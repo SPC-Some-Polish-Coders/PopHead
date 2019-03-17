@@ -1,0 +1,12 @@
+# Executables, env dependend files
+*.o
+*.a
+*.so
+*.dll
+*.exe
+
+# Build directories
+build/
+
+# IDE's
+.vscode
