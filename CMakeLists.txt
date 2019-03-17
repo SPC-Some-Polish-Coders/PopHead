@@ -3,7 +3,8 @@ cmake_minimum_required (VERSION 3.13)
 project( PopHead CXX )
 
 set( SRC_LIST
-./src/main.cpp
+src/main.cpp
+src/Base/Game.cpp
 )
 
 include_directories(
