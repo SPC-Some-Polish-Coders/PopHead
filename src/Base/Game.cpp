@@ -3,7 +3,8 @@
 using PopHead::Base::Game;
 
 Game::Game()
-        : mSoundPlayer { new Audio::SoundPlayer() }
+        : mGameData {}
+        , mSoundPlayer { new Audio::SoundPlayer() }
         , mMusicPlayer { new Audio::MusicPlayer() }
         , mTextures { new Resources::TextureHolder() }
         , mFonts { new Resources::FontHolder() }
@@ -12,6 +13,15 @@ Game::Game()
         , mInput { new Input::Input() }
         , mRenderer { new Renderer::Renderer() }
 {
+    mGameData.reset( new GameData(
+            mSoundPlayer.get(),
+            mMusicPlayer.get(),
+            mTextures.get(),
+            mFonts.get(),
+            mShaders.get(),
+            mStateMachine.get(),
+            mInput.get(),
+            mRenderer.get() ) );
     run();
 }
 
