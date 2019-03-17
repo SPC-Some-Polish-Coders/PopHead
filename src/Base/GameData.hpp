@@ -13,8 +13,11 @@
 namespace PopHead {
 namespace Base {
 
-struct GameData
+/// GameData is holder for observer pointers to Game Modules.
+/** GameData is recivied by Game itself. */
+class GameData
 {
+  public:
     inline GameData(
             Audio::SoundPlayer* const = nullptr,
             Audio::MusicPlayer* const = nullptr,
@@ -25,6 +28,16 @@ struct GameData
             Input::Input* const = nullptr,
             Renderer::Renderer* const  = nullptr );
 
+    inline auto getSoundPlayer() const -> Audio::SoundPlayer&;
+    inline auto getMusicPlayer() const -> Audio::getMusicPlayer&;
+    inline auto getTextures() const -> Resources::getTextureHolder&;
+    inline auto getFonts() const -> Resources::getFontHolder&;
+    inline auto getShaders() const -> Resources::getShaderHolder&;
+    inline auto getStateMachie() const -> States::StateMachie&;
+    inline auto getInput() const -> Input::Input&;
+    inline auto getRenderer() const -> Renderer::Renderer&;
+
+  private:
     Audio::SoundPlayer* const mSoundPlayer;
     Audio::MusicPlayer* const mMusicPlayer;
     Resources::TextureHolder* const mTextures;
@@ -52,6 +65,30 @@ inline GameData::GameData(
         , mStateMachine { stateMachine }
         , mInput { input }
         , mRenderer { renderer } {};
+
+inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
+{ return *mSoundPlayer; }
+
+inline auto GameData::getMusicPlayer() const -> Audio::getMusicPlayer&
+{ return *mMusicPlayer; }
+
+inline auto GameData::getTextures() const -> Resources::getTextureHolder&
+{ return *mTextures; }
+
+inline auto GameData::getFonts() const -> Resources::getFontHolder&
+{ return *mFonts; }
+
+inline auto GameData::getShaders() const -> Resources::getShaderHolder&
+{ return *mShaders; }
+
+inline auto GameData::getStateMachie() const -> States::StateMachie&
+{ return *mStateMachine; }
+
+inline auto GameData::getInput() const -> Input::Input&
+{ return *mInput; }
+
+inline auto GameData::getRenderer() const -> Renderer::Renderer&
+{ return *mRenderer; }
 
 }}
 
