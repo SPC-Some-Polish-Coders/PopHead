@@ -18,15 +18,16 @@ namespace Base {
 class GameData
 {
   public:
+    inline GameData();
     inline GameData(
-            Audio::SoundPlayer* const = nullptr,
-            Audio::MusicPlayer* const = nullptr,
-            Resources::TextureHolder* const = nullptr,
-            Resources::FontHolder* const = nullptr,
-            Resources::ShaderHolder* const = nullptr,
-            States::StateMachine* const = nullptr,
-            Input::Input* const = nullptr,
-            Renderer::Renderer* const = nullptr );
+            Audio::SoundPlayer* const,
+            Audio::MusicPlayer* const,
+            Resources::TextureHolder* const,
+            Resources::FontHolder* const,
+            Resources::ShaderHolder* const,
+            States::StateMachie* const,
+            Input::Input* const,
+            Renderer::Renderer* const );
 
     inline auto getSoundPlayer() const -> Audio::SoundPlayer&;
     inline auto getMusicPlayer() const -> Audio::MusicPlayer&;
@@ -48,6 +49,10 @@ class GameData
     Renderer::Renderer* const mRenderer;
 };
 
+inline GameData::GameData()
+        : GameData( nullptr, nullptr, nullptr, nullptr,
+                    nullptr, nullptr, nullptr, nullptr ) {}
+
 inline GameData::GameData(
         Audio::SoundPlayer* const soundPlayer,
         Audio::MusicPlayer* const musicPlayer,
@@ -65,8 +70,9 @@ inline GameData::GameData(
         , mStateMachine { stateMachine }
         , mInput { input }
         , mRenderer { renderer }
-        {
-        }
+{
+    
+}
 
 inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
 { return *mSoundPlayer; }
