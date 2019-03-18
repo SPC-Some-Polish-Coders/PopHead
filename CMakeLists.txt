@@ -5,6 +5,10 @@ project( PopHead CXX )
 set( SRC_LIST
 src/main.cpp
 src/Base/Game.cpp
+src/Resources/FontResource.cpp
+src/Resources/TextureResource.cpp
+src/Resources/ShaderResource.cpp
+src/Resources/SoundBufferResource.cpp
 )
 
 include_directories(
