@@ -26,13 +26,13 @@ class GameData
             Resources::ShaderHolder* const = nullptr,
             States::StateMachie* const = nullptr,
             Input::Input* const = nullptr,
-            Renderer::Renderer* const  = nullptr );
+            Renderer::Renderer* const = nullptr );
 
     inline auto getSoundPlayer() const -> Audio::SoundPlayer&;
-    inline auto getMusicPlayer() const -> Audio::getMusicPlayer&;
-    inline auto getTextures() const -> Resources::getTextureHolder&;
-    inline auto getFonts() const -> Resources::getFontHolder&;
-    inline auto getShaders() const -> Resources::getShaderHolder&;
+    inline auto getMusicPlayer() const -> Audio::MusicPlayer&;
+    inline auto getTextures() const -> Resources::TextureHolder&;
+    inline auto getFonts() const -> Resources::FontHolder&;
+    inline auto getShaders() const -> Resources::ShaderHolder&;
     inline auto getStateMachie() const -> States::StateMachie&;
     inline auto getInput() const -> Input::Input&;
     inline auto getRenderer() const -> Renderer::Renderer&;
@@ -69,16 +69,16 @@ inline GameData::GameData(
 inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
 { return *mSoundPlayer; }
 
-inline auto GameData::getMusicPlayer() const -> Audio::getMusicPlayer&
+inline auto GameData::getMusicPlayer() const -> Audio::MusicPlayer&
 { return *mMusicPlayer; }
 
-inline auto GameData::getTextures() const -> Resources::getTextureHolder&
+inline auto GameData::getTextures() const -> Resources::TextureHolder&
 { return *mTextures; }
 
-inline auto GameData::getFonts() const -> Resources::getFontHolder&
+inline auto GameData::getFonts() const -> Resources::FontHolder&
 { return *mFonts; }
 
-inline auto GameData::getShaders() const -> Resources::getShaderHolder&
+inline auto GameData::getShaders() const -> Resources::ShaderHolder&
 { return *mShaders; }
 
 inline auto GameData::getStateMachie() const -> States::StateMachie&
