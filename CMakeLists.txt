@@ -28,9 +28,9 @@ set( COMMON_LIBS
 	-lvorbisfile
 	-lopenal
 	-lpthread
+	sfml-graphics-s.a
 	sfml-window-s.a
 	sfml-audio-s.a
-	sfml-graphics-s.a
 	sfml-network-s.a
 	sfml-system-s.a
 )
