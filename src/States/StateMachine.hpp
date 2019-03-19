@@ -5,10 +5,13 @@
 #include <vector>
 #include <SFML/System.hpp>
 
+#include "State.hpp"
+
 namespace PopHead {
 namespace States {
 
 using StatePtr = std::unique_ptr<State>;
+
 
 class StateMachine
 {
@@ -39,6 +42,7 @@ private:
     bool mIsRemoving;
     bool mIsClearing;
 };
+
 
 }}
 
