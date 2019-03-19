@@ -64,7 +64,9 @@ inline GameData::GameData(
         , mShaders { shaders }
         , mStateMachine { stateMachine }
         , mInput { input }
-        , mRenderer { renderer } {};
+        , mRenderer { renderer }
+        {
+        }
 
 inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
 { return *mSoundPlayer; }

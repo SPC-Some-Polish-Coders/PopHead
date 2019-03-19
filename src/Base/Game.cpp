@@ -1,5 +1,7 @@
 #include "Base/Game.hpp"
 
+#include <SFML/System.hpp>
+
 using PopHead::Base::Game;
 
 Game::Game()
@@ -27,30 +29,35 @@ Game::Game()
 
 void Game::run()
 {
-    mainloop();
+    sf::Clock clock;
+    const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
+    while(true)///in the future here will be something like mRenderer->isWindowOpen()
+    {
+        ///mStateMachine->changingStatesProcess();
+        ///mStateMachine->input();
+        timeSinceLastUpdate += clock.restart();
+
+        while(timeSinceLastUpdate > timePerFrame){
+            timeSinceLastUpdate -= timePerFrame;
+            ///mStateMachine->update(timePerFrame);
+            ///mRenderer->draw();
+        }
+    }
 }
 
 void Game::input()
 {
 
-};
+}
 
 void Game::update( float delta )
 {
 
-};
+}
 
 void Game::draw()
 {
 
-};
-
-void Game::mainloop()
-{
-    while (true)
-    {
-        input();
-        update( 0.f );
-        draw();
-    };
 }

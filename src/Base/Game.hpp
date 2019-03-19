@@ -41,9 +41,6 @@ class Game
     /// Draw current state on screen.
     void draw();
 
-    /// Mainloop.
-    void mainloop();
-
     /// Get GameData.
     /** @return GameData reference. */
     inline auto getGameData() const -> const Base::GameData&;
