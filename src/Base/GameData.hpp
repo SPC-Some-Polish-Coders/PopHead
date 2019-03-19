@@ -24,7 +24,7 @@ class GameData
             Resources::TextureHolder* const = nullptr,
             Resources::FontHolder* const = nullptr,
             Resources::ShaderHolder* const = nullptr,
-            States::StateMachie* const = nullptr,
+            States::StateMachine* const = nullptr,
             Input::Input* const = nullptr,
             Renderer::Renderer* const = nullptr );
 
@@ -33,7 +33,7 @@ class GameData
     inline auto getTextures() const -> Resources::TextureHolder&;
     inline auto getFonts() const -> Resources::FontHolder&;
     inline auto getShaders() const -> Resources::ShaderHolder&;
-    inline auto getStateMachie() const -> States::StateMachie&;
+    inline auto getStateMachine() const -> States::StateMachine&;
     inline auto getInput() const -> Input::Input&;
     inline auto getRenderer() const -> Renderer::Renderer&;
 
@@ -43,7 +43,7 @@ class GameData
     Resources::TextureHolder* const mTextures;
     Resources::FontHolder* const mFonts;
     Resources::ShaderHolder* const mShaders;
-    States::StateMachie* const mStateMachine;
+    States::StateMachine* const mStateMachine;
     Input::Input* const mInput;
     Renderer::Renderer* const mRenderer;
 };
@@ -54,7 +54,7 @@ inline GameData::GameData(
         Resources::TextureHolder* const textures,
         Resources::FontHolder* const fonts,
         Resources::ShaderHolder* const shaders,
-        States::StateMachie* const stateMachine,
+        States::StateMachine* const stateMachine,
         Input::Input* const input,
         Renderer::Renderer* const renderer )
         : mSoundPlayer { soundPlayer }
@@ -83,7 +83,7 @@ inline auto GameData::getFonts() const -> Resources::FontHolder&
 inline auto GameData::getShaders() const -> Resources::ShaderHolder&
 { return *mShaders; }
 
-inline auto GameData::getStateMachie() const -> States::StateMachie&
+inline auto GameData::getStateMachine() const -> States::StateMachine&
 { return *mStateMachine; }
 
 inline auto GameData::getInput() const -> Input::Input&

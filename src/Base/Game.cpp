@@ -11,7 +11,7 @@ Game::Game()
         , mTextures { new Resources::TextureHolder() }
         , mFonts { new Resources::FontHolder() }
         , mShaders { new Resources::ShaderHolder() }
-        , mStateMachine { new States::StateMachie() }
+        , mStateMachine { new States::StateMachine() }
         , mInput { new Input::Input() }
         , mRenderer { new Renderer::Renderer() }
 {

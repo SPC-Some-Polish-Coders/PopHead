@@ -52,7 +52,7 @@ class Game
     std::unique_ptr< Resources::TextureHolder > mTextures;
     std::unique_ptr< Resources::FontHolder > mFonts;
     std::unique_ptr< Resources::ShaderHolder > mShaders;
-    std::unique_ptr< States::StateMachie > mStateMachine;
+    std::unique_ptr< States::StateMachine > mStateMachine;
     std::unique_ptr< Input::Input > mInput;
     std::unique_ptr< Renderer::Renderer > mRenderer; ///@}
 };

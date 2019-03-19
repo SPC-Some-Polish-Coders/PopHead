@@ -8,6 +8,7 @@
 #include "State.hpp"
 
 namespace PopHead {
+    namespace Base { class GameData; }
 namespace States {
 
 using StatePtr = std::unique_ptr<State>;
@@ -16,7 +17,7 @@ using StatePtr = std::unique_ptr<State>;
 class StateMachine
 {
 public:
-    StateMachine(StatePtr initialState);
+    //StateMachine(StatePtr initialState);
 
     void changingStatesProcess();
     void input();
