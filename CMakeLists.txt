@@ -9,6 +9,7 @@ src/Resources/FontResource.cpp
 src/Resources/TextureResource.cpp
 src/Resources/ShaderResource.cpp
 src/Resources/SoundBufferResource.cpp
+src/Renderer/Renderer.cpp
 )
 
 include_directories(
@@ -19,6 +20,8 @@ include_directories(
 )
 
 set( COMMON_LIBS
+	-lasan
+    -lubsan
 	-lfreetype
 	-lGL
 	-ludev
@@ -36,8 +39,6 @@ set( COMMON_LIBS
 )
 
 set( LINUX_LIBS
-	-lasan
-	-lubsan	
 	-lX11
 	-lXrandr
 )
@@ -57,7 +58,7 @@ add_executable( PopHead ${SRC_LIST} )
 set_property(TARGET PopHead PROPERTY CXX_STANDARD 17 )
 
 target_include_directories(PopHead PUBLIC
-	src/
+	src
 	res/include)
 
 target_link_directories(PopHead PUBLIC res/lib/SFML )

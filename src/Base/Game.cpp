@@ -42,7 +42,7 @@ void Game::run()
         while(timeSinceLastUpdate > timePerFrame){
             timeSinceLastUpdate -= timePerFrame;
             ///mStateMachine->update(timePerFrame);
-            ///mRenderer->draw();
+            mRenderer->draw();
         }
     }
 }
