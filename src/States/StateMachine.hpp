@@ -23,8 +23,8 @@ public:
     void input();
     void update(sf::Time delta);
     void pushState(StatePtr state);
-    void popState();
     void replaceState(StatePtr replacer);
+    void popState();
     void clearStates();
 
     unsigned int getStatesAmount() const;

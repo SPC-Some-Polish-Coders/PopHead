@@ -28,15 +28,28 @@ void StateMachine::update(sf::Time delta)
 
 void StateMachine::pushState(StatePtr state)
 {
+    if(mIsReplacing == false){
+        mPendingStates.push_back(std::move(state));
+        mIsAdding = true;
+    }
+    else{
+        /// log - ERROR | States | couldn't push state because another state is replacing
+    }
+}
 
+void StateMachine::replaceState(StatePtr state)
+{
+    if(mIsAdding == false){
+        mPendingStates.clear();
+        mPendingStates.push_back(std::move(state));
+        mIsReplacing = true;
+    }
+    else{
+        /// log - ERROR | States | couldn't replace state because another state is pushing
+    }
 }
 
 void StateMachine::popState()
-{
-
-}
-
-void StateMachine::replaceState(StatePtr replacer)
 {
 
 }
