@@ -51,12 +51,12 @@ void StateMachine::replaceState(StatePtr state)
 
 void StateMachine::popState()
 {
-
+    mIsRemoving = true;
 }
 
 void StateMachine::clearStates()
 {
-
+    mIsClearing = true;
 }
 
 unsigned int StateMachine::getStatesAmount() const
