@@ -9,7 +9,9 @@ using PopHead::Renderer::LayerID;
 Renderer::Renderer()
         : mCamera { { 0, 0, 100, 100 } }
         // std::vector< sf::ViewPort > mViewports;
-        , mWindow { sf::VideoMode::getDesktopMode(), "test" }
+        , mWindow { sf::VideoMode::getDesktopMode(),
+                    "PopHead",
+                    sf::Style::Fullscreen }
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
@@ -20,9 +22,11 @@ Renderer::Renderer()
 
 void Renderer::draw() const
 {
+    mWindow.clear(sf::Color::Black);
     for( const auto& layer : mLayers )
         for( const auto& object : layer.second )
             object->draw();
+    mWindow.display();
 }
 
 void Renderer::addObject( World::Entity::Object* const object )

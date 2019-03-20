@@ -36,7 +36,7 @@ class Renderer
   private:
     sf::View mCamera;
     // std::vector< sf::Rect< float > > mViewports;
-    sf::RenderWindow mWindow;
+    mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
 };
 
