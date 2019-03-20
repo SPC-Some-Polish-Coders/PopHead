@@ -6,14 +6,17 @@
 #include "Base/GameData.hpp"
 
 namespace PopHead{
-    namespace Base { class GameData; }
+
+namespace Base { class GameData; }
+
 namespace States{
 
 
 class State
 {
 public:
-    State(Base::GameData *gameData);
+    //State(Base::GameData *gameData);
+
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
