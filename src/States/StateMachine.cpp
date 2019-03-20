@@ -97,26 +97,26 @@ void StateMachine::clearStates()
 
 unsigned int StateMachine::getStatesAmount() const
 {
-
+    return mActiveStates.size();
 }
 
 bool StateMachine::getHideInStateNr(unsigned int nrOfState) const
 {
-    return mPendingStates[ mPendingStates.size() - nrOfState - 1 ]->getHide();
+    return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getHide();
 }
 
 bool StateMachine::getPauseInStateNr(unsigned int nrOfState) const
 {
-    return mPendingStates[ mPendingStates.size() - nrOfState - 1 ]->getPause();
+    return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getPause();
 }
 
 void StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
 {
-    mPendingStates[ mPendingStates.size() - nrOfState - 1 ]->setHide(hide);
+    mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setHide(hide);
 }
 
 void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
 {
-    mPendingStates[ mPendingStates.size() - nrOfState - 1 ]->setPause(pause);
+    mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
 }
 
