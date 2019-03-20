@@ -54,12 +54,19 @@ void StateMachine::changingStatesProcess()
 
 void StateMachine::input()
 {
-
+    mActiveStates.back()->input();
 }
 
 void StateMachine::update(sf::Time delta)
 {
+    mActiveStates.back()->update(delta);
 
+    #if 0
+    for(auto state& : mActiveStates){
+        if(!state->getPause())
+            state->update(delta);
+    }
+    #endif // 0
 }
 
 void StateMachine::pushState(StatePtr state)
