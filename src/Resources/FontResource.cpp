@@ -2,7 +2,7 @@
 
 using PopHead::Resources::FontResource;
 
-bool FontResource::load()
+bool FontResource::load( std::string path )
 {
     return true;
 }

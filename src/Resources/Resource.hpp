@@ -14,7 +14,7 @@ class Resource
     -> std::unique_ptr< ResourceType >;
 
   private:
-    virtual bool load() =0;
+    virtual bool load( std::string path ) =0;
 };
 
 template< typename ResourceType >

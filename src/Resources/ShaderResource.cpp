@@ -2,7 +2,7 @@
 
 using PopHead::Resources::ShaderResource;
 
-bool ShaderResource::load()
+bool ShaderResource::load( std::string path )
 {
     return true;
 }
