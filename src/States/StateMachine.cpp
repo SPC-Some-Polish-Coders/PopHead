@@ -1,5 +1,7 @@
 #include "States/StateMachine.hpp"
 
+#include <iostream>
+
 using PopHead::States::StateMachine;
 
 
@@ -54,12 +56,31 @@ void StateMachine::changingStatesProcess()
 
 void StateMachine::input()
 {
-
+    if(mActiveStates.empty()){
+        //it's temporary. Later we'll change it to be handle by LogManager.
+        std::cout<<"ERROR | States | cannot execute input because there are no States on the vector"<<std::endl;
+    }
+    else{
+        mActiveStates.back()->input();
+    }
 }
 
 void StateMachine::update(sf::Time delta)
 {
+    if(mActiveStates.empty()){
+        //it's temporary. Later we'll change it to be handle by LogManager.
+        std::cout<<"ERROR | States | cannot execute update because there are no States on the vector"<<std::endl;
+    }
+    else{
+        mActiveStates.back()->update(delta);
 
+        #if 0
+        for(auto state& : mActiveStates){
+            if(!state->getPause())
+                state->update(delta);
+        }
+        #endif // 0
+    }
 }
 
 void StateMachine::pushState(StatePtr state)
@@ -97,26 +118,26 @@ void StateMachine::clearStates()
 
 unsigned int StateMachine::getStatesAmount() const
 {
-
+    return mActiveStates.size();
 }
 
 bool StateMachine::getHideInStateNr(unsigned int nrOfState) const
 {
-
+    return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getHide();
 }
 
 bool StateMachine::getPauseInStateNr(unsigned int nrOfState) const
 {
-
+    return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getPause();
 }
 
 void StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
 {
-
+    mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setHide(hide);
 }
 
 void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
 {
-
+    mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
 }
 

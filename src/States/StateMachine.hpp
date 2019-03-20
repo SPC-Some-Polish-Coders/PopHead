@@ -29,7 +29,7 @@ public:
     void clearStates();
 
     unsigned int getStatesAmount() const;
-    bool getHideInStateNr(unsigned int nrOfState) const;
+    bool getHideInStateNr(unsigned int nrOfState) const; /// 0 is top
     bool getPauseInStateNr(unsigned int nrOfState) const;
 
     void setHideInStateNr(unsigned int nrOfState, bool hide);

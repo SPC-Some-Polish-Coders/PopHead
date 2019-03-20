@@ -35,7 +35,7 @@ class Game
     /// World update method.
     /** Here whole game logic is resolved.
      *  @param delta - time (in milliseconds) from last frame. */
-    void update( float delta );
+    void update( sf::Time delta );
 
     /// Draw method.
     /// Draw current state on screen.

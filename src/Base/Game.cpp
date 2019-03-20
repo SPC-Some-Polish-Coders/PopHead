@@ -36,13 +36,14 @@ void Game::run()
 
     while(true)///in the future here will be something like mRenderer->isWindowOpen()
     {
-        ///mStateMachine->changingStatesProcess();
-        ///mStateMachine->input();
+        mStateMachine->changingStatesProcess();
+        mStateMachine->input();
         timeSinceLastUpdate += clock.restart();
 
         while(timeSinceLastUpdate > timePerFrame){
             timeSinceLastUpdate -= timePerFrame;
-            ///mStateMachine->update(timePerFrame);
+
+            mStateMachine->update(timePerFrame);
             mRenderer->draw();
         }
     }
@@ -50,12 +51,12 @@ void Game::run()
 
 void Game::input()
 {
-
+    mStateMachine->input();
 }
 
-void Game::update( float delta )
+void Game::update( sf::Time delta )
 {
-
+    mStateMachine->update(delta);
 }
 
 void Game::draw()
