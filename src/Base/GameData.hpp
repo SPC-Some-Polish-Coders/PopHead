@@ -25,7 +25,7 @@ class GameData
             Resources::TextureHolder* const,
             Resources::FontHolder* const,
             Resources::ShaderHolder* const,
-            States::StateMachie* const,
+            States::StateMachine* const,
             Input::Input* const,
             Renderer::Renderer* const );
 
