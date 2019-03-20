@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <deque>
 #include <SFML/System.hpp>
 
 #include "State.hpp"
@@ -36,7 +37,7 @@ public:
 
 private:
     std::vector<StatePtr> mActiveStates;
-    std::vector<StatePtr> mPendingStates;
+    std::deque<StatePtr> mPendingStates;
 
     bool mIsAdding;
     bool mIsReplacing;
