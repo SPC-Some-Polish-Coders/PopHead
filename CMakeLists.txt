@@ -10,6 +10,7 @@ src/Resources/TextureResource.cpp
 src/Resources/ShaderResource.cpp
 src/Resources/SoundBufferResource.cpp
 src/Renderer/Renderer.cpp
+src/Renderer/Layer.cpp
 src/States/StateMachine.cpp
 src/States/State.cpp
 )

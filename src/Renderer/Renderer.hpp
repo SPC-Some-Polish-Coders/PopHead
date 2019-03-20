@@ -22,13 +22,12 @@ class Renderer
 
     void draw() const;
 
-    void addObject( const World::Entity::Object* const objectToAdd );
-    void addObject( const World::Entity::Object* const objectToAdd,
+    void addObject( World::Entity::Object* const objectToAdd );
+    void addObject( World::Entity::Object* const objectToAdd,
                     LayerID layerID );
 
-    void removeObject( std::string name );
-    void removeObject( std::string name, LayerID layerID );
     void removeObject( const World::Entity::Object* const object );
+    void removeObject( std::string name, LayerID layerID );
 
     inline auto getWindow() const -> const sf::Window&;
     inline auto getLayer( LayerID ) -> Layer&;

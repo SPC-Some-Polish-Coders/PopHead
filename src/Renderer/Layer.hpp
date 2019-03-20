@@ -14,7 +14,7 @@ class Layer
 {
   public:
     using ObjectsSequence = std::list< World::Entity::Object* >;
-    void addObject( const World::Entity::Object* const object );
+    void addObject( World::Entity::Object* const object );
 
     void removeObject( const World::Entity::Object* const object );
     void removeObject( std::string name );
