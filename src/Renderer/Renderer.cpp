@@ -22,11 +22,17 @@ Renderer::Renderer()
 
 void Renderer::draw() const
 {
-    mWindow.clear(sf::Color::Black);
+    mWindow.clear();
+
     for( const auto& layer : mLayers )
         for( const auto& object : layer.second )
             object->draw();
+
     mWindow.display();
+
+    /// VERY TEMPORARY
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        mWindow.close();
 }
 
 void Renderer::addObject( World::Entity::Object* const object )
