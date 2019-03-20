@@ -17,7 +17,7 @@ using StatePtr = std::unique_ptr<State>;
 class StateMachine
 {
 public:
-    //StateMachine(StatePtr initialState);
+    //StateMachine();
 
     void changingStatesProcess();
     void input();

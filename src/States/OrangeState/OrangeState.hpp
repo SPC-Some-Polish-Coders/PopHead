@@ -2,6 +2,7 @@
 #define POPHEAD_STATES_ORANGESTATE_ORANGESTATE_H
 
 #include "States/State.hpp"
+#include "Base/GameData.hpp"
 
 namespace PopHead{
 namespace States{
@@ -14,6 +15,9 @@ public:
 
     void input() override;
     void update(sf::Time delta) override;
+
+private:
+    Base::GameData *gameData;
 };
 
 

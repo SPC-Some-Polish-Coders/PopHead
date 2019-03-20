@@ -1,6 +1,7 @@
 #include "Base/Game.hpp"
 
 #include <SFML/System.hpp>
+#include "States/OrangeState/OrangeState.hpp"
 
 using PopHead::Base::Game;
 
