@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <deque>
 #include <SFML/System.hpp>
 
 #include "State.hpp"
@@ -17,14 +18,14 @@ using StatePtr = std::unique_ptr<State>;
 class StateMachine
 {
 public:
-    //StateMachine(StatePtr initialState);
+    StateMachine();
 
     void changingStatesProcess();
     void input();
     void update(sf::Time delta);
     void pushState(StatePtr state);
-    void popState();
     void replaceState(StatePtr replacer);
+    void popState();
     void clearStates();
 
     unsigned int getStatesAmount() const;
@@ -36,7 +37,7 @@ public:
 
 private:
     std::vector<StatePtr> mActiveStates;
-    std::vector<StatePtr> mPendingStates;
+    std::deque<StatePtr> mPendingStates;
 
     bool mIsAdding;
     bool mIsReplacing;

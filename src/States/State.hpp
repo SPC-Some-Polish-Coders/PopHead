@@ -3,17 +3,17 @@
 
 #include <SFML/System.hpp>
 
-#include "Base/GameData.hpp"
 
 namespace PopHead{
-    namespace Base { class GameData; }
+
+namespace Base { class GameData; }
+
 namespace States{
 
 
 class State
 {
 public:
-    State(Base::GameData *gameData);
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
@@ -25,7 +25,6 @@ public:
     void setPause(bool pause);
 
 private:
-    Base::GameData *mGameData;
     ///World::Entity mRoot;
     bool mHide;
     bool mPause;

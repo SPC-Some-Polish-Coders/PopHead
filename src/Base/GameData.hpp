@@ -71,7 +71,7 @@ inline GameData::GameData(
         , mInput { input }
         , mRenderer { renderer }
 {
-    
+
 }
 
 inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
