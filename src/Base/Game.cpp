@@ -1,9 +1,13 @@
 #include "Base/Game.hpp"
 
-#include <SFML/System.hpp>
 #include "States/OrangeState/OrangeState.hpp"
+#include "States/StateIdentifiers.hpp"
+#include <SFML/System.hpp>
+
+namespace PopHead{ namespace States { enum class StateID; } }
 
 using PopHead::Base::Game;
+
 
 Game::Game()
         : mGameData {}
@@ -26,7 +30,7 @@ Game::Game()
             mInput.get(),
             mRenderer.get() ) );
 
-    //mStateMachine.reset( new States::StateMachine(mGameData.get()) );
+    mStateMachine->pushState(States::StateID::OrangeState);
 
     run();
 }
