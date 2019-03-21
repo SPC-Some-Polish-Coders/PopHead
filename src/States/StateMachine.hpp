@@ -7,6 +7,7 @@
 #include <SFML/System.hpp>
 
 #include "State.hpp"
+#include "StateIdentifiers.hpp"
 
 namespace PopHead {
     namespace Base { class GameData; }
