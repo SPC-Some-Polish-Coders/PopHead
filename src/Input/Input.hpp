@@ -11,6 +11,11 @@ namespace Input {
 
 class Input
 {
+public:
+    auto getKeyboard() -> const KeyboardManager&;
+    auto getMouse()    -> const MouseManager&;
+    auto getAction()   -> const MouseManager&;
+
 private:
     ActionManager mAction;
     KeyboardManager mKeyboard;
