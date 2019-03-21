@@ -12,7 +12,7 @@ Game::Game()
         , mTextures { new Resources::TextureHolder() }
         , mFonts { new Resources::FontHolder() }
         , mShaders { new Resources::ShaderHolder() }
-        , mStateMachine { new States::StateMachine() }
+        , mStateMachine { new States::StateMachine( mGameData.get() ) }
         , mInput { new Input::Input() }
         , mRenderer { new Renderer::Renderer() }
 {
@@ -25,6 +25,9 @@ Game::Game()
             mStateMachine.get(),
             mInput.get(),
             mRenderer.get() ) );
+
+    //mStateMachine.reset( new States::StateMachine(mGameData.get()) );
+
     run();
 }
 

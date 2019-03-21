@@ -10,7 +10,9 @@
 #include "StateIdentifiers.hpp"
 
 namespace PopHead {
+
     namespace Base { class GameData; }
+
 namespace States {
 
 using StatePtr = std::unique_ptr<State>;
@@ -19,13 +21,13 @@ using StatePtr = std::unique_ptr<State>;
 class StateMachine
 {
 public:
-    StateMachine();
+    StateMachine(Base::GameData*);
 
     void changingStatesProcess();
     void input();
     void update(sf::Time delta);
-    void pushState(StatePtr state);
-    void replaceState(StatePtr replacer);
+    void pushState(StateID);
+    void replaceState(StateID);
     void popState();
     void clearStates();
 
@@ -37,8 +39,13 @@ public:
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 
 private:
+    auto getStatePtr(StateID) const -> std::unique_ptr<State>;
+
+private:
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;
+
+    Base::GameData* gameData;
 
     bool mIsAdding;
     bool mIsReplacing;

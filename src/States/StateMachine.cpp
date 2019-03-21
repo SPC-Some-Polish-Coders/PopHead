@@ -2,11 +2,16 @@
 
 #include <iostream>
 
+#include "OrangeState/OrangeState.hpp"
+#include "GreenState/GreenState.hpp"
+
 using PopHead::States::StateMachine;
 
+class State;
 
-StateMachine::StateMachine()
-:mIsAdding(false)
+StateMachine::StateMachine(Base::GameData *gameData)
+:gameData(gameData)
+,mIsAdding(false)
 ,mIsReplacing(false)
 ,mIsRemoving(false)
 ,mIsClearing(false)
@@ -83,10 +88,10 @@ void StateMachine::update(sf::Time delta)
     }
 }
 
-void StateMachine::pushState(StatePtr state)
+void StateMachine::pushState(StateID id)
 {
     if(mIsReplacing == false){
-        mPendingStates.emplace_back(std::move(state));
+        mPendingStates.emplace_back( std::move(getStatePtr(id)) );
         mIsAdding = true;
     }
     else{
@@ -94,11 +99,11 @@ void StateMachine::pushState(StatePtr state)
     }
 }
 
-void StateMachine::replaceState(StatePtr state)
+void StateMachine::replaceState(StateID id)
 {
     if(mIsAdding == false){
         mPendingStates.clear();
-        mPendingStates.emplace_back(std::move(state));
+        mPendingStates.emplace_back( std::move(getStatePtr(id)) );
         mIsReplacing = true;
     }
     else{
@@ -139,5 +144,18 @@ void StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
 void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
 {
     mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
+}
+
+auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
+{
+    switch(id)
+    {
+        case StateID::OrangeState:{
+            return StatePtr(new States::OrangeState(gameData));
+        }
+        case StateID::GreenState:{
+            return StatePtr(new States::GreenState(gameData));
+        }
+    }
 }
 
