@@ -14,7 +14,7 @@ class Input
 public:
     auto getKeyboard() -> const KeyboardManager&;
     auto getMouse()    -> const MouseManager&;
-    auto getAction()   -> const MouseManager&;
+    auto getAction()   -> const ActionManager&;
 
 private:
     ActionManager mAction;

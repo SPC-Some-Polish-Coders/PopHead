@@ -12,7 +12,7 @@ auto Input::getMouse() -> const MouseManager&
     return mMouse;
 }
 
-auto Input::getAction()   -> const MouseManager&
+auto Input::getAction()   -> const ActionManager&
 {
-    mAction;
+    return mAction;
 }
