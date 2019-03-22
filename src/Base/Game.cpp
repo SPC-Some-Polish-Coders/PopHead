@@ -30,6 +30,7 @@ Game::Game()
             mInput.get(),
             mRenderer.get() ) );
 
+    mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::OrangeState);
 
     run();

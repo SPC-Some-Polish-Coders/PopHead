@@ -11,13 +11,10 @@ namespace States{
 class OrangeState : public State
 {
 public:
-    OrangeState(Base::GameData *gameData);
+    OrangeState(Base::GameData *const gameData);
 
     void input() override;
     void update(sf::Time delta) override;
-
-private:
-    Base::GameData *gameData;
 };
 
 

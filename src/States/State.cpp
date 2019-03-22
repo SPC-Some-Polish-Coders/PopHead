@@ -2,6 +2,13 @@
 
 using PopHead::States::State;
 
+State::State( Base::GameData* const gameData )
+        : mGameData { gameData }
+        // , World::Entity mRoot;
+        , mHide { false }
+        , mPause { false }
+{
+}
 
 bool State::getHide() const
 {

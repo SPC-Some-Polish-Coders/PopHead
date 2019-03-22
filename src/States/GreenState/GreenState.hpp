@@ -10,13 +10,10 @@ namespace States{
 class GreenState : public State
 {
 public:
-    GreenState(Base::GameData *gameData);
+    GreenState(Base::GameData *const gameData);
 
     void input() override;
     void update(sf::Time delta) override;
-
-private:
-    Base::GameData *gameData;
 };
 
 

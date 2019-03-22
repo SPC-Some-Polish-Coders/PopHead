@@ -17,7 +17,6 @@ namespace States {
 
 using StatePtr = std::unique_ptr<State>;
 
-
 class StateMachine
 {
 public:
@@ -38,21 +37,22 @@ public:
     void setHideInStateNr(unsigned int nrOfState, bool hide);
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 
+    // XXX not the best solution at all..
+    void setGameData( Base::GameData* const );
+
 private:
     auto getStatePtr(StateID) const -> std::unique_ptr<State>;
 
-private:
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;
 
-    Base::GameData* gameData;
+    Base::GameData* mGameData;
 
     bool mIsAdding;
     bool mIsReplacing;
     bool mIsRemoving;
     bool mIsClearing;
 };
-
 
 }}
 

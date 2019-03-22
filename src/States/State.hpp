@@ -14,6 +14,7 @@ namespace States{
 class State
 {
 public:
+    State( Base::GameData* const gameData );
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
@@ -23,6 +24,9 @@ public:
 
     void setHide(bool hide);
     void setPause(bool pause);
+
+protected:
+    Base::GameData* const mGameData;
 
 private:
     ///World::Entity mRoot;

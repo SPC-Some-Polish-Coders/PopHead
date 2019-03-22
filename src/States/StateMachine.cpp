@@ -9,8 +9,8 @@ using PopHead::States::StateMachine;
 
 class State;
 
-StateMachine::StateMachine(Base::GameData *gameData)
-:gameData(gameData)
+StateMachine::StateMachine()
+:mGameData(nullptr)
 ,mIsAdding(false)
 ,mIsReplacing(false)
 ,mIsRemoving(false)
@@ -29,6 +29,7 @@ void StateMachine::changingStatesProcess()
             mActiveStates.clear();
             /// log - GOOD | States | vector of active states was cleared
         }
+        mIsClearing = false;
     }
 
     if(mIsRemoving)
@@ -40,6 +41,7 @@ void StateMachine::changingStatesProcess()
             mActiveStates.pop_back();
             /// log - GOOD | States | the state in the back of the vector of active states was popped (deleted)
         }
+        mIsRemoving = false;
     }
 
     if(mIsAdding)
@@ -49,6 +51,7 @@ void StateMachine::changingStatesProcess()
             mPendingStates.pop_front();
             /// log - GOOD | States | the state in the back of the vector was replaced by new state
         }
+        mIsAdding = false;
     }
 
     if(mIsReplacing)
@@ -56,6 +59,7 @@ void StateMachine::changingStatesProcess()
         mActiveStates.emplace_back(std::move(mPendingStates.back()));
         mPendingStates.clear();
         /// log - GOOD | States | the new state was pushed into back of the vector
+        mIsReplacing = false;
     }
 }
 
@@ -151,11 +155,16 @@ auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
     switch(id)
     {
         case StateID::OrangeState:{
-            return StatePtr(new States::OrangeState(gameData));
+            return StatePtr(new States::OrangeState(mGameData));
         }
         case StateID::GreenState:{
-            return StatePtr(new States::GreenState(gameData));
+            return StatePtr(new States::GreenState(mGameData));
         }
     }
+}
+
+void StateMachine::setGameData( Base::GameData* const ptr )
+{
+    mGameData = ptr;
 }
 

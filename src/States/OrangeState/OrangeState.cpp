@@ -5,8 +5,8 @@
 
 using PopHead::States::OrangeState;
 
-OrangeState::OrangeState(Base::GameData *gameData)
-:gameData(gameData)
+OrangeState::OrangeState(Base::GameData* const gameData)
+:State{gameData}
 {
 }
 
@@ -20,4 +20,5 @@ void OrangeState::input()
 void OrangeState::update(sf::Time delta)
 {
     std::cout<<"ORANGE"<<std::endl;
+    mGameData->getStateMachine().replaceState(StateID::GreenState);
 }
