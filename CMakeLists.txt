@@ -13,6 +13,8 @@ src/Renderer/Renderer.cpp
 src/Renderer/Layer.cpp
 src/States/StateMachine.cpp
 src/States/State.cpp
+src/States/GreenState/GreenState.cpp
+src/States/OrangeState/OrangeState.cpp
 )
 
 include_directories(
