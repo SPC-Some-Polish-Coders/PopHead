@@ -20,7 +20,7 @@ using StatePtr = std::unique_ptr<State>;
 class StateMachine
 {
 public:
-    StateMachine(Base::GameData*);
+    StateMachine();
 
     void changingStatesProcess();
     void input();
