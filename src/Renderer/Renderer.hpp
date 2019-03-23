@@ -21,6 +21,11 @@ class Renderer
     Renderer( Renderer& ) = delete;
     Renderer& operator=( Renderer& ) = delete;
 
+    enum Viewports
+    {
+        FullScreenViewport
+    };
+
     void draw() const;
 
     void addObject( World::Entity::Object* const objectToAdd );
@@ -36,7 +41,7 @@ class Renderer
 
   private:
     sf::View mCamera;
-    // std::vector< sf::Viewport > mViewports;
+    const std::map< Viewports, sf::Rect< float > > mViewports;
     mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
 };

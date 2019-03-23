@@ -7,8 +7,8 @@ using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;
 
 Renderer::Renderer()
-        : mCamera { { 0, 0, 100, 100 } }
-        // std::vector< sf::ViewPort > mViewports;
+        : mCamera { { 0, 0, 32*10, 32*10 } }
+        , mViewports { { FullScreenViewport, { 0.f, 0.f, 0.1f, 1.f } } }
         , mWindow { sf::VideoMode::getDesktopMode(),
                     "PopHead",
                     sf::Style::Fullscreen }
@@ -18,6 +18,7 @@ Renderer::Renderer()
                     { LayerID::airEntities, Layer() },
                     { LayerID::GUI, Layer() }, }
 {
+    mCamera.setViewport( mViewports.at( FullScreenViewport ) );
 }
 
 Renderer::~Renderer()
