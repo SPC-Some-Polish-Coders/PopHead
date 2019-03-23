@@ -12,7 +12,7 @@
 namespace PopHead {
 namespace Renderer {
 
-/// Renderer class.
+
 class Renderer
 {
   public:
@@ -36,7 +36,7 @@ class Renderer
 
   private:
     sf::View mCamera;
-    // std::vector< sf::Rect< float > > mViewports;
+    // std::vector< sf::Viewport > mViewports;
     mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
 };
@@ -49,6 +49,7 @@ auto Renderer::getLayer( LayerID id ) -> Layer&
 
 auto Renderer::getLayer( LayerID id ) const -> const Layer&
 { return mLayers[id]; }
+
 
 }}
 
