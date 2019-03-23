@@ -8,7 +8,7 @@ using PopHead::Renderer::LayerID;
 
 Renderer::Renderer()
         : mCamera { { 0, 0, 32*10, 32*10 } }
-        , mViewports { { FullScreenViewport, { 0.f, 0.f, 0.1f, 1.f } } }
+        , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
         , mWindow { sf::VideoMode::getDesktopMode(),
                     "PopHead",
                     sf::Style::Fullscreen }
