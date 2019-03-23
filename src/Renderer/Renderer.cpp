@@ -20,6 +20,11 @@ Renderer::Renderer()
 {
 }
 
+Renderer::~Renderer()
+{
+    mWindow.close();
+}
+
 void Renderer::draw() const
 {
     mWindow.clear();
@@ -29,10 +34,6 @@ void Renderer::draw() const
             object->draw();
 
     mWindow.display();
-
-    /// VERY TEMPORARY
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        mWindow.close();
 }
 
 void Renderer::addObject( World::Entity::Object* const object )

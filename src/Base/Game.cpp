@@ -45,7 +45,13 @@ void Game::run()
     while(mRenderer->getWindow().isOpen())
     {
         mStateMachine->changingStatesProcess();
+
+        // temp
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            break;
+
         mStateMachine->input();
+
         timeSinceLastUpdate += clock.restart();
 
         while(timeSinceLastUpdate > timePerFrame){

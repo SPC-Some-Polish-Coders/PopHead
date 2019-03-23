@@ -17,6 +17,7 @@ class Renderer
 {
   public:
     Renderer();
+    ~Renderer();
     Renderer( Renderer& ) = delete;
     Renderer& operator=( Renderer& ) = delete;
 
