@@ -2,7 +2,7 @@
 
 #include "Renderer/LayerID.hpp"
 
-#include "World/Entity/Object.hpp"
+#include "World/Entity/object.hpp"
 
 using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;

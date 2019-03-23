@@ -1,4 +1,4 @@
-#include "GreenState.hpp"
+#include "greenState.hpp"
 
 #include <iostream>
 
@@ -17,5 +17,5 @@ void GreenState::input()
 void GreenState::update(sf::Time delta)
 {
     std::cout<<"GREEN"<<std::endl;
-    
+
 }

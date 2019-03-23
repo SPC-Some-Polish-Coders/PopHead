@@ -1,4 +1,4 @@
-#include "State.hpp"
+#include "state.hpp"
 
 using PopHead::States::State;
 

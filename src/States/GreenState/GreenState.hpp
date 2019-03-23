@@ -1,7 +1,7 @@
 #ifndef POPHEAD_STATES_GREENSTATE_GREENSTATE_HPP
 #define POPHEAD_STATES_GREENSTATE_GREENSTATE_HPP
 
-#include "States/State.hpp"
+#include "States/state.hpp"
 
 namespace PopHead{
 namespace States{

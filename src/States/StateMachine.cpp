@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "OrangeState/OrangeState.hpp"
-#include "GreenState/GreenState.hpp"
+#include "OrangeState/orangeState.hpp"
+#include "GreenState/greenState.hpp"
 
 using PopHead::States::StateMachine;
 

@@ -1,6 +1,6 @@
 #include "Renderer/Renderer.hpp"
 
-#include "World/Entity/Object.hpp"
+#include "World/Entity/object.hpp"
 
 using PopHead::Renderer::Renderer;
 using PopHead::Renderer::Layer;

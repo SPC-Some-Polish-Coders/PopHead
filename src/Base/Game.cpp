@@ -1,7 +1,6 @@
 #include "Base/Game.hpp"
 
-#include "States/OrangeState/OrangeState.hpp"
-#include "States/StateIdentifiers.hpp"
+#include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 
 namespace PopHead{ namespace States { enum class StateID; } }

@@ -1,4 +1,4 @@
-#include "KeyboardManager.hpp"
+#include "keyboardManager.hpp"
 
 using PopHead::Input::KeyboardManager;
 

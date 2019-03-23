@@ -1,4 +1,4 @@
-#include "Resources/SoundBufferResource.hpp"
+#include "Resources/soundBufferResource.hpp"
 
 using PopHead::Resources::SoundBufferResource;
 

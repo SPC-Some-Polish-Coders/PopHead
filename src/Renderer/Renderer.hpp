@@ -6,8 +6,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Renderer/Layer.hpp"
-#include "Renderer/LayerID.hpp"
+#include "Renderer/layer.hpp"
+#include "Renderer/layerID.hpp"
 
 namespace PopHead {
 namespace Renderer {

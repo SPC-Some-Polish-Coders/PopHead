@@ -3,12 +3,12 @@
 
 #include <memory>
 
-#include "Audio/Music/MusicPlayer.hpp"
-#include "Audio/Sound/SoundPlayer.hpp"
-#include "Renderer/Renderer.hpp"
-#include "States/StateMachine.hpp"
-#include "Input/Input.hpp"
-#include "Resources/ResourceHolder.hpp"
+#include "Audio/Music/musicPlayer.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
+#include "Renderer/renderer.hpp"
+#include "States/stateMachine.hpp"
+#include "Input/input.hpp"
+#include "Resources/resourceHolder.hpp"
 
 namespace PopHead {
 namespace Base {

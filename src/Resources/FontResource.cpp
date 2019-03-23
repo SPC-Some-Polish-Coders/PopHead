@@ -1,4 +1,4 @@
-#include "Resources/FontResource.hpp"
+#include "Resources/fontResource.hpp"
 
 using PopHead::Resources::FontResource;
 

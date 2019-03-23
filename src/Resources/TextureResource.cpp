@@ -1,4 +1,4 @@
-#include "Resources/TextureResource.hpp"
+#include "Resources/textureResource.hpp"
 
 using PopHead::Resources::TextureResource;
 

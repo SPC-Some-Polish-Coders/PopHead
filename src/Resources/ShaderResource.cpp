@@ -1,4 +1,4 @@
-#include "Resources/ShaderResource.hpp"
+#include "Resources/shaderResource.hpp"
 
 using PopHead::Resources::ShaderResource;
 

@@ -1,8 +1,8 @@
 #ifndef POPHEAD_WORLD_OBJECT_H_
 #define POPHEAD_WORLD_OBJECT_H_
 
-#include "World/Entity/Entity.hpp"
-#include "Renderer/LayerID.hpp"
+#include "entity.hpp"
+#include "Renderer/layerID.hpp"
 
 namespace PopHead {
 namespace World {

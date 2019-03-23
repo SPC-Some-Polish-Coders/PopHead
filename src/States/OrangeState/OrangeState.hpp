@@ -1,8 +1,8 @@
 #ifndef POPHEAD_STATES_ORANGESTATE_ORANGESTATE_H
 #define POPHEAD_STATES_ORANGESTATE_ORANGESTATE_H
 
-#include "States/State.hpp"
-#include "Base/GameData.hpp"
+#include "States/state.hpp"
+#include "Base/gameData.hpp"
 
 namespace PopHead{
 namespace States{

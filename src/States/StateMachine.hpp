@@ -6,8 +6,8 @@
 #include <deque>
 #include <SFML/System.hpp>
 
-#include "State.hpp"
-#include "StateIdentifiers.hpp"
+#include "state.hpp"
+#include "stateIdentifiers.hpp"
 
 namespace PopHead {
 
