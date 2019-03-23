@@ -57,3 +57,8 @@ void Renderer::removeObject( const World::Entity::Object* const object )
 {
     mLayers[object->getLayerID()].removeObject( object );
 }
+
+void Renderer::removeObjects( LayerID layerID )
+{
+    mLayers[layerID].clear();
+}

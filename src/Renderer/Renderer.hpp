@@ -34,6 +34,7 @@ class Renderer
 
     void removeObject( const World::Entity::Object* const object );
     void removeObject( std::string name, LayerID layerID );
+    void removeObjects( LayerID );
 
     inline auto getWindow() const -> const sf::Window&;
     inline auto getLayer( LayerID ) -> Layer&;
