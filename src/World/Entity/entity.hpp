@@ -28,7 +28,7 @@ public:
     auto getID() const -> unsigned int;
     auto getParent() const -> Entity&;
     auto getChild(std::string name) const -> Entity&;
-    auto getChildren() const -> const std::list< std::unique_ptr<Entity> >&;
+    auto getChildren() -> std::list< std::unique_ptr<Entity> >&;
     auto getName() const -> const std::string&;
 
 private:
