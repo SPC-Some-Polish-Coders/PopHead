@@ -2,23 +2,46 @@
 #define POPHEAD_WORLD_ENTITY_H_
 
 #include <string>
+#include <list>
+#include <memory>
+
+#include "entityType.hpp"
+#include "Base/gameData.hpp"
 
 namespace PopHead {
 namespace World {
 namespace Entity {
+
+
 class Entity
 {
-  public:
+public:
     Entity( std::string name );
+    ~Entity();
 
-    inline auto getName() -> const std::string&;
+    void addChild(Entity);
+    void removeChild(std::string name);
+    void removeChild(unsigned int id);
+    void removeChild(EntityType);
 
-  private:
+    auto getEntityType() const -> EntityType;
+    auto getID() const -> unsigned int;
+    auto getParent() const -> Entity&;
+    auto getChild(std::string name) const -> Entity&;
+    auto getChildren() const -> const std::list< std::unique_ptr<Entity> >&;
+    auto getName() const -> const std::string&;
+
+private:
+    const EntityType mEntityType;
+    unsigned int mID;
     std::string mName;
+
+    Entity* mParent;
+    std::list< std::unique_ptr<Entity> > mChildren;
+
+    Base::GameData* mGameData;
 };
 
-auto Entity::getName() -> const std::string&
-{ return mName; }
 
 }}}
 
