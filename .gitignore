@@ -11,6 +11,10 @@ build/
 bin/
 obj/
 
+# Generated documentation
+doc/html
+doc/latex
+
 # IDE's
 .vscode
 *.cbp
