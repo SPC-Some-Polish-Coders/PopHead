@@ -1,4 +1,4 @@
-#include "Base/Game.hpp"
+#include "Base/game.hpp"
 
 #include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>

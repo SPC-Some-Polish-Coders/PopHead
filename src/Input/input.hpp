@@ -1,9 +1,9 @@
 #ifndef POPHEAD_INPUT_INPUT_H_
 #define POPHEAD_INPUT_INPUT_H_
 
-#include "actionManager.hpp"
-#include "keyboardManager.hpp"
-#include "mouseManager.hpp"
+#include "Input/actionManager.hpp"
+#include "Input/keyboardManager.hpp"
+#include "Input/mouseManager.hpp"
 
 namespace PopHead {
 namespace Input {

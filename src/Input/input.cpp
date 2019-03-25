@@ -1,4 +1,4 @@
-#include "input.hpp"
+#include "Input/input.hpp"
 
 using PopHead::Input::Input;
 

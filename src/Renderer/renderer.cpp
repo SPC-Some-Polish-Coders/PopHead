@@ -1,4 +1,4 @@
-#include "Renderer/Renderer.hpp"
+#include "Renderer/renderer.hpp"
 
 #include "World/Entity/object.hpp"
 

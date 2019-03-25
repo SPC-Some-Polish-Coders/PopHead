@@ -1,6 +1,6 @@
-#include "Renderer/Layer.hpp"
+#include "Renderer/layer.hpp"
 
-#include "Renderer/LayerID.hpp"
+#include "Renderer/layerID.hpp"
 
 #include "World/Entity/object.hpp"
 

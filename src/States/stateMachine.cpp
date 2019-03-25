@@ -1,4 +1,4 @@
-#include "States/StateMachine.hpp"
+#include "States/stateMachine.hpp"
 
 #include <iostream>
 
