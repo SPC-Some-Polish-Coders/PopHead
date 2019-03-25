@@ -3,6 +3,37 @@
 using PopHead::World::Entity::Entity;
 
 
+void Entity::addChild(EntityPtr newChild)
+{
+    newChild->mParent = this;
+    mChildren.emplace_back(std::move(newChild));
+}
+
+void Entity::removeChild(const std::string& name)
+{
+    /*for(auto it = mChildren.begin(); it != mChildren.end(); ++it){
+        if((*it)->getName() == name){
+            mChildren.erase(it);
+            return;
+        }
+    }*/
+
+    /*mChildren.remove_if( [](const std::unique_ptr<Entity>& e)
+    {
+        return "Joe" == e->getName();
+    } );*/
+}
+
+void Entity::removeChild(unsigned int id)
+{
+
+}
+
+void Entity::removeChild(EntityType)
+{
+
+}
+
 auto Entity::getEntityType() const -> EntityType
 {
     return mEntityType;

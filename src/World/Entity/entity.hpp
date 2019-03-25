@@ -16,11 +16,14 @@ namespace Entity {
 class Entity
 {
 public:
+    using EntityPtr = std::unique_ptr<Entity>;
+
+    Entity();
     Entity( std::string name );
     ~Entity();
 
-    void addChild(Entity);
-    void removeChild(std::string name);
+    void addChild(EntityPtr);
+    void removeChild(const std::string& name);
     void removeChild(unsigned int id);
     void removeChild(EntityType);
 
