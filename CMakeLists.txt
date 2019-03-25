@@ -4,17 +4,17 @@ project( PopHead CXX )
 
 set( SRC_LIST
 src/main.cpp
-src/Base/Game.cpp
-src/Resources/FontResource.cpp
-src/Resources/TextureResource.cpp
-src/Resources/ShaderResource.cpp
-src/Resources/SoundBufferResource.cpp
-src/Renderer/Renderer.cpp
-src/Renderer/Layer.cpp
-src/States/StateMachine.cpp
-src/States/State.cpp
-src/States/GreenState/GreenState.cpp
-src/States/OrangeState/OrangeState.cpp
+src/Base/game.cpp
+src/Resources/fontResource.cpp
+src/Resources/textureResource.cpp
+src/Resources/shaderResource.cpp
+src/Resources/soundBufferResource.cpp
+src/Renderer/renderer.cpp
+src/Renderer/layer.cpp
+src/States/stateMachine.cpp
+src/States/state.cpp
+src/States/GreenState/greenState.cpp
+src/States/OrangeState/orangeState.cpp
 )
 
 include_directories(
