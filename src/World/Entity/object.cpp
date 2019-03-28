@@ -3,74 +3,69 @@
 using PopHead::World::Entity::Object;
 
 
-Object( Renderer::LayerID layerID )
+Object::Object(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID)
+:Entity(type, gameData, name)
+,mLayerID(layerID)
 {
-
 }
 
-void draw( sf::RenderTarget&, sf::RenderStates ) const = 0
+void Object::moveTo(sf::Vector2f)
 {
-
 }
 
-void moveTo(sf::Vector2f)
+void Object::show()
 {
-
+    mVisibility = true;
 }
 
-virtual void onColision(Object&) = 0
+void Object::hide()
 {
-
+    mVisibility = false;
 }
 
-void show()
+void Object::setPosition(sf::Vector2f pos)
 {
-
+    mPosition = pos;
 }
 
-void hide()
+void Object::setScale(sf::Vector2f scale)
 {
-
+    mScale = scale;
 }
 
-virtual void setPosition(sf::Vector2f)
+void Object::setRotation(float angle)
 {
-
+    mRotation = angle;
 }
 
-virtual void setScale(sf::Vector2f)
-{
-
-}
-
-virtual void setRotation(float angle)
-{
-
-}
-
-sf::Vector2f getPosition() const
+sf::Vector2f Object::getPosition() const
 {
     return mPosition;
 }
 
-sf::Vector2f getScale() const
+sf::Vector2f Object::getScale() const
 {
     return mScale;
 }
 
-float getRotation() const
+float Object::getRotation() const
 {
     return mRotation;
 }
 
 #if 0
-auto getColision() const -> const ColisionObject&
+auto Object::getColision() const -> const ColisionObject&
 {
-
+    return mColision;
 }
 #endif // 0
 
-auto getLayerID() const -> Renderer::LayerID
+auto Object::getLayerID() const -> Renderer::LayerID
 {
     return mLayerID;
+}
+
+bool Object::isVisible() const
+{
+    return mVisibility;
 }

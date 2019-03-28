@@ -19,7 +19,7 @@ public:
     using EntityPtr = std::unique_ptr<Entity>;
 
     Entity();
-    Entity( std::string name );
+    Entity(EntityType, Base::GameData*, std::string name);
     ~Entity();
 
     void addChild(EntityPtr);

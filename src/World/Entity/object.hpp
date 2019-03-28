@@ -13,9 +13,7 @@ namespace Entity {
 class Object : public Entity, public sf::Drawable
 {
 public:
-    Object( Renderer::LayerID layerID );
-
-    virtual void draw( sf::RenderTarget&, sf::RenderStates ) const override = 0;
+    Object(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID);
 
     void moveTo(sf::Vector2f);
     virtual void onColision(Object&) = 0;
@@ -31,9 +29,10 @@ public:
     sf::Vector2f getScale() const;
     float getRotation() const;
     ///auto getColision() const -> const ColisionObject&;
-    inline auto getLayerID() const -> Renderer::LayerID;
+    auto getLayerID() const -> Renderer::LayerID;
+    bool isVisible() const;
 
-private:
+protected:
     sf::Vector2f mPosition;
     sf::Vector2f mScale;
     float mRotation;
