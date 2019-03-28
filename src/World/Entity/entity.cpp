@@ -11,6 +11,8 @@ void Entity::addChild(EntityPtr newChild)
 
 void Entity::removeChild(const std::string& name)
 {
+
+
     /*for(auto it = mChildren.begin(); it != mChildren.end(); ++it){
         if((*it)->getName() == name){
             mChildren.erase(it);
@@ -32,6 +34,11 @@ void Entity::removeChild(unsigned int id)
 void Entity::removeChild(EntityType)
 {
 
+}
+
+void Entity::setName(const std::string& name)
+{
+    mName = name;
 }
 
 auto Entity::getEntityType() const -> EntityType

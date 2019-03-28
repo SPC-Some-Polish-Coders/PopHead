@@ -26,6 +26,7 @@ public:
     void removeChild(const std::string& name);
     void removeChild(unsigned int id);
     void removeChild(EntityType);
+    void setName(const std::string& name);
 
     auto getEntityType() const -> EntityType;
     auto getID() const -> unsigned int;

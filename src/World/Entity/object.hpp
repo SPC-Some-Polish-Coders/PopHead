@@ -8,6 +8,7 @@ namespace PopHead {
 namespace World {
 namespace Entity {
 
+
 class Object : public Entity
 {
   public:
@@ -18,11 +19,14 @@ class Object : public Entity
     inline auto getLayerID() const -> Renderer::LayerID;
 
   private:
+
+
     const Renderer::LayerID mLayerID;
 };
 
 auto Object::getLayerID() const -> Renderer::LayerID
 { return mLayerID; }
+
 
 }}}
 
