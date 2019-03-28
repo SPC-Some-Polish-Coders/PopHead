@@ -43,9 +43,6 @@ private:
     const Renderer::LayerID mLayerID;
 };
 
-auto Object::getLayerID() const -> Renderer::LayerID
-{ return mLayerID; }
-
 
 }}}
 
