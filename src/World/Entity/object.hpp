@@ -31,7 +31,6 @@ public:
     sf::Vector2f getScale() const;
     float getRotation() const;
     ///auto getColision() const -> const ColisionObject&;
-
     inline auto getLayerID() const -> Renderer::LayerID;
 
 private:

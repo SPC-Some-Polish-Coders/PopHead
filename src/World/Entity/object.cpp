@@ -50,17 +50,17 @@ virtual void setRotation(float angle)
 
 sf::Vector2f getPosition() const
 {
-
+    return mPosition;
 }
 
 sf::Vector2f getScale() const
 {
-
+    return mScale;
 }
 
 float getRotation() const
 {
-
+    return mRotation;
 }
 
 #if 0
@@ -72,5 +72,5 @@ auto getColision() const -> const ColisionObject&
 
 auto getLayerID() const -> Renderer::LayerID
 {
-
+    return mLayerID;
 }
