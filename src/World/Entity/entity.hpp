@@ -20,7 +20,9 @@ public:
 
     Entity();
     Entity(EntityType, Base::GameData*, std::string name);
-    ~Entity();
+
+    virtual void input();
+    virtual void update(sf::Time delta);
 
     void addChild(EntityPtr);
     void removeChild(const std::string& name);

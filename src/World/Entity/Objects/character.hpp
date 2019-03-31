@@ -1,3 +1,6 @@
+#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
+#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
+
 #include "World/Entity/object.hpp"
 
 namespace PopHead{
@@ -27,3 +30,5 @@ protected:
 
 
 }}}
+
+#endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_

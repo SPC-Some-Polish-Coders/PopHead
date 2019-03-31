@@ -11,6 +11,16 @@ Entity::Entity(EntityType type, Base::GameData* gameData, std::string name)
 
 }
 
+void Entity::input()
+{
+
+}
+
+void Entity::update(sf::Time delta)
+{
+
+}
+
 void Entity::addChild(EntityPtr newChild)
 {
     newChild->mParent = this;
