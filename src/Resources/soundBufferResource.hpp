@@ -5,7 +5,7 @@
 
 #include <SFML/Audio.hpp>
 
-#include "Resources/resource.hpp"
+#include "resource.hpp"
 
 namespace PopHead {
 namespace Resources {
@@ -13,7 +13,7 @@ namespace Resources {
 class SoundBufferResource : public Resource< SoundBufferResource >
 {
   private:
-    virtual bool load( std::string ) override;
+    virtual bool load( std::string path ) override;
 
     sf::SoundBuffer mSoundBuffer;
 };

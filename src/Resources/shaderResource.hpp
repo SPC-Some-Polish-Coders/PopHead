@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Resources/resource.hpp"
+#include "resource.hpp"
 
 namespace PopHead {
 namespace Resources {
@@ -13,7 +13,7 @@ namespace Resources {
 class ShaderResource : public Resource< ShaderResource >
 {
   private:
-    virtual bool load( std::string ) override;
+    virtual bool load( std::string path ) override;
 
     sf::Shader mShader;
 };

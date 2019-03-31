@@ -5,11 +5,11 @@
 #include <string>
 #include <unordered_map>
 
-#include "Resources/resource.hpp"
-#include "Resources/textureResource.hpp"
-#include "Resources/fontResource.hpp"
-#include "Resources/shaderResource.hpp"
-#include "Resources/soundBufferResource.hpp"
+#include "resource.hpp"
+#include "textureResource.hpp"
+#include "fontResource.hpp"
+#include "shaderResource.hpp"
+#include "soundBufferResource.hpp"
 
 namespace PopHead {
 namespace Resources {

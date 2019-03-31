@@ -1,4 +1,4 @@
-#include "Resources/textureResource.hpp"
+#include "textureResource.hpp"
 
 using PopHead::Resources::TextureResource;
 
@@ -8,6 +8,5 @@ bool TextureResource::load( std::string path )
     {
         return false;
     }
-
     return true;
 }

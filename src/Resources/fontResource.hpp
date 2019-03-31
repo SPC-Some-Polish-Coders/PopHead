@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Resources/resource.hpp"
+#include "resource.hpp"
 
 namespace PopHead {
 namespace Resources {
@@ -13,7 +13,7 @@ namespace Resources {
 class FontResource : public Resource< FontResource >
 {
   private:
-    virtual bool load( std::string ) override;
+    virtual bool load( std::string path ) override;
     sf::Font mFont;
 };
 

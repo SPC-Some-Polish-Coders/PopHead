@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Resources/resource.hpp"
+#include "resource.hpp"
 
 namespace PopHead {
 namespace Resources {
