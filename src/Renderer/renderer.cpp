@@ -32,7 +32,7 @@ void Renderer::draw() const
 
     for( const auto& layer : mLayers )
         for( const auto& object : layer.second )
-            object->draw();
+            mWindow.draw(*object);
 
     mWindow.display();
 }

@@ -2,6 +2,7 @@
 #define POPHEAD_INPUT_KEYBOARDMANAGER_H_
 
 #include <SFML/Window.hpp>
+#include <map>
 
 namespace PopHead {
 namespace Input {
@@ -9,12 +10,11 @@ namespace Input {
 class KeyboardManager
 {
 public:
-    bool isKeyPressed( sf::Keyboard::Key ) const;
-    bool isKeyJustPressed( sf::Keyboard::Key ) const;
+    bool isKeyPressed( sf::Keyboard::Key );
+    bool isKeyJustPressed( sf::Keyboard::Key );
 
 private:
-    bool mPressed;
-    sf::Event::KeyEvent::Code mKeyCode;
+    std::map<sf::Keyboard::Key, bool> mPreviouslyPressed;
 };
 
 }}

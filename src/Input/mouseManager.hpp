@@ -1,8 +1,7 @@
 #ifndef POPHEAD_INPUT_MOUSEMANAGER_H_
 #define POPHEAD_INPUT_MOUSEMANAGER_H_
 
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace PopHead {
 namespace Input {

@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <string>
 #include <vector>
+#include <map>
 
 namespace PopHead {
 namespace Input {
@@ -21,8 +22,7 @@ public:
     bool isActionJustPressed ( std::string action ) const;
 
 private:
-    std::map< std::string action, std::vector<sf::Event> >;
-
+    std::map< std::string, std::vector<sf::Event> > mActions;
 };
 
 }}
