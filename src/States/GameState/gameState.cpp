@@ -17,5 +17,4 @@ void GameState::input()
 void GameState::update(sf::Time delta)
 {
     std::cout<<"GAME STATE"<<std::endl;
-
 }

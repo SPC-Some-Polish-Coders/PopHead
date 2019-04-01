@@ -7,8 +7,6 @@ namespace States{
 
 enum class StateID
 {
-    OrangeState,
-    GreenState,
     //CreatingCharacterState,
     //SplashState,
     //MenuState,

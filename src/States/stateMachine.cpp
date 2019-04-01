@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "OrangeState/orangeState.hpp"
-#include "GreenState/greenState.hpp"
 #include "GameState/gameState.hpp"
 
 using PopHead::States::StateMachine;
@@ -155,12 +153,6 @@ auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
 {
     switch(id)
     {
-        case StateID::OrangeState:{
-            return StatePtr(new States::OrangeState(mGameData));
-        }
-        case StateID::GreenState:{
-            return StatePtr(new States::GreenState(mGameData));
-        }
         case StateID::GameState:{
             return StatePtr(new States::GameState(mGameData));
         }
