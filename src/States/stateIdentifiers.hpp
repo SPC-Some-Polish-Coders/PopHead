@@ -8,8 +8,7 @@ namespace States{
 enum class StateID
 {
     OrangeState,
-    GreenState
-
+    GreenState,
     //CreatingCharacterState,
     //SplashState,
     //MenuState,
@@ -17,7 +16,7 @@ enum class StateID
     //LoadGameState,
     //LoadingState,
     //GameOverState,
-    //GameState,
+    GameState
     //PauseState,
     //InventoryState,
     //DevelopingCharacterState,
