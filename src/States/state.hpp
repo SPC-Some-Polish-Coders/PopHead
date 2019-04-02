@@ -18,7 +18,7 @@ public:
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
-    ///&World::Entity getRoot() const;
+    //auto State::getRoot() -> World::Entity::Entity&;
     bool getHide() const;
     bool getPause() const;
 
@@ -27,9 +27,9 @@ public:
 
 protected:
     Base::GameData* const mGameData;
+    World::Entity::Entity mRoot;
 
 private:
-    World::Entity::Entity mRoot;
     bool mHide;
     bool mPause;
 };

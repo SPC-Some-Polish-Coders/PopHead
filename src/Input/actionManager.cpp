@@ -2,7 +2,3 @@
 
 using PopHead::Input::ActionManager;
 
-ActionManager::ActionManager()
-{
-
-}
