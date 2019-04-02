@@ -40,6 +40,9 @@ public:
     auto getChildren() -> std::list< std::unique_ptr<Entity> >&;
     auto getName() const -> const std::string&;
 
+protected:
+    Base::GameData* mGameData;
+
 private:
     const EntityType mEntityType;
     unsigned int mID;
@@ -47,8 +50,6 @@ private:
 
     Entity* mParent;
     std::list< std::unique_ptr<Entity> > mChildren;
-
-    Base::GameData* mGameData;
 };
 
 
