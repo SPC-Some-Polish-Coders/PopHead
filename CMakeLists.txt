@@ -13,8 +13,9 @@ src/Renderer/renderer.cpp
 src/Renderer/layer.cpp
 src/States/stateMachine.cpp
 src/States/state.cpp
-src/States/GreenState/greenState.cpp
-src/States/OrangeState/orangeState.cpp
+src/States/GameState/gameState.cpp
+src/World/Entity/entity.cpp
+src/World/Entity/object.cpp
 )
 
 include_directories(
@@ -34,7 +35,8 @@ set( COMMON_LIBS
 	-lvorbis
 	-lvorbisenc
 	-lvorbisfile
-	-lopenal
+    -lopenal
+    -lFLAC
 	-lpthread
 	sfml-graphics-s.a
 	sfml-window-s.a

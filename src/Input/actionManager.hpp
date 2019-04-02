@@ -12,7 +12,7 @@ namespace Input {
 class ActionManager
 {
 public:
-    ActionManager();
+    ActionManager() = default;
 
     void addAction ( const std::string& action, std::vector<sf::Event> );
     void addAction ( const std::string& action, sf::Event );

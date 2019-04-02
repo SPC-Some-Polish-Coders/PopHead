@@ -5,10 +5,14 @@
 #include <list>
 #include <memory>
 
-#include "entityType.hpp"
-#include "Base/gameData.hpp"
+#include <SFML/System.hpp>
+
+#include "World/Entity/entityType.hpp"
 
 namespace PopHead {
+
+namespace Base { class GameData; }
+
 namespace World {
 namespace Entity {
 
@@ -18,8 +22,7 @@ class Entity
 public:
     using EntityPtr = std::unique_ptr<Entity>;
 
-    Entity();
-    Entity(EntityType, Base::GameData*, std::string name);
+    Entity(EntityType, PopHead::Base::GameData*, std::string name);
 
     virtual void input();
     virtual void update(sf::Time delta);

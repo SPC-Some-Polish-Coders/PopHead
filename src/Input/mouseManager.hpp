@@ -9,7 +9,7 @@ namespace Input {
 class MouseManager
 {
 public:
-    MouseEvent();
+    MouseManager() = default;
 
     sf::Event::MouseButtonEvent getMouseButtonEvent() const;
     sf::Vector2f getMousePosition() const;

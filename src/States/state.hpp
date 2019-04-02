@@ -2,7 +2,7 @@
 #define POPHEAD_STATES_STATE_H
 
 #include <SFML/System.hpp>
-
+#include "World/Entity/entity.hpp"
 
 namespace PopHead{
 
@@ -29,7 +29,7 @@ protected:
     Base::GameData* const mGameData;
 
 private:
-    ///World::Entity mRoot;
+    World::Entity::Entity mRoot;
     bool mHide;
     bool mPause;
 };

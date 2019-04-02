@@ -2,7 +2,6 @@
 
 using PopHead::World::Entity::Entity;
 
-
 Entity::Entity(EntityType type, Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
