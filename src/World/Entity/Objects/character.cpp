@@ -1,5 +1,7 @@
 #include "character.hpp"
 
+#include <iostream>
+
 using PopHead::World::Entity::Character;
 
 Character::Character(Base::GameData* gameData, std::string name,
@@ -21,6 +23,13 @@ void Character::atack()
 
 }*/
 
+void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(mSprite, states);
+
+    std::cout<<"draw()"<<std::endl;
+}
+
 unsigned int Character::getMaxHP() const
 {
     return mMaxHP;
@@ -29,6 +38,11 @@ unsigned int Character::getMaxHP() const
 unsigned int Character::getHP() const
 {
     return mHP;
+}
+
+sf::Sprite& Character::getSprite()
+{
+    return mSprite;
 }
 
 /*auto Character::getEquipment() const -> const Equipment&

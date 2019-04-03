@@ -2,12 +2,18 @@
 
 #include <iostream>
 
+#include "World/Entity/Objects/Characters/player.hpp"
+
 using PopHead::States::GameState;
 
 GameState::GameState(Base::GameData* const gameData)
 :State{gameData}
 {
-    //mRoot.addChild();
+    mTexture.loadFromFile("resources/textures/characters/faultMan.png");
+
+    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(gameData));
+    player->getSprite().setTexture(mTexture);
+    mRoot.addChild(std::move(player));
 }
 
 void GameState::input()
