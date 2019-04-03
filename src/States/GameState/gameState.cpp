@@ -9,7 +9,7 @@ using PopHead::States::GameState;
 GameState::GameState(Base::GameData* const gameData)
 :State{gameData}
 {
-    mTexture.loadFromFile("resources/textures/characters/faultMan.png");
+    mTexture.loadFromFile("resources/textures/characters/vaultMan.png");
 
     std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(gameData));
     player->getSprite().setTexture(mTexture);
@@ -18,10 +18,10 @@ GameState::GameState(Base::GameData* const gameData)
 
 void GameState::input()
 {
-
+    mRoot.input();
 }
 
 void GameState::update(sf::Time delta)
 {
-    std::cout<<"GAME STATE"<<std::endl;
+    mRoot.update(delta);
 }

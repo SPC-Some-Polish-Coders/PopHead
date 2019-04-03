@@ -12,12 +12,14 @@ Entity::Entity(EntityType type, Base::GameData* gameData, std::string name)
 
 void Entity::input()
 {
-
+    for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
+        (*it)->input();
 }
 
 void Entity::update(sf::Time delta)
 {
-
+    for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
+        (*it)->update(delta);
 }
 
 void Entity::addChild(EntityPtr newChild)

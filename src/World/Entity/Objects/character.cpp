@@ -26,8 +26,6 @@ void Character::atack()
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
-
-    std::cout<<"draw()"<<std::endl;
 }
 
 unsigned int Character::getMaxHP() const
