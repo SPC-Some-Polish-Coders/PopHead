@@ -17,7 +17,7 @@ public:
     Object(Base::GameData*, std::string name, Renderer::LayerID);
 
     void moveTo(sf::Vector2f);
-    virtual void onColision(Object&) = 0;
+    //virtual void onColision(Object&) = 0;
 
     void show();
     void hide();

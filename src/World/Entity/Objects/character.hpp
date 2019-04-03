@@ -16,6 +16,8 @@ public:
 
     void atack();
     ///void onColision(Object&) override;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     unsigned int getMaxHP() const;
     unsigned int getHP() const;
     ///auto getEquipment() const -> const Equipment&;
@@ -26,6 +28,7 @@ protected:
     ///Equipment mEquipment;
     ///Weapon* const mCurrentWeapon;
     ///ExperienceManager mExperienceManager;
+    sf::Sprite mSprite;
     unsigned int mHP;
     unsigned int mMaxHP;
     unsigned int mMovementSpeed;

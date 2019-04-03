@@ -2,12 +2,15 @@
 
 #include <iostream>
 
+#include "World/Entity/Objects/Characters/player.hpp"
+
 using PopHead::States::GameState;
 
 GameState::GameState(Base::GameData* const gameData)
 :State{gameData}
 {
-    //mRoot.addChild();
+    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(gameData));
+    mRoot.addChild(std::move(player));
 }
 
 void GameState::input()
