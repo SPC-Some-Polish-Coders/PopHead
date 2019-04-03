@@ -9,8 +9,8 @@ CharacterMotion::CharacterMotion()
 
 void CharacterMotion::clear()
 {
-    isMovingLeft = false;
+    isMovingLeft  = false;
     isMovingRight = false;
-    isMovingUp = false;
-    isMovingDown = false;
+    isMovingUp    = false;
+    isMovingDown  = false;
 }

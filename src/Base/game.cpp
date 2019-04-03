@@ -53,7 +53,7 @@ void Game::run()
 
         timeSinceLastUpdate += clock.restart();
 
-        while(timeSinceLastUpdate > timePerFrame){
+        while(timeSinceLastUpdate >= timePerFrame){
             timeSinceLastUpdate -= timePerFrame;
 
             mStateMachine->update(timePerFrame);
