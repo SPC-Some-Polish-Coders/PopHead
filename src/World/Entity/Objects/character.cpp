@@ -2,6 +2,15 @@
 
 using PopHead::World::Entity::Character;
 
+Character::Character(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID,
+                     unsigned int HP, unsigned int maxHP, unsigned int movementSpeed)
+:Object(type, gameData, name, layerID)
+,mHP(HP)
+,mMaxHP(maxHP)
+,mMovementSpeed(movementSpeed)
+{
+}
+
 void Character::atack()
 {
 

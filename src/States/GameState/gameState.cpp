@@ -7,6 +7,7 @@ using PopHead::States::GameState;
 GameState::GameState(Base::GameData* const gameData)
 :State{gameData}
 {
+    //mRoot.addChild();
 }
 
 void GameState::input()

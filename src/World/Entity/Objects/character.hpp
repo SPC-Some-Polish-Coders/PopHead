@@ -11,6 +11,9 @@ namespace Entity{
 class Character : public Object
 {
 public:
+    Character(EntityType, Base::GameData*, std::string name, Renderer::LayerID,
+              unsigned int HP = 100, unsigned int maxHP = 100, unsigned int mMovementSpeed = 10);
+
     void atack();
     ///void onColision(Object&) override;
     unsigned int getMaxHP() const;

@@ -14,7 +14,7 @@ namespace Entity {
 class Object : public Entity, public sf::Drawable
 {
 public:
-    Object(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID);
+    Object(EntityType, Base::GameData*, std::string name, Renderer::LayerID);
 
     void moveTo(sf::Vector2f);
     virtual void onColision(Object&) = 0;

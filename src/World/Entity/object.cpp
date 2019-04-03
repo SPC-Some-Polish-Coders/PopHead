@@ -8,7 +8,7 @@ Object::Object(EntityType type, Base::GameData* gameData, std::string name, Rend
 :Entity(type, gameData, name)
 ,mLayerID(layerID)
 {
-    mGameData->getRenderer().addObject(this);
+    mGameData->getRenderer().addObject(this, layerID);
 }
 
 void Object::moveTo(sf::Vector2f)
