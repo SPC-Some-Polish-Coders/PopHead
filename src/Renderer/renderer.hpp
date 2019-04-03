@@ -10,14 +10,14 @@
 #include "Renderer/layerID.hpp"
 
 /** @defgroup Renderer Renderer
- *  Renderer module manages window management and drawing.
- *  
- *  Object must be add to [Renderer](@ref PopHead::Renderer::Renderer), before anything is drawn. It is archived by
+ *  Renderer module is responsible for rendering game world and managing the window.
+ *
+ *  Object must be add to [Renderer](@ref PopHead::Renderer::Renderer), before it's drawn. It must be added by
  *  Renderer::addObject methods.
- *  
+ *
  *  Objects are stored in Layers, not directly in Renderer.
- *  
- *  Renderer consists of few Layers. Each layer is drawn separately in
+ *
+ *  Renderer consists a few Layers. Each layer is drawn separately in
  *  pre-defined order. */
 
 namespace PopHead {
