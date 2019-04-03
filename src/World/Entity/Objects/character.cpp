@@ -5,11 +5,12 @@
 using PopHead::World::Entity::Character;
 
 Character::Character(Base::GameData* gameData, std::string name,
-                     unsigned int HP, unsigned int maxHP, unsigned int movementSpeed)
+                     unsigned int movementSpeed, unsigned int HP, unsigned int maxHP)
 :Object(gameData, name, Renderer::LayerID::kinematicEntities)
 ,mHP(HP)
 ,mMaxHP(maxHP)
 ,mMovementSpeed(movementSpeed)
+,mMotion()
 {
 }
 

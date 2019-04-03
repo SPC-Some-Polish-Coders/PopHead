@@ -10,7 +10,7 @@ namespace Input {
 class KeyboardManager
 {
 public:
-    bool isKeyPressed( sf::Keyboard::Key );
+    bool isKeyPressed( sf::Keyboard::Key ) const;
     bool isKeyJustPressed( sf::Keyboard::Key );
 
 private:

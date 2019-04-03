@@ -2,6 +2,7 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
 
 #include "World/Entity/object.hpp"
+#include "characterMotion.hpp"
 
 namespace PopHead{
 namespace World{
@@ -12,7 +13,7 @@ class Character : public Object
 {
 public:
     Character(Base::GameData*, std::string name,
-              unsigned int HP = 100, unsigned int maxHP = 100, unsigned int mMovementSpeed = 10);
+              unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100);
 
     void atack();
     ///void onColision(Object&) override;
@@ -33,6 +34,7 @@ protected:
     unsigned int mHP;
     unsigned int mMaxHP;
     unsigned int mMovementSpeed;
+    CharacterMotion mMotion;
 };
 
 
