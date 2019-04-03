@@ -28,19 +28,11 @@ void Entity::addChild(EntityPtr newChild)
 
 void Entity::removeChild(const std::string& name)
 {
-
-
-    /*for(auto it = mChildren.begin(); it != mChildren.end(); ++it){
-        if((*it)->getName() == name){
-            mChildren.erase(it);
-            return;
-        }
-    }*/
-
-    /*mChildren.remove_if( [](const std::unique_ptr<Entity>& e)
-    {
-        return "Joe" == e->getName();
-    } );*/
+    for(auto it = mChildren.begin(); it != mChildren.end(); )
+        if((*it)->getName() == name)
+            it = mChildren.erase(it);
+        else
+            ++it;
 }
 
 void Entity::removeChild(unsigned int id)
