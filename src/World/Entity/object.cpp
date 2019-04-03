@@ -4,8 +4,8 @@
 using PopHead::World::Entity::Object;
 
 
-Object::Object(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID)
-:Entity(type, gameData, name)
+Object::Object(Base::GameData* gameData, std::string name, Renderer::LayerID layerID)
+:Entity(EntityType::object, gameData, name)
 ,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);

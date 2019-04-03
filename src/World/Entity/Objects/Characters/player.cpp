@@ -2,6 +2,11 @@
 
 using PopHead::World::Entity::Player;
 
+Player::Player(Base::GameData* gameData)
+:Character(gameData, "player")
+{
+}
+
 void Player::input()
 {
 

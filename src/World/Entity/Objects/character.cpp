@@ -2,9 +2,9 @@
 
 using PopHead::World::Entity::Character;
 
-Character::Character(EntityType type, Base::GameData* gameData, std::string name, Renderer::LayerID layerID,
+Character::Character(Base::GameData* gameData, std::string name,
                      unsigned int HP, unsigned int maxHP, unsigned int movementSpeed)
-:Object(type, gameData, name, layerID)
+:Object(gameData, name, Renderer::LayerID::kinematicEntities)
 ,mHP(HP)
 ,mMaxHP(maxHP)
 ,mMovementSpeed(movementSpeed)

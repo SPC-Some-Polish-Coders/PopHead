@@ -11,6 +11,8 @@ namespace Entity{
 class Player : public Character
 {
 public:
+    Player(Base::GameData*);
+
     void input() override;
     void update(sf::Time delta) override;
     ///void talkTo(NPC&);

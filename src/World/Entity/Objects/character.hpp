@@ -11,7 +11,7 @@ namespace Entity{
 class Character : public Object
 {
 public:
-    Character(EntityType, Base::GameData*, std::string name, Renderer::LayerID,
+    Character(Base::GameData*, std::string name,
               unsigned int HP = 100, unsigned int maxHP = 100, unsigned int mMovementSpeed = 10);
 
     void atack();
