@@ -1,4 +1,5 @@
 #include "object.hpp"
+#include "Base/gameData.hpp"
 
 using PopHead::World::Entity::Object;
 
@@ -7,6 +8,7 @@ Object::Object(EntityType type, Base::GameData* gameData, std::string name, Rend
 :Entity(type, gameData, name)
 ,mLayerID(layerID)
 {
+    mGameData->getRenderer().addObject(this);
 }
 
 void Object::moveTo(sf::Vector2f)

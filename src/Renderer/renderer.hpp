@@ -56,8 +56,7 @@ class Renderer
     void addObject( World::Entity::Object* const object );
 
     /// Register object to be drawn.
-    void addObject( World::Entity::Object* const object,
-                    LayerID layerID );
+    void addObject( World::Entity::Object* const object, LayerID layerID );
 
     void removeObject( const World::Entity::Object* const object );
     void removeObject( std::string name, LayerID layerID );
