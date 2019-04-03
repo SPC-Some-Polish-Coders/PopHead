@@ -20,6 +20,7 @@ public:
 
     unsigned int getMaxHP() const;
     unsigned int getHP() const;
+    sf::Sprite& getSprite();
     ///auto getEquipment() const -> const Equipment&;
     ///auto getCurrentWeapon() const -> const Weapon&;
     ///auto getExperienceManager() const -> const ExperienceManager&;

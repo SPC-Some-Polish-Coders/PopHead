@@ -40,6 +40,11 @@ unsigned int Character::getHP() const
     return mHP;
 }
 
+sf::Sprite& Character::getSprite()
+{
+    return mSprite;
+}
+
 /*auto Character::getEquipment() const -> const Equipment&
 {
 
