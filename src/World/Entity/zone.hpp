@@ -13,12 +13,13 @@ class Zone : public Entity
 {
 public:
     ///auto getArea() const -> const CollsionRect&
-    virtual void onEnter(Object* const) = 0;
-    virtual void onExit(Object* const) = 0;
-    void update(sf::Time delta) override;
+    virtual void onEnter(Object*) = 0;
+    virtual void onExit (Object*) = 0;
+    virtual void present(Object*) = 0;
+    //void update(sf::Time delta) override;
 
 private:
-    std::list<Object* const> mEnclosedObjects;
+    std::list<Object*> mEnclosedObjects;
 };
 
 
