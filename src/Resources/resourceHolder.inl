@@ -31,5 +31,7 @@ inline bool load(const std::string& path)
     {
         path.erase(path.size()-4,4);
         mResources[path] = r;
+        return true;
     }
+    return false;
 }

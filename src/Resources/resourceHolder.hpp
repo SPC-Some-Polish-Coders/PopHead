@@ -24,7 +24,7 @@ class ResourceHolder
     inline auto get( const std::string& name ) -> Resource&;
     inline void free( const std::string& name );
     inline bool has( const std::string& name );
-    virtual inline bool load( const std::string& name );
+    inline bool load( const std::string& name );
 
   private:
     ResourceMap mResources;
