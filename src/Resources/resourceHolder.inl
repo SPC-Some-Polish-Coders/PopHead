@@ -24,3 +24,12 @@ inline auto get( const std::string& name ) -> Resource&
     auto found = mResources.find(name);
     return *found->second;
 }
+inline bool load(const std::string& path)
+{
+    auto r = std::make_unique< ResourceType >();
+    if( r->load( path ) )
+    {
+        path.erase(path.size()-4,4);
+        mResources[path] = r;
+    }
+}
