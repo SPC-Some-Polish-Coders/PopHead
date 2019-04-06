@@ -13,7 +13,7 @@ namespace Resources {
 class ShaderResource : public Resource< ShaderResource >
 {
   private:
-    virtual bool load( std::string path ) override;
+    virtual bool loadFromFile( std::string path ) override;
 
     sf::Shader mShader;
 };

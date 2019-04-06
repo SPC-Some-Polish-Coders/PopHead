@@ -2,7 +2,7 @@
 
 using PopHead::Resources::SoundBufferResource;
 
-bool SoundBufferResource::load( std::string path )
+bool SoundBufferResource::loadFromFile( std::string path )
 {
     if(!mSoundBuffer.loadFromFile(path))
     {

@@ -27,7 +27,7 @@ inline auto get( const std::string& name ) -> Resource&
 inline bool load(const std::string& path)
 {
     auto r = std::make_unique< ResourceType >();
-    if( r->load( path ) )
+    if( r->loadFromFile( path ) )
     {
         path.erase(path.size()-4,4);
         mResources[path] = r;

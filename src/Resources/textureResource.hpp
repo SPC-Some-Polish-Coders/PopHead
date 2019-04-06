@@ -13,7 +13,7 @@ namespace Resources {
 class TextureResource : public Resource< TextureResource >
 {
   private:
-    virtual bool load( std::string path ) override;
+    virtual bool loadFromFile( std::string path ) override;
 
     sf::Texture mTexture;
 };

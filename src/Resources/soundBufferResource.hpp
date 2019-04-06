@@ -13,7 +13,7 @@ namespace Resources {
 class SoundBufferResource : public Resource< SoundBufferResource >
 {
   private:
-    virtual bool load( std::string path ) override;
+    virtual bool loadFromFile( std::string path ) override;
 
     sf::SoundBuffer mSoundBuffer;
 };

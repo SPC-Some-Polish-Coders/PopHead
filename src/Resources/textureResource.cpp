@@ -2,7 +2,7 @@
 
 using PopHead::Resources::TextureResource;
 
-bool TextureResource::load( std::string path )
+bool TextureResource::loadFromFile( std::string path )
 {
     if (!mTexture.loadFromFile(path))
     {

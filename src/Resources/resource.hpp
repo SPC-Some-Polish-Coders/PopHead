@@ -14,7 +14,7 @@ class Resource
     -> std::unique_ptr< ResourceType >;
 
   private:
-    virtual bool load( std::string path ) =0;
+    virtual bool loadFromFile( std::string path ) =0;
 };
 
 template< typename ResourceType >
@@ -22,7 +22,7 @@ auto Resource<ResourceType>::createResource( const std::string& path )
 -> std::unique_ptr< ResourceType >
 {
     auto r = std::make_unique< ResourceType >();
-    if( r->load( path ) ) return r;
+    if( r->loadFromFile( path ) ) return r;
     return std::unique_ptr< ResourceType >( nullptr );
 }
 

@@ -13,7 +13,7 @@ namespace Resources {
 class FontResource : public Resource< FontResource >
 {
   private:
-    virtual bool load( std::string path ) override;
+    virtual bool loadFromFile( std::string path ) override;
     sf::Font mFont;
 };
 
