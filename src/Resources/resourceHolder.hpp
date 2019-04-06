@@ -31,7 +31,7 @@ class ResourceHolder
 };
 
 using SoundBufferHolder = ResourceHolder< SoundBufferResource >;
-using TextureHolder = ResourceHolder< TextureResource >;
+using TextureHolder = ResourceHolder< sf::Texture >;
 using FontHolder = ResourceHolder< FontResource >;
 using ShaderHolder = ResourceHolder< ShaderResource >;
 

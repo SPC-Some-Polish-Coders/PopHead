@@ -17,7 +17,7 @@ public:
     void update(sf::Time delta) override;
 
 private:
-    sf::Texture mTexture; ///this is very temporary later it'll be handled by Resources module
+    //sf::Texture mTexture; ///this is very temporary later it'll be handled by Resources module
 };
 
 

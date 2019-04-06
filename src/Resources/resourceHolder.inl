@@ -3,7 +3,7 @@
 using PopHead::Resources::ResourceHolder;
 
 template<typename Resource>
-inline bool ResourceHolder<Resource>::has()
+bool ResourceHolder<Resource>::has()
 {
     if(mResources.find(name)==mResources.end())
     {
