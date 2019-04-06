@@ -19,9 +19,7 @@ public:
     void moveTo(sf::Vector2f);
     //virtual void onColision(Object&) = 0;
 
-    void show();
-    void hide();
-
+    void setVisibility(bool visibility);
     virtual void setPosition(sf::Vector2f);
     virtual void setScale(sf::Vector2f);
     virtual void setRotation(float angle);
@@ -31,7 +29,7 @@ public:
     float getRotation() const;
     ///auto getColision() const -> const ColisionObject&;
     auto getLayerID() const -> Renderer::LayerID;
-    bool isVisible() const;
+    bool getVisibility() const;
 
 protected:
     sf::Vector2f mPosition;

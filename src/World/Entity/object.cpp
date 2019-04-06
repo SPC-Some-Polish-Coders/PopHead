@@ -15,14 +15,9 @@ void Object::moveTo(sf::Vector2f)
 {
 }
 
-void Object::show()
+void Object::setVisibility(bool visibility)
 {
-    mVisibility = true;
-}
-
-void Object::hide()
-{
-    mVisibility = false;
+    mVisibility = visibility;
 }
 
 void Object::setPosition(sf::Vector2f pos)
@@ -67,7 +62,7 @@ auto Object::getLayerID() const -> Renderer::LayerID
     return mLayerID;
 }
 
-bool Object::isVisible() const
+bool Object::getVisibility() const
 {
     return mVisibility;
 }
