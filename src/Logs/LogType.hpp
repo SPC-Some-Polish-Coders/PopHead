@@ -1,5 +1,5 @@
-#ifndef POPHEAD_LOG_LOGTYPE_H_
-#define POPHEAD_LOG_LOGTYPE_H_
+#ifndef POPHEAD_LOGS_LOGTYPE_H_
+#define POPHEAD_LOGS_LOGTYPE_H_
 
 namespace PopHead {
 namespace Logs{

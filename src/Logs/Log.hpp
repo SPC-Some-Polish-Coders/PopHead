@@ -4,12 +4,11 @@
 namespace PopHead{
 namespace Logs{
 
-class Log{
-pubilc:
+struct Log{
     Log ();
-    LogType type
-    ModuleID moduleID
-    std::string message
+    LogType type;
+    ModuleID moduleID;
+    std::string message;
 };
 
 
