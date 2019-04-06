@@ -19,10 +19,10 @@ void Character::atack()
 
 }
 
-/*void Character::onColision(Object&)
+void Character::onCollision(Object&)
 {
 
-}*/
+}
 
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

@@ -10,9 +10,8 @@ Projectile::Projectile(Base::GameData* gameData, const std::string& name, float 
 {
 }
 
-/*
 void Projectile::onCollision(Object&)
 {
 
 }
-*/
+

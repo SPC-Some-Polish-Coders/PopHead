@@ -2,9 +2,7 @@
 
 using PopHead::World::Entity::Enemy;
 
-#if 0
-void Enemy::onColision(Object&)
+void Enemy::onCollision(Object&)
 {
 
 }
-#endif // 0

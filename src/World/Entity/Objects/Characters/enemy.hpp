@@ -12,7 +12,7 @@ namespace Entity{
 class Enemy : public Character
 {
 public:
-    ///void onColision(Object&) override;
+    void onCollision(Object&) override;
 
     ///auto getDamageWeaknesses() const -> const std::set<DamageWeakness>;
 

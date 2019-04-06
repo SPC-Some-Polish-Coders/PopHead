@@ -11,7 +11,7 @@ namespace Entity{
 class Item : public Object
 {
 public:
-    //void onCollision(Object&) override;
+    void onCollision(Object&) override;
     void pickUp();
 
 private:
