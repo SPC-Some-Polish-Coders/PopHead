@@ -7,24 +7,24 @@ namespace Logs {
 class LogManager{
 pubilc:
     LogManager ();
-    writeLog(log : Log) : void
-    stopWritingLogsInConsole() : void
-    startWritingLogsInConsole() : void
-    writeLogsOnlyFromCertainModules(std::vector<ModuleID>) : void
-    writeLogsFromEachModule() : void
-    writeLogsOnlyFromCertainLogTypes(std::vector<LogType>) : void
-    writeLogsFromEachLogType() : void
-    writeEachLog() : void
-    getTimeFromStartOfTheProgram()const :sf::Time&
+    void writeLog(log : Log)
+    void stopWritingLogsInConsole()
+    void startWritingLogsInConsole()
+    void writeLogsOnlyFromCertainModules(std::vector<ModuleID>)
+    void writeLogsFromEachModule()
+    void writeLogsOnlyFromCertainLogTypes(std::vector<LogType>)
+    void writeLogsFromEachLogType()
+    void writeEachLog()
+    sf::Time& getTimeFromStartOfTheProgram()const
 
 
 private:
-    gatheredLogs: std::vector<Log>
-    timeFromStartOfTheProgram : sf::Clock
-    LogFromModulesToWrite : std::vector<ModuleID>
-    TypesOfLogToWrite : srd:vector<LogType>
-    stop : bool
-    saveLogsInFile() : void
+    std::vector<Log> gatheredLogs
+    sf::Clock timeFromStartOfTheProgram
+    std::vector<ModuleID>  LogFromModulesToWrite
+    std:vector<LogType> TypesOfLogToWrite
+    bool stop
+    void saveLogsInFile()
 
 };
 

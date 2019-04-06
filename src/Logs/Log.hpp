@@ -7,9 +7,9 @@ namespace Logs{
 class Log{
 pubilc:
     Log ();
-    type : LogType
-    moduleID : ModuleID
-    message : std::string
+    LogType type
+    ModuleID moduleID
+    std::string message
 };
 
 
