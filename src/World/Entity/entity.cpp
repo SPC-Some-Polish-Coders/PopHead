@@ -2,7 +2,7 @@
 
 using PopHead::World::Entity::Entity;
 
-Entity::Entity(EntityType type, Base::GameData* gameData, std::string name)
+Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
 ,mName(name)
@@ -42,7 +42,7 @@ void Entity::removeChild(unsigned int id)
 
 }
 
-void Entity::removeChild(EntityType)
+void Entity::removeChild(PopHead::World::EntityType)
 {
 
 }
@@ -52,7 +52,7 @@ void Entity::setName(const std::string& name)
     mName = name;
 }
 
-auto Entity::getEntityType() const -> EntityType
+auto Entity::getEntityType() const -> PopHead::World::EntityType
 {
     return mEntityType;
 }

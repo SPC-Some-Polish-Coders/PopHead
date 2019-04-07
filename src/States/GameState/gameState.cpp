@@ -6,7 +6,7 @@
 
 using PopHead::States::GameState;
 
-GameState::GameState(Base::GameData* const gameData)
+GameState::GameState(PopHead::Base::GameData* const gameData)
 :State{gameData}
 {
     mTexture.loadFromFile("resources/textures/characters/vaultMan.png");

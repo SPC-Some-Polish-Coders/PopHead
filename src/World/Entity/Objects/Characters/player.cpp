@@ -4,7 +4,7 @@
 
 using PopHead::World::Entity::Player;
 
-Player::Player(Base::GameData* gameData)
+Player::Player(PopHead::Base::GameData* gameData)
 :Character(gameData, "player", 150)
 {
     mSprite.setPosition(400, 400);

@@ -10,5 +10,5 @@ bool KeyboardManager::isKeyPressed( sf::Keyboard::Key key ) const
 
 bool KeyboardManager::isKeyJustPressed( sf::Keyboard::Key key )
 {
-
+	return sf::Keyboard::isKeyPressed(key);
 }

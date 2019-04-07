@@ -5,8 +5,9 @@
 #include "GameState/gameState.hpp"
 
 using PopHead::States::StateMachine;
+using PopHead::States::State;
 
-class State;
+#include "state.hpp"
 
 StateMachine::StateMachine()
 :mGameData(nullptr)
@@ -91,7 +92,7 @@ void StateMachine::update(sf::Time delta)
     }
 }
 
-void StateMachine::pushState(StateID id)
+void StateMachine::pushState(PopHead::States::StateID id)
 {
     if(mIsReplacing == false){
         mPendingStates.emplace_back( std::move(getStatePtr(id)) );
@@ -102,7 +103,7 @@ void StateMachine::pushState(StateID id)
     }
 }
 
-void StateMachine::replaceState(StateID id)
+void StateMachine::replaceState(PopHead::States::StateID id)
 {
     if(mIsAdding == false){
         mPendingStates.clear();
@@ -149,17 +150,17 @@ void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
     mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
 }
 
-auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
+auto StateMachine::getStatePtr(PopHead::States::StateID id) const -> std::unique_ptr<State>
 {
     switch(id)
     {
-        case StateID::GameState:{
-            return StatePtr(new States::GameState(mGameData));
+	case PopHead::States::StateID::GameState:{
+            return StatePtr(new PopHead::States::GameState(mGameData));
         }
     }
 }
 
-void StateMachine::setGameData( Base::GameData* const ptr )
+void StateMachine::setGameData( PopHead::Base::GameData* const ptr )
 {
     mGameData = ptr;
 }

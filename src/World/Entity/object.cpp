@@ -4,8 +4,8 @@
 using PopHead::World::Entity::Object;
 
 
-Object::Object(Base::GameData* gameData, std::string name, Renderer::LayerID layerID)
-:Entity(EntityType::object, gameData, name)
+Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Renderer::LayerID layerID)
+:Entity(PopHead::World::EntityType::object, gameData, name)
 ,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);
@@ -57,7 +57,7 @@ auto Object::getColision() const -> const ColisionObject&
 }
 #endif // 0
 
-auto Object::getLayerID() const -> Renderer::LayerID
+auto Object::getLayerID() const -> PopHead::Renderer::LayerID
 {
     return mLayerID;
 }

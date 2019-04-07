@@ -7,12 +7,12 @@
 using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;
 
-void Layer::addObject( World::Entity::Object* const object )
+void Layer::addObject( PopHead::World::Entity::Object* const object )
 {
     mObjects.emplace_back( object );
 }
 
-void Layer::removeObject( const World::Entity::Object* const object )
+void Layer::removeObject( const PopHead::World::Entity::Object* const object )
 {
     for(auto it = mObjects.begin(); it != mObjects.end(); ++it )
         if(*it == object)

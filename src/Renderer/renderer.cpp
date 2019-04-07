@@ -37,12 +37,12 @@ void Renderer::draw() const
     mWindow.display();
 }
 
-void Renderer::addObject( World::Entity::Object* const object )
+void Renderer::addObject( PopHead::World::Entity::Object* const object )
 {
     mLayers[object->getLayerID()].addObject( object );
 }
 
-void Renderer::addObject( World::Entity::Object* const object,
+void Renderer::addObject(PopHead::World::Entity::Object* const object,
                           LayerID layerID )
 {
     mLayers[layerID].addObject( object );
@@ -53,7 +53,7 @@ void Renderer::removeObject( std::string name, LayerID layerID )
     mLayers[layerID].removeObject( name );
 }
 
-void Renderer::removeObject( const World::Entity::Object* const object )
+void Renderer::removeObject( const PopHead::World::Entity::Object* const object )
 {
     mLayers[object->getLayerID()].removeObject( object );
 }

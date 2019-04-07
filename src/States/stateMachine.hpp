@@ -41,7 +41,7 @@ public:
     void setGameData( Base::GameData* const );
 
 private:
-    auto getStatePtr(StateID) const -> std::unique_ptr<State>;
+    auto getStatePtr(PopHead::States::StateID id) const -> std::unique_ptr<State>;
 
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;
