@@ -11,7 +11,7 @@ class DamageWeakness
 {
 public:
     DamageWeakness(DamageWeaknessType, float additionalDamage);
-    operator==(DamageWeakness&);
+    bool operator==(DamageWeakness&);
     auto getType() const -> DamageWeaknessType;
 
 private:
