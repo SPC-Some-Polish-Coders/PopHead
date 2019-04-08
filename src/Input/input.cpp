@@ -4,5 +4,5 @@ using PopHead::Input::Input;
 
 void Input::setGameData(Base::GameData* gameData)
 {
-
+    mKeyboard.setGameData(gameData);
 }

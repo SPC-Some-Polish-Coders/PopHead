@@ -46,15 +46,15 @@ class Game
     inline auto getGameData() const -> const Base::GameData&;
 
   ///@{ @name GameData members
-    std::unique_ptr< Base::GameData > mGameData;
-    std::unique_ptr< Audio::SoundPlayer > mSoundPlayer;
-    std::unique_ptr< Audio::MusicPlayer > mMusicPlayer;
+    std::unique_ptr< Base::GameData >           mGameData;
+    std::unique_ptr< Audio::SoundPlayer >       mSoundPlayer;
+    std::unique_ptr< Audio::MusicPlayer >       mMusicPlayer;
     std::unique_ptr< Resources::TextureHolder > mTextures;
-    std::unique_ptr< Resources::FontHolder > mFonts;
-    std::unique_ptr< Resources::ShaderHolder > mShaders;
-    std::unique_ptr< States::StateMachine > mStateMachine;
-    std::unique_ptr< Input::Input > mInput;
-    std::unique_ptr< Renderer::Renderer > mRenderer; ///@}
+    std::unique_ptr< Resources::FontHolder >    mFonts;
+    std::unique_ptr< Resources::ShaderHolder >  mShaders;
+    std::unique_ptr< States::StateMachine >     mStateMachine;
+    std::unique_ptr< Input::Input >             mInput;
+    std::unique_ptr< Renderer::Renderer >       mRenderer; ///@}
 };
 
 inline auto Game::getGameData() const -> const Base::GameData&

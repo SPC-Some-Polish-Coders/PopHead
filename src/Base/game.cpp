@@ -29,6 +29,8 @@ Game::Game()
             mInput.get(),
             mRenderer.get() ) );
 
+    mInput->setGameData( mGameData.get() );
+
     mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::GameState);
 
