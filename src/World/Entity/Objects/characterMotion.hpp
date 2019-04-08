@@ -10,6 +10,7 @@ struct CharacterMotion
 {
     CharacterMotion();
     void clear();
+    bool isMoving();
 
     bool isMovingLeft;
     bool isMovingRight;
