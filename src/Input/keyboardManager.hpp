@@ -13,11 +13,14 @@ class KeyboardManager
 public:
     bool isKeyPressed( sf::Keyboard::Key ) const;
     bool isKeyJustPressed( sf::Keyboard::Key ) const;
+    bool isKeyJustReleased( sf::Keyboard::Key ) const;
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
-    std::map<sf::Keyboard::Key, bool> mPreviouslyPressed;
+    bool isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const;
+
+private:
     Base::GameData* mGameData;
 };
 
