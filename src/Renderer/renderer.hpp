@@ -63,15 +63,15 @@ class Renderer
 
     void removeObjects( LayerID layerID );
 
-    inline auto Renderer::getWindow() const -> const sf::Window& { return mWindow; }
-    inline auto Renderer::getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
-    inline auto Renderer::getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
+    auto getWindow() const -> const sf::Window& { return mWindow; }
+    auto getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
+    auto getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
-    inline auto Renderer::getCameraPosition() const -> const sf::Vector2f& { return mCamera.getCenter(); }
-    inline auto Renderer::getCameraSize() const -> const sf::Vector2f& { return mCamera.getSize(); }
+    auto getCameraPosition() const -> const sf::Vector2f& { return mCamera.getCenter(); }
+    auto getCameraSize() const -> const sf::Vector2f& { return mCamera.getSize(); }
 
-    inline void Renderer::setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
-    inline void Renderer::setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
+    void setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
+    void setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
 
   private:
     sf::View mCamera;
@@ -79,8 +79,6 @@ class Renderer
     mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
 };
-
-#include "Renderer/renderer.inl"
 
 }}
 
