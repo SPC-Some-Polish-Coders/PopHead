@@ -14,7 +14,4 @@ bool DamageWeakness::operator==(DamageWeakness&)
 	return true;
 }
 
-auto DamageWeakness::getType() const -> DamageWeaknessType
-{
-    return mType;
-}
+auto DamageWeakness::getType() const -> DamageWeaknessType { return mType; }
