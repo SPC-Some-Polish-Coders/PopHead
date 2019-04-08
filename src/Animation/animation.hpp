@@ -27,7 +27,7 @@ public:
 
 	void goToFrontFrame() { mCurrentFrameIndex = 0; };
 
-	std::string getCurrentStateName() const;
+	auto getCurrentStateName() const -> std::string;
 
 private:
 	sf::Time mDelay = sf::seconds(0.1f);
