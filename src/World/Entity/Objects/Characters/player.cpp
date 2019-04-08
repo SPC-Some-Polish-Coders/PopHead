@@ -1,6 +1,7 @@
 #include "player.hpp"
 
 #include "Base/gameData.hpp"
+#include <array>
 
 using PopHead::World::Entity::Player;
 
