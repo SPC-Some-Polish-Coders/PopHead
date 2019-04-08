@@ -24,7 +24,7 @@ Player::Player(PopHead::Base::GameData* gameData)
 		const sf::IntRect frame(0, top * frameHeight, frameWidth, frameHeight);
 		mAnimation.addState(statesNames[top], frame, framesCount);
 	}
-	mAnimation.setDelay(sf::seconds(0.2f));
+	mAnimation.setDelay(sf::seconds(0.15f));
 	mAnimation.animate(mSprite);
 }
 
@@ -48,26 +48,29 @@ void Player::update(sf::Time delta)
 {
     sf::Vector2f velocity;
 
-    if(mMotion.isMovingLeft){
-        velocity.x -= mMovementSpeed * delta.asSeconds();
-        mAnimation.changeState("left");
-    }
-    if(mMotion.isMovingRight){
-        velocity.x += mMovementSpeed * delta.asSeconds();
-        mAnimation.changeState("right");
-    }
-    if(mMotion.isMovingUp){
-        velocity.y -= mMovementSpeed * delta.asSeconds();
-        mAnimation.changeState("up");
-    }
-    if(mMotion.isMovingDown){
-        velocity.y += mMovementSpeed * delta.asSeconds();
-        mAnimation.changeState("down");
+    if(mMotion.isMoving())
+    {
+        if(mMotion.isMovingLeft){
+            velocity.x -= mMovementSpeed * delta.asSeconds();
+            updateAnimation("left");
+        }
+        if(mMotion.isMovingRight){
+            velocity.x += mMovementSpeed * delta.asSeconds();
+            updateAnimation("right");
+        }
+        if(mMotion.isMovingUp){
+            velocity.y -= mMovementSpeed * delta.asSeconds();
+            updateAnimation("up");
+        }
+        if(mMotion.isMovingDown){
+            velocity.y += mMovementSpeed * delta.asSeconds();
+            updateAnimation("down");
+        }
+
+        mAnimation.animate(mSprite, delta);
     }
 
     mSprite.move(velocity);
-
-    mAnimation.animate(mSprite, delta);
 
     mMotion.clear();
 }

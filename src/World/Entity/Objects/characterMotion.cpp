@@ -14,3 +14,8 @@ void CharacterMotion::clear()
     isMovingUp    = false;
     isMovingDown  = false;
 }
+
+bool CharacterMotion::isMoving()
+{
+    return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
+}
