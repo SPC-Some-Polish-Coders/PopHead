@@ -47,25 +47,13 @@ void Entity::removeChild(PopHead::World::EntityType)
 
 }
 
-void Entity::setName(const std::string& name)
-{
-    mName = name;
-}
+void Entity::setName(const std::string& name) { mName = name; }
 
-auto Entity::getEntityType() const -> PopHead::World::EntityType
-{
-    return mEntityType;
-}
+auto Entity::getEntityType() const -> PopHead::World::EntityType { return mEntityType; }
 
-auto Entity::getID() const -> unsigned int
-{
-    return mID;
-}
+auto Entity::getID() const -> unsigned int { return mID; }
 
-auto Entity::getParent() const -> Entity&
-{
-    return *mParent;
-}
+auto Entity::getParent() const -> Entity& { return *mParent; }
 
 auto Entity::getChild(std::string name) const -> Entity&
 {
@@ -75,12 +63,6 @@ auto Entity::getChild(std::string name) const -> Entity&
     }
 }
 
-auto Entity::getChildren() -> std::list< std::unique_ptr<Entity> >&
-{
-    return mChildren;
-}
+auto Entity::getChildren() -> std::list< std::unique_ptr<Entity> >& { return mChildren; }
 
-auto Entity::getName() const -> const std::string&
-{
-    return mName;
-}
+auto Entity::getName() const -> const std::string& { return mName; }
