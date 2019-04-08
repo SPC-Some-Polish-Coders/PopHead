@@ -19,7 +19,7 @@ void Animation::addState(const std::string& stateName, const std::vector<sf::Int
 		mCurrentStateName = stateName;
 }
 
-void Animation::addState(const std::string & stateName, sf::IntRect frame, unsigned framesCount)
+void Animation::addState(const std::string& stateName, sf::IntRect frame, unsigned framesCount)
 {
 	if (framesCount == 0)
 		throw std::runtime_error("Frames count must be greater than 0");
@@ -35,7 +35,7 @@ void Animation::addState(const std::string & stateName, sf::IntRect frame, unsig
 		mCurrentStateName = stateName;
 }
 
-void Animation::changeState(const std::string & stateName)
+void Animation::changeState(const std::string& stateName)
 {
 	auto result = mStates.find(stateName);
 	if (result == mStates.end())
@@ -44,7 +44,7 @@ void Animation::changeState(const std::string & stateName)
 	mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(sf::Sprite & sprite)
+void Animation::animate(sf::Sprite& sprite)
 {
 	if (mStates.empty())
 		throw std::runtime_error("Add at least one state to animate");
@@ -54,7 +54,7 @@ void Animation::animate(sf::Sprite & sprite)
 		mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(sf::Sprite & sprite, const sf::Time & deltaTime)
+void Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
 {
 	if (mStates.empty())
 		throw std::runtime_error("Add at least one state to animate");
@@ -68,7 +68,7 @@ void Animation::animate(sf::Sprite & sprite, const sf::Time & deltaTime)
 	}
 }
 
-std::string Animation::getCurrentStateName() const
+auto Animation::getCurrentStateName() const -> std::string
 {
 	if (mStates.empty())
 		throw std::runtime_error("Add at least one state to get current state name");
