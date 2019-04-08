@@ -63,7 +63,7 @@ class Renderer
 
     void removeObjects( LayerID layerID );
 
-    auto getWindow() const -> const sf::Window& { return mWindow; }
+    auto getWindow() const -> sf::Window& { return mWindow; }
     auto getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
     auto getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
