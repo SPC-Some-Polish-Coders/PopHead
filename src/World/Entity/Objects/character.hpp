@@ -3,6 +3,7 @@
 
 #include "World/Entity/object.hpp"
 #include "characterMotion.hpp"
+#include "World/Animation/animation.hpp"
 
 namespace PopHead{
 namespace World{
@@ -30,11 +31,12 @@ protected:
     ///Equipment mEquipment;
     ///Weapon* const mCurrentWeapon;
     ///ExperienceManager mExperienceManager;
-    sf::Sprite mSprite;
     unsigned int mHP;
     unsigned int mMaxHP;
     unsigned int mMovementSpeed;
     CharacterMotion mMotion;
+    sf::Sprite mSprite;
+    Animation mAnimation;
 };
 
 
