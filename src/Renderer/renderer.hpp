@@ -63,15 +63,15 @@ class Renderer
 
     void removeObjects( LayerID layerID );
 
-    inline auto getWindow() const -> const sf::Window&;
-    inline auto getLayer( LayerID ) -> Layer&;
-    inline auto getLayer( LayerID ) const -> const Layer&;
+    inline auto Renderer::getWindow() const -> const sf::Window& { return mWindow; }
+    inline auto Renderer::getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
+    inline auto Renderer::getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
-    inline auto getCameraPosition() const -> const sf::Vector2f&;
-    inline auto getCameraSize() const -> const sf::Vector2f&;
+    inline auto Renderer::getCameraPosition() const -> const sf::Vector2f& { return mCamera.getCenter(); }
+    inline auto Renderer::getCameraSize() const -> const sf::Vector2f& { return mCamera.getSize(); }
 
-    inline void setCameraPosition( sf::Vector2f );
-    inline void setCameraSize( sf::Vector2f );
+    inline void Renderer::setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
+    inline void Renderer::setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
 
   private:
     sf::View mCamera;
