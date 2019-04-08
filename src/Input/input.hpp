@@ -6,15 +6,18 @@
 #include "Input/mouseManager.hpp"
 
 namespace PopHead {
+    namespace Base{ class GameData; }
 namespace Input {
 
 
 class Input
 {
 public:
-    auto getKeyboard() -> const KeyboardManager&;
-    auto getMouse()    -> const MouseManager&;
-    auto getAction()   -> const ActionManager&;
+    auto getKeyboard() -> const KeyboardManager& {return mKeyboard;}
+    auto getMouse()    -> const MouseManager&    {return mMouse;}
+    auto getAction()   -> const ActionManager&   {return mAction;}
+
+    void setGameData(Base::GameData*);
 
 private:
     ActionManager mAction;

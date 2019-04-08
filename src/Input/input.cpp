@@ -1,21 +1,11 @@
-#include "Input/input.hpp"
+#include "input.hpp"
+#include "Base/gameData.hpp"
 
 using PopHead::Input::Input;
-using PopHead::Input::ActionManager;
-using PopHead::Input::KeyboardManager;
-using PopHead::Input::MouseManager;
 
-auto Input::getKeyboard() -> const KeyboardManager&
+void Input::setGameData(Base::GameData* gameData)
 {
-	return mKeyboard;
-}
+    gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
 
-auto Input::getMouse() -> const MouseManager&
-{
-	return mMouse;
-}
-
-auto Input::getAction()   -> const ActionManager&
-{
-	return mAction;
+    mKeyboard.setGameData(gameData);
 }
