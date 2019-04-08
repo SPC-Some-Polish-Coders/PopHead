@@ -1,9 +1,10 @@
 #include "animation.hpp"
 #include <stdexcept>
 
-namespace PopHead {
+using PopHead::World::Animation;
+
 Animation::Animation(const sf::Time& delay)
-	: mDelay(delay)
+    : mDelay(delay)
 {
 }
 
@@ -72,5 +73,4 @@ std::string Animation::getCurrentStateName() const
 	if (mStates.empty())
 		throw std::runtime_error("Add at least one state to get current state name");
 	return mCurrentStateName;
-}
 }

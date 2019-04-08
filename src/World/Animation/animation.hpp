@@ -1,5 +1,5 @@
-#ifndef POPHEAD_ANIMATION_ANIMATION_H_
-#define POPHEAD_ANIMATION_ANIMATION_H_
+#ifndef POPHEAD_WORLD_ANIMATION_ANIMATION_H_
+#define POPHEAD_WORLD_ANIMATION_ANIMATION_H_
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -7,7 +7,11 @@
 #include <map>
 
 namespace PopHead {
-class Animation {
+namespace World{
+
+
+class Animation
+{
 public:
 	Animation() = default;
 
@@ -36,6 +40,8 @@ private:
 	std::string mCurrentStateName;
 	std::size_t mCurrentFrameIndex = 0;
 };
-}
 
-#endif 
+
+}}
+
+#endif
