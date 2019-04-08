@@ -12,9 +12,9 @@ namespace Input {
 class Input
 {
 public:
-    auto getKeyboard() -> const KeyboardManager&;
-    auto getMouse()    -> const MouseManager&;
-    auto getAction()   -> const ActionManager&;
+    auto getKeyboard() -> const KeyboardManager& {return mKeyboard;}
+    auto getMouse()    -> const MouseManager&    {return mMouse;}
+    auto getAction()   -> const ActionManager&   {return mAction;}
 
 private:
     ActionManager mAction;
