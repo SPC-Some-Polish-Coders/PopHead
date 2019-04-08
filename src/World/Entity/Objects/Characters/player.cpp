@@ -53,7 +53,4 @@ void Player::update(sf::Time delta)
 
 }*/
 
-/*auto getPerks() const -> const PerkManager&
-{
-    return mPerks;
-}*/
+//auto getPerks() const -> const PerkManager& { return mPerks; }
