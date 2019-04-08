@@ -2,6 +2,8 @@
 
 #include "Base/gameData.hpp"
 
+#include <iostream>
+
 using PopHead::World::Entity::Player;
 
 Player::Player(PopHead::Base::GameData* gameData)

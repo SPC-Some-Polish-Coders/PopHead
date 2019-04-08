@@ -12,7 +12,7 @@ class KeyboardManager
 {
 public:
     bool isKeyPressed( sf::Keyboard::Key ) const;
-    bool isKeyJustPressed( sf::Keyboard::Key );
+    bool isKeyJustPressed( sf::Keyboard::Key ) const;
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
