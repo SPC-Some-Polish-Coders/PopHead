@@ -9,7 +9,7 @@ using PopHead::States::GameState;
 GameState::GameState(PopHead::Base::GameData* const gameData)
 :State{gameData}
 {
-    mTexture.loadFromFile("resources/textures/characters/vaultMan.png");
+    mTexture.loadFromFile("resources/textures/characters/vaultManSheet.png");
 
     std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(gameData));
     player->getSprite().setTexture(mTexture);
