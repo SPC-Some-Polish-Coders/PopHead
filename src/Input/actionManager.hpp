@@ -19,9 +19,9 @@ public:
 
     void addAction( const std::string& action, const std::vector<sf::Keyboard::Key>& );
     void addAction( const std::string& action, sf::Keyboard::Key );
-    void addKeyToAction( const std::string& toWhichAction, sf::Keyboard::Key );
-    void deleteKeyFromAction( const std::string& toWhichAction, sf::Keyboard::Key );
-    void clearAction(const std::string& action);
+    void addKeyToAction( const std::string& action, sf::Keyboard::Key );
+    void deleteKeyFromAction( const std::string& action, sf::Keyboard::Key );
+    void deleteAction(const std::string& action);
 
     bool isActionPressed( const std::string& action );
     bool isActionJustPressed( const std::string& action );

@@ -11,41 +11,35 @@ ActionManager::ActionManager()
 
 }
 
-void ActionManager::addAction ( const std::string& action, const std::vector<sf::Keyboard::Key>& buttons )
+void ActionManager::addAction( const std::string& action, const std::vector<sf::Keyboard::Key>& buttons )
 {
     mActions[action] = buttons;
 }
 
-void ActionManager::addAction ( const std::string& action, sf::Keyboard::Key button )
+void ActionManager::addAction( const std::string& action, sf::Keyboard::Key button )
 {
     mActions[action] = std::vector<sf::Keyboard::Key>{button};
 }
 
-void ActionManager::addKeyToAction ( const std::string& toWhichAction, sf::Keyboard::Key button )
+void ActionManager::addKeyToAction( const std::string& action, sf::Keyboard::Key button )
 {
-    auto found = mActions.find(toWhichAction);
+    auto found = mActions.find(action);
     if(found != mActions.end()){
         found->second.emplace_back(button);
     }
 }
 
-void ActionManager::deleteKeyFromAction ( const std::string& toWhichAction, sf::Keyboard::Key button )
+void ActionManager::deleteKeyFromAction( const std::string& action, sf::Keyboard::Key button )
 {
-    #if 0
-    auto found = mActions.find(toWhichAction);
+    auto found = mActions.find(action);
 
     if(found != mActions.end()){
-        for( auto it = *found->second.begin(); it != *found->second.end(); ++it ){
-            if(*it == button){
-                *found->second.erase(it);
-                break;
-            }
-        }
+        auto& vec = found->second;
+        vec.erase(std::remove(vec.begin(), vec.end(), button), vec.end());
     }
-    #endif // 0
 }
 
-void ActionManager::clearAction(const std::string& action)
+void ActionManager::deleteAction(const std::string& action)
 {
     auto found = mActions.find(action);
     mActions.erase(found);
@@ -60,7 +54,7 @@ bool ActionManager::isActionPressed( const std::string& action )
     return false;
 }
 
-bool ActionManager::isActionJustPressed ( const std::string& action )
+bool ActionManager::isActionJustPressed( const std::string& action )
 {
     for(const auto& button : mActions[action]){
         if(isKeyJust(sf::Event::KeyPressed, button))
@@ -69,7 +63,7 @@ bool ActionManager::isActionJustPressed ( const std::string& action )
     return false;
 }
 
-bool ActionManager::isActionJustReleased ( const std::string& action )
+bool ActionManager::isActionJustReleased( const std::string& action )
 {
     for(const auto& button : mActions[action]){
         if(isKeyJust(sf::Event::KeyReleased, button))
