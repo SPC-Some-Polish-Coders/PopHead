@@ -13,6 +13,8 @@ ActionManager::ActionManager()
 
 void ActionManager::addAction( const std::string& action, const std::vector<sf::Keyboard::Key>& buttons )
 {
+    ///TODO: check is there 2 identical buttons in vector
+
     mActions[action] = buttons;
 }
 
@@ -25,6 +27,9 @@ void ActionManager::addKeyToAction( const std::string& action, sf::Keyboard::Key
 {
     auto found = mActions.find(action);
     if(found != mActions.end()){
+
+        ///TODO: check is there already the same button in vector
+
         found->second.emplace_back(button);
     }
 }
