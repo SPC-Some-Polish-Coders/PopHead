@@ -24,8 +24,8 @@ public:
     void clearAction(const std::string& action);
 
     bool isActionPressed( const std::string& action );
-    bool isActionJustPressed( const std::string& action ) const;
-    bool isActionJustReleased( const std::string& action ) const;
+    bool isActionJustPressed( const std::string& action );
+    bool isActionJustReleased( const std::string& action );
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 

@@ -60,13 +60,21 @@ bool ActionManager::isActionPressed( const std::string& action )
     return false;
 }
 
-bool ActionManager::isActionJustPressed ( const std::string& action ) const
+bool ActionManager::isActionJustPressed ( const std::string& action )
 {
+    for(const auto& button : mActions[action]){
+        if(isKeyJust(sf::Event::KeyPressed, button))
+            return true;
+    }
     return false;
 }
 
-bool ActionManager::isActionJustReleased ( const std::string& action ) const
+bool ActionManager::isActionJustReleased ( const std::string& action )
 {
+    for(const auto& button : mActions[action]){
+        if(isKeyJust(sf::Event::KeyReleased, button))
+            return true;
+    }
     return false;
 }
 
