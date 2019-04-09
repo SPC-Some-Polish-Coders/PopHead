@@ -17,15 +17,15 @@ class ActionManager
 public:
     ActionManager();
 
-    void addAction ( const std::string& action, const std::vector<sf::Keyboard::Key>& );
-    void addAction ( const std::string& action, sf::Keyboard::Key );
-    void addKeyToAction ( const std::string& toWhichAction, sf::Keyboard::Key );
-    void deleteKeyFromAction ( const std::string& toWhichAction, sf::Keyboard::Key );
+    void addAction( const std::string& action, const std::vector<sf::Keyboard::Key>& );
+    void addAction( const std::string& action, sf::Keyboard::Key );
+    void addKeyToAction( const std::string& toWhichAction, sf::Keyboard::Key );
+    void deleteKeyFromAction( const std::string& toWhichAction, sf::Keyboard::Key );
     void clearAction(const std::string& action);
 
-    bool isActionPressed ( const std::string& action ) const;
-    bool isActionJustPressed ( const std::string& action ) const;
-    bool isActionJustReleased ( const std::string& action ) const;
+    bool isActionPressed( const std::string& action );
+    bool isActionJustPressed( const std::string& action ) const;
+    bool isActionJustReleased( const std::string& action ) const;
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 

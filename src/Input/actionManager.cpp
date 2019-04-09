@@ -49,8 +49,12 @@ void ActionManager::clearAction(const std::string& action)
     mActions.erase(found);
 }
 
-bool ActionManager::isActionPressed ( const std::string& action ) const
+bool ActionManager::isActionPressed( const std::string& action )
 {
+    for(const auto& button : mActions[action]){
+        if(sf::Keyboard::isKeyPressed(button))
+            return true;
+    }
     return false;
 }
 
