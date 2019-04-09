@@ -30,6 +30,9 @@ public:
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
+    bool isKeyJust(sf::Event::EventType, sf::Keyboard::Key) const;
+
+private:
     std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
     Base::GameData* mGameData;
 };

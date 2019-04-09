@@ -1,5 +1,7 @@
 #include "actionManager.hpp"
 
+#include "Base/gameData.hpp"
+
 using PopHead::Input::ActionManager;
 
 ActionManager::ActionManager()
@@ -66,4 +68,11 @@ bool ActionManager::isActionJustPressed ( const std::string& action ) const
 bool ActionManager::isActionJustReleased ( const std::string& action ) const
 {
     return false;
+}
+
+bool ActionManager::isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const
+{
+    sf::Event event;
+    mGameData->getRenderer().getWindow().pollEvent( event );
+    return(event.type == type && event.key.code == key);
 }

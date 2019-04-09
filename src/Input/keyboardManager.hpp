@@ -18,7 +18,7 @@ public:
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
-    bool isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const;
+    bool isKeyJust(sf::Event::EventType, sf::Keyboard::Key) const;
 
 private:
     Base::GameData* mGameData;
