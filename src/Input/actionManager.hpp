@@ -6,23 +6,32 @@
 #include <vector>
 #include <map>
 
+//#include "Base/gameData.hpp"
+
 namespace PopHead {
+    namespace Base{ class GameData; }
 namespace Input {
 
 class ActionManager
 {
 public:
-    ActionManager() = default;
+    ActionManager();
 
-    void addAction ( const std::string& action, std::vector<sf::Event> );
-    void addAction ( const std::string& action, sf::Event );
-    void addEventWhichDoAction ( const std::string& toWhichAction, sf::Event );
+    void addAction ( const std::string& action, std::vector<sf::Keyboard::Key> );
+    void addAction ( const std::string& action, sf::Keyboard::Key );
+    void addKeyToAction ( const std::string& toWhichAction, sf::Keyboard::Key );
+    void deleteKeyFromAction ( const std::string& toWhichAction, sf::Keyboard::Key );
+    void clearAction(const std::string& action);
 
-    bool isActionPressed ( std::string action ) const;
-    bool isActionJustPressed ( std::string action ) const;
+    bool isActionPressed ( const std::string& action ) const;
+    bool isActionJustPressed ( const std::string& action ) const;
+    bool isActionJustReleased ( const std::string& action ) const;
+
+    void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
-    std::map< std::string, std::vector<sf::Event> > mActions;
+    std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
+    Base::GameData* mGameData;
 };
 
 }}
