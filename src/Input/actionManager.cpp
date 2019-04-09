@@ -21,17 +21,32 @@ void ActionManager::addAction ( const std::string& action, sf::Keyboard::Key but
 
 void ActionManager::addKeyToAction ( const std::string& toWhichAction, sf::Keyboard::Key button )
 {
-
+    auto found = mActions.find(toWhichAction);
+    if(found != mActions.end()){
+        found->second.emplace_back(button);
+    }
 }
 
 void ActionManager::deleteKeyFromAction ( const std::string& toWhichAction, sf::Keyboard::Key button )
 {
+    #if 0
+    auto found = mActions.find(toWhichAction);
 
+    if(found != mActions.end()){
+        for( auto it = *found->second.begin(); it != *found->second.end(); ++it ){
+            if(*it == button){
+                *found->second.erase(it);
+                break;
+            }
+        }
+    }
+    #endif // 0
 }
 
 void ActionManager::clearAction(const std::string& action)
 {
-
+    auto found = mActions.find(action);
+    mActions.erase(found);
 }
 
 bool ActionManager::isActionPressed ( const std::string& action ) const
