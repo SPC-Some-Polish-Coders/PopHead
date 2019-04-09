@@ -17,7 +17,7 @@ class ActionManager
 public:
     ActionManager();
 
-    void addAction ( const std::string& action, std::vector<sf::Keyboard::Key> );
+    void addAction ( const std::string& action, const std::vector<sf::Keyboard::Key>& );
     void addAction ( const std::string& action, sf::Keyboard::Key );
     void addKeyToAction ( const std::string& toWhichAction, sf::Keyboard::Key );
     void deleteKeyFromAction ( const std::string& toWhichAction, sf::Keyboard::Key );
