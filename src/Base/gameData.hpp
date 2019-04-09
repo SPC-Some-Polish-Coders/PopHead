@@ -29,14 +29,14 @@ class GameData
             Input::Input* const,
             Renderer::Renderer* const );
 
-    inline auto getSoundPlayer() const -> Audio::SoundPlayer&;
-    inline auto getMusicPlayer() const -> Audio::MusicPlayer&;
-    inline auto getTextures() const -> Resources::TextureHolder&;
-    inline auto getFonts() const -> Resources::FontHolder&;
-    inline auto getShaders() const -> Resources::ShaderHolder&;
-    inline auto getStateMachine() const -> States::StateMachine&;
-    inline auto getInput() const -> Input::Input&;
-    inline auto getRenderer() const -> Renderer::Renderer&;
+    auto getSoundPlayer()  const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
+    auto getMusicPlayer()  const -> Audio::MusicPlayer&       { return *mMusicPlayer;  }
+    auto getTextures()     const -> Resources::TextureHolder& { return *mTextures;     }
+    auto getFonts()        const -> Resources::FontHolder&    { return *mFonts;        }
+    auto getShaders()      const -> Resources::ShaderHolder&  { return *mShaders;      }
+    auto getStateMachine() const -> States::StateMachine&     { return *mStateMachine; }
+    auto getInput()        const -> Input::Input&             { return *mInput;        }
+    auto getRenderer()     const -> Renderer::Renderer&       { return *mRenderer;     }
 
   private:
     Audio::SoundPlayer* const mSoundPlayer;
@@ -71,32 +71,8 @@ inline GameData::GameData(
         , mInput { input }
         , mRenderer { renderer }
 {
-
 }
 
-inline auto GameData::getSoundPlayer() const -> Audio::SoundPlayer&
-{ return *mSoundPlayer; }
-
-inline auto GameData::getMusicPlayer() const -> Audio::MusicPlayer&
-{ return *mMusicPlayer; }
-
-inline auto GameData::getTextures() const -> Resources::TextureHolder&
-{ return *mTextures; }
-
-inline auto GameData::getFonts() const -> Resources::FontHolder&
-{ return *mFonts; }
-
-inline auto GameData::getShaders() const -> Resources::ShaderHolder&
-{ return *mShaders; }
-
-inline auto GameData::getStateMachine() const -> States::StateMachine&
-{ return *mStateMachine; }
-
-inline auto GameData::getInput() const -> Input::Input&
-{ return *mInput; }
-
-inline auto GameData::getRenderer() const -> Renderer::Renderer&
-{ return *mRenderer; }
 
 }}
 
