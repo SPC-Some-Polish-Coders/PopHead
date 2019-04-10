@@ -4,20 +4,19 @@
 #include <SFML/Graphics.hpp>
 
 namespace PopHead {
+    namespace Base{ class GameData; }
 namespace Input {
 
 class MouseManager
 {
 public:
-    MouseManager() = default;
-
     sf::Event::MouseButtonEvent getMouseButtonEvent() const;
     sf::Vector2f getMousePosition() const;
-    bool isClicked( const sf::Rect<int>& ) const;
-    bool isClicked( const sf::Sprite& ) const;
+
+    void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
-    sf::Vector2f previousMousePos;
+    Base::GameData* mGameData;
 };
 
 }}
