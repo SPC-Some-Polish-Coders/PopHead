@@ -26,6 +26,11 @@ void Player::input()
     if(mGameData->getInput().getAction().isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
+
+    if(mGameData->getInput().getAction().isActionJustPressed("shot"));
+        std::cout<<"just pressed"<<std::endl;
+    if(mGameData->getInput().getAction().isActionJustReleased("shot"));
+        std::cout<<"just released"<<std::endl;
 }
 
 void Player::update(sf::Time delta)
