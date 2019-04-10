@@ -10,8 +10,8 @@ namespace Input {
 class MouseManager
 {
 public:
-    sf::Event::MouseButtonEvent getMouseButtonEvent() const;
-    sf::Vector2f getMousePosition() const;
+    auto getMouseButtonEvent() const -> sf::Event::MouseButtonEvent;
+    auto getMousePosition() const -> sf::Vector2i;
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 

@@ -2,12 +2,12 @@
 
 using PopHead::Input::MouseManager;
 
-sf::Event::MouseButtonEvent MouseManager::getMouseButtonEvent() const
+auto getMouseButtonEvent() const -> sf::Event::MouseButtonEvent
 {
 
 }
 
-sf::Vector2f MouseManager::getMousePosition() const
+auto getMousePosition() const -> sf::Vector2i
 {
 
 }

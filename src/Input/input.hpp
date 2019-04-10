@@ -22,9 +22,9 @@ public:
     void setGameData(Base::GameData*);
 
 private:
+    MouseManager mMouse;
     ActionManager mAction;
     KeyboardManager mKeyboard;
-    MouseManager mMouse;
 };
 
 
