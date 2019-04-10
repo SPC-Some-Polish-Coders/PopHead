@@ -55,6 +55,11 @@ void ActionManager::deleteAction(const std::string& action)
     mActions.erase(found);
 }
 
+void ActionManager::clearAllActions() noexcept
+{
+    mActions.clear();
+}
+
 bool ActionManager::isActionPressed( const std::string& action )
 {
     for(const auto& button : mActions[action]){

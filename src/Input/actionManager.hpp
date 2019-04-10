@@ -22,6 +22,7 @@ public:
     void addKeyToAction( const std::string& action, sf::Keyboard::Key );
     void deleteKeyFromAction( const std::string& action, sf::Keyboard::Key );
     void deleteAction(const std::string& action);
+    void clearAllActions() noexcept;
 
     bool isActionPressed( const std::string& action );
     bool isActionJustPressed( const std::string& action );
