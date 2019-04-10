@@ -1,20 +1,18 @@
 #include "actionManager.hpp"
-
 #include "Base/gameData.hpp"
+#include <algorithm>
 
 using PopHead::Input::ActionManager;
 
 ActionManager::ActionManager()
 {
 ///TODO: loading player's favorite controls from file
-
-
 }
 
-void ActionManager::addAction( const std::string& action, const std::vector<sf::Keyboard::Key>& buttons )
+void ActionManager::addAction( const std::string& action, std::vector<sf::Keyboard::Key>& buttons )
 {
-    ///TODO: check is there 2 identical buttons in vector
-
+    auto last = std::unique(buttons.begin(), buttons.end());
+    buttons.erase(last, buttons.end());
     mActions[action] = buttons;
 }
 

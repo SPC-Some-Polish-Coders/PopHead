@@ -13,4 +13,5 @@ void Input::setGameData(Base::GameData* gameData)
     gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
 
     mKeyboard.setGameData(gameData);
+    mAction.setGameData(gameData);
 }
