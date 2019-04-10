@@ -24,11 +24,11 @@ void ActionManager::addAction( const std::string& action, sf::Keyboard::Key butt
 void ActionManager::addKeyToAction( const std::string& action, sf::Keyboard::Key button )
 {
     auto found = mActions.find(action);
+
     if(found != mActions.end()){
-
-        ///TODO: check is there already the same button in vector
-
-        found->second.emplace_back(button);
+        auto& vec = found->second;
+        if(std::find(vec.begin(), vec.end(), button) == vec.end())
+            found->second.emplace_back(button);
     }
 }
 
