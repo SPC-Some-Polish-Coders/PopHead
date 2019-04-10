@@ -14,16 +14,16 @@ Player::Player(PopHead::Base::GameData* gameData)
 
 void Player::input()
 {
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::A)){
+    if(mGameData->getInput().getAction().isActionPressed("movingLeft")){
         mMotion.isMovingLeft = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::D)){
+    if(mGameData->getInput().getAction().isActionPressed("movingRight")){
         mMotion.isMovingRight = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::W)){
+    if(mGameData->getInput().getAction().isActionPressed("movingUp")){
         mMotion.isMovingUp = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::S)){
+    if(mGameData->getInput().getAction().isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
 }

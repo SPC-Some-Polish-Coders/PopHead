@@ -17,7 +17,7 @@ public:
 
     auto getKeyboard() -> const KeyboardManager& {return mKeyboard;}
     auto getMouse()    -> const MouseManager&    {return mMouse;}
-    auto getAction()   -> const ActionManager&   {return mAction;}
+    auto getAction()   -> ActionManager&         {return mAction;}
 
     void setGameData(Base::GameData*);
 
