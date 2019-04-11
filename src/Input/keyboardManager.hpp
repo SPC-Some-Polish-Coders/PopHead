@@ -5,7 +5,6 @@
 #include <map>
 
 namespace PopHead {
-    namespace Base{ class GameData; }
 namespace Input {
 
 class KeyboardManager
@@ -15,13 +14,8 @@ public:
     bool isKeyJustPressed( sf::Keyboard::Key ) const;
     bool isKeyJustReleased( sf::Keyboard::Key ) const;
 
-    void setGameData(Base::GameData* gameData){mGameData = gameData;}
-
 private:
     bool isKeyJust(sf::Event::EventType, sf::Keyboard::Key) const;
-
-private:
-    Base::GameData* mGameData;
 };
 
 }}

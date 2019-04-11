@@ -6,10 +6,7 @@
 #include <vector>
 #include <map>
 
-//#include "Base/gameData.hpp"
-
 namespace PopHead {
-    namespace Base{ class GameData; }
 namespace Input {
 
 class ActionManager
@@ -28,14 +25,14 @@ public:
     bool isActionJustPressed( const std::string& action );
     bool isActionJustReleased( const std::string& action );
 
-    void setGameData(Base::GameData* gameData){mGameData = gameData;}
+    //void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
     bool isKeyJust(sf::Event::EventType, sf::Keyboard::Key) const;
 
 private:
     std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
-    Base::GameData* mGameData;
+//    Base::GameData* mGameData;
 };
 
 }}

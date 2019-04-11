@@ -5,12 +5,12 @@
 using PopHead::Input::EventLoop;
 
 
-void EventLoop::eventLoop()
+void EventLoop::eventLoop(Base::GameData* gameData)
 {
     clear();
     sf::Event event;
 
-    while(mGameData->getRenderer().getWindow().pollEvent(event))
+    while(gameData->getRenderer().getWindow().pollEvent(event))
     {
         switch(event.type)
         {

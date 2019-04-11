@@ -12,9 +12,7 @@ class EventLoop
 {
 public:
     ///TODO change eventLoop to operator()
-    static void eventLoop();
-
-    static void setGameData(Base::GameData* gameData){mGameData = gameData;}
+    static void eventLoop(Base::GameData*);
 
     ///TODO change for example isKeyPressed to isKeyJustPressed
     static bool isKeyPressed(){return mIsKeyPressed;}
@@ -29,8 +27,6 @@ private:
     static void clear();
 
 private:
-    static Base::GameData* mGameData;
-
     static bool mIsKeyPressed;
     static bool mIsKeyReleased;
     static bool mIsMouseButtonPressed;
@@ -41,7 +37,6 @@ private:
     static sf::Mouse::Button mMouseButton;
 };
 
-Base::GameData* EventLoop::mGameData;
 bool EventLoop::mIsKeyPressed;
 bool EventLoop::mIsKeyReleased;
 bool EventLoop::mIsMouseButtonPressed;
@@ -49,6 +44,7 @@ bool EventLoop::mIsMouseButtonReleased;
 bool EventLoop::mHasMouseMoved;
 sf::Keyboard::Key EventLoop::mKey;
 sf::Mouse::Button EventLoop::mMouseButton;
+
 
 }}
 

@@ -1,5 +1,6 @@
 #include "actionManager.hpp"
-#include "Base/gameData.hpp"
+//#include "Base/gameData.hpp"
+#include "eventLoop.hpp"
 #include <algorithm>
 
 using PopHead::Input::ActionManager;
@@ -72,7 +73,7 @@ bool ActionManager::isActionPressed( const std::string& action )
 bool ActionManager::isActionJustPressed( const std::string& action )
 {
     for(const auto& button : mActions[action]){
-        if(isKeyJust(sf::Event::KeyPressed, button))
+        if(EventLoop::isKeyPressed() && EventLoop::getKey() == button)
             return true;
     }
     return false;
@@ -81,7 +82,7 @@ bool ActionManager::isActionJustPressed( const std::string& action )
 bool ActionManager::isActionJustReleased( const std::string& action )
 {
     for(const auto& button : mActions[action]){
-        if(isKeyJust(sf::Event::KeyReleased, button))
+        if(EventLoop::isKeyReleased() && EventLoop::getKey() == button)
             return true;
     }
     return false;
@@ -89,7 +90,7 @@ bool ActionManager::isActionJustReleased( const std::string& action )
 
 bool ActionManager::isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const
 {
-    sf::Event event;
+    /*sf::Event event;
     while(mGameData->getRenderer().getWindow().pollEvent( event )){
         if(event.type == type){
             if(event.key.code == key)
@@ -97,6 +98,6 @@ bool ActionManager::isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) 
             else
                 return false;
         }
-    }
+    }*/
     return false;
 }
