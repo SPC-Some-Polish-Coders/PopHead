@@ -1,7 +1,6 @@
 #include "eventLoop.hpp"
 
 #include "Base/gameData.hpp"
-#include <SFML/Window.hpp>
 
 using PopHead::Input::EventLoop;
 
@@ -16,23 +15,23 @@ void EventLoop::eventLoop()
         switch(event.type)
         {
         case sf::Event::KeyPressed:
-            isKeyPressed = true;
+            mIsKeyPressed = true;
             break;
 
         case sf::Event::KeyReleased:
-            isKeyReleased = true;
+            mIsKeyReleased = true;
             break;
 
         case sf::Event::MouseButtonPressed:
-            isMouseButtonPressed = true;
+            mIsMouseButtonPressed = true;
             break;
 
         case sf::Event::MouseButtonReleased:
-            isMouseButtonReleased = true;
+            mIsMouseButtonReleased = true;
             break;
 
         case sf::Event::MouseMoved:
-            hasMouseMoved = true;
+            mHasMouseMoved = true;
             break;
         }
     }
@@ -40,9 +39,11 @@ void EventLoop::eventLoop()
 
 void EventLoop::clear()
 {
-    isKeyPressed = false;
-    isKeyReleased = false;
-    isMouseButtonPressed = false;
-    isMouseButtonReleased = false;
-    hasMouseMoved = false;
+    mIsKeyPressed = false;
+    mIsKeyReleased = false;
+    mIsMouseButtonPressed = false;
+    mIsMouseButtonReleased = false;
+    mHasMouseMoved = false;
+    mKey = sf::Keyboard::Unknown;
+    mMouseButton = sf::Mouse::ButtonCount;
 }
