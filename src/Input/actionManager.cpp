@@ -87,17 +87,3 @@ bool ActionManager::isActionJustReleased( const std::string& action )
     }
     return false;
 }
-
-bool ActionManager::isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const
-{
-    /*sf::Event event;
-    while(mGameData->getRenderer().getWindow().pollEvent( event )){
-        if(event.type == type){
-            if(event.key.code == key)
-                return true;
-            else
-                return false;
-        }
-    }*/
-    return false;
-}
