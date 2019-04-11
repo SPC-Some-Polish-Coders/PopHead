@@ -11,6 +11,7 @@ namespace Input{
 class EventLoop
 {
 public:
+    static void init(Base::GameData*);
     ///TODO change eventLoop to operator()
     static void eventLoop(Base::GameData*);
 

@@ -12,6 +12,11 @@ bool EventLoop::mHasMouseMoved;
 sf::Keyboard::Key EventLoop::mKey;
 sf::Mouse::Button EventLoop::mMouseButton;
 
+void EventLoop::init(Base::GameData* gameData)
+{
+    gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
+}
+
 void EventLoop::eventLoop(Base::GameData* gameData)
 {
     clear();

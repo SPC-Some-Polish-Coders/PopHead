@@ -7,15 +7,11 @@
 namespace PopHead {
 namespace Input {
 
-class KeyboardManager
+struct KeyboardManager
 {
-public:
     bool isKeyPressed( sf::Keyboard::Key ) const;
     bool isKeyJustPressed( sf::Keyboard::Key ) const;
     bool isKeyJustReleased( sf::Keyboard::Key ) const;
-
-private:
-    bool isKeyJust(sf::Event::EventType, sf::Keyboard::Key) const;
 };
 
 }}

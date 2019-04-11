@@ -27,18 +27,18 @@ void Player::input()
         mMotion.isMovingDown = true;
     }
 
-    //#if 0
+    #if 0
     if(mGameData->getInput().getAction().isActionJustReleased("shot"))
         std::cout<<"just released"<<std::endl;
     if(mGameData->getInput().getAction().isActionJustPressed("shot"))
         std::cout<<"just pressed"<<std::endl;
-    //#endif // 0
-    #if 0
-    if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
-        std::cout<<"just pressed"<<std::endl;
+    #endif // 0
+    //#if 0
     if(mGameData->getInput().getKeyboard().isKeyJustReleased(sf::Keyboard::Return))
         std::cout<<"just released"<<std::endl;
-    #endif // 0
+    if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
+        std::cout<<"just pressed"<<std::endl;
+    //#endif // 0
 
     #if 0
     if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Right))

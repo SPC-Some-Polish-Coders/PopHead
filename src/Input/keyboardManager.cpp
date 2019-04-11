@@ -1,5 +1,5 @@
 #include "Input/keyboardManager.hpp"
-
+#include "eventLoop.hpp"
 
 using PopHead::Input::KeyboardManager;
 
@@ -11,17 +11,10 @@ bool KeyboardManager::isKeyPressed( sf::Keyboard::Key key ) const
 
 bool KeyboardManager::isKeyJustPressed( sf::Keyboard::Key key ) const
 {
-    return isKeyJust(sf::Event::KeyPressed ,key);
+    return (EventLoop::isKeyPressed() && EventLoop::getKey() == key);
 }
 
 bool KeyboardManager::isKeyJustReleased( sf::Keyboard::Key key ) const
 {
-    return isKeyJust(sf::Event::KeyReleased ,key);
-}
-
-bool KeyboardManager::isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const
-{
-    /*sf::Event event;
-    mGameData->getRenderer().getWindow().pollEvent( event );
-    return(event.type == type && event.key.code == key);*/
+    return (EventLoop::isKeyReleased() && EventLoop::getKey() == key);
 }
