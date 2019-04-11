@@ -16,6 +16,7 @@ public:
 
     static void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
+    ///TODO change for example isKeyPressed to isKeyJustPressed
     static bool isKeyPressed(){return mIsKeyPressed;}
     static bool isKeyReleased(){return mIsKeyReleased;}
     static bool isMouseButtonPressed(){return mIsMouseButtonPressed;}

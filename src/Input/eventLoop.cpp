@@ -16,22 +16,27 @@ void EventLoop::eventLoop()
         {
         case sf::Event::KeyPressed:
             mIsKeyPressed = true;
+            mKey = event.key.code;
             break;
 
         case sf::Event::KeyReleased:
             mIsKeyReleased = true;
+            mKey = event.key.code;
             break;
 
         case sf::Event::MouseButtonPressed:
             mIsMouseButtonPressed = true;
+            mMouseButton = event.mouseButton.button;
             break;
 
         case sf::Event::MouseButtonReleased:
             mIsMouseButtonReleased = true;
+            mMouseButton = event.mouseButton.button;
             break;
 
         case sf::Event::MouseMoved:
             mHasMouseMoved = true;
+            ///TODO mouse position
             break;
         }
     }
