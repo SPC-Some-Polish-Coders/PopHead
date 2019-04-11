@@ -14,6 +14,9 @@ public:
     static void setGameData(Base::GameData* gameData){mGameData = gameData;}
 
 private:
+    static void clear();
+
+private:
     static Base::GameData* mGameData;
 
     static bool isKeyPressed;
