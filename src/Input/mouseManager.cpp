@@ -17,9 +17,11 @@ bool MouseManager::hasMouseMovedSinceLastFrame() const
 bool MouseManager::isMouseButtonPressed(sf::Mouse::Button button) const
 {
     ///1st implementation
-    sf::Event event;
+    /*sf::Event event;
     mGameData->getRenderer().getWindow().pollEvent( event );
-    return ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == button));
+    return ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == button));*/
+
+    return false;
 
     ///2nd implementation
     #if 0

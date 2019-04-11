@@ -40,8 +40,10 @@ void Player::input()
         std::cout<<"just released"<<std::endl;
     #endif // 0
 
+    #if 0
     if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Right))
         std::cout<<"mouse button pressed"<<std::endl;
+    #endif // 0
 }
 
 void Player::update(sf::Time delta)
