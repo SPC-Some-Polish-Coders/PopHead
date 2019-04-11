@@ -37,14 +37,6 @@ private:
     static sf::Mouse::Button mMouseButton;
 };
 
-bool EventLoop::mIsKeyPressed;
-bool EventLoop::mIsKeyReleased;
-bool EventLoop::mIsMouseButtonPressed;
-bool EventLoop::mIsMouseButtonReleased;
-bool EventLoop::mHasMouseMoved;
-sf::Keyboard::Key EventLoop::mKey;
-sf::Mouse::Button EventLoop::mMouseButton;
-
 
 }}
 
