@@ -26,6 +26,21 @@ void Player::input()
     if(INPUT_isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
+
+    #if 0
+    if(INPUT.is_action_pressed("movingLeft")){
+        mMotion.isMovingLeft = true;
+    }
+    if(INPUT.is_action_pressed("movingRight")){
+        mMotion.isMovingRight = true;
+    }
+    if(INPUT.is_action_pressed("movingUp")){
+        mMotion.isMovingUp = true;
+    }
+    if(INPUT.is_action_pressed("movingDown")){
+        mMotion.isMovingDown = true;
+    }
+    #endif // 0
 }
 
 void Player::update(sf::Time delta)
