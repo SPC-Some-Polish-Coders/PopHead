@@ -11,6 +11,8 @@ namespace Input{
 class EventLoop
 {
 public:
+    EventLoop() = delete;
+
     static void init(Base::GameData*);
 
     static void eventLoop(Base::GameData*);
