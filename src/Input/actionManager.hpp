@@ -1,3 +1,8 @@
+#define INPUT_isActionPressed mGameData->getInput().getAction().isActionPressed
+#define INPUT_isActionJustPressed mGameData->getInput().getAction().isActionJustPressed
+#define INPUT_isActionJustReleased mGameData->getInput().getAction().isActionJustReleased
+
+
 #ifndef POPHEAD_INPUT_ACTIONMANAGER_H_
 #define POPHEAD_INPUT_ACTIONMANAGER_H_
 

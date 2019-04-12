@@ -1,3 +1,5 @@
+#define INPUT mGameData->getInput()
+
 #ifndef POPHEAD_INPUT_INPUT_H_
 #define POPHEAD_INPUT_INPUT_H_
 
