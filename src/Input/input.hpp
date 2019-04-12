@@ -1,3 +1,5 @@
+#define INPUT mGameData->getInput()
+
 #ifndef POPHEAD_INPUT_INPUT_H_
 #define POPHEAD_INPUT_INPUT_H_
 
@@ -13,16 +15,18 @@ namespace Input {
 class Input
 {
 public:
+    Input();
+
     auto getKeyboard() -> const KeyboardManager& {return mKeyboard;}
     auto getMouse()    -> const MouseManager&    {return mMouse;}
-    auto getAction()   -> const ActionManager&   {return mAction;}
+    auto getAction()   -> ActionManager&         {return mAction;}
 
     void setGameData(Base::GameData*);
 
 private:
+    MouseManager mMouse;
     ActionManager mAction;
     KeyboardManager mKeyboard;
-    MouseManager mMouse;
 };
 
 

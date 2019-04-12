@@ -1,3 +1,8 @@
+#define INPUT_isKeyPressed mGameData->getInput().getKeyboard().isKeyPressed
+#define INPUT_isKeyJustPressed mGameData->getInput().getKeyboard().isKeyJustPressed
+#define INPUT_isKeyJustReleased mGameData->getInput().getKeyboard().isKeyJustReleased
+
+
 #ifndef POPHEAD_INPUT_KEYBOARDMANAGER_H_
 #define POPHEAD_INPUT_KEYBOARDMANAGER_H_
 
@@ -5,24 +10,16 @@
 #include <map>
 
 namespace PopHead {
-    namespace Base{ class GameData; }
 namespace Input {
 
-class KeyboardManager
+
+struct KeyboardManager
 {
-public:
     bool isKeyPressed( sf::Keyboard::Key ) const;
     bool isKeyJustPressed( sf::Keyboard::Key ) const;
     bool isKeyJustReleased( sf::Keyboard::Key ) const;
-
-    void setGameData(Base::GameData* gameData){mGameData = gameData;}
-
-private:
-    bool isKeyJust(sf::Event::EventType type, sf::Keyboard::Key key) const;
-
-private:
-    Base::GameData* mGameData;
 };
+
 
 }}
 

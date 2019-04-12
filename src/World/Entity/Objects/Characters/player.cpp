@@ -32,18 +32,33 @@ Player::Player(PopHead::Base::GameData* gameData)
 
 void Player::input()
 {
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::A)){
+    if(INPUT_isActionPressed("movingLeft")){
         mMotion.isMovingLeft = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::D)){
+    if(INPUT_isActionPressed("movingRight")){
         mMotion.isMovingRight = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::W)){
+    if(INPUT_isActionPressed("movingUp")){
         mMotion.isMovingUp = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::S)){
+    if(INPUT_isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
+
+    #if 0
+    if(INPUT.is_action_pressed("movingLeft")){
+        mMotion.isMovingLeft = true;
+    }
+    if(INPUT.is_action_pressed("movingRight")){
+        mMotion.isMovingRight = true;
+    }
+    if(INPUT.is_action_pressed("movingUp")){
+        mMotion.isMovingUp = true;
+    }
+    if(INPUT.is_action_pressed("movingDown")){
+        mMotion.isMovingDown = true;
+    }
+    #endif // 0
 }
 
 void Player::update(sf::Time delta)
