@@ -19,6 +19,8 @@ public:
     auto getMouse()    -> const MouseManager&    {return mMouse;}
     auto getAction()   -> ActionManager&         {return mAction;}
 
+    void setGameData(Base::GameData*);
+
 private:
     MouseManager mMouse;
     ActionManager mAction;

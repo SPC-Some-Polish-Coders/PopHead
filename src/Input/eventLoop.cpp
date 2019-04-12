@@ -48,7 +48,6 @@ void EventLoop::eventLoop(Base::GameData* gameData)
 
         case sf::Event::MouseMoved:
             mHasMouseMoved = true;
-            ///TODO mouse position
             break;
         }
     }

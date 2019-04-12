@@ -36,6 +36,7 @@ private:
 
     static sf::Keyboard::Key mKey;
     static sf::Mouse::Button mMouseButton;
+    static sf::Vector2i mMousePos;
 };
 
 

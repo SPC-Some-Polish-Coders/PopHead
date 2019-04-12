@@ -40,5 +40,5 @@ bool MouseManager::isMouseButtonPressed(sf::Mouse::Button button) const
 
 bool MouseManager::isMouseButtonReleased(sf::Mouse::Button) const
 {
-
+    return false;
 }

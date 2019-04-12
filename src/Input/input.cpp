@@ -8,3 +8,8 @@ Input::Input()
 :mAction()
 {
 }
+
+void Input::setGameData(Base::GameData* gameData)
+{
+    mMouse.setGameData(gameData);
+}

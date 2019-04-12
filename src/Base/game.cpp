@@ -34,6 +34,7 @@ Game::Game()
     mStateMachine->pushState(States::StateID::GameState);
 
     Input::EventLoop::init( mGameData.get() );
+    mInput->setGameData( mGameData.get() );
 
     run();
 }
