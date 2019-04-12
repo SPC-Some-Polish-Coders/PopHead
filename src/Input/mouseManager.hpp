@@ -11,7 +11,7 @@ class MouseManager
 {
 public:
     auto getMousePosition() const -> sf::Vector2i;
-    bool hasMouseMovedSinceLastFrame() const;
+    bool hasMouseMovedSinceLastInput() const;
     bool isMouseButtonPressed(sf::Mouse::Button) const;
     bool isMouseButtonReleased(sf::Mouse::Button) const;
 

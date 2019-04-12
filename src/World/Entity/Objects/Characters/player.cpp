@@ -40,13 +40,18 @@ void Player::input()
         std::cout<<"just pressed"<<std::endl;
     //#endif // 0
 
-    sf::Vector2i mousePos = mGameData->getInput().getMouse().getMousePosition();
-    std::cout<<mousePos.x<<"  "<<mousePos.y<<std::endl;
+    //sf::Vector2i mousePos = mGameData->getInput().getMouse().getMousePosition();
+    //std::cout<<mousePos.x<<"  "<<mousePos.y<<std::endl;
 
     if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Right))
         std::cout<<"mouse button pressed"<<std::endl;
     if(mGameData->getInput().getMouse().isMouseButtonReleased(sf::Mouse::Right))
         std::cout<<"mouse button released"<<std::endl;
+
+    if(mGameData->getInput().getMouse().hasMouseMovedSinceLastInput())
+        std::cout<<"mouse has moved"<<std::endl;
+    else
+        std::cout<<"mouse has NOT moved"<<std::endl;
 }
 
 void Player::update(sf::Time delta)
