@@ -10,17 +10,17 @@ auto MouseManager::getMousePosition() const -> sf::Vector2i
     return sf::Mouse::getPosition( mGameData->getRenderer().getWindow() );
 }
 
-bool MouseManager::hasMouseMovedSinceLastInput() const
+bool MouseManager::hasMouseJustMoved() const
 {
-    return EventLoop::hasMouseMoved();
+    return EventLoop::hasMouseJustMoved();
 }
 
-bool MouseManager::isMouseButtonPressed(sf::Mouse::Button button) const
+bool MouseManager::isMouseButtonJustPressed(sf::Mouse::Button button) const
 {
-    return (EventLoop::isMouseButtonPressed() && EventLoop::getMouseButton() == button);
+    return (EventLoop::isMouseButtonJustPressed() && EventLoop::getMouseButton() == button);
 }
 
-bool MouseManager::isMouseButtonReleased(sf::Mouse::Button button) const
+bool MouseManager::isMouseButtonJustReleased(sf::Mouse::Button button) const
 {
-    return (EventLoop::isMouseButtonReleased() && EventLoop::getMouseButton() == button);
+    return (EventLoop::isMouseButtonJustReleased() && EventLoop::getMouseButton() == button);
 }

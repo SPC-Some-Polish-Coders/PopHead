@@ -4,11 +4,11 @@
 
 using PopHead::Input::EventLoop;
 
-bool EventLoop::mIsKeyPressed;
-bool EventLoop::mIsKeyReleased;
-bool EventLoop::mIsMouseButtonPressed;
-bool EventLoop::mIsMouseButtonReleased;
-bool EventLoop::mHasMouseMoved;
+bool EventLoop::mIsKeyJustPressed;
+bool EventLoop::mIsKeyJustReleased;
+bool EventLoop::mIsMouseButtonJustPressed;
+bool EventLoop::mIsMouseButtonJustReleased;
+bool EventLoop::mHasMouseJustMoved;
 sf::Keyboard::Key EventLoop::mKey;
 sf::Mouse::Button EventLoop::mMouseButton;
 
@@ -27,27 +27,27 @@ void EventLoop::eventLoop(Base::GameData* gameData)
         switch(event.type)
         {
         case sf::Event::KeyPressed:
-            mIsKeyPressed = true;
+            mIsKeyJustPressed = true;
             mKey = event.key.code;
             break;
 
         case sf::Event::KeyReleased:
-            mIsKeyReleased = true;
+            mIsKeyJustReleased = true;
             mKey = event.key.code;
             break;
 
         case sf::Event::MouseButtonPressed:
-            mIsMouseButtonPressed = true;
+            mIsMouseButtonJustPressed = true;
             mMouseButton = event.mouseButton.button;
             break;
 
         case sf::Event::MouseButtonReleased:
-            mIsMouseButtonReleased = true;
+            mIsMouseButtonJustReleased = true;
             mMouseButton = event.mouseButton.button;
             break;
 
         case sf::Event::MouseMoved:
-            mHasMouseMoved = true;
+            mHasMouseJustMoved = true;
             break;
         }
     }
@@ -55,11 +55,11 @@ void EventLoop::eventLoop(Base::GameData* gameData)
 
 void EventLoop::clear()
 {
-    mIsKeyPressed = false;
-    mIsKeyReleased = false;
-    mIsMouseButtonPressed = false;
-    mIsMouseButtonReleased = false;
-    mHasMouseMoved = false;
+    mIsKeyJustPressed = false;
+    mIsKeyJustReleased = false;
+    mIsMouseButtonJustPressed = false;
+    mIsMouseButtonJustReleased = false;
+    mHasMouseJustMoved = false;
     mKey = sf::Keyboard::Unknown;
     mMouseButton = sf::Mouse::ButtonCount;
 }

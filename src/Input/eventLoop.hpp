@@ -12,15 +12,14 @@ class EventLoop
 {
 public:
     static void init(Base::GameData*);
-    ///TODO change eventLoop to operator()
     static void eventLoop(Base::GameData*);
 
     ///TODO change for example isKeyPressed to isKeyJustPressed
-    static bool isKeyPressed(){return mIsKeyPressed;}
-    static bool isKeyReleased(){return mIsKeyReleased;}
-    static bool isMouseButtonPressed(){return mIsMouseButtonPressed;}
-    static bool isMouseButtonReleased(){return mIsMouseButtonReleased;}
-    static bool hasMouseMoved(){return mHasMouseMoved;}
+    static bool isKeyJustPressed(){return mIsKeyJustPressed;}
+    static bool isKeyJustReleased(){return mIsKeyJustReleased;}
+    static bool isMouseButtonJustPressed(){return mIsMouseButtonJustPressed;}
+    static bool isMouseButtonJustReleased(){return mIsMouseButtonJustReleased;}
+    static bool hasMouseJustMoved(){return mHasMouseJustMoved;}
     static auto getKey() -> sf::Keyboard::Key {return mKey;}
     static auto getMouseButton() -> sf::Mouse::Button {return mMouseButton;}
 
@@ -28,11 +27,11 @@ private:
     static void clear();
 
 private:
-    static bool mIsKeyPressed;
-    static bool mIsKeyReleased;
-    static bool mIsMouseButtonPressed;
-    static bool mIsMouseButtonReleased;
-    static bool mHasMouseMoved;
+    static bool mIsKeyJustPressed;
+    static bool mIsKeyJustReleased;
+    static bool mIsMouseButtonJustPressed;
+    static bool mIsMouseButtonJustReleased;
+    static bool mHasMouseJustMoved;
 
     static sf::Keyboard::Key mKey;
     static sf::Mouse::Button mMouseButton;

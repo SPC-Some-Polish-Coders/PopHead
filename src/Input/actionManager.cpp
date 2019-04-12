@@ -72,7 +72,7 @@ bool ActionManager::isActionPressed( const std::string& action )
 bool ActionManager::isActionJustPressed( const std::string& action )
 {
     for(const auto& button : mActions[action]){
-        if(EventLoop::isKeyPressed() && EventLoop::getKey() == button)
+        if(EventLoop::isKeyJustPressed() && EventLoop::getKey() == button)
             return true;
     }
     return false;
@@ -81,7 +81,7 @@ bool ActionManager::isActionJustPressed( const std::string& action )
 bool ActionManager::isActionJustReleased( const std::string& action )
 {
     for(const auto& button : mActions[action]){
-        if(EventLoop::isKeyReleased() && EventLoop::getKey() == button)
+        if(EventLoop::isKeyJustReleased() && EventLoop::getKey() == button)
             return true;
     }
     return false;

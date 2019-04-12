@@ -11,9 +11,9 @@ class MouseManager
 {
 public:
     auto getMousePosition() const -> sf::Vector2i;
-    bool hasMouseMovedSinceLastInput() const;
-    bool isMouseButtonPressed(sf::Mouse::Button) const;
-    bool isMouseButtonReleased(sf::Mouse::Button) const;
+    bool hasMouseJustMoved() const;
+    bool isMouseButtonJustPressed(sf::Mouse::Button) const;
+    bool isMouseButtonJustReleased(sf::Mouse::Button) const;
 
     void setGameData(Base::GameData* gameData){mGameData = gameData;}
 

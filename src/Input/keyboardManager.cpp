@@ -11,10 +11,10 @@ bool KeyboardManager::isKeyPressed( sf::Keyboard::Key key ) const
 
 bool KeyboardManager::isKeyJustPressed( sf::Keyboard::Key key ) const
 {
-    return (EventLoop::isKeyPressed() && EventLoop::getKey() == key);
+    return (EventLoop::isKeyJustPressed() && EventLoop::getKey() == key);
 }
 
 bool KeyboardManager::isKeyJustReleased( sf::Keyboard::Key key ) const
 {
-    return (EventLoop::isKeyReleased() && EventLoop::getKey() == key);
+    return (EventLoop::isKeyJustReleased() && EventLoop::getKey() == key);
 }
