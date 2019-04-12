@@ -26,34 +26,6 @@ void Player::input()
     if(mGameData->getInput().getAction().isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
-
-    #if 0
-    if(mGameData->getInput().getAction().isActionJustReleased("shot"))
-        std::cout<<"just released"<<std::endl;
-    if(mGameData->getInput().getAction().isActionJustPressed("shot"))
-        std::cout<<"just pressed"<<std::endl;
-    #endif // 0
-    //#if 0
-    if(mGameData->getInput().getKeyboard().isKeyJustReleased(sf::Keyboard::Return))
-        std::cout<<"just released"<<std::endl;
-    if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
-        std::cout<<"just pressed"<<std::endl;
-    //#endif // 0
-
-    //sf::Vector2i mousePos = mGameData->getInput().getMouse().getMousePosition();
-    //std::cout<<mousePos.x<<"  "<<mousePos.y<<std::endl;
-
-    if(mGameData->getInput().getMouse().isMouseButtonReleased(sf::Mouse::Right))
-        std::cout<<"mouse button released"<<std::endl;
-    if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Right))
-        std::cout<<"mouse button pressed"<<std::endl;
-
-    #if 0
-    if(mGameData->getInput().getMouse().hasMouseMovedSinceLastInput())
-        std::cout<<"mouse has moved"<<std::endl;
-    else
-        std::cout<<"mouse has NOT moved"<<std::endl;
-    #endif // 0
 }
 
 void Player::update(sf::Time delta)
