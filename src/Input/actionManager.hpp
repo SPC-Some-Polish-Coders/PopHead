@@ -9,6 +9,7 @@
 namespace PopHead {
 namespace Input {
 
+
 class ActionManager
 {
 public:
@@ -28,6 +29,7 @@ public:
 private:
     std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
 };
+
 
 }}
 

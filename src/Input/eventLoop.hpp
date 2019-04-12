@@ -12,9 +12,9 @@ class EventLoop
 {
 public:
     static void init(Base::GameData*);
+
     static void eventLoop(Base::GameData*);
 
-    ///TODO change for example isKeyPressed to isKeyJustPressed
     static bool isKeyJustPressed(){return mIsKeyJustPressed;}
     static bool isKeyJustReleased(){return mIsKeyJustReleased;}
     static bool isMouseButtonJustPressed(){return mIsMouseButtonJustPressed;}

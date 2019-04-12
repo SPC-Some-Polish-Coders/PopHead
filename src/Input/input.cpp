@@ -4,6 +4,7 @@
 
 using PopHead::Input::Input;
 
+
 Input::Input()
 :mAction()
 {

@@ -7,6 +7,7 @@ namespace PopHead {
     namespace Base{ class GameData; }
 namespace Input {
 
+
 class MouseManager
 {
 public:
@@ -20,6 +21,7 @@ public:
 private:
     Base::GameData* mGameData;
 };
+
 
 }}
 

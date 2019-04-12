@@ -4,6 +4,7 @@
 
 using PopHead::Input::ActionManager;
 
+
 ActionManager::ActionManager()
 {
 ///TODO: loading player's favorite controls from file
@@ -13,7 +14,6 @@ addAction( "movingUp",    {sf::Keyboard::W, sf::Keyboard::Up}    );
 addAction( "movingDown",  {sf::Keyboard::S, sf::Keyboard::Down}  );
 addAction( "movingRight", {sf::Keyboard::D, sf::Keyboard::Right} );
 addAction( "movingLeft",  {sf::Keyboard::A, sf::Keyboard::Left}  );
-addAction( "shot", sf::Keyboard::Return );
 }
 
 void ActionManager::addAction( const std::string& action, std::vector<sf::Keyboard::Key> buttons )
