@@ -4,7 +4,9 @@
 namespace PopHead{
 namespace Logs {
 
-class LogManager{
+
+class LogManager
+{
 public:
     LogManager ();
     void writeLog(log : Log);
@@ -17,6 +19,8 @@ public:
     void writeEachLog();
     sf::Time&getTimeFromStartOfTheProgram()const;
 
+private:
+    void saveLogsInFile();
 
 private:
     std::vector<Log> gatheredLogs;
@@ -24,8 +28,6 @@ private:
     std::vector<ModuleID>  LogFromModulesToWrite;
     std:vector<LogType> TypesOfLogToWrite;
     bool stop;
-    void saveLogsInFile();
-
 };
 
 
