@@ -2,7 +2,7 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
 
 #include "World/Entity/object.hpp"
-#include "characterMotion.hpp"
+#include "Characters/Motion/characterMotion.hpp"
 #include "World/Animation/animation.hpp"
 
 namespace PopHead{
