@@ -3,16 +3,16 @@
 using PopHead::World::Entity::Map;
 
 
-Map::Map(Base::GameData* gameData, std::string name, const sf::Texture& texture, float scale)
-:Object(gameData, name, Renderer::LayerID::staticEntities)
+Map::Map(PopHead::Base::GameData* gameData, std::string name, const sf::Texture& texture, float scale)
+	:Object(gameData, name, Renderer::LayerID::staticEntities)
 {
-    mSprite.setTexture(texture);
-    mSprite.setScale(scale, scale);
+	mSprite.setTexture(texture);
+	mSprite.setScale(scale, scale);
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite, states);
+	target.draw(mSprite, states);
 }
 
 void Map::onCollision(Object&)
