@@ -19,6 +19,7 @@ Renderer::Renderer()
                     { LayerID::GUI, Layer() }, }
 {
     mCamera.setViewport( mViewports.at( FullScreenViewport ) );
+    mWindow.setVerticalSyncEnabled(true);
 }
 
 Renderer::~Renderer()
