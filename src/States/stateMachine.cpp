@@ -125,11 +125,6 @@ void StateMachine::clearStates()
     mIsClearing = true;
 }
 
-unsigned int StateMachine::getStatesAmount() const
-{
-    return mActiveStates.size();
-}
-
 bool StateMachine::getHideInStateNr(unsigned int nrOfState) const
 {
     return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getHide();
@@ -158,10 +153,5 @@ auto StateMachine::getStatePtr(PopHead::States::StateID id) const -> std::unique
             return StatePtr(new PopHead::States::GameState(mGameData));
         }
     }
-}
-
-void StateMachine::setGameData( PopHead::Base::GameData* const ptr )
-{
-    mGameData = ptr;
 }
 

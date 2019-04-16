@@ -30,15 +30,14 @@ public:
     void popState();
     void clearStates();
 
-    unsigned int getStatesAmount() const;
+    auto getStatesAmount() const -> unsigned int {return mActiveStates.size();}
     bool getHideInStateNr(unsigned int nrOfState) const; /// 0 is top
     bool getPauseInStateNr(unsigned int nrOfState) const;
 
     void setHideInStateNr(unsigned int nrOfState, bool hide);
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 
-    // XXX not the best solution at all..
-    void setGameData( Base::GameData* const );
+    void setGameData( PopHead::Base::GameData* const gameData ){mGameData = gameData;}
 
 private:
     auto getStatePtr(PopHead::States::StateID id) const -> std::unique_ptr<State>;
