@@ -21,7 +21,7 @@ template< typename ResourceType >
 auto Resource<ResourceType>::createResource( const std::string& path )
 -> std::unique_ptr< ResourceType >
 {
-    auto r = std::make_unique< ResourceType >();
+    std::unique_ptr<ResourceType> r = new ResourceType();
     if( r->load( path ) ) return r;
     return std::unique_ptr< ResourceType >( nullptr );
 }
