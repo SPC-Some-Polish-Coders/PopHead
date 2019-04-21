@@ -6,7 +6,6 @@
 namespace PopHead {
 namespace Utilities {
 
-
 class Random {
 public:
 	static float generateNumber(float min, float max);

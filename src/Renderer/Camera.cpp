@@ -1,0 +1,36 @@
+#include "camera.hpp"
+#include "Utilities/math.hpp"
+#include "Utilities/random.hpp"
+
+using namespace PopHead::Utilities;
+
+PopHead::Renderer::Camera::Camera(sf::Vector2f center, sf::Vector2f size)
+	: mView(center, size), mCenterWithoutShake(center)
+{
+}
+
+void PopHead::Renderer::Camera::setCenter(sf::Vector2f center)
+{
+	mCenterWithoutShake = center;
+	mView.setCenter(center);
+}
+
+void PopHead::Renderer::Camera::move(sf::Vector2f destination, float speed)
+{
+	mCenterWithoutShake = Math::lerp(mCenterWithoutShake, destination, speed);
+	mView.setCenter(mCenterWithoutShake);
+}
+
+void PopHead::Renderer::Camera::shake(float strengthLoss)
+{
+	if (mShakeStrength > 0.f) {
+		const float randomNumber = Random::generateNumber(-mShakeStrength, mShakeStrength);
+		mView.setCenter(mCenterWithoutShake.x + randomNumber, mCenterWithoutShake.y + randomNumber);
+		mShakeStrength -= strengthLoss;
+	}
+}
+
+void PopHead::Renderer::Camera::applyTo(sf::RenderTarget& renderTarget) const
+{
+	renderTarget.setView(mView);
+}
