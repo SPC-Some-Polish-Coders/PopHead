@@ -13,8 +13,12 @@ public:
 	Camera(sf::Vector2f center, sf::Vector2f size);
 
 	void setCenter(sf::Vector2f center);
+	auto getCenter() const -> sf::Vector2f { return mView.getCenter(); }
 
 	void setSize(sf::Vector2f size) { mView.setSize(size); }
+	auto getSize() const -> sf::Vector2f { mView.getSize(); }
+
+	void setViewport(sf::FloatRect viewport) { mView.setViewport(viewport); }
 
 	void move(sf::Vector2f destination, float speed);
 
