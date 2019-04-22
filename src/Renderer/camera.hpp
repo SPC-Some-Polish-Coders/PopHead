@@ -30,7 +30,7 @@ public:
 private:
 	sf::View mView;
 	sf::Vector2f mCenterWithoutShake;
-	float mShakeStrength = 10.f;
+	float mShakeStrength = 0.f;
 };
 
 }
