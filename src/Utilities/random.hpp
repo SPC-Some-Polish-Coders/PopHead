@@ -8,13 +8,12 @@ namespace Utilities {
 
 class Random {
 public:
-	static auto generateNumber(float min, float max) -> float;
+	static float generateNumber(float min, float max);
 
 private:
 	static std::default_random_engine mEngine;
 };
 
-}
-}
+}}
 
 #endif

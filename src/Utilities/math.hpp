@@ -12,17 +12,16 @@ namespace Math {
 
 	inline auto getBottomBound(sf::FloatRect bounds) -> float { return bounds.top + bounds.height; }
 
-	inline auto getCenter(sf::FloatRect bounds) -> sf::Vector2f 
+	inline auto getCenter(sf::FloatRect bounds) -> sf::Vector2f
 	{ return sf::Vector2f(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f); }
 
 	inline auto lerp(sf::Vector2f source, sf::Vector2f destination, float speed) -> sf::Vector2f
 	{
-		assert(speed >= 0.f, "speed can't be less than 0");
+		assert(speed >= 0.f);
 		return source + (destination - source) * speed;
 	}
 }
 
-}
-}
+}}
 
 #endif
