@@ -1,7 +1,7 @@
 #ifndef POPHEAD_PHYSICS_PHYSICSENGINE_H_
 #define POPHEAD_PHYSICS_PHYSICSENGINE_H_
 
-#include "collsionBody.hpp"
+#include "collisionBody.hpp"
 #include <SFML/System.hpp>
 
 namespace PopHead{
@@ -13,13 +13,13 @@ class PhysicsEngine
 public:
     void update(sf::Time delta);
 
-    void addBody(CollisionBody* const);
-    void removeBody(CollisionBody* const);
+    void addBody(CollisionBody*);
+    void removeBody(CollisionBody*);
     void clear() noexcept;
 
 private:
-    std::vector<CollisionBody* const> staticBodies;
-    std::vector<CollisionBody* const> kinematicBodies;
+    std::vector<CollisionBody*> staticBodies;
+    std::vector<CollisionBody*> kinematicBodies;
 };
 
 

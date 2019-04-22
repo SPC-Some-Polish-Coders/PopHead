@@ -7,12 +7,12 @@ void PhysicsEngine::update(sf::Time delta)
 
 }
 
-void PhysicsEngine::addBody(CollisionBody* const)
+void PhysicsEngine::addBody(CollisionBody*)
 {
 
 }
 
-void PhysicsEngine::removeBody(CollisionBody* const)
+void PhysicsEngine::removeBody(CollisionBody*)
 {
 
 }
