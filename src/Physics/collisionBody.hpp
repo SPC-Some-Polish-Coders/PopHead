@@ -12,14 +12,12 @@ class CollisionBody
 public:
     CollisionBody(sf::FloatRect rect, float mass);
 
-    void move(float speed);
+    void addToForce(sf::Vector2f force);
 
 private:
-    sf::FloatRect rect;
-    float mass;
-    sf::Vector2f force;
-
-
+    sf::FloatRect mRect;
+    float mMass;
+    sf::Vector2f mForce;
 };
 
 
