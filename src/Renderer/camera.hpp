@@ -21,17 +21,16 @@ public:
 	void setViewport(sf::FloatRect viewport) { mView.setViewport(viewport); }
 
 	void setShakeStrength(float shakeStrength) { mShakeStrength = shakeStrength; }
-
 	void shake(float shakeStrengthLoss);
 
-	void move(sf::Vector2f destination, float speed);
+	void move(sf::Vector2f center, float speed);
 
 	void applyTo(sf::RenderTarget& renderTarget) const;
 
 private:
 	sf::View mView;
 	sf::Vector2f mCenterWithoutShake;
-	float mShakeStrength = 0.f;
+	float mShakeStrength = 10.f;
 };
 
 }
