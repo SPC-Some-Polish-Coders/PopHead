@@ -7,12 +7,22 @@ void PhysicsEngine::update(sf::Time delta)
 
 }
 
-void PhysicsEngine::addBody(CollisionBody*)
+void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
+{
+    mStaticBodies.emplace_back(staticBodyPtr);
+}
+
+void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBodyPtr)
+{
+    mKinematicBodies.emplace_back(kinematicBodyPtr);
+}
+
+void PhysicsEngine::removeStaticBody(CollisionBody* staticBodyPtr)
 {
 
 }
 
-void PhysicsEngine::removeBody(CollisionBody*)
+void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBodyPtr)
 {
 
 }
