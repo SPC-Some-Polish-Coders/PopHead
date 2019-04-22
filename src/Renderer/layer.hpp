@@ -22,7 +22,7 @@ class Layer
     inline auto begin() const -> const ObjectsSequence::const_iterator;
     inline auto end() const -> const ObjectsSequence::const_iterator;
 
-    inline auto clear();
+    inline void clear();
 
   private:
     ObjectsSequence mObjects;
@@ -34,7 +34,7 @@ inline auto Layer::begin() const -> const ObjectsSequence::const_iterator
 inline auto Layer::end() const -> const ObjectsSequence::const_iterator
 { return mObjects.cend(); }
 
-inline auto Layer::clear()
+inline void Layer::clear()
 { mObjects.clear(); }
 
 }}
