@@ -7,7 +7,7 @@ using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;
 
 Renderer::Renderer()
-        : mCamera { { 0, 0, 32*10, 32*10 } }
+	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
         , mWindow { sf::VideoMode::getDesktopMode(),
                     "PopHead",
@@ -29,6 +29,7 @@ Renderer::~Renderer()
 
 void Renderer::draw() const
 {
+	mCamera.applyTo(mWindow);
     mWindow.clear();
 
     for( const auto& layer : mLayers )

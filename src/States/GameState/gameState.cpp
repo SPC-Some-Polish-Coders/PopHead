@@ -1,9 +1,11 @@
 #include "States/GameState/gameState.hpp"
 
-#include <iostream>
-
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
+
+#include "Base/gameData.hpp"
+
+#include "Utilities/math.hpp"
 
 using PopHead::States::GameState;
 
@@ -27,5 +29,9 @@ void GameState::input()
 
 void GameState::update(sf::Time delta)
 {
-    mRoot.update(delta);
+    mRoot.update(delta);		
+
+	const float cameraMotionSpeed = 4.f;
+	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
+	mGameData->getRenderer().moveCamera(Utilities::Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }

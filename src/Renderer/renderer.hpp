@@ -8,6 +8,7 @@
 
 #include "Renderer/layer.hpp"
 #include "Renderer/layerID.hpp"
+#include "Renderer/camera.hpp"
 
 /** @defgroup Renderer Renderer
  *  Renderer module is responsible for rendering game world and managing the window.
@@ -73,8 +74,10 @@ class Renderer
     void setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
     void setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
 
+	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
+
   private:
-    sf::View mCamera;
+    Camera mCamera;
     const std::map< Viewports, sf::Rect< float > > mViewports;
     mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
