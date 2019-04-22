@@ -15,19 +15,19 @@ void PopHead::Renderer::Camera::setCenter(sf::Vector2f center)
 	mView.setCenter(center);
 }
 
-void PopHead::Renderer::Camera::move(sf::Vector2f destination, float speed)
-{
-	mCenterWithoutShake = Math::lerp(mCenterWithoutShake, destination, speed);
-	mView.setCenter(mCenterWithoutShake);
-}
-
-void PopHead::Renderer::Camera::shake(float strengthLoss)
+void PopHead::Renderer::Camera::shake(float shakeStrengthLoss)
 {
 	if (mShakeStrength > 0.f) {
 		const float randomNumber = Random::generateNumber(-mShakeStrength, mShakeStrength);
 		mView.setCenter(mCenterWithoutShake.x + randomNumber, mCenterWithoutShake.y + randomNumber);
-		mShakeStrength -= strengthLoss;
+		mShakeStrength -= shakeStrengthLoss;
 	}
+}
+
+void PopHead::Renderer::Camera::move(sf::Vector2f destination, float speed)
+{
+	mCenterWithoutShake = Math::lerp(mCenterWithoutShake, destination, speed);
+	mView.setCenter(mCenterWithoutShake);
 }
 
 void PopHead::Renderer::Camera::applyTo(sf::RenderTarget& renderTarget) const
