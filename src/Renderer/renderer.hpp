@@ -73,8 +73,10 @@ class Renderer
 
     void setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
     void setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
+	void setCameraShakeStrength(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 
-	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
+	void moveCamera( sf::Vector2f center, float speed ) { mCamera.move(center, speed); }
+	void shakeCamera( float shakeStrengthLoss ) { mCamera.shake(shakeStrengthLoss); }
 
   private:
     Camera mCamera;
