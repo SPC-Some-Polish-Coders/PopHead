@@ -17,7 +17,7 @@ namespace Math {
 
 	inline auto lerp(sf::Vector2f source, sf::Vector2f destination, float speed) -> sf::Vector2f
 	{
-		assert(speed >= 0.f);
+		assert(speed >= 0.f); ///speed cannot be lesser then 0
 		return source + (destination - source) * speed;
 	}
 }
