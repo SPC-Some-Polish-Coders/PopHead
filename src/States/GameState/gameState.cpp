@@ -2,11 +2,8 @@
 
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
-
 #include "Base/gameData.hpp"
-
 #include "Utilities/math.hpp"
-#include "Utilities/random.hpp"
 
 using PopHead::States::GameState;
 
