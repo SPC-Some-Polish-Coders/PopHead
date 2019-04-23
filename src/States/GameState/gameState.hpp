@@ -12,7 +12,13 @@ class GameState : public State
 {
 public:
     GameState(Base::GameData *const);
+private:
+    void loadResources();
+    void makeSceneTree();
+    void makePlayer();
+    void makeMap();
 
+public:
     void input() override;
     void update(sf::Time delta) override;
 
