@@ -13,7 +13,7 @@ namespace Entity{
 class Character : public Object
 {
 public:
-    Character(Base::GameData*, std::string name,
+    Character(Base::GameData*, std::string name, Animation animation = Animation(),
               unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100);
 
     void atack();

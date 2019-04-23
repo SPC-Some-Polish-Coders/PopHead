@@ -4,13 +4,14 @@
 
 using PopHead::World::Entity::Character;
 
-Character::Character(PopHead::Base::GameData* gameData, std::string name,
+Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
                      unsigned int movementSpeed, unsigned int HP, unsigned int maxHP)
 :Object(gameData, name, Renderer::LayerID::kinematicEntities)
 ,mHP(HP)
 ,mMaxHP(maxHP)
 ,mMovementSpeed(movementSpeed)
 ,mMotion()
+,mAnimation(animation)
 {
 }
 

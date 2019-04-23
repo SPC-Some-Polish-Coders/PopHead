@@ -8,25 +8,16 @@
 using PopHead::World::Entity::Player;
 
 Player::Player(PopHead::Base::GameData* gameData)
-:Character(gameData, "player", 150)
+	:
+	Character(gameData, "player",
+		Animation{
+			std::array<std::string, 4>{"down", "left", "right", "up"},
+			{sf::IntRect(0,0,48,48), sf::IntRect(0,48,48,48), sf::IntRect(0,96,48,48), sf::IntRect(0,144,48,48)},
+			{3,3,3,3},
+			sf::seconds(0.15f)
+		}, 150)
 {
     mSprite.setPosition(400, 400);
-
-    const std::array<std::string, 4> statesNames
-	{
-		"down",
-		"left",
-		"right",
-		"up",
-	};
-	const int frameWidth = 48;
-	const int frameHeight = 48;
-	const unsigned framesCount = 3;
-	for (unsigned top = 0; top < statesNames.size(); ++top){
-		const sf::IntRect frame(0, top * frameHeight, frameWidth, frameHeight);
-		mAnimation.addState(statesNames[top], frame, framesCount);
-	}
-	mAnimation.setDelay(sf::seconds(0.15f));
 	mAnimation.animate(mSprite);
 }
 
