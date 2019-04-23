@@ -17,6 +17,17 @@ public:
 
 	Animation(const sf::Time& delay);
 
+	template <std::size_t SIZE>
+	Animation(const std::array<std::string, SIZE>& statesNames,
+		const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
+		const sf::Time& delay = sf::seconds(0.1f));
+
+	template <std::size_t SIZE>
+	Animation(const std::array<std::string, SIZE> statesNames,
+		std::array<sf::IntRect, SIZE> statesFrames,
+		std::array<unsigned, SIZE> framesCounts,
+		const sf::Time& delay = sf::seconds(0.1f));
+
 	void setDelay(const sf::Time& delay) { mDelay = delay; }
 
 	void addState(const std::string& stateName, const std::vector<sf::IntRect>& frames);
@@ -34,13 +45,35 @@ public:
 	auto getCurrentStateName() const -> std::string;
 
 private:
-	sf::Time mDelay = sf::seconds(0.1f);
-	sf::Time mElapsedTime = sf::Time::Zero;
 	std::map<std::string, std::vector<sf::IntRect>> mStates;
 	std::string mCurrentStateName;
+	sf::Time mDelay = sf::seconds(0.1f);
+	sf::Time mElapsedTime = sf::Time::Zero;
 	std::size_t mCurrentFrameIndex = 0;
 };
 
+template<std::size_t SIZE>
+PopHead::World::Animation::Animation(
+	const std::array<std::string, SIZE>& statesNames,
+	const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
+	const sf::Time& delay)
+	: mDelay(delay)
+{
+	for (std::size_t i = 0; i < SIZE; ++i)
+		addState(statesNames[i], statesFrames[i]);
+}
+
+template<std::size_t SIZE>
+PopHead::World::Animation::Animation(
+	const std::array<std::string, SIZE> statesNames,
+	std::array<sf::IntRect, SIZE> statesFrames,
+	std::array<unsigned, SIZE> framesCounts,
+	const sf::Time& delay)
+	: mDelay(delay)
+{
+	for (std::size_t i = 0; i < SIZE; ++i)
+		addState(statesNames[i], statesFrames[i], framesCounts[i]);
+}
 
 }}
 
