@@ -1,19 +1,31 @@
 #include "player.hpp"
 
 #include "Base/gameData.hpp"
+
+#include "Resources/spriteSheetData.hpp"
+
 #include <array>
 
-#include <iostream>
-
 using PopHead::World::Entity::Player;
+using namespace PopHead::Resources;
 
 Player::Player(PopHead::Base::GameData* gameData)
 	:
 	Character(gameData, "player",
 		Animation{
 			std::array<std::string, 4>{"down", "left", "right", "up"},
-			{sf::IntRect(0,0,48,48), sf::IntRect(0,48,48,48), sf::IntRect(0,96,48,48), sf::IntRect(0,144,48,48)},
-			{3,3,3,3},
+			{
+				sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+			},
+			{
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT
+			},
 			sf::seconds(0.15f)
 		}, 150)
 {
