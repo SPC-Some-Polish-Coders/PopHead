@@ -49,20 +49,20 @@ void Game::run()
     {
         mStateMachine->changingStatesProcess();
 
-        // temp
+        // temporary
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             break;
 
         Input::EventLoop::eventLoop(mGameData.get());
-        mStateMachine->input();
+        input();
 
         timeSinceLastUpdate += clock.restart();
 
         while(timeSinceLastUpdate >= timePerFrame){
             timeSinceLastUpdate -= timePerFrame;
 
-            mStateMachine->update(timePerFrame);
-            mRenderer->draw();
+            update(timePerFrame);
+            draw();
         }
     }
 }
@@ -79,5 +79,5 @@ void Game::update( sf::Time delta )
 
 void Game::draw()
 {
-
+    mRenderer->draw();
 }
