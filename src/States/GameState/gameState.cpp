@@ -6,6 +6,7 @@
 #include "Base/gameData.hpp"
 
 #include "Utilities/math.hpp"
+#include "Utilities/random.hpp"
 
 using PopHead::States::GameState;
 
@@ -33,7 +34,7 @@ void GameState::input()
 
 void GameState::update(sf::Time delta)
 {
-    mRoot.update(delta);		
+    mRoot.update(delta);
 
 	const float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
