@@ -13,13 +13,15 @@ class PhysicsEngine
 public:
     void update(sf::Time delta);
 
-    void addBody(CollisionBody*);
-    void removeBody(CollisionBody*);
+    void addStaticBody(CollisionBody* staticBodyPtr);
+    void addKinematicBody(CollisionBody* kinematicBodyPtr);
+    void removeStaticBody(CollisionBody* staticBodyPtr);
+    void removeKinematicBody(CollisionBody* kinematicBodyPtr);
     void clear() noexcept;
 
 private:
-    std::vector<CollisionBody*> staticBodies;
-    std::vector<CollisionBody*> kinematicBodies;
+    std::vector<CollisionBody*> mStaticBodies;
+    std::vector<CollisionBody*> mKinematicBodies;
 };
 
 
