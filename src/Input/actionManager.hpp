@@ -1,4 +1,3 @@
-///#define is_action_pressed getAction().isActionPressed OPTIONAL
 #define INPUT_isActionPressed mGameData->getInput().getAction().isActionPressed
 #define INPUT_isActionJustPressed mGameData->getInput().getAction().isActionJustPressed
 #define INPUT_isActionJustReleased mGameData->getInput().getAction().isActionJustReleased
