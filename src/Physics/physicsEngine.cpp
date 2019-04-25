@@ -39,5 +39,6 @@ void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBodyPtr)
 
 void PhysicsEngine::clear() noexcept
 {
-
+	mStaticBodies.clear();
+	mKinematicBodies.clear();
 }
