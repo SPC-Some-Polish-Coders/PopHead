@@ -1,4 +1,3 @@
-#include "World/Entity/object.hpp"
 #include "Interface.hpp"
 #ifndef GUI_BASE
 #define GUI_BASE

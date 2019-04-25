@@ -18,6 +18,7 @@ namespace GUI {
 
 		void draw();
 
+		bool setContentPath(const std::string& path);
 	};
 
 }}

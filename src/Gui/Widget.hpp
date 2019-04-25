@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "BehaviorType.hpp"
-
+#include "World/Entity/object.hpp"
+#include "Base/gameData.hpp"
 #ifndef GUI_BASE_WIDGET
 #define GUI_BASE_WIDGET
 
@@ -24,7 +25,7 @@ namespace GUI {
 
 		virtual void update(sf::Time delta);
 
-		virtual void addWidget(const std::unique_ptr<Widget>& ptr);
+		virtual void addWidget(const std::string& name, Widget* ptr);
 
 		virtual void hide();
 
@@ -44,19 +45,24 @@ namespace GUI {
 
 		virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
 
-		void setGameData(Base::GameData* GameData);
+		virtual void setGameData(Base::GameData* GameData);
+
+		virtual bool isActive();
 
 	protected:
 		sf::Vector2f mPosition;
-		sf::Sprite mSprite;
 		bool misActive;
 		sf::Vector2i mSize;
 		sf::Vector2i mVirtualSize;
 		unsigned int mAlpha;
 		Base::GameData* mGameData;
-		
+		sf::RenderWindow* mWindow;
 		std::multimap < behaviorType, std::function<void(Widget*)>> mBehaviors;
 		std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;
+
+	private:
+		sf::Sprite mSprite;
+
 	};
 
 
