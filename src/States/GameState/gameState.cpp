@@ -42,7 +42,7 @@ void GameState::makeMap()
 void GameState::input()
 {
     mRoot.input();
-	
+
 	if (INPUT_isKeyJustPressed(sf::Keyboard::Space))
 		shouldCameraShake = true;
 }
@@ -64,7 +64,7 @@ void GameState::cameraShake()
 	shouldCameraShake = false;
 }
 
-void PopHead::States::GameState::cameraMovement(sf::Time delta)
+void GameState::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
