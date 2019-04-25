@@ -9,6 +9,7 @@
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
+#include "Physics/physicsEngine.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -27,7 +28,8 @@ class GameData
             Resources::ShaderHolder* const,
             States::StateMachine* const,
             Input::Input* const,
-            Renderer::Renderer* const );
+            Renderer::Renderer* const,
+			Physics::PhysicsEngine* const);
 
     auto getSoundPlayer()  const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
     auto getMusicPlayer()  const -> Audio::MusicPlayer&       { return *mMusicPlayer;  }
@@ -37,6 +39,7 @@ class GameData
     auto getStateMachine() const -> States::StateMachine&     { return *mStateMachine; }
     auto getInput()        const -> Input::Input&             { return *mInput;        }
     auto getRenderer()     const -> Renderer::Renderer&       { return *mRenderer;     }
+    auto getPhysics()      const -> Physics::PhysicsEngine&   { return *mPhysicsEngine;}
 
   private:
     Audio::SoundPlayer* const mSoundPlayer;
@@ -47,10 +50,11 @@ class GameData
     States::StateMachine* const mStateMachine;
     Input::Input* const mInput;
     Renderer::Renderer* const mRenderer;
+	Physics::PhysicsEngine* const mPhysicsEngine;
 };
 
 inline GameData::GameData()
-        : GameData( nullptr, nullptr, nullptr, nullptr,
+        : GameData( nullptr, nullptr, nullptr, nullptr, nullptr,
                     nullptr, nullptr, nullptr, nullptr ) {}
 
 inline GameData::GameData(
@@ -61,7 +65,8 @@ inline GameData::GameData(
         Resources::ShaderHolder* const shaders,
         States::StateMachine* const stateMachine,
         Input::Input* const input,
-        Renderer::Renderer* const renderer )
+        Renderer::Renderer* const renderer,
+		Physics::PhysicsEngine* const physicsEngine)
         : mSoundPlayer { soundPlayer }
         , mMusicPlayer { musicPlayer }
         , mTextures { textures }
@@ -70,6 +75,7 @@ inline GameData::GameData(
         , mStateMachine { stateMachine }
         , mInput { input }
         , mRenderer { renderer }
+		, mPhysicsEngine{ physicsEngine }
 {
 }
 

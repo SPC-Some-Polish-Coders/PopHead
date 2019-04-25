@@ -2,14 +2,15 @@
 
 using PopHead::Physics::CollisionBody;
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass)
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
 {
+	
 }
 
-void CollisionBody::addToForce(sf::Vector2f force)
+void CollisionBody::move(sf::Vector2f velocity)
 {
-    mForce.x += force.x;
-    mForce.y += force.y;
+	mVelocity.x += velocity.x;
+	mVelocity.y += velocity.y;
 }
