@@ -42,16 +42,30 @@ void GameState::makeMap()
 void GameState::input()
 {
     mRoot.input();
-	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Key::Space)) {
-		constexpr float cameraShakeStrength = 10.f;
-		mGameData->getRenderer().startShaking(cameraShakeStrength);
-	}
+	
+	if (INPUT_isKeyJustPressed(sf::Keyboard::Space))
+		shouldCameraShake = true;
 }
 
 void GameState::update(sf::Time delta)
 {
     mRoot.update(delta);
 
+	if (shouldCameraShake)
+		cameraShake();
+
+	cameraMovement(delta);
+}
+
+void GameState::cameraShake()
+{
+	constexpr float cameraShakeStrength = 10.f;
+	mGameData->getRenderer().startShaking(cameraShakeStrength);
+	shouldCameraShake = false;
+}
+
+void PopHead::States::GameState::cameraMovement(sf::Time delta)
+{
 	constexpr float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Utilities::Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
