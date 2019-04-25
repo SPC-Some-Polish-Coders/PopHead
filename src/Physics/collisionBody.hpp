@@ -7,10 +7,16 @@ namespace PopHead{
 namespace Physics{
 
 
+enum class BodyType
+{
+	staticBody,
+	kinematicBody
+};
+
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass, PopHead::Base::GameData*);
+    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::Base::GameData*);
 
     void move(sf::Vector2f velocity);
 

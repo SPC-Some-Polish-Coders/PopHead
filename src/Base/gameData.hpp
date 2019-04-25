@@ -31,15 +31,15 @@ class GameData
             Renderer::Renderer* const,
 			Physics::PhysicsEngine* const);
 
-    auto getSoundPlayer()  const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
-    auto getMusicPlayer()  const -> Audio::MusicPlayer&       { return *mMusicPlayer;  }
-    auto getTextures()     const -> Resources::TextureHolder& { return *mTextures;     }
-    auto getFonts()        const -> Resources::FontHolder&    { return *mFonts;        }
-    auto getShaders()      const -> Resources::ShaderHolder&  { return *mShaders;      }
-    auto getStateMachine() const -> States::StateMachine&     { return *mStateMachine; }
-    auto getInput()        const -> Input::Input&             { return *mInput;        }
-    auto getRenderer()     const -> Renderer::Renderer&       { return *mRenderer;     }
-    auto getPhysics()      const -> Physics::PhysicsEngine&   { return *mPhysicsEngine;}
+    auto getSoundPlayer()	const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
+    auto getMusicPlayer()	const -> Audio::MusicPlayer&       { return *mMusicPlayer;  }
+    auto getTextures()		const -> Resources::TextureHolder& { return *mTextures;     }
+    auto getFonts()			const -> Resources::FontHolder&    { return *mFonts;        }
+    auto getShaders()		const -> Resources::ShaderHolder&  { return *mShaders;      }
+    auto getStateMachine()	const -> States::StateMachine&     { return *mStateMachine; }
+    auto getInput()			const -> Input::Input&             { return *mInput;        }
+    auto getRenderer()		const -> Renderer::Renderer&       { return *mRenderer;     }
+    auto getPhysicsEngine()	const -> Physics::PhysicsEngine&   { return *mPhysicsEngine;}
 
   private:
     Audio::SoundPlayer* const mSoundPlayer;
