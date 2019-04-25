@@ -38,6 +38,7 @@ class GameData
     auto getShaders()      const -> Resources::ShaderHolder&  { return *mShaders;      }
     auto getStateMachine() const -> States::StateMachine&     { return *mStateMachine; }
     auto getInput()        const -> Input::Input&             { return *mInput;        }
+	auto getGui()		   const -> GUI::GUI &				  { return *mGui;		   }
     auto getRenderer()     const -> Renderer::Renderer&       { return *mRenderer;     }
 
   private:

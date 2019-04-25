@@ -37,8 +37,9 @@ namespace GUI {
 	void Widget::addWidget(const std::string& name, Widget* ptr) 
 	{
 		mWidgetList.insert({name,std::unique_ptr<Widget>(ptr) });
-		(mWidgetList.end()--)->second->setGameData(mGameData);
-		(mWidgetList.end()--)->second->setRoot(this);
+		auto k = mWidgetList.rbegin();
+		k->second->setGameData(mGameData);
+		k->second->setRoot(this);
 	}
 
 	void Widget::hide() 
@@ -56,6 +57,7 @@ namespace GUI {
 		if (!mTexture.loadFromFile(path))
 			return false;
 		mSprite.setTexture(mTexture);
+		mSize = mTexture.getSize();
 		return true;
 	}
 
@@ -95,5 +97,9 @@ namespace GUI {
 	void Widget::setRoot(Widget* ptr)
 	{
 		mRoot = ptr;
+	}
+	sf::Vector2f Widget::getPosition() const
+	{
+		return mPosition;
 	}
 }}

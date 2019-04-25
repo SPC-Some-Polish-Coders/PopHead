@@ -52,11 +52,14 @@ namespace GUI {
 		virtual bool isActive();
 
 		virtual void setRoot( Widget* ptr);
+		
+		virtual sf::Vector2f getPosition() const;
+
 
 	protected:
 		sf::Vector2f mPosition;
 		bool misActive;
-		sf::Vector2i mSize;
+		sf::Vector2u mSize;
 		sf::Vector2i mVirtualSize;
 		unsigned int mAlpha;
 		Base::GameData* mGameData;

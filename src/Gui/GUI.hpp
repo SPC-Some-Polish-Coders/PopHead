@@ -1,6 +1,13 @@
 #include "Interface.hpp"
+
+#include "World/Entity/object.hpp"
+#define GUI_TEST
+
 #ifndef GUI_BASE
 #define GUI_BASE
+
+
+
 
 
 namespace PopHead {
@@ -9,12 +16,38 @@ namespace GUI {
 	class GUI
 	{
 	public:
-		GUI() = default;
+		GUI();
 		~GUI();
 
-		std::unique_ptr<Interface>& addInterface(const std::string& name);
+		class Gui_drawer
+			: public World::Entity::Object
+		{
+		public:
 
-		std::unique_ptr<Interface>& getInterface(const std::string& name);
+			Gui_drawer(Base::GameData* gameData, std::string name, Renderer::LayerID id)
+				: World::Entity::Object(gameData, name, id)
+			{
+			}
+
+
+			void init(GUI* gui) {
+				mGui = gui;
+			}
+			void onCollision(Object&) {};
+
+			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+			{
+				mGui->draw();
+			}
+
+		private:
+			GUI* mGui;
+		};
+
+
+		Widget* addInterface(const std::string& name);
+
+		Widget* getInterface(const std::string& name);
 
 		void deleteInterface(const std::string& name);
 
@@ -36,6 +69,8 @@ namespace GUI {
 
 	private:
 		
+		Gui_drawer* mGuiDrawer;
+
 		Base::GameData* mGameData;
 
 		std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;

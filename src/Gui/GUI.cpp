@@ -2,22 +2,24 @@
 
 namespace PopHead {
 	namespace GUI {
-
+		GUI::GUI()
+		{
+		}
 		GUI::~GUI()
 		{
 		}
-	
-		std::unique_ptr<Interface>& GUI::addInterface(const std::string& name)
+
+		Widget* GUI::addInterface(const std::string& name)
 		{
 			mInterfaceList.insert({ name,std::make_unique<Interface>() });
-			auto k = mInterfaceList.end()--;
+			auto k = mInterfaceList.rbegin();
 			k->second->setGameData(mGameData);
-			return  k->second;
+			return  k->second.get();
 		}
 
-		std::unique_ptr<Interface>& GUI::getInterface(const std::string& name)
-		{	
-			return mInterfaceList.find(name)->second;
+		Widget* GUI::getInterface(const std::string& name)
+		{
+			return mInterfaceList.find(name)->second.get();
 		}
 
 		void GUI::deleteInterface(const std::string& name)
@@ -74,7 +76,7 @@ namespace PopHead {
 		{
 			for (const auto& k : mInterfaceList)
 			{
-				if(k.second->isActive())
+				if (k.second->isActive())
 					k.second->update(deltaTime);
 			}
 		}
@@ -83,17 +85,31 @@ namespace PopHead {
 		{
 			for (const auto& k : mInterfaceList)
 			{
-				if(k.second->isActive())
+				if (k.second->isActive())
 					k.second->draw();
 			}
 		}
-		void GUI::init(Base::GameData* gamedata)
-		{
-			mGameData = gamedata;
-		}
+
 		void GUI::transform()
 		{
 
 		}
-	}
-}
+
+
+		void GUI::init(Base::GameData* gamedata)
+		{
+			mGameData = gamedata;
+			mGuiDrawer = new Gui_drawer(gamedata, "GUI_DRAWER", Renderer::LayerID::GUI);
+			mGuiDrawer->init(this);
+			mGameData->getRenderer().addObject(mGuiDrawer);
+#ifdef GUI_TEST
+
+
+
+
+#endif
+
+
+
+		}
+}}
