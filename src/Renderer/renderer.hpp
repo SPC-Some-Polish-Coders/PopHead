@@ -50,6 +50,8 @@ class Renderer
     /// Draw registered objects.
     /** Iterates through Layer s, and draw registered Object s by
      *  addObject(*) methods. */
+	void update(sf::Time delta);
+
     void draw() const;
 
     /// Register object to be drawn.
@@ -65,6 +67,7 @@ class Renderer
     void removeObjects( LayerID layerID );
 
     auto getWindow() const -> sf::Window& { return mWindow; }
+	auto getCamera() -> Camera& { return mCamera; }
     auto getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
     auto getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
@@ -73,7 +76,7 @@ class Renderer
 
     void setCameraPosition( sf::Vector2f center ) { mCamera.setCenter( center ); }
     void setCameraSize( sf::Vector2f size ) { mCamera.setSize( size ); }
-	void setCameraShakeStrength(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
+	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 
 	void moveCamera( sf::Vector2f center, float speed ) { mCamera.move(center, speed); }
 	void shakeCamera( float shakeStrengthLoss ) { mCamera.shake(shakeStrengthLoss); }

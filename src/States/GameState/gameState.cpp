@@ -44,7 +44,7 @@ void GameState::input()
     mRoot.input();
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Key::Space)) {
 		constexpr float cameraShakeStrength = 10.f;
-		mGameData->getRenderer().setCameraShakeStrength(cameraShakeStrength);
+		mGameData->getRenderer().startShaking(cameraShakeStrength);
 	}
 }
 
@@ -55,7 +55,4 @@ void GameState::update(sf::Time delta)
 	constexpr float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Utilities::Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
-
-	constexpr float cameraShakeStrengthLoss = 10.f;
-	mGameData->getRenderer().shakeCamera(cameraShakeStrengthLoss * delta.asSeconds());
 }

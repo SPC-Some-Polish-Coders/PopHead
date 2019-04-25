@@ -2,9 +2,16 @@
 #include "Utilities/math.hpp"
 #include "Utilities/random.hpp"
 
+#include <iostream>
+
 PopHead::Renderer::Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	: mView(center, size), mCenterWithoutShake(center)
 {
+}
+
+void PopHead::Renderer::Camera::update(sf::Time delta)
+{
+	shake(mShakeStrengthLoss * delta.asSeconds());
 }
 
 void PopHead::Renderer::Camera::setCenter(sf::Vector2f center)

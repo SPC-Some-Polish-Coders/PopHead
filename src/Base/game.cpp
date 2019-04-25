@@ -72,9 +72,10 @@ void Game::input()
     mStateMachine->input();
 }
 
-void Game::update( sf::Time delta )
+void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
+	mRenderer->update(delta);
 }
 
 void Game::draw()

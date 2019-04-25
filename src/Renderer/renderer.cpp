@@ -27,6 +27,11 @@ Renderer::~Renderer()
     mWindow.close();
 }
 
+void Renderer::update(sf::Time delta)
+{
+	mCamera.update(delta);
+}
+
 void Renderer::draw() const
 {
 	mCamera.applyTo(mWindow);

@@ -12,6 +12,8 @@ public:
 
 	Camera(sf::Vector2f center, sf::Vector2f size);
 
+	void update(sf::Time delta);
+
 	void setCenter(sf::Vector2f center);
 	auto getCenter() const -> sf::Vector2f { return mView.getCenter(); }
 
@@ -21,6 +23,7 @@ public:
 	void setViewport(sf::FloatRect viewport) { mView.setViewport(viewport); }
 
 	void setShakeStrength(float shakeStrength) { mShakeStrength = shakeStrength; }
+	void setShakeStrengthLoss(float shakeStrengthLoss) { mShakeStrengthLoss = shakeStrengthLoss; }
 	void shake(float shakeStrengthLoss);
 
 	void move(sf::Vector2f center, float speed);
@@ -31,6 +34,7 @@ private:
 	sf::View mView;
 	sf::Vector2f mCenterWithoutShake;
 	float mShakeStrength = 0.f;
+	float mShakeStrengthLoss = 10.f;
 };
 
 }
