@@ -9,6 +9,7 @@
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
+#include "Gui/GUI.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -27,6 +28,7 @@ class GameData
             Resources::ShaderHolder* const,
             States::StateMachine* const,
             Input::Input* const,
+			GUI::GUI* const,
             Renderer::Renderer* const );
 
     auto getSoundPlayer()  const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
@@ -46,12 +48,13 @@ class GameData
     Resources::ShaderHolder* const mShaders;
     States::StateMachine* const mStateMachine;
     Input::Input* const mInput;
+	GUI::GUI* const mGui;
     Renderer::Renderer* const mRenderer;
 };
 
 inline GameData::GameData()
         : GameData( nullptr, nullptr, nullptr, nullptr,
-                    nullptr, nullptr, nullptr, nullptr ) {}
+                    nullptr, nullptr, nullptr, nullptr , nullptr) {}
 
 inline GameData::GameData(
         Audio::SoundPlayer* const soundPlayer,
@@ -61,6 +64,7 @@ inline GameData::GameData(
         Resources::ShaderHolder* const shaders,
         States::StateMachine* const stateMachine,
         Input::Input* const input,
+		GUI::GUI* const gui,
         Renderer::Renderer* const renderer )
         : mSoundPlayer { soundPlayer }
         , mMusicPlayer { musicPlayer }
@@ -69,6 +73,7 @@ inline GameData::GameData(
         , mShaders { shaders }
         , mStateMachine { stateMachine }
         , mInput { input }
+		, mGui { gui }
         , mRenderer { renderer }
 {
 }

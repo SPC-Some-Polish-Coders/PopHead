@@ -6,6 +6,7 @@ namespace PopHead {
 		GUI::~GUI()
 		{
 		}
+	
 		std::unique_ptr<Interface>& GUI::addInterface(const std::string& name)
 		{
 			mInterfaceList.insert({ name,std::make_unique<Interface>() });
@@ -85,6 +86,10 @@ namespace PopHead {
 				if(k.second->isActive())
 					k.second->draw();
 			}
+		}
+		void GUI::init(Base::GameData* gamedata)
+		{
+			mGameData = gamedata;
 		}
 		void GUI::transform()
 		{

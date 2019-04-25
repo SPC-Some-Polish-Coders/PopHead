@@ -2,7 +2,11 @@
 namespace PopHead {
 
 namespace GUI {
+	Widget::Widget()
+	{
 
+
+	}
 	void Widget::draw()
 	{
 		if (misActive)
@@ -32,8 +36,9 @@ namespace GUI {
 
 	void Widget::addWidget(const std::string& name, Widget* ptr) 
 	{
-		mWidgetList.insert({name,std::make_unique<Widget>(ptr) });
+		mWidgetList.insert({name,std::unique_ptr<Widget>(ptr) });
 		(mWidgetList.end()--)->second->setGameData(mGameData);
+		(mWidgetList.end()--)->second->setRoot(this);
 	}
 
 	void Widget::hide() 
@@ -48,15 +53,20 @@ namespace GUI {
 
 	bool Widget::setContentPath(const std::string& path)
 	{
-		return;
+		if (!mTexture.loadFromFile(path))
+			return false;
+		mSprite.setTexture(mTexture);
+		return true;
 	}
 
 	void Widget::setPosition(const sf::Vector2f& pos) 
 	{
+		mSprite.setPosition(pos);
 	}
 
 	void Widget::setScale(const sf::Vector2f& scale)
 	{
+		mSprite.setPosition(scale);
 	}
 
 	void Widget::setVirtualSize(const sf::Vector2f& size) 
@@ -81,5 +91,9 @@ namespace GUI {
 	bool Widget::isActive()
 	{
 		return misActive;
+	}
+	void Widget::setRoot(Widget* ptr)
+	{
+		mRoot = ptr;
 	}
 }}

@@ -7,14 +7,10 @@ namespace PopHead {
 namespace GUI {
 
 	class GUI
-		:public World::Entity::Object
 	{
 	public:
-
+		GUI() = default;
 		~GUI();
-
-
-		void onCollision(Object&) {};
 
 		std::unique_ptr<Interface>& addInterface(const std::string& name);
 
@@ -32,11 +28,15 @@ namespace GUI {
 
 		void update(sf::Time deltaTime);
 
-		void draw();
-
 		void transform();
 
+		void draw();
+
+		void init(Base::GameData* gamedata);
+
 	private:
+		
+		Base::GameData* mGameData;
 
 		std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
 

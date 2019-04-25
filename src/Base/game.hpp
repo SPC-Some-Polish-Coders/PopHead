@@ -10,6 +10,7 @@
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
+#include "Gui/GUI.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -54,6 +55,7 @@ class Game
     std::unique_ptr< Resources::ShaderHolder >  mShaders;
     std::unique_ptr< States::StateMachine >     mStateMachine;
     std::unique_ptr< Input::Input >             mInput;
+	std::unique_ptr< GUI::GUI >					mGui;
     std::unique_ptr< Renderer::Renderer >       mRenderer; ///@}
 };
 

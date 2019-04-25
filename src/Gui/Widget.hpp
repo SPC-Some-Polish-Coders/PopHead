@@ -19,6 +19,8 @@ namespace GUI {
 	class Widget {
 	public:
 
+		Widget();
+
 		virtual void draw();
 
 		virtual void setAlpha(unsigned int alpha);
@@ -49,6 +51,8 @@ namespace GUI {
 
 		virtual bool isActive();
 
+		virtual void setRoot( Widget* ptr);
+
 	protected:
 		sf::Vector2f mPosition;
 		bool misActive;
@@ -62,7 +66,8 @@ namespace GUI {
 
 	private:
 		sf::Sprite mSprite;
-
+		sf::Texture mTexture;
+		Widget* mRoot;
 	};
 
 

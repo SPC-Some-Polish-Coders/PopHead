@@ -18,6 +18,7 @@ Game::Game()
         , mShaders { new Resources::ShaderHolder() }
         , mStateMachine { new States::StateMachine() }
         , mInput { new Input::Input() }
+		, mGui { new GUI::GUI() }
         , mRenderer { new Renderer::Renderer() }
 {
     mGameData.reset( new GameData(
@@ -28,7 +29,11 @@ Game::Game()
             mShaders.get(),
             mStateMachine.get(),
             mInput.get(),
+			mGui.get(),
             mRenderer.get() ) );
+
+
+	mGui->init(mGameData.get());
 
     mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::GameState);
@@ -76,9 +81,11 @@ void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
 	mRenderer->update(delta);
+	mGui->update(delta);
 }
 
 void Game::draw()
 {
     mRenderer->draw();
+	mGui->draw();
 }
