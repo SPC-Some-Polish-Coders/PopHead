@@ -3,8 +3,13 @@ namespace PopHead {
 
 namespace GUI {
 	Widget::Widget()
+		:
+		mRoot(nullptr),
+		mPosition(0, 0),
+		mSize(0,0),
+		mOrigin(0,0)
 	{
-
+		//mSprite.setPosition(sf::Vector2f(500, 500));
 
 	}
 	void Widget::draw()
@@ -56,6 +61,7 @@ namespace GUI {
 	{
 		if (!mTexture.loadFromFile(path))
 			return false;
+		mSize = mTexture.getSize();
 		mSprite.setTexture(mTexture);
 		mSize = mTexture.getSize();
 		return true;
@@ -63,16 +69,29 @@ namespace GUI {
 
 	void Widget::setPosition(const sf::Vector2f& pos) 
 	{
-		mSprite.setPosition(pos);
+		mPosition = pos;
+		if (mRoot != nullptr)
+		{
+			auto localPosition = mRoot->getGlobalPosition();
+			auto size = mRoot->getSize();
+			mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
+		}
 	}
 
 	void Widget::setScale(const sf::Vector2f& scale)
 	{
-		mSprite.setPosition(scale);
+		mSize.x *= scale.x;
+		mSize.y *= scale.y;
+		mSprite.scale(scale);
 	}
 
 	void Widget::setVirtualSize(const sf::Vector2f& size) 
 	{
+	}
+
+	sf::Vector2u Widget::getSize() const
+	{
+		return mSize;
 	}
 
 	void Widget::addBehavior(behaviorType type, const std::function<void(Widget*)>& func) 
@@ -98,8 +117,16 @@ namespace GUI {
 	{
 		mRoot = ptr;
 	}
+	void Widget::setOrigin(const sf::Vector2f& origin)
+	{
+		mOrigin = origin;
+	}
 	sf::Vector2f Widget::getPosition() const
 	{
 		return mPosition;
+	}
+	sf::Vector2f Widget::getGlobalPosition() const
+	{
+		return mSprite.getPosition();
 	}
 }}

@@ -41,6 +41,8 @@ namespace GUI {
 
 		virtual void setVirtualSize(const sf::Vector2f& size);
 
+		virtual sf::Vector2u getSize() const;
+
 		virtual void addBehavior(behaviorType type, const std::function<void(Widget*)>& func);
 
 		virtual Widget* getWidget(const std::string& name);
@@ -52,8 +54,11 @@ namespace GUI {
 		virtual bool isActive();
 
 		virtual void setRoot( Widget* ptr);
+
+		virtual void setOrigin(const sf::Vector2f& origin);
 		
 		virtual sf::Vector2f getPosition() const;
+		virtual sf::Vector2f getGlobalPosition() const;
 
 
 	protected:
@@ -61,6 +66,7 @@ namespace GUI {
 		bool misActive;
 		sf::Vector2u mSize;
 		sf::Vector2i mVirtualSize;
+		sf::Vector2f mOrigin;
 		unsigned int mAlpha;
 		Base::GameData* mGameData;
 		sf::RenderWindow* mWindow;
@@ -74,12 +80,6 @@ namespace GUI {
 	};
 
 
-
-
 }}
-
-
-
-
 
 #endif

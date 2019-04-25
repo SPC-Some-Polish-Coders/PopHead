@@ -14,11 +14,17 @@ namespace GUI {
 	{
 	public:
 
+		Interface();
+
 		void update(sf::Time delta);
 
 		void draw();
 
 		bool setContentPath(const std::string& path);
+
+		void setPosition(const sf::Vector2f& pos);
+
+		sf::Vector2f getGlobalPosition() const;
 	};
 
 }}
