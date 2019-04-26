@@ -67,6 +67,7 @@ void Game::run()
             timeSinceLastUpdate -= timePerFrame;
 
             update(timePerFrame);
+			
             draw();
         }
     }
@@ -81,6 +82,7 @@ void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
 	mRenderer->update(delta);
+	mGui->update(delta);
 }
 
 void Game::draw()

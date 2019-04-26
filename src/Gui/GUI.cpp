@@ -2,6 +2,10 @@
 
 namespace PopHead {
 	namespace GUI {
+
+		
+
+
 		GUI::GUI()
 			: mGuiDrawer(nullptr)
 		{
@@ -107,31 +111,72 @@ namespace PopHead {
 
 #ifdef GUI_TEST
 
-/*			auto k = mGameData->getGui().addInterface("pause_game");
-			k->setPosition(sf::Vector2f(0.5, 0.5));
+			/*  GUI INTRODUCTION  */
 
-			auto widget = new Widget;
-			widget->setContentPath("src/Gui/GuiTestContent/gui4.png");
-			k->addWidget("tlo_guziorow", widget);
-			widget->setOrigin(sf::Vector2f(0.5, 0.5));
-			widget->setPosition(sf::Vector2f(0, 0));
-			widget->show();
-			
-			k->show();
-			
-			auto widget1 = new Widget;
-			widget1->setContentPath("src/Gui/GuiTestContent/gui1.png");
-			widget->addWidget("guzior1",widget1);
-			widget1->setOrigin(sf::Vector2f(0.5, 0.5));
-			widget1->setPosition(sf::Vector2f(0, 0));
-			widget1->show();
+			/*
+				First we are going to create our Interface class (it can be: player equipment, skills menu, game options etc...).
+			*/
 
-			auto widget2 = new Widget;
-			widget2->setContentPath("src/Gui/GuiTestContent/gui2.png");
-			widget->addWidget("guzior2",widget2);
-			widget2->setOrigin(sf::Vector2f(0.5, 0.5));
-			widget2->setPosition(sf::Vector2f(0, 0));
-			widget2->show();*/
+			
+			auto interface = mGameData->getGui().addInterface("game_pause_menu");
+
+			/* Let's create some widgets to display. */
+			auto mainWidget = new Widget;
+			auto buttonFirstWidget = new Widget;
+			auto buttonSecondWidget = new Widget;
+
+			/* 
+				Interface has no texture, it's only for positioning widgets and divide them into groups 
+			*/
+
+			// interface->setContentPath("crazy_stuff.png");  --> nothing to do
+		
+
+			mainWidget->setContentPath("src/Gui/GuiTestContent/gui4.png");
+			buttonFirstWidget->setContentPath("src/Gui/GuiTestContent/gui1.png");
+			buttonSecondWidget->setContentPath("src/Gui/GuiTestContent/gui2.png");
+
+
+			/* By default, each gui element is disabled. This means that it will never be displayed.
+			   You can manipulate displaying widgets by calling hide() or show().
+			*/
+			interface->show();
+			mainWidget->show();
+			buttonFirstWidget->show();
+			buttonSecondWidget->show();
+
+			/* each widget have to be connected (to widget or interface) */
+			interface->addWidget("buttonArea", mainWidget);
+			mainWidget->addWidget("button1", buttonFirstWidget);
+			mainWidget->addWidget("button2", buttonSecondWidget);
+
+			/* perfect center of the screen. */
+			interface->setPosition(sf::Vector2f(0.5, 0.5));
+
+			/* Order of method calls is important for correctly initializing widgets */ 
+			mainWidget->setOrigin(sf::Vector2f(0.5, 0.5));
+			mainWidget->setScale(sf::Vector2f(1, 1));  // ---> useless but important (dont ask)
+			mainWidget->setPosition(sf::Vector2f(0, 0)); // ---> position oriented by parent-widget, so position (0,0) means left corner of the parent
+		
+			buttonFirstWidget->setOrigin(sf::Vector2f(0.5, 0.5));
+			buttonFirstWidget->setScale(sf::Vector2f(0.5, 0.5));
+			buttonFirstWidget->setPosition(sf::Vector2f(0.5, 0.2));
+			
+			buttonSecondWidget->setOrigin(sf::Vector2f(0.5, 0.5));
+			buttonSecondWidget->setScale(sf::Vector2f(1, 1));
+			buttonSecondWidget->setPosition(sf::Vector2f(0.5, 0.7));
+			
+			/* Let's set callback for our widget, for example change his texture after mouse button pressed */
+			buttonFirstWidget->addBehavior(behaviorType::onPressed, [](Widget * ptr)->void {
+				ptr->setContentPath("src/Gui/GuiTestContent/gui2.png");
+				});
+
+
+			/* 
+				Other game window? 
+				Just create new interface.
+			*/
+			
 
 
 #endif

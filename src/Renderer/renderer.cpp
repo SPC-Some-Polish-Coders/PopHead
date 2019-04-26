@@ -9,16 +9,17 @@ using PopHead::Renderer::LayerID;
 Renderer::Renderer()
 	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-        , mWindow { sf::VideoMode::getDesktopMode(),
+        ,/* mWindow { sf::VideoMode::getDesktopMode(),
                     "PopHead",
-                    sf::Style::Fullscreen }
+                    sf::Style::Fullscreen }*/
+		mWindow{ sf::VideoMode(1366,768),"guitest"}
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
                     { LayerID::airEntities, Layer() },
                     { LayerID::GUI, Layer() }, }
 {
-    mCamera.setViewport( mViewports.at( FullScreenViewport ) );
+   // mCamera.setViewport( mViewports.at( FullScreenViewport ) );
     mWindow.setVerticalSyncEnabled(false);
 }
 
@@ -29,12 +30,12 @@ Renderer::~Renderer()
 
 void Renderer::update(sf::Time delta)
 {
-	mCamera.update(delta);
+	//mCamera.update(delta);
 }
 
 void Renderer::draw() const
 {
-	mCamera.applyTo(mWindow);
+	//mCamera.applyTo(mWindow);
     mWindow.clear();
 
     for( const auto& layer : mLayers )
