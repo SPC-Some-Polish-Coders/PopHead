@@ -25,11 +25,12 @@ public:
     virtual void setScale(sf::Vector2f);
     virtual void setRotation(float angle);
 
-    sf::Vector2f getPosition() const;
-    sf::Vector2f getScale() const;
-    float getRotation() const;
-    auto getLayerID() const -> Renderer::LayerID;
-    bool getVisibility() const;
+	auto getPosition() -> sf::Vector2f const { return mPosition; }
+	auto getScale() -> sf::Vector2f const { return mScale; }
+	float getRotation() const { return mRotation; }
+	auto getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+	bool getVisibility() const { return mVisibility; }
+
 
 private:
 	template <typename T>

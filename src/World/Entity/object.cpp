@@ -66,13 +66,3 @@ void Object::setRotation(float angle)
 	};
 	forEachChildWhichIsObject(func, angle);
 }
-
-sf::Vector2f Object::getPosition() const { return mPosition; }
-
-sf::Vector2f Object::getScale() const { return mScale; }
-
-float Object::getRotation() const { return mRotation; }
-
-auto Object::getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
-
-bool Object::getVisibility() const { return mVisibility; }
