@@ -31,8 +31,7 @@ public:
 	auto getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
 	bool getVisibility() const { return mVisibility; }
 
-
-private:
+protected:
 	template <typename T>
 	void forEachChildWhichIsObject(std::function<void(T)> func, T param);
 

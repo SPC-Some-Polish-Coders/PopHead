@@ -15,15 +15,15 @@ void Object::onCollision(Object&)
 {
 }
 
-void Object::setVisibility(bool visibility) 
-{ 
+void Object::setVisibility(bool visibility)
+{
 	mVisibility = visibility;
 
 	std::function<void(bool)> func = [=](bool visibility) {this->mVisibility = visibility;};
 	forEachChildWhichIsObject(func, visibility);
 }
 
-void Object::setPosition(sf::Vector2f pos) 
+void Object::setPosition(sf::Vector2f pos)
 {
 	mPosition = pos;
 
@@ -31,27 +31,27 @@ void Object::setPosition(sf::Vector2f pos)
 	forEachChildWhichIsObject(func, pos);
 }
 
-void Object::move(sf::Vector2f motion)
+void Object::move(sf::Vector2f offset)
 {
-	mPosition.x += motion.x;
-	mPosition.y += motion.y;
+	mPosition.x += offset.x;
+	mPosition.y += offset.y;
 
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f motion) {
-		this->mPosition.x += motion.x;
-		this->mPosition.y += motion.y;
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f offset) {
+		this->mPosition.x += offset.x;
+		this->mPosition.y += offset.y;
 	};
-	forEachChildWhichIsObject(func, motion);
+	forEachChildWhichIsObject(func, offset);
 }
 
-void Object::setScale(sf::Vector2f scale) 
+void Object::setScale(sf::Vector2f scale)
 {
-	mScale = scale; 
+	mScale = scale;
 
 	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f scale) {this->mScale = scale;};
 	forEachChildWhichIsObject(func, scale);
 }
 
-void Object::setRotation(float angle) 
+void Object::setRotation(float angle)
 {
 	mRotation = angle;
 
