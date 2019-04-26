@@ -52,10 +52,7 @@ void PopHead::World::Entity::Object::forEachChildWhichIsObject(std::function<voi
 {
 	for (auto& child : mChildren) {
 		Object* objectPtr = dynamic_cast<Object*>(child.get());
-		if (objectPtr == nullptr) {
-			;///LOG (WARNING: trying to set visibility to Entity which doesn't inherit from Object, so it doesn't have visibility.)
-		}
-		else {
+		if (objectPtr) {
 			func(param);
 		}
 	}
