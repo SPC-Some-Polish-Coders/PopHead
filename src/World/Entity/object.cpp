@@ -28,17 +28,44 @@ void Object::setVisibility(bool visibility)
 void Object::setPosition(sf::Vector2f pos) 
 {
 	mPosition = pos;
+
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f pos) {
+		this->mPosition = pos;
+	};
+	forEachChildWhichIsObject(func, pos);
 }
 
 void Object::move(sf::Vector2f motion)
 {
 	mPosition.x += motion.x;
 	mPosition.y += motion.y;
+
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f motion) {
+		this->mPosition.x += motion.x;
+		this->mPosition.y += motion.y;
+	};
+	forEachChildWhichIsObject(func, motion);
 }
 
-void Object::setScale(sf::Vector2f scale) { mScale = scale; }
+void Object::setScale(sf::Vector2f scale) 
+{
+	mScale = scale; 
 
-void Object::setRotation(float angle) { mRotation = angle; }
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f scale) {
+		this->mScale = scale;
+	};
+	forEachChildWhichIsObject(func, scale);
+}
+
+void Object::setRotation(float angle) 
+{
+	mRotation = angle;
+
+	std::function<void(float)> func = [=](float angle) {
+		this->mRotation = angle;
+	};
+	forEachChildWhichIsObject(func, angle);
+}
 
 sf::Vector2f Object::getPosition() const { return mPosition; }
 
