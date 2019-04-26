@@ -18,7 +18,7 @@ Game::Game()
         , mShaders { new Resources::ShaderHolder() }
         , mStateMachine { new States::StateMachine() }
         , mInput { new Input::Input() }
-		, mGui { new GUI::GUI() }
+        , mGui { new GUI::GUI() }
         , mRenderer { new Renderer::Renderer() }
 {
     mGameData.reset( new GameData(
@@ -29,7 +29,7 @@ Game::Game()
             mShaders.get(),
             mStateMachine.get(),
             mInput.get(),
-			mGui.get(),
+            mGui.get(),
             mRenderer.get() ) );
 
 

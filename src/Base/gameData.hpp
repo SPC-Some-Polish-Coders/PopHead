@@ -28,7 +28,7 @@ class GameData
             Resources::ShaderHolder* const,
             States::StateMachine* const,
             Input::Input* const,
-			GUI::GUI* const,
+            GUI::GUI* const,
             Renderer::Renderer* const );
 
     auto getSoundPlayer()  const -> Audio::SoundPlayer&       { return *mSoundPlayer;  }
@@ -38,7 +38,7 @@ class GameData
     auto getShaders()      const -> Resources::ShaderHolder&  { return *mShaders;      }
     auto getStateMachine() const -> States::StateMachine&     { return *mStateMachine; }
     auto getInput()        const -> Input::Input&             { return *mInput;        }
-	auto getGui()		   const -> GUI::GUI &				  { return *mGui;		   }
+    auto getGui()		   const -> GUI::GUI &				  { return *mGui;		   }
     auto getRenderer()     const -> Renderer::Renderer&       { return *mRenderer;     }
 
   private:
@@ -49,7 +49,7 @@ class GameData
     Resources::ShaderHolder* const mShaders;
     States::StateMachine* const mStateMachine;
     Input::Input* const mInput;
-	GUI::GUI* const mGui;
+    GUI::GUI* const mGui;
     Renderer::Renderer* const mRenderer;
 };
 
@@ -74,7 +74,7 @@ inline GameData::GameData(
         , mShaders { shaders }
         , mStateMachine { stateMachine }
         , mInput { input }
-		, mGui { gui }
+        , mGui { gui }
         , mRenderer { renderer }
 {
 }
