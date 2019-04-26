@@ -2,6 +2,7 @@
 #define POPHEAD_WORLD_OBJECT_H_
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 #include "World/Entity/entity.hpp"
 #include "Renderer/layerID.hpp"

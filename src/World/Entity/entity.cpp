@@ -51,8 +51,6 @@ void Entity::setName(const std::string& name) { mName = name; }
 
 auto Entity::getEntityType() const -> PopHead::World::EntityType { return mEntityType; }
 
-auto Entity::getID() const -> unsigned int { return mID; }
-
 auto Entity::getParent() const -> Entity& { return *mParent; }
 
 auto Entity::getChild(std::string name) const -> Entity&
