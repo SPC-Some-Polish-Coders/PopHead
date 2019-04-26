@@ -33,9 +33,23 @@ void PopHead::Renderer::Camera::move(sf::Vector2f center, float speed)
 {
 	mCenterWithoutShake = Utilities::Math::lerp(mCenterWithoutShake, center, speed);
 	mView.setCenter(mCenterWithoutShake);
+	updateCameraMoveFromLastFrame();
+	updateLastCameraPosition();
 }
 
 void PopHead::Renderer::Camera::applyTo(sf::RenderTarget& renderTarget) const
 {
 	renderTarget.setView(mView);
+}
+
+void PopHead::Renderer::Camera::updateCameraMoveFromLastFrame()
+{
+	mCameraMoveFromLastFrame.x = mCenterWithoutShake.x - mLastFrameCameraCenterPosition.x;
+	mCameraMoveFromLastFrame.y = mCenterWithoutShake.y - mLastFrameCameraCenterPosition.y;
+}
+
+void PopHead::Renderer::Camera::updateLastCameraPosition()
+{
+	mLastFrameCameraCenterPosition.x = mCenterWithoutShake.x;
+	mLastFrameCameraCenterPosition.y = mCenterWithoutShake.y;
 }

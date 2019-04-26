@@ -6,6 +6,7 @@
 namespace PopHead {
 namespace Renderer {
 
+
 class Camera {
 public:
 	Camera() = default;
@@ -30,13 +31,21 @@ public:
 
 	void applyTo(sf::RenderTarget& renderTarget) const;
 
+	auto getCameraMoveFromLastFrame() -> sf::Vector2f { return mCameraMoveFromLastFrame; }
+
+private:
+	void updateCameraMoveFromLastFrame();
+	void updateLastCameraPosition();
+
 private:
 	sf::View mView;
 	sf::Vector2f mCenterWithoutShake;
 	float mShakeStrength = 0.f;
 	float mShakeStrengthLoss = 10.f;
+	sf::Vector2f mLastFrameCameraCenterPosition;
+	sf::Vector2f mCameraMoveFromLastFrame;
 };
 
-}
-}
+
+}}
 #endif
