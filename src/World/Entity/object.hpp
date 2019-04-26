@@ -31,6 +31,10 @@ public:
     auto getLayerID() const -> Renderer::LayerID;
     bool getVisibility() const;
 
+private:
+	template <typename T>
+	void forEachChildWhichIsObject(std::function<void(T)> func, T param);
+
 protected:
     sf::Vector2f mPosition;
     sf::Vector2f mScale;
@@ -41,5 +45,19 @@ protected:
 
 
 }}}
+
+template <typename T>
+void PopHead::World::Entity::Object::forEachChildWhichIsObject(std::function<void(T)> func, T param)
+{
+	for (auto& child : mChildren) {
+		Object* objectPtr = dynamic_cast<Object*>(child.get());
+		if (objectPtr == nullptr) {
+			;///LOG (WARNING: trying to set visibility to Entity which doesn't inherit from Object, so it doesn't have visibility.)
+		}
+		else {
+			func(param);
+		}
+	}
+}
 
 #endif // !POPHEAD_WORLD_OBJECT_H_

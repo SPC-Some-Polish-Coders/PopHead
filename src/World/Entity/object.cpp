@@ -19,15 +19,10 @@ void Object::setVisibility(bool visibility)
 { 
 	mVisibility = visibility;
 
-	for (auto& child : mChildren) {
-		Object* objectPtr = dynamic_cast<Object*>(child.get());
-		if (objectPtr == nullptr) {
-			;///LOG (WARNING: trying to set visibility to Entity which doesn't inherit from Object, so it doesn't have visibility.)
-		}
-		else {
-			objectPtr->setVisibility(visibility);
-		}
-	}
+	std::function<void(bool)> func = [=](bool visibility) {
+		this->mVisibility = visibility;
+	};
+	forEachChildWhichIsObject(func, visibility);
 }
 
 void Object::setPosition(sf::Vector2f pos) 
