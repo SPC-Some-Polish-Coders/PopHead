@@ -69,6 +69,7 @@ namespace GUI {
 		sf::Vector2i mVirtualSize;
 		sf::Vector2f mOrigin;
 		unsigned int mAlpha;
+		sf::Vector2f mScale;
 		Base::GameData* mGameData;
 		sf::RenderWindow* mWindow;
 		std::multimap < behaviorType, std::function<void(Widget*)>> mBehaviors;

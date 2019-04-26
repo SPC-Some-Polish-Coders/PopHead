@@ -30,6 +30,7 @@ namespace GUI {
 				: World::Entity::Object(gameData, name, id)
 				, mGui(nullptr)
 			{
+				
 			}
 
 
@@ -41,6 +42,11 @@ namespace GUI {
 			void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 			{
 				mGui->draw();
+			}
+
+			void update(sf::Time delta)
+			{
+				mGui->update(delta);
 			}
 
 		private:
@@ -72,6 +78,7 @@ namespace GUI {
 
 	private:
 		
+
 		Gui_drawer* mGuiDrawer;
 
 		Base::GameData* mGameData;

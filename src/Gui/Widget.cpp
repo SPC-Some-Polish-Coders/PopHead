@@ -6,11 +6,10 @@ namespace GUI {
 		:
 		mRoot(nullptr),
 		mPosition(0, 0),
-		mSize(0,0),
-		mOrigin(0.5,0.5)
+		mSize(0, 0),
+		mOrigin(0.5, 0.5),
+		mScale(1, 1)
 	{
-		//mSprite.setPosition(sf::Vector2f(500, 500));
-
 	}
 	void Widget::draw()
 	{
@@ -30,6 +29,43 @@ namespace GUI {
 
 	void Widget::update(sf::Time delta)
 	{
+		if (mGameData->getInput().getMouse().isMouseButtonJustPressed(sf::Mouse::Left))
+		{
+
+			auto k = mGameData->getInput().getMouse().getMousePosition();
+			if (k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
+				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
+			{
+				for (const auto& k : mBehaviors)
+				{
+					if (k.first == behaviorType::onPressed)
+					{
+						k.second(this);
+					}
+				}
+			}
+		}
+
+		if (mGameData->getInput().getMouse().isMouseButtonJustReleased(sf::Mouse::Left))
+		{
+			for (const auto& k : mBehaviors)
+			{
+				if (k.first == behaviorType::onReleased)
+				{
+					k.second(this);
+				}
+			}
+		}
+
+		for (const auto& k : mBehaviors)
+		{
+			if (k.first == behaviorType::onUpdate)
+			{
+				k.second(this);
+			}
+		}
+		
+
 		if (misActive)
 		{
 			for (const auto& k : mWidgetList)
@@ -61,9 +97,13 @@ namespace GUI {
 	{
 		if (!mTexture.loadFromFile(path))
 			return false;
-		mSize = mTexture.getSize();
 		mSprite.setTexture(mTexture);
 		mSize = mTexture.getSize();
+
+		mSize.x *= mScale.x;
+		mSize.y *= mScale.y;
+		mSprite.setScale(mScale);
+
 		return true;
 	}
 
@@ -95,6 +135,7 @@ namespace GUI {
 		mSize.y *= finalScale.y;
 
 		mSprite.setOrigin(mOrigin);
+		mScale = finalScale;
 		mSprite.scale(finalScale);
 		setPosition(mPosition);
 
@@ -111,6 +152,7 @@ namespace GUI {
 
 	void Widget::addBehavior(behaviorType type, const std::function<void(Widget*)>& func) 
 	{
+		mBehaviors.insert({ type,func });
 	}
 	Widget* Widget::getWidget(const std::string& name)
 	{
