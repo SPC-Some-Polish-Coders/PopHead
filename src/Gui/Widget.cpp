@@ -75,18 +75,29 @@ namespace GUI {
 			auto localPosition = mRoot->getGlobalPosition();
 			auto size = mRoot->getSize();
 			auto origin = mRoot->getOrigin();
+			mSprite.setOrigin(mOrigin);
+			mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
 
-			//mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
-
-			mSprite.setPosition(pos.x * size.x + localPosition.x + origin.x * size.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y + origin.y * size.y - mSize.y * mOrigin.y);
 		}
 	}
 
 	void Widget::setScale(const sf::Vector2f& scale)
 	{
-		mSize.x *= scale.x;
-		mSize.y *= scale.y;
-		mSprite.scale(scale);
+		auto k = mGameData->getRenderer().getWindow().getSize();
+		sf::Vector2f finalScale;
+		finalScale.x = k.x / 1366.f;
+		finalScale.y = k.y / 768.f;
+
+		finalScale.x *= scale.x;
+		finalScale.y *= scale.y;
+
+		mSize.x *= finalScale.x;
+		mSize.y *= finalScale.y;
+
+		mSprite.setOrigin(mOrigin);
+		mSprite.scale(finalScale);
+		setPosition(mPosition);
+
 	}
 
 	void Widget::setVirtualSize(const sf::Vector2f& size) 
