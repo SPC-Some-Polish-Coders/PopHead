@@ -19,9 +19,7 @@ void Object::setVisibility(bool visibility)
 { 
 	mVisibility = visibility;
 
-	std::function<void(bool)> func = [=](bool visibility) {
-		this->mVisibility = visibility;
-	};
+	std::function<void(bool)> func = [=](bool visibility) {this->mVisibility = visibility;};
 	forEachChildWhichIsObject(func, visibility);
 }
 
@@ -29,9 +27,7 @@ void Object::setPosition(sf::Vector2f pos)
 {
 	mPosition = pos;
 
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f pos) {
-		this->mPosition = pos;
-	};
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f pos) {this->mPosition = pos;};
 	forEachChildWhichIsObject(func, pos);
 }
 
@@ -51,9 +47,7 @@ void Object::setScale(sf::Vector2f scale)
 {
 	mScale = scale; 
 
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f scale) {
-		this->mScale = scale;
-	};
+	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f scale) {this->mScale = scale;};
 	forEachChildWhichIsObject(func, scale);
 }
 
@@ -61,8 +55,6 @@ void Object::setRotation(float angle)
 {
 	mRotation = angle;
 
-	std::function<void(float)> func = [=](float angle) {
-		this->mRotation = angle;
-	};
+	std::function<void(float)> func = [=](float angle) {this->mRotation = angle;};
 	forEachChildWhichIsObject(func, angle);
 }
