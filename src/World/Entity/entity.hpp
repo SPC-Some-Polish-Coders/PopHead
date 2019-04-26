@@ -34,7 +34,6 @@ public:
     void setName(const std::string& name);
 
     auto getEntityType() const -> EntityType;
-    auto getID() const -> unsigned int;
     auto getParent() const -> Entity&;
     auto getChild(std::string name) const -> Entity&;
     auto getChildren() -> std::list< std::unique_ptr<Entity> >&;
@@ -43,9 +42,7 @@ public:
 protected:
     Base::GameData* mGameData;
 
-private:
     const EntityType mEntityType;
-    unsigned int mID;
     std::string mName;
 
     Entity* mParent;

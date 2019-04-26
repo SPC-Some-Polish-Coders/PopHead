@@ -15,7 +15,11 @@ void Object::onCollision(Object&)
 {
 }
 
-void Object::setVisibility(bool visibility) { mVisibility = visibility; }
+void Object::setVisibility(bool visibility) 
+{ 
+	mVisibility = visibility;
+	
+}
 
 void Object::setPosition(sf::Vector2f pos) { mPosition = pos; }
 
