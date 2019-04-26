@@ -56,6 +56,7 @@ namespace GUI {
 		virtual void setRoot( Widget* ptr);
 
 		virtual void setOrigin(const sf::Vector2f& origin);
+		virtual sf::Vector2f getOrigin() const;
 		
 		virtual sf::Vector2f getPosition() const;
 		virtual sf::Vector2f getGlobalPosition() const;

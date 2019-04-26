@@ -7,7 +7,7 @@ namespace GUI {
 		mRoot(nullptr),
 		mPosition(0, 0),
 		mSize(0,0),
-		mOrigin(0,0)
+		mOrigin(0.5,0.5)
 	{
 		//mSprite.setPosition(sf::Vector2f(500, 500));
 
@@ -74,7 +74,11 @@ namespace GUI {
 		{
 			auto localPosition = mRoot->getGlobalPosition();
 			auto size = mRoot->getSize();
-			mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
+			auto origin = mRoot->getOrigin();
+
+			//mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
+
+			mSprite.setPosition(pos.x * size.x + localPosition.x + origin.x * size.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y + origin.y * size.y - mSize.y * mOrigin.y);
 		}
 	}
 
@@ -120,6 +124,10 @@ namespace GUI {
 	void Widget::setOrigin(const sf::Vector2f& origin)
 	{
 		mOrigin = origin;
+	}
+	sf::Vector2f Widget::getOrigin() const
+	{
+		return mOrigin;
 	}
 	sf::Vector2f Widget::getPosition() const
 	{

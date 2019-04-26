@@ -1,12 +1,14 @@
 #include "Interface.hpp"
 
 #include "World/Entity/object.hpp"
+//#include "Renderer/layerID.hpp"
 #define GUI_TEST
 
 #ifndef GUI_BASE
 #define GUI_BASE
 
 
+/* GUI TEST  */
 
 
 
@@ -26,6 +28,7 @@ namespace GUI {
 
 			Gui_drawer(Base::GameData* gameData, std::string name, Renderer::LayerID id)
 				: World::Entity::Object(gameData, name, id)
+				, mGui(nullptr)
 			{
 			}
 

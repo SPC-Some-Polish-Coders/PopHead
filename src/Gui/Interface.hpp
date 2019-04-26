@@ -24,6 +24,8 @@ namespace GUI {
 
 		void setPosition(const sf::Vector2f& pos);
 
+		void addWidget(const std::string& name, Widget* ptr);
+
 		sf::Vector2f getGlobalPosition() const;
 	};
 

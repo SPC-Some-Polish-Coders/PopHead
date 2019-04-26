@@ -3,6 +3,7 @@
 namespace PopHead {
 	namespace GUI {
 		GUI::GUI()
+			: mGuiDrawer(nullptr)
 		{
 		}
 		GUI::~GUI()
@@ -102,9 +103,35 @@ namespace PopHead {
 			mGuiDrawer = new Gui_drawer(gamedata, "GUI_DRAWER", Renderer::LayerID::GUI);
 			mGuiDrawer->init(this);
 			mGameData->getRenderer().addObject(mGuiDrawer);
+
+
 #ifdef GUI_TEST
 
+/*			auto k = mGameData->getGui().addInterface("pause_game");
+			k->setPosition(sf::Vector2f(0.5, 0.5));
 
+			auto widget = new Widget;
+			widget->setContentPath("src/Gui/GuiTestContent/gui4.png");
+			k->addWidget("tlo_guziorow", widget);
+			widget->setOrigin(sf::Vector2f(0.5, 0.5));
+			widget->setPosition(sf::Vector2f(0, 0));
+			widget->show();
+			
+			k->show();
+			
+			auto widget1 = new Widget;
+			widget1->setContentPath("src/Gui/GuiTestContent/gui1.png");
+			widget->addWidget("guzior1",widget1);
+			widget1->setOrigin(sf::Vector2f(0.5, 0.5));
+			widget1->setPosition(sf::Vector2f(0, 0));
+			widget1->show();
+
+			auto widget2 = new Widget;
+			widget2->setContentPath("src/Gui/GuiTestContent/gui2.png");
+			widget->addWidget("guzior2",widget2);
+			widget2->setOrigin(sf::Vector2f(0.5, 0.5));
+			widget2->setPosition(sf::Vector2f(0, 0));
+			widget2->show();*/
 
 
 #endif

@@ -6,6 +6,7 @@ namespace GUI {
 	Interface::Interface()
 		: Widget()
 	{
+		
 	}
 	void Interface::update(sf::Time delta)
 	{
@@ -36,6 +37,12 @@ namespace GUI {
 		auto k = mGameData->getRenderer().getWindow().getSize();
 		mPosition.x = pos.x * k.x;
 		mPosition.y = pos.y * k.y;
+	}
+
+	void Interface::addWidget(const std::string& name, Widget* ptr)
+	{
+		Widget::addWidget(name,ptr);
+		mSize = ptr->getSize();
 	}
 
 	sf::Vector2f Interface::getGlobalPosition() const
