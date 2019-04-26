@@ -11,7 +11,7 @@ Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Ren
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::moveTo(sf::Vector2f)
+void Object::onCollision(Object&)
 {
 }
 
@@ -34,10 +34,6 @@ sf::Vector2f Object::getPosition() const { return mPosition; }
 sf::Vector2f Object::getScale() const { return mScale; }
 
 float Object::getRotation() const { return mRotation; }
-
-#if 0
-auto Object::getColision() const -> const ColisionObject& { return mColision; }
-#endif // 0
 
 auto Object::getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
 
