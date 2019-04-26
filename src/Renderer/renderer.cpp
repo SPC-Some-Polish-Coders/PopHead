@@ -74,7 +74,7 @@ void Renderer::removeObjects( LayerID layerID )
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
 	for (const auto& guiObject : mLayers[LayerID::GUI]) {
-		;
+		guiObject->move(mCamera.getCameraMoveFromLastFrame());
 	}
 }
 

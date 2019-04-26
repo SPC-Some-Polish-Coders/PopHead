@@ -19,6 +19,12 @@ void Object::setVisibility(bool visibility) { mVisibility = visibility; }
 
 void Object::setPosition(sf::Vector2f pos) { mPosition = pos; }
 
+void Object::move(sf::Vector2f motion)
+{
+	mPosition.x += motion.x;
+	mPosition.y += motion.y;
+}
+
 void Object::setScale(sf::Vector2f scale) { mScale = scale; }
 
 void Object::setRotation(float angle) { mRotation = angle; }
