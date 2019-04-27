@@ -17,6 +17,7 @@ private:
     void makeSceneTree();
     void makePlayer();
     void makeMap();
+    void setCamera();
 
 public:
     void input() override;

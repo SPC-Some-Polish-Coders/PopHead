@@ -24,12 +24,14 @@ void GameState::makeSceneTree()
 {
     makePlayer();
     makeMap();
+    setCamera();
 }
 
 void GameState::makePlayer()
 {
     std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
     player->getSprite().setTexture(mPlayerTexture);
+    player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
 }
 
@@ -37,6 +39,12 @@ void GameState::makeMap()
 {
     std::unique_ptr<World::Entity::Map> city(new World::Entity::Map(mGameData, "cityMap", mMapTexture, 2));
     mRoot.addChild(std::move(city));
+}
+
+void GameState::setCamera()
+{
+    const sf::Vector2f playerPosition(1900, 5240);
+    mGameData->getRenderer().getCamera().setCenter(playerPosition);
 }
 
 void GameState::input()
