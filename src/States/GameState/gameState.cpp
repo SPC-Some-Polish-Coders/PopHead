@@ -17,13 +17,17 @@ GameState::GameState(PopHead::Base::GameData* const gameData)
 void GameState::loadResources()
 {
     mPlayerTexture.loadFromFile("resources/textures/characters/vaultManSheet.png");
+    mNPCTexture.loadFromFile("resources/textures/characters/vaultMan.png");
     mMapTexture.loadFromFile("resources/textures/map/city.png");
+    mBoatTexture.loadFromFile("resources/textures/vehicles/boat.png");
 }
 
 void GameState::makeSceneTree()
 {
-    makePlayer();
     makeMap();
+    makeBoat();
+    makeNPC();
+    makePlayer();
     setCamera();
 }
 
@@ -33,6 +37,24 @@ void GameState::makePlayer()
     player->getSprite().setTexture(mPlayerTexture);
     player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
+}
+
+void GameState::makeBoat()
+{
+    std::unique_ptr<World::Entity::Character> boat(new World::Entity::Character(mGameData, "boat"));
+    boat->getSprite().setTexture(mBoatTexture);
+    boat->setPosition(sf::Vector2f(1500, 5700));
+
+    mRoot.addChild(std::move(boat));
+}
+
+void GameState::makeNPC()
+{
+    std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
+    npc->getSprite().setTexture(mNPCTexture);
+    npc->setPosition(sf::Vector2f(1650, 5800));
+
+    mRoot.getChild("boat").addChild(std::move(npc));
 }
 
 void GameState::makeMap()

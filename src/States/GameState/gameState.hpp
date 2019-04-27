@@ -16,6 +16,8 @@ private:
     void loadResources();
     void makeSceneTree();
     void makePlayer();
+    void makeBoat();
+    void makeNPC();
     void makeMap();
     void setCamera();
 
@@ -31,6 +33,8 @@ private:
     ///this is very temporary later it'll be handled by Resources module
     sf::Texture mPlayerTexture;
     sf::Texture mMapTexture;
+    sf::Texture mBoatTexture;
+    sf::Texture mNPCTexture;
 
 	bool shouldCameraShake = false;
 };
