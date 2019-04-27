@@ -24,10 +24,12 @@ private:
 public:
     void input() override;
 
+public:
     void update(sf::Time delta) override;
 private:
 	void cameraShake();
 	void cameraMovement(sf::Time delta) const;
+	void boatMovement(sf::Time delta);
 
 private:
     ///this is very temporary later it'll be handled by Resources module

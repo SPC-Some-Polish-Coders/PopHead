@@ -85,6 +85,8 @@ void GameState::update(sf::Time delta)
 		cameraShake();
 
 	cameraMovement(delta);
+
+	boatMovement(delta);
 }
 
 void GameState::cameraShake()
@@ -99,4 +101,10 @@ void GameState::cameraMovement(sf::Time delta) const
 	constexpr float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Utilities::Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
+}
+
+void GameState::boatMovement(sf::Time delta)
+{
+    auto& boat = dynamic_cast<World::Entity::Character&>(mRoot.getChild("boat"));
+    boat.rotate(delta.asSeconds() * 35);
 }
