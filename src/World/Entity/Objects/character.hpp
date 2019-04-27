@@ -24,6 +24,7 @@ public:
 	void move(sf::Vector2f) override;
     void setScale(sf::Vector2f) override;
     void setRotation(float angle) override;
+    void rotate(float angle) override;
 
     unsigned int getMaxHP() const;
     unsigned int getHP() const;

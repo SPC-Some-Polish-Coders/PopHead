@@ -58,3 +58,11 @@ void Object::setRotation(float angle)
 	std::function<void(float)> func = [=](float angle) {this->mRotation = angle;};
 	forEachChildWhichIsObject(func, angle);
 }
+
+void Object::rotate(float angle)
+{
+    mRotation += angle;
+
+    std::function<void(float)> func = [=](float angle) {this->mRotation += angle;};
+	forEachChildWhichIsObject(func, angle);
+}

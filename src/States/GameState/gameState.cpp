@@ -65,7 +65,7 @@ void GameState::makeMap()
 
 void GameState::setCamera()
 {
-    const sf::Vector2f playerPosition(1900, 5240);
+    const sf::Vector2f playerPosition(1900, 5220);
     mGameData->getRenderer().getCamera().setCenter(playerPosition);
 }
 

@@ -54,6 +54,12 @@ void Character::setRotation(float angle)
     Object::setRotation(angle);
 }
 
+void Character::rotate(float angle)
+{
+    mSprite.rotate(angle);
+    Object::rotate(angle);
+}
+
 unsigned int Character::getMaxHP() const { return mMaxHP; }
 
 unsigned int Character::getHP() const { return mHP; }
