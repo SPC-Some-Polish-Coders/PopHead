@@ -106,5 +106,5 @@ void GameState::cameraMovement(sf::Time delta) const
 void GameState::boatMovement(sf::Time delta)
 {
     auto& boat = dynamic_cast<World::Entity::Character&>(mRoot.getChild("boat"));
-    boat.rotate(delta.asSeconds() * 35);
+    boat.move(sf::Vector2f(delta.asSeconds() * -15, 0));
 }
