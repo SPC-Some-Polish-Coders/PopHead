@@ -19,7 +19,7 @@ void Object::setVisibility(bool visibility)
 {
 	mVisibility = visibility;
 
-	std::function<void(bool)> func = [=](bool visibility) {this->mVisibility = visibility;};
+	std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) {object->setVisibility(visibility);};
 	forEachChildWhichIsObject(func, visibility);
 }
 
@@ -27,34 +27,24 @@ void Object::setPosition(sf::Vector2f pos)
 {
 	mPosition = pos;
 
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f pos) {this->mPosition = pos;};
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos); };
 	forEachChildWhichIsObject(func, pos);
 }
 
 void Object::move(sf::Vector2f offset)
 {
-	mPosition.x += offset.x;
-	mPosition.y += offset.y;
-    #if 0
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f offset) {
-		this->mPosition.x += offset.x;
-		this->mPosition.y += offset.y;
+	mPosition += offset;
+	std::function<void(Object*, sf::Vector2f)> func = [](Object* object, sf::Vector2f offset) {
+		object->move(offset);
 	};
 	forEachChildWhichIsObject(func, offset);
-	#endif // 0
-
-    for (auto& child : mChildren) {
-		Object* objectPtr = dynamic_cast<Object*>(child.get());
-		if (objectPtr)
-			objectPtr->move(offset);
-	}
 }
 
 void Object::setScale(sf::Vector2f scale)
 {
 	mScale = scale;
 
-	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f scale) {this->mScale = scale;};
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) {object->setScale(scale); };
 	forEachChildWhichIsObject(func, scale);
 }
 
@@ -62,14 +52,14 @@ void Object::setRotation(float angle)
 {
 	mRotation = angle;
 
-	std::function<void(float)> func = [=](float angle) {this->mRotation = angle;};
+	std::function<void(Object*, float)> func = [=](Object * object, float angle) {object->setRotation(angle); };
 	forEachChildWhichIsObject(func, angle);
 }
 
 void Object::rotate(float angle)
 {
-    mRotation += angle;
+	mRotation += angle;
 
-    std::function<void(float)> func = [=](float angle) {this->mRotation += angle;};
+	std::function<void(Object*, float)> func = [=](Object* object, float angle) {object->rotate(angle);};
 	forEachChildWhichIsObject(func, angle);
 }

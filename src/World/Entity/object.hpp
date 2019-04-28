@@ -34,7 +34,7 @@ public:
 
 private:
 	template <typename T>
-	void forEachChildWhichIsObject(std::function<void(T)> func, T param);
+	void forEachChildWhichIsObject(std::function<void(Object*, T)> func, T param);
 
 protected:
     sf::Vector2f mPosition;
