@@ -35,12 +35,19 @@ void Object::move(sf::Vector2f offset)
 {
 	mPosition.x += offset.x;
 	mPosition.y += offset.y;
-
+    #if 0
 	std::function<void(sf::Vector2f)> func = [=](sf::Vector2f offset) {
 		this->mPosition.x += offset.x;
 		this->mPosition.y += offset.y;
 	};
 	forEachChildWhichIsObject(func, offset);
+	#endif // 0
+
+    for (auto& child : mChildren) {
+		Object* objectPtr = dynamic_cast<Object*>(child.get());
+		if (objectPtr)
+			objectPtr->move(offset);
+	}
 }
 
 void Object::setScale(sf::Vector2f scale)
