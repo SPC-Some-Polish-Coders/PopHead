@@ -1,5 +1,3 @@
-#include "resourceHolder.hpp"
-
 using PopHead::Resources::ResourceHolder;
 
 template<typename Resource>
