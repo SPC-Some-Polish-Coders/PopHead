@@ -3,7 +3,7 @@
 using PopHead::World::Entity::NPC;
 
 
-NPC::NPC(Base::GameData* gameData, std::string name)
+NPC::NPC(PopHead::Base::GameData* gameData, std::string name)
 :Character(gameData, name)
 {
 }

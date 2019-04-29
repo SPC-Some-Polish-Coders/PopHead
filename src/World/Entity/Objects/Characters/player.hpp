@@ -15,6 +15,9 @@ public:
 
     void input() override;
     void update(sf::Time delta) override;
+
+private:
+    void updateAnimation(const std::string& stateName);
     ///void talkTo(NPC&);
 
     ///auto getPerks() const -> const PerkManager&;

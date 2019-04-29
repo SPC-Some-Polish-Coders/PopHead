@@ -2,26 +2,49 @@
 
 #include "Base/gameData.hpp"
 
-using PopHead::World::Entity::Player;
+#include "Resources/spriteSheetData.hpp"
 
-Player::Player(Base::GameData* gameData)
-:Character(gameData, "player", 150)
+#include <array>
+
+using PopHead::World::Entity::Player;
+using namespace PopHead::Resources;
+
+Player::Player(PopHead::Base::GameData* gameData)
+	:
+	Character(gameData, "player",
+		Animation{
+			std::array<std::string, 4>{"down", "left", "right", "up"},
+			{
+				sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+				sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+			},
+			{
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT,
+				SpriteSheetData::PLAYER_FRAMES_COUNT
+			},
+			sf::seconds(0.15f)
+		}, 150)
 {
     mSprite.setPosition(400, 400);
+	mAnimation.animate(mSprite);
 }
 
 void Player::input()
 {
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::A)){
+    if(INPUT_isActionPressed("movingLeft")){
         mMotion.isMovingLeft = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::D)){
+    if(INPUT_isActionPressed("movingRight")){
         mMotion.isMovingRight = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::W)){
+    if(INPUT_isActionPressed("movingUp")){
         mMotion.isMovingUp = true;
     }
-    if(mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::S)){
+    if(INPUT_isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
 }
@@ -30,17 +53,26 @@ void Player::update(sf::Time delta)
 {
     sf::Vector2f velocity;
 
-    if(mMotion.isMovingLeft){
-        velocity.x -= mMovementSpeed * delta.asSeconds();
-    }
-    if(mMotion.isMovingRight){
-        velocity.x += mMovementSpeed * delta.asSeconds();
-    }
-    if(mMotion.isMovingUp){
-        velocity.y -= mMovementSpeed * delta.asSeconds();
-    }
-    if(mMotion.isMovingDown){
-        velocity.y += mMovementSpeed * delta.asSeconds();
+    if(mMotion.isMoving())
+    {
+        if(mMotion.isMovingLeft){
+            velocity.x -= mMovementSpeed * delta.asSeconds();
+            updateAnimation("left");
+        }
+        if(mMotion.isMovingRight){
+            velocity.x += mMovementSpeed * delta.asSeconds();
+            updateAnimation("right");
+        }
+        if(mMotion.isMovingUp){
+            velocity.y -= mMovementSpeed * delta.asSeconds();
+            updateAnimation("up");
+        }
+        if(mMotion.isMovingDown){
+            velocity.y += mMovementSpeed * delta.asSeconds();
+            updateAnimation("down");
+        }
+
+        mAnimation.animate(mSprite, delta);
     }
 
     mSprite.move(velocity);
@@ -48,12 +80,19 @@ void Player::update(sf::Time delta)
     mMotion.clear();
 }
 
+void Player::updateAnimation(const std::string& stateName)
+{
+    const std::string name = mAnimation.getCurrentStateName();
+	if (name != stateName)
+	{
+		mAnimation.changeState(stateName);
+		mAnimation.animate(mSprite);
+	}
+}
+
 /*void talkTo(NPC&)
 {
 
 }*/
 
-/*auto getPerks() const -> const PerkManager&
-{
-    return mPerks;
-}*/
+//auto getPerks() const -> const PerkManager& { return mPerks; }

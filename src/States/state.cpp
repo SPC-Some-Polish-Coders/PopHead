@@ -5,7 +5,7 @@
 using PopHead::States::State;
 using PopHead::World::EntityType;
 
-State::State( Base::GameData* const gameData )
+State::State( PopHead::Base::GameData* const gameData )
         : mGameData { gameData }
         , mRoot { EntityType::none, gameData, "root" }
         , mHide { false }

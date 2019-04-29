@@ -1,29 +1,118 @@
 #include "States/GameState/gameState.hpp"
 
-#include <iostream>
-
 #include "World/Entity/Objects/Characters/player.hpp"
+#include "World/Entity/Objects/map.hpp"
+#include "World/Entity/Objects/staticObjectToCamera.hpp"
 #include "Base/gameData.hpp"
+#include "Utilities/math.hpp"
 
 using PopHead::States::GameState;
 
-GameState::GameState(Base::GameData* const gameData)
+GameState::GameState(PopHead::Base::GameData* const gameData)
 :State{gameData}
 {
-    //mTexture.loadFromFile("resources/textures/characters/vaultMan.png");
-    mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
+    loadResources();
+    makeSceneTree();
+}
 
-    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(gameData));
-    player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan"));
+void GameState::loadResources()
+{
+    mPlayerTexture.loadFromFile("resources/textures/characters/vaultManSheet.png");
+    mNPCTexture.loadFromFile("resources/textures/characters/vaultMan.png");
+    mMapTexture.loadFromFile("resources/textures/map/city.png");
+    mBoatTexture.loadFromFile("resources/textures/vehicles/boat.png");
+}
+
+void GameState::makeSceneTree()
+{
+    makeMap();
+    makeBoat();
+    makeNPC();
+    makePlayer();
+	makeStaticObjectToCamera();
+    setCamera();
+}
+
+void GameState::makePlayer()
+{
+    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
+    player->getSprite().setTexture(mPlayerTexture);
+    player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
+}
+
+void GameState::makeBoat()
+{
+    std::unique_ptr<World::Entity::Character> boat(new World::Entity::Character(mGameData, "boat"));
+    boat->getSprite().setTexture(mBoatTexture);
+    boat->setPosition(sf::Vector2f(1500, 5700));
+
+    mRoot.addChild(std::move(boat));
+}
+
+void GameState::makeNPC()
+{
+    std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
+    npc->getSprite().setTexture(mNPCTexture);
+    npc->setPosition(sf::Vector2f(1650, 5800));
+
+    mRoot.getChild("boat").addChild(std::move(npc));
+}
+
+void GameState::makeMap()
+{
+    std::unique_ptr<World::Entity::Map> city(new World::Entity::Map(mGameData, "cityMap", mMapTexture, 2));
+    mRoot.addChild(std::move(city));
+}
+
+void PopHead::States::GameState::makeStaticObjectToCamera()
+{
+	auto object = std::make_unique<World::Entity::StaticObjectToCamera>(mGameData);
+	mRoot.addChild(std::move(object));
+}
+
+void GameState::setCamera()
+{
+    const sf::Vector2f playerPosition(1900, 5220);
+    mGameData->getRenderer().getCamera().setCenter(playerPosition);
 }
 
 void GameState::input()
 {
     mRoot.input();
+
+	if (INPUT_isKeyJustPressed(sf::Keyboard::Space))
+		shouldCameraShake = true;
 }
 
 void GameState::update(sf::Time delta)
 {
     mRoot.update(delta);
+
+	if (shouldCameraShake)
+		cameraShake();
+
+	cameraMovement(delta);
+
+	boatMovement(delta);
+}
+
+void GameState::cameraShake()
+{
+	constexpr float cameraShakeStrength = 10.f;
+	mGameData->getRenderer().startShaking(cameraShakeStrength);
+	shouldCameraShake = false;
+}
+
+void GameState::cameraMovement(sf::Time delta) const
+{
+	constexpr float cameraMotionSpeed = 4.f;
+	const sf::FloatRect characterBounds = dynamic_cast<World::Entity::Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
+	mGameData->getRenderer().moveCamera(Utilities::Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
+}
+
+void GameState::boatMovement(sf::Time delta)
+{
+    auto& boat = dynamic_cast<World::Entity::Character&>(mRoot.getChild("boat"));
+    boat.move(sf::Vector2f(delta.asSeconds() * -15, 0));
 }

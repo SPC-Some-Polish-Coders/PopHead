@@ -2,6 +2,7 @@
 
 #include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
+#include <Input/eventLoop.hpp>
 
 namespace PopHead{ namespace States { enum class StateID; } }
 
@@ -27,10 +28,13 @@ Game::Game()
             mShaders.get(),
             mStateMachine.get(),
             mInput.get(),
-            mRenderer.get() ) );
+            mRenderer.get()	) );
 
     mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::GameState);
+
+    Input::EventLoop::init( mGameData.get() );
+    mInput->setGameData( mGameData.get() );
 
     run();
 }
@@ -45,19 +49,20 @@ void Game::run()
     {
         mStateMachine->changingStatesProcess();
 
-        // temp
+        // temporary
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             break;
 
-        mStateMachine->input();
+        Input::EventLoop::eventLoop(mGameData.get());
+        input();
 
         timeSinceLastUpdate += clock.restart();
 
         while(timeSinceLastUpdate >= timePerFrame){
             timeSinceLastUpdate -= timePerFrame;
 
-            mStateMachine->update(timePerFrame);
-            mRenderer->draw();
+            update(timePerFrame);
+            draw();
         }
     }
 }
@@ -67,12 +72,13 @@ void Game::input()
     mStateMachine->input();
 }
 
-void Game::update( sf::Time delta )
+void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
+	mRenderer->update(delta);
 }
 
 void Game::draw()
 {
-
+    mRenderer->draw();
 }
