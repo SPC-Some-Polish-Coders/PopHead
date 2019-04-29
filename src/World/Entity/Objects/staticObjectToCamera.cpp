@@ -15,3 +15,10 @@ void StaticObjectToCamera::draw(sf::RenderTarget& target, sf::RenderStates state
 {
 	target.draw(mShape, states);
 }
+
+void StaticObjectToCamera::move(sf::Vector2f offset)
+{
+	mShape.move(offset);
+	Object::move(offset);
+}
+

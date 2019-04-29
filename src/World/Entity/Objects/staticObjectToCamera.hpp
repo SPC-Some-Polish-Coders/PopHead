@@ -17,6 +17,7 @@ public:
 	StaticObjectToCamera(PopHead::Base::GameData*);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void move(sf::Vector2f offset) override;
 
 private:
 	sf::RectangleShape mShape;

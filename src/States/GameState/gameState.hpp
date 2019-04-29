@@ -19,6 +19,7 @@ private:
     void makeBoat();
     void makeNPC();
     void makeMap();
+	void makeStaticObjectToCamera();
     void setCamera();
 
 public:

@@ -2,6 +2,7 @@
 
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
+#include "World/Entity/Objects/staticObjectToCamera.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/math.hpp"
 
@@ -28,6 +29,7 @@ void GameState::makeSceneTree()
     makeBoat();
     makeNPC();
     makePlayer();
+	makeStaticObjectToCamera();
     setCamera();
 }
 
@@ -61,6 +63,12 @@ void GameState::makeMap()
 {
     std::unique_ptr<World::Entity::Map> city(new World::Entity::Map(mGameData, "cityMap", mMapTexture, 2));
     mRoot.addChild(std::move(city));
+}
+
+void PopHead::States::GameState::makeStaticObjectToCamera()
+{
+	auto object = std::make_unique<World::Entity::StaticObjectToCamera>(mGameData);
+	mRoot.addChild(std::move(object));
 }
 
 void GameState::setCamera()
