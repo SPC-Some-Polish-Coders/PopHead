@@ -9,6 +9,7 @@ StaticObjectToCamera::StaticObjectToCamera(PopHead::Base::GameData* gameData)
 ,mShape(sf::Vector2f(300, 100))
 {
 	mShape.setFillColor(sf::Color::Red);
+	mShape.setPosition(-400, -400);
 }
 
 void StaticObjectToCamera::draw(sf::RenderTarget& target, sf::RenderStates states) const

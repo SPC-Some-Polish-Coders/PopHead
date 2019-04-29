@@ -44,12 +44,10 @@ void PopHead::Renderer::Camera::applyTo(sf::RenderTarget& renderTarget) const
 
 void PopHead::Renderer::Camera::updateCameraMoveFromLastFrame()
 {
-	mCameraMoveFromLastFrame.x = mCenterWithoutShake.x - mLastFrameCameraCenterPosition.x;
-	mCameraMoveFromLastFrame.y = mCenterWithoutShake.y - mLastFrameCameraCenterPosition.y;
+	mCameraMoveFromLastFrame = mCenterWithoutShake - mLastFrameCameraCenterPosition;
 }
 
 void PopHead::Renderer::Camera::updateLastCameraPosition()
 {
-	mLastFrameCameraCenterPosition.x = mCenterWithoutShake.x;
-	mLastFrameCameraCenterPosition.y = mCenterWithoutShake.y;
+	mLastFrameCameraCenterPosition = mCenterWithoutShake;
 }

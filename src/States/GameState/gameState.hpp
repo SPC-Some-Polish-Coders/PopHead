@@ -19,8 +19,8 @@ private:
     void makeBoat();
     void makeNPC();
     void makeMap();
-	void makeStaticObjectToCamera();
     void setCamera();
+	void makeStaticObjectToCamera();
 
 public:
     void input() override;
