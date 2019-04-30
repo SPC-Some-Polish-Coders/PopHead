@@ -24,3 +24,14 @@ void CollisionBody::move(sf::Vector2f velocity)
 {
 	mVelocity += velocity;
 }
+
+void CollisionBody::movePhysics()
+{
+	mRect.left += mVelocity.x;
+	mRect.top += mVelocity.y;
+}
+
+void CollisionBody::setPositionOfGraphicRepresentation(sf::Vector2f position)
+{
+
+}

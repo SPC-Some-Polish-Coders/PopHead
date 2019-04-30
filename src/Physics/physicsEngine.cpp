@@ -9,8 +9,7 @@ void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
     {
-        kinematicBody->mRect.left += kinematicBody->mVelocity.x;
-        kinematicBody->mRect.top += kinematicBody->mVelocity.y;
+		kinematicBody->movePhysics();
     }
 }
 

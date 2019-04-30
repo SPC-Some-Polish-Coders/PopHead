@@ -17,6 +17,10 @@ public:
     void move(sf::Vector2f velocity);
 
 private:
+	void movePhysics();
+	void setPositionOfGraphicRepresentation(sf::Vector2f position);
+
+private:
     sf::FloatRect mRect;
     sf::Vector2f mVelocity;
     float mMass;
