@@ -4,13 +4,14 @@
 
 using PopHead::World::Entity::Character;
 
-Character::Character(Base::GameData* gameData, std::string name,
+Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
                      unsigned int movementSpeed, unsigned int HP, unsigned int maxHP)
 :Object(gameData, name, Renderer::LayerID::kinematicEntities)
 ,mHP(HP)
 ,mMaxHP(maxHP)
 ,mMovementSpeed(movementSpeed)
 ,mMotion()
+,mAnimation(animation)
 {
 }
 
@@ -29,32 +30,47 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mSprite, states);
 }
 
-unsigned int Character::getMaxHP() const
+void Character::setPosition(sf::Vector2f position)
 {
-    return mMaxHP;
+    mSprite.setPosition(position);
+    Object::setPosition(position);
 }
 
-unsigned int Character::getHP() const
+void Character::move(sf::Vector2f offset)
 {
-    return mHP;
+    mSprite.move(offset);
+    Object::move(offset);
 }
 
-sf::Sprite& Character::getSprite()
+void Character::setScale(sf::Vector2f factor)
 {
-    return mSprite;
+    mSprite.setScale(factor);
+    Object::setScale(factor);
 }
+
+void Character::setRotation(float angle)
+{
+    mSprite.setRotation(angle);
+    Object::setRotation(angle);
+}
+
+void Character::rotate(float angle)
+{
+    mSprite.rotate(angle);
+    Object::rotate(angle);
+}
+
+unsigned int Character::getMaxHP() const { return mMaxHP; }
+
+unsigned int Character::getHP() const { return mHP; }
+
+sf::Sprite& Character::getSprite() { return mSprite; }
 
 /*auto Character::getEquipment() const -> const Equipment&
-{
-
-}*/
+{}*/
 
 /*auto Character::getCurrentWeapon() const -> const Weapon&
-{
-
-}*/
+{}*/
 
 /*auto Character::getExperienceManager() const -> const ExperienceManager&
-{
-
-}*/
+{}*/

@@ -2,6 +2,7 @@
 #define POPHEAD_WORLD_OBJECT_H_
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 #include "World/Entity/entity.hpp"
 #include "Renderer/layerID.hpp"
@@ -16,31 +17,36 @@ class Object : public Entity, public sf::Drawable
 public:
     Object(Base::GameData*, std::string name, Renderer::LayerID);
 
-    void moveTo(sf::Vector2f);
-    virtual void onCollision(Object&) = 0;
+    virtual void onCollision(Object&);
 
     void setVisibility(bool visibility);
     virtual void setPosition(sf::Vector2f);
+	virtual void move(sf::Vector2f);
     virtual void setScale(sf::Vector2f);
     virtual void setRotation(float angle);
+    virtual void rotate(float angle);
 
-    sf::Vector2f getPosition() const;
-    sf::Vector2f getScale() const;
-    float getRotation() const;
-    ///auto getColision() const -> const ColisionObject&;
-    auto getLayerID() const -> Renderer::LayerID;
-    bool getVisibility() const;
+	auto getPosition() -> sf::Vector2f const { return mPosition; }
+	auto getScale() -> sf::Vector2f const { return mScale; }
+	float getRotation() const { return mRotation; }
+	auto getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+	bool getVisibility() const { return mVisibility; }
+
+private:
+	template <typename T>
+	void forEachChildWhichIsObject(std::function<void(Object*, T)> func, T param);
 
 protected:
     sf::Vector2f mPosition;
     sf::Vector2f mScale;
     float mRotation;
-    ///ColisionObject mColision;
     bool mVisibility;
     const Renderer::LayerID mLayerID;
 };
 
 
 }}}
+
+#include "object.inl"
 
 #endif // !POPHEAD_WORLD_OBJECT_H_

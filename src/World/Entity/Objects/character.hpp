@@ -2,7 +2,8 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
 
 #include "World/Entity/object.hpp"
-#include "characterMotion.hpp"
+#include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
+#include "World/Animation/animation.hpp"
 
 namespace PopHead{
 namespace World{
@@ -12,12 +13,18 @@ namespace Entity{
 class Character : public Object
 {
 public:
-    Character(Base::GameData*, std::string name,
+    Character(Base::GameData*, std::string name, Animation animation = Animation(),
               unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100);
 
     void atack();
     void onCollision(Object&) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    void setPosition(sf::Vector2f) override;
+	void move(sf::Vector2f) override;
+    void setScale(sf::Vector2f) override;
+    void setRotation(float angle) override;
+    void rotate(float angle) override;
 
     unsigned int getMaxHP() const;
     unsigned int getHP() const;
@@ -30,11 +37,12 @@ protected:
     ///Equipment mEquipment;
     ///Weapon* const mCurrentWeapon;
     ///ExperienceManager mExperienceManager;
-    sf::Sprite mSprite;
     unsigned int mHP;
     unsigned int mMaxHP;
     unsigned int mMovementSpeed;
     CharacterMotion mMotion;
+    sf::Sprite mSprite;
+    Animation mAnimation;
 };
 
 

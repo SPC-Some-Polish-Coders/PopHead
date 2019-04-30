@@ -1,3 +1,5 @@
+#define INPUT mGameData->getInput()
+
 #ifndef POPHEAD_INPUT_INPUT_H_
 #define POPHEAD_INPUT_INPUT_H_
 
@@ -6,20 +8,25 @@
 #include "Input/mouseManager.hpp"
 
 namespace PopHead {
+    namespace Base{ class GameData; }
 namespace Input {
 
 
 class Input
 {
 public:
-    auto getKeyboard() -> const KeyboardManager&;
-    auto getMouse()    -> const MouseManager&;
-    auto getAction()   -> const ActionManager&;
+    Input();
+
+    auto getKeyboard() -> const KeyboardManager& {return mKeyboard;}
+    auto getMouse()    -> const MouseManager&    {return mMouse;}
+    auto getAction()   -> ActionManager&         {return mAction;}
+
+    void setGameData(Base::GameData*);
 
 private:
+    MouseManager mMouse;
     ActionManager mAction;
     KeyboardManager mKeyboard;
-    MouseManager mMouse;
 };
 
 

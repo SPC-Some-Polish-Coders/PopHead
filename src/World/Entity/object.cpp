@@ -4,65 +4,62 @@
 using PopHead::World::Entity::Object;
 
 
-Object::Object(Base::GameData* gameData, std::string name, Renderer::LayerID layerID)
-:Entity(EntityType::object, gameData, name)
+Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Renderer::LayerID layerID)
+:Entity(PopHead::World::EntityType::object, gameData, name)
 ,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::moveTo(sf::Vector2f)
+void Object::onCollision(Object&)
 {
 }
 
 void Object::setVisibility(bool visibility)
 {
-    mVisibility = visibility;
+	mVisibility = visibility;
+
+	std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) {object->setVisibility(visibility);};
+	forEachChildWhichIsObject(func, visibility);
 }
 
 void Object::setPosition(sf::Vector2f pos)
 {
-    mPosition = pos;
+	mPosition = pos;
+
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos); };
+	forEachChildWhichIsObject(func, pos);
+}
+
+void Object::move(sf::Vector2f offset)
+{
+	mPosition += offset;
+	std::function<void(Object*, sf::Vector2f)> func = [](Object* object, sf::Vector2f offset) {
+		object->move(offset);
+	};
+	forEachChildWhichIsObject(func, offset);
 }
 
 void Object::setScale(sf::Vector2f scale)
 {
-    mScale = scale;
+	mScale = scale;
+
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) {object->setScale(scale); };
+	forEachChildWhichIsObject(func, scale);
 }
 
 void Object::setRotation(float angle)
 {
-    mRotation = angle;
+	mRotation = angle;
+
+	std::function<void(Object*, float)> func = [=](Object * object, float angle) {object->setRotation(angle); };
+	forEachChildWhichIsObject(func, angle);
 }
 
-sf::Vector2f Object::getPosition() const
+void Object::rotate(float angle)
 {
-    return mPosition;
-}
+	mRotation += angle;
 
-sf::Vector2f Object::getScale() const
-{
-    return mScale;
-}
-
-float Object::getRotation() const
-{
-    return mRotation;
-}
-
-#if 0
-auto Object::getColision() const -> const ColisionObject&
-{
-    return mColision;
-}
-#endif // 0
-
-auto Object::getLayerID() const -> Renderer::LayerID
-{
-    return mLayerID;
-}
-
-bool Object::getVisibility() const
-{
-    return mVisibility;
+	std::function<void(Object*, float)> func = [=](Object* object, float angle) {object->rotate(angle);};
+	forEachChildWhichIsObject(func, angle);
 }

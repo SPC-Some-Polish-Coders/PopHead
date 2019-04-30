@@ -1,18 +1,16 @@
-#include "Input/input.hpp"
+#include "input.hpp"
+#include "Base/gameData.hpp"
+#include "eventLoop.hpp"
 
 using PopHead::Input::Input;
 
-auto Input::getKeyboard() -> const KeyboardManager&
+
+Input::Input()
+	:mAction()
 {
-    return mKeyboard;
 }
 
-auto Input::getMouse() -> const MouseManager&
+void Input::setGameData(PopHead::Base::GameData* gameData)
 {
-    return mMouse;
-}
-
-auto Input::getAction()   -> const ActionManager&
-{
-    return mAction;
+	mMouse.setGameData(gameData);
 }

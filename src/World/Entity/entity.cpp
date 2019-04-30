@@ -2,7 +2,7 @@
 
 using PopHead::World::Entity::Entity;
 
-Entity::Entity(EntityType type, Base::GameData* gameData, std::string name)
+Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
 ,mName(name)
@@ -37,34 +37,14 @@ void Entity::removeChild(const std::string& name)
             ++it;
 }
 
-void Entity::removeChild(unsigned int id)
+void Entity::removeChild(Entity*)
 {
 
 }
 
-void Entity::removeChild(EntityType)
+void Entity::removeChild(PopHead::World::EntityType)
 {
 
-}
-
-void Entity::setName(const std::string& name)
-{
-    mName = name;
-}
-
-auto Entity::getEntityType() const -> EntityType
-{
-    return mEntityType;
-}
-
-auto Entity::getID() const -> unsigned int
-{
-    return mID;
-}
-
-auto Entity::getParent() const -> Entity&
-{
-    return *mParent;
 }
 
 auto Entity::getChild(std::string name) const -> Entity&
@@ -73,14 +53,4 @@ auto Entity::getChild(std::string name) const -> Entity&
         if(child->getName() == name)
             return *(child.get());
     }
-}
-
-auto Entity::getChildren() -> std::list< std::unique_ptr<Entity> >&
-{
-    return mChildren;
-}
-
-auto Entity::getName() const -> const std::string&
-{
-    return mName;
 }

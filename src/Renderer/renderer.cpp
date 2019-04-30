@@ -7,7 +7,7 @@ using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;
 
 Renderer::Renderer()
-        : mCamera { { 0, 0, 32*10, 32*10 } }
+	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
         , mWindow { sf::VideoMode::getDesktopMode(),
                     "PopHead",
@@ -18,7 +18,8 @@ Renderer::Renderer()
                     { LayerID::airEntities, Layer() },
                     { LayerID::GUI, Layer() }, }
 {
-    mCamera.setViewport( mViewports.at( FullScreenViewport ) );
+    mCamera.setViewport(mViewports.at(FullScreenViewport));
+    mWindow.setVerticalSyncEnabled(false);
 }
 
 Renderer::~Renderer()
@@ -26,8 +27,15 @@ Renderer::~Renderer()
     mWindow.close();
 }
 
+void Renderer::update(sf::Time delta)
+{
+	mCamera.update(delta);
+	setPositionOfStaticObjectsToCamera();
+}
+
 void Renderer::draw() const
 {
+	mCamera.applyTo(mWindow);
     mWindow.clear();
 
     for( const auto& layer : mLayers )
@@ -37,12 +45,12 @@ void Renderer::draw() const
     mWindow.display();
 }
 
-void Renderer::addObject( World::Entity::Object* const object )
+void Renderer::addObject( PopHead::World::Entity::Object* const object )
 {
     mLayers[object->getLayerID()].addObject( object );
 }
 
-void Renderer::addObject( World::Entity::Object* const object,
+void Renderer::addObject(PopHead::World::Entity::Object* const object,
                           LayerID layerID )
 {
     mLayers[layerID].addObject( object );
@@ -53,7 +61,7 @@ void Renderer::removeObject( std::string name, LayerID layerID )
     mLayers[layerID].removeObject( name );
 }
 
-void Renderer::removeObject( const World::Entity::Object* const object )
+void Renderer::removeObject( const PopHead::World::Entity::Object* const object )
 {
     mLayers[object->getLayerID()].removeObject( object );
 }
@@ -62,3 +70,12 @@ void Renderer::removeObjects( LayerID layerID )
 {
     mLayers[layerID].clear();
 }
+
+void Renderer::setPositionOfStaticObjectsToCamera()
+{
+	for (const auto& guiObject : mLayers[LayerID::GUI]) {
+		guiObject->move(mCamera.getCameraMoveFromLastFrame());
+	}
+}
+
+

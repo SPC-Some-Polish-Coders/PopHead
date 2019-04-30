@@ -8,6 +8,7 @@
 
 #include "Renderer/layer.hpp"
 #include "Renderer/layerID.hpp"
+#include "Renderer/camera.hpp"
 
 /** @defgroup Renderer Renderer
  *  Renderer module is responsible for rendering game world and managing the window.
@@ -28,7 +29,7 @@ namespace Renderer {
 /// @ingroup Renderer
 class Renderer
 {
-  public:
+public:
     Renderer();
 
     /// Destructor.
@@ -49,6 +50,8 @@ class Renderer
     /// Draw registered objects.
     /** Iterates through Layer s, and draw registered Object s by
      *  addObject(*) methods. */
+	void update(sf::Time delta);
+
     void draw() const;
 
     /// Register object to be drawn.
@@ -63,24 +66,23 @@ class Renderer
 
     void removeObjects( LayerID layerID );
 
-    inline auto getWindow() const -> const sf::Window&;
-    inline auto getLayer( LayerID ) -> Layer&;
-    inline auto getLayer( LayerID ) const -> const Layer&;
+    auto getWindow() const -> sf::Window& { return mWindow; }
+	auto getCamera() -> Camera& { return mCamera; }
+    auto getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
+    auto getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
-    inline auto getCameraPosition() const -> const sf::Vector2f&;
-    inline auto getCameraSize() const -> const sf::Vector2f&;
+	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
+	void moveCamera( sf::Vector2f center, float speed ) { mCamera.move(center, speed); }
 
-    inline void setCameraPosition( sf::Vector2f );
-    inline void setCameraSize( sf::Vector2f );
+private:
+    void setPositionOfStaticObjectsToCamera();
 
-  private:
-    sf::View mCamera;
+private:
+    Camera mCamera;
     const std::map< Viewports, sf::Rect< float > > mViewports;
     mutable sf::RenderWindow mWindow;
     mutable std::map< LayerID, Layer > mLayers;
 };
-
-#include "Renderer/renderer.inl"
 
 }}
 
