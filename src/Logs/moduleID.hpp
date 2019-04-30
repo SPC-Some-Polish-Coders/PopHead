@@ -15,7 +15,7 @@ enum class ModuleID
 	Physics,
 	States,
 	Inputs,
-	Resourcees
+	Resources
 };
 
 }}

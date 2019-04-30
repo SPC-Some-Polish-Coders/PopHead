@@ -21,6 +21,8 @@ public:
 	void writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType);
 	void writeEachLog();
 	auto getTimeFromStartOfTheProgram() const->sf::Time &; 
+	friend std::ostream& operator<<(std::ostream& os, const ModuleID& dt);
+	friend std::ostream& operator<<(std::ostream& os, const LogType& dt);
 private:
 	std::vector<Log> gatheredLogs;
 	sf::Clock timeFromStartOfTheProgram;
