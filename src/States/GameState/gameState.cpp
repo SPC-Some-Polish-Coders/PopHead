@@ -17,10 +17,10 @@ GameState::GameState(PopHead::Base::GameData* const gameData)
 
 void GameState::loadResources()
 {
-    mPlayerTexture.loadFromFile("resources/textures/characters/vaultManSheet.png");
-    mNPCTexture.loadFromFile("resources/textures/characters/vaultMan.png");
-    mMapTexture.loadFromFile("resources/textures/map/city.png");
-    mBoatTexture.loadFromFile("resources/textures/vehicles/boat.png");
+	mGameData->getTextures().load("resources/textures/characters/vaultManSheet.png");
+	mGameData->getTextures().load("resources/textures/vehicles/boat.png");
+	mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
+	mGameData->getTextures().load("resources/textures/map/city.png");
 }
 
 void GameState::makeSceneTree()
@@ -36,7 +36,7 @@ void GameState::makeSceneTree()
 void GameState::makePlayer()
 {
     std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
-    player->getSprite().setTexture(mPlayerTexture);
+    player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
     player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
 }
@@ -44,7 +44,7 @@ void GameState::makePlayer()
 void GameState::makeBoat()
 {
     std::unique_ptr<World::Entity::Character> boat(new World::Entity::Character(mGameData, "boat"));
-    boat->getSprite().setTexture(mBoatTexture);
+    boat->getSprite().setTexture(mGameData->getTextures().get("resources/textures/vehicles/boat.png"));
     boat->setPosition(sf::Vector2f(1500, 5700));
 
     mRoot.addChild(std::move(boat));
@@ -53,7 +53,7 @@ void GameState::makeBoat()
 void GameState::makeNPC()
 {
     std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
-    npc->getSprite().setTexture(mNPCTexture);
+    npc->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
     npc->setPosition(sf::Vector2f(1650, 5800));
 
     mRoot.getChild("boat").addChild(std::move(npc));
@@ -61,7 +61,8 @@ void GameState::makeNPC()
 
 void GameState::makeMap()
 {
-    std::unique_ptr<World::Entity::Map> city(new World::Entity::Map(mGameData, "cityMap", mMapTexture, 2));
+    std::unique_ptr<World::Entity::Map> 
+		city(new World::Entity::Map(mGameData, "cityMap", mGameData->getTextures().get("resources/textures/map/city.png"), 2));
     mRoot.addChild(std::move(city));
 }
 

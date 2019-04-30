@@ -1,17 +1,17 @@
 #include <cassert>
-//#include <string>
 
 using PopHead::Resources::ResourceHolder;
 
 template< typename ResourceType >
 bool ResourceHolder<ResourceType>::load(const std::string& filepath)
 {
-    auto r = std::make_unique< ResourceType >();
-    if( r->loadFromFile(filepath) )
-    {
-        mResources[filepath] = r;
+    auto resource = std::make_unique< ResourceType >();
+
+    if(resource->loadFromFile(filepath) ){
+		mResources.insert(std::make_pair(filepath, std::move(resource)));
         return true;
     }
+	///LOG will be here "unable to load file " + filepath + "! Probably there is not such file."
     return false;
 }
 

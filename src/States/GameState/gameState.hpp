@@ -33,12 +33,6 @@ private:
 	void boatMovement(sf::Time delta);
 
 private:
-    ///this is very temporary later it'll be handled by Resources module
-    sf::Texture mPlayerTexture;
-    sf::Texture mMapTexture;
-    sf::Texture mBoatTexture;
-    sf::Texture mNPCTexture;
-
 	bool shouldCameraShake = false;
 };
 
