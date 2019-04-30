@@ -10,6 +10,8 @@ void PhysicsEngine::update(sf::Time delta)
     for(auto kinematicBody : mKinematicBodies)
     {
 		kinematicBody->movePhysics();
+
+		kinematicBody->setPositionOfGraphicRepresentation();
     }
 }
 

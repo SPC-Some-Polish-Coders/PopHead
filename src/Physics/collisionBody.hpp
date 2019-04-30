@@ -3,8 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "Base/gameData.hpp"
+#include "../World/Entity/object.hpp"
 
 namespace PopHead{
+	//namespace World { namespace Entity { class Object; } }
 namespace Physics{
 
 enum class BodyType;
@@ -12,18 +14,19 @@ enum class BodyType;
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::Base::GameData*);
+    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData*);
 
     void move(sf::Vector2f velocity);
 
 private:
 	void movePhysics();
-	void setPositionOfGraphicRepresentation(sf::Vector2f position);
+	void setPositionOfGraphicRepresentation();
 
 private:
     sf::FloatRect mRect;
     sf::Vector2f mVelocity;
     float mMass;
+	World::Entity::Object* const pointerToObjectWhichIsOwnerOfThisCollisionBody;
 
 public:
     friend PhysicsEngine;
