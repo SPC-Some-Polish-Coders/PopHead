@@ -11,20 +11,17 @@
 namespace PopHead {
 namespace Resources {
 
-template< typename Resource >
+
+template< typename ResourceType >
 class ResourceHolder
 {
 public:
-    using ResourceMap =
-            std::unordered_map< std::string, std::unique_ptr< Resource > >;
-
-    inline auto get( const std::string& name ) -> Resource&;
-    inline void free( const std::string& name );
-    inline bool has( const std::string& name );
-    inline bool load( const std::string& name );
+    auto get(const std::string& name) ->ResourceType&;
+    void free(const std::string& name);
+    bool load(const std::string& name);
 
 private:
-    ResourceMap mResources;
+	std::unordered_map< std::string, std::unique_ptr<ResourceType> > mResources;
 };
 
 using SoundBufferHolder = ResourceHolder< sf::SoundBuffer >;
@@ -32,8 +29,9 @@ using TextureHolder = ResourceHolder< sf::Texture >;
 using FontHolder = ResourceHolder< sf::Font >;
 using ShaderHolder = ResourceHolder< sf::Shader>;
 
+
 }}
 
-#endif // !POPHEAD_RESOURCES_RESOURCESHOLDER_H_
-
 #include "Resources/resourceHolder.inl"
+
+#endif // !POPHEAD_RESOURCES_RESOURCESHOLDER_H_
