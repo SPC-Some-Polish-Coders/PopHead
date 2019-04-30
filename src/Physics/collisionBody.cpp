@@ -1,10 +1,12 @@
 #include "collisionBody.hpp"
+#include "bodyType.hpp"
 
 using PopHead::Physics::CollisionBody;
 
 CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
+,mVelocity()
 {
 	switch (bodyType)
 	{

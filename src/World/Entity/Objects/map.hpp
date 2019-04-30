@@ -13,7 +13,6 @@ class Map : public Object
 public:
     Map(Base::GameData* gameData, std::string name, const sf::Texture& texture, float scale = 1);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void onCollision(Object&) override;
 
 private:
     sf::Sprite mSprite;

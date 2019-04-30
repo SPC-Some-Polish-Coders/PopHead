@@ -2,16 +2,12 @@
 #define POPHEAD_PHYSICS_COLLISIONSBODY_H_
 
 #include <SFML/Graphics.hpp>
+#include "Base/gameData.hpp"
 
 namespace PopHead{
 namespace Physics{
 
-
-enum class BodyType
-{
-	staticBody,
-	kinematicBody
-};
+enum class BodyType;
 
 class CollisionBody
 {
