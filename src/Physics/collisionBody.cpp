@@ -31,6 +31,9 @@ void CollisionBody::movePhysics()
 {
 	mRect.left += mVelocity.x;
 	mRect.top += mVelocity.y;
+	
+	mVelocity.x = 0;
+	mVelocity.y = 0;
 }
 
 void CollisionBody::setPositionOfGraphicRepresentation()
