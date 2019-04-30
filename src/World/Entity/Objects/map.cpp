@@ -14,7 +14,3 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
 }
-
-void Map::onCollision(Object&)
-{
-}

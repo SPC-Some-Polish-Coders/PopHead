@@ -19,6 +19,7 @@ Game::Game()
         , mStateMachine { new States::StateMachine() }
         , mInput { new Input::Input() }
         , mRenderer { new Renderer::Renderer() }
+        , mPhysicsEngine { new Physics::PhysicsEngine() }
 {
     mGameData.reset( new GameData(
             mSoundPlayer.get(),
@@ -28,7 +29,8 @@ Game::Game()
             mShaders.get(),
             mStateMachine.get(),
             mInput.get(),
-            mRenderer.get()	) );
+            mRenderer.get(),
+			mPhysicsEngine.get() ) );
 
     mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::GameState);

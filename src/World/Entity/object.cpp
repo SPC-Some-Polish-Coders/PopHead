@@ -11,10 +11,6 @@ Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Ren
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::onCollision(Object&)
-{
-}
-
 void Object::setVisibility(bool visibility)
 {
 	mVisibility = visibility;

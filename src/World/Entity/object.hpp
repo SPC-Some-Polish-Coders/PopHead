@@ -17,8 +17,6 @@ class Object : public Entity, public sf::Drawable
 public:
     Object(Base::GameData*, std::string name, Renderer::LayerID);
 
-    virtual void onCollision(Object&);
-
     void setVisibility(bool visibility);
     virtual void setPosition(sf::Vector2f);
 	virtual void move(sf::Vector2f);

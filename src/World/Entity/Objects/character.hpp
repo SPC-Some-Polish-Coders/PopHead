@@ -17,7 +17,6 @@ public:
               unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100);
 
     void atack();
-    void onCollision(Object&) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void setPosition(sf::Vector2f) override;

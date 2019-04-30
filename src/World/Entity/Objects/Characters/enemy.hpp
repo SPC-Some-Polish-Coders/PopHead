@@ -12,8 +12,6 @@ namespace Entity{
 class Enemy : public Character
 {
 public:
-    void onCollision(Object&) override;
-
     ///auto getDamageWeaknesses() const -> const std::set<DamageWeakness>;
 
 protected:

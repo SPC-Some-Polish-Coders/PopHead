@@ -10,6 +10,7 @@
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
+#include "Physics/physicsEngine.hpp"
 #include "Logs/logManager.hpp"
 
 namespace PopHead {
@@ -55,7 +56,8 @@ class Game
     std::unique_ptr< Resources::ShaderHolder >  mShaders;
     std::unique_ptr< States::StateMachine >     mStateMachine;
     std::unique_ptr< Input::Input >             mInput;
-    std::unique_ptr< Renderer::Renderer >       mRenderer;///@}
+    std::unique_ptr< Renderer::Renderer >       mRenderer; 
+	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine; ///@}
 };
 
 inline auto Game::getGameData() const -> const Base::GameData&
