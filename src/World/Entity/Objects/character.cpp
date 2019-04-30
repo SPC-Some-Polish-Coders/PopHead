@@ -1,17 +1,20 @@
 #include "character.hpp"
 
+#include "Physics/bodyType.hpp"
+
 #include <iostream>
 
 using PopHead::World::Entity::Character;
 
 Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
-                     unsigned int movementSpeed, unsigned int HP, unsigned int maxHP)
+                     unsigned int movementSpeed, unsigned int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass)
 :Object(gameData, name, Renderer::LayerID::kinematicEntities)
 ,mHP(HP)
 ,mMaxHP(maxHP)
 ,mMovementSpeed(movementSpeed)
 ,mMotion()
 ,mAnimation(animation)
+,mCollisionBody(posAndSize, mass, Physics::BodyType::kinematicBody, this, gameData)
 {
 }
 
