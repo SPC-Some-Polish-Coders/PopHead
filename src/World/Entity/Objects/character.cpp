@@ -30,6 +30,36 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mSprite, states);
 }
 
+void Character::setPosition(sf::Vector2f position)
+{
+    mSprite.setPosition(position);
+    Object::setPosition(position);
+}
+
+void Character::move(sf::Vector2f offset)
+{
+    mSprite.move(offset);
+    Object::move(offset);
+}
+
+void Character::setScale(sf::Vector2f factor)
+{
+    mSprite.setScale(factor);
+    Object::setScale(factor);
+}
+
+void Character::setRotation(float angle)
+{
+    mSprite.setRotation(angle);
+    Object::setRotation(angle);
+}
+
+void Character::rotate(float angle)
+{
+    mSprite.rotate(angle);
+    Object::rotate(angle);
+}
+
 unsigned int Character::getMaxHP() const { return mMaxHP; }
 
 unsigned int Character::getHP() const { return mHP; }

@@ -18,7 +18,6 @@ public:
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
-	//auto State::getRoot() -> World::Entity::Entity&;
     bool getHide() const;
     bool getPause() const;
 

@@ -1,40 +1,37 @@
-#ifndef POPHEAD_RESOURCE_RESOURCESHOLDER_H_
-#define POPHEAD_RESOURCE_RESOURCESHOLDER_H_
+#ifndef POPHEAD_RESOURCES_RESOURCESHOLDER_H_
+#define POPHEAD_RESOURCES_RESOURCESHOLDER_H_
 
 #include <memory>
 #include <string>
 #include <unordered_map>
 
-#include "resource.hpp"
-#include "textureResource.hpp"
-#include "fontResource.hpp"
-#include "shaderResource.hpp"
-#include "soundBufferResource.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace PopHead {
 namespace Resources {
 
-template< typename Resource >
+
+template< typename ResourceType >
 class ResourceHolder
 {
-  public:
-    using ResourceMap =
-            std::unordered_map< std::string, std::unique_ptr< Resource > >;
+public:
+    auto get(const std::string& name) ->ResourceType&;
+    void free(const std::string& name);
+    bool load(const std::string& name);
 
-    inline auto get( const std::string& name ) -> Resource&;
-    inline void free( const std::string& name );
-    inline bool has( const std::string& name );
-    inline bool load( const std::string& name );
-
-  private:
-    ResourceMap mResources;
+private:
+	std::unordered_map< std::string, std::unique_ptr<ResourceType> > mResources;
 };
 
-using SoundBufferHolder = ResourceHolder< SoundBufferResource >;
-using TextureHolder = ResourceHolder< TextureResource >;
-using FontHolder = ResourceHolder< FontResource >;
-using ShaderHolder = ResourceHolder< ShaderResource >;
+using SoundBufferHolder = ResourceHolder< sf::SoundBuffer >;
+using TextureHolder = ResourceHolder< sf::Texture >;
+using FontHolder = ResourceHolder< sf::Font >;
+using ShaderHolder = ResourceHolder< sf::Shader>;
+
 
 }}
 
-#endif // !POPHEAD_RESOURCE_RESOURCESHOLDER_H_
+#include "Resources/resourceHolder.inl"
+
+#endif // !POPHEAD_RESOURCES_RESOURCESHOLDER_H_

@@ -11,28 +11,55 @@ Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Ren
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::moveTo(sf::Vector2f)
+void Object::onCollision(Object&)
 {
 }
 
-void Object::setVisibility(bool visibility) { mVisibility = visibility; }
+void Object::setVisibility(bool visibility)
+{
+	mVisibility = visibility;
 
-void Object::setPosition(sf::Vector2f pos) { mPosition = pos; }
+	std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) {object->setVisibility(visibility);};
+	forEachChildWhichIsObject(func, visibility);
+}
 
-void Object::setScale(sf::Vector2f scale) { mScale = scale; }
+void Object::setPosition(sf::Vector2f pos)
+{
+	mPosition = pos;
 
-void Object::setRotation(float angle) { mRotation = angle; }
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos); };
+	forEachChildWhichIsObject(func, pos);
+}
 
-sf::Vector2f Object::getPosition() const { return mPosition; }
+void Object::move(sf::Vector2f offset)
+{
+	mPosition += offset;
+	std::function<void(Object*, sf::Vector2f)> func = [](Object* object, sf::Vector2f offset) {
+		object->move(offset);
+	};
+	forEachChildWhichIsObject(func, offset);
+}
 
-sf::Vector2f Object::getScale() const { return mScale; }
+void Object::setScale(sf::Vector2f scale)
+{
+	mScale = scale;
 
-float Object::getRotation() const { return mRotation; }
+	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) {object->setScale(scale); };
+	forEachChildWhichIsObject(func, scale);
+}
 
-#if 0
-auto Object::getColision() const -> const ColisionObject& { return mColision; }
-#endif // 0
+void Object::setRotation(float angle)
+{
+	mRotation = angle;
 
-auto Object::getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+	std::function<void(Object*, float)> func = [=](Object * object, float angle) {object->setRotation(angle); };
+	forEachChildWhichIsObject(func, angle);
+}
 
-bool Object::getVisibility() const { return mVisibility; }
+void Object::rotate(float angle)
+{
+	mRotation += angle;
+
+	std::function<void(Object*, float)> func = [=](Object* object, float angle) {object->rotate(angle);};
+	forEachChildWhichIsObject(func, angle);
+}

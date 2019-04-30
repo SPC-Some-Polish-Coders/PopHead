@@ -16,7 +16,11 @@ private:
     void loadResources();
     void makeSceneTree();
     void makePlayer();
+    void makeBoat();
+    void makeNPC();
     void makeMap();
+    void setCamera();
+	void makeStaticObjectToCamera();
 
 public:
     void input() override;
@@ -25,13 +29,10 @@ public:
     void update(sf::Time delta) override;
 private:
 	void cameraShake();
-	void cameraMovement(sf::Time delta);
+	void cameraMovement(sf::Time delta) const;
+	void boatMovement(sf::Time delta);
 
 private:
-    ///this is very temporary later it'll be handled by Resources module
-    sf::Texture mPlayerTexture;
-    sf::Texture mMapTexture;
-
 	bool shouldCameraShake = false;
 };
 

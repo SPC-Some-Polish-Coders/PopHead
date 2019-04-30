@@ -29,7 +29,7 @@ namespace Renderer {
 /// @ingroup Renderer
 class Renderer
 {
-  public:
+public:
     Renderer();
 
     /// Destructor.
@@ -74,7 +74,10 @@ class Renderer
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera( sf::Vector2f center, float speed ) { mCamera.move(center, speed); }
 
-  private:
+private:
+    void setPositionOfStaticObjectsToCamera();
+
+private:
     Camera mCamera;
     const std::map< Viewports, sf::Rect< float > > mViewports;
     mutable sf::RenderWindow mWindow;

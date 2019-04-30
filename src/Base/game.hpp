@@ -11,6 +11,7 @@
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
+#include "Logs/logManager.hpp"
 
 namespace PopHead {
 namespace Base {

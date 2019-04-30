@@ -20,6 +20,12 @@ public:
     void onCollision(Object&) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    void setPosition(sf::Vector2f) override;
+	void move(sf::Vector2f) override;
+    void setScale(sf::Vector2f) override;
+    void setRotation(float angle) override;
+    void rotate(float angle) override;
+
     unsigned int getMaxHP() const;
     unsigned int getHP() const;
     sf::Sprite& getSprite();

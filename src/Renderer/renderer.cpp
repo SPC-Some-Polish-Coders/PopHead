@@ -18,7 +18,7 @@ Renderer::Renderer()
                     { LayerID::airEntities, Layer() },
                     { LayerID::GUI, Layer() }, }
 {
-    mCamera.setViewport( mViewports.at( FullScreenViewport ) );
+    mCamera.setViewport(mViewports.at(FullScreenViewport));
     mWindow.setVerticalSyncEnabled(false);
 }
 
@@ -30,6 +30,7 @@ Renderer::~Renderer()
 void Renderer::update(sf::Time delta)
 {
 	mCamera.update(delta);
+	setPositionOfStaticObjectsToCamera();
 }
 
 void Renderer::draw() const
@@ -68,6 +69,13 @@ void Renderer::removeObject( const PopHead::World::Entity::Object* const object 
 void Renderer::removeObjects( LayerID layerID )
 {
     mLayers[layerID].clear();
+}
+
+void Renderer::setPositionOfStaticObjectsToCamera()
+{
+	for (const auto& guiObject : mLayers[LayerID::GUI]) {
+		guiObject->move(mCamera.getCameraMoveFromLastFrame());
+	}
 }
 
 
