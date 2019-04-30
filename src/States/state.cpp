@@ -13,13 +13,6 @@ State::State( PopHead::Base::GameData* const gameData )
 {
 }
 
-#if 0
-auto State::getRoot() -> World::Entity::Entity&;
-{
-    return *mRoot;
-}
-#endif // 0
-
 bool State::getHide() const
 {
     return mHide;
