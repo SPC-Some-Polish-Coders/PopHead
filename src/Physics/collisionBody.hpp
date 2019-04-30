@@ -3,10 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "Base/gameData.hpp"
-#include "../World/Entity/object.hpp"
+#include "World/Entity/object.hpp"
 
 namespace PopHead{
-	//namespace World { namespace Entity { class Object; } }
 namespace Physics{
 
 enum class BodyType;

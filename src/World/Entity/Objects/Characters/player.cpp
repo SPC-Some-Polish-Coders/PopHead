@@ -71,12 +71,9 @@ void Player::update(sf::Time delta)
             velocity.y += mMovementSpeed * delta.asSeconds();
             updateAnimation("down");
         }
-
+		mCollisionBody.move(velocity);
         mAnimation.animate(mSprite, delta);
     }
-
-    mSprite.move(velocity);
-
     mMotion.clear();
 }
 
