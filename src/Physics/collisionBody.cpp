@@ -22,6 +22,5 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType, 
 
 void CollisionBody::move(sf::Vector2f velocity)
 {
-	mVelocity.x += velocity.x;
-	mVelocity.y += velocity.y;
+	mVelocity += velocity;
 }

@@ -1,10 +1,16 @@
 #include "physicsEngine.hpp"
 
+#include "collisionBody.hpp"
+
 using PopHead::Physics::PhysicsEngine;
 
 void PhysicsEngine::update(sf::Time delta)
 {
-
+    for(auto kinematicBody : mKinematicBodies)
+    {
+        kinematicBody->mRect.left += kinematicBody->mVelocity.x;
+        kinematicBody->mRect.top += kinematicBody->mVelocity.y;
+    }
 }
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)

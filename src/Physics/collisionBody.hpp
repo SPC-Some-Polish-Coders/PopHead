@@ -8,6 +8,7 @@ namespace PopHead{
 namespace Physics{
 
 enum class BodyType;
+//class PhysicsEngine;
 
 class CollisionBody
 {
@@ -20,6 +21,9 @@ private:
     sf::FloatRect mRect;
     sf::Vector2f mVelocity;
     float mMass;
+
+public:
+    friend PhysicsEngine;
 };
 
 
