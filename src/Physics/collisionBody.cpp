@@ -27,6 +27,12 @@ void CollisionBody::move(sf::Vector2f velocity)
 	mVelocity += velocity;
 }
 
+void CollisionBody::setPosition(sf::Vector2f position)
+{
+	mRect.left = position.x;
+	mRect.top = position.y;
+}
+
 void CollisionBody::movePhysics()
 {
 	mRect.left += mVelocity.x;

@@ -31,12 +31,14 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Character::setPosition(sf::Vector2f position)
 {
     mSprite.setPosition(position);
+	mCollisionBody.setPosition(position);
     Object::setPosition(position);
 }
 
 void Character::move(sf::Vector2f offset)
 {
     mSprite.move(offset);
+	mCollisionBody.move(offset);
     Object::move(offset);
 }
 

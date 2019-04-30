@@ -16,6 +16,7 @@ public:
     CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData*);
 
     void move(sf::Vector2f velocity);
+	void setPosition(sf::Vector2f position);
 
 private:
 	void movePhysics();
