@@ -29,16 +29,14 @@ public:
 
     void addChild(EntityPtr);
     void removeChild(const std::string& name);
-    void removeChild(unsigned int id);
+    void removeChild(Entity*);
     void removeChild(EntityType);
     void setName(const std::string& name);
 
-    auto getEntityType() const -> EntityType;
-    auto getParent() const -> Entity&;
+	auto getParent() const -> Entity& { return *mParent; }
+	auto getName() const -> const std::string& { return mName; }
     auto getChild(std::string name) const -> Entity&;
-    auto getChildren() -> std::list< std::unique_ptr<Entity> >&;
-    auto getName() const -> const std::string&;
-
+	
 protected:
     Base::GameData* mGameData;
 
