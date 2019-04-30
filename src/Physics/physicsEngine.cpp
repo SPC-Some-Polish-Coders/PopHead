@@ -3,6 +3,7 @@
 #include "collisionBody.hpp"
 
 using PopHead::Physics::PhysicsEngine;
+using PopHead::Physics::CollisionBody;
 
 void PhysicsEngine::update(sf::Time delta)
 {

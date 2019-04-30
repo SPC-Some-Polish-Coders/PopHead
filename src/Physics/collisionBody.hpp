@@ -8,7 +8,6 @@ namespace PopHead{
 namespace Physics{
 
 enum class BodyType;
-//class PhysicsEngine;
 
 class CollisionBody
 {
