@@ -11,55 +11,62 @@ Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Ren
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::onCollision(Object&)
-{
-}
-
-void Object::setVisibility(bool visibility)
+void Object::setVisibility(bool visibility, bool recursive)
 {
 	mVisibility = visibility;
 
-	std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) {object->setVisibility(visibility);};
-	forEachChildWhichIsObject(func, visibility);
+	if (recursive) {
+		std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) { object->setVisibility(visibility, recursive); };
+		forEachChildWhichIsObject(func, visibility);
+	}
 }
 
-void Object::setPosition(sf::Vector2f pos)
+void Object::setPosition(sf::Vector2f pos, bool recursive)
 {
 	mPosition = pos;
 
-	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos); };
-	forEachChildWhichIsObject(func, pos);
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos, recursive); };
+		forEachChildWhichIsObject(func, pos);
+	}
 }
 
-void Object::move(sf::Vector2f offset)
+void Object::move(sf::Vector2f offset, bool recursive)
 {
 	mPosition += offset;
-	std::function<void(Object*, sf::Vector2f)> func = [](Object* object, sf::Vector2f offset) {
-		object->move(offset);
-	};
-	forEachChildWhichIsObject(func, offset);
+
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f offset) { object->move(offset, recursive); };
+		forEachChildWhichIsObject(func, offset);
+	}
 }
 
-void Object::setScale(sf::Vector2f scale)
+void Object::setScale(sf::Vector2f scale, bool recursive)
 {
 	mScale = scale;
 
-	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) {object->setScale(scale); };
-	forEachChildWhichIsObject(func, scale);
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) { object->setScale(scale, recursive); };
+		forEachChildWhichIsObject(func, scale);
+	}
 }
 
-void Object::setRotation(float angle)
+void Object::setRotation(float angle, bool recursive)
 {
 	mRotation = angle;
 
-	std::function<void(Object*, float)> func = [=](Object * object, float angle) {object->setRotation(angle); };
-	forEachChildWhichIsObject(func, angle);
+	if (recursive) {
+		std::function<void(Object*, float)> func = [=](Object * object, float angle) { object->setRotation(angle, recursive); };
+		forEachChildWhichIsObject(func, angle);
+	}
 }
 
-void Object::rotate(float angle)
+void Object::rotate(float angle, bool recursive)
 {
 	mRotation += angle;
 
-	std::function<void(Object*, float)> func = [=](Object* object, float angle) {object->rotate(angle);};
-	forEachChildWhichIsObject(func, angle);
+	if (recursive) {
+		std::function<void(Object*, float)> func = [=](Object * object, float angle) { object->rotate(angle, recursive); };
+		forEachChildWhichIsObject(func, angle);
+	}
 }

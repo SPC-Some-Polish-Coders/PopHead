@@ -19,6 +19,7 @@ Game::Game()
         , mStateMachine { new States::StateMachine() }
         , mInput { new Input::Input() }
         , mRenderer { new Renderer::Renderer() }
+        , mPhysicsEngine { new Physics::PhysicsEngine() }
 {
     mGameData.reset( new GameData(
             mSoundPlayer.get(),
@@ -28,7 +29,8 @@ Game::Game()
             mShaders.get(),
             mStateMachine.get(),
             mInput.get(),
-            mRenderer.get()	) );
+            mRenderer.get(),
+			mPhysicsEngine.get() ) );
 
     mStateMachine->setGameData( mGameData.get() );
     mStateMachine->pushState(States::StateID::GameState);
@@ -53,7 +55,6 @@ void Game::run()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             break;
 
-        Input::EventLoop::eventLoop(mGameData.get());
         input();
 
         timeSinceLastUpdate += clock.restart();
@@ -69,12 +70,14 @@ void Game::run()
 
 void Game::input()
 {
+    Input::EventLoop::eventLoop(mGameData.get());
     mStateMachine->input();
 }
 
 void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
+	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 }
 

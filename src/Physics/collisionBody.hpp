@@ -2,22 +2,34 @@
 #define POPHEAD_PHYSICS_COLLISIONSBODY_H_
 
 #include <SFML/Graphics.hpp>
+#include "Base/gameData.hpp"
+#include "World/Entity/object.hpp"
 
 namespace PopHead{
 namespace Physics{
 
+enum class BodyType;
 
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass);
+    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData*);
 
-    void addToForce(sf::Vector2f force);
+    void move(sf::Vector2f velocity);
+	void setPosition(sf::Vector2f position);
+
+private:
+	void movePhysics();
+	void setPositionOfGraphicRepresentation();
 
 private:
     sf::FloatRect mRect;
+    sf::Vector2f mVelocity;
     float mMass;
-    sf::Vector2f mForce;
+	World::Entity::Object* const pointerToObjectWhichIsOwnerOfThisCollisionBody;
+
+public:
+    friend PhysicsEngine;
 };
 
 

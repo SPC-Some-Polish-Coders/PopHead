@@ -12,7 +12,6 @@ class Projectile : public Object
 {
 public:
     Projectile(Base::GameData*, const std::string& name, float damage, float range);
-    void onCollision(Object&) override;
     virtual void dealDamage(Object&) = 0;
 
 private:

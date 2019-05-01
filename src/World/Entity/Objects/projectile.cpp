@@ -9,9 +9,3 @@ Projectile::Projectile(PopHead::Base::GameData* gameData, const std::string& nam
 ,mDistanceTraveled(0)
 {
 }
-
-void Projectile::onCollision(Object&)
-{
-
-}
-

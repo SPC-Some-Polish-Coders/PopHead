@@ -1,12 +1,13 @@
 #ifndef POPHEAD_PHYSICS_PHYSICSENGINE_H_
 #define POPHEAD_PHYSICS_PHYSICSENGINE_H_
 
-#include "collisionBody.hpp"
 #include <SFML/System.hpp>
+#include <vector>
 
 namespace PopHead{
 namespace Physics{
 
+class CollisionBody;
 
 class PhysicsEngine
 {

@@ -1,10 +1,17 @@
 #include "physicsEngine.hpp"
 
+#include "collisionBody.hpp"
+
 using PopHead::Physics::PhysicsEngine;
+using PopHead::Physics::CollisionBody;
 
 void PhysicsEngine::update(sf::Time delta)
 {
-
+    for(auto kinematicBody : mKinematicBodies)
+    {
+		kinematicBody->movePhysics();
+		kinematicBody->setPositionOfGraphicRepresentation();
+    }
 }
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
@@ -39,5 +46,6 @@ void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBodyPtr)
 
 void PhysicsEngine::clear() noexcept
 {
-
+	mStaticBodies.clear();
+	mKinematicBodies.clear();
 }
