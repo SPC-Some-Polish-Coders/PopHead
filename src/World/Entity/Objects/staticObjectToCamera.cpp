@@ -17,9 +17,9 @@ void StaticObjectToCamera::draw(sf::RenderTarget& target, sf::RenderStates state
 	target.draw(mShape, states);
 }
 
-void StaticObjectToCamera::move(sf::Vector2f offset)
+void StaticObjectToCamera::move(sf::Vector2f offset, bool recursive)
 {
 	mShape.move(offset);
-	Object::move(offset);
+	Object::move(offset, recursive);
 }
 

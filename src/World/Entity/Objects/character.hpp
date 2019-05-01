@@ -22,10 +22,10 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void setPosition(sf::Vector2f, bool recursive = true) override;
-	void move(sf::Vector2f) override;
-    void setScale(sf::Vector2f) override;
-    void setRotation(float angle) override;
-    void rotate(float angle) override;
+	void move(sf::Vector2f, bool recursive = true) override;
+    void setScale(sf::Vector2f, bool recursive = true) override;
+    void setRotation(float angle, bool recursive = true) override;
+    void rotate(float angle, bool recursive = true) override;
 
     unsigned int getMaxHP() const;
     unsigned int getHP() const;

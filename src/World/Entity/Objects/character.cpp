@@ -35,29 +35,29 @@ void Character::setPosition(sf::Vector2f position, bool recursive)
     Object::setPosition(position, recursive);
 }
 
-void Character::move(sf::Vector2f offset)
+void Character::move(sf::Vector2f offset, bool recursive)
 {
     mSprite.move(offset);
 	mCollisionBody.move(offset);
-    Object::move(offset);
+    Object::move(offset, recursive);
 }
 
-void Character::setScale(sf::Vector2f factor)
+void Character::setScale(sf::Vector2f factor, bool recursive)
 {
     mSprite.setScale(factor);
-    Object::setScale(factor);
+    Object::setScale(factor, recursive);
 }
 
-void Character::setRotation(float angle)
+void Character::setRotation(float angle, bool recursive)
 {
     mSprite.setRotation(angle);
-    Object::setRotation(angle);
+    Object::setRotation(angle, recursive);
 }
 
-void Character::rotate(float angle)
+void Character::rotate(float angle, bool recursive)
 {
     mSprite.rotate(angle);
-    Object::rotate(angle);
+    Object::rotate(angle, recursive);
 }
 
 unsigned int Character::getMaxHP() const { return mMaxHP; }
