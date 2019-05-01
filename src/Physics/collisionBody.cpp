@@ -44,5 +44,5 @@ void CollisionBody::movePhysics()
 
 void CollisionBody::setPositionOfGraphicRepresentation()
 {
-	pointerToObjectWhichIsOwnerOfThisCollisionBody->setPosition(sf::Vector2f(mRect.left, mRect.top));
+	pointerToObjectWhichIsOwnerOfThisCollisionBody->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }

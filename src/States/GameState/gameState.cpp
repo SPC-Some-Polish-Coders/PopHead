@@ -54,7 +54,7 @@ void GameState::makeNPC()
 {
     std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
     npc->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
-    npc->setPosition(sf::Vector2f(1750, 5900));
+    npc->setPosition(sf::Vector2f(1650, 5760));
 
     mRoot.getChild("boat").addChild(std::move(npc));
 }

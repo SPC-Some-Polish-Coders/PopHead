@@ -21,7 +21,7 @@ public:
     void atack();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void setPosition(sf::Vector2f) override;
+    void setPosition(sf::Vector2f, bool recursive = true) override;
 	void move(sf::Vector2f) override;
     void setScale(sf::Vector2f) override;
     void setRotation(float angle) override;

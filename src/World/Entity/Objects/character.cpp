@@ -28,11 +28,11 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mSprite, states);
 }
 
-void Character::setPosition(sf::Vector2f position)
+void Character::setPosition(sf::Vector2f position, bool recursive)
 {
     mSprite.setPosition(position);
 	mCollisionBody.setPosition(position);
-    Object::setPosition(position);
+    Object::setPosition(position, recursive);
 }
 
 void Character::move(sf::Vector2f offset)

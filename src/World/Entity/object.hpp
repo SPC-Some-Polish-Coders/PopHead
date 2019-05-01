@@ -18,7 +18,7 @@ public:
     Object(Base::GameData*, std::string name, Renderer::LayerID);
 
     void setVisibility(bool visibility);
-    virtual void setPosition(sf::Vector2f);
+    virtual void setPosition(sf::Vector2f, bool recursive);
 	virtual void move(sf::Vector2f);
     virtual void setScale(sf::Vector2f);
     virtual void setRotation(float angle);
