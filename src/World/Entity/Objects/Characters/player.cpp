@@ -1,7 +1,6 @@
 #include "player.hpp"
 
 #include "Base/gameData.hpp"
-
 #include "Resources/spriteSheetData.hpp"
 
 #include <array>
@@ -9,9 +8,19 @@
 using PopHead::World::Entity::Player;
 using namespace PopHead::Resources;
 
+namespace
+{
+	std::string name = "player";
+	unsigned int movementSpeed = 150;
+	unsigned int HP = 100;
+	unsigned int maxHP = 100;
+	sf::FloatRect posAndSize = sf::FloatRect(0, 0, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT);
+	float mass = 50;
+}
+
 Player::Player(PopHead::Base::GameData* gameData)
 	:
-	Character(gameData, "player",
+	Character(gameData, name,
 		Animation{
 			std::array<std::string, 4>{"down", "left", "right", "up"},
 			{
@@ -27,9 +36,8 @@ Player::Player(PopHead::Base::GameData* gameData)
 				SpriteSheetData::PLAYER_FRAMES_COUNT
 			},
 			sf::seconds(0.15f)
-		}, 150, 100, 100, sf::FloatRect(0, 0, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT), 50)
+		}, movementSpeed, HP, maxHP, posAndSize, mass)
 {
-    mSprite.setPosition(400, 400);
 	mAnimation.animate(mSprite);
 }
 
