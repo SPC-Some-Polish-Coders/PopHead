@@ -3,13 +3,14 @@
 #include "collisionBody.hpp"
 
 using PopHead::Physics::PhysicsEngine;
+using PopHead::Physics::CollisionBody;
 
 void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
     {
-        kinematicBody->mRect.left += kinematicBody->mVelocity.x;
-        kinematicBody->mRect.top += kinematicBody->mVelocity.y;
+		kinematicBody->movePhysics();
+		kinematicBody->setPositionOfGraphicRepresentation();
     }
 }
 

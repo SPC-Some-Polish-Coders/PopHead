@@ -55,7 +55,6 @@ void Game::run()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             break;
 
-        Input::EventLoop::eventLoop(mGameData.get());
         input();
 
         timeSinceLastUpdate += clock.restart();
@@ -71,12 +70,14 @@ void Game::run()
 
 void Game::input()
 {
+    Input::EventLoop::eventLoop(mGameData.get());
     mStateMachine->input();
 }
 
 void Game::update(sf::Time delta)
 {
     mStateMachine->update(delta);
+	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 }
 

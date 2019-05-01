@@ -19,12 +19,14 @@ void Object::setVisibility(bool visibility)
 	forEachChildWhichIsObject(func, visibility);
 }
 
-void Object::setPosition(sf::Vector2f pos)
+void Object::setPosition(sf::Vector2f pos, bool recursive)
 {
 	mPosition = pos;
 
-	std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos); };
-	forEachChildWhichIsObject(func, pos);
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos, recursive); };
+		forEachChildWhichIsObject(func, pos);
+	}
 }
 
 void Object::move(sf::Vector2f offset)

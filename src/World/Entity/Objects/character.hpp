@@ -4,6 +4,7 @@
 #include "World/Entity/object.hpp"
 #include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
 #include "World/Animation/animation.hpp"
+#include "Physics/collisionBody.hpp"
 
 namespace PopHead{
 namespace World{
@@ -14,12 +15,13 @@ class Character : public Object
 {
 public:
     Character(Base::GameData*, std::string name, Animation animation = Animation(),
-              unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100);
+              unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100,
+			  sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50);
 
     void atack();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void setPosition(sf::Vector2f) override;
+    void setPosition(sf::Vector2f, bool recursive = true) override;
 	void move(sf::Vector2f) override;
     void setScale(sf::Vector2f) override;
     void setRotation(float angle) override;
@@ -42,6 +44,7 @@ protected:
     CharacterMotion mMotion;
     sf::Sprite mSprite;
     Animation mAnimation;
+	Physics::CollisionBody mCollisionBody;
 };
 
 

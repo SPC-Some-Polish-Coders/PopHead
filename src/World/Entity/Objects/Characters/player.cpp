@@ -27,7 +27,7 @@ Player::Player(PopHead::Base::GameData* gameData)
 				SpriteSheetData::PLAYER_FRAMES_COUNT
 			},
 			sf::seconds(0.15f)
-		}, 150)
+		}, 150, 100, 100, sf::FloatRect(0, 0, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT), 50)
 {
     mSprite.setPosition(400, 400);
 	mAnimation.animate(mSprite);
@@ -71,12 +71,9 @@ void Player::update(sf::Time delta)
             velocity.y += mMovementSpeed * delta.asSeconds();
             updateAnimation("down");
         }
-
+		mCollisionBody.move(velocity);
         mAnimation.animate(mSprite, delta);
     }
-
-    mSprite.move(velocity);
-
     mMotion.clear();
 }
 
