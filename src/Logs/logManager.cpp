@@ -1,52 +1,12 @@
 #include "logManager.hpp"
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 
 using PopHead::Logs::LogManager;
 using PopHead::Logs::Log;
 using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
-
-LogManager::LogManager(bool shouldWritingLogs)
-	: stop(shouldWritingLogs)
-{
-	if (shouldWritingLogs == true) { startWritingLogsInConsole(); }
-}
-
-
-void LogManager::stopWritingLogsInConsole()
-{
-}
-
-void LogManager::startWritingLogsInConsole()
-{
-
-}
-
-void LogManager::writeLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID)
-{
-}
-
-void LogManager::writeLogsFromEachModule()
-{
-}
-
-void LogManager::writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType)
-{
-}
-
-void LogManager::writeEachLog()
-{
-}
-
-auto LogManager::getTimeFromStartOfTheProgram() const->sf::Time &
-{
-	sf::Time elapsed = timeFromStartOfTheProgram.getElapsedTime();
-	return elapsed;
-}
-
-void LogManager::saveLogsInFile()
-{
-}
 
 std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
 {
@@ -102,11 +62,61 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	return os;
 }
 
+LogManager::LogManager(bool shouldWritingLogs)
+	: stop(shouldWritingLogs), typesOfLogToWrite(3), logFromModulesToWrite(10)
+{
+	typesOfLogToWrite = { LogType::GOOD, LogType::WARNING, LogType::FATAL };
+	logFromModulesToWrite = { ModuleID::Base, ModuleID::Logs, ModuleID::Music, ModuleID::Sound, ModuleID::World,
+		ModuleID::Render, ModuleID::Physics, ModuleID::States, ModuleID::Inputs, ModuleID::Resources };
+	if (!shouldWritingLogs) { stopWritingLogsInConsole(); }
+}
+
+
 void LogManager::writeLog(Log log)
 {
-	std::cout << log.type << " | " << log.moduleID << " | " << log.message << " | " << std::endl << " | "
-		<< getTimeFromStartOfTheProgram().asSeconds;
 	gatheredLogs.push_back(log);
 	logFromModulesToWrite.push_back(log.moduleID);
 	typesOfLogToWrite.push_back(log.type);
+}
+
+void LogManager::stopWritingLogsInConsole()
+{
+}
+
+void LogManager::startWritingLogsInConsole()
+{
+}
+
+void LogManager::writeLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID)
+{
+}
+
+void LogManager::writeLogsFromEachModule()
+{
+}
+
+void LogManager::writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType)
+{
+}
+
+void LogManager::writeEachLog()
+{
+	std::cout << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | " << gatheredLogs.back().message << " | "
+		<< std::setprecision(1) << getTimeFromStartOfTheProgram().asSeconds() << "s" << std::endl;
+}
+
+auto LogManager::getTimeFromStartOfTheProgram() const->sf::Time &
+{
+	sf::Time elapsed = timeFromStartOfTheProgram.getElapsedTime();
+	return elapsed;
+}
+
+void LogManager::saveLogsInFile()
+{
+	std::ofstream logFile;
+	logFile.open("Log.txt", std::ios::app);
+	logFile << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | '" << gatheredLogs.back().message << "' | "
+		<< std::setprecision(1) << getTimeFromStartOfTheProgram().asSeconds() << "s" << std::endl;
+	logFile.flush();
+	logFile.close();
 }
