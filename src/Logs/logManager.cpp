@@ -62,13 +62,13 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	return os;
 }
 
-LogManager::LogManager(bool shouldWritingLogs)
-	: stop(shouldWritingLogs), typesOfLogToWrite(3), logFromModulesToWrite(10)
+LogManager::LogManager(bool stopWritingLogs)
+	: stop(stopWritingLogs), typesOfLogToWrite(3), logFromModulesToWrite(10)
 {
 	typesOfLogToWrite = { LogType::GOOD, LogType::WARNING, LogType::FATAL };
 	logFromModulesToWrite = { ModuleID::Base, ModuleID::Logs, ModuleID::Music, ModuleID::Sound, ModuleID::World,
 		ModuleID::Render, ModuleID::Physics, ModuleID::States, ModuleID::Inputs, ModuleID::Resources };
-	if (!shouldWritingLogs) { stopWritingLogsInConsole(); }
+	if (stopWritingLogs) { stopWritingLogsInConsole(); }
 }
 
 
@@ -77,6 +77,8 @@ void LogManager::writeLog(Log log)
 	gatheredLogs.push_back(log);
 	logFromModulesToWrite.push_back(log.moduleID);
 	typesOfLogToWrite.push_back(log.type);
+	if (stop == false) startWritingLogsInConsole();
+	saveLogsInFile();
 }
 
 void LogManager::stopWritingLogsInConsole()
@@ -85,6 +87,7 @@ void LogManager::stopWritingLogsInConsole()
 
 void LogManager::startWritingLogsInConsole()
 {
+	writeEachLog();
 }
 
 void LogManager::writeLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID)
@@ -114,7 +117,7 @@ auto LogManager::getTimeFromStartOfTheProgram() const->sf::Time &
 void LogManager::saveLogsInFile()
 {
 	std::ofstream logFile;
-	logFile.open("Log.txt", std::ios::app);
+	logFile.open("src/Logs/Log.txt", std::ios::app);
 	logFile << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | '" << gatheredLogs.back().message << "' | "
 		<< std::setprecision(1) << getTimeFromStartOfTheProgram().asSeconds() << "s" << std::endl;
 	logFile.flush();

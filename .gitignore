@@ -5,6 +5,7 @@
 *.dll
 *.exe
 *.bat
+*.txt
 
 # Build directories
 build/
