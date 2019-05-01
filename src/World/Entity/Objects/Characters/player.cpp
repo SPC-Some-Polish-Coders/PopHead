@@ -2,41 +2,43 @@
 
 #include "Base/gameData.hpp"
 #include "Resources/spriteSheetData.hpp"
+#include "World/Animation/animation.hpp"
 
 #include <array>
 
 using PopHead::World::Entity::Player;
-using namespace PopHead::Resources;
 
 namespace
 {
+	using namespace PopHead::Resources;
+
 	std::string name = "player";
 	unsigned int movementSpeed = 150;
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
 	sf::FloatRect posAndSize = sf::FloatRect(0, 0, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT);
 	float mass = 50;
+
+	PopHead::World::Animation animation{
+		std::array<std::string, 4>{"down", "left", "right", "up"},
+		{
+			sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+		},
+		{
+			SpriteSheetData::PLAYER_FRAMES_COUNT,
+			SpriteSheetData::PLAYER_FRAMES_COUNT,
+			SpriteSheetData::PLAYER_FRAMES_COUNT,
+			SpriteSheetData::PLAYER_FRAMES_COUNT
+		},
+		sf::seconds(0.15f)
+	};
 }
 
 Player::Player(PopHead::Base::GameData* gameData)
-	:
-	Character(gameData, name,
-		Animation{
-			std::array<std::string, 4>{"down", "left", "right", "up"},
-			{
-				sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-				sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-				sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-				sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
-			},
-			{
-				SpriteSheetData::PLAYER_FRAMES_COUNT,
-				SpriteSheetData::PLAYER_FRAMES_COUNT,
-				SpriteSheetData::PLAYER_FRAMES_COUNT,
-				SpriteSheetData::PLAYER_FRAMES_COUNT
-			},
-			sf::seconds(0.15f)
-		}, movementSpeed, HP, maxHP, posAndSize, mass)
+	:Character(gameData, name, std::move(animation), movementSpeed, HP, maxHP, posAndSize, mass)
 {
 	mAnimation.animate(mSprite);
 }
