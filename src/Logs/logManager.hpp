@@ -5,6 +5,7 @@
 #include "moduleID.hpp"
 #include <SFML/System.hpp>
 #include <vector>
+#include <fstream>
 
 namespace PopHead {
 namespace Logs {
@@ -24,6 +25,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const ModuleID& dt);
 	friend std::ostream& operator<<(std::ostream& os, const LogType& dt);
 private:
+	std::ofstream logFile;
 	std::vector<Log> gatheredLogs;
 	sf::Clock timeFromStartOfTheProgram;
 	std::vector<ModuleID> logFromModulesToWrite;

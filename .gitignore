@@ -5,16 +5,17 @@
 *.dll
 *.exe
 *.bat
-*.txt
 
 # Build directories
 build/
 bin/
 obj/
 
+
 # Generated documentation
 doc/html
 doc/latex
+src/Logs/savedLogs
 
 # IDE's
 .vscode
