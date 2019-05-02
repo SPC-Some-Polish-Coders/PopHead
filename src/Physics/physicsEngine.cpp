@@ -4,15 +4,7 @@
 
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
-
-void PhysicsEngine::update(sf::Time delta)
-{
-    for(auto kinematicBody : mKinematicBodies)
-    {
-		kinematicBody->movePhysics();
-		kinematicBody->setPositionOfGraphicRepresentation();
-    }
-}
+using PopHead::Physics::CollisionAxis;
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
@@ -49,3 +41,49 @@ void PhysicsEngine::clear() noexcept
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
 }
+
+void PhysicsEngine::update(sf::Time delta)
+{
+    for(auto kinematicBody : mKinematicBodies)
+    {
+		kinematicBody->movePhysics();
+		handleStaticCollisionsForThisKinematicBody(kinematicBody);
+		kinematicBody->setPositionOfGraphicRepresentation();
+		kinematicBody->setPreviousPositionToCurrentPosition();
+    }
+}
+
+void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody)
+{
+	for (const auto& staticBody : mStaticBodies) {
+		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);
+		kinematicBody->setPositionToPreviousPosition(axis);
+	}
+}
+
+CollisionAxis PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody)
+{
+	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
+	{
+		if (kinematicBody->getPreviousRect().top + kinematicBody->getPreviousRect().width > staticBody->getPreviousRect().top &&
+			kinematicBody->getPreviousRect().top < staticBody->getPreviousRect().top + staticBody->getPreviousRect().height) {
+			return CollisionAxis::x;
+		}
+		else {
+			return CollisionAxis::y;
+		}
+	}
+	else {
+		return CollisionAxis::none;
+	}
+}
+
+bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
+{
+	return(
+	A.left < B.left + B.width &&
+	A.left + A.width > B.left &&
+	A.top < B.top + B.height &&
+	A.top + A.height > B.top);
+}
+

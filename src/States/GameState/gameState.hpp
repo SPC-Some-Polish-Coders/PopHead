@@ -15,12 +15,13 @@ public:
 private:
     void loadResources();
     void makeSceneTree();
-    void makePlayer();
-    void makeBoat();
-    void makeNPC();
     void makeMap();
-    void setCamera();
+	void makeWall(); //this wall is for test of static collisions
+    void makeBoat();
+	void makeNPC();
+    void makePlayer();
 	void makeStaticObjectToCamera();
+    void setCamera();
 
 public:
     void input() override;

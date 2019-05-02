@@ -21,10 +21,14 @@ public:
 private:
 	void movePhysics();
 	void setPositionOfGraphicRepresentation();
+	void setPositionToPreviousPosition(CollisionAxis);
+	void setPreviousPositionToCurrentPosition();
+	sf::FloatRect getPreviousRect();
 
 private:
     sf::FloatRect mRect;
     sf::Vector2f mVelocity;
+	sf::Vector2f mPreviousPosition;
     float mMass;
 	World::Entity::Object* const pointerToObjectWhichIsOwnerOfThisCollisionBody;
 

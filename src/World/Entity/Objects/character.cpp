@@ -59,18 +59,3 @@ void Character::rotate(float angle, bool recursive)
     mSprite.rotate(angle);
     Object::rotate(angle, recursive);
 }
-
-unsigned int Character::getMaxHP() const { return mMaxHP; }
-
-unsigned int Character::getHP() const { return mHP; }
-
-sf::Sprite& Character::getSprite() { return mSprite; }
-
-/*auto Character::getEquipment() const -> const Equipment&
-{}*/
-
-/*auto Character::getCurrentWeapon() const -> const Weapon&
-{}*/
-
-/*auto Character::getExperienceManager() const -> const ExperienceManager&
-{}*/

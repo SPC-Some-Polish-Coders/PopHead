@@ -27,10 +27,8 @@ public:
     void setRotation(float angle, bool recursive = true) override;
     void rotate(float angle, bool recursive = true) override;
 
-    unsigned int getMaxHP() const;
-    unsigned int getHP() const;
-    sf::Sprite& getSprite();
-    ///auto getEquipment() const -> const Equipment&;
+	auto getSprite() -> sf::Sprite& { return mSprite; }
+	///auto getEquipment() const -> const Equipment&;
     ///auto getCurrentWeapon() const -> const Weapon&;
     ///auto getExperienceManager() const -> const ExperienceManager&;
 

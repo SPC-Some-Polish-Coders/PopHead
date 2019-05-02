@@ -3,6 +3,7 @@
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/staticObjectToCamera.hpp"
+#include "World/Entity/Objects/shapeWithCollision.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/math.hpp"
 
@@ -26,6 +27,7 @@ void GameState::loadResources()
 void GameState::makeSceneTree()
 {
     makeMap();
+	makeWall();
     makeBoat();
     makeNPC();
     makePlayer();
@@ -33,12 +35,18 @@ void GameState::makeSceneTree()
     setCamera();
 }
 
-void GameState::makePlayer()
+void GameState::makeMap()
 {
-    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
-    player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
-    player->setPosition(sf::Vector2f(1900, 5240));
-    mRoot.addChild(std::move(player));
+    std::unique_ptr<World::Entity::Map> 
+		city(new World::Entity::Map(mGameData, "cityMap", mGameData->getTextures().get("resources/textures/map/city.png"), 2));
+    mRoot.addChild(std::move(city));
+}
+
+void GameState::makeWall()
+{
+	auto wall = std::make_unique<World::Entity::ShapeWithCollision>(mGameData);
+	wall->setPosition(sf::Vector2f(2000, 5000));
+	mRoot.getChild("cityMap").addChild(std::move(wall));
 }
 
 void GameState::makeBoat()
@@ -59,14 +67,15 @@ void GameState::makeNPC()
     mRoot.getChild("boat").addChild(std::move(npc));
 }
 
-void GameState::makeMap()
+void GameState::makePlayer()
 {
-    std::unique_ptr<World::Entity::Map> 
-		city(new World::Entity::Map(mGameData, "cityMap", mGameData->getTextures().get("resources/textures/map/city.png"), 2));
-    mRoot.addChild(std::move(city));
+    std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
+    player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
+    player->setPosition(sf::Vector2f(1900, 5240));
+    mRoot.addChild(std::move(player));
 }
 
-void PopHead::States::GameState::makeStaticObjectToCamera()
+void GameState::makeStaticObjectToCamera()
 {
 	auto object = std::make_unique<World::Entity::StaticObjectToCamera>(mGameData);
 	mRoot.addChild(std::move(object));

@@ -90,8 +90,7 @@ void Player::update(sf::Time delta)
 void Player::updateAnimation(const std::string& stateName)
 {
     const std::string name = mAnimation.getCurrentStateName();
-	if (name != stateName)
-	{
+	if (name != stateName){
 		mAnimation.changeState(stateName);
 		mAnimation.animate(mSprite);
 	}

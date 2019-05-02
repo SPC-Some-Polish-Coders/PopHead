@@ -1,13 +1,16 @@
 #include "collisionBody.hpp"
 #include "bodyType.hpp"
+#include "collisionAxis.hpp"
 
 using PopHead::Physics::CollisionBody;
+using PopHead::Physics::CollisionAxis;
 
 CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::BodyType bodyType,
 							 PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
 ,mVelocity()
+,mPreviousPosition()
 ,pointerToObjectWhichIsOwnerOfThisCollisionBody(thisPointer)
 {
 	switch (bodyType)
@@ -45,4 +48,29 @@ void CollisionBody::movePhysics()
 void CollisionBody::setPositionOfGraphicRepresentation()
 {
 	pointerToObjectWhichIsOwnerOfThisCollisionBody->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
+}
+
+void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)
+{
+	switch (axis)
+	{
+	case CollisionAxis::x:
+		mRect.left = mPreviousPosition.x;
+		break;
+
+	case CollisionAxis::y:
+		mRect.top = mPreviousPosition.y;
+		break;
+	}
+}
+
+void PopHead::Physics::CollisionBody::setPreviousPositionToCurrentPosition()
+{
+	mPreviousPosition.x = mRect.left;
+	mPreviousPosition.y = mRect.top;
+}
+
+sf::FloatRect CollisionBody::getPreviousRect()
+{
+	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.top);
 }
