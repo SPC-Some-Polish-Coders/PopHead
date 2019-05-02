@@ -15,16 +15,15 @@ class CollisionBody;
 class PhysicsEngine
 {
 public:
-    void update(sf::Time delta);
-
     void addStaticBody(CollisionBody* staticBodyPtr);
     void addKinematicBody(CollisionBody* kinematicBodyPtr);
     void removeStaticBody(CollisionBody* staticBodyPtr);
     void removeKinematicBody(CollisionBody* kinematicBodyPtr);
     void clear() noexcept;
 
+    void update(sf::Time delta);
 private:
-	void handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody) const;
+	void handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody);
 	CollisionAxis getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 

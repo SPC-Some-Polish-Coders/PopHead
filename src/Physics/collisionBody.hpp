@@ -21,6 +21,8 @@ public:
 private:
 	void movePhysics();
 	void setPositionOfGraphicRepresentation();
+	void setPositionToPreviousPosition(CollisionAxis);
+	sf::FloatRect getPreviousRect();
 
 private:
     sf::FloatRect mRect;
