@@ -25,6 +25,7 @@ private:
 private:
     sf::FloatRect mRect;
     sf::Vector2f mVelocity;
+	sf::Vector2f mPreviousPosition;
     float mMass;
 	World::Entity::Object* const pointerToObjectWhichIsOwnerOfThisCollisionBody;
 

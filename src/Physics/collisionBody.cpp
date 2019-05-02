@@ -8,6 +8,7 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 :mRect(rect)
 ,mMass(mass)
 ,mVelocity()
+,mPreviousPosition()
 ,pointerToObjectWhichIsOwnerOfThisCollisionBody(thisPointer)
 {
 	switch (bodyType)

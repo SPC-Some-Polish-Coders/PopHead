@@ -4,6 +4,7 @@
 
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
+using PopHead::Physics::CollisionAxis;
 
 void PhysicsEngine::update(sf::Time delta)
 {
@@ -49,3 +50,19 @@ void PhysicsEngine::clear() noexcept
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
 }
+
+void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody) const
+{
+
+}
+
+CollisionAxis PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody)
+{
+	return CollisionAxis::none;
+}
+
+bool PhysicsEngine::isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB)
+{
+	return false;
+}
+
