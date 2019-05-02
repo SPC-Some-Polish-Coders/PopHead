@@ -4,7 +4,7 @@ using PopHead::World::Entity::Map;
 
 
 Map::Map(PopHead::Base::GameData* gameData, std::string name, const sf::Texture& texture, float scale)
-	:Object(gameData, name, Renderer::LayerID::staticEntities)
+	:Object(gameData, name, Renderer::LayerID::floorEntities)
 {
 	mSprite.setTexture(texture);
 	mSprite.setScale(scale, scale);

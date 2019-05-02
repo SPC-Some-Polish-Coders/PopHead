@@ -17,8 +17,9 @@ private:
     void makeSceneTree();
     void makePlayer();
     void makeBoat();
-    void makeNPC();
+	void makeNPC();
     void makeMap();
+	void makeWall(); //this wall is for test of static collisions
     void setCamera();
 	void makeStaticObjectToCamera();
 

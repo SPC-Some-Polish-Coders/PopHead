@@ -3,6 +3,7 @@
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/staticObjectToCamera.hpp"
+#include "World/Entity/Objects/shapeWithCollision.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/math.hpp"
 
@@ -26,6 +27,7 @@ void GameState::loadResources()
 void GameState::makeSceneTree()
 {
     makeMap();
+	makeWall();
     makeBoat();
     makeNPC();
     makePlayer();
@@ -66,7 +68,14 @@ void GameState::makeMap()
     mRoot.addChild(std::move(city));
 }
 
-void PopHead::States::GameState::makeStaticObjectToCamera()
+void GameState::makeWall()
+{
+	auto wall = std::make_unique<World::Entity::ShapeWithCollision>(mGameData);
+	wall->setPosition(sf::Vector2f(2000, 5000));
+	mRoot.getChild("cityMap").addChild(std::move(wall));
+}
+
+void GameState::makeStaticObjectToCamera()
 {
 	auto object = std::make_unique<World::Entity::StaticObjectToCamera>(mGameData);
 	mRoot.addChild(std::move(object));
