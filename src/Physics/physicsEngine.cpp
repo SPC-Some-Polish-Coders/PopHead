@@ -49,6 +49,7 @@ void PhysicsEngine::update(sf::Time delta)
 		kinematicBody->movePhysics();
 		handleStaticCollisionsForThisKinematicBody(kinematicBody);
 		kinematicBody->setPositionOfGraphicRepresentation();
+		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
 
