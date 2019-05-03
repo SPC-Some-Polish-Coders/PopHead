@@ -1,4 +1,4 @@
-#include <cassert>
+#include <cassert>//This include must by removed when asserts are replaced by logs
 
 using PopHead::Resources::ResourceHolder;
 
@@ -11,16 +11,17 @@ bool ResourceHolder<ResourceType>::load(const std::string& filepath)
 		mResources.insert(std::make_pair(filepath, std::move(resource)));
         return true;
     }
-	///LOG will be here "unable to load file " + filepath + "! Probably there is not such file."
+	//LOG: "unable to load file " + filepath + "! Probably there is not such file."
     return false;
 }
 
 template< typename ResourceType >
-auto ResourceHolder<ResourceType>::get( const std::string& name ) -> ResourceType&
+auto ResourceHolder<ResourceType>::get(const std::string& name) -> ResourceType&
 {
     auto found = mResources.find(name);
 	if (found == mResources.end()) {
-		///LOG will be here later
+		//LOG: You try to get "cat.png". A resource with this name does not exist. 
+		///assert will be removed and replaced by log.
 		assert((false && "resource was not found!"));
 	}
 	else {
@@ -29,12 +30,15 @@ auto ResourceHolder<ResourceType>::get( const std::string& name ) -> ResourceTyp
 }
 
 template< typename ResourceType >
-void ResourceHolder<ResourceType>::free( const std::string& name )
+void ResourceHolder<ResourceType>::free(const std::string& name)
 {
-	for (auto it = mResources.begin(); it != mResources.end();) {
-		if (it->first == name)
+	for (auto it = mResources.begin(); it != mResources.end(); ++it) {
+		if (it->first == name) {
 			it = mResources.erase(it);
-		else
-			++it;
+			//LOG: You try to free "cat.png". A resource with this name does not exist. 
+			///assert will be removed and replaced by log.
+			assert((false && "resource was not found!"));
+			break;
+		}
 	}
 }
