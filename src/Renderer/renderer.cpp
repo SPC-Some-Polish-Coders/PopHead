@@ -66,7 +66,7 @@ void Renderer::removeObject( const PopHead::World::Entity::Object* const object 
     mLayers[object->getLayerID()].removeObject( object );
 }
 
-void Renderer::removeObjects( LayerID layerID )
+void Renderer::removeAllObjectsFromLayer( LayerID layerID )
 {
     mLayers[layerID].clear();
 }
