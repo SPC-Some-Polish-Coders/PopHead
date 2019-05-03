@@ -48,14 +48,13 @@ void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
     {
-		kinematicBody->movePhysics();
-		handleStaticCollisionsForThisKinematicBody(kinematicBody);
+		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody->setPositionOfGraphicRepresentation();
 		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
 
-void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody)
+void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
 		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);

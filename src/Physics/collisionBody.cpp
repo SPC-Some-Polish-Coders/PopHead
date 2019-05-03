@@ -6,12 +6,11 @@ using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
 
 CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::BodyType bodyType,
-							 PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData* gameData)
+							 PopHead::World::Entity::Object* const owner, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
-,mVelocity()
-,mPreviousPosition()
-,pointerToObjectWhichIsOwnerOfThisCollisionBody(thisPointer)
+,mPreviousPosition(rect.left, rect.top)
+,mOwner(owner)
 {
 	switch (bodyType)
 	{
@@ -27,7 +26,8 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 
 void CollisionBody::move(sf::Vector2f velocity)
 {
-	mVelocity += velocity;
+	mRect.left += velocity.x;
+	mRect.top += velocity.y;
 }
 
 void CollisionBody::setPosition(sf::Vector2f position)
@@ -36,18 +36,9 @@ void CollisionBody::setPosition(sf::Vector2f position)
 	mRect.top = position.y;
 }
 
-void CollisionBody::movePhysics()
-{
-	mRect.left += mVelocity.x;
-	mRect.top += mVelocity.y;
-	
-	mVelocity.x = 0;
-	mVelocity.y = 0;
-}
-
 void CollisionBody::setPositionOfGraphicRepresentation()
 {
-	pointerToObjectWhichIsOwnerOfThisCollisionBody->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
+	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
 void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)

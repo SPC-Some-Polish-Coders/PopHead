@@ -23,7 +23,7 @@ public:
 
     void update(sf::Time delta);
 private:
-	void handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody);
+	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
 	auto getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis;
 	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
