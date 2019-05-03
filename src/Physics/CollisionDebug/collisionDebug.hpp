@@ -2,7 +2,8 @@
 #define POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
 
 #include <vector>
-#include "World/Entity/Objects/collisionDebugRect.hpp"
+#include "collisionDebugRect.hpp"
+#include "Physics/bodyType.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -13,11 +14,11 @@ class CollisionBody;
 class CollisionDebug
 {
 public:
-    void createCollisionDebugRects(const std::vector<CollisionBody*>& kinematicBodies,
-                                   const std::vector<CollisionBody*>& staticBodies);
-    void addCollisonDebugRect(const CollisionBody*);
+    void createFrom(const std::vector<CollisionBody*>& kinematicBodies,
+                    const std::vector<CollisionBody*>& staticBodies);
+    void createFrom(const CollisionBody* collisionBody, BodyType type);
 
-    void clearCollisonDebugRects();
+    void clear();
 
 private:
     std::vector<PopHead::World::Entity::CollisionDebugRect> mCollisionDebugRects;

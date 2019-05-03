@@ -49,12 +49,12 @@ void PhysicsEngine::clear() noexcept
 
 void PhysicsEngine::turnOnCollisionDebug()
 {
-
+    mCollisionDebug.createFrom(mKinematicBodies, mStaticBodies);
 }
 
 void PhysicsEngine::turnOffCollisionDebug()
 {
-
+    mCollisionDebug.clear();
 }
 
 void PhysicsEngine::update(sf::Time delta)

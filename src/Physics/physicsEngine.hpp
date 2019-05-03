@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "collisionAxis.hpp"
-#include "collisionDebug.hpp"
+#include "CollisionDebug/collisionDebug.hpp"
 
 namespace PopHead{
 namespace Physics{
