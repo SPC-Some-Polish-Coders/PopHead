@@ -57,7 +57,8 @@ void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* ki
 {
 	for (const auto& staticBody : mStaticBodies) {
 		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);
-		kinematicBody->setPositionToPreviousPosition(axis);
+		if(axis != CollisionAxis::none)
+			kinematicBody->setPositionToPreviousPosition(axis);
 	}
 }
 
