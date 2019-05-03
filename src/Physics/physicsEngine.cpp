@@ -2,6 +2,8 @@
 
 #include "collisionBody.hpp"
 
+#include <iostream>
+
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
@@ -62,15 +64,16 @@ void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* ki
 	}
 }
 
-CollisionAxis PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody)
+auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis
 {
 	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
 	{
-		if (kinematicBody->getPreviousRect().top + kinematicBody->getPreviousRect().width > staticBody->getPreviousRect().top &&
-			kinematicBody->getPreviousRect().top < staticBody->getPreviousRect().top + staticBody->getPreviousRect().height) {
+		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)){
+			std::cout << "X" << std::endl;
 			return CollisionAxis::x;
 		}
 		else {
+			std::cout << "Y" << std::endl; 
 			return CollisionAxis::y;
 		}
 	}
@@ -79,8 +82,16 @@ CollisionAxis PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, Co
 	}
 }
 
+bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
+{
+	return
+		(bodyA->mRect.top + bodyA->mRect.height > bodyB->mRect.top &&
+		 bodyA->mRect.top < bodyB->mRect.top + bodyB->mRect.height);
+}
+
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
+	//AABB collision detection algorithm
 	return(
 	A.left < B.left + B.width &&
 	A.left + A.width > B.left &&

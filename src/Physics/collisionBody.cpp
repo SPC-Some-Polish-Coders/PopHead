@@ -52,10 +52,10 @@ void CollisionBody::setPositionOfGraphicRepresentation()
 
 void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)
 {
-	mRect.left = mPreviousPosition.x;
-	mRect.top = mPreviousPosition.y;
+	/*mRect.left = mPreviousPosition.x;
+	mRect.top = mPreviousPosition.y;*/
 
-	/*switch (axis)
+	switch (axis)
 	{
 	case CollisionAxis::x:
 		mRect.left = mPreviousPosition.x;
@@ -64,7 +64,7 @@ void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)
 	case CollisionAxis::y:
 		mRect.top = mPreviousPosition.y;
 		break;
-	}*/
+	}
 }
 
 void CollisionBody::setPreviousPositionToCurrentPosition()
