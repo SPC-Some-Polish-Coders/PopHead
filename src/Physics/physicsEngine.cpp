@@ -8,6 +8,12 @@ using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
 
+PhysicsEngine::PhysicsEngine()
+:mCollisionDebug()
+{
+
+}
+
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
     mStaticBodies.emplace_back(std::move(staticBodyPtr));

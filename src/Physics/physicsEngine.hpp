@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "collisionAxis.hpp"
+#include "collisionDebug.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -15,6 +16,8 @@ class CollisionBody;
 class PhysicsEngine
 {
 public:
+    PhysicsEngine();
+
     void addStaticBody(CollisionBody* staticBodyPtr);
     void addKinematicBody(CollisionBody* kinematicBodyPtr);
     void removeStaticBody(CollisionBody* staticBodyPtr);
@@ -31,6 +34,8 @@ private:
 private:
     std::vector<CollisionBody*> mStaticBodies;
     std::vector<CollisionBody*> mKinematicBodies;
+
+    CollisionDebug mCollisionDebug;
 };
 
 
