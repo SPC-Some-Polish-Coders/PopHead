@@ -84,9 +84,8 @@ auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBo
 
 bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
 {
-	return
-		(bodyA->mRect.top + bodyA->mRect.height > bodyB->mRect.top &&
-		 bodyA->mRect.top < bodyB->mRect.top + bodyB->mRect.height);
+	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().width > bodyB->mRect.top &&
+			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);
 }
 
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
