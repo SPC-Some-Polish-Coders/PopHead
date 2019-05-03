@@ -36,7 +36,7 @@ void CollisionBody::setPosition(sf::Vector2f position)
 	mRect.top = position.y;
 }
 
-void CollisionBody::setPositionOfGraphicRepresentation()
+void CollisionBody::updateOwnerPosition()
 {
 	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
@@ -66,5 +66,5 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 
 sf::FloatRect CollisionBody::getPreviousRect()
 {
-	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.top);
+	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
 }

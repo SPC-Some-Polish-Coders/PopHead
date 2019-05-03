@@ -49,7 +49,7 @@ void PhysicsEngine::update(sf::Time delta)
     for(auto kinematicBody : mKinematicBodies)
     {
 		handleStaticCollisionsFor(kinematicBody);
-		kinematicBody->setPositionOfGraphicRepresentation();
+		kinematicBody->updateOwnerPosition();
 		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
@@ -79,7 +79,7 @@ auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBo
 
 bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
 {
-	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().width > bodyB->mRect.top &&
+	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().height > bodyB->mRect.top &&
 			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);
 }
 

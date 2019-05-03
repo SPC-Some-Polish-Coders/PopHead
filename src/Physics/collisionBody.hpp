@@ -19,7 +19,7 @@ public:
 	void setPosition(sf::Vector2f position);
 
 private:
-	void setPositionOfGraphicRepresentation();
+	void updateOwnerPosition();
 	void setPositionToPreviousPosition(CollisionAxis);
 	void setPreviousPositionToCurrentPosition();
 	sf::FloatRect getPreviousRect();
