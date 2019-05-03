@@ -68,14 +68,10 @@ auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBo
 {
 	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
 	{
-		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)){
-			std::cout << "X" << std::endl;
+		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody))
 			return CollisionAxis::x;
-		}
-		else {
-			std::cout << "Y" << std::endl; 
+		else
 			return CollisionAxis::y;
-		}
 	}
 	else {
 		return CollisionAxis::none;
