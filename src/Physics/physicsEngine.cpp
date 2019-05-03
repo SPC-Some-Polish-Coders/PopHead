@@ -7,12 +7,8 @@
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
+using PopHead::Physics::CollisionDebug;
 
-PhysicsEngine::PhysicsEngine()
-:mCollisionDebug()
-{
-
-}
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
@@ -48,6 +44,17 @@ void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
+}
+
+
+void PhysicsEngine::turnOnCollisionDebug()
+{
+
+}
+
+void PhysicsEngine::turnOffCollisionDebug()
+{
+
 }
 
 void PhysicsEngine::update(sf::Time delta)

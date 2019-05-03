@@ -16,13 +16,14 @@ class CollisionBody;
 class PhysicsEngine
 {
 public:
-    PhysicsEngine();
-
     void addStaticBody(CollisionBody* staticBodyPtr);
     void addKinematicBody(CollisionBody* kinematicBodyPtr);
     void removeStaticBody(CollisionBody* staticBodyPtr);
     void removeKinematicBody(CollisionBody* kinematicBodyPtr);
     void clear() noexcept;
+
+    void turnOnCollisionDebug();
+    void turnOffCollisionDebug();
 
     void update(sf::Time delta);
 private:

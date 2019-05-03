@@ -8,10 +8,16 @@ namespace PopHead{
 namespace Physics{
 
 
+class CollisionBody;
+
 class CollisionDebug
 {
 public:
-    collisionDebug();
+    void createCollisionDebugRects(const std::vector<CollisionBody*>& kinematicBodies,
+                                   const std::vector<CollisionBody*>& staticBodies);
+    void addCollisonDebugRect(const CollisionBody*);
+
+    void clearCollisonDebugRects();
 
 private:
     std::vector<PopHead::World::Entity::CollisionDebugRect> mCollisionDebugRects;
