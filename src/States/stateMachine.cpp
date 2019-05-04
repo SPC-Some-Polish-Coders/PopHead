@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "GameState/gameState.hpp"
+#include "Logs.hpp"
 
 using PopHead::States::StateMachine;
 using PopHead::States::State;
@@ -23,11 +24,11 @@ void StateMachine::changingStatesProcess()
     if(mIsClearing)
     {
         if(mActiveStates.empty()){
-            /// log - WARNING | States | you are trying to clear active states, but there are no states in vector
+			PopHead::LOG(LogType::WARNING, ModuleID::States, "You are trying to clear active states, but there are no states in vector.");
         }
         else{
             mActiveStates.clear();
-            /// log - GOOD | States | vector of active states was cleared
+			PopHead::LOG(LogType::GOOD, ModuleID::States, "Vector of active states was cleared.");
         }
         mIsClearing = false;
     }
@@ -35,11 +36,11 @@ void StateMachine::changingStatesProcess()
     if(mIsRemoving)
     {
         if(mActiveStates.empty()){
-            /// log - WARNING | States | you are trying to pop state, but there are no states in vector
+			PopHead::LOG(LogType::WARNING, ModuleID::States, "You are trying to pop state, but there are no states in vector.");
         }
         else{
             mActiveStates.pop_back();
-            /// log - GOOD | States | the state in the back of the vector of active states was popped (deleted)
+			PopHead::LOG(LogType::GOOD, ModuleID::States, "The state in the back of the vector of active states was popped (deleted).");
         }
         mIsRemoving = false;
     }
@@ -49,7 +50,7 @@ void StateMachine::changingStatesProcess()
         while(!mPendingStates.empty()){
             mActiveStates.emplace_back(std::move(mPendingStates.front()));
             mPendingStates.pop_front();
-            /// log - GOOD | States | the state in the back of the vector was replaced by new state
+			PopHead::LOG(LogType::GOOD, ModuleID::States, "The state in the back of the vector was replaced by new state.");
         }
         mIsAdding = false;
     }
@@ -58,7 +59,7 @@ void StateMachine::changingStatesProcess()
     {
         mActiveStates.emplace_back(std::move(mPendingStates.back()));
         mPendingStates.clear();
-        /// log - GOOD | States | the new state was pushed into back of the vector
+		PopHead::LOG(LogType::GOOD, ModuleID::States, "The new state was pushed into back of the vector.");
         mIsReplacing = false;
     }
 }
@@ -66,8 +67,7 @@ void StateMachine::changingStatesProcess()
 void StateMachine::input()
 {
     if(mActiveStates.empty()){
-        //it's temporary. Later we'll change it to be handle by LogManager.
-        std::cout<<"ERROR | States | cannot execute input because there are no States on the vector"<<std::endl;
+		PopHead::LOG(LogType::ERROR, ModuleID::States, "Cannot execute input because there are no States on the vector.");
     }
     else{
         mActiveStates.back()->input();
@@ -77,8 +77,7 @@ void StateMachine::input()
 void StateMachine::update(sf::Time delta)
 {
     if(mActiveStates.empty()){
-        //it's temporary. Later we'll change it to be handle by LogManager.
-        std::cout<<"ERROR | States | cannot execute update because there are no States on the vector"<<std::endl;
+		PopHead::LOG(LogType::ERROR, ModuleID::States, "Cannot execute update because there are no States on the vector.");
     }
     else{
         mActiveStates.back()->update(delta);
@@ -99,7 +98,7 @@ void StateMachine::pushState(PopHead::States::StateID id)
         mIsAdding = true;
     }
     else{
-        /// log - ERROR | States | couldn't push state because another state is replacing
+		PopHead::LOG(LogType::ERROR, ModuleID::States, "Couldn't push state because another state is replacing.");
     }
 }
 
@@ -111,7 +110,7 @@ void StateMachine::replaceState(PopHead::States::StateID id)
         mIsReplacing = true;
     }
     else{
-        /// log - ERROR | States | couldn't replace state because another state is pushing
+		PopHead::LOG(LogType::ERROR, ModuleID::States, "Couldn't replace state because another state is pushing.");
     }
 }
 

@@ -6,6 +6,7 @@ Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameDat
 :mEntityType(type)
 ,mGameData(gameData)
 ,mName(name)
+,mParent(nullptr)
 {
 
 }

@@ -15,8 +15,8 @@ class LogManager
 {
 private:
 	LogManager();
-	//LogManager(LogManager&) = delete;
-	//operator=(LogManager&) = delete;
+	LogManager(LogManager&) = delete;
+	void operator=(LogManager&) = delete;
 
 public:
 	static LogManager& getLogManager()
@@ -25,24 +25,25 @@ public:
 		return logManager;
 	}
 
-	void writeLog(Log log);
+	void writeLog(const Log& log);
+	
+private:
+	void saveLogsInFile(const Log& log); 
+	void writeLogInConsole(const Log& log);
+
+public:
 	void stopWritingLogsInConsole();
-	void startWritingLogsInConsole();
 	void writeLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID);
 	void writeLogsFromEachModule();
 	void writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType);
 	void writeEachLog();
-	sf::Time& getTimeFromStartOfTheProgram();
-	
-private:
-	 void saveLogsInFile(); 
+	sf::Time getTimeFromStartOfTheProgram();
 
 private:
-	 std::ofstream logFile;
-	 std::vector<Log> gatheredLogs;
-	 sf::Clock timeFromStartOfTheProgram;
-	 std::vector<ModuleID> logFromModulesToWrite;
-	 std::vector<LogType> typesOfLogToWrite;
+	 std::ofstream mLogFile;
+	 sf::Clock mTimeFromStartOfTheProgram;
+	 std::vector<ModuleID> mLogFromModulesToWrite;
+	 std::vector<LogType> mTypesOfLogToWrite;
 
 public:
 	friend std::ostream& operator<<(std::ostream& os, const ModuleID& dt);

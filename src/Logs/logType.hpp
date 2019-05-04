@@ -7,7 +7,7 @@ namespace Logs {
 enum class LogType
 {
 	GOOD,
-	FATAL,
+	ERROR,
 	WARNING
 };
 
