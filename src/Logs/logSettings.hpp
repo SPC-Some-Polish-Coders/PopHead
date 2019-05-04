@@ -8,6 +8,7 @@
 namespace PopHead{
 namespace Logs{
 
+
 class LogSettings
 {
 public:
@@ -18,13 +19,13 @@ public:
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
 
-	void setWriteLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID);
+	void setWritingEachLog();
+
+	void setWritingLogsOnlyFromCertainModules(const std::vector<ModuleID>& modulesToWrite) {mLogFromModulesToWrite = modulesToWrite;}
 	void setWritingLogsFromEachModule();
 
-	void setWritingLogsOnlyFromCertainTypes(std::vector<LogType> logType);
+	void setWritingLogsOnlyFromCertainTypes(const std::vector<LogType>& logTypesToWrite) { mTypesOfLogToWrite = logTypesToWrite;}
 	void setWritingLogsFromEachLogType();
-
-	void setWritingEachLog();
 
 private:
 	bool shouldThisLogBeWrittenIntoConsole();

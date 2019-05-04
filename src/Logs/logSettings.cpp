@@ -5,9 +5,10 @@ using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
 
 LogSettings::LogSettings()
-	: mShouldLogIntoFile(true)
-	, mShouldLogIntoConsole(true)
+	:mShouldLogIntoConsole(true)
+	,mShouldLogIntoFile(true)
 {
+	setWritingEachLog();
 }
 
 void LogSettings::setWritingLogs(bool enabled)
@@ -16,26 +17,25 @@ void LogSettings::setWritingLogs(bool enabled)
 	mShouldLogIntoFile = enabled;
 }
 
-void LogSettings::setWriteLogsOnlyFromCertainModules(std::vector <ModuleID> moduleID)
+void LogSettings::setWritingEachLog()
 {
+	setWritingLogsFromEachModule();
+	setWritingLogsFromEachLogType();
 }
 
 void LogSettings::setWritingLogsFromEachModule()
 {
+	setWritingLogsOnlyFromCertainModules(
+		{ ModuleID::Base, ModuleID::Inputs, ModuleID::Logs, ModuleID::Music, ModuleID::Physics,
+		ModuleID::Render, ModuleID::Resources, ModuleID::Sound, ModuleID::States }
+	);
 }
 
 void LogSettings::setWritingLogsFromEachLogType()
 {
-
+	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::GOOD, LogType::WARNING } );
 }
 
-void LogSettings::setWritingLogsOnlyFromCertainTypes(std::vector <LogType> logType)
-{
-}
-
-void LogSettings::setWritingEachLog()
-{
-}
 
 bool LogSettings::shouldThisLogBeWrittenIntoConsole()
 {
