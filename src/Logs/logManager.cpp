@@ -21,7 +21,7 @@ LogManager::LogManager()
 
 	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min);
 	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min);
-	logFile.open("savedLogs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+	logFile.open("Logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
 }
 
 std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
@@ -107,7 +107,7 @@ void LogManager::writeLogsOnlyFromCertainLogTypes(std::vector <LogType> logType)
 
 void LogManager::writeEachLog()
 {
-	std::cout << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | '" << gatheredLogs.back().message << "' | "
+	std::cout << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | " << gatheredLogs.back().message << " | "
 		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
 }
 
@@ -119,7 +119,7 @@ auto LogManager::getTimeFromStartOfTheProgram() -> sf::Time &
 
 void LogManager::saveLogsInFile()
 {
-	logFile << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | '" << gatheredLogs.back().message << "' | "
+	logFile << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | " << gatheredLogs.back().message << " | "
 		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
 	logFile.flush();
 }

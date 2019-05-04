@@ -21,8 +21,8 @@ private:
 public:
 	static LogManager& getLogManager()
 	{
-		static LogManager logManager; //Dobra to gites - ja bêdê obserwowa³ na razie i jak bêdzie opcja to wbijê xD
-		return logManager; //zrobie teraz commit-a
+		static LogManager logManager; 
+		return logManager;
 	}
 
 	void writeLog(Log log);
@@ -35,7 +35,7 @@ public:
 	sf::Time& getTimeFromStartOfTheProgram();
 	
 private:
-	 void saveLogsInFile();
+	 void saveLogsInFile(); 
 
 private:
 	 std::ofstream logFile;
