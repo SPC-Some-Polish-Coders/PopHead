@@ -68,7 +68,13 @@ LogManager::LogManager(bool stopWritingLogs)
 	time_t t = time(0);
 	struct tm now;
 	localtime_s(&now, &t);
-	std::string fileName = std::to_string(now.tm_mon + 1) + "." + std::to_string(now.tm_mday) + "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min);
+	std::string fileName;
+	if (now.tm_mday < 10 && now.tm_mon < 10) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
+	if (now.tm_mday < 10 && now.tm_mon > 9) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + std::to_string(now.tm_mday);
+	if (now.tm_mon < 10 && now.tm_mon > 9) fileName += std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
+
+	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min);
+	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min);
 	logFile.open("savedLogs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
 	if (stopWritingLogs) { stopWritingLogsInConsole(); }
 }
