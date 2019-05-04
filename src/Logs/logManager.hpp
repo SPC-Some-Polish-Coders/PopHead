@@ -10,10 +10,21 @@
 namespace PopHead {
 namespace Logs {
 
+
 class LogManager
 {
+private:
+	LogManager();
+	//LogManager(LogManager&) = delete;
+	//operator=(LogManager&) = delete;
+
 public:
-	LogManager(bool shouldWritingLogs);
+	static LogManager& getLogManager()
+	{
+		static LogManager logManager; 
+		return logManager;
+	}
+
 	void writeLog(Log log);
 	void stopWritingLogsInConsole();
 	void startWritingLogsInConsole();
@@ -21,18 +32,23 @@ public:
 	void writeLogsFromEachModule();
 	void writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType);
 	void writeEachLog();
-	auto getTimeFromStartOfTheProgram() const->sf::Time &; 
+	sf::Time& getTimeFromStartOfTheProgram();
+	
+private:
+	 void saveLogsInFile(); 
+
+private:
+	 std::ofstream logFile;
+	 std::vector<Log> gatheredLogs;
+	 sf::Clock timeFromStartOfTheProgram;
+	 std::vector<ModuleID> logFromModulesToWrite;
+	 std::vector<LogType> typesOfLogToWrite;
+
+public:
 	friend std::ostream& operator<<(std::ostream& os, const ModuleID& dt);
 	friend std::ostream& operator<<(std::ostream& os, const LogType& dt);
-private:
-	std::ofstream logFile;
-	std::vector<Log> gatheredLogs;
-	sf::Clock timeFromStartOfTheProgram;
-	std::vector<ModuleID> logFromModulesToWrite;
-	std::vector<LogType> typesOfLogToWrite;
-	bool stop; 
-	void saveLogsInFile();
 };
+
 
 }}
 
