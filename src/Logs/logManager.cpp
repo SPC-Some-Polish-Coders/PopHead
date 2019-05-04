@@ -18,10 +18,9 @@ LogManager::LogManager()
 	if (now.tm_mday < 10 && now.tm_mon < 10) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
 	if (now.tm_mday < 10 && now.tm_mon > 9) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + std::to_string(now.tm_mday);
 	if (now.tm_mon < 10 && now.tm_mon > 9) fileName += std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
-
-	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min);
-	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min);
-	logFile.open("Logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
+	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
+	mLogFile.open("Logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
 }
 
 std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
@@ -74,23 +73,33 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	case ModuleID::Resources:
 		os << "RESOURCES";
 		break;
+	case ModuleID::None:
+		break;
 	}
 	return os;
 }
 
-void LogManager::writeLog(Log log)
+void LogManager::writeLog(const Log& log)
 {
-	gatheredLogs.push_back(log);
-	saveLogsInFile();
+	writeLogInConsole(log);
+	saveLogsInFile(log);
+}
+
+void LogManager::writeLogInConsole(const Log& log)
+{
+	std::cout << log.type << " | " << log.moduleID << " | " << log.message << " | "
+	<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
+}
+
+void LogManager::saveLogsInFile(const Log& log)
+{
+	mLogFile << log.type << " | " << log.moduleID << " | " << log.message << " | "
+	<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
+	mLogFile.flush();
 }
 
 void LogManager::stopWritingLogsInConsole()
 {
-}
-
-void LogManager::startWritingLogsInConsole()
-{
-	writeEachLog();
 }
 
 void LogManager::writeLogsOnlyFromCertainModules(std::vector <ModuleID> moduleID)
@@ -107,19 +116,11 @@ void LogManager::writeLogsOnlyFromCertainLogTypes(std::vector <LogType> logType)
 
 void LogManager::writeEachLog()
 {
-	std::cout << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | " << gatheredLogs.back().message << " | "
-		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
+
 }
 
 auto LogManager::getTimeFromStartOfTheProgram() -> sf::Time &
 {
-	sf::Time elapsed = timeFromStartOfTheProgram.getElapsedTime();
+	sf::Time elapsed = mTimeFromStartOfTheProgram.getElapsedTime();
 	return elapsed;
-}
-
-void LogManager::saveLogsInFile()
-{
-	logFile << gatheredLogs.back().type << " | " << gatheredLogs.back().moduleID << " | " << gatheredLogs.back().message << " | "
-		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
-	logFile.flush();
 }

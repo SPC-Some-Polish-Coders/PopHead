@@ -1,13 +1,10 @@
 #include "Base/game.hpp"
 
-#include "Logs/logManager.hpp"
-#include "Logs/logType.hpp"
+#include "Logs.hpp"
 
 int main()
 {
-	auto& logManager = PopHead::Logs::LogManager::getLogManager();
-	logManager.writeLog(PopHead::Logs::Log(PopHead::Logs::LogType::GOOD, PopHead::Logs::ModuleID::Logs, "start of executing PopHead!"));
-	logManager.writeEachLog();
+	LOG(Log(LogType::GOOD, ModuleID::None, "start executing PopHead!"));
 
     PopHead::Base::Game();
     return 0;
