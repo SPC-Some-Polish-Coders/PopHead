@@ -27,9 +27,11 @@ public:
 	void setWritingLogsFromEachLogType();
 
 private:
-	bool shouldThisLogBeWrittenIntoConsole(const Log&);
-	bool shouldThisLogBeWrittenIntoFile(const Log&);
-	bool shouldThisLogBeWritten(const Log&);
+	bool shouldThisLogBeWrittenIntoConsole(const Log&) const;
+	bool shouldThisLogBeWrittenIntoFile(const Log&) const;
+	bool shouldThisLogBeWritten(const Log&) const;
+	bool shouldThisLogBeWrittenConsideringLogType(const Log&) const;
+	bool shouldThisLogBeWrittenConsideringModuleID(const Log&) const;
 
 private:
 	std::vector<ModuleID> mLogFromModulesToWrite;

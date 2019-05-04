@@ -32,22 +32,42 @@ void LogSettings::setWritingLogsFromEachModule()
 	);
 }
 
-void LogSettings::setWritingLogsFromEachLogType()
+void LogSettings::setWritingLogsFromEachLogType() 
 {
 	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::GOOD, LogType::WARNING } );
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log)
+bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log) const
 {
 	return mShouldLogIntoConsole && shouldThisLogBeWritten(log);
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoFile(const Log& log)
+bool LogSettings::shouldThisLogBeWrittenIntoFile(const Log& log) const
 {
 	return mShouldLogIntoFile && shouldThisLogBeWritten(log);
 }
 
-bool LogSettings::shouldThisLogBeWritten(const Log& log)
+bool LogSettings::shouldThisLogBeWritten(const Log& log) const
 {
-	return true;
+	return shouldThisLogBeWrittenConsideringLogType(log) && shouldThisLogBeWrittenConsideringModuleID(log);
+}
+
+bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
+{
+	for (auto type : mTypesOfLogToWrite) {
+		if (type == log.type) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool LogSettings::shouldThisLogBeWrittenConsideringModuleID(const Log& log) const
+{
+	for (auto moduleID : mLogFromModulesToWrite){
+		if (moduleID == log.moduleID){
+			return true;
+		}
+	}
+	return false;
 }
