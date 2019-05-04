@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "collisionAxis.hpp"
+#include "CollisionDebug/collisionDebug.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -21,15 +22,21 @@ public:
     void removeKinematicBody(CollisionBody* kinematicBodyPtr);
     void clear() noexcept;
 
+    void turnOnCollisionDebug();
+    void turnOffCollisionDebug();
+
     void update(sf::Time delta);
 private:
-	void handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody);
-	CollisionAxis getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody);
+	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
+	auto getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis;
+	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;
     std::vector<CollisionBody*> mKinematicBodies;
+
+    CollisionDebug mCollisionDebug;
 };
 
 

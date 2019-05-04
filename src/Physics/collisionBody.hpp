@@ -13,24 +13,22 @@ enum class BodyType;
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const thisPointer, PopHead::Base::GameData*);
+    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 
     void move(sf::Vector2f velocity);
 	void setPosition(sf::Vector2f position);
 
 private:
-	void movePhysics();
-	void setPositionOfGraphicRepresentation();
+	void updateOwnerPosition();
 	void setPositionToPreviousPosition(CollisionAxis);
 	void setPreviousPositionToCurrentPosition();
 	sf::FloatRect getPreviousRect();
 
 private:
     sf::FloatRect mRect;
-    sf::Vector2f mVelocity;
 	sf::Vector2f mPreviousPosition;
     float mMass;
-	World::Entity::Object* const pointerToObjectWhichIsOwnerOfThisCollisionBody;
+	World::Entity::Object* const mOwner;
 
 public:
     friend PhysicsEngine;

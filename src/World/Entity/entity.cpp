@@ -30,21 +30,22 @@ void Entity::addChild(EntityPtr newChild)
 
 void Entity::removeChild(const std::string& name)
 {
-    for(auto it = mChildren.begin(); it != mChildren.end(); )
-        if((*it)->getName() == name)
-            it = mChildren.erase(it);
-        else
-            ++it;
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
+		if ((*it)->getName() == name) {
+            mChildren.erase(it);
+			break;
+		}
+	}
 }
 
-void Entity::removeChild(Entity*)
+void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 {
-
-}
-
-void Entity::removeChild(PopHead::World::EntityType)
-{
-
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
+		if ((*it).get() == pointerToChildWhichIsSupposedToBeRemoved) {
+			mChildren.erase(it);
+			break;
+		}
+	}
 }
 
 auto Entity::getChild(std::string name) const -> Entity&

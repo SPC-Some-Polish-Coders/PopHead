@@ -2,9 +2,13 @@
 
 #include "collisionBody.hpp"
 
+#include <iostream>
+
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
+using PopHead::Physics::CollisionDebug;
+
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
@@ -42,44 +46,59 @@ void PhysicsEngine::clear() noexcept
 	mKinematicBodies.clear();
 }
 
+
+void PhysicsEngine::turnOnCollisionDebug()
+{
+    mCollisionDebug.createFrom(mKinematicBodies, mStaticBodies);
+}
+
+void PhysicsEngine::turnOffCollisionDebug()
+{
+    mCollisionDebug.clear();
+}
+
 void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
     {
-		kinematicBody->movePhysics();
-		handleStaticCollisionsForThisKinematicBody(kinematicBody);
-		kinematicBody->setPositionOfGraphicRepresentation();
+		handleStaticCollisionsFor(kinematicBody);
+		kinematicBody->updateOwnerPosition();
 		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
 
-void PhysicsEngine::handleStaticCollisionsForThisKinematicBody(CollisionBody* kinematicBody)
+void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
 		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);
-		kinematicBody->setPositionToPreviousPosition(axis);
+		if(axis != CollisionAxis::none)
+			kinematicBody->setPositionToPreviousPosition(axis);
 	}
 }
 
-CollisionAxis PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody)
+auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis
 {
 	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
 	{
-		if (kinematicBody->getPreviousRect().top + kinematicBody->getPreviousRect().width > staticBody->getPreviousRect().top &&
-			kinematicBody->getPreviousRect().top < staticBody->getPreviousRect().top + staticBody->getPreviousRect().height) {
+		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody))
 			return CollisionAxis::x;
-		}
-		else {
+		else
 			return CollisionAxis::y;
-		}
 	}
 	else {
 		return CollisionAxis::none;
 	}
 }
 
+bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
+{
+	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().height > bodyB->mRect.top &&
+			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);
+}
+
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
+	//AABB collision detection algorithm
 	return(
 	A.left < B.left + B.width &&
 	A.left + A.width > B.left &&

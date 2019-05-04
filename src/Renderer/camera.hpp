@@ -7,7 +7,8 @@ namespace PopHead {
 namespace Renderer {
 
 
-class Camera {
+class Camera
+{
 public:
 	Camera() = default;
 

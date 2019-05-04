@@ -56,23 +56,21 @@ public:
 
     /// Register object to be drawn.
     /** @ingroup Renderer */
-    void addObject( World::Entity::Object* const object );
+    void addObject(World::Entity::Object* const);
 
     /// Register object to be drawn.
-    void addObject( World::Entity::Object* const object, LayerID layerID );
+    void addObject(World::Entity::Object* const, LayerID);
 
-    void removeObject( const World::Entity::Object* const object );
-    void removeObject( std::string name, LayerID layerID );
+    void removeObject(const World::Entity::Object* const);
+    void removeObject(std::string name, LayerID);
 
-    void removeObjects( LayerID layerID );
+    void removeAllObjectsFromLayer(LayerID);
 
-    auto getWindow() const -> sf::Window& { return mWindow; }
+    auto getWindow() const -> sf::RenderWindow& { return mWindow; }
 	auto getCamera() -> Camera& { return mCamera; }
-    auto getLayer( LayerID id ) -> Layer& { return mLayers[id]; }
-    auto getLayer( LayerID id ) const -> const Layer& { return mLayers[id]; }
 
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
-	void moveCamera( sf::Vector2f center, float speed ) { mCamera.move(center, speed); }
+	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
 
 private:
     void setPositionOfStaticObjectsToCamera();
@@ -81,7 +79,7 @@ private:
     Camera mCamera;
     const std::map< Viewports, sf::Rect< float > > mViewports;
     mutable sf::RenderWindow mWindow;
-    mutable std::map< LayerID, Layer > mLayers;
+    std::map< LayerID, Layer > mLayers;
 };
 
 }}

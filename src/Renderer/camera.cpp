@@ -4,23 +4,25 @@
 
 #include <iostream>
 
-PopHead::Renderer::Camera::Camera(sf::Vector2f center, sf::Vector2f size)
+using PopHead::Renderer::Camera;
+
+Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	: mView(center, size), mCenterWithoutShake(center)
 {
 }
 
-void PopHead::Renderer::Camera::update(sf::Time delta)
+void Camera::update(sf::Time delta)
 {
 	shake(mShakeStrengthLoss * delta.asSeconds());
 }
 
-void PopHead::Renderer::Camera::setCenter(sf::Vector2f center)
+void Camera::setCenter(sf::Vector2f center)
 {
 	mCenterWithoutShake = center;
 	mView.setCenter(center);
 }
 
-void PopHead::Renderer::Camera::shake(float shakeStrengthLoss)
+void Camera::shake(float shakeStrengthLoss)
 {
 	if (mShakeStrength > 0.f) {
 		const float randomNumber = Utilities::Random::generateNumber(-mShakeStrength, mShakeStrength);
@@ -29,7 +31,7 @@ void PopHead::Renderer::Camera::shake(float shakeStrengthLoss)
 	}
 }
 
-void PopHead::Renderer::Camera::move(sf::Vector2f center, float speed)
+void Camera::move(sf::Vector2f center, float speed)
 {
 	mCenterWithoutShake = Utilities::Math::lerp(mCenterWithoutShake, center, speed);
 	mView.setCenter(mCenterWithoutShake);
@@ -37,17 +39,17 @@ void PopHead::Renderer::Camera::move(sf::Vector2f center, float speed)
 	updateLastCameraPosition();
 }
 
-void PopHead::Renderer::Camera::applyTo(sf::RenderTarget& renderTarget) const
+void Camera::applyTo(sf::RenderTarget& renderTarget) const
 {
 	renderTarget.setView(mView);
 }
 
-void PopHead::Renderer::Camera::updateCameraMoveFromLastFrame()
+void Camera::updateCameraMoveFromLastFrame()
 {
 	mCameraMoveFromLastFrame = mCenterWithoutShake - mLastFrameCameraCenterPosition;
 }
 
-void PopHead::Renderer::Camera::updateLastCameraPosition()
+void Camera::updateLastCameraPosition()
 {
 	mLastFrameCameraCenterPosition = mCenterWithoutShake;
 }

@@ -10,6 +10,7 @@ enum class LayerID
     staticEntities,
     kinematicEntities,
     airEntities,
+    collisionDebug,
     GUI
 };
 
