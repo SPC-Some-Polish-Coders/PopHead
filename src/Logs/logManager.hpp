@@ -1,8 +1,8 @@
 #ifndef POPHEAD_LOGS_LOGMANAGER_H_
 #define POPHEAD_LOGS_LOGMANAGER_H_
 
-#include "log.hpp"
-#include "moduleID.hpp"
+#include "LogData/log.hpp"
+#include "LogData/moduleID.hpp"
 #include <SFML/System.hpp>
 #include <vector>
 #include <fstream>

@@ -1,4 +1,4 @@
-#include "Logs.hpp"
+#include "Logs/Logs.hpp"
 
 #include <cassert>//This include must by removed when asserts are replaced by logs
 
