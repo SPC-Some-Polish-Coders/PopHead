@@ -1,8 +1,7 @@
 #ifndef POPHEAD_LOGS_LOGSETTINGS_H_
 #define POPHEAD_LOGS_LOGSETTINGS_H_
 
-#include "LogData/moduleID.hpp"
-#include "LogData/logType.hpp"
+#include "LogData/Log.hpp"
 #include <vector>
 
 namespace PopHead{
@@ -28,8 +27,9 @@ public:
 	void setWritingLogsFromEachLogType();
 
 private:
-	bool shouldThisLogBeWrittenIntoConsole();
-	bool shouldThisLogBeWrittenIntoFile();
+	bool shouldThisLogBeWrittenIntoConsole(const Log&);
+	bool shouldThisLogBeWrittenIntoFile(const Log&);
+	bool shouldThisLogBeWritten(const Log&);
 
 private:
 	std::vector<ModuleID> mLogFromModulesToWrite;

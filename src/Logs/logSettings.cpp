@@ -3,6 +3,7 @@
 using PopHead::Logs::LogSettings;
 using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
+using PopHead::Logs::Log;
 
 LogSettings::LogSettings()
 	:mShouldLogIntoConsole(true)
@@ -36,13 +37,17 @@ void LogSettings::setWritingLogsFromEachLogType()
 	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::GOOD, LogType::WARNING } );
 }
 
-
-bool LogSettings::shouldThisLogBeWrittenIntoConsole()
+bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log)
 {
-	return true;
+	return mShouldLogIntoConsole && shouldThisLogBeWritten(log);
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoFile()
+bool LogSettings::shouldThisLogBeWrittenIntoFile(const Log& log)
+{
+	return mShouldLogIntoFile && shouldThisLogBeWritten(log);
+}
+
+bool LogSettings::shouldThisLogBeWritten(const Log& log)
 {
 	return true;
 }
