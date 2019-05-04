@@ -14,5 +14,4 @@ namespace PopHead
 	void LOG(LogType, ModuleID, std::string message);
 }
 
-
 #endif // !POPHEAD_LOGS_H_

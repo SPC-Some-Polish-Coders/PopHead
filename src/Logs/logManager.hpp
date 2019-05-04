@@ -3,6 +3,7 @@
 
 #include "LogData/log.hpp"
 #include "LogData/moduleID.hpp"
+#include "logSettings.hpp"
 #include <SFML/System.hpp>
 #include <vector>
 #include <fstream>
@@ -25,25 +26,19 @@ public:
 		return logManager;
 	}
 
+	auto getLogSettings() -> LogSettings& { return mLogSettings; }
+
 	void writeLog(const Log& log);
-	
+
 private:
 	void saveLogsInFile(const Log& log); 
 	void writeLogInConsole(const Log& log);
-
-public:
-	void stopWritingLogsInConsole();
-	void writeLogsOnlyFromCertainModules(std::vector<ModuleID> moduleID);
-	void writeLogsFromEachModule();
-	void writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType);
-	void writeEachLog();
 	sf::Time getTimeFromStartOfTheProgram();
 
 private:
-	 std::ofstream mLogFile;
-	 sf::Clock mTimeFromStartOfTheProgram;
-	 std::vector<ModuleID> mLogFromModulesToWrite;
-	 std::vector<LogType> mTypesOfLogToWrite;
+	LogSettings mLogSettings;
+	std::ofstream mLogFile;
+	sf::Clock mTimeFromStartOfTheProgram;
 
 public:
 	friend std::ostream& operator<<(std::ostream& os, const ModuleID& dt);

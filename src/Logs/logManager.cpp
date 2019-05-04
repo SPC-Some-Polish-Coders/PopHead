@@ -99,26 +99,6 @@ void LogManager::saveLogsInFile(const Log& log)
 	mLogFile.flush();
 }
 
-void LogManager::stopWritingLogsInConsole()
-{
-}
-
-void LogManager::writeLogsOnlyFromCertainModules(std::vector <ModuleID> moduleID)
-{
-}
-
-void LogManager::writeLogsFromEachModule()
-{
-}
-
-void LogManager::writeLogsOnlyFromCertainLogTypes(std::vector <LogType> logType)
-{
-}
-
-void LogManager::writeEachLog()
-{
-
-}
 
 sf::Time LogManager::getTimeFromStartOfTheProgram()
 {
