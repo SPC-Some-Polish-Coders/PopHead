@@ -3,19 +3,18 @@
 
 #include <vector>
 #include "collisionDebugRect.hpp"
-#include "Physics/bodyType.hpp"
 
 namespace PopHead{
 namespace Physics{
 
 
 class CollisionBody;
+enum class BodyType;
 
 class CollisionDebug
 {
 public:
-    void createFrom(const std::vector<CollisionBody*>& kinematicBodies,
-                    const std::vector<CollisionBody*>& staticBodies);
+    void createFrom(std::vector<CollisionBody*>& kinematicBodies, std::vector<CollisionBody*>& staticBodies);
     void createFrom(const CollisionBody* collisionBody, BodyType type);
 
     void clear();

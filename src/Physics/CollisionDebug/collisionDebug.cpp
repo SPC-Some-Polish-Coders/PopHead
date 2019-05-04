@@ -1,12 +1,15 @@
 #include "collisionDebug.hpp"
 
 #include "Physics/bodyType.hpp"
+#include "Physics/collisionBody.hpp"
 
 using PopHead::Physics::CollisionDebug;
+using PopHead::Physics::CollisionBody;
+using PopHead::Physics::BodyType;
 
 
-void CollisionDebug::createFrom(const std::vector<CollisionBody*>& kinematicBodies,
-                                const std::vector<CollisionBody*>& staticBodies)
+void CollisionDebug::createFrom(std::vector<CollisionBody*>& kinematicBodies,
+                                std::vector<CollisionBody*>& staticBodies)
 {
 
 }
