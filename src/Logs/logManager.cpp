@@ -29,8 +29,8 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
 	case LogType::GOOD:
 		os << "GOOD";
 		break;
-	case LogType::FATAL:
-		os << "FATAL";
+	case LogType::ERROR:
+		os << "ERROR";
 		break;
 	case LogType::WARNING:
 		os << "WARNING";
@@ -74,6 +74,7 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 		os << "RESOURCES";
 		break;
 	case ModuleID::None:
+		os << "           ";
 		break;
 	}
 	return os;
