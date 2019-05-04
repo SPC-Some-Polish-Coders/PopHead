@@ -15,8 +15,8 @@ class LogManager
 {
 private:
 	LogManager();
-	//LogManager(LogManager&) = delete;
-	//operator=(LogManager&) = delete;
+	LogManager(LogManager&) = delete;
+	void operator=(LogManager&) = delete;
 
 public:
 	static LogManager& getLogManager()
@@ -37,7 +37,7 @@ public:
 	void writeLogsFromEachModule();
 	void writeLogsOnlyFromCertainLogTypes(std::vector<LogType> logType);
 	void writeEachLog();
-	sf::Time& getTimeFromStartOfTheProgram();
+	sf::Time getTimeFromStartOfTheProgram();
 
 private:
 	 std::ofstream mLogFile;

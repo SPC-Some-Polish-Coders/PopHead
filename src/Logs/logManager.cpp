@@ -120,7 +120,7 @@ void LogManager::writeEachLog()
 
 }
 
-auto LogManager::getTimeFromStartOfTheProgram() -> sf::Time &
+sf::Time LogManager::getTimeFromStartOfTheProgram()
 {
 	sf::Time elapsed = mTimeFromStartOfTheProgram.getElapsedTime();
 	return elapsed;
