@@ -4,8 +4,8 @@
 
 int main()
 {
-	PopHead::LOG(LogType::GOOD, ModuleID::None, "start executing PopHead!");
+	PopHead::LOG(LogType::INFO, ModuleID::None, "start executing PopHead!");
 
-    PopHead::Base::Game();
+	PopHead::Base::Game();
     return 0;
 }

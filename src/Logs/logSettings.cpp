@@ -20,21 +20,21 @@ void LogSettings::setWritingLogs(bool enabled)
 
 void LogSettings::setWritingEachLog()
 {
-	setWritingLogsFromEachModule();
-	setWritingLogsFromEachLogType();
+	setWritingLogsFromEachModules();
+	setWritingLogsFromEachLogTypes();
 }
 
-void LogSettings::setWritingLogsFromEachModule()
+void LogSettings::setWritingLogsFromEachModules()
 {
 	setWritingLogsOnlyFromCertainModules(
 		{ ModuleID::Base, ModuleID::Inputs, ModuleID::Logs, ModuleID::Music, ModuleID::Physics,
-		ModuleID::Render, ModuleID::Resources, ModuleID::Sound, ModuleID::States }
+		ModuleID::Renderer, ModuleID::Resources, ModuleID::Sound, ModuleID::States, ModuleID::None }
 	);
 }
 
-void LogSettings::setWritingLogsFromEachLogType() 
+void LogSettings::setWritingLogsFromEachLogTypes() 
 {
-	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::GOOD, LogType::WARNING } );
+	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
 }
 
 bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log) const

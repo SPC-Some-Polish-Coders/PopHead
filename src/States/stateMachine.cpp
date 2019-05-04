@@ -28,7 +28,7 @@ void StateMachine::changingStatesProcess()
         }
         else{
             mActiveStates.clear();
-			PopHead::LOG(LogType::GOOD, ModuleID::States, "Vector of active states was cleared.");
+			PopHead::LOG(LogType::INFO, ModuleID::States, "Vector of active states was cleared.");
         }
         mIsClearing = false;
     }
@@ -40,7 +40,7 @@ void StateMachine::changingStatesProcess()
         }
         else{
             mActiveStates.pop_back();
-			PopHead::LOG(LogType::GOOD, ModuleID::States, "The state in the back of the vector of active states was popped (deleted).");
+			PopHead::LOG(LogType::INFO, ModuleID::States, "The state in the back of the vector of active states was popped (deleted).");
         }
         mIsRemoving = false;
     }
@@ -50,7 +50,7 @@ void StateMachine::changingStatesProcess()
         while(!mPendingStates.empty()){
             mActiveStates.emplace_back(std::move(mPendingStates.front()));
             mPendingStates.pop_front();
-			PopHead::LOG(LogType::GOOD, ModuleID::States, "The state in the back of the vector was replaced by new state.");
+			PopHead::LOG(LogType::INFO, ModuleID::States, "The state in the back of the vector was replaced by new state.");
         }
         mIsAdding = false;
     }
@@ -59,7 +59,7 @@ void StateMachine::changingStatesProcess()
     {
         mActiveStates.emplace_back(std::move(mPendingStates.back()));
         mPendingStates.clear();
-		PopHead::LOG(LogType::GOOD, ModuleID::States, "The new state was pushed into back of the vector.");
+		PopHead::LOG(LogType::INFO, ModuleID::States, "The new state was pushed into back of the vector.");
         mIsReplacing = false;
     }
 }

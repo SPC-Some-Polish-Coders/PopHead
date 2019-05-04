@@ -11,7 +11,7 @@ enum class ModuleID
 	Music,
 	Sound,
 	World,
-	Render,
+	Renderer,
 	Physics,
 	States,
 	Inputs,

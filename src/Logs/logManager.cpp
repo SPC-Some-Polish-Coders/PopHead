@@ -11,7 +11,7 @@ using PopHead::Logs::LogType;
 
 LogManager::LogManager()
 {
-	time_t t = time(0);
+	std::time_t t = time(0);
 	struct tm now;
 	localtime_s(&now, &t);
 	std::string fileName;
@@ -20,14 +20,15 @@ LogManager::LogManager()
 	if (now.tm_mon < 10 && now.tm_mon > 9) fileName += std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
 	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
 	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
-	mLogFile.open("Logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+
+	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
 }
 
 std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
 {
 	switch (dt) {
-	case LogType::GOOD:
-		os << "GOOD";
+	case LogType::INFO:
+		os << "INFO";
 		break;
 	case LogType::ERROR:
 		os << "ERROR";
@@ -58,8 +59,8 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	case ModuleID::World:
 		os << "WORLD";
 		break;
-	case ModuleID::Render:
-		os << "RENDER";
+	case ModuleID::Renderer:
+		os << "RENDERER";
 		break;
 	case ModuleID::Physics:
 		os << "PHYSICS";
@@ -82,8 +83,11 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 
 void LogManager::writeLog(const Log& log)
 {
-	writeLogInConsole(log);
-	saveLogsInFile(log);
+	if(mLogSettings.shouldThisLogBeWrittenIntoConsole(log))
+		writeLogInConsole(log);
+
+	if(mLogSettings.shouldThisLogBeWrittenIntoFile(log))
+		saveLogsInFile(log);
 }
 
 void LogManager::writeLogInConsole(const Log& log)
