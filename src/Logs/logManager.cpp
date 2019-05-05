@@ -11,17 +11,7 @@ using PopHead::Logs::LogType;
 
 LogManager::LogManager()
 {
-	std::time_t t = time(0);
-	struct tm now;
-	localtime_s(&now, &t);
-	std::string fileName;
-	if (now.tm_mday < 10 && now.tm_mon < 10) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
-	if (now.tm_mday < 10 && now.tm_mon > 9) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + std::to_string(now.tm_mday);
-	if (now.tm_mon < 10 && now.tm_mon > 9) fileName += std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
-	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
-	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
-
-	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+	nameTheFile();
 }
 
 std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& dt)
@@ -81,6 +71,22 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	return os;
 }
 
+void LogManager::nameTheFile()
+{
+	std::time_t t = time(0);
+	struct tm now;
+	localtime_s(&now, &t);
+	std::string fileName;
+	if (now.tm_mday < 10 && now.tm_mon < 10) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
+	if (now.tm_mday < 10 && now.tm_mon > 9) fileName += "0" + std::to_string(now.tm_mon + 1) + "." + std::to_string(now.tm_mday);
+	if (now.tm_mon < 10 && now.tm_mon > 9) fileName += std::to_string(now.tm_mon + 1) + "." + "0" + std::to_string(now.tm_mday);
+	if (now.tm_min < 10) fileName += "_" + std::to_string(now.tm_hour) + "-" + "0" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
+	else fileName += "_" + std::to_string(now.tm_hour) + "-" + std::to_string(now.tm_min) + "-" + std::to_string(now.tm_sec);
+
+	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+}
+
+
 void LogManager::writeLog(const Log& log)
 {
 	if(mLogSettings.shouldThisLogBeWrittenIntoConsole(log))
@@ -102,7 +108,6 @@ void LogManager::saveLogsInFile(const Log& log)
 	<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
 	mLogFile.flush();
 }
-
 
 sf::Time LogManager::getTimeFromStartOfTheProgram()
 {
