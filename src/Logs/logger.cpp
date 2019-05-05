@@ -1,15 +1,15 @@
-#include "logManager.hpp"
+#include "logger.hpp"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 
-using PopHead::Logs::LogManager;
+using PopHead::Logs::Logger;
 using PopHead::Logs::Log;
 using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
 
 
-LogManager::LogManager()
+Logger::Logger()
 {
 	std::time_t t = time(0);
 	struct tm now;
@@ -81,7 +81,7 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 	return os;
 }
 
-void LogManager::writeLog(const Log& log)
+void Logger::writeLog(const Log& log)
 {
 	if(mLogSettings.shouldThisLogBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
@@ -90,13 +90,13 @@ void LogManager::writeLog(const Log& log)
 		saveLogsInFile(log);
 }
 
-void LogManager::writeLogInConsole(const Log& log)
+void Logger::writeLogInConsole(const Log& log)
 {
 	std::cout << log.type << " | " << log.moduleID << " | " << log.message << " | "
 	<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
 }
 
-void LogManager::saveLogsInFile(const Log& log)
+void Logger::saveLogsInFile(const Log& log)
 {
 	mLogFile << log.type << " | " << log.moduleID << " | " << log.message << " | "
 	<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
@@ -104,7 +104,7 @@ void LogManager::saveLogsInFile(const Log& log)
 }
 
 
-sf::Time LogManager::getTimeFromStartOfTheProgram()
+sf::Time Logger::getTimeFromStartOfTheProgram()
 {
 	sf::Time elapsed = mTimeFromStartOfTheProgram.getElapsedTime();
 	return elapsed;
