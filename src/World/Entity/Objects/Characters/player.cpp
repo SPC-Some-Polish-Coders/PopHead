@@ -45,16 +45,16 @@ Player::Player(PopHead::Base::GameData* gameData)
 
 void Player::input()
 {
-    if(INPUT_isActionPressed("movingLeft")){
+    if(mGameData->getInput().getAction().isActionPressed("movingLeft")){
         mMotion.isMovingLeft = true;
     }
-    if(INPUT_isActionPressed("movingRight")){
+    if(mGameData->getInput().getAction().isActionPressed("movingRight")){
         mMotion.isMovingRight = true;
     }
-    if(INPUT_isActionPressed("movingUp")){
+    if(mGameData->getInput().getAction().isActionPressed("movingUp")){
         mMotion.isMovingUp = true;
     }
-    if(INPUT_isActionPressed("movingDown")){
+    if(mGameData->getInput().getAction().isActionPressed("movingDown")){
         mMotion.isMovingDown = true;
     }
 }

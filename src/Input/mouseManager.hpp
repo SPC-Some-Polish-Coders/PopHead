@@ -1,10 +1,3 @@
-#define INPUT_getMousePosition mGameData->getInput().getMouse().getMousePosition
-#define INPUT_hasMouseJustMoved mGameData->getInput().getMouse().hasMouseJustMoved
-#define INPUT_isMouseButtonPressed mGameData->getInput().getMouse().isMouseButtonPressed
-#define INPUT_isMouseButtonJustPressed mGameData->getInput().getMouse().isMouseButtonJustPressed
-#define INPUT_isMouseButtonJustReleased mGameData->getInput().getMouse().isMouseButtonJustReleased
-
-
 #ifndef POPHEAD_INPUT_MOUSEMANAGER_H_
 #define POPHEAD_INPUT_MOUSEMANAGER_H_
 

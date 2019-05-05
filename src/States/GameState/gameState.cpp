@@ -37,7 +37,7 @@ void GameState::makeSceneTree()
 
 void GameState::makeMap()
 {
-    std::unique_ptr<World::Entity::Map> 
+    std::unique_ptr<World::Entity::Map>
 		city(new World::Entity::Map(mGameData, "cityMap", mGameData->getTextures().get("resources/textures/map/city.png"), 2));
     mRoot.addChild(std::move(city));
 }
@@ -91,7 +91,7 @@ void GameState::input()
 {
     mRoot.input();
 
-	if (INPUT_isKeyJustPressed(sf::Keyboard::Space))
+	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		shouldCameraShake = true;
 }
 
