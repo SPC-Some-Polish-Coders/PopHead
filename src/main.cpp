@@ -7,6 +7,14 @@
 #endif // _WIN32
 #include <stdexcept>
 #include <cstdlib>
+#include <string>
+
+void showErrorMessageBox(const std::string& message, const std::string& title)
+{
+#ifdef _WIN32
+	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
+#endif // _WIN32
+}
 
 int main()
 {
@@ -15,15 +23,11 @@ int main()
 		PopHead::Base::Game();
 	}
 	catch (const std::exception& e) {
-#ifdef _WIN32
-		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
-#endif // _WIN32
+		showErrorMessageBox(e.what(), "Error");
 		return EXIT_FAILURE;
 	}
 	catch (...) {
-#ifdef _WIN32
-		MessageBoxA(nullptr, "Unknown error occurred!", "Error", MB_OK | MB_ICONERROR);
-#endif // _WIN32
+		showErrorMessageBox("Unknown error occurred!", "Error");
 		return EXIT_FAILURE;
 	}
     return EXIT_SUCCESS;
