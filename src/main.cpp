@@ -1,6 +1,6 @@
 #include "Base/game.hpp"
 
-#include "Logs/Logs.hpp"
+#include "Logs/logs.hpp"
 
 #ifdef _WIN32
 #include <Windows.h>
