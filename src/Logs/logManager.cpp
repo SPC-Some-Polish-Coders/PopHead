@@ -92,16 +92,18 @@ void LogManager::writeLog(const Log & log)
 
 void LogManager::writeLogInConsole(const Log & log)
 {
-	std::cout << std::setw(7) << std::internal << log.type << " | " << std::setw(9)
-		<< std::internal << log.moduleID << " | " << std::left << log.message << " | "
-		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
+	std::cout << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
+		<< " | " << std::setw(7) << std::left << log.type
+		<< " | " << std::setw(9) << std::left << log.moduleID
+		<< " | " << std::left << log.message << std::endl;
 }
 
 void LogManager::saveLogsInFile(const Log & log)
 {
-	mLogFile << log.type << " | " << log.moduleID << " | " << log.message << " | "
-		<< std::setprecision(1) << "[" << getTimeFromStartOfTheProgram().asSeconds() << "s]" << std::endl;
-	mLogFile.flush();
+	mLogFile << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
+		<< " | " << std::setw(7) << std::left << log.type
+		<< " | " << std::setw(9) << std::left << log.moduleID
+		<< " | " << std::left << log.message << std::endl;
 }
 
 
