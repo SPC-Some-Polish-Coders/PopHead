@@ -1,6 +1,6 @@
 #include "Base/game.hpp"
 
-#include "Logs/Logs.hpp"
+#include "Logs/logs.hpp"
 
 int main()
 {
