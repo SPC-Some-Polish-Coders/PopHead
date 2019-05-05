@@ -71,8 +71,7 @@ std::ostream& PopHead::Logs::operator<<(std::ostream & os, const ModuleID & dt)
 	return os;
 }
 
-<<<<<<< HEAD:src/Logs/logManager.cpp
-void LogManager::openTheFile()
+void Logger::openTheFile()
 {
 	std::string fileNameDate(__DATE__);
 	std::string fileNameTime(__TIME__);
@@ -82,10 +81,8 @@ void LogManager::openTheFile()
 	mLogFile.open("logs/log_" + fileNameDate + "_" + fileNameTime + ".txt", std::ofstream::out | std::ofstream::app);
 }
 
-void LogManager::writeLog(const Log & log)
-=======
+
 void Logger::writeLog(const Log& log)
->>>>>>> master:src/Logs/logger.cpp
 {
 	if (mLogSettings.shouldThisLogBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
@@ -94,11 +91,8 @@ void Logger::writeLog(const Log& log)
 		saveLogsInFile(log);
 }
 
-<<<<<<< HEAD:src/Logs/logManager.cpp
-void LogManager::writeLogInConsole(const Log & log)
-=======
 void Logger::writeLogInConsole(const Log& log)
->>>>>>> master:src/Logs/logger.cpp
+
 {
 	std::cout << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
@@ -106,11 +100,8 @@ void Logger::writeLogInConsole(const Log& log)
 		<< " | " << std::left << log.message << std::endl;
 }
 
-<<<<<<< HEAD:src/Logs/logManager.cpp
-void LogManager::saveLogsInFile(const Log & log)
-=======
 void Logger::saveLogsInFile(const Log& log)
->>>>>>> master:src/Logs/logger.cpp
+
 {
 	mLogFile << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
