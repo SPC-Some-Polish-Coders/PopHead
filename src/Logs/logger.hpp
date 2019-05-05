@@ -1,5 +1,5 @@
-#ifndef POPHEAD_LOGS_LOGMANAGER_H_
-#define POPHEAD_LOGS_LOGMANAGER_H_
+#ifndef POPHEAD_LOGS_LOGGER_H_
+#define POPHEAD_LOGS_LOGGER_H_
 
 #include "LogData/moduleID.hpp"
 #include "logSettings.hpp"
@@ -11,18 +11,18 @@ namespace PopHead {
 namespace Logs {
 
 
-class LogManager
+class Logger
 {
 private:
-	LogManager();
-	LogManager(LogManager&) = delete;
-	void operator=(LogManager&) = delete;
+	Logger();
+	Logger(Logger&) = delete;
+	void operator=(Logger&) = delete;
 
 public:
-	static LogManager& getLogManager()
+	static Logger& getLogger()
 	{
-		static LogManager logManager; 
-		return logManager;
+		static Logger Logger; 
+		return Logger;
 	}
 
 	auto getLogSettings() -> LogSettings& { return mLogSettings; }
@@ -48,4 +48,4 @@ public:
 
 }}
 
-#endif // !POPHEAD_LOGS_LOGMANAGER_H_
+#endif // !POPHEAD_LOGS_LOGGER_H_
