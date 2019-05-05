@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "GameState/gameState.hpp"
-#include "Logs/Logs.hpp"
+#include "Logs/logs.hpp"
 
 using PopHead::States::StateMachine;
 using PopHead::States::State;

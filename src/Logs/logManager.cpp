@@ -65,7 +65,7 @@ std::ostream& PopHead::Logs::operator<<(std::ostream& os, const ModuleID& dt)
 		os << "RESOURCES";
 		break;
 	case ModuleID::None:
-		os << "           ";
+		os << "         ";
 		break;
 	}
 	return os;

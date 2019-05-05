@@ -16,7 +16,7 @@ template< typename ResourceType >
 class ResourceHolder
 {
 public:
-    bool load(const std::string& name);
+    void load(const std::string& name);
     auto get(const std::string& name) ->ResourceType&;
     void free(const std::string& name);
 

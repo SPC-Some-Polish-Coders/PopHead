@@ -1,7 +1,6 @@
 #ifndef POPHEAD_LOGS_LOGMANAGER_H_
 #define POPHEAD_LOGS_LOGMANAGER_H_
 
-#include "LogData/log.hpp"
 #include "LogData/moduleID.hpp"
 #include "logSettings.hpp"
 #include <SFML/System.hpp>
