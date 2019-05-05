@@ -30,6 +30,7 @@ public:
 	void writeLog(const Log& log);
 
 private:
+	void nameTheFile();
 	void saveLogsInFile(const Log& log); 
 	void writeLogInConsole(const Log& log);
 	sf::Time getTimeFromStartOfTheProgram();
