@@ -11,6 +11,7 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 ,mMass(mass)
 ,mPreviousPosition(rect.left, rect.top)
 ,mOwner(owner)
+,mCollisionDebugRect(gameData)
 {
 	switch (bodyType)
 	{
@@ -43,9 +44,6 @@ void CollisionBody::updateOwnerPosition()
 
 void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)
 {
-	/*mRect.left = mPreviousPosition.x;
-	mRect.top = mPreviousPosition.y;*/
-
 	switch (axis)
 	{
 	case CollisionAxis::x:

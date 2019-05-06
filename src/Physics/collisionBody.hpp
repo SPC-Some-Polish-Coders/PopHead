@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Base/gameData.hpp"
 #include "World/Entity/object.hpp"
+#include "CollisionDebug/collisionDebugRect.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -29,8 +30,8 @@ private:
 	sf::Vector2f mPreviousPosition;
     float mMass;
 	World::Entity::Object* const mOwner;
+	CollisionDebugRect mCollisionDebugRect;
 
-public:
     friend PhysicsEngine;
 };
 

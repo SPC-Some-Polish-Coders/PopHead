@@ -46,17 +46,6 @@ void PhysicsEngine::clear() noexcept
 	mKinematicBodies.clear();
 }
 
-
-void PhysicsEngine::turnOnCollisionDebug()
-{
-    mCollisionDebug.createFrom(mKinematicBodies, mStaticBodies);
-}
-
-void PhysicsEngine::turnOffCollisionDebug()
-{
-    mCollisionDebug.clear();
-}
-
 void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
