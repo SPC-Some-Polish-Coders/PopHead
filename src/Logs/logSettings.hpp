@@ -20,21 +20,21 @@ public:
 
 	void setWritingEachLog();
 
-	void setModulesToWrite(const std::vector<std::string>& modulesToWrite) {mModulesToWrite = modulesToWrite;}
+	void setModuleNamesToWrite(const std::vector<std::string>& moduleNames) {mModuleNamesToWrite = moduleNames;}
 	void setWritingLogsFromEachModules();
 
-	void setTypesToWrite(const std::vector<LogType>& logTypesToWrite) { mTypesToWrite = logTypesToWrite;}
+	void setTypesToWrite(const std::vector<LogType>& logTypes) { mTypesToWrite = logTypes;}
 	void setWritingLogsFromEachLogTypes();
 
-	bool shouldThisLogBeWrittenIntoConsole(const Log&) const;
-	bool shouldThisLogBeWrittenIntoFile(const Log&) const;
+	bool shouldBeWrittenIntoConsole(const Log&) const;
+	bool shouldBeWrittenIntoFile(const Log&) const;
 private:
-	bool shouldThisLogBeWritten(const Log&) const;
-	bool shouldThisLogBeWrittenConsideringLogType(const Log&) const;
-	bool shouldThisLogBeWrittenConsideringModuleID(const Log&) const;
+	bool shouldBeWritten(const Log&) const;
+	bool shouldBeWrittenConsideringLogType(const Log&) const;
+	bool shouldBeWrittenConsideringModuleName(const Log&) const;
 
 private:
-	std::vector<std::string> mModulesToWrite;
+	std::vector<std::string> mModuleNamesToWrite;
 	std::vector<LogType> mTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;

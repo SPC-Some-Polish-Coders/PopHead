@@ -25,7 +25,7 @@ void LogSettings::setWritingEachLog()
 
 void LogSettings::setWritingLogsFromEachModules()
 {
-	setModulesToWrite(
+	setModuleNamesToWrite(
 		{ "Base", "Inputs", "Logs", "Music", "Physics", "Renderer", "Resources", "Sound", "States", "None" }
 	);
 }
@@ -35,22 +35,22 @@ void LogSettings::setWritingLogsFromEachLogTypes()
 	setTypesToWrite( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log) const
+bool LogSettings::shouldBeWrittenIntoConsole(const Log& log) const
 {
-	return mShouldLogIntoConsole && shouldThisLogBeWritten(log);
+	return mShouldLogIntoConsole && shouldBeWritten(log);
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoFile(const Log& log) const
+bool LogSettings::shouldBeWrittenIntoFile(const Log& log) const
 {
-	return mShouldLogIntoFile && shouldThisLogBeWritten(log);
+	return mShouldLogIntoFile && shouldBeWritten(log);
 }
 
-bool LogSettings::shouldThisLogBeWritten(const Log& log) const
+bool LogSettings::shouldBeWritten(const Log& log) const
 {
-	return shouldThisLogBeWrittenConsideringLogType(log) && shouldThisLogBeWrittenConsideringModuleID(log);
+	return shouldBeWrittenConsideringLogType(log) && shouldBeWrittenConsideringModuleName(log);
 }
 
-bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringLogType(const Log& log) const
 {
 	for (auto type : mTypesToWrite) {
 		if (type == log.type) {
@@ -60,9 +60,9 @@ bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
 	return false;
 }
 
-bool LogSettings::shouldThisLogBeWrittenConsideringModuleID(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringModuleName(const Log& log) const
 {
-	for (auto moduleName : mModulesToWrite){
+	for (auto moduleName : mModuleNamesToWrite){
 		if (moduleName == log.moduleName){
 			return true;
 		}

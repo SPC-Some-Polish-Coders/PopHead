@@ -4,8 +4,6 @@
 #include "logType.hpp"
 #include <string>
 
-
-
 namespace PopHead {
 namespace Logs {
 
@@ -13,6 +11,7 @@ class Log
 {
 public:
 	Log(LogType logType, const char* const filePath, const std::string& message);
+
 	std::string message;
 	std::string moduleName;
 	LogType type;

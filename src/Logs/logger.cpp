@@ -7,12 +7,9 @@
 #pragma warning(disable:4996)
 #endif
 
-
-
 using PopHead::Logs::Logger;
 using PopHead::Logs::Log;
 using PopHead::Logs::LogType;
-
 
 Logger::Logger()
 {
@@ -54,10 +51,10 @@ void Logger::openTheFile()
 
 void Logger::writeLog(const Log& log)
 {
-	if (mLogSettings.shouldThisLogBeWrittenIntoConsole(log))
+	//if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
 
-	if (mLogSettings.shouldThisLogBeWrittenIntoFile(log))
+	//if (mLogSettings.shouldThisLogBeWrittenIntoFile(log))
 		saveLogsInFile(log);
 }
 
@@ -79,7 +76,6 @@ void Logger::saveLogsInFile(const Log& log)
 		<< " | " << std::left << log.message << std::endl
 		<< std::flush;
 }
-
 
 sf::Time Logger::getTimeFromStartOfTheProgram()
 {
