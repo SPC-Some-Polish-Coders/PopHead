@@ -94,7 +94,7 @@ void Logger::writeLog(const Log& log)
 void Logger::writeLogInConsole(const Log& log)
 
 {
-	std::cout << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
+	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleID
 		<< " | " << std::left << log.message << std::endl;
@@ -103,7 +103,7 @@ void Logger::writeLogInConsole(const Log& log)
 void Logger::saveLogsInFile(const Log& log)
 
 {
-	mLogFile << std::setprecision(3) << "[  " << std::left << std::setw(7) << getTimeFromStartOfTheProgram().asSeconds() << "s ]"
+	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleID
 		<< " | " << std::left << log.message << std::endl;
