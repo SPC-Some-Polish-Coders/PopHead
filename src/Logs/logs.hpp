@@ -1,7 +1,7 @@
 #ifndef POPHEAD_LOGS_H_
 #define POPHEAD_LOGS_H_
 
-#include "Logs/logManager.hpp"
+#include "Logs/logger.hpp"
 #include "Logs/LogData/logType.hpp"
 #include <string>
 
