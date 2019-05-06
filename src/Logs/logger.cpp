@@ -3,6 +3,10 @@
 #include <fstream>
 #include <iomanip>
 
+#if defined _MSC_VER
+#pragma warning(disable:4996)
+#endif
+
 using PopHead::Logs::Logger;
 using PopHead::Logs::Log;
 using PopHead::Logs::ModuleID;
@@ -73,12 +77,17 @@ std::ostream& PopHead::Logs::operator<<(std::ostream & os, const ModuleID & dt)
 
 void Logger::openTheFile()
 {
-	std::string fileNameDate(__DATE__);
-	std::string fileNameTime(__TIME__);
-	fileNameDate.replace(3, 1, "_"); fileNameDate.replace(6, 1, "_");
-	fileNameTime.replace(2, 1, "-"); fileNameTime.replace(5, 1, "-");
+	std::time_t t = time(0);
+	struct tm *now = localtime(&t);
+	std::string fileName;
 
-	mLogFile.open("logs/log_" + fileNameDate + "_" + fileNameTime + ".txt", std::ofstream::out | std::ofstream::app);
+	if (now->tm_mday < 10 && now->tm_mon < 10) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
+	if (now->tm_mday < 10 && now->tm_mon > 9) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
+	if (now->tm_mon < 10 && now->tm_mon > 9) fileName += std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
+	if (now->tm_min < 10) fileName += "_" + std::to_string(now->tm_hour) + "-" + "0" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
+	else fileName += "_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
+
+	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
 }
 
 
@@ -106,7 +115,8 @@ void Logger::saveLogsInFile(const Log& log)
 	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleID
-		<< " | " << std::left << log.message << std::endl;
+		<< " | " << std::left << log.message << std::endl
+		<< std::flush;
 }
 
 
