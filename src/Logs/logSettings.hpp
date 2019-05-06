@@ -20,10 +20,10 @@ public:
 
 	void setWritingEachLog();
 
-	void setWritingLogsOnlyFromCertainModules(const std::vector<ModuleID>& modulesToWrite) {mLogFromModulesToWrite = modulesToWrite;}
+	void setModulesToWrite(const std::vector<std::string>& modulesToWrite) {mModulesToWrite = modulesToWrite;}
 	void setWritingLogsFromEachModules();
 
-	void setWritingLogsOnlyFromCertainTypes(const std::vector<LogType>& logTypesToWrite) { mTypesOfLogToWrite = logTypesToWrite;}
+	void setTypesToWrite(const std::vector<LogType>& logTypesToWrite) { mTypesToWrite = logTypesToWrite;}
 	void setWritingLogsFromEachLogTypes();
 
 	bool shouldThisLogBeWrittenIntoConsole(const Log&) const;
@@ -34,8 +34,8 @@ private:
 	bool shouldThisLogBeWrittenConsideringModuleID(const Log&) const;
 
 private:
-	std::vector<ModuleID> mLogFromModulesToWrite;
-	std::vector<LogType> mTypesOfLogToWrite;
+	std::vector<std::string> mModulesToWrite;
+	std::vector<LogType> mTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
 };

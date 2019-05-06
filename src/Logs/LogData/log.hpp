@@ -1,9 +1,10 @@
 #ifndef POPHEAD_LOGS_LOG_H_
 #define POPHEAD_LOGS_LOG_H_
 
-#include "moduleID.hpp"
 #include "logType.hpp"
 #include <string>
+
+
 
 namespace PopHead {
 namespace Logs {
@@ -11,10 +12,10 @@ namespace Logs {
 class Log
 {
 public:
-	Log(LogType logType, ModuleID moduleID, const std::string message);
-	LogType type;
-	ModuleID moduleID;
+	Log(LogType logType, const char* const filePath, const std::string& message);
 	std::string message;
+	std::string moduleName;
+	LogType type;
 };
 
 }}

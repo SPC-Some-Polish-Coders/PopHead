@@ -3,13 +3,14 @@
 #include <fstream>
 #include <iomanip>
 
-#if defined _MSC_VER
+#ifdef _MSC_VER
 #pragma warning(disable:4996)
 #endif
 
+
+
 using PopHead::Logs::Logger;
 using PopHead::Logs::Log;
-using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
 
 
@@ -34,46 +35,6 @@ std::ostream & PopHead::Logs::operator<<(std::ostream & os, const LogType & dt)
 	return os;
 }
 
-std::ostream& PopHead::Logs::operator<<(std::ostream & os, const ModuleID & dt)
-{
-	switch (dt)
-	{
-	case ModuleID::Base:
-		os << "BASE";
-		break;
-	case ModuleID::Logs:
-		os << "LOGS";
-		break;
-	case ModuleID::Music:
-		os << "MUSIC";
-		break;
-	case ModuleID::Sound:
-		os << "SOUND";
-		break;
-	case ModuleID::World:
-		os << "WORLD";
-		break;
-	case ModuleID::Renderer:
-		os << "RENDERER";
-		break;
-	case ModuleID::Physics:
-		os << "PHYSICS";
-		break;
-	case ModuleID::States:
-		os << "STATES";
-		break;
-	case ModuleID::Inputs:
-		os << "INPUTS";
-		break;
-	case ModuleID::Resources:
-		os << "RESOURCES";
-		break;
-	case ModuleID::None:
-		os << "         ";
-		break;
-	}
-	return os;
-}
 
 void Logger::openTheFile()
 {
@@ -105,7 +66,7 @@ void Logger::writeLogInConsole(const Log& log)
 {
 	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
-		<< " | " << std::setw(9) << std::left << log.moduleID
+		<< " | " << std::setw(9) << std::left << log.moduleName
 		<< " | " << std::left << log.message << std::endl;
 }
 
@@ -114,7 +75,7 @@ void Logger::saveLogsInFile(const Log& log)
 {
 	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
-		<< " | " << std::setw(9) << std::left << log.moduleID
+		<< " | " << std::setw(9) << std::left << log.moduleName
 		<< " | " << std::left << log.message << std::endl
 		<< std::flush;
 }

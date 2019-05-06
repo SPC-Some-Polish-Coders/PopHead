@@ -1,7 +1,6 @@
 #include "logSettings.hpp"
 
 using PopHead::Logs::LogSettings;
-using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
 using PopHead::Logs::Log;
 
@@ -26,15 +25,14 @@ void LogSettings::setWritingEachLog()
 
 void LogSettings::setWritingLogsFromEachModules()
 {
-	setWritingLogsOnlyFromCertainModules(
-		{ ModuleID::Base, ModuleID::Inputs, ModuleID::Logs, ModuleID::Music, ModuleID::Physics,
-		ModuleID::Renderer, ModuleID::Resources, ModuleID::Sound, ModuleID::States, ModuleID::None }
+	setModulesToWrite(
+		{ "Base", "Inputs", "Logs", "Music", "Physics", "Renderer", "Resources", "Sound", "States", "None" }
 	);
 }
 
 void LogSettings::setWritingLogsFromEachLogTypes() 
 {
-	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
+	setTypesToWrite( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
 }
 
 bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log) const
@@ -54,7 +52,7 @@ bool LogSettings::shouldThisLogBeWritten(const Log& log) const
 
 bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
 {
-	for (auto type : mTypesOfLogToWrite) {
+	for (auto type : mTypesToWrite) {
 		if (type == log.type) {
 			return true;
 		}
@@ -64,8 +62,8 @@ bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
 
 bool LogSettings::shouldThisLogBeWrittenConsideringModuleID(const Log& log) const
 {
-	for (auto moduleID : mLogFromModulesToWrite){
-		if (moduleID == log.moduleID){
+	for (auto moduleName : mModulesToWrite){
+		if (moduleName == log.moduleName){
 			return true;
 		}
 	}

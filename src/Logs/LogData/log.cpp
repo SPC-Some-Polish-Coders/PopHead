@@ -2,8 +2,8 @@
 
 using PopHead::Logs::LogType;
 using PopHead::Logs::Log;
-using PopHead::Logs::ModuleID;
 
-Log::Log(LogType logType, ModuleID moduleID, const std::string message)
-	: type(logType), moduleID(moduleID), message(message)
-{}
+Log::Log(LogType logType, const char* const filePath, const std::string& message)
+	: message(message), type(logType)
+{
+}

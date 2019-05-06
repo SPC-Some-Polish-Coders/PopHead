@@ -1,4 +1,4 @@
-#include "Logs/logs.hpp"
+#include "Logs/logger.hpp"
 
 #include <cassert>//This include must by removed when asserts are replaced by logs
 #include <stdexcept>
@@ -13,7 +13,7 @@ void ResourceHolder<ResourceType>::load(const std::string& filepath)
     if(resource->loadFromFile(filepath))
 		mResources.insert(std::make_pair(filepath, std::move(resource)));
 	else {
-		PopHead::LOG(LogType::ERROR, ModuleID::Resources, "unable to load file " + filepath + "! Probably there is not such file.");
+		PH_LOG(LogType::ERROR, "unable to load file " + filepath + "! Probably there is not such file.");
 		throw std::runtime_error("unable to load file " + filepath + "! Probably there is not such file.");
 	}
 }
@@ -24,7 +24,7 @@ auto ResourceHolder<ResourceType>::get(const std::string& name) -> ResourceType&
     auto found = mResources.find(name);
 #ifndef NDEBUG
 	if (found == mResources.end())
-		PopHead::LOG(LogType::ERROR, ModuleID::Resources, "You try to get " + name + ". A resource with this name does not exist.");
+		PH_LOG(LogType::ERROR, "name");
 #endif // !NDEBUG
 	return *found->second;
 }
@@ -38,5 +38,5 @@ void ResourceHolder<ResourceType>::free(const std::string& name)
 			return;
 		}
 	}
-	PopHead::LOG(LogType::ERROR, ModuleID::Resources, "You try to get " + name + ". A resource with this name does not exist.");
+	PH_LOG(LogType::ERROR, "You try to get " + name + ". A resource with this name does not exist.");
 }
