@@ -18,6 +18,7 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void setColor(sf::Color color) { mShape.setFillColor(color); }
+
 	static void setShouldDisplay(bool shouldDisplay) { mShouldDisplay = shouldDisplay; }
 
 private:

@@ -25,6 +25,8 @@ private:
 
 public:
     void input() override;
+private:
+	void collisionDebugSwitch();
 
 public:
     void update(sf::Time delta) override;
@@ -34,7 +36,8 @@ private:
 	void boatMovement(sf::Time delta);
 
 private:
-	bool shouldCameraShake = false;
+	bool mShouldCameraShake = false;
+	bool mIsCollisionDebugTurnOn = false;
 };
 
 

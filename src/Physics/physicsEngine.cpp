@@ -7,8 +7,6 @@
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
 using PopHead::Physics::CollisionAxis;
-using PopHead::Physics::CollisionDebugSettings;
-
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {

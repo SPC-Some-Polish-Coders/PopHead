@@ -16,7 +16,19 @@ enum class BodyType;
 
 class CollisionDebugSettings
 {
+private:
+	CollisionDebugSettings();
+
 public:
+	CollisionDebugSettings(const CollisionDebugSettings&) = delete;
+	void operator=(CollisionDebugSettings&) = delete;
+
+	static CollisionDebugSettings& getInstance()
+	{
+		static CollisionDebugSettings instance;
+		return instance;
+	}
+
 	void turnOn();
 	void turnOff();
 };

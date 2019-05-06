@@ -1,8 +1,13 @@
 #ifndef PH_RELEASE
 
-#include "collisionDebug.hpp"
+#include "collisionDebugSettings.hpp"
 
 using PopHead::Physics::CollisionDebugSettings;
+
+CollisionDebugSettings::CollisionDebugSettings()
+{
+	turnOff();
+}
 
 void CollisionDebugSettings::turnOn()
 {
