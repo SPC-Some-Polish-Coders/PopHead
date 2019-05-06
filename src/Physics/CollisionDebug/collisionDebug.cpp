@@ -2,12 +2,16 @@
 
 #include "collisionDebug.hpp"
 
-void PopHead::Physics::CollisionDebug::turnOn()
+using PopHead::Physics::CollisionDebugSettings;
+
+void CollisionDebugSettings::turnOn()
 {
+	CollisionDebugRect::setShouldDisplay(true);
 }
 
-void PopHead::Physics::CollisionDebug::turnOff()
+void CollisionDebugSettings::turnOff()
 {
+	CollisionDebugRect::setShouldDisplay(false);
 }
 
 #endif //!PH_RELEASE

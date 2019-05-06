@@ -36,7 +36,7 @@ private:
     std::vector<CollisionBody*> mStaticBodies;
     std::vector<CollisionBody*> mKinematicBodies;
 
-    CollisionDebug mCollisionDebug;
+    CollisionDebugSettings mCollisionDebug;
 };
 
 

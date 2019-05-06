@@ -14,7 +14,7 @@ class CollisionBody;
 enum class BodyType;
 
 
-class CollisionDebug
+class CollisionDebugSettings
 {
 public:
 	void turnOn();
