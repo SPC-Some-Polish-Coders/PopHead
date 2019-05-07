@@ -8,7 +8,7 @@
 #endif
 
 using PopHead::Logs::Logger;
-using PopHead::Logs::Log;
+using PopHead::Logs::LogData;
 using PopHead::Logs::LogType;
 
 Logger::Logger()
@@ -49,7 +49,7 @@ void Logger::openFile()
 }
 
 
-void Logger::writeLog(const Log& log)
+void Logger::writeLog(const LogData& log)
 {
 	//if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
@@ -58,7 +58,7 @@ void Logger::writeLog(const Log& log)
 		saveLogsInFile(log);
 }
 
-void Logger::writeLogInConsole(const Log& log)
+void Logger::writeLogInConsole(const LogData& log)
 
 {
 	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
@@ -67,7 +67,7 @@ void Logger::writeLogInConsole(const Log& log)
 		<< " | " << std::left << log.message << std::endl;
 }
 
-void Logger::saveLogsInFile(const Log& log)
+void Logger::saveLogsInFile(const LogData& log)
 
 {
 	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"

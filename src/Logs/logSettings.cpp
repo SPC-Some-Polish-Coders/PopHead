@@ -2,7 +2,7 @@
 
 using PopHead::Logs::LogSettings;
 using PopHead::Logs::LogType;
-using PopHead::Logs::Log;
+using PopHead::Logs::LogData;
 
 LogSettings::LogSettings()
 	:mShouldLogIntoConsole(true)
@@ -39,22 +39,22 @@ void LogSettings::setWritingLogs(bool enabled)
 	mShouldLogIntoFile = enabled;
 }
 
-bool LogSettings::shouldBeWrittenIntoConsole(const Log& log) const
+bool LogSettings::shouldBeWrittenIntoConsole(const LogData& log) const
 {
 	return mShouldLogIntoConsole && shouldBeWritten(log);
 }
 
-bool LogSettings::shouldBeWrittenIntoFile(const Log& log) const
+bool LogSettings::shouldBeWrittenIntoFile(const LogData& log) const
 {
 	return mShouldLogIntoFile && shouldBeWritten(log);
 }
 
-bool LogSettings::shouldBeWritten(const Log& log) const
+bool LogSettings::shouldBeWritten(const LogData& log) const
 {
 	return shouldBeWrittenConsideringLogType(log) && shouldBeWrittenConsideringModuleName(log);
 }
 
-bool LogSettings::shouldBeWrittenConsideringLogType(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringLogType(const LogData& log) const
 {
 	for (auto type : mLogTypesToWrite) 
 		if (type == log.type) 
@@ -62,7 +62,7 @@ bool LogSettings::shouldBeWrittenConsideringLogType(const Log& log) const
 	return false;
 }
 
-bool LogSettings::shouldBeWrittenConsideringModuleName(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringModuleName(const LogData& log) const
 {
 	for (auto moduleName : mModuleNamesToWrite)
 		if (moduleName == log.moduleName)

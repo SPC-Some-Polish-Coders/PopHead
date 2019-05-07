@@ -13,11 +13,8 @@ enum class LogType : std::size_t {
 	Count // WARNING: Keep it last
 };
 
-class Log
+struct LogData
 {
-public:
-	Log(LogType logType, const char* const filePath, const std::string& message);
-
 	std::string message;
 	std::string moduleName;
 	LogType type;
