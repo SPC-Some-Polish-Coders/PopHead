@@ -1,20 +1,23 @@
 #ifndef POPHEAD_LOGS_LOG_H_
 #define POPHEAD_LOGS_LOG_H_
 
-#include "moduleID.hpp"
-#include "logType.hpp"
 #include <string>
 
 namespace PopHead {
 namespace Logs {
 
-class Log
+enum class LogType : std::size_t {
+	Info,
+	Error,
+	Warning,
+	Count // WARNING: Keep it last
+};
+
+struct LogData
 {
-public:
-	Log(LogType logType, ModuleID moduleID, const std::string message);
-	LogType type;
-	ModuleID moduleID;
 	std::string message;
+	std::string moduleName;
+	LogType type;
 };
 
 }}
