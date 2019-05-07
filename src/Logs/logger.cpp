@@ -46,6 +46,8 @@ void Logger::openFile()
 	else fileName += "_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
 
 	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
+	if (!mLogFile.is_open())
+		; // TODO: Handle error in some way or do some logs
 }
 
 
