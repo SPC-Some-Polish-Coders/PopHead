@@ -32,7 +32,7 @@ void LogSettings::setWritingLogsFromEachModules()
 
 void LogSettings::setWritingLogsFromEachLogTypes() 
 {
-	setTypesToWrite( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
+	setTypesToWrite( { LogType::Error, LogType::Info, LogType::Warning } );
 }
 
 bool LogSettings::shouldBeWrittenIntoConsole(const Log& log) const

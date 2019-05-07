@@ -13,7 +13,7 @@ void ResourceHolder<ResourceType>::load(const std::string& filepath)
     if(resource->loadFromFile(filepath))
 		mResources.insert(std::make_pair(filepath, std::move(resource)));
 	else {
-		PH_LOG(LogType::ERROR, "unable to load file " + filepath + "! Probably there is not such file.");
+		PH_LOG(LogType::Error, "unable to load file " + filepath + "! Probably there is not such file.");
 		throw std::runtime_error("unable to load file " + filepath + "! Probably there is not such file.");
 	}
 }
@@ -24,7 +24,7 @@ auto ResourceHolder<ResourceType>::get(const std::string& name) -> ResourceType&
     auto found = mResources.find(name);
 #ifndef NDEBUG
 	if (found == mResources.end())
-		PH_LOG(LogType::ERROR, "name");
+		PH_LOG(LogType::Error, "name");
 #endif // !NDEBUG
 	return *found->second;
 }
@@ -38,5 +38,5 @@ void ResourceHolder<ResourceType>::free(const std::string& name)
 			return;
 		}
 	}
-	PH_LOG(LogType::ERROR, "You try to get " + name + ". A resource with this name does not exist.");
+	PH_LOG(LogType::Error, "You try to get " + name + ". A resource with this name does not exist.");
 }

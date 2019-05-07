@@ -19,7 +19,7 @@ void showErrorMessageBox(const std::string& message, const std::string& title)
 int main()
 {
 	try {
-		PH_LOG(LogType::INFO, "start executing PopHead!");
+		PH_LOG(LogType::Info, "start executing PopHead!");
 		PopHead::Base::Game();
 	}
 	catch (const std::exception& e) {

@@ -24,11 +24,11 @@ void StateMachine::changingStatesProcess()
     if(mIsClearing)
     {
         if(mActiveStates.empty()){
-			PH_LOG(LogType::WARNING, "You are trying to clear active states, but there are no states in vector.");
+			PH_LOG(LogType::Warning, "You are trying to clear active states, but there are no states in vector.");
         }
         else{
             mActiveStates.clear();
-			PH_LOG(LogType::INFO, "Vector of active states was cleared.");
+			PH_LOG(LogType::Info, "Vector of active states was cleared.");
         }
         mIsClearing = false;
     }
@@ -36,11 +36,11 @@ void StateMachine::changingStatesProcess()
     if(mIsRemoving)
     {
         if(mActiveStates.empty()){
-			PH_LOG(LogType::WARNING, "You are trying to pop state, but there are no states in vector.");
+			PH_LOG(LogType::Warning, "You are trying to pop state, but there are no states in vector.");
         }
         else{
             mActiveStates.pop_back();
-			PH_LOG(LogType::INFO, "The state in the back of the vector of active states was popped (deleted).");
+			PH_LOG(LogType::Info, "The state in the back of the vector of active states was popped (deleted).");
         }
         mIsRemoving = false;
     }
@@ -50,7 +50,7 @@ void StateMachine::changingStatesProcess()
         while(!mPendingStates.empty()){
             mActiveStates.emplace_back(std::move(mPendingStates.front()));
             mPendingStates.pop_front();
-			PH_LOG(LogType::INFO, "The state in the back of the vector was replaced by new state.");
+			PH_LOG(LogType::Info, "The state in the back of the vector was replaced by new state.");
         }
         mIsAdding = false;
     }
@@ -59,7 +59,7 @@ void StateMachine::changingStatesProcess()
     {
         mActiveStates.emplace_back(std::move(mPendingStates.back()));
         mPendingStates.clear();
-		PH_LOG(LogType::INFO, "The new state was pushed into back of the vector.");
+		PH_LOG(LogType::Info, "The new state was pushed into back of the vector.");
         mIsReplacing = false;
     }
 }
@@ -67,7 +67,7 @@ void StateMachine::changingStatesProcess()
 void StateMachine::input()
 {
     if(mActiveStates.empty()){
-		PH_LOG(LogType::ERROR, "Cannot execute input because there are no States on the vector.");
+		PH_LOG(LogType::Error, "Cannot execute input because there are no States on the vector.");
     }
     else{
         mActiveStates.back()->input();
@@ -77,7 +77,7 @@ void StateMachine::input()
 void StateMachine::update(sf::Time delta)
 {
     if(mActiveStates.empty()){
-		PH_LOG(LogType::ERROR, "Cannot execute update because there are no States on the vector.");
+		PH_LOG(LogType::Error, "Cannot execute update because there are no States on the vector.");
     }
     else{
         mActiveStates.back()->update(delta);
@@ -98,7 +98,7 @@ void StateMachine::pushState(PopHead::States::StateID id)
         mIsAdding = true;
     }
     else{
-		PH_LOG(LogType::ERROR, "Couldn't push state because another state is replacing.");
+		PH_LOG(LogType::Error, "Couldn't push state because another state is replacing.");
     }
 }
 
@@ -110,7 +110,7 @@ void StateMachine::replaceState(PopHead::States::StateID id)
         mIsReplacing = true;
     }
     else{
-		PH_LOG(LogType::ERROR, "Couldn't replace state because another state is pushing.");
+		PH_LOG(LogType::Error, "Couldn't replace state because another state is pushing.");
     }
 }
 

@@ -6,9 +6,9 @@ namespace Logs {
 
 enum class LogType
 {
-	INFO,
-	ERROR,
-	WARNING
+	Info,
+	Error,
+	Warning
 };
 
 }}

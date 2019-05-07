@@ -19,13 +19,13 @@ Logger::Logger()
 std::ostream & PopHead::Logs::operator<<(std::ostream & os, const LogType & dt)
 {
 	switch (dt) {
-	case LogType::INFO:
+	case LogType::Info:
 		os << "INFO";
 		break;
-	case LogType::ERROR:
+	case LogType::Error:
 		os << "ERROR";
 		break;
-	case LogType::WARNING:
+	case LogType::Warning:
 		os << "WARNING";
 		break;
 	}

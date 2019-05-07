@@ -9,11 +9,10 @@ Log::Log(LogType logType, const char* const filePath, const std::string& message
 	: message(message), moduleName(std::string(filePath)), type(logType)
 {
 	//G:\PopHead\src\main.cpp
-//G:\PopHead\src\States\stateMachine.cpp
+	//G:\PopHead\src\States\stateMachine.cpp
 	std::size_t begin = moduleName.rfind("PopHead\\src");
-	//std::cout << "Position after first find is: " << begin;
-	// TODO: PH_ASSERT(begin != std::string::npos, "Module location cannot be found");
-	//std::cout << std::strlen("PopHead\\src\\");
+	//NOTE: We can't use PH_ASSERT here, becouse it uses Log, so it can cause recursion
+	//PH_ASSERT(begin != std::string::npos, "Module location cannot be found");
 	begin += std::strlen("PopHead\\src\\");
 	if (moduleName.find("\\", begin) == std::string::npos)
 	{
