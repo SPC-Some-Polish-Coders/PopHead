@@ -8,7 +8,8 @@ std::string PopHead::Utilities::Parser::toModuleName(const std::string& sourceFi
 	// WARNING: Don't use PH_ASSERT or PH_LOG here becouse they are using this method, so it can result in recursion
 	// TODO: Allow this also on Linux (Linux has forward slash instead of backslash)
 
-	const char* const SOURCE_PATH = "PopHead\\src";
+	std::string fullPath = "PopHead" + PH_PATH_SEPARATOR + "src";
+	const char* const SOURCE_PATH = fullPath.c_str();
 	std::size_t begin = sourceFilePath.find(SOURCE_PATH);
 	if (begin == std::string::npos) {
 		std::cout << "[Parser::toModuleName] Module location cannot be found" << std::endl;
