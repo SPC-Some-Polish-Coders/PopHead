@@ -22,6 +22,7 @@ public:
 private:
 	void updateOwnerPosition();
 	sf::FloatRect getPreviousRect();
+	void setPreviousPositionToCurrentPosition();
 
 private:
     sf::FloatRect mRect;

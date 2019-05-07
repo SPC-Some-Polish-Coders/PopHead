@@ -50,6 +50,7 @@ void PhysicsEngine::update(sf::Time delta)
     {
 		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody->updateOwnerPosition();
+		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
 
@@ -77,6 +78,11 @@ void PhysicsEngine::setToContactPosition(CollisionBody* kinematicBody, Collision
 				kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top + staticBody->mRect.height));
 		}
 	}
+}
+
+auto PopHead::Physics::PhysicsEngine::getCollisionSide() -> CollisionSide
+{
+	return CollisionSide();
 }
 
 bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)

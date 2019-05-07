@@ -9,6 +9,13 @@
 namespace PopHead{
 namespace Physics{
 
+enum class CollisionSide
+{
+	left,
+	right,
+	top,
+	down
+};
 
 class CollisionBody;
 
@@ -25,6 +32,7 @@ public:
 private:
 	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
 	void setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody);
+	auto getCollisionSide() -> CollisionSide;
 	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 

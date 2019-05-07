@@ -50,3 +50,9 @@ sf::FloatRect CollisionBody::getPreviousRect()
 {
 	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
 }
+
+void PopHead::Physics::CollisionBody::setPreviousPositionToCurrentPosition()
+{
+	mPreviousPosition.x = mRect.left;
+	mPreviousPosition.y = mRect.top;
+}
