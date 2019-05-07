@@ -27,6 +27,7 @@ Log::Log(LogType logType, const char* const filePath, const std::string& message
 		std::cout << "[Log::Log()] There should be at least one letter after source path" << std::endl;
 		PH_BREAKPOINT();
 	}
+
 	std::size_t end = moduleName.find("\\", begin + 1);
 	if (end == std::string::npos)
 		moduleName = "None";

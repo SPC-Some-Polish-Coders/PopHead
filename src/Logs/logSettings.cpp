@@ -20,13 +20,17 @@ void LogSettings::turnOnWritingEachLog()
 void LogSettings::turnOnWritingLogsFromEachModule()
 {
 	setModuleNamesToWrite(
-		{ "Base", "Inputs", "Logs", "Music", "Physics", "Renderer", "Resources", "Sound", "States", "None" }
+		{ "Audio", "Base", "Input", "Logs", "Physics", "Renderer", "Resources", "States", "Utilities", "World", "None" }
 	);
 }
 
 void LogSettings::turnOnWritingLogsFromEachLogTypes() 
 {
-	setLogTypesToWrite( { LogType::Error, LogType::Info, LogType::Warning } );
+	const std::size_t count = static_cast<std::size_t>(LogType::Count);
+	mLogTypesToWrite.clear();
+	mLogTypesToWrite.resize(count);
+	for (std::size_t i = 0; i < count; ++i)
+		mLogTypesToWrite[i] = static_cast<LogType>(i);
 }
 
 void LogSettings::setWritingLogs(bool enabled)

@@ -1,7 +1,7 @@
 #ifndef POPHEAD_LOGS_LOGSETTINGS_H_
 #define POPHEAD_LOGS_LOGSETTINGS_H_
 
-#include "LogData/Log.hpp"
+#include "log.hpp"
 #include <vector>
 
 namespace PopHead{

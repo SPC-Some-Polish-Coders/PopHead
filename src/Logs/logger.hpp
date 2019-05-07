@@ -1,7 +1,7 @@
 #ifndef POPHEAD_LOGS_LOGGER_H_
 #define POPHEAD_LOGS_LOGGER_H_
 
-#include "LogData/logType.hpp"
+#include "log.hpp"
 #include "logSettings.hpp"
 #include <SFML/System.hpp>
 #include <vector>
