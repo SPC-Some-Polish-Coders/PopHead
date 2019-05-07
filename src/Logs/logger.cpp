@@ -13,12 +13,12 @@ using PopHead::Logs::LogType;
 
 Logger::Logger()
 {
-	openTheFile();
+	openFile();
 }
 
-std::ostream & PopHead::Logs::operator<<(std::ostream & os, const LogType & dt)
+std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& logType)
 {
-	switch (dt) {
+	switch (logType) {
 	case LogType::Info:
 		os << "INFO";
 		break;
@@ -33,10 +33,10 @@ std::ostream & PopHead::Logs::operator<<(std::ostream & os, const LogType & dt)
 }
 
 
-void Logger::openTheFile()
+void Logger::openFile()
 {
 	std::time_t t = time(0);
-	struct tm *now = localtime(&t);
+	std::tm* now = localtime(&t);
 	std::string fileName;
 
 	if (now->tm_mday < 10 && now->tm_mon < 10) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
@@ -61,7 +61,7 @@ void Logger::writeLog(const Log& log)
 void Logger::writeLogInConsole(const Log& log)
 
 {
-	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
+	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleName
 		<< " | " << std::left << log.message << std::endl;
@@ -70,15 +70,15 @@ void Logger::writeLogInConsole(const Log& log)
 void Logger::saveLogsInFile(const Log& log)
 
 {
-	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getTimeFromStartOfTheProgram().asSeconds()).erase(5, 4) << "s ]"
+	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleName
 		<< " | " << std::left << log.message << std::endl
 		<< std::flush;
 }
 
-sf::Time Logger::getTimeFromStartOfTheProgram()
+sf::Time Logger::getElapsedTimeSinceCreation()
 {
-	sf::Time elapsed = mTimeFromStartOfTheProgram.getElapsedTime();
-	return elapsed;
+	const sf::Time elapsedTime = mClock.getElapsedTime();
+	return elapsedTime;
 }

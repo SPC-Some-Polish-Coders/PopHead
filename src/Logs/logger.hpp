@@ -19,10 +19,11 @@ class Logger
 {
 private:
 	Logger();
+
+public:
 	Logger(Logger&) = delete;
 	void operator=(Logger&) = delete;
 
-public:
 	static Logger& getLogger()
 	{
 		static Logger Logger; 
@@ -34,18 +35,18 @@ public:
 	void writeLog(const Log& log);
 
 private:
-	void openTheFile();
+	void openFile();
 	void saveLogsInFile(const Log& log); 
 	void writeLogInConsole(const Log& log);
-	sf::Time getTimeFromStartOfTheProgram();
+	sf::Time getElapsedTimeSinceCreation();
 
 private:
 	LogSettings mLogSettings;
 	std::ofstream mLogFile;
-	sf::Clock mTimeFromStartOfTheProgram;
+	sf::Clock mClock;
 
 public:
-	friend std::ostream& operator<<(std::ostream& os, const LogType& dt);
+	friend std::ostream& operator<<(std::ostream& os, const LogType& logType);
 };
 
 
