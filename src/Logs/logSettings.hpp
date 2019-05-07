@@ -18,16 +18,17 @@ public:
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
 
-	void setWritingEachLog();
+	void turnOnWritingEachLog();
 
 	void setModuleNamesToWrite(const std::vector<std::string>& moduleNames) {mModuleNamesToWrite = moduleNames;}
-	void setWritingLogsFromEachModules();
+	void turnOnWritingLogsFromEachModule();
 
-	void setTypesToWrite(const std::vector<LogType>& logTypes) { mTypesToWrite = logTypes;}
-	void setWritingLogsFromEachLogTypes();
+	void setLogTypesToWrite(const std::vector<LogType>& logTypes) { mLogTypesToWrite = logTypes;}
+	void turnOnWritingLogsFromEachLogTypes();
 
 	bool shouldBeWrittenIntoConsole(const Log&) const;
 	bool shouldBeWrittenIntoFile(const Log&) const;
+
 private:
 	bool shouldBeWritten(const Log&) const;
 	bool shouldBeWrittenConsideringLogType(const Log&) const;
@@ -35,7 +36,7 @@ private:
 
 private:
 	std::vector<std::string> mModuleNamesToWrite;
-	std::vector<LogType> mTypesToWrite;
+	std::vector<LogType> mLogTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
 };
