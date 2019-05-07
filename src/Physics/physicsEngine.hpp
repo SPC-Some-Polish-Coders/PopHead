@@ -24,7 +24,7 @@ public:
     void update(sf::Time delta);
 private:
 	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
-	auto getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis;
+	void setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody);
 	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 

@@ -46,26 +46,6 @@ void CollisionBody::updateOwnerPosition()
 	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
-void CollisionBody::setPositionToPreviousPosition(CollisionAxis axis)
-{
-	switch (axis)
-	{
-	case CollisionAxis::x:
-		mRect.left = mPreviousPosition.x;
-		break;
-
-	case CollisionAxis::y:
-		mRect.top = mPreviousPosition.y;
-		break;
-	}
-}
-
-void CollisionBody::setPreviousPositionToCurrentPosition()
-{
-	mPreviousPosition.x = mRect.left;
-	mPreviousPosition.y = mRect.top;
-}
-
 sf::FloatRect CollisionBody::getPreviousRect()
 {
 	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);

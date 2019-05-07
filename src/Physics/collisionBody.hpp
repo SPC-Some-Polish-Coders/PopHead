@@ -21,8 +21,6 @@ public:
 
 private:
 	void updateOwnerPosition();
-	void setPositionToPreviousPosition(CollisionAxis);
-	void setPreviousPositionToCurrentPosition();
 	sf::FloatRect getPreviousRect();
 
 private:

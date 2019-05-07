@@ -50,30 +50,32 @@ void PhysicsEngine::update(sf::Time delta)
     {
 		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody->updateOwnerPosition();
-		kinematicBody->setPreviousPositionToCurrentPosition();
     }
 }
 
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
-		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);
-		if(axis != CollisionAxis::none)
-			kinematicBody->setPositionToPreviousPosition(axis);
+		setToContactPosition(kinematicBody, staticBody);
 	}
 }
 
-auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis
+void PhysicsEngine::setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
 	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
 	{
-		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody))
-			return CollisionAxis::x;
-		else
-			return CollisionAxis::y;
-	}
-	else {
-		return CollisionAxis::none;
+		if (isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)) {//x collision axis
+			if (kinematicBody->getPreviousRect().left < staticBody->mRect.left) // left
+				kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left - kinematicBody->mRect.width, kinematicBody->mRect.top));
+			else // right
+				kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left + staticBody->mRect.width, kinematicBody->mRect.top));
+		}
+		else { //y collision axis
+			if (kinematicBody->getPreviousRect().top < staticBody->mRect.top) // up
+				kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top - kinematicBody->mRect.height));
+			else // down
+				kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top + staticBody->mRect.height));
+		}
 	}
 }
 
