@@ -1,15 +1,36 @@
 #include "logSettings.hpp"
 
 using PopHead::Logs::LogSettings;
-using PopHead::Logs::ModuleID;
 using PopHead::Logs::LogType;
-using PopHead::Logs::Log;
+using PopHead::Logs::LogData;
 
 LogSettings::LogSettings()
 	:mShouldLogIntoConsole(true)
 	,mShouldLogIntoFile(true)
 {
-	setWritingEachLog();
+	turnOnWritingEachLog();
+}
+
+void LogSettings::turnOnWritingEachLog()
+{
+	turnOnWritingLogsFromEachModule();
+	turnOnWritingLogsFromEachLogTypes();
+}
+
+void LogSettings::turnOnWritingLogsFromEachModule()
+{
+	setModuleNamesToWrite(
+		{ "Audio", "Base", "Input", "Logs", "Physics", "Renderer", "Resources", "States", "Utilities", "World", "None" }
+	);
+}
+
+void LogSettings::turnOnWritingLogsFromEachLogTypes() 
+{
+	const std::size_t count = static_cast<std::size_t>(LogType::Count);
+	mLogTypesToWrite.clear();
+	mLogTypesToWrite.resize(count);
+	for (std::size_t i = 0; i < count; ++i)
+		mLogTypesToWrite[i] = static_cast<LogType>(i);
 }
 
 void LogSettings::setWritingLogs(bool enabled)
@@ -18,56 +39,33 @@ void LogSettings::setWritingLogs(bool enabled)
 	mShouldLogIntoFile = enabled;
 }
 
-void LogSettings::setWritingEachLog()
+bool LogSettings::shouldBeWrittenIntoConsole(const LogData& log) const
 {
-	setWritingLogsFromEachModules();
-	setWritingLogsFromEachLogTypes();
+	return mShouldLogIntoConsole && shouldBeWritten(log);
 }
 
-void LogSettings::setWritingLogsFromEachModules()
+bool LogSettings::shouldBeWrittenIntoFile(const LogData& log) const
 {
-	setWritingLogsOnlyFromCertainModules(
-		{ ModuleID::Base, ModuleID::Inputs, ModuleID::Logs, ModuleID::Music, ModuleID::Physics,
-		ModuleID::Renderer, ModuleID::Resources, ModuleID::Sound, ModuleID::States, ModuleID::None }
-	);
+	return mShouldLogIntoFile && shouldBeWritten(log);
 }
 
-void LogSettings::setWritingLogsFromEachLogTypes() 
+bool LogSettings::shouldBeWritten(const LogData& log) const
 {
-	setWritingLogsOnlyFromCertainTypes( { LogType::ERROR, LogType::INFO, LogType::WARNING } );
+	return shouldBeWrittenConsideringLogType(log) && shouldBeWrittenConsideringModuleName(log);
 }
 
-bool LogSettings::shouldThisLogBeWrittenIntoConsole(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringLogType(const LogData& log) const
 {
-	return mShouldLogIntoConsole && shouldThisLogBeWritten(log);
-}
-
-bool LogSettings::shouldThisLogBeWrittenIntoFile(const Log& log) const
-{
-	return mShouldLogIntoFile && shouldThisLogBeWritten(log);
-}
-
-bool LogSettings::shouldThisLogBeWritten(const Log& log) const
-{
-	return shouldThisLogBeWrittenConsideringLogType(log) && shouldThisLogBeWrittenConsideringModuleID(log);
-}
-
-bool LogSettings::shouldThisLogBeWrittenConsideringLogType(const Log& log) const
-{
-	for (auto type : mTypesOfLogToWrite) {
-		if (type == log.type) {
+	for (LogType type : mLogTypesToWrite) 
+		if (type == log.type) 
 			return true;
-		}
-	}
 	return false;
 }
 
-bool LogSettings::shouldThisLogBeWrittenConsideringModuleID(const Log& log) const
+bool LogSettings::shouldBeWrittenConsideringModuleName(const LogData& log) const
 {
-	for (auto moduleID : mLogFromModulesToWrite){
-		if (moduleID == log.moduleID){
+	for (const std::string& moduleName : mModuleNamesToWrite)
+		if (moduleName == log.moduleName)
 			return true;
-		}
-	}
 	return false;
 }

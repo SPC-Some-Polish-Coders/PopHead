@@ -1,6 +1,6 @@
 #include "Base/game.hpp"
 
-#include "Logs/logs.hpp"
+#include "Logs/logger.hpp"
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -19,7 +19,7 @@ void showErrorMessageBox(const std::string& message, const std::string& title)
 int main()
 {
 	try {
-		PopHead::LOG(LogType::INFO, ModuleID::None, "start executing PopHead!");
+		PH_LOG(LogType::Info, "start executing PopHead!");
 		PopHead::Base::Game();
 	}
 	catch (const std::exception& e) {

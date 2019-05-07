@@ -1,7 +1,7 @@
 #ifndef POPHEAD_LOGS_LOGSETTINGS_H_
 #define POPHEAD_LOGS_LOGSETTINGS_H_
 
-#include "LogData/Log.hpp"
+#include "log.hpp"
 #include <vector>
 
 namespace PopHead{
@@ -18,24 +18,25 @@ public:
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
 
-	void setWritingEachLog();
+	void turnOnWritingEachLog();
 
-	void setWritingLogsOnlyFromCertainModules(const std::vector<ModuleID>& modulesToWrite) {mLogFromModulesToWrite = modulesToWrite;}
-	void setWritingLogsFromEachModules();
+	void setModuleNamesToWrite(const std::vector<std::string>& moduleNames) {mModuleNamesToWrite = moduleNames;}
+	void turnOnWritingLogsFromEachModule();
 
-	void setWritingLogsOnlyFromCertainTypes(const std::vector<LogType>& logTypesToWrite) { mTypesOfLogToWrite = logTypesToWrite;}
-	void setWritingLogsFromEachLogTypes();
+	void setLogTypesToWrite(const std::vector<LogType>& logTypes) { mLogTypesToWrite = logTypes;}
+	void turnOnWritingLogsFromEachLogTypes();
 
-	bool shouldThisLogBeWrittenIntoConsole(const Log&) const;
-	bool shouldThisLogBeWrittenIntoFile(const Log&) const;
-private:
-	bool shouldThisLogBeWritten(const Log&) const;
-	bool shouldThisLogBeWrittenConsideringLogType(const Log&) const;
-	bool shouldThisLogBeWrittenConsideringModuleID(const Log&) const;
+	bool shouldBeWrittenIntoConsole(const LogData&) const;
+	bool shouldBeWrittenIntoFile(const LogData&) const;
 
 private:
-	std::vector<ModuleID> mLogFromModulesToWrite;
-	std::vector<LogType> mTypesOfLogToWrite;
+	bool shouldBeWritten(const LogData&) const;
+	bool shouldBeWrittenConsideringLogType(const LogData&) const;
+	bool shouldBeWrittenConsideringModuleName(const LogData&) const;
+
+private:
+	std::vector<std::string> mModuleNamesToWrite;
+	std::vector<LogType> mLogTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
 };
