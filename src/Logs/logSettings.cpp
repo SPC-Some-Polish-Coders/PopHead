@@ -56,7 +56,7 @@ bool LogSettings::shouldBeWritten(const LogData& log) const
 
 bool LogSettings::shouldBeWrittenConsideringLogType(const LogData& log) const
 {
-	for (auto type : mLogTypesToWrite) 
+	for (LogType type : mLogTypesToWrite) 
 		if (type == log.type) 
 			return true;
 	return false;
@@ -64,7 +64,7 @@ bool LogSettings::shouldBeWrittenConsideringLogType(const LogData& log) const
 
 bool LogSettings::shouldBeWrittenConsideringModuleName(const LogData& log) const
 {
-	for (auto moduleName : mModuleNamesToWrite)
+	for (const std::string& moduleName : mModuleNamesToWrite)
 		if (moduleName == log.moduleName)
 			return true;
 	return false;
