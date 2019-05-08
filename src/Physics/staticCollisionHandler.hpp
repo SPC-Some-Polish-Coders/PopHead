@@ -12,7 +12,7 @@ public:
 	void handleStaticCollision(CollisionBody* kinematicBody, CollisionBody* staticBody);
 
 private:
-	void setToContactPosition();
+	void makeKinematicBodyStickToStaticBody();
 	bool WouldKinematicBodyCollideOnAxisX();
 
 private:

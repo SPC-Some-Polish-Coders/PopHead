@@ -32,6 +32,7 @@ private:
 	CollisionDebugRect mCollisionDebugRect;
 
     friend PhysicsEngine;
+	friend StaticCollisionHandler;
 };
 
 
