@@ -1,9 +1,7 @@
 #include "collisionBody.hpp"
 #include "bodyType.hpp"
-#include "collisionAxis.hpp"
 
 using PopHead::Physics::CollisionBody;
-using PopHead::Physics::CollisionAxis;
 
 CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::BodyType bodyType,
 							 PopHead::World::Entity::Object* const owner, PopHead::Base::GameData* gameData)
