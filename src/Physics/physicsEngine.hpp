@@ -31,10 +31,10 @@ public:
     void update(sf::Time delta);
 private:
 	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
+	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 	void setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody);
 	auto getCollisionSide() -> CollisionSide;
 	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
-	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;

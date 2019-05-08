@@ -57,26 +57,34 @@ void PhysicsEngine::update(sf::Time delta)
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
-		setToContactPosition(kinematicBody, staticBody);
+		if(isThereCollision(kinematicBody->mRect, staticBody->mRect))
+			setToContactPosition(kinematicBody, staticBody);
 	}
+}
+
+bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
+{
+	//AABB collision detection algorithm
+	return(
+	A.left < B.left + B.width &&
+	A.left + A.width > B.left &&
+	A.top < B.top + B.height &&
+	A.top + A.height > B.top);
 }
 
 void PhysicsEngine::setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
-	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
-	{
-		if (isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)) {//x collision axis
-			if (kinematicBody->getPreviousRect().left < staticBody->mRect.left) // left
-				kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left - kinematicBody->mRect.width, kinematicBody->mRect.top));
-			else // right
-				kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left + staticBody->mRect.width, kinematicBody->mRect.top));
-		}
-		else { //y collision axis
-			if (kinematicBody->getPreviousRect().top < staticBody->mRect.top) // up
-				kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top - kinematicBody->mRect.height));
-			else // down
-				kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top + staticBody->mRect.height));
-		}
+	if (isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)) {//x collision axis
+		if (kinematicBody->getPreviousRect().left < staticBody->mRect.left) // left
+			kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left - kinematicBody->mRect.width, kinematicBody->mRect.top));
+		else // right
+			kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left + staticBody->mRect.width, kinematicBody->mRect.top));
+	}
+	else { //y collision axis
+		if (kinematicBody->getPreviousRect().top < staticBody->mRect.top) // up
+			kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top - kinematicBody->mRect.height));
+		else // down
+			kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top + staticBody->mRect.height));
 	}
 }
 
@@ -90,14 +98,3 @@ bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* 
 	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().height > bodyB->mRect.top &&
 			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);
 }
-
-bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
-{
-	//AABB collision detection algorithm
-	return(
-	A.left < B.left + B.width &&
-	A.left + A.width > B.left &&
-	A.top < B.top + B.height &&
-	A.top + A.height > B.top);
-}
-
