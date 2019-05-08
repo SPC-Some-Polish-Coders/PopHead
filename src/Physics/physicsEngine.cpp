@@ -6,7 +6,6 @@
 
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
-using PopHead::Physics::CollisionAxis;
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
@@ -74,13 +73,13 @@ bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 
 void PhysicsEngine::setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
-	if (isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody)) {//x collision axis
+	if (WouldBodyCollideOnAxisX(kinematicBody, staticBody)) {
 		if (kinematicBody->getPreviousRect().left < staticBody->mRect.left) // left
 			kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left - kinematicBody->mRect.width, kinematicBody->mRect.top));
 		else // right
 			kinematicBody->setPosition(sf::Vector2f(staticBody->mRect.left + staticBody->mRect.width, kinematicBody->mRect.top));
 	}
-	else { //y collision axis
+	else {
 		if (kinematicBody->getPreviousRect().top < staticBody->mRect.top) // up
 			kinematicBody->setPosition(sf::Vector2f(kinematicBody->mRect.left, staticBody->mRect.top - kinematicBody->mRect.height));
 		else // down
@@ -88,12 +87,7 @@ void PhysicsEngine::setToContactPosition(CollisionBody* kinematicBody, Collision
 	}
 }
 
-auto PopHead::Physics::PhysicsEngine::getCollisionSide() -> CollisionSide
-{
-	return CollisionSide();
-}
-
-bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
+bool PhysicsEngine::WouldBodyCollideOnAxisX(CollisionBody* bodyA, CollisionBody* bodyB)
 {
 	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().height > bodyB->mRect.top &&
 			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);

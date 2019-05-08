@@ -4,18 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-#include "collisionAxis.hpp"
-
 namespace PopHead{
 namespace Physics{
 
-enum class CollisionSide
-{
-	left,
-	right,
-	top,
-	down
-};
 
 class CollisionBody;
 
@@ -33,8 +24,7 @@ private:
 	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 	void setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody);
-	auto getCollisionSide() -> CollisionSide;
-	bool isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB);
+	bool WouldBodyCollideOnAxisX(CollisionBody* bodyA, CollisionBody* bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;
