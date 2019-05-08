@@ -25,8 +25,6 @@ public:
 private:
 	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
 	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
-	void setToContactPosition(CollisionBody* kinematicBody, CollisionBody* staticBody);
-	bool WouldBodyCollideOnAxisX(CollisionBody* bodyA, CollisionBody* bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;

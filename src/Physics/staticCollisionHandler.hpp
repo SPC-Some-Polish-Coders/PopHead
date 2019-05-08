@@ -13,7 +13,7 @@ public:
 
 private:
 	void makeKinematicBodyStickToStaticBody();
-	bool WouldKinematicBodyCollideOnAxisX();
+	bool isKinematicBodyCollidingOnAxisX();
 
 private:
 	CollisionBody* mKinematicBody;

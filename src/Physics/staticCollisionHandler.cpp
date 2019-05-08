@@ -16,7 +16,7 @@ void StaticCollisionHandler::handleStaticCollision(CollisionBody* kinematicBody,
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 {
-	if (WouldKinematicBodyCollideOnAxisX()) {
+	if (isKinematicBodyCollidingOnAxisX()) {
 		if (mKinematicBody->getPreviousRect().left < mStaticBody->mRect.left) // left
 			mKinematicBody->setPosition(sf::Vector2f(mStaticBody->mRect.left - mKinematicBody->mRect.width, mKinematicBody->mRect.top));
 		else // right
@@ -30,7 +30,7 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 	}
 }
 
-bool StaticCollisionHandler::WouldKinematicBodyCollideOnAxisX()
+bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX()
 {
 	return (mKinematicBody->getPreviousRect().top + mKinematicBody->getPreviousRect().height > mStaticBody->mRect.top &&
 		    mKinematicBody->getPreviousRect().top < mStaticBody->mRect.top + mStaticBody->mRect.height);
