@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "staticCollisionHandler.hpp"
+
 namespace PopHead{
 namespace Physics{
 
@@ -29,6 +31,8 @@ private:
 private:
     std::vector<CollisionBody*> mStaticBodies;
     std::vector<CollisionBody*> mKinematicBodies;
+
+	StaticCollisionHandler mStaticCollisionHandler;
 };
 
 
