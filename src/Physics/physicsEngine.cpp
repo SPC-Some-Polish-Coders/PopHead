@@ -6,9 +6,6 @@
 
 using PopHead::Physics::PhysicsEngine;
 using PopHead::Physics::CollisionBody;
-using PopHead::Physics::CollisionAxis;
-using PopHead::Physics::CollisionDebug;
-
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
 {
@@ -46,17 +43,6 @@ void PhysicsEngine::clear() noexcept
 	mKinematicBodies.clear();
 }
 
-
-void PhysicsEngine::turnOnCollisionDebug()
-{
-    mCollisionDebug.createFrom(mKinematicBodies, mStaticBodies);
-}
-
-void PhysicsEngine::turnOffCollisionDebug()
-{
-    mCollisionDebug.clear();
-}
-
 void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
@@ -70,30 +56,9 @@ void PhysicsEngine::update(sf::Time delta)
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
-		CollisionAxis axis = getAxisOfCollision(kinematicBody, staticBody);
-		if(axis != CollisionAxis::none)
-			kinematicBody->setPositionToPreviousPosition(axis);
+		if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
+			mStaticCollisionHandler.handleStaticCollision(kinematicBody, staticBody);
 	}
-}
-
-auto PhysicsEngine::getAxisOfCollision(CollisionBody* kinematicBody, CollisionBody* staticBody) -> CollisionAxis
-{
-	if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
-	{
-		if(isBodyBetweenTopAndBottomAxisesOfAnotherBody(kinematicBody, staticBody))
-			return CollisionAxis::x;
-		else
-			return CollisionAxis::y;
-	}
-	else {
-		return CollisionAxis::none;
-	}
-}
-
-bool PhysicsEngine::isBodyBetweenTopAndBottomAxisesOfAnotherBody(CollisionBody* bodyA, CollisionBody* bodyB)
-{
-	return (bodyA->getPreviousRect().top + bodyA->getPreviousRect().height > bodyB->mRect.top &&
-			bodyA->getPreviousRect().top < bodyB->mRect.top + bodyB->mRect.height);
 }
 
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
@@ -105,4 +70,3 @@ bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 	A.top < B.top + B.height &&
 	A.top + A.height > B.top);
 }
-

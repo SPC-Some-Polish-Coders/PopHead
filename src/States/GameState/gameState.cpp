@@ -6,6 +6,7 @@
 #include "World/Entity/Objects/shapeWithCollision.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/math.hpp"
+#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 using PopHead::States::GameState;
 
@@ -92,14 +93,32 @@ void GameState::input()
     mRoot.input();
 
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
-		shouldCameraShake = true;
+		mShouldCameraShake = true;
+
+	collisionDebugSwitch();
+}
+
+void GameState::collisionDebugSwitch()
+{
+	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F1)) {
+		auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+
+		if (mIsCollisionDebugTurnOn) {
+			collisionDebugSettings.turnOff();
+			mIsCollisionDebugTurnOn = false;
+		}
+		else {
+			collisionDebugSettings.turnOn();
+			mIsCollisionDebugTurnOn = true;
+		}
+	}
 }
 
 void GameState::update(sf::Time delta)
 {
     mRoot.update(delta);
 
-	if (shouldCameraShake)
+	if (mShouldCameraShake)
 		cameraShake();
 
 	cameraMovement(delta);
@@ -111,7 +130,7 @@ void GameState::cameraShake()
 {
 	constexpr float cameraShakeStrength = 10.f;
 	mGameData->getRenderer().startShaking(cameraShakeStrength);
-	shouldCameraShake = false;
+	mShouldCameraShake = false;
 }
 
 void GameState::cameraMovement(sf::Time delta) const
