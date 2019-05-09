@@ -14,6 +14,12 @@ public:
 private:
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX();
+	bool isKinematicBodyOnTheLeftOfTheStaticBody();
+	void stickToRight();
+	void stickToLeft();
+	bool isKinematicBodyUpOfTheStaticBody();
+	void stickToTop();
+	void stickToBottom();
 
 private:
 	CollisionBody* mKinematicBody;
