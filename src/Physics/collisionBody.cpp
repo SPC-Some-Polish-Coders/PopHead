@@ -9,7 +9,8 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 ,mMass(mass)
 ,mPreviousPosition(rect.left, rect.top)
 ,mOwner(owner)
-,mCollisionDebugRect(gameData, rect)
+,mBodyType(bodyType)
+,mCollisionDebugRect(gameData, rect, this)
 {
 	switch (bodyType)
 	{

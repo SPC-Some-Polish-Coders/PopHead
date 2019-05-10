@@ -19,6 +19,8 @@ public:
     void move(sf::Vector2f velocity);
 	void setPosition(sf::Vector2f position);
 
+	auto getBodyType() const -> const BodyType& { return mBodyType; }
+
 private:
 	void updateOwnerPosition();
 	sf::FloatRect getPreviousRect();
@@ -30,6 +32,7 @@ private:
     float mMass;
 	World::Entity::Object* const mOwner;
 	CollisionDebugRect mCollisionDebugRect;
+	const BodyType mBodyType;
 
     friend PhysicsEngine;
 	friend StaticCollisionHandler;

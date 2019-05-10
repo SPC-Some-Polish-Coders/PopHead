@@ -7,11 +7,13 @@
 namespace PopHead {
 namespace Physics {
 
+class CollisionDebugSettings;
+class CollisionBody;
 
 class CollisionDebugRect : public World::Entity::Object
 {
 public:
-    CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect);
+    CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
 
 	void move(sf::Vector2f velocity) { mShape.move(velocity); }
 	void setPosition(sf::Vector2f position) { mShape.setPosition(position); }
@@ -19,11 +21,15 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void setColor(sf::Color color) { mShape.setFillColor(color); }
 
+private:
 	static void setShouldDisplay(bool shouldDisplay) { mShouldDisplay = shouldDisplay; }
+
+	friend CollisionDebugSettings;
 
 private:
     sf::RectangleShape mShape;
 	static bool mShouldDisplay;
+	CollisionBody* owner;
 };
 
 
