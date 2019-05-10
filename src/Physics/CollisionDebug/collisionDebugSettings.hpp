@@ -31,6 +31,10 @@ public:
 
 	void turnOn();
 	void turnOff();
+	
+	void displayOnlyKinematicBodies();
+	void displayOnlyStaticBodies();
+	void displayAllBodies();
 };
 
 

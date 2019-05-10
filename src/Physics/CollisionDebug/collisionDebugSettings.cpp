@@ -7,6 +7,7 @@ using PopHead::Physics::CollisionDebugSettings;
 CollisionDebugSettings::CollisionDebugSettings()
 {
 	turnOff();
+	displayAllBodies();
 }
 
 void CollisionDebugSettings::turnOn()
@@ -17,6 +18,24 @@ void CollisionDebugSettings::turnOn()
 void CollisionDebugSettings::turnOff()
 {
 	CollisionDebugRect::setShouldDisplay(false);
+}
+
+void CollisionDebugSettings::displayOnlyKinematicBodies()
+{
+	CollisionDebugRect::setShouldDisplayKinematicBodies(true);
+	CollisionDebugRect::setShouldDisplayStaticBodies(false);
+}
+
+void CollisionDebugSettings::displayOnlyStaticBodies()
+{
+	CollisionDebugRect::setShouldDisplayKinematicBodies(false);
+	CollisionDebugRect::setShouldDisplayStaticBodies(true);
+}
+
+void CollisionDebugSettings::displayAllBodies()
+{
+	CollisionDebugRect::setShouldDisplayKinematicBodies(true);
+	CollisionDebugRect::setShouldDisplayStaticBodies(true);
 }
 
 #endif //!PH_RELEASE

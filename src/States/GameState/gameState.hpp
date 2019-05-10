@@ -38,6 +38,7 @@ private:
 private:
 	bool mShouldCameraShake = false;
 	bool mIsCollisionDebugTurnOn = false;
+	int mCollisionDebugMode = 1;
 };
 
 

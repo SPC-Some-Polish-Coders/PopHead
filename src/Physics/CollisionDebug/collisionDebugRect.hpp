@@ -22,14 +22,21 @@ public:
     void setColor(sf::Color color) { mShape.setFillColor(color); }
 
 private:
+	bool shouldDisplay() const;
+
 	static void setShouldDisplay(bool shouldDisplay) { mShouldDisplay = shouldDisplay; }
+	static void setShouldDisplayKinematicBodies(bool shouldDisplay) { mShouldDisplayKinematicBodies = shouldDisplay; }
+	static void setShouldDisplayStaticBodies(bool shouldDisplay) { mShouldDisplayStaticBodies = shouldDisplay; }
 
 	friend CollisionDebugSettings;
 
 private:
     sf::RectangleShape mShape;
+	CollisionBody* mOwner;
+	
 	static bool mShouldDisplay;
-	CollisionBody* owner;
+	static bool mShouldDisplayKinematicBodies;
+	static bool mShouldDisplayStaticBodies;
 };
 
 
