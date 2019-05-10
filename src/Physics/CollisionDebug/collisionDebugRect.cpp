@@ -2,12 +2,10 @@
 
 #include "Base/gameData.hpp"
 #include "Physics/collisionBody.hpp"
+#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 using PopHead::Physics::CollisionDebugRect;
 
-bool CollisionDebugRect::mShouldDisplay = false;
-bool CollisionDebugRect::mShouldDisplayKinematicBodies = false;
-bool CollisionDebugRect::mShouldDisplayStaticBodies = false;
 
 CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, PopHead::Physics::CollisionBody* owner)
 	:Object(gameData, "collisionDebugRect", Renderer::LayerID::collisionDebug)
@@ -19,16 +17,8 @@ CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::Fl
 	
 void CollisionDebugRect::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if(shouldDisplay())
+	using PopHead::Physics::CollisionDebugSettings;
+
+	if(CollisionDebugSettings::getInstance().shouldDisplay(mOwner->getBodyType()))
 		target.draw(mShape, states);
-}
-
-bool CollisionDebugRect::shouldDisplay() const
-{
-	if (mOwner->getBodyType() == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)
-		return false;
-	if (mOwner->getBodyType() == BodyType::staticBody && !mShouldDisplayStaticBodies)
-		return false;
-
-	return mShouldDisplay;
 }

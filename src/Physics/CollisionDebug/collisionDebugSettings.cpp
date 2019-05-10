@@ -1,41 +1,54 @@
 #ifndef PH_RELEASE
 
 #include "collisionDebugSettings.hpp"
+#include "Physics/bodyType.hpp"
 
 using PopHead::Physics::CollisionDebugSettings;
+using PopHead::Physics::BodyType;
 
 CollisionDebugSettings::CollisionDebugSettings()
+	:mShouldDisplay(false)
+	,mShouldDisplayKinematicBodies(true)
+	,mShouldDisplayStaticBodies(true)
 {
-	turnOff();
-	displayAllBodies();
 }
 
 void CollisionDebugSettings::turnOn()
 {
-	CollisionDebugRect::setShouldDisplay(true);
+	mShouldDisplay = true;
 }
 
 void CollisionDebugSettings::turnOff()
 {
-	CollisionDebugRect::setShouldDisplay(false);
+	mShouldDisplay = false;
 }
 
 void CollisionDebugSettings::displayOnlyKinematicBodies()
 {
-	CollisionDebugRect::setShouldDisplayKinematicBodies(true);
-	CollisionDebugRect::setShouldDisplayStaticBodies(false);
+	mShouldDisplayKinematicBodies = true;
+	mShouldDisplayStaticBodies = false;
 }
 
 void CollisionDebugSettings::displayOnlyStaticBodies()
 {
-	CollisionDebugRect::setShouldDisplayKinematicBodies(false);
-	CollisionDebugRect::setShouldDisplayStaticBodies(true);
+	mShouldDisplayKinematicBodies = false;
+	mShouldDisplayStaticBodies = true;
 }
 
 void CollisionDebugSettings::displayAllBodies()
 {
-	CollisionDebugRect::setShouldDisplayKinematicBodies(true);
-	CollisionDebugRect::setShouldDisplayStaticBodies(true);
+	mShouldDisplayKinematicBodies = true;
+	mShouldDisplayStaticBodies = true;
+}
+
+bool CollisionDebugSettings::shouldDisplay(BodyType bodyType)
+{
+	if (bodyType == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)
+		return false;
+	if (bodyType == BodyType::staticBody && !mShouldDisplayStaticBodies)
+		return false;
+
+	return mShouldDisplay;
 }
 
 #endif //!PH_RELEASE
