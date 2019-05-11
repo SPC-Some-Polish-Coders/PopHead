@@ -71,21 +71,28 @@ auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 
 void CollisionDebugSettings::setColors(int numberOfSet)
 {
+	static const sf::Color red(45, 100, 150, 140);
+	static const sf::Color blue(200, 0, 0, 140);
+	static const sf::Color green(24, 158, 68, 140);
+	static const sf::Color orange(218, 104, 20, 140);
+	static const sf::Color cyan(69, 254, 222, 140);
+	static const sf::Color violet(117, 9, 90, 140);
+
 	switch (numberOfSet)
 	{
 	case 1:
-		mKinematicBodiesColor = sf::Color(45, 100, 150, 140);
-		mStaticBodiesColor = sf::Color(200, 0, 0, 140);
+		mKinematicBodiesColor = red;
+		mStaticBodiesColor = blue;
 		break;
 
 	case 2:
-		mKinematicBodiesColor = sf::Color(24, 158, 68, 140);
-		mStaticBodiesColor = sf::Color(218, 104, 20, 140);
+		mKinematicBodiesColor = green;
+		mStaticBodiesColor = orange;
 		break;
 
 	case 3:
-		mKinematicBodiesColor = sf::Color(69, 254, 222, 140);
-		mStaticBodiesColor = sf::Color(117, 9, 90, 140);
+		mKinematicBodiesColor = cyan;
+		mStaticBodiesColor = violet;
 		break;
 
 	default:
