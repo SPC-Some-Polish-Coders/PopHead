@@ -123,6 +123,15 @@ void GameState::collisionDebugSwitch()
 				break;
 			}
 		}
+		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num1)){
+			collisionDebugSettings.setColors(1);
+		}
+		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num2)) {
+			collisionDebugSettings.setColors(2);
+		}
+		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num3)) {
+			collisionDebugSettings.setColors(3);
+		}
 		else {
 			if (mIsCollisionDebugTurnOn) {
 				collisionDebugSettings.turnOff();
