@@ -41,6 +41,24 @@ void CollisionDebugSettings::displayAllBodies()
 	mShouldDisplayStaticBodies = true;
 }
 
+void CollisionDebugSettings::setColors(int numberOfSet)
+{
+	switch (numberOfSet)
+	{
+	case 1:
+		mKinematicBodiesColor = sf::Color(45, 100, 150, 135);
+		mStaticBodiesColor = sf::Color(200, 0, 0, 100);
+
+	case 2:
+		mKinematicBodiesColor = sf::Color(24, 158, 68, 100);
+		mStaticBodiesColor = sf::Color(218, 104, 20, 100);
+
+	case 3:
+		mKinematicBodiesColor = sf::Color(4, 134, 140, 100);
+		mStaticBodiesColor = sf::Color(117, 9, 90, 100);
+	}
+}
+
 bool CollisionDebugSettings::shouldDisplay(BodyType bodyType)
 {
 	if (bodyType == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)

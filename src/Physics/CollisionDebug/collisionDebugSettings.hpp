@@ -36,12 +36,16 @@ public:
 	void displayOnlyStaticBodies();
 	void displayAllBodies();
 
+	void setColors(int numberOfSet);
+
 	bool shouldDisplay(BodyType);
 
 private:
 	bool mShouldDisplay;
 	bool mShouldDisplayKinematicBodies;
 	bool mShouldDisplayStaticBodies;
+	sf::Color mKinematicBodiesColor;
+	sf::Color mStaticBodiesColor;
 };
 
 
