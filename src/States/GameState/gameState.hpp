@@ -26,7 +26,9 @@ private:
 public:
     void input() override;
 private:
-	void collisionDebugSwitch();
+	void handleCollisionDebugShortcuts();
+	void switchCollisionDebugMode();
+	void turnOnAndTurnOffCollisionDebugSettings();
 
 public:
     void update(sf::Time delta) override;

@@ -74,18 +74,18 @@ void CollisionDebugSettings::setColors(int numberOfSet)
 	switch (numberOfSet)
 	{
 	case 1:
-		mKinematicBodiesColor = sf::Color(45, 100, 150, 135);
-		mStaticBodiesColor = sf::Color(200, 0, 0, 100);
+		mKinematicBodiesColor = sf::Color(45, 100, 150, 140);
+		mStaticBodiesColor = sf::Color(200, 0, 0, 140);
 		break;
 
 	case 2:
-		mKinematicBodiesColor = sf::Color(24, 158, 68, 100);
-		mStaticBodiesColor = sf::Color(218, 104, 20, 100);
+		mKinematicBodiesColor = sf::Color(24, 158, 68, 140);
+		mStaticBodiesColor = sf::Color(218, 104, 20, 140);
 		break;
 
 	case 3:
-		mKinematicBodiesColor = sf::Color(4, 134, 140, 100);
-		mStaticBodiesColor = sf::Color(117, 9, 90, 100);
+		mKinematicBodiesColor = sf::Color(69, 254, 222, 140);
+		mStaticBodiesColor = sf::Color(117, 9, 90, 140);
 		break;
 
 	default:
@@ -95,8 +95,8 @@ void CollisionDebugSettings::setColors(int numberOfSet)
 
 void CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)
 {
-	const std::string message = "You have to choose CollisionDebug color set from 1 to 3! There is no option "
-		+ std::to_string(numberOfSet) + ".";
+	const std::string message = "You have to choose CollisionDebug color set from 1 to 3! There is no option " +
+                                 std::to_string(numberOfSet) + ".";
 	PH_LOG(LogType::Error, message);
 	throw std::runtime_error(message);
 }

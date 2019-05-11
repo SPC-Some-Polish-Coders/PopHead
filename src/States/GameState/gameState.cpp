@@ -95,33 +95,16 @@ void GameState::input()
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		mShouldCameraShake = true;
 
-	collisionDebugSwitch();
+	handleCollisionDebugShortcuts();
 }
 
-void GameState::collisionDebugSwitch()
+void GameState::handleCollisionDebugShortcuts()
 {
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F1)) {
 		auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
 
 		if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) {
-			++mCollisionDebugMode;
-			if (mCollisionDebugMode == 4)
-				mCollisionDebugMode = 1;
-
-			switch (mCollisionDebugMode)
-			{
-			case 1:
-				collisionDebugSettings.displayAllBodies();
-				break;
-
-			case 2:
-				collisionDebugSettings.displayOnlyKinematicBodies();
-				break;
-
-			case 3:
-				collisionDebugSettings.displayOnlyStaticBodies();
-				break;
-			}
+			switchCollisionDebugMode();
 		}
 		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num1)){
 			collisionDebugSettings.setColors(1);
@@ -133,15 +116,46 @@ void GameState::collisionDebugSwitch()
 			collisionDebugSettings.setColors(3);
 		}
 		else {
-			if (mIsCollisionDebugTurnOn) {
-				collisionDebugSettings.turnOff();
-				mIsCollisionDebugTurnOn = false;
-			}
-			else {
-				collisionDebugSettings.turnOn();
-				mIsCollisionDebugTurnOn = true;
-			}
+			turnOnAndTurnOffCollisionDebugSettings();
 		}
+	}
+}
+
+void GameState::switchCollisionDebugMode()
+{
+	auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+
+	++mCollisionDebugMode;
+	if (mCollisionDebugMode == 4)
+		mCollisionDebugMode = 1;
+
+	switch (mCollisionDebugMode)
+	{
+	case 1:
+		collisionDebugSettings.displayAllBodies();
+		break;
+
+	case 2:
+		collisionDebugSettings.displayOnlyKinematicBodies();
+		break;
+
+	case 3:
+		collisionDebugSettings.displayOnlyStaticBodies();
+		break;
+	}
+}
+
+void GameState::turnOnAndTurnOffCollisionDebugSettings()
+{
+	auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+
+	if (mIsCollisionDebugTurnOn) {
+		collisionDebugSettings.turnOff();
+		mIsCollisionDebugTurnOn = false;
+	}
+	else {
+		collisionDebugSettings.turnOn();
+		mIsCollisionDebugTurnOn = true;
 	}
 }
 
