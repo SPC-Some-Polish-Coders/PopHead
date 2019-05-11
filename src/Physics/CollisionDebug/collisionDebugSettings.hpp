@@ -36,10 +36,12 @@ public:
 	void displayOnlyStaticBodies();
 	void displayAllBodies();
 
-	void setColors(int numberOfSet);
-
 	sf::Color getFillColor(BodyType);
 	bool shouldDisplay(BodyType);
+
+	void setColors(int numberOfSet);
+private:
+	void dealWithSetColorsError(int numberOfSet);
 
 private:
 	bool mShouldDisplay;
