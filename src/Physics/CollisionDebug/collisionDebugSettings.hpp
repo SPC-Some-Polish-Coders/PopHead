@@ -38,6 +38,7 @@ public:
 
 	void setColors(int numberOfSet);
 
+	sf::Color getFillColor(BodyType);
 	bool shouldDisplay(BodyType);
 
 private:
