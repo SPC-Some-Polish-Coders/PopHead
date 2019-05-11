@@ -55,10 +55,10 @@ void Logger::openFile()
 
 void Logger::writeLog(const LogData& log)
 {
-	//if (mLogSettings.shouldBeWrittenIntoConsole(log))
+	if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
 
-	//if (mLogSettings.shouldThisLogBeWrittenIntoFile(log))
+	if (mLogSettings.shouldBeWrittenIntoFile(log))
 		saveLogsInFile(log);
 }
 
