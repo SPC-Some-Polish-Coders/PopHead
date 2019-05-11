@@ -6,8 +6,6 @@
 
 using PopHead::Physics::CollisionDebugRect;
 
-bool CollisionDebugRect::shouldUpdateTheSettings = true;
-
 CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, PopHead::Physics::CollisionBody* owner)
 	:Object(gameData, "collisionDebugRect", Renderer::LayerID::collisionDebug)
 	,mShape(sf::Vector2f(rect.width, rect.height))
@@ -18,18 +16,21 @@ CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::Fl
 
 void CollisionDebugRect::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if (shouldUpdateTheSettings)
-		updateSettings();
+	updateColor();
 
-	using PopHead::Physics::CollisionDebugSettings;
-
-	if(CollisionDebugSettings::getInstance().shouldDisplay(mOwner->getBodyType()))
+	if(shouldDisplay())
 		target.draw(mShape, states);
 }
 
-void CollisionDebugRect::updateSettings() const
+void CollisionDebugRect::updateColor() const
 {
 	auto& settings = CollisionDebugSettings::getInstance();
-	sf::Color newColor = settings.getFillColor(mOwner->getBodyType());
+	auto& newColor = settings.getFillColor(mOwner->getBodyType());
 	mShape.setFillColor(newColor);
+}
+
+bool CollisionDebugRect::shouldDisplay() const
+{
+	auto& settings = CollisionDebugSettings::getInstance();
+	return settings.shouldDisplay(mOwner->getBodyType());
 }

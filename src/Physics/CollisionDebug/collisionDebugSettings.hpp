@@ -36,7 +36,7 @@ public:
 	void displayOnlyStaticBodies();
 	void displayAllBodies();
 
-	sf::Color getFillColor(BodyType);
+	auto getFillColor(BodyType bodyType) -> const sf::Color&;
 	bool shouldDisplay(BodyType);
 
 	void setColors(int numberOfSet);

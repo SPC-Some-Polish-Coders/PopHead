@@ -57,7 +57,7 @@ bool CollisionDebugSettings::shouldDisplay(BodyType bodyType)
 	return mShouldDisplay;
 }
 
-sf::Color CollisionDebugSettings::getFillColor(BodyType bodyType)
+auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 {
 	switch (bodyType)
 	{
