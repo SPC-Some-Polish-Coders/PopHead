@@ -16,7 +16,7 @@ Logger::Logger()
 	openFile();
 }
 
-std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& logType)
+std::ostream& operator<<(std::ostream& os, const LogType& logType)
 {
 	switch (logType) {
 	case LogType::Info:

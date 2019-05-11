@@ -16,12 +16,10 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 	{
 	case PopHead::Physics::BodyType::staticBody:
 		gameData->getPhysicsEngine().addStaticBody(this);
-		mCollisionDebugRect.setColor(sf::Color(200, 0, 0, 100));
 		break;
 
 	case PopHead::Physics::BodyType::kinematicBody:
 		gameData->getPhysicsEngine().addKinematicBody(this);
-		mCollisionDebugRect.setColor(sf::Color(45, 100, 150, 135));
 		break;
 	}
 }

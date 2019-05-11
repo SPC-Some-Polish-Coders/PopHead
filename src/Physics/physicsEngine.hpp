@@ -23,14 +23,14 @@ public:
 
     void update(sf::Time delta);
 private:
-	void handleStaticCollisionsFor(CollisionBody* kinematicBody);
-	bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
+    void handleStaticCollisionsFor(CollisionBody* kinematicBody);
+    bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;
     std::vector<CollisionBody*> mKinematicBodies;
 
-	StaticCollisionHandler mStaticCollisionHandler;
+    StaticCollisionHandler mStaticCollisionHandler;
 };
 
 
