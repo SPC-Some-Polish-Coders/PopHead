@@ -17,25 +17,25 @@ public:
     CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 
     void move(sf::Vector2f velocity);
-	void setPosition(sf::Vector2f position);
+    void setPosition(sf::Vector2f position);
 
-	auto getBodyType() const -> const BodyType& { return mBodyType; }
+    auto getBodyType() const -> const BodyType& { return mBodyType; }
 
 private:
-	void updateOwnerPosition();
-	sf::FloatRect getPreviousRect();
-	void setPreviousPositionToCurrentPosition();
+    void updateOwnerPosition();
+    sf::FloatRect getPreviousRect();
+    void setPreviousPositionToCurrentPosition();
 
 private:
     sf::FloatRect mRect;
-	sf::Vector2f mPreviousPosition;
+    sf::Vector2f mPreviousPosition;
     float mMass;
-	World::Entity::Object* const mOwner;
-	CollisionDebugRect mCollisionDebugRect;
-	const BodyType mBodyType;
+    World::Entity::Object* const mOwner;
+    CollisionDebugRect mCollisionDebugRect;
+    const BodyType mBodyType;
 
     friend PhysicsEngine;
-	friend StaticCollisionHandler;
+    friend StaticCollisionHandler;
 };
 
 
