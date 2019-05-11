@@ -40,8 +40,10 @@ void Logger::openFile()
 	std::string fileName;
 
 	if (now->tm_mday < 10 && now->tm_mon < 10) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
-	if (now->tm_mday < 10 && now->tm_mon > 9) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
-	if (now->tm_mon < 10 && now->tm_mon > 9) fileName += std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
+	else if (now->tm_mday < 10 && now->tm_mon > 9) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
+	else if (now->tm_mon < 10 && now->tm_mon > 9) fileName += std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
+	else fileName += std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday); 
+
 	if (now->tm_min < 10) fileName += "_" + std::to_string(now->tm_hour) + "-" + "0" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
 	else fileName += "_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
 
