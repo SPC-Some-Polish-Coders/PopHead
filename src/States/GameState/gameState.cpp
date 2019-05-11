@@ -103,13 +103,35 @@ void GameState::collisionDebugSwitch()
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F1)) {
 		auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
 
-		if (mIsCollisionDebugTurnOn) {
-			collisionDebugSettings.turnOff();
-			mIsCollisionDebugTurnOn = false;
+		if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) {
+			++mCollisionDebugMode;
+			if (mCollisionDebugMode == 4)
+				mCollisionDebugMode = 1;
+
+			switch (mCollisionDebugMode)
+			{
+			case 1:
+				collisionDebugSettings.displayAllBodies();
+				break;
+
+			case 2:
+				collisionDebugSettings.displayOnlyKinematicBodies();
+				break;
+
+			case 3:
+				collisionDebugSettings.displayOnlyStaticBodies();
+				break;
+			}
 		}
 		else {
-			collisionDebugSettings.turnOn();
-			mIsCollisionDebugTurnOn = true;
+			if (mIsCollisionDebugTurnOn) {
+				collisionDebugSettings.turnOff();
+				mIsCollisionDebugTurnOn = false;
+			}
+			else {
+				collisionDebugSettings.turnOn();
+				mIsCollisionDebugTurnOn = true;
+			}
 		}
 	}
 }

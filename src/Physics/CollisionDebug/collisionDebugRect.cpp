@@ -1,19 +1,24 @@
 #include "collisionDebugRect.hpp"
+
 #include "Base/gameData.hpp"
+#include "Physics/collisionBody.hpp"
+#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 using PopHead::Physics::CollisionDebugRect;
 
-bool CollisionDebugRect::mShouldDisplay = false;
 
-CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect)
+CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, PopHead::Physics::CollisionBody* owner)
 	:Object(gameData, "collisionDebugRect", Renderer::LayerID::collisionDebug)
 	,mShape(sf::Vector2f(rect.width, rect.height))
+	,mOwner(owner)
 {
 	mShape.setPosition(rect.left, rect.top);
 }
 	
 void CollisionDebugRect::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if(mShouldDisplay)
+	using PopHead::Physics::CollisionDebugSettings;
+
+	if(CollisionDebugSettings::getInstance().shouldDisplay(mOwner->getBodyType()))
 		target.draw(mShape, states);
 }
