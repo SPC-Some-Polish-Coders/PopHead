@@ -11,6 +11,7 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 ,mOwner(owner)
 ,mBodyType(bodyType)
 ,mCollisionDebugRect(gameData, rect, this)
+,mGameData(gameData)
 {
 	switch (bodyType)
 	{
@@ -20,6 +21,20 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 
 	case PopHead::Physics::BodyType::kinematicBody:
 		gameData->getPhysicsEngine().addKinematicBody(this);
+		break;
+	}
+}
+
+CollisionBody::~CollisionBody()
+{
+	switch (mBodyType)
+	{
+	case PopHead::Physics::BodyType::staticBody:
+		mGameData->getPhysicsEngine().removeStaticBody(this);
+		break;
+
+	case PopHead::Physics::BodyType::kinematicBody:
+		mGameData->getPhysicsEngine().removeKinematicBody(this);
 		break;
 	}
 }

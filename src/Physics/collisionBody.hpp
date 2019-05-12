@@ -15,6 +15,7 @@ class CollisionBody
 {
 public:
     CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
+	~CollisionBody();
 
     void move(sf::Vector2f velocity);
     void setPosition(sf::Vector2f position);
@@ -33,6 +34,7 @@ private:
     World::Entity::Object* const mOwner;
     CollisionDebugRect mCollisionDebugRect;
     const BodyType mBodyType;
+	Base::GameData* mGameData;
 
     friend PhysicsEngine;
     friend StaticCollisionHandler;

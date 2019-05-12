@@ -17,24 +17,24 @@ void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBodyPtr)
     mKinematicBodies.emplace_back(std::move(kinematicBodyPtr));
 }
 
-void PhysicsEngine::removeStaticBody(CollisionBody* staticBodyPtr)
+void PhysicsEngine::removeStaticBody(CollisionBody* staticBody)
 {
-    for(auto it = mStaticBodies.begin(); it != mStaticBodies.end(); ++it){
-        if(*it == staticBodyPtr){
-            mStaticBodies.erase(it);
-            break;
-        }
-    }
+	removeBody(mStaticBodies, staticBody);
 }
 
-void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBodyPtr)
+void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBody)
 {
-    for(auto it = mKinematicBodies.begin(); it != mKinematicBodies.end(); ++it){
-        if(*it == kinematicBodyPtr){
-            mKinematicBodies.erase(it);
-            break;
-        }
-    }
+	removeBody(mKinematicBodies, kinematicBody);
+}
+
+void PhysicsEngine::removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body)
+{
+	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
+		if (*it == body) {
+			bodies.erase(it);
+			break;
+		}
+	}
 }
 
 void PhysicsEngine::clear() noexcept
