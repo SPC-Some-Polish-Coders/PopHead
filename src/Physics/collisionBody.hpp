@@ -24,16 +24,16 @@ public:
 
 private:
     void updateOwnerPosition();
-    sf::FloatRect getPreviousRect();
     void setPreviousPositionToCurrentPosition();
+    sf::FloatRect getPreviousRect();
 
 private:
     sf::FloatRect mRect;
     sf::Vector2f mPreviousPosition;
     float mMass;
-    World::Entity::Object* const mOwner;
-    CollisionDebugRect mCollisionDebugRect;
     const BodyType mBodyType;
+    CollisionDebugRect mCollisionDebugRect;
+    World::Entity::Object* const mOwner;
 	Base::GameData* mGameData;
 
     friend PhysicsEngine;

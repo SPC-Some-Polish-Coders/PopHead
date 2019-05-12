@@ -24,7 +24,6 @@ private:
 private:
 	CollisionBody* mKinematicBody;
 	CollisionBody* mStaticBody;
-
 };
 
 
