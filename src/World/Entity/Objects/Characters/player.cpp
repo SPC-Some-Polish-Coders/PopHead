@@ -2,6 +2,7 @@
 
 #include "Base/gameData.hpp"
 #include "Resources/spriteSheetData.hpp"
+#include "Resources/collisionRectData.hpp"
 #include "World/Animation/animation.hpp"
 
 #include <array>
@@ -16,7 +17,7 @@ namespace
 	unsigned int movementSpeed = 150;
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
-	sf::FloatRect posAndSize = sf::FloatRect(0, 0, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT);
+	sf::FloatRect posAndSize = sf::FloatRect(0, 0, CollisionRectData::PLAYER_WIDTH, CollisionRectData::PLAYER_HEIGHT);
 	float mass = 50;
 
 	PopHead::World::Animation animation{
