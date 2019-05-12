@@ -95,11 +95,12 @@ bool LogSettings::InitLogSettings::mGetShouldLogIntoConsole()
 	while (std::getline(mSettingsFile, found)) {
 		if (found.find("ShouldBeWrittenIntoConsole=") != std::string::npos)
 		{
-			if (found.find("1") != std::string::npos) 	return true;
-			else if (found.find("0") != std::string::npos)	return false;
+			if (found.find("1") != std::string::npos) { mCloseTheFile(); return true; }
+			else if (found.find("0") != std::string::npos) { mCloseTheFile(); return false; }
 			else 
 			{
 				std::cout << "\nBad format for '" << found << "' - [true] assumed\n";
+				mCloseTheFile();
 				return true;
 			}
 		}
@@ -114,16 +115,16 @@ bool LogSettings::InitLogSettings::mGetShouldLogIntoFile()
 	while (std::getline(mSettingsFile, found)) {
 		if (found.find("ShouldBeWrittenIntoFile=") != std::string::npos)
 		{
-			if (found.find("1") != std::string::npos) 	return true;
-			else if (found.find("0") != std::string::npos)	return false;
+			if (found.find("1") != std::string::npos) { mCloseTheFile(); return true; }
+			else if (found.find("0") != std::string::npos) { mCloseTheFile();	return false; }
 			else
 			{
 				std::cout << "\nBad format for '" << found << "' - [true] assumed\n";
+				mCloseTheFile();
 				return true;
 			}
 		}
 	}
-	mCloseTheFile();
 }
 
 std::vector<LogType> LogSettings::InitLogSettings::mGetLogTypesToWrite()
