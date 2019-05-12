@@ -28,7 +28,7 @@ class Game
     void update( sf::Time delta );
     void draw();
 
-    inline auto getGameData() const -> const Base::GameData&;
+	inline auto getGameData() const -> const Base::GameData& { return *(mGameData); };
 
     std::unique_ptr< Base::GameData >           mGameData;
     std::unique_ptr< Audio::SoundPlayer >       mSoundPlayer;
@@ -42,8 +42,6 @@ class Game
 	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine;
 };
 
-inline auto Game::getGameData() const -> const Base::GameData&
-{ return *(mGameData); }
 
 }}
 
