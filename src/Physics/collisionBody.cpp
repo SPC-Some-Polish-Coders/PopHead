@@ -68,11 +68,11 @@ sf::FloatRect CollisionBody::getPreviousRect()
 {
 	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
 }
-void PopHead::Physics::CollisionBody::setForceVector(sf::Vector2f forceVector)
+void CollisionBody::setForceVector(sf::Vector2f forceVector)
 {
     this->forceVector = forceVector;
 }
-void PopHead::Physics::CollisionBody::updatePush(sf::Time delta)
+void CollisionBody::updatePush(sf::Time delta)
 {
     mRect.left += forceVector.x*delta.asSeconds();
 	mRect.top += forceVector.y*delta.asSeconds();
@@ -93,15 +93,17 @@ void PopHead::Physics::CollisionBody::updatePush(sf::Time delta)
 
 }
 
-float PopHead::Physics::CollisionBody::getMass()
+float CollisionBody::getMass()
 {
     return mMass;
 }
-sf::Vector2f PopHead::Physics::CollisionBody::getPosition()
+
+sf::Vector2f CollisionBody::getPosition()
 {
     return sf::Vector2f(mRect.left, mRect.top);
 }
-bool PopHead::Physics::CollisionBody::getStunStatus()
+
+bool CollisionBody::getStunStatus()
 {
     return (forceVector.x != 0 || forceVector.y != 0);
 }

@@ -64,6 +64,15 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 	}
 }
 
+void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
+{
+    for (const auto& tkinematicBody : mKinematicBodies)
+    {
+        if(isThereCollision(kinematicBody->mRect, tkinematicBody->mRect))
+            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, tkinematicBody);
+    }
+}
+
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
 	using namespace PopHead::Utilities::Math;
@@ -74,13 +83,4 @@ bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 	getRightBound(A) > B.left &&
 	A.top < getBottomBound(B) &&
 	getBottomBound(A) > B.top);
-}
-
-void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
-{
-    for (const auto& tkinematicBody : mKinematicBodies)
-    {
-        if(isThereCollision(kinematicBody->mRect,tkinematicBody->mRect))
-            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, tkinematicBody);
-    }
 }

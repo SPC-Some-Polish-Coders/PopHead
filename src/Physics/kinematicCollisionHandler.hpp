@@ -4,6 +4,7 @@
 namespace PopHead {
 namespace Physics {
 
+
 class CollisionBody;
 
 class KinematicCollisionHandler
@@ -12,13 +13,10 @@ public:
 	void handleKinematicCollision(CollisionBody* kinematicBodyFirst, CollisionBody* kinematicBodySecond);
 
 private:
-	void makeKinematicBodyStickToStaticBody();
-	bool isKinematicBodyCollidingOnAxisX();
-
-private:
 	CollisionBody* mKinematicBodyFirst;
 	CollisionBody* mKinematicBodySecond;
 };
+
 
 }}
 
