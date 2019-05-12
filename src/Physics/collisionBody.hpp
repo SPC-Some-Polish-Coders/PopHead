@@ -20,6 +20,12 @@ public:
     void move(sf::Vector2f velocity);
     void setPosition(sf::Vector2f position);
 
+    void setForceVector(sf::Vector2f forceVector);
+    void updatePush(sf::Time delta);
+    float getMass();
+    sf::Vector2f getPosition();
+    bool getStunStatus();
+
     auto getBodyType() const -> const BodyType& { return mBodyType; }
 
 private:
@@ -30,6 +36,7 @@ private:
 private:
     sf::FloatRect mRect;
     sf::Vector2f mPreviousPosition;
+    sf::Vector2f forceVector;
     float mMass;
     const BodyType mBodyType;
     CollisionDebugRect mCollisionDebugRect;

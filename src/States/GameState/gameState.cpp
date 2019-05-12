@@ -66,6 +66,11 @@ void GameState::makeNPC()
     npc->setPosition(sf::Vector2f(1650, 5760));
 
     mRoot.getChild("boat").addChild(std::move(npc));
+
+    std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(mGameData, "npc1",PopHead::World::Animation(),50,100,100,sf::FloatRect(0,0,32,32),25));
+    npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
+    npcq->setPosition(sf::Vector2f(1850, 5240));
+    mRoot.addChild(std::move(npcq));
 }
 
 void GameState::makePlayer()
@@ -74,6 +79,7 @@ void GameState::makePlayer()
     player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
     player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
+
 }
 
 void GameState::makeStaticObjectToCamera()

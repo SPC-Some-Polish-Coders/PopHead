@@ -49,6 +49,8 @@ void PhysicsEngine::update(sf::Time delta)
     for(auto kinematicBody : mKinematicBodies)
     {
 		handleStaticCollisionsFor(kinematicBody);
+		handleKinematicCollisionsFor(kinematicBody);
+		kinematicBody->updatePush(delta);
 		kinematicBody->updateOwnerPosition();
 		kinematicBody->setPreviousPositionToCurrentPosition();
     }
@@ -72,4 +74,13 @@ bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 	getRightBound(A) > B.left &&
 	A.top < getBottomBound(B) &&
 	getBottomBound(A) > B.top);
+}
+
+void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
+{
+    for (const auto& tkinematicBody : mKinematicBodies)
+    {
+        if(isThereCollision(kinematicBody->mRect,tkinematicBody->mRect))
+            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, tkinematicBody);
+    }
 }

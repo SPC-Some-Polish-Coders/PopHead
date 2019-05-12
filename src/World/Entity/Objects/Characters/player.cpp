@@ -64,7 +64,7 @@ void Player::update(sf::Time delta)
 {
     sf::Vector2f velocity;
 
-    if(mMotion.isMoving())
+    if(mMotion.isMoving() && !mCollisionBody.getStunStatus())
     {
         if(mMotion.isMovingLeft){
             velocity.x -= mMovementSpeed * delta.asSeconds();

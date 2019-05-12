@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "staticCollisionHandler.hpp"
+#include "kinematicCollisionHandler.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -29,6 +30,7 @@ public:
     void update(sf::Time delta);
 private:
     void handleStaticCollisionsFor(CollisionBody* kinematicBody);
+    void handleKinematicCollisionsFor(CollisionBody* kinematicBody);
     bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 
 private:
@@ -36,6 +38,7 @@ private:
     std::vector<CollisionBody*> mKinematicBodies;
 
     StaticCollisionHandler mStaticCollisionHandler;
+    KinematicCollisionHandler mKinematicCollisionHandler;
 };
 
 
