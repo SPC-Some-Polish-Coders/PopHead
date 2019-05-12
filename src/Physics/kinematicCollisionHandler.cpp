@@ -1,13 +1,11 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
-#include <iostream>
+
 using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
 
 void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* kinematicBodyFirst, CollisionBody* kinematicBodySecond)
 {
-    if(kinematicBodyFirst == nullptr || kinematicBodySecond == nullptr)
-        return;
     float mass1 = kinematicBodyFirst->getMass();
     float mass2 = kinematicBodySecond->getMass();
     if(mass1 == mass2)
@@ -45,16 +43,6 @@ void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* kinemati
     {
         vector.y = -1*(1-div);
     }
-   // std::cout << vector.x << " " << vector.y << "\n";
-    if(mass1 > mass2)
-    {
-        kinematicBodySecond->setForceVector(vector);
-    }
-    else
-    {
-        kinematicBodyFirst->setForceVector(vector);
-    }
-
 
     float force;
     sf::Vector2f forceVector;
