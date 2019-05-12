@@ -1,6 +1,7 @@
 #include "physicsEngine.hpp"
 
 #include "collisionBody.hpp"
+#include "Utilities/math.hpp"
 
 #include <iostream>
 
@@ -63,10 +64,12 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
+	using namespace PopHead::Utilities::Math;
+
 	//AABB collision detection algorithm
 	return(
-	A.left < B.left + B.width &&
-	A.left + A.width > B.left &&
-	A.top < B.top + B.height &&
-	A.top + A.height > B.top);
+	A.left < getRightBound(B) &&
+	getRightBound(A) > B.left &&
+	A.top < getBottomBound(B) &&
+	getBottomBound(A) > B.top);
 }
