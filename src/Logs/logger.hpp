@@ -39,6 +39,7 @@ private:
 	void openFile();
 	void saveLogsInFile(const LogData& log); 
 	void writeLogInConsole(const LogData& log);
+	std::string nameTheFile();
 	sf::Time getElapsedTimeSinceCreation();
 
 private:

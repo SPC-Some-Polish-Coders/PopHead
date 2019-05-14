@@ -32,8 +32,7 @@ std::ostream& operator<<(std::ostream& os, const LogType& logType)
 	return os;
 }
 
-
-void Logger::openFile()
+std::string Logger::nameTheFile()
 {
 	std::time_t t = time(0);
 	std::tm* now = localtime(&t);
@@ -42,16 +41,20 @@ void Logger::openFile()
 	if (now->tm_mday < 10 && now->tm_mon < 10) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
 	else if (now->tm_mday < 10 && now->tm_mon > 9) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
 	else if (now->tm_mon < 10 && now->tm_mon > 9) fileName += std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
-	else fileName += std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday); 
+	else fileName += std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
 
 	if (now->tm_min < 10) fileName += "_" + std::to_string(now->tm_hour) + "-" + "0" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
 	else fileName += "_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
 
-	mLogFile.open("logs/log_" + fileName + ".txt", std::ofstream::out | std::ofstream::app);
-	if (!mLogFile.is_open())
-		; // TODO: Handle error in some way or do some logs
+	return fileName;
 }
 
+void Logger::openFile()
+{
+	mLogFile.open("logs/log_" + nameTheFile() + ".txt", std::ofstream::out | std::ofstream::app);
+	if (!mLogFile.is_open())
+		std::cout << "\nLog file could not be created. Make sure that 'logs' folder exists in your game directory.\n";
+}
 
 void Logger::writeLog(const LogData& log)
 {
