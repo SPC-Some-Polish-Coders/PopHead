@@ -9,9 +9,7 @@ namespace Resources {
 
 namespace CollisionRectData
 {
-	static constexpr unsigned PLAYER_OFFSET_LEFT = 9;
-	static constexpr unsigned PLAYER_OFFSET_TOP = 4;
-	static constexpr unsigned PLAYER_WIDTH = 27;
+	static constexpr unsigned PLAYER_WIDTH = 30;
 	static constexpr unsigned PLAYER_HEIGHT = 44;
 }
 

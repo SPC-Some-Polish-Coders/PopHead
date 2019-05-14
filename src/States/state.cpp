@@ -12,23 +12,3 @@ State::State( PopHead::Base::GameData* const gameData )
         , mPause { false }
 {
 }
-
-bool State::getHide() const
-{
-    return mHide;
-}
-
-bool State::getPause() const
-{
-    return mPause;
-}
-
-void State::setHide(bool hide)
-{
-    mHide = hide;
-}
-
-void State::setPause(bool pause)
-{
-    mPause = pause;
-}

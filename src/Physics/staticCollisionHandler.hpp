@@ -4,6 +4,7 @@
 namespace PopHead {
 namespace Physics {
 
+
 class CollisionBody;
 
 class StaticCollisionHandler
@@ -24,7 +25,6 @@ private:
 private:
 	CollisionBody* mKinematicBody;
 	CollisionBody* mStaticBody;
-
 };
 
 

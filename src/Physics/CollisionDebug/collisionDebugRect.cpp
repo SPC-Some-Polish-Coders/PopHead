@@ -18,8 +18,9 @@ void CollisionDebugRect::draw(sf::RenderTarget& target, sf::RenderStates states)
 {
 	updateColor();
 
-	if(shouldDisplay())
+	if (shouldDisplay()) {
 		target.draw(mShape, states);
+	}
 }
 
 void CollisionDebugRect::updateColor() const

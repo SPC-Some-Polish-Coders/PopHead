@@ -11,6 +11,7 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 ,mOwner(owner)
 ,mBodyType(bodyType)
 ,mCollisionDebugRect(gameData, rect, this)
+,mGameData(gameData)
 {
 	switch (bodyType)
 	{
@@ -20,6 +21,20 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 
 	case PopHead::Physics::BodyType::kinematicBody:
 		gameData->getPhysicsEngine().addKinematicBody(this);
+		break;
+	}
+}
+
+CollisionBody::~CollisionBody()
+{
+	switch (mBodyType)
+	{
+	case PopHead::Physics::BodyType::staticBody:
+		mGameData->getPhysicsEngine().removeStaticBody(this);
+		break;
+
+	case PopHead::Physics::BodyType::kinematicBody:
+		mGameData->getPhysicsEngine().removeKinematicBody(this);
 		break;
 	}
 }
@@ -43,13 +58,52 @@ void CollisionBody::updateOwnerPosition()
 	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
+void CollisionBody::setPreviousPositionToCurrentPosition()
+{
+	mPreviousPosition.x = mRect.left;
+	mPreviousPosition.y = mRect.top;
+}
+
 sf::FloatRect CollisionBody::getPreviousRect()
 {
 	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
 }
-
-void PopHead::Physics::CollisionBody::setPreviousPositionToCurrentPosition()
+void CollisionBody::setForceVector(sf::Vector2f forceVector)
 {
-	mPreviousPosition.x = mRect.left;
-	mPreviousPosition.y = mRect.top;
+    this->forceVector = forceVector;
+}
+void CollisionBody::updatePush(sf::Time delta)
+{
+    mRect.left += forceVector.x*delta.asSeconds();
+	mRect.top += forceVector.y*delta.asSeconds();
+	mCollisionDebugRect.move(forceVector);
+	if(forceVector.x != 0)
+        forceVector.x -= forceVector.x*delta.asSeconds()*1.5f;
+	if(forceVector.y != 0)
+        forceVector.y -= forceVector.y*delta.asSeconds()*1.5f;
+    //std::cout << forceVector.x << " " << forceVector.y << "\n";
+	if(forceVector.x < 2 && forceVector.x > -2)
+    {
+        forceVector.x=0;
+    }
+    if(forceVector.y < 2 && forceVector.y > -2)
+    {
+        forceVector.y=0;
+    }
+
+}
+
+float CollisionBody::getMass()
+{
+    return mMass;
+}
+
+sf::Vector2f CollisionBody::getPosition()
+{
+    return sf::Vector2f(mRect.left, mRect.top);
+}
+
+bool CollisionBody::getStunStatus()
+{
+    return (forceVector.x != 0 || forceVector.y != 0);
 }

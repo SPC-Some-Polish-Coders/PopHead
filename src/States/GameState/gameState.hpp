@@ -18,7 +18,8 @@ private:
     void makeMap();
 	void makeWall(); //this wall is for test of static collisions
     void makeBoat();
-	void makeNPC();
+	void makeNpc();
+	void makeNpcToBeAbleToTestDynamicCollisions();
     void makePlayer();
 	void makeStaticObjectToCamera();
     void setCamera();

@@ -30,7 +30,8 @@ void GameState::makeSceneTree()
     makeMap();
 	makeWall();
     makeBoat();
-    makeNPC();
+    makeNpc();
+	makeNpcToBeAbleToTestDynamicCollisions();
     makePlayer();
 	makeStaticObjectToCamera();
     setCamera();
@@ -59,7 +60,7 @@ void GameState::makeBoat()
     mRoot.addChild(std::move(boat));
 }
 
-void GameState::makeNPC()
+void GameState::makeNpc()
 {
     std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
     npc->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
@@ -68,12 +69,23 @@ void GameState::makeNPC()
     mRoot.getChild("boat").addChild(std::move(npc));
 }
 
+void GameState::makeNpcToBeAbleToTestDynamicCollisions()
+{
+	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
+		mGameData, "dynamicCollisionsTester - NPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), 25));
+	npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
+	npcq->setPosition(sf::Vector2f(1850, 5240));
+
+	mRoot.addChild(std::move(npcq));
+}
+
 void GameState::makePlayer()
 {
     std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
     player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
     player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
+
 }
 
 void GameState::makeStaticObjectToCamera()

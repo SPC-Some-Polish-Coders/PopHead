@@ -15,7 +15,7 @@ namespace PopHead {
 namespace Base {
 
 /// GameData is holder for observer pointers to Game Modules.
-/** GameData is recivied by Game itself. */
+
 class GameData
 {
   public:
