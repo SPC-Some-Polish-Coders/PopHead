@@ -12,16 +12,20 @@ class CollisionBody;
 class KinematicCollisionHandler
 {
 public:
-	void handleKinematicCollision(CollisionBody* kinematicBodyFirst, CollisionBody* kinematicBodySecond);
+	void handleKinematicCollision(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody);
 
 private:
-	sf::Vector2f getDirectionOfPush() const;
+	void init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody);
 	float getForce() const;
+	sf::Vector2f getDirectionOfPush() const;
 	void applyForce(sf::Vector2f forceVector) const;
 
 private:
 	CollisionBody* mFirstKinematicBody;
 	CollisionBody* mSecondKinematicBody;
+
+	float mMass1;
+	float mMass2;
 };
 
 
