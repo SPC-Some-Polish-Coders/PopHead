@@ -16,6 +16,8 @@ public:
 
 private:
 	sf::Vector2f getDirectionOfPush() const;
+	float getForce() const;
+	void applyForce(sf::Vector2f forceVector) const;
 
 private:
 	CollisionBody* mFirstKinematicBody;
