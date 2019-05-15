@@ -74,23 +74,14 @@ void CollisionBody::setForceVector(sf::Vector2f forceVector)
 }
 void CollisionBody::updatePush(sf::Time delta)
 {
-    mRect.left += forceVector.x*delta.asSeconds();
-	mRect.top += forceVector.y*delta.asSeconds();
-	mCollisionDebugRect.move(forceVector);
-	if(forceVector.x != 0)
-        forceVector.x -= forceVector.x*delta.asSeconds()*1.5f;
-	if(forceVector.y != 0)
-        forceVector.y -= forceVector.y*delta.asSeconds()*1.5f;
-    //std::cout << forceVector.x << " " << forceVector.y << "\n";
-	if(forceVector.x < 2 && forceVector.x > -2)
-    {
-        forceVector.x=0;
-    }
-    if(forceVector.y < 2 && forceVector.y > -2)
-    {
-        forceVector.y=0;
-    }
+    move(forceVector * delta.asSeconds());
 
+    forceVector -= forceVector * delta.asSeconds() * 1.5f;
+
+	if(forceVector.x < 2 && forceVector.x > -2)
+        forceVector.x=0;
+    if(forceVector.y < 2 && forceVector.y > -2)
+        forceVector.y=0;
 }
 
 float CollisionBody::getMass()
