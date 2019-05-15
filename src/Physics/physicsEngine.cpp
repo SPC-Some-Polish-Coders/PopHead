@@ -48,11 +48,11 @@ void PhysicsEngine::update(sf::Time delta)
 {
     for(auto kinematicBody : mKinematicBodies)
     {
-		handleStaticCollisionsFor(kinematicBody);
 		handleKinematicCollisionsFor(kinematicBody);
 		kinematicBody->updatePush(delta);
-		kinematicBody->updateOwnerPosition();
+		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody->setPreviousPositionToCurrentPosition();
+		kinematicBody->updateOwnerPosition();
     }
 }
 
