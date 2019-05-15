@@ -1,6 +1,8 @@
 #ifndef POPHEAD_PHYSICS_KINEMATICCOLLISIONHANDLER_H_
 #define POPHEAD_PHYSICS_KINEMATICCOLLISIONHANDLER_H_
 
+#include <SFML/Graphics.hpp>
+
 namespace PopHead {
 namespace Physics {
 
@@ -13,8 +15,11 @@ public:
 	void handleKinematicCollision(CollisionBody* kinematicBodyFirst, CollisionBody* kinematicBodySecond);
 
 private:
-	CollisionBody* mKinematicBodyFirst;
-	CollisionBody* mKinematicBodySecond;
+	sf::Vector2f getDirectionOfPush() const;
+
+private:
+	CollisionBody* mFirstKinematicBody;
+	CollisionBody* mSecondKinematicBody;
 };
 
 
