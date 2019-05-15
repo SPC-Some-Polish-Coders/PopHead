@@ -5,6 +5,7 @@
 #include "Base/gameData.hpp"
 #include "World/Entity/object.hpp"
 #include "CollisionDebug/collisionDebugRect.hpp"
+#include "Utilities/math.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -25,8 +26,9 @@ public:
 
 	float getMass() { return mMass; }
 	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
-	bool getStunStatus() { return (forceVector.x != 0 || forceVector.y != 0); }
+	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
 	auto getBodyType() const -> const BodyType& { return mBodyType; }
+	bool getStunStatus() { return (forceVector.x != 0 || forceVector.y != 0); }
 
 private:
     void updateOwnerPosition();
