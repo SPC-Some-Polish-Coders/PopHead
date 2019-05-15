@@ -68,10 +68,12 @@ sf::FloatRect CollisionBody::getPreviousRect()
 {
 	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
 }
+
 void CollisionBody::setForceVector(sf::Vector2f forceVector)
 {
     this->forceVector = forceVector;
 }
+
 void CollisionBody::updatePush(sf::Time delta)
 {
     move(forceVector * delta.asSeconds());
@@ -79,22 +81,7 @@ void CollisionBody::updatePush(sf::Time delta)
     forceVector -= forceVector * delta.asSeconds() * 1.5f;
 
 	if(forceVector.x < 2 && forceVector.x > -2)
-        forceVector.x=0;
+        forceVector.x = 0;
     if(forceVector.y < 2 && forceVector.y > -2)
-        forceVector.y=0;
-}
-
-float CollisionBody::getMass()
-{
-    return mMass;
-}
-
-sf::Vector2f CollisionBody::getPosition()
-{
-    return sf::Vector2f(mRect.left, mRect.top);
-}
-
-bool CollisionBody::getStunStatus()
-{
-    return (forceVector.x != 0 || forceVector.y != 0);
+        forceVector.y = 0;
 }
