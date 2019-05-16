@@ -30,7 +30,6 @@ public:
     void addChild(EntityPtr);
     void removeChild(const std::string& name);
     void removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved);
-    void setName(const std::string& name);
 
 	auto getParent() const -> Entity& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }

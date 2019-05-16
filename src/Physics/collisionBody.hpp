@@ -5,6 +5,7 @@
 #include "Base/gameData.hpp"
 #include "World/Entity/object.hpp"
 #include "CollisionDebug/collisionDebugRect.hpp"
+#include "Utilities/math.hpp"
 
 namespace PopHead{
 namespace Physics{
@@ -17,16 +18,17 @@ public:
     CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 	~CollisionBody();
 
+    void updatePush(sf::Time delta);
+    void setForceVector(sf::Vector2f forceVector);
+
     void move(sf::Vector2f velocity);
     void setPosition(sf::Vector2f position);
 
-    void setForceVector(sf::Vector2f forceVector);
-    void updatePush(sf::Time delta);
-    float getMass();
-    sf::Vector2f getPosition();
-    bool getStunStatus();
-
-    auto getBodyType() const -> const BodyType& { return mBodyType; }
+	float getMass() { return mMass; }
+	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
+	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
+	auto getBodyType() const -> const BodyType& { return mBodyType; }
+	bool getStunStatus() { return (forceVector.x != 0 || forceVector.y != 0); }
 
 private:
     void updateOwnerPosition();
