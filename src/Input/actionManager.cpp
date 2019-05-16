@@ -60,7 +60,7 @@ void ActionManager::clearAllActions() noexcept
     mActions.clear();
 }
 
-bool ActionManager::isActionPressed( const std::string& action )
+bool ActionManager::isActionPressed(const std::string& action)
 {
     for(const auto& button : mActions[action]){
         if(sf::Keyboard::isKeyPressed(button))
@@ -69,20 +69,21 @@ bool ActionManager::isActionPressed( const std::string& action )
     return false;
 }
 
-bool ActionManager::isActionJustPressed( const std::string& action )
+bool ActionManager::isActionJustPressed(const std::string& action)
 {
-    for(const auto& button : mActions[action]){
-        if(EventLoop::isKeyJustPressed() && EventLoop::getKey() == button)
-            return true;
-    }
-    return false;
+	return isAction(action, EventLoop::isKeyJustPressed);
 }
 
-bool ActionManager::isActionJustReleased( const std::string& action )
+bool ActionManager::isActionJustReleased(const std::string& action)
 {
-    for(const auto& button : mActions[action]){
-        if(EventLoop::isKeyJustReleased() && EventLoop::getKey() == button)
-            return true;
-    }
-    return false;
+	return isAction(action, EventLoop::isKeyJustReleased);
+}
+
+bool ActionManager::isAction(const std::string& action, std::function<bool(void)> func)
+{
+	for (const auto& button : mActions[action]) {
+		if (func() && EventLoop::getKey() == button)
+			return true;
+	}
+	return false;
 }
