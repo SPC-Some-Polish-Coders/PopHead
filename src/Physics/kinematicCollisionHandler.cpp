@@ -9,14 +9,9 @@ using PopHead::Physics::CollisionBody;
 
 void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
 {
+    //mMomentum
 	init(firstKinematicBody, secondKinematicBody);
-
-	float force = getForce();
-	if (force == 0)
-		return;
-	sf::Vector2f directionOfPush = getDirectionOfPush();
-    sf::Vector2f forceVector(force * directionOfPush.x, force * directionOfPush.y);
-	applyForce(forceVector);
+    applyKinematicCollision();
 }
 
 void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
@@ -60,11 +55,38 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 	return directionOfPush;
 }
 
-
-void KinematicCollisionHandler::applyForce(const sf::Vector2f& forceVector) const
+void KinematicCollisionHandler::applyKinematicCollision()
 {
+    calculateMomentums();
+    if(mMomentum1*2 > mMomentum2 || mMomentum1 < mMomentum2*2)
+        applyPush();
+    else
+        applyShift();
+
+}
+
+void KinematicCollisionHandler::calculateMomentums()
+{
+    mMomentum1 = mFirstKinematicBody->mSpeed > 1 ? mFirstKinematicBody->mSpeed*mMass1 : 1;
+    mMomentum2 = mSecondKinematicBody->mSpeed > 1 ? mSecondKinematicBody->mSpeed*mMass2 : 1;
+}
+
+
+void KinematicCollisionHandler::applyPush() const
+{
+    float force = getForce();
+	if (force == 0)
+		return;
+	sf::Vector2f directionOfPush = getDirectionOfPush();
+    sf::Vector2f forceVector(force * directionOfPush.x, force * directionOfPush.y);
+
 	if (mMass1 > mMass2)
 		mSecondKinematicBody->setForceVector(forceVector);
 	else
 		mFirstKinematicBody->setForceVector(forceVector);
+}
+
+void KinematicCollisionHandler::applyShift() const
+{
+
 }

@@ -15,7 +15,7 @@ enum class BodyType;
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
+    CollisionBody(sf::FloatRect rect, float mass,unsigned int speed, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 	~CollisionBody();
 
     void updatePush(sf::Time delta);
@@ -40,6 +40,8 @@ private:
     sf::Vector2f mPreviousPosition;
     sf::Vector2f forceVector;
     float mMass;
+    unsigned int mSpeed;
+    bool isMoving;
     const BodyType mBodyType;
     CollisionDebugRect mCollisionDebugRect;
     World::Entity::Object* const mOwner;
@@ -47,6 +49,7 @@ private:
 
     friend PhysicsEngine;
     friend StaticCollisionHandler;
+    friend KinematicCollisionHandler;
 };
 
 

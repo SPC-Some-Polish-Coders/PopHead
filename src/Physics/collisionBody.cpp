@@ -3,10 +3,11 @@
 
 using PopHead::Physics::CollisionBody;
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::BodyType bodyType,
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass,unsigned int speed, PopHead::Physics::BodyType bodyType,
 							 PopHead::World::Entity::Object* const owner, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
+,mSpeed(speed)
 ,mPreviousPosition(rect.left, rect.top)
 ,mOwner(owner)
 ,mBodyType(bodyType)
@@ -44,6 +45,7 @@ void CollisionBody::move(sf::Vector2f velocity)
 	mRect.left += velocity.x;
 	mRect.top += velocity.y;
 	mCollisionDebugRect.move(velocity);
+    isMoving=true;
 }
 
 void CollisionBody::setPosition(sf::Vector2f position)

@@ -17,8 +17,11 @@ public:
 private:
 	void init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody);
 	float getForce() const;
+	void calculateMomentums();
 	sf::Vector2f getDirectionOfPush() const;
-	void applyForce(const sf::Vector2f& forceVector) const;
+	void applyKinematicCollision();
+	void applyShift() const;
+	void applyPush() const;
 
 private:
 	CollisionBody* mFirstKinematicBody;
@@ -26,6 +29,8 @@ private:
 
 	float mMass1;
 	float mMass2;
+	float mMomentum1;
+	float mMomentum2;
 
 	float forceMultiplier = 12.5;
 };

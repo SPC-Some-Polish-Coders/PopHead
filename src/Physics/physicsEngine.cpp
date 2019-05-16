@@ -56,6 +56,7 @@ void PhysicsEngine::update(sf::Time delta)
 		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody->setPreviousPositionToCurrentPosition();
 		kinematicBody->updateOwnerPosition();
+		kinematicBody->isMoving=false;
     }
 }
 
