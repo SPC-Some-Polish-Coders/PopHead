@@ -16,12 +16,12 @@ public:
 
 private:
 	void init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody);
-	float getForce() const;
-	void calculateMomentums();
-	sf::Vector2f getDirectionOfPush() const;
 	void applyKinematicCollision();
-	void applyShift() const;
+	void calculateMomentums();
 	void applyPush() const;
+	float getForce() const;
+	sf::Vector2f getDirectionOfPush() const;
+	void applyShift() const;
 
 private:
 	CollisionBody* mFirstKinematicBody;

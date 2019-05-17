@@ -77,7 +77,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 			continue;
 
 		if (isThereCollision(kinematicBody->mRect, kinematicBody2->mRect)) {
-			PH_LOG(LogType::Info, "there is kinematic collision between " + kinematicBody->mOwner->getName() + " and " + kinematicBody2->mOwner->getName());
+			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->mOwner->getName() + " and " + kinematicBody2->mOwner->getName());
             mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, kinematicBody2);
 		}
     }
