@@ -15,7 +15,7 @@ enum class BodyType;
 class CollisionBody
 {
 public:
-    CollisionBody(sf::FloatRect rect, float mass,unsigned int speed, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
+    CollisionBody(sf::FloatRect rect, float mass, unsigned int speed, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 	~CollisionBody();
 
     void updatePush(sf::Time delta);

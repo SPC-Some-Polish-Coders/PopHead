@@ -9,7 +9,6 @@ using PopHead::Physics::CollisionBody;
 
 void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
 {
-    //mMomentum
 	init(firstKinematicBody, secondKinematicBody);
     applyKinematicCollision();
 }
@@ -58,7 +57,7 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 void KinematicCollisionHandler::applyKinematicCollision()
 {
     calculateMomentums();
-    if(mMomentum1*2 > mMomentum2 || mMomentum1 < mMomentum2*2)
+    if(mMomentum1 * 2 > mMomentum2 || mMomentum1 < mMomentum2 * 2)
         applyPush();
     else
         applyShift();
@@ -67,10 +66,12 @@ void KinematicCollisionHandler::applyKinematicCollision()
 
 void KinematicCollisionHandler::calculateMomentums()
 {
-    mMomentum1 = mFirstKinematicBody->mSpeed > 1 ? mFirstKinematicBody->mSpeed*mMass1 : 1;
-    mMomentum2 = mSecondKinematicBody->mSpeed > 1 ? mSecondKinematicBody->mSpeed*mMass2 : 1;
-}
+    mMomentum1 = mFirstKinematicBody->mSpeed > 1 ? mFirstKinematicBody->mSpeed * mMass1 : 1;
+    mMomentum2 = mSecondKinematicBody->mSpeed > 1 ? mSecondKinematicBody->mSpeed * mMass2 : 1;
 
+	PH_LOG(LogType::Info, "momentum 1: " + std::to_string(mMomentum1));
+	PH_LOG(LogType::Info, "momentum 2: " + std::to_string(mMomentum2));
+}
 
 void KinematicCollisionHandler::applyPush() const
 {

@@ -3,7 +3,7 @@
 
 using PopHead::Physics::CollisionBody;
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass,unsigned int speed, PopHead::Physics::BodyType bodyType,
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass, unsigned int speed, PopHead::Physics::BodyType bodyType,
 							 PopHead::World::Entity::Object* const owner, PopHead::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
