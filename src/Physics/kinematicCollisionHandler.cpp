@@ -1,8 +1,6 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
 
-#include "Logs/logger.hpp"
-
 using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
 
@@ -10,12 +8,13 @@ using PopHead::Physics::CollisionBody;
 void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
 {
 	init(firstKinematicBody, secondKinematicBody);
-
+    
 	float force = getForce();
 	if (force == 0)
 		return;
 	sf::Vector2f directionOfPush = getDirectionOfPush();
-    sf::Vector2f forceVector(force * directionOfPush.x, force * directionOfPush.y);
+	sf::Vector2f forceVector(force * directionOfPush.x, force * directionOfPush.y);
+
 	applyForce(forceVector);
 }
 
@@ -30,6 +29,8 @@ void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, Collisio
 
 float KinematicCollisionHandler::getForce() const
 {
+	constexpr float forceMultiplier = 12.5f;
+
 	if (mMass1 == mMass2) {
 		return 0;
 	}
@@ -59,7 +60,6 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 
 	return directionOfPush;
 }
-
 
 void KinematicCollisionHandler::applyForce(const sf::Vector2f& forceVector) const
 {

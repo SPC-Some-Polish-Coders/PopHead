@@ -54,6 +54,7 @@ void PhysicsEngine::update(sf::Time delta)
 		handleKinematicCollisionsFor(kinematicBody);
 		kinematicBody->updatePush(delta);
 		handleStaticCollisionsFor(kinematicBody);
+
 		kinematicBody->setPreviousPositionToCurrentPosition();
 		kinematicBody->updateOwnerPosition();
     }
@@ -69,10 +70,15 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 
 void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 {
-    for (const auto& tkinematicBody : mKinematicBodies)
+    for (const auto& kinematicBody2 : mKinematicBodies)
     {
-        if(isThereCollision(kinematicBody->mRect, tkinematicBody->mRect))
-            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, tkinematicBody);
+		if (kinematicBody == kinematicBody2)
+			continue;
+
+		if (isThereCollision(kinematicBody->mRect, kinematicBody2->mRect)) {
+			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->mOwner->getName() + " and " + kinematicBody2->mOwner->getName());
+            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, kinematicBody2);
+		}
     }
 }
 

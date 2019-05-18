@@ -2,8 +2,6 @@
 
 #include "Physics/bodyType.hpp"
 
-#include <iostream>
-
 using PopHead::World::Entity::Character;
 
 Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,

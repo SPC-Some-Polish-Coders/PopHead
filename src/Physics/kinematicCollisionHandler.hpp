@@ -26,8 +26,6 @@ private:
 
 	float mMass1;
 	float mMass2;
-
-	float forceMultiplier = 12.5;
 };
 
 
