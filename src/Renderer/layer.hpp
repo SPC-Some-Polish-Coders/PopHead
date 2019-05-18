@@ -12,7 +12,7 @@ namespace Renderer {
 
 class Layer
 {
-  public:
+public:
     using ObjectsSequence = std::list< World::Entity::Object* >;
     void addObject( World::Entity::Object* const object );
 
@@ -24,7 +24,7 @@ class Layer
 
     inline void clear();
 
-  private:
+private:
     ObjectsSequence mObjects;
 };
 

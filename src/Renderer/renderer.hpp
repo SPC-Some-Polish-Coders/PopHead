@@ -45,6 +45,7 @@ public:
 
 private:
     void setPositionOfStaticObjectsToCamera();
+	std::string getLayerName(LayerID) const;
 
 private:
     Camera mCamera;
