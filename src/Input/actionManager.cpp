@@ -1,9 +1,9 @@
 #include "actionManager.hpp"
 #include "eventLoop.hpp"
 #include <algorithm>
+#include "Logs/logger.hpp"
 
 using PopHead::Input::ActionManager;
-
 
 ActionManager::ActionManager()
 {
@@ -21,11 +21,13 @@ void ActionManager::addAction( const std::string& action, std::vector<sf::Keyboa
     auto last = std::unique(buttons.begin(), buttons.end());
     buttons.erase(last, buttons.end());
     mActions[action] = buttons;
+	PH_LOG(LogType::Info, "Action was added to ActionManager.");
 }
 
 void ActionManager::addAction( const std::string& action, sf::Keyboard::Key button )
 {
     mActions[action] = std::vector<sf::Keyboard::Key>{button};
+	PH_LOG(LogType::Info, "Action was added to ActionManager.");
 }
 
 void ActionManager::addKeyToAction( const std::string& action, sf::Keyboard::Key button )
@@ -37,6 +39,7 @@ void ActionManager::addKeyToAction( const std::string& action, sf::Keyboard::Key
         if(std::find(vec.begin(), vec.end(), button) == vec.end())
             found->second.emplace_back(button);
     }
+	PH_LOG(LogType::Info, "Key was added to action.");
 }
 
 void ActionManager::deleteKeyFromAction( const std::string& action, sf::Keyboard::Key button )
@@ -47,17 +50,20 @@ void ActionManager::deleteKeyFromAction( const std::string& action, sf::Keyboard
         auto& vec = found->second;
         vec.erase(std::remove(vec.begin(), vec.end(), button), vec.end());
     }
+	PH_LOG(LogType::Info, "Key was deleted from action.");
 }
 
 void ActionManager::deleteAction(const std::string& action)
 {
     auto found = mActions.find(action);
     mActions.erase(found);
+	PH_LOG(LogType::Info, "Action was deleted from ActionManager.");
 }
 
 void ActionManager::clearAllActions() noexcept
 {
     mActions.clear();
+	PH_LOG(LogType::Info, "All actions were cleared.");
 }
 
 bool ActionManager::isActionPressed(const std::string& action)
