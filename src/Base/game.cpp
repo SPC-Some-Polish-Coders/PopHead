@@ -37,8 +37,6 @@ Game::Game()
 
     Input::EventLoop::init( mGameData.get() );
     mInput->setGameData( mGameData.get() );
-
-    run();
 }
 
 void Game::run()

@@ -22,8 +22,8 @@ class Game
   public:
     Game();
 
-  private:
     void run();
+  private:
     void input();
     void update( sf::Time delta );
     void draw();
