@@ -1,5 +1,7 @@
 #include "entity.hpp"
 
+#include "Logs/logger.hpp"
+
 using PopHead::World::Entity::Entity;
 
 Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
@@ -25,8 +27,10 @@ void Entity::update(sf::Time delta)
 
 void Entity::addChild(EntityPtr newChild)
 {
+	const std::string nameOfNewChild = newChild->getName();
     newChild->mParent = this;
     mChildren.emplace_back(std::move(newChild));
+	PH_LOG(LogType::Info, "Entity \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
 }
 
 void Entity::removeChild(const std::string& name)
@@ -37,6 +41,7 @@ void Entity::removeChild(const std::string& name)
 			break;
 		}
 	}
+	PH_LOG(LogType::Info, "Entity \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
 void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
@@ -47,6 +52,8 @@ void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 			break;
 		}
 	}
+	PH_LOG(LogType::Info, "Entity \"" + pointerToChildWhichIsSupposedToBeRemoved->getName() + 
+		                  "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
 auto Entity::getChild(std::string name) const -> Entity&

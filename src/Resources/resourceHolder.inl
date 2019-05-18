@@ -24,7 +24,7 @@ auto ResourceHolder<ResourceType>::get(const std::string& name) -> ResourceType&
     auto found = mResources.find(name);
 #ifndef NDEBUG
 	if (found == mResources.end())
-		PH_LOG(LogType::Error, "name");
+		PH_LOG(LogType::Error, "Resource \"" + name + "\" was not found!");
 #endif // !NDEBUG
 	return *found->second;
 }
