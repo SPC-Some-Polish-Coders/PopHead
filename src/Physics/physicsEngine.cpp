@@ -57,7 +57,6 @@ void PhysicsEngine::update(sf::Time delta)
 
 		kinematicBody->setPreviousPositionToCurrentPosition();
 		kinematicBody->updateOwnerPosition();
-		kinematicBody->isMoving = false;
     }
 }
 

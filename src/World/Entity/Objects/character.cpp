@@ -2,8 +2,6 @@
 
 #include "Physics/bodyType.hpp"
 
-#include <iostream>
-
 using PopHead::World::Entity::Character;
 
 Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
@@ -14,7 +12,7 @@ Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHea
 ,mMovementSpeed(movementSpeed)
 ,mMotion()
 ,mAnimation(animation)
-,mCollisionBody(posAndSize, mass,movementSpeed, Physics::BodyType::kinematicBody, this, gameData)
+,mCollisionBody(posAndSize, mass, Physics::BodyType::kinematicBody, this, gameData)
 {
 }
 

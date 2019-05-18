@@ -6,7 +6,7 @@ using PopHead::World::Entity::ShapeWithCollision;
 
 ShapeWithCollision::ShapeWithCollision(PopHead::Base::GameData* gameData)
 	:Object(gameData, "shapeWithCollision", Renderer::LayerID::staticEntities)
-	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, 0, Physics::BodyType::staticBody, this, gameData)
+	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, Physics::BodyType::staticBody, this, gameData)
 	,mShape(sf::Vector2f(100, 50))
 {
 	mShape.setFillColor(sf::Color::Black);
