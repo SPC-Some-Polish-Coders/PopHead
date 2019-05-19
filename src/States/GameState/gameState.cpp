@@ -4,6 +4,7 @@
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/staticObjectToCamera.hpp"
 #include "World/Entity/Objects/shapeWithCollision.hpp"
+#include "World/Entity/Objects/Characters/enemies/zombie.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -22,6 +23,7 @@ void GameState::loadResources()
 	mGameData->getTextures().load("resources/textures/characters/vaultManSheet.png");
 	mGameData->getTextures().load("resources/textures/vehicles/boat.png");
 	mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
+	mGameData->getTextures().load("resources/textures/characters/zombie.png");
 	mGameData->getTextures().load("resources/textures/map/city.png");
 }
 
@@ -33,6 +35,7 @@ void GameState::makeSceneTree()
     makeNpc();
 	makeNpcToBeAbleToTestDynamicCollisions();
     makePlayer();
+	makeZombie();
 	makeStaticObjectToCamera();
     setCamera();
 }
@@ -85,7 +88,13 @@ void GameState::makePlayer()
     player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
     player->setPosition(sf::Vector2f(1900, 5240));
     mRoot.addChild(std::move(player));
+}
 
+void GameState::makeZombie()
+{
+	auto zombie = std::make_unique<World::Entity::Zombie>(mGameData);
+	zombie->setPosition(sf::Vector2f(1935, 5000));
+	mRoot.addChild(std::move(zombie));
 }
 
 void GameState::makeStaticObjectToCamera()
