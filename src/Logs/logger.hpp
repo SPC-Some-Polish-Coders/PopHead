@@ -12,6 +12,7 @@ using PopHead::Logs::LogData;
 using PopHead::Logs::LogType;
 
 #define PH_LOG(logType, message) PopHead::Logs::Logger::getLogger().writeLog(PopHead::Logs::LogData{message, PopHead::Utilities::Parser::toModuleName(std::string(__FILE__)), logType})
+#define PH_EXCEPTION(message) PopHead::Logs::Logger::getLogger().throwException(message)
 
 namespace PopHead {
 namespace Logs {
@@ -34,6 +35,7 @@ public:
 	auto getLogSettings() -> LogSettings& { return mLogSettings; }
 
 	void writeLog(const LogData& log);
+	void throwException(const char* message);
 
 private:
 	void openFile();
