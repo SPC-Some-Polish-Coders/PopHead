@@ -42,7 +42,7 @@ public:
 
 	void goToFrontFrame() { mCurrentFrameIndex = 0; };
 
-	auto getCurrentStateName() const -> std::string;
+	std::string getCurrentStateName() const;
 
 private:
 	std::map<std::string, std::vector<sf::IntRect>> mStates;
