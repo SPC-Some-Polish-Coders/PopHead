@@ -53,7 +53,7 @@ void Logger::openFile()
 {
 	mLogFile.open("logs/log_" + nameTheFile() + ".txt", std::ofstream::out | std::ofstream::app);
 	if (!mLogFile.is_open())
-		std::cout << "\nLog file could not be created. Make sure that 'logs' folder exists in your game directory.\n";
+		PH_EXCEPTION("Log file could not be created. Make sure that 'logs' folder exists in your game directory.");
 }
 
 void Logger::writeLog(const LogData& log)
