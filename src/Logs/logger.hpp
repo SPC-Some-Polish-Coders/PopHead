@@ -4,9 +4,11 @@
 #include "log.hpp"
 #include "logSettings.hpp"
 #include "Utilities/parser.hpp"
+#include "assert.hpp"
 #include <SFML/System.hpp>
 #include <vector>
 #include <fstream>
+#include <stdexcept>
 
 using PopHead::Logs::LogData;
 using PopHead::Logs::LogType;
@@ -14,9 +16,7 @@ using PopHead::Logs::LogType;
 #define PH_LOG(logType, message)\
 	PopHead::Logs::Logger::getLogger().writeLog(PopHead::Logs::LogData{message, PopHead::Utilities::Parser::toModuleName(std::string(__FILE__)), logType})
 
-#define PH_EXCEPTION(message)\
-	PopHead::Logs::Logger::getLogger().writeLog(PopHead::Logs::LogData{message, PopHead::Utilities::Parser::toModuleName(std::string(__FILE__)), LogType::Error});\
-	throw std::runtime_error(message);
+#define PH_EXCEPTION(message) (void)(PH_LOG(PopHead::Logs::LogType::Error, message), PH_BREAKPOINT(), throw std::runtime_error(message))
 
 namespace PopHead {
 namespace Logs {
