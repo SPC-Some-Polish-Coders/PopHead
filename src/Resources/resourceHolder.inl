@@ -1,8 +1,5 @@
 #include "Logs/logger.hpp"
 
-#include <cassert>//This include must by removed when asserts are replaced by logs
-#include <stdexcept>
-
 using PopHead::Resources::ResourceHolder;
 
 template< typename ResourceType >
@@ -13,8 +10,7 @@ void ResourceHolder<ResourceType>::load(const std::string& filepath)
     if(resource->loadFromFile(filepath))
 		mResources.insert(std::make_pair(filepath, std::move(resource)));
 	else {
-		PH_LOG(LogType::Error, "unable to load file " + filepath + "! Probably there is not such file.");
-		throw std::runtime_error("unable to load file " + filepath + "! Probably there is not such file.");
+		PH_EXCEPTION("unable to load file " + filepath + "! Probably there is not such file.");
 	}
 }
 
@@ -38,5 +34,5 @@ void ResourceHolder<ResourceType>::free(const std::string& name)
 			return;
 		}
 	}
-	PH_LOG(LogType::Error, "You try to get " + name + ". A resource with this name does not exist.");
+	PH_LOG(LogType::Error, "You try to free " + name + ". A resource with this name does not exist.");
 }

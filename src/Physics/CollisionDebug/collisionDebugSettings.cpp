@@ -3,9 +3,7 @@
 #include "collisionDebugSettings.hpp"
 #include "Physics/bodyType.hpp"
 #include "Logs/logger.hpp"
-
 #include <string>
-#include <stdexcept>
 
 using PopHead::Physics::CollisionDebugSettings;
 using PopHead::Physics::BodyType;
@@ -109,10 +107,7 @@ void CollisionDebugSettings::setColors(int numberOfSet)
 
 void CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)
 {
-	const std::string message = "You have to choose CollisionDebug color set from 1 to 3! There is no option " +
-                                 std::to_string(numberOfSet) + ".";
-	PH_LOG(LogType::Error, message);
-	throw std::runtime_error(message);
+	PH_EXCEPTION("You have to choose CollisionDebug color set from 1 to 3! There is no option " + std::to_string(numberOfSet) + ".");
 }
 
 #endif //!PH_RELEASE
