@@ -22,6 +22,7 @@ private:
 	void makeNpcToBeAbleToTestDynamicCollisions();
     void makePlayer();
 	void makeZombie();
+	void makeBox();
 	void makeStaticObjectToCamera();
     void setCamera();
 

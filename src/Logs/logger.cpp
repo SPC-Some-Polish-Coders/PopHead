@@ -84,12 +84,6 @@ void Logger::saveLogsInFile(const LogData& log)
 		<< std::flush;
 }
 
-void Logger::throwException(const char* message)
-{
-	PH_LOG(LogType::Error, message);
-	throw std::runtime_error(std::string(message));
-}
-
 sf::Time Logger::getElapsedTimeSinceCreation()
 {
 	const sf::Time elapsedTime = mClock.getElapsedTime();
