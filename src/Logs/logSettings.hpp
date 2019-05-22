@@ -39,20 +39,6 @@ private:
 	std::vector<LogType> mLogTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
-
-private:
-	class InitLogSettings
-	{
-	public:
-		static std::fstream mSettingsFile;
-	public:
-		static void mOpenTheFile();
-		static void mCloseTheFile();
-		static bool mGetShouldLogIntoConsole();
-		static bool mGetShouldLogIntoFile();
-		static std::vector<LogType> mGetLogTypesToWrite();
-		static std::vector<std::string> mGetModuleNamesToWrite();
-	};
 };
 
 }}

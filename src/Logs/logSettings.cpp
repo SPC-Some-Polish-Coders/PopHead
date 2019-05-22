@@ -1,19 +1,20 @@
 #include "logSettings.hpp"
+#include "Utilities/iniLoader.hpp"
 #include <fstream>
 #include <iostream>
+
 using PopHead::Logs::LogSettings;
 using PopHead::Logs::LogType;
 using PopHead::Logs::LogData;
-
-std::fstream LogSettings::InitLogSettings::mSettingsFile;
+using PopHead::Utilities::IniLoader;
 
 LogSettings::LogSettings()
-	: mShouldLogIntoConsole(LogSettings::InitLogSettings::mGetShouldLogIntoConsole()),
-	mShouldLogIntoFile(LogSettings::InitLogSettings::mGetShouldLogIntoFile())
+	: mShouldLogIntoConsole(IniLoader::iniGetShouldLogIntoConsole()),
+	mShouldLogIntoFile(IniLoader::iniGetShouldLogIntoFile())
 
 {
-	setLogTypesToWrite(LogSettings::InitLogSettings::mGetLogTypesToWrite());
-	setModuleNamesToWrite(LogSettings::InitLogSettings::mGetModuleNamesToWrite());
+	setLogTypesToWrite(IniLoader::iniGetLogTypesToWrite());
+	setModuleNamesToWrite(IniLoader::iniGetModuleNamesToWrite());
 }
 
 void LogSettings::turnOnWritingEachLog()
@@ -75,105 +76,3 @@ bool LogSettings::shouldBeWrittenConsideringModuleName(const LogData& log) const
 	return false;
 }
 
-void LogSettings::InitLogSettings::mOpenTheFile()
-{
-	mSettingsFile.open("logs/settings.ini");
-	if (!mSettingsFile.is_open()) std::cout << "\n.ini file could not be opened\n";
-}
-
-void LogSettings::InitLogSettings::mCloseTheFile()
-{
-	mSettingsFile.close();
-	mSettingsFile.flush();
-	if (mSettingsFile.is_open()) std::cout << "\n.ini file could not be closed\n";
-}
-
-bool LogSettings::InitLogSettings::mGetShouldLogIntoConsole()
-{
-	mOpenTheFile();
-	std::string found;
-	while (std::getline(mSettingsFile, found)) {
-		if (found.find("ShouldBeWrittenIntoConsole=") != std::string::npos)
-		{
-			if (found.find("1") != std::string::npos) { mCloseTheFile(); return true; }
-			else if (found.find("0") != std::string::npos) { mCloseTheFile(); return false; }
-			else 
-			{
-				std::cout << "\nBad format for '" << found << "' - [true] assumed\n";
-				mCloseTheFile();
-				return true;
-			}
-		}
-	}
-	mCloseTheFile();
-}
-
-bool LogSettings::InitLogSettings::mGetShouldLogIntoFile()
-{
-	mOpenTheFile();
-	std::string found;
-	while (std::getline(mSettingsFile, found)) {
-		if (found.find("ShouldBeWrittenIntoFile=") != std::string::npos)
-		{
-			if (found.find("1") != std::string::npos) { mCloseTheFile(); return true; }
-			else if (found.find("0") != std::string::npos) { mCloseTheFile();	return false; }
-			else
-			{
-				std::cout << "\nBad format for '" << found << "' - [true] assumed\n";
-				mCloseTheFile();
-				return true;
-			}
-		}
-	}
-}
-
-std::vector<LogType> LogSettings::InitLogSettings::mGetLogTypesToWrite()
-{
-	mOpenTheFile();
-	std::string found;
-	std::vector<LogType> InitLogTypesToWrite;
-	while (std::getline(mSettingsFile, found)) {
-		if (found.find("LogTypesToWrite=") != std::string::npos)
-		{
-			if (found.find("All") != std::string::npos)
-				InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::Count };
-			else
-			{
-				if (found.find("Error") != std::string::npos) InitLogTypesToWrite.push_back(LogType::Error);
-				if (found.find("Info") != std::string::npos) InitLogTypesToWrite.push_back(LogType::Info);
-				if (found.find("Warning") != std::string::npos) InitLogTypesToWrite.push_back(LogType::Warning);
-			}
-		}
-	}
-	mCloseTheFile();
-	return InitLogTypesToWrite;
-}
-
-std::vector<std::string> LogSettings::InitLogSettings::mGetModuleNamesToWrite()
-{
-	mOpenTheFile();
-	std::string found;
-	std::vector<std::string> InitModuleNamesToWrite;
-	while (std::getline(mSettingsFile, found))
-	{
-		if(found.find("ModuleNamesToWrite=") != std::string::npos) 
-			if(found.find("All") != std::string::npos)
-				InitModuleNamesToWrite = { "Audio", "Base", "Input", "Logs", "Physics", "Renderer", "Resources", "States", "Utilities", "World", "None" };
-			else
-			{
-				if (found.find("Audio") != std::string::npos) InitModuleNamesToWrite.push_back("Audio");
-				if (found.find("Base") != std::string::npos) InitModuleNamesToWrite.push_back("Base");
-				if (found.find("Input") != std::string::npos) InitModuleNamesToWrite.push_back("Input");
-				if (found.find("Logs") != std::string::npos) InitModuleNamesToWrite.push_back("Logs");
-				if (found.find("Physics") != std::string::npos) InitModuleNamesToWrite.push_back("Physics");
-				if (found.find("Renderer") != std::string::npos) InitModuleNamesToWrite.push_back("Renderer");
-				if (found.find("Resources") != std::string::npos) InitModuleNamesToWrite.push_back("Resources");
-				if (found.find("States") != std::string::npos) InitModuleNamesToWrite.push_back("States");
-				if (found.find("Utilities") != std::string::npos) InitModuleNamesToWrite.push_back("Utilities");
-				if (found.find("World") != std::string::npos) InitModuleNamesToWrite.push_back("World");
-				if (found.find("None") != std::string::npos) InitModuleNamesToWrite.push_back("None");
-			}
-		}
-	mCloseTheFile();
-	return InitModuleNamesToWrite;
-}

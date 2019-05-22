@@ -6,19 +6,23 @@
 #include <vector>
 
 namespace PopHead {
-namespace Utilies {
+namespace Utilities {
 
-class iniLoader
+class IniLoader
 {
+public:
+	static bool iniGetShouldLogIntoConsole();
+	static bool iniGetShouldLogIntoFile();
+	static std::vector<Logs::LogType> iniGetLogTypesToWrite();
+	static std::vector<std::string> iniGetModuleNamesToWrite();
 private:
 	static std::fstream iniSettingsFile;
+	static std::string currentLine;
 protected:
-	static void OpenTheFile();
-	static void CloseTheFile();
-
-//Probably there will be many derived classes which correspond to
-//the proper module - each of them will be public with public members.
-
+	static void openTheFile();
+	static void closeTheFile();
+	static bool findPhrase(std::string);
+	static bool findValue(std::string);
 };
 
 }}
