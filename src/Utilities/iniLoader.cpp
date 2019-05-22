@@ -1,12 +1,8 @@
-#include "iniLoader.hpp"
-#include "Logs/LogsIniLoader/logsIniLoader.hpp"
 #include "Logs/logger.hpp"
+#include "iniLoader.hpp"
 #include <iostream>
 #include <string>
 
-using PopHead::Logs::LogData;
-using PopHead::Logs::LogType;
-using PopHead::Logs::LogsIniLoader;
 using PopHead::Utilities::IniLoader;
 
 std::fstream IniLoader::iniSettingsFile;
@@ -15,13 +11,22 @@ std::string IniLoader::currentLine;
 void IniLoader::openTheFile()
 {
 	iniSettingsFile.open("logs/settings.ini", std::ios::in);
-	if (!iniSettingsFile.is_open()) std::cout << "\n.ini file could not be opened\n";
+	if (!iniSettingsFile.is_open())
+	{
+		throw std::runtime_error("'settings.ini' file could not be opened!");
+		//PH_EXCEPTION("'settings.ini' file could not be opened!");
+		//TODO: MAKE 'PH_EXCEPTION' WORK IN THIS PART OF PROGRAM
+	}
 }
 
 void IniLoader::closeTheFile()
 {
 	iniSettingsFile.close();
-	if (iniSettingsFile.is_open()) std::cout << "\n.ini file could not be closed\n";
+	if (iniSettingsFile.is_open())
+	{
+		throw std::runtime_error("'settings.ini' file could not be closed!");
+		//PH_EXCEPTION("'settings.ini' file could not be closed!");
+	}
 }
 
 bool IniLoader::findPhrase(std::string searchedPhrase)
@@ -31,7 +36,8 @@ bool IniLoader::findPhrase(std::string searchedPhrase)
 			return true;
 		if (iniSettingsFile.eof())
 		{
-			//PH_EXCEPTION("HELLO!"); I don't know why but instead of throwing runtime error, program just freezes
+			throw std::runtime_error("' " + searchedPhrase + "' in settings.ini file could not be found!");
+			//PH_EXCEPTION("' " + searchedPhrase + "' in settings.ini file could not be found!");
 			closeTheFile();
 			return false;
 		}
@@ -44,32 +50,6 @@ bool IniLoader::findValue(std::string searchedValue)
 		return true;
 	else
 		return false;
-}
-
-bool IniLoader::iniGetShouldLogIntoConsole()
-{
-	openTheFile();
-	return LogsIniLoader::getShouldLogIntoConsole();
-	closeTheFile();
-}
-
-bool IniLoader::iniGetShouldLogIntoFile()
-{
-	openTheFile();
-	return LogsIniLoader::getShouldLogIntoFile();
-	closeTheFile();
-}
-
-std::vector<LogType> IniLoader::iniGetLogTypesToWrite()
-{
-	openTheFile();
-	return LogsIniLoader::getLogTypesToWrite();
-}
-
-std::vector<std::string> IniLoader::iniGetModuleNamesToWrite()
-{
-	openTheFile();
-	return LogsIniLoader::getModuleNamesToWrite();
 }
 
 
