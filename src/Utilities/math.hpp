@@ -1,8 +1,8 @@
 #ifndef POPHEAD_UTILITIES_MATH_H_
 #define POPHEAD_UTILITIES_MATH_H_
 
+#include "Logs/assert.hpp"
 #include <SFML/Graphics.hpp>
-#include <cassert>
 
 namespace PopHead {
 namespace Utilities {
@@ -17,7 +17,7 @@ namespace Math {
 
 	inline auto lerp(sf::Vector2f source, sf::Vector2f destination, float speed) -> sf::Vector2f
 	{
-		assert(speed >= 0.f && "speed cannot be lesser then 0");
+		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
 	}
 }

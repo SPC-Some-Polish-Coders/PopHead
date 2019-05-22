@@ -1,31 +1,29 @@
 #include "parser.hpp"
 #include "Logs/assert.hpp"
 #include <iostream>
-#include <cstring>
+#include <string>
 
 std::string PopHead::Utilities::Parser::toModuleName(const std::string& sourceFilePath)
 {
-	// WARNING: Don't use PH_ASSERT or PH_LOG here becouse they are using this method, so it can result in recursion
-	// TODO: Allow this also on Linux (Linux has forward slash instead of backslash)
+	// WARNING: Don't use PH_EXCEPTION or PH_LOG here becouse they are using this method, so it can result in recursion
 
-	std::string fullPath = "PopHead" + PH_PATH_SEPARATOR + "src";
-	const char* const SOURCE_PATH = fullPath.c_str();
-	std::size_t begin = sourceFilePath.find(SOURCE_PATH);
+	const std::string fullPath = "PopHead" + PH_PATH_SEPARATOR + "src";
+	std::size_t begin = sourceFilePath.find(fullPath);
 	if (begin == std::string::npos) {
 		std::cout << "[Parser::toModuleName] Module location cannot be found" << std::endl;
-		PH_BREAKPOINT();
+		throw std::runtime_error("[Parser::toModuleName] Module location cannot be found");
 	}
-	if (sourceFilePath.find(SOURCE_PATH, begin + 1) != std::string::npos) {
+	if (sourceFilePath.find(fullPath, begin + 1) != std::string::npos) {
 		std::cout << "[Parser::toModuleName] Move folder with project to another location" << std::endl;
-		PH_BREAKPOINT();
+		throw std::runtime_error("[Parser::toModuleName] Move folder with project to another location");
 	}
-	begin += std::strlen(SOURCE_PATH) + 1;
+	begin += fullPath.size() + 1;
 	if (begin >= sourceFilePath.size()) {
 		std::cout << "[Parser::toModuleName] There should be at least one letter after source path" << std::endl;
-		PH_BREAKPOINT();
+		throw std::runtime_error("[Parser::toModuleName] There should be at least one letter after source path");
 	}
 
-	std::size_t end = sourceFilePath.find("\\", begin + 1);
+	const std::size_t end = sourceFilePath.find(PH_PATH_SEPARATOR, begin + 1);
 	if (end == std::string::npos)
 		return "None";
 	else
