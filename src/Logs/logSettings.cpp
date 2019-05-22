@@ -1,5 +1,4 @@
 #include "logSettings.hpp"
-#include "Utilities/iniLoader.hpp"
 #include "Logs/LogsIniLoader/logsIniLoader.hpp"
 #include <fstream>
 #include <iostream>
