@@ -1,4 +1,5 @@
 #include "Renderer/renderer.hpp"
+#include "Utilities/iniLoader.hpp"
 
 #include "World/Entity/object.hpp"
 #include "Logs/logger.hpp"
@@ -6,11 +7,13 @@
 using PopHead::Renderer::Renderer;
 using PopHead::Renderer::Layer;
 using PopHead::Renderer::LayerID;
+using PopHead::Utilities::IniLoader;
 
 Renderer::Renderer()
 	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-        , mWindow { sf::VideoMode::getDesktopMode(),
+        , mWindow { sf::VideoMode(IniLoader::iniGetWindowWidth(),
+				IniLoader::iniGetWindowHeight()),
                     "PopHead",
                     sf::Style::Fullscreen }
         , mLayers { { LayerID::floorEntities, Layer() },
