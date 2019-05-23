@@ -30,17 +30,21 @@ void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, Collisio
 
 float KinematicCollisionHandler::getForce() const
 {
+	float force;
 	constexpr float forceMultiplier = 12.5f;
 
-	if (mMass1 == mMass2) {
-		return 0;
-	}
-	else if (mMass1 > mMass2) {
-		return (mMass1 - mMass2) * forceMultiplier;
+	if (mMass1 > mMass2) {
+		force = (mMass1 - mMass2) * forceMultiplier;
 	}
 	else {
-		return (mMass2 - mMass1) * forceMultiplier;
+		force = (mMass2 - mMass1) * forceMultiplier;
 	}
+
+	constexpr float theSmallestPossibleForce = 13 * forceMultiplier;
+	if (force < theSmallestPossibleForce)
+		force = theSmallestPossibleForce;
+
+	return force;
 }
 
 sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
