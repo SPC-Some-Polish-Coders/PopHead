@@ -15,7 +15,7 @@ Renderer::Renderer()
         , mWindow { sf::VideoMode(IniLoader::iniGetWindowWidth(),
 				IniLoader::iniGetWindowHeight()),
                     "PopHead",
-                    sf::Style::Fullscreen }
+                    sf::Style::Default }
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
