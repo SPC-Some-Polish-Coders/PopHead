@@ -74,57 +74,57 @@ bool IniLoader::getBool(const std::string& currentLine)
 		return true;
 	}
 }
-
-bool IniLoader::iniGetFullscreenMode()
-{
-	openTheFile();
-	if (findPhrase("FullscreenMode="))
-	{
-		return getBool(currentLine);
-	}
-}
-
-int IniLoader::iniGetWindowWidth()
-{
-	openTheFile();
-	if (findPhrase("WindowWidth="))
-	{
-		if (findValue("Auto"))
-		{
-			closeTheFile();
-			return sf::VideoMode::getDesktopMode().width;
-		}
-		else
-		{
-			std::size_t equalSignPosition = currentLine.find("=") + 1;
-			currentLine = currentLine.substr(equalSignPosition, 4);	//These three lines may become a function in order to keep the code cleaner
-			int width = std::stoi(currentLine);
-			closeTheFile();
-			return width;
-		}
-	}
-}
-
-int IniLoader::iniGetWindowHeight()
-{
-	openTheFile();
-	if (findPhrase("WindowHeight="))
-	{
-		if (findValue("Auto"))
-		{
-			closeTheFile();
-			return sf::VideoMode::getDesktopMode().height;
-		}
-		else
-		{
-			std::size_t equalSignPosition = currentLine.find("=") + 1;
-			currentLine = currentLine.substr(equalSignPosition, 4);
-			int height = std::stoi(currentLine);
-			closeTheFile();
-			return height;
-		}
-	}
-}
+//
+//bool IniLoader::iniGetFullscreenMode()
+//{
+//	openTheFile();
+//	if (findPhrase("FullscreenMode="))
+//	{
+//		return getBool(currentLine);
+//	}
+//}
+//
+//int IniLoader::iniGetWindowWidth()
+//{
+//	openTheFile();
+//	if (findPhrase("WindowWidth="))
+//	{
+//		if (findValue("Auto"))
+//		{
+//			closeTheFile();
+//			return sf::VideoMode::getDesktopMode().width;
+//		}
+//		else
+//		{
+//			std::size_t equalSignPosition = currentLine.find("=") + 1;
+//			currentLine = currentLine.substr(equalSignPosition, 4);	//These three lines may become a function in order to keep the code cleaner
+//			int width = std::stoi(currentLine);
+//			closeTheFile();
+//			return width;
+//		}
+//	}
+//}
+//
+//int IniLoader::iniGetWindowHeight()
+//{
+//	openTheFile();
+//	if (findPhrase("WindowHeight="))
+//	{
+//		if (findValue("Auto"))
+//		{
+//			closeTheFile();
+//			return sf::VideoMode::getDesktopMode().height;
+//		}
+//		else
+//		{
+//			std::size_t equalSignPosition = currentLine.find("=") + 1;
+//			currentLine = currentLine.substr(equalSignPosition, 4);
+//			int height = std::stoi(currentLine);
+//			closeTheFile();
+//			return height;
+//		}
+//	}
+//}
 
 
 

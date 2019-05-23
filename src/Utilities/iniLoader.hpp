@@ -10,9 +10,9 @@ namespace Utilities {
 class IniLoader
 {
 public:
-	static int iniGetWindowWidth();
-	static int iniGetWindowHeight();
-	static bool iniGetFullscreenMode(); 
+	//static int iniGetWindowWidth();
+	//static int iniGetWindowHeight();
+	//static bool iniGetFullscreenMode(); 
 protected:
 	static void openTheFile();
 	static void closeTheFile();
