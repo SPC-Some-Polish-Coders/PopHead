@@ -1,5 +1,6 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
+#include <cmath>
 
 using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
@@ -50,13 +51,11 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 	sf::Vector2f sides = posOfBody1 - posOfBody2;
 
 	sf::Vector2f directionOfPush;
-	float sideC = sqrt(sides.x * sides.x + sides.y * sides.y);
-	float div = sides.x / sideC;
-	if (div < 0)
-		div *= -1;
+	float hypotenuse = sqrt(sides.x * sides.x + sides.y * sides.y);
+	float sineResult = std::abs(sides.x / hypotenuse);
 
-	directionOfPush.x = posOfBody1.x > posOfBody2.x ? div : -1 * div;
-	directionOfPush.y = posOfBody1.y > posOfBody2.y ? 1 - div : -1 * (1 - div);
+	directionOfPush.x = posOfBody1.x > posOfBody2.x ? sineResult : -1 * sineResult;
+	directionOfPush.y = posOfBody1.y > posOfBody2.y ? 1 - sineResult : -1 * (1 - sineResult);
 
 	return directionOfPush;
 }
