@@ -12,15 +12,17 @@ class IniLoader
 public:
 	static int iniGetWindowWidth();
 	static int iniGetWindowHeight();
-	//TODO: static bool iniGetFullscreenMode(); dont know how to implement it yet
+	static bool iniGetFullscreenMode(); 
 protected:
 	static void openTheFile();
 	static void closeTheFile();
-	static bool findPhrase(std::string);
-	static bool findValue(std::string);
+	static bool findPhrase(const std::string&);
+	static bool findValue(const std::string&);	
+	static bool getBool(const std::string&);
+protected:
+	static std::string currentLine;
 private:
 	static std::fstream iniSettingsFile;
-	static std::string currentLine;
 };
 
 }}

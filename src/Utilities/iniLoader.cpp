@@ -31,7 +31,7 @@ void IniLoader::closeTheFile()
 	}
 }
 
-bool IniLoader::findPhrase(std::string searchedPhrase)
+bool IniLoader::findPhrase(const std::string& searchedPhrase)
 {
 	while (std::getline(iniSettingsFile, currentLine)) {
 		if (currentLine.find(searchedPhrase) != std::string::npos)
@@ -46,7 +46,7 @@ bool IniLoader::findPhrase(std::string searchedPhrase)
 	}
 }
 
-bool IniLoader::findValue(std::string searchedValue)
+bool IniLoader::findValue(const std::string& searchedValue)
 {
 	if (currentLine.find(searchedValue) != std::string::npos)
 		return true;
@@ -54,7 +54,35 @@ bool IniLoader::findValue(std::string searchedValue)
 		return false;
 }
 
+bool IniLoader::getBool(const std::string& currentLine)
+{
+	if (findValue("1"))
+	{
+		closeTheFile();
+		return true;
+	}
+	else if (findValue("0"))
+	{
+		closeTheFile();
+		return false;
+	}
+	else
+	{
+		closeTheFile();
+		std::cout << "No specified logical value detected for '" + currentLine + "' . Assumed 'true'";
+		//PH_LOG(LogType::Warning, "No specified logical value detected for '" + currentLine + "' . Assumed 'true'");
+		return true;
+	}
+}
 
+bool IniLoader::iniGetFullscreenMode()
+{
+	openTheFile();
+	if (findPhrase("FullscreenMode="))
+	{
+		return getBool(currentLine);
+	}
+}
 
 int IniLoader::iniGetWindowWidth()
 {
@@ -69,7 +97,7 @@ int IniLoader::iniGetWindowWidth()
 		else
 		{
 			std::size_t equalSignPosition = currentLine.find("=") + 1;
-			currentLine = currentLine.substr(equalSignPosition, 4);	//These three lines may become a function in order to keep code cleaner
+			currentLine = currentLine.substr(equalSignPosition, 4);	//These three lines may become a function in order to keep the code cleaner
 			int width = std::stoi(currentLine);
 			closeTheFile();
 			return width;
@@ -97,6 +125,7 @@ int IniLoader::iniGetWindowHeight()
 		}
 	}
 }
+
 
 
 

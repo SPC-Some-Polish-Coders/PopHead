@@ -12,16 +12,27 @@ using PopHead::Utilities::IniLoader;
 Renderer::Renderer()
 	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-        , mWindow { sf::VideoMode(IniLoader::iniGetWindowWidth(),
-				IniLoader::iniGetWindowHeight()),
-                    "PopHead",
-                    sf::Style::Default }
+    //    , mWindow { sf::VideoMode(IniLoader::iniGetWindowWidth(),
+				//IniLoader::iniGetWindowHeight()),
+    //                "PopHead",
+    //                sf::Style::Default }
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
                     { LayerID::airEntities, Layer() },
                     { LayerID::GUI, Layer() }, }
 {
+	if (IniLoader::iniGetFullscreenMode())
+	{
+		mWindow.create(sf::VideoMode(IniLoader::iniGetWindowWidth(),
+			IniLoader::iniGetWindowHeight()), "PopHead", sf::Style::Fullscreen);
+	}
+	else
+	{
+		mWindow.create(sf::VideoMode(IniLoader::iniGetWindowWidth(),
+			IniLoader::iniGetWindowHeight()), "PopHead", sf::Style::Default);
+	}
+
     mCamera.setViewport(mViewports.at(FullScreenViewport));
     mWindow.setVerticalSyncEnabled(false);
 }

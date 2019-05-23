@@ -1,4 +1,5 @@
 #include "logsIniLoader.hpp"
+#include "Logs/logger.hpp"
 
 using PopHead::Logs::LogsIniLoader;
 using PopHead::Logs::LogType;
@@ -9,21 +10,7 @@ bool LogsIniLoader::iniGetShouldLogIntoConsole()
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
 	{
-		if (findValue("1"))
-		{
-			closeTheFile();
-			return true;
-		}
-		else if (findValue("0"))
-		{ 
-			closeTheFile();
-			return false;
-		}
-		else
-		{ 
-			closeTheFile();
-			return true;
-		}
+		return getBool(currentLine);
 	}
 }
 
@@ -32,21 +19,7 @@ bool LogsIniLoader::iniGetShouldLogIntoFile()
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
 	{
-		if (findValue("1"))
-		{
-			closeTheFile();
-			return true;
-		}
-		else if (findValue("0"))
-		{
-			closeTheFile();
-			return false;
-		}
-		else
-		{
-			closeTheFile();
-			return true;
-		}
+		return getBool(currentLine);
 	}
 }
 
