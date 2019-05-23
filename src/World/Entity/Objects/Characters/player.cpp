@@ -82,6 +82,12 @@ void Player::update(sf::Time delta)
             velocity.y += mMovementSpeed * delta.asSeconds();
             updateAnimation("down");
         }
+
+		if (mMotion.isMovingDiagonally()) {
+			velocity.x *= std::sqrt(2) / 2;
+			velocity.y *= std::sqrt(2) / 2;
+		}
+
 		mCollisionBody.move(velocity);
         mAnimation.animate(mSprite, delta);
     }

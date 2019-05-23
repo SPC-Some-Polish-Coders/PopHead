@@ -16,3 +16,8 @@ bool CharacterMotion::isMoving()
 {
     return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
 }
+
+bool CharacterMotion::isMovingDiagonally()
+{
+	return (isMovingLeft || isMovingRight) && (isMovingUp || isMovingDown);
+}
