@@ -1,6 +1,7 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
 #include <cmath>
+#include "Logs/logger.hpp"
 
 using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
@@ -81,13 +82,21 @@ void KinematicCollisionHandler::applyForceForBodiesOfEqualsMasses(const sf::Vect
 
 	if (velocitySumOfFirstBody > velocitySumOfSecondBody)
 		mSecondKinematicBody->setForceVector(forceVector);
-	else// if (velocitySumOfFirstBody < velocitySumOfSecondBody)
+	else if (velocitySumOfFirstBody < velocitySumOfSecondBody)
 		mFirstKinematicBody->setForceVector(forceVector);
-	/*else {
+	else {
 		sf::Vector2f halfForceVector = forceVector;
 		halfForceVector.x /= 2;
 		halfForceVector.y /= 2;
 		mFirstKinematicBody->setForceVector(halfForceVector);
 		mSecondKinematicBody->setForceVector(halfForceVector);
-	}*/
+
+		PH_LOG(LogType::Info, "halfForceVector: " + 
+			std::to_string(halfForceVector.x) + std::to_string(halfForceVector.y));
+	}
+
+	PH_LOG(LogType::Info, "velocity of 1st body: " +
+		std::to_string(mFirstKinematicBody->getVelocity().x) + std::to_string(mFirstKinematicBody->getVelocity().y));
+	PH_LOG(LogType::Info, "velocity of 2nd body: " +
+		std::to_string(mSecondKinematicBody->getVelocity().x) + std::to_string(mSecondKinematicBody->getVelocity().y));
 }

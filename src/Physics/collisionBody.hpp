@@ -29,7 +29,7 @@ public:
 	auto getVelocity() -> sf::Vector2f { return mVelocity; }
 	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
 	auto getBodyType() const -> const BodyType & { return mBodyType; }
-	bool getStunStatus() { return (forceVector.x != 0 || forceVector.y != 0); }
+	bool getStunStatus() { return (mForceVector.x != 0 || mForceVector.y != 0); }
 
 private:
 	void updateOwnerPosition();
@@ -40,7 +40,7 @@ private:
 	sf::FloatRect mRect;
 	sf::Vector2f mPreviousPosition;
 	sf::Vector2f mVelocity;
-	sf::Vector2f forceVector;
+	sf::Vector2f mForceVector;
 	float mMass;
 	const BodyType mBodyType;
 	CollisionDebugRect mCollisionDebugRect;
@@ -49,6 +49,8 @@ private:
 
 	friend PhysicsEngine;
 	friend StaticCollisionHandler;
+
+	friend KinematicCollisionHandler; //temporary
 };
 
 

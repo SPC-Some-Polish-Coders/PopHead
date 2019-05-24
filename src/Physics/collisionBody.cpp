@@ -72,17 +72,17 @@ sf::FloatRect CollisionBody::getPreviousRect()
 
 void CollisionBody::setForceVector(sf::Vector2f forceVector)
 {
-    this->forceVector = forceVector;
+    this->mForceVector = forceVector;
 }
 
 void CollisionBody::updatePush(sf::Time delta)
 {
-    move(forceVector * delta.asSeconds());
+    move(mForceVector * delta.asSeconds());
 
-    forceVector -= forceVector * delta.asSeconds() * 1.5f;
+    mForceVector -= mForceVector * delta.asSeconds() * 1.5f;
 
-	if(forceVector.x < 2 && forceVector.x > -2)
-        forceVector.x = 0;
-    if(forceVector.y < 2 && forceVector.y > -2)
-        forceVector.y = 0;
+	if(mForceVector.x < 40 && mForceVector.x > -40)
+        mForceVector.x = 0;
+    if(mForceVector.y < 40 && mForceVector.y > -40)
+        mForceVector.y = 0;
 }
