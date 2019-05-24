@@ -65,7 +65,7 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
 		if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
-			mStaticCollisionHandler.handleStaticCollision(kinematicBody, staticBody);
+			mStaticCollisionHandler(kinematicBody, staticBody);
 	}
 }
 
@@ -78,7 +78,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 
 		if (isThereCollision(kinematicBody->mRect, kinematicBody2->mRect)) {
 			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->mOwner->getName() + " and " + kinematicBody2->mOwner->getName());
-            mKinematicCollisionHandler.handleKinematicCollision(kinematicBody, kinematicBody2);
+            mKinematicCollisionHandler(kinematicBody, kinematicBody2);
 		}
     }
 }

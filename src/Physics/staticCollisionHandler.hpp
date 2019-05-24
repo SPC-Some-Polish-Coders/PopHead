@@ -10,7 +10,7 @@ class CollisionBody;
 class StaticCollisionHandler
 {
 public:
-	void handleStaticCollision(CollisionBody* kinematicBody, CollisionBody* staticBody);
+	void operator()(CollisionBody* kinematicBody, CollisionBody* staticBody);
 
 private:
 	void makeKinematicBodyStickToStaticBody();

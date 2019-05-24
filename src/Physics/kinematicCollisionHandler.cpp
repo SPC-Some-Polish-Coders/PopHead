@@ -7,17 +7,14 @@ using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
 
 
-void KinematicCollisionHandler::handleKinematicCollision(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
+void KinematicCollisionHandler::operator()(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
 {
 	init(firstKinematicBody, secondKinematicBody);
     
 	float force = getForce();
-	if (force == 0)
-		return;
 	sf::Vector2f directionOfPush = getDirectionOfPush();
-	sf::Vector2f forceVector(force * directionOfPush.x, force * directionOfPush.y);
-
-	applyForce(forceVector);
+	mForceVector = sf::Vector2f(force * directionOfPush.x, force * directionOfPush.y);
+	applyForces();
 }
 
 void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
@@ -65,37 +62,35 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 	return directionOfPush;
 }
 
-void KinematicCollisionHandler::applyForce(const sf::Vector2f& forceVector) const
+void KinematicCollisionHandler::applyForces() const
 {
 	if (mMass1 > mMass2)
-		mSecondKinematicBody->setForceVector(forceVector);
+		mSecondKinematicBody->setForceVector(mForceVector);
 	else if (mMass1 < mMass2)
-		mFirstKinematicBody->setForceVector(forceVector);
+		mFirstKinematicBody->setForceVector(mForceVector);
 	else
-		applyForceForBodiesOfEqualsMasses(forceVector);
+		applyForcesForBodiesOfEqualsMasses();
 }
 
-void KinematicCollisionHandler::applyForceForBodiesOfEqualsMasses(const sf::Vector2f& forceVector) const
+void KinematicCollisionHandler::applyForcesForBodiesOfEqualsMasses() const
 {
 	float velocitySumOfFirstBody = std::abs(mFirstKinematicBody->getVelocity().x) + std::abs(mFirstKinematicBody->getVelocity().y);
 	float velocitySumOfSecondBody = std::abs(mSecondKinematicBody->getVelocity().x) + std::abs(mSecondKinematicBody->getVelocity().y);
 
 	if (velocitySumOfFirstBody > velocitySumOfSecondBody)
-		mSecondKinematicBody->setForceVector(forceVector);
+		mSecondKinematicBody->setForceVector(mForceVector);
 	else if (velocitySumOfFirstBody < velocitySumOfSecondBody)
-		mFirstKinematicBody->setForceVector(forceVector);
+		mFirstKinematicBody->setForceVector(mForceVector);
 	else
-		applyForceForBodiesOfEqualsVelocitiesAndMasses(forceVector);
+		applyForcesForBodiesOfEqualsVelocitiesAndMasses();
 }
 
-void KinematicCollisionHandler::applyForceForBodiesOfEqualsVelocitiesAndMasses(const sf::Vector2f& forceVector) const
+void KinematicCollisionHandler::applyForcesForBodiesOfEqualsVelocitiesAndMasses() const
 {
-	sf::Vector2f halfForceVector = forceVector;
+	sf::Vector2f halfForceVector = mForceVector;
 	halfForceVector.x /= 2;
 	halfForceVector.y /= 2;
 
 	mFirstKinematicBody->setForceVector(halfForceVector);
-
-	halfForceVector = -halfForceVector;
-	mSecondKinematicBody->setForceVector(halfForceVector);
+	mSecondKinematicBody->setForceVector(-halfForceVector);
 }

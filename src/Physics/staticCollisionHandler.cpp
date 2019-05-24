@@ -7,7 +7,7 @@
 using PopHead::Physics::StaticCollisionHandler;
 using PopHead::Physics::CollisionBody;
 
-void StaticCollisionHandler::handleStaticCollision(CollisionBody* kinematicBody, CollisionBody* staticBody)
+void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
 	mKinematicBody = kinematicBody;
 	mStaticBody = staticBody;
