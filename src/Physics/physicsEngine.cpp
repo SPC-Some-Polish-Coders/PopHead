@@ -57,6 +57,7 @@ void PhysicsEngine::update(sf::Time delta)
 
 		kinematicBody->setPreviousPositionToCurrentPosition();
 		kinematicBody->updateOwnerPosition();
+		kinematicBody->mVelocity = sf::Vector2f();
     }
 }
 

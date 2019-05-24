@@ -103,7 +103,7 @@ void GameState::makeZombie()
 void GameState::makeBox()
 {
 	auto box = std::make_unique<World::Entity::Character>(
-		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), 37);
+		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), 50);
 	box->setPosition(sf::Vector2f(1800, 4900));
 	box->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/box.png"));
 	mRoot.addChild(std::move(box));

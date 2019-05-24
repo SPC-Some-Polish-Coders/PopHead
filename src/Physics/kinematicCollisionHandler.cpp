@@ -32,15 +32,15 @@ float KinematicCollisionHandler::getForce() const
 {
 	float force;
 	constexpr float forceMultiplier = 12.5f;
+	constexpr float theSmallestPossibleForce = 13 * forceMultiplier;
 
 	if (mMass1 > mMass2) {
 		force = (mMass1 - mMass2) * forceMultiplier;
 	}
-	else {
+	else{
 		force = (mMass2 - mMass1) * forceMultiplier;
 	}
 
-	constexpr float theSmallestPossibleForce = 13 * forceMultiplier;
 	if (force < theSmallestPossibleForce)
 		force = theSmallestPossibleForce;
 
@@ -68,6 +68,26 @@ void KinematicCollisionHandler::applyForce(const sf::Vector2f& forceVector) cons
 {
 	if (mMass1 > mMass2)
 		mSecondKinematicBody->setForceVector(forceVector);
-	else
+	else if (mMass1 < mMass2)
 		mFirstKinematicBody->setForceVector(forceVector);
+	else
+		applyForceForBodiesOfEqualsMasses(forceVector);
+}
+
+void KinematicCollisionHandler::applyForceForBodiesOfEqualsMasses(const sf::Vector2f& forceVector) const
+{
+	float velocitySumOfFirstBody = std::abs(mFirstKinematicBody->getVelocity().x) + std::abs(mFirstKinematicBody->getVelocity().y);
+	float velocitySumOfSecondBody = std::abs(mSecondKinematicBody->getVelocity().x) + std::abs(mSecondKinematicBody->getVelocity().y);
+
+	if (velocitySumOfFirstBody > velocitySumOfSecondBody)
+		mSecondKinematicBody->setForceVector(forceVector);
+	else// if (velocitySumOfFirstBody < velocitySumOfSecondBody)
+		mFirstKinematicBody->setForceVector(forceVector);
+	/*else {
+		sf::Vector2f halfForceVector = forceVector;
+		halfForceVector.x /= 2;
+		halfForceVector.y /= 2;
+		mFirstKinematicBody->setForceVector(halfForceVector);
+		mSecondKinematicBody->setForceVector(halfForceVector);
+	}*/
 }
