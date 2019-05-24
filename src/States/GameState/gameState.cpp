@@ -76,8 +76,9 @@ void GameState::makeNpc()
 
 void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 {
+	constexpr float mass = 50;
 	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
-		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), 25));
+		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
 	npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
 	npcq->setPosition(sf::Vector2f(1850, 5240));
 

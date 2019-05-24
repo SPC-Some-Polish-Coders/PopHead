@@ -52,8 +52,11 @@ std::string Logger::nameTheFile()
 void Logger::openFile()
 {
 	mLogFile.open("logs/log_" + nameTheFile() + ".txt", std::ofstream::out | std::ofstream::app);
-	if (!mLogFile.is_open())
-		PH_EXCEPTION("Log file could not be created. Make sure that 'logs' folder exists in your game directory");
+	if (!mLogFile.is_open()) {
+		// WARNING: Don't use PH_EXCEPTION or PH_LOG here if this method is called in Logger constructor becouse it can result in recursion
+		std::cout << "[Logger::openFile] Log file could not be created. Make sure that 'logs' folder exists in your game directory" << std::endl;
+		throw std::runtime_error("Log file could not be created. Make sure that 'logs' folder exists in your game directory");
+	}
 }
 
 void Logger::writeLog(const LogData& log)

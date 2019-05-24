@@ -11,6 +11,9 @@ struct CharacterMotion
     CharacterMotion();
     void clear();
     bool isMoving();
+	
+	bool isMovingDiagonally();
+	void handleDiagonalMovement();
 
     bool isMovingLeft;
     bool isMovingRight;
