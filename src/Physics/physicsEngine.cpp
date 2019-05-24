@@ -54,10 +54,7 @@ void PhysicsEngine::update(sf::Time delta)
 		handleKinematicCollisionsFor(kinematicBody);
 		kinematicBody->updatePush(delta);
 		handleStaticCollisionsFor(kinematicBody);
-
-		kinematicBody->setPreviousPositionToCurrentPosition();
-		kinematicBody->updateOwnerPosition();
-		kinematicBody->mVelocity = sf::Vector2f();
+		kinematicBody->actionsAtTheEndOfPhysicsLoopIteration();
     }
 }
 

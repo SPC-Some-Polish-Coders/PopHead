@@ -54,6 +54,13 @@ void CollisionBody::setPosition(sf::Vector2f position)
 	mCollisionDebugRect.setPosition(position);
 }
 
+void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
+{
+	setPreviousPositionToCurrentPosition();
+	updateOwnerPosition();
+	mVelocity = sf::Vector2f();
+}
+
 void CollisionBody::updateOwnerPosition()
 {
 	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);

@@ -24,6 +24,8 @@ public:
 	void move(sf::Vector2f velocity);
 	void setPosition(sf::Vector2f position);
 
+	void actionsAtTheEndOfPhysicsLoopIteration();
+
 	float getMass() { return mMass; }
 	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
 	auto getVelocity() -> sf::Vector2f { return mVelocity; }
@@ -49,8 +51,6 @@ private:
 
 	friend PhysicsEngine;
 	friend StaticCollisionHandler;
-
-	friend KinematicCollisionHandler; //temporary
 };
 
 
