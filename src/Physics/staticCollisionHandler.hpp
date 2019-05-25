@@ -1,6 +1,8 @@
 #ifndef POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
 #define POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
 
+#include <SFML/Graphics.hpp>
+
 namespace PopHead {
 namespace Physics {
 
@@ -13,6 +15,7 @@ public:
 	void operator()(CollisionBody* kinematicBody, CollisionBody* staticBody);
 
 private:
+	void init(CollisionBody* kinematicBody, CollisionBody* staticBody);
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX();
 	bool isKinematicBodyOnTheLeftOfTheStaticBody();
@@ -25,6 +28,11 @@ private:
 private:
 	CollisionBody* mKinematicBody;
 	CollisionBody* mStaticBody;
+	
+	sf::FloatRect mKinematicBodyRect;
+	sf::FloatRect mStaticBodyRect;
+	sf::FloatRect mKinematicBodyPreviousRect;
+	sf::FloatRect mStaticBodyPreviousRect;
 };
 
 

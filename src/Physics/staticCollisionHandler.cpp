@@ -1,6 +1,5 @@
 #include "staticCollisionHandler.hpp"
 
-#include <SFML/Graphics.hpp>
 #include "collisionBody.hpp"
 #include "Utilities/math.hpp"
 
@@ -9,10 +8,19 @@ using PopHead::Physics::CollisionBody;
 
 void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
+	init(kinematicBody, staticBody);
+	makeKinematicBodyStickToStaticBody();
+}
+
+void StaticCollisionHandler::init(CollisionBody* kinematicBody, CollisionBody* staticBody)
+{
 	mKinematicBody = kinematicBody;
 	mStaticBody = staticBody;
 
-	makeKinematicBodyStickToStaticBody();
+	mKinematicBodyRect = mKinematicBody->getRect();
+	mStaticBodyRect = mStaticBody->getRect();
+	mKinematicBodyPreviousRect = mKinematicBody->getPreviousRect();
+	mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
 }
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
@@ -33,39 +41,39 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 
 bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX()
 {
-	return (mKinematicBody->getPreviousRect().top + mKinematicBody->getPreviousRect().height > mStaticBody->getRect().top &&
-		    mKinematicBody->getPreviousRect().top < mStaticBody->getRect().top + mStaticBody->getRect().height);
+	return (mKinematicBodyPreviousRect.top + mKinematicBodyPreviousRect.height > mStaticBodyRect.top &&
+		    mKinematicBodyPreviousRect.top < mStaticBodyRect.top + mStaticBodyRect.height);
 }
 
 bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody()
 {
-	return mKinematicBody->getPreviousRect().left < mStaticBody->getRect().left;
+	return mKinematicBodyPreviousRect.left < mStaticBodyRect.left;
 }
 
 void StaticCollisionHandler::stickToLeft()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mStaticBody->getRect().left - mKinematicBody->getRect().width, mKinematicBody->getRect().top));
+	mKinematicBody->setPosition(sf::Vector2f(mStaticBodyRect.left - mKinematicBodyRect.width, mKinematicBodyRect.top));
 }
 
 void StaticCollisionHandler::stickToRight()
 {
 	using namespace PopHead::Utilities::Math;
-	mKinematicBody->setPosition(sf::Vector2f(getRightBound(mStaticBody->getRect()), mKinematicBody->getRect().top));
+	mKinematicBody->setPosition(sf::Vector2f(getRightBound(mStaticBodyRect), mKinematicBodyRect.top));
 }
 
 bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody()
 {
-	return mKinematicBody->getPreviousRect().top < mStaticBody->getRect().top;
+	return mKinematicBodyPreviousRect.top < mStaticBodyRect.top;
 }
 
 void StaticCollisionHandler::stickToTop()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->getRect().left, mStaticBody->getRect().top - mKinematicBody->getRect().height));
+	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, mStaticBodyRect.top - mKinematicBodyRect.height));
 }
 
 void StaticCollisionHandler::stickToBottom()
 {
 	using namespace PopHead::Utilities::Math;
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->getRect().left, getBottomBound(mStaticBody->getRect())));
+	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, getBottomBound(mStaticBodyRect)));
 }
 
