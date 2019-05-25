@@ -10,25 +10,25 @@ using PopHead::Physics::CollisionBody;
 void PhysicsEngine::addStaticBody(CollisionBody* staticBody)
 {
     mStaticBodies.emplace_back(std::move(staticBody));
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->mOwner->getName() + " was added to physics engine.");
+	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was added to physics engine.");
 }
 
 void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBody)
 {
     mKinematicBodies.emplace_back(std::move(kinematicBody));
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->mOwner->getName() + " was added to physics engine.");
+	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was added to physics engine.");
 }
 
 void PhysicsEngine::removeStaticBody(CollisionBody* staticBody)
 {
 	removeBody(mStaticBodies, staticBody);
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->mOwner->getName() + " was deleted from physics engine.");
+	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
 void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBody)
 {
 	removeBody(mKinematicBodies, kinematicBody);
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->mOwner->getName() + " was deleted from physics engine.");
+	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
 void PhysicsEngine::removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body)
@@ -61,7 +61,7 @@ void PhysicsEngine::update(sf::Time delta)
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
 	for (const auto& staticBody : mStaticBodies) {
-		if (isThereCollision(kinematicBody->mRect, staticBody->mRect))
+		if (isThereCollision(kinematicBody->getRect(), staticBody->getRect()))
 			mStaticCollisionHandler(kinematicBody, staticBody);
 	}
 }
@@ -73,8 +73,8 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 		if (kinematicBody == kinematicBody2)
 			continue;
 
-		if (isThereCollision(kinematicBody->mRect, kinematicBody2->mRect)) {
-			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->mOwner->getName() + " and " + kinematicBody2->mOwner->getName());
+		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect())) {
+			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->getNameOfOwner() + " and " + kinematicBody2->getNameOfOwner());
             mKinematicCollisionHandler(kinematicBody, kinematicBody2);
 		}
     }
