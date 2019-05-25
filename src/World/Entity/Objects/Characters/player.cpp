@@ -84,8 +84,8 @@ void Player::update(sf::Time delta)
         }
 
 		if (mMotion.isMovingDiagonally()) {
-			velocity.x *= std::sqrt(2) / 2;
-			velocity.y *= std::sqrt(2) / 2;
+			velocity.x *= std::sqrt(2.f) / 2.f;
+			velocity.y *= std::sqrt(2.f) / 2.f;
 		}
 
 		mCollisionBody.move(velocity);
