@@ -73,10 +73,8 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 		if (kinematicBody == kinematicBody2)
 			continue;
 
-		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect())) {
-			PH_LOG(LogType::Info, "There is kinematic collision between " + kinematicBody->getNameOfOwner() + " and " + kinematicBody2->getNameOfOwner());
+		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect()))
             mKinematicCollisionHandler(kinematicBody, kinematicBody2);
-		}
     }
 }
 
@@ -91,3 +89,5 @@ bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 	A.top < getBottomBound(B) &&
 	getBottomBound(A) > B.top);
 }
+
+

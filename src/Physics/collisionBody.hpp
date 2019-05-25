@@ -23,7 +23,6 @@ public:
 	void setPosition(sf::Vector2f position);
 	bool isBeingPushed() { return (mForceVector.x != 0 || mForceVector.y != 0); }
 
-
 	//the methods below should be called only from physics module
 	void updatePush(sf::Time delta);
 	void setForceVector(sf::Vector2f forceVector) { mForceVector = forceVector; }

@@ -22,6 +22,7 @@ private:
 	void applyForceVector() const;
 	void applyForceVectorForBodiesOfEqualsMasses() const;
 	void applyForceVectorForBodiesOfEqualsVelocitiesAndMasses() const;
+	void collisionLog() const;
 
 private:
 	CollisionBody* mFirstKinematicBody;

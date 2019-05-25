@@ -1,7 +1,7 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
-#include <cmath>
 #include "Logs/logger.hpp"
+#include <cmath>
 
 using PopHead::Physics::KinematicCollisionHandler;
 using PopHead::Physics::CollisionBody;
@@ -10,6 +10,7 @@ using PopHead::Physics::CollisionBody;
 void KinematicCollisionHandler::operator()(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
 {
 	init(firstKinematicBody, secondKinematicBody);
+	collisionLog();
 	calculateForceVector();
 	applyForceVector();
 }
@@ -21,6 +22,12 @@ void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, Collisio
 
 	mMass1 = mFirstKinematicBody->getMass();
 	mMass2 = mSecondKinematicBody->getMass();
+}
+
+void KinematicCollisionHandler::collisionLog() const
+{
+	PH_LOG(LogType::Info, "There is kinematic collision between " +
+		mFirstKinematicBody->getNameOfOwner() + " and " + mSecondKinematicBody->getNameOfOwner() + ".");
 }
 
 void KinematicCollisionHandler::calculateForceVector()
