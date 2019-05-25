@@ -61,30 +61,26 @@ void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 	mVelocity = sf::Vector2f();
 }
 
-void CollisionBody::updateOwnerPosition()
-{
-	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
-}
-
 void CollisionBody::setPreviousPositionToCurrentPosition()
 {
 	mPreviousPosition.x = mRect.left;
 	mPreviousPosition.y = mRect.top;
 }
 
-void CollisionBody::setForceVector(sf::Vector2f forceVector)
+void CollisionBody::updateOwnerPosition()
 {
-    this->mForceVector = forceVector;
+	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
 void CollisionBody::updatePush(sf::Time delta)
 {
-    move(mForceVector * delta.asSeconds());
+	if (mForceVector == sf::Vector2f())
+		return;
 
+    move(mForceVector * delta.asSeconds());
     mForceVector -= mForceVector * delta.asSeconds() * 1.5f;
 
-	if(mForceVector.x < 40 && mForceVector.x > -40)
-        mForceVector.x = 0;
-    if(mForceVector.y < 40 && mForceVector.y > -40)
-        mForceVector.y = 0;
+	if (mForceVector.x < 40 && mForceVector.x > -40 && mForceVector.y < 40 && mForceVector.y > -40) {
+		mForceVector = sf::Vector2f(0, 0);
+	}
 }

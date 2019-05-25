@@ -18,26 +18,30 @@ public:
 	CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
 	~CollisionBody();
 
-	//these methods should be called from owner
+	//the methods below should be called from owner
 	void move(sf::Vector2f velocity);
 	void setPosition(sf::Vector2f position);
 	bool isBeingPushed() { return (mForceVector.x != 0 || mForceVector.y != 0); }
 
-	//these methods should be called only from physics module
-	void updatePush(sf::Time delta);
-	void actionsAtTheEndOfPhysicsLoopIteration();
-	void setForceVector(sf::Vector2f forceVector);
-	void updateOwnerPosition();
-	void setPreviousPositionToCurrentPosition();
 
+	//the methods below should be called only from physics module
+	void updatePush(sf::Time delta);
+	void setForceVector(sf::Vector2f forceVector) { mForceVector = forceVector; }
+	
+	void actionsAtTheEndOfPhysicsLoopIteration();
+private:
+	void setPreviousPositionToCurrentPosition();
+	void updateOwnerPosition();
+
+public:
 	auto getBodyType() const -> const BodyType { return mBodyType; }
-	float getMass() { return mMass; }
+	auto getNameOfOwner() -> const std::string& { return mOwner->getName(); }
 	auto getVelocity() -> sf::Vector2f { return mVelocity; }
 	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
+	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
 	auto getRect() -> const sf::FloatRect& { return mRect; }
 	auto getPreviousRect() -> sf::FloatRect { return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height); }
-	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
-	auto getNameOfOwner() -> const std::string& { return mOwner->getName(); }
+	float getMass() { return mMass; }
 
 private:
 	sf::FloatRect mRect;
