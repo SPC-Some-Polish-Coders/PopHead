@@ -2,6 +2,7 @@
 
 #include "collisionBody.hpp"
 #include "Utilities/math.hpp"
+#include "Logs/logger.hpp"
 
 using PopHead::Physics::StaticCollisionHandler;
 using PopHead::Physics::CollisionBody;
@@ -9,6 +10,7 @@ using PopHead::Physics::CollisionBody;
 void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
 	init(kinematicBody, staticBody);
+	collisionLog();
 	makeKinematicBodyStickToStaticBody();
 }
 
@@ -21,6 +23,12 @@ void StaticCollisionHandler::init(CollisionBody* kinematicBody, CollisionBody* s
 	mStaticBodyRect = mStaticBody->getRect();
 	mKinematicBodyPreviousRect = mKinematicBody->getPreviousRect();
 	mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
+}
+
+void StaticCollisionHandler::collisionLog() const
+{
+	PH_LOG(LogType::Info, "There is static collision between " +
+		mKinematicBody->getNameOfOwner() + " and " + mStaticBody->getNameOfOwner() + ".");
 }
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
