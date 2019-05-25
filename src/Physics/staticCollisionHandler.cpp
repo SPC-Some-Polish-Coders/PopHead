@@ -33,39 +33,39 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 
 bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX()
 {
-	return (mKinematicBody->getPreviousRect().top + mKinematicBody->getPreviousRect().height > mStaticBody->mRect.top &&
-		    mKinematicBody->getPreviousRect().top < mStaticBody->mRect.top + mStaticBody->mRect.height);
+	return (mKinematicBody->getPreviousRect().top + mKinematicBody->getPreviousRect().height > mStaticBody->getRect().top &&
+		    mKinematicBody->getPreviousRect().top < mStaticBody->getRect().top + mStaticBody->getRect().height);
 }
 
 bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody()
 {
-	return mKinematicBody->getPreviousRect().left < mStaticBody->mRect.left;
+	return mKinematicBody->getPreviousRect().left < mStaticBody->getRect().left;
 }
 
 void StaticCollisionHandler::stickToLeft()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mStaticBody->mRect.left - mKinematicBody->mRect.width, mKinematicBody->mRect.top));
+	mKinematicBody->setPosition(sf::Vector2f(mStaticBody->getRect().left - mKinematicBody->getRect().width, mKinematicBody->getRect().top));
 }
 
 void StaticCollisionHandler::stickToRight()
 {
 	using namespace PopHead::Utilities::Math;
-	mKinematicBody->setPosition(sf::Vector2f(getRightBound(mStaticBody->mRect), mKinematicBody->mRect.top));
+	mKinematicBody->setPosition(sf::Vector2f(getRightBound(mStaticBody->getRect()), mKinematicBody->getRect().top));
 }
 
 bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody()
 {
-	return mKinematicBody->getPreviousRect().top < mStaticBody->mRect.top;
+	return mKinematicBody->getPreviousRect().top < mStaticBody->getRect().top;
 }
 
 void StaticCollisionHandler::stickToTop()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->mRect.left, mStaticBody->mRect.top - mKinematicBody->mRect.height));
+	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->getRect().left, mStaticBody->getRect().top - mKinematicBody->getRect().height));
 }
 
 void StaticCollisionHandler::stickToBottom()
 {
 	using namespace PopHead::Utilities::Math;
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->mRect.left, getBottomBound(mStaticBody->mRect)));
+	mKinematicBody->setPosition(sf::Vector2f(mKinematicBody->getRect().left, getBottomBound(mStaticBody->getRect())));
 }
 

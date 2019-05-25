@@ -72,11 +72,6 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 	mPreviousPosition.y = mRect.top;
 }
 
-sf::FloatRect CollisionBody::getPreviousRect()
-{
-	return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height);
-}
-
 void CollisionBody::setForceVector(sf::Vector2f forceVector)
 {
     this->mForceVector = forceVector;
