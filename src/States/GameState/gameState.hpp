@@ -23,6 +23,7 @@ private:
     void makePlayer();
 	void makeZombie();
 	void makeBox();
+	void makeBall();
 	void makeStaticObjectToCamera();
     void setCamera();
 
