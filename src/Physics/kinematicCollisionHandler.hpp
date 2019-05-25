@@ -16,11 +16,12 @@ public:
 
 private:
 	void init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody);
+	void calculateForceVector();
 	float getForce() const;
 	sf::Vector2f getDirectionOfPush() const;
-	void applyForces() const;
-	void applyForcesForBodiesOfEqualsMasses() const;
-	void applyForcesForBodiesOfEqualsVelocitiesAndMasses() const;
+	void applyForceVector() const;
+	void applyForceVectorForBodiesOfEqualsMasses() const;
+	void applyForceVectorForBodiesOfEqualsVelocitiesAndMasses() const;
 
 private:
 	CollisionBody* mFirstKinematicBody;
