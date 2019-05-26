@@ -15,9 +15,9 @@ void IniLoader::openTheFile()
 	iniSettingsFile.open("logs/settings.ini", std::ios::in);
 	if (!iniSettingsFile.is_open())
 	{
+		// WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method becouse it can result in recursion
+		std::cout<<"[IniLoader::openTheFile] 'settings.ini' file could not be opened!"<<std::endl;
 		throw std::runtime_error("'settings.ini' file could not be opened!");
-		//PH_EXCEPTION("'settings.ini' file could not be opened!");
-		//TODO: MAKE 'PH_EXCEPTION' WORK IN THIS PART OF PROGRAM
 	}
 }
 
@@ -26,8 +26,9 @@ void IniLoader::closeTheFile()
 	iniSettingsFile.close();
 	if (iniSettingsFile.is_open())
 	{
+		// WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method becouse it can result in recursion
+		std::cout << "[IniLoader::closeTheFile] 'settings.ini' file could not be closed!" << std::endl;
 		throw std::runtime_error("'settings.ini' file could not be closed!");
-		//PH_EXCEPTION("'settings.ini' file could not be closed!");
 	}
 }
 
@@ -38,8 +39,9 @@ bool IniLoader::findPhrase(const std::string& searchedPhrase)
 			return true;
 		if (iniSettingsFile.eof())
 		{
+			// WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method becouse it can result in recursion
+			std::cout << "[IniLoader::findPhrase] ' " + searchedPhrase + "' in settings.ini file could not be found!" << std::endl;
 			throw std::runtime_error("' " + searchedPhrase + "' in settings.ini file could not be found!");
-			//PH_EXCEPTION("' " + searchedPhrase + "' in settings.ini file could not be found!");
 			closeTheFile();
 			return false;
 		}
@@ -69,8 +71,8 @@ bool IniLoader::getBool(const std::string& currentLine)
 	else
 	{
 		closeTheFile();
-		std::cout << "No specified logical value detected for '" + currentLine + "' . Assumed 'true'";
-		//PH_LOG(LogType::Warning, "No specified logical value detected for '" + currentLine + "' . Assumed 'true'");
+		// WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method becouse it can result in recursion
+		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'.Assumed 'true'" << std::endl;
 		return true;
 	}
 }
