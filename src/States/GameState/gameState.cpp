@@ -26,6 +26,7 @@ void GameState::loadResources()
 	mGameData->getTextures().load("resources/textures/characters/zombie.png");
 	mGameData->getTextures().load("resources/textures/map/city.png");
 	mGameData->getTextures().load("resources/textures/others/box.png");
+	mGameData->getTextures().load("resources/textures/others/ball.png");
 }
 
 void GameState::makeSceneTree()
@@ -38,6 +39,7 @@ void GameState::makeSceneTree()
     makePlayer();
 	makeZombie();
 	makeBox();
+	makeBall();
 	makeStaticObjectToCamera();
     setCamera();
 }
@@ -76,8 +78,9 @@ void GameState::makeNpc()
 
 void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 {
+	constexpr float mass = 50.f;
 	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
-		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), 25));
+		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
 	npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
 	npcq->setPosition(sf::Vector2f(1850, 5240));
 
@@ -100,12 +103,24 @@ void GameState::makeZombie()
 }
 
 void GameState::makeBox()
-{
+{	
+	constexpr float mass = 49.5f;
 	auto box = std::make_unique<World::Entity::Character>(
-		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), 37);
+		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
 	box->setPosition(sf::Vector2f(1800, 4900));
 	box->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/box.png"));
 	mRoot.addChild(std::move(box));
+}
+
+void GameState::makeBall()
+{
+	constexpr float mass = 15.f;
+	auto ball = std::make_unique<World::Entity::Character>(
+		mGameData, "ball", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
+	ball->setPosition(sf::Vector2f(1600, 5150));
+	ball->setScale(sf::Vector2f(0.4f, 0.4f));
+	ball->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/ball.png"));
+	mRoot.addChild(std::move(ball));
 }
 
 void GameState::makeStaticObjectToCamera()

@@ -64,7 +64,7 @@ void Player::update(sf::Time delta)
 {
     sf::Vector2f velocity;
 
-    if(mMotion.isMoving() && !mCollisionBody.getStunStatus())
+    if(mMotion.isMoving() && !mCollisionBody.isBeingPushed())
     {
         if(mMotion.isMovingLeft){
             velocity.x -= mMovementSpeed * delta.asSeconds();
@@ -82,6 +82,12 @@ void Player::update(sf::Time delta)
             velocity.y += mMovementSpeed * delta.asSeconds();
             updateAnimation("down");
         }
+
+		if (mMotion.isMovingDiagonally()) {
+			velocity.x *= std::sqrt(2.f) / 2.f;
+			velocity.y *= std::sqrt(2.f) / 2.f;
+		}
+
 		mCollisionBody.move(velocity);
         mAnimation.animate(mSprite, delta);
     }
