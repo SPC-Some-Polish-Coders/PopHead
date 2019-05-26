@@ -1,4 +1,4 @@
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 
 using PopHead::Resources::ResourceHolder;
 

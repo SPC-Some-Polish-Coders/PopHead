@@ -2,7 +2,7 @@
 
 #include "collisionBody.hpp"
 #include "Utilities/math.hpp"
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 
 using PopHead::Physics::StaticCollisionHandler;
 using PopHead::Physics::CollisionBody;

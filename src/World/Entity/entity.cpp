@@ -1,6 +1,6 @@
 #include "entity.hpp"
 
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 
 using PopHead::World::Entity::Entity;
 

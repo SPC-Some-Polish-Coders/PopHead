@@ -1,6 +1,6 @@
 #include "kinematicCollisionHandler.hpp"
 #include "collisionBody.hpp"
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 #include <cmath>
 
 using PopHead::Physics::KinematicCollisionHandler;

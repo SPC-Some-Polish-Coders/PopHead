@@ -1,7 +1,7 @@
 #ifndef POPHEAD_UTILITIES_MATH_H_
 #define POPHEAD_UTILITIES_MATH_H_
 
-#include "Logs/assert.hpp"
+#include "Utilities/debug.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace PopHead {
