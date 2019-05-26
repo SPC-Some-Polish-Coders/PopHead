@@ -3,23 +3,14 @@
 using PopHead::Renderer::WindowInitializer;
 using PopHead::Utilities::IniLoader;
 
-sf::RenderWindow WindowInitializer::getInitialWindow()
+sf::VideoMode WindowInitializer::iniGetWindowSize()
 {
-	if (iniGetFullscreenMode())
-	{
-		return sf::RenderWindow(sf::VideoMode(iniGetWindowWidth(), iniGetWindowHeight()), "PopHead", sf::Style::Fullscreen);
-	}
-	else 
-		return sf::RenderWindow(sf::VideoMode(iniGetWindowWidth(), iniGetWindowHeight()), "PopHead", sf::Style::Default); //TODO: MAKE IT WORK
+	return sf::VideoMode(iniGetWindowWidth(), iniGetWindowHeight());
 }
 
-bool WindowInitializer::iniGetFullscreenMode()
+sf::Uint32 WindowInitializer::iniGetStyle()
 {
-	openTheFile();
-	if (findPhrase("FullscreenMode="))
-	{
-		return getBool(currentLine);
-	}
+	return iniGetFullscreenMode() ? sf::Style::Fullscreen : sf::Style::Default;
 }
 
 int WindowInitializer::iniGetWindowWidth()
@@ -61,5 +52,14 @@ int WindowInitializer::iniGetWindowHeight()
 			closeTheFile();
 			return height;
 		}
+	}
+}
+
+bool WindowInitializer::iniGetFullscreenMode()
+{
+	openTheFile();
+	if (findPhrase("FullscreenMode="))
+	{
+		return getBool(currentLine);
 	}
 }

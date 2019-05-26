@@ -10,7 +10,8 @@ namespace Renderer{
 class WindowInitializer : private  Utilities::IniLoader
 {
 public:
-	static sf::RenderWindow getInitialWindow();
+	static sf::VideoMode iniGetWindowSize();
+	static sf::Uint32 iniGetStyle();
 private:
 	static int iniGetWindowWidth();
 	static int iniGetWindowHeight();
