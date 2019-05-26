@@ -5,7 +5,7 @@ using PopHead::Logs::LogsIniLoader;
 using PopHead::Logs::LogType;
 using PopHead::Utilities::IniLoader;
 
-bool LogsIniLoader::iniGetShouldLogIntoConsole()
+bool LogsIniLoader::getShouldLogIntoConsole()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
@@ -14,7 +14,7 @@ bool LogsIniLoader::iniGetShouldLogIntoConsole()
 	}
 }
 
-bool LogsIniLoader::iniGetShouldLogIntoFile()
+bool LogsIniLoader::getShouldLogIntoFile()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
@@ -23,7 +23,7 @@ bool LogsIniLoader::iniGetShouldLogIntoFile()
 	}
 }
 
-std::vector<LogType> LogsIniLoader::iniGetLogTypesToWrite()
+std::vector<LogType> LogsIniLoader::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
@@ -42,7 +42,7 @@ std::vector<LogType> LogsIniLoader::iniGetLogTypesToWrite()
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> LogsIniLoader::iniGetModuleNamesToWrite()
+std::vector<std::string> LogsIniLoader::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;

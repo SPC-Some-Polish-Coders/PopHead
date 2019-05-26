@@ -10,10 +10,10 @@ namespace Logs {
 class LogsIniLoader : private Utilities::IniLoader
 {
 public:
-	static bool iniGetShouldLogIntoConsole();
-	static bool iniGetShouldLogIntoFile();
-	static std::vector<Logs::LogType> iniGetLogTypesToWrite();
-	static std::vector<std::string> iniGetModuleNamesToWrite();
+	static bool getShouldLogIntoConsole();
+	static bool getShouldLogIntoFile();
+	static std::vector<Logs::LogType> getLogTypesToWrite();
+	static std::vector<std::string> getModuleNamesToWrite();
 };
 
 }}

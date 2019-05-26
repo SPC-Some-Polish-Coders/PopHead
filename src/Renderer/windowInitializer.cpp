@@ -3,12 +3,12 @@
 using PopHead::Renderer::WindowInitializer;
 using PopHead::Utilities::IniLoader;
 
-sf::VideoMode WindowInitializer::iniGetWindowSize()
+sf::VideoMode WindowInitializer::getWindowSize()
 {
 	return sf::VideoMode(iniGetWindowWidth(), iniGetWindowHeight());
 }
 
-sf::Uint32 WindowInitializer::iniGetStyle()
+sf::Uint32 WindowInitializer::getStyle()
 {
 	return iniGetFullscreenMode() ? sf::Style::Fullscreen : sf::Style::Default;
 }

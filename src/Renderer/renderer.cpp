@@ -14,8 +14,8 @@ using PopHead::Utilities::IniLoader;
 Renderer::Renderer()
 	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-		, mWindow{ WindowInitializer::iniGetWindowSize(),
-			"PopHead", WindowInitializer::iniGetStyle() }
+		, mWindow{ WindowInitializer::getWindowSize(),
+			"PopHead", WindowInitializer::getStyle() }
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },

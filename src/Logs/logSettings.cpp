@@ -9,12 +9,12 @@ using PopHead::Logs::LogData;
 using PopHead::Utilities::IniLoader;
 
 LogSettings::LogSettings()
-	: mShouldLogIntoConsole(LogsIniLoader::iniGetShouldLogIntoConsole()),
-	mShouldLogIntoFile(LogsIniLoader::iniGetShouldLogIntoFile())
+	: mShouldLogIntoConsole(LogsIniLoader::getShouldLogIntoConsole()),
+	mShouldLogIntoFile(LogsIniLoader::getShouldLogIntoFile())
 
 {
-	setLogTypesToWrite(LogsIniLoader::iniGetLogTypesToWrite());
-	setModuleNamesToWrite(LogsIniLoader::iniGetModuleNamesToWrite());
+	setLogTypesToWrite(LogsIniLoader::getLogTypesToWrite());
+	setModuleNamesToWrite(LogsIniLoader::getModuleNamesToWrite());
 }
 
 void LogSettings::turnOnWritingEachLog()
