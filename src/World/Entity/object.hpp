@@ -15,14 +15,14 @@ namespace Entity {
 class Object : public Entity, public sf::Drawable
 {
 public:
-    Object(Base::GameData*, std::string name, Renderer::LayerID);
+	Object(Base::GameData*, std::string name, Renderer::LayerID);
 
-    void setVisibility(bool visibility, bool recursive = true);
-    virtual void setPosition(sf::Vector2f, bool recursive = true);
+	void setVisibility(bool visibility, bool recursive = true);
+	virtual void setPosition(sf::Vector2f, bool recursive = true);
 	virtual void move(sf::Vector2f, bool recursive = true);
-    virtual void setScale(sf::Vector2f, bool recursive = true);
-    virtual void setRotation(float angle, bool recursive = true);
-    virtual void rotate(float angle, bool recursive = true);
+	virtual void setScale(sf::Vector2f, bool recursive = true);
+	virtual void setRotation(float angle, bool recursive = true);
+	virtual void rotate(float angle, bool recursive = true);
 
 	auto getPosition() -> sf::Vector2f const { return mPosition; }
 	auto getScale() -> sf::Vector2f const { return mScale; }
@@ -35,11 +35,11 @@ private:
 	void forEachChildWhichIsObject(std::function<void(Object*, T)> func, T param);
 
 protected:
-    sf::Vector2f mPosition;
-    sf::Vector2f mScale;
-    float mRotation;
-    bool mVisibility;
-    const Renderer::LayerID mLayerID;
+	sf::Vector2f mPosition;
+	sf::Vector2f mScale;
+	float mRotation;
+	bool mVisibility;
+	const Renderer::LayerID mLayerID;
 };
 
 

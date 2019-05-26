@@ -14,23 +14,23 @@ namespace Input {
 class ActionManager
 {
 public:
-    ActionManager();
+	ActionManager();
 
-    void addAction(const std::string& action, std::vector<sf::Keyboard::Key>);
-    void addAction(const std::string& action, sf::Keyboard::Key);
-    void addKeyToAction(const std::string& action, sf::Keyboard::Key);
-    void deleteKeyFromAction(const std::string& action, sf::Keyboard::Key);
-    void deleteAction(const std::string& action);
-    void clearAllActions() noexcept;
+	void addAction(const std::string& action, std::vector<sf::Keyboard::Key>);
+	void addAction(const std::string& action, sf::Keyboard::Key);
+	void addKeyToAction(const std::string& action, sf::Keyboard::Key);
+	void deleteKeyFromAction(const std::string& action, sf::Keyboard::Key);
+	void deleteAction(const std::string& action);
+	void clearAllActions() noexcept;
 
-    bool isActionPressed(const std::string& action);
-    bool isActionJustPressed(const std::string& action);
-    bool isActionJustReleased(const std::string& action);
+	bool isActionPressed(const std::string& action);
+	bool isActionJustPressed(const std::string& action);
+	bool isActionJustReleased(const std::string& action);
 private:
 	bool isAction(const std::string& action, std::function<bool(void)> func);
 
 private:
-    std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
+	std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
 };
 
 
