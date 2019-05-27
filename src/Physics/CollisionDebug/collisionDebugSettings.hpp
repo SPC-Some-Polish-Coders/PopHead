@@ -1,4 +1,4 @@
-#ifndef PH_RELEASE
+//#ifndef PH_RELEASE
 
 #ifndef POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
 #define POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
@@ -56,4 +56,4 @@ private:
 
 #endif // !POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
 
-#endif // !PH_RELEASE
+//#endif // !PH_RELEASE

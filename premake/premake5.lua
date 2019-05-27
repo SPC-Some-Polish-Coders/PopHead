@@ -4,14 +4,15 @@ workspace "PopHead"
     
     configurations{
         "Debug",
-        "Release"
+        "Release",
+        "Distribution"
     }
 
 project "PopHead"
     location "../"
     kind "ConsoleApp"
     language "C++"
-    cppdialect "C++14"
+    cppdialect "C++17"
 
     targetdir ("../bin/bin/")
 	objdir ("../bin/obj/")
@@ -21,9 +22,7 @@ project "PopHead"
         "../vendor/SFML_2.5.1-VisualStudio/include"
     }
 
-    libdirs{
-        "../vendor/SFML_2.5.1-VisualStudio/lib"
-    }
+    libdirs{"../vendor/SFML_2.5.1-VisualStudio/lib"}
 
     files{
         "../src/**.hpp",
@@ -38,13 +37,12 @@ project "PopHead"
         "freetype.lib"
     }
 
+    defines{"SFML_STATIC"}
+
     filter "configurations:Debug"
         symbols "On"
 
-        defines{
-            "DEBUG",
-            "SFML_STATIC"
-        }
+        defines{"PH_DEBUG"}
 
         links{
             "sfml-graphics-s-d",
@@ -54,13 +52,8 @@ project "PopHead"
             "sfml-system-s-d"
         }
 
-    filter "configurations:Release"
+    filter{"configurations:Release or Distribution"}
         optimize "On"
-
-        defines{
-            "RELEASE",
-            "SFML_STATIC"
-        }
 
         links{
             "sfml-graphics-s",
@@ -69,3 +62,9 @@ project "PopHead"
             "sfml-window-s",
             "sfml-system-s"
         }
+
+    filter{"configurations:Release"}
+        defines{"PH_RELEASE"}
+
+    filter{"configurations:Distribution"}
+        defines{"PH_DISTRIBUTION"}
