@@ -1,5 +1,5 @@
-#ifndef POPHEAD_LOGS_LOGSINILOADER_H_
-#define	POPHEAD_LOGS_LOGSINILOADER_H_
+#ifndef POPHEAD_LOGS_LOGSINITIALIZER_H_
+#define	POPHEAD_LOGS_LOGSINITIALIZER_H_
 
 #include "Utilities/iniLoader.hpp"
 #include "Logs/log.hpp"
@@ -7,7 +7,7 @@
 namespace PopHead {
 namespace Logs {
 
-class LogsIniLoader : private Utilities::IniLoader
+class LogsInitializer : private Utilities::IniLoader
 {
 public:
 	static bool getShouldLogIntoConsole();
@@ -18,4 +18,4 @@ public:
 
 }}
 
-#endif // !POPHEAD_LOGS_LOGSINILOADER_H_
+#endif // !POPHEAD_LOGS_LOGSINITIALIZER_H_

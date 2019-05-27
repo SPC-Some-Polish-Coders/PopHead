@@ -1,11 +1,11 @@
-#include "logsIniLoader.hpp"
+#include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-using PopHead::Logs::LogsIniLoader;
+using PopHead::Logs::LogsInitializer;
 using PopHead::Logs::LogType;
 using PopHead::Utilities::IniLoader;
 
-bool LogsIniLoader::getShouldLogIntoConsole()
+bool LogsInitializer::getShouldLogIntoConsole()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
@@ -14,7 +14,7 @@ bool LogsIniLoader::getShouldLogIntoConsole()
 	}
 }
 
-bool LogsIniLoader::getShouldLogIntoFile()
+bool LogsInitializer::getShouldLogIntoFile()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
@@ -23,7 +23,7 @@ bool LogsIniLoader::getShouldLogIntoFile()
 	}
 }
 
-std::vector<LogType> LogsIniLoader::getLogTypesToWrite()
+std::vector<LogType> LogsInitializer::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
@@ -42,7 +42,7 @@ std::vector<LogType> LogsIniLoader::getLogTypesToWrite()
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> LogsIniLoader::getModuleNamesToWrite()
+std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;
