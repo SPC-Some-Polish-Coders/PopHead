@@ -3,13 +3,10 @@
 *.a
 *.so
 *.dll
-*.exe
 *.bat
 
 # Build directories
-build/
 bin/
-obj/
 
 
 # Generated documentation

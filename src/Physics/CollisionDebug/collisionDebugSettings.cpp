@@ -1,4 +1,4 @@
-#ifndef PH_RELEASE
+//#ifndef PH_RELEASE
 
 #include "collisionDebugSettings.hpp"
 #include "Physics/bodyType.hpp"
@@ -110,4 +110,4 @@ void CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)
 	PH_EXCEPTION("You have to choose CollisionDebug color set from 1 to 3! There is no option " + std::to_string(numberOfSet) + ".");
 }
 
-#endif //!PH_RELEASE
+//#endif //!PH_RELEASE

@@ -7,6 +7,7 @@
 #pragma warning(disable:4996)
 #endif
 
+
 using PopHead::Logs::Logger;
 using PopHead::Logs::LogData;
 using PopHead::Logs::LogType;
@@ -16,21 +17,6 @@ Logger::Logger()
 	openFile();
 }
 
-std::ostream& operator<<(std::ostream& os, const LogType& logType)
-{
-	switch (logType) {
-	case LogType::Info:
-		os << "INFO";
-		break;
-	case LogType::Error:
-		os << "ERROR";
-		break;
-	case LogType::Warning:
-		os << "WARNING";
-		break;
-	}
-	return os;
-}
 
 std::string Logger::nameTheFile()
 {
@@ -83,4 +69,20 @@ sf::Time Logger::getElapsedTimeSinceCreation()
 {
 	const sf::Time elapsedTime = mClock.getElapsedTime();
 	return elapsedTime;
+}
+
+std::ostream& PopHead::Logs::operator<<(std::ostream& os, const LogType& logType)
+{
+	switch(logType) {
+	case LogType::Info:
+		os << "INFO";
+		break;
+	case LogType::Error:
+		os << "ERROR";
+		break;
+	case LogType::Warning:
+		os << "WARNING";
+		break;
+	}
+	return os;
 }
