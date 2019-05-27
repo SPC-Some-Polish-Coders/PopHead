@@ -1,5 +1,5 @@
 #include "parser.hpp"
-#include "Logs/assert.hpp"
+#include "Utilities/debug.hpp"
 #include <iostream>
 #include <string>
 

@@ -3,7 +3,7 @@
 #include "windowInitializer.hpp"
 
 #include "World/Entity/object.hpp"
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 
 using PopHead::Renderer::Renderer;
 using PopHead::Renderer::Layer;

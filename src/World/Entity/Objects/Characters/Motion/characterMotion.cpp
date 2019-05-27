@@ -4,7 +4,7 @@ using PopHead::World::Entity::CharacterMotion;
 
 CharacterMotion::CharacterMotion()
 {
-    clear();
+	clear();
 }
 
 void CharacterMotion::clear()
@@ -14,7 +14,7 @@ void CharacterMotion::clear()
 
 bool CharacterMotion::isMoving()
 {
-    return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
+	return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
 }
 
 bool CharacterMotion::isMovingDiagonally()

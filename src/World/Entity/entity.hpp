@@ -20,29 +20,29 @@ namespace Entity {
 class Entity
 {
 public:
-    using EntityPtr = std::unique_ptr<Entity>;
+	using EntityPtr = std::unique_ptr<Entity>;
 
-    Entity(EntityType, PopHead::Base::GameData*, std::string name);
+	Entity(EntityType, PopHead::Base::GameData*, std::string name);
 
-    virtual void input();
-    virtual void update(sf::Time delta);
+	virtual void input();
+	virtual void update(sf::Time delta);
 
-    void addChild(EntityPtr);
-    void removeChild(const std::string& name);
-    void removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved);
+	void addChild(EntityPtr);
+	void removeChild(const std::string& name);
+	void removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved);
 
 	auto getParent() const -> Entity& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }
-    auto getChild(std::string name) const -> Entity&;
-	
+	auto getChild(std::string name) const->Entity&;
+
 protected:
-    Base::GameData* mGameData;
+	Base::GameData* mGameData;
 
-    const EntityType mEntityType;
-    std::string mName;
+	const EntityType mEntityType;
+	std::string mName;
 
-    Entity* mParent;
-    std::list< std::unique_ptr<Entity> > mChildren;
+	Entity* mParent;
+	std::list< std::unique_ptr<Entity> > mChildren;
 };
 
 

@@ -2,7 +2,7 @@
 
 #include "collisionDebugSettings.hpp"
 #include "Physics/bodyType.hpp"
-#include "Logs/logger.hpp"
+#include "Utilities/debug.hpp"
 #include <string>
 
 using PopHead::Physics::CollisionDebugSettings;

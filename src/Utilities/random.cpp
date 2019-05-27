@@ -1,5 +1,5 @@
 #include "random.hpp"
-#include "Logs/assert.hpp"
+#include "Utilities/debug.hpp"
 #include <ctime>
 
 std::default_random_engine PopHead::Utilities::Random::mEngine(static_cast<unsigned>(time(nullptr)));

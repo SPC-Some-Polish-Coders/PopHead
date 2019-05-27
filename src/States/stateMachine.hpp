@@ -22,13 +22,21 @@ class StateMachine
 public:
     StateMachine();
 
-    void changingStatesProcess();
-    void input();
-    void update(sf::Time delta);
     void pushState(StateID);
     void replaceState(StateID);
     void popState();
     void clearStates();
+    
+	void changingStatesProcess();
+private:
+	void pushAction();
+	void replaceAction();
+	void popAction();
+	void clearAction();
+
+public:
+    void input();
+    void update(sf::Time delta);
 
     auto getStatesAmount() const -> unsigned int {return mActiveStates.size();}
     bool getHideInStateNr(unsigned int nrOfState) const; /// 0 is top
@@ -47,9 +55,9 @@ private:
 
     Base::GameData* mGameData;
 
-    bool mIsAdding;
+    bool mIsPushing;
     bool mIsReplacing;
-    bool mIsRemoving;
+    bool mIsPopping;
     bool mIsClearing;
 };
 

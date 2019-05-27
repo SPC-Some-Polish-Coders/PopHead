@@ -1,5 +1,5 @@
 #include "animation.hpp"
-#include "Logs/assert.hpp"
+#include "Utilities/debug.hpp"
 
 using PopHead::World::Animation;
 
