@@ -38,15 +38,8 @@ std::string Logger::nameTheFile()
 	std::tm* now = localtime(&t);
 	std::string fileName;
 
-	if (now->tm_mday < 10 && now->tm_mon < 10) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
-	else if (now->tm_mday < 10 && now->tm_mon > 9) fileName += "0" + std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
-	else if (now->tm_mon < 10 && now->tm_mon > 9) fileName += std::to_string(now->tm_mon + 1) + "." + "0" + std::to_string(now->tm_mday);
-	else fileName += std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday);
-
-	if (now->tm_min < 10) fileName += "_" + std::to_string(now->tm_hour) + "-" + "0" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
-	else fileName += "_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) + "-" + std::to_string(now->tm_sec);
-
-	return fileName;
+	return fileName += std::to_string(now->tm_mon+1) + "." + std::to_string(now->tm_mday) 
+		+ "_" + std::to_string(now->tm_hour) + "." + std::to_string(now->tm_sec);
 }
 
 void Logger::openFile()
@@ -65,7 +58,7 @@ void Logger::writeLog(const LogData& log)
 		writeLogInConsole(log);
 
 	if (mLogSettings.shouldBeWrittenIntoFile(log))
-		saveLogsInFile(log);
+		saveLogInFile(log);
 }
 
 void Logger::writeLogInConsole(const LogData& log)
@@ -77,14 +70,13 @@ void Logger::writeLogInConsole(const LogData& log)
 		<< " | " << std::left << log.message << std::endl;
 }
 
-void Logger::saveLogsInFile(const LogData& log)
+void Logger::saveLogInFile(const LogData& log)
 
 {
 	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
 		<< " | " << std::setw(7) << std::left << log.type
 		<< " | " << std::setw(9) << std::left << log.moduleName
-		<< " | " << std::left << log.message << std::endl
-		<< std::flush;
+		<< " | " << std::left << log.message << std::endl;
 }
 
 sf::Time Logger::getElapsedTimeSinceCreation()
