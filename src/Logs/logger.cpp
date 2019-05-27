@@ -23,9 +23,9 @@ std::string Logger::nameTheFile()
 	std::time_t t = time(0);
 	std::tm* now = localtime(&t);
 	std::string fileName;
-
-	return fileName += std::to_string(now->tm_mon+1) + "." + std::to_string(now->tm_mday) 
-		+ "_" + std::to_string(now->tm_hour) + "." + std::to_string(now->tm_sec);
+	return fileName += std::to_string(now->tm_mon+1) + "." + std::to_string(now->tm_mday) + 
+		"_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min)+
+		"-" + std::to_string(now->tm_sec);
 }
 
 void Logger::openFile()
@@ -50,19 +50,24 @@ void Logger::writeLog(const LogData& log)
 void Logger::writeLogInConsole(const LogData& log)
 
 {
-	std::cout  << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
-		<< " | " << std::setw(7) << std::left << log.type
-		<< " | " << std::setw(9) << std::left << log.moduleName
-		<< " | " << std::left << log.message << std::endl;
+	std::cout << printLog(log).str();
 }
 
 void Logger::saveLogInFile(const LogData& log)
 
 {
-	mLogFile << "[  " << std::left << std::setw(7) << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
-		<< " | " << std::setw(7) << std::left << log.type
-		<< " | " << std::setw(9) << std::left << log.moduleName
-		<< " | " << std::left << log.message << std::endl;
+	mLogFile << printLog(log).str();
+}
+
+std::stringstream Logger::printLog(const LogData& log)
+{
+	std::stringstream ssLog;
+	ssLog << "[  " << std::left << std::setw(7)
+		  << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
+		  << " | " << std::setw(7) << std::left << log.type
+		  << " | " << std::setw(9) << std::left << log.moduleName
+		  << " | " << std::left << log.message << std::endl;
+	return ssLog;
 }
 
 sf::Time Logger::getElapsedTimeSinceCreation()

@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <stdexcept>
+#include <sstream>
 
 using PopHead::Logs::LogData;
 using PopHead::Logs::LogType;
@@ -38,6 +39,7 @@ private:
 	void openFile();
 	void saveLogInFile(const LogData& log); 
 	void writeLogInConsole(const LogData& log);
+	std::stringstream printLog(const LogData& log);
 	std::string nameTheFile();
 	sf::Time getElapsedTimeSinceCreation();
 
