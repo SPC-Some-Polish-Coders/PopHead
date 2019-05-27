@@ -1,16 +1,29 @@
 workspace "PopHead"
-    location "../"
-    configurations{"Debug", "Release"}
     architecture "x86"
+    location "../"
+    
+    configurations{
+        "Debug",
+        "Release"
+    }
 
 project "PopHead"
     location "../"
     kind "ConsoleApp"
     language "C++"
+    cppdialect "C++14"
+
     targetdir ("../bin/bin/")
 	objdir ("../bin/obj/")
-    includedirs{"../src", "../vendor/SFML_2.5.1-VisualStudio/include"}
-    libdirs{"../vendor/SFML_2.5.1-VisualStudio/lib"}
+    
+    includedirs{
+        "../src",
+        "../vendor/SFML_2.5.1-VisualStudio/include"
+    }
+
+    libdirs{
+        "../vendor/SFML_2.5.1-VisualStudio/lib"
+    }
 
     files{
         "../src/**.hpp",
@@ -18,25 +31,41 @@ project "PopHead"
         "../src/**.inl"
     }
 
-    links{"opengl32.lib"}
-    links{"winmm.lib"}
-    links{"gdi32.lib"}
-    links{"freetype.lib"}
+    links{
+        "opengl32.lib",
+        "winmm.lib",
+        "gdi32.lib",
+        "freetype.lib"
+    }
 
     filter "configurations:Debug"
-        defines{"DEBUG", "SFML_STATIC"}
         symbols "On"
-        links { "sfml-graphics-s-d" }
-        links { "sfml-audio-s-d" }
-        links { "sfml-network-s-d" }
-        links { "sfml-window-s-d" }
-        links { "sfml-system-s-d" }
+
+        defines{
+            "DEBUG",
+            "SFML_STATIC"
+        }
+
+        links{
+            "sfml-graphics-s-d",
+            "sfml-audio-s-d",
+            "sfml-network-s-d",
+            "sfml-window-s-d",
+            "sfml-system-s-d"
+        }
 
     filter "configurations:Release"
-        defines{"RELEASE", "SFML_STATIC"}
         optimize "On"
-        links { "sfml-graphics-s" }
-        links { "sfml-audio-s" }
-        links { "sfml-network-s" }
-        links { "sfml-window-s" }
-        links { "sfml-system-s" }
+
+        defines{
+            "RELEASE",
+            "SFML_STATIC"
+        }
+
+        links{
+            "sfml-graphics-s",
+            "sfml-audio-s", 
+            "sfml-network-s",
+            "sfml-window-s",
+            "sfml-system-s"
+        }
