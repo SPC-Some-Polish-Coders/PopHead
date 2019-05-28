@@ -1,5 +1,6 @@
 #include "States/GameState/gameState.hpp"
 
+#include "SFML/Graphics.hpp"
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/staticObjectToCamera.hpp"
@@ -143,6 +144,8 @@ void GameState::input()
 		mShouldCameraShake = true;
 
 	handleCollisionDebugShortcuts();
+
+	windowMinimalizeAndMaximalizeShortcut();
 }
 
 void GameState::handleCollisionDebugShortcuts()
@@ -203,6 +206,26 @@ void GameState::turnOnAndTurnOffCollisionDebugSettings()
 	else {
 		collisionDebugSettings.turnOn();
 		mIsCollisionDebugTurnOn = true;
+	}
+}
+
+void GameState::windowMinimalizeAndMaximalizeShortcut()
+{
+	enum class WindowSizeState {fullScreen, notFullScreen};
+	static WindowSizeState windowSizeState = WindowSizeState::fullScreen;
+
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F11)) {
+		switch(windowSizeState)
+		{
+		case WindowSizeState::fullScreen:
+			windowSizeState = WindowSizeState::notFullScreen;
+			mGameData->getRenderer().getWindow().create(sf::VideoMode(1000, 760), "PopHead", sf::Style::Default);
+			break;
+		case WindowSizeState::notFullScreen:
+			windowSizeState = WindowSizeState::fullScreen;
+			mGameData->getRenderer().getWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
+			break;
+		}
 	}
 }
 

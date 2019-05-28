@@ -47,8 +47,6 @@ private:
 	LogSettings mLogSettings;
 	std::ofstream mLogFile;
 	sf::Clock mClock;
-
-	friend std::ostream& operator<<(std::ostream& os, const LogType& logType);
 };
 
 

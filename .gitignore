@@ -19,3 +19,4 @@ Logs/*.txt
 *.cbp
 *.vcxproj
 *.sln
+*.workspace
