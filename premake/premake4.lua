@@ -1,7 +1,6 @@
-workspace "PopHead"
-    architecture "x86"
+solution "PopHead"
     location "../"
-    
+
     configurations{
         "Debug",
         "Release",
@@ -12,38 +11,30 @@ project "PopHead"
     location "../"
     kind "ConsoleApp"
     language "C++"
-    cppdialect "C++17"
 
-    targetdir ("../bin/bin/")
-	objdir ("../bin/obj/")
-    
+    targetdir "../bin/bin/"
+    objdir "../bin/obj/"
+
     includedirs{
         "../src",
-        "../vendor/SFML_2.5.1-VisualStudio/include"
+        "../vendor/SFML_2.5.1-CodeBlocks/include"
     }
 
-    libdirs{"../vendor/SFML_2.5.1-VisualStudio/lib"}
+    libdirs{"../vendor/SFML_2.5.1-CodeBlocks/lib"}
 
-    files{
+    files {
         "../src/**.hpp",
         "../src/**.cpp",
-        "../src/**.inl"
+        "../src/**.inl",
     }
-
-    links{
-        "opengl32.lib",
-        "winmm.lib",
-        "gdi32.lib",
-        "freetype.lib"
-    }
-
+    
     defines{"SFML_STATIC"}
-
-    filter "configurations:Debug"
-        symbols "On"
-
+    
+    configuration "Debug"
+        flags{"Symbols"}
+        
         defines{"PH_DEBUG"}
-
+        
         links{
             "sfml-graphics-s-d",
             "sfml-audio-s-d",
@@ -51,10 +42,10 @@ project "PopHead"
             "sfml-window-s-d",
             "sfml-system-s-d"
         }
-
-    filter{"configurations:Release or Distribution"}
-        optimize "On"
-
+    
+    configuration "Release or Distribution"
+        flags{"Optimize"}
+        
         links{
             "sfml-graphics-s",
             "sfml-audio-s", 
@@ -62,12 +53,21 @@ project "PopHead"
             "sfml-window-s",
             "sfml-system-s"
         }
-
-    filter{"configurations:Release"}
+    
+    configuration "Release"
         defines{"PH_RELEASE"}
-
-    filter{"configurations:Distribution"}
+    
+    configuration "Distribution"
         defines{"PH_DISTRIBUTION"}
+    
+    configuration{}
+    
+    links{
+        "opengl32.lib",
+        "winmm.lib",
+        "gdi32.lib",
+        "freetype.lib"
+    }
 
     printf("For now PopHead supports only new Visual Studio versions and Codeblocks.")
     printf("If you have any problems with Premake or compiling PopHead contact Grzegorz \"Czapa\" Bednorz.")
