@@ -33,6 +33,7 @@ private:
 	void handleCollisionDebugShortcuts();
 	void switchCollisionDebugMode();
 	void turnOnAndTurnOffCollisionDebugSettings();
+	void windowMinimalizeAndMaximalizeShortcut();
 
 public:
 	void update(sf::Time delta) override;
