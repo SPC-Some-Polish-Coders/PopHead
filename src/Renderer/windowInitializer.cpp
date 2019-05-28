@@ -5,15 +5,15 @@ using PopHead::Utilities::IniLoader;
 
 sf::VideoMode WindowInitializer::getWindowSize()
 {
-	return sf::VideoMode(iniGetWindowWidth(), iniGetWindowHeight());
+	return sf::VideoMode(getWindowWidth(), getWindowHeight());
 }
 
 sf::Uint32 WindowInitializer::getStyle()
 {
-	return iniGetFullscreenMode() ? sf::Style::Fullscreen : sf::Style::Default;
+	return getFullscreenMode() ? sf::Style::Fullscreen : sf::Style::Default;
 }
 
-int WindowInitializer::iniGetWindowWidth()
+int WindowInitializer::getWindowWidth()
 {
 	openTheFile();
 	if (findPhrase("WindowWidth="))
@@ -25,16 +25,14 @@ int WindowInitializer::iniGetWindowWidth()
 		}
 		else
 		{
-			std::size_t equalSignPosition = currentLine.find("=") + 1;
-			currentLine = currentLine.substr(equalSignPosition, 4);	//These three lines may become a function in order to keep the code cleaner
-			int width = std::stoi(currentLine);
+			int width = getResolutionValue();
 			closeTheFile();
 			return width;
 		}
 	}
 }
 
-int WindowInitializer::iniGetWindowHeight()
+int WindowInitializer::getWindowHeight()
 {
 	openTheFile();
 	if (findPhrase("WindowHeight="))
@@ -46,16 +44,21 @@ int WindowInitializer::iniGetWindowHeight()
 		}
 		else
 		{
-			std::size_t equalSignPosition = currentLine.find("=") + 1;
-			currentLine = currentLine.substr(equalSignPosition, 4);
-			int height = std::stoi(currentLine);
+			int height = getResolutionValue();
 			closeTheFile();
 			return height;
 		}
 	}
 }
 
-bool WindowInitializer::iniGetFullscreenMode()
+int WindowInitializer::getResolutionValue()
+{
+	std::size_t equalSignPosition = currentLine.find("=") + 1;
+	currentLine = currentLine.substr(equalSignPosition, 4);
+	return std::stoi(currentLine);
+}
+
+bool WindowInitializer::getFullscreenMode()
 {
 	openTheFile();
 	if (findPhrase("FullscreenMode="))
