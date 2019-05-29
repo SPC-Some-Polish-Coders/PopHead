@@ -12,11 +12,11 @@ void Xml::loadFromFile(const std::string& filename)
 	std::string temp;
 	while (std::getline(ifs, temp))
 		content += temp;
-	// Delete prolog but keep '>' for implementation purpose
+	// Delete prolog but keep '?>' for implementation purpose
 	const std::size_t begin = content.find("?>");
 	if (begin != std::string::npos)
-		content.erase(0, begin + std::strlen("?>") - 1);
-	else 
+		content.erase(0, begin);
+	else
 		content.insert(0, ">"); // TODO: It has terrible performance probably
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + content);
 }
