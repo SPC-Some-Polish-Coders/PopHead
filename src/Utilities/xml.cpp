@@ -2,32 +2,6 @@
 #include "Utilities/debug.hpp"
 #include <fstream>
 
-/*
-	NOTE:
-	Node options:
-
-	1.
-	std::string content;
-
-	Easy to implement.
-	Terrible performance (if move operation isn't performed).
-	Disallows to comeback in tree structure.
-
-	2.
-	std::string& document;
-	std::size_t begin;
-	std::size_t end;
-
-	Hard to implement.
-	Good performance.
-	Allows to come back in tree structure.
-
-	3. 
-	Change document layout to diffrent. But how it would looks like?
-
-	Hard to implement.
-*/
-
 using PopHead::Utilities::Xml;
 
 void Xml::loadFromFile(const std::string& filename)
@@ -45,26 +19,8 @@ void Xml::loadFromFile(const std::string& filename)
 	else 
 		content.insert(0, ">"); // TODO: It has terrible performance probably
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + content);
-
-	/* 
-		TODO:
-		Some possible ways to improve implementation:
-		1. Wherever there could be a white character use find to skip them inside getChild(), getChildren(), getAttribute()
-		Pros: Faster loading. Probably easier to implement (but one must remember about them all the time when new method is added, so in a long run it can be painful). 
-		Cons: Longer access time in long run (via getChild(), getChildren(), getAttribute()).
-
-		2. Delete unnecessary white characters (keep them inside attribute values and in data between tags)
-		Example: <          map      id   =    "10" />
-		Pros: Faster access to elements.
-		Cons: Longer loading. Probably harder to implement (becouse one must think about all possible scenarios here).
-	*/
 }
 
-/*
-	TODO: 
-	Find better name or change implementation?
-	Right now it searches for a child name in all nodes inside current tag, not only in his children 
-*/
 Xml Xml::getChild(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
@@ -102,11 +58,6 @@ Xml Xml::getChild(std::string name) const
 	return xml;
 }
 
-/*
-	TODO:
-	Find better name or change implementation?
-	Right now it searches for a child name in all nodes inside current tag, not only in his children
-*/
 std::vector<Xml> Xml::getChildren(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
