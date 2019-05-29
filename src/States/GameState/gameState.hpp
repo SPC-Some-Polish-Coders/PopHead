@@ -26,6 +26,7 @@ private:
 	void makeBall();
 	void makeStaticObjectToCamera();
 	void setCamera();
+	void playMusic();
 
 public:
 	void input() override;
