@@ -67,6 +67,12 @@ project "PopHead"
         "winmm.lib",
         "gdi32.lib",
         "freetype.lib"
+        "flac.lib",
+        "vorbisenc.lib",
+        "vorbisfile.lib",
+        "vorbis.lib",
+        "ogg.lib",
+        "openal32.lib"
     }
 
     printf("For now PopHead supports only new Visual Studio versions and Codeblocks.")
