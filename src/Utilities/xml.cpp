@@ -7,14 +7,23 @@ using PopHead::Utilities::Xml;
 
 void Xml::loadFromFile(const std::string& filename)
 {
+	content.clear();
 	std::ifstream ifs(filename);
 	if (!ifs.is_open())
 		PH_EXCEPTION("cannot open file: " + filename);
 	std::string temp;
+	if(!std::getline(ifs, temp))
+		PH_EXCEPTION("given xml file is empty or something bad happened ("+filename + ")");
+	// Delete prolog but keep '?>' for implementation purpose
+	const std::size_t begin = temp.find("?>");
+	if (begin == std::string::npos)
+		temp.insert(0, "?>");
+	else
+		temp.erase(0, begin);
+	content += temp;
 	while (std::getline(ifs, temp))
 		content += temp;
 	// Delete prolog but keep '>' for implementation purpose
-	const std::size_t begin = content.find("?>");
 	if (begin != std::string::npos)
 		content.erase(0, begin + std::strlen("?>") - 1);
 	else
