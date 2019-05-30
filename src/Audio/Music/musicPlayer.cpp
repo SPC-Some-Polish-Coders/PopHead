@@ -5,7 +5,7 @@
 using PopHead::Audio::MusicPlayer;
 
 MusicPlayer::MusicPlayer()
-	:mVolume(10.f)
+	:mVolume(70.f)
 {
 }
 
