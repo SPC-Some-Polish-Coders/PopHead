@@ -43,6 +43,7 @@ void GameState::makeSceneTree()
 	makeBall();
 	makeStaticObjectToCamera();
 	setCamera();
+	playMusic();
 }
 
 void GameState::makeMap()
@@ -134,6 +135,11 @@ void GameState::setCamera()
 {
 	const sf::Vector2f playerPosition(1900, 5220);
 	mGameData->getRenderer().getCamera().setCenter(playerPosition);
+}
+
+void GameState::playMusic()
+{
+	mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
 }
 
 void GameState::input()

@@ -34,7 +34,13 @@ project "PopHead"
         "opengl32.lib",
         "winmm.lib",
         "gdi32.lib",
-        "freetype.lib"
+        "freetype.lib",
+        "flac.lib",
+        "vorbisenc.lib",
+        "vorbisfile.lib",
+        "vorbis.lib",
+        "ogg.lib",
+        "openal32.lib"
     }
 
     defines{"SFML_STATIC"}

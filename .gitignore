@@ -2,7 +2,6 @@
 *.o
 *.a
 *.so
-*.dll
 *.bat
 
 # Build directories
