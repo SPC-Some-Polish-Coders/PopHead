@@ -3,19 +3,19 @@
 
 #include <string>
 
+namespace PopHead {
+namespace Audio {
+
+
 struct MusicResource
 {
-	std::string filepath;
 	float volumeMultiplier;
 	bool loop;
 
-	MusicResource::MusicResource(std::string filepath, float volumeMultiplier = 1.f, bool loop = false)
-		:filepath(filepath)
-		, volumeMultiplier(volumeMultiplier)
-		, loop(loop)
-	{
-	}
+	MusicResource(float volumeMultiplier = 1.f, bool loop = false);
 };
 
+
+}}
 
 #endif // !POPHEAD_AUDIO_MUSICRESOURCE_H_
