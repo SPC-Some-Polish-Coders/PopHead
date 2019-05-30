@@ -58,19 +58,10 @@ bool IniLoader::findValue(const std::string& searchedValue)
 
 bool IniLoader::getBool(const std::string& currentLine)
 {
-	if (findValue("1"))
-	{
-		closeTheFile();
-		return true;
-	}
-	else if (findValue("0"))
-	{
-		closeTheFile();
-		return false;
-	}
+	if (findValue("1")) return true;
+	else if (findValue("0")) return false;
 	else
 	{
-		closeTheFile();
 		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'.Assumed 'true'" << std::endl;
 		return true;
 	}
