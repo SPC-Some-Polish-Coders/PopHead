@@ -66,7 +66,7 @@ project "PopHead"
         "opengl32.lib",
         "winmm.lib",
         "gdi32.lib",
-        "freetype.lib"
+        "freetype.lib",
         "flac.lib",
         "vorbisenc.lib",
         "vorbisfile.lib",

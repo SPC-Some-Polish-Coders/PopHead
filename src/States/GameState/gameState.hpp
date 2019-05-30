@@ -35,6 +35,7 @@ private:
 	void switchCollisionDebugMode();
 	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
+	void shotgunShot();
 
 public:
 	void update(sf::Time delta) override;
