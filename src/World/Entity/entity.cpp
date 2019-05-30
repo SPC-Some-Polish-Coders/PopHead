@@ -1,5 +1,5 @@
 #include "entity.hpp"
-
+#include <iostream>
 #include "Utilities/debug.hpp"
 
 using PopHead::World::Entity::Entity;
@@ -7,7 +7,7 @@ using PopHead::World::Entity::Entity;
 Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
-,mName(name)
+,mName(checkName(name))
 ,mParent(nullptr)
 {
 
@@ -21,8 +21,27 @@ void Entity::input()
 
 void Entity::update(sf::Time delta)
 {
-    for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
-        (*it)->update(delta);
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
+	{
+		(*it)->update(delta);
+	}
+}
+
+std::string Entity::checkName(const std::string& childName)
+{
+	//for (auto const& child : mChildren)
+	//{
+	//	if (child->getName()== childName)
+	//		PH_LOG(LogType::Info, "WORKS!");
+	//	//childName=someFuncHere
+	//}
+
+	for (auto & child = mChildren.begin(); child != mChildren.end(); ++child)
+	{
+		if ((*child)->getName() == childName);
+			//childName=someFuncHere
+	}
+	return childName;
 }
 
 void Entity::addChild(EntityPtr newChild)

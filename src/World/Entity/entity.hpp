@@ -35,8 +35,10 @@ public:
 	auto getName() const -> const std::string& { return mName; }
 	auto getChild(std::string name) const->Entity&;
 
+
 protected:
 	Base::GameData* mGameData;
+	std::string checkName(const std::string&);
 
 	const EntityType mEntityType;
 	std::string mName;
