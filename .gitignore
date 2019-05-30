@@ -3,6 +3,7 @@
 *.a
 *.so
 *.bat
+!logFileCleaner.bat
 
 # Build directories
 bin/
