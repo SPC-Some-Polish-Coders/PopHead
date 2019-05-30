@@ -6,8 +6,7 @@ Premake is an project build system. It can generate project files for several ID
 
 ## How to use Premake to generate PopHead project files
 We can use premake only from command line. There is no GUI for it. But don't worry. I assure you that it is very convinient and easy.
-You have to open command line in the premake directory. If you're on Windows you can do that clicking to bar with link to the current
-directory in your windows explorer and type cmd. This will open command prompt in your current directory. <br/> 
+You have to open command line in the premake directory.
 If you enter `premake5 --help` you should see help for premake5 and available actions. <br/>
 The same thing for premake 4: `premake4 --help`. <br/>
 You can generate project files for any IDE which is supported, but truly we support only Visual Studio and CodeBlocks.
@@ -22,6 +21,11 @@ or <br/>
 ### CodeBlocks
 To generate project files for CodeBlocks enter: <br/>
 `premake4 codeblocks` <br/>
+
+## You have to copy openal32.dll
+We link SFML statically so we don't need sfml dll files, but we need one certain .dll file which is openal32.dll.
+This file is in vendor/SFML_2.5.1-VisualStudio/dll/openal32.dll or vendor/SFML_2.5.1-CodeBlocks/dll/openal32.dll.
+You have to copy this file to directory from which you run PopHead.exe. Otherwise it won't work.
 
 ## Clean action
 Clean action deletes project files for every IDE. <br/>
