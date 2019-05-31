@@ -1,10 +1,11 @@
 #include "soundPlayer.hpp"
-#include "Utilities/debug.hpp"
+
+#include "soundData.hpp"
 
 using PopHead::Audio::SoundPlayer;
 
 SoundPlayer::SoundPlayer()
-	:mVolume(40.f)
+	:mVolume(20.f)
 {
 	loadEverySound();
 }
@@ -18,9 +19,11 @@ void SoundPlayer::playSound(const std::string& filePath)
 {
 	removeStoppedSounds();
 
+	SoundData soundData = getAmbientSoundData(filePath);
 	sf::Sound sound;
 	sound.setBuffer(mSoundBuffers.get(filePath));
-	sound.setVolume(mVolume);
+	sound.setVolume(mVolume * soundData.mVolumeMultiplier);
+	sound.setLoop(soundData.mLoop);
 	mSounds.emplace_back(std::move(sound));
 	mSounds.back().play();
 }

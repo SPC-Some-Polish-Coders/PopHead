@@ -1,6 +1,8 @@
 #ifndef POPHEAD_AUDIO_SOUNDDATA_H_
 #define POPHEAD_AUDIO_SOUNDDATA_H_
 
+#include <string>
+
 namespace PopHead {
 namespace Audio {
 
@@ -20,6 +22,8 @@ struct SpatialSoundData : public SoundData
 	SpatialSoundData(float volumeMultiplier = 1.f, float min = 0.f, float max = 1000.f, bool loop = false);
 };
 
+SoundData getAmbientSoundData(const std::string& filePath);
+SpatialSoundData getSpatialSoundData(const std::string& filePath);
 
 }}
 
