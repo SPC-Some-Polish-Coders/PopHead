@@ -15,6 +15,7 @@ public:
 
 	void playSound(const std::string& filePath);
 	void setVolume(float volume);
+	void removeEverySound();
 
 private:
 	void loadEverySound();
