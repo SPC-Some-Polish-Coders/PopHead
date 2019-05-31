@@ -1,7 +1,6 @@
 #include "logSettings.hpp"
 #include "Logs/LogsInitializer/logsInitializer.hpp"
 #include <fstream>
-#include <iostream>
 
 using PopHead::Logs::LogSettings;
 using PopHead::Logs::LogType;
@@ -11,7 +10,6 @@ using PopHead::Utilities::IniLoader;
 LogSettings::LogSettings()
 	: mShouldLogIntoConsole(LogsInitializer::getShouldLogIntoConsole()),
 	mShouldLogIntoFile(LogsInitializer::getShouldLogIntoFile())
-
 {
 	setLogTypesToWrite(LogsInitializer::getLogTypesToWrite());
 	setModuleNamesToWrite(LogsInitializer::getModuleNamesToWrite());

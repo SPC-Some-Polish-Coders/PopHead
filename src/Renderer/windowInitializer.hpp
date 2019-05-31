@@ -13,9 +13,10 @@ public:
 	static sf::VideoMode getWindowSize();
 	static sf::Uint32 getStyle();
 private:
-	static int iniGetWindowWidth();
-	static int iniGetWindowHeight();
-	static bool iniGetFullscreenMode();
+	static int getWindowWidth();
+	static int getWindowHeight();
+	static int getResolutionValue();
+	static bool getFullscreenMode();
 };
 
 }}

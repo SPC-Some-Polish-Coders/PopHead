@@ -145,13 +145,11 @@ void GameState::playMusic()
 void GameState::input()
 {
 	mRoot.input();
-
+	handleCollisionDebugShortcuts();
+	windowMinimalizeAndMaximalizeShortcut();
+	shotgunShot();
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		mShouldCameraShake = true;
-
-	handleCollisionDebugShortcuts();
-
-	windowMinimalizeAndMaximalizeShortcut();
 }
 
 void GameState::handleCollisionDebugShortcuts()
@@ -233,6 +231,13 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 			break;
 		}
 	}
+}
+
+void GameState::shotgunShot()
+{
+	// It's an sound player test.
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
+		mGameData->getMusicPlayer().play("resources/sounds/barretaShot.wav");
 }
 
 void GameState::update(sf::Time delta)

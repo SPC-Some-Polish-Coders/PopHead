@@ -1,6 +1,7 @@
 #include "xml.hpp"
 #include "Utilities/debug.hpp"
 #include <fstream>
+#include <cstring>
 
 using PopHead::Utilities::Xml;
 
@@ -22,6 +23,11 @@ void Xml::loadFromFile(const std::string& filename)
 	content += temp;
 	while (std::getline(ifs, temp))
 		content += temp;
+	// Delete prolog but keep '>' for implementation purpose
+	if (begin != std::string::npos)
+		content.erase(0, begin + std::strlen("?>") - 1);
+	else
+		content.insert(0, ">"); // TODO: It has terrible performance probably
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + content);
 }
 
