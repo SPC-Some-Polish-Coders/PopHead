@@ -237,7 +237,7 @@ void GameState::shotgunShot()
 {
 	// It's an sound player test.
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
-		mGameData->getMusicPlayer().play("resources/sounds/barretaShot.wav");
+		mGameData->getSoundPlayer().playSound("resources/sounds/barretaShot.wav");
 }
 
 void GameState::update(sf::Time delta)

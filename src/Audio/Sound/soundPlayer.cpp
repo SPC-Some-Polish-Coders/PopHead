@@ -3,7 +3,7 @@
 using PopHead::Audio::SoundPlayer;
 
 SoundPlayer::SoundPlayer()
-	:mVolume(10.f)
+	:mVolume(40.f)
 {
 	loadEverySound();
 }
@@ -18,7 +18,8 @@ void SoundPlayer::playSound(const std::string& filePath)
 	sf::Sound sound;
 	sound.setBuffer(mSoundBuffers.get(filePath));
 	sound.setVolume(mVolume);
-	mSounds.emplace_back(sound);
+	mSounds.emplace_back(std::move(sound));
+	mSounds.back().play();
 }
 
 void SoundPlayer::removeStoppedSounds()
