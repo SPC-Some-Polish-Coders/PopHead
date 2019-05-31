@@ -15,7 +15,7 @@ Renderer::Renderer()
 	:	mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
         , mViewports { { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
 		, mWindow{ WindowInitializer::getWindowSize(),
-			"PopHead", WindowInitializer::getStyle() }
+			"PopHead", WindowInitializer::getStyle(), sf::ContextSettings() }
         , mLayers { { LayerID::floorEntities, Layer() },
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
