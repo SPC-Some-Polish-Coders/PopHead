@@ -10,7 +10,9 @@ bool LogsInitializer::getShouldLogIntoConsole()
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
 	{
-		return getBool(currentLine);
+		bool returnVal = getBool(currentLine);
+		closeTheFile();
+		return returnVal;
 	}
 }
 
@@ -19,7 +21,9 @@ bool LogsInitializer::getShouldLogIntoFile()
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
 	{
-		return getBool(currentLine);
+		bool returnVal = getBool(currentLine);
+		closeTheFile();
+		return returnVal;
 	}
 }
 

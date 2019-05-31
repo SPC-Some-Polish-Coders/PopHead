@@ -15,6 +15,8 @@ protected:
 	static bool findPhrase(const std::string&);
 	static bool findValue(const std::string&);	
 	static bool getBool(const std::string&);
+private:
+	static void handleException(const std::string&);
 protected:
 	static std::string currentLine;
 private:
