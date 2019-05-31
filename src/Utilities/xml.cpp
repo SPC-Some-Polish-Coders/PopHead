@@ -11,12 +11,12 @@ void Xml::loadFromFile(const std::string& filename)
 	if (!ifs.is_open())
 		PH_EXCEPTION("cannot open file: " + filename);
 	std::string temp;
-	if(!std::getline(ifs, temp))
-		PH_EXCEPTION("given xml file is empty or something bad happened ("+filename + ")");
+	if (!std::getline(ifs, temp))
+		PH_EXCEPTION("given xml file is empty or something bad happened (" + filename + ")");
 	// Delete prolog but keep '?>' for implementation purpose
 	const std::size_t begin = temp.find("?>");
 	if (begin == std::string::npos)
-		temp.insert(0, "?>"); 
+		temp.insert(0, "?>");
 	else
 		temp.erase(0, begin);
 	content += temp;
