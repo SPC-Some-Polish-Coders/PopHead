@@ -20,7 +20,7 @@ public:
 
 	std::string toString() const;
 
-	unsigned toInt() const { return std::stoi(content); }
+	int toInt() const { return std::stoi(content); }
 
 	unsigned toUnsigned() const { return Cast::toUnsigned(content); }
 
