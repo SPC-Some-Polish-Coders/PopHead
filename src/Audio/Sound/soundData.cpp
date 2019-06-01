@@ -1,9 +1,8 @@
 #include "soundData.hpp"
 
-using PopHead::Audio::SpatialSoundData;
 using PopHead::Audio::SoundData;
 
-SoundData PopHead::Audio::getAmbientSoundData(const std::string& filePath)
+SoundData PopHead::Audio::getSoundData(const std::string& filePath)
 {
 	if(filePath == "resources/sounds/barretaShot.wav")
 		return SoundData(1.4f);
@@ -11,19 +10,9 @@ SoundData PopHead::Audio::getAmbientSoundData(const std::string& filePath)
 		return SoundData();
 }
 
-SpatialSoundData PopHead::Audio::getSpatialSoundData(const std::string& filePath)
-{
-	return SpatialSoundData();
-}
-
-SoundData::SoundData(float volumeMultiplier, bool loop)
+SoundData::SoundData(float volumeMultiplier, bool loop, float min, float max)
 	:mVolumeMultiplier(volumeMultiplier)
 	,mLoop(loop)
-{
-}
-
-SpatialSoundData::SpatialSoundData(float volumeMultiplier, bool loop, float min, float max)
-	:SoundData(volumeMultiplier, loop)
 	,mMin(min)
 	,mMax(max)
 {

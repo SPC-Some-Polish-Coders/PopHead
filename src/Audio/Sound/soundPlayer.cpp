@@ -19,7 +19,7 @@ void SoundPlayer::playSound(const std::string& filePath)
 {
 	removeStoppedSounds();
 
-	SoundData soundData = getAmbientSoundData(filePath);
+	SoundData soundData = getSoundData(filePath);
 	sf::Sound sound;
 	sound.setBuffer(mSoundBuffers.get(filePath));
 	sound.setVolume(mVolume * soundData.mVolumeMultiplier);
@@ -47,5 +47,3 @@ void SoundPlayer::removeEverySound()
 {
 	mSounds.clear();
 }
-
-
