@@ -3,10 +3,13 @@
 using PopHead::Audio::SoundDataHolder;
 using PopHead::Audio::SoundData;
 
+SoundDataHolder::SoundDataHolder()
+{
+	mAllSoundsData["resources/sounds/barretaShot.wav"] = SoundData(1.4f);
+}
+
 SoundData SoundDataHolder::getSoundData(const std::string& filePath)
 {
-	if(filePath == "resources/sounds/barretaShot.wav")
-		return SoundData(1.4f);
-	else
-		return SoundData();
+	auto found = mAllSoundsData.find(filePath);
+	return found->second;
 }

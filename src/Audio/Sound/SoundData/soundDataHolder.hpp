@@ -3,6 +3,7 @@
 
 #include "soundData.hpp"
 #include <string>
+#include <map>
 
 namespace PopHead {
 namespace Audio {
@@ -10,7 +11,12 @@ namespace Audio {
 class SoundDataHolder
 {
 public:
+	SoundDataHolder();
+
 	SoundData getSoundData(const std::string& filePath);
+
+private:
+	std::map<std::string, SoundData> mAllSoundsData;
 };
 
 }}
