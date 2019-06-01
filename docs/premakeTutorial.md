@@ -1,6 +1,23 @@
 # Premake usage tutorial
 -------------------------------------------------------
 
+## Table of Contents
+<details>
+<summary>"Click to expand"</summary>
+  
+- [What is Premake](#what-is-premake)
+- [How to use Premake to generate PopHead project files?](#how-to-use-premake-to-generate-pophead-project-files)
+    * [Visual Studio](#visual-studio)
+    * [CodeBlocks](#codeblocks)
+- [You have to copy openal32.dll](#you-have-to-copy-openal32-dll-file)
+- [Clean action](#clean-action)
+- [What if I want to code on other IDE then Visual Studio and CodeBlocks?](#what-if-i-want-to-code-on-other-ide-then-visual-studio-and-codeblocks)
+- [What if I want to run premake on Linux or Mac?](#what-if-i-want-to-run-premake-on-linux-or-mac)
+- [Premake5 and Premake4](#premake5-and-premake4)
+- [Issues](#issues)
+
+</details>
+
 ## What is Premake
 Premake is an project build system. It can generate project files for several IDEs. Premake scripts are written in Lua.
 
@@ -22,7 +39,7 @@ or <br/>
 To generate project files for CodeBlocks enter: <br/>
 `premake4 codeblocks` <br/>
 
-## You have to copy openal32.dll
+## You have to copy openal32 dll file
 We link SFML statically so we don't need sfml dll files, but we need one certain .dll file which is openal32.dll.
 This file is in vendor/SFML_2.5.1-VisualStudio/dll/openal32.dll or vendor/SFML_2.5.1-CodeBlocks/dll/openal32.dll.
 You have to copy this file to directory from which you run PopHead.exe. Otherwise it won't work.
