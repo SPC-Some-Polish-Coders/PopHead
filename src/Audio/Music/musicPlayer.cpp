@@ -14,7 +14,7 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::play(std::string filePath)
 {
-	currentThemeData = getMusicData(filePath);
+	MusicData currentThemeData = musicDataHolder.getMusicData(filePath);
 	mMusic.openFromFile(filePath);
 	mMusic.setVolume(mVolume * currentThemeData.volumeMultiplier);
 	mMusic.setLoop(currentThemeData.loop);
@@ -37,5 +37,6 @@ void MusicPlayer::setPaused(bool pause)
 void MusicPlayer::setVolume(float volume)
 {
 	mVolume = volume;
-	mMusic.setVolume(volume * currentThemeData.volumeMultiplier);
+	float volumeMultiplier = musicDataHolder.getCurrentThemeData().volumeMultiplier;
+	mMusic.setVolume(volume * volumeMultiplier);
 }

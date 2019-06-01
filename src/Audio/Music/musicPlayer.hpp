@@ -2,7 +2,7 @@
 #define POPHEAD_AUDIO_MUSICPLAYER_H_
 
 #include <SFML/Audio.hpp>
-#include "musicData.hpp"
+#include "musicDataHolder.hpp"
 
 namespace PopHead {
 namespace Audio {
@@ -24,7 +24,7 @@ public:
 private:
 	sf::Music mMusic;
 	float mVolume;
-	MusicData currentThemeData;
+	MusicDataHolder musicDataHolder;
 };
 
 
