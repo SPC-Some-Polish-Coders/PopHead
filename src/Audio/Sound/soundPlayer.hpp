@@ -2,6 +2,7 @@
 #define POPHEAD_AUDIO_SOUNDPLAYER_H_
 
 #include "Resources/resourceHolder.hpp"
+#include "Audio/Sound/SoundData/soundDataHolder.hpp"
 #include <SFML/Audio.hpp>
 #include <list>
 
@@ -25,6 +26,7 @@ private:
 	Resources::SoundBufferHolder mSoundBuffers;
 	std::list<sf::Sound> mSounds;
 	float mVolume;
+	SoundDataHolder mSoundDataHolder;
 };
 
 }}
