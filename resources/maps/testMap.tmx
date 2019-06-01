@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="supermario" tilewidth="32" tileheight="32" tilecount="744" columns="31">
-  <image source="supermario.jpg" width="1008" height="793"/>
+  <image source="../textures/map/supermario.jpg" width="1008" height="793"/>
  </tileset>
  <tileset firstgid="745" name="wolf" tilewidth="32" tileheight="32" tilecount="240" columns="20">
-  <image source="wolf.png" width="640" height="384"/>
+  <image source="../textures/map/wolf.png" width="640" height="384"/>
  </tileset>
  <layer id="1" name="Bottom" width="10" height="10">
   <data encoding="csv">

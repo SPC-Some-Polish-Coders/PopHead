@@ -26,6 +26,8 @@ void GameState::loadResources()
 	mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
 	mGameData->getTextures().load("resources/textures/characters/zombie.png");
 	mGameData->getTextures().load("resources/textures/map/city.png");
+	mGameData->getTextures().load("resources/textures/map/wolf.png");
+	mGameData->getTextures().load("resources/textures/map/supermario.jpg");
 	mGameData->getTextures().load("resources/textures/others/box.png");
 	mGameData->getTextures().load("resources/textures/others/ball.png");
 }
@@ -49,7 +51,7 @@ void GameState::makeSceneTree()
 void GameState::makeMap()
 {
 	std::unique_ptr<World::Entity::Map>
-		city(new World::Entity::Map(mGameData, "cityMap", mGameData->getTextures().get("resources/textures/map/city.png"), 2));
+		city(new World::Entity::Map(mGameData, "testMap", "resources/maps/testMap.tmx", 2));
 	mRoot.addChild(std::move(city));
 }
 
@@ -57,7 +59,7 @@ void GameState::makeWall()
 {
 	auto wall = std::make_unique<World::Entity::ShapeWithCollision>(mGameData);
 	wall->setPosition(sf::Vector2f(2000, 5000));
-	mRoot.getChild("cityMap").addChild(std::move(wall));
+	mRoot.getChild("testMap").addChild(std::move(wall));
 }
 
 void GameState::makeBoat()
@@ -93,7 +95,6 @@ void GameState::makePlayer()
 {
 	std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
 	player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
-	player->setPosition(sf::Vector2f(1900, 5240));
 	mRoot.addChild(std::move(player));
 }
 
