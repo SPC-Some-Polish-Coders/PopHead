@@ -20,6 +20,7 @@
 
 ## What is Premake
 Premake is an project build system. It can generate project files for several IDEs. Premake scripts are written in Lua.
+If you wanna see premake's website click [here](https://premake.github.io/).
 
 ## How to use Premake to generate PopHead project files
 We can use premake only from command line. There is no GUI for it. But don't worry. I assure you that it is very convinient and easy.
@@ -56,7 +57,7 @@ If you're not part of the PopHead team and you want to build it on IDE which we 
 
 ## What if I want to run premake on Linux or Mac
 For now we only support windows (We have windows premake binaries) because every PopHead developer works on Windows. <br/>
-But you can just download premake for another OS from here: https://premake.github.io/download.html#v4 and place the binaries
+But you can just download premake for another OS from [here](https://premake.github.io/download.html#v4) and place the binaries
 in premake directory.
 
 ## Premake5 and Premake4
