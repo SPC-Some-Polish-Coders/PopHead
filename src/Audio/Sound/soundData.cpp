@@ -22,7 +22,7 @@ SoundData::SoundData(float volumeMultiplier, bool loop)
 {
 }
 
-SpatialSoundData::SpatialSoundData(float volumeMultiplier, float min, float max, bool loop)
+SpatialSoundData::SpatialSoundData(float volumeMultiplier, bool loop, float min, float max)
 	:SoundData(volumeMultiplier, loop)
 	,mMin(min)
 	,mMax(max)

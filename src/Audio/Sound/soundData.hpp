@@ -19,7 +19,7 @@ struct SpatialSoundData : public SoundData
 	float mMin;
 	float mMax;
 
-	SpatialSoundData(float volumeMultiplier = 1.f, float min = 0.f, float max = 1000.f, bool loop = false);
+	SpatialSoundData(float volumeMultiplier = 1.f, bool loop = false, float min = 0.f, float max = 1000.f);
 };
 
 SoundData getAmbientSoundData(const std::string& filePath);
