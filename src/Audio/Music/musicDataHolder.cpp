@@ -5,12 +5,12 @@ using PopHead::Audio::MusicData;
 
 MusicDataHolder::MusicDataHolder()
 {
+	mAllThemesData["resources/music/explorationTheme.ogg"] = MusicData(0.2f, true);
 }
 
 MusicData MusicDataHolder::getMusicData(const std::string& filePath)
 {
-	if(filePath == "resources/music/explorationTheme.ogg")
-		return MusicData(0.2f, true);
-	else
-		return MusicData();
+	auto found = mAllThemesData.find(filePath);
+	mCurrentThemeData = found->second;
+	return found->second;
 }
