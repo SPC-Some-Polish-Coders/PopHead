@@ -34,6 +34,14 @@ void MusicPlayer::setPaused(bool pause)
 		mMusic.play();
 }
 
+void MusicPlayer::setMute(bool mute)
+{
+	if(mute)
+		mMusic.setVolume(0.f);
+	else
+		setVolume(mVolume);
+}
+
 void MusicPlayer::setVolume(float volume)
 {
 	mVolume = volume;

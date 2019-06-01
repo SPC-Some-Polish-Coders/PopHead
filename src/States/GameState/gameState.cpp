@@ -147,6 +147,7 @@ void GameState::input()
 	mRoot.input();
 	handleCollisionDebugShortcuts();
 	windowMinimalizeAndMaximalizeShortcut();
+	audioMuteShortcut();
 	shotgunShot();
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		mShouldCameraShake = true;
@@ -229,6 +230,24 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 			windowSizeState = WindowSizeState::fullScreen;
 			mGameData->getRenderer().getWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
 			break;
+		}
+	}
+}
+
+void GameState::audioMuteShortcut()
+{
+	static bool isMute = false;
+
+	if((mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) &&
+	   (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M)))
+	{
+		if(isMute) {
+			mGameData->getMusicPlayer().setMute(false);
+			isMute = false;
+		}
+		else {
+			mGameData->getMusicPlayer().setMute(true);
+			isMute = true;
 		}
 	}
 }

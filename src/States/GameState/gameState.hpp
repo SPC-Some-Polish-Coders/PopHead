@@ -35,6 +35,7 @@ private:
 	void switchCollisionDebugMode();
 	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
+	void audioMuteShortcut();
 	void shotgunShot();
 
 public:

@@ -18,6 +18,7 @@ public:
 	void stop();
 
 	void setPaused(bool pause);
+	void setMute(bool mute);
 	void setVolume(float volume);
 	float getVolume() { return mVolume; }
 
