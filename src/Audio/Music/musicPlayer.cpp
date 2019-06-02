@@ -30,24 +30,19 @@ void MusicPlayer::stop()
 
 void MusicPlayer::setPaused(bool pause)
 {
-	if(pause)
-		mMusic.pause();
-	else
-		mMusic.play();
+	pause ? mMusic.pause() : mMusic.play();
 }
 
 void MusicPlayer::setMute(bool mute)
 {
 	mMute = mute;
-	if(mute)
-		mMusic.setVolume(0.f);
-	else
-		setVolume(mVolume);
+	mute ? mMusic.setVolume(0.f) : setVolume(mVolume);
 }
 
 void MusicPlayer::setVolume(float volume)
 {
 	mVolume = volume;
-	float volumeMultiplier = musicDataHolder.getCurrentThemeData().volumeMultiplier;
+	auto themeData = musicDataHolder.getCurrentThemeData();
+	float volumeMultiplier = themeData.volumeMultiplier;
 	mMusic.setVolume(volume * volumeMultiplier);
 }
