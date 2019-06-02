@@ -4,6 +4,7 @@ using PopHead::Audio::MusicPlayer;
 
 MusicPlayer::MusicPlayer()
 	:mVolume(70.f)
+	,mMute(true)
 {
 }
 
@@ -18,6 +19,7 @@ void MusicPlayer::play(std::string filePath)
 	mMusic.openFromFile(filePath);
 	mMusic.setVolume(mVolume * currentThemeData.volumeMultiplier);
 	mMusic.setLoop(currentThemeData.loop);
+	setMute(mMute);
 	mMusic.play();
 }
 
@@ -36,6 +38,7 @@ void MusicPlayer::setPaused(bool pause)
 
 void MusicPlayer::setMute(bool mute)
 {
+	mMute = mute;
 	if(mute)
 		mMusic.setVolume(0.f);
 	else

@@ -36,6 +36,7 @@ private:
 	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
 	void audioMuteShortcut();
+	bool isAudioMuteShortcutPressed();
 	void shotgunShot();
 
 public:

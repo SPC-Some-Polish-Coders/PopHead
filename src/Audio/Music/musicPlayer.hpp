@@ -19,13 +19,15 @@ public:
 
 	void setPaused(bool pause);
 	void setMute(bool mute);
+	bool isMuted() { return mMute; }
 	void setVolume(float volume);
 	float getVolume() { return mVolume; }
 
 private:
+	MusicDataHolder musicDataHolder;
 	sf::Music mMusic;
 	float mVolume;
-	MusicDataHolder musicDataHolder;
+	bool mMute;
 };
 
 
