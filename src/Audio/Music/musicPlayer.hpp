@@ -2,7 +2,7 @@
 #define POPHEAD_AUDIO_MUSICPLAYER_H_
 
 #include <SFML/Audio.hpp>
-#include "musicResource.hpp"
+#include "MusicData/musicDataHolder.hpp"
 
 namespace PopHead {
 namespace Audio {
@@ -14,17 +14,20 @@ public:
 	MusicPlayer();
 	~MusicPlayer();
 
-	void play(std::string filePath);
+	void play(const std::string& filePath);
 	void stop();
 
 	void setPaused(bool pause);
+	void setMute(bool mute);
+	bool isMuted() { return mIsMuted; }
 	void setVolume(float volume);
 	float getVolume() { return mVolume; }
 
 private:
+	MusicDataHolder musicDataHolder;
 	sf::Music mMusic;
 	float mVolume;
-	MusicResource currentThemeData;
+	bool mIsMuted;
 };
 
 

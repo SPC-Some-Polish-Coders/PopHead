@@ -4,7 +4,7 @@
 #include "World/Entity/object.hpp"
 #include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
 #include "World/Animation/animation.hpp"
-#include "Physics/collisionBody.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 
 namespace PopHead {
 namespace World {

@@ -1,6 +1,6 @@
 #include "physicsEngine.hpp"
 
-#include "collisionBody.hpp"
+#include "CollisionBody/collisionBody.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
 

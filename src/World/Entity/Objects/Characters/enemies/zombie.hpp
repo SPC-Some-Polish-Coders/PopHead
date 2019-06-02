@@ -12,6 +12,11 @@ class Zombie : public Enemy
 {
 public:
 	Zombie(Base::GameData*);
+
+	void update(sf::Time delta) override;
+
+private:
+	sf::Clock timeFromLastGrowl;
 };
 
 

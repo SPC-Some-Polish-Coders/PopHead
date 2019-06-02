@@ -17,6 +17,7 @@ protected:
 	static bool getBool(const std::string&);
 private:
 	static void handleException(const std::string&);
+
 protected:
 	static std::string currentLine;
 private:

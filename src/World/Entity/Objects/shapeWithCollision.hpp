@@ -2,7 +2,7 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_SHAPEWITHCOLLISION_H_
 
 #include "World/Entity/object.hpp"
-#include "Physics/collisionBody.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 
 ///This class is for test purposes
 ///It should be probably deleted when map collisions and the whole Physics module are made

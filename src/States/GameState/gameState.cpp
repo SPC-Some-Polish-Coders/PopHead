@@ -147,6 +147,7 @@ void GameState::input()
 	mRoot.input();
 	handleCollisionDebugShortcuts();
 	windowMinimalizeAndMaximalizeShortcut();
+	audioMuteShortcut();
 	shotgunShot();
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		mShouldCameraShake = true;
@@ -233,23 +234,36 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 	}
 }
 
+void GameState::audioMuteShortcut()
+{
+	bool isMuted = mGameData->getMusicPlayer().isMuted();
+	bool mute = !isMuted;
+	if(isAudioMuteShortcutPressed())
+		mGameData->getMusicPlayer().setMute(mute);
+}
+
+bool GameState::isAudioMuteShortcutPressed()
+{
+	return 
+		mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl) &&
+		mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M);
+}
+
 void GameState::shotgunShot()
 {
 	// It's an sound player test.
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
-		mGameData->getSoundPlayer().playSound("resources/sounds/barretaShot.wav");
+		mGameData->getSoundPlayer().playAmbientSound("resources/sounds/barretaShot.wav");
 }
 
 void GameState::update(sf::Time delta)
 {
 	mRoot.update(delta);
-
 	if (mShouldCameraShake)
 		cameraShake();
-
 	cameraMovement(delta);
-
 	boatMovement(delta);
+	updateListenerPosition();
 }
 
 void GameState::cameraShake()
@@ -270,4 +284,10 @@ void GameState::boatMovement(sf::Time delta)
 {
 	auto& boat = dynamic_cast<World::Entity::Character&>(mRoot.getChild("boat"));
 	boat.move(sf::Vector2f(delta.asSeconds() * -15, 0));
+}
+
+void GameState::updateListenerPosition()
+{
+	World::Entity::Object& player = dynamic_cast<World::Entity::Object&>(mRoot.getChild("player"));
+	mGameData->getSoundPlayer().setListenerPosition(player.getPosition());
 }

@@ -1,7 +1,7 @@
 //#ifndef PH_RELEASE
 
 #include "collisionDebugSettings.hpp"
-#include "Physics/bodyType.hpp"
+#include "Physics/CollisionBody/bodyType.hpp"
 #include "Utilities/debug.hpp"
 #include <string>
 

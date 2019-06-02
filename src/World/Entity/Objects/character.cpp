@@ -1,6 +1,6 @@
 #include "character.hpp"
 
-#include "Physics/bodyType.hpp"
+#include "Physics/CollisionBody/bodyType.hpp"
 
 using PopHead::World::Entity::Character;
 
