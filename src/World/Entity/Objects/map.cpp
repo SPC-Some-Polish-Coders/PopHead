@@ -15,17 +15,18 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	const Xml mapNode = document.getChild("map");
 
 	const Xml tilesetNode = mapNode.getChild("tileset");
-	const int tileWidth = tilesetNode.getAttribute("tilewidth").toInt();
-	const int tileHeight = tilesetNode.getAttribute("tileheight").toInt();
+	const unsigned tileWidth = tilesetNode.getAttribute("tilewidth").toUnsigned();
+	const unsigned tileHeight = tilesetNode.getAttribute("tileheight").toUnsigned();
+	const unsigned tilesetColumns = tilesetNode.getAttribute("columns").toUnsigned();
 
 	const Xml imageNode = tilesetNode.getChild("image");
 	std::string source = imageNode.getAttribute("source").toString();
 	source = Utilities::Parser::toFilename(source, '/');
 
 	const Xml layerNode = mapNode.getChild("layer");
-	const unsigned layerWidth = layerNode.getAttribute("width").toUnsigned();
-	const unsigned layerHeight = layerNode.getAttribute("height").toUnsigned();
-	mSprites.reserve(layerWidth * layerHeight);
+	const unsigned layerColumns = layerNode.getAttribute("width").toUnsigned();
+	const unsigned layerRows = layerNode.getAttribute("height").toUnsigned();
+	mSprites.reserve(layerColumns * layerRows);
 
 	const Xml dataNode = layerNode.getChild("data");
 	const std::string encoding = dataNode.getAttribute("encoding").toString();
@@ -33,20 +34,22 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 	const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
 
+	unsigned i = 0;
 	for (unsigned value : values) {
-		if (value) {
-			/* 
-				TODO: 
-				- Convert value from 1D to 2D (left, top)
-				- Move map resources path to some better place or make it a static const for example?
-			*/
+		if (value--) {		
+			// TODO: Fix bug with tileset loading. Use tilesetColumns instead of layerColumns or something like that?
+			const unsigned x = value % layerColumns;
+			const unsigned y = value / layerColumns;
 			sf::Sprite sprite(
-				mGameData->getTextures().get("resources/textures/map/" + source),
-				sf::IntRect(0, 0, tileWidth, tileHeight)
+				mGameData->getTextures().get("resources/textures/map/" + source), // TODO: Move map resources path to some better place or make it a static const for example?
+				sf::IntRect(x, y, tileWidth, tileHeight)
 			);
-			sprite.setScale(scale, scale);
+			//sprite.setScale(scale, scale);
+			const sf::Vector2f position((i % layerColumns) * tileWidth, (i / layerColumns) * tileHeight);
+			sprite.setPosition(position);
 			mSprites.push_back(sprite);
 		}
+		++i;
 	}
 }
 
