@@ -17,9 +17,7 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	const int tileHeight = tilesetNode.getAttribute("tileheight").toInt();
 	const Xml imageNode = tilesetNode.getChild("image");
 	std::string source = imageNode.getAttribute("source").toString();
-	const std::size_t begin = source.rfind("/");
-	if (begin != std::string::npos)
-		source = source.substr(begin + 1);
+	source = Utilities::Parser::toFilename(source, '/');
 
 	const Xml layerNode = mapNode.getChild("layer");
 	const Xml dataNode = layerNode.getChild("data");

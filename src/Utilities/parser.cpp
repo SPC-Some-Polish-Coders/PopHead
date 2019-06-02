@@ -7,7 +7,7 @@ std::string PopHead::Utilities::Parser::toModuleName(const std::string& sourceFi
 {
 	// WARNING: Don't use PH_EXCEPTION or PH_LOG here becouse they are using this method, so it can result in recursion
 
-	const std::string fullPath = "PopHead" + PH_PATH_SEPARATOR + "src";
+	const std::string fullPath = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
 	std::size_t begin = sourceFilePath.find(fullPath);
 	if (begin == std::string::npos) {
 		std::cout << "[Parser::toModuleName] Module location cannot be found" << std::endl;
@@ -28,4 +28,19 @@ std::string PopHead::Utilities::Parser::toModuleName(const std::string& sourceFi
 		return "None";
 	else
 		return sourceFilePath.substr(begin, end - begin);
+}
+
+std::string PopHead::Utilities::Parser::toFilename(const std::string& path, char separator)
+{
+	const std::size_t begin = path.rfind(separator);
+	if(begin != std::string::npos)
+		return path.substr(begin + 1);
+	return path;
+	/*
+		TODO:
+		Probably another possible implementation (which is better/faster?)
+
+		const std::size_t begin = path.rfind(separator);
+		return path.substr(begin + 1);
+	*/
 }
