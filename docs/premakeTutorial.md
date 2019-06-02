@@ -1,8 +1,26 @@
 # Premake usage tutorial
 -------------------------------------------------------
 
+## Table of Contents
+<details>
+<summary>"Click to expand"</summary>
+  
+- [What is Premake](#what-is-premake)
+- [How to use Premake to generate PopHead project files?](#how-to-use-premake-to-generate-pophead-project-files)
+    * [Visual Studio](#visual-studio)
+    * [CodeBlocks](#codeblocks)
+- [You have to copy openal32.dll](#you-have-to-copy-openal32-dll-file)
+- [Clean action](#clean-action)
+- [What if I want to code on other IDE then Visual Studio and CodeBlocks?](#what-if-i-want-to-code-on-other-ide-then-visual-studio-and-codeblocks)
+- [What if I want to run premake on Linux or Mac?](#what-if-i-want-to-run-premake-on-linux-or-mac)
+- [Premake5 and Premake4](#premake5-and-premake4)
+- [Issues](#issues)
+
+</details>
+
 ## What is Premake
 Premake is an project build system. It can generate project files for several IDEs. Premake scripts are written in Lua.
+If you wanna see premake's website click [here](https://premake.github.io/).
 
 ## How to use Premake to generate PopHead project files
 We can use premake only from command line. There is no GUI for it. But don't worry. I assure you that it is very convinient and easy.
@@ -22,7 +40,7 @@ or <br/>
 To generate project files for CodeBlocks enter: <br/>
 `premake4 codeblocks` <br/>
 
-## You have to copy openal32.dll
+## You have to copy openal32 dll file
 We link SFML statically so we don't need sfml dll files, but we need one certain .dll file which is openal32.dll.
 This file is in vendor/SFML_2.5.1-VisualStudio/dll/openal32.dll or vendor/SFML_2.5.1-CodeBlocks/dll/openal32.dll.
 You have to copy this file to directory from which you run PopHead.exe. Otherwise it won't work.
@@ -39,7 +57,7 @@ If you're not part of the PopHead team and you want to build it on IDE which we 
 
 ## What if I want to run premake on Linux or Mac
 For now we only support windows (We have windows premake binaries) because every PopHead developer works on Windows. <br/>
-But you can just download premake for another OS from here: https://premake.github.io/download.html#v4 and place the binaries
+But you can just download premake for another OS from [here](https://premake.github.io/download.html#v4) and place the binaries
 in premake directory.
 
 ## Premake5 and Premake4
