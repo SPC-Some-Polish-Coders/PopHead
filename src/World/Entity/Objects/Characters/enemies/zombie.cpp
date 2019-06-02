@@ -26,8 +26,7 @@ Zombie::Zombie(PopHead::Base::GameData* gameData)
 
 void Zombie::update(sf::Time delta)
 {
-	static sf::Clock timeFromLastGrowl;
-	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 5) {
+	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 2) {
 		mGameData->getSoundPlayer().playSpatialSound("resources/sounds/zombieGetsAttacked.wav", mPosition);
 		timeFromLastGrowl.restart();
 	}

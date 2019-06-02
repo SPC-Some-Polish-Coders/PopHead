@@ -10,11 +10,18 @@ namespace Audio {
 class SpatializationManager
 {
 public:
-	float getSpatialVolume(SoundData, const sf::Vector2f& soundPosition, float volume);
 	void setListenerPosition(sf::Vector2f listenerPosition) { mListenerPosition = listenerPosition; }
+	float getSpatialVolume(SoundData, const sf::Vector2f& soundPosition, float volume);
+private:
+	void init(SoundData, const sf::Vector2f& soundPosition, float volume);
+	float getMaximalVolume();
 
 private:
 	sf::Vector2f mListenerPosition;
+
+	SoundData mSoundData;
+	sf::Vector2f mSoundPosition;
+	float mVolume;
 };
 
 }}
