@@ -139,7 +139,7 @@ void GameState::setCamera()
 
 void GameState::playMusic()
 {
-	mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
+	//mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
 }
 
 void GameState::input()

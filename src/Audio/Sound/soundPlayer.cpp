@@ -1,11 +1,10 @@
 #include "soundPlayer.hpp"
 
-#include "SoundData/soundData.hpp"
 #include <cmath>
-
 #include "Utilities/debug.hpp"
 
 using PopHead::Audio::SoundPlayer;
+using PopHead::Audio::SoundData;
 
 SoundPlayer::SoundPlayer()
 	:mVolume(20.f)
@@ -24,34 +23,38 @@ void SoundPlayer::playAmbientSound(const std::string& filePath)
 	removeStoppedSounds();
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	sf::Sound sound;
-	sound.setBuffer(mSoundBuffers.get(filePath));
-	sound.setVolume(mVolume * soundData.mVolumeMultiplier);
-	sound.setLoop(soundData.mLoop);
-	mSounds.emplace_back(std::move(sound));
-	mSounds.back().play();
+	playSound(filePath, mVolume * soundData.mVolumeMultiplier, soundData.mLoop);
 }
 
-void SoundPlayer::playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition)
+void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector2f& soundPosition)
 {
 	removeStoppedSounds();
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
+	float spatialVolume = static_cast<float>(getSpatialVolume(soundData, soundPosition));
+	playSound(filePath, spatialVolume, soundData.mLoop);
+}
 
-	float volumeMultiplier = soundData.mVolumeMultiplier;
+int SoundPlayer::getSpatialVolume(SoundData soundData, const sf::Vector2f& soundPosition)
+{
 	float distance = hypotf(abs(mListenerPosition.x - soundPosition.x), abs(mListenerPosition.y - soundPosition.y));
 
-	if(distance > soundData.mMin && distance < soundData.mMax) {
+	if(distance > soundData.mMax)
+		return 0;
+	else if(distance < soundData.mMin)
+		return static_cast<int>(mVolume * soundData.mVolumeMultiplier);
+	else{
 		float scope = soundData.mMax - soundData.mMin;
-		volumeMultiplier *= ((scope - (distance - soundData.mMin)) / scope);
+		return static_cast<int>(mVolume * soundData.mVolumeMultiplier * ((scope - (distance - soundData.mMin)) / scope));
 	}
-	else if(distance > soundData.mMax)
-		volumeMultiplier = 0.f;
+}
 
+void SoundPlayer::playSound(const std::string& filePath, float volume, bool loop)
+{
 	sf::Sound sound;
 	sound.setBuffer(mSoundBuffers.get(filePath));
-	sound.setVolume(mVolume * volumeMultiplier);
-	sound.setLoop(soundData.mLoop);
+	sound.setVolume(volume);
+	sound.setLoop(loop);
 	mSounds.emplace_back(std::move(sound));
 	mSounds.back().play();
 }
