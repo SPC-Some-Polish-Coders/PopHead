@@ -1,7 +1,5 @@
 #include "musicPlayer.hpp"
 
-#include "musicData.hpp"
-
 using PopHead::Audio::MusicPlayer;
 
 MusicPlayer::MusicPlayer()
@@ -16,7 +14,7 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::play(std::string filePath)
 {
-	currentThemeData = getMusicData(filePath);
+	MusicData currentThemeData = musicDataHolder.getMusicData(filePath);
 	mMusic.openFromFile(filePath);
 	mMusic.setVolume(mVolume * currentThemeData.volumeMultiplier);
 	mMusic.setLoop(currentThemeData.loop);
@@ -36,8 +34,17 @@ void MusicPlayer::setPaused(bool pause)
 		mMusic.play();
 }
 
+void MusicPlayer::setMute(bool mute)
+{
+	if(mute)
+		mMusic.setVolume(0.f);
+	else
+		setVolume(mVolume);
+}
+
 void MusicPlayer::setVolume(float volume)
 {
 	mVolume = volume;
-	mMusic.setVolume(volume * currentThemeData.volumeMultiplier);
+	float volumeMultiplier = musicDataHolder.getCurrentThemeData().volumeMultiplier;
+	mMusic.setVolume(volume * volumeMultiplier);
 }

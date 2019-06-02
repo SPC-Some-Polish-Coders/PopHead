@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Base/gameData.hpp"
 #include "World/Entity/object.hpp"
-#include "CollisionDebug/collisionDebugRect.hpp"
+#include "Physics/CollisionDebug/collisionDebugRect.hpp"
 #include "Utilities/math.hpp"
 
 namespace PopHead {

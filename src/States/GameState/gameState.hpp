@@ -35,6 +35,7 @@ private:
 	void switchCollisionDebugMode();
 	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
+	void audioMuteShortcut();
 	void shotgunShot();
 
 public:
@@ -43,6 +44,7 @@ private:
 	void cameraShake();
 	void cameraMovement(sf::Time delta) const;
 	void boatMovement(sf::Time delta);
+	void updateListenerPosition();
 
 private:
 	bool mShouldCameraShake = false;

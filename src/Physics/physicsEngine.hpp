@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-#include "staticCollisionHandler.hpp"
-#include "kinematicCollisionHandler.hpp"
+#include "CollisionHandlers/staticCollisionHandler.hpp"
+#include "CollisionHandlers/kinematicCollisionHandler.hpp"
 
 namespace PopHead{
 namespace Physics{

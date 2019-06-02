@@ -1,6 +1,6 @@
 #include "staticCollisionHandler.hpp"
 
-#include "collisionBody.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
 

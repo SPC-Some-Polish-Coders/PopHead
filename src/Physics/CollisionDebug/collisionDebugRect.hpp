@@ -2,7 +2,7 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_COLLISIONDEBUGRECT_H_
 
 #include "World/Entity/object.hpp"
-#include "Physics/bodyType.hpp"
+#include "Physics/CollisionBody/bodyType.hpp"
 
 namespace PopHead {
 namespace Physics {
