@@ -139,7 +139,7 @@ void GameState::setCamera()
 
 void GameState::playMusic()
 {
-	//mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
+	mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
 }
 
 void GameState::input()
@@ -236,20 +236,17 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 
 void GameState::audioMuteShortcut()
 {
-	static bool isMute = false;
+	bool isMuted = mGameData->getMusicPlayer().isMuted();
+	bool mute = !isMuted;
+	if(isAudioMuteShortcutPressed())
+		mGameData->getMusicPlayer().setMute(mute);
+}
 
-	if((mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) &&
-	   (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M)))
-	{
-		if(isMute) {
-			mGameData->getMusicPlayer().setMute(false);
-			isMute = false;
-		}
-		else {
-			mGameData->getMusicPlayer().setMute(true);
-			isMute = true;
-		}
-	}
+bool GameState::isAudioMuteShortcutPressed()
+{
+	return 
+		mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl) &&
+		mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M);
 }
 
 void GameState::shotgunShot()
