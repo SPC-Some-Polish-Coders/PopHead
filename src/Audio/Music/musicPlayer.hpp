@@ -14,12 +14,12 @@ public:
 	MusicPlayer();
 	~MusicPlayer();
 
-	void play(std::string filePath);
+	void play(const std::string& filePath);
 	void stop();
 
 	void setPaused(bool pause);
 	void setMute(bool mute);
-	bool isMuted() { return mMute; }
+	bool isMuted() { return mIsMuted; }
 	void setVolume(float volume);
 	float getVolume() { return mVolume; }
 
@@ -27,7 +27,7 @@ private:
 	MusicDataHolder musicDataHolder;
 	sf::Music mMusic;
 	float mVolume;
-	bool mMute;
+	bool mIsMuted;
 };
 
 
