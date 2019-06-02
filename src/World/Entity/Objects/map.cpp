@@ -33,10 +33,13 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 	const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
 
-	// TODO: Convert values from 1D to 2D (left, top)
 	for (unsigned value : values) {
 		if (value) {
-			// TODO: Move map resources path to some better place or make it a static const for example?
+			/* 
+				TODO: 
+				- Convert value from 1D to 2D (left, top)
+				- Move map resources path to some better place or make it a static const for example?
+			*/
 			sf::Sprite sprite(
 				mGameData->getTextures().get("resources/textures/map/" + source),
 				sf::IntRect(0, 0, tileWidth, tileHeight)
