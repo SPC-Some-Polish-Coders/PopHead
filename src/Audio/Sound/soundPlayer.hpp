@@ -34,7 +34,6 @@ private:
 	Resources::SoundBufferHolder mSoundBuffers;
 	SoundDataHolder mSoundDataHolder;
 	std::list<sf::Sound> mSounds;
-	sf::Vector2f mListenerPosition;
 	float mVolume;
 	SpatializationManager mSpatializationManager;
 };

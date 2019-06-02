@@ -31,7 +31,7 @@ void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector
 	removeStoppedSounds();
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	float spatialVolume = static_cast<float>(mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume));
+	float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
 	playSound(filePath, spatialVolume, soundData.mLoop);
 }
 
