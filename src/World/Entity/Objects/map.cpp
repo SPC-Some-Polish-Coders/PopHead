@@ -1,6 +1,7 @@
 #include "map.hpp"
 #include "Base/gameData.hpp"
 #include "Utilities/xml.hpp"
+#include "Utilities/csv.hpp"
 
 using PopHead::World::Entity::Map;
 using PopHead::Utilities::Xml;
@@ -21,7 +22,8 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 
 	const Xml layerNode = mapNode.getChild("layer");
 	const Xml dataNode = layerNode.getChild("data");
-	// TODO: Parse csv
+	const std::vector<int> values = Utilities::Csv::toIntValues(dataNode.toString());
+	// TODO: Convert values from 1D to 2D (left, top)
 
 	// TODO: Move map path to some better place or make it a static const for example?
 	mSprite.setTexture(mGameData->getTextures().get("resources/textures/map/" + source));
