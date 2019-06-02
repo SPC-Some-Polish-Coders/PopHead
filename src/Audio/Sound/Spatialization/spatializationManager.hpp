@@ -14,7 +14,12 @@ public:
 	float getSpatialVolume(SoundData, const sf::Vector2f& soundPosition, float volume);
 private:
 	void init(SoundData, const sf::Vector2f& soundPosition, float volume);
+	float getDistanceBetweenListenerAndSoundSource();
+	bool isListenerOutOfHearableArea();
+	bool isListenerVeryCloseToSoundSource();
 	float getMaximalVolume();
+	float getVolumeForListenerInDistanceScope();
+	float getSpatializationFactor();
 
 private:
 	sf::Vector2f mListenerPosition;
@@ -22,6 +27,7 @@ private:
 	SoundData mSoundData;
 	sf::Vector2f mSoundPosition;
 	float mVolume;
+	float mDistanceBetweenListenerAndSoundSource;
 };
 
 }}
