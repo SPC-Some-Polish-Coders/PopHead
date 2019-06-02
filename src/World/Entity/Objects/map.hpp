@@ -3,6 +3,7 @@
 
 #include "World/Entity/object.hpp"
 #include <string>
+#include <vector>
 
 namespace PopHead{
 namespace World{
@@ -13,10 +14,11 @@ class Map : public Object
 {
 public:
     Map(Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale = 1);
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-    sf::Sprite mSprite;
+	std::vector<sf::Sprite> mSprites;
 };
 
 
