@@ -23,3 +23,12 @@ Zombie::Zombie(PopHead::Base::GameData* gameData)
 {
 	mSprite.setTexture(gameData->getTextures().get("resources/textures/characters/zombie.png"));
 }
+
+void Zombie::update(sf::Time delta)
+{
+	static sf::Clock timeFromLastGrowl;
+	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 5) {
+		mGameData->getSoundPlayer().playSpatialSound("resources/sounds/zombieGetsAttacked.wav", mPosition);
+		timeFromLastGrowl.restart();
+	}
+}
