@@ -33,8 +33,6 @@ project "PopHead"
     configuration "Debug"
         flags{"Symbols"}
         
-        defines{"PH_DEBUG"}
-        
         links{
             "sfml-graphics-s-d",
             "sfml-audio-s-d",
@@ -54,9 +52,6 @@ project "PopHead"
             "sfml-system-s"
         }
     
-    configuration "Release"
-        defines{"PH_RELEASE"}
-    
     configuration "Distribution"
         defines{"PH_DISTRIBUTION"}
     
@@ -74,6 +69,15 @@ project "PopHead"
         "ogg.lib",
         "openal32.lib"
     }
+
+    configuration "windows"
+        defines{"PH_WINDOWS"}
+
+    configuration "linux"
+        defines{"PH_LINUX"}
+
+    configuration "mac"
+        defines{"PH_MAC"}
 
     printf("For now PopHead supports only new Visual Studio versions and Codeblocks.")
     printf("If you have any problems with Premake or compiling PopHead contact Grzegorz \"Czapa\" Bednorz.")

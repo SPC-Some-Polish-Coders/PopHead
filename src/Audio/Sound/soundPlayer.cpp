@@ -31,22 +31,8 @@ void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector
 	removeStoppedSounds();
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	float spatialVolume = static_cast<float>(getSpatialVolume(soundData, soundPosition));
+	float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
 	playSound(filePath, spatialVolume, soundData.mLoop);
-}
-
-int SoundPlayer::getSpatialVolume(SoundData soundData, const sf::Vector2f& soundPosition)
-{
-	float distance = hypotf(abs(mListenerPosition.x - soundPosition.x), abs(mListenerPosition.y - soundPosition.y));
-
-	if(distance > soundData.mMax)
-		return 0;
-	else if(distance < soundData.mMin)
-		return static_cast<int>(mVolume * soundData.mVolumeMultiplier);
-	else{
-		float scope = soundData.mMax - soundData.mMin;
-		return static_cast<int>(mVolume * soundData.mVolumeMultiplier * ((scope - (distance - soundData.mMin)) / scope));
-	}
 }
 
 void SoundPlayer::playSound(const std::string& filePath, float volume, bool loop)

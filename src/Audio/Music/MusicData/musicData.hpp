@@ -8,8 +8,8 @@ namespace Audio {
 
 struct MusicData
 {
-	float volumeMultiplier;
-	bool loop;
+	float mVolumeMultiplier;
+	bool mLoop;
 
 	MusicData(float volumeMultiplier = 1.f, bool loop = false);
 };

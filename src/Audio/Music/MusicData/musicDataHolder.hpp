@@ -13,8 +13,8 @@ class MusicDataHolder
 public:
 	MusicDataHolder();
 
-	MusicData getMusicData(const std::string& filePath);
-	MusicData getCurrentThemeData() { return mCurrentThemeData; }
+	auto getMusicData (const std::string& filePath) -> const MusicData&;
+	auto getCurrentThemeData() -> const MusicData& { return mCurrentThemeData; }
 
 private:
 	std::map<std::string, MusicData> mAllThemesData;
