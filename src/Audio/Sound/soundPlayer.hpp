@@ -14,7 +14,9 @@ class SoundPlayer
 public:
 	SoundPlayer();
 
-	void playSound(const std::string& filePath);
+	void playAmbientSound(const std::string& filePath);
+	void playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition);
+	void setListenerPosition(const sf::Vector2f& listenerPosition) { mListenerPosition = listenerPosition; }
 	void setVolume(float volume);
 	void removeEverySound();
 
@@ -24,9 +26,10 @@ private:
 
 private:
 	Resources::SoundBufferHolder mSoundBuffers;
-	std::list<sf::Sound> mSounds;
-	float mVolume;
 	SoundDataHolder mSoundDataHolder;
+	std::list<sf::Sound> mSounds;
+	sf::Vector2f mListenerPosition;
+	float mVolume;
 };
 
 }}
