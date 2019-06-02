@@ -22,7 +22,7 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 
 	const Xml layerNode = mapNode.getChild("layer");
 	const Xml dataNode = layerNode.getChild("data");
-	const std::vector<int> values = Utilities::Csv::toIntValues(dataNode.toString());
+	const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
 	// TODO: Convert values from 1D to 2D (left, top)
 
 	// TODO: Move map path to some better place or make it a static const for example?
