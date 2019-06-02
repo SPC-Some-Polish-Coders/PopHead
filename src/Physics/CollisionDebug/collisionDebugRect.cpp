@@ -1,7 +1,7 @@
 #include "collisionDebugRect.hpp"
 
 #include "Base/gameData.hpp"
-#include "Physics/collisionBody.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 using PopHead::Physics::CollisionDebugRect;
