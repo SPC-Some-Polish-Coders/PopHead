@@ -1,37 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="13" height="7" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" name="supermario" tilewidth="32" tileheight="32" tilecount="744" columns="31">
   <image source="../textures/map/supermario.jpg" width="1008" height="793"/>
  </tileset>
- <tileset firstgid="745" name="wolf" tilewidth="32" tileheight="32" tilecount="240" columns="20">
-  <image source="../textures/map/wolf.png" width="640" height="384"/>
- </tileset>
- <layer id="1" name="Bottom" width="10" height="10">
+ <layer id="1" name="Bottom" width="13" height="7">
   <data encoding="csv">
-1,2,3,4,5,1,2,3,4,5,
-32,33,34,35,36,37,38,159,160,161,
-63,64,65,66,67,68,69,190,191,192,
-94,95,96,97,98,99,100,221,222,223,
-32,33,34,35,36,37,38,252,253,254,
-63,64,65,66,67,68,69,283,284,285,
-94,95,96,97,98,99,100,314,315,316,
-32,33,34,35,36,37,38,345,346,347,
-63,64,65,66,67,68,69,376,377,378,
-94,95,96,97,98,99,100,407,408,409
-</data>
- </layer>
- <layer id="2" name="Top" width="10" height="10">
-  <data encoding="csv">
-0,745,746,747,0,0,0,0,0,0,
-0,765,766,767,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,825,826,827,828,0,
-0,0,0,0,0,845,846,847,848,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,825,826,827,828,0,0,0,0,
-0,0,845,846,847,848,0,0,0,0
+1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,11,1,
+1,1,1,1,1,1,1,1,1,1,1,42,1,
+1,1,1,1,95,96,97,98,99,1,1,73,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,
+33,34,35,36,37,38,33,34,35,36,37,38,39
 </data>
  </layer>
 </map>

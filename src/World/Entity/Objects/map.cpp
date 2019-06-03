@@ -14,6 +14,12 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	document.loadFromFile(xmlFilename);
 
 	const Xml mapNode = document.getChild("map");
+	const std::string orientation = mapNode.getAttribute("orientation").toString();
+	if (orientation != "orthogonal")
+		PH_EXCEPTION("Used unsupported map orientation: " + orientation);
+	const std::string infinite = mapNode.getAttribute("infinite").toString();
+	if (infinite != "0")
+		PH_EXCEPTION("Infinite maps are not supported");
 	const sf::Vector2u mapSize(
 		mapNode.getAttribute("width").toUnsigned(),
 		mapNode.getAttribute("height").toUnsigned()
@@ -47,21 +53,25 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		TODO:
 		Move map resources path to some better place or make it a static const for example?
 	*/
+	unsigned i = 0;
 	for (unsigned value : values) {
 		if (value--) {
-			sf::Vector2u position = Utilities::Math::toTwoDimensional(value, tilesetColumns);
-			position.x *= tileSize.x;
-			position.y *= tileSize.y;
-			const sf::IntRect rect(
-				static_cast<sf::Vector2i>(position),
+			sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(value, tilesetColumns);
+			tilePosition.x *= tileSize.x;
+			tilePosition.y *= tileSize.y;
+			const sf::IntRect tileRect(
+				static_cast<sf::Vector2i>(tilePosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			const sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), rect);
-			//sprite.setScale(scale, scale);
-			//const sf::Vector2f position((i % layerColumns) * tileWidth, (i / layerColumns) * tileHeight);
-			//sprite.setPosition(position);
+			sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), tileRect);
+			sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
+			position.x *= tileSize.x;
+			position.y *= tileSize.y;
+			sprite.setPosition(position);
+			// TODO: Scale sprite? (scale funtion paramiter)
 			mSprites.push_back(sprite);
 		}
+		++i;
 	}
 }
 

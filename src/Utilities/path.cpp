@@ -13,6 +13,7 @@ std::string PopHead::Utilities::Path::toModuleName(const std::string& path)
 		std::cout << "[Path::toModuleName] Module location cannot be found" << std::endl;
 		throw std::runtime_error("[Path::toModuleName] Module location cannot be found");
 	}
+	// TODO: Replace that with rfind()?
 	if (path.find(searchedPath, begin + 1) != std::string::npos) {
 		std::cout << "[Path::toModuleName] Move folder with project to another location" << std::endl;
 		throw std::runtime_error("[Path::toModuleName] Move folder with project to another location");
