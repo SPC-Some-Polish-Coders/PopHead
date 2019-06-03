@@ -17,10 +17,10 @@ project "PopHead"
 
     includedirs{
         "../src",
-        "../vendor/SFML_2.5.1-CodeBlocks/include"
+        "../vendor/SFML_2.5.1/include"
     }
 
-    libdirs{"../vendor/SFML_2.5.1-CodeBlocks/lib"}
+    libdirs{"../vendor/SFML_2.5.1/lib-CodeBlocks"}
 
     files {
         "../src/**.hpp",

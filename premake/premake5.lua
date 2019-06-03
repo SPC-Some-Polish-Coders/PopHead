@@ -19,10 +19,10 @@ project "PopHead"
     
     includedirs{
         "../src",
-        "../vendor/SFML_2.5.1-VisualStudio/include"
+        "../vendor/SFML_2.5.1/include"
     }
 
-    libdirs{"../vendor/SFML_2.5.1-VisualStudio/lib"}
+    libdirs{"../vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
         "../src/**.hpp",
