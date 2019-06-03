@@ -14,12 +14,16 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	document.loadFromFile(xmlFilename);
 
 	const Xml mapNode = document.getChild("map");
+	const sf::Vector2u mapSize(
+		mapNode.getAttribute("width").toUnsigned(),
+		mapNode.getAttribute("height").toUnsigned()
+	);
+	const sf::Vector2u tileSize(
+		mapNode.getAttribute("tilewidth").toUnsigned(),
+		mapNode.getAttribute("tileheight").toUnsigned()
+	);
 
 	const Xml tilesetNode = mapNode.getChild("tileset");
-	const sf::Vector2u tileSize(
-		tilesetNode.getAttribute("tilewidth").toUnsigned(),
-		tilesetNode.getAttribute("tileheight").toUnsigned()
-	);
 	const unsigned tilesetColumns = tilesetNode.getAttribute("columns").toUnsigned();
 
 	const Xml imageNode = tilesetNode.getChild("image");
@@ -27,9 +31,11 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	source = Utilities::Path::toFilename(source, '/');
 
 	const Xml layerNode = mapNode.getChild("layer");
-	const unsigned layerColumns = layerNode.getAttribute("width").toUnsigned();
-	const unsigned layerRows = layerNode.getAttribute("height").toUnsigned();
-	mSprites.reserve(layerColumns * layerRows);
+	const sf::Vector2u layerSize(
+		layerNode.getAttribute("width").toUnsigned(),
+		layerNode.getAttribute("height").toUnsigned()
+	);
+	mSprites.reserve(layerSize.x * layerSize.y);
 
 	const Xml dataNode = layerNode.getChild("data");
 	const std::string encoding = dataNode.getAttribute("encoding").toString();
@@ -37,21 +43,25 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 	const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
 
-	unsigned i = 0;
+	/*
+		TODO:
+		Move map resources path to some better place or make it a static const for example?
+	*/
 	for (unsigned value : values) {
-		if (value--) {		
-			// TODO: Fix bug with tileset loading. Use tilesetColumns instead of layerColumns or something like that?
-			const sf::Vector2u rect = Utilities::Math::toTwoDimensional(value, tilesetColumns);
-			sf::Sprite sprite(
-				mGameData->getTextures().get("resources/textures/map/" + source), // TODO: Move map resources path to some better place or make it a static const for example?
-				sf::IntRect(sf::Vector2i(rect), static_cast<sf::Vector2i>(tileSize))
+		if (value--) {
+			sf::Vector2u position = Utilities::Math::toTwoDimensional(value, tilesetColumns);
+			position.x *= tileSize.x;
+			position.y *= tileSize.y;
+			const sf::IntRect rect(
+				static_cast<sf::Vector2i>(position),
+				static_cast<sf::Vector2i>(tileSize)
 			);
+			const sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), rect);
 			//sprite.setScale(scale, scale);
 			//const sf::Vector2f position((i % layerColumns) * tileWidth, (i / layerColumns) * tileHeight);
 			//sprite.setPosition(position);
 			mSprites.push_back(sprite);
 		}
-		++i;
 	}
 }
 
