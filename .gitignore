@@ -1,6 +1,5 @@
 # Executables, env dependend files
 *.o
-*.a
 *.so
 *.bat
 !logFilesCleaner.bat
