@@ -17,6 +17,9 @@ namespace Math {
 	inline sf::Vector2f getCenter(sf::FloatRect bounds)
 	{ return sf::Vector2f(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f); }
 
+	inline sf::Vector2u toTwoDimensional(unsigned value, unsigned columns)
+	{ return sf::Vector2u(value % columns, value / columns); }
+
 	inline sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed)
 	{
 		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
