@@ -18,10 +18,7 @@ template< typename ResourceType >
 auto ResourceHolder<ResourceType>::get(const std::string& name) -> ResourceType&
 {
     auto found = mResources.find(name);
-#ifndef NDEBUG
-	if (found == mResources.end())
-		PH_LOG(LogType::Error, "Resource \"" + name + "\" was not found!");
-#endif // !NDEBUG
+	PH_ASSERT(found != mResources.end(), "Resource \"" + name + "\" was not found!");
 	return *found->second;
 }
 

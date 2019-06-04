@@ -1,12 +1,8 @@
 # Executables, env dependend files
 *.o
-*.a
 *.so
 *.bat
 !logFilesCleaner.bat
-*.dll
-!vendor/SFML_2.5.1-CodeBlocks/dll/openal32.dll
-!vendor/SFML_2.5.1-VisualStudio/dll/openal32.dll
 
 # Build directories
 bin/

@@ -19,7 +19,7 @@
 #endif // !_MSC_VER
 
 #define PH_LOG(logType, message)\
-	PopHead::Logs::Logger::getLogger().writeLog(PopHead::Logs::LogData{message, PopHead::Utilities::Parser::toModuleName(std::string(__FILE__)), logType})
+	PopHead::Logs::Logger::getLogger().writeLog(PopHead::Logs::LogData{message, PopHead::Utilities::Path::toModuleName(std::string(__FILE__)), logType})
 
 #define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(PopHead::Logs::LogType::Error, message), PH_BREAKPOINT(), 0))
 

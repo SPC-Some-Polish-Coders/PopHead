@@ -6,7 +6,7 @@ using PopHead::Utilities::Xml;
 
 void Xml::loadFromFile(const std::string& filename)
 {
-	content.clear();
+	mContent.clear();
 	std::ifstream ifs(filename);
 	if (!ifs.is_open())
 		PH_EXCEPTION("cannot open file: " + filename);
@@ -19,10 +19,10 @@ void Xml::loadFromFile(const std::string& filename)
 		temp.insert(0, "?>");
 	else
 		temp.erase(0, begin);
-	content += temp;
+	mContent += temp;
 	while (std::getline(ifs, temp))
-		content += temp;
-	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + content);
+		mContent += temp;
+	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + mContent);
 }
 
 Xml Xml::getChild(std::string name) const
@@ -36,12 +36,12 @@ Xml Xml::getChild(std::string name) const
 	else if (isSelfClosingTag(begin))
 		PH_EXCEPTION("current tag cannot have children");
 
-	begin = content.find(name, begin + 1);
+	begin = mContent.find(name, begin + 1);
 	if (begin == std::string::npos)
 		PH_EXCEPTION("cannot find child");
 	++begin; // WARNING: Don't use += name.size() here if you want to keep tag name
 
-	std::size_t end = content.find('>', begin);
+	std::size_t end = mContent.find('>', begin);
 	if (end == std::string::npos)
 		PH_EXCEPTION("missing angle bracket in child opening tag");
 
@@ -51,14 +51,14 @@ Xml Xml::getChild(std::string name) const
 		name.insert(1, "/");
 		name.push_back('>');
 
-		end = content.find(name, end + 1);
+		end = mContent.find(name, end + 1);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing closing tag in child");
 	}
 
 	Xml xml;
-	xml.content = content.substr(begin, end - begin);
-	PH_LOG(LogType::Info, "Xml getChild(): " + xml.content);
+	xml.mContent = mContent.substr(begin, end - begin);
+	PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
 	return xml;
 }
 
@@ -73,12 +73,12 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 	else if (isSelfClosingTag(begin))
 		return std::vector<Xml>();
 
-	begin = content.find(name, begin + 1);
+	begin = mContent.find(name, begin + 1);
 	if (begin == std::string::npos)
 		return std::vector<Xml>();
 	++begin; // WARNING: Don't use += name.size() here if you want to keep tag name
 
-	std::size_t end = content.find('>', begin);
+	std::size_t end = mContent.find('>', begin);
 	if (end == std::string::npos)
 		PH_EXCEPTION("missing angle bracket in child opening tag");
 
@@ -88,36 +88,36 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 
 	std::vector<Xml> children;
 	if (isSelfClosingTag(end))
-		begin = content.find(name, end + 1);
+		begin = mContent.find(name, end + 1);
 	else {
-		end = content.find(endingTag, end + 1);
+		end = mContent.find(endingTag, end + 1);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing closing tag in child");
 
 		Xml xml;
-		xml.content = content.substr(begin, end - begin);
-		PH_LOG(LogType::Info, "Xml getChildren(): " + xml.content);
+		xml.mContent = mContent.substr(begin, end - begin);
+		PH_LOG(LogType::Info, "Xml getChildren(): " + xml.mContent);
 		children.push_back(xml);
-		begin = content.find(name, end + endingTag.size());
+		begin = mContent.find(name, end + endingTag.size());
 	}
 	while (begin != std::string::npos) {
 		++begin; // WARNING: Don't use += name.size() here if you want to keep tag name
 
-		end = content.find('>', begin);
+		end = mContent.find('>', begin);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing angle bracket in child opening tag");
 		if (isSelfClosingTag(end))
-			begin = content.find(name, end + 1);
+			begin = mContent.find(name, end + 1);
 		else {
-			end = content.find(endingTag, end + 1);
+			end = mContent.find(endingTag, end + 1);
 			if (end == std::string::npos)
 				PH_EXCEPTION("missing closing tag in child");
 
 			Xml xml;
-			xml.content = content.substr(begin, end - begin);
-			PH_LOG(LogType::Info, "Xml getChildren(): " + xml.content);
+			xml.mContent = mContent.substr(begin, end - begin);
+			PH_LOG(LogType::Info, "Xml getChildren(): " + xml.mContent);
 			children.push_back(xml);
-			begin = content.find(name, end + endingTag.size());
+			begin = mContent.find(name, end + endingTag.size());
 		}
 	}
 	return children;
@@ -139,12 +139,12 @@ Xml Xml::getAttribute(std::string name) const
 	name.push_back('\"');
 
 	// TODO: Improve performance by doing reverse find from end?
-	std::size_t begin = content.find(name);
+	std::size_t begin = mContent.find(name);
 	if (begin == std::string::npos)
 		PH_EXCEPTION("attribute name cannot be found");
 	begin += name.size();
 
-	std::size_t end = content.find('>');
+	std::size_t end = mContent.find('>');
 	if (end == std::string::npos)
 		PH_EXCEPTION("missing angle bracket in child opening tag");
 	if (isSelfClosingTag(end))
@@ -154,13 +154,13 @@ Xml Xml::getAttribute(std::string name) const
 	if (isEmptyAttributeValue(begin))
 		return Xml();
 
-	end = content.find('\"', begin + 1);
+	end = mContent.find('\"', begin + 1);
 	if (end == std::string::npos)
 		PH_EXCEPTION("missing closing quote");
 
 	Xml xml;
-	xml.content = content.substr(begin, end - begin);
-	PH_LOG(LogType::Info, "Xml getAttribute(): " + xml.content);
+	xml.mContent = mContent.substr(begin, end - begin);
+	PH_LOG(LogType::Info, "Xml getAttribute(): " + xml.mContent);
 	return xml;
 }
 
@@ -168,7 +168,7 @@ std::string Xml::toString() const
 {
 	std::size_t begin = findEndOfCurrentTagAttributes();
 	if (begin == std::string::npos)
-		return content;
+		return mContent;
 	++begin;
-	return content.substr(begin, content.size() - begin);
+	return mContent.substr(begin, mContent.size() - begin);
 }

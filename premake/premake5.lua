@@ -19,10 +19,10 @@ project "PopHead"
     
     includedirs{
         "../src",
-        "../vendor/SFML_2.5.1-VisualStudio/include"
+        "../vendor/SFML_2.5.1/include"
     }
 
-    libdirs{"../vendor/SFML_2.5.1-VisualStudio/lib"}
+    libdirs{"../vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
         "../src/**.hpp",
@@ -48,8 +48,6 @@ project "PopHead"
     filter "configurations:Debug"
         symbols "On"
 
-        defines{"PH_DEBUG"}
-
         links{
             "sfml-graphics-s-d",
             "sfml-audio-s-d",
@@ -69,11 +67,19 @@ project "PopHead"
             "sfml-system-s"
         }
 
-    filter{"configurations:Release"}
-        defines{"PH_RELEASE"}
-
     filter{"configurations:Distribution"}
         defines{"PH_DISTRIBUTION"}
+
+    filter "system:Windows"
+        defines{"PH_WINDOWS"}
+
+    filter "system:Unix"
+        defines{"PH_LINUX"}
+
+    filter "system:Mac"
+        defines{"PH_MAC"}
+
+    filter{}
 
     printf("For now PopHead supports only new Visual Studio versions and Codeblocks.")
     printf("If you have any problems with Premake or compiling PopHead contact Grzegorz \"Czapa\" Bednorz.")

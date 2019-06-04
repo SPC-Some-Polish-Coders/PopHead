@@ -20,21 +20,21 @@ public:
 
 	std::string toString() const;
 
-	int toInt() const { return std::stoi(content); }
+	int toInt() const { return std::stoi(mContent); }
 
-	unsigned toUnsigned() const { return Cast::toUnsigned(content); }
+	unsigned toUnsigned() const { return Cast::toUnsigned(mContent); }
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
-	{ return content[openingTagEndPosition - 1] == '/'; }
+	{ return mContent[openingTagEndPosition - 1] == '/'; }
 
 	bool isEmptyAttributeValue(std::size_t onePositionAfterAttributeValueOpeningQuote) const
-	{ return content[onePositionAfterAttributeValueOpeningQuote] == '\"'; }
+	{ return mContent[onePositionAfterAttributeValueOpeningQuote] == '\"'; }
 
 	std::size_t findEndOfCurrentTagAttributes() const
-	{ return content.find('>'); }
+	{ return mContent.find('>'); }
 
-	std::string content;
+	std::string mContent;
 };
 
 }}
