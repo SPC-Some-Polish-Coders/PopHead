@@ -36,42 +36,35 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	std::string source = imageNode.getAttribute("source").toString();
 	source = Utilities::Path::toFilename(source, '/');
 
-	const Xml layerNode = mapNode.getChild("layer");
-	const sf::Vector2u layerSize(
-		layerNode.getAttribute("width").toUnsigned(),
-		layerNode.getAttribute("height").toUnsigned()
-	);
-	mSprites.reserve(layerSize.x * layerSize.y);
-
-	const Xml dataNode = layerNode.getChild("data");
-	const std::string encoding = dataNode.getAttribute("encoding").toString();
-	if (encoding != "csv")
-		PH_EXCEPTION("Used unsupported data encoding: " + encoding);
-	const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
-
-	/*
-		TODO:
-		Move map resources path to some better place or make it a static const for example?
-	*/
-	unsigned i = 0;
-	for (unsigned value : values) {
-		if (value--) {
-			sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(value, tilesetColumns);
-			tilePosition.x *= tileSize.x;
-			tilePosition.y *= tileSize.y;
-			const sf::IntRect tileRect(
-				static_cast<sf::Vector2i>(tilePosition),
-				static_cast<sf::Vector2i>(tileSize)
-			);
-			sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), tileRect);
-			sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
-			position.x *= tileSize.x;
-			position.y *= tileSize.y;
-			sprite.setPosition(position);
-			// TODO: Scale sprite? (scale funtion paramiter)
-			mSprites.push_back(sprite);
+	// TODO: What if there are no layers? Change Xml impl or just do something here?
+	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
+	// TODO: Just use resize and replace push_back with [] in below loop?
+	mSprites.reserve(mapSize.x * mapSize.y * layerNodes.size());
+	for (const Xml& layerNode : layerNodes) {
+		const Xml dataNode = layerNode.getChild("data");
+		const std::string encoding = dataNode.getAttribute("encoding").toString();
+		if (encoding != "csv")
+			PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+		const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
+		for (std::size_t i = 0; i < values.size(); ++i) {
+			if (values[i]) {
+				sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(values[i] - 1, tilesetColumns);
+				tilePosition.x *= tileSize.x;
+				tilePosition.y *= tileSize.y;
+				const sf::IntRect tileRect(
+					static_cast<sf::Vector2i>(tilePosition),
+					static_cast<sf::Vector2i>(tileSize)
+				);
+				// TODO: Move map resources path to some better place or make it a static const for example?
+				sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), tileRect);
+				sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
+				position.x *= tileSize.x;
+				position.y *= tileSize.y;
+				sprite.setPosition(position);
+				// TODO: Scale sprite? (scale funtion paramiter)
+				mSprites.push_back(sprite);
+			}
 		}
-		++i;
 	}
 }
 
