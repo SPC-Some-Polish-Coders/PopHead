@@ -29,12 +29,22 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		mapNode.getAttribute("tileheight").toUnsigned()
 	);
 
-	const Xml tilesetNode = mapNode.getChild("tileset");
-	const unsigned tilesetColumns = tilesetNode.getAttribute("columns").toUnsigned();
+	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
+	/*
+		TODO:
+		Is it better to use reserve and push_back() instead of
+		size() in constructor and operator[] in below loop?
+	*/
+	TilesetsData tilesets;
+	tilesets.sources.resize(tilesetNodes.size());
+	tilesets.columnsAmounts.resize(tilesetNodes.size());
+	for (std::size_t i = 0; i < tilesetNodes.size(); ++i) {
+		tilesets.columnsAmounts[i] = tilesetNodes[i].getAttribute("columns").toUnsigned();
 
-	const Xml imageNode = tilesetNode.getChild("image");
-	std::string source = imageNode.getAttribute("source").toString();
-	source = Utilities::Path::toFilename(source, '/');
+		const Xml imageNode = tilesetNodes[i].getChild("image");
+		tilesets.sources[i] = imageNode.getAttribute("source").toString();
+		tilesets.sources[i] = Utilities::Path::toFilename(tilesets.sources[i], '/');
+	}
 
 	// TODO: What if there are no layers? Change Xml impl or just do something here?
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
@@ -46,17 +56,27 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		if (encoding != "csv")
 			PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 		const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
+
+		/*
+			TODO:
+			Use firstgid and tilecount from tileset to check which texture should be used?
+			After that use % to get poper value for sf::IntRect in sf::Sprite?
+
+			if (value >= firstgid && value <= firstgid + tilecount - 1)
+				use source of this tileset
+		*/
+
 		for (std::size_t i = 0; i < values.size(); ++i) {
 			if (values[i]) {
-				sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(values[i] - 1, tilesetColumns);
+				sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(values[i] - 1, tilesets.columnsAmounts.front());
 				tilePosition.x *= tileSize.x;
 				tilePosition.y *= tileSize.y;
 				const sf::IntRect tileRect(
 					static_cast<sf::Vector2i>(tilePosition),
 					static_cast<sf::Vector2i>(tileSize)
 				);
-				// TODO: Move map resources path to some better place or make it a static const for example?
-				sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), tileRect);
+				// TODO: Move map resources path to some better place and make it static const for example?
+				sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + tilesets.sources.front()), tileRect);
 				sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
 				position.x *= tileSize.x;
 				position.y *= tileSize.y;

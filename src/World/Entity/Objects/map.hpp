@@ -18,6 +18,11 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
+	struct TilesetsData {
+		std::vector<std::string> sources;
+		std::vector<unsigned> columnsAmounts;
+	};
+
 	std::vector<sf::Sprite> mSprites;
 };
 
