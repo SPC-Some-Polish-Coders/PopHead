@@ -44,7 +44,6 @@ void GameState::makeSceneTree()
 	makeBox();
 	makeBall();
 	makeStaticObjectToCamera();
-	setCamera();
 	playMusic();
 }
 
@@ -66,7 +65,7 @@ void GameState::makeBoat()
 {
 	std::unique_ptr<World::Entity::Character> boat(new World::Entity::Character(mGameData, "boat"));
 	boat->getSprite().setTexture(mGameData->getTextures().get("resources/textures/vehicles/boat.png"));
-	boat->setPosition(sf::Vector2f(1500, 5700));
+	boat->setPosition(sf::Vector2f(500, 700));
 
 	mRoot.addChild(std::move(boat));
 }
@@ -75,7 +74,7 @@ void GameState::makeNpc()
 {
 	std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
 	npc->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
-	npc->setPosition(sf::Vector2f(1650, 5760));
+	npc->setPosition(sf::Vector2f(650, 760));
 
 	mRoot.getChild("boat").addChild(std::move(npc));
 }
@@ -86,7 +85,7 @@ void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
 		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
 	npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
-	npcq->setPosition(sf::Vector2f(1850, 5240));
+	npcq->setPosition(sf::Vector2f(400, 400));
 
 	mRoot.addChild(std::move(npcq));
 }
@@ -101,7 +100,7 @@ void GameState::makePlayer()
 void GameState::makeZombie()
 {
 	auto zombie = std::make_unique<World::Entity::Zombie>(mGameData);
-	zombie->setPosition(sf::Vector2f(1935, 5000));
+	zombie->setPosition(sf::Vector2f(800, 300));
 	mRoot.addChild(std::move(zombie));
 }
 
@@ -110,7 +109,7 @@ void GameState::makeBox()
 	constexpr float mass = 49.5f;
 	auto box = std::make_unique<World::Entity::Character>(
 		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
-	box->setPosition(sf::Vector2f(1800, 4900));
+	box->setPosition(sf::Vector2f(100, 300));
 	box->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/box.png"));
 	mRoot.addChild(std::move(box));
 }
@@ -120,7 +119,7 @@ void GameState::makeBall()
 	constexpr float mass = 15.f;
 	auto ball = std::make_unique<World::Entity::Character>(
 		mGameData, "ball", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
-	ball->setPosition(sf::Vector2f(1600, 5150));
+	ball->setPosition(sf::Vector2f(505, 505));
 	ball->setScale(sf::Vector2f(0.4f, 0.4f));
 	ball->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/ball.png"));
 	mRoot.addChild(std::move(ball));
@@ -130,12 +129,6 @@ void GameState::makeStaticObjectToCamera()
 {
 	auto object = std::make_unique<World::Entity::StaticObjectToCamera>(mGameData);
 	mRoot.addChild(std::move(object));
-}
-
-void GameState::setCamera()
-{
-	const sf::Vector2f playerPosition(1900, 5220);
-	mGameData->getRenderer().getCamera().setCenter(playerPosition);
 }
 
 void GameState::playMusic()

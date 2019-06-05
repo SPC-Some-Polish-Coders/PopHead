@@ -25,7 +25,6 @@ private:
 	void makeBox();
 	void makeBall();
 	void makeStaticObjectToCamera();
-	void setCamera();
 	void playMusic();
 
 public:
