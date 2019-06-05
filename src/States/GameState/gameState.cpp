@@ -25,7 +25,6 @@ void GameState::loadResources()
 	mGameData->getTextures().load("resources/textures/vehicles/boat.png");
 	mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
 	mGameData->getTextures().load("resources/textures/characters/zombie.png");
-	mGameData->getTextures().load("resources/textures/map/city.png");
 	mGameData->getTextures().load("resources/textures/map/wolf.png");
 	mGameData->getTextures().load("resources/textures/map/supermario.jpg");
 	mGameData->getTextures().load("resources/textures/others/box.png");
