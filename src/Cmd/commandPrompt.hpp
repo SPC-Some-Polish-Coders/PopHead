@@ -18,9 +18,9 @@ public:
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
 
 private:
-	Base::GameData* mGameData;
-
 	sf::RectangleShape mCommandPromptBackground;
+	Base::GameData* mGameData;
+	bool mIsVisible;
 };
 
 }}
