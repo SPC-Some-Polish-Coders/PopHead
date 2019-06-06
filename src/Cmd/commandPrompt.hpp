@@ -15,6 +15,7 @@ public:
 	void input();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+	void move(sf::Vector2f offset) { mCommandPromptBackground.move(offset); }
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
 
 private:

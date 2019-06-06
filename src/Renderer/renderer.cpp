@@ -85,9 +85,11 @@ void Renderer::removeAllObjectsFromLayer( LayerID layerID )
 
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
+	const sf::Vector2f movementFromLastFrame = mCamera.getCameraMoveFromLastFrame();
 	for (const auto& guiObject : mLayers[LayerID::gui]) {
-		guiObject->move(mCamera.getCameraMoveFromLastFrame());
+		guiObject->move(movementFromLastFrame);
 	}
+	mGameData->getCommandPrompt().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const

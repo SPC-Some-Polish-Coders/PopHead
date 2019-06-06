@@ -5,10 +5,11 @@
 using PopHead::Cmd::CommandPrompt;
 
 CommandPrompt::CommandPrompt()
-	:mCommandPromptBackground(sf::Vector2f(1000, 100))
+	:mCommandPromptBackground(sf::Vector2f(650, 200))
 	,mIsVisible(false)
 {
 	mCommandPromptBackground.setFillColor(sf::Color(0, 0, 0, 230));
+	mCommandPromptBackground.setPosition(-500.f, 300.f);
 }
 
 void CommandPrompt::input()

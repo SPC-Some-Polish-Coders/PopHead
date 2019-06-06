@@ -56,7 +56,7 @@ void GameState::makeMap()
 void GameState::makeWall()
 {
 	auto wall = std::make_unique<World::Entity::ShapeWithCollision>(mGameData);
-	wall->setPosition(sf::Vector2f(2000, 5000));
+	wall->setPosition(sf::Vector2f(50, 50));
 	mRoot.getChild("testMap").addChild(std::move(wall));
 }
 
