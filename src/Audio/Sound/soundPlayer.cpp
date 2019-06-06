@@ -14,8 +14,8 @@ SoundPlayer::SoundPlayer()
 
 void SoundPlayer::loadEverySound()
 {
-	mSoundBuffers.load("resources/sounds/barretaShot.wav");
-	mSoundBuffers.load("resources/sounds/zombieGetsAttacked.wav");
+	mSoundBuffers.load("sounds/barretaShot.wav");
+	mSoundBuffers.load("sounds/zombieGetsAttacked.wav");
 }
 
 void SoundPlayer::playAmbientSound(const std::string& filePath)

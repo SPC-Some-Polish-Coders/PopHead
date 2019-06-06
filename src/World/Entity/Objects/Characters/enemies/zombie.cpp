@@ -21,13 +21,13 @@ namespace
 Zombie::Zombie(PopHead::Base::GameData* gameData)
 	:Enemy(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
 {
-	mSprite.setTexture(gameData->getTextures().get("resources/textures/characters/zombie.png"));
+	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombie.png"));
 }
 
 void Zombie::update(sf::Time delta)
 {
 	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 2) {
-		mGameData->getSoundPlayer().playSpatialSound("resources/sounds/zombieGetsAttacked.wav", mPosition);
+		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", mPosition);
 		timeFromLastGrowl.restart();
 	}
 }

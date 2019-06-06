@@ -5,7 +5,7 @@ using PopHead::Audio::MusicData;
 
 MusicDataHolder::MusicDataHolder()
 {
-	mAllThemesData["resources/music/explorationTheme.ogg"] = MusicData(1.2f, true);
+	mAllThemesData["music/explorationTheme.ogg"] = MusicData(1.2f, true);
 }
 
 auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&

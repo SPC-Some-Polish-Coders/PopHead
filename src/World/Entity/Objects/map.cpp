@@ -63,7 +63,7 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 				static_cast<sf::Vector2i>(tilePosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + source), tileRect);
+			sf::Sprite sprite(mGameData->getTextures().get("textures/map/" + source), tileRect);
 			sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;

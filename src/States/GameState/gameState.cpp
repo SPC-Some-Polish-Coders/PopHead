@@ -21,14 +21,14 @@ GameState::GameState(PopHead::Base::GameData* const gameData)
 
 void GameState::loadResources()
 {
-	mGameData->getTextures().load("resources/textures/characters/vaultManSheet.png");
-	mGameData->getTextures().load("resources/textures/vehicles/boat.png");
-	mGameData->getTextures().load("resources/textures/characters/vaultMan.png");
-	mGameData->getTextures().load("resources/textures/characters/zombie.png");
-	mGameData->getTextures().load("resources/textures/map/wolf.png");
-	mGameData->getTextures().load("resources/textures/map/supermario.jpg");
-	mGameData->getTextures().load("resources/textures/others/box.png");
-	mGameData->getTextures().load("resources/textures/others/ball.png");
+	mGameData->getTextures().load("textures/characters/vaultManSheet.png");
+	mGameData->getTextures().load("textures/vehicles/boat.png");
+	mGameData->getTextures().load("textures/characters/vaultMan.png");
+	mGameData->getTextures().load("textures/characters/zombie.png");
+	mGameData->getTextures().load("textures/map/wolf.png");
+	mGameData->getTextures().load("textures/map/supermario.jpg");
+	mGameData->getTextures().load("textures/others/box.png");
+	mGameData->getTextures().load("textures/others/ball.png");
 }
 
 void GameState::makeSceneTree()
@@ -49,7 +49,7 @@ void GameState::makeSceneTree()
 void GameState::makeMap()
 {
 	std::unique_ptr<World::Entity::Map>
-		city(new World::Entity::Map(mGameData, "testMap", "resources/maps/testMap.tmx", 2));
+		city(new World::Entity::Map(mGameData, "testMap", "maps/testMap.tmx", 2));
 	mRoot.addChild(std::move(city));
 }
 
@@ -63,7 +63,7 @@ void GameState::makeWall()
 void GameState::makeBoat()
 {
 	std::unique_ptr<World::Entity::Character> boat(new World::Entity::Character(mGameData, "boat"));
-	boat->getSprite().setTexture(mGameData->getTextures().get("resources/textures/vehicles/boat.png"));
+	boat->getSprite().setTexture(mGameData->getTextures().get("textures/vehicles/boat.png"));
 	boat->setPosition(sf::Vector2f(500, 700));
 
 	mRoot.addChild(std::move(boat));
@@ -72,7 +72,7 @@ void GameState::makeBoat()
 void GameState::makeNpc()
 {
 	std::unique_ptr<World::Entity::Character> npc(new World::Entity::Character(mGameData, "npc"));
-	npc->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
+	npc->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
 	npc->setPosition(sf::Vector2f(650, 760));
 
 	mRoot.getChild("boat").addChild(std::move(npc));
@@ -83,7 +83,7 @@ void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 	constexpr float mass = 50.f;
 	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
 		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
-	npcq->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultMan.png"));
+	npcq->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
 	npcq->setPosition(sf::Vector2f(400, 400));
 
 	mRoot.addChild(std::move(npcq));
@@ -92,7 +92,7 @@ void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 void GameState::makePlayer()
 {
 	std::unique_ptr<World::Entity::Player> player(new World::Entity::Player(mGameData));
-	player->getSprite().setTexture(mGameData->getTextures().get("resources/textures/characters/vaultManSheet.png"));
+	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultManSheet.png"));
 	mRoot.addChild(std::move(player));
 }
 
@@ -109,7 +109,7 @@ void GameState::makeBox()
 	auto box = std::make_unique<World::Entity::Character>(
 		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
 	box->setPosition(sf::Vector2f(100, 300));
-	box->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/box.png"));
+	box->getSprite().setTexture(mGameData->getTextures().get("textures/others/box.png"));
 	mRoot.addChild(std::move(box));
 }
 
@@ -120,7 +120,7 @@ void GameState::makeBall()
 		mGameData, "ball", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
 	ball->setPosition(sf::Vector2f(505, 505));
 	ball->setScale(sf::Vector2f(0.4f, 0.4f));
-	ball->getSprite().setTexture(mGameData->getTextures().get("resources/textures/others/ball.png"));
+	ball->getSprite().setTexture(mGameData->getTextures().get("textures/others/ball.png"));
 	mRoot.addChild(std::move(ball));
 }
 
@@ -132,7 +132,7 @@ void GameState::makeStaticObjectToCamera()
 
 void GameState::playMusic()
 {
-	mGameData->getMusicPlayer().play("resources/music/explorationTheme.ogg");
+	mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
 }
 
 void GameState::input()
@@ -246,7 +246,7 @@ void GameState::shotgunShot()
 {
 	// It's an sound player test.
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
-		mGameData->getSoundPlayer().playAmbientSound("resources/sounds/barretaShot.wav");
+		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 }
 
 void GameState::update(sf::Time delta)
