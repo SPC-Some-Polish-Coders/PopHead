@@ -11,7 +11,7 @@
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
-#include "Logs/logger.hpp"
+#include "Cmd/commandPrompt.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -40,6 +40,7 @@ private:
 	std::unique_ptr< Input::Input >             mInput;
 	std::unique_ptr< Renderer::Renderer >       mRenderer;
 	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine;
+	std::unique_ptr< Cmd::CommandPrompt >		mCommandPrompt;
 };
 
 

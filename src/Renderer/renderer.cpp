@@ -4,6 +4,7 @@
 
 #include "World/Entity/object.hpp"
 #include "Utilities/debug.hpp"
+#include "Base/gameData.hpp"
 
 using PopHead::Renderer::Renderer;
 using PopHead::Renderer::Layer;
@@ -20,7 +21,8 @@ Renderer::Renderer()
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
                     { LayerID::airEntities, Layer() },
-                    { LayerID::GUI, Layer() }, }
+                    { LayerID::gui, Layer() },
+					{ LayerID::cmd, Layer() } }
 {
     mCamera.setViewport(mViewports.at(FullScreenViewport));
     mWindow.setVerticalSyncEnabled(false);
@@ -45,6 +47,8 @@ void Renderer::draw() const
     for( const auto& layer : mLayers )
         for( const auto& object : layer.second )
             mWindow.draw(*object);
+
+	mWindow.draw(mGameData->getCommandPrompt());
 
     mWindow.display();
 }
@@ -81,7 +85,7 @@ void Renderer::removeAllObjectsFromLayer( LayerID layerID )
 
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
-	for (const auto& guiObject : mLayers[LayerID::GUI]) {
+	for (const auto& guiObject : mLayers[LayerID::gui]) {
 		guiObject->move(mCamera.getCameraMoveFromLastFrame());
 	}
 }
@@ -100,7 +104,7 @@ std::string Renderer::getLayerName(LayerID layerID) const
 		return "airEntities";
 	case PopHead::Renderer::LayerID::collisionDebug:
 		return "collisionDebug";
-	case PopHead::Renderer::LayerID::GUI:
+	case PopHead::Renderer::LayerID::gui:
 		return "GUI";
 	default:
 		return "ERROR: Every object has to be bind to the certain layer.";

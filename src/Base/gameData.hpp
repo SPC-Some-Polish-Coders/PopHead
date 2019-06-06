@@ -10,6 +10,7 @@
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
+#include "Cmd/commandPrompt.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -29,7 +30,8 @@ public:
 		States::StateMachine* const,
 		Input::Input* const,
 		Renderer::Renderer* const,
-		Physics::PhysicsEngine* const);
+		Physics::PhysicsEngine* const,
+		Cmd::CommandPrompt* const);
 
 	auto getSoundPlayer()	const -> Audio::SoundPlayer & { return *mSoundPlayer; }
 	auto getMusicPlayer()	const -> Audio::MusicPlayer & { return *mMusicPlayer; }
@@ -40,6 +42,7 @@ public:
 	auto getInput()			const -> Input::Input & { return *mInput; }
 	auto getRenderer()		const -> Renderer::Renderer & { return *mRenderer; }
 	auto getPhysicsEngine()	const -> Physics::PhysicsEngine & { return *mPhysicsEngine; }
+	auto getCommandPrompt()	const -> Cmd::CommandPrompt & { return *mCommandPrompt; }
 
 private:
 	Audio::SoundPlayer* const mSoundPlayer;
@@ -51,10 +54,11 @@ private:
 	Input::Input* const mInput;
 	Renderer::Renderer* const mRenderer;
 	Physics::PhysicsEngine* const mPhysicsEngine;
+	Cmd::CommandPrompt* const mCommandPrompt;
 };
 
 inline GameData::GameData()
-	: GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	: GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 
 inline GameData::GameData(
 	Audio::SoundPlayer* const soundPlayer,
@@ -65,7 +69,8 @@ inline GameData::GameData(
 	States::StateMachine* const stateMachine,
 	Input::Input* const input,
 	Renderer::Renderer* const renderer,
-	Physics::PhysicsEngine* const physicsEngine)
+	Physics::PhysicsEngine* const physicsEngine,
+	Cmd::CommandPrompt* const commandPrompt)
 	: mSoundPlayer{soundPlayer}
 	, mMusicPlayer{musicPlayer}
 	, mTextures{textures}
@@ -75,11 +80,11 @@ inline GameData::GameData(
 	, mInput{input}
 	, mRenderer{renderer}
 	, mPhysicsEngine{physicsEngine}
+	, mCommandPrompt{commandPrompt}
 {
 }
 
 
-}
-}
+}}
 
 #endif // !POPHEAD_BASE_GAMEDATA_H_
