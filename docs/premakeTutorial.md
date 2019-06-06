@@ -42,7 +42,7 @@ To generate project files for CodeBlocks enter: <br/>
 
 ## You have to copy openal32 dll file
 We link SFML statically so we don't need sfml dll files, but we need one certain .dll file which is openal32.dll.
-This file is in vendor/SFML_2.5.1-VisualStudio/dll/openal32.dll or vendor/SFML_2.5.1-CodeBlocks/dll/openal32.dll.
+This file is in vendor/SFML_2.5.1/dll/
 You have to copy this file to directory from which you run PopHead.exe. Otherwise it won't work.
 
 ## Clean action
