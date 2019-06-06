@@ -94,18 +94,20 @@ std::string Renderer::getLayerName(LayerID layerID) const
 {
 	switch (layerID)
 	{
-	case PopHead::Renderer::LayerID::floorEntities:
+	case LayerID::floorEntities:
 		return "floorEntities";
-	case PopHead::Renderer::LayerID::staticEntities:
+	case LayerID::staticEntities:
 		return "staticEntities";
-	case PopHead::Renderer::LayerID::kinematicEntities:
+	case LayerID::kinematicEntities:
 		return "kinematicEntities";
-	case PopHead::Renderer::LayerID::airEntities:
+	case LayerID::airEntities:
 		return "airEntities";
-	case PopHead::Renderer::LayerID::collisionDebug:
+	case LayerID::collisionDebug:
 		return "collisionDebug";
-	case PopHead::Renderer::LayerID::gui:
-		return "GUI";
+	case LayerID::gui:
+		return "gui";
+	case LayerID::cmd:
+		return "cmd";
 	default:
 		return "ERROR: Every object has to be bind to the certain layer.";
 	}
