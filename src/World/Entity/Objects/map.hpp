@@ -20,7 +20,9 @@ public:
 private:
 	struct TilesetsData {
 		std::vector<std::string> sources;
-		std::vector<unsigned> columnsAmounts;
+		std::vector<unsigned> columnsCounts;
+		std::vector<unsigned> gid;
+		std::vector<unsigned> tileCounts;
 	};
 
 	std::vector<sf::Sprite> mSprites;

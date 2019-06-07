@@ -37,9 +37,13 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 	*/
 	TilesetsData tilesets;
 	tilesets.sources.resize(tilesetNodes.size());
-	tilesets.columnsAmounts.resize(tilesetNodes.size());
+	tilesets.columnsCounts.resize(tilesetNodes.size());
+	tilesets.gid.resize(tilesetNodes.size());
+	tilesets.tileCounts.resize(tilesetNodes.size());
 	for (std::size_t i = 0; i < tilesetNodes.size(); ++i) {
-		tilesets.columnsAmounts[i] = tilesetNodes[i].getAttribute("columns").toUnsigned();
+		tilesets.columnsCounts[i] = tilesetNodes[i].getAttribute("columns").toUnsigned();
+		tilesets.gid[i] = tilesetNodes[i].getAttribute("firstgid").toUnsigned();
+		tilesets.tileCounts[i] = tilesetNodes[i].getAttribute("tilecount").toUnsigned();
 
 		const Xml imageNode = tilesetNodes[i].getChild("image");
 		tilesets.sources[i] = imageNode.getAttribute("source").toString();
@@ -68,21 +72,29 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 
 		for (std::size_t i = 0; i < values.size(); ++i) {
 			if (values[i]) {
-				sf::Vector2u tilePosition = Utilities::Math::toTwoDimensional(values[i] - 1, tilesets.columnsAmounts.front());
-				tilePosition.x *= tileSize.x;
-				tilePosition.y *= tileSize.y;
-				const sf::IntRect tileRect(
-					static_cast<sf::Vector2i>(tilePosition),
-					static_cast<sf::Vector2i>(tileSize)
-				);
-				// TODO: Move map resources path to some better place and make it static const for example?
-				sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + tilesets.sources.front()), tileRect);
-				sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
-				position.x *= tileSize.x;
-				position.y *= tileSize.y;
-				sprite.setPosition(position);
-				// TODO: Scale sprite? (scale funtion paramiter)
-				mSprites.push_back(sprite);
+				for (std::size_t j = 0; j < tilesets.gid.size(); ++j) {
+					const unsigned lastTileGid = tilesets.gid[j] + tilesets.tileCounts[j] - 1;
+					if (values[i] >= tilesets.gid[j] && values[i] <= lastTileGid) {
+						sf::Vector2u tilePosition = 
+							Utilities::Math::toTwoDimensional(values[i] - tilesets.gid[j], tilesets.columnsCounts[j]);
+						tilePosition.x *= tileSize.x;
+						tilePosition.y *= tileSize.y;
+						const sf::IntRect tileRect(
+							static_cast<sf::Vector2i>(tilePosition),
+							static_cast<sf::Vector2i>(tileSize)
+						);
+						// TODO: Move map resources path to some better place and make it static const for example?
+						sf::Sprite sprite(mGameData->getTextures().get("resources/textures/map/" + tilesets.sources[j]), tileRect);
+						sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
+						position.x *= tileSize.x;
+						position.y *= tileSize.y;
+						sprite.setPosition(position);
+						// TODO: Scale sprite? (scale funtion paramiter)
+						mSprites.push_back(sprite);
+
+						break;
+					}
+				}
 			}
 		}
 	}
