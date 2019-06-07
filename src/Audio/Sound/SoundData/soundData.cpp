@@ -2,7 +2,7 @@
 
 using PopHead::Audio::SoundData;
 
-SoundData::SoundData(float volumeMultiplier, bool loop, float min, float max)
+SoundData::SoundData(const float volumeMultiplier, const bool loop, const float min, const float max)
 	:mVolumeMultiplier(volumeMultiplier)
 	,mLoop(loop)
 	,mMin(min)

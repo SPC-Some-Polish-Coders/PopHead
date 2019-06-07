@@ -26,16 +26,16 @@ void SoundPlayer::playAmbientSound(const std::string& filePath)
 	playSound(filePath, mVolume * soundData.mVolumeMultiplier, soundData.mLoop);
 }
 
-void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector2f& soundPosition)
+void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition)
 {
 	removeStoppedSounds();
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
+	const float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
 	playSound(filePath, spatialVolume, soundData.mLoop);
 }
 
-void SoundPlayer::playSound(const std::string& filePath, float volume, bool loop)
+void SoundPlayer::playSound(const std::string& filePath, const float volume, const bool loop)
 {
 	sf::Sound sound;
 	sound.setBuffer(mSoundBuffers.get(filePath));
@@ -47,12 +47,12 @@ void SoundPlayer::playSound(const std::string& filePath, float volume, bool loop
 
 void SoundPlayer::removeStoppedSounds()
 {
-	mSounds.remove_if([](sf::Sound sound) {
+	mSounds.remove_if([](const sf::Sound sound) {
 		return sound.getStatus() == sf::Sound::Status::Stopped;
 	});
 }
 
-void SoundPlayer::setVolume(float volume)
+void SoundPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
 	for(auto& sound : mSounds) {

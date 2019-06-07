@@ -3,7 +3,7 @@
 using PopHead::Audio::SpatializationManager;
 using PopHead::Audio::SoundData;
 
-float SpatializationManager::getSpatialVolume(SoundData soundData, const sf::Vector2f& soundPosition, float volume)
+float SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	init(soundData, soundPosition, volume);
 
@@ -15,7 +15,7 @@ float SpatializationManager::getSpatialVolume(SoundData soundData, const sf::Vec
 		return getVolumeForListenerInDistanceScope();
 }
 
-void SpatializationManager::init(SoundData soundData, const sf::Vector2f& soundPosition, float volume)
+void SpatializationManager::init(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	mSoundData = soundData;
 	mSoundPosition = soundPosition;

@@ -10,10 +10,10 @@ namespace Audio {
 class SpatializationManager
 {
 public:
-	void setListenerPosition(sf::Vector2f listenerPosition) { mListenerPosition = listenerPosition; }
-	float getSpatialVolume(SoundData, const sf::Vector2f& soundPosition, float volume);
+	void setListenerPosition(const sf::Vector2f listenerPosition) { mListenerPosition = listenerPosition; }
+	float getSpatialVolume(const SoundData, const sf::Vector2f soundPosition, const float volume);
 private:
-	void init(SoundData, const sf::Vector2f& soundPosition, float volume);
+	void init(const SoundData, const sf::Vector2f soundPosition, const float volume);
 	float getDistanceBetweenListenerAndSoundSource();
 	bool isListenerOutOfHearableArea();
 	bool isListenerVeryCloseToSoundSource();
@@ -22,9 +22,8 @@ private:
 	float getSpatializationFactor();
 
 private:
-	sf::Vector2f mListenerPosition;
-
 	SoundData mSoundData;
+	sf::Vector2f mListenerPosition;
 	sf::Vector2f mSoundPosition;
 	float mVolume;
 	float mDistanceBetweenListenerAndSoundSource;

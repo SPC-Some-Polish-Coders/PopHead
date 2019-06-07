@@ -7,11 +7,11 @@ namespace Audio {
 struct SoundData
 {
 	float mVolumeMultiplier;
-	bool mLoop;
 	float mMin;
 	float mMax;
+	bool mLoop;
 
-	SoundData(float volumeMultiplier = 1.f, bool loop = false, float min = 0.f, float max = 1000.f);
+	SoundData(const float volumeMultiplier = 1.f, const bool loop = false, const float min = 0.f, const float max = 1000.f);
 };
 
 }}
