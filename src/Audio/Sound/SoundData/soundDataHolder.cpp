@@ -5,12 +5,13 @@ using PopHead::Audio::SoundData;
 
 SoundDataHolder::SoundDataHolder()
 {
-	mAllSoundsData["resources/sounds/barretaShot.wav"] = SoundData(1.4f);
-	mAllSoundsData["resources/sounds/zombieGetsAttacked.wav"] = SoundData(5.f, false, 200.f, 1000.f);
+	using namespace std::string_literals;
+	mAllSoundsData["sounds/barretaShot.wav"s] = SoundData(1.4f);
+	mAllSoundsData["sounds/zombieGetsAttacked.wav"s] = SoundData(5.f, false, 200.f, 1000.f);
 }
 
 SoundData SoundDataHolder::getSoundData(const std::string& filePath)
 {
-	auto found = mAllSoundsData.find(filePath);
+	const auto found = mAllSoundsData.find(filePath);
 	return found->second;
 }

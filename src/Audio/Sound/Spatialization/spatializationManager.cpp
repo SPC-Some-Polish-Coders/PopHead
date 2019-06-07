@@ -3,7 +3,7 @@
 using PopHead::Audio::SpatializationManager;
 using PopHead::Audio::SoundData;
 
-float SpatializationManager::getSpatialVolume(SoundData soundData, const sf::Vector2f& soundPosition, float volume)
+float SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	init(soundData, soundPosition, volume);
 
@@ -15,7 +15,7 @@ float SpatializationManager::getSpatialVolume(SoundData soundData, const sf::Vec
 		return getVolumeForListenerInDistanceScope();
 }
 
-void SpatializationManager::init(SoundData soundData, const sf::Vector2f& soundPosition, float volume)
+void SpatializationManager::init(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	mSoundData = soundData;
 	mSoundPosition = soundPosition;
@@ -32,12 +32,12 @@ float SpatializationManager::getDistanceBetweenListenerAndSoundSource()
 
 bool SpatializationManager::isListenerOutOfHearableArea()
 {
-	return mDistanceBetweenListenerAndSoundSource > mSoundData.mMax;
+	return mDistanceBetweenListenerAndSoundSource > mSoundData.mMaximalHearableDistance;
 }
 
 bool SpatializationManager::isListenerVeryCloseToSoundSource()
 {
-	return mDistanceBetweenListenerAndSoundSource < mSoundData.mMin;
+	return mDistanceBetweenListenerAndSoundSource < mSoundData.mMaximalFullVolumeDistance;
 }
 
 float SpatializationManager::getMaximalVolume()
@@ -52,8 +52,8 @@ float SpatializationManager::getVolumeForListenerInDistanceScope()
 
 float SpatializationManager::getSpatializationFactor()
 {
-	float scope = mSoundData.mMax - mSoundData.mMin;
-	float distanceBetweenListenerAndMaximalVolumeArea = mDistanceBetweenListenerAndSoundSource - mSoundData.mMin;
+	float scope = mSoundData.mMaximalHearableDistance - mSoundData.mMaximalFullVolumeDistance;
+	float distanceBetweenListenerAndMaximalVolumeArea = mDistanceBetweenListenerAndSoundSource - mSoundData.mMaximalFullVolumeDistance;
 	float distanceBetweenListenerAndHearableAreaBound = scope - distanceBetweenListenerAndMaximalVolumeArea;
 	float spatializationFactor = distanceBetweenListenerAndHearableAreaBound / scope;
 	return spatializationFactor;

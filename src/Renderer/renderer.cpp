@@ -4,6 +4,7 @@
 
 #include "World/Entity/object.hpp"
 #include "Utilities/debug.hpp"
+#include "Base/gameData.hpp"
 
 using PopHead::Renderer::Renderer;
 using PopHead::Renderer::Layer;
@@ -20,7 +21,8 @@ Renderer::Renderer()
                     { LayerID::staticEntities, Layer() },
                     { LayerID::kinematicEntities, Layer() },
                     { LayerID::airEntities, Layer() },
-                    { LayerID::GUI, Layer() }, }
+                    { LayerID::gui, Layer() },
+					{ LayerID::cmd, Layer() } }
 {
     mCamera.setViewport(mViewports.at(FullScreenViewport));
     mWindow.setVerticalSyncEnabled(false);
@@ -45,6 +47,8 @@ void Renderer::draw() const
     for( const auto& layer : mLayers )
         for( const auto& object : layer.second )
             mWindow.draw(*object);
+
+	mWindow.draw(mGameData->getCommandPrompt());
 
     mWindow.display();
 }
@@ -81,27 +85,31 @@ void Renderer::removeAllObjectsFromLayer( LayerID layerID )
 
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
-	for (const auto& guiObject : mLayers[LayerID::GUI]) {
-		guiObject->move(mCamera.getCameraMoveFromLastFrame());
+	const sf::Vector2f movementFromLastFrame = mCamera.getCameraMoveFromLastFrame();
+	for (const auto& guiObject : mLayers[LayerID::gui]) {
+		guiObject->move(movementFromLastFrame);
 	}
+	mGameData->getCommandPrompt().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const
 {
 	switch (layerID)
 	{
-	case PopHead::Renderer::LayerID::floorEntities:
+	case LayerID::floorEntities:
 		return "floorEntities";
-	case PopHead::Renderer::LayerID::staticEntities:
+	case LayerID::staticEntities:
 		return "staticEntities";
-	case PopHead::Renderer::LayerID::kinematicEntities:
+	case LayerID::kinematicEntities:
 		return "kinematicEntities";
-	case PopHead::Renderer::LayerID::airEntities:
+	case LayerID::airEntities:
 		return "airEntities";
-	case PopHead::Renderer::LayerID::collisionDebug:
+	case LayerID::collisionDebug:
 		return "collisionDebug";
-	case PopHead::Renderer::LayerID::GUI:
-		return "GUI";
+	case LayerID::gui:
+		return "gui";
+	case LayerID::cmd:
+		return "cmd";
 	default:
 		return "ERROR: Every object has to be bind to the certain layer.";
 	}

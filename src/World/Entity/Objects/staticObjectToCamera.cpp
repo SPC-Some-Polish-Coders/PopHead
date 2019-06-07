@@ -5,7 +5,7 @@
 using PopHead::World::Entity::StaticObjectToCamera;
 
 StaticObjectToCamera::StaticObjectToCamera(PopHead::Base::GameData* gameData)
-:Object(gameData, "staticObjectToCamera", Renderer::LayerID::GUI)
+:Object(gameData, "staticObjectToCamera", Renderer::LayerID::gui)
 ,mShape(sf::Vector2f(300, 100))
 {
 	mShape.setFillColor(sf::Color::Red);

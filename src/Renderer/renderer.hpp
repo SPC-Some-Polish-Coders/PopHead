@@ -11,6 +11,7 @@
 #include "Renderer/camera.hpp"
 
 namespace PopHead {
+	namespace Base { class GameData; }
 namespace Renderer {
 
 
@@ -43,6 +44,8 @@ public:
 	auto getWindow() const -> sf::RenderWindow& { return mWindow; }
 	auto getCamera() -> Camera& { return mCamera; }
 
+	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
+
 private:
 	void setPositionOfStaticObjectsToCamera();
 	std::string getLayerName(LayerID) const;
@@ -52,6 +55,7 @@ private:
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	mutable sf::RenderWindow mWindow;
 	std::map< LayerID, Layer > mLayers;
+	Base::GameData* mGameData;
 };
 
 }}

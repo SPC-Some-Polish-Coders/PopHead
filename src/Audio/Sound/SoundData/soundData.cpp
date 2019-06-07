@@ -2,10 +2,11 @@
 
 using PopHead::Audio::SoundData;
 
-SoundData::SoundData(float volumeMultiplier, bool loop, float min, float max)
+SoundData::SoundData(const float volumeMultiplier, const bool loop,
+					const float maximalFullVolumeDistance, const float maximalHearableDistance)
 	:mVolumeMultiplier(volumeMultiplier)
 	,mLoop(loop)
-	,mMin(min)
-	,mMax(max)
+	,mMaximalFullVolumeDistance(maximalFullVolumeDistance)
+	,mMaximalHearableDistance(maximalHearableDistance)
 {
 }

@@ -6,13 +6,12 @@
 #include <Windows.h>
 #endif // _WIN32
 #include <stdexcept>
-#include <cstdlib>
 #include <string>
 
-void showErrorMessageBox(const std::string& message, const std::string& title)
+void showErrorMessageBox(const std::string& title, const std::string& message)
 {
 #ifdef _WIN32
-	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
+	MessageBoxA(nullptr, title.c_str(), message.c_str(), MB_OK | MB_ICONERROR);
 #endif // _WIN32
 }
 
@@ -24,12 +23,12 @@ int main()
 		game.run();
 	}
 	catch (const std::exception& e) {
-		showErrorMessageBox(e.what(), "Error");
-		return EXIT_FAILURE;
+		showErrorMessageBox("Error", e.what());
+		throw;
 	}
 	catch (...) {
-		showErrorMessageBox("Unknown error occurred!", "Error");
-		return EXIT_FAILURE;
+		showErrorMessageBox("Error", "Unknown error occurred!");
+		throw;
 	}
-    return EXIT_SUCCESS;
+	return 0;
 }

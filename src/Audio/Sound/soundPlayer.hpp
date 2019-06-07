@@ -17,13 +17,13 @@ public:
 	SoundPlayer();
 
 	void playAmbientSound(const std::string& filePath);
-	void playSpatialSound(const std::string& filePath, const sf::Vector2f& soundPosition);
+	void playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition);
 private:
-	void playSound(const std::string& filePath, float volume, bool loop);
+	void playSound(const std::string& filePath, const float volume, const bool loop);
 
 public:
-	void setListenerPosition(const sf::Vector2f& listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
-	void setVolume(float volume);
+	void setListenerPosition(const sf::Vector2f listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
+	void setVolume(const float volume);
 	void removeEverySound();
 
 private:
@@ -31,11 +31,11 @@ private:
 	void removeStoppedSounds();
 
 private:
+	std::list<sf::Sound> mSounds;
 	Resources::SoundBufferHolder mSoundBuffers;
 	SoundDataHolder mSoundDataHolder;
-	std::list<sf::Sound> mSounds;
-	float mVolume;
 	SpatializationManager mSpatializationManager;
+	float mVolume;
 };
 
 }}

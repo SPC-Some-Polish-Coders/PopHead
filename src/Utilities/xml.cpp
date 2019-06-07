@@ -4,15 +4,16 @@
 
 using PopHead::Utilities::Xml;
 
-void Xml::loadFromFile(const std::string& filename)
+void Xml::loadFromFile(const std::string& filePath)
 {
 	mContent.clear();
-	std::ifstream ifs(filename);
+	std::string fullFilePath = "resources/" + filePath;
+	std::ifstream ifs(fullFilePath);
 	if (!ifs.is_open())
-		PH_EXCEPTION("cannot open file: " + filename);
+		PH_EXCEPTION("cannot open file: " + fullFilePath);
 	std::string temp;
 	if (!std::getline(ifs, temp))
-		PH_EXCEPTION("given xml file is empty or something bad happened (" + filename + ")");
+		PH_EXCEPTION("given xml file is empty or something bad happened (" + fullFilePath + ")");
 	// Delete prolog but keep '?>' for implementation purpose
 	const std::size_t begin = temp.find("?>");
 	if (begin == std::string::npos)

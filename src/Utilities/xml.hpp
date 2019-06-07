@@ -10,7 +10,7 @@ namespace Utilities {
 
 class Xml {
 public:
-	void loadFromFile(const std::string& filename);
+	void loadFromFile(const std::string& filePath);
 
 	Xml getChild(std::string name) const;
 
