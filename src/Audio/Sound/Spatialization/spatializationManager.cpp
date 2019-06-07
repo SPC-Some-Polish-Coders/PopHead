@@ -32,12 +32,12 @@ float SpatializationManager::getDistanceBetweenListenerAndSoundSource()
 
 bool SpatializationManager::isListenerOutOfHearableArea()
 {
-	return mDistanceBetweenListenerAndSoundSource > mSoundData.mMax;
+	return mDistanceBetweenListenerAndSoundSource > mSoundData.mMaximalHearableDistance;
 }
 
 bool SpatializationManager::isListenerVeryCloseToSoundSource()
 {
-	return mDistanceBetweenListenerAndSoundSource < mSoundData.mMin;
+	return mDistanceBetweenListenerAndSoundSource < mSoundData.mMaximalFullVolumeDistance;
 }
 
 float SpatializationManager::getMaximalVolume()
@@ -52,8 +52,8 @@ float SpatializationManager::getVolumeForListenerInDistanceScope()
 
 float SpatializationManager::getSpatializationFactor()
 {
-	float scope = mSoundData.mMax - mSoundData.mMin;
-	float distanceBetweenListenerAndMaximalVolumeArea = mDistanceBetweenListenerAndSoundSource - mSoundData.mMin;
+	float scope = mSoundData.mMaximalHearableDistance - mSoundData.mMaximalFullVolumeDistance;
+	float distanceBetweenListenerAndMaximalVolumeArea = mDistanceBetweenListenerAndSoundSource - mSoundData.mMaximalFullVolumeDistance;
 	float distanceBetweenListenerAndHearableAreaBound = scope - distanceBetweenListenerAndMaximalVolumeArea;
 	float spatializationFactor = distanceBetweenListenerAndHearableAreaBound / scope;
 	return spatializationFactor;

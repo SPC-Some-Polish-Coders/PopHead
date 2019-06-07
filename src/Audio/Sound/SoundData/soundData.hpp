@@ -7,11 +7,12 @@ namespace Audio {
 struct SoundData
 {
 	float mVolumeMultiplier;
-	float mMin;
-	float mMax;
+	float mMaximalFullVolumeDistance;
+	float mMaximalHearableDistance;
 	bool mLoop;
 
-	SoundData(const float volumeMultiplier = 1.f, const bool loop = false, const float min = 0.f, const float max = 1000.f);
+	SoundData(const float volumeMultiplier = 1.f, const bool loop = false,
+			const float maximalFullVolumeDistance = 0.f, const float maximalHearableDistance = 1000.f);
 };
 
 }}
