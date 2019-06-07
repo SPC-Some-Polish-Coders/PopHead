@@ -15,11 +15,12 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::play(const std::string& filePath)
 {
-	MusicData currentThemeData = musicDataHolder.getMusicData(filePath);
-	mMusic.openFromFile(filePath);
+	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
+	const std::string fullFilePath = "resources/" + filePath;
+	mMusic.openFromFile(fullFilePath);
 	mMusic.setVolume(mVolume * currentThemeData.mVolumeMultiplier);
 	mMusic.setLoop(currentThemeData.mLoop);
-	setMute(mIsMuted);
+	setMuted(mIsMuted);
 	mMusic.play();
 }
 
@@ -28,21 +29,21 @@ void MusicPlayer::stop()
 	mMusic.stop();
 }
 
-void MusicPlayer::setPaused(bool pause)
+void MusicPlayer::setPaused(const bool pause)
 {
 	pause ? mMusic.pause() : mMusic.play();
 }
 
-void MusicPlayer::setMute(bool mute)
+void MusicPlayer::setMuted(const bool mute)
 {
 	mute ? mMusic.setVolume(0.f) : setVolume(mVolume);
 	mIsMuted = mute;
 }
 
-void MusicPlayer::setVolume(float volume)
+void MusicPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
-	auto themeData = musicDataHolder.getCurrentThemeData();
-	float volumeMultiplier = themeData.mVolumeMultiplier;
+	const auto themeData = mMusicDataHolder.getCurrentThemeData();
+	const float volumeMultiplier = themeData.mVolumeMultiplier;
 	mMusic.setVolume(volume * volumeMultiplier);
 }

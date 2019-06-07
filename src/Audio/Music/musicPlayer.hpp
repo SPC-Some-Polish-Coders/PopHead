@@ -17,14 +17,14 @@ public:
 	void play(const std::string& filePath);
 	void stop();
 
-	void setPaused(bool pause);
-	void setMute(bool mute);
+	void setPaused(const bool pause);
+	void setMuted(const bool mute);
 	bool isMuted() { return mIsMuted; }
-	void setVolume(float volume);
+	void setVolume(const float volume);
 	float getVolume() { return mVolume; }
 
 private:
-	MusicDataHolder musicDataHolder;
+	MusicDataHolder mMusicDataHolder;
 	sf::Music mMusic;
 	float mVolume;
 	bool mIsMuted;

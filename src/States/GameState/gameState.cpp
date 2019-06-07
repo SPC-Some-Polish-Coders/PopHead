@@ -229,10 +229,11 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 
 void GameState::audioMuteShortcut()
 {
-	bool isMuted = mGameData->getMusicPlayer().isMuted();
-	bool mute = !isMuted;
-	if(isAudioMuteShortcutPressed())
-		mGameData->getMusicPlayer().setMute(mute);
+	if(isAudioMuteShortcutPressed()) {
+		bool isMuted = mGameData->getMusicPlayer().isMuted();
+		bool mute = !isMuted;
+		mGameData->getMusicPlayer().setMuted(mute);
+	}
 }
 
 bool GameState::isAudioMuteShortcutPressed()
