@@ -9,7 +9,7 @@ CommandPrompt::CommandPrompt()
 	,mIsVisible(false)
 	,mText(new sf::Text())
 	,mContent(new std::string())
-	,mKeyboardInputHandler(mText, mContent)
+	,mKeyboardInputHandler(mText, mContent, &mIsVisible)
 {
 	mCommandPromptBackground.setFillColor(sf::Color(0, 0, 0, 230));
 	mCommandPromptBackground.setPosition(-450.f, 300.f);
@@ -17,9 +17,6 @@ CommandPrompt::CommandPrompt()
 
 void CommandPrompt::input()
 {
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Tab))
-		mIsVisible = !mIsVisible;
-
 	mKeyboardInputHandler.handleInput();
 }
 

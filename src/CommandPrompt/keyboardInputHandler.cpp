@@ -4,13 +4,23 @@
 
 using PopHead::CommandPrompt::KeyboardInputHandler;
 
-KeyboardInputHandler::KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content)
+KeyboardInputHandler::KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content, bool* isVisible)
 	:mText(text)
 	,mContent(content)
+	,mIsVisible(isVisible)
 {
 }
 
 void KeyboardInputHandler::handleInput()
+{
+	handleKeyboardCharactersInput();
+	handleEnter();
+	showOrHideCommandPromptInput();
+
+	mText->setString(*mContent);
+}
+
+void KeyboardInputHandler::handleKeyboardCharactersInput()
 {
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::A))
 		* mContent += "a";
@@ -66,12 +76,18 @@ void KeyboardInputHandler::handleInput()
 		* mContent += "z";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		* mContent += " ";
-
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::BackSpace))
 		mContent->pop_back();
-	
+}
+
+void KeyboardInputHandler::handleEnter()
+{
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Enter))
 		mContent->clear();
+}
 
-	mText->setString(*mContent);
+void KeyboardInputHandler::showOrHideCommandPromptInput()
+{
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Tab))
+		* mIsVisible = !*mIsVisible;
 }

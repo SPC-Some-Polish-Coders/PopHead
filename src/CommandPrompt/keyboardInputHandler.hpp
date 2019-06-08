@@ -12,16 +12,21 @@ namespace CommandPrompt {
 class KeyboardInputHandler
 {
 public:
-	KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content);
+	KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content, bool* isVisible);
 	
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
 
 	void handleInput();
+private:
+	void handleKeyboardCharactersInput();
+	void handleEnter();
+	void showOrHideCommandPromptInput();
 
 private:
 	Base::GameData* mGameData;
 	std::shared_ptr<sf::Text> mText;
 	std::shared_ptr<std::string> mContent;
+	bool* mIsVisible;
 };
 
 }}
