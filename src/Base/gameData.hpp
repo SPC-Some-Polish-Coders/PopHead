@@ -10,7 +10,7 @@
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
-#include "Cmd/commandPrompt.hpp"
+#include "CommandPrompt/commandPrompt.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -31,7 +31,7 @@ public:
 		Input::Input* const,
 		Renderer::Renderer* const,
 		Physics::PhysicsEngine* const,
-		Cmd::CommandPrompt* const);
+		CommandPrompt::CommandPrompt* const);
 
 	auto getSoundPlayer()	const -> Audio::SoundPlayer & { return *mSoundPlayer; }
 	auto getMusicPlayer()	const -> Audio::MusicPlayer & { return *mMusicPlayer; }
@@ -42,7 +42,7 @@ public:
 	auto getInput()			const -> Input::Input & { return *mInput; }
 	auto getRenderer()		const -> Renderer::Renderer & { return *mRenderer; }
 	auto getPhysicsEngine()	const -> Physics::PhysicsEngine & { return *mPhysicsEngine; }
-	auto getCommandPrompt()	const -> Cmd::CommandPrompt & { return *mCommandPrompt; }
+	auto getCommandPrompt()	const -> CommandPrompt::CommandPrompt & { return *mCommandPrompt; }
 
 private:
 	Audio::SoundPlayer* const mSoundPlayer;
@@ -54,7 +54,7 @@ private:
 	Input::Input* const mInput;
 	Renderer::Renderer* const mRenderer;
 	Physics::PhysicsEngine* const mPhysicsEngine;
-	Cmd::CommandPrompt* const mCommandPrompt;
+	CommandPrompt::CommandPrompt* const mCommandPrompt;
 };
 
 inline GameData::GameData()
@@ -70,7 +70,7 @@ inline GameData::GameData(
 	Input::Input* const input,
 	Renderer::Renderer* const renderer,
 	Physics::PhysicsEngine* const physicsEngine,
-	Cmd::CommandPrompt* const commandPrompt)
+	CommandPrompt::CommandPrompt* const commandPrompt)
 	: mSoundPlayer{soundPlayer}
 	, mMusicPlayer{musicPlayer}
 	, mTextures{textures}

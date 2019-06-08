@@ -20,7 +20,7 @@ Game::Game()
 	, mInput{new Input::Input()}
 	, mRenderer{new Renderer::Renderer()}
 	, mPhysicsEngine{new Physics::PhysicsEngine()}
-	, mCommandPrompt{new Cmd::CommandPrompt()}
+	, mCommandPrompt{new CommandPrompt::CommandPrompt()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -41,7 +41,7 @@ Game::Game()
 	Input::EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
 
-	mCommandPrompt->setGameData(mGameData.get());
+	mCommandPrompt->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
 }
