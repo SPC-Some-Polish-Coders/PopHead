@@ -25,7 +25,7 @@ private:
 		std::vector<unsigned> tileCounts;
 	};
 
-	std::vector<sf::Sprite> mSprites;
+	std::vector<sf::Sprite> mTiles;
 };
 
 
