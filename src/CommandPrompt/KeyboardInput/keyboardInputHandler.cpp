@@ -13,6 +13,7 @@ KeyboardInputHandler::KeyboardInputHandler(CommandPromptSharedData commandPrompt
 void KeyboardInputHandler::handleInput()
 {
 	handleKeyboardCharactersInput();
+	handleBackspace();
 	handleEnter();
 	showOrHideCommandPromptInput();
 
@@ -77,8 +78,15 @@ void KeyboardInputHandler::handleKeyboardCharactersInput()
 		content += "z";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
 		content += " ";
-	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::BackSpace))
-		content.pop_back();
+}
+
+void KeyboardInputHandler::handleBackspace()
+{
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::BackSpace)) {
+		auto& content = mCommandPromptSharedData->mContent;
+		if(content.size() > 0)
+			content.pop_back();
+	}
 }
 
 void KeyboardInputHandler::handleEnter()

@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
-#include "commandPromptSharedData.hpp"
+#include "CommandPrompt/commandPromptSharedData.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
@@ -20,6 +20,7 @@ public:
 	void handleInput();
 private:
 	void handleKeyboardCharactersInput();
+	void handleBackspace();
 	void handleEnter();
 	void showOrHideCommandPromptInput();
 

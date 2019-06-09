@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include "commandPromptSharedData.hpp"
-#include "keyboardInputHandler.hpp"
+#include "KeyboardInput/keyboardInputHandler.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
