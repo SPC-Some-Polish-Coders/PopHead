@@ -8,6 +8,7 @@
 
 namespace PopHead {
 	namespace Base { class GameData; }
+	namespace Input { struct KeyboardManager; }
 namespace CommandPrompt {
 
 class KeyboardInputHandler
