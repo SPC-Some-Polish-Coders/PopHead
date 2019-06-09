@@ -88,6 +88,8 @@ void KeyboardInputHandler::handleEnter()
 
 void KeyboardInputHandler::showOrHideCommandPromptInput()
 {
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Tab))
-		* mIsVisible = !*mIsVisible;
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Tab)) {
+		mGameData->getInput().getAction().setEnabled(*mIsVisible);
+		*mIsVisible = !*mIsVisible;
+	}
 }
