@@ -27,6 +27,7 @@ private:
 private:
 	Base::GameData* mGameData;
 	CommandPromptSharedData mCommandPromptSharedData;
+	std::string& mContent;
 };
 
 }}
