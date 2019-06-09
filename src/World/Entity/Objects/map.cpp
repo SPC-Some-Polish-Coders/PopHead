@@ -30,6 +30,16 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		mapNode.getAttribute("tileheight").toUnsigned()
 	);
 
+	/*
+		TODO:
+		What if there are no tilesets?
+
+		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
+		- (BEST) Do something with Xml impl to check if there is source attribute defined? -> xml.hasAttribute("source")
+		- Assume that there is not such? -> Maybe it would be better to just allow them.
+		- Try to find it and catch corresponding exception by checking error message 
+			(much better: define proper exception type in Xml impl)?
+	*/
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	TilesetsData tilesets;
 	tilesets.sources.reserve(tilesetNodes.size());
