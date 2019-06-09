@@ -30,6 +30,7 @@ private:
 public:
 	void input() override;
 private:
+	void handleCameraShakeShortcut();
 	void handleCollisionDebugShortcuts();
 	void switchCollisionDebugMode();
 	void turnOnAndTurnOffCollisionDebugSettings();

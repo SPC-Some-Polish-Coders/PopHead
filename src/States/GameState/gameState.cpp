@@ -138,11 +138,16 @@ void GameState::playMusic()
 void GameState::input()
 {
 	mRoot.input();
+	handleCameraShakeShortcut();
 	handleCollisionDebugShortcuts();
 	windowMinimalizeAndMaximalizeShortcut();
 	audioMuteShortcut();
 	shotgunShot();
-	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
+}
+
+void GameState::handleCameraShakeShortcut()
+{
+	if(mGameData->getInput().getAction().isActionJustPressed("cameraShake"))
 		mShouldCameraShake = true;
 }
 
@@ -246,7 +251,7 @@ bool GameState::isAudioMuteShortcutPressed()
 void GameState::shotgunShot()
 {
 	// It's an sound player test.
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Return))
+	if(mGameData->getInput().getAction().isActionJustPressed("shotgunShot"))
 		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 }
 
