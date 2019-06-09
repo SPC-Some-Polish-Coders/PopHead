@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
+#include "commandPromptSharedData.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
@@ -12,7 +13,7 @@ namespace CommandPrompt {
 class KeyboardInputHandler
 {
 public:
-	KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content, bool* isVisible);
+	KeyboardInputHandler(CommandPromptSharedData);
 	
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
 
@@ -24,9 +25,7 @@ private:
 
 private:
 	Base::GameData* mGameData;
-	std::shared_ptr<sf::Text> mText;
-	std::shared_ptr<std::string> mContent;
-	bool* mIsVisible;
+	CommandPromptSharedData mCommandPromptSharedData;
 };
 
 }}

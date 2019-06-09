@@ -3,11 +3,10 @@
 #include "Base/gameData.hpp"
 
 using PopHead::CommandPrompt::KeyboardInputHandler;
+using PopHead::CommandPrompt::CommandPromptSharedData;
 
-KeyboardInputHandler::KeyboardInputHandler(std::shared_ptr<sf::Text> text, std::shared_ptr<std::string> content, bool* isVisible)
-	:mText(text)
-	,mContent(content)
-	,mIsVisible(isVisible)
+KeyboardInputHandler::KeyboardInputHandler(CommandPromptSharedData commandPromptSharedData)
+	:mCommandPromptSharedData(commandPromptSharedData)
 {
 }
 
@@ -17,79 +16,82 @@ void KeyboardInputHandler::handleInput()
 	handleEnter();
 	showOrHideCommandPromptInput();
 
-	mText->setString(*mContent);
+	mCommandPromptSharedData->mText.setString(mCommandPromptSharedData->mContent);
 }
 
 void KeyboardInputHandler::handleKeyboardCharactersInput()
 {
+	auto& content = mCommandPromptSharedData->mContent;
+
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::A))
-		* mContent += "a";
+		content += "a";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::B))
-		* mContent += "b";
+		content += "b";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::C))
-		* mContent += "c";
+		content += "c";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::D))
-		* mContent += "d";
+		content += "d";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::E))
-		* mContent += "e";
+		content += "e";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F))
-		* mContent += "f";
+		content += "f";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::G))
-		* mContent += "g";
+		content += "g";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::H))
-		* mContent += "h";
+		content += "h";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::I))
-		* mContent += "i";
+		content += "i";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::J))
-		* mContent += "j";
+		content += "j";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::K))
-		* mContent += "k";
+		content += "k";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::L))
-		* mContent += "l";
+		content += "l";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M))
-		* mContent += "m";
+		content += "m";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::N))
-		* mContent += "n";
+		content += "n";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::O))
-		* mContent += "o";
+		content += "o";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::P))
-		* mContent += "p";
+		content += "p";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Q))
-		* mContent += "q";
+		content += "q";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::R))
-		* mContent += "r";
+		content += "r";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::S))
-		* mContent += "s";
+		content += "s";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::T))
-		* mContent += "t";
+		content += "t";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::U))
-		* mContent += "u";
+		content += "u";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::V))
-		* mContent += "v";
+		content += "v";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::W))
-		* mContent += "w";
+		content += "w";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::X))
-		* mContent += "x";
+		content += "x";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Y))
-		* mContent += "y";
+		content += "y";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Z))
-		* mContent += "z";
+		content += "z";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Space))
-		* mContent += " ";
+		content += " ";
 	else if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::BackSpace))
-		mContent->pop_back();
+		content.pop_back();
 }
 
 void KeyboardInputHandler::handleEnter()
 {
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Enter))
-		mContent->clear();
+		mCommandPromptSharedData->mContent.clear();
 }
 
 void KeyboardInputHandler::showOrHideCommandPromptInput()
 {
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Tab)) {
-		mGameData->getInput().getAction().setEnabled(*mIsVisible);
-		*mIsVisible = !*mIsVisible;
+		auto& isVisible = mCommandPromptSharedData->mIsVisible;
+		mGameData->getInput().getAction().setEnabled(isVisible);
+		isVisible = !isVisible;
 	}
 }

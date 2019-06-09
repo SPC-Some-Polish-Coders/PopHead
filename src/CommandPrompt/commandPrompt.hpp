@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
+#include "commandPromptSharedData.hpp"
 #include "keyboardInputHandler.hpp"
 
 namespace PopHead {
@@ -24,12 +25,10 @@ private:
 	void initializeText();
 
 private:
+	CommandPromptSharedData mCommandPromptSharedData;
 	sf::RectangleShape mCommandPromptBackground;
-	std::shared_ptr<sf::Text> mText;
-	std::shared_ptr<std::string> mContent;
 	KeyboardInputHandler mKeyboardInputHandler;
 	Base::GameData* mGameData;
-	bool mIsVisible;
 };
 
 }}

@@ -5,11 +5,9 @@
 using PopHead::CommandPrompt::CommandPrompt;
 
 CommandPrompt::CommandPrompt()
-	:mCommandPromptBackground(sf::Vector2f(650, 200))
-	,mIsVisible(false)
-	,mText(new sf::Text())
-	,mContent(new std::string())
-	,mKeyboardInputHandler(mText, mContent, &mIsVisible)
+	:mCommandPromptSharedData(new CommandPromptData())
+	,mCommandPromptBackground(sf::Vector2f(650, 200))
+	,mKeyboardInputHandler(mCommandPromptSharedData)
 {
 	mCommandPromptBackground.setFillColor(sf::Color(0, 0, 0, 230));
 	mCommandPromptBackground.setPosition(-450.f, 300.f);
@@ -22,16 +20,16 @@ void CommandPrompt::input()
 
 void CommandPrompt::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if(mIsVisible) {
+	if(mCommandPromptSharedData->mIsVisible) {
 		target.draw(mCommandPromptBackground, states);
-		target.draw(*mText, states);
+		target.draw(mCommandPromptSharedData->mText, states);
 	}
 }
 
 void CommandPrompt::move(sf::Vector2f offset)
 {
 	mCommandPromptBackground.move(offset);
-	mText->move(offset);
+	mCommandPromptSharedData->mText.move(offset);
 }
 
 void CommandPrompt::init(PopHead::Base::GameData* gameData)
@@ -44,9 +42,10 @@ void CommandPrompt::init(PopHead::Base::GameData* gameData)
 void CommandPrompt::initializeText()
 {
 	mGameData->getFonts().load("fonts/consolab.ttf");
-	mText->setFont(mGameData->getFonts().get("fonts/consolab.ttf"));
-	mText->setFillColor(sf::Color::White);
-	mText->setCharacterSize(18);
-	mText->setString("PopHead command prompt:");
-	mText->setPosition(-450.f, 300.f);
+	auto& text = mCommandPromptSharedData->mText;
+	text.setFont(mGameData->getFonts().get("fonts/consolab.ttf"));
+	text.setFillColor(sf::Color::White);
+	text.setCharacterSize(18);
+	text.setString("PopHead command prompt:");
+	text.setPosition(-450.f, 300.f);
 }
