@@ -88,8 +88,13 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 	endingTag.push_back('>');
 
 	std::vector<Xml> children;
-	if (isSelfClosingTag(end))
-		begin = mContent.find(name, end + 1);
+	if (isSelfClosingTag(end)) {
+		++end;
+		Xml xml;
+		xml.mContent = mContent.substr(begin, end - begin);
+		children.push_back(xml);
+		begin = mContent.find(name, end);
+	}
 	else {
 		end = mContent.find(endingTag, end + 1);
 		if (end == std::string::npos)
@@ -107,8 +112,13 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 		end = mContent.find('>', begin);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing angle bracket in child opening tag");
-		if (isSelfClosingTag(end))
-			begin = mContent.find(name, end + 1);
+		if (isSelfClosingTag(end)) {
+			++end;
+			Xml xml;
+			xml.mContent = mContent.substr(begin, end - begin);
+			children.push_back(xml);
+			begin = mContent.find(name, end);
+		}
 		else {
 			end = mContent.find(endingTag, end + 1);
 			if (end == std::string::npos)
