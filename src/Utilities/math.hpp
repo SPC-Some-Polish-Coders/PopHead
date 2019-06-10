@@ -1,23 +1,28 @@
 #ifndef POPHEAD_UTILITIES_MATH_H_
 #define POPHEAD_UTILITIES_MATH_H_
 
+#include "Utilities/debug.hpp"
 #include <SFML/Graphics.hpp>
-#include <cassert>
 
 namespace PopHead {
 namespace Utilities {
 
 namespace Math {
-	inline auto getRightBound(sf::FloatRect bounds) -> float { return bounds.left + bounds.width; }
+	inline float getRightBound(sf::FloatRect bounds) 
+	{ return bounds.left + bounds.width; }
 
-	inline auto getBottomBound(sf::FloatRect bounds) -> float { return bounds.top + bounds.height; }
+	inline float getBottomBound(sf::FloatRect bounds)  
+	{ return bounds.top + bounds.height; }
 
-	inline auto getCenter(sf::FloatRect bounds) -> sf::Vector2f
+	inline sf::Vector2f getCenter(sf::FloatRect bounds)
 	{ return sf::Vector2f(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f); }
 
-	inline auto lerp(sf::Vector2f source, sf::Vector2f destination, float speed) -> sf::Vector2f
+	inline sf::Vector2u toTwoDimensional(unsigned value, unsigned columns)
+	{ return sf::Vector2u(value % columns, value / columns); }
+
+	inline sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed)
 	{
-		assert(speed >= 0.f && "speed cannot be lesser then 0");
+		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
 	}
 }

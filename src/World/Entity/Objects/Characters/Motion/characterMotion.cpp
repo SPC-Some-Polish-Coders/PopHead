@@ -4,18 +4,20 @@ using PopHead::World::Entity::CharacterMotion;
 
 CharacterMotion::CharacterMotion()
 {
-    clear();
+	clear();
 }
 
 void CharacterMotion::clear()
 {
-    isMovingLeft  = false;
-    isMovingRight = false;
-    isMovingUp    = false;
-    isMovingDown  = false;
+	isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
 }
 
 bool CharacterMotion::isMoving()
 {
-    return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
+	return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
+}
+
+bool CharacterMotion::isMovingDiagonally()
+{
+	return (isMovingLeft || isMovingRight) && (isMovingUp || isMovingDown);
 }

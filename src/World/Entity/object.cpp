@@ -11,28 +11,62 @@ Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Ren
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void Object::moveTo(sf::Vector2f)
+void Object::setVisibility(bool visibility, bool recursive)
 {
+	mVisibility = visibility;
+
+	if (recursive) {
+		std::function<void(Object*, bool)> func = [=](Object * object, bool visibility) { object->setVisibility(visibility, recursive); };
+		forEachChildWhichIsObject(func, visibility);
+	}
 }
 
-void Object::setVisibility(bool visibility) { mVisibility = visibility; }
+void Object::setPosition(sf::Vector2f pos, bool recursive)
+{
+	mPosition = pos;
 
-void Object::setPosition(sf::Vector2f pos) { mPosition = pos; }
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f pos) {object->setPosition(pos, recursive); };
+		forEachChildWhichIsObject(func, pos);
+	}
+}
 
-void Object::setScale(sf::Vector2f scale) { mScale = scale; }
+void Object::move(sf::Vector2f offset, bool recursive)
+{
+	mPosition += offset;
 
-void Object::setRotation(float angle) { mRotation = angle; }
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f offset) { object->move(offset, recursive); };
+		forEachChildWhichIsObject(func, offset);
+	}
+}
 
-sf::Vector2f Object::getPosition() const { return mPosition; }
+void Object::setScale(sf::Vector2f scale, bool recursive)
+{
+	mScale = scale;
 
-sf::Vector2f Object::getScale() const { return mScale; }
+	if (recursive) {
+		std::function<void(Object*, sf::Vector2f)> func = [=](Object * object, sf::Vector2f scale) { object->setScale(scale, recursive); };
+		forEachChildWhichIsObject(func, scale);
+	}
+}
 
-float Object::getRotation() const { return mRotation; }
+void Object::setRotation(float angle, bool recursive)
+{
+	mRotation = angle;
 
-#if 0
-auto Object::getColision() const -> const ColisionObject& { return mColision; }
-#endif // 0
+	if (recursive) {
+		std::function<void(Object*, float)> func = [=](Object * object, float angle) { object->setRotation(angle, recursive); };
+		forEachChildWhichIsObject(func, angle);
+	}
+}
 
-auto Object::getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+void Object::rotate(float angle, bool recursive)
+{
+	mRotation += angle;
 
-bool Object::getVisibility() const { return mVisibility; }
+	if (recursive) {
+		std::function<void(Object*, float)> func = [=](Object * object, float angle) { object->rotate(angle, recursive); };
+		forEachChildWhichIsObject(func, angle);
+	}
+}

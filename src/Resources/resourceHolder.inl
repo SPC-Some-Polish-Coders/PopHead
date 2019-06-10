@@ -1,37 +1,37 @@
+#include "Utilities/debug.hpp"
 #include "resourceHolder.hpp"
 
 using PopHead::Resources::ResourceHolder;
 
-template<typename Resource>
-inline bool ResourceHolder<Resource>::has()
+template< typename ResourceType >
+void ResourceHolder<ResourceType>::load(const std::string& filePath)
 {
-    if(mResources.find(name)==mResources.end())
-    {
-        return 0;
-    }
-    return 1;
+	std::string fullFilePath = "resources/" + filePath;
+    auto resource = std::make_unique< ResourceType >();
+    if(resource->loadFromFile(fullFilePath))
+		mResources.insert(std::make_pair(fullFilePath, std::move(resource)));
+	else
+		PH_EXCEPTION("unable to load file " + fullFilePath + "! Probably there is not such file.");
 }
-inline void free( const std::string& name )
+
+template< typename ResourceType >
+auto ResourceHolder<ResourceType>::get(const std::string& filePath) -> ResourceType&
 {
-    for(auto it = mResources.begin(); it != mResources.end(); )
-        if(it->first == name)
-            it = mResources.erase(it);
-        else
-            ++it;
+	std::string fullFilePath = "resources/" + filePath;
+    auto found = mResources.find(fullFilePath);
+	PH_ASSERT(found != mResources.end(), "Resource \"" + fullFilePath + "\" was not found!");
+	return *found->second;
 }
-inline auto get( const std::string& name ) -> Resource&
+
+template< typename ResourceType >
+void ResourceHolder<ResourceType>::free(const std::string& filePath)
 {
-    auto found = mResources.find(name);
-    return *found->second;
-}
-inline bool load(const std::string& path)
-{
-    auto r = std::make_unique< ResourceType >();
-    if( r->load( path ) )
-    {
-        path.erase(path.size()-4,4);
-        mResources[path] = r;
-        return true;
-    }
-    return false;
+	std::string fullFilePath = "resources/" + filePath;
+	for (auto it = mResources.begin(); it != mResources.end(); ++it) {
+		if (it->first == fullFilePath) {
+			it = mResources.erase(it);
+			return;
+		}
+	}
+	PH_LOG(LogType::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
 }

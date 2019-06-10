@@ -4,88 +4,91 @@
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 
-namespace PopHead{ namespace States { enum class StateID; } }
+namespace PopHead { namespace States { enum class StateID; } }
 
 using PopHead::Base::Game;
 
 
 Game::Game()
-        : mGameData {}
-        , mSoundPlayer { new Audio::SoundPlayer() }
-        , mMusicPlayer { new Audio::MusicPlayer() }
-        , mTextures { new Resources::TextureHolder() }
-        , mFonts { new Resources::FontHolder() }
-        , mShaders { new Resources::ShaderHolder() }
-        , mStateMachine { new States::StateMachine() }
-        , mInput { new Input::Input() }
-        , mGui { new GUI::GUI() }
-        , mRenderer { new Renderer::Renderer() }
+	: mGameData{}
+	, mSoundPlayer{new Audio::SoundPlayer()}
+	, mMusicPlayer{new Audio::MusicPlayer()}
+	, mTextures{new Resources::TextureHolder()}
+	, mFonts{new Resources::FontHolder()}
+	, mShaders{new Resources::ShaderHolder()}
+	, mStateMachine{new States::StateMachine()}
+	, mInput{new Input::Input()}
+	, mRenderer{new Renderer::Renderer()}
+	, mPhysicsEngine{new Physics::PhysicsEngine()}
+	, mTerminal{new Terminal::Terminal()}
 {
-    mGameData.reset( new GameData(
-            mSoundPlayer.get(),
-            mMusicPlayer.get(),
-            mTextures.get(),
-            mFonts.get(),
-            mShaders.get(),
-            mStateMachine.get(),
-            mInput.get(),
-            mGui.get(),
-            mRenderer.get() ) );
+	mGameData.reset(new GameData(
+		mSoundPlayer.get(),
+		mMusicPlayer.get(),
+		mTextures.get(),
+		mFonts.get(),
+		mShaders.get(),
+		mStateMachine.get(),
+		mInput.get(),
+		mRenderer.get(),
+		mPhysicsEngine.get(),
+		mTerminal.get()
+	));
 
+	mStateMachine->setGameData(mGameData.get());
+	mStateMachine->pushState(States::StateID::GameState);
 
-	mGui->init(mGameData.get());
+	Input::EventLoop::init(mGameData.get());
+	mInput->setGameData(mGameData.get());
 
-    mStateMachine->setGameData( mGameData.get() );
-    mStateMachine->pushState(States::StateID::GameState);
+	mTerminal->init(mGameData.get());
 
-    Input::EventLoop::init( mGameData.get() );
-    mInput->setGameData( mGameData.get() );
-
-    run();
+	mRenderer->setGameData(mGameData.get());
 }
 
 void Game::run()
 {
-    sf::Clock clock;
-    const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	sf::Clock clock;
+	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-    while(mRenderer->getWindow().isOpen())
-    {
-        mStateMachine->changingStatesProcess();
+	while(mRenderer->getWindow().isOpen())
+	{
+		mStateMachine->changingStatesProcess();
 
-        // temporary
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-            break;
+		// temporary
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			break;
 
-        Input::EventLoop::eventLoop(mGameData.get());
-        input();
+		input();
 
-        timeSinceLastUpdate += clock.restart();
+		timeSinceLastUpdate += clock.restart();
 
-        while(timeSinceLastUpdate >= timePerFrame){
-            timeSinceLastUpdate -= timePerFrame;
+		while(timeSinceLastUpdate >= timePerFrame) {
+			timeSinceLastUpdate -= timePerFrame;
 
-            update(timePerFrame);
-			
-            draw();
-        }
-    }
+			update(timePerFrame);
+			draw();
+		}
+	}
 }
 
 void Game::input()
 {
-    mStateMachine->input();
+	Input::EventLoop::eventLoop(mGameData.get());
+	mStateMachine->input();
+	mTerminal->input();
 }
 
 void Game::update(sf::Time delta)
 {
-    mStateMachine->update(delta);
+	mStateMachine->update(delta);
+	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);
 }
 
 void Game::draw()
 {
-    mRenderer->draw();
+	mRenderer->draw();
 }

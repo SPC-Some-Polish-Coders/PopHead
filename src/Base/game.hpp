@@ -10,57 +10,39 @@
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
-#include "Gui/GUI.hpp"
+#include "Physics/physicsEngine.hpp"
+#include "Terminal/terminal.hpp"
 
 namespace PopHead {
 namespace Base {
 
-/// Main game class.
-/** On initialization creates game and run mainloop. */
+
 class Game
 {
-  public:
-    /// Default constructor.
-    /** Initializes modules, and runs game. */
-    Game();
+public:
+	Game();
 
-  private:
-    /// Main game method.
-    /** mainloop is executed here. */
-    void run();
+	void run();
+private:
+	void input();
+	void update(sf::Time delta);
+	void draw();
 
-    /// Handle input.
-    /** Handling input recivied from SFML. */
-    void input();
+	inline auto getGameData() const -> const Base::GameData& { return *(mGameData); };
 
-    /// World update method.
-    /** Here whole game logic is resolved.
-     *  @param delta - time (in milliseconds) from last frame. */
-    void update( sf::Time delta );
-
-    /// Draw method.
-    /// Draw current state on screen.
-    void draw();
-
-    /// Get GameData.
-    /** @return GameData reference. */
-    inline auto getGameData() const -> const Base::GameData&;
-
-  ///@{ @name GameData members
-    std::unique_ptr< Base::GameData >           mGameData;
-    std::unique_ptr< Audio::SoundPlayer >       mSoundPlayer;
-    std::unique_ptr< Audio::MusicPlayer >       mMusicPlayer;
-    std::unique_ptr< Resources::TextureHolder > mTextures;
-    std::unique_ptr< Resources::FontHolder >    mFonts;
-    std::unique_ptr< Resources::ShaderHolder >  mShaders;
-    std::unique_ptr< States::StateMachine >     mStateMachine;
-    std::unique_ptr< Input::Input >             mInput;
-    std::unique_ptr< GUI::GUI >                 mGui;
-    std::unique_ptr< Renderer::Renderer >       mRenderer; ///@}
+	std::unique_ptr< Base::GameData >			mGameData;
+	std::unique_ptr< Audio::SoundPlayer >		mSoundPlayer;
+	std::unique_ptr< Audio::MusicPlayer >		mMusicPlayer;
+	std::unique_ptr< Resources::TextureHolder >	mTextures;
+	std::unique_ptr< Resources::FontHolder >	mFonts;
+	std::unique_ptr< Resources::ShaderHolder >	mShaders;
+	std::unique_ptr< States::StateMachine >		mStateMachine;
+	std::unique_ptr< Input::Input >				mInput;
+	std::unique_ptr< Renderer::Renderer >		mRenderer;
+	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine;
+	std::unique_ptr< Terminal::Terminal >		mTerminal;
 };
 
-inline auto Game::getGameData() const -> const Base::GameData&
-{ return *(mGameData); }
 
 }}
 

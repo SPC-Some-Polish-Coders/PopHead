@@ -12,30 +12,19 @@ namespace Renderer {
 
 class Layer
 {
-  public:
-    using ObjectsSequence = std::list< World::Entity::Object* >;
+public:
     void addObject( World::Entity::Object* const object );
-
     void removeObject( const World::Entity::Object* const object );
     void removeObject( std::string name );
+	inline void Layer::clear(){ mObjects.clear(); }
 
-    inline auto begin() const -> const ObjectsSequence::const_iterator;
-    inline auto end() const -> const ObjectsSequence::const_iterator;
+    using ObjectsSequence = std::list< World::Entity::Object* >;
+	inline auto Layer::begin() const -> const ObjectsSequence::const_iterator{ return mObjects.cbegin(); }
+	inline auto Layer::end() const -> const ObjectsSequence::const_iterator{ return mObjects.cend(); }
 
-    inline void clear();
-
-  private:
+private:
     ObjectsSequence mObjects;
 };
-
-inline auto Layer::begin() const -> const ObjectsSequence::const_iterator
-{ return mObjects.cbegin(); }
-
-inline auto Layer::end() const -> const ObjectsSequence::const_iterator
-{ return mObjects.cend(); }
-
-inline void Layer::clear()
-{ mObjects.clear(); }
 
 }}
 

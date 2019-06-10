@@ -12,30 +12,3 @@ State::State( PopHead::Base::GameData* const gameData )
         , mPause { false }
 {
 }
-
-#if 0
-auto State::getRoot() -> World::Entity::Entity&;
-{
-    return *mRoot;
-}
-#endif // 0
-
-bool State::getHide() const
-{
-    return mHide;
-}
-
-bool State::getPause() const
-{
-    return mPause;
-}
-
-void State::setHide(bool hide)
-{
-    mHide = hide;
-}
-
-void State::setPause(bool pause)
-{
-    mPause = pause;
-}

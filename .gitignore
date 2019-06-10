@@ -1,22 +1,21 @@
 # Executables, env dependend files
 *.o
-*.a
 *.so
-*.dll
-*.exe
 *.bat
+!logFilesCleaner.bat
 
 # Build directories
-build/
 bin/
-obj/
+
 
 # Generated documentation
 doc/html
 doc/latex
+Logs/*.txt
 
 # IDE's
 .vscode
 *.cbp
 *.vcxproj
 *.sln
+*.workspace

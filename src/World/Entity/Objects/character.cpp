@@ -1,17 +1,18 @@
 #include "character.hpp"
 
-#include <iostream>
+#include "Physics/CollisionBody/bodyType.hpp"
 
 using PopHead::World::Entity::Character;
 
 Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
-                     unsigned int movementSpeed, unsigned int HP, unsigned int maxHP)
-:Object(gameData, name, Renderer::LayerID::kinematicEntities)
-,mHP(HP)
-,mMaxHP(maxHP)
-,mMovementSpeed(movementSpeed)
-,mMotion()
-,mAnimation(animation)
+	unsigned int movementSpeed, unsigned int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass)
+	:Object(gameData, name, Renderer::LayerID::kinematicEntities)
+	, mHP(HP)
+	, mMaxHP(maxHP)
+	, mMovementSpeed(movementSpeed)
+	, mMotion()
+	, mAnimation(animation)
+	, mCollisionBody(posAndSize, mass, Physics::BodyType::kinematicBody, this, gameData)
 {
 }
 
@@ -20,27 +21,39 @@ void Character::atack()
 
 }
 
-void Character::onCollision(Object&)
-{
-
-}
-
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite, states);
+	target.draw(mSprite, states);
 }
 
-unsigned int Character::getMaxHP() const { return mMaxHP; }
+void Character::setPosition(sf::Vector2f position, bool recursive)
+{
+	mSprite.setPosition(position);
+	mCollisionBody.setPosition(position);
+	Object::setPosition(position, recursive);
+}
 
-unsigned int Character::getHP() const { return mHP; }
+void Character::move(sf::Vector2f offset, bool recursive)
+{
+	mSprite.move(offset);
+	mCollisionBody.move(offset);
+	Object::move(offset, recursive);
+}
 
-sf::Sprite& Character::getSprite() { return mSprite; }
+void Character::setScale(sf::Vector2f factor, bool recursive)
+{
+	mSprite.setScale(factor);
+	Object::setScale(factor, recursive);
+}
 
-/*auto Character::getEquipment() const -> const Equipment&
-{}*/
+void Character::setRotation(float angle, bool recursive)
+{
+	mSprite.setRotation(angle);
+	Object::setRotation(angle, recursive);
+}
 
-/*auto Character::getCurrentWeapon() const -> const Weapon&
-{}*/
-
-/*auto Character::getExperienceManager() const -> const ExperienceManager&
-{}*/
+void Character::rotate(float angle, bool recursive)
+{
+	mSprite.rotate(angle);
+	Object::rotate(angle, recursive);
+}

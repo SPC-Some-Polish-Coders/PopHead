@@ -18,12 +18,11 @@ public:
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
-	//auto State::getRoot() -> World::Entity::Entity&;
-    bool getHide() const;
-    bool getPause() const;
+	bool getHide() const { return mHide; }
+	bool getPause() const { return mPause; }
 
-    void setHide(bool hide);
-    void setPause(bool pause);
+	void setHide(bool hide) { mHide = hide; }
+	void setPause(bool pause) { mPause = pause; }
 
 protected:
     Base::GameData* const mGameData;

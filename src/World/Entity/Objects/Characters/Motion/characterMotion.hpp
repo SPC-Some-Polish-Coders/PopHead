@@ -1,21 +1,23 @@
 #ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_
 #define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_
 
-namespace PopHead{
-namespace World{
-namespace Entity{
+namespace PopHead {
+namespace World {
+namespace Entity {
 
 
 struct CharacterMotion
 {
-    CharacterMotion();
-    void clear();
-    bool isMoving();
+	CharacterMotion();
+	void clear();
+	bool isMoving();
 
-    bool isMovingLeft;
-    bool isMovingRight;
-    bool isMovingUp;
-    bool isMovingDown;
+	bool isMovingDiagonally();
+
+	bool isMovingLeft;
+	bool isMovingRight;
+	bool isMovingUp;
+	bool isMovingDown;
 };
 
 

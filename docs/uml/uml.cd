@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="PopHead::States::GameState">
+    <Position X="0.5" Y="17.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAAAAQAAAAAOAGAAAAAAAAAQQARAABAAAAAAEIAA=</HashCode>
+      <FileName>src\States\GameState\gameState.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::States::State">
+    <Position X="0.5" Y="13.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAABEAAACAAAIAAAAhAAABAABAAEQAA=</HashCode>
+      <FileName>src\States\state.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::States::StateMachine" Collapsed="true">
+    <Position X="33.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CYAAIIAAAgAAAAAAAAAAAIAICgAAILAgABAAIAgECEA=</HashCode>
+      <FileName>src\States\stateMachine.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Audio::MusicPlayer" Collapsed="true">
+    <Position X="38.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Audio\Music\musicPlayer.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Audio::SoundPlayer" Collapsed="true">
+    <Position X="31.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Audio\Sound\soundPlayer.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Base::Game" Collapsed="true">
+    <Position X="35.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAIgAAAAEAAABAIAIAAAAAIAiEABAAAAIAAAAEAAA=</HashCode>
+      <FileName>src\Base\game.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Base::GameData" Collapsed="true">
+    <Position X="37" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QUAAAIEAQAEAAABCIAAAAAAAIAGEAAAAAAIgABAAAAA=</HashCode>
+      <FileName>src\Base\gameData.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Base::Serializable" Collapsed="true">
+    <Position X="38.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Base\serializable.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Input::ActionManager" Collapsed="true">
+    <Position X="31.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAQAIAAAQAAAAAAAAQAAAAAAAAABAAAAQAQAAACE=</HashCode>
+      <FileName>src\Input\actionManager.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Input::EventLoop" Collapsed="true">
+    <Position X="33.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEEAAAAEABAAIAAYFACAAAAQgQAAAEIAQAAAAAAQAAA=</HashCode>
+      <FileName>src\Input\eventLoop.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Input::Input" Collapsed="true">
+    <Position X="38.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAQAAAAAAgEIAAQAAAABAAABAAAAA=</HashCode>
+      <FileName>src\Input\input.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Input::MouseManager" Collapsed="true">
+    <Position X="37" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAIAAIEAAAAIAEAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\Input\mouseManager.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Logs::Log">
+    <Position X="30.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgBAABAAAAAAAAAACA=</HashCode>
+      <FileName>src\Logs\LogData\log.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Logs::LogManager" Collapsed="true">
+    <Position X="33.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAABAABQAAAAAAAAAAARAAAAgAAAgAAAgQAAgAAA=</HashCode>
+      <FileName>src\Logs\logManager.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Logs::LogSettings" Collapsed="true">
+    <Position X="35.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQCAABAAACAFAAAIAAKUAAJAEAAAAMAAACAAA=</HashCode>
+      <FileName>src\Logs\logSettings.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Physics::CollisionBody" Collapsed="true">
+    <Position X="37" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAABAAAAAAACAAAAAAAACAAAAAAAyAAACAAQAIAQ=</HashCode>
+      <FileName>src\Physics\collisionBody.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Physics::CollisionDebug" Collapsed="true">
+    <Position X="38.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAAAA=</HashCode>
+      <FileName>src\Physics\CollisionDebug\collisionDebug.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Physics::PhysicsEngine" Collapsed="true">
+    <Position X="31.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAIAACIAIAQIAAAAQAAAAAEAECAAAAAAAAAAAMAAA=</HashCode>
+      <FileName>src\Physics\physicsEngine.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Animation" Collapsed="true">
+    <Position X="33.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAABAAAQAAAAgAQAECAAAAQEAAQAAAAAQAIAAAA=</HashCode>
+      <FileName>src\World\Animation\animation.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::DamageWeakness" Collapsed="true">
+    <Position X="31.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAREAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\DamageWeakness\damageWeakness.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::CollisionDebugRect">
+    <Position X="23.25" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAIAAQ=</HashCode>
+      <FileName>src\Physics\CollisionDebug\collisionDebugRect.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Object">
+    <Position X="13.25" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIIHABAAAAACgAAAQAAACCBAgCAACAAAEAEAAAgA=</HashCode>
+      <FileName>src\World\Entity\object.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Entity">
+    <Position X="15" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>FAAAIAAAAEAAAAAAADAAAAQCAAAAABBAAAgEAAAEAAI=</HashCode>
+      <FileName>src\World\Entity\entity.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Character">
+    <Position X="6.5" Y="10.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAiCAQRIQACACCAAAAAACAAIBAAACCAA=</HashCode>
+      <FileName>src\World\Entity\Objects\character.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Enemy">
+    <Position X="7.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\Characters\enemy.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::NPC">
+    <Position X="4" Y="16" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAEAAAABAAAAAAAABEAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\Characters\npc.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Player">
+    <Position X="9.5" Y="16" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAQAEAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\Characters\player.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Item">
+    <Position X="26" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\item.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Map">
+    <Position X="1.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAQAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\map.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Projectile">
+    <Position X="13.5" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BQAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAEIAA=</HashCode>
+      <FileName>src\World\Entity\Objects\projectile.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::AreaProjectile">
+    <Position X="12.25" Y="13.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAIAAAAAAAAAACAAAAAAAAAAAQAA=</HashCode>
+      <FileName>src\World\Entity\Objects\Projectiles\areaProjectile.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Bullet">
+    <Position X="14.75" Y="13.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\Projectiles\bullet.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::ShapeWithCollision">
+    <Position X="17.25" Y="10.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAACAAAAIEAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\shapeWithCollision.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::StaticObjectToCamera">
+    <Position X="20.5" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAACAAAIAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\Objects\staticObjectToCamera.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::World::Entity::Zone">
+    <Position X="28.25" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQABACAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>src\World\Entity\zone.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Renderer::Camera" Collapsed="true">
+    <Position X="35.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIBCgAAgAIACAAiAAAARAAABAAACACAAAAAQDAAEBSA=</HashCode>
+      <FileName>src\Renderer\camera.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Renderer::Layer" Collapsed="true">
+    <Position X="31.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAQAACAAAAAAAAAAAEACAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Renderer\layer.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Renderer::Renderer" Collapsed="true">
+    <Position X="35.25" Y="3.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="PopHead::Renderer::Renderer::Viewports" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>src\Renderer\renderer.hpp</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AoIoAAAAAAAAAAAgQBIEgCAAAAAAAAAABACgAAAEQCA=</HashCode>
+      <FileName>src\Renderer\renderer.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Resources::ResourceHolder&lt;ResourceType&gt;" Collapsed="true">
+    <Position X="37" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAIAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Resources\resourceHolder.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PopHead::Utilities::Random" Collapsed="true">
+    <Position X="33.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Utilities\random.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="PopHead::Input::KeyboardManager" Collapsed="true">
+    <Position X="33.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAQAAAAAAQAAA=</HashCode>
+      <FileName>src\Input\keyboardManager.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PopHead::World::Entity::CharacterMotion" Collapsed="true">
+    <Position X="31.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAYABAAAAAQA=</HashCode>
+      <FileName>src\World\Entity\Objects\Characters\Motion\characterMotion.hpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="PopHead::States::StateID" Collapsed="true">
+    <Position X="31.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>src\States\stateIdentifiers.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::Logs::LogType">
+    <Position X="34" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>src\Logs\LogData\logType.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::Logs::ModuleID">
+    <Position X="34" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEQIBAAAAAAAAIAAAAAEAAAAAAABACABAEAQAA=</HashCode>
+      <FileName>src\Logs\LogData\moduleID.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::Physics::BodyType" Collapsed="true">
+    <Position X="31.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Physics\bodyType.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::Physics::CollisionAxis" Collapsed="true">
+    <Position X="33.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>src\Physics\collisionAxis.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::World::DamageWeaknessType" Collapsed="true">
+    <Position X="35.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\DamageWeakness\damageWeaknessType.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::World::EntityType" Collapsed="true">
+    <Position X="37" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAACAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\World\Entity\entityType.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PopHead::Renderer::LayerID" Collapsed="true">
+    <Position X="38.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAgABAAAAAAEAAEAAAEAAAA=</HashCode>
+      <FileName>src\Renderer\layerID.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

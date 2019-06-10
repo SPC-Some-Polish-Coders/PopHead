@@ -4,35 +4,53 @@
 #include "States/state.hpp"
 #include <SFML/Graphics.hpp>
 
-namespace PopHead{
-namespace States{
+namespace PopHead {
+namespace States {
 
 
 class GameState : public State
 {
 public:
-    GameState(Base::GameData *const);
+	GameState(Base::GameData* const);
 private:
-    void loadResources();
-    void makeSceneTree();
-    void makePlayer();
-    void makeMap();
+	void loadResources();
+	void makeSceneTree();
+	void makeMap();
+	void makeWall();
+	void makeBoat();
+	void makeNpc();
+	void makeNpcToBeAbleToTestDynamicCollisions();
+	void makePlayer();
+	void makeZombie();
+	void makeBox();
+	void makeBall();
+	void makeStaticObjectToCamera();
+	void playMusic();
 
 public:
-    void input() override;
+	void input() override;
+private:
+	void handleCameraShakeShortcut();
+	void handleCollisionDebugShortcuts();
+	void switchCollisionDebugMode();
+	void turnOnAndTurnOffCollisionDebugSettings();
+	void windowMinimalizeAndMaximalizeShortcut();
+	void audioMuteShortcut();
+	bool isAudioMuteShortcutPressed();
+	void shotgunShot();
 
 public:
-    void update(sf::Time delta) override;
+	void update(sf::Time delta) override;
 private:
 	void cameraShake();
-	void cameraMovement(sf::Time delta);
+	void cameraMovement(sf::Time delta) const;
+	void boatMovement(sf::Time delta);
+	void updateListenerPosition();
 
 private:
-    ///this is very temporary later it'll be handled by Resources module
-    sf::Texture mPlayerTexture;
-    sf::Texture mMapTexture;
-
-	bool shouldCameraShake = false;
+	bool mShouldCameraShake = false;
+	bool mIsCollisionDebugTurnOn = false;
+	int mCollisionDebugMode = 1;
 };
 
 

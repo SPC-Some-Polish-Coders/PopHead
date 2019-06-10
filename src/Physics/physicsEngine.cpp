@@ -1,43 +1,93 @@
 #include "physicsEngine.hpp"
 
+#include "CollisionBody/collisionBody.hpp"
+#include "Utilities/math.hpp"
+#include "Utilities/debug.hpp"
+
 using PopHead::Physics::PhysicsEngine;
+using PopHead::Physics::CollisionBody;
 
-void PhysicsEngine::update(sf::Time delta)
+void PhysicsEngine::addStaticBody(CollisionBody* staticBody)
 {
-
+    mStaticBodies.emplace_back(std::move(staticBody));
+	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was added to physics engine.");
 }
 
-void PhysicsEngine::addStaticBody(CollisionBody* staticBodyPtr)
+void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBody)
 {
-    mStaticBodies.emplace_back(std::move(staticBodyPtr));
+    mKinematicBodies.emplace_back(std::move(kinematicBody));
+	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was added to physics engine.");
 }
 
-void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBodyPtr)
+void PhysicsEngine::removeStaticBody(CollisionBody* staticBody)
 {
-    mKinematicBodies.emplace_back(std::move(kinematicBodyPtr));
+	removeBody(mStaticBodies, staticBody);
+	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
-void PhysicsEngine::removeStaticBody(CollisionBody* staticBodyPtr)
+void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBody)
 {
-    for(auto it = mStaticBodies.begin(); it != mStaticBodies.end(); ++it){
-        if(*it == staticBodyPtr){
-            mStaticBodies.erase(it);
-            break;
-        }
-    }
+	removeBody(mKinematicBodies, kinematicBody);
+	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
-void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBodyPtr)
+void PhysicsEngine::removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body)
 {
-    for(auto it = mKinematicBodies.begin(); it != mKinematicBodies.end(); ++it){
-        if(*it == kinematicBodyPtr){
-            mKinematicBodies.erase(it);
-            break;
-        }
-    }
+	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
+		if (*it == body) {
+			bodies.erase(it);
+			break;
+		}
+	}
 }
 
 void PhysicsEngine::clear() noexcept
 {
-
+	mStaticBodies.clear();
+	mKinematicBodies.clear();
 }
+
+void PhysicsEngine::update(sf::Time delta)
+{
+    for(auto kinematicBody : mKinematicBodies)
+    {
+		handleKinematicCollisionsFor(kinematicBody);
+		kinematicBody->updatePush(delta);
+		handleStaticCollisionsFor(kinematicBody);
+		kinematicBody->actionsAtTheEndOfPhysicsLoopIteration();
+    }
+}
+
+void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
+{
+	for (const auto& staticBody : mStaticBodies) {
+		if (isThereCollision(kinematicBody->getRect(), staticBody->getRect()))
+			mStaticCollisionHandler(kinematicBody, staticBody);
+	}
+}
+
+void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
+{
+    for (const auto& kinematicBody2 : mKinematicBodies)
+    {
+		if (kinematicBody == kinematicBody2)
+			continue;
+
+		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect()))
+            mKinematicCollisionHandler(kinematicBody, kinematicBody2);
+    }
+}
+
+bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
+{
+	using namespace PopHead::Utilities::Math;
+
+	//AABB collision detection algorithm
+	return(
+	A.left < getRightBound(B) &&
+	getRightBound(A) > B.left &&
+	A.top < getBottomBound(B) &&
+	getBottomBound(A) > B.top);
+}
+
+

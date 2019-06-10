@@ -2,6 +2,8 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_
 
 #include "World/Entity/object.hpp"
+#include <string>
+#include <vector>
 
 namespace PopHead{
 namespace World{
@@ -11,12 +13,19 @@ namespace Entity{
 class Map : public Object
 {
 public:
-    Map(Base::GameData* gameData, std::string name, const sf::Texture& texture, float scale = 1);
+    Map(Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale = 1);
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void onCollision(Object&) override;
 
 private:
-    sf::Sprite mSprite;
+	struct TilesetsData {
+		std::vector<std::string> sources;
+		std::vector<unsigned> columnsCounts;
+		std::vector<unsigned> gid;
+		std::vector<unsigned> tileCounts;
+	};
+
+	std::vector<sf::Sprite> mTiles;
 };
 
 
