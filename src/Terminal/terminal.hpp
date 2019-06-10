@@ -1,20 +1,20 @@
-#ifndef POPHEAD_CMD_COMMANDPROMPT_H_
-#define POPHEAD_CMD_COMMANDPROMPT_H_
+#ifndef POPHEAD_TERMINAL_COMMANDPROMPT_H_
+#define POPHEAD_TERMINAL_COMMANDPROMPT_H_
 
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
-#include "commandPromptSharedData.hpp"
-#include "KeyboardInput/keyboardInputHandler.hpp"
+#include "terminalSharedData.hpp"
+#include "Input/terminalInputHandler.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
-namespace CommandPrompt {
+namespace Terminal {
 
-class CommandPrompt : public sf::Drawable
+class Terminal : public sf::Drawable
 {
 public:
-	CommandPrompt();
+	Terminal();
 
 	void input();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -25,9 +25,9 @@ private:
 	void initializeText();
 
 private:
-	CommandPromptSharedData mCommandPromptSharedData;
-	sf::RectangleShape mCommandPromptBackground;
-	KeyboardInputHandler mKeyboardInputHandler;
+	TerminalSharedData mTerminalSharedData;
+	sf::RectangleShape mTerminalBackground;
+	TerminalInputHandler mKeyboardInputHandler;
 	Base::GameData* mGameData;
 };
 

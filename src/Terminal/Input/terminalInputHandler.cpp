@@ -1,17 +1,17 @@
-#include "keyboardInputHandler.hpp"
+#include "TerminalInputHandler.hpp"
 
 #include "Base/gameData.hpp"
 
-using PopHead::CommandPrompt::KeyboardInputHandler;
-using PopHead::CommandPrompt::CommandPromptSharedData;
+using PopHead::Terminal::TerminalInputHandler;
+using PopHead::Terminal::TerminalSharedData;
 
-KeyboardInputHandler::KeyboardInputHandler(CommandPromptSharedData commandPromptSharedData)
-	:mCommandPromptSharedData(commandPromptSharedData)
+TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
+	:mCommandPromptSharedData(terminalSharedData)
 	,mContent(mCommandPromptSharedData->mContent)
 {
 }
 
-void KeyboardInputHandler::handleInput()
+void TerminalInputHandler::handleInput()
 {
 	handleKeyboardCharactersInput();
 	handleBackspace();
@@ -21,7 +21,7 @@ void KeyboardInputHandler::handleInput()
 	mCommandPromptSharedData->mText.setString(mCommandPromptSharedData->mContent);
 }
 
-void KeyboardInputHandler::handleKeyboardCharactersInput()
+void TerminalInputHandler::handleKeyboardCharactersInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 
@@ -54,7 +54,7 @@ void KeyboardInputHandler::handleKeyboardCharactersInput()
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
 }
 
-void KeyboardInputHandler::handleBackspace()
+void TerminalInputHandler::handleBackspace()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::BackSpace)) {
@@ -63,14 +63,14 @@ void KeyboardInputHandler::handleBackspace()
 	}
 }
 
-void KeyboardInputHandler::handleEnter()
+void TerminalInputHandler::handleEnter()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Enter))
 		mContent.clear();
 }
 
-void KeyboardInputHandler::showOrHideCommandPromptInput()
+void TerminalInputHandler::showOrHideCommandPromptInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Tab)) {

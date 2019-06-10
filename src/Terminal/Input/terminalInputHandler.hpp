@@ -1,20 +1,20 @@
-#ifndef POPHEAD_COMMANDPROMPT_KEYBOARDINPUTHANDLER_H_
-#define POPHEAD_COMMANDPROMPT_KEYBOARDINPUTHANDLER_H_
+#ifndef POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
+#define POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
 
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
-#include "CommandPrompt/commandPromptSharedData.hpp"
+#include "Terminal/terminalSharedData.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
 	namespace Input { struct KeyboardManager; }
-namespace CommandPrompt {
+namespace Terminal {
 
-class KeyboardInputHandler
+class TerminalInputHandler
 {
 public:
-	KeyboardInputHandler(CommandPromptSharedData);
+	TerminalInputHandler(TerminalSharedData);
 	
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
 
@@ -27,7 +27,7 @@ private:
 
 private:
 	Base::GameData* mGameData;
-	CommandPromptSharedData mCommandPromptSharedData;
+	TerminalSharedData mCommandPromptSharedData;
 	std::string& mContent;
 };
 

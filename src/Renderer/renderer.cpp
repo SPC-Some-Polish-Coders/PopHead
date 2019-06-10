@@ -48,7 +48,7 @@ void Renderer::draw() const
         for( const auto& object : layer.second )
             mWindow.draw(*object);
 
-	mWindow.draw(mGameData->getCommandPrompt());
+	mWindow.draw(mGameData->getTerminal());
 
     mWindow.display();
 }
@@ -89,7 +89,7 @@ void Renderer::setPositionOfStaticObjectsToCamera()
 	for (const auto& guiObject : mLayers[LayerID::gui]) {
 		guiObject->move(movementFromLastFrame);
 	}
-	mGameData->getCommandPrompt().move(movementFromLastFrame);
+	mGameData->getTerminal().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const
