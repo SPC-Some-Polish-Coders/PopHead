@@ -41,10 +41,12 @@ protected:
 	std::string checkName(const std::string&);
 
 	const EntityType mEntityType;
-	std::string mName;
 
 	Entity* mParent;
 	std::list< std::unique_ptr<Entity> > mChildren;
+
+	std::string mName;
+
 };
 
 

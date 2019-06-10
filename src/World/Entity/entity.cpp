@@ -29,18 +29,13 @@ void Entity::update(sf::Time delta)
 
 std::string Entity::checkName(const std::string& childName)
 {
-	//for (auto const& child : mChildren)
-	//{
-	//	if (child->getName()== childName)
-	//		PH_LOG(LogType::Info, "WORKS!");
-	//	//childName=someFuncHere
-	//}
-
-	for (auto & child = mChildren.begin(); child != mChildren.end(); ++child)
+	for (const auto& child : mChildren)
 	{
-		if ((*child)->getName() == childName);
-			//childName=someFuncHere
+		if (child->getName()== childName)
+			PH_LOG(LogType::Info, "WORKS!");
+		//childName=someFuncHere
 	}
+
 	return childName;
 }
 
