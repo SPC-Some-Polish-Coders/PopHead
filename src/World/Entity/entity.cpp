@@ -7,7 +7,7 @@ using PopHead::World::Entity::Entity;
 Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
-,mName(checkName(name))
+,mName(name)
 ,mParent(nullptr)
 {
 
@@ -35,13 +35,12 @@ std::string Entity::checkName(const std::string& childName)
 			PH_LOG(LogType::Info, "WORKS!");
 		//childName=someFuncHere
 	}
-
 	return childName;
 }
 
 void Entity::addChild(EntityPtr newChild)
 {
-	const std::string nameOfNewChild = newChild->getName();
+	const std::string nameOfNewChild = checkName(newChild->getName());
     newChild->mParent = this;
     mChildren.emplace_back(std::move(newChild));
 	PH_LOG(LogType::Info, "Entity \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
