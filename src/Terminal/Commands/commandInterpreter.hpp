@@ -16,8 +16,13 @@ public:
 private:
 	bool commandHasAnArgument();
 	bool commandContains(const char);
-	void handleCommandWithoutArguments();
+
 	void handleCommandWithOneArgument();
+	std::string getCommandWithoutArguments();
+	int getArgumentPositionInCommand();
+	void executeLog();
+	
+	void handleCommandWithoutArguments();
 	void executeTest();
 	void executeExit();
 

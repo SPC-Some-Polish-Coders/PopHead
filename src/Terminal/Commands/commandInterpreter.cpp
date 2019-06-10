@@ -1,5 +1,6 @@
 #include "commandInterpreter.hpp"
 
+#include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 
@@ -27,7 +28,30 @@ bool CommandInterpreter::commandContains(const char c)
 
 void CommandInterpreter::handleCommandWithOneArgument()
 {
-	PH_LOG(LogType::Info, "handling command with one argument");
+	const std::string commandWithoutArguments = getCommandWithoutArguments();
+	if(commandWithoutArguments == "log")
+		executeLog();
+}
+
+std::string CommandInterpreter::getCommandWithoutArguments()
+{
+	return mCommand.substr(0, getArgumentPositionInCommand());
+}
+
+int CommandInterpreter::getArgumentPositionInCommand()
+{
+	size_t argumentPosition;
+	std::array<char, 3> argumentCharacters{' ', '-', '='};
+	for(int i = 0; i < 3; ++i) {
+		argumentPosition = mCommand.find(argumentCharacters[i]);
+		if(argumentPosition != std::string::npos)
+			return argumentPosition;
+	}
+}
+
+void CommandInterpreter::executeLog()
+{
+	PH_LOG(LogType::Info, "execution of log command");
 }
 
 void CommandInterpreter::handleCommandWithoutArguments()
