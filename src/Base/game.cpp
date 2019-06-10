@@ -20,7 +20,7 @@ Game::Game()
 	, mInput{new Input::Input()}
 	, mRenderer{new Renderer::Renderer()}
 	, mPhysicsEngine{new Physics::PhysicsEngine()}
-	, mCommandPrompt{new Cmd::CommandPrompt()}
+	, mTerminal{new Terminal::Terminal()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -32,7 +32,7 @@ Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mCommandPrompt.get()
+		mTerminal.get()
 	));
 
 	mStateMachine->setGameData(mGameData.get());
@@ -41,7 +41,7 @@ Game::Game()
 	Input::EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
 
-	mCommandPrompt->setGameData(mGameData.get());
+	mTerminal->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
 }
@@ -77,7 +77,7 @@ void Game::input()
 {
 	Input::EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
-	mCommandPrompt->input();
+	mTerminal->input();
 }
 
 void Game::update(sf::Time delta)

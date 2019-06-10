@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include "Base/gameData.hpp"
+#include "Utilities/debug.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
@@ -29,31 +30,35 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		mapNode.getAttribute("tileheight").toUnsigned()
 	);
 
-	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	/*
 		TODO:
-		Is it better to use reserve and push_back() instead of
-		size() in constructor and operator[] in below loop?
+		What if there are no tilesets?
+
+		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
+		- (BEST) Do something with Xml impl to check if there is source attribute defined? -> xml.hasAttribute("source")
+		- Assume that there is not such? -> Maybe it would be better to just allow them.
+		- Try to find it and catch corresponding exception by checking error message 
+			(much better: define proper exception type in Xml impl)?
 	*/
+	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	TilesetsData tilesets;
-	tilesets.sources.resize(tilesetNodes.size());
-	tilesets.columnsCounts.resize(tilesetNodes.size());
-	tilesets.gid.resize(tilesetNodes.size());
-	tilesets.tileCounts.resize(tilesetNodes.size());
+	tilesets.sources.reserve(tilesetNodes.size());
+	tilesets.columnsCounts.reserve(tilesetNodes.size());
+	tilesets.gid.reserve(tilesetNodes.size());
+	tilesets.tileCounts.reserve(tilesetNodes.size());
 	for (std::size_t i = 0; i < tilesetNodes.size(); ++i) {
-		tilesets.columnsCounts[i] = tilesetNodes[i].getAttribute("columns").toUnsigned();
-		tilesets.gid[i] = tilesetNodes[i].getAttribute("firstgid").toUnsigned();
-		tilesets.tileCounts[i] = tilesetNodes[i].getAttribute("tilecount").toUnsigned();
+		tilesets.columnsCounts.push_back(tilesetNodes[i].getAttribute("columns").toUnsigned());
+		tilesets.gid.push_back(tilesetNodes[i].getAttribute("firstgid").toUnsigned());
+		tilesets.tileCounts.push_back(tilesetNodes[i].getAttribute("tilecount").toUnsigned());
 
 		const Xml imageNode = tilesetNodes[i].getChild("image");
-		tilesets.sources[i] = imageNode.getAttribute("source").toString();
+		tilesets.sources.push_back(imageNode.getAttribute("source").toString());
 		tilesets.sources[i] = Utilities::Path::toFilename(tilesets.sources[i], '/');
 	}
 
 	// TODO: What if there are no layers? Change Xml impl or just do something here?
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
-	// TODO: Just use resize and replace push_back with [] in below loop?
-	mSprites.reserve(mapSize.x * mapSize.y * layerNodes.size());
+	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::string encoding = dataNode.getAttribute("encoding").toString();
@@ -74,13 +79,13 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 							static_cast<sf::Vector2i>(tileSize)
 						);
 						// TODO: Move map resources path to some better place and make it static const for example?
-						sf::Sprite sprite(mGameData->getTextures().get("textures/map/" + tilesets.sources[j]), tileRect);
+						sf::Sprite tile(mGameData->getTextures().get("textures/map/" + tilesets.sources[j]), tileRect);
 						sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
 						position.x *= tileSize.x;
 						position.y *= tileSize.y;
-						sprite.setPosition(position);
-						// TODO: Scale sprite? (scale funtion paramiter)
-						mSprites.push_back(sprite);
+						tile.setPosition(position);
+						// TODO: Scale tile? (scale funtion paramiter)
+						mTiles.push_back(tile);
 
 						break;
 					}
@@ -92,6 +97,6 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (const sf::Sprite& sprite : mSprites)
+	for (const sf::Sprite& sprite : mTiles)
 		target.draw(sprite, states);
 }

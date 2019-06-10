@@ -14,6 +14,8 @@ ActionManager::ActionManager()
 	addAction("movingDown", {sf::Keyboard::S, sf::Keyboard::Down});
 	addAction("movingRight", {sf::Keyboard::D, sf::Keyboard::Right});
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
+	addAction("shotgunShot", sf::Keyboard::Return);
+	addAction("cameraShake", sf::Keyboard::Space);
 }
 
 void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
@@ -68,6 +70,9 @@ void ActionManager::clearAllActions() noexcept
 
 bool ActionManager::isActionPressed(const std::string& action)
 {
+	if(!mEnabled)
+		return false;
+
 	for(const auto& button : mActions[action]) {
 		if(sf::Keyboard::isKeyPressed(button))
 			return true;
@@ -87,6 +92,9 @@ bool ActionManager::isActionJustReleased(const std::string& action)
 
 bool ActionManager::isAction(const std::string& action, std::function<bool(void)> func)
 {
+	if(!mEnabled)
+		return false;
+
 	for(const auto& button : mActions[action]) {
 		if(func() && EventLoop::getKey() == button)
 			return true;
