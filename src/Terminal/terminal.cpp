@@ -16,6 +16,12 @@ Terminal::Terminal()
 void Terminal::input()
 {
 	mKeyboardInputHandler.handleInput();
+
+	if(mKeyboardInputHandler.isEnterClicked()) {
+		auto& content = mTerminalSharedData->mContent;
+		mCommandInterpreter.handleCommand(content);
+		content.clear();
+	}
 }
 
 void Terminal::draw(sf::RenderTarget& target, sf::RenderStates states) const

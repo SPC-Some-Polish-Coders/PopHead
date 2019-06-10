@@ -54,7 +54,7 @@ std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
 	{
 		if (findValue("All"))
 			InitModuleNamesToWrite = { "Audio", "Base", "Input", "Logs", "Physics",
-			"Renderer", "Resources", "States", "Utilities", "World", "None" };
+			"Renderer", "Resources", "States", "Utilities", "World", "Terminal", "None" };
 		else
 		{
 			if (findValue("Audio")) InitModuleNamesToWrite.push_back("Audio");
@@ -67,6 +67,7 @@ std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
 			if (findValue("States")) InitModuleNamesToWrite.push_back("States");
 			if (findValue("Utilities")) InitModuleNamesToWrite.push_back("Utilities");
 			if (findValue("World")) InitModuleNamesToWrite.push_back("World");
+			if (findValue("Terminal")) InitModuleNamesToWrite.push_back("Terminal");
 			if (findValue("None")) InitModuleNamesToWrite.push_back("None");
 		}
 	}

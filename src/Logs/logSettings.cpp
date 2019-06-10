@@ -24,7 +24,7 @@ void LogSettings::turnOnWritingEachLog()
 void LogSettings::turnOnWritingLogsFromEachModule()
 {
 	setModuleNamesToWrite(
-		{ "Audio", "Base", "Input", "Logs", "Physics", "Renderer", "Resources", "States", "Utilities", "World", "None" }
+		{ "Audio", "Base", "Input", "Logs", "Physics", "Renderer", "Resources", "States", "Utilities", "World", "Terminal", "None" }
 	);
 }
 

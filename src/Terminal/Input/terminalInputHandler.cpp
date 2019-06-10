@@ -65,9 +65,10 @@ void TerminalInputHandler::handleBackspace()
 
 void TerminalInputHandler::handleEnter()
 {
+	mIsEnterClicked = false;
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Enter))
-		mContent.clear();
+		mIsEnterClicked = true;
 }
 
 void TerminalInputHandler::showOrHideCommandPromptInput()

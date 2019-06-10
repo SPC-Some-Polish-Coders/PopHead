@@ -6,6 +6,7 @@
 #include <memory>
 #include "terminalSharedData.hpp"
 #include "Input/terminalInputHandler.hpp"
+#include "Commands/commandInterpreter.hpp"
 
 namespace PopHead {
 	namespace Base { class GameData; }
@@ -28,6 +29,7 @@ private:
 	TerminalSharedData mTerminalSharedData;
 	sf::RectangleShape mTerminalBackground;
 	TerminalInputHandler mKeyboardInputHandler;
+	CommandInterpreter mCommandInterpreter;
 	Base::GameData* mGameData;
 };
 

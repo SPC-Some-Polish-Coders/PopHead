@@ -17,6 +17,7 @@ public:
 	TerminalInputHandler(TerminalSharedData);
 	
 	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
+	bool isEnterClicked() { return mIsEnterClicked; }
 
 	void handleInput();
 private:
@@ -29,6 +30,7 @@ private:
 	Base::GameData* mGameData;
 	TerminalSharedData mCommandPromptSharedData;
 	std::string& mContent;
+	bool mIsEnterClicked;
 };
 
 }}
