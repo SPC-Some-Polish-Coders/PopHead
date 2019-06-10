@@ -6,19 +6,22 @@ using PopHead::Terminal::TerminalInputHandler;
 using PopHead::Terminal::TerminalSharedData;
 
 TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
-	:mCommandPromptSharedData(terminalSharedData)
-	,mContent(mCommandPromptSharedData->mContent)
+	:mTerminalSharedData(terminalSharedData)
+	,mContent(mTerminalSharedData->mContent)
 {
 }
 
 void TerminalInputHandler::handleInput()
 {
-	handleKeyboardCharactersInput();
-	handleBackspace();
-	handleEnter();
+	if(mTerminalSharedData->mIsVisible){
+		handleKeyboardCharactersInput();
+		handleBackspace();
+		handleEnter();
+	}
+
 	showOrHideCommandPromptInput();
 
-	mCommandPromptSharedData->mText.setString(mCommandPromptSharedData->mContent);
+	mTerminalSharedData->mText.setString(mTerminalSharedData->mContent);
 }
 
 void TerminalInputHandler::handleKeyboardCharactersInput()
@@ -75,7 +78,7 @@ void TerminalInputHandler::showOrHideCommandPromptInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Tab)) {
-		bool& isVisible = mCommandPromptSharedData->mIsVisible;
+		bool& isVisible = mTerminalSharedData->mIsVisible;
 		auto& actionManager = mGameData->getInput().getAction();
 		actionManager.setEnabled(isVisible);
 		isVisible = !isVisible;

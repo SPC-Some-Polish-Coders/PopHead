@@ -28,7 +28,7 @@ private:
 
 private:
 	Base::GameData* mGameData;
-	TerminalSharedData mCommandPromptSharedData;
+	TerminalSharedData mTerminalSharedData;
 	std::string& mContent;
 	bool mIsEnterClicked;
 };
