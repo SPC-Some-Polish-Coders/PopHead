@@ -42,6 +42,7 @@ void Terminal::init(PopHead::Base::GameData* gameData)
 {
 	mGameData = gameData;
 	mKeyboardInputHandler.setGameData(mGameData);
+	mCommandInterpreter.setGameData(mGameData);
 	initializeText();
 }
 
