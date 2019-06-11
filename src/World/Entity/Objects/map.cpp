@@ -32,15 +32,20 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 
 	/*
 		TODO:
-		What if there are no tilesets?
-
 		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
-		- (BEST) Do something with Xml impl to check if there is source attribute defined? -> xml.hasAttribute("source")
+		- (BEST) Do something with Xml impl to check if there is source attribute defined? ->
+			* return iterator in getAttribute(name)?
+			* return std::pair in getAttribute(name)?
+			* return struct in getAttribute(name)?
+			* make output argument?
+			* make method hasAttribute(name)? -> bad performance (double find or hard impl based on temp buffer)
 		- Assume that there is not such? -> Maybe it would be better to just allow them.
 		- Try to find it and catch corresponding exception by checking error message 
 			(much better: define proper exception type in Xml impl)?
 	*/
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
+	if (tilesetNodes.size() == 0)
+		PH_LOG(LogType::Warning, "Map doesn't have any tilesets: " + xmlFilename);
 	TilesetsData tilesets;
 	tilesets.sources.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
@@ -56,8 +61,9 @@ Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string&
 		tilesets.sources[i] = Utilities::Path::toFilename(tilesets.sources[i], '/');
 	}
 
-	// TODO: What if there are no layers? Change Xml impl or just do something here?
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
+	if (layerNodes.size() == 0)
+		PH_LOG(LogType::Warning, "Map doesn't have any layers: " + xmlFilename);
 	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
