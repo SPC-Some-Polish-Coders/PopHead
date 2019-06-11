@@ -1,6 +1,6 @@
 #include "item.hpp"
 
-using PopHead::World::Entity::Item;
+using ph::World::Entity::Item;
 
 
 void Item::pickUp()

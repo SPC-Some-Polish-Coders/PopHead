@@ -5,10 +5,10 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
-using PopHead::World::Entity::Map;
-using PopHead::Utilities::Xml;
+using ph::World::Entity::Map;
+using ph::Utilities::Xml;
 
-Map::Map(PopHead::Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale)
+Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale)
 	: Object(gameData, name, Renderer::LayerID::floorEntities)
 {
 	Xml document;

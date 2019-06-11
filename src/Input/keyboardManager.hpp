@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <map>
 
-namespace PopHead {
+namespace ph {
 namespace Input {
 
 

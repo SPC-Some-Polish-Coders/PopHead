@@ -3,7 +3,7 @@
 
 #include "World/Entity/Objects/projectile.hpp"
 
-namespace PopHead{
+namespace ph{
 namespace World{
 namespace Entity{
 

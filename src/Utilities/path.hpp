@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace PopHead {
+namespace ph {
 namespace Utilities {
 
 namespace Path {

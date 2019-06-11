@@ -2,14 +2,14 @@
 #include "Base/gameData.hpp"
 #include "eventLoop.hpp"
 
-using PopHead::Input::Input;
+using ph::Input::Input;
 
 Input::Input()
 	:mAction()
 {
 }
 
-void Input::setGameData(PopHead::Base::GameData* gameData)
+void Input::setGameData(ph::Base::GameData* gameData)
 {
 	mMouse.setGameData(gameData);
 }

@@ -2,9 +2,9 @@
 
 #include "Utilities/debug.hpp"
 
-using PopHead::World::Entity::Entity;
+using ph::World::Entity::Entity;
 
-Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
+Entity::Entity(ph::World::EntityType type, ph::Base::GameData* gameData, std::string name)
 :mEntityType(type)
 ,mGameData(gameData)
 ,mName(name)

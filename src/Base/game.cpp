@@ -4,9 +4,9 @@
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 
-namespace PopHead { namespace States { enum class StateID; } }
+namespace ph { namespace States { enum class StateID; } }
 
-using PopHead::Base::Game;
+using ph::Base::Game;
 
 
 Game::Game()

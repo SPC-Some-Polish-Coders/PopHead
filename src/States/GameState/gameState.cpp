@@ -10,9 +10,9 @@
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
-using PopHead::States::GameState;
+using ph::States::GameState;
 
-GameState::GameState(PopHead::Base::GameData* const gameData)
+GameState::GameState(ph::Base::GameData* const gameData)
 	:State{ gameData }
 {
 	loadResources();
@@ -82,7 +82,7 @@ void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 {
 	constexpr float mass = 50.f;
 	std::unique_ptr<World::Entity::Character> npcq(new World::Entity::Character(
-		mGameData, "dynamicCollisionsTesterNPC", PopHead::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
+		mGameData, "dynamicCollisionsTesterNPC", ph::World::Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
 	npcq->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
 	npcq->setPosition(sf::Vector2f(400, 400));
 
@@ -107,7 +107,7 @@ void GameState::makeBox()
 {
 	constexpr float mass = 49.5f;
 	auto box = std::make_unique<World::Entity::Character>(
-		mGameData, "box", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
+		mGameData, "box", ph::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
 	box->setPosition(sf::Vector2f(100, 300));
 	box->getSprite().setTexture(mGameData->getTextures().get("textures/others/box.png"));
 	mRoot.addChild(std::move(box));
@@ -117,7 +117,7 @@ void GameState::makeBall()
 {
 	constexpr float mass = 15.f;
 	auto ball = std::make_unique<World::Entity::Character>(
-		mGameData, "ball", PopHead::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
+		mGameData, "ball", ph::World::Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
 	ball->setPosition(sf::Vector2f(505, 505));
 	ball->setScale(sf::Vector2f(0.4f, 0.4f));
 	ball->getSprite().setTexture(mGameData->getTextures().get("textures/others/ball.png"));
@@ -154,7 +154,7 @@ void GameState::handleCameraShakeShortcut()
 void GameState::handleCollisionDebugShortcuts()
 {
 	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F1)) {
-		auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+		auto& collisionDebugSettings = ph::Physics::CollisionDebugSettings::getInstance();
 
 		if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) {
 			switchCollisionDebugMode();
@@ -176,7 +176,7 @@ void GameState::handleCollisionDebugShortcuts()
 
 void GameState::switchCollisionDebugMode()
 {
-	auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+	auto& collisionDebugSettings = ph::Physics::CollisionDebugSettings::getInstance();
 
 	++mCollisionDebugMode;
 	if (mCollisionDebugMode == 4)
@@ -200,7 +200,7 @@ void GameState::switchCollisionDebugMode()
 
 void GameState::turnOnAndTurnOffCollisionDebugSettings()
 {
-	auto& collisionDebugSettings = PopHead::Physics::CollisionDebugSettings::getInstance();
+	auto& collisionDebugSettings = ph::Physics::CollisionDebugSettings::getInstance();
 
 	if (mIsCollisionDebugTurnOn) {
 		collisionDebugSettings.turnOff();

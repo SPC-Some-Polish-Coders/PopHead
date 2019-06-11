@@ -6,7 +6,7 @@
 #include <vector>
 #include "collisionDebugRect.hpp"
 
-namespace PopHead{
+namespace ph{
 namespace Physics{
 
 

@@ -12,7 +12,7 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Base {
 
 /// GameData is holder for observer pointers to Game Modules.

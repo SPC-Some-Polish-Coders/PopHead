@@ -1,7 +1,7 @@
 #ifndef POPHEAD_RESOURCE_COLLISIONRECTDATA_H_
 #define POPHEAD_RESOURCE_COLLISIONRECTDATA_H_
 
-namespace PopHead {
+namespace ph {
 namespace Resources {
 
 /// OFFSET_LEFT: number of pixels from left bound of the sprite to the left bound of the actual collision rect

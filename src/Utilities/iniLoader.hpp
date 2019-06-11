@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-namespace PopHead {
+namespace ph {
 namespace Utilities {
 
 class IniLoader

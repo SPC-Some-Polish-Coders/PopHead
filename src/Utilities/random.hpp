@@ -3,7 +3,7 @@
 
 #include <random>
 
-namespace PopHead {
+namespace ph {
 namespace Utilities {
 
 class Random {

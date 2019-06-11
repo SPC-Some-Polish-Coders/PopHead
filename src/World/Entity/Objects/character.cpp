@@ -2,9 +2,9 @@
 
 #include "Physics/CollisionBody/bodyType.hpp"
 
-using PopHead::World::Entity::Character;
+using ph::World::Entity::Character;
 
-Character::Character(PopHead::Base::GameData* gameData, std::string name, PopHead::World::Animation animation,
+Character::Character(ph::Base::GameData* gameData, std::string name, ph::World::Animation animation,
 	unsigned int movementSpeed, unsigned int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass)
 	:Object(gameData, name, Renderer::LayerID::kinematicEntities)
 	, mHP(HP)

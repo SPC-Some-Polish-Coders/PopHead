@@ -2,7 +2,7 @@
 
 #include "Base/gameData.hpp"
 
-using PopHead::Input::EventLoop;
+using ph::Input::EventLoop;
 
 
 bool EventLoop::mIsKeyJustPressed;
@@ -14,12 +14,12 @@ sf::Keyboard::Key EventLoop::mKey;
 sf::Mouse::Button EventLoop::mMouseButton;
 
 
-void EventLoop::init(PopHead::Base::GameData* gameData)
+void EventLoop::init(ph::Base::GameData* gameData)
 {
 	gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
 }
 
-void EventLoop::eventLoop(PopHead::Base::GameData* gameData)
+void EventLoop::eventLoop(ph::Base::GameData* gameData)
 {
 	clear();
 	sf::Event event;

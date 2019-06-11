@@ -1,7 +1,7 @@
 #ifndef POPHEAD_RENDERER_LAYERID_H_
 #define POPHEAD_RENDERER_LAYERID_H_
 
-namespace PopHead {
+namespace ph {
 namespace Renderer {
 
 enum class LayerID

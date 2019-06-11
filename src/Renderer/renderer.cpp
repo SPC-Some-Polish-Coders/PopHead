@@ -6,11 +6,11 @@
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 
-using PopHead::Renderer::Renderer;
-using PopHead::Renderer::Layer;
-using PopHead::Renderer::LayerID;
-using PopHead::Renderer::WindowInitializer;
-using PopHead::Utilities::IniLoader;
+using ph::Renderer::Renderer;
+using ph::Renderer::Layer;
+using ph::Renderer::LayerID;
+using ph::Renderer::WindowInitializer;
+using ph::Utilities::IniLoader;
 
 Renderer::Renderer()
 	: mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }
@@ -53,13 +53,13 @@ void Renderer::draw() const
 	mWindow.display();
 }
 
-void Renderer::addObject(PopHead::World::Entity::Object* const object)
+void Renderer::addObject(ph::World::Entity::Object* const object)
 {
 	mLayers[object->getLayerID()].addObject(object);
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was added to " + getLayerName(object->getLayerID()) + " layer.");
 }
 
-void Renderer::addObject(PopHead::World::Entity::Object* const object, LayerID layerID)
+void Renderer::addObject(ph::World::Entity::Object* const object, LayerID layerID)
 {
 	mLayers[layerID].addObject(object);
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
@@ -71,7 +71,7 @@ void Renderer::removeObject(std::string name, LayerID layerID)
 	PH_LOG(LogType::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerID) + " layer.");
 }
 
-void Renderer::removeObject(const PopHead::World::Entity::Object* const object)
+void Renderer::removeObject(const ph::World::Entity::Object* const object)
 {
 	mLayers[object->getLayerID()].removeObject(object);
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");

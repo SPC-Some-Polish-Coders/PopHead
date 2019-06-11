@@ -19,7 +19,7 @@ int main()
 {
 	try {
 		PH_LOG(LogType::Info, "start executing PopHead!");
-		PopHead::Base::Game game;
+		ph::Base::Game game;
 		game.run();
 	}
 	catch (const std::exception& e) {

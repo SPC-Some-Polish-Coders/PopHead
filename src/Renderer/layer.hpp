@@ -4,7 +4,7 @@
 #include <list>
 #include <string>
 
-namespace PopHead {
+namespace ph {
 
 namespace World { namespace Entity { class Object; } }
 

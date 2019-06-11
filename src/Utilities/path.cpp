@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-std::string PopHead::Utilities::Path::toModuleName(const std::string& path)
+std::string ph::Utilities::Path::toModuleName(const std::string& path)
 {
 	// WARNING: Don't use PH_EXCEPTION or PH_LOG here becouse they are using this method, so it can result in recursion
 
@@ -31,7 +31,7 @@ std::string PopHead::Utilities::Path::toModuleName(const std::string& path)
 		return path.substr(begin, end - begin);
 }
 
-std::string PopHead::Utilities::Path::toFilename(const std::string& path, char separator)
+std::string ph::Utilities::Path::toFilename(const std::string& path, char separator)
 {
 	const std::size_t begin = path.rfind(separator);
 	if(begin != std::string::npos)

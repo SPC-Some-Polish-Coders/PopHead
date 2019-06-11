@@ -8,7 +8,7 @@
 #include <SFML/Audio.hpp>
 #include <list>
 
-namespace PopHead {
+namespace ph {
 namespace Audio {
 
 class SoundPlayer

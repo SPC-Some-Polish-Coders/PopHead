@@ -7,7 +7,7 @@
 ///This class is for test purposes
 ///It should be probably deleted when map collisions and the whole Physics module are made
 
-namespace PopHead {
+namespace ph {
 namespace World {
 namespace Entity {
 
@@ -15,7 +15,7 @@ namespace Entity {
 class ShapeWithCollision : public Object
 {
 public:
-	ShapeWithCollision(PopHead::Base::GameData*);
+	ShapeWithCollision(ph::Base::GameData*);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void setPosition(sf::Vector2f, bool recursive = true) override;

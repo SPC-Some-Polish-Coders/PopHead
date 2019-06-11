@@ -1,6 +1,6 @@
 #include "zone.hpp"
 
-using PopHead::World::Entity::Zone;
+using ph::World::Entity::Zone;
 
 /*
 void Zone::update(sf::Time delta)

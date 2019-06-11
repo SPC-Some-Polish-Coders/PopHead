@@ -23,9 +23,9 @@ static std::ostream& operator<<(std::ostream& os, const LogType& logType)
 	return os;
 }
 
-using PopHead::Logs::Logger;
-using PopHead::Logs::LogData;
-using PopHead::Logs::LogType;
+using ph::Logs::Logger;
+using ph::Logs::LogData;
+using ph::Logs::LogType;
 
 Logger::Logger()
 {

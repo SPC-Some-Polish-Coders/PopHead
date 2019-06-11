@@ -4,7 +4,7 @@
 #include "Utilities/debug.hpp"
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
+namespace ph {
 namespace Utilities {
 
 namespace Math {

@@ -1,7 +1,7 @@
 #include "soundDataHolder.hpp"
 
-using PopHead::Audio::SoundDataHolder;
-using PopHead::Audio::SoundData;
+using ph::Audio::SoundDataHolder;
+using ph::Audio::SoundData;
 
 SoundDataHolder::SoundDataHolder()
 {

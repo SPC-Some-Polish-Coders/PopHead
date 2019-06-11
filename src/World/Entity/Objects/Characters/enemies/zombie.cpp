@@ -2,12 +2,12 @@
 
 #include "Resources/collisionRectData.hpp"
 
-using PopHead::World::Entity::Zombie;
-using PopHead::World::Animation;
+using ph::World::Entity::Zombie;
+using ph::World::Animation;
 
 namespace
 {
-	using namespace PopHead::Resources;
+	using namespace ph::Resources;
 
 	const std::string name = "zombie";
 	const Animation animation = Animation();
@@ -18,7 +18,7 @@ namespace
 	constexpr float mass = 70;
 }
 
-Zombie::Zombie(PopHead::Base::GameData* gameData)
+Zombie::Zombie(ph::Base::GameData* gameData)
 	:Enemy(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombie.png"));

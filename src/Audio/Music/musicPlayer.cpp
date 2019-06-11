@@ -1,6 +1,6 @@
 #include "musicPlayer.hpp"
 
-using PopHead::Audio::MusicPlayer;
+using ph::Audio::MusicPlayer;
 
 MusicPlayer::MusicPlayer()
 	:mVolume(70.f)

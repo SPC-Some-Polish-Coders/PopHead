@@ -4,8 +4,8 @@
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
 
-using PopHead::Physics::StaticCollisionHandler;
-using PopHead::Physics::CollisionBody;
+using ph::Physics::StaticCollisionHandler;
+using ph::Physics::CollisionBody;
 
 void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
 {
@@ -65,7 +65,7 @@ void StaticCollisionHandler::stickToLeft()
 
 void StaticCollisionHandler::stickToRight()
 {
-	using namespace PopHead::Utilities::Math;
+	using namespace ph::Utilities::Math;
 	mKinematicBody->setPosition(sf::Vector2f(getRightBound(mStaticBodyRect), mKinematicBodyRect.top));
 }
 
@@ -81,7 +81,7 @@ void StaticCollisionHandler::stickToTop()
 
 void StaticCollisionHandler::stickToBottom()
 {
-	using namespace PopHead::Utilities::Math;
+	using namespace ph::Utilities::Math;
 	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, getBottomBound(mStaticBodyRect)));
 }
 

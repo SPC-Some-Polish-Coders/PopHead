@@ -5,8 +5,8 @@
 #include "Utilities/debug.hpp"
 #include <string>
 
-using PopHead::Physics::CollisionDebugSettings;
-using PopHead::Physics::BodyType;
+using ph::Physics::CollisionDebugSettings;
+using ph::Physics::BodyType;
 
 CollisionDebugSettings::CollisionDebugSettings()
 	:mShouldDisplay(false)

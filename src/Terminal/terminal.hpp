@@ -8,7 +8,7 @@
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
 
-namespace PopHead {
+namespace ph {
 	namespace Base { class GameData; }
 namespace Terminal {
 

@@ -1,7 +1,7 @@
 #ifndef POPHEAD_RESOURCE_SPRITESHEETDATA_H_
 #define POPHEAD_RESOURCE_SPRITESHEETDATA_H_
 
-namespace PopHead {
+namespace ph {
 namespace Resources {
 
 

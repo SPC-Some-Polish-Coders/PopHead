@@ -4,7 +4,7 @@
 #include <SFML/System.hpp>
 #include "World/Entity/entity.hpp"
 
-namespace PopHead{
+namespace ph{
 
 namespace Base { class GameData; }
 

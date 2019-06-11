@@ -10,10 +10,10 @@
 #include <stdexcept>
 #include <sstream>
 
-using PopHead::Logs::LogData;
-using PopHead::Logs::LogType;
+using ph::Logs::LogData;
+using ph::Logs::LogType;
 
-namespace PopHead {
+namespace ph {
 namespace Logs {
 
 class Logger

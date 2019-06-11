@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
+namespace ph {
     namespace Base{ class GameData; }
 namespace Input {
 

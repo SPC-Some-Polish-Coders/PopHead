@@ -1,11 +1,11 @@
 #include "object.hpp"
 #include "Base/gameData.hpp"
 
-using PopHead::World::Entity::Object;
+using ph::World::Entity::Object;
 
 
-Object::Object(PopHead::Base::GameData* gameData, std::string name, PopHead::Renderer::LayerID layerID)
-:Entity(PopHead::World::EntityType::object, gameData, name)
+Object::Object(ph::Base::GameData* gameData, std::string name, ph::Renderer::LayerID layerID)
+:Entity(ph::World::EntityType::object, gameData, name)
 ,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);

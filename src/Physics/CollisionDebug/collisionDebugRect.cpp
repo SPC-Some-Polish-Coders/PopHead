@@ -4,9 +4,9 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
-using PopHead::Physics::CollisionDebugRect;
+using ph::Physics::CollisionDebugRect;
 
-CollisionDebugRect::CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, PopHead::Physics::CollisionBody* owner)
+CollisionDebugRect::CollisionDebugRect(ph::Base::GameData* gameData, sf::FloatRect rect, ph::Physics::CollisionBody* owner)
 	:Object(gameData, "collisionDebugRect", Renderer::LayerID::collisionDebug)
 	,mShape(sf::Vector2f(rect.width, rect.height))
 	,mOwner(owner)

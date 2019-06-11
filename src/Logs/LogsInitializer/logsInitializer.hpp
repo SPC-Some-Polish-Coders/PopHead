@@ -4,7 +4,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "Logs/log.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Logs {
 
 class LogsInitializer : private Utilities::IniLoader

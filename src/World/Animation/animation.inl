@@ -1,5 +1,5 @@
 template<std::size_t SIZE>
-PopHead::World::Animation::Animation(
+ph::World::Animation::Animation(
 	const std::array<std::string, SIZE>& statesNames,
 	const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
 	const sf::Time& delay)
@@ -10,7 +10,7 @@ PopHead::World::Animation::Animation(
 }
 
 template<std::size_t SIZE>
-PopHead::World::Animation::Animation(
+ph::World::Animation::Animation(
 	const std::array<std::string, SIZE> statesNames,
 	std::array<sf::IntRect, SIZE> statesFrames,
 	std::array<unsigned, SIZE> framesCounts,

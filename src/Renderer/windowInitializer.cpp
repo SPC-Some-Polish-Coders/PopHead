@@ -1,7 +1,7 @@
 #include "Renderer/windowInitializer.hpp"
 
-using PopHead::Renderer::WindowInitializer;
-using PopHead::Utilities::IniLoader;
+using ph::Renderer::WindowInitializer;
+using ph::Utilities::IniLoader;
 
 sf::VideoMode WindowInitializer::getWindowSize()
 {

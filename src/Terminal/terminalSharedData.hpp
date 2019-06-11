@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-namespace PopHead {
+namespace ph {
 namespace Terminal {
 
 struct TerminalData

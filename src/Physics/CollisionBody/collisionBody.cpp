@@ -1,10 +1,10 @@
 #include "collisionBody.hpp"
 #include "bodyType.hpp"
 
-using PopHead::Physics::CollisionBody;
+using ph::Physics::CollisionBody;
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::BodyType bodyType,
-							 PopHead::World::Entity::Object* const owner, PopHead::Base::GameData* gameData)
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass, ph::Physics::BodyType bodyType,
+							 ph::World::Entity::Object* const owner, ph::Base::GameData* gameData)
 :mRect(rect)
 ,mMass(mass)
 ,mPreviousPosition(rect.left, rect.top)
@@ -15,11 +15,11 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass, PopHead::Physics::B
 {
 	switch (bodyType)
 	{
-	case PopHead::Physics::BodyType::staticBody:
+	case ph::Physics::BodyType::staticBody:
 		gameData->getPhysicsEngine().addStaticBody(this);
 		break;
 
-	case PopHead::Physics::BodyType::kinematicBody:
+	case ph::Physics::BodyType::kinematicBody:
 		gameData->getPhysicsEngine().addKinematicBody(this);
 		break;
 	}
@@ -29,11 +29,11 @@ CollisionBody::~CollisionBody()
 {
 	switch (mBodyType)
 	{
-	case PopHead::Physics::BodyType::staticBody:
+	case ph::Physics::BodyType::staticBody:
 		mGameData->getPhysicsEngine().removeStaticBody(this);
 		break;
 
-	case PopHead::Physics::BodyType::kinematicBody:
+	case ph::Physics::BodyType::kinematicBody:
 		mGameData->getPhysicsEngine().removeKinematicBody(this);
 		break;
 	}

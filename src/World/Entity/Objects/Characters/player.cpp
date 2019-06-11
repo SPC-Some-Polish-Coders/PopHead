@@ -6,11 +6,11 @@
 #include "World/Animation/animation.hpp"
 #include <array>
 
-using PopHead::World::Entity::Player;
+using ph::World::Entity::Player;
 
 namespace
 {
-	using namespace PopHead::Resources;
+	using namespace ph::Resources;
 
 	std::string name = "player";
 	unsigned int movementSpeed = 150;
@@ -19,7 +19,7 @@ namespace
 	sf::FloatRect posAndSize = sf::FloatRect(0, 0, CollisionRectData::PLAYER_WIDTH, CollisionRectData::PLAYER_HEIGHT);
 	float mass = 50;
 
-	PopHead::World::Animation animation{
+	ph::World::Animation animation{
 		std::array<std::string, 4>{"down", "left", "right", "up"},
 		{
 			sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
@@ -37,7 +37,7 @@ namespace
 	};
 }
 
-Player::Player(PopHead::Base::GameData* gameData)
+Player::Player(ph::Base::GameData* gameData)
 	:Character(gameData, name, std::move(animation), movementSpeed, HP, maxHP, posAndSize, mass)
 {
 	mAnimation.animate(mSprite);

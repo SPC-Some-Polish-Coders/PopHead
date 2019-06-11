@@ -2,10 +2,10 @@
 #include "Logs/LogsInitializer/logsInitializer.hpp"
 #include <fstream>
 
-using PopHead::Logs::LogSettings;
-using PopHead::Logs::LogType;
-using PopHead::Logs::LogData;
-using PopHead::Utilities::IniLoader;
+using ph::Logs::LogSettings;
+using ph::Logs::LogType;
+using ph::Logs::LogData;
+using ph::Utilities::IniLoader;
 
 LogSettings::LogSettings()
 	: mShouldLogIntoConsole(LogsInitializer::getShouldLogIntoConsole()),

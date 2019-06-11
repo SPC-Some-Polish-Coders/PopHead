@@ -7,7 +7,7 @@
 #include "Physics/CollisionDebug/collisionDebugRect.hpp"
 #include "Utilities/math.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Physics {
 
 enum class BodyType;
@@ -15,7 +15,7 @@ enum class BodyType;
 class CollisionBody
 {
 public:
-	CollisionBody(sf::FloatRect rect, float mass, BodyType, PopHead::World::Entity::Object* const owner, PopHead::Base::GameData*);
+	CollisionBody(sf::FloatRect rect, float mass, BodyType, ph::World::Entity::Object* const owner, ph::Base::GameData*);
 	~CollisionBody();
 
 	//the methods below should be called from owner
@@ -37,7 +37,7 @@ public:
 	auto getNameOfOwner() -> const std::string& { return mOwner->getName(); }
 	auto getVelocity() -> sf::Vector2f { return mVelocity; }
 	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
-	auto getPositionOfCenter() -> sf::Vector2f { return PopHead::Utilities::Math::getCenter(mRect); }
+	auto getPositionOfCenter() -> sf::Vector2f { return ph::Utilities::Math::getCenter(mRect); }
 	auto getRect() -> const sf::FloatRect& { return mRect; }
 	auto getPreviousRect() -> sf::FloatRect { return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height); }
 	float getMass() { return mMass; }

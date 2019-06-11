@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace PopHead {
+namespace ph {
 namespace Logs {
 
 enum class LogType : std::size_t {

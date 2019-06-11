@@ -8,7 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-namespace PopHead {
+namespace ph {
 namespace Resources {
 
 

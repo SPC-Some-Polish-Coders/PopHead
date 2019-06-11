@@ -9,7 +9,7 @@
 #include "States/state.hpp"
 #include "States/stateIdentifiers.hpp"
 
-namespace PopHead {
+namespace ph {
 
     namespace Base { class GameData; }
 
@@ -45,10 +45,10 @@ public:
     void setHideInStateNr(unsigned int nrOfState, bool hide);
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 
-    void setGameData( PopHead::Base::GameData* const gameData ){mGameData = gameData;}
+    void setGameData( ph::Base::GameData* const gameData ){mGameData = gameData;}
 
 private:
-    auto getStatePtr(PopHead::States::StateID id) const -> std::unique_ptr<State>;
+    auto getStatePtr(ph::States::StateID id) const -> std::unique_ptr<State>;
 
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;

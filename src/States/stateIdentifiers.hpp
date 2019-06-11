@@ -1,7 +1,7 @@
 #ifndef POPHEAD_STATES_STATEIDENTIFIERS_HPP
 #define POPHEAD_STATES_STATEIDENTIFIERS_HPP
 
-namespace PopHead{
+namespace ph{
 namespace States{
 
 

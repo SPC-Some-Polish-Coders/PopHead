@@ -4,7 +4,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "SFML/Graphics.hpp"
 
-namespace PopHead{
+namespace ph{
 namespace Renderer{
 
 class WindowInitializer : private  Utilities::IniLoader

@@ -4,7 +4,7 @@
 #include "World/Entity/object.hpp"
 #include "Physics/CollisionBody/bodyType.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Physics {
 
 class CollisionDebugSettings;
@@ -13,7 +13,7 @@ class CollisionBody;
 class CollisionDebugRect : public World::Entity::Object
 {
 public:
-    CollisionDebugRect(PopHead::Base::GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
+    CollisionDebugRect(ph::Base::GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
 
     void move(sf::Vector2f velocity) { mShape.move(velocity); }
     void setPosition(sf::Vector2f position) { mShape.setPosition(position); }

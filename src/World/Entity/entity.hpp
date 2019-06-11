@@ -9,7 +9,7 @@
 
 #include "World/Entity/entityType.hpp"
 
-namespace PopHead {
+namespace ph {
 
 namespace Base { class GameData; }
 
@@ -22,7 +22,7 @@ class Entity
 public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
-	Entity(EntityType, PopHead::Base::GameData*, std::string name);
+	Entity(EntityType, ph::Base::GameData*, std::string name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);

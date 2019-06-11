@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-using PopHead::Renderer::Camera;
+using ph::Renderer::Camera;
 
 Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	: mView(center, size), mCenterWithoutShake(center)

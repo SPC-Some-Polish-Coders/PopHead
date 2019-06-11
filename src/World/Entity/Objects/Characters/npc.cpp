@@ -1,9 +1,9 @@
 #include "npc.hpp"
 
-using PopHead::World::Entity::NPC;
+using ph::World::Entity::NPC;
 
 
-NPC::NPC(PopHead::Base::GameData* gameData, std::string name)
+NPC::NPC(ph::Base::GameData* gameData, std::string name)
 :Character(gameData, name)
 {
 }

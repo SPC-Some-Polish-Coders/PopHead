@@ -4,7 +4,7 @@
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 
-using PopHead::Terminal::CommandInterpreter;
+using ph::Terminal::CommandInterpreter;
 
 void CommandInterpreter::handleCommand(const std::string& command)
 {

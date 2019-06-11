@@ -3,7 +3,7 @@
 
 #include "World/Entity/Objects/Characters/enemy.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace World {
 namespace Entity {
 

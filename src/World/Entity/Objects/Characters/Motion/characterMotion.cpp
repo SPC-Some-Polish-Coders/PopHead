@@ -1,6 +1,6 @@
 #include "characterMotion.hpp"
 
-using PopHead::World::Entity::CharacterMotion;
+using ph::World::Entity::CharacterMotion;
 
 CharacterMotion::CharacterMotion()
 {

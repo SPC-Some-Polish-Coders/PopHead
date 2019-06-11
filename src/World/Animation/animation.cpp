@@ -1,7 +1,7 @@
 #include "animation.hpp"
 #include "Utilities/debug.hpp"
 
-using PopHead::World::Animation;
+using ph::World::Animation;
 
 Animation::Animation(const sf::Time& delay)
     : mDelay(delay)

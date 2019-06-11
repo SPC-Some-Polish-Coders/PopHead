@@ -7,7 +7,7 @@
 #include "CollisionHandlers/staticCollisionHandler.hpp"
 #include "CollisionHandlers/kinematicCollisionHandler.hpp"
 
-namespace PopHead{
+namespace ph{
 namespace Physics{
 
 

@@ -10,7 +10,7 @@
 #include "Renderer/layerID.hpp"
 #include "Renderer/camera.hpp"
 
-namespace PopHead {
+namespace ph {
 	namespace Base { class GameData; }
 namespace Renderer {
 

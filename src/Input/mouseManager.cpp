@@ -2,7 +2,7 @@
 #include "Base/gameData.hpp"
 #include "eventLoop.hpp"
 
-using PopHead::Input::MouseManager;
+using ph::Input::MouseManager;
 
 
 auto MouseManager::getMousePosition() const -> sf::Vector2i

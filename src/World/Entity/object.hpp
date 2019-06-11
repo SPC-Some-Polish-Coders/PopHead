@@ -7,7 +7,7 @@
 #include "World/Entity/entity.hpp"
 #include "Renderer/layerID.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace World {
 namespace Entity {
 
@@ -27,7 +27,7 @@ public:
 	auto getPosition() -> sf::Vector2f const { return mPosition; }
 	auto getScale() -> sf::Vector2f const { return mScale; }
 	float getRotation() const { return mRotation; }
-	auto getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+	auto getLayerID() const -> ph::Renderer::LayerID { return mLayerID; }
 	bool getVisibility() const { return mVisibility; }
 
 private:

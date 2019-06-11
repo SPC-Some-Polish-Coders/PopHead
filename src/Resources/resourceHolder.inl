@@ -1,7 +1,7 @@
 #include "Utilities/debug.hpp"
 #include "resourceHolder.hpp"
 
-using PopHead::Resources::ResourceHolder;
+using ph::Resources::ResourceHolder;
 
 template< typename ResourceType >
 void ResourceHolder<ResourceType>::load(const std::string& filePath)

@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Audio/Sound/SoundData/SoundData.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Audio {
 
 class SpatializationManager

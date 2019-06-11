@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-using PopHead::Utilities::IniLoader;
+using ph::Utilities::IniLoader;
 
 std::fstream IniLoader::iniSettingsFile;
 std::string IniLoader::currentLine;

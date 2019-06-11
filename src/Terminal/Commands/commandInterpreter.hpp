@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace PopHead {
+namespace ph {
 	namespace Base { class GameData; }
 namespace Terminal {
 

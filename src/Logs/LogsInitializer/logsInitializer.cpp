@@ -1,9 +1,9 @@
 #include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-using PopHead::Logs::LogsInitializer;
-using PopHead::Logs::LogType;
-using PopHead::Utilities::IniLoader;
+using ph::Logs::LogsInitializer;
+using ph::Logs::LogType;
+using ph::Utilities::IniLoader;
 
 bool LogsInitializer::getShouldLogIntoConsole()
 {

@@ -2,8 +2,8 @@
 
 #include "Base/gameData.hpp"
 
-using PopHead::Terminal::TerminalInputHandler;
-using PopHead::Terminal::TerminalSharedData;
+using ph::Terminal::TerminalInputHandler;
+using ph::Terminal::TerminalSharedData;
 
 TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)

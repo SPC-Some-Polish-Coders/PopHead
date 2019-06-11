@@ -1,7 +1,7 @@
 #include "spatializationManager.hpp"
 
-using PopHead::Audio::SpatializationManager;
-using PopHead::Audio::SoundData;
+using ph::Audio::SpatializationManager;
+using ph::Audio::SoundData;
 
 float SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {

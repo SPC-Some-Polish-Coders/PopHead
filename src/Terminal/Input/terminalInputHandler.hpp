@@ -6,7 +6,7 @@
 #include <memory>
 #include "Terminal/terminalSharedData.hpp"
 
-namespace PopHead {
+namespace ph {
 	namespace Base { class GameData; }
 	namespace Input { struct KeyboardManager; }
 namespace Terminal {

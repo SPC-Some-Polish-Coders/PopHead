@@ -4,8 +4,8 @@
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
 
-using PopHead::Physics::PhysicsEngine;
-using PopHead::Physics::CollisionBody;
+using ph::Physics::PhysicsEngine;
+using ph::Physics::CollisionBody;
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBody)
 {
@@ -80,7 +80,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
-	using namespace PopHead::Utilities::Math;
+	using namespace ph::Utilities::Math;
 
 	//AABB collision detection algorithm
 	return(

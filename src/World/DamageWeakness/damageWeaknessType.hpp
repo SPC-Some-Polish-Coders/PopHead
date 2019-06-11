@@ -1,7 +1,7 @@
 #ifndef POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESSTYPE_H_
 #define POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESSTYPE_H_
 
-namespace PopHead{
+namespace ph{
 namespace World{
 
 

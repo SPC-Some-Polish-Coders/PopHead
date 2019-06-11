@@ -13,7 +13,7 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace Base {
 
 

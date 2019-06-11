@@ -2,7 +2,7 @@
 
 #include "Base/gameData.hpp"
 
-using PopHead::Terminal::Terminal;
+using ph::Terminal::Terminal;
 
 Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
@@ -38,7 +38,7 @@ void Terminal::move(sf::Vector2f offset)
 	mTerminalSharedData->mText.move(offset);
 }
 
-void Terminal::init(PopHead::Base::GameData* gameData)
+void Terminal::init(ph::Base::GameData* gameData)
 {
 	mGameData = gameData;
 	mKeyboardInputHandler.setGameData(mGameData);

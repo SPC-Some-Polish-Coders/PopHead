@@ -6,7 +6,7 @@
 ///This class is only for test purposes
 ///It should be deleted when GUI is made
 
-namespace PopHead {
+namespace ph {
 namespace World {
 namespace Entity {
 
@@ -14,7 +14,7 @@ namespace Entity {
 class StaticObjectToCamera : public Object
 {
 public:
-	StaticObjectToCamera(PopHead::Base::GameData*);
+	StaticObjectToCamera(ph::Base::GameData*);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void move(sf::Vector2f offset, bool recursive = true) override;

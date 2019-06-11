@@ -1,7 +1,7 @@
 #ifndef POPHEAD_PHYSICS_BODYTYPE_H_
 #define POPHEAD_PHYSICS_BODYTYPE_H_
 
-namespace PopHead {
+namespace ph {
 namespace Physics {
 
 

@@ -1,7 +1,7 @@
 #include "Input/keyboardManager.hpp"
 #include "eventLoop.hpp"
 
-using PopHead::Input::KeyboardManager;
+using ph::Input::KeyboardManager;
 
 bool KeyboardManager::isKeyPressed( sf::Keyboard::Key key ) const
 {

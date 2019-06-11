@@ -3,8 +3,8 @@
 #include <cmath>
 #include "Utilities/debug.hpp"
 
-using PopHead::Audio::SoundPlayer;
-using PopHead::Audio::SoundData;
+using ph::Audio::SoundPlayer;
+using ph::Audio::SoundData;
 
 SoundPlayer::SoundPlayer()
 	:mVolume(20.f)

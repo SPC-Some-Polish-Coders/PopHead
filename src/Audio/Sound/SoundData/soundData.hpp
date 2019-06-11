@@ -1,7 +1,7 @@
 #ifndef POPHEAD_AUDIO_SOUNDDATA_H_
 #define POPHEAD_AUDIO_SOUNDDATA_H_
 
-namespace PopHead {
+namespace ph {
 namespace Audio {
 
 struct SoundData

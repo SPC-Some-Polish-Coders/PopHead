@@ -4,7 +4,7 @@
 #include "States/state.hpp"
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
+namespace ph {
 namespace States {
 
 

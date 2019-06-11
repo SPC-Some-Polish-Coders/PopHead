@@ -3,8 +3,8 @@
 #include "Utilities/debug.hpp"
 #include <cmath>
 
-using PopHead::Physics::KinematicCollisionHandler;
-using PopHead::Physics::CollisionBody;
+using ph::Physics::KinematicCollisionHandler;
+using ph::Physics::CollisionBody;
 
 
 void KinematicCollisionHandler::operator()(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)

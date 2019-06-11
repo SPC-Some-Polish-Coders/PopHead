@@ -5,7 +5,7 @@
 #include "Input/keyboardManager.hpp"
 #include "Input/mouseManager.hpp"
 
-namespace PopHead {
+namespace ph {
     namespace Base{ class GameData; }
 namespace Input {
 

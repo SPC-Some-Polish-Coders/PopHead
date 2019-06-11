@@ -6,7 +6,7 @@
 #include "World/Animation/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 
-namespace PopHead {
+namespace ph {
 namespace World {
 namespace Entity {
 

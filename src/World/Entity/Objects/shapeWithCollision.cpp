@@ -2,9 +2,9 @@
 
 #include "Physics/CollisionBody/bodyType.hpp"
 
-using PopHead::World::Entity::ShapeWithCollision;
+using ph::World::Entity::ShapeWithCollision;
 
-ShapeWithCollision::ShapeWithCollision(PopHead::Base::GameData* gameData)
+ShapeWithCollision::ShapeWithCollision(ph::Base::GameData* gameData)
 	:Object(gameData, "shapeWithCollision", Renderer::LayerID::staticEntities)
 	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, Physics::BodyType::staticBody, this, gameData)
 	,mShape(sf::Vector2f(100, 50))

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Utilities/debug.hpp"
 
-using PopHead::Input::ActionManager;
+using ph::Input::ActionManager;
 
 ActionManager::ActionManager()
 {
