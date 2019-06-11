@@ -3,6 +3,7 @@
 #include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
+#include "NonArgumentCommands/exitCommand.hpp"
 
 using PopHead::Terminal::CommandInterpreter;
 
@@ -56,16 +57,5 @@ void CommandInterpreter::executeLog()
 
 void CommandInterpreter::handleCommandWithoutArguments()
 {
-	if(mCommand == "test")      executeTest();
-	else if(mCommand == "exit") executeExit();
-}
-
-void CommandInterpreter::executeTest()
-{
-	PH_LOG(LogType::Info, "terminal test");
-}
-
-void CommandInterpreter::executeExit()
-{
-	mGameData->getRenderer().getWindow().close();
+	if(mCommand == "exit") ExitCommand::execute(mGameData);
 }
