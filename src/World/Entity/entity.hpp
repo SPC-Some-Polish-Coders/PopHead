@@ -31,10 +31,13 @@ public:
 	auto getName() const -> const std::string& { return mName; }
 	auto getChild(std::string name) const->Entity&;
 
+protected:
+	std::string checkName(std::string&);
+	void correctChildName(std::string&);
+	void incrementNumber(std::string&);
 
 protected:
 	GameData* mGameData;
-	std::string checkName(const std::string&);
 
 	const EntityType mEntityType;
 
