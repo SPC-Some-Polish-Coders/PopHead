@@ -3,7 +3,7 @@
 
 #include "Logs/logger.hpp"
 
-#ifdef PH_RELEASE
+#ifdef PH_DISTRIBUTION
 #define PH_BREAKPOINT() ((void)0)
 
 #define PH_LOG(logType, message) ((void)0)
