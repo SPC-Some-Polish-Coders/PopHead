@@ -24,6 +24,6 @@
 #define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), 0))
 
 #define PH_EXCEPTION(message) (void)(PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), throw std::runtime_error(message), 0)
-#endif // !PH_RELEASE
+#endif // !PH_DISTRIBUTION
 
 #endif // !POPHEAD_UTILITIES_DEBUG_H_
