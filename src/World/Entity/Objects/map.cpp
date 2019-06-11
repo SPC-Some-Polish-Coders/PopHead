@@ -5,11 +5,8 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
-using ph::World::Entity::Map;
-using ph::Utilities::Xml;
-
-Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale)
-	: Object(gameData, name, Renderer::LayerID::floorEntities)
+ph::Map::Map(GameData* gameData, std::string name, const std::string& xmlFilename, float scale)
+	:Object(gameData, name, LayerID::floorEntities)
 {
 	Xml document;
 	document.loadFromFile(xmlFilename);
@@ -53,7 +50,7 @@ Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlF
 
 		const Xml imageNode = tilesetNodes[i].getChild("image");
 		tilesets.sources.push_back(imageNode.getAttribute("source").toString());
-		tilesets.sources[i] = Utilities::Path::toFilename(tilesets.sources[i], '/');
+		tilesets.sources[i] = Path::toFilename(tilesets.sources[i], '/');
 	}
 
 	// TODO: What if there are no layers? Change Xml impl or just do something here?
@@ -64,14 +61,14 @@ Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlF
 		const std::string encoding = dataNode.getAttribute("encoding").toString();
 		if (encoding != "csv")
 			PH_EXCEPTION("Used unsupported data encoding: " + encoding);
-		const std::vector<unsigned> values = Utilities::Csv::toUnsigneds(dataNode.toString());
+		const std::vector<unsigned> values = Csv::toUnsigneds(dataNode.toString());
 		for (std::size_t i = 0; i < values.size(); ++i) {
 			if (values[i]) {
 				for (std::size_t j = 0; j < tilesets.gid.size(); ++j) {
 					const unsigned lastTileGid = tilesets.gid[j] + tilesets.tileCounts[j] - 1;
 					if (values[i] >= tilesets.gid[j] && values[i] <= lastTileGid) {
 						sf::Vector2u tilePosition = 
-							Utilities::Math::toTwoDimensional(values[i] - tilesets.gid[j], tilesets.columnsCounts[j]);
+							Math::toTwoDimensional(values[i] - tilesets.gid[j], tilesets.columnsCounts[j]);
 						tilePosition.x *= tileSize.x;
 						tilePosition.y *= tileSize.y;
 						const sf::IntRect tileRect(
@@ -80,7 +77,7 @@ Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlF
 						);
 						// TODO: Move map resources path to some better place and make it static const for example?
 						sf::Sprite tile(mGameData->getTextures().get("textures/map/" + tilesets.sources[j]), tileRect);
-						sf::Vector2f position(Utilities::Math::toTwoDimensional(i, mapSize.x));
+						sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 						position.x *= tileSize.x;
 						position.y *= tileSize.y;
 						tile.setPosition(position);
@@ -95,7 +92,7 @@ Map::Map(ph::Base::GameData* gameData, std::string name, const std::string& xmlF
 	}
 }
 
-void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (const sf::Sprite& sprite : mTiles)
 		target.draw(sprite, states);

@@ -4,8 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 namespace ph {
-namespace Renderer {
-
 
 class Camera
 {
@@ -47,6 +45,6 @@ private:
 	sf::Vector2f mCameraMoveFromLastFrame;
 };
 
+}
 
-}}
 #endif

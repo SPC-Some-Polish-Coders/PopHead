@@ -7,8 +7,6 @@
 #include <map>
 
 namespace ph {
-namespace World{
-
 
 class Animation
 {
@@ -54,6 +52,6 @@ private:
 
 #include "animation.inl"
 
-}}
+}
 
 #endif

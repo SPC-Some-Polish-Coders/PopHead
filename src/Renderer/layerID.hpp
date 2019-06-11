@@ -2,7 +2,6 @@
 #define POPHEAD_RENDERER_LAYERID_H_
 
 namespace ph {
-namespace Renderer {
 
 enum class LayerID
 {
@@ -15,6 +14,6 @@ enum class LayerID
 	cmd
 };
 
-}}
+}
 
 #endif // !POPHEAD_RENDERER_LAYERID_H_

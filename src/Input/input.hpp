@@ -6,9 +6,8 @@
 #include "Input/mouseManager.hpp"
 
 namespace ph {
-    namespace Base{ class GameData; }
-namespace Input {
 
+class GameData;
 
 class Input
 {
@@ -19,7 +18,7 @@ public:
     auto getMouse()    -> const MouseManager&    {return mMouse;}
     auto getAction()   -> ActionManager&         {return mAction;}
 
-    void setGameData(Base::GameData*);
+    void setGameData(GameData*);
 
 private:
     MouseManager mMouse;
@@ -27,7 +26,6 @@ private:
     KeyboardManager mKeyboard;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_INPUT_H_

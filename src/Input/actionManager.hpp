@@ -8,8 +8,6 @@
 #include <functional>
 
 namespace ph {
-namespace Input {
-
 
 class ActionManager
 {
@@ -36,7 +34,6 @@ private:
 	bool mEnabled;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_ACTIONMANAGER_H_

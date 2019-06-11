@@ -11,9 +11,8 @@
 #include "Renderer/camera.hpp"
 
 namespace ph {
-	namespace Base { class GameData; }
-namespace Renderer {
 
+class GameData;
 
 class Renderer
 {
@@ -31,10 +30,10 @@ public:
 	void update(sf::Time delta);
 	void draw() const;
 
-	void addObject(World::Entity::Object* const);
-	void addObject(World::Entity::Object* const, LayerID);
+	void addObject(Object* const);
+	void addObject(Object* const, LayerID);
 
-	void removeObject(const World::Entity::Object* const);
+	void removeObject(const Object* const);
 	void removeObject(std::string name, LayerID);
 	void removeAllObjectsFromLayer(LayerID);
 
@@ -44,7 +43,7 @@ public:
 	auto getWindow() const -> sf::RenderWindow& { return mWindow; }
 	auto getCamera() -> Camera& { return mCamera; }
 
-	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
+	void setGameData(GameData* gameData) { mGameData = gameData; }
 
 private:
 	void setPositionOfStaticObjectsToCamera();
@@ -55,9 +54,9 @@ private:
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	mutable sf::RenderWindow mWindow;
 	std::map< LayerID, Layer > mLayers;
-	Base::GameData* mGameData;
+	GameData* mGameData;
 };
 
-}}
+}
 
 #endif // !POPHEAD_RENDERER_RENDERER_H_

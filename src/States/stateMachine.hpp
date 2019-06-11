@@ -11,9 +11,7 @@
 
 namespace ph {
 
-    namespace Base { class GameData; }
-
-namespace States {
+class GameData;
 
 using StatePtr = std::unique_ptr<State>;
 
@@ -45,15 +43,15 @@ public:
     void setHideInStateNr(unsigned int nrOfState, bool hide);
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 
-    void setGameData( ph::Base::GameData* const gameData ){mGameData = gameData;}
+    void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
 
 private:
-    auto getStatePtr(ph::States::StateID id) const -> std::unique_ptr<State>;
+    auto getStatePtr(StateID id) const -> std::unique_ptr<State>;
 
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;
 
-    Base::GameData* mGameData;
+    GameData* mGameData;
 
     bool mIsPushing;
     bool mIsReplacing;
@@ -61,6 +59,6 @@ private:
     bool mIsClearing;
 };
 
-}}
+}
 
 #endif // !POPHEAD_STATES_STATEMACHINE_H_

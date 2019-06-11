@@ -1,9 +1,6 @@
-#include "spatializationManager.hpp"
+#include "SpatializationManager.hpp"
 
-using ph::Audio::SpatializationManager;
-using ph::Audio::SoundData;
-
-float SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
+float ph::SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	init(soundData, soundPosition, volume);
 
@@ -15,7 +12,7 @@ float SpatializationManager::getSpatialVolume(const SoundData soundData, const s
 		return getVolumeForListenerInDistanceScope();
 }
 
-void SpatializationManager::init(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
+void ph::SpatializationManager::init(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	mSoundData = soundData;
 	mSoundPosition = soundPosition;
@@ -23,34 +20,34 @@ void SpatializationManager::init(const SoundData soundData, const sf::Vector2f s
 	mDistanceBetweenListenerAndSoundSource = getDistanceBetweenListenerAndSoundSource();
 }
 
-float SpatializationManager::getDistanceBetweenListenerAndSoundSource()
+float ph::SpatializationManager::getDistanceBetweenListenerAndSoundSource()
 {
 	float legX = abs(mListenerPosition.x - mSoundPosition.x);
 	float legY = abs(mListenerPosition.y - mSoundPosition.y);
 	return hypotf(legX, legY);
 }
 
-bool SpatializationManager::isListenerOutOfHearableArea()
+bool ph::SpatializationManager::isListenerOutOfHearableArea()
 {
 	return mDistanceBetweenListenerAndSoundSource > mSoundData.mMaximalHearableDistance;
 }
 
-bool SpatializationManager::isListenerVeryCloseToSoundSource()
+bool ph::SpatializationManager::isListenerVeryCloseToSoundSource()
 {
 	return mDistanceBetweenListenerAndSoundSource < mSoundData.mMaximalFullVolumeDistance;
 }
 
-float SpatializationManager::getMaximalVolume()
+float ph::SpatializationManager::getMaximalVolume()
 {
 	return mVolume * mSoundData.mVolumeMultiplier;
 }
 
-float SpatializationManager::getVolumeForListenerInDistanceScope()
+float ph::SpatializationManager::getVolumeForListenerInDistanceScope()
 {
 	return getMaximalVolume() * getSpatializationFactor();
 }
 
-float SpatializationManager::getSpatializationFactor()
+float ph::SpatializationManager::getSpatializationFactor()
 {
 	float scope = mSoundData.mMaximalHearableDistance - mSoundData.mMaximalFullVolumeDistance;
 	float distanceBetweenListenerAndMaximalVolumeArea = mDistanceBetweenListenerAndSoundSource - mSoundData.mMaximalFullVolumeDistance;

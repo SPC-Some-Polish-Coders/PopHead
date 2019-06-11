@@ -10,11 +10,7 @@
 #include <stdexcept>
 #include <sstream>
 
-using ph::Logs::LogData;
-using ph::Logs::LogType;
-
 namespace ph {
-namespace Logs {
 
 class Logger
 {
@@ -49,7 +45,6 @@ private:
 	sf::Clock mClock;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_LOGS_LOGGER_H_

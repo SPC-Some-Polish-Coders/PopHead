@@ -6,19 +6,18 @@
 #include <map>
 
 namespace ph {
-namespace Audio {
 
 class SoundDataHolder
 {
 public:
 	SoundDataHolder();
 
-	SoundData getSoundData(const std::string& filePath);
+	auto getSoundData(const std::string& filePath) -> SoundData;
 
 private:
 	std::map<std::string, SoundData> mAllSoundsData;
 };
 
-}}
+}
 
 #endif

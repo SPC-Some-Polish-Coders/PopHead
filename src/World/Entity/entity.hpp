@@ -11,18 +11,14 @@
 
 namespace ph {
 
-namespace Base { class GameData; }
-
-namespace World {
-namespace Entity {
-
+class GameData;
 
 class Entity
 {
 public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
-	Entity(EntityType, ph::Base::GameData*, std::string name);
+	Entity(EntityType, GameData*, std::string name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
@@ -36,7 +32,7 @@ public:
 	auto getChild(std::string name) const->Entity&;
 
 protected:
-	Base::GameData* mGameData;
+	GameData* mGameData;
 
 	const EntityType mEntityType;
 	std::string mName;
@@ -45,7 +41,6 @@ protected:
 	std::list< std::unique_ptr<Entity> > mChildren;
 };
 
-
-}}}
+}
 
 #endif // !POPHEAD_WORLD_ENTITY_H_

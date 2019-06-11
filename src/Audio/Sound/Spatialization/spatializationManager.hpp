@@ -5,7 +5,6 @@
 #include "Audio/Sound/SoundData/SoundData.hpp"
 
 namespace ph {
-namespace Audio {
 
 class SpatializationManager
 {
@@ -29,6 +28,6 @@ private:
 	float mDistanceBetweenListenerAndSoundSource;
 };
 
-}}
+}
 
 #endif

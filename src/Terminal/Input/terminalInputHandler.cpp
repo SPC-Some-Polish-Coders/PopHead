@@ -2,16 +2,13 @@
 
 #include "Base/gameData.hpp"
 
-using ph::Terminal::TerminalInputHandler;
-using ph::Terminal::TerminalSharedData;
-
-TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
+ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
 	,mContent(mTerminalSharedData->mContent)
 {
 }
 
-void TerminalInputHandler::handleInput()
+void ph::TerminalInputHandler::handleInput()
 {
 	if(mTerminalSharedData->mIsVisible){
 		handleKeyboardCharactersInput();
@@ -24,7 +21,7 @@ void TerminalInputHandler::handleInput()
 	mTerminalSharedData->mText.setString(mTerminalSharedData->mContent);
 }
 
-void TerminalInputHandler::handleKeyboardCharactersInput()
+void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 
@@ -57,7 +54,7 @@ void TerminalInputHandler::handleKeyboardCharactersInput()
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
 }
 
-void TerminalInputHandler::handleBackspace()
+void ph::TerminalInputHandler::handleBackspace()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::BackSpace)) {
@@ -66,7 +63,7 @@ void TerminalInputHandler::handleBackspace()
 	}
 }
 
-void TerminalInputHandler::handleEnter()
+void ph::TerminalInputHandler::handleEnter()
 {
 	mIsEnterClicked = false;
 	auto& keyboard = mGameData->getInput().getKeyboard();
@@ -74,7 +71,7 @@ void TerminalInputHandler::handleEnter()
 		mIsEnterClicked = true;
 }
 
-void TerminalInputHandler::showOrHideCommandPromptInput()
+void ph::TerminalInputHandler::showOrHideCommandPromptInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Tab)) {

@@ -4,9 +4,6 @@
 #include "World/Entity/object.hpp"
 
 namespace ph{
-namespace World{
-namespace Entity{
-
 
 class Item : public Object
 {
@@ -18,6 +15,6 @@ private:
 };
 
 
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_ITEM_H_

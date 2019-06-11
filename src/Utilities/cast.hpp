@@ -4,12 +4,11 @@
 #include <string>
 
 namespace ph {
-namespace Utilities {
 
 namespace Cast {
 	unsigned toUnsigned(const std::string& str);
 }
 
-}}
+}
 
 #endif // !POPHEAD_UTILITIES_CAST_H_

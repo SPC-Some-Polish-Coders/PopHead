@@ -5,17 +5,16 @@
 #include "Logs/log.hpp"
 
 namespace ph {
-namespace Logs {
 
-class LogsInitializer : private Utilities::IniLoader
+class LogsInitializer : private IniLoader
 {
 public:
 	static bool getShouldLogIntoConsole();
 	static bool getShouldLogIntoFile();
-	static std::vector<Logs::LogType> getLogTypesToWrite();
+	static std::vector<LogType> getLogTypesToWrite();
 	static std::vector<std::string> getModuleNamesToWrite();
 };
 
-}}
+}
 
 #endif // !POPHEAD_LOGS_LOGSINITIALIZER_H_

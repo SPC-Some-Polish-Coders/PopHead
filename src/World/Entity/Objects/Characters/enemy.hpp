@@ -5,23 +5,19 @@
 #include <set>
 
 namespace ph {
-namespace World {
-namespace Entity {
-
 
 class Enemy : public Character
 {
 public:
-	Enemy(ph::Base::GameData* gameData, std::string name, ph::World::Animation animation,
+	Enemy(GameData* gameData, std::string name, Animation animation,
 		unsigned int movementSpeed, unsigned int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass);
 
-	///auto getDamageWeaknesses() const -> const std::set<DamageWeakness>;
+	//auto getDamageWeaknesses() const -> const std::set<DamageWeakness>;
 
 protected:
-	///std::set<DamageWeakness> mDamageWeaknesses;
+	//std::set<DamageWeakness> mDamageWeaknesses;
 };
 
-
-}}}
+}
 
 #endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMY_H_

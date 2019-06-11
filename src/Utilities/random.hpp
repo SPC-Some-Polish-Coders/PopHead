@@ -4,7 +4,6 @@
 #include <random>
 
 namespace ph {
-namespace Utilities {
 
 class Random {
 public:
@@ -14,6 +13,6 @@ private:
 	static std::default_random_engine mEngine;
 };
 
-}}
+}
 
 #endif

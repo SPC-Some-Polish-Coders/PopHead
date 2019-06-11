@@ -1,23 +1,21 @@
 #include "characterMotion.hpp"
 
-using ph::World::Entity::CharacterMotion;
-
-CharacterMotion::CharacterMotion()
+ph::CharacterMotion::CharacterMotion()
 {
 	clear();
 }
 
-void CharacterMotion::clear()
+void ph::CharacterMotion::clear()
 {
 	isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
 }
 
-bool CharacterMotion::isMoving()
+bool ph::CharacterMotion::isMoving()
 {
 	return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
 }
 
-bool CharacterMotion::isMovingDiagonally()
+bool ph::CharacterMotion::isMovingDiagonally()
 {
 	return (isMovingLeft || isMovingRight) && (isMovingUp || isMovingDown);
 }

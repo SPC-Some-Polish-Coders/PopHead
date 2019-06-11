@@ -6,26 +6,24 @@
 
 namespace ph {
 
-namespace World { namespace Entity { class Object; } }
+class Object;
 
-namespace Renderer {
-
-class Layer
+class Layer 
 {
 public:
-    void addObject( World::Entity::Object* const object );
-    void removeObject( const World::Entity::Object* const object );
-    void removeObject( std::string name );
-	inline void Layer::clear(){ mObjects.clear(); }
+	void addObject(Object* const object);
+	void removeObject(const Object* const object);
+	void removeObject(std::string name);
+	inline void Layer::clear() { mObjects.clear(); }
 
-    using ObjectsSequence = std::list< World::Entity::Object* >;
-	inline auto Layer::begin() const -> const ObjectsSequence::const_iterator{ return mObjects.cbegin(); }
-	inline auto Layer::end() const -> const ObjectsSequence::const_iterator{ return mObjects.cend(); }
+	using ObjectsSequence = std::list<Object*>;
+	inline auto Layer::begin() const -> const ObjectsSequence::const_iterator { return mObjects.cbegin(); }
+	inline auto Layer::end() const -> const ObjectsSequence::const_iterator { return mObjects.cend(); }
 
 private:
-    ObjectsSequence mObjects;
+	ObjectsSequence mObjects;
 };
 
-}}
+}
 
 #endif // !POPHEAD_RENDERER_LAYER_H_

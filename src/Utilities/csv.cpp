@@ -2,15 +2,7 @@
 #include "Utilities/cast.hpp"
 #include <sstream>
 
-/*
-	TODO:
-	Possible improvements
-	- CSV formats could vary in the choice of separator character.
-	- Ignore separator character inside double-quote.
-	- Allow embedded double-quote characters: Foo, bar, "Something, ""realy"" cool"
-*/
-
-std::vector<std::string> ph::Utilities::Csv::toStrings(const std::string& csv)
+std::vector<std::string> ph::Csv::toStrings(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<std::string> values;
@@ -20,7 +12,7 @@ std::vector<std::string> ph::Utilities::Csv::toStrings(const std::string& csv)
 	return values;
 }
 
-std::vector<int> ph::Utilities::Csv::toInts(const std::string& csv)
+std::vector<int> ph::Csv::toInts(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<int> values;
@@ -32,7 +24,7 @@ std::vector<int> ph::Utilities::Csv::toInts(const std::string& csv)
 	return values;
 }
 
-std::vector<unsigned> ph::Utilities::Csv::toUnsigneds(const std::string& csv)
+std::vector<unsigned> ph::Csv::toUnsigneds(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<unsigned> values;

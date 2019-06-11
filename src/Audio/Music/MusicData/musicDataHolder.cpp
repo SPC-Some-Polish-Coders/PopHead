@@ -2,16 +2,13 @@
 
 #include "Utilities/debug.hpp"
 
-using ph::Audio::MusicDataHolder;
-using ph::Audio::MusicData;
-
-MusicDataHolder::MusicDataHolder()
+ph::MusicDataHolder::MusicDataHolder()
 {
 	using namespace std::string_literals;
 	mAllThemesData["music/explorationTheme.ogg"s] = MusicData(1.2f, true);
 }
 
-auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
+auto ph::MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
 {
 	auto found = mAllThemesData.find(filePath);
 

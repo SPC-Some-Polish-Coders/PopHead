@@ -7,32 +7,28 @@
 #pragma warning(disable:4996)
 #endif
 
-static std::ostream& operator<<(std::ostream& os, const LogType& logType)
+static std::ostream& operator<<(std::ostream& os, const ph::LogType& logType)
 {
 	switch(logType) {
-	case LogType::Info:
+	case ph::LogType::Info:
 		os << "INFO";
 		break;
-	case LogType::Error:
+	case ph::LogType::Error:
 		os << "ERROR";
 		break;
-	case LogType::Warning:
+	case ph::LogType::Warning:
 		os << "WARNING";
 		break;
 	}
 	return os;
 }
 
-using ph::Logs::Logger;
-using ph::Logs::LogData;
-using ph::Logs::LogType;
-
-Logger::Logger()
+ph::Logger::Logger()
 {
 	openFile();
 }
 
-std::string Logger::nameTheFile()
+std::string ph::Logger::nameTheFile()
 {
 	std::time_t t = time(0);
 	std::tm* now = localtime(&t);
@@ -42,7 +38,7 @@ std::string Logger::nameTheFile()
 		"-" + std::to_string(now->tm_sec);
 }
 
-void Logger::openFile()
+void ph::Logger::openFile()
 {
 	mLogFile.open("logs/log_" + nameTheFile() + ".txt", std::ofstream::out | std::ofstream::app);
 	if (!mLogFile.is_open()) {
@@ -52,7 +48,7 @@ void Logger::openFile()
 	}
 }
 
-void Logger::writeLog(const LogData& log)
+void ph::Logger::writeLog(const LogData& log)
 {
 	if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
@@ -61,19 +57,17 @@ void Logger::writeLog(const LogData& log)
 		saveLogInFile(log);
 }
 
-void Logger::writeLogInConsole(const LogData& log)
-
+void ph::Logger::writeLogInConsole(const LogData& log)
 {
 	std::cout << printLog(log).str();
 }
 
-void Logger::saveLogInFile(const LogData& log)
-
+void ph::Logger::saveLogInFile(const LogData& log)
 {
 	mLogFile << printLog(log).str();
 }
 
-std::stringstream Logger::printLog(const LogData& log)
+std::stringstream ph::Logger::printLog(const LogData& log)
 {
 	std::stringstream ssLog;
 	ssLog << "[  " << std::left << std::setw(7)
@@ -84,7 +78,7 @@ std::stringstream Logger::printLog(const LogData& log)
 	return ssLog;
 }
 
-sf::Time Logger::getElapsedTimeSinceCreation()
+sf::Time ph::Logger::getElapsedTimeSinceCreation()
 {
 	const sf::Time elapsedTime = mClock.getElapsedTime();
 	return elapsedTime;

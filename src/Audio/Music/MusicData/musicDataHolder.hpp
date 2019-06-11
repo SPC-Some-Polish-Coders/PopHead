@@ -6,7 +6,6 @@
 #include <map>
 
 namespace ph {
-namespace Audio {
 
 class MusicDataHolder
 {
@@ -21,8 +20,7 @@ private:
 	MusicData mCurrentThemeData;
 };
 
-}}
-
+}
 
 #endif // !POPHEAD_AUDIO_MUSICDATAHOLDER_H_
 

@@ -6,14 +6,11 @@
 #include <vector>
 
 namespace ph{
-namespace World{
-namespace Entity{
-
 
 class Map : public Object
 {
 public:
-    Map(Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale = 1);
+    Map(GameData* gameData, std::string name, const std::string& xmlFilename, float scale = 1);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -29,6 +26,6 @@ private:
 };
 
 
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_

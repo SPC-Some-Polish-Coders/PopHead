@@ -1,19 +1,17 @@
 #include "musicPlayer.hpp"
 
-using ph::Audio::MusicPlayer;
-
-MusicPlayer::MusicPlayer()
+ph::MusicPlayer::MusicPlayer()
 	:mVolume(70.f)
 	,mIsMuted(true)
 {
 }
 
-MusicPlayer::~MusicPlayer()
+ph::MusicPlayer::~MusicPlayer()
 {
 	mMusic.stop();
 }
 
-void MusicPlayer::play(const std::string& filePath)
+void ph::MusicPlayer::play(const std::string& filePath)
 {
 	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
 	const std::string fullFilePath = "resources/" + filePath;
@@ -24,23 +22,23 @@ void MusicPlayer::play(const std::string& filePath)
 	mMusic.play();
 }
 
-void MusicPlayer::stop()
+void ph::MusicPlayer::stop()
 {
 	mMusic.stop();
 }
 
-void MusicPlayer::setPaused(const bool pause)
+void ph::MusicPlayer::setPaused(const bool pause)
 {
 	pause ? mMusic.pause() : mMusic.play();
 }
 
-void MusicPlayer::setMuted(const bool mute)
+void ph::MusicPlayer::setMuted(const bool mute)
 {
 	mute ? mMusic.setVolume(0.f) : setVolume(mVolume);
 	mIsMuted = mute;
 }
 
-void MusicPlayer::setVolume(const float volume)
+void ph::MusicPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
 	const auto themeData = mMusicDataHolder.getCurrentThemeData();

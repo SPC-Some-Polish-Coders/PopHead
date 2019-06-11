@@ -5,15 +5,14 @@
 #include "Physics/CollisionBody/bodyType.hpp"
 
 namespace ph {
-namespace Physics {
 
 class CollisionDebugSettings;
 class CollisionBody;
 
-class CollisionDebugRect : public World::Entity::Object
+class CollisionDebugRect : public Object
 {
 public:
-    CollisionDebugRect(ph::Base::GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
+    CollisionDebugRect(GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
 
     void move(sf::Vector2f velocity) { mShape.move(velocity); }
     void setPosition(sf::Vector2f position) { mShape.setPosition(position); }
@@ -29,7 +28,6 @@ private:
     CollisionBody* mOwner;
 };
 
-
-}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_COLLISIONDEBUGRECT_H_

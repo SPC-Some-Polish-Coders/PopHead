@@ -8,8 +8,6 @@
 #include "CollisionHandlers/kinematicCollisionHandler.hpp"
 
 namespace ph{
-namespace Physics{
-
 
 class CollisionBody;
 
@@ -42,7 +40,6 @@ private:
     KinematicCollisionHandler mKinematicCollisionHandler;
 };
 
-
-}}
+}
 
 #endif // POPHEAD_PHYSICS_PHYSICSENGINE_H_

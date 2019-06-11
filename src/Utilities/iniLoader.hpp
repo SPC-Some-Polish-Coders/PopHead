@@ -5,7 +5,6 @@
 #include <vector>
 
 namespace ph {
-namespace Utilities {
 
 class IniLoader
 {
@@ -24,7 +23,7 @@ private:
 	static std::fstream iniSettingsFile;
 };
 
-}}
+}
 
 #endif //!POPHEAD_UTILITIES_INILOADER_H_
 

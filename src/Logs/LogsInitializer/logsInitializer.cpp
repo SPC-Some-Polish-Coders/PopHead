@@ -1,11 +1,7 @@
 #include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-using ph::Logs::LogsInitializer;
-using ph::Logs::LogType;
-using ph::Utilities::IniLoader;
-
-bool LogsInitializer::getShouldLogIntoConsole()
+bool ph::LogsInitializer::getShouldLogIntoConsole()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
@@ -16,7 +12,7 @@ bool LogsInitializer::getShouldLogIntoConsole()
 	}
 }
 
-bool LogsInitializer::getShouldLogIntoFile()
+bool ph::LogsInitializer::getShouldLogIntoFile()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
@@ -27,7 +23,7 @@ bool LogsInitializer::getShouldLogIntoFile()
 	}
 }
 
-std::vector<LogType> LogsInitializer::getLogTypesToWrite()
+std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
@@ -46,7 +42,7 @@ std::vector<LogType> LogsInitializer::getLogTypesToWrite()
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
+std::vector<std::string> ph::LogsInitializer::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;

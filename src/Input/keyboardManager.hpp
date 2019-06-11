@@ -5,8 +5,6 @@
 #include <map>
 
 namespace ph {
-namespace Input {
-
 
 struct KeyboardManager
 {
@@ -15,7 +13,6 @@ struct KeyboardManager
     bool isKeyJustReleased( sf::Keyboard::Key ) const;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_KEYBOARDMANAGER_H_

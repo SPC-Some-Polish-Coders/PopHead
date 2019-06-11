@@ -2,8 +2,6 @@
 #define POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESSTYPE_H_
 
 namespace ph{
-namespace World{
-
 
 enum class DamageWeaknessType
 {
@@ -12,7 +10,6 @@ enum class DamageWeaknessType
     explosive
 };
 
-
-}}
+}
 
 #endif // POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESSTYPE_H_

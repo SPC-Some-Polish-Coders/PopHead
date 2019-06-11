@@ -2,9 +2,7 @@
 
 #include "Base/gameData.hpp"
 
-using ph::Terminal::Terminal;
-
-Terminal::Terminal()
+ph::Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
 	,mTerminalBackground(sf::Vector2f(650, 200))
 	,mKeyboardInputHandler(mTerminalSharedData)
@@ -13,7 +11,7 @@ Terminal::Terminal()
 	mTerminalBackground.setPosition(-450.f, 300.f);
 }
 
-void Terminal::input()
+void ph::Terminal::input()
 {
 	mKeyboardInputHandler.handleInput();
 
@@ -24,7 +22,7 @@ void Terminal::input()
 	}
 }
 
-void Terminal::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ph::Terminal::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if(mTerminalSharedData->mIsVisible) {
 		target.draw(mTerminalBackground, states);
@@ -32,13 +30,13 @@ void Terminal::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-void Terminal::move(sf::Vector2f offset)
+void ph::Terminal::move(sf::Vector2f offset)
 {
 	mTerminalBackground.move(offset);
 	mTerminalSharedData->mText.move(offset);
 }
 
-void Terminal::init(ph::Base::GameData* gameData)
+void ph::Terminal::init(GameData* gameData)
 {
 	mGameData = gameData;
 	mKeyboardInputHandler.setGameData(mGameData);
@@ -46,7 +44,7 @@ void Terminal::init(ph::Base::GameData* gameData)
 	initializeText();
 }
 
-void Terminal::initializeText()
+void ph::Terminal::initializeText()
 {
 	mGameData->getFonts().load("fonts/consolab.ttf");
 	auto& text = mTerminalSharedData->mText;

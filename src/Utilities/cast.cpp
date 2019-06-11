@@ -1,7 +1,7 @@
 #include "cast.hpp"
 #include "Utilities/debug.hpp"
 
-unsigned ph::Utilities::Cast::toUnsigned(const std::string& str)
+unsigned ph::Cast::toUnsigned(const std::string& str)
 {
 	const unsigned long ulResult = std::stoul(str);
 	const unsigned result = ulResult;

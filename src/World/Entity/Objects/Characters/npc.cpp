@@ -1,28 +1,25 @@
 #include "npc.hpp"
 
-using ph::World::Entity::NPC;
-
-
-NPC::NPC(ph::Base::GameData* gameData, std::string name)
-:Character(gameData, name)
+ph::Npc::Npc(GameData* gameData, std::string name)
+	:Character(gameData, name)
 {
 }
 
-void NPC::input()
+void ph::Npc::input()
 {
     #if 0
     if(mGameData->getInput().getAction().isActionJustPressed("talk with NPC"))
-        wasDialogueButtonClicked = true;
+        mWasDialogueButtonClicked = true;
     #endif // 0
 }
 
-void NPC::update(sf::Time delta)
+void ph::Npc::update(sf::Time delta)
 {
-    if(wasDialogueButtonClicked)
+    if(mWasDialogueButtonClicked)
         talk();
 }
 
-void NPC::talk()
+void ph::Npc::talk()
 {
 
 }

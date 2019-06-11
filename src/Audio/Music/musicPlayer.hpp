@@ -5,8 +5,6 @@
 #include "MusicData/musicDataHolder.hpp"
 
 namespace ph {
-namespace Audio {
-
 
 class MusicPlayer
 {
@@ -30,7 +28,6 @@ private:
 	bool mIsMuted;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_AUDIO_MUSICPLAYER_H_

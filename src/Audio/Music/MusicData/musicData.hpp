@@ -4,7 +4,6 @@
 #include <string>
 
 namespace ph {
-namespace Audio {
 
 struct MusicData
 {
@@ -14,9 +13,7 @@ struct MusicData
 	MusicData(float volumeMultiplier = 1.f, bool loop = false);
 };
 
-}}
-
-
+}
 
 #endif // !POPHEAD_AUDIO_MUSICDATA_H_
 

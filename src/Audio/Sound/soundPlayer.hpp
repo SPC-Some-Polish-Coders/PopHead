@@ -9,7 +9,6 @@
 #include <list>
 
 namespace ph {
-namespace Audio {
 
 class SoundPlayer
 {
@@ -32,12 +31,12 @@ private:
 
 private:
 	std::list<sf::Sound> mSounds;
-	Resources::SoundBufferHolder mSoundBuffers;
+	SoundBufferHolder mSoundBuffers;
 	SoundDataHolder mSoundDataHolder;
 	SpatializationManager mSpatializationManager;
 	float mVolume;
 };
 
-}}
+}
 
 #endif // !POPHEAD_AUDIO_SOUNDPLAYER_H_

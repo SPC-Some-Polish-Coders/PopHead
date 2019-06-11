@@ -2,8 +2,6 @@
 #define POPHEAD_STATES_STATEIDENTIFIERS_HPP
 
 namespace ph{
-namespace States{
-
 
 enum class StateID
 {
@@ -22,7 +20,6 @@ enum class StateID
     //MapState
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_STATES_STATEIDENTIFIERS_HPP

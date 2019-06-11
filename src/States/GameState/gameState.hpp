@@ -5,13 +5,11 @@
 #include <SFML/Graphics.hpp>
 
 namespace ph {
-namespace States {
-
 
 class GameState : public State
 {
 public:
-	GameState(Base::GameData* const);
+	GameState(GameData* const);
 private:
 	void loadResources();
 	void makeSceneTree();
@@ -24,7 +22,6 @@ private:
 	void makeZombie();
 	void makeBox();
 	void makeBall();
-	void makeStaticObjectToCamera();
 	void playMusic();
 
 public:
@@ -53,7 +50,6 @@ private:
 	int mCollisionDebugMode = 1;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP

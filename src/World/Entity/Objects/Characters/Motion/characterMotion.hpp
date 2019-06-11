@@ -2,9 +2,6 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_
 
 namespace ph {
-namespace World {
-namespace Entity {
-
 
 struct CharacterMotion
 {
@@ -20,7 +17,6 @@ struct CharacterMotion
 	bool isMovingDown;
 };
 
-
-}}}
+}
 
 #endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_

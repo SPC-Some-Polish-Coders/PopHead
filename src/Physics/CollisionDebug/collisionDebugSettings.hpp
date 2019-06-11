@@ -1,5 +1,3 @@
-//#ifndef PH_RELEASE
-
 #ifndef POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
 #define POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
 
@@ -7,12 +5,9 @@
 #include "collisionDebugRect.hpp"
 
 namespace ph{
-namespace Physics{
-
 
 class CollisionBody;
 enum class BodyType;
-
 
 class CollisionDebugSettings
 {
@@ -51,9 +46,6 @@ private:
 	sf::Color mStaticBodiesColor;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
-
-//#endif // !PH_RELEASE

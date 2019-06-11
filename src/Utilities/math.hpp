@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 
 namespace ph {
-namespace Utilities {
 
 namespace Math {
 	inline float getRightBound(sf::FloatRect bounds) 
@@ -27,6 +26,6 @@ namespace Math {
 	}
 }
 
-}}
+}
 
 #endif

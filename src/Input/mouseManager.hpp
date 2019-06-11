@@ -4,9 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 namespace ph {
-    namespace Base{ class GameData; }
-namespace Input {
 
+class GameData;
 
 class MouseManager
 {
@@ -17,13 +16,13 @@ public:
     bool isMouseButtonJustPressed(sf::Mouse::Button) const;
     bool isMouseButtonJustReleased(sf::Mouse::Button) const;
 
-    void setGameData(Base::GameData* gameData){mGameData = gameData;}
+    void setGameData(GameData* gameData){mGameData = gameData;}
 
 private:
-    Base::GameData* mGameData;
+    GameData* mGameData;
 };
 
 
-}}
+}
 
 #endif // !POPHEAD_INPUT_MOUSEMANAGER_H_

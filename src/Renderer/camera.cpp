@@ -4,52 +4,50 @@
 
 #include <iostream>
 
-using ph::Renderer::Camera;
-
-Camera::Camera(sf::Vector2f center, sf::Vector2f size)
+ph::Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	: mView(center, size), mCenterWithoutShake(center)
 {
 }
 
-void Camera::update(sf::Time delta)
+void ph::Camera::update(sf::Time delta)
 {
 	shake(mShakeStrengthLoss * delta.asSeconds());
 }
 
-void Camera::setCenter(sf::Vector2f center)
+void ph::Camera::setCenter(sf::Vector2f center)
 {
 	mCenterWithoutShake = center;
 	mView.setCenter(center);
 }
 
-void Camera::shake(float shakeStrengthLoss)
+void ph::Camera::shake(float shakeStrengthLoss)
 {
 	if (mShakeStrength > 0.f) {
-		const float randomNumber = Utilities::Random::generateNumber(-mShakeStrength, mShakeStrength);
+		const float randomNumber = Random::generateNumber(-mShakeStrength, mShakeStrength);
 		mView.setCenter(mCenterWithoutShake.x + randomNumber, mCenterWithoutShake.y + randomNumber);
 		mShakeStrength -= shakeStrengthLoss;
 	}
 }
 
-void Camera::move(sf::Vector2f center, float speed)
+void ph::Camera::move(sf::Vector2f center, float speed)
 {
-	mCenterWithoutShake = Utilities::Math::lerp(mCenterWithoutShake, center, speed);
+	mCenterWithoutShake = Math::lerp(mCenterWithoutShake, center, speed);
 	mView.setCenter(mCenterWithoutShake);
 	updateCameraMoveFromLastFrame();
 	updateLastCameraPosition();
 }
 
-void Camera::applyTo(sf::RenderTarget& renderTarget) const
+void ph::Camera::applyTo(sf::RenderTarget& renderTarget) const
 {
 	renderTarget.setView(mView);
 }
 
-void Camera::updateCameraMoveFromLastFrame()
+void ph::Camera::updateCameraMoveFromLastFrame()
 {
 	mCameraMoveFromLastFrame = mCenterWithoutShake - mLastFrameCameraCenterPosition;
 }
 
-void Camera::updateLastCameraPosition()
+void ph::Camera::updateLastCameraPosition()
 {
 	mLastFrameCameraCenterPosition = mCenterWithoutShake;
 }

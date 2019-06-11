@@ -4,14 +4,11 @@
 #include "World/Entity/object.hpp"
 
 namespace ph{
-namespace World{
-namespace Entity{
-
 
 class Projectile : public Object
 {
 public:
-    Projectile(Base::GameData*, const std::string& name, float damage, float range);
+    Projectile(GameData*, const std::string& name, float damage, float range);
     virtual void dealDamage(Object&) = 0;
 
 private:
@@ -20,7 +17,6 @@ private:
     float mDistanceTraveled;
 };
 
-
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILE_H_

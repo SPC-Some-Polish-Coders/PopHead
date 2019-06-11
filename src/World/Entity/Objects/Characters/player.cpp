@@ -6,44 +6,45 @@
 #include "World/Animation/animation.hpp"
 #include <array>
 
-using ph::World::Entity::Player;
-
 namespace
 {
-	using namespace ph::Resources;
-
 	std::string name = "player";
 	unsigned int movementSpeed = 150;
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
-	sf::FloatRect posAndSize = sf::FloatRect(0, 0, CollisionRectData::PLAYER_WIDTH, CollisionRectData::PLAYER_HEIGHT);
+	sf::FloatRect posAndSize(
+		0,
+		0,
+		ph::CollisionRectData::PLAYER_WIDTH,
+		ph::CollisionRectData::PLAYER_HEIGHT
+	);
 	float mass = 50;
 
-	ph::World::Animation animation{
+	ph::Animation animation{
 		std::array<std::string, 4>{"down", "left", "right", "up"},
 		{
-			sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-			sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-			sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+			sf::IntRect(0, 0 * ph::SpriteSheetData::PLAYER_HEIGHT, ph::SpriteSheetData::PLAYER_WIDTH, ph::SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 1 * ph::SpriteSheetData::PLAYER_HEIGHT, ph::SpriteSheetData::PLAYER_WIDTH, ph::SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 2 * ph::SpriteSheetData::PLAYER_HEIGHT, ph::SpriteSheetData::PLAYER_WIDTH, ph::SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 3 * ph::SpriteSheetData::PLAYER_HEIGHT, ph::SpriteSheetData::PLAYER_WIDTH, ph::SpriteSheetData::PLAYER_HEIGHT)
 		},
 		{
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT
+			ph::SpriteSheetData::PLAYER_FRAMES_COUNT,
+			ph::SpriteSheetData::PLAYER_FRAMES_COUNT,
+			ph::SpriteSheetData::PLAYER_FRAMES_COUNT,
+			ph::SpriteSheetData::PLAYER_FRAMES_COUNT
 		},
 		sf::seconds(0.15f)
 	};
 }
 
-Player::Player(ph::Base::GameData* gameData)
+ph::Player::Player(GameData* gameData)
 	:Character(gameData, name, std::move(animation), movementSpeed, HP, maxHP, posAndSize, mass)
 {
 	mAnimation.animate(mSprite);
 }
 
-void Player::input()
+void ph::Player::input()
 {
 	if (mGameData->getInput().getAction().isActionPressed("movingLeft")) {
 		mMotion.isMovingLeft = true;
@@ -59,7 +60,7 @@ void Player::input()
 	}
 }
 
-void Player::update(sf::Time delta)
+void ph::Player::update(sf::Time delta)
 {
 	sf::Vector2f velocity;
 
@@ -93,7 +94,7 @@ void Player::update(sf::Time delta)
 	mMotion.clear();
 }
 
-void Player::updateAnimation(const std::string& stateName)
+void ph::Player::updateAnimation(const std::string& stateName)
 {
 	const std::string name = mAnimation.getCurrentStateName();
 	if (name != stateName) {
@@ -102,7 +103,7 @@ void Player::updateAnimation(const std::string& stateName)
 	}
 }
 
-/*void talkTo(NPC&)
+/*void talkTo(Npc&)
 {
 
 }*/

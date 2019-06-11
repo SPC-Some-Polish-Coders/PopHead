@@ -4,13 +4,13 @@
 #include <string>
 
 namespace ph {
-	namespace Base { class GameData; }
-namespace Terminal {
+
+class GameData;
 
 class CommandInterpreter
 {
 public:
-	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
+	void setGameData(GameData* gameData) { mGameData = gameData; }
 
 	void handleCommand(const std::string&);
 private:
@@ -28,10 +28,10 @@ private:
 
 private:
 	std::string mCommand;
-	Base::GameData* mGameData;
+	GameData* mGameData;
 };
 
-}}
+}
 
 #endif // !POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
 

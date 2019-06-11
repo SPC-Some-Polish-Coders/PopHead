@@ -9,8 +9,6 @@
 #include <SFML/Audio.hpp>
 
 namespace ph {
-namespace Resources {
-
 
 template< typename ResourceType >
 class ResourceHolder
@@ -29,8 +27,7 @@ using TextureHolder = ResourceHolder< sf::Texture >;
 using FontHolder = ResourceHolder< sf::Font >;
 using ShaderHolder = ResourceHolder< sf::Shader>;
 
-
-}}
+}
 
 #include "Resources/resourceHolder.inl"
 

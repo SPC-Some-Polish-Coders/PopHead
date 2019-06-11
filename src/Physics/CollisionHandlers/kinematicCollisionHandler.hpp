@@ -4,8 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 namespace ph {
-namespace Physics {
-
 
 class CollisionBody;
 
@@ -33,7 +31,6 @@ private:
 	sf::Vector2f mForceVector;
 };
 
-
-}}
+}
 
 #endif
