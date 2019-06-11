@@ -1,25 +1,22 @@
 #include "entity.hpp"
-#include <iostream>
 #include "Utilities/debug.hpp"
 
-using PopHead::World::Entity::Entity;
-
-Entity::Entity(PopHead::World::EntityType type, PopHead::Base::GameData* gameData, std::string name)
-:mEntityType(type)
-,mGameData(gameData)
-,mName(name)
-,mParent(nullptr)
+ph::Entity::Entity(EntityType type, GameData* gameData, std::string name)
+	:mEntityType(type)
+	,mGameData(gameData)
+	,mName(name)
+	,mParent(nullptr)
 {
 
 }
 
-void Entity::input()
+void ph::Entity::input()
 {
     for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
         (*it)->input();
 }
 
-void Entity::update(sf::Time delta)
+void ph::Entity::update(sf::Time delta)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
 	{
@@ -27,7 +24,7 @@ void Entity::update(sf::Time delta)
 	}
 }
 
-std::string Entity::checkName(const std::string& childName)
+std::string ph::Entity::checkName(const std::string& childName)
 {
 	for (const auto& child : mChildren)
 	{
@@ -38,7 +35,7 @@ std::string Entity::checkName(const std::string& childName)
 	return childName;
 }
 
-void Entity::addChild(EntityPtr newChild)
+void ph::Entity::addChild(EntityPtr newChild)
 {
 	const std::string nameOfNewChild = checkName(newChild->getName());
     newChild->mParent = this;
@@ -46,7 +43,7 @@ void Entity::addChild(EntityPtr newChild)
 	PH_LOG(LogType::Info, "Entity \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
 }
 
-void Entity::removeChild(const std::string& name)
+void ph::Entity::removeChild(const std::string& name)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		if ((*it)->getName() == name) {
@@ -57,7 +54,7 @@ void Entity::removeChild(const std::string& name)
 	PH_LOG(LogType::Info, "Entity \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
+void ph::Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		if ((*it).get() == pointerToChildWhichIsSupposedToBeRemoved) {
@@ -69,7 +66,7 @@ void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 		                  "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-auto Entity::getChild(std::string name) const -> Entity&
+auto ph::Entity::getChild(std::string name) const -> Entity&
 {
     for(auto const &child : mChildren){
         if(child->getName() == name)

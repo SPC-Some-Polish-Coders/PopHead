@@ -8,8 +8,7 @@
 #include <SFML/Audio.hpp>
 #include <list>
 
-namespace PopHead {
-namespace Audio {
+namespace ph {
 
 class SoundPlayer
 {
@@ -32,12 +31,12 @@ private:
 
 private:
 	std::list<sf::Sound> mSounds;
-	Resources::SoundBufferHolder mSoundBuffers;
+	SoundBufferHolder mSoundBuffers;
 	SoundDataHolder mSoundDataHolder;
 	SpatializationManager mSpatializationManager;
 	float mVolume;
 };
 
-}}
+}
 
 #endif // !POPHEAD_AUDIO_SOUNDPLAYER_H_

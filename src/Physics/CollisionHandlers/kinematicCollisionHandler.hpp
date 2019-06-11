@@ -3,9 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
-namespace Physics {
-
+namespace ph {
 
 class CollisionBody;
 
@@ -33,7 +31,6 @@ private:
 	sf::Vector2f mForceVector;
 };
 
-
-}}
+}
 
 #endif

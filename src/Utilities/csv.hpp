@@ -4,8 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
 namespace Csv {
 	std::vector<std::string> toStrings(const std::string& csv);
@@ -15,6 +14,6 @@ namespace Csv {
 	std::vector<unsigned> toUnsigneds(const std::string& csv);
 }
 
-}}
+}
 
 #endif // !POPHEAD_UTILITIES_CSV_H_

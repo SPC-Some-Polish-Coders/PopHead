@@ -1,9 +1,7 @@
 #ifndef POPHEAD_STATES_STATEIDENTIFIERS_HPP
 #define POPHEAD_STATES_STATEIDENTIFIERS_HPP
 
-namespace PopHead{
-namespace States{
-
+namespace ph{
 
 enum class StateID
 {
@@ -22,7 +20,6 @@ enum class StateID
     //MapState
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_STATES_STATEIDENTIFIERS_HPP

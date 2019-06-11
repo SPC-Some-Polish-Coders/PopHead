@@ -6,17 +6,17 @@
 #include <memory>
 #include "Terminal/terminalSharedData.hpp"
 
-namespace PopHead {
-	namespace Base { class GameData; }
-	namespace Input { struct KeyboardManager; }
-namespace Terminal {
+namespace ph {
+
+class GameData;
+struct KeyboardManager;
 
 class TerminalInputHandler
 {
 public:
 	TerminalInputHandler(TerminalSharedData);
 	
-	void setGameData(Base::GameData* gameData) { mGameData = gameData; }
+	void setGameData(GameData* gameData) { mGameData = gameData; }
 	bool isEnterClicked() { return mIsEnterClicked; }
 
 	void handleInput();
@@ -27,13 +27,12 @@ private:
 	void showOrHideCommandPromptInput();
 
 private:
-	Base::GameData* mGameData;
+	GameData* mGameData;
 	TerminalSharedData mTerminalSharedData;
 	std::string& mContent;
 	bool mIsEnterClicked;
 };
 
-}}
+}
 
 #endif // !POPHEAD_COMMANDPROMPT_KEYBOARDINPUTHANDLER_H_
-

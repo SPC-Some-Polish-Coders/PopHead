@@ -5,8 +5,7 @@
 #include <string>
 #include <memory>
 
-namespace PopHead {
-namespace Terminal {
+namespace ph {
 
 struct TerminalData
 {
@@ -17,7 +16,7 @@ struct TerminalData
 
 using TerminalSharedData = std::shared_ptr<TerminalData>;
 
-}}
+}
 
 #endif // !POPHEAD_TERMINAL_TERMINALSHAREDDATA_H_
 

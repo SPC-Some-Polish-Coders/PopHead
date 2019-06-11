@@ -8,9 +8,9 @@
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
 
-namespace PopHead {
-	namespace Base { class GameData; }
-namespace Terminal {
+namespace ph {
+
+class GameData;
 
 class Terminal : public sf::Drawable
 {
@@ -21,7 +21,7 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void move(sf::Vector2f offset);
-	void init(Base::GameData*);
+	void init(GameData*);
 private:
 	void initializeText();
 
@@ -30,10 +30,9 @@ private:
 	sf::RectangleShape mTerminalBackground;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
-	Base::GameData* mGameData;
+	GameData* mGameData;
 };
 
-}}
+}
 
 #endif // !POPHEAD_CMD_COMMANDPROMPT_H_
-

@@ -2,24 +2,20 @@
 
 #include "Base/gameData.hpp"
 
-using PopHead::Input::EventLoop;
+bool ph::EventLoop::mIsKeyJustPressed;
+bool ph::EventLoop::mIsKeyJustReleased;
+bool ph::EventLoop::mIsMouseButtonJustPressed;
+bool ph::EventLoop::mIsMouseButtonJustReleased;
+bool ph::EventLoop::mHasMouseJustMoved;
+sf::Keyboard::Key ph::EventLoop::mKey;
+sf::Mouse::Button ph::EventLoop::mMouseButton;
 
-
-bool EventLoop::mIsKeyJustPressed;
-bool EventLoop::mIsKeyJustReleased;
-bool EventLoop::mIsMouseButtonJustPressed;
-bool EventLoop::mIsMouseButtonJustReleased;
-bool EventLoop::mHasMouseJustMoved;
-sf::Keyboard::Key EventLoop::mKey;
-sf::Mouse::Button EventLoop::mMouseButton;
-
-
-void EventLoop::init(PopHead::Base::GameData* gameData)
+void ph::EventLoop::init(GameData* gameData)
 {
 	gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
 }
 
-void EventLoop::eventLoop(PopHead::Base::GameData* gameData)
+void ph::EventLoop::eventLoop(GameData* gameData)
 {
 	clear();
 	sf::Event event;
@@ -55,7 +51,7 @@ void EventLoop::eventLoop(PopHead::Base::GameData* gameData)
 	}
 }
 
-void EventLoop::clear()
+void ph::EventLoop::clear()
 {
 	mIsKeyJustPressed = false;
 	mIsKeyJustReleased = false;

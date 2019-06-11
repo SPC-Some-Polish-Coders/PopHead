@@ -4,9 +4,7 @@
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 
-using PopHead::Terminal::CommandInterpreter;
-
-void CommandInterpreter::handleCommand(const std::string& command)
+void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
 	mCommand = command;
 
@@ -16,29 +14,29 @@ void CommandInterpreter::handleCommand(const std::string& command)
 		handleCommandWithoutArguments();
 }
 
-bool CommandInterpreter::commandHasAnArgument()
+bool ph::CommandInterpreter::commandHasAnArgument()
 {
 	return commandContains(' ') || commandContains('-') || commandContains('=');
 }
 
-bool CommandInterpreter::commandContains(const char c)
+bool ph::CommandInterpreter::commandContains(const char c)
 {
 	return mCommand.find(c) != std::string::npos;
 }
 
-void CommandInterpreter::handleCommandWithOneArgument()
+void ph::CommandInterpreter::handleCommandWithOneArgument()
 {
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 	if(commandWithoutArguments == "log")
 		executeLog();
 }
 
-std::string CommandInterpreter::getCommandWithoutArguments()
+std::string ph::CommandInterpreter::getCommandWithoutArguments()
 {
 	return mCommand.substr(0, getArgumentPositionInCommand());
 }
 
-int CommandInterpreter::getArgumentPositionInCommand()
+int ph::CommandInterpreter::getArgumentPositionInCommand()
 {
 	size_t argumentPosition;
 	std::array<char, 3> argumentCharacters{' ', '-', '='};
@@ -49,23 +47,23 @@ int CommandInterpreter::getArgumentPositionInCommand()
 	}
 }
 
-void CommandInterpreter::executeLog()
+void ph::CommandInterpreter::executeLog()
 {
 	PH_LOG(LogType::Info, "execution of log command");
 }
 
-void CommandInterpreter::handleCommandWithoutArguments()
+void ph::CommandInterpreter::handleCommandWithoutArguments()
 {
 	if(mCommand == "test")      executeTest();
 	else if(mCommand == "exit") executeExit();
 }
 
-void CommandInterpreter::executeTest()
+void ph::CommandInterpreter::executeTest()
 {
 	PH_LOG(LogType::Info, "terminal test");
 }
 
-void CommandInterpreter::executeExit()
+void ph::CommandInterpreter::executeExit()
 {
 	mGameData->getRenderer().getWindow().close();
 }

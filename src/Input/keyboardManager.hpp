@@ -4,9 +4,7 @@
 #include <SFML/Window.hpp>
 #include <map>
 
-namespace PopHead {
-namespace Input {
-
+namespace ph {
 
 struct KeyboardManager
 {
@@ -15,7 +13,6 @@ struct KeyboardManager
     bool isKeyJustReleased( sf::Keyboard::Key ) const;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_KEYBOARDMANAGER_H_

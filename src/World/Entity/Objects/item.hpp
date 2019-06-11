@@ -3,10 +3,7 @@
 
 #include "World/Entity/object.hpp"
 
-namespace PopHead{
-namespace World{
-namespace Entity{
-
+namespace ph{
 
 class Item : public Object
 {
@@ -18,6 +15,6 @@ private:
 };
 
 
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_ITEM_H_

@@ -4,8 +4,7 @@
 #include "Utilities/debug.hpp"
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
 namespace Math {
 	inline float getRightBound(sf::FloatRect bounds) 
@@ -27,6 +26,6 @@ namespace Math {
 	}
 }
 
-}}
+}
 
 #endif

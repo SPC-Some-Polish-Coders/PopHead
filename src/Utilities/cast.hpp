@@ -3,13 +3,12 @@
 
 #include <string>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
 namespace Cast {
 	unsigned toUnsigned(const std::string& str);
 }
 
-}}
+}
 
 #endif // !POPHEAD_UTILITIES_CAST_H_

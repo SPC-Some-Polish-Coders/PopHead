@@ -5,15 +5,14 @@
 #include <string>
 #include <vector>
 
-namespace PopHead{
-namespace World{
-namespace Entity{
-
+namespace ph{
 
 class Map : public Object
 {
 public:
-    Map(Base::GameData* gameData, std::string name, const std::string& xmlFilename, float scale = 1);
+    Map(GameData* gameData, std::string name, float scale = 1);
+
+	void loadFromFile(const std::string& filename);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -21,7 +20,7 @@ private:
 	struct TilesetsData {
 		std::vector<std::string> sources;
 		std::vector<unsigned> columnsCounts;
-		std::vector<unsigned> gid;
+		std::vector<unsigned> globalIds;
 		std::vector<unsigned> tileCounts;
 	};
 
@@ -29,6 +28,6 @@ private:
 };
 
 
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_

@@ -1,9 +1,7 @@
 #ifndef POPHEAD_PHYSICS_BODYTYPE_H_
 #define POPHEAD_PHYSICS_BODYTYPE_H_
 
-namespace PopHead {
-namespace Physics {
-
+namespace ph {
 
 enum class BodyType
 {
@@ -11,8 +9,6 @@ enum class BodyType
 	kinematicBody
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_PHYSICS_BODYTYPE_H_
-

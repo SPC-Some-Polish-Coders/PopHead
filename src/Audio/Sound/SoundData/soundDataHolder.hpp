@@ -5,20 +5,19 @@
 #include <string>
 #include <map>
 
-namespace PopHead {
-namespace Audio {
+namespace ph {
 
 class SoundDataHolder
 {
 public:
 	SoundDataHolder();
 
-	SoundData getSoundData(const std::string& filePath);
+	auto getSoundData(const std::string& filePath) -> SoundData;
 
 private:
 	std::map<std::string, SoundData> mAllSoundsData;
 };
 
-}}
+}
 
 #endif

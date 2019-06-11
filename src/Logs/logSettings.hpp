@@ -4,9 +4,7 @@
 #include "log.hpp"
 #include <vector>
 
-namespace PopHead{
-namespace Logs{
-
+namespace ph{
 
 class LogSettings
 {
@@ -41,6 +39,6 @@ private:
 	bool mShouldLogIntoFile;
 };
 
-}}
+}
 
 #endif //POPHEAD_LOGS_LOGSETTINGS_H_
