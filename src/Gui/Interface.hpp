@@ -13,8 +13,9 @@ namespace GUI {
 		:public Widget
 	{
 	public:
-
 		Interface();
+
+		Interface(Base::GameData* data);
 
 		void update(sf::Time delta);
 
@@ -25,6 +26,8 @@ namespace GUI {
 		void setPosition(const sf::Vector2f& pos);
 
 		void addWidget(const std::string& name, Widget* ptr);
+
+		void move(const sf::Vector2f& delta);
 
 		sf::Vector2f getGlobalPosition() const;
 	};

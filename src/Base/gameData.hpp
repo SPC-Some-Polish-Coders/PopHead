@@ -11,6 +11,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
+#include "Gui/GUI.hpp"
 
 namespace PopHead {
 namespace Base {
@@ -31,7 +32,8 @@ public:
 		Input::Input* const,
 		Renderer::Renderer* const,
 		Physics::PhysicsEngine* const,
-		Terminal::Terminal* const);
+		Terminal::Terminal* const,
+		GUI::GUI* const);
 
 	auto getSoundPlayer()	const -> Audio::SoundPlayer & { return *mSoundPlayer; }
 	auto getMusicPlayer()	const -> Audio::MusicPlayer & { return *mMusicPlayer; }
@@ -43,6 +45,7 @@ public:
 	auto getRenderer()		const -> Renderer::Renderer & { return *mRenderer; }
 	auto getPhysicsEngine()	const -> Physics::PhysicsEngine & { return *mPhysicsEngine; }
 	auto getTerminal()	const -> Terminal::Terminal & { return *mTerminal; }
+	auto getGui()		const -> GUI::GUI & { return *mGui; }
 
 private:
 	Audio::SoundPlayer* const mSoundPlayer;
@@ -55,10 +58,11 @@ private:
 	Renderer::Renderer* const mRenderer;
 	Physics::PhysicsEngine* const mPhysicsEngine;
 	Terminal::Terminal* const mTerminal;
+	GUI::GUI* const mGui;
 };
 
 inline GameData::GameData()
-	: GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	: GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 
 inline GameData::GameData(
 	Audio::SoundPlayer* const soundPlayer,
@@ -70,7 +74,8 @@ inline GameData::GameData(
 	Input::Input* const input,
 	Renderer::Renderer* const renderer,
 	Physics::PhysicsEngine* const physicsEngine,
-	Terminal::Terminal* const Terminal)
+	Terminal::Terminal* const Terminal,
+	GUI::GUI* const gui)
 	: mSoundPlayer{soundPlayer}
 	, mMusicPlayer{musicPlayer}
 	, mTextures{textures}
@@ -81,6 +86,7 @@ inline GameData::GameData(
 	, mRenderer{renderer}
 	, mPhysicsEngine{physicsEngine}
 	, mTerminal{Terminal}
+	, mGui{gui}
 {
 }
 

@@ -13,6 +13,8 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 
+
+
 namespace PopHead {
 namespace Base {
 
@@ -41,6 +43,7 @@ private:
 	std::unique_ptr< Renderer::Renderer >		mRenderer;
 	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine;
 	std::unique_ptr< Terminal::Terminal >		mTerminal;
+	std::unique_ptr< GUI::GUI >					mGui;
 };
 
 

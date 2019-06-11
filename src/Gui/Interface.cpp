@@ -4,9 +4,20 @@ namespace PopHead {
 
 namespace GUI {
 	Interface::Interface()
+	{
+		mSize = sf::Vector2u(300, 300);
+		setScale(sf::Vector2f(1, 1));
+	}
+	Interface::Interface(Base::GameData* data)
 		: Widget()
 	{
-		
+		mGameData = data;
+
+		mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getRenderer().getWindow());
+
+		mSize = sf::Vector2u(300, 300);
+		setScale(sf::Vector2f(1, 1));
+
 	}
 	void Interface::update(sf::Time delta)
 	{
@@ -37,12 +48,24 @@ namespace GUI {
 		auto k = mGameData->getRenderer().getWindow().getSize();
 		mPosition.x = pos.x * k.x;
 		mPosition.y = pos.y * k.y;
+		for (const auto& k : mWidgetList)
+		{
+			k.second->rePosition();
+		}
 	}
 
 	void Interface::addWidget(const std::string& name, Widget* ptr)
 	{
 		Widget::addWidget(name,ptr);
-		mSize = ptr->getSize();
+		//mSize = ptr->getSize();
+	}
+
+	void Interface::move(const sf::Vector2f& delta)
+	{
+		for (const auto& k : mWidgetList)
+		{
+			k.second->move(delta);
+		}
 	}
 
 	sf::Vector2f Interface::getGlobalPosition() const

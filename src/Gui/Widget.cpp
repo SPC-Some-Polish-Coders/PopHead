@@ -4,11 +4,15 @@ namespace PopHead {
 namespace GUI {
 	Widget::Widget()
 		:
+		mAlpha(0),
 		mRoot(nullptr),
 		mPosition(0, 0),
 		mSize(0, 0),
 		mOrigin(0.5, 0.5),
-		mScale(1, 1)
+		mScale(1, 1),
+		misActive(true),
+		mGameData(nullptr),
+		mWindow(nullptr)
 	{
 	}
 	void Widget::draw()
@@ -78,9 +82,12 @@ namespace GUI {
 	void Widget::addWidget(const std::string& name, Widget* ptr) 
 	{
 		mWidgetList.insert({name,std::unique_ptr<Widget>(ptr) });
-		auto k = mWidgetList.rbegin();
-		k->second->setGameData(mGameData);
-		k->second->setRoot(this);
+	//	auto k = mWidgetList.begin();
+	//	k->second->setGameData(mGameData);
+		//k->second->setRoot(this);
+		ptr->setGameData(mGameData);
+		ptr->setRoot(this);
+		ptr->rePosition();
 	}
 
 	void Widget::hide() 
@@ -95,15 +102,15 @@ namespace GUI {
 
 	bool Widget::setContentPath(const std::string& path)
 	{
-		if (!mTexture.loadFromFile(path))
-			return false;
-		mSprite.setTexture(mTexture);
-		mSize = mTexture.getSize();
+		//if (!mTexture.loadFromFile(path))
+			//return false;
+		mSprite.setTexture(mGameData->getTextures().get(path));
+		mSize = mGameData->getTextures().get(path).getSize();
 
-		mSize.x *= mScale.x;
-		mSize.y *= mScale.y;
+		mSize.x *= (unsigned int)mScale.x;
+		mSize.y *= (unsigned int)mScale.y;
 		mSprite.setScale(mScale);
-
+		//rePosition();
 		return true;
 	}
 
@@ -116,9 +123,23 @@ namespace GUI {
 			auto size = mRoot->getSize();
 			auto origin = mRoot->getOrigin();
 			mSprite.setOrigin(mOrigin);
+			
 			mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
 
+			for (const auto& k : mWidgetList)
+			{
+				k.second->rePosition();
+			}
 		}
+	}
+
+	void Widget::move(const sf::Vector2f& delta)
+	{
+		for (const auto& k : mWidgetList)
+		{
+			k.second->move(delta);
+		}
+		mSprite.move(delta);
 	}
 
 	void Widget::setScale(const sf::Vector2f& scale)
@@ -131,8 +152,8 @@ namespace GUI {
 		finalScale.x *= scale.x;
 		finalScale.y *= scale.y;
 
-		mSize.x *= finalScale.x;
-		mSize.y *= finalScale.y;
+		mSize.x *= (float)finalScale.x;
+		mSize.y *= (float)finalScale.y;
 
 		mSprite.setOrigin(mOrigin);
 		mScale = finalScale;
@@ -177,6 +198,10 @@ namespace GUI {
 	void Widget::setOrigin(const sf::Vector2f& origin)
 	{
 		mOrigin = origin;
+		for (const auto& k : mWidgetList)
+		{
+			k.second->rePosition();
+		}
 	}
 	sf::Vector2f Widget::getOrigin() const
 	{
@@ -189,5 +214,13 @@ namespace GUI {
 	sf::Vector2f Widget::getGlobalPosition() const
 	{
 		return mSprite.getPosition();
+	}
+	void Widget::rePosition()
+	{
+		setPosition(mPosition);
+		for (const auto& k : mWidgetList)
+		{
+			k.second->rePosition();
+		}
 	}
 }}

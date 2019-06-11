@@ -37,6 +37,8 @@ namespace GUI {
 
 		virtual void setPosition(const sf::Vector2f& pos);
 
+		virtual void move(const sf::Vector2f& delta);
+
 		virtual void setScale(const sf::Vector2f& scale);
 
 		virtual void setVirtualSize(const sf::Vector2f& size);
@@ -60,6 +62,10 @@ namespace GUI {
 		
 		virtual sf::Vector2f getPosition() const;
 		virtual sf::Vector2f getGlobalPosition() const;
+
+
+		virtual void rePosition();
+		//virtual void setGameData(Base::GameData* data);
 
 
 	protected:

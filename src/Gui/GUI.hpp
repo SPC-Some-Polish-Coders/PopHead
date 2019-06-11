@@ -49,6 +49,11 @@ namespace GUI {
 				mGui->update(delta);
 			}
 
+			void move(sf::Vector2f delta, bool recursive = true)
+			{
+				mGui->move(delta);
+			}
+		
 		private:
 			GUI* mGui;
 		};
@@ -57,6 +62,8 @@ namespace GUI {
 		Widget* addInterface(const std::string& name);
 
 		Widget* getInterface(const std::string& name);
+
+		void move(const sf::Vector2f&);
 
 		void deleteInterface(const std::string& name);
 

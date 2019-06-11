@@ -21,6 +21,7 @@ Game::Game()
 	, mRenderer{new Renderer::Renderer()}
 	, mPhysicsEngine{new Physics::PhysicsEngine()}
 	, mTerminal{new Terminal::Terminal()}
+	, mGui{new GUI::GUI()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -32,8 +33,10 @@ Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mTerminal.get()
+		mTerminal.get(),
+		mGui.get()
 	));
+
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(States::StateID::GameState);
@@ -44,6 +47,8 @@ Game::Game()
 	mTerminal->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
+	
+	mGui->init(mGameData.get());
 }
 
 void Game::run()
