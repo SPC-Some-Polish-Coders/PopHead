@@ -3,9 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
-namespace Renderer {
-
+namespace ph {
 
 class Camera
 {
@@ -47,6 +45,6 @@ private:
 	sf::Vector2f mCameraMoveFromLastFrame;
 };
 
+}
 
-}}
 #endif

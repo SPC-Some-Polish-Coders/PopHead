@@ -9,8 +9,7 @@
 
 #include <string>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
 namespace Path {
 	std::string toModuleName(const std::string& path);
@@ -18,7 +17,6 @@ namespace Path {
 	std::string toFilename(const std::string& path, char separator = PH_PATH_SEPARATOR);
 }
 
-}
 }
 
 #endif

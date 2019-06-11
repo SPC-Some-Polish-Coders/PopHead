@@ -7,9 +7,7 @@
 #include <map>
 #include <functional>
 
-namespace PopHead {
-namespace Input {
-
+namespace ph {
 
 class ActionManager
 {
@@ -23,6 +21,8 @@ public:
 	void deleteAction(const std::string& action);
 	void clearAllActions() noexcept;
 
+	void setEnabled(bool enabled) { mEnabled = enabled; }
+
 	bool isActionPressed(const std::string& action);
 	bool isActionJustPressed(const std::string& action);
 	bool isActionJustReleased(const std::string& action);
@@ -31,9 +31,9 @@ private:
 
 private:
 	std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
+	bool mEnabled;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_ACTIONMANAGER_H_

@@ -3,8 +3,7 @@
 
 #include <random>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
 class Random {
 public:
@@ -14,6 +13,6 @@ private:
 	static std::default_random_engine mEngine;
 };
 
-}}
+}
 
 #endif

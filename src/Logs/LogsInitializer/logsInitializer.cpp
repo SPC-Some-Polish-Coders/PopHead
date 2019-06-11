@@ -1,11 +1,7 @@
 #include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-using PopHead::Logs::LogsInitializer;
-using PopHead::Logs::LogType;
-using PopHead::Utilities::IniLoader;
-
-bool LogsInitializer::getShouldLogIntoConsole()
+bool ph::LogsInitializer::getShouldLogIntoConsole()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
@@ -16,7 +12,7 @@ bool LogsInitializer::getShouldLogIntoConsole()
 	}
 }
 
-bool LogsInitializer::getShouldLogIntoFile()
+bool ph::LogsInitializer::getShouldLogIntoFile()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
@@ -27,7 +23,7 @@ bool LogsInitializer::getShouldLogIntoFile()
 	}
 }
 
-std::vector<LogType> LogsInitializer::getLogTypesToWrite()
+std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
@@ -37,16 +33,16 @@ std::vector<LogType> LogsInitializer::getLogTypesToWrite()
 			InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::Count };
 		else
 		{
-			if (findValue("Error")) InitLogTypesToWrite.push_back(LogType::Error);
-			if (findValue("Info")) InitLogTypesToWrite.push_back(LogType::Info);
-			if (findValue("Warning")) InitLogTypesToWrite.push_back(LogType::Warning);
+			if (findValue("Error")) InitLogTypesToWrite.emplace_back(LogType::Error);
+			if (findValue("Info")) InitLogTypesToWrite.emplace_back(LogType::Info);
+			if (findValue("Warning")) InitLogTypesToWrite.emplace_back(LogType::Warning);
 		}
 	}
 	closeTheFile();
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
+std::vector<std::string> ph::LogsInitializer::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;
@@ -54,20 +50,21 @@ std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
 	{
 		if (findValue("All"))
 			InitModuleNamesToWrite = { "Audio", "Base", "Input", "Logs", "Physics",
-			"Renderer", "Resources", "States", "Utilities", "World", "None" };
+			"Renderer", "Resources", "States", "Utilities", "World", "Terminal", "None" };
 		else
 		{
-			if (findValue("Audio")) InitModuleNamesToWrite.push_back("Audio");
-			if (findValue("Base")) InitModuleNamesToWrite.push_back("Base");
-			if (findValue("Input")) InitModuleNamesToWrite.push_back("Input");
-			if (findValue("Logs")) InitModuleNamesToWrite.push_back("Logs");
-			if (findValue("Physics")) InitModuleNamesToWrite.push_back("Physics");
-			if (findValue("Renderer")) InitModuleNamesToWrite.push_back("Renderer");
-			if (findValue("Resources")) InitModuleNamesToWrite.push_back("Resources");
-			if (findValue("States")) InitModuleNamesToWrite.push_back("States");
-			if (findValue("Utilities")) InitModuleNamesToWrite.push_back("Utilities");
-			if (findValue("World")) InitModuleNamesToWrite.push_back("World");
-			if (findValue("None")) InitModuleNamesToWrite.push_back("None");
+			if (findValue("Audio")) InitModuleNamesToWrite.emplace_back("Audio");
+			if (findValue("Base")) InitModuleNamesToWrite.emplace_back("Base");
+			if (findValue("Input")) InitModuleNamesToWrite.emplace_back("Input");
+			if (findValue("Logs")) InitModuleNamesToWrite.emplace_back("Logs");
+			if (findValue("Physics")) InitModuleNamesToWrite.emplace_back("Physics");
+			if (findValue("Renderer")) InitModuleNamesToWrite.emplace_back("Renderer");
+			if (findValue("Resources")) InitModuleNamesToWrite.emplace_back("Resources");
+			if (findValue("States")) InitModuleNamesToWrite.emplace_back("States");
+			if (findValue("Utilities")) InitModuleNamesToWrite.emplace_back("Utilities");
+			if (findValue("World")) InitModuleNamesToWrite.emplace_back("World");
+			if (findValue("Terminal")) InitModuleNamesToWrite.emplace_back("Terminal");
+			if (findValue("None")) InitModuleNamesToWrite.emplace_back("None");
 		}
 	}
 	closeTheFile();

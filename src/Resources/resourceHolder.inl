@@ -1,30 +1,28 @@
 #include "Utilities/debug.hpp"
 #include "resourceHolder.hpp"
 
-using PopHead::Resources::ResourceHolder;
-
 template< typename ResourceType >
-void ResourceHolder<ResourceType>::load(const std::string& filePath)
+void ph::ResourceHolder<ResourceType>::load(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
-    auto resource = std::make_unique< ResourceType >();
-    if(resource->loadFromFile(fullFilePath))
+	auto resource = std::make_unique< ResourceType >();
+	if (resource->loadFromFile(fullFilePath))
 		mResources.insert(std::make_pair(fullFilePath, std::move(resource)));
 	else
 		PH_EXCEPTION("unable to load file " + fullFilePath + "! Probably there is not such file.");
 }
 
 template< typename ResourceType >
-auto ResourceHolder<ResourceType>::get(const std::string& filePath) -> ResourceType&
+auto ph::ResourceHolder<ResourceType>::get(const std::string& filePath) -> ResourceType &
 {
 	std::string fullFilePath = "resources/" + filePath;
-    auto found = mResources.find(fullFilePath);
+	auto found = mResources.find(fullFilePath);
 	PH_ASSERT(found != mResources.end(), "Resource \"" + fullFilePath + "\" was not found!");
 	return *found->second;
 }
 
 template< typename ResourceType >
-void ResourceHolder<ResourceType>::free(const std::string& filePath)
+void ph::ResourceHolder<ResourceType>::free(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
 	for (auto it = mResources.begin(); it != mResources.end(); ++it) {

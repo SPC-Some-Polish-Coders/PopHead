@@ -7,26 +7,23 @@
 ///This class is for test purposes
 ///It should be probably deleted when map collisions and the whole Physics module are made
 
-namespace PopHead {
-namespace World {
-namespace Entity {
-
+namespace ph {
 
 class ShapeWithCollision : public Object
 {
 public:
-	ShapeWithCollision(PopHead::Base::GameData*);
+	ShapeWithCollision(GameData*);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void setPosition(sf::Vector2f, bool recursive = true) override;
 
 private:
 	sf::RectangleShape mShape;
-	Physics::CollisionBody mCollisionBody;
+	CollisionBody mCollisionBody;
 };
 
 
-}}}
+}
 
 #endif // !POPHEAD_WORLD_ENTITY_OBJECTS_STATICOBJECTTOCAMERA_H_
 

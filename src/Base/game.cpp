@@ -4,23 +4,20 @@
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 
-namespace PopHead { namespace States { enum class StateID; } }
+namespace ph { enum class StateID; }
 
-using PopHead::Base::Game;
-
-
-Game::Game()
-	: mGameData{}
-	, mSoundPlayer{new Audio::SoundPlayer()}
-	, mMusicPlayer{new Audio::MusicPlayer()}
-	, mTextures{new Resources::TextureHolder()}
-	, mFonts{new Resources::FontHolder()}
-	, mShaders{new Resources::ShaderHolder()}
-	, mStateMachine{new States::StateMachine()}
-	, mInput{new Input::Input()}
-	, mRenderer{new Renderer::Renderer()}
-	, mPhysicsEngine{new Physics::PhysicsEngine()}
-	, mCommandPrompt{new CommandPrompt::CommandPrompt()}
+ph::Game::Game()
+	:mGameData{}
+	,mSoundPlayer{new SoundPlayer()}
+	,mMusicPlayer{new MusicPlayer()}
+	,mTextures{new TextureHolder()}
+	,mFonts{new FontHolder()}
+	,mShaders{new ShaderHolder()}
+	,mStateMachine{new StateMachine()}
+	,mInput{new Input()}
+	,mRenderer{new Renderer()}
+	,mPhysicsEngine{new PhysicsEngine()}
+	,mTerminal{new Terminal()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -32,21 +29,21 @@ Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mCommandPrompt.get()
+		mTerminal.get()
 	));
 
 	mStateMachine->setGameData(mGameData.get());
-	mStateMachine->pushState(States::StateID::GameState);
+	mStateMachine->pushState(StateID::GameState);
 
-	Input::EventLoop::init(mGameData.get());
+	EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
 
-	mCommandPrompt->init(mGameData.get());
+	mTerminal->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
 }
 
-void Game::run()
+void ph::Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -73,21 +70,21 @@ void Game::run()
 	}
 }
 
-void Game::input()
+void ph::Game::input()
 {
-	Input::EventLoop::eventLoop(mGameData.get());
+	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
-	mCommandPrompt->input();
+	mTerminal->input();
 }
 
-void Game::update(sf::Time delta)
+void ph::Game::update(sf::Time delta)
 {
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 }
 
-void Game::draw()
+void ph::Game::draw()
 {
 	mRenderer->draw();
 }

@@ -1,8 +1,7 @@
 #ifndef POPHEAD_AUDIO_SOUNDDATA_H_
 #define POPHEAD_AUDIO_SOUNDDATA_H_
 
-namespace PopHead {
-namespace Audio {
+namespace ph {
 
 struct SoundData
 {
@@ -15,6 +14,6 @@ struct SoundData
 			const float maximalFullVolumeDistance = 0.f, const float maximalHearableDistance = 1000.f);
 };
 
-}}
+}
 
 #endif

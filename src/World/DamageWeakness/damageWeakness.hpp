@@ -3,9 +3,7 @@
 
 #include "damageWeaknessType.hpp"
 
-namespace PopHead{
-namespace World{
-
+namespace ph{
 
 class DamageWeakness
 {
@@ -19,7 +17,6 @@ private:
     float mAdditionalDamage;
 };
 
-
-}}
+}
 
 #endif // POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESS_H_

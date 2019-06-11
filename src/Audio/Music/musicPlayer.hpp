@@ -4,9 +4,7 @@
 #include <SFML/Audio.hpp>
 #include "MusicData/musicDataHolder.hpp"
 
-namespace PopHead {
-namespace Audio {
-
+namespace ph {
 
 class MusicPlayer
 {
@@ -30,7 +28,6 @@ private:
 	bool mIsMuted;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_AUDIO_MUSICPLAYER_H_

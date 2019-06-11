@@ -7,15 +7,12 @@
 #include "World/Entity/entity.hpp"
 #include "Renderer/layerID.hpp"
 
-namespace PopHead {
-namespace World {
-namespace Entity {
-
+namespace ph {
 
 class Object : public Entity, public sf::Drawable
 {
 public:
-	Object(Base::GameData*, std::string name, Renderer::LayerID);
+	Object(GameData*, std::string name, LayerID);
 
 	void setVisibility(bool visibility, bool recursive = true);
 	virtual void setPosition(sf::Vector2f, bool recursive = true);
@@ -27,7 +24,7 @@ public:
 	auto getPosition() -> sf::Vector2f const { return mPosition; }
 	auto getScale() -> sf::Vector2f const { return mScale; }
 	float getRotation() const { return mRotation; }
-	auto getLayerID() const -> PopHead::Renderer::LayerID { return mLayerID; }
+	auto getLayerID() const -> ph::LayerID { return mLayerID; }
 	bool getVisibility() const { return mVisibility; }
 
 private:
@@ -39,11 +36,10 @@ protected:
 	sf::Vector2f mScale;
 	float mRotation;
 	bool mVisibility;
-	const Renderer::LayerID mLayerID;
+	const LayerID mLayerID;
 };
 
-
-}}}
+}
 
 #include "object.inl"
 

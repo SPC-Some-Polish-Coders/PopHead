@@ -6,9 +6,7 @@
 #include <vector>
 #include <map>
 
-namespace PopHead {
-namespace World{
-
+namespace ph {
 
 class Animation
 {
@@ -54,6 +52,6 @@ private:
 
 #include "animation.inl"
 
-}}
+}
 
 #endif

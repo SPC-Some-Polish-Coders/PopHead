@@ -5,8 +5,7 @@
 #include <string>
 #include <map>
 
-namespace PopHead {
-namespace Audio {
+namespace ph {
 
 class MusicDataHolder
 {
@@ -21,8 +20,7 @@ private:
 	MusicData mCurrentThemeData;
 };
 
-}}
-
+}
 
 #endif // !POPHEAD_AUDIO_MUSICDATAHOLDER_H_
 

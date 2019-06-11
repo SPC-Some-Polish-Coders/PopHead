@@ -3,8 +3,7 @@
 
 #include <string>
 
-namespace PopHead {
-namespace Logs {
+namespace ph {
 
 enum class LogType : std::size_t {
 	Info,
@@ -20,6 +19,6 @@ struct LogData
 	LogType type;
 };
 
-}}
+}
 
 #endif // !POPHEAD_LOG_LOG_H_
