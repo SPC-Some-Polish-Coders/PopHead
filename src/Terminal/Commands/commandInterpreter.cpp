@@ -3,7 +3,6 @@
 #include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
-#include "NonArgumentCommands/exitCommand.hpp"
 
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
@@ -55,5 +54,10 @@ void ph::CommandInterpreter::executeLog()
 
 void ph::CommandInterpreter::handleCommandWithoutArguments()
 {
-	if(mCommand == "exit") ExitCommand::execute(mGameData);
+	if(mCommand == "exit") executeExit();
+}
+
+void ph::CommandInterpreter::executeExit()
+{
+	mGameData->getRenderer().getWindow().close();
 }

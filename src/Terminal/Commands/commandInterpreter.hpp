@@ -23,6 +23,7 @@ private:
 	void executeLog();
 	
 	void handleCommandWithoutArguments();
+	void executeExit();
 
 private:
 	std::string mCommand;
