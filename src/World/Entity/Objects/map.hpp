@@ -2,6 +2,7 @@
 #define POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_
 
 #include "World/Entity/object.hpp"
+#include "Utilities/xml.hpp"
 #include <string>
 #include <vector>
 
@@ -24,6 +25,9 @@ private:
 		std::vector<unsigned> tileCounts;
 	};
 
+	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
+
+	const std::string pathToMapTextures = "textures/map/";
 	std::vector<sf::Sprite> mTiles;
 };
 
