@@ -7,9 +7,7 @@
 #include <map>
 #include <functional>
 
-namespace PopHead {
-namespace Input {
-
+namespace ph {
 
 class ActionManager
 {
@@ -36,7 +34,6 @@ private:
 	bool mEnabled;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_ACTIONMANAGER_H_

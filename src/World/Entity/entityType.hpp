@@ -1,9 +1,7 @@
 #ifndef POPHEAD_WORLD_ENTITYTYPE_H_
 #define POPHEAD_WORLD_ENTITYTYPE_H_
 
-namespace PopHead{
-namespace World{
-
+namespace ph{
 
 enum class EntityType
 {
@@ -12,7 +10,6 @@ enum class EntityType
     object
 };
 
-
-}}
+}
 
 #endif // POPHEAD_WORLD_ENTITYTYPE_H_

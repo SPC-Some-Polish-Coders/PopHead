@@ -4,10 +4,9 @@
 #include "Utilities/iniLoader.hpp"
 #include "SFML/Graphics.hpp"
 
-namespace PopHead{
-namespace Renderer{
+namespace ph{
 
-class WindowInitializer : private  Utilities::IniLoader
+class WindowInitializer : private IniLoader
 {
 public:
 	static sf::VideoMode getWindowSize();
@@ -19,5 +18,6 @@ private:
 	static bool getFullscreenMode();
 };
 
-}}
+}
+
 #endif // !POPHEAD_RENDERER_WINDOWINITIALIZER_H_

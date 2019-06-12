@@ -2,7 +2,7 @@
 
 #include "Base/gameData.hpp"
 
-void PopHead::Terminal::ExitCommand::execute(Base::GameData* gameData)
+void ph::ExitCommand::execute(GameData* gameData)
 {
 	gameData->getRenderer().getWindow().close();
 }

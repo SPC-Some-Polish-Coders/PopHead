@@ -5,20 +5,18 @@
 #include <string>
 #include <sstream>
 
-using PopHead::Utilities::IniLoader;
-
-std::fstream IniLoader::iniSettingsFile;
-std::string IniLoader::currentLine;
+std::fstream ph::IniLoader::iniSettingsFile;
+std::string ph::IniLoader::currentLine;
 
 // WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method because it can result in recursion
 
-void IniLoader::handleException(const std::string& message)
+void ph::IniLoader::handleException(const std::string& message)
 {
 	std::cout << message << std::endl;
 	throw std::runtime_error(message);
 }
 
-void IniLoader::openTheFile()
+void ph::IniLoader::openTheFile()
 {
 	iniSettingsFile.open("config.ini", std::ios::in);
 	if (!iniSettingsFile.is_open())
@@ -27,7 +25,7 @@ void IniLoader::openTheFile()
 	}
 }
 
-void IniLoader::closeTheFile()
+void ph::IniLoader::closeTheFile()
 {
 	iniSettingsFile.close();
 	if (iniSettingsFile.is_open())
@@ -36,7 +34,7 @@ void IniLoader::closeTheFile()
 	}
 }
 
-bool IniLoader::findPhrase(const std::string& searchedPhrase)
+bool ph::IniLoader::findPhrase(const std::string& searchedPhrase)
 {
 	while (std::getline(iniSettingsFile, currentLine)) {
 		if (currentLine.find(searchedPhrase) != std::string::npos)
@@ -48,7 +46,7 @@ bool IniLoader::findPhrase(const std::string& searchedPhrase)
 	}
 }
 
-bool IniLoader::findValue(const std::string& searchedValue)
+bool ph::IniLoader::findValue(const std::string& searchedValue)
 {
 	if (currentLine.find(searchedValue) != std::string::npos)
 		return true;
@@ -56,7 +54,7 @@ bool IniLoader::findValue(const std::string& searchedValue)
 		return false;
 }
 
-bool IniLoader::getBool(const std::string& currentLine)
+bool ph::IniLoader::getBool(const std::string& currentLine)
 {
 	if (findValue("1")) return true;
 	else if (findValue("0")) return false;

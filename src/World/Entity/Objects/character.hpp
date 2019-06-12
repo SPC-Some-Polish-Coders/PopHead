@@ -6,19 +6,15 @@
 #include "World/Animation/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 
-namespace PopHead {
-namespace World {
-namespace Entity {
-
+namespace ph {
 
 class Character : public Object
 {
 public:
-	Character(Base::GameData*, std::string name, Animation animation = Animation(),
+	Character(GameData*, std::string name, Animation animation = Animation(),
 		unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100,
 		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50);
 
-	void atack();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void setPosition(sf::Vector2f, bool recursive = true) override;
@@ -42,10 +38,9 @@ protected:
 	CharacterMotion mMotion;
 	sf::Sprite mSprite;
 	Animation mAnimation;
-	Physics::CollisionBody mCollisionBody;
+	CollisionBody mCollisionBody;
 };
 
-
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_

@@ -3,21 +3,17 @@
 
 #include "World/Entity/Objects/projectile.hpp"
 
-namespace PopHead{
-namespace World{
-namespace Entity{
-
+namespace ph{
 
 class Bullet : public Projectile
 {
 public:
-    Bullet(Base::GameData*, const std::string& name, float damage, float range);
+    Bullet(GameData*, const std::string& name, float damage, float range);
 
 private:
     void dealDamage(Object&) override;
 };
 
-
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILES_BULLET_H_

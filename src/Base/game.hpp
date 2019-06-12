@@ -13,9 +13,7 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 
-namespace PopHead {
-namespace Base {
-
+namespace ph {
 
 class Game
 {
@@ -28,22 +26,21 @@ private:
 	void update(sf::Time delta);
 	void draw();
 
-	inline auto getGameData() const -> const Base::GameData& { return *(mGameData); };
+	inline auto getGameData() const -> const GameData& { return *(mGameData); };
 
-	std::unique_ptr< Base::GameData >			mGameData;
-	std::unique_ptr< Audio::SoundPlayer >		mSoundPlayer;
-	std::unique_ptr< Audio::MusicPlayer >		mMusicPlayer;
-	std::unique_ptr< Resources::TextureHolder >	mTextures;
-	std::unique_ptr< Resources::FontHolder >	mFonts;
-	std::unique_ptr< Resources::ShaderHolder >	mShaders;
-	std::unique_ptr< States::StateMachine >		mStateMachine;
-	std::unique_ptr< Input::Input >				mInput;
-	std::unique_ptr< Renderer::Renderer >		mRenderer;
-	std::unique_ptr< Physics::PhysicsEngine >	mPhysicsEngine;
-	std::unique_ptr< Terminal::Terminal >		mTerminal;
+	std::unique_ptr< GameData >			mGameData;
+	std::unique_ptr< SoundPlayer >		mSoundPlayer;
+	std::unique_ptr< MusicPlayer >		mMusicPlayer;
+	std::unique_ptr< TextureHolder >	mTextures;
+	std::unique_ptr< FontHolder >		mFonts;
+	std::unique_ptr< ShaderHolder >		mShaders;
+	std::unique_ptr< StateMachine >		mStateMachine;
+	std::unique_ptr< Input >			mInput;
+	std::unique_ptr< Renderer >			mRenderer;
+	std::unique_ptr< PhysicsEngine >	mPhysicsEngine;
+	std::unique_ptr< Terminal >			mTerminal;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_BASE_GAME_H_

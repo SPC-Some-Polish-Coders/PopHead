@@ -3,22 +3,19 @@
 
 #include "World/Entity/Objects/character.hpp"
 
-namespace PopHead{
-namespace World{
-namespace Entity{
-
+namespace ph{
 
 class Player : public Character
 {
 public:
-    Player(Base::GameData*);
+    Player(GameData*);
 
     void input() override;
     void update(sf::Time delta) override;
 
 private:
     void updateAnimation(const std::string& stateName);
-    ///void talkTo(NPC&);
+    ///void talkTo(Npc&);
 
     ///auto getPerks() const -> const PerkManager&;
 
@@ -28,6 +25,6 @@ private:
 };
 
 
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_PLAYER_H_

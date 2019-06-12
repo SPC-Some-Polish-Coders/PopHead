@@ -1,8 +1,7 @@
 #include "command.hpp"
 
-using PopHead::Terminal::Command;
-
-Command::Command(const std::string& command)
-	:mCommand(command)
+ph::Command::Command(GameData* const gameData, const std::string& command)
+	:mGameData(gameData)
+	,mCommand(command)
 {
 }

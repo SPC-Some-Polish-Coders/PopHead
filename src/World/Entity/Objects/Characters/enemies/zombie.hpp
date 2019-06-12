@@ -3,15 +3,12 @@
 
 #include "World/Entity/Objects/Characters/enemy.hpp"
 
-namespace PopHead {
-namespace World {
-namespace Entity {
-
+namespace ph {
 
 class Zombie : public Enemy
 {
 public:
-	Zombie(Base::GameData*);
+	Zombie(GameData*);
 
 	void update(sf::Time delta) override;
 
@@ -19,9 +16,7 @@ private:
 	sf::Clock timeFromLastGrowl;
 };
 
-
-}}}
-
+}
 
 #endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMIES_ZOMBIE_H_
 

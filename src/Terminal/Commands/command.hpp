@@ -3,19 +3,21 @@
 
 #include <string>
 
-namespace PopHead {
-namespace Terminal {
+namespace ph {
+
+class GameData;
 
 class Command
 {
 public:
-	Command(const std::string& command);
+	Command(GameData* const, const std::string& command);
 
 private:
 	std::string mCommand;
+	GameData* mGameData;
 };
 
-}}
+}
 
 #endif // !POPHEAD_TERMINAL_COMMANDS_COMMAND_H_
 

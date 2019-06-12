@@ -3,9 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace PopHead {
-namespace Physics {
-
+namespace ph {
 
 class CollisionBody;
 
@@ -37,7 +35,6 @@ private:
 };
 
 
-}}
+}
 
 #endif // !POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
-
