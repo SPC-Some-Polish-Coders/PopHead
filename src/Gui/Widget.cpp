@@ -8,7 +8,7 @@ namespace GUI {
 		mRoot(nullptr),
 		mPosition(0, 0),
 		mSize(0, 0),
-		mOrigin(0.5, 0.5),
+		mOrigin(0, 0),
 		mScale(1, 1),
 		misActive(true),
 		mGameData(nullptr),
@@ -137,7 +137,7 @@ namespace GUI {
 		this->move(delta);
 		for (const auto& k : mWidgetList)
 		{
-			k.second->move(delta);
+			k.second->moveAlongBranch(delta);
 		}
 	}
 
@@ -154,7 +154,7 @@ namespace GUI {
 		this->scale(scale);
 		for (const auto& k : mWidgetList)
 		{
-			k.second->scale(scale);
+			k.second->scaleAlongBranch(scale);
 		}
 	}
 

@@ -63,10 +63,11 @@ namespace GUI {
 
 	void Interface::move(const sf::Vector2f& delta)
 	{
-		for (const auto& k : mWidgetList)
-		{
-			k.second->move(delta);
-		}
+		
+	//	for (const auto& k : mWidgetList)
+		//{
+		//	k.second->move(delta);
+		//}
 	}
 
 	sf::Vector2f Interface::getGlobalPosition() const

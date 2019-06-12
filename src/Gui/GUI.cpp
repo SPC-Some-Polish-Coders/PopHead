@@ -31,7 +31,7 @@ namespace PopHead {
 		{ 
 			for (const auto& k : mInterfaceList)
 			{
-				k.second->move(delta);
+				k.second->moveAlongBranch(delta);
 			}
 		}
 
