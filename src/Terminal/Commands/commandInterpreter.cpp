@@ -3,6 +3,8 @@
 #include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
+#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
+
 
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
@@ -29,6 +31,8 @@ void ph::CommandInterpreter::handleCommandWithOneArgument()
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 	if(commandWithoutArguments == "log")
 		executeLog();
+	if (commandWithoutArguments == "changecolor")
+		executeCollisionDebugColors();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -64,4 +68,15 @@ void ph::CommandInterpreter::handleCommandWithoutArguments()
 void ph::CommandInterpreter::executeExit()
 {
 	mGameData->getRenderer().getWindow().close();
+}
+
+void ph::CommandInterpreter::executeCollisionDebugColors() 
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+	if (commandContains('1'))
+		collisionDebugSettings.setColors(1);
+	else if (commandContains('2'))
+		collisionDebugSettings.setColors(2);
+	else if (commandContains('3'))
+		collisionDebugSettings.setColors(3);
 }

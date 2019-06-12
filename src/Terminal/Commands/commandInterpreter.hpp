@@ -25,6 +25,8 @@ private:
 	void handleCommandWithoutArguments();
 	void executeExit();
 
+	void executeCollisionDebugColors();
+
 private:
 	std::string mCommand;
 	GameData* mGameData;
