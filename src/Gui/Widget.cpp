@@ -20,9 +20,14 @@ namespace GUI {
 		if (misActive)
 		{
 			mWindow->draw(mSprite);
-			for (const auto& k : mWidgetList)
+			/*for (const auto& k : mWidgetList)
 			{
 				k.second->draw();
+			}*/
+			for (auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
+			{
+				if (k->second->isActive())
+					k->second->draw();
 			}
 		}
 	}
@@ -198,6 +203,7 @@ namespace GUI {
 	void Widget::setOrigin(const sf::Vector2f& origin)
 	{
 		mOrigin = origin;
+		rePosition();
 		for (const auto& k : mWidgetList)
 		{
 			k.second->rePosition();

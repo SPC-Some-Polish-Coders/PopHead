@@ -30,10 +30,15 @@ namespace GUI {
 
 	void Interface::draw()
 	{
-		for (const auto& k : mWidgetList)
+		/*for (const auto& k : mWidgetList)
 		{
 			if (k.second->isActive())
 				k.second->draw();
+		}*/
+		for (auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
+		{
+			if (k->second->isActive())
+				k->second->draw();
 		}
 	}
 
