@@ -6,7 +6,8 @@ namespace GUI {
 	Interface::Interface()
 	{
 		mSize = sf::Vector2u(300, 300);
-		setScale(sf::Vector2f(1, 1));
+		mDefaultSize = mSize;
+		scale(sf::Vector2f(1, 1));
 	}
 	Interface::Interface(Base::GameData* data)
 		: Widget()
@@ -16,7 +17,8 @@ namespace GUI {
 		mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getRenderer().getWindow());
 
 		mSize = sf::Vector2u(300, 300);
-		setScale(sf::Vector2f(1, 1));
+		mDefaultSize = mSize;
+		scale(sf::Vector2f(1, 1));
 
 	}
 	void Interface::update(sf::Time delta)
@@ -30,11 +32,6 @@ namespace GUI {
 
 	void Interface::draw()
 	{
-		/*for (const auto& k : mWidgetList)
-		{
-			if (k.second->isActive())
-				k.second->draw();
-		}*/
 		for (auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 		{
 			if (k->second->isActive())
@@ -62,7 +59,6 @@ namespace GUI {
 	void Interface::addWidget(const std::string& name, Widget* ptr)
 	{
 		Widget::addWidget(name,ptr);
-		//mSize = ptr->getSize();
 	}
 
 	void Interface::move(const sf::Vector2f& delta)

@@ -39,7 +39,11 @@ namespace GUI {
 
 		virtual void move(const sf::Vector2f& delta);
 
-		virtual void setScale(const sf::Vector2f& scale);
+		virtual void moveAlongBranch(const sf::Vector2f& delta);
+
+		virtual void scale(const sf::Vector2f& scale);
+
+		virtual void scaleAlongBranch(const sf::Vector2f& scale);
 
 		virtual void setVirtualSize(const sf::Vector2f& size);
 
@@ -80,7 +84,7 @@ namespace GUI {
 		sf::RenderWindow* mWindow;
 		std::multimap < behaviorType, std::function<void(Widget*)>> mBehaviors;
 		std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;
-
+		sf::Vector2u mDefaultSize;
 	private:
 		sf::Sprite mSprite;
 		sf::Texture mTexture;

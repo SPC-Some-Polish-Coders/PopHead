@@ -107,15 +107,12 @@ namespace GUI {
 
 	bool Widget::setContentPath(const std::string& path)
 	{
-		//if (!mTexture.loadFromFile(path))
-			//return false;
 		mSprite.setTexture(mGameData->getTextures().get(path));
 		mSize = mGameData->getTextures().get(path).getSize();
 
-		mSize.x *= (unsigned int)mScale.x;
-		mSize.y *= (unsigned int)mScale.y;
-		mSprite.setScale(mScale);
-		//rePosition();
+		mDefaultSize = mSize;
+		scale(mScale);
+		rePosition();
 		return true;
 	}
 
@@ -126,7 +123,6 @@ namespace GUI {
 		{
 			auto localPosition = mRoot->getGlobalPosition();
 			auto size = mRoot->getSize();
-			auto origin = mRoot->getOrigin();
 			mSprite.setOrigin(mOrigin);
 			
 			mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
@@ -147,24 +143,20 @@ namespace GUI {
 		mSprite.move(delta);
 	}
 
-	void Widget::setScale(const sf::Vector2f& scale)
+	void Widget::moveAlongBranch(const sf::Vector2f& delta)
 	{
-		auto k = mGameData->getRenderer().getWindow().getSize();
-		sf::Vector2f finalScale;
-		finalScale.x = k.x / 1366.f;
-		finalScale.y = k.y / 768.f;
+	}
 
-		finalScale.x *= scale.x;
-		finalScale.y *= scale.y;
-
-		mSize.x *= (float)finalScale.x;
-		mSize.y *= (float)finalScale.y;
-
+	void Widget::scale(const sf::Vector2f& scale)
+	{
+		mSize.x *= scale.x;
+		mSize.y *= scale.y;
 		mSprite.setOrigin(mOrigin);
-		mScale = finalScale;
-		mSprite.scale(finalScale);
-		setPosition(mPosition);
+		mSprite.scale(scale);
+	}
 
+	void Widget::scaleAlongBranch(const sf::Vector2f& scale)
+	{
 	}
 
 	void Widget::setVirtualSize(const sf::Vector2f& size) 
