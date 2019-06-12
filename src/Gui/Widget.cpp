@@ -20,10 +20,6 @@ namespace GUI {
 		if (misActive)
 		{
 			mWindow->draw(mSprite);
-			/*for (const auto& k : mWidgetList)
-			{
-				k.second->draw();
-			}*/
 			for (auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 			{
 				if (k->second->isActive())
@@ -87,9 +83,6 @@ namespace GUI {
 	void Widget::addWidget(const std::string& name, Widget* ptr) 
 	{
 		mWidgetList.insert({name,std::unique_ptr<Widget>(ptr) });
-	//	auto k = mWidgetList.begin();
-	//	k->second->setGameData(mGameData);
-		//k->second->setRoot(this);
 		ptr->setGameData(mGameData);
 		ptr->setRoot(this);
 		ptr->rePosition();
@@ -136,15 +129,16 @@ namespace GUI {
 
 	void Widget::move(const sf::Vector2f& delta)
 	{
-		for (const auto& k : mWidgetList)
-		{
-			k.second->move(delta);
-		}
 		mSprite.move(delta);
 	}
 
 	void Widget::moveAlongBranch(const sf::Vector2f& delta)
 	{
+		this->move(delta);
+		for (const auto& k : mWidgetList)
+		{
+			k.second->move(delta);
+		}
 	}
 
 	void Widget::scale(const sf::Vector2f& scale)
@@ -157,6 +151,11 @@ namespace GUI {
 
 	void Widget::scaleAlongBranch(const sf::Vector2f& scale)
 	{
+		this->scale(scale);
+		for (const auto& k : mWidgetList)
+		{
+			k.second->scale(scale);
+		}
 	}
 
 	void Widget::setVirtualSize(const sf::Vector2f& size) 
