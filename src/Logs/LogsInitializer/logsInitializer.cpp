@@ -30,12 +30,13 @@ std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
 	if (findPhrase("LogTypesToWrite="))
 	{
 		if (findValue("All"))
-			InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::Count };
+			InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::FromUser, LogType::Count };
 		else
 		{
 			if (findValue("Error")) InitLogTypesToWrite.emplace_back(LogType::Error);
 			if (findValue("Info")) InitLogTypesToWrite.emplace_back(LogType::Info);
 			if (findValue("Warning")) InitLogTypesToWrite.emplace_back(LogType::Warning);
+			if (findValue("From user")) InitLogTypesToWrite.emplace_back(LogType::FromUser);
 		}
 	}
 	closeTheFile();

@@ -49,7 +49,11 @@ int ph::CommandInterpreter::getArgumentPositionInCommand()
 
 void ph::CommandInterpreter::executeLog()
 {
-	PH_LOG(LogType::Info, "execution of log command");
+	size_t spacePosition = mCommand.find(' ');
+	size_t messageStartPos = spacePosition + 1;
+	size_t messageLength = mCommand.size() - messageStartPos;
+	std::string message = mCommand.substr(messageStartPos, messageLength);
+	PH_LOG(LogType::FromUser, message);
 }
 
 void ph::CommandInterpreter::handleCommandWithoutArguments()

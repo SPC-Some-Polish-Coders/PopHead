@@ -9,6 +9,7 @@ enum class LogType : std::size_t {
 	Info,
 	Error,
 	Warning,
+	FromUser,
 	Count // WARNING: Keep it last
 };
 

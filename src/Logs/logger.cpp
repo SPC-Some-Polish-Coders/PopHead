@@ -19,6 +19,9 @@ static std::ostream& operator<<(std::ostream& os, const ph::LogType& logType)
 	case ph::LogType::Warning:
 		os << "WARNING";
 		break;
+	case ph::LogType::FromUser:
+		os << "FROM USER";
+		break;
 	}
 	return os;
 }
@@ -72,7 +75,7 @@ std::stringstream ph::Logger::printLog(const LogData& log)
 	std::stringstream ssLog;
 	ssLog << "[  " << std::left << std::setw(7)
 		  << std::to_string(getElapsedTimeSinceCreation().asSeconds()).erase(5, 4) << "s ]"
-		  << " | " << std::setw(7) << std::left << log.type
+		  << " | " << std::setw(9) << std::left << log.type
 		  << " | " << std::setw(9) << std::left << log.moduleName
 		  << " | " << std::left << log.message << std::endl;
 	return ssLog;
