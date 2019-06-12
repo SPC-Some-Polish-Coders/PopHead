@@ -1,5 +1,4 @@
 #include "entity.hpp"
-
 #include "Utilities/debug.hpp"
 
 ph::Entity::Entity(EntityType type, GameData* gameData, std::string name)
@@ -19,13 +18,44 @@ void ph::Entity::input()
 
 void ph::Entity::update(sf::Time delta)
 {
-    for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
-        (*it)->update(delta);
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
+	{
+		(*it)->update(delta);
+	}
+}
+
+std::string ph::Entity::checkName(std::string& childName)
+{
+	for (const auto& child : mChildren)
+	{
+		if (child->getName() == childName)
+		{
+			while (child->getName() == childName)
+				correctChildName(childName);
+		}
+	}
+	return childName;
+}
+
+void ph::Entity::correctChildName(std::string& childNameToCorrect)
+{
+	if (childNameToCorrect.find('_') != std::string::npos)
+		incrementNumber(childNameToCorrect);
+	else
+		childNameToCorrect += "_2";
+}
+
+void ph::Entity::incrementNumber(std::string& childNameToIncrement)
+{
+	std::size_t begin = childNameToIncrement.find('_');
+	childNameToIncrement.replace(begin + 1, std::string::npos,
+		std::to_string(std::stoi(childNameToIncrement.substr(begin + 1))+1));
 }
 
 void ph::Entity::addChild(EntityPtr newChild)
 {
-	const std::string nameOfNewChild = newChild->getName();
+	const std::string nameOfNewChild = checkName(newChild->mName);
+	newChild->mName = nameOfNewChild;
     newChild->mParent = this;
     mChildren.emplace_back(std::move(newChild));
 	PH_LOG(LogType::Info, "Entity \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");

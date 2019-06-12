@@ -44,9 +44,9 @@ void ph::GameState::makeSceneTree()
 
 void ph::GameState::makeMap()
 {
-	std::unique_ptr<Map>
-		city(new Map(mGameData, "testMap", "maps/testMap.tmx", 2));
-	mRoot.addChild(std::move(city));
+	auto map = std::make_unique<Map>(mGameData, "testMap", 2);
+	map->loadFromFile("maps/testMap.tmx");
+	mRoot.addChild(std::move(map));
 }
 
 void ph::GameState::makeWall()

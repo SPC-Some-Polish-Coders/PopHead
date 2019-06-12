@@ -32,13 +32,20 @@ public:
 	auto getChild(std::string name) const->Entity&;
 
 protected:
+	std::string checkName(std::string&);
+	void correctChildName(std::string&);
+	void incrementNumber(std::string&);
+
+protected:
 	GameData* mGameData;
 
 	const EntityType mEntityType;
-	std::string mName;
 
 	Entity* mParent;
 	std::list< std::unique_ptr<Entity> > mChildren;
+
+	std::string mName;
+
 };
 
 }
