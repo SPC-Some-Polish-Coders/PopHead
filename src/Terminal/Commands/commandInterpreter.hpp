@@ -27,7 +27,8 @@ private:
 	void executeExit();
 
 	void executeChangeCollisionDebugColors();
-	void executeChangeCollisionDebugMode();
+	void executeChangeCollisionDebugDisplay();
+	void executeSwitchCollisionDebugMode();
 
 private:
 	std::string mCommand;
