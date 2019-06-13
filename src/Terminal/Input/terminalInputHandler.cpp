@@ -62,6 +62,7 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num9)) mContent += "9";
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num0)) mContent += "0";
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up)) mContent += mTerminalSharedData->mLastCommand;
 }
 
 void ph::TerminalInputHandler::handleBackspace()
