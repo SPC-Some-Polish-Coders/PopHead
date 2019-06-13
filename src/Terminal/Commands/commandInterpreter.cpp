@@ -36,16 +36,18 @@ void ph::CommandInterpreter::handleCommandWithOneArgument()
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 	if (commandWithoutArguments == "log")
 		executeLog();
-	else if (commandWithoutArguments == "changecolldisplay")
+	else if (commandWithoutArguments == "changecollisiondisplay")
 		executeChangeCollisionDebugDisplay();
 	else if (commandWithoutArguments == "changecolor")
 		executeChangeCollisionDebugColors();
-	else if (commandWithoutArguments == "switchcollmode")
+	else if (commandWithoutArguments == "switchcollisionmode")
 		executeSwitchCollisionDebugMode();
 	else if (commandWithoutArguments == "mute")
 		executeMute();
 	else if (commandWithoutArguments == "unmute")
 		executeUnmute();
+	else if (commandWithoutArguments == "setvolume")
+		executeSetVolume();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -128,4 +130,24 @@ void ph::CommandInterpreter::executeUnmute()
 		mGameData->getMusicPlayer().setMuted(0);
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(20.f);
+}
+
+float ph::CommandInterpreter::getVolumeFromCommand()
+{
+	size_t spacePosition = mCommand.find_last_of(' ');
+	size_t valueStartPos = spacePosition + 1;
+	size_t valueLength = mCommand.size() - valueStartPos;
+	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
+	float volumeValue = std::strtof(textToFloat.c_str(), nullptr);
+	return !(volumeValue) ? 50.f : volumeValue;	
+}
+
+void ph::CommandInterpreter::executeSetVolume()
+{
+	if (commandContains("music"))
+	{
+		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+	}
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
 }

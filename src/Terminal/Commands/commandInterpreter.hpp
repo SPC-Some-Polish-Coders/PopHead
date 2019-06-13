@@ -29,9 +29,12 @@ private:
 	void executeChangeCollisionDebugColors();
 	void executeChangeCollisionDebugDisplay();
 	void executeSwitchCollisionDebugMode();
-
+	
+	float getVolumeFromCommand();
 	void executeMute();
 	void executeUnmute();
+	void executeSetVolume();
+
 
 private:
 	std::string mCommand;
