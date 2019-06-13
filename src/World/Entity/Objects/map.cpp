@@ -48,30 +48,7 @@ void ph::Map::loadFromFile(const std::string& filename)
 			PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 
 		const std::vector<unsigned> values = Csv::toUnsigneds(dataNode.toString());
-		for (std::size_t i = 0; i < values.size(); ++i) {
-			if (values[i]) {
-				for (std::size_t j = 0; j < tilesets.globalIds.size(); ++j) {
-					const unsigned lastTileGlobalId = tilesets.globalIds[j] + tilesets.tileCounts[j] - 1;
-					if (values[i] >= tilesets.globalIds[j] && values[i] <= lastTileGlobalId) {
-						sf::Vector2u tilePosition = Math::toTwoDimensional(values[i] - tilesets.globalIds[j], tilesets.columnsCounts[j]);
-						tilePosition.x *= tileSize.x;
-						tilePosition.y *= tileSize.y;
-						const sf::IntRect tileRect(
-							static_cast<sf::Vector2i>(tilePosition),
-							static_cast<sf::Vector2i>(tileSize)
-						);
-						sf::Sprite tile(mGameData->getTextures().get(pathToMapTextures + tilesets.sources[j]), tileRect);
-						sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
-						position.x *= tileSize.x;
-						position.y *= tileSize.y;
-						tile.setPosition(position);
-						// TODO: Scale tile? (scale funtion paramiter)
-						mTiles.push_back(tile);
-						break;
-					}
-				}
-			}
-		}
+		loadTiles(values, tilesets, mapSize, tileSize);
 	}
 }
 
@@ -105,6 +82,47 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 		tilesets.sources[i] = Path::toFilename(tilesets.sources[i], '/');
 	}
 	return tilesets;
+}
+
+void ph::Map::loadTiles(const std::vector<unsigned>& values,
+						const TilesetsData& tilesets,
+						sf::Vector2u mapSize,
+						sf::Vector2u tileSize)
+{
+	for (std::size_t i = 0; i < values.size(); ++i) {
+		if (hasTile(values[i])) {
+			const std::size_t j = findTilesetIndex(values[i], tilesets);
+			if (j == std::string::npos) {
+				PH_LOG(LogType::Warning, "It was not possible to find tileset for value " + values[i]);
+				continue;
+			}
+
+			sf::Vector2u tilePosition = Math::toTwoDimensional(values[i] - tilesets.globalIds[j], tilesets.columnsCounts[j]);
+			tilePosition.x *= tileSize.x;
+			tilePosition.y *= tileSize.y;
+			const sf::IntRect tileRect(
+				static_cast<sf::Vector2i>(tilePosition),
+				static_cast<sf::Vector2i>(tileSize)
+			);
+			sf::Sprite tile(mGameData->getTextures().get(pathToMapTextures + tilesets.sources[j]), tileRect);
+			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
+			position.x *= tileSize.x;
+			position.y *= tileSize.y;
+			tile.setPosition(position);
+			// TODO: Scale tile? (scale funtion paramiter)
+			mTiles.push_back(tile);
+		}
+	}
+}
+
+std::size_t ph::Map::findTilesetIndex(unsigned value, const TilesetsData& tilesets) const
+{
+	for (std::size_t i = 0; i < tilesets.globalIds.size(); ++i) {
+		const unsigned lastGlobalTileIdInCurrentTileset = tilesets.globalIds[i] + tilesets.tileCounts[i] - 1;
+		if (value >= tilesets.globalIds[i] && value <= lastGlobalTileIdInCurrentTileset) 
+			return i;
+	}
+	return std::string::npos;
 }
 
 void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const

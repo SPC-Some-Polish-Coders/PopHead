@@ -27,10 +27,18 @@ private:
 
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
 
+	void loadTiles(const std::vector<unsigned>& values,
+				   const TilesetsData& tilesets,
+				   sf::Vector2u mapSize,
+				   sf::Vector2u tileSize);
+
+	bool hasTile(unsigned value) const { return value != 0; }
+
+	std::size_t findTilesetIndex(unsigned value, const TilesetsData& tilesets) const;
+
 	const std::string pathToMapTextures = "textures/map/";
 	std::vector<sf::Sprite> mTiles;
 };
-
 
 }
 
