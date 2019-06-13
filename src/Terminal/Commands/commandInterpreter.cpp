@@ -4,7 +4,7 @@
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
-
+#include "Audio/Sound/SoundData/soundData.hpp"
 
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
@@ -42,6 +42,10 @@ void ph::CommandInterpreter::handleCommandWithOneArgument()
 		executeChangeCollisionDebugColors();
 	else if (commandWithoutArguments == "switchcollmode")
 		executeSwitchCollisionDebugMode();
+	else if (commandWithoutArguments == "mute")
+		executeMute();
+	else if (commandWithoutArguments == "unmute")
+		executeUnmute();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -110,3 +114,18 @@ void ph::CommandInterpreter::executeSwitchCollisionDebugMode()
 		collisionDebugSettings.turnOff();
 }
 
+void ph::CommandInterpreter::executeMute()
+{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setMuted(1);
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setVolume(0.f);
+}
+
+void ph::CommandInterpreter::executeUnmute()
+{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setMuted(0);
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setVolume(20.f);
+}

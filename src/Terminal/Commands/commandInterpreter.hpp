@@ -30,6 +30,9 @@ private:
 	void executeChangeCollisionDebugDisplay();
 	void executeSwitchCollisionDebugMode();
 
+	void executeMute();
+	void executeUnmute();
+
 private:
 	std::string mCommand;
 	GameData* mGameData;
