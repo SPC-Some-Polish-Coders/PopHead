@@ -150,4 +150,9 @@ void ph::CommandInterpreter::executeSetVolume()
 	}
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+	else
+	{
+		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+	}
 }
