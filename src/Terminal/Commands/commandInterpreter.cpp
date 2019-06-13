@@ -26,13 +26,20 @@ bool ph::CommandInterpreter::commandContains(const char c)
 	return mCommand.find(c) != std::string::npos;
 }
 
+bool ph::CommandInterpreter::commandContains(const char* c)
+{
+	return mCommand.find(c) != std::string::npos;
+}
+
 void ph::CommandInterpreter::handleCommandWithOneArgument()
 {
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
-	if(commandWithoutArguments == "log")
+	if (commandWithoutArguments == "log")
 		executeLog();
-	if (commandWithoutArguments == "changecolor")
-		executeCollisionDebugColors();
+	else if (commandWithoutArguments == "changecolor")
+		executeChangeCollisionDebugColors();
+	else if (commandWithoutArguments == "changemode")
+		executeChangeCollisionDebugMode();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -70,7 +77,7 @@ void ph::CommandInterpreter::executeExit()
 	mGameData->getRenderer().getWindow().close();
 }
 
-void ph::CommandInterpreter::executeCollisionDebugColors() 
+void ph::CommandInterpreter::executeChangeCollisionDebugColors() 
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 	if (commandContains('1'))
@@ -79,4 +86,15 @@ void ph::CommandInterpreter::executeCollisionDebugColors()
 		collisionDebugSettings.setColors(2);
 	else if (commandContains('3'))
 		collisionDebugSettings.setColors(3);
+}
+
+void ph::CommandInterpreter::executeChangeCollisionDebugMode()
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+	if (commandContains("kin"))
+		collisionDebugSettings.displayOnlyKinematicBodies();
+	else if (commandContains("sta"))
+		collisionDebugSettings.displayOnlyStaticBodies();
+	else if (commandContains("all"))
+		collisionDebugSettings.displayAllBodies();
 }

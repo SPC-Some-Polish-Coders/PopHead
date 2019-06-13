@@ -15,6 +15,7 @@ public:
 	void handleCommand(const std::string&);
 private:
 	bool commandHasAnArgument();
+	bool commandContains(const char*);
 	bool commandContains(const char);
 
 	void handleCommandWithOneArgument();
@@ -25,7 +26,8 @@ private:
 	void handleCommandWithoutArguments();
 	void executeExit();
 
-	void executeCollisionDebugColors();
+	void executeChangeCollisionDebugColors();
+	void executeChangeCollisionDebugMode();
 
 private:
 	std::string mCommand;
