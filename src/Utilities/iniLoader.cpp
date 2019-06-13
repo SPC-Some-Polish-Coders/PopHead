@@ -56,11 +56,11 @@ bool ph::IniLoader::findValue(const std::string& searchedValue)
 
 bool ph::IniLoader::getBool(const std::string& currentLine)
 {
-	if (findValue("1")) return true;
-	else if (findValue("0")) return false;
+	if (findValue("true")) return true;
+	else if (findValue("false")) return false;
 	else
 	{
-		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'.Assumed 'true'" << std::endl;
+		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'. Assumed 'true'" << std::endl;
 		return true;
 	}
 }
