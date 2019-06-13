@@ -5,6 +5,7 @@
 #include "Base/gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
+#include "Logs/logger.hpp"
 
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
@@ -34,20 +35,19 @@ bool ph::CommandInterpreter::commandContains(const char* c)
 void ph::CommandInterpreter::handleCommandWithOneArgument()
 {
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
-	if (commandWithoutArguments == "log")
-		executeLog();
-	else if (commandWithoutArguments == "changecollisiondisplay")
-		executeChangeCollisionDebugDisplay();
-	else if (commandWithoutArguments == "changecolor")
-		executeChangeCollisionDebugColors();
-	else if (commandWithoutArguments == "switchcollisionmode")
-		executeSwitchCollisionDebugMode();
-	else if (commandWithoutArguments == "mute")
-		executeMute();
-	else if (commandWithoutArguments == "unmute")
-		executeUnmute();
-	else if (commandWithoutArguments == "setvolume")
-		executeSetVolume();
+
+	if (commandWithoutArguments == "log")							executeLog();
+	else if (commandWithoutArguments == "changecollisiondisplay")	executeChangeCollisionDebugDisplay();
+	else if (commandWithoutArguments == "changecolor")				executeChangeCollisionDebugColors();
+	else if (commandWithoutArguments == "switchcollisionmode")		executeSwitchCollisionDebugMode();
+	else if (commandWithoutArguments == "mute")						executeMute();
+	else if (commandWithoutArguments == "unmute")					executeUnmute();
+	else if (commandWithoutArguments == "setvolume")				executeSetVolume();
+	else if (commandWithoutArguments == "loginttofile")				executeSetLoggingIntoFile();
+	else if (commandWithoutArguments == "logintoconsole")			executeSetLoggingIntoConsole();
+	else if (commandWithoutArguments == "logintoboth")				executeSetLogging();
+	else if (commandWithoutArguments == "setlogtype")				executeSetLoggingLogTypes();
+	else if (commandWithoutArguments == "setmodulename")			executeSetLoggingModuleNames();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -88,9 +88,9 @@ void ph::CommandInterpreter::executeExit()
 void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	if (commandContains("kin"))
+	if (commandContains("kinematic"))
 		collisionDebugSettings.displayOnlyKinematicBodies();
-	else if (commandContains("sta"))
+	else if (commandContains("static"))
 		collisionDebugSettings.displayOnlyStaticBodies();
 	else if (commandContains("all"))
 		collisionDebugSettings.displayAllBodies();
@@ -119,7 +119,7 @@ void ph::CommandInterpreter::executeSwitchCollisionDebugMode()
 void ph::CommandInterpreter::executeMute()
 {
 	if (commandContains("music"))
-		mGameData->getMusicPlayer().setMuted(1);
+		mGameData->getMusicPlayer().setMuted(true);
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(0.f);
 }
@@ -127,7 +127,7 @@ void ph::CommandInterpreter::executeMute()
 void ph::CommandInterpreter::executeUnmute()
 {
 	if (commandContains("music"))
-		mGameData->getMusicPlayer().setMuted(0);
+		mGameData->getMusicPlayer().setMuted(false);
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(20.f);
 }
@@ -155,4 +155,63 @@ void ph::CommandInterpreter::executeSetVolume()
 		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
 		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
 	}
+}
+
+void ph::CommandInterpreter::executeSetLoggingIntoFile()
+{
+	auto& logSettings = Logger::getLogger();
+	if (commandContains('1'))
+		logSettings.getLogSettings().setWritingLogsIntoFile(true);
+	else if (commandContains('0'))
+		logSettings.getLogSettings().setWritingLogsIntoFile(false);
+}
+void ph::CommandInterpreter::executeSetLoggingIntoConsole()
+{
+	auto& logSettings = Logger::getLogger();
+	if (commandContains('1'))
+		logSettings.getLogSettings().setWritingLogsIntoConsole(true);
+	else if (commandContains('0'))
+		logSettings.getLogSettings().setWritingLogsIntoConsole(false);
+}
+
+void ph::CommandInterpreter::executeSetLogging()
+{
+	executeSetLoggingIntoConsole();
+	executeSetLoggingIntoFile();
+}
+
+void ph::CommandInterpreter::executeSetLoggingLogTypes()
+{
+	auto& logSettings = Logger::getLogger();
+	if (commandContains("info")) 			logSettings.getLogSettings().addLogType(LogType::Info);
+	else if (commandContains("warning")) 	logSettings.getLogSettings().addLogType(LogType::Warning);
+	else if (commandContains("error"))		logSettings.getLogSettings().addLogType(LogType::Error);
+	else if (commandContains("user"))		logSettings.getLogSettings().addLogType(LogType::FromUser);
+
+	else if (commandContains("all"))		
+		logSettings.getLogSettings().turnOnWritingLogsFromEachLogTypes();
+	else if (commandContains("clear"))	
+		logSettings.getLogSettings().setLogTypesToWrite({});
+}
+
+void ph::CommandInterpreter::executeSetLoggingModuleNames()
+{
+	auto& logSettings = Logger::getLogger();
+	if (commandContains("audio")) 			logSettings.getLogSettings().addModuleName("Audio");
+	else if (commandContains("base"))		logSettings.getLogSettings().addModuleName("Base");
+	else if (commandContains("input"))		logSettings.getLogSettings().addModuleName("Input");
+	else if (commandContains("logs"))		logSettings.getLogSettings().addModuleName("Logs");
+	else if (commandContains("physics"))	logSettings.getLogSettings().addModuleName("Physics");
+	else if (commandContains("renderer"))	logSettings.getLogSettings().addModuleName("Renderer");
+	else if (commandContains("resources"))	logSettings.getLogSettings().addModuleName("Resources");
+	else if (commandContains("states"))		logSettings.getLogSettings().addModuleName("States");
+	else if (commandContains("utilities"))	logSettings.getLogSettings().addModuleName("Utilities");
+	else if (commandContains("world"))		logSettings.getLogSettings().addModuleName("World");
+	else if (commandContains("terminal"))	logSettings.getLogSettings().addModuleName("Terminal");
+	else if (commandContains("none"))		logSettings.getLogSettings().addModuleName("None");
+
+	else if (commandContains("all"))
+		logSettings.getLogSettings().turnOnWritingLogsFromEachModule();
+	else if (commandContains("clear"))
+		logSettings.getLogSettings().setModuleNamesToWrite({});
 }

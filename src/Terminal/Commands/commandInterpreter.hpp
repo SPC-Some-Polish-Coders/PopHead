@@ -35,6 +35,11 @@ private:
 	void executeUnmute();
 	void executeSetVolume();
 
+	void executeSetLoggingIntoFile();
+	void executeSetLoggingIntoConsole();
+	void executeSetLogging();
+	void executeSetLoggingLogTypes();
+	void executeSetLoggingModuleNames();
 
 private:
 	std::string mCommand;
