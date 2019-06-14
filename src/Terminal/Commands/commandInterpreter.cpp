@@ -10,44 +10,21 @@
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
 	mCommand = command;
-
-	if(commandHasAnArgument())
-		handleCommandWithOneArgument();
-	else
-		handleCommandWithoutArguments();
-}
-
-bool ph::CommandInterpreter::commandHasAnArgument()
-{
-	return commandContains(' ') || commandContains('-') || commandContains('=');
-}
-
-bool ph::CommandInterpreter::commandContains(const char c)
-{
-	return mCommand.find(c) != std::string::npos;
-}
-
-bool ph::CommandInterpreter::commandContains(const char* c)
-{
-	return mCommand.find(c) != std::string::npos;
-}
-
-void ph::CommandInterpreter::handleCommandWithOneArgument()
-{
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "log")							executeLog();
-	else if (commandWithoutArguments == "changecollisiondisplay")	executeChangeCollisionDebugDisplay();
-	else if (commandWithoutArguments == "changecolor")				executeChangeCollisionDebugColors();
-	else if (commandWithoutArguments == "switchcollisionmode")		executeSwitchCollisionDebugMode();
-	else if (commandWithoutArguments == "mute")						executeMute();
-	else if (commandWithoutArguments == "unmute")					executeUnmute();
-	else if (commandWithoutArguments == "setvolume")				executeSetVolume();
-	else if (commandWithoutArguments == "loginttofile")				executeSetLoggingIntoFile();
-	else if (commandWithoutArguments == "logintoconsole")			executeSetLoggingIntoConsole();
-	else if (commandWithoutArguments == "logintoboth")				executeSetLogging();
-	else if (commandWithoutArguments == "setlogtype")				executeSetLoggingLogTypes();
-	else if (commandWithoutArguments == "setmodulename")			executeSetLoggingModuleNames();
+	if (commandWithoutArguments == "log")                           executeLog();
+	else if (commandWithoutArguments == "changecollisiondisplay")   executeChangeCollisionDebugDisplay();
+	else if (commandWithoutArguments == "changecolor")              executeChangeCollisionDebugColors();
+	else if (commandWithoutArguments == "switchcollisionmode")      executeSwitchCollisionDebugMode();
+	else if (commandWithoutArguments == "mute")                     executeMute();
+	else if (commandWithoutArguments == "unmute")                   executeUnmute();
+	else if (commandWithoutArguments == "setvolume")                executeSetVolume();
+	else if (commandWithoutArguments == "loginttofile")             executeSetLoggingIntoFile();
+	else if (commandWithoutArguments == "logintoconsole")           executeSetLoggingIntoConsole();
+	else if (commandWithoutArguments == "logintoboth")              executeSetLogging();
+	else if (commandWithoutArguments == "setlogtype")               executeSetLoggingLogTypes();
+	else if (commandWithoutArguments == "setmodulename")            executeSetLoggingModuleNames();
+	else if (commandWithoutArguments == "exit")                     executeExit();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -64,6 +41,7 @@ int ph::CommandInterpreter::getArgumentPositionInCommand()
 		if(argumentPosition != std::string::npos)
 			return argumentPosition;
 	}
+	return mCommand.size();
 }
 
 void ph::CommandInterpreter::executeLog()
@@ -73,16 +51,6 @@ void ph::CommandInterpreter::executeLog()
 	size_t messageLength = mCommand.size() - messageStartPos;
 	std::string message = mCommand.substr(messageStartPos, messageLength);
 	PH_LOG(LogType::FromUser, message);
-}
-
-void ph::CommandInterpreter::handleCommandWithoutArguments()
-{
-	if(mCommand == "exit") executeExit();
-}
-
-void ph::CommandInterpreter::executeExit()
-{
-	mGameData->getRenderer().getWindow().close();
 }
 
 void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
@@ -132,6 +100,18 @@ void ph::CommandInterpreter::executeUnmute()
 		mGameData->getSoundPlayer().setVolume(20.f);
 }
 
+void ph::CommandInterpreter::executeSetVolume()
+{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+	else{
+		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+	}
+}
+
 float ph::CommandInterpreter::getVolumeFromCommand()
 {
 	size_t spacePosition = mCommand.find_last_of(' ');
@@ -140,21 +120,6 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
 	float volumeValue = std::strtof(textToFloat.c_str(), nullptr);
 	return !(volumeValue) ? 50.f : volumeValue;	
-}
-
-void ph::CommandInterpreter::executeSetVolume()
-{
-	if (commandContains("music"))
-	{
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
-	}
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
-	else
-	{
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
-	}
 }
 
 void ph::CommandInterpreter::executeSetLoggingIntoFile()
@@ -214,4 +179,19 @@ void ph::CommandInterpreter::executeSetLoggingModuleNames()
 		logSettings.getLogSettings().turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))
 		logSettings.getLogSettings().setModuleNamesToWrite({});
+}
+
+void ph::CommandInterpreter::executeExit()
+{
+	mGameData->getRenderer().getWindow().close();
+}
+
+bool ph::CommandInterpreter::commandContains(const char c)
+{
+	return mCommand.find(c) != std::string::npos;
+}
+
+bool ph::CommandInterpreter::commandContains(const char* c)
+{
+	return mCommand.find(c) != std::string::npos;
 }
