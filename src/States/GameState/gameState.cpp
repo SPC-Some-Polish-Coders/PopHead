@@ -44,7 +44,7 @@ void ph::GameState::makeSceneTree()
 
 void ph::GameState::makeMap()
 {
-	auto map = std::make_unique<Map>(mGameData, "testMap", 2);
+	auto map = std::make_unique<Map>(mGameData, "testMap");
 	map->loadFromFile("maps/testMap.tmx");
 	mRoot.addChild(std::move(map));
 }
