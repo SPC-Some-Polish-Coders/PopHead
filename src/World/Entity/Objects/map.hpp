@@ -11,7 +11,7 @@ namespace ph{
 class Map : public Object
 {
 public:
-    Map(GameData* gameData, std::string name, float scale = 1);
+    Map(GameData* gameData, std::string name);
 
 	void loadFromFile(const std::string& filename);
 
@@ -21,20 +21,33 @@ private:
 	struct TilesetsData {
 		std::vector<std::string> sources;
 		std::vector<unsigned> columnsCounts;
-		std::vector<unsigned> globalIds;
+		std::vector<unsigned> firstGlobalTileIds;
 		std::vector<unsigned> tileCounts;
 	};
 
+	void checkMapSupport(const Xml& mapNode) const;
+
+	sf::Vector2u getMapSize(const Xml& mapNode) const;
+
+	sf::Vector2u getTileSize(const Xml& mapNode) const;
+
+	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
+
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
 
-	void loadTiles(const std::vector<unsigned>& values,
-				   const TilesetsData& tilesets,
-				   sf::Vector2u mapSize,
-				   sf::Vector2u tileSize);
+	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
-	bool hasTile(unsigned value) const { return value != 0; }
+	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
-	std::size_t findTilesetIndex(unsigned value, const TilesetsData& tilesets) const;
+	void loadTiles(
+		const std::vector<unsigned>& globalTileIds,
+		const TilesetsData& tilesets,
+		sf::Vector2u mapSize,
+		sf::Vector2u tileSize);
+
+	bool hasTile(unsigned globalTileId) const { return globalTileId != 0; }
+
+	std::size_t findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const;
 
 	const std::string pathToMapTextures = "textures/map/";
 	std::vector<sf::Sprite> mTiles;
