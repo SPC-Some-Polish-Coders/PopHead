@@ -1,5 +1,5 @@
 
-#include "Widget.hpp"
+#include "TextWidget.hpp"
 
 #ifndef GUI_INTERFACE
 #define GUI_INTERFACE

@@ -45,7 +45,8 @@ namespace GUI {
 
 		virtual void scaleAlongBranch(const sf::Vector2f& scale);
 
-		virtual void setVirtualSize(const sf::Vector2f& size);
+		virtual void setAlphaAlongBranch(unsigned int alpha);
+
 
 		virtual sf::Vector2u getSize() const;
 
@@ -53,7 +54,6 @@ namespace GUI {
 
 		virtual Widget* getWidget(const std::string& name);
 
-		virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
 
 		virtual void setGameData(Base::GameData* GameData);
 
@@ -67,11 +67,7 @@ namespace GUI {
 		virtual sf::Vector2f getPosition() const;
 		virtual sf::Vector2f getGlobalPosition() const;
 
-
 		virtual void rePosition();
-		//virtual void setGameData(Base::GameData* data);
-
-
 	protected:
 		sf::Vector2f mPosition;
 		bool misActive;
@@ -89,6 +85,12 @@ namespace GUI {
 		sf::Sprite mSprite;
 		sf::Texture mTexture;
 		Widget* mRoot;
+		
+		
+		
+		virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
+		void setVirtualSize(const sf::Vector2f& size);
+
 	};
 
 

@@ -30,14 +30,18 @@ namespace GUI {
 
 	void Widget::setAlpha(unsigned int alpha) 
 	{
+		mSprite.setColor(sf::Color(255, 255, 255, alpha));
 	}
 
 	void Widget::update(sf::Time delta)
 	{
-		if (mGameData->getInput().getMouse().isMouseButtonJustPressed(sf::Mouse::Left))
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		//if (mGameData->getInput().getMouse().isMouseButtonJustPressed(sf::Mouse::Left))
 		{
 
-			auto k = mGameData->getInput().getMouse().getMousePosition();
+			auto c = mGameData->getInput().getMouse().getMousePosition();
+			auto k = mWindow->mapPixelToCoords(c);
+
 			if (k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
 				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
 			{
@@ -50,14 +54,22 @@ namespace GUI {
 				}
 			}
 		}
-
+	
 		if (mGameData->getInput().getMouse().isMouseButtonJustReleased(sf::Mouse::Left))
 		{
-			for (const auto& k : mBehaviors)
+
+			auto c = mGameData->getInput().getMouse().getMousePosition();
+			auto k = mWindow->mapPixelToCoords(c);
+
+			if (k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
+				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
 			{
-				if (k.first == behaviorType::onReleased)
+				for (const auto& k : mBehaviors)
 				{
-					k.second(this);
+					if (k.first == behaviorType::onReleased)
+					{
+						k.second(this);
+					}
 				}
 			}
 		}
@@ -152,9 +164,19 @@ namespace GUI {
 	void Widget::scaleAlongBranch(const sf::Vector2f& scale)
 	{
 		this->scale(scale);
+		rePosition();
 		for (const auto& k : mWidgetList)
 		{
 			k.second->scaleAlongBranch(scale);
+		}
+	}
+
+	void Widget::setAlphaAlongBranch(unsigned int alpha)
+	{
+		this->setAlpha(alpha);
+		for (const auto& k : mWidgetList)
+		{
+			k.second->setAlphaAlongBranch(alpha);
 		}
 	}
 
