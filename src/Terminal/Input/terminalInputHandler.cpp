@@ -51,7 +51,18 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::X)) mContent += "x";
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Y)) mContent += "y";
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Z)) mContent += "z";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num1)) mContent += "1";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num2)) mContent += "2";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num3)) mContent += "3";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num4)) mContent += "4";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num5)) mContent += "5";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num6)) mContent += "6";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num7)) mContent += "7";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num8)) mContent += "8";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num9)) mContent += "9";
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Num0)) mContent += "0";
 	else if(keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up)) mContent += mTerminalSharedData->mLastCommand;
 }
 
 void ph::TerminalInputHandler::handleBackspace()

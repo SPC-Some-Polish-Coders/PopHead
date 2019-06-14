@@ -11,6 +11,7 @@ struct TerminalData
 {
 	sf::Text mText;
 	std::string mContent;
+	std::string mLastCommand;
 	bool mIsVisible = false;
 };
 
