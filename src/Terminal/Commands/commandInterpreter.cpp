@@ -74,20 +74,24 @@ void ph::CommandInterpreter::executeTeleport()
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
 	float newYPosition = std::stof(yArgument);
 
-	auto& gameState = mGameData->getStateMachine().getTopState();
-	auto& root = gameState.getRoot();
-	auto& player = dynamic_cast<Object&>(root.getChild("player"));
+	auto& player = getPlayer();
 	player.setPosition({newXPosition, newYPosition});
 }
 
 void ph::CommandInterpreter::executeCurrentPos()
 {
-	auto& gameState = mGameData->getStateMachine().getTopState();
-	auto& root = gameState.getRoot();
-	auto& player = dynamic_cast<Object&>(root.getChild("player"));
+	auto& player = getPlayer();
 	std::string x = std::to_string(player.getPosition().x);
 	std::string y = std::to_string(player.getPosition().y);
 	PH_LOG(LogType::Info, "player position:  x: " + x + "  y:" + y);
+}
+
+auto ph::CommandInterpreter::getPlayer() const -> Object&
+{
+	auto& gameState = mGameData->getStateMachine().getTopState();
+	auto& root = gameState.getRoot();
+	Object& player = dynamic_cast<Object&>(root.getChild("player"));
+	return player;
 }
 
 void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()

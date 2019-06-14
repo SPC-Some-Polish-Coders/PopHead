@@ -6,6 +6,7 @@
 namespace ph {
 
 class GameData;
+class Object;
 
 class CommandInterpreter
 {
@@ -21,6 +22,7 @@ private:
 
 	void executeTeleport();
 	void executeCurrentPos();
+	auto getPlayer() const -> Object&;
 
 	void executeChangeCollisionDebugColors();
 	void executeChangeCollisionDebugDisplay();
