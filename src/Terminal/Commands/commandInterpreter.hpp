@@ -14,16 +14,30 @@ public:
 
 	void handleCommand(const std::string&);
 private:
-	bool commandHasAnArgument();
-	bool commandContains(const char);
-
-	void handleCommandWithOneArgument();
 	std::string getCommandWithoutArguments();
 	int getArgumentPositionInCommand();
+
 	void executeLog();
+
+	void executeChangeCollisionDebugColors();
+	void executeChangeCollisionDebugDisplay();
+	void executeSwitchCollisionDebugMode();
 	
-	void handleCommandWithoutArguments();
+	void executeMute();
+	void executeUnmute();
+	void executeSetVolume();
+	float getVolumeFromCommand();
+
+	void executeSetLoggingIntoFile();
+	void executeSetLoggingIntoConsole();
+	void executeSetLogging();
+	void executeSetLoggingLogTypes();
+	void executeSetLoggingModuleNames();
+
 	void executeExit();
+
+	bool commandContains(const char);
+	bool commandContains(const char*);
 
 private:
 	std::string mCommand;

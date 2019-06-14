@@ -17,6 +17,7 @@ void ph::Terminal::input()
 
 	if(mKeyboardInputHandler.isEnterClicked()) {
 		auto& content = mTerminalSharedData->mContent;
+		mTerminalSharedData->mLastCommand = content;
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
