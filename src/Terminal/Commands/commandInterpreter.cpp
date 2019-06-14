@@ -37,14 +37,8 @@ std::string ph::CommandInterpreter::getCommandWithoutArguments()
 
 int ph::CommandInterpreter::getArgumentPositionInCommand()
 {
-	size_t argumentPosition;
-	std::array<char, 3> argumentCharacters{' ', '-', '='};
-	for(int i = 0; i < 3; ++i) {
-		argumentPosition = mCommand.find(argumentCharacters[i]);
-		if(argumentPosition != std::string::npos)
-			return argumentPosition;
-	}
-	return mCommand.size();
+	size_t argumentPosition = mCommand.find(' ');
+	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
 void ph::CommandInterpreter::executeLog()
