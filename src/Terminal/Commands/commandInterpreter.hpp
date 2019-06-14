@@ -2,6 +2,7 @@
 #define POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
 
 #include <string>
+#include <SFML/Graphics.hpp>
 
 namespace ph {
 
@@ -21,6 +22,7 @@ private:
 	void executeLog();
 
 	void executeTeleport();
+	sf::Vector2f getPositionFromCommand() const;
 	void executeCurrentPos();
 	auto getPlayer() const -> Object&;
 

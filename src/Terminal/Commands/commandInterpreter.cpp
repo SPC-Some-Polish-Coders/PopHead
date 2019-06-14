@@ -58,13 +58,20 @@ void ph::CommandInterpreter::executeLog()
 
 void ph::CommandInterpreter::executeTeleport()
 {
+	auto& player = getPlayer();
+	sf::Vector2f newPosition = getPositionFromCommand();
+	player.setPosition(newPosition);
+}
+
+sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
+{
 	const std::string numbers("1234567890");
 
 	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
 	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
-	float newXPosition = std::stof(xArgument);
+	float positionX = std::stof(xArgument);
 
 	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
 	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
@@ -72,10 +79,8 @@ void ph::CommandInterpreter::executeTeleport()
 		yArgumentEndPositionInCommand = mCommand.size();
 	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
-	float newYPosition = std::stof(yArgument);
-
-	auto& player = getPlayer();
-	player.setPosition({newXPosition, newYPosition});
+	float positionY = std::stof(yArgument);
+	return sf::Vector2f(positionX, positionY);
 }
 
 void ph::CommandInterpreter::executeCurrentPos()
