@@ -20,6 +20,7 @@ private:
 	void executeLog();
 
 	void executeTeleport();
+	void executeCurrentPos();
 
 	void executeChangeCollisionDebugColors();
 	void executeChangeCollisionDebugDisplay();

@@ -15,6 +15,7 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	if (commandWithoutArguments == "log")                           executeLog();
 	else if (commandWithoutArguments == "teleport")                 executeTeleport();
+	else if (commandWithoutArguments == "currentpos")               executeCurrentPos();
 	else if (commandWithoutArguments == "changecollisiondisplay")   executeChangeCollisionDebugDisplay();
 	else if (commandWithoutArguments == "changecolor")              executeChangeCollisionDebugColors();
 	else if (commandWithoutArguments == "switchcollisionmode")      executeSwitchCollisionDebugMode();
@@ -77,6 +78,16 @@ void ph::CommandInterpreter::executeTeleport()
 	auto& root = gameState.getRoot();
 	auto& player = dynamic_cast<Object&>(root.getChild("player"));
 	player.setPosition({newXPosition, newYPosition});
+}
+
+void ph::CommandInterpreter::executeCurrentPos()
+{
+	auto& gameState = mGameData->getStateMachine().getTopState();
+	auto& root = gameState.getRoot();
+	auto& player = dynamic_cast<Object&>(root.getChild("player"));
+	std::string x = std::to_string(player.getPosition().x);
+	std::string y = std::to_string(player.getPosition().y);
+	PH_LOG(LogType::Info, "player position:  x: " + x + "  y:" + y);
 }
 
 void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
