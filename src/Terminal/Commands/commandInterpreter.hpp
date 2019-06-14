@@ -19,6 +19,8 @@ private:
 
 	void executeLog();
 
+	void executeTeleport();
+
 	void executeChangeCollisionDebugColors();
 	void executeChangeCollisionDebugDisplay();
 	void executeSwitchCollisionDebugMode();

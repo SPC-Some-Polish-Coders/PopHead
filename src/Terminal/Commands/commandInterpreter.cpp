@@ -10,9 +10,11 @@
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
 	mCommand = command;
+
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
 	if (commandWithoutArguments == "log")                           executeLog();
+	else if (commandWithoutArguments == "teleport")                 executeTeleport();
 	else if (commandWithoutArguments == "changecollisiondisplay")   executeChangeCollisionDebugDisplay();
 	else if (commandWithoutArguments == "changecolor")              executeChangeCollisionDebugColors();
 	else if (commandWithoutArguments == "switchcollisionmode")      executeSwitchCollisionDebugMode();
@@ -51,6 +53,30 @@ void ph::CommandInterpreter::executeLog()
 	size_t messageLength = mCommand.size() - messageStartPos;
 	std::string message = mCommand.substr(messageStartPos, messageLength);
 	PH_LOG(LogType::FromUser, message);
+}
+
+void ph::CommandInterpreter::executeTeleport()
+{
+	const std::string numbers("1234567890");
+
+	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
+	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
+	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
+	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
+	float newXPosition = std::stof(xArgument);
+
+	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
+	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
+	if(yArgumentEndPositionInCommand == std::string::npos)
+		yArgumentEndPositionInCommand = mCommand.size();
+	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
+	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
+	float newYPosition = std::stof(yArgument);
+
+	auto& gameState = mGameData->getStateMachine().getTopState();
+	auto& root = gameState.getRoot();
+	auto& player = dynamic_cast<Object&>(root.getChild("player"));
+	player.setPosition({newXPosition, newYPosition});
 }
 
 void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
