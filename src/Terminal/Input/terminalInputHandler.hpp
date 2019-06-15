@@ -25,6 +25,7 @@ private:
 	void handleBackspace();
 	void handleEnter();
 	void showOrHideCommandPromptInput();
+	inline void setKeyRepeatEnabled(bool enabled);
 
 private:
 	GameData* mGameData;

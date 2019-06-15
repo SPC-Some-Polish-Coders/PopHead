@@ -21,8 +21,7 @@ public:
 	Logger(Logger&) = delete;
 	void operator=(Logger&) = delete;
 
-	static Logger& getLogger()
-	{
+	static Logger& getInstance(){
 		static Logger Logger; 
 		return Logger;
 	}
