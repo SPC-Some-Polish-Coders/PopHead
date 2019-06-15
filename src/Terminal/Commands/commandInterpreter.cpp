@@ -174,8 +174,8 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	size_t valueStartPos = spacePosition + 1;
 	size_t valueLength = mCommand.size() - valueStartPos;
 	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
-		if (textToFloat.find("0") != std::string::npos) return 0;
 	float volumeValue = std::strtof(textToFloat.c_str(), nullptr);
+		if (volumeValue == 0) return 0;
 	return !(volumeValue) ?	50.f : volumeValue;	
 }
 
