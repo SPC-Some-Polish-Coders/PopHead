@@ -3,7 +3,7 @@
 #ifndef TEXT_WIDGET
 #define TEXT_WIDGET
 
-namespace PopHead {
+namespace ph {
 	namespace GUI {
 
 	class TextWidget : public Widget {

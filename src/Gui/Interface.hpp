@@ -4,7 +4,7 @@
 #ifndef GUI_INTERFACE
 #define GUI_INTERFACE
 
-namespace PopHead {
+namespace ph {
 
 namespace GUI {
 
@@ -15,7 +15,7 @@ namespace GUI {
 	public:
 		Interface();
 
-		Interface(Base::GameData* data);
+		Interface(GameData* data);
 
 		void update(sf::Time delta);
 

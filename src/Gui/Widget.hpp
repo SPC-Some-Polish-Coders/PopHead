@@ -9,9 +9,9 @@
 #ifndef GUI_BASE_WIDGET
 #define GUI_BASE_WIDGET
 
-namespace PopHead {
+namespace ph {
 
-namespace Base { class GameData; }
+class GameData; 
 
 namespace GUI {
 
@@ -54,7 +54,7 @@ namespace GUI {
 		virtual Widget* getWidget(const std::string& name);
 
 
-		virtual void setGameData(Base::GameData* GameData);
+		virtual void setGameData(GameData* GameData);
 
 		virtual bool isActive();
 
@@ -75,7 +75,7 @@ namespace GUI {
 		sf::Vector2f mOrigin;
 		unsigned int mAlpha;
 		sf::Vector2f mScale;
-		Base::GameData* mGameData;
+		GameData* mGameData;
 		sf::RenderWindow* mWindow;
 		std::multimap < behaviorType, std::function<void(Widget*)>> mBehaviors;
 		std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;

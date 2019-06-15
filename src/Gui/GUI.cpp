@@ -1,6 +1,6 @@
 #include "GUI.hpp"
 
-namespace PopHead {
+namespace ph {
 	namespace GUI {
 
 		
@@ -109,10 +109,10 @@ namespace PopHead {
 		}
 
 
-		void GUI::init(Base::GameData* gamedata)
+		void GUI::init(GameData* gamedata)
 		{
 			mGameData = gamedata;
-			mGuiDrawer = new Gui_drawer(gamedata, "GUI_DRAWER", Renderer::LayerID::gui);
+			mGuiDrawer = new Gui_drawer(gamedata, "GUI_DRAWER", LayerID::gui);
 			mGuiDrawer->init(this);
 			//mGameData->getRenderer().addObject(mGuiDrawer);
 

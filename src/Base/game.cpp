@@ -29,8 +29,7 @@ ph::Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mTerminal.get(),
-		mGui.get()
+		mTerminal.get()
 	));
 
 
@@ -44,7 +43,7 @@ ph::Game::Game()
 
 	mRenderer->setGameData(mGameData.get());
 	
-	mGui->init(mGameData.get());
+	//mGui->init(mGameData.get());
 }
 
 void ph::Game::run()
@@ -86,7 +85,7 @@ void ph::Game::update(sf::Time delta)
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
-	mGui->update(delta);
+	//mGui->update(delta);
 }
 
 void ph::Game::draw()

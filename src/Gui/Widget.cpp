@@ -1,5 +1,5 @@
 #include "Widget.hpp"
-namespace PopHead {
+namespace ph {
 
 namespace GUI {
 	Widget::Widget()
@@ -200,7 +200,7 @@ namespace GUI {
 	void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size) 
 	{
 	}
-	void Widget::setGameData(Base::GameData* GameData)
+	void Widget::setGameData(GameData* GameData)
 	{
 		mGameData = GameData;
 		mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getRenderer().getWindow());

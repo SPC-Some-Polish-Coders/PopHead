@@ -1,6 +1,6 @@
 #include "TextWidget.hpp"
 
-namespace PopHead {
+namespace ph {
 	namespace GUI {
 
 

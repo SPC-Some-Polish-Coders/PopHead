@@ -1,6 +1,6 @@
 #include "Interface.hpp"
 
-namespace PopHead {
+namespace ph {
 
 namespace GUI {
 	Interface::Interface()
@@ -9,7 +9,7 @@ namespace GUI {
 		mDefaultSize = mSize;
 		scale(sf::Vector2f(1, 1));
 	}
-	Interface::Interface(Base::GameData* data)
+	Interface::Interface(GameData* data)
 		: Widget()
 	{
 		mGameData = data;

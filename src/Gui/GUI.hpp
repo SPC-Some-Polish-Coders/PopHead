@@ -9,7 +9,7 @@
 #ifndef GUI_BASE
 #define GUI_BASE
 
-namespace PopHead {
+namespace ph {
 namespace GUI {
 
 	class GUI
@@ -19,12 +19,12 @@ namespace GUI {
 		~GUI();
 
 		class Gui_drawer
-			: public World::Entity::Object
+			: public Object
 		{
 		public:
-
-			Gui_drawer(Base::GameData* gameData, std::string name, Renderer::LayerID id)
-				: World::Entity::Object(gameData, name, id)
+		
+			Gui_drawer(GameData* gameData, std::string name, LayerID id)
+				: Object(gameData, name, id)
 				, mGui(nullptr)
 			{
 
@@ -78,14 +78,14 @@ namespace GUI {
 
 		void draw();
 
-		void init(Base::GameData* gamedata);
+		void init(GameData* gamedata);
 
 	private:
 		
 
 		Gui_drawer* mGuiDrawer;
 
-		Base::GameData* mGameData;
+		GameData* mGameData;
 
 		std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
 
