@@ -3,13 +3,13 @@
 
 #include <string>
 
-namespace PopHead {
-namespace Logs {
+namespace ph {
 
 enum class LogType : std::size_t {
 	Info,
 	Error,
 	Warning,
+	FromUser,
 	Count // WARNING: Keep it last
 };
 
@@ -20,6 +20,6 @@ struct LogData
 	LogType type;
 };
 
-}}
+}
 
 #endif // !POPHEAD_LOG_LOG_H_

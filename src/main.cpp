@@ -11,15 +11,15 @@
 void showErrorMessageBox(const std::string& title, const std::string& message)
 {
 #ifdef _WIN32
-	MessageBoxA(nullptr, title.c_str(), message.c_str(), MB_OK | MB_ICONERROR);
+	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
 #endif // _WIN32
 }
 
 int main()
 {
 	try {
-		PH_LOG(LogType::Info, "start executing PopHead!");
-		PopHead::Base::Game game;
+		PH_LOG(ph::LogType::Info, "start executing PopHead!");
+		ph::Game game;
 		game.run();
 	}
 	catch (const std::exception& e) {

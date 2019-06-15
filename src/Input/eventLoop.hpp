@@ -3,19 +3,18 @@
 
 #include <SFML/Window.hpp>
 
-namespace PopHead{
-    namespace Base{ class GameData; }
-namespace Input{
+namespace ph{
 
+class GameData;
 
 class EventLoop
 {
 public:
     EventLoop() = delete;
 
-    static void init(Base::GameData*);
+    static void init(GameData*);
 
-    static void eventLoop(Base::GameData*);
+    static void eventLoop(GameData*);
 
     static bool isKeyJustPressed(){return mIsKeyJustPressed;}
     static bool isKeyJustReleased(){return mIsKeyJustReleased;}
@@ -39,7 +38,6 @@ private:
     static sf::Mouse::Button mMouseButton;
 };
 
-
-}}
+}
 
 #endif // !POPHEAD_INPUT_EVENTLOOP_H_

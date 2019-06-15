@@ -4,9 +4,7 @@
 #include "log.hpp"
 #include <vector>
 
-namespace PopHead{
-namespace Logs{
-
+namespace ph{
 
 class LogSettings
 {
@@ -17,6 +15,8 @@ public:
 	void setWritingLogs(bool enabled);
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
+	void addLogType(const LogType&);
+	void addModuleName(const std::string&);
 
 	void turnOnWritingEachLog();
 
@@ -41,6 +41,6 @@ private:
 	bool mShouldLogIntoFile;
 };
 
-}}
+}
 
 #endif //POPHEAD_LOGS_LOGSETTINGS_H_

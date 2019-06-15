@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
-namespace PopHead {
-namespace Utilities {
+namespace ph {
 
-class Xml {
+class Xml 
+{
 public:
 	void loadFromFile(const std::string& filePath);
 
@@ -17,6 +17,8 @@ public:
 	std::vector<Xml> getChildren(std::string name) const;
 
 	Xml getAttribute(std::string name) const;
+
+	Xml someMethod();
 
 	std::string toString() const;
 
@@ -37,6 +39,6 @@ private:
 	std::string mContent;
 };
 
-}}
+}
 
 #endif // !POPHEAD_UTILITIES_XML_H_

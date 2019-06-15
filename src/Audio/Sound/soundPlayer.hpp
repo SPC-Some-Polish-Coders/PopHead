@@ -8,8 +8,7 @@
 #include <SFML/Audio.hpp>
 #include <list>
 
-namespace PopHead {
-namespace Audio {
+namespace ph {
 
 class SoundPlayer
 {
@@ -18,26 +17,28 @@ public:
 
 	void playAmbientSound(const std::string& filePath);
 	void playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition);
-private:
-	void playSound(const std::string& filePath, const float volume, const bool loop);
 
-public:
 	void setListenerPosition(const sf::Vector2f listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
+	void setMuted(bool muted);
+	bool isMuted() { return mIsMuted; }
 	void setVolume(const float volume);
+	float getVolume() { return mVolume; }
 	void removeEverySound();
 
 private:
+	void playSound(const std::string& filePath, const float volume, const bool loop);
 	void loadEverySound();
 	void removeStoppedSounds();
 
 private:
 	std::list<sf::Sound> mSounds;
-	Resources::SoundBufferHolder mSoundBuffers;
+	SoundBufferHolder mSoundBuffers;
 	SoundDataHolder mSoundDataHolder;
 	SpatializationManager mSpatializationManager;
 	float mVolume;
+	bool mIsMuted;
 };
 
-}}
+}
 
 #endif // !POPHEAD_AUDIO_SOUNDPLAYER_H_

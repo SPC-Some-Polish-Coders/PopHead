@@ -3,15 +3,12 @@
 
 #include "World/Entity/Objects/character.hpp"
 
-namespace PopHead{
-namespace World{
-namespace Entity{
+namespace ph{
 
-
-class NPC : public Character
+class Npc : public Character
 {
 public:
-    NPC(Base::GameData* gameData, std::string name);
+    Npc(GameData* gameData, std::string name);
 
     void input() override;
     void update(sf::Time delta) override;
@@ -19,10 +16,9 @@ public:
     void talk();
 
 private:
-    bool wasDialogueButtonClicked;
+    bool mWasDialogueButtonClicked = false;
 };
 
-
-}}}
+}
 
 #endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_NPC_H_

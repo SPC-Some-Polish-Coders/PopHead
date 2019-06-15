@@ -5,19 +5,19 @@
 #include <string>
 #include <memory>
 
-namespace PopHead {
-namespace Terminal {
+namespace ph {
 
 struct TerminalData
 {
 	sf::Text mText;
 	std::string mContent;
+	std::string mLastCommand;
 	bool mIsVisible = false;
 };
 
 using TerminalSharedData = std::shared_ptr<TerminalData>;
 
-}}
+}
 
 #endif // !POPHEAD_TERMINAL_TERMINALSHAREDDATA_H_
 

@@ -1,11 +1,7 @@
 #include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-using PopHead::Logs::LogsInitializer;
-using PopHead::Logs::LogType;
-using PopHead::Utilities::IniLoader;
-
-bool LogsInitializer::getShouldLogIntoConsole()
+bool ph::LogsInitializer::getShouldLogIntoConsole()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoConsole="))
@@ -16,7 +12,7 @@ bool LogsInitializer::getShouldLogIntoConsole()
 	}
 }
 
-bool LogsInitializer::getShouldLogIntoFile()
+bool ph::LogsInitializer::getShouldLogIntoFile()
 {
 	openTheFile();
 	if (findPhrase("ShouldBeWrittenIntoFile="))
@@ -27,26 +23,27 @@ bool LogsInitializer::getShouldLogIntoFile()
 	}
 }
 
-std::vector<LogType> LogsInitializer::getLogTypesToWrite()
+std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
 	if (findPhrase("LogTypesToWrite="))
 	{
 		if (findValue("All"))
-			InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::Count };
+			InitLogTypesToWrite = { LogType::Warning, LogType::Error, LogType::Info, LogType::FromUser, LogType::Count };
 		else
 		{
 			if (findValue("Error")) InitLogTypesToWrite.emplace_back(LogType::Error);
 			if (findValue("Info")) InitLogTypesToWrite.emplace_back(LogType::Info);
 			if (findValue("Warning")) InitLogTypesToWrite.emplace_back(LogType::Warning);
+			if (findValue("From user")) InitLogTypesToWrite.emplace_back(LogType::FromUser);
 		}
 	}
 	closeTheFile();
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
+std::vector<std::string> ph::LogsInitializer::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;
