@@ -12,19 +12,15 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "log")                           executeLog();
-	else if (commandWithoutArguments == "exit")                     executeExit();
-	else if (commandWithoutArguments == "teleport")                 executeTeleport();
-	else if (commandWithoutArguments == "currentpos")               executeCurrentPos();
-	else if (commandWithoutArguments == "collisiondebug")           executeCollisionDebug();
-	else if (commandWithoutArguments == "mute")                     executeMute();
-	else if (commandWithoutArguments == "unmute")                   executeUnmute();
-	else if (commandWithoutArguments == "setvolume")                executeSetVolume();
-	else if (commandWithoutArguments == "logintofile")              executeSetLoggingIntoFile();
-	else if (commandWithoutArguments == "logintoconsole")           executeSetLoggingIntoConsole();
-	else if (commandWithoutArguments == "logintoboth")              executeSetLogging();
-	else if (commandWithoutArguments == "setlogtype")               executeSetLoggingLogTypes();
-	else if (commandWithoutArguments == "setmodulename")            executeSetLoggingModuleNames();
+	if (commandWithoutArguments == "echo")                 executeEcho();
+	else if (commandWithoutArguments == "exit")            executeExit();
+	else if (commandWithoutArguments == "teleport")        executeTeleport();
+	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
+	else if (commandWithoutArguments == "collisiondebug")  executeCollisionDebug();
+	else if (commandWithoutArguments == "mute")            executeMute();
+	else if (commandWithoutArguments == "unmute")          executeUnmute();
+	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
+	else if (commandWithoutArguments == "log")             executeLog();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -38,7 +34,7 @@ int ph::CommandInterpreter::getArgumentPositionInCommand()
 	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
-void ph::CommandInterpreter::executeLog()
+void ph::CommandInterpreter::executeEcho()
 {
 	size_t spacePosition = mCommand.find(' ');
 	size_t messageStartPos = spacePosition + 1;
@@ -191,60 +187,60 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	return !(volumeValue) ?	50.f : volumeValue;	
 }
 
-void ph::CommandInterpreter::executeSetLoggingIntoFile()
+void ph::CommandInterpreter::executeLog()
 {
-	auto& logSettings = Logger::getLogger();
-	if (commandContains('1'))
-		logSettings.getLogSettings().setWritingLogsIntoFile(true);
-	else if (commandContains('0'))
-		logSettings.getLogSettings().setWritingLogsIntoFile(false);
-}
-void ph::CommandInterpreter::executeSetLoggingIntoConsole()
-{
-	auto& logSettings = Logger::getLogger();
-	if (commandContains('1'))
-		logSettings.getLogSettings().setWritingLogsIntoConsole(true);
-	else if (commandContains('0'))
-		logSettings.getLogSettings().setWritingLogsIntoConsole(false);
+	if(commandContains("into"))
+		logInto();
+	else if(commandContains("types"))
+		setLogTypesToLog();
+	else if(commandContains("modules"))
+		setModulesToLog();
 }
 
-void ph::CommandInterpreter::executeSetLogging()
+void ph::CommandInterpreter::logInto()
 {
-	executeSetLoggingIntoConsole();
-	executeSetLoggingIntoFile();
+	auto& logSettings = Logger::getLogger().getLogSettings();
+
+	int newValue = commandContains("not") ? false : true;
+	if(commandContains("console") || commandContains("both"))
+		logSettings.setWritingLogsIntoConsole(newValue);
+	if(commandContains("file") || commandContains("both"))
+		logSettings.setWritingLogsIntoConsole(newValue);
 }
 
-void ph::CommandInterpreter::executeSetLoggingLogTypes()
+void ph::CommandInterpreter::setLogTypesToLog()
 {
 	auto& logSettings = Logger::getLogger();
-	if (commandContains("info")) 			logSettings.getLogSettings().addLogType(LogType::Info);
-	else if (commandContains("warning")) 	logSettings.getLogSettings().addLogType(LogType::Warning);
-	else if (commandContains("error"))		logSettings.getLogSettings().addLogType(LogType::Error);
-	else if (commandContains("user"))		logSettings.getLogSettings().addLogType(LogType::FromUser);
 
-	else if (commandContains("all"))		
+	if (commandContains("info"))     logSettings.getLogSettings().addLogType(LogType::Info);
+	if (commandContains("warning"))  logSettings.getLogSettings().addLogType(LogType::Warning);
+	if (commandContains("error"))    logSettings.getLogSettings().addLogType(LogType::Error);
+	if (commandContains("user"))     logSettings.getLogSettings().addLogType(LogType::FromUser);
+
+	if (commandContains("all"))		
 		logSettings.getLogSettings().turnOnWritingLogsFromEachLogTypes();
 	else if (commandContains("clear"))	
 		logSettings.getLogSettings().setLogTypesToWrite({});
 }
 
-void ph::CommandInterpreter::executeSetLoggingModuleNames()
+void ph::CommandInterpreter::setModulesToLog()
 {
 	auto& logSettings = Logger::getLogger();
-	if (commandContains("audio")) 			logSettings.getLogSettings().addModuleName("Audio");
-	else if (commandContains("base"))		logSettings.getLogSettings().addModuleName("Base");
-	else if (commandContains("input"))		logSettings.getLogSettings().addModuleName("Input");
-	else if (commandContains("logs"))		logSettings.getLogSettings().addModuleName("Logs");
-	else if (commandContains("physics"))	logSettings.getLogSettings().addModuleName("Physics");
-	else if (commandContains("renderer"))	logSettings.getLogSettings().addModuleName("Renderer");
-	else if (commandContains("resources"))	logSettings.getLogSettings().addModuleName("Resources");
-	else if (commandContains("states"))		logSettings.getLogSettings().addModuleName("States");
-	else if (commandContains("utilities"))	logSettings.getLogSettings().addModuleName("Utilities");
-	else if (commandContains("world"))		logSettings.getLogSettings().addModuleName("World");
-	else if (commandContains("terminal"))	logSettings.getLogSettings().addModuleName("Terminal");
-	else if (commandContains("none"))		logSettings.getLogSettings().addModuleName("None");
 
-	else if (commandContains("all"))
+	if (commandContains("audio"))       logSettings.getLogSettings().addModuleName("Audio");
+	if (commandContains("base"))        logSettings.getLogSettings().addModuleName("Base");
+	if (commandContains("input"))       logSettings.getLogSettings().addModuleName("Input");
+	if (commandContains("logs"))        logSettings.getLogSettings().addModuleName("Logs");
+	if (commandContains("physics"))     logSettings.getLogSettings().addModuleName("Physics");
+	if (commandContains("renderer"))    logSettings.getLogSettings().addModuleName("Renderer");
+	if (commandContains("resources"))   logSettings.getLogSettings().addModuleName("Resources");
+	if (commandContains("states"))      logSettings.getLogSettings().addModuleName("States");
+	if (commandContains("utilities"))   logSettings.getLogSettings().addModuleName("Utilities");
+	if (commandContains("world"))       logSettings.getLogSettings().addModuleName("World");
+	if (commandContains("terminal"))    logSettings.getLogSettings().addModuleName("Terminal");
+	if (commandContains("none"))        logSettings.getLogSettings().addModuleName("None");
+
+	if (commandContains("all"))
 		logSettings.getLogSettings().turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))
 		logSettings.getLogSettings().setModuleNamesToWrite({});
@@ -255,7 +251,7 @@ bool ph::CommandInterpreter::commandContains(const char c)
 	return mCommand.find(c) != std::string::npos;
 }
 
-bool ph::CommandInterpreter::commandContains(const std::string& c)
+bool ph::CommandInterpreter::commandContains(const char* c)
 {
 	return mCommand.find(c) != std::string::npos;
 }

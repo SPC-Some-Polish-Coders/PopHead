@@ -19,7 +19,7 @@ private:
 	std::string getCommandWithoutArguments();
 	int getArgumentPositionInCommand();
 
-	void executeLog();
+	void executeEcho();
 
 	void executeExit();
 
@@ -38,14 +38,13 @@ private:
 	void executeSetVolume();
 	float getVolumeFromCommand();
 
-	void executeSetLoggingIntoFile();
-	void executeSetLoggingIntoConsole();
-	void executeSetLogging();
-	void executeSetLoggingLogTypes();
-	void executeSetLoggingModuleNames();
+	void executeLog();
+	void logInto();
+	void setLogTypesToLog();
+	void setModulesToLog();
 
 	bool commandContains(const char);
-	bool commandContains(const std::string&);
+	bool commandContains(const char*);
 
 private:
 	std::string mCommand;
