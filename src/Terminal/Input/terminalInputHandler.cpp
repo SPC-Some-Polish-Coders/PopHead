@@ -64,7 +64,7 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 
 
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up))		mContent += mTerminalSharedData->mLastCommand;
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Delete))	mContent = ""; 
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Down))		mContent = ""; 
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Space))	mContent += " ";
 }
 
