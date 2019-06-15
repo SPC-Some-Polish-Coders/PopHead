@@ -210,40 +210,40 @@ void ph::CommandInterpreter::logInto()
 
 void ph::CommandInterpreter::setLogTypesToLog()
 {
-	auto& logSettings = Logger::getLogger();
+	auto& logSettings = Logger::getLogger().getLogSettings();
 
-	if (commandContains("info"))     logSettings.getLogSettings().addLogType(LogType::Info);
-	if (commandContains("warning"))  logSettings.getLogSettings().addLogType(LogType::Warning);
-	if (commandContains("error"))    logSettings.getLogSettings().addLogType(LogType::Error);
-	if (commandContains("user"))     logSettings.getLogSettings().addLogType(LogType::FromUser);
+	if (commandContains("info"))     logSettings.addLogType(LogType::Info);
+	if (commandContains("warning"))  logSettings.addLogType(LogType::Warning);
+	if (commandContains("error"))    logSettings.addLogType(LogType::Error);
+	if (commandContains("user"))     logSettings.addLogType(LogType::FromUser);
 
 	if (commandContains("all"))		
-		logSettings.getLogSettings().turnOnWritingLogsFromEachLogTypes();
+		logSettings.turnOnWritingLogsFromEachLogTypes();
 	else if (commandContains("clear"))	
-		logSettings.getLogSettings().setLogTypesToWrite({});
+		logSettings.setLogTypesToWrite({});
 }
 
 void ph::CommandInterpreter::setModulesToLog()
 {
-	auto& logSettings = Logger::getLogger();
+	auto& logSettings = Logger::getLogger().getLogSettings();
 
-	if (commandContains("audio"))       logSettings.getLogSettings().addModuleName("Audio");
-	if (commandContains("base"))        logSettings.getLogSettings().addModuleName("Base");
-	if (commandContains("input"))       logSettings.getLogSettings().addModuleName("Input");
-	if (commandContains("logs"))        logSettings.getLogSettings().addModuleName("Logs");
-	if (commandContains("physics"))     logSettings.getLogSettings().addModuleName("Physics");
-	if (commandContains("renderer"))    logSettings.getLogSettings().addModuleName("Renderer");
-	if (commandContains("resources"))   logSettings.getLogSettings().addModuleName("Resources");
-	if (commandContains("states"))      logSettings.getLogSettings().addModuleName("States");
-	if (commandContains("utilities"))   logSettings.getLogSettings().addModuleName("Utilities");
-	if (commandContains("world"))       logSettings.getLogSettings().addModuleName("World");
-	if (commandContains("terminal"))    logSettings.getLogSettings().addModuleName("Terminal");
-	if (commandContains("none"))        logSettings.getLogSettings().addModuleName("None");
+	if (commandContains("audio"))       logSettings.addModuleName("Audio");
+	if (commandContains("base"))        logSettings.addModuleName("Base");
+	if (commandContains("input"))       logSettings.addModuleName("Input");
+	if (commandContains("logs"))        logSettings.addModuleName("Logs");
+	if (commandContains("physics"))     logSettings.addModuleName("Physics");
+	if (commandContains("renderer"))    logSettings.addModuleName("Renderer");
+	if (commandContains("resources"))   logSettings.addModuleName("Resources");
+	if (commandContains("states"))      logSettings.addModuleName("States");
+	if (commandContains("utilities"))   logSettings.addModuleName("Utilities");
+	if (commandContains("world"))       logSettings.addModuleName("World");
+	if (commandContains("terminal"))    logSettings.addModuleName("Terminal");
+	if (commandContains("none"))        logSettings.addModuleName("None");
 
 	if (commandContains("all"))
-		logSettings.getLogSettings().turnOnWritingLogsFromEachModule();
+		logSettings.turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))
-		logSettings.getLogSettings().setModuleNamesToWrite({});
+		logSettings.setModuleNamesToWrite({});
 }
 
 bool ph::CommandInterpreter::commandContains(const char c)
