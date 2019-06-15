@@ -61,11 +61,10 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Num8)) mContent += "8";
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Num9)) mContent += "9";
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Num0)) mContent += "0";
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
 
-
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up))		mContent += mTerminalSharedData->mLastCommand;
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Down))		mContent = ""; 
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Space))	mContent += " ";
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up)) mContent += mTerminalSharedData->mLastCommand;
+	else if (keyboard.isKeyJustPressed(sf::Keyboard::Down))	mContent.clear(); 
 }
 
 void ph::TerminalInputHandler::handleBackspace()
@@ -93,5 +92,12 @@ void ph::TerminalInputHandler::showOrHideCommandPromptInput()
 		auto& actionManager = mGameData->getInput().getAction();
 		actionManager.setEnabled(isVisible);
 		isVisible = !isVisible;
+		setKeyRepeatEnabled(isVisible);
 	}
+}
+
+void ph::TerminalInputHandler::setKeyRepeatEnabled(bool enabled)
+{
+	auto& window = mGameData->getRenderer().getWindow();
+	window.setKeyRepeatEnabled(enabled);
 }
