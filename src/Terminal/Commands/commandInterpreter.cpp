@@ -1,6 +1,5 @@
 #include "commandInterpreter.hpp"
 
-#include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -13,21 +12,15 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "log")                           executeLog();
-	else if (commandWithoutArguments == "teleport")                 executeTeleport();
-	else if (commandWithoutArguments == "currentpos")               executeCurrentPos();
-	else if (commandWithoutArguments == "changecollisiondisplay")   executeChangeCollisionDebugDisplay();
-	else if (commandWithoutArguments == "changecolor")              executeChangeCollisionDebugColors();
-	else if (commandWithoutArguments == "switchcollisionmode")      executeSwitchCollisionDebugMode();
-	else if (commandWithoutArguments == "mute")                     executeMute();
-	else if (commandWithoutArguments == "unmute")                   executeUnmute();
-	else if (commandWithoutArguments == "setvolume")                executeSetVolume();
-	else if (commandWithoutArguments == "loginttofile")             executeSetLoggingIntoFile();
-	else if (commandWithoutArguments == "logintoconsole")           executeSetLoggingIntoConsole();
-	else if (commandWithoutArguments == "logintoboth")              executeSetLogging();
-	else if (commandWithoutArguments == "setlogtype")               executeSetLoggingLogTypes();
-	else if (commandWithoutArguments == "setmodulename")            executeSetLoggingModuleNames();
-	else if (commandWithoutArguments == "exit")                     executeExit();
+	if (commandWithoutArguments == "echo")                 executeEcho();
+	else if (commandWithoutArguments == "exit")            executeExit();
+	else if (commandWithoutArguments == "teleport")        executeTeleport();
+	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
+	else if (commandWithoutArguments == "collisiondebug")  executeCollisionDebug();
+	else if (commandWithoutArguments == "mute")            executeMute();
+	else if (commandWithoutArguments == "unmute")          executeUnmute();
+	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
+	else if (commandWithoutArguments == "log")             executeLog();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -37,17 +30,11 @@ std::string ph::CommandInterpreter::getCommandWithoutArguments()
 
 int ph::CommandInterpreter::getArgumentPositionInCommand()
 {
-	size_t argumentPosition;
-	std::array<char, 3> argumentCharacters{' ', '-', '='};
-	for(int i = 0; i < 3; ++i) {
-		argumentPosition = mCommand.find(argumentCharacters[i]);
-		if(argumentPosition != std::string::npos)
-			return argumentPosition;
-	}
-	return mCommand.size();
+	size_t argumentPosition = mCommand.find(' ');
+	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
-void ph::CommandInterpreter::executeLog()
+void ph::CommandInterpreter::executeEcho()
 {
 	size_t spacePosition = mCommand.find(' ');
 	size_t messageStartPos = spacePosition + 1;
@@ -56,7 +43,19 @@ void ph::CommandInterpreter::executeLog()
 	PH_LOG(LogType::FromUser, message);
 }
 
+void ph::CommandInterpreter::executeExit()
+{
+	mGameData->getRenderer().getWindow().close();
+}
+
 void ph::CommandInterpreter::executeTeleport()
+{
+	auto& player = getPlayer();
+	sf::Vector2f newPosition = getPositionFromCommand();
+	player.setPosition(newPosition);
+}
+
+sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
 {
 	const std::string numbers("1234567890");
 
@@ -64,7 +63,7 @@ void ph::CommandInterpreter::executeTeleport()
 	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
-	float newXPosition = std::stof(xArgument);
+	float positionX = std::stof(xArgument);
 
 	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
 	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
@@ -72,10 +71,8 @@ void ph::CommandInterpreter::executeTeleport()
 		yArgumentEndPositionInCommand = mCommand.size();
 	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
-	float newYPosition = std::stof(yArgument);
-
-	auto& player = getPlayer();
-	player.setPosition({newXPosition, newYPosition});
+	float positionY = std::stof(yArgument);
+	return sf::Vector2f(positionX, positionY);
 }
 
 void ph::CommandInterpreter::executeCurrentPos()
@@ -94,9 +91,45 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 	return player;
 }
 
-void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
+void ph::CommandInterpreter::executeCollisionDebug()
+{
+	if(commandContains("turn"))
+		turnOnOrTurnOffCollisionDebug();
+	else if(commandContains("color"))
+		changeCollisionDebugColor();
+	else if(commandContains("display"))
+		changeCollisionDebugDisplayMode();
+}
+
+void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
+	//if(commandContains("off")) must be first! Do not change the order!
+	if(commandContains("off"))
+		collisionDebugSettings.turnOff();
+	else if(commandContains("on"))
+		collisionDebugSettings.turnOn();
+}
+
+void ph::CommandInterpreter::changeCollisionDebugColor()
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
+	if(commandContains('1'))
+		collisionDebugSettings.setColors(1);
+	else if(commandContains('2'))
+		collisionDebugSettings.setColors(2);
+	else if(commandContains('3'))
+		collisionDebugSettings.setColors(3);
+	else
+		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
+}
+
+void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
 	if (commandContains("kinematic"))
 		collisionDebugSettings.displayOnlyKinematicBodies();
 	else if (commandContains("static"))
@@ -105,61 +138,33 @@ void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
 		collisionDebugSettings.displayAllBodies();
 }
 
-void ph::CommandInterpreter::executeChangeCollisionDebugColors() 
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	if (commandContains('1'))
-		collisionDebugSettings.setColors(1);
-	else if (commandContains('2'))
-		collisionDebugSettings.setColors(2);
-	else if (commandContains('3'))
-		collisionDebugSettings.setColors(3);
-}
-
-void ph::CommandInterpreter::executeSwitchCollisionDebugMode()
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	if (commandContains('1'))
-		collisionDebugSettings.turnOn();
-	else if (commandContains('0'))
-		collisionDebugSettings.turnOff();
-}
-
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music"))
+	if (commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(true);
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(0.f);
-	else if (commandContains("all"))
-	{
-		mGameData->getMusicPlayer().setMuted(true);
-		mGameData->getSoundPlayer().setVolume(0.f);
-	}
+	if (commandContains("sound") || commandContains("all"))
+		mGameData->getSoundPlayer().setMuted(true);
 }
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music"))
+	if(commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(false);
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(20.f);
-	else if (commandContains("all"))
-	{
-		mGameData->getMusicPlayer().setMuted(false);
-		mGameData->getSoundPlayer().setVolume(20.f);
-	}
+	if(commandContains("sound") || commandContains("all"))
+		mGameData->getSoundPlayer().setMuted(false);
 }
 
 void ph::CommandInterpreter::executeSetVolume()
 {
+	int newVolume = getVolumeFromCommand();
+
 	if (commandContains("music"))
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getMusicPlayer().setVolume(newVolume);
 	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getSoundPlayer().setVolume(newVolume);
 	else{
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getMusicPlayer().setVolume(newVolume);
+		mGameData->getSoundPlayer().setVolume(newVolume);
 	}
 }
 
@@ -174,68 +179,63 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	return !(volumeValue) ?	50.f : volumeValue;	
 }
 
-void ph::CommandInterpreter::executeSetLoggingIntoFile()
+void ph::CommandInterpreter::executeLog()
 {
-	auto& logSettings = Logger::getLogger();
-	if (commandContains('1'))
-		logSettings.getLogSettings().setWritingLogsIntoFile(true);
-	else if (commandContains('0'))
-		logSettings.getLogSettings().setWritingLogsIntoFile(false);
-}
-void ph::CommandInterpreter::executeSetLoggingIntoConsole()
-{
-	auto& logSettings = Logger::getLogger();
-	if (commandContains('1'))
-		logSettings.getLogSettings().setWritingLogsIntoConsole(true);
-	else if (commandContains('0'))
-		logSettings.getLogSettings().setWritingLogsIntoConsole(false);
+	if(commandContains("into"))
+		logInto();
+	else if(commandContains("types"))
+		setLogTypesToLog();
+	else if(commandContains("modules"))
+		setModulesToLog();
 }
 
-void ph::CommandInterpreter::executeSetLogging()
+void ph::CommandInterpreter::logInto()
 {
-	executeSetLoggingIntoConsole();
-	executeSetLoggingIntoFile();
+	auto& logSettings = Logger::getLogger().getLogSettings();
+
+	int newValue = commandContains("not") ? false : true;
+	if(commandContains("console") || commandContains("both"))
+		logSettings.setWritingLogsIntoConsole(newValue);
+	if(commandContains("file") || commandContains("both"))
+		logSettings.setWritingLogsIntoConsole(newValue);
 }
 
-void ph::CommandInterpreter::executeSetLoggingLogTypes()
+void ph::CommandInterpreter::setLogTypesToLog()
 {
-	auto& logSettings = Logger::getLogger();
-	if (commandContains("info")) 			logSettings.getLogSettings().addLogType(LogType::Info);
-	else if (commandContains("warning")) 	logSettings.getLogSettings().addLogType(LogType::Warning);
-	else if (commandContains("error"))		logSettings.getLogSettings().addLogType(LogType::Error);
-	else if (commandContains("user"))		logSettings.getLogSettings().addLogType(LogType::FromUser);
+	auto& logSettings = Logger::getLogger().getLogSettings();
 
-	else if (commandContains("all"))		
-		logSettings.getLogSettings().turnOnWritingLogsFromEachLogTypes();
+	if (commandContains("info"))     logSettings.addLogType(LogType::Info);
+	if (commandContains("warning"))  logSettings.addLogType(LogType::Warning);
+	if (commandContains("error"))    logSettings.addLogType(LogType::Error);
+	if (commandContains("user"))     logSettings.addLogType(LogType::FromUser);
+
+	if (commandContains("all"))		
+		logSettings.turnOnWritingLogsFromEachLogTypes();
 	else if (commandContains("clear"))	
-		logSettings.getLogSettings().setLogTypesToWrite({});
+		logSettings.setLogTypesToWrite({});
 }
 
-void ph::CommandInterpreter::executeSetLoggingModuleNames()
+void ph::CommandInterpreter::setModulesToLog()
 {
-	auto& logSettings = Logger::getLogger();
-	if (commandContains("audio")) 			logSettings.getLogSettings().addModuleName("Audio");
-	else if (commandContains("base"))		logSettings.getLogSettings().addModuleName("Base");
-	else if (commandContains("input"))		logSettings.getLogSettings().addModuleName("Input");
-	else if (commandContains("logs"))		logSettings.getLogSettings().addModuleName("Logs");
-	else if (commandContains("physics"))	logSettings.getLogSettings().addModuleName("Physics");
-	else if (commandContains("renderer"))	logSettings.getLogSettings().addModuleName("Renderer");
-	else if (commandContains("resources"))	logSettings.getLogSettings().addModuleName("Resources");
-	else if (commandContains("states"))		logSettings.getLogSettings().addModuleName("States");
-	else if (commandContains("utilities"))	logSettings.getLogSettings().addModuleName("Utilities");
-	else if (commandContains("world"))		logSettings.getLogSettings().addModuleName("World");
-	else if (commandContains("terminal"))	logSettings.getLogSettings().addModuleName("Terminal");
-	else if (commandContains("none"))		logSettings.getLogSettings().addModuleName("None");
+	auto& logSettings = Logger::getLogger().getLogSettings();
 
-	else if (commandContains("all"))
-		logSettings.getLogSettings().turnOnWritingLogsFromEachModule();
+	if (commandContains("audio"))       logSettings.addModuleName("Audio");
+	if (commandContains("base"))        logSettings.addModuleName("Base");
+	if (commandContains("input"))       logSettings.addModuleName("Input");
+	if (commandContains("logs"))        logSettings.addModuleName("Logs");
+	if (commandContains("physics"))     logSettings.addModuleName("Physics");
+	if (commandContains("renderer"))    logSettings.addModuleName("Renderer");
+	if (commandContains("resources"))   logSettings.addModuleName("Resources");
+	if (commandContains("states"))      logSettings.addModuleName("States");
+	if (commandContains("utilities"))   logSettings.addModuleName("Utilities");
+	if (commandContains("world"))       logSettings.addModuleName("World");
+	if (commandContains("terminal"))    logSettings.addModuleName("Terminal");
+	if (commandContains("none"))        logSettings.addModuleName("None");
+
+	if (commandContains("all"))
+		logSettings.turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))
-		logSettings.getLogSettings().setModuleNamesToWrite({});
-}
-
-void ph::CommandInterpreter::executeExit()
-{
-	mGameData->getRenderer().getWindow().close();
+		logSettings.setModuleNamesToWrite({});
 }
 
 bool ph::CommandInterpreter::commandContains(const char c)
