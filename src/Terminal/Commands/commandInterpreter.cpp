@@ -148,6 +148,11 @@ void ph::CommandInterpreter::executeMute()
 		mGameData->getMusicPlayer().setMuted(true);
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(0.f);
+	else if (commandContains("all"))
+	{
+		mGameData->getMusicPlayer().setMuted(true);
+		mGameData->getSoundPlayer().setVolume(0.f);
+	}
 }
 
 void ph::CommandInterpreter::executeUnmute()
@@ -156,6 +161,11 @@ void ph::CommandInterpreter::executeUnmute()
 		mGameData->getMusicPlayer().setMuted(false);
 	else if (commandContains("sound"))
 		mGameData->getSoundPlayer().setVolume(20.f);
+	else if (commandContains("all"))
+	{
+		mGameData->getMusicPlayer().setMuted(false);
+		mGameData->getSoundPlayer().setVolume(20.f);
+	}
 }
 
 void ph::CommandInterpreter::executeSetVolume()
@@ -176,8 +186,9 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	size_t valueStartPos = spacePosition + 1;
 	size_t valueLength = mCommand.size() - valueStartPos;
 	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
+		if (textToFloat.find("0") != std::string::npos) return 0;
 	float volumeValue = std::strtof(textToFloat.c_str(), nullptr);
-	return !(volumeValue) ? 50.f : volumeValue;	
+	return !(volumeValue) ?	50.f : volumeValue;	
 }
 
 void ph::CommandInterpreter::executeSetLoggingIntoFile()
