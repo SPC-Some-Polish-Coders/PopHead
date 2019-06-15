@@ -1,6 +1,5 @@
 #include "commandInterpreter.hpp"
 
-#include <array>
 #include "Utilities/debug.hpp"
 #include "Base/gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -14,20 +13,18 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
 	if (commandWithoutArguments == "log")                           executeLog();
+	else if (commandWithoutArguments == "exit")                     executeExit();
 	else if (commandWithoutArguments == "teleport")                 executeTeleport();
 	else if (commandWithoutArguments == "currentpos")               executeCurrentPos();
-	else if (commandWithoutArguments == "changecollisiondisplay")   executeChangeCollisionDebugDisplay();
-	else if (commandWithoutArguments == "changecolor")              executeChangeCollisionDebugColors();
-	else if (commandWithoutArguments == "switchcollisionmode")      executeSwitchCollisionDebugMode();
+	else if (commandWithoutArguments == "collisiondebug")           executeCollisionDebug();
 	else if (commandWithoutArguments == "mute")                     executeMute();
 	else if (commandWithoutArguments == "unmute")                   executeUnmute();
 	else if (commandWithoutArguments == "setvolume")                executeSetVolume();
-	else if (commandWithoutArguments == "loginttofile")             executeSetLoggingIntoFile();
+	else if (commandWithoutArguments == "logintofile")              executeSetLoggingIntoFile();
 	else if (commandWithoutArguments == "logintoconsole")           executeSetLoggingIntoConsole();
 	else if (commandWithoutArguments == "logintoboth")              executeSetLogging();
 	else if (commandWithoutArguments == "setlogtype")               executeSetLoggingLogTypes();
 	else if (commandWithoutArguments == "setmodulename")            executeSetLoggingModuleNames();
-	else if (commandWithoutArguments == "exit")                     executeExit();
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -48,6 +45,11 @@ void ph::CommandInterpreter::executeLog()
 	size_t messageLength = mCommand.size() - messageStartPos;
 	std::string message = mCommand.substr(messageStartPos, messageLength);
 	PH_LOG(LogType::FromUser, message);
+}
+
+void ph::CommandInterpreter::executeExit()
+{
+	mGameData->getRenderer().getWindow().close();
 }
 
 void ph::CommandInterpreter::executeTeleport()
@@ -93,35 +95,51 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 	return player;
 }
 
-void ph::CommandInterpreter::executeChangeCollisionDebugDisplay()
+void ph::CommandInterpreter::executeCollisionDebug()
+{
+	if(commandContains("turn"))
+		turnOnOrTurnOffCollisionDebug();
+	else if(commandContains("color"))
+		changeCollisionDebugColor();
+	else if(commandContains("display"))
+		changeCollisionDebugDisplayMode();
+}
+
+void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
+	//if(commandContains("off") must be first) Do not change the order!
+	if(commandContains("off"))
+		collisionDebugSettings.turnOff();
+	else if(commandContains("on"))
+		collisionDebugSettings.turnOn();
+}
+
+void ph::CommandInterpreter::changeCollisionDebugColor()
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
+	if(commandContains('1'))
+		collisionDebugSettings.setColors(1);
+	else if(commandContains('2'))
+		collisionDebugSettings.setColors(2);
+	else if(commandContains('3'))
+		collisionDebugSettings.setColors(3);
+	else
+		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
+}
+
+void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
+{
+	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
+
 	if (commandContains("kinematic"))
 		collisionDebugSettings.displayOnlyKinematicBodies();
 	else if (commandContains("static"))
 		collisionDebugSettings.displayOnlyStaticBodies();
 	else if (commandContains("all"))
 		collisionDebugSettings.displayAllBodies();
-}
-
-void ph::CommandInterpreter::executeChangeCollisionDebugColors() 
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	if (commandContains('1'))
-		collisionDebugSettings.setColors(1);
-	else if (commandContains('2'))
-		collisionDebugSettings.setColors(2);
-	else if (commandContains('3'))
-		collisionDebugSettings.setColors(3);
-}
-
-void ph::CommandInterpreter::executeSwitchCollisionDebugMode()
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	if (commandContains('1'))
-		collisionDebugSettings.turnOn();
-	else if (commandContains('0'))
-		collisionDebugSettings.turnOff();
 }
 
 void ph::CommandInterpreter::executeMute()
@@ -221,17 +239,12 @@ void ph::CommandInterpreter::executeSetLoggingModuleNames()
 		logSettings.getLogSettings().setModuleNamesToWrite({});
 }
 
-void ph::CommandInterpreter::executeExit()
-{
-	mGameData->getRenderer().getWindow().close();
-}
-
 bool ph::CommandInterpreter::commandContains(const char c)
 {
 	return mCommand.find(c) != std::string::npos;
 }
 
-bool ph::CommandInterpreter::commandContains(const char* c)
+bool ph::CommandInterpreter::commandContains(const std::string& c)
 {
 	return mCommand.find(c) != std::string::npos;
 }
