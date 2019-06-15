@@ -130,19 +130,19 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains("kinematic"))
+	if(commandContains("kinematic"))
 		collisionDebugSettings.displayOnlyKinematicBodies();
-	else if (commandContains("static"))
+	else if(commandContains("static"))
 		collisionDebugSettings.displayOnlyStaticBodies();
-	else if (commandContains("all"))
+	else if(commandContains("all"))
 		collisionDebugSettings.displayAllBodies();
 }
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music") || commandContains("all"))
+	if(commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(true);
-	if (commandContains("sound") || commandContains("all"))
+	if(commandContains("sound") || commandContains("all"))
 		mGameData->getSoundPlayer().setMuted(true);
 }
 
@@ -191,7 +191,7 @@ void ph::CommandInterpreter::executeLog()
 
 void ph::CommandInterpreter::logInto()
 {
-	auto& logSettings = Logger::getLogger().getLogSettings();
+	auto& logSettings = Logger::getInstance().getLogSettings();
 
 	int newValue = commandContains("not") ? false : true;
 	if(commandContains("console") || commandContains("both"))
@@ -202,7 +202,7 @@ void ph::CommandInterpreter::logInto()
 
 void ph::CommandInterpreter::setLogTypesToLog()
 {
-	auto& logSettings = Logger::getLogger().getLogSettings();
+	auto& logSettings = Logger::getInstance().getLogSettings();
 
 	if (commandContains("info"))     logSettings.addLogType(LogType::Info);
 	if (commandContains("warning"))  logSettings.addLogType(LogType::Warning);
@@ -217,7 +217,7 @@ void ph::CommandInterpreter::setLogTypesToLog()
 
 void ph::CommandInterpreter::setModulesToLog()
 {
-	auto& logSettings = Logger::getLogger().getLogSettings();
+	auto& logSettings = Logger::getInstance().getLogSettings();
 
 	if (commandContains("audio"))       logSettings.addModuleName("Audio");
 	if (commandContains("base"))        logSettings.addModuleName("Base");
