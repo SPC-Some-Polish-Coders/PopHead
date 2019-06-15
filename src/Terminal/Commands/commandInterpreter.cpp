@@ -140,28 +140,18 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music"))
+	if (commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(true);
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(0.f);
-	else if (commandContains("all"))
-	{
-		mGameData->getMusicPlayer().setMuted(true);
-		mGameData->getSoundPlayer().setVolume(0.f);
-	}
+	if (commandContains("sound") || commandContains("all"))
+		mGameData->getSoundPlayer().setMuted(true);
 }
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music"))
+	if(commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(false);
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(20.f);
-	else if (commandContains("all"))
-	{
-		mGameData->getMusicPlayer().setMuted(false);
-		mGameData->getSoundPlayer().setVolume(20.f);
-	}
+	if(commandContains("sound") || commandContains("all"))
+		mGameData->getSoundPlayer().setMuted(false);
 }
 
 void ph::CommandInterpreter::executeSetVolume()
