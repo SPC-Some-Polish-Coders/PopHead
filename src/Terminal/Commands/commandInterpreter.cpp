@@ -12,7 +12,7 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "echo")                 executeEcho();
+	if		(commandWithoutArguments == "echo")            executeEcho();
 	else if (commandWithoutArguments == "exit")            executeExit();
 	else if (commandWithoutArguments == "teleport")        executeTeleport();
 	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
@@ -93,12 +93,9 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 
 void ph::CommandInterpreter::executeCollisionDebug()
 {
-	if(commandContains("turn"))
-		turnOnOrTurnOffCollisionDebug();
-	else if(commandContains("color"))
-		changeCollisionDebugColor();
-	else if(commandContains("display"))
-		changeCollisionDebugDisplayMode();
+	if(commandContains("turn")) 			turnOnOrTurnOffCollisionDebug();
+	else if(commandContains("color"))		changeCollisionDebugColor();
+	else if(commandContains("display"))		changeCollisionDebugDisplayMode();
 }
 
 void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
@@ -106,9 +103,9 @@ void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
 	//if(commandContains("off")) must be first! Do not change the order!
-	if(commandContains("off"))
+	if (commandContains("off"))
 		collisionDebugSettings.turnOff();
-	else if(commandContains("on"))
+	else if (commandContains("on"))
 		collisionDebugSettings.turnOn();
 }
 
@@ -116,12 +113,9 @@ void ph::CommandInterpreter::changeCollisionDebugColor()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if(commandContains('1'))
-		collisionDebugSettings.setColors(1);
-	else if(commandContains('2'))
-		collisionDebugSettings.setColors(2);
-	else if(commandContains('3'))
-		collisionDebugSettings.setColors(3);
+	if(commandContains('1'))		collisionDebugSettings.setColors(1);
+	else if(commandContains('2'))	collisionDebugSettings.setColors(2);
+	else if(commandContains('3'))	collisionDebugSettings.setColors(3);
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
 }
@@ -130,12 +124,9 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains("kinematic"))
-		collisionDebugSettings.displayOnlyKinematicBodies();
-	else if (commandContains("static"))
-		collisionDebugSettings.displayOnlyStaticBodies();
-	else if (commandContains("all"))
-		collisionDebugSettings.displayAllBodies();
+	if (commandContains("kinematic"))	collisionDebugSettings.displayOnlyKinematicBodies();
+	else if (commandContains("static"))	collisionDebugSettings.displayOnlyStaticBodies();
+	else if (commandContains("all"))	collisionDebugSettings.displayAllBodies();
 }
 
 void ph::CommandInterpreter::executeMute()
@@ -197,7 +188,7 @@ void ph::CommandInterpreter::logInto()
 	if(commandContains("console") || commandContains("both"))
 		logSettings.setWritingLogsIntoConsole(newValue);
 	if(commandContains("file") || commandContains("both"))
-		logSettings.setWritingLogsIntoConsole(newValue);
+		logSettings.setWritingLogsIntoFile(newValue);
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()
