@@ -120,7 +120,7 @@ void ph::Map::loadTiles(
 		if (hasTile(globalTileIds[i])) {
 			const std::size_t j = findTilesetIndex(globalTileIds[i], tilesets);
 			if (j == std::string::npos) {
-				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + globalTileIds[i]);
+				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileIds[i]));
 				continue;
 			}
 			const unsigned tileId = globalTileIds[i] - tilesets.firstGlobalTileIds[j];
