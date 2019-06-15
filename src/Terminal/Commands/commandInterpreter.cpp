@@ -105,7 +105,7 @@ void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	//if(commandContains("off") must be first) Do not change the order!
+	//if(commandContains("off")) must be first! Do not change the order!
 	if(commandContains("off"))
 		collisionDebugSettings.turnOff();
 	else if(commandContains("on"))
@@ -166,13 +166,15 @@ void ph::CommandInterpreter::executeUnmute()
 
 void ph::CommandInterpreter::executeSetVolume()
 {
+	int newVolume = getVolumeFromCommand();
+
 	if (commandContains("music"))
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getMusicPlayer().setVolume(newVolume);
 	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getSoundPlayer().setVolume(newVolume);
 	else{
-		mGameData->getMusicPlayer().setVolume(getVolumeFromCommand());
-		mGameData->getSoundPlayer().setVolume(getVolumeFromCommand());
+		mGameData->getMusicPlayer().setVolume(newVolume);
+		mGameData->getSoundPlayer().setVolume(newVolume);
 	}
 }
 
