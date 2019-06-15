@@ -7,11 +7,12 @@
   
 - [General usage in game](#general-usage-in-game)
 - [Navigation keys in terminal](#navigation-keys-in-the-terminal)
-- [Game commands](#game-commands)
-- [Logging commands](#logging-commands)
-- [Audio commands](#audio-commands)
-- [Collision Debug commands](#collision-debug-commands)
-- [Player location commands](#player-location-commands)
+- Commands
+	- [Game commands](#game-commands)
+	- [Logging commands](#logging-commands)
+	- [Audio commands](#audio-commands)
+	- [Collision Debug commands](#collision-debug-commands)
+	- [Player location commands](#player-location-commands)
 
 </details>
 
