@@ -147,7 +147,7 @@ void ph::CommandInterpreter::executeUnmute()
 
 void ph::CommandInterpreter::executeSetVolume()
 {
-	int newVolume = getVolumeFromCommand();
+	float newVolume = getVolumeFromCommand();
 
 	if (commandContains("music"))
 		mGameData->getMusicPlayer().setVolume(newVolume);
@@ -167,7 +167,7 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
 	float volumeValue = std::strtof(textToFloat.c_str(), nullptr);
 		if (volumeValue == 0) return 0;
-	return !(volumeValue) ?	50.f : volumeValue;	
+	return !(volumeValue) ?	50.f : volumeValue;
 }
 
 void ph::CommandInterpreter::executeLog()
