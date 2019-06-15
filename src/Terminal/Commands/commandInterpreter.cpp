@@ -21,6 +21,8 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "unmute")          executeUnmute();
 	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
 	else if (commandWithoutArguments == "log")             executeLog();
+	else PH_LOG(LogType::Error, "Entered command is not recognised. Make sure if it's correct.");
+	//weird loop occures when the program starts. Problem disappears when we run the terminal.
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -127,6 +129,8 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 	if (commandContains("kinematic"))	collisionDebugSettings.displayOnlyKinematicBodies();
 	else if (commandContains("static"))	collisionDebugSettings.displayOnlyStaticBodies();
 	else if (commandContains("all"))	collisionDebugSettings.displayAllBodies();
+	else 
+		PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
 }
 
 void ph::CommandInterpreter::executeMute()
@@ -193,10 +197,10 @@ void ph::CommandInterpreter::setLogTypesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
-	if (commandContains("info"))     logSettings.addLogType(LogType::Info);
-	if (commandContains("warning"))  logSettings.addLogType(LogType::Warning);
-	if (commandContains("error"))    logSettings.addLogType(LogType::Error);
-	if (commandContains("user"))     logSettings.addLogType(LogType::FromUser);
+	if (commandContains("info"))     logSettings.addToVector(LogType::Info);
+	if (commandContains("warning"))  logSettings.addToVector(LogType::Warning);
+	if (commandContains("error"))    logSettings.addToVector(LogType::Error);
+	if (commandContains("user"))     logSettings.addToVector(LogType::FromUser);
 
 	if (commandContains("all"))		
 		logSettings.turnOnWritingLogsFromEachLogTypes();
@@ -208,18 +212,18 @@ void ph::CommandInterpreter::setModulesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
-	if (commandContains("audio"))       logSettings.addModuleName("Audio");
-	if (commandContains("base"))        logSettings.addModuleName("Base");
-	if (commandContains("input"))       logSettings.addModuleName("Input");
-	if (commandContains("logs"))        logSettings.addModuleName("Logs");
-	if (commandContains("physics"))     logSettings.addModuleName("Physics");
-	if (commandContains("renderer"))    logSettings.addModuleName("Renderer");
-	if (commandContains("resources"))   logSettings.addModuleName("Resources");
-	if (commandContains("states"))      logSettings.addModuleName("States");
-	if (commandContains("utilities"))   logSettings.addModuleName("Utilities");
-	if (commandContains("world"))       logSettings.addModuleName("World");
-	if (commandContains("terminal"))    logSettings.addModuleName("Terminal");
-	if (commandContains("none"))        logSettings.addModuleName("None");
+	if (commandContains("audio"))       logSettings.addToVector("Audio");
+	if (commandContains("base"))        logSettings.addToVector("Base");
+	if (commandContains("input"))       logSettings.addToVector("Input");
+	if (commandContains("logs"))        logSettings.addToVector("Logs");
+	if (commandContains("physics"))     logSettings.addToVector("Physics");
+	if (commandContains("renderer"))    logSettings.addToVector("Renderer");
+	if (commandContains("resources"))   logSettings.addToVector("Resources");
+	if (commandContains("states"))      logSettings.addToVector("States");
+	if (commandContains("utilities"))   logSettings.addToVector("Utilities");
+	if (commandContains("world"))       logSettings.addToVector("World");
+	if (commandContains("terminal"))    logSettings.addToVector("Terminal");
+	if (commandContains("none"))        logSettings.addToVector("None");
 
 	if (commandContains("all"))
 		logSettings.turnOnWritingLogsFromEachModule();

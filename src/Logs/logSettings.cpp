@@ -32,14 +32,14 @@ void ph::LogSettings::turnOnWritingLogsFromEachLogTypes()
 		mLogTypesToWrite[i] = static_cast<LogType>(i);
 }
 
-void ph::LogSettings::addLogType(const LogType& logTypeName)
+void ph::LogSettings::addToVector(const LogType& logTypeName)
 {
 	for (std::size_t i = 0; i < mLogTypesToWrite.size(); ++i)
 		if (mLogTypesToWrite[i] == logTypeName) return;
 	mLogTypesToWrite.emplace_back(logTypeName);		
 }
 
-void ph::LogSettings::addModuleName(const std::string& moduleName)
+void ph::LogSettings::addToVector(const std::string& moduleName)
 {
 	for (std::size_t i = 0; i < mModuleNamesToWrite.size(); ++i)
 		if (mModuleNamesToWrite[i] == moduleName) return;
