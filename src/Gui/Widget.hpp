@@ -47,7 +47,6 @@ namespace GUI {
 
 		virtual void setAlphaAlongBranch(unsigned int alpha);
 
-
 		virtual sf::Vector2u getSize() const;
 
 		virtual void addBehavior(behaviorType type, const std::function<void(Widget*)>& func);

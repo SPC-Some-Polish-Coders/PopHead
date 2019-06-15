@@ -16,7 +16,8 @@ namespace GUI {
 
 		mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getRenderer().getWindow());
 
-		mSize = sf::Vector2u(300, 300);
+		//mSize = sf::Vector2u(300, 300);
+		mSize = mWindow->getSize();
 		mDefaultSize = mSize;
 		scale(sf::Vector2f(1, 1));
 
@@ -32,6 +33,7 @@ namespace GUI {
 
 	void Interface::draw()
 	{
+		if(isActive())
 		for (auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 		{
 			if (k->second->isActive())
@@ -48,8 +50,8 @@ namespace GUI {
 	void Interface::setPosition(const sf::Vector2f& pos)
 	{
 		auto k = mGameData->getRenderer().getWindow().getSize();
-		mPosition.x = pos.x * k.x;
-		mPosition.y = pos.y * k.y;
+		mPosition.x = pos.x * k.x /2;
+		mPosition.y = pos.y * k.y /2;
 		for (const auto& k : mWidgetList)
 		{
 			k.second->rePosition();
@@ -63,11 +65,6 @@ namespace GUI {
 
 	void Interface::move(const sf::Vector2f& delta)
 	{
-		
-	//	for (const auto& k : mWidgetList)
-		//{
-		//	k.second->move(delta);
-		//}
 	}
 
 	sf::Vector2f Interface::getGlobalPosition() const

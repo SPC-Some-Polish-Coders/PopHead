@@ -35,8 +35,7 @@ namespace GUI {
 
 	void Widget::update(sf::Time delta)
 	{
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		//if (mGameData->getInput().getMouse().isMouseButtonJustPressed(sf::Mouse::Left))
+		if (mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Left))
 		{
 
 			auto c = mGameData->getInput().getMouse().getMousePosition();
@@ -159,6 +158,7 @@ namespace GUI {
 		mSize.y *= scale.y;
 		mSprite.setOrigin(mOrigin);
 		mSprite.scale(scale);
+		rePosition();
 	}
 
 	void Widget::scaleAlongBranch(const sf::Vector2f& scale)

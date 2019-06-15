@@ -1,16 +1,13 @@
 #include "Interface.hpp"
 
 #include "World/Entity/object.hpp"
-//#include "Renderer/layerID.hpp"
-#define GUI_TEST
+
+/* Uncomment if you want to experiment   */
+
+	//#define GUI_TEST
 
 #ifndef GUI_BASE
 #define GUI_BASE
-
-
-/* GUI TEST  */
-
-
 
 namespace PopHead {
 namespace GUI {
@@ -30,7 +27,7 @@ namespace GUI {
 				: World::Entity::Object(gameData, name, id)
 				, mGui(nullptr)
 			{
-				
+
 			}
 
 
