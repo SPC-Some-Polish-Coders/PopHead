@@ -49,12 +49,18 @@ void ph::SoundPlayer::removeStoppedSounds()
 	});
 }
 
+void ph::SoundPlayer::setMuted(bool mute)
+{
+	static float previousVolume = mVolume;
+	setVolume(mute ? 0.f : previousVolume);
+	mIsMuted = mute;
+}
+
 void ph::SoundPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
-	for(auto& sound : mSounds) {
+	for(auto& sound : mSounds)
 		sound.setVolume(volume);
-	}
 }
 
 void ph::SoundPlayer::removeEverySound()
