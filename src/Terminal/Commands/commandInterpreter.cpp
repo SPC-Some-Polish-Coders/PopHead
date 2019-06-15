@@ -21,7 +21,7 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "unmute")          executeUnmute();
 	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
 	else if (commandWithoutArguments == "log")             executeLog();
-	else PH_LOG(LogType::Error, "Entered command is not recognised. Make sure if it's correct.");
+	//else PH_LOG(LogType::Error, "Entered command is not recognised. Make sure if it's correct.");
 	//weird loop occures when the program starts. Problem disappears when we run the terminal.
 }
 
@@ -55,6 +55,8 @@ void ph::CommandInterpreter::executeTeleport()
 	auto& player = getPlayer();
 	sf::Vector2f newPosition = getPositionFromCommand();
 	player.setPosition(newPosition);
+	PH_LOG(LogType::Info, "Teleported! Player's position set to " + std::to_string(newPosition.x) + 
+		" X and " + std::to_string(newPosition.y) + " Y.");
 }
 
 sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
@@ -129,24 +131,27 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 	if (commandContains("kinematic"))	collisionDebugSettings.displayOnlyKinematicBodies();
 	else if (commandContains("static"))	collisionDebugSettings.displayOnlyStaticBodies();
 	else if (commandContains("all"))	collisionDebugSettings.displayAllBodies();
-	else 
-		PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
+	else	PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
 }
 
 void ph::CommandInterpreter::executeMute()
 {
 	if(commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(true);
-	if(commandContains("sound") || commandContains("all"))
+	else if(commandContains("sound") || commandContains("all"))
 		mGameData->getSoundPlayer().setMuted(true);
+	else 
+		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
 }
 
 void ph::CommandInterpreter::executeUnmute()
 {
 	if(commandContains("music") || commandContains("all"))
 		mGameData->getMusicPlayer().setMuted(false);
-	if(commandContains("sound") || commandContains("all"))
+	else if(commandContains("sound") || commandContains("all"))
 		mGameData->getSoundPlayer().setMuted(false);
+	else
+		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
 }
 
 void ph::CommandInterpreter::executeSetVolume()
