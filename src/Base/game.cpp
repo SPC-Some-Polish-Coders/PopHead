@@ -18,6 +18,7 @@ ph::Game::Game()
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
+	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -29,11 +30,15 @@ ph::Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mTerminal.get()
+		mTerminal.get(),
+		mGui.get()
 	));
+
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
+
+	mGui->init(mGameData.get());
 
 	EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
@@ -41,6 +46,7 @@ ph::Game::Game()
 	mTerminal->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
+	
 }
 
 void ph::Game::run()
@@ -82,6 +88,7 @@ void ph::Game::update(sf::Time delta)
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
+	mGui->update(delta);
 }
 
 void ph::Game::draw()
