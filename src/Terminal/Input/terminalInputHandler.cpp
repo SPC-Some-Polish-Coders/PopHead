@@ -18,7 +18,7 @@ void ph::TerminalInputHandler::handleInput()
 
 	showOrHideCommandPromptInput();
 
-	mTerminalSharedData->mText.setString(mTerminalSharedData->mContent);
+	mTerminalSharedData->mInputLine.setString(mTerminalSharedData->mContent);
 }
 
 void ph::TerminalInputHandler::handleKeyboardCharactersInput()
