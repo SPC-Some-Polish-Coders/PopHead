@@ -195,6 +195,11 @@ namespace GUI {
 	}
 	Widget* Widget::getWidget(const std::string& name)
 	{
+		auto it = mWidgetList.find(name);
+
+		if (it != mWidgetList.end())
+			return it->second.get();
+
 		return nullptr;
 	}
 	void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size) 
