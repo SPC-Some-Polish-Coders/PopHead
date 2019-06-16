@@ -1,8 +1,10 @@
 #ifndef POPHEAD_TERMINAL_RENDERER_TERMINALRENDERER_H_
 #define POPHEAD_TERMINAL_RENDERER_TERMINALRENDERER_H_
 
-#include <SFML/Graphics.hpp>
 #include "Terminal/terminalSharedData.hpp"
+#include "outputArea.hpp"
+
+#include <SFML/Graphics.hpp>
 
 namespace ph {
 
@@ -18,7 +20,8 @@ public:
 	void move(sf::Vector2f offset);
 
 private:
-	sf::RectangleShape mTerminalBackground;
+	OutputArea mOutputArea;
+	sf::RectangleShape mBackground;
 	sf::RectangleShape mSeparatorBetweenInputAndOutputArea;
 	TerminalSharedData mTerminalSharedData;
 };

@@ -3,11 +3,11 @@
 
 ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
-	,mTerminalBackground({650, 400})
+	,mBackground({650, 400})
 	,mSeparatorBetweenInputAndOutputArea({650, 10})
 {
-	mTerminalBackground.setFillColor(sf::Color(0, 0, 0, 230));
-	mTerminalBackground.setPosition(-450.f, 100.f);
+	mBackground.setFillColor(sf::Color(0, 0, 0, 230));
+	mBackground.setPosition(-450.f, 100.f);
 	mSeparatorBetweenInputAndOutputArea.setFillColor(sf::Color::Black);
 	mSeparatorBetweenInputAndOutputArea.setPosition(-450, 125);
 }
@@ -15,17 +15,19 @@ ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if(mTerminalSharedData->mIsVisible) {
-		target.draw(mTerminalBackground);
+		target.draw(mBackground);
 		target.draw(mTerminalSharedData->mText);
 		target.draw(mSeparatorBetweenInputAndOutputArea);
+		target.draw(mOutputArea);
 	}
 }
 
 void ph::TerminalImage::move(sf::Vector2f offset)
 {
-	mTerminalBackground.move(offset);
+	mBackground.move(offset);
 	mTerminalSharedData->mText.move(offset);
 	mSeparatorBetweenInputAndOutputArea.move(offset);
+	mOutputArea.move(offset);
 }
 
 void ph::TerminalImage::initializeText(GameData* gameData)
