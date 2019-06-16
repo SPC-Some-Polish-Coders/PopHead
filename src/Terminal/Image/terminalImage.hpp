@@ -19,6 +19,7 @@ public:
 
 private:
 	sf::RectangleShape mTerminalBackground;
+	sf::RectangleShape mSeparatorBetweenInputAndOutputArea;
 	TerminalSharedData mTerminalSharedData;
 };
 
