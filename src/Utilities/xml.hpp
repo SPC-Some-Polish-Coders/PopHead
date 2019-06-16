@@ -18,8 +18,6 @@ public:
 
 	Xml getAttribute(std::string name) const;
 
-	Xml someMethod();
-
 	std::string toString() const;
 
 	int toInt() const { return std::stoi(mContent); }
