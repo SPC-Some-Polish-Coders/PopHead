@@ -6,7 +6,6 @@
 
 namespace ph {
 
-namespace GUI {
 
 
 	class Interface 
@@ -32,7 +31,7 @@ namespace GUI {
 		sf::Vector2f getGlobalPosition() const;
 	};
 
-}}
+}
 
 
 #endif

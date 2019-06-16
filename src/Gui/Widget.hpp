@@ -13,8 +13,6 @@ namespace ph {
 
 class GameData; 
 
-namespace GUI {
-
 
 	class Widget {
 	public:
@@ -93,6 +91,6 @@ namespace GUI {
 	};
 
 
-}}
+}
 
 #endif

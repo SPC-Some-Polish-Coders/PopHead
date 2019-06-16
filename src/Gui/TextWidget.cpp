@@ -1,7 +1,7 @@
 #include "TextWidget.hpp"
 
 namespace ph {
-	namespace GUI {
+
 
 
 	TextWidget::TextWidget()
@@ -26,6 +26,8 @@ namespace ph {
 		auto size = getSize();
 
 		mText.setPosition(pos.x * size.x + localPosition.x , pos.y * size.y + localPosition.y);
+
+		mTextPosition = pos;
 	}
 
 	void TextWidget::setAlpha(unsigned int alpha)
@@ -47,12 +49,13 @@ namespace ph {
 	void TextWidget::scaleText(const sf::Vector2f& scale)
 	{
 		mText.scale(scale);
+		setTextPosition(mTextPosition);
 	}
 
 	void TextWidget::setPosition(const sf::Vector2f& pos)
 	{
 		Widget::setPosition(pos);
-		mText.setPosition(Widget::getGlobalPosition());
+		setTextPosition(mTextPosition);
 	}
 
 	void TextWidget::move(const sf::Vector2f& delta)
@@ -71,6 +74,12 @@ namespace ph {
 		mText.setFont(mGameData->getFonts().get(path));
 	}
 
+	void TextWidget::scale(const sf::Vector2f& scale)
+	{
+		Widget::scale(scale);
+		scaleText(scale);
+	}
+
 	void TextWidget::draw()
 	{
 		if (misActive)
@@ -80,5 +89,5 @@ namespace ph {
 		}
 	}
 
-}}
+}
 

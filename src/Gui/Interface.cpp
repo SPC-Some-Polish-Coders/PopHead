@@ -2,7 +2,6 @@
 
 namespace ph {
 
-namespace GUI {
 	Interface::Interface()
 	{
 		mSize = sf::Vector2u(300, 300);
@@ -72,6 +71,6 @@ namespace GUI {
 		return mPosition;
 	}
 
-}}
+}
 
 

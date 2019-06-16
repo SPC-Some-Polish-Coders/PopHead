@@ -1,7 +1,7 @@
 #include "GUI.hpp"
 
 namespace ph {
-	namespace GUI {
+
 
 		
 
@@ -134,7 +134,6 @@ namespace ph {
 			interface->addWidget("buttonArea", mainWidget);
 			mainWidget->addWidget("button1", buttonFirstWidget);
 			mainWidget->addWidget("button2", buttonSecondWidget);
-
 		//	auto mainSecondWidget = new Widget;
 			//buttonSecondWidget->setOrigin(sf::Vector2f(0.5, 0.5));
 			//buttonSecondWidget->setScale(sf::Vector2f(1, 1));
@@ -173,7 +172,7 @@ namespace ph {
 			buttonSecondWidget->setOrigin(sf::Vector2f(0.5f, 0.5f));
 			buttonSecondWidget->setPosition(sf::Vector2f(0.5f, 0.7f));
 		
-
+			
 			//interface->moveAlongBranch(sf::Vector2f(-50, -110));
 
 			
@@ -182,4 +181,4 @@ namespace ph {
 
 
 		}
-}}
+}

@@ -1,7 +1,6 @@
 #include "Widget.hpp"
 namespace ph {
 
-namespace GUI {
 	Widget::Widget()
 		:
 		mAlpha(0),
@@ -35,6 +34,10 @@ namespace GUI {
 
 	void Widget::update(sf::Time delta)
 	{
+		if (misActive == false)
+			return;
+
+
 		if (mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Left))
 		{
 
@@ -247,4 +250,4 @@ namespace GUI {
 			k.second->rePosition();
 		}
 	}
-}}
+}

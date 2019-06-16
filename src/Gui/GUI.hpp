@@ -10,7 +10,6 @@
 #define GUI_BASE
 
 namespace ph {
-namespace GUI {
 
 	class GUI
 	{
@@ -91,7 +90,7 @@ namespace GUI {
 
 	};
 
-}}
+}
 
 
 #endif

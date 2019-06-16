@@ -4,7 +4,6 @@
 #define TEXT_WIDGET
 
 namespace ph {
-	namespace GUI {
 
 	class TextWidget : public Widget {
 
@@ -33,6 +32,8 @@ namespace ph {
 
 		void setFontPath(const std::string& path);
 
+		void scale(const sf::Vector2f& scale);
+
 		void draw();
 
 	private:
@@ -42,6 +43,6 @@ namespace ph {
 	};
 
 
-}}
+}
 
 #endif
