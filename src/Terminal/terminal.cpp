@@ -26,5 +26,5 @@ void ph::Terminal::init(GameData* gameData)
 	mGameData = gameData;
 	mKeyboardInputHandler.setGameData(mGameData);
 	mCommandInterpreter.setGameData(mGameData);
-	mTerminalImage.initializeText(gameData);
+	mTerminalImage.init(gameData);
 }

@@ -8,10 +8,12 @@
 
 namespace ph {
 
+class GameData;
+
 class OutputArea : public sf::Drawable
 {
 public:
-	OutputArea();
+	void init(GameData* gameData);
 
 	void pushOutputText(const std::string& text);
 

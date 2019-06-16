@@ -16,7 +16,7 @@ void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) 
 {
 	if(mTerminalSharedData->mIsVisible) {
 		target.draw(mBackground);
-		target.draw(mTerminalSharedData->mText);
+		target.draw(mTerminalSharedData->mInputLine);
 		target.draw(mSeparatorBetweenInputAndOutputArea);
 		target.draw(mOutputArea);
 	}
@@ -25,15 +25,22 @@ void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) 
 void ph::TerminalImage::move(sf::Vector2f offset)
 {
 	mBackground.move(offset);
-	mTerminalSharedData->mText.move(offset);
+	mTerminalSharedData->mInputLine.move(offset);
 	mSeparatorBetweenInputAndOutputArea.move(offset);
 	mOutputArea.move(offset);
 }
 
+void ph::TerminalImage::init(GameData* gameData)
+{
+	initializeText(gameData);
+	mOutputArea.init(gameData);
+}
+
 void ph::TerminalImage::initializeText(GameData* gameData)
 {
+	//TODO: Place where fonts are loaded shouldn't be here!
 	gameData->getFonts().load("fonts/consolab.ttf");
-	auto& text = mTerminalSharedData->mText;
+	auto& text = mTerminalSharedData->mInputLine;
 	text.setFont(gameData->getFonts().get("fonts/consolab.ttf"));
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(18);

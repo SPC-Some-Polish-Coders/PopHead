@@ -14,10 +14,13 @@ class TerminalImage : public sf::Drawable
 {
 public:
 	TerminalImage(TerminalSharedData);
-	void initializeText(GameData*);
+	void init(GameData*);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void move(sf::Vector2f offset);
+
+private:
+	void initializeText(GameData*);
 
 private:
 	OutputArea mOutputArea;
