@@ -42,7 +42,7 @@ void ph::Renderer::draw() const
 		for(const auto& object : layer.second)
 			mWindow.draw(*object);
 
-	mWindow.draw(mGameData->getTerminal());
+	mWindow.draw(mGameData->getTerminal().getImage());
 
 	mWindow.display();
 }
@@ -83,7 +83,7 @@ void ph::Renderer::setPositionOfStaticObjectsToCamera()
 	for(const auto& guiObject : mLayers[LayerID::gui]) {
 		guiObject->move(movementFromLastFrame);
 	}
-	mGameData->getTerminal().move(movementFromLastFrame);
+	mGameData->getTerminal().getImage().move(movementFromLastFrame);
 }
 
 std::string ph::Renderer::getLayerName(LayerID layerID) const
