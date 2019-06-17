@@ -7,27 +7,25 @@
 #include "terminalSharedData.hpp"
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
+#include "Image/terminalImage.hpp"
 
 namespace ph {
 
 class GameData;
 
-class Terminal : public sf::Drawable
+class Terminal
 {
 public:
 	Terminal();
 
 	void input();
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	void move(sf::Vector2f offset);
 	void init(GameData*);
-private:
-	void initializeText();
+
+	auto getImage() -> TerminalImage& { return mTerminalImage; }
 
 private:
 	TerminalSharedData mTerminalSharedData;
-	sf::RectangleShape mTerminalBackground;
+	TerminalImage mTerminalImage;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
 	GameData* mGameData;

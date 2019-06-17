@@ -36,10 +36,11 @@ public:
     void input();
     void update(sf::Time delta);
 
+	State& getTopState() { return *(mActiveStates.back().get()); }
+
     auto getStatesAmount() const -> unsigned int {return mActiveStates.size();}
     bool getHideInStateNr(unsigned int nrOfState) const; /// 0 is top
     bool getPauseInStateNr(unsigned int nrOfState) const;
-
     void setHideInStateNr(unsigned int nrOfState, bool hide);
     void setPauseInStateNr(unsigned int nrOfState, bool pause);
 

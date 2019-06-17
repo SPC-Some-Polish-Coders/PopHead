@@ -9,7 +9,7 @@ namespace ph {
 
 struct TerminalData
 {
-	sf::Text mText;
+	sf::Text mInputLine;
 	std::string mContent;
 	std::string mLastCommand;
 	bool mIsVisible = false;

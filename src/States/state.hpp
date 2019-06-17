@@ -15,11 +15,12 @@ public:
     virtual void input() = 0;
     virtual void update(sf::Time delta) = 0;
 
-	bool getHide() const { return mHide; }
-	bool getPause() const { return mPause; }
-
-	void setHide(bool hide) { mHide = hide; }
 	void setPause(bool pause) { mPause = pause; }
+	bool getPause() const { return mPause; }
+	void setHide(bool hide) { mHide = hide; }
+	bool getHide() const { return mHide; }
+	
+	Entity& getRoot() { return mRoot; }
 
 protected:
     GameData* const mGameData;
