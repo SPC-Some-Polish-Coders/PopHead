@@ -47,37 +47,45 @@ exit
 ```
 ## Logging commands
 -------------------------
-**`log`** is **many-argumented** command which is generally associated with way of logging into console or file:
-- **`into`** argument makes logs appear only in specified place
-	- `file` argument makes logs appear in file
-	- `console` argument makes logs appear in console
-	- `both` argument makes logs appear in both places
-	- `not` argument makes whole command opposite - logs won't appear in specified place
-	
+### **`log`** is **many-argumented** command which is generally associated with way of logging into console or file:
+
+ ### **`into`** argument makes logs appear only in specified place
+ 
+| **into arguments** | **Describe** |
+| -----------: | ------------ |
+| `file` | argument makes logs appear in file |
+| `console` | argument makes logs appear in console	|
+| `both` | argument makes logs appear in both places |
+| `not` | argument makes whole command opposite - logs won't appear in specified place |
+
 #### Examples: 
 ```
 log into file
 log into both not
 log into console
 ```
-- **`types`** argument makes logs appear only from certain types
-	- `all` argument sets logging from all types
-	- `clear` argument clears logging types - won't log from any of them
-	- `<name>` argument sets logging from specified type - these are following:
-		- `error` `info` `warning` `user`
+### **`types`** argument makes logs appear only from certain types
+
+| **types arguments** | **Describe** |
+| -----------: | ------------ |
+| `all` | argument sets logging from all types |
+| `clear` | argument clears logging types - won't log from any of them |
+| `<log type>` | argument sets logging from specified type - these are following: `error` `info` `warning` `user` |
 			
-	#### Examples: 
-	```
-	log types all
-	log types error info
-	log types clear
-	log types warning
-	```
-- **`modules`** argument makes logs appear only from certain modules
-	- `all` argument sets logging from all types
-	- `clear` argument clears logging modules - won't log from any of them
-	- `<name>` argument sets logging from specified module - these are following:
-		- `audio` `base` `input` `logs` `physics` `renderer` `resources` `states` `utilities` `terminal` `world` `none`
+#### Examples: 
+```
+log types all
+log types error info
+log types clear
+log types warning
+```
+### **`modules`** argument makes logs appear only from certain modules
+
+| **modules arguments** | **Describe** |
+| -----------: | ------------ |
+| `all` | argument sets logging from all types |
+| `clear` | argument clears logging modules - won't log from any of them |
+| `<module>` | argument sets logging from specified module - these are following: `audio` `base` `input` `logs` `physics` `renderer` `resources` `states` `utilities` `terminal` `world` `none` |
 		
 #### Examples:
 ```
@@ -88,15 +96,19 @@ log modules none
 ```
 ## Audio commands
 -------------------------
-**`mute`** is **single-argumented** command which disables audio from specified module:
-- `music` argument mutes music
-- `sound` argument mutes sounds
-- `all` argument mutes both music and sounds
+### **`mute`** is **single-argumented** command which disables audio from specified module:
+| **mute arguments** | **Describe** |
+| -----------: | ------------ |
+| `music` | argument mutes music |
+| `sound` | argument mutes sounds |
+| `all` | argument mutes both music and sounds |
 	
-**`unmute`** is **single-argumented** command which enables audio from specified module:
-- `music` argument unmutes music
-- `sound`argument unmutes sounds
-- `all` argument unmutes both music and sounds
+### **`unmute`** is **single-argumented** command which enables audio from specified module:
+| **unmute arguments** | **Describe** |
+| -----------: | ------------ |
+| `music` | argument unmutes music |
+| `sound` | argument unmutes sounds |
+| `all` | argument unmutes both music and sounds |
 
 #### Examples: 
 ```
@@ -104,11 +116,13 @@ mute all
 unmute sound
 mute sound
 ```
-**`setvolume`** is **many or single-argumented** command which sets loudness of specified module:
-- `music` argument sets volume of music
-- `sound` argument sets volume of sound
-- if neither music nor sound is included, volume is set to both
-- `<value>` argument a number from range `0-100`
+### **`setvolume`** is **many or single-argumented** command which sets loudness of specified module:
+| **setvolume arguments** | **Describe** |
+| -----------: | ------------ |
+| `music` | argument sets volume of music |
+| `sound` | argument sets volume of sound	|
+| `no argument` | if neither music nor sound is included, volume is set to both |
+| `<value>`| argument a number from range `0-100` |
 
 #### Examples: 
 ```
@@ -119,18 +133,25 @@ setvolume sound 100
 
 ## Collision Debug commands
 -------------------------
-**`collisiondebug`** is **many-argumented** command which is generally associated with displaying collision debugging features:
-- `turn` argument switches the mode of collision debug to turned off/on
-	- `off` argument turns off the collision debug
-	- `on` argument turns on the collision debug
-- `color` argument changes color set of the collision debug
-	- `1` argument sets first color set
-	- `2` argument sets second color set
-	- `3` argument sets third color set
-- `display`argument changes type of highlighted objects
-	- `static` argument highlights static objects
-	- `kinematic` argument highlights kinematic objects
-	- `all` argument highlights all objects
+### **`collisiondebug`** is **many-argumented** command which is generally associated with displaying collision debugging features:
+
+#### `turn` argument switches the mode of collision debug to turned off/on
+| **turn arguments** | **Describe** |
+| -----------: | ------------ |
+| `off` | argument turns off the collision debug |
+| `on` | argument turns on the collision debug |
+#### `color` argument changes color set of the collision debug
+| **color arguments** | **Describe** |
+| -----------: | ------------ |
+| `1` | argument sets first color set |
+| `2` | argument sets second color set |
+|  `3` | argument sets third color set |
+#### `display`argument changes type of highlighted objects
+| **display arguments** | **Describe** |
+| -----------: | ------------ |
+| `static` | argument highlights static objects |
+| `kinematic` | argument highlights kinematic objects |
+| `all` | argument highlights all objects |
 	
 #### Examples: 
 ```
@@ -140,11 +161,13 @@ collisiondebug display static
 ```
 ## Player location commands
 -------------------------
-**`currentpos`** is **no-argument** command which prints out player's coordinates
-**`teleport`** is **many-argumented** command which relocate player to other coordinates
-	- `<X coordinate>` argument is a number which sets the player on X axis
-	- `<Y coordinate>` argument is a number which sets the player on Y axis
-	- if only one argument is given, second one implicitly gets its value
+### **`currentpos`** is **no-argument** command which prints out player's coordinates
+### **`teleport`** is **many-argumented** command which relocate player to other coordinates
+| **teleport arguments** | **Describe** |
+| -----------: | ------------ |
+| `<X coordinate>` | argument is a number which sets the player on X axis |
+| `<Y coordinate>` | argument is a number which sets the player on Y axis |
+| `<only one argument`> | if only one argument is given, second one implicitly gets its value |
 	
 #### Examples: 
 ```
