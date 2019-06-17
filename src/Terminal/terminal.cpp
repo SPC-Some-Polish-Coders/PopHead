@@ -6,6 +6,7 @@ ph::Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
 	,mTerminalImage(mTerminalSharedData)
 	,mKeyboardInputHandler(mTerminalSharedData)
+	,mGameData(nullptr)
 {
 }
 

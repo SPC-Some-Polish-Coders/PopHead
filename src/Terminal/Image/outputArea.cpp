@@ -22,7 +22,7 @@ void ph::OutputArea::pushOutputLine(const OutputLine& line)
 
 	mOutputLines.emplace_front(line);
 
-	for(int i = 0; i < mOutputLines.size(); ++i) {
+	for(size_t i = 0; i < mOutputLines.size(); ++i) {
 		mTexts[i].setString(mOutputLines[i].mText);
 		mTexts[i].setFillColor(mOutputLines[i].mColor);
 	}

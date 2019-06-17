@@ -5,6 +5,8 @@
 ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
 	,mContent(mTerminalSharedData->mContent)
+	,mIsEnterClicked(false)
+	,mGameData(nullptr)
 {
 }
 
@@ -78,10 +80,11 @@ void ph::TerminalInputHandler::handleBackspace()
 
 void ph::TerminalInputHandler::handleEnter()
 {
-	mIsEnterClicked = false;
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Enter))
 		mIsEnterClicked = true;
+	else
+		mIsEnterClicked = false;
 }
 
 void ph::TerminalInputHandler::showOrHideCommandPromptInput()
