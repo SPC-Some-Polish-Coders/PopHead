@@ -1,15 +1,21 @@
 #include "terminalImage.hpp"
 #include "Base/gameData.hpp"
 
+namespace
+{
+	constexpr float terminalStartXPosition = -480.f;
+	constexpr float terminalWidth = 960;
+}
+
 ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
-	,mBackground({650, 400})
-	,mSeparatorBetweenInputAndOutputArea({650, 10})
+	,mBackground({terminalWidth, 400})
+	,mSeparatorBetweenInputAndOutputArea({terminalWidth, 10})
 {
 	mBackground.setFillColor(sf::Color(0, 0, 0, 230));
-	mBackground.setPosition(-450.f, 100.f);
+	mBackground.setPosition(terminalStartXPosition, 100.f);
 	mSeparatorBetweenInputAndOutputArea.setFillColor(sf::Color::Black);
-	mSeparatorBetweenInputAndOutputArea.setPosition(-450, 125);
+	mSeparatorBetweenInputAndOutputArea.setPosition(terminalStartXPosition, 125);
 }
 
 void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -44,5 +50,5 @@ void ph::TerminalImage::initializeText(GameData* gameData)
 	text.setFont(gameData->getFonts().get("fonts/consolab.ttf"));
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(18);
-	text.setPosition(-450.f, 100.f);
+	text.setPosition(terminalStartXPosition + 5, 100.f);
 }
