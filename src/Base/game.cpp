@@ -3,6 +3,7 @@
 #include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
+#include "Logs/logger.hpp"
 
 namespace ph { enum class StateID; }
 
@@ -34,6 +35,10 @@ ph::Game::Game()
 		mGui.get()
 	));
 
+	mTerminal->init(mGameData.get());
+
+	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
+	Logger::getInstance().setGameData(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
@@ -43,10 +48,7 @@ ph::Game::Game()
 	EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
 
-	mTerminal->init(mGameData.get());
-
 	mRenderer->setGameData(mGameData.get());
-	
 }
 
 void ph::Game::run()
@@ -59,7 +61,7 @@ void ph::Game::run()
 	{
 		mStateMachine->changingStatesProcess();
 
-		// temporary
+		// temporary - TODO: move this somewhere else
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			break;
 

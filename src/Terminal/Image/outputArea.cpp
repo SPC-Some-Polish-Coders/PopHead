@@ -25,7 +25,7 @@ void ph::OutputArea::pushOutputText(const std::string& text)
 
 	mContentOfLines.emplace_front(text);
 
-	for(int i = 0; i != mContentOfLines.size(); ++i)
+	for(int i = 0; i < mContentOfLines.size(); ++i)
 		mOutputLines[i].setString(mContentOfLines[i]);
 }
 
