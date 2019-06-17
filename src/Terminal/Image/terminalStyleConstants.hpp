@@ -27,6 +27,10 @@ namespace TerminalStyleConstants
 	constexpr unsigned int inputCharacterSize = 18;
 	constexpr unsigned int outputCharacterSize = 15;
 	const sf::Color inputTextColor(sf::Color::White);
+	const sf::Color outputUserTextColor(sf::Color::Blue);
+	const sf::Color outputInfoTextColor(sf::Color::Green);
+	const sf::Color outputWarningTextColor(sf::Color::Yellow);
+	const sf::Color outputErrorTextColor(sf::Color::Red);
 
 	constexpr unsigned int numberOfOutputLines = 19;
 	constexpr float spaceBetweenTheLines = 18;

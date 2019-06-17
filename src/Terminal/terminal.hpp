@@ -20,7 +20,7 @@ public:
 
 	void input();
 	void init(GameData*);
-	void pushOutputLine(const std::string& line);
+	void pushOutputLine(const OutputLine&);
 
 	auto getImage() -> TerminalImage& { return mTerminalImage; }
 
