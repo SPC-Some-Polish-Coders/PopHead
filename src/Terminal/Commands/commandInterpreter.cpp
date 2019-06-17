@@ -21,8 +21,7 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "unmute")          executeUnmute();
 	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
 	else if (commandWithoutArguments == "log")             executeLog();
-	//else PH_LOG(LogType::Error, "Entered command is not recognised. Make sure if it's correct.");
-	//weird loop occures when the program starts. Problem disappears when we run the terminal.
+	else PH_LOG(LogType::Error, "Entered command is not recognised. Use 'help' in order to get availible commands.");
 }
 
 std::string ph::CommandInterpreter::getCommandWithoutArguments()
@@ -65,7 +64,7 @@ sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
 	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
-	float positionX = std::stof(xArgument);
+	float positionX = std::strtof(xArgument.c_str(), nullptr);
 
 	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
 	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
@@ -73,7 +72,7 @@ sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
 		yArgumentEndPositionInCommand = mCommand.size();
 	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
-	float positionY = std::stof(yArgument);
+	float positionY = std::strtof(yArgument.c_str(), nullptr);
 	return sf::Vector2f(positionX, positionY);
 }
 
@@ -165,6 +164,11 @@ void ph::CommandInterpreter::executeUnmute()
 void ph::CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
+	if (!(commandContains("0")) && newVolume == 0)
+	{
+		PH_LOG(LogType::Error, "Incorrect volume value!");
+		return;
+	}
 
 	if (commandContains("music"))			mGameData->getMusicPlayer().setVolume(newVolume);
 	else if (commandContains("sound"))		mGameData->getSoundPlayer().setVolume(newVolume);
@@ -202,10 +206,12 @@ void ph::CommandInterpreter::logInto()
 	{
 		logSettings.setWritingLogsIntoConsole(newValue);
 	}
-	if (commandContains("file") || commandContains("both"))
+	else if (commandContains("file") || commandContains("both"))
 	{
 		logSettings.setWritingLogsIntoFile(newValue);
 	}
+	else
+		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found!");
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()
@@ -217,10 +223,19 @@ void ph::CommandInterpreter::setLogTypesToLog()
 	if (commandContains("error"))    logSettings.addToVector(LogType::Error);
 	if (commandContains("user"))     logSettings.addToVector(LogType::FromUser);
 
-	if (commandContains("all"))
-		logSettings.turnOnWritingLogsFromEachLogTypes();
-	else if (commandContains("clear"))
-		logSettings.setLogTypesToWrite({});
+	if (commandContains("all"))			logSettings.turnOnWritingLogsFromEachLogTypes();
+	else if (commandContains("clear")) 	logSettings.setLogTypesToWrite({});
+	if (areArgumentsToLogTypesToLogInvalid())
+		PH_LOG(LogType::Error, "Incorrect second argument! Use one of log types or 'all'/'clear'.");
+}
+
+bool ph::CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
+{
+	return(!(
+		commandContains("info") || commandContains("warning") ||
+		commandContains("error") || commandContains("user") ||
+		commandContains("all") || commandContains("clear")
+	));
 }
 
 void ph::CommandInterpreter::setModulesToLog()
@@ -239,11 +254,21 @@ void ph::CommandInterpreter::setModulesToLog()
 	if (commandContains("world"))       logSettings.addToVector("World");
 	if (commandContains("terminal"))    logSettings.addToVector("Terminal");
 	if (commandContains("none"))        logSettings.addToVector("None");
+	
+	if (commandContains("all"))			logSettings.turnOnWritingLogsFromEachModule();
+	else if (commandContains("clear"))	logSettings.setModuleNamesToWrite({});
+	if (areArgumentsToModulesToLogInvalid())
+		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");
+}
 
-	if (commandContains("all"))
-		logSettings.turnOnWritingLogsFromEachModule();
-	else if (commandContains("clear"))
-		logSettings.setModuleNamesToWrite({});
+bool ph::CommandInterpreter::areArgumentsToModulesToLogInvalid()
+{
+	return(!(commandContains("audio") || commandContains("base") || commandContains("input") ||
+		commandContains("logs") || commandContains("physics") || commandContains("renderer") ||
+		commandContains("resources") || commandContains("states") || commandContains("utilities") ||
+		commandContains("world") || commandContains("terminal") || commandContains("none") ||
+		commandContains("all") || commandContains("clear")
+		));
 }
 
 bool ph::CommandInterpreter::commandContains(const char c)

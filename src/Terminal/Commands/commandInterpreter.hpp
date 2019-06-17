@@ -41,7 +41,11 @@ private:
 	void executeLog();
 	void logInto();
 	void setLogTypesToLog();
+
 	void setModulesToLog();
+
+	bool areArgumentsToModulesToLogInvalid();
+	bool areArgumentsToLogTypesToLogInvalid();
 
 	bool commandContains(const char);
 	bool commandContains(const char*);
