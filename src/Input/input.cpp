@@ -1,5 +1,5 @@
 #include "input.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "eventLoop.hpp"
 
 ph::Input::Input()

@@ -1,6 +1,6 @@
 #include "collisionDebugRect.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 

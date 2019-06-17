@@ -1,5 +1,5 @@
 #include "map.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Utilities/debug.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"

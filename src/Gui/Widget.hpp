@@ -5,7 +5,8 @@
 
 #include "BehaviorType.hpp"
 #include "World/Entity/object.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
+
 #ifndef GUI_BASE_WIDGET
 #define GUI_BASE_WIDGET
 

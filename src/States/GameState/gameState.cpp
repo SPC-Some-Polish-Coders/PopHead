@@ -5,7 +5,7 @@
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/shapeWithCollision.hpp"
 #include "World/Entity/Objects/Characters/enemies/zombie.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 

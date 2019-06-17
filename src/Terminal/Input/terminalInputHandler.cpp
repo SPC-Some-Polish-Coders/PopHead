@@ -1,6 +1,6 @@
 #include "TerminalInputHandler.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)

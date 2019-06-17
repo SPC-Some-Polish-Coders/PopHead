@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "World/Animation/animation.hpp"

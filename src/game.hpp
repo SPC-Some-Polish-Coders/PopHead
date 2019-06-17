@@ -5,7 +5,7 @@
 
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
 #include "States/stateMachine.hpp"
 #include "Input/input.hpp"

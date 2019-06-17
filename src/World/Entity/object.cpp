@@ -1,5 +1,5 @@
 #include "object.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 ph::Object::Object(GameData* gameData, std::string name, LayerID layerID)
 	:Entity(EntityType::object, gameData, name)

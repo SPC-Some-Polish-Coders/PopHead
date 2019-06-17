@@ -1,5 +1,5 @@
 #include "mouseManager.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "eventLoop.hpp"
 
 auto ph::MouseManager::getMousePosition() const -> sf::Vector2i

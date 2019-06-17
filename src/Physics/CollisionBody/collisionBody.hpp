@@ -2,7 +2,7 @@
 #define POPHEAD_PHYSICS_COLLISIONSBODY_H_
 
 #include <SFML/Graphics.hpp>
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "World/Entity/object.hpp"
 #include "Physics/CollisionDebug/collisionDebugRect.hpp"
 #include "bodyType.hpp"
