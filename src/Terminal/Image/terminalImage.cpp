@@ -45,7 +45,7 @@ void ph::TerminalImage::initializeText(GameData* gameData)
 	gameData->getFonts().load(fontPath);
 	auto& text = mTerminalSharedData->mInputLine;
 	text.setFont(gameData->getFonts().get(fontPath));
-	text.setFillColor(inputTextColor);
+	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(inputCharacterSize);
 	text.setPosition(inputTextPosition);
 }

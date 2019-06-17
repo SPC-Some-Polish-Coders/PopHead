@@ -26,7 +26,6 @@ namespace TerminalStyleConstants
 	const std::string fontPath("fonts/consolab.ttf");
 	constexpr unsigned int inputCharacterSize = 18;
 	constexpr unsigned int outputCharacterSize = 15;
-	const sf::Color inputTextColor(sf::Color::White);
 
 	constexpr unsigned int numberOfOutputLines = 19;
 	constexpr float spaceBetweenTheLines = 18;
