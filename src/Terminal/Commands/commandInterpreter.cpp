@@ -166,15 +166,21 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music") || commandContains("all"))
+	if (commandContains("music"))
 	{
 		mGameData->getMusicPlayer().setMuted(true);
 		PH_LOG(LogType::Info, "Muted music.");
 	}
-	else if (commandContains("sound") || commandContains("all"))
+	else if (commandContains("sound"))
 	{
 		mGameData->getSoundPlayer().setMuted(true);
 		PH_LOG(LogType::Info, "Muted sounds.");
+	}
+	else if (commandContains("all"))
+	{
+		mGameData->getSoundPlayer().setMuted(true);
+		mGameData->getMusicPlayer().setMuted(true);
+		PH_LOG(LogType::Info, "Muted sounds and music.");
 	}
 	else 
 		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
@@ -182,15 +188,21 @@ void ph::CommandInterpreter::executeMute()
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music") || commandContains("all"))
+	if (commandContains("music"))
 	{
 		mGameData->getMusicPlayer().setMuted(false);
 		PH_LOG(LogType::Info, "Unmuted music.");
 	}
-	else if (commandContains("sound") || commandContains("all"))
+	else if(commandContains("sound"))
 	{
 		mGameData->getSoundPlayer().setMuted(false);
 		PH_LOG(LogType::Info, "Unmuted sounds.");
+	}
+	else if(commandContains("all"))
+	{
+		mGameData->getMusicPlayer().setMuted(false);
+		mGameData->getSoundPlayer().setMuted(false);
+		PH_LOG(LogType::Info, "Unmuted sounds and music.");
 	}
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
@@ -228,7 +240,7 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 
 void ph::CommandInterpreter::executeLog()
 {
-	if(commandContains("into"))
+	if (commandContains("into"))
 		logInto();
 	else if(commandContains("types"))
 		setLogTypesToLog();
@@ -241,10 +253,14 @@ void ph::CommandInterpreter::logInto()
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
 	int newValue = commandContains("not") ? false : true;
-	if(commandContains("console") || commandContains("both"))
+	if (commandContains("console") || commandContains("both"))
+	{
 		logSettings.setWritingLogsIntoConsole(newValue);
-	if(commandContains("file") || commandContains("both"))
+	}
+	if (commandContains("file") || commandContains("both"))
+	{
 		logSettings.setWritingLogsIntoFile(newValue);
+	}
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()
