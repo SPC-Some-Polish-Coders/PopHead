@@ -1,20 +1,15 @@
 #include "outputArea.hpp"
+#include "terminalStyleConstants.hpp"
 #include "Base/gameData.hpp"
 
-namespace
-{
-	constexpr unsigned int numberOfOutputLines = 19;
-	constexpr float spaceBetweenTheLines = 18;
-	constexpr unsigned int fontSize = 15;
-	constexpr float outputTextXPosition = -475.f;
-}
+using namespace ph::TerminalStyleConstants;
 
 void ph::OutputArea::init(GameData* gameData)
 {
 	float positionY = 135;
 	for(int i = 0; i < numberOfOutputLines; ++i, positionY += spaceBetweenTheLines) {
-		sf::Text text("an output line", gameData->getFonts().get("fonts/consolab.ttf"), fontSize);
-		text.setPosition(outputTextXPosition, positionY);
+		sf::Text text("", gameData->getFonts().get(fontPath), outputCharacterSize);
+		text.setPosition(terminalXPosition + 5, positionY);
 		mOutputLines.emplace_back(std::move(text));
 	}
 }

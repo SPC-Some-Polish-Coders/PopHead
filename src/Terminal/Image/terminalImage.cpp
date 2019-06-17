@@ -1,21 +1,18 @@
 #include "terminalImage.hpp"
+#include "terminalStyleConstants.hpp"
 #include "Base/gameData.hpp"
 
-namespace
-{
-	constexpr float terminalStartXPosition = -480.f;
-	constexpr float terminalWidth = 960;
-}
+using namespace ph::TerminalStyleConstants;
 
 ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
-	,mBackground({terminalWidth, 400})
-	,mSeparatorBetweenInputAndOutputArea({terminalWidth, 10})
+	,mBackground(terminalSize)
+	,mSeparatorBetweenInputAndOutputArea(separatorBetweenInputAndOutputAreaSize)
 {
-	mBackground.setFillColor(sf::Color(0, 0, 0, 230));
-	mBackground.setPosition(terminalStartXPosition, 100.f);
-	mSeparatorBetweenInputAndOutputArea.setFillColor(sf::Color::Black);
-	mSeparatorBetweenInputAndOutputArea.setPosition(terminalStartXPosition, 125);
+	mBackground.setFillColor(terminalColor);
+	mBackground.setPosition(terminalPosition);
+	mSeparatorBetweenInputAndOutputArea.setFillColor(separatorBetweenInputAndOutputColor);
+	mSeparatorBetweenInputAndOutputArea.setPosition(separatorBetweenInputAndOutputAreaPosition);
 }
 
 void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -45,10 +42,10 @@ void ph::TerminalImage::init(GameData* gameData)
 void ph::TerminalImage::initializeText(GameData* gameData)
 {
 	//TODO: Place where fonts are loaded shouldn't be here!
-	gameData->getFonts().load("fonts/consolab.ttf");
+	gameData->getFonts().load(fontPath);
 	auto& text = mTerminalSharedData->mInputLine;
-	text.setFont(gameData->getFonts().get("fonts/consolab.ttf"));
-	text.setFillColor(sf::Color::White);
-	text.setCharacterSize(18);
-	text.setPosition(terminalStartXPosition + 5, 100.f);
+	text.setFont(gameData->getFonts().get(fontPath));
+	text.setFillColor(inputTextColor);
+	text.setCharacterSize(inputCharacterSize);
+	text.setPosition(inputTextPosition);
 }
