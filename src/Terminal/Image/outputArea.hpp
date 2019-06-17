@@ -10,19 +10,25 @@ namespace ph {
 
 class GameData;
 
+struct OutputLine
+{
+	std::string mText;
+	sf::Color mColor;
+};
+
 class OutputArea : public sf::Drawable
 {
 public:
 	void init(GameData* gameData);
 
-	void pushOutputText(const std::string& text);
+	void pushOutputLine(const OutputLine&);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void move(sf::Vector2f offset);
 
 private:
-	std::vector<sf::Text> mOutputLines;
-	std::deque<std::string> mContentOfLines;
+	std::vector<sf::Text> mTexts;
+	std::deque<OutputLine> mOutputLines;
 };
 
 }

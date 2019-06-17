@@ -74,7 +74,8 @@ void ph::Logger::writeLogInInternalTerminal(const LogData& log)
 {
 	if(mGameData != nullptr) {
 		std::string message = printLog(log).str();
-		mGameData->getTerminal().pushOutputLine(message);
+		OutputLine line{ message, sf::Color::White };
+		mGameData->getTerminal().pushOutputLine(line);
 	}
 }
 

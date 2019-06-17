@@ -1,6 +1,7 @@
 #include "outputArea.hpp"
 #include "terminalStyleConstants.hpp"
 #include "Base/gameData.hpp"
+#include "Logs/log.hpp"
 
 using namespace ph::TerminalStyleConstants;
 
@@ -9,30 +10,32 @@ void ph::OutputArea::init(GameData* gameData)
 	float positionY = 135;
 	for(int i = 0; i < numberOfOutputLines; ++i, positionY += spaceBetweenTheLines) {
 		sf::Text text("", gameData->getFonts().get(fontPath), outputCharacterSize);
-		text.setPosition(terminalXPosition + 5, positionY);
-		mOutputLines.emplace_back(std::move(text));
+		text.setPosition(textXposition, positionY);
+		mTexts.emplace_back(std::move(text));
 	}
 }
 
-void ph::OutputArea::pushOutputText(const std::string& text)
+void ph::OutputArea::pushOutputLine(const OutputLine& line)
 {
-	if(mContentOfLines.size() >= numberOfOutputLines)
-		mContentOfLines.pop_back();
+	if(mOutputLines.size() >= numberOfOutputLines)
+		mOutputLines.pop_back();
 
-	mContentOfLines.emplace_front(text);
+	mOutputLines.emplace_front(line);
 
-	for(int i = 0; i < mContentOfLines.size(); ++i)
-		mOutputLines[i].setString(mContentOfLines[i]);
+	for(int i = 0; i < mOutputLines.size(); ++i) {
+		mTexts[i].setString(mOutputLines[i].mText);
+		mTexts[i].setFillColor(mOutputLines[i].mColor);
+	}
 }
 
 void ph::OutputArea::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for(auto& line : mOutputLines)
+	for(auto& line : mTexts)
 		target.draw(line);
 }
 
 void ph::OutputArea::move(sf::Vector2f offset)
 {
-	for(auto& line : mOutputLines)
+	for(auto& line : mTexts)
 		line.move(offset);
 }

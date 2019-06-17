@@ -29,7 +29,7 @@ void ph::Terminal::init(GameData* gameData)
 	mTerminalImage.init(gameData);
 }
 
-void ph::Terminal::pushOutputLine(const std::string& line)
+void ph::Terminal::pushOutputLine(const OutputLine& line)
 {
-	mTerminalImage.getOutputArea().pushOutputText(line);
+	mTerminalImage.getOutputArea().pushOutputLine(line);
 }
