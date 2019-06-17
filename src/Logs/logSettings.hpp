@@ -15,8 +15,8 @@ public:
 	void setWritingLogs(bool enabled);
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
-	void addLogType(const LogType&);
-	void addModuleName(const std::string&);
+	void addToVector(const LogType&);
+	void addToVector(const std::string&);
 
 	void turnOnWritingEachLog();
 

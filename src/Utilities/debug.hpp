@@ -19,7 +19,7 @@
 #endif // !_MSC_VER
 
 #define PH_LOG(logType, message)\
-	ph::Logger::getLogger().writeLog(ph::LogData{message, ph::Path::toModuleName(std::string(__FILE__)), logType})
+	ph::Logger::getInstance().writeLog(ph::LogData{message, ph::Path::toModuleName(std::string(__FILE__)), logType})
 
 #define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), 0))
 

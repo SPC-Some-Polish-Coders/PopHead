@@ -3,6 +3,7 @@
 #include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
+#include "Logs/logger.hpp"
 
 namespace ph { enum class StateID; }
 
@@ -18,6 +19,7 @@ ph::Game::Game()
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
+	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
 		mSoundPlayer.get(),
@@ -29,16 +31,22 @@ ph::Game::Game()
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
-		mTerminal.get()
+		mTerminal.get(),
+		mGui.get()
 	));
+
+	mTerminal->init(mGameData.get());
+
+	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
+	Logger::getInstance().setGameData(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
 
+	mGui->init(mGameData.get());
+
 	EventLoop::init(mGameData.get());
 	mInput->setGameData(mGameData.get());
-
-	mTerminal->init(mGameData.get());
 
 	mRenderer->setGameData(mGameData.get());
 }
@@ -53,7 +61,7 @@ void ph::Game::run()
 	{
 		mStateMachine->changingStatesProcess();
 
-		// temporary
+		// temporary - TODO: move this somewhere else
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			break;
 
@@ -82,6 +90,7 @@ void ph::Game::update(sf::Time delta)
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
+	mGui->update(delta);
 }
 
 void ph::Game::draw()

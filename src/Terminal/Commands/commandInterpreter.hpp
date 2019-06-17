@@ -2,10 +2,12 @@
 #define POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
 
 #include <string>
+#include <SFML/Graphics.hpp>
 
 namespace ph {
 
 class GameData;
+class Object;
 
 class CommandInterpreter
 {
@@ -17,24 +19,29 @@ private:
 	std::string getCommandWithoutArguments();
 	int getArgumentPositionInCommand();
 
-	void executeLog();
+	void executeEcho();
 
-	void executeChangeCollisionDebugColors();
-	void executeChangeCollisionDebugDisplay();
-	void executeSwitchCollisionDebugMode();
+	void executeExit();
+
+	void executeTeleport();
+	sf::Vector2f getPositionFromCommand() const;
+	void executeCurrentPos();
+	auto getPlayer() const -> Object&;
+
+	void executeCollisionDebug();
+	void changeCollisionDebugColor();
+	void changeCollisionDebugDisplayMode();
+	void turnOnOrTurnOffCollisionDebug();
 	
 	void executeMute();
 	void executeUnmute();
 	void executeSetVolume();
 	float getVolumeFromCommand();
 
-	void executeSetLoggingIntoFile();
-	void executeSetLoggingIntoConsole();
-	void executeSetLogging();
-	void executeSetLoggingLogTypes();
-	void executeSetLoggingModuleNames();
-
-	void executeExit();
+	void executeLog();
+	void logInto();
+	void setLogTypesToLog();
+	void setModulesToLog();
 
 	bool commandContains(const char);
 	bool commandContains(const char*);

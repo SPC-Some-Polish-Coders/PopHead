@@ -39,6 +39,7 @@ private:
 	std::unique_ptr< Renderer >			mRenderer;
 	std::unique_ptr< PhysicsEngine >	mPhysicsEngine;
 	std::unique_ptr< Terminal >			mTerminal;
+	std::unique_ptr< GUI >				mGui;
 };
 
 }

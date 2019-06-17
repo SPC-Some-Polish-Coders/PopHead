@@ -17,15 +17,16 @@ public:
 
 	void playAmbientSound(const std::string& filePath);
 	void playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition);
-private:
-	void playSound(const std::string& filePath, const float volume, const bool loop);
 
-public:
 	void setListenerPosition(const sf::Vector2f listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
+	void setMuted(bool muted);
+	bool isMuted() { return mIsMuted; }
 	void setVolume(const float volume);
+	float getVolume() { return mVolume; }
 	void removeEverySound();
 
 private:
+	void playSound(const std::string& filePath, const float volume, const bool loop);
 	void loadEverySound();
 	void removeStoppedSounds();
 
@@ -35,6 +36,7 @@ private:
 	SoundDataHolder mSoundDataHolder;
 	SpatializationManager mSpatializationManager;
 	float mVolume;
+	bool mIsMuted;
 };
 
 }
