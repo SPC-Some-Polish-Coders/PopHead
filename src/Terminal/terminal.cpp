@@ -28,3 +28,8 @@ void ph::Terminal::init(GameData* gameData)
 	mCommandInterpreter.setGameData(mGameData);
 	mTerminalImage.init(gameData);
 }
+
+void ph::Terminal::pushOutputLine(const std::string& line)
+{
+	mTerminalImage.getOutputArea().pushOutputText(line);
+}

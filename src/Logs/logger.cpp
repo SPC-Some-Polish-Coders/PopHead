@@ -1,4 +1,6 @@
 #include "logger.hpp"
+#include "Base/gameData.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -27,6 +29,7 @@ static std::ostream& operator<<(std::ostream& os, const ph::LogType& logType)
 }
 
 ph::Logger::Logger()
+	:mGameData(nullptr)
 {
 	openFile();
 }
@@ -56,6 +59,8 @@ void ph::Logger::writeLog(const LogData& log)
 	if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
 
+	writeLogInInternalTerminal(log);
+
 	if (mLogSettings.shouldBeWrittenIntoFile(log))
 		saveLogInFile(log);
 }
@@ -63,6 +68,14 @@ void ph::Logger::writeLog(const LogData& log)
 void ph::Logger::writeLogInConsole(const LogData& log)
 {
 	std::cout << printLog(log).str();
+}
+
+void ph::Logger::writeLogInInternalTerminal(const LogData& log)
+{
+	if(mGameData != nullptr) {
+		std::string message = printLog(log).str();
+		mGameData->getTerminal().pushOutputLine(message);
+	}
 }
 
 void ph::Logger::saveLogInFile(const LogData& log)

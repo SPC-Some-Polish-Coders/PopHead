@@ -12,6 +12,8 @@
 
 namespace ph {
 
+class GameData;
+
 class Logger
 {
 private:
@@ -26,6 +28,8 @@ public:
 		return Logger;
 	}
 
+	void setGameData(GameData* gameData) { mGameData = gameData; }
+
 	auto getLogSettings() -> LogSettings& { return mLogSettings; }
 
 	void writeLog(const LogData& log);
@@ -34,6 +38,7 @@ private:
 	void openFile();
 	void saveLogInFile(const LogData& log); 
 	void writeLogInConsole(const LogData& log);
+	void writeLogInInternalTerminal(const LogData& log);
 	std::stringstream printLog(const LogData& log);
 	std::string nameTheFile();
 	sf::Time getElapsedTimeSinceCreation();
@@ -42,6 +47,7 @@ private:
 	LogSettings mLogSettings;
 	std::ofstream mLogFile;
 	sf::Clock mClock;
+	GameData* mGameData;
 };
 
 }
