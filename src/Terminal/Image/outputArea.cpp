@@ -1,13 +1,18 @@
 #include "outputArea.hpp"
 #include "Base/gameData.hpp"
 
-void ph::OutputArea::init(GameData* gameData)
+namespace
 {
 	constexpr unsigned int numberOfOutputLines = 20;
-	float positionY = 135;
 	constexpr float spaceBetweenTheNumbers = 14;
+	constexpr unsigned int fontSize = 15;
+}
+
+void ph::OutputArea::init(GameData* gameData)
+{
+	float positionY = 135;
 	for(int i = 0; i <= numberOfOutputLines; ++i, positionY += spaceBetweenTheNumbers) {
-		sf::Text text("an output line", gameData->getFonts().get("fonts/consolab.ttf"), 15);
+		sf::Text text("an output line", gameData->getFonts().get("fonts/consolab.ttf"), fontSize);
 		text.setPosition(-450, positionY);
 		mOutputLines.emplace_back(std::move(text));
 	}
@@ -15,7 +20,6 @@ void ph::OutputArea::init(GameData* gameData)
 
 void ph::OutputArea::pushOutputText(const std::string& text)
 {
-	constexpr int numberOfOutputLines = 5;
 	if(mContentOfLines.size() >= numberOfOutputLines)
 		mContentOfLines.pop_back();
 
