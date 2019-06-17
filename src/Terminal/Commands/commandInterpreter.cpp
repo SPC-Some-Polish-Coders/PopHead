@@ -12,7 +12,7 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if		(commandWithoutArguments == "echo")            executeEcho();
+	if (commandWithoutArguments == "echo")				   executeEcho();
 	else if (commandWithoutArguments == "exit")            executeExit();
 	else if (commandWithoutArguments == "teleport")        executeTeleport();
 	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
@@ -55,8 +55,6 @@ void ph::CommandInterpreter::executeTeleport()
 	auto& player = getPlayer();
 	sf::Vector2f newPosition = getPositionFromCommand();
 	player.setPosition(newPosition);
-	PH_LOG(LogType::Info, "Teleported! Player's position set to " + std::to_string(newPosition.x) + 
-		" X and " + std::to_string(newPosition.y) + " Y.");
 }
 
 sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
@@ -97,9 +95,11 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 
 void ph::CommandInterpreter::executeCollisionDebug()
 {
-	if(commandContains("turn")) 			turnOnOrTurnOffCollisionDebug();
-	else if(commandContains("color"))		changeCollisionDebugColor();
-	else if(commandContains("display"))		changeCollisionDebugDisplayMode();
+	if (commandContains("turn")) 			turnOnOrTurnOffCollisionDebug();
+	else if (commandContains("color"))		changeCollisionDebugColor();
+	else if (commandContains("display"))	changeCollisionDebugDisplayMode();
+	else
+		PH_LOG(LogType::Error, "Incorrect argument! Use 'turn', 'color' or 'display' to set collision debugging.");
 }
 
 void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
@@ -107,37 +107,20 @@ void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
 	//if(commandContains("off")) must be first! Do not change the order!
-	if (commandContains("off"))
-	{
-		collisionDebugSettings.turnOff();
-		PH_LOG(LogType::Info, "Collision debug mode is turned off.");
-	}
-	else if (commandContains("on"))
-	{
-		collisionDebugSettings.turnOn();
-		PH_LOG(LogType::Info, "Collision debug mode is turned on.");
-	}
+	if (commandContains("off"))			collisionDebugSettings.turnOff();
+	else if (commandContains("on"))		collisionDebugSettings.turnOn();
+	else
+		PH_LOG(LogType::Error, "Incorrect argument! Use 'on' or 'off' to switch between modes.");
+	//This error will never be printed unless we do something with this 'on' in Collision
 }
 
 void ph::CommandInterpreter::changeCollisionDebugColor()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains('1'))
-	{ 
-		collisionDebugSettings.setColors(1);
-		PH_LOG(LogType::Info, "Collision debug color mode is set to 1.");
-	}
-	else if (commandContains('2'))
-	{
-		collisionDebugSettings.setColors(2);
-		PH_LOG(LogType::Info, "Collision debug color mode is set to 2.");
-	}
-	else if(commandContains('3'))	
-	{
-		collisionDebugSettings.setColors(3);
-		PH_LOG(LogType::Info, "Collision debug color mode is set to 3.");
-	}
+	if (commandContains('1'))		collisionDebugSettings.setColors(1);
+	else if (commandContains('2'))	collisionDebugSettings.setColors(2);
+	else if(commandContains('3'))	collisionDebugSettings.setColors(3);
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
 }
@@ -146,41 +129,21 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains("kinematic"))
-	{
-		collisionDebugSettings.displayOnlyKinematicBodies();
-		PH_LOG(LogType::Info, "Collition debug display mode is set to kinematic bodies.");
-	}
-	else if (commandContains("static"))
-	{
-		collisionDebugSettings.displayOnlyStaticBodies();
-		PH_LOG(LogType::Info, "Collition debug display mode is set to static bodies.");
-	}
-	else if (commandContains("all"))
-	{
-		collisionDebugSettings.displayAllBodies();
-		PH_LOG(LogType::Info, "Collition debug display mode is set to all bodies.");
-	}
-	else	PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
+	if (commandContains("kinematic"))		collisionDebugSettings.displayOnlyKinematicBodies();
+	else if (commandContains("static"))		collisionDebugSettings.displayOnlyStaticBodies();
+	else if (commandContains("all"))		collisionDebugSettings.displayAllBodies();
+	else	
+		PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
 }
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music"))
-	{
-		mGameData->getMusicPlayer().setMuted(true);
-		PH_LOG(LogType::Info, "Muted music.");
-	}
-	else if (commandContains("sound"))
-	{
-		mGameData->getSoundPlayer().setMuted(true);
-		PH_LOG(LogType::Info, "Muted sounds.");
-	}
+	if (commandContains("music"))		mGameData->getMusicPlayer().setMuted(true);
+	else if (commandContains("sound"))		mGameData->getSoundPlayer().setMuted(true);
 	else if (commandContains("all"))
 	{
 		mGameData->getSoundPlayer().setMuted(true);
 		mGameData->getMusicPlayer().setMuted(true);
-		PH_LOG(LogType::Info, "Muted sounds and music.");
 	}
 	else 
 		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
@@ -188,21 +151,12 @@ void ph::CommandInterpreter::executeMute()
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music"))
-	{
-		mGameData->getMusicPlayer().setMuted(false);
-		PH_LOG(LogType::Info, "Unmuted music.");
-	}
-	else if(commandContains("sound"))
-	{
-		mGameData->getSoundPlayer().setMuted(false);
-		PH_LOG(LogType::Info, "Unmuted sounds.");
-	}
+	if (commandContains("music"))		mGameData->getMusicPlayer().setMuted(false);
+	else if(commandContains("sound"))	mGameData->getSoundPlayer().setMuted(false);
 	else if(commandContains("all"))
 	{
 		mGameData->getMusicPlayer().setMuted(false);
 		mGameData->getSoundPlayer().setMuted(false);
-		PH_LOG(LogType::Info, "Unmuted sounds and music.");
 	}
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
@@ -212,20 +166,12 @@ void ph::CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
 
-	if (commandContains("music"))
+	if (commandContains("music"))			mGameData->getMusicPlayer().setVolume(newVolume);
+	else if (commandContains("sound"))		mGameData->getSoundPlayer().setVolume(newVolume);
+	else
 	{
 		mGameData->getMusicPlayer().setVolume(newVolume);
-		PH_LOG(LogType::Info, "Music volume is set to " + std::to_string(newVolume) + ".");
-	}
-	else if (commandContains("sound"))
-	{
 		mGameData->getSoundPlayer().setVolume(newVolume);
-		PH_LOG(LogType::Info, "Sound volume is set to " + std::to_string(newVolume) + ".");
-	}
-	else{
-		mGameData->getMusicPlayer().setVolume(newVolume);
-		mGameData->getSoundPlayer().setVolume(newVolume);
-		PH_LOG(LogType::Info, "Sound and music volume is set to " + std::to_string(newVolume) + ".");
 	}
 }
 
@@ -234,18 +180,17 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	size_t spacePosition = mCommand.find_last_of(' ');
 	size_t valueStartPos = spacePosition + 1;
 	size_t valueLength = mCommand.size() - valueStartPos;
-	std::string textToFloat = mCommand.substr(valueStartPos, valueLength);
-	return std::strtof(textToFloat.c_str(), nullptr);
+	std::string volumeValue = mCommand.substr(valueStartPos, valueLength);
+	return std::strtof(volumeValue.c_str(), nullptr);
 }
 
 void ph::CommandInterpreter::executeLog()
 {
-	if (commandContains("into"))
-		logInto();
-	else if(commandContains("types"))
-		setLogTypesToLog();
-	else if(commandContains("modules"))
-		setModulesToLog();
+	if (commandContains("into"))			logInto();
+	else if (commandContains("types"))		setLogTypesToLog();
+	else if (commandContains("modules"))	setModulesToLog();
+	else
+		PH_LOG(LogType::Error, "Incorrect argument! Use 'into' 'types' or 'modules' to set logging.");
 }
 
 void ph::CommandInterpreter::logInto()
@@ -272,9 +217,9 @@ void ph::CommandInterpreter::setLogTypesToLog()
 	if (commandContains("error"))    logSettings.addToVector(LogType::Error);
 	if (commandContains("user"))     logSettings.addToVector(LogType::FromUser);
 
-	if (commandContains("all"))		
+	if (commandContains("all"))
 		logSettings.turnOnWritingLogsFromEachLogTypes();
-	else if (commandContains("clear"))	
+	else if (commandContains("clear"))
 		logSettings.setLogTypesToWrite({});
 }
 

@@ -75,6 +75,14 @@ void ph::Logger::writeLogInInternalTerminal(const LogData& log)
 	if(mGameData != nullptr) {
 		std::string message = printLog(log).str();
 		OutputLine line{ message, sf::Color::White };
+		if (log.type == LogType::Info)
+			line.mColor = sf::Color(127, 244, 44);
+		else if (log.type == LogType::Error)
+			line.mColor = sf::Color(255, 25, 33);
+		else if (log.type == LogType::Warning)
+			line.mColor = sf::Color(235, 135, 30);
+		else if (log.type == LogType::FromUser)
+			line.mColor = sf::Color(79, 202, 255);
 		mGameData->getTerminal().pushOutputLine(line);
 	}
 }

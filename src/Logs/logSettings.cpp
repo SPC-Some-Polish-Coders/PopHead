@@ -1,6 +1,7 @@
 #include "logSettings.hpp"
 #include "Logs/LogsInitializer/logsInitializer.hpp"
 #include <fstream>
+#include <Utilities/debug.hpp>
 
 ph::LogSettings::LogSettings()
 	:mShouldLogIntoConsole(LogsInitializer::getShouldLogIntoConsole())
@@ -34,16 +35,32 @@ void ph::LogSettings::turnOnWritingLogsFromEachLogTypes()
 
 void ph::LogSettings::addToVector(const LogType& logTypeName)
 {
-	for (std::size_t i = 0; i < mLogTypesToWrite.size(); ++i)
-		if (mLogTypesToWrite[i] == logTypeName) return;
-	mLogTypesToWrite.emplace_back(logTypeName);		
+	if (mLogTypesToWrite.size() == 0)
+	{
+		mLogTypesToWrite.emplace_back(logTypeName);
+	}
+	else 
+		for (std::size_t i = 0; i < mLogTypesToWrite.size(); ++i)
+		{
+			if (mLogTypesToWrite[i] == logTypeName) return;
+			mLogTypesToWrite.emplace_back(logTypeName);
+		}
 }
 
 void ph::LogSettings::addToVector(const std::string& moduleName)
 {
-	for (std::size_t i = 0; i < mModuleNamesToWrite.size(); ++i)
-		if (mModuleNamesToWrite[i] == moduleName) return;
-	mModuleNamesToWrite.emplace_back(moduleName);
+	if (mModuleNamesToWrite.size() == 0)
+	{
+		mModuleNamesToWrite.emplace_back(moduleName);
+		PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
+	}
+	else
+		for (std::size_t i = 0; i < mModuleNamesToWrite.size()+1; ++i)
+		{
+			if (mModuleNamesToWrite[i] == moduleName) return;
+			mModuleNamesToWrite.emplace_back(moduleName);
+			PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
+		}
 }
 
 void ph::LogSettings::setWritingLogs(bool enabled)
