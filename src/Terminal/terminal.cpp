@@ -18,9 +18,12 @@ void ph::Terminal::input()
 		auto& content = mTerminalSharedData->mContent;
 		auto& lastCommands = mTerminalSharedData->mLastCommands;
 
+		if (content.size() != 0)
+		{
 		lastCommands.emplace_front(content);
-		if(lastCommands.size() > 10)
+		if (lastCommands.size() > 10)
 			lastCommands.pop_back();
+		}
 
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
