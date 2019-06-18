@@ -6,6 +6,7 @@ ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalShared
 	:mTerminalSharedData(terminalSharedData)
 	,mContent(mTerminalSharedData->mContent)
 	,mIsEnterClicked(false)
+	,mIndexOfCurrentLastCommand(-1)
 	,mGameData(nullptr)
 {
 }
@@ -16,11 +17,11 @@ void ph::TerminalInputHandler::handleInput()
 		handleKeyboardCharactersInput();
 		handleBackspace();
 		handleEnter();
+		handleLastCommandShortcut();
+		clearTextShortcut();
 	}
-
 	showOrHideCommandPromptInput();
-
-	mTerminalSharedData->mInputLine.setString(mTerminalSharedData->mContent);
+	mTerminalSharedData->mInputLine.setString(mContent);
 }
 
 void ph::TerminalInputHandler::handleKeyboardCharactersInput()
@@ -64,9 +65,6 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Num9)) mContent += "9";
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Num0)) mContent += "0";
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
-
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Up)) mContent += mTerminalSharedData->mLastCommand;
-	else if (keyboard.isKeyJustPressed(sf::Keyboard::Down))	mContent.clear(); 
 }
 
 void ph::TerminalInputHandler::handleBackspace()
@@ -85,6 +83,31 @@ void ph::TerminalInputHandler::handleEnter()
 		mIsEnterClicked = true;
 	else
 		mIsEnterClicked = false;
+
+	if(mIsEnterClicked)
+		mIndexOfCurrentLastCommand = -1;
+}
+
+void ph::TerminalInputHandler::handleLastCommandShortcut()
+{
+	auto& keyboard = mGameData->getInput().getKeyboard();
+	auto& lastCommands = mTerminalSharedData->mLastCommands;
+	if(keyboard.isKeyJustPressed(sf::Keyboard::Up) && mIndexOfCurrentLastCommand + 1 < static_cast<int>(lastCommands.size()))
+		++mIndexOfCurrentLastCommand;
+	else if(keyboard.isKeyJustPressed(sf::Keyboard::Down) && mIndexOfCurrentLastCommand > -1)
+		--mIndexOfCurrentLastCommand;
+	else
+		return;
+
+	if(mIndexOfCurrentLastCommand >= 0)
+		mContent = lastCommands[mIndexOfCurrentLastCommand];
+}
+
+void ph::TerminalInputHandler::clearTextShortcut()
+{
+	auto& keyboard = mGameData->getInput().getKeyboard();
+	if(keyboard.isKeyJustPressed(sf::Keyboard::Down) && mIndexOfCurrentLastCommand == -1)
+		mContent.clear();
 }
 
 void ph::TerminalInputHandler::showOrHideCommandPromptInput()
