@@ -24,6 +24,8 @@ private:
 	void handleKeyboardCharactersInput();
 	void handleBackspace();
 	void handleEnter();
+	void handleLastCommandShortcut();
+	void clearTextShortcut();
 	void showOrHideCommandPromptInput();
 	inline void setKeyRepeatEnabled(bool enabled);
 
@@ -31,6 +33,7 @@ private:
 	GameData* mGameData;
 	TerminalSharedData mTerminalSharedData;
 	std::string& mContent;
+	int mIndexOfCurrentLastCommand;
 	bool mIsEnterClicked;
 };
 
