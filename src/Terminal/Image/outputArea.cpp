@@ -1,6 +1,6 @@
 #include "outputArea.hpp"
 #include "terminalStyleConstants.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "Logs/log.hpp"
 
 using namespace ph::TerminalStyleConstants;

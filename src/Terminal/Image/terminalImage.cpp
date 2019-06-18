@@ -1,6 +1,6 @@
 #include "terminalImage.hpp"
 #include "terminalStyleConstants.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 using namespace ph::TerminalStyleConstants;
 

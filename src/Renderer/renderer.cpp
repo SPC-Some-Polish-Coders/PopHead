@@ -4,7 +4,7 @@
 
 #include "World/Entity/object.hpp"
 #include "Utilities/debug.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 ph::Renderer::Renderer()
 	:mCamera{ sf::Vector2f{0,0}, sf::Vector2f{32*30, 32*30} }

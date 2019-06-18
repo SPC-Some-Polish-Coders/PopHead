@@ -1,5 +1,5 @@
 #include "logger.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 #include <iostream>
 #include <fstream>

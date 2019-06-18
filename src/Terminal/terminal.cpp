@@ -1,6 +1,6 @@
 #include "terminal.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 ph::Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())

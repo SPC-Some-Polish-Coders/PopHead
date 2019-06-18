@@ -1,6 +1,6 @@
 #include "eventLoop.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
 bool ph::EventLoop::mIsKeyJustPressed;
 bool ph::EventLoop::mIsKeyJustReleased;
