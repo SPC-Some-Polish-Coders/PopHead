@@ -61,16 +61,30 @@ sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
 {
 	const std::string numbers("1234567890");
 
+	if (mCommand.find_first_of(numbers) == std::string::npos)
+	{
+		PH_LOG(LogType::Error, "Incorrect argument! Use only digits from 0 to 9");
+		return getPlayer().getPosition();
+	}
+
 	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
+		if (xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
+		{
+			PH_LOG(LogType::Error, "Incorrect argument! Argument of X position is not a digit.");
+			return sf::Vector2f(getPlayer().getPosition());
+		}
 	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
 	float positionX = std::strtof(xArgument.c_str(), nullptr);
 
 	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
+		if (yArgumentPositionInCommand == std::string::npos)
+		{
+			PH_LOG(LogType::Error, "Incorrect argument! Argument of Y position is not a digit.");
+			return sf::Vector2f(getPlayer().getPosition());
+		}
 	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
-	if(yArgumentEndPositionInCommand == std::string::npos)
-		yArgumentEndPositionInCommand = mCommand.size();
 	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
 	float positionY = std::strtof(yArgument.c_str(), nullptr);
@@ -165,7 +179,7 @@ void ph::CommandInterpreter::executeSetVolume()
 	float newVolume = getVolumeFromCommand();
 	if (!(commandContains("0")) && newVolume == 0 || newVolume > 100)
 	{
-		PH_LOG(LogType::Error, "Incorrect volume value! Expected range is 0-100");
+		PH_LOG(LogType::Error, "Incorrect volume value! Use values from 0 to 100");
 		return;
 	}
 
