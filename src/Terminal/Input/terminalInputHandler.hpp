@@ -24,6 +24,7 @@ private:
 	void handleKeyboardCharactersInput();
 	void handleBackspace();
 	void handleEnter();
+	void updateLastCommands();
 	void handleLastCommandShortcut();
 	void clearTextShortcut();
 	void showOrHideCommandPromptInput();

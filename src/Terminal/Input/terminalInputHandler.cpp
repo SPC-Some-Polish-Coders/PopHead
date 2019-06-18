@@ -79,13 +79,22 @@ void ph::TerminalInputHandler::handleBackspace()
 void ph::TerminalInputHandler::handleEnter()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
-	if(keyboard.isKeyJustPressed(sf::Keyboard::Enter))
-		mIsEnterClicked = true;
-	else
-		mIsEnterClicked = false;
+	mIsEnterClicked = keyboard.isKeyJustPressed(sf::Keyboard::Enter);
 
 	if(mIsEnterClicked)
-		mIndexOfCurrentLastCommand = -1;
+		updateLastCommands();
+}
+
+void ph::TerminalInputHandler::updateLastCommands()
+{
+	mIndexOfCurrentLastCommand = -1;
+	auto& content = mTerminalSharedData->mContent;
+	auto& lastCommands = mTerminalSharedData->mLastCommands;
+	if(content.size() != 0) {
+		lastCommands.emplace_front(content);
+		if(lastCommands.size() > 10)
+			lastCommands.pop_back();
+	}
 }
 
 void ph::TerminalInputHandler::handleLastCommandShortcut()
