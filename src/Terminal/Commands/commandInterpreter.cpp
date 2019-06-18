@@ -106,31 +106,33 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 
 void ph::CommandInterpreter::executeCollisionDebug()
 {
-	if (commandContains("turn")) 			turnOnOrTurnOffCollisionDebug();
-	else if (commandContains("color"))		changeCollisionDebugColor();
-	else if (commandContains("display"))	changeCollisionDebugDisplayMode();
+	if(commandContains("turn"))          turnOnOrTurnOffCollisionDebug();
+	else if(commandContains("color"))    changeCollisionDebugColor();
+	else if(commandContains("display"))  changeCollisionDebugDisplayMode();
 	else
-		PH_LOG(LogType::Error, "Incorrect argument! Use 'turn', 'color' or 'display' to set collision debugging.");
+		PH_LOG(LogType::Error, "Incorrect argument! First argument has to be 'turn', 'color' or 'display'.");
 }
 
 void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-	size_t endOfCommand = getCommandWithoutArguments().size();
 
-	if (mCommand.rfind("on") > endOfCommand)	collisionDebugSettings.turnOn();
-	else if (commandContains("off"))			collisionDebugSettings.turnOff();
+	size_t endOfCommand = getCommandWithoutArguments().size();
+	if (mCommand.rfind("on") > endOfCommand)
+		collisionDebugSettings.turnOn();
+	else if (commandContains("off"))
+		collisionDebugSettings.turnOff();
 	else
-		PH_LOG(LogType::Error, "Incorrect argument! Use 'on' or 'off' to switch between modes.");
+		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.");
 }
 
 void ph::CommandInterpreter::changeCollisionDebugColor()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains('1'))		collisionDebugSettings.setColors(1);
-	else if (commandContains('2'))	collisionDebugSettings.setColors(2);
-	else if(commandContains('3'))	collisionDebugSettings.setColors(3);
+	if(commandContains('1'))       collisionDebugSettings.setColors(1);
+	else if(commandContains('2'))  collisionDebugSettings.setColors(2);
+	else if(commandContains('3'))  collisionDebugSettings.setColors(3);
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
 }
@@ -139,19 +141,20 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	if (commandContains("kinematic"))		collisionDebugSettings.displayOnlyKinematicBodies();
-	else if (commandContains("static"))		collisionDebugSettings.displayOnlyStaticBodies();
-	else if (commandContains("all"))		collisionDebugSettings.displayAllBodies();
-	else	
-		PH_LOG(LogType::Error, "Incorrect second argument! Display mode not found.");
+	if(commandContains("kinematic"))    collisionDebugSettings.displayOnlyKinematicBodies();
+	else if(commandContains("static"))  collisionDebugSettings.displayOnlyStaticBodies();
+	else if(commandContains("all"))     collisionDebugSettings.displayAllBodies();
+	else
+		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.");
 }
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music"))		mGameData->getMusicPlayer().setMuted(true);
-	else if (commandContains("sound"))		mGameData->getSoundPlayer().setMuted(true);
-	else if (commandContains("all"))
-	{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setMuted(true);
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setMuted(true);
+	else if (commandContains("all")){
 		mGameData->getSoundPlayer().setMuted(true);
 		mGameData->getMusicPlayer().setMuted(true);
 	}
@@ -161,10 +164,11 @@ void ph::CommandInterpreter::executeMute()
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music"))		mGameData->getMusicPlayer().setMuted(false);
-	else if(commandContains("sound"))	mGameData->getSoundPlayer().setMuted(false);
-	else if(commandContains("all"))
-	{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setMuted(false);
+	else if(commandContains("sound"))
+		mGameData->getSoundPlayer().setMuted(false);
+	else if(commandContains("all")){
 		mGameData->getMusicPlayer().setMuted(false);
 		mGameData->getSoundPlayer().setMuted(false);
 	}
@@ -175,16 +179,16 @@ void ph::CommandInterpreter::executeUnmute()
 void ph::CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
-	if (!(commandContains("0")) && newVolume == 0 || newVolume > 100)
-	{
+	if (!(commandContains("0")) && newVolume == 0 || newVolume > 100){
 		PH_LOG(LogType::Error, "Incorrect volume value! Use values from 0 to 100");
 		return;
 	}
 
-	if (commandContains("music"))			mGameData->getMusicPlayer().setVolume(newVolume);
-	else if (commandContains("sound"))		mGameData->getSoundPlayer().setVolume(newVolume);
-	else
-	{
+	if (commandContains("music"))
+		mGameData->getMusicPlayer().setVolume(newVolume);
+	else if (commandContains("sound"))
+		mGameData->getSoundPlayer().setVolume(newVolume);
+	else{
 		mGameData->getMusicPlayer().setVolume(newVolume);
 		mGameData->getSoundPlayer().setVolume(newVolume);
 	}
@@ -214,13 +218,9 @@ void ph::CommandInterpreter::logInto()
 
 	int newValue = commandContains("not") ? false : true;
 	if (commandContains("console") || commandContains("both"))
-	{
 		logSettings.setWritingLogsIntoConsole(newValue);
-	}
 	else if (commandContains("file") || commandContains("both"))
-	{
 		logSettings.setWritingLogsIntoFile(newValue);
-	}
 	else
 		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found!");
 }
@@ -279,7 +279,7 @@ bool ph::CommandInterpreter::areArgumentsToModulesToLogInvalid()
 		commandContains("resources") || commandContains("states") || commandContains("utilities") ||
 		commandContains("world") || commandContains("terminal") || commandContains("none") ||
 		commandContains("all") || commandContains("clear")
-		));
+	));
 }
 
 bool ph::CommandInterpreter::commandContains(const char c)
