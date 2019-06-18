@@ -10,6 +10,14 @@ ph::Terminal::Terminal()
 {
 }
 
+void ph::Terminal::init(GameData* gameData)
+{
+	mGameData = gameData;
+	mKeyboardInputHandler.setGameData(mGameData);
+	mCommandInterpreter.setGameData(mGameData);
+	mTerminalImage.init(gameData);
+}
+
 void ph::Terminal::input()
 {
 	mKeyboardInputHandler.handleInput();
@@ -19,14 +27,6 @@ void ph::Terminal::input()
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
-}
-
-void ph::Terminal::init(GameData* gameData)
-{
-	mGameData = gameData;
-	mKeyboardInputHandler.setGameData(mGameData);
-	mCommandInterpreter.setGameData(mGameData);
-	mTerminalImage.init(gameData);
 }
 
 void ph::Terminal::pushOutputLine(const OutputLine& line)
