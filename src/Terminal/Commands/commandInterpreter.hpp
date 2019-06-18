@@ -24,7 +24,8 @@ private:
 	void executeExit();
 
 	void executeTeleport();
-	sf::Vector2f getPositionFromCommand() const;
+	sf::Vector2f getTeleportPositionFromCommand() const;
+	sf::Vector2f handleTeleportArgumentError() const;
 	void executeCurrentPos();
 	auto getPlayer() const -> Object&;
 

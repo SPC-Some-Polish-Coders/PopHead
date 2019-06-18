@@ -53,48 +53,46 @@ void ph::CommandInterpreter::executeExit()
 void ph::CommandInterpreter::executeTeleport()
 {
 	auto& player = getPlayer();
-	sf::Vector2f newPosition = getPositionFromCommand();
+	sf::Vector2f newPosition = getTeleportPositionFromCommand();
 	player.setPosition(newPosition);
 }
 
-sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
+sf::Vector2f ph::CommandInterpreter::getTeleportPositionFromCommand() const
 {
 	const std::string numbers("1234567890");
 
-	if (mCommand.find_first_of(numbers) == std::string::npos)
-	{
-		PH_LOG(LogType::Error, "Incorrect argument! Use only digits from 0 to 9");
-		return getPlayer().getPosition();
-	}
+	if(mCommand.find_first_of(numbers) == std::string::npos)
+		return handleTeleportArgumentError();
 
 	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
-		if (xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
-		{
-			PH_LOG(LogType::Error, "Incorrect argument! Argument of X position is not a digit.");
-			return sf::Vector2f(getPlayer().getPosition());
-		}
+	if(xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
+		return handleTeleportArgumentError();
 	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
 	float positionX = std::strtof(xArgument.c_str(), nullptr);
 
 	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
-		if (yArgumentPositionInCommand == std::string::npos)
-		{
-			PH_LOG(LogType::Error, "Incorrect argument! Argument of Y position is not a digit.");
-			return sf::Vector2f(getPlayer().getPosition());
-		}
+	if(yArgumentPositionInCommand == std::string::npos)
+		return handleTeleportArgumentError();
 	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
 	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
 	float positionY = std::strtof(yArgument.c_str(), nullptr);
+
 	return sf::Vector2f(positionX, positionY);
+}
+
+sf::Vector2f ph::CommandInterpreter::handleTeleportArgumentError() const
+{
+	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
+	return getPlayer().getPosition();
 }
 
 void ph::CommandInterpreter::executeCurrentPos()
 {
-	auto& player = getPlayer().getPosition();
-	PH_LOG(LogType::Info, "player position: " + Cast::toString(player));
+	auto& playerPosition = getPlayer().getPosition();
+	PH_LOG(LogType::Info, "player position: " + Cast::toString(playerPosition));
 }
 
 auto ph::CommandInterpreter::getPlayer() const -> Object&
