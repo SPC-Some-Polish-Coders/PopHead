@@ -5,6 +5,7 @@
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Logs/logger.hpp"
+#include "Utilities/cast.hpp"
 
 void ph::CommandInterpreter::handleCommand(const std::string& command)
 {
@@ -78,10 +79,8 @@ sf::Vector2f ph::CommandInterpreter::getPositionFromCommand() const
 
 void ph::CommandInterpreter::executeCurrentPos()
 {
-	auto& player = getPlayer();
-	std::string x = std::to_string(player.getPosition().x);
-	std::string y = std::to_string(player.getPosition().y);
-	PH_LOG(LogType::Info, "player position:  x: " + x + "  y:" + y);
+	auto& player = getPlayer().getPosition();
+	PH_LOG(LogType::Info, "player position: " + Cast::toString(player));
 }
 
 auto ph::CommandInterpreter::getPlayer() const -> Object&
@@ -164,9 +163,9 @@ void ph::CommandInterpreter::executeUnmute()
 void ph::CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
-	if (!(commandContains("0")) && newVolume == 0)
+	if (!(commandContains("0")) && newVolume == 0 || newVolume > 100)
 	{
-		PH_LOG(LogType::Error, "Incorrect volume value!");
+		PH_LOG(LogType::Error, "Incorrect volume value! Expected range is 0-100");
 		return;
 	}
 
