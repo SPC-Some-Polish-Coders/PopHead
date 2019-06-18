@@ -10,7 +10,7 @@
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 ph::GameState::GameState(GameData* const gameData)
-	:State{ gameData }
+	:State(gameData)
 {
 	loadResources();
 	makeSceneTree();
@@ -129,9 +129,7 @@ void ph::GameState::input()
 {
 	mRoot.input();
 	handleCameraShakeShortcut();
-	handleCollisionDebugShortcuts();
 	windowMinimalizeAndMaximalizeShortcut();
-	audioMuteShortcut();
 	shotgunShot();
 }
 
@@ -139,67 +137,6 @@ void ph::GameState::handleCameraShakeShortcut()
 {
 	if(mGameData->getInput().getAction().isActionJustPressed("cameraShake"))
 		mShouldCameraShake = true;
-}
-
-void ph::GameState::handleCollisionDebugShortcuts()
-{
-	if (mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F1)) {
-		auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-		if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl)) {
-			switchCollisionDebugMode();
-		}
-		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num1)) {
-			collisionDebugSettings.setColors(1);
-		}
-		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num2)) {
-			collisionDebugSettings.setColors(2);
-		}
-		else if (mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::Num3)) {
-			collisionDebugSettings.setColors(3);
-		}
-		else {
-			turnOnAndTurnOffCollisionDebugSettings();
-		}
-	}
-}
-
-void ph::GameState::switchCollisionDebugMode()
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-	++mCollisionDebugMode;
-	if (mCollisionDebugMode == 4)
-		mCollisionDebugMode = 1;
-
-	switch (mCollisionDebugMode)
-	{
-	case 1:
-		collisionDebugSettings.displayAllBodies();
-		break;
-
-	case 2:
-		collisionDebugSettings.displayOnlyKinematicBodies();
-		break;
-
-	case 3:
-		collisionDebugSettings.displayOnlyStaticBodies();
-		break;
-	}
-}
-
-void ph::GameState::turnOnAndTurnOffCollisionDebugSettings()
-{
-	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-	if (mIsCollisionDebugTurnOn) {
-		collisionDebugSettings.turnOff();
-		mIsCollisionDebugTurnOn = false;
-	}
-	else {
-		collisionDebugSettings.turnOn();
-		mIsCollisionDebugTurnOn = true;
-	}
 }
 
 void ph::GameState::windowMinimalizeAndMaximalizeShortcut()
@@ -220,22 +157,6 @@ void ph::GameState::windowMinimalizeAndMaximalizeShortcut()
 			break;
 		}
 	}
-}
-
-void ph::GameState::audioMuteShortcut()
-{
-	if(isAudioMuteShortcutPressed()) {
-		bool isMuted = mGameData->getMusicPlayer().isMuted();
-		bool mute = !isMuted;
-		mGameData->getMusicPlayer().setMuted(mute);
-	}
-}
-
-bool ph::GameState::isAudioMuteShortcutPressed()
-{
-	return 
-		mGameData->getInput().getKeyboard().isKeyPressed(sf::Keyboard::LControl) &&
-		mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::M);
 }
 
 void ph::GameState::shotgunShot()

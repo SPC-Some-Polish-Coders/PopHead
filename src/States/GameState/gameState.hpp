@@ -28,12 +28,7 @@ public:
 	void input() override;
 private:
 	void handleCameraShakeShortcut();
-	void handleCollisionDebugShortcuts();
-	void switchCollisionDebugMode();
-	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
-	void audioMuteShortcut();
-	bool isAudioMuteShortcutPressed();
 	void shotgunShot();
 
 public:
