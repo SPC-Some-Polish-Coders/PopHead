@@ -120,7 +120,7 @@ void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 	size_t endOfCommand = getCommandWithoutArguments().size();
 
 	if (mCommand.rfind("on") > endOfCommand)	collisionDebugSettings.turnOn();
-	else if (commandContains("off"))			collisionDebugSettings.turnOff();
+	else if (mCommand.find("off"))			collisionDebugSettings.turnOff();
 	else
 		PH_LOG(LogType::Error, "Incorrect argument! Use 'on' or 'off' to switch between modes.");
 }
