@@ -21,7 +21,6 @@ namespace TerminalStyleConstants
 
 	const sf::Vector2f separatorBetweenInputAndOutputAreaSize(terminalWidth, 10);
 	const sf::Vector2f separatorBetweenInputAndOutputAreaPosition(terminalXPosition, terminalYPosition + 25);
-	const sf::Color separatorBetweenInputAndOutputColor(sf::Color::Black);
 
 	const std::string fontPath("fonts/consolab.ttf");
 	constexpr unsigned int inputCharacterSize = 18;

@@ -11,7 +11,7 @@ ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 {
 	mBackground.setFillColor(terminalColor);
 	mBackground.setPosition(terminalPosition);
-	mSeparatorBetweenInputAndOutputArea.setFillColor(separatorBetweenInputAndOutputColor);
+	mSeparatorBetweenInputAndOutputArea.setFillColor(sf::Color::Black);
 	mSeparatorBetweenInputAndOutputArea.setPosition(separatorBetweenInputAndOutputAreaPosition);
 }
 
