@@ -5,6 +5,7 @@
 
 ph::SoundPlayer::SoundPlayer()
 	:mVolume(20.f)
+	,mIsMuted(true)
 {
 	loadEverySound();
 }
@@ -38,6 +39,7 @@ void ph::SoundPlayer::playSound(const std::string& filePath, const float volume,
 	sound.setBuffer(mSoundBuffers.get(filePath));
 	sound.setVolume(volume);
 	sound.setLoop(loop);
+	setMuted(mIsMuted);
 	mSounds.emplace_back(std::move(sound));
 	mSounds.back().play();
 }

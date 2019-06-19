@@ -17,9 +17,9 @@ class Terminal
 {
 public:
 	Terminal();
+	void init(GameData*);
 
 	void input();
-	void init(GameData*);
 	void pushOutputLine(const OutputLine&);
 
 	auto getImage() -> TerminalImage& { return mTerminalImage; }

@@ -11,7 +11,7 @@ ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 {
 	mBackground.setFillColor(terminalColor);
 	mBackground.setPosition(terminalPosition);
-	mSeparatorBetweenInputAndOutputArea.setFillColor(separatorBetweenInputAndOutputColor);
+	mSeparatorBetweenInputAndOutputArea.setFillColor(sf::Color::Black);
 	mSeparatorBetweenInputAndOutputArea.setPosition(separatorBetweenInputAndOutputAreaPosition);
 }
 
@@ -41,8 +41,6 @@ void ph::TerminalImage::init(GameData* gameData)
 
 void ph::TerminalImage::initializeText(GameData* gameData)
 {
-	//TODO: Place where fonts are loaded shouldn't be here!
-	gameData->getFonts().load(fontPath);
 	auto& text = mTerminalSharedData->mInputLine;
 	text.setFont(gameData->getFonts().get(fontPath));
 	text.setFillColor(sf::Color::White);

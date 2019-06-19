@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 #include "Logs/logger.hpp"
+#include "Resources/loadFonts.hpp"
 
 namespace ph { enum class StateID; }
 
@@ -34,6 +35,8 @@ ph::Game::Game()
 		mTerminal.get(),
 		mGui.get()
 	));
+
+	loadFonts(mGameData.get());
 
 	mTerminal->init(mGameData.get());
 
