@@ -29,6 +29,8 @@ private:
 	void executeCurrentPos();
 	auto getPlayer() const -> Object&;
 
+	void executeHistory();
+
 	void executeCollisionDebug();
 	void changeCollisionDebugColor();
 	void changeCollisionDebugDisplayMode();

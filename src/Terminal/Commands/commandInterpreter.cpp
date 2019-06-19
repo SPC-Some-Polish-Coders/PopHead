@@ -13,15 +13,16 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if(commandWithoutArguments == "echo")                 executeEcho();
-	else if(commandWithoutArguments == "exit")            executeExit();
-	else if(commandWithoutArguments == "teleport")        executeTeleport();
-	else if(commandWithoutArguments == "currentpos")      executeCurrentPos();
-	else if(commandWithoutArguments == "collisiondebug")  executeCollisionDebug();
-	else if(commandWithoutArguments == "mute")            executeMute();
-	else if(commandWithoutArguments == "unmute")          executeUnmute();
-	else if(commandWithoutArguments == "setvolume")       executeSetVolume();
-	else if(commandWithoutArguments == "log")             executeLog();
+	if (commandWithoutArguments == "echo")                 executeEcho();
+	else if (commandWithoutArguments == "exit")            executeExit();
+	else if (commandWithoutArguments == "teleport")        executeTeleport();
+	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
+	else if (commandWithoutArguments == "collisiondebug")  executeCollisionDebug();
+	else if (commandWithoutArguments == "mute")            executeMute();
+	else if (commandWithoutArguments == "unmute")          executeUnmute();
+	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
+	else if (commandWithoutArguments == "log")             executeLog();
+	else if (commandWithoutArguments == "history")		  executeHistory();
 	else if(commandWithoutArguments == "") PH_LOG(LogType::Info, "This is terminal. Enter 'help' to see availible commands.");
 	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
 }
@@ -44,6 +45,18 @@ void ph::CommandInterpreter::executeEcho()
 	size_t messageLength = mCommand.size() - messageStartPos;
 	std::string message = mCommand.substr(messageStartPos, messageLength);
 	PH_LOG(LogType::FromUser, message);
+}
+
+void ph::CommandInterpreter::executeHistory()
+{
+	//in progress
+	auto historyData = mGameData->getTerminal().getSharedData()->mLastCommands;
+	for (const auto& it : historyData)
+	{
+		mGameData->getTerminal().pushOutputLine({ it, sf::Color::White });
+		//or PH_LOG(LogType::Info, it);
+	}
+	PH_LOG(LogType::Info, "Ten last used commands: ");
 }
 
 void ph::CommandInterpreter::executeExit()
