@@ -36,6 +36,7 @@ private:
 	
 	void executeMute();
 	void executeUnmute();
+	void setAudioMuted(bool mute);
 	void executeSetVolume();
 	float getVolumeFromCommand();
 

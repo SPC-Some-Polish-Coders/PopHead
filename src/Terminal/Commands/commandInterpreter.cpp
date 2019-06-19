@@ -150,30 +150,26 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 
 void ph::CommandInterpreter::executeMute()
 {
-	if (commandContains("music"))
-		mGameData->getMusicPlayer().setMuted(true);
-	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setMuted(true);
-	else if (commandContains("all")){
-		mGameData->getSoundPlayer().setMuted(true);
-		mGameData->getMusicPlayer().setMuted(true);
-	}
-	else 
-		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
+	setAudioMuted(true);
 }
 
 void ph::CommandInterpreter::executeUnmute()
 {
-	if (commandContains("music"))
-		mGameData->getMusicPlayer().setMuted(false);
+	setAudioMuted(false);
+}
+
+void ph::CommandInterpreter::setAudioMuted(bool mute)
+{
+	if(commandContains("music"))
+		mGameData->getMusicPlayer().setMuted(mute);
 	else if(commandContains("sound"))
-		mGameData->getSoundPlayer().setMuted(false);
-	else if(commandContains("all")){
-		mGameData->getMusicPlayer().setMuted(false);
-		mGameData->getSoundPlayer().setMuted(false);
+		mGameData->getSoundPlayer().setMuted(mute);
+	else if(commandContains("all")) {
+		mGameData->getMusicPlayer().setMuted(mute);
+		mGameData->getSoundPlayer().setMuted(mute);
 	}
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found.");
+		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'music', 'sound' or 'all'.");
 }
 
 void ph::CommandInterpreter::executeSetVolume()
@@ -253,22 +249,22 @@ void ph::CommandInterpreter::setModulesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
-	if (commandContains("audio"))       logSettings.addToVector("Audio");
-	if (commandContains("base"))        logSettings.addToVector("Base");
-	if (commandContains("input"))       logSettings.addToVector("Input");
-	if (commandContains("logs"))        logSettings.addToVector("Logs");
-	if (commandContains("physics"))     logSettings.addToVector("Physics");
-	if (commandContains("renderer"))    logSettings.addToVector("Renderer");
-	if (commandContains("resources"))   logSettings.addToVector("Resources");
-	if (commandContains("states"))      logSettings.addToVector("States");
-	if (commandContains("utilities"))   logSettings.addToVector("Utilities");
-	if (commandContains("world"))       logSettings.addToVector("World");
-	if (commandContains("terminal"))    logSettings.addToVector("Terminal");
-	if (commandContains("none"))        logSettings.addToVector("None");
+	if(commandContains("audio"))      logSettings.addToVector("Audio");
+	if(commandContains("base"))       logSettings.addToVector("Base");
+	if(commandContains("input"))      logSettings.addToVector("Input");
+	if(commandContains("logs"))       logSettings.addToVector("Logs");
+	if(commandContains("physics"))    logSettings.addToVector("Physics");
+	if(commandContains("renderer"))   logSettings.addToVector("Renderer");
+	if(commandContains("resources"))  logSettings.addToVector("Resources");
+	if(commandContains("states"))     logSettings.addToVector("States");
+	if(commandContains("utilities"))  logSettings.addToVector("Utilities");
+	if(commandContains("world"))      logSettings.addToVector("World");
+	if(commandContains("terminal"))   logSettings.addToVector("Terminal");
+	if(commandContains("none"))       logSettings.addToVector("None");
 	
-	if (commandContains("all"))			logSettings.turnOnWritingLogsFromEachModule();
+	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))	logSettings.setModuleNamesToWrite({});
-	if (areArgumentsToModulesToLogInvalid())
+	if(areArgumentsToModulesToLogInvalid())
 		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");
 }
 
