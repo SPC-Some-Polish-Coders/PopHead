@@ -175,8 +175,8 @@ void ph::CommandInterpreter::setAudioMuted(bool mute)
 void ph::CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
-	if (!(commandContains("0")) && newVolume == 0 || newVolume > 100){
-		PH_LOG(LogType::Error, "Incorrect volume value! Use values from 0 to 100");
+	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
+		PH_LOG(LogType::Error, "Incorrect volume value! Enter value from 0 to 100");
 		return;
 	}
 
@@ -201,11 +201,11 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 
 void ph::CommandInterpreter::executeLog()
 {
-	if (commandContains("into"))			logInto();
-	else if (commandContains("types"))		setLogTypesToLog();
-	else if (commandContains("modules"))	setModulesToLog();
+	if (commandContains("into"))          logInto();
+	else if (commandContains("types"))    setLogTypesToLog();
+	else if (commandContains("modules"))  setModulesToLog();
 	else
-		PH_LOG(LogType::Error, "Incorrect argument! Use 'into' 'types' or 'modules' to set logging.");
+		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");
 }
 
 void ph::CommandInterpreter::logInto()
@@ -218,22 +218,23 @@ void ph::CommandInterpreter::logInto()
 	else if (commandContains("file") || commandContains("both"))
 		logSettings.setWritingLogsIntoFile(newValue);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Specified module not found!");
+		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file' or 'both'.");
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
-	if (commandContains("info"))     logSettings.addToVector(LogType::Info);
-	if (commandContains("warning"))  logSettings.addToVector(LogType::Warning);
-	if (commandContains("error"))    logSettings.addToVector(LogType::Error);
-	if (commandContains("user"))     logSettings.addToVector(LogType::FromUser);
+	if(commandContains("info"))     logSettings.addToVector(LogType::Info);
+	if(commandContains("warning"))  logSettings.addToVector(LogType::Warning);
+	if(commandContains("error"))    logSettings.addToVector(LogType::Error);
+	if(commandContains("user"))     logSettings.addToVector(LogType::FromUser);
 
-	if (commandContains("all"))			logSettings.turnOnWritingLogsFromEachLogTypes();
-	else if (commandContains("clear")) 	logSettings.setLogTypesToWrite({});
-	if (areArgumentsToLogTypesToLogInvalid())
-		PH_LOG(LogType::Error, "Incorrect second argument! Use one of log types or 'all'/'clear'.");
+	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachLogTypes();
+	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({});
+
+	if(areArgumentsToLogTypesToLogInvalid())
+		PH_LOG(LogType::Error, "Incorrect 2nd argument! Enter: 'info','warning','error','user','all' or 'clear'.");
 }
 
 bool ph::CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
