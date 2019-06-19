@@ -126,7 +126,7 @@ void ph::Map::loadTiles(
 
 			const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
 			const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
-			const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
+			const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally; // diagonally flipped is just rotate 270 + flip horizontally
 
 			const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
@@ -143,11 +143,64 @@ void ph::Map::loadTiles(
 				static_cast<sf::Vector2i>(tileRectPosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			const sf::Texture& texture = mGameData->getTextures().get(pathToMapTextures + tilesets.sources[j]);
+			const std::string textureName = pathToMapTextures + tilesets.sources[j];
+			const sf::Texture& texture = mGameData->getTextures().get(textureName);
 			sf::Sprite tile(texture, tileRect);
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
+
+			if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+				// rotate 90 + flip vertically
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				tile.setScale(1.f, -1.f);
+				position += center;
+			}
+			else if (isHorizontallyFlipped && isVerticallyFlipped) {
+				// flip horizontally + flip vertically
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(-1.f, -1.f);
+				position += center;
+			}
+			else if (isHorizontallyFlipped && isDiagonallyFlipped) {
+				// rotate 90
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(90);
+				position += center;
+			}
+			else if (isHorizontallyFlipped) {
+				// flip horizontally
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(-1.f, 1.f);
+				position += center;
+			}
+			else if (isVerticallyFlipped && isDiagonallyFlipped) {
+				// rotate 270
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				position += center;
+			}
+			else if (isVerticallyFlipped) {
+				// flip vertically
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(1.f, -1.f);
+				position += center;
+			}
+			else if (isDiagonallyFlipped) {
+				// rotate 270 + flip horizontally
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				tile.setScale(-1.f, 1.f);
+				position += center;
+			}
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 		}
