@@ -30,6 +30,7 @@ private:
 	auto getPlayer() const -> Object&;
 
 	void executeHistory();
+	void executeHelp();
 
 	void executeCollisionDebug();
 	void changeCollisionDebugColor();
@@ -55,6 +56,7 @@ private:
 private:
 	std::string mCommand;
 	GameData* mGameData;
+
 };
 
 }

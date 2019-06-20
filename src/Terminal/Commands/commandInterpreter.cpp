@@ -22,7 +22,8 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "unmute")          executeUnmute();
 	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
 	else if (commandWithoutArguments == "log")             executeLog();
-	else if (commandWithoutArguments == "history")		  executeHistory();
+	else if (commandWithoutArguments == "history")		   executeHistory();
+	else if (commandWithoutArguments == "help")			   executeHelp();
 	else if(commandWithoutArguments == "") PH_LOG(LogType::Info, "This is terminal. Enter 'help' to see availible commands.");
 	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
 }
@@ -49,14 +50,40 @@ void ph::CommandInterpreter::executeEcho()
 
 void ph::CommandInterpreter::executeHistory()
 {
-	//in progress
 	auto historyData = mGameData->getTerminal().getSharedData()->mLastCommands;
-	for (const auto& it : historyData)
+	std::deque<std::string>::reverse_iterator it = historyData.rbegin();
+
+	for (; it != historyData.rend(); ++it)
+		mGameData->getTerminal().pushOutputLine({ "- " + *it, sf::Color(127, 244, 44) });
+	mGameData->getTerminal().pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
+}
+
+void ph::CommandInterpreter::executeHelp()
+{
+	std::vector<std::string> commandsList = { "EXIT", "ECHO", "HISTORY", 
+							"HELP", "MUTE", "UNMUTE", "SETVOLUME",
+							"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"};
+	int i = 0;
+
+	if (commandContains('1'))
 	{
-		mGameData->getTerminal().pushOutputLine({ it, sf::Color::White });
-		//or PH_LOG(LogType::Info, it);
+		i = 1;
+		for (int i = 0; i < commandsList.size(); ++i)
+			mGameData->getTerminal().pushOutputLine({ "- " + commandsList[i], sf::Color(127, 244, 44) });
 	}
-	PH_LOG(LogType::Info, "Ten last used commands: ");
+	else if (commandContains('2'))
+	{
+		i = 2;
+		mGameData->getTerminal().pushOutputLine({ "Will be fulfilled if necessary" + commandsList[i], sf::Color(127, 244, 44) });
+	}
+	else
+	{
+		i = 1;
+		for (int i = 0; i < commandsList.size(); ++i)
+			mGameData->getTerminal().pushOutputLine({ "- " + commandsList[i], sf::Color(127, 244, 44) });
+	}
+
+	mGameData->getTerminal().pushOutputLine({"Avalible commands, PAGE "+ std::to_string(i) + ": ",sf::Color(127, 244, 44) });
 }
 
 void ph::CommandInterpreter::executeExit()
