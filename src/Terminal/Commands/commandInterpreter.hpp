@@ -31,6 +31,7 @@ private:
 
 	void executeHistory();
 	void executeHelp();
+	void executeClear();
 
 	void executeCollisionDebug();
 	void changeCollisionDebugColor();
