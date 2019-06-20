@@ -261,14 +261,14 @@ void ph::CommandInterpreter::logInto()
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
 	int newValue = commandContains("not") ? false : true;
-	if (commandContains("console") || commandContains("both"))
+	if (commandContains("console") || commandContains("all"))
 		logSettings.setWritingLogsIntoConsole(newValue);
-	else if (commandContains("file") || commandContains("both"))
+	else if (commandContains("file") || commandContains("all"))
 		logSettings.setWritingLogsIntoFile(newValue);
-	else if (commandContains("terminal") || commandContains("both"))
+	else if (commandContains("terminal") || commandContains("all"))
 		logSettings.setWritingLogsIntoTerminal(newValue);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'both'.");
+		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()
