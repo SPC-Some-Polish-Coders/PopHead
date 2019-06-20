@@ -69,7 +69,7 @@ clear
 | `file` | argument makes logs appear in file |
 | `console` | argument makes logs appear in console	|
 | `terminal` | argument makes logs appear in terminal	|
-| `both` | argument makes logs appear in both places |
+| `all` | argument makes logs appear in both places |
 | `not` | argument needs to be combined with one of above. It makes whole command opposite
 - logs won't appear in specified place |
 
