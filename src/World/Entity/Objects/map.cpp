@@ -68,6 +68,7 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 		TODO:
 		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
 		- (BEST) Do something with Xml impl to check if there is source attribute defined? ->
+			* return std::optional?
 			* return iterator in getAttribute(name)?
 			* return std::pair in getAttribute(name)?
 			* return struct in getAttribute(name)?
@@ -118,12 +119,23 @@ void ph::Map::loadTiles(
 {
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		if (hasTile(globalTileIds[i])) {
-			const std::size_t j = findTilesetIndex(globalTileIds[i], tilesets);
+			const unsigned bitsInByte = 8;
+			const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
+			const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
+			const unsigned flippedDiagonally = 0B1u << (sizeof(unsigned) * bitsInByte - 3);
+
+			const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
+			const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
+			const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
+
+			const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+
+			const std::size_t j = findTilesetIndex(globalTileId, tilesets);
 			if (j == std::string::npos) {
-				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + globalTileIds[i]);
+				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
-			const unsigned tileId = globalTileIds[i] - tilesets.firstGlobalTileIds[j];
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[j];
 			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[j]);
 			tileRectPosition.x *= tileSize.x;
 			tileRectPosition.y *= tileSize.y;
@@ -131,10 +143,57 @@ void ph::Map::loadTiles(
 				static_cast<sf::Vector2i>(tileRectPosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			sf::Sprite tile(mGameData->getTextures().get(pathToMapTextures + tilesets.sources[j]), tileRect);
+			const std::string textureName = pathToMapTextures + tilesets.sources[j];
+			const sf::Texture& texture = mGameData->getTextures().get(textureName);
+			sf::Sprite tile(texture, tileRect);
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
+
+			if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				tile.setScale(1.f, -1.f);
+				position += center;
+			}
+			else if (isHorizontallyFlipped && isVerticallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(-1.f, -1.f);
+				position += center;
+			}
+			else if (isHorizontallyFlipped && isDiagonallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(90);
+				position += center;
+			}
+			else if (isHorizontallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(-1.f, 1.f);
+				position += center;
+			}
+			else if (isVerticallyFlipped && isDiagonallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				position += center;
+			}
+			else if (isVerticallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setScale(1.f, -1.f);
+				position += center;
+			}
+			else if (isDiagonallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				tile.setRotation(270);
+				tile.setScale(-1.f, 1.f);
+				position += center;
+			}
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 		}

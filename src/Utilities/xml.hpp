@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_XML_H_
-#define POPHEAD_UTILITIES_XML_H_
+#pragma once
 
 #include "cast.hpp"
 #include <string>
@@ -38,5 +37,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_UTILITIES_XML_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_
+#pragma once
 
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
@@ -54,5 +53,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_MAP_H_
