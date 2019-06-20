@@ -11,6 +11,12 @@ bool ph::LogsInitializer::getShouldLogIntoFile()
 	return getShouldLogInto(LogOutputTarget::file);
 }
 
+bool ph::LogsInitializer::getShouldLogIntoTerminal()
+{
+	return getShouldLogInto(LogOutputTarget::terminal);
+}
+
+
 bool ph::LogsInitializer::getShouldLogInto(LogOutputTarget target)
 {
 	openTheFile();
@@ -19,6 +25,8 @@ bool ph::LogsInitializer::getShouldLogInto(LogOutputTarget target)
 		phrase += "Console=";
 	else if(target == LogOutputTarget::file)
 		phrase += "File=";
+	else if(target == LogOutputTarget::terminal)
+		phrase += "Terminal=";
 	if(findPhrase(phrase)) {
 		bool returnVal = getBool(currentLine);
 		closeTheFile();

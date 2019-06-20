@@ -15,6 +15,7 @@ public:
 	void setWritingLogs(bool enabled);
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
+	void setWritingLogsIntoTerminal(bool enabled) { mShouldLogIntoTerminal = enabled; }
 	void addToVector(const LogType&);
 	void addToVector(const std::string&);
 
@@ -28,6 +29,7 @@ public:
 
 	bool shouldBeWrittenIntoConsole(const LogData&) const;
 	bool shouldBeWrittenIntoFile(const LogData&) const;
+	bool shouldBeWrittenIntoTerminal(const LogData&) const;
 
 private:
 	bool shouldBeWritten(const LogData&) const;
@@ -39,6 +41,7 @@ private:
 	std::vector<LogType> mLogTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
+	bool mShouldLogIntoTerminal;
 };
 
 }

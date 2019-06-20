@@ -51,12 +51,13 @@ void ph::CommandInterpreter::executeEcho()
 
 void ph::CommandInterpreter::executeHistory()
 {
-	auto historyData = mGameData->getTerminal().getSharedData()->mLastCommands;
-	std::deque<std::string>::reverse_iterator it = historyData.rbegin();
+	auto& terminalData = mGameData->getTerminal();
+	auto& commandsHistory = mGameData->getTerminal().getSharedData()->mLastCommands;
+	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
-	for (; it != historyData.rend(); ++it)
-		mGameData->getTerminal().pushOutputLine({ "- " + *it, sf::Color(127, 244, 44) });
-	mGameData->getTerminal().pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
+	for (; it != commandsHistory.rend(); ++it)
+		terminalData.pushOutputLine({ "- " + *it, sf::Color(127, 244, 44) });
+	terminalData.pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
 }
 
 void ph::CommandInterpreter::executeHelp()
@@ -264,8 +265,10 @@ void ph::CommandInterpreter::logInto()
 		logSettings.setWritingLogsIntoConsole(newValue);
 	else if (commandContains("file") || commandContains("both"))
 		logSettings.setWritingLogsIntoFile(newValue);
+	else if (commandContains("terminal") || commandContains("both"))
+		logSettings.setWritingLogsIntoTerminal(newValue);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file' or 'both'.");
+		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'both'.");
 }
 
 void ph::CommandInterpreter::setLogTypesToLog()

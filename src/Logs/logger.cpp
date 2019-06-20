@@ -59,7 +59,8 @@ void ph::Logger::writeLog(const LogData& log)
 	if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
 
-	writeLogInInternalTerminal(log);
+	if (mLogSettings.shouldBeWrittenIntoTerminal(log))
+		writeLogInInternalTerminal(log);
 
 	if (mLogSettings.shouldBeWrittenIntoFile(log))
 		saveLogInFile(log);

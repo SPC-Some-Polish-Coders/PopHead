@@ -6,6 +6,7 @@
 ph::LogSettings::LogSettings()
 	:mShouldLogIntoConsole(LogsInitializer::getShouldLogIntoConsole())
 	,mShouldLogIntoFile(LogsInitializer::getShouldLogIntoFile())
+	,mShouldLogIntoTerminal(LogsInitializer::getShouldLogIntoTerminal())
 {
 	setLogTypesToWrite(LogsInitializer::getLogTypesToWrite());
 	setModuleNamesToWrite(LogsInitializer::getModuleNamesToWrite());
@@ -33,36 +34,6 @@ void ph::LogSettings::turnOnWritingLogsFromEachLogTypes()
 		mLogTypesToWrite[i] = static_cast<LogType>(i);
 }
 
-void ph::LogSettings::addToVector(const LogType& logTypeName)
-{
-	if (mLogTypesToWrite.size() == 0)
-	{
-		mLogTypesToWrite.emplace_back(logTypeName);
-	}
-	else 
-		for (std::size_t i = 0; i < mLogTypesToWrite.size(); ++i)
-		{
-			if (mLogTypesToWrite[i] == logTypeName) return;
-			mLogTypesToWrite.emplace_back(logTypeName);
-		}
-}
-
-void ph::LogSettings::addToVector(const std::string& moduleName)
-{
-	if (mModuleNamesToWrite.size() == 0)
-	{
-		mModuleNamesToWrite.emplace_back(moduleName);
-		PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
-	}
-	else
-		for (std::size_t i = 0; i < mModuleNamesToWrite.size()+1; ++i)
-		{
-			if (mModuleNamesToWrite[i] == moduleName) return;
-			mModuleNamesToWrite.emplace_back(moduleName);
-			PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
-		}
-}
-
 void ph::LogSettings::setWritingLogs(bool enabled)
 {
 	mShouldLogIntoConsole = enabled;
@@ -77,6 +48,11 @@ bool ph::LogSettings::shouldBeWrittenIntoConsole(const LogData& log) const
 bool ph::LogSettings::shouldBeWrittenIntoFile(const LogData& log) const
 {
 	return mShouldLogIntoFile && shouldBeWritten(log);
+}
+
+bool ph::LogSettings::shouldBeWrittenIntoTerminal(const LogData& log) const
+{
+	return mShouldLogIntoTerminal && shouldBeWritten(log);
 }
 
 bool ph::LogSettings::shouldBeWritten(const LogData& log) const
@@ -100,3 +76,32 @@ bool ph::LogSettings::shouldBeWrittenConsideringModuleName(const LogData& log) c
 	return false;
 }
 
+void ph::LogSettings::addToVector(const LogType& logTypeName)
+{
+	if (mLogTypesToWrite.size() == 0)
+	{
+		mLogTypesToWrite.emplace_back(logTypeName);
+	}
+	else
+		for (std::size_t i = 0; i < mLogTypesToWrite.size(); ++i)
+		{
+			if (mLogTypesToWrite[i] == logTypeName) return;
+			mLogTypesToWrite.emplace_back(logTypeName);
+		}
+}
+
+void ph::LogSettings::addToVector(const std::string & moduleName)
+{
+	if (mModuleNamesToWrite.size() == 0)
+	{
+		mModuleNamesToWrite.emplace_back(moduleName);
+		PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
+	}
+	else
+		for (std::size_t i = 0; i < mModuleNamesToWrite.size() + 1; ++i)
+		{
+			if (mModuleNamesToWrite[i] == moduleName) return;
+			mModuleNamesToWrite.emplace_back(moduleName);
+			PH_LOG(LogType::Info, moduleName + " was added to displayed modules.");
+		}
+}

@@ -14,8 +14,9 @@ public:
 
 	static bool getShouldLogIntoConsole();
 	static bool getShouldLogIntoFile();
+	static bool getShouldLogIntoTerminal();
 private:
-	enum class LogOutputTarget{ console, file };
+	enum class LogOutputTarget{ console, file, terminal };
 	static bool getShouldLogInto(LogOutputTarget);
 };
 
