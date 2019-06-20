@@ -29,6 +29,13 @@ Then you can enter one of the commands listed below. These can be either many-ar
 Confirm it by **pressing "Enter"**. You can keep entering commands or if you'd like to leave **press "Tab"** once again.
 In fact, order of arguments is not important at all. It's crucial to include "basic" command name in the beggining and arguments might be mixed.
 
+```
+log into terminal not
+log not into terminal
+log terminal not into
+```
+Above examples **mean the same**!
+
 ## Navigation keys in the terminal
 - Using **"Up"** arrow you recover last entered command
 - Using **"Down"** arrow you delete so far entered characters
@@ -39,11 +46,17 @@ In fact, order of arguments is not important at all. It's crucial to include "ba
 | ----------: | ----------- |
 | **`exit`**  | is **no-argument** command which closes the program |
 | **`echo`** | is **single-argumented** command which prints out the message given by the user |
+| **`help`** | is **single-argumented** command which prints out availible commands. Needs to be combined with a number of a page |
+| **`history`** | is **no-argument** command which prints out ten last used commands |
+| **`clear`** | is **no-argument** command which clears the output area in terminal |
 
 #### Examples: 
 ```
 echo hello world
 exit
+help 2
+history
+clear
 ```
 ## Logging commands
 -------------------------
@@ -55,8 +68,10 @@ exit
 | -----------: | ------------ |
 | `file` | argument makes logs appear in file |
 | `console` | argument makes logs appear in console	|
+| `terminal` | argument makes logs appear in terminal	|
 | `both` | argument makes logs appear in both places |
-| `not` | argument makes whole command opposite - logs won't appear in specified place |
+| `not` | argument needs to be combined with one of above. It makes whole command opposite
+- logs won't appear in specified place |
 
 #### Examples: 
 ```
