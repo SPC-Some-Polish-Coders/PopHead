@@ -10,6 +10,8 @@ enum class LogType : std::size_t {
 	Error,
 	Warning,
 	FromUser,
+	Exception,
+	UnhandledException,
 	Count // WARNING: Keep it last
 };
 
