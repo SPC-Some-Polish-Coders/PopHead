@@ -279,11 +279,9 @@ void ph::CommandInterpreter::setLogTypesToLog()
 	if(commandContains("warning"))  logSettings.addToVector(LogType::Warning);
 	if(commandContains("error"))    logSettings.addToVector(LogType::Error);
 	if(commandContains("user"))     logSettings.addToVector(LogType::FromUser);
-	if (commandContains("exception"))				logSettings.addToVector(LogType::Exception);
-	if (commandContains("unhandled exception"))     logSettings.addToVector(LogType::UnhandledException);
 
 	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachLogTypes();
-	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({});
+	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({LogType::Exception, LogType::UnhandledException});
 
 	if(areArgumentsToLogTypesToLogInvalid())
 		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");
@@ -294,7 +292,6 @@ bool ph::CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
 	return(!(
 		commandContains("info") || commandContains("warning") ||
 		commandContains("error") || commandContains("user") ||
-		commandContains("exception") || commandContains("unhandled exception") ||
 		commandContains("all") || commandContains("clear")
 	));
 }
