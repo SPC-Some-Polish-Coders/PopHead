@@ -2,6 +2,7 @@
 
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 #include <string>
 #include <vector>
 
@@ -24,6 +25,11 @@ private:
 		std::vector<unsigned> tileCounts;
 	};
 
+	struct CollisionsData {
+		std::vector<sf::FloatRect> bounds;
+		std::vector<unsigned> tileIds;
+	};
+
 	void checkMapSupport(const Xml& mapNode) const;
 
 	sf::Vector2u getMapSize(const Xml& mapNode) const;
@@ -34,6 +40,8 @@ private:
 
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
 
+	CollisionsData getCollisionsData(const std::vector<Xml>& tilesetNodes) const;
+
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
@@ -41,6 +49,7 @@ private:
 	void loadTiles(
 		const std::vector<unsigned>& globalTileIds,
 		const TilesetsData& tilesets,
+		const CollisionsData& collisions,
 		sf::Vector2u mapSize,
 		sf::Vector2u tileSize);
 
@@ -48,8 +57,9 @@ private:
 
 	std::size_t findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const;
 
-	const std::string pathToMapTextures = "textures/map/";
+	inline static const std::string pathToMapTextures = "textures/map/";
 	std::vector<sf::Sprite> mTiles;
+	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 
 }

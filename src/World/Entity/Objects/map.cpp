@@ -19,12 +19,13 @@ void ph::Map::loadFromFile(const std::string& filename)
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
+	const CollisionsData collisions = getCollisionsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		loadTiles(globalTileIds, tilesets, mapSize, tileSize);
+		loadTiles(globalTileIds, tilesets, collisions, mapSize, tileSize);
 	}
 }
 
@@ -95,6 +96,28 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 	return tilesets;
 }
 
+ph::Map::CollisionsData ph::Map::getCollisionsData(const std::vector<Xml>& tilesetNodes) const
+{
+	CollisionsData collisions;
+	for (const Xml& tilesetNode : tilesetNodes) {
+		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
+		for (const Xml& tileNode : tileNodes) {
+			const Xml objectGroupNode = tileNode.getChild("objectgroup");
+			const Xml objectNode = objectGroupNode.getChild("object");
+			const unsigned tileId = objectNode.getAttribute("id").toUnsigned();
+			collisions.tileIds.push_back(tileId);
+			const sf::FloatRect bounds(
+				objectNode.getAttribute("x").toFloat(),
+				objectNode.getAttribute("y").toFloat(),
+				objectNode.getAttribute("width").toFloat(),
+				objectNode.getAttribute("height").toFloat()
+			);
+			collisions.bounds.push_back(bounds);
+		}
+	}
+	return collisions;
+}
+
 std::vector<ph::Xml> ph::Map::getLayerNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
@@ -114,11 +137,20 @@ std::vector<unsigned> ph::Map::toGlobalTileIds(const Xml& dataNode) const
 void ph::Map::loadTiles(
 	const std::vector<unsigned>& globalTileIds,
 	const TilesetsData& tilesets,
+	const CollisionsData& collisions,
 	sf::Vector2u mapSize,
 	sf::Vector2u tileSize)
 {
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		if (hasTile(globalTileIds[i])) {
+			for (std::size_t j = 0; j < collisions.tileIds.size(); ++j) {
+				if (globalTileIds[i] == collisions.tileIds[j]) {
+					// TODO: Should pass this?
+					std::unique_ptr<CollisionBody> collisionBody = std::make_unique<CollisionBody>(collisions.bounds[j], 0, BodyType::staticBody, this, mGameData);
+					mCollisionBodies.push_back(std::move(collisionBody));
+				}
+			}
+
 			const unsigned bitsInByte = 8;
 			const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
 			const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
@@ -220,13 +252,13 @@ void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
 	sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 
-	for(const sf::Sprite& sprite : mTiles) {
+	for (const sf::Sprite& sprite : mTiles) {
 		const sf::FloatRect bounds = sprite.getGlobalBounds();
 		screen.left -= bounds.width;
 		screen.top -= bounds.height;
 		screen.width += bounds.width;
 		screen.height += bounds.height;
-		if(screen.contains(bounds.left, bounds.top))
+		if (screen.contains(bounds.left, bounds.top))
 			target.draw(sprite, states);
 	}
 }
