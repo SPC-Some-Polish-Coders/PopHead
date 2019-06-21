@@ -142,18 +142,18 @@ void ph::Map::loadTiles(
 	sf::Vector2u tileSize)
 {
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
-		if (hasTile(globalTileIds[i])) {
-			const unsigned bitsInByte = 8;
-			const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
-			const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
-			const unsigned flippedDiagonally = 0B1u << (sizeof(unsigned) * bitsInByte - 3);
+		const unsigned bitsInByte = 8;
+		const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
+		const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
+		const unsigned flippedDiagonally = 0B1u << (sizeof(unsigned) * bitsInByte - 3);
 
-			const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
-			const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
-			const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
+		const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
+		const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
+		const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
 
-			const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+		const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
+		if (hasTile(globalTileId)) {
 			const std::size_t j = findTilesetIndex(globalTileId, tilesets);
 			if (j == std::string::npos) {
 				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
@@ -222,7 +222,7 @@ void ph::Map::loadTiles(
 			mTiles.push_back(tile);
 
 			for (std::size_t j = 0; j < collisions.tileIds.size(); ++j) {
-				if (globalTileIds[i] == collisions.tileIds[j]) {
+				if (tileId == collisions.tileIds[j]) {
 					// TODO: Should pass this?
 					sf::FloatRect collisionBounds = collisions.bounds[j];
 					collisionBounds.left += position.x;
