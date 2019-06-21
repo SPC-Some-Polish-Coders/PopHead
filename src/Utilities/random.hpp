@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_RANDOM_H_
-#define POPHEAD_UTILITIES_RANDOM_H_
+#pragma once
 
 #include <random>
 
@@ -14,5 +13,3 @@ private:
 };
 
 }
-
-#endif

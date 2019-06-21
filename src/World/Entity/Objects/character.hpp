@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_
+#pragma once
 
 #include "World/Entity/object.hpp"
 #include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
@@ -42,5 +41,3 @@ protected:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTER_H_

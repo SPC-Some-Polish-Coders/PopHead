@@ -1,5 +1,4 @@
-#ifndef POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP
-#define POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP
+#pragma once
 
 #include "States/state.hpp"
 #include <SFML/Graphics.hpp>
@@ -46,5 +45,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP

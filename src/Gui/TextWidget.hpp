@@ -1,7 +1,6 @@
-#include "Widget.hpp"
+#pragma once
 
-#ifndef TEXT_WIDGET
-#define TEXT_WIDGET
+#include "Widget.hpp"
 
 namespace ph {
 
@@ -44,5 +43,3 @@ namespace ph {
 
 
 }
-
-#endif

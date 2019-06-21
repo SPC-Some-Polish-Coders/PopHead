@@ -1,5 +1,4 @@
-#ifndef POPHEAD_INPUT_ACTIONMANAGER_H_
-#define POPHEAD_INPUT_ACTIONMANAGER_H_
+#pragma once
 
 #include <SFML/Window.hpp>
 #include <string>
@@ -35,5 +34,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_INPUT_ACTIONMANAGER_H_

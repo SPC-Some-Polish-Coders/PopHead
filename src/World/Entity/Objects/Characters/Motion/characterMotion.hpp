@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_
+#pragma once
 
 namespace ph {
 
@@ -18,5 +17,3 @@ struct CharacterMotion
 };
 
 }
-
-#endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERMOTION_H_

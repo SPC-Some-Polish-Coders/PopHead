@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITYTYPE_H_
-#define POPHEAD_WORLD_ENTITYTYPE_H_
+#pragma once
 
 namespace ph{
 
@@ -11,5 +10,3 @@ enum class EntityType
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITYTYPE_H_

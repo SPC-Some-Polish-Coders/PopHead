@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RENDERER_CAMERA_H_
-#define POPHEAD_RENDERER_CAMERA_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -46,5 +45,3 @@ private:
 };
 
 }
-
-#endif

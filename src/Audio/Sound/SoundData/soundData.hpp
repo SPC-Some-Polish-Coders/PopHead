@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_SOUNDDATA_H_
-#define POPHEAD_AUDIO_SOUNDDATA_H_
+#pragma once
 
 namespace ph {
 
@@ -15,5 +14,3 @@ struct SoundData
 };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RESOURCE_SPRITESHEETDATA_H_
-#define POPHEAD_RESOURCE_SPRITESHEETDATA_H_
+#pragma once
 
 namespace ph {
 
@@ -10,5 +9,3 @@ namespace SpriteSheetData {
 }
 
 }
-
-#endif // !POPHEAD_RESOURCE_SPRITESHEETDATA_H_

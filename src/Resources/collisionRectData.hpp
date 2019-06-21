@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RESOURCE_COLLISIONRECTDATA_H_
-#define POPHEAD_RESOURCE_COLLISIONRECTDATA_H_
+#pragma once
 
 namespace ph {
 
@@ -12,5 +11,3 @@ namespace CollisionRectData {
 }
 
 }
-
-#endif //!POPHEAD_RESOURCE_COLLISIONRECTDATA_H_

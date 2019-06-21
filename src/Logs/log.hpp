@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOG_H_
-#define POPHEAD_LOGS_LOG_H_
+#pragma once
 
 #include <string>
 
@@ -23,5 +22,3 @@ struct LogData
 };
 
 }
-
-#endif // !POPHEAD_LOG_LOG_H_

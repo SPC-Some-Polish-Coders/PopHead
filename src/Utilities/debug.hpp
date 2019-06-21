@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_DEBUG_H_
-#define POPHEAD_UTILITIES_DEBUG_H_
+#pragma once
 
 #include "Logs/logger.hpp"
 
@@ -25,5 +24,3 @@
 
 #define PH_EXCEPTION(message) (void)(PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), throw std::runtime_error(message), 0)
 #endif // !PH_DISTRIBUTION
-
-#endif // !POPHEAD_UTILITIES_DEBUG_H_

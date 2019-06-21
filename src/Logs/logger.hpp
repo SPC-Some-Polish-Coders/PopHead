@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOGGER_H_
-#define POPHEAD_LOGS_LOGGER_H_
+#pragma once
 
 #include "log.hpp"
 #include "logSettings.hpp"
@@ -51,5 +50,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_LOGS_LOGGER_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_OBJECT_H_
-#define POPHEAD_WORLD_OBJECT_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -42,5 +41,3 @@ protected:
 }
 
 #include "object.inl"
-
-#endif // !POPHEAD_WORLD_OBJECT_H_

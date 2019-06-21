@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOGSINITIALIZER_H_
-#define	POPHEAD_LOGS_LOGSINITIALIZER_H_
+#pragma once
 
 #include "Utilities/iniLoader.hpp"
 #include "Logs/log.hpp"
@@ -21,5 +20,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_LOGS_LOGSINITIALIZER_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_STATES_STATEMACHINE_H_
-#define POPHEAD_STATES_STATEMACHINE_H_
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -61,5 +60,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_STATES_STATEMACHINE_H_

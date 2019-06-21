@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Interface.hpp"
 
 #include "World/Entity/object.hpp"
@@ -5,9 +7,6 @@
 /* Uncomment if you want to experiment   */
 
 	//#define GUI_TEST
-
-#ifndef GUI_BASE
-#define GUI_BASE
 
 namespace ph {
 
@@ -91,6 +90,3 @@ namespace ph {
 	};
 
 }
-
-
-#endif

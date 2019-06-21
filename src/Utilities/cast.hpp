@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_CAST_H_
-#define POPHEAD_UTILITIES_CAST_H_
+#pragma once
 
 #include "SFML/System/Vector2.hpp"
 #include <string>
@@ -12,5 +11,3 @@ namespace Cast {
 }
 
 }
-
-#endif // !POPHEAD_UTILITIES_CAST_H_

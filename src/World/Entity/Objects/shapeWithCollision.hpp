@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_SHAPEWITHCOLLISION_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_SHAPEWITHCOLLISION_H_
+#pragma once
 
 #include "World/Entity/object.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
@@ -24,6 +23,3 @@ private:
 
 
 }
-
-#endif // !POPHEAD_WORLD_ENTITY_OBJECTS_STATICOBJECTTOCAMERA_H_
-

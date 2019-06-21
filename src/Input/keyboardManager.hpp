@@ -1,5 +1,4 @@
-#ifndef POPHEAD_INPUT_KEYBOARDMANAGER_H_
-#define POPHEAD_INPUT_KEYBOARDMANAGER_H_
+#pragma once
 
 #include <SFML/Window.hpp>
 #include <map>
@@ -14,5 +13,3 @@ struct KeyboardManager
 };
 
 }
-
-#endif // !POPHEAD_INPUT_KEYBOARDMANAGER_H_

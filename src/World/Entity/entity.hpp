@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_H_
-#define POPHEAD_WORLD_ENTITY_H_
+#pragma once
 
 #include <string>
 #include <list>
@@ -49,5 +48,3 @@ protected:
 };
 
 }
-
-#endif // !POPHEAD_WORLD_ENTITY_H_

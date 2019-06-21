@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_RENDERER_TERMINALRENDERER_H_
-#define POPHEAD_TERMINAL_RENDERER_TERMINALRENDERER_H_
+#pragma once
 
 #include "Terminal/terminalSharedData.hpp"
 #include "outputArea.hpp"
@@ -32,5 +31,3 @@ private:
 };
 
 }
-
-#endif

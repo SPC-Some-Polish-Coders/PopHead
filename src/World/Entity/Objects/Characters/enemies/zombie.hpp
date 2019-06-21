@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMIES_ZOMBIE_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMIES_ZOMBIE_H_
+#pragma once
 
 #include "World/Entity/Objects/Characters/enemy.hpp"
 
@@ -17,6 +16,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMIES_ZOMBIE_H_
-

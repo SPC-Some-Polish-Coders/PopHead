@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_MUSICDATA_H_
-#define POPHEAD_AUDIO_MUSICDATA_H_
+#pragma once
 
 #include <string>
 
@@ -14,6 +13,3 @@ struct MusicData
 };
 
 }
-
-#endif // !POPHEAD_AUDIO_MUSICDATA_H_
-

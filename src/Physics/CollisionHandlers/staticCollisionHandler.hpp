@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
-#define POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -36,5 +35,3 @@ private:
 
 
 }
-
-#endif // !POPHEAD_PHYSICS_STATICCOLLISIONHANDLER_H_
