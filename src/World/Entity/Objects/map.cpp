@@ -213,6 +213,20 @@ std::size_t ph::Map::findTilesetIndex(unsigned globalTileId, const TilesetsData&
 
 void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (const sf::Sprite& sprite : mTiles)
-		target.draw(sprite, states);
+	auto& camera = mGameData->getRenderer().getCamera();
+	const sf::Vector2f center = camera.getCenter();
+	const sf::Vector2f size = camera.getSize();
+	const sf::Vector2f tileSize(32, 32);
+	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
+	sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
+
+	for(const sf::Sprite& sprite : mTiles) {
+		const sf::FloatRect bounds = sprite.getGlobalBounds();
+		screen.left -= bounds.width;
+		screen.top -= bounds.height;
+		screen.width += bounds.width;
+		screen.height += bounds.height;
+		if(screen.contains(bounds.left, bounds.top))
+			target.draw(sprite, states);
+	}
 }
