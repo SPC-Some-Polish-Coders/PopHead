@@ -30,7 +30,6 @@ private:
     void handleStaticCollisionsFor(CollisionBody* kinematicBody);
     void handleKinematicCollisionsFor(CollisionBody* kinematicBody);
     bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
-	void collisionLog(const std::string& collisionType, CollisionBody* bodyA, CollisionBody* bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;
