@@ -15,7 +15,6 @@ class Object;
 class CollisionBody
 {
 public:
-	CollisionBody() = default;
 	CollisionBody(sf::FloatRect rect, float mass, BodyType, Object* const owner, GameData*);
 	~CollisionBody();
 

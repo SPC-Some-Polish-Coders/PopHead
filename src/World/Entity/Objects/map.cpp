@@ -143,14 +143,6 @@ void ph::Map::loadTiles(
 {
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		if (hasTile(globalTileIds[i])) {
-			for (std::size_t j = 0; j < collisions.tileIds.size(); ++j) {
-				if (globalTileIds[i] == collisions.tileIds[j]) {
-					// TODO: Should pass this?
-					std::unique_ptr<CollisionBody> collisionBody = std::make_unique<CollisionBody>(collisions.bounds[j], 0, BodyType::staticBody, this, mGameData);
-					mCollisionBodies.push_back(std::move(collisionBody));
-				}
-			}
-
 			const unsigned bitsInByte = 8;
 			const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
 			const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
@@ -228,6 +220,18 @@ void ph::Map::loadTiles(
 			}
 			tile.setPosition(position);
 			mTiles.push_back(tile);
+
+			for (std::size_t j = 0; j < collisions.tileIds.size(); ++j) {
+				if (globalTileIds[i] == collisions.tileIds[j]) {
+					// TODO: Should pass this?
+					sf::FloatRect collisionBounds = collisions.bounds[j];
+					collisionBounds.left += position.x;
+					collisionBounds.top += position.y;
+					std::unique_ptr<CollisionBody> collisionBody =
+						std::make_unique<CollisionBody>(collisionBounds, 0, BodyType::staticBody, this, mGameData);
+					mCollisionBodies.push_back(std::move(collisionBody));
+				}
+			}
 		}
 	}
 }
