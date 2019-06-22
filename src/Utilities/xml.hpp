@@ -23,6 +23,10 @@ public:
 
 	unsigned toUnsigned() const { return Cast::toUnsigned(mContent); }
 
+	float toFloat() const { return std::stof(mContent); }
+
+	bool toBool();
+
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
 	{ return mContent[openingTagEndPosition - 1] == '/'; }
