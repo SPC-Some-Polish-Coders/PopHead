@@ -62,29 +62,22 @@ void ph::CommandInterpreter::executeHistory()
 
 void ph::CommandInterpreter::executeHelp()
 {
-	std::vector<std::string> commandsList1 = { "EXIT", "ECHO", "HISTORY", 
-							"HELP", "MUTE", "UNMUTE", "SETVOLUME",
-							"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"};
+	std::vector<std::string> commandsList1 {
+		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", "SETVOLUME",
+		"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"
+	};
 
 	sf::Color infoColor = {127, 244, 44};
-	auto& terminalData = mGameData->getTerminal();
+	auto& terminal = mGameData->getTerminal();
 
-	if (commandContains('1'))
-	{
-		for (int i = 0; i < commandsList1.size(); ++i)
-			terminalData.pushOutputLine({ "- " + commandsList1[i], infoColor });
-		terminalData.pushOutputLine({ "Avalible commands, PAGE 1 of 3.", infoColor });
+	if (commandContains('2')){
+		terminal.pushOutputLine({ "Will be fulfilled if necessary", infoColor });
+		terminal.pushOutputLine({ "Avalible commands, PAGE 2 of 2.", infoColor });
 	}
-	else if (commandContains('2'))
-	{
-		terminalData.pushOutputLine({ "Will be fulfilled if necessary", infoColor });
-		terminalData.pushOutputLine({ "Avalible commands, PAGE 2 of 3.", infoColor });
-	}
-	else
-	{
-		for (int i = 0; i < commandsList1.size(); ++i)
-			terminalData.pushOutputLine({ "- " + commandsList1[i], sf::Color(127, 244, 44) });
-		terminalData.pushOutputLine({ "Avalible commands, PAGE 1 of 3.", infoColor });
+	else{
+		for (size_t i = 0; i < commandsList1.size(); ++i)
+			terminal.pushOutputLine({ "- " + commandsList1[i], infoColor });
+		terminal.pushOutputLine({ "Avalible commands, PAGE 1 of 2.", infoColor });
 	}
 }
 
