@@ -19,13 +19,12 @@ void ph::Map::loadFromFile(const std::string& filename)
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
-	const CollisionsData collisions = getCollisionsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		loadTiles(globalTileIds, tilesets, collisions, mapSize, tileSize);
+		loadTiles(globalTileIds, tilesets, mapSize, tileSize);
 	}
 }
 
@@ -80,42 +79,59 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 			(much better: define proper exception type in Xml impl)?
 	*/
 	TilesetsData tilesets;
-	tilesets.sources.reserve(tilesetNodes.size());
-	tilesets.columnsCounts.reserve(tilesetNodes.size());
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
+	tilesets.columnsCounts.reserve(tilesetNodes.size());
+	tilesets.sources.reserve(tilesetNodes.size());
 	for (const Xml& tilesetNode : tilesetNodes) {
-		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
-		tilesets.firstGlobalTileIds.push_back(tilesetNode.getAttribute("firstgid").toUnsigned());
+		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
+		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
+		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
 		std::string source = imageNode.getAttribute("source").toString();
 		source = Path::toFilename(source, '/');
 		tilesets.sources.push_back(source);
-	}
-	return tilesets;
-}
 
-ph::Map::CollisionsData ph::Map::getCollisionsData(const std::vector<Xml>& tilesetNodes) const
-{
-	CollisionsData collisions;
-	for (const Xml& tilesetNode : tilesetNodes) {
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
+		TilesetsData::TilesData tiles;
+		tiles.ids.reserve(tileNodes.size());
+		tiles.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
+		tiles.firstGlobalTileId = firstGlobalTileId;
 		for (const Xml& tileNode : tileNodes) {
+			tiles.ids.push_back(tileNode.getAttribute("id").toUnsigned());
 			const Xml objectGroupNode = tileNode.getChild("objectgroup");
+			/*
+				TODO:
+				* What if collisions from tile would be deleted in Tiled?
+				Does tile tag would disappear too?
+				If no there would be a problem -> getChild would search for objectgroup which no longer exists.
+
+				* Could objectGroupNode contain more than one object?
+				If that would be true there would be a possibility to have
+				more than one CollisionBody per tile.
+				(Maybe some of them could be wrapped into one).
+
+				* Inform that other types are not allowed? Allow some of them?
+				For example:
+					- ellipse
+					- point
+					- polygon
+					- polyline
+					- text
+			*/
 			const Xml objectNode = objectGroupNode.getChild("object");
-			const unsigned tileId = objectNode.getAttribute("id").toUnsigned();
-			collisions.tileIds.push_back(tileId);
 			const sf::FloatRect bounds(
 				objectNode.getAttribute("x").toFloat(),
 				objectNode.getAttribute("y").toFloat(),
 				objectNode.getAttribute("width").toFloat(),
 				objectNode.getAttribute("height").toFloat()
 			);
-			collisions.bounds.push_back(bounds);
+			tiles.bounds.push_back(bounds);
 		}
+		tilesets.tiles.push_back(tiles);
 	}
-	return collisions;
+	return tilesets;
 }
 
 std::vector<ph::Xml> ph::Map::getLayerNodes(const Xml& mapNode) const
@@ -137,7 +153,6 @@ std::vector<unsigned> ph::Map::toGlobalTileIds(const Xml& dataNode) const
 void ph::Map::loadTiles(
 	const std::vector<unsigned>& globalTileIds,
 	const TilesetsData& tilesets,
-	const CollisionsData& collisions,
 	sf::Vector2u mapSize,
 	sf::Vector2u tileSize)
 {
@@ -173,40 +188,46 @@ void ph::Map::loadTiles(
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
-
-			const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-			tile.setOrigin(center);
-			position += center;
-			if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-				tile.setRotation(270);
-				tile.setScale(1.f, -1.f);
-			}
-			else if (isHorizontallyFlipped && isVerticallyFlipped)
-				tile.setScale(-1.f, -1.f);
-			else if (isHorizontallyFlipped && isDiagonallyFlipped)
-				tile.setRotation(90);
-			else if (isHorizontallyFlipped)
-				tile.setScale(-1.f, 1.f);
-			else if (isVerticallyFlipped && isDiagonallyFlipped)
-				tile.setRotation(270);
-			else if (isVerticallyFlipped)
-				tile.setScale(1.f, -1.f);
-			else if (isDiagonallyFlipped) {
-				tile.setRotation(270);
-				tile.setScale(-1.f, 1.f);
+			if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
+				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+				tile.setOrigin(center);
+				position += center;
+				if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+					tile.setRotation(270);
+					tile.setScale(1.f, -1.f);
+				}
+				else if (isHorizontallyFlipped && isVerticallyFlipped)
+					tile.setScale(-1.f, -1.f);
+				else if (isHorizontallyFlipped && isDiagonallyFlipped)
+					tile.setRotation(90);
+				else if (isHorizontallyFlipped)
+					tile.setScale(-1.f, 1.f);
+				else if (isVerticallyFlipped && isDiagonallyFlipped)
+					tile.setRotation(270);
+				else if (isVerticallyFlipped)
+					tile.setScale(1.f, -1.f);
+				else if (isDiagonallyFlipped) {
+					tile.setRotation(270);
+					tile.setScale(-1.f, 1.f);
+				}
 			}
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 
-			for (std::size_t j = 0; j < collisions.tileIds.size(); ++j) {
-				if (tileId == collisions.tileIds[j]) {
-					// TODO: Should pass this?
-					sf::FloatRect collisionBounds = collisions.bounds[j];
-					collisionBounds.left += position.x;
-					collisionBounds.top += position.y;
-					std::unique_ptr<CollisionBody> collisionBody =
-						std::make_unique<CollisionBody>(collisionBounds, 0, BodyType::staticBody, this, mGameData);
-					mCollisionBodies.push_back(std::move(collisionBody));
+			for (std::size_t k = 0; k < tilesets.tiles.size(); ++k) {
+				if (tilesets.firstGlobalTileIds[j] == tilesets.tiles[k].firstGlobalTileId) { 
+					for (std::size_t l = 0; l < tilesets.tiles[k].ids.size(); ++l) {
+						if (tileId == tilesets.tiles[k].ids[l]) {
+							sf::FloatRect bounds = tilesets.tiles[k].bounds[l];
+							bounds.left += position.x;
+							bounds.top += position.y;
+							// TODO: Should pass this?
+							std::unique_ptr<CollisionBody> collisionBody =
+								std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);
+							mCollisionBodies.push_back(std::move(collisionBody));
+						}
+					}
+					break; 
 				}
 			}
 		}

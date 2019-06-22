@@ -18,16 +18,20 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-	struct TilesetsData {
-		std::vector<std::string> sources;
-		std::vector<unsigned> columnsCounts;
+	struct TilesetsData 
+	{
+		struct TilesData 
+		{
+			unsigned firstGlobalTileId;
+			std::vector<unsigned> ids;
+			std::vector<sf::FloatRect> bounds;
+		};
+
 		std::vector<unsigned> firstGlobalTileIds;
 		std::vector<unsigned> tileCounts;
-	};
-
-	struct CollisionsData {
-		std::vector<sf::FloatRect> bounds;
-		std::vector<unsigned> tileIds;
+		std::vector<unsigned> columnsCounts;
+		std::vector<std::string> sources;
+		std::vector<TilesData> tiles;
 	};
 
 	void checkMapSupport(const Xml& mapNode) const;
@@ -40,8 +44,6 @@ private:
 
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
 
-	CollisionsData getCollisionsData(const std::vector<Xml>& tilesetNodes) const;
-
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
@@ -49,7 +51,6 @@ private:
 	void loadTiles(
 		const std::vector<unsigned>& globalTileIds,
 		const TilesetsData& tilesets,
-		const CollisionsData& collisions,
 		sf::Vector2u mapSize,
 		sf::Vector2u tileSize);
 
