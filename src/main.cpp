@@ -23,7 +23,7 @@ int main()
 		game.run();
 	}
 	catch (const std::exception& e) {
-		PH_LOG(ph::LogType::Exception, e.what());
+		PH_LOG(ph::LogType::UnhandledException, e.what());
 		showErrorMessageBox("Error", e.what());
 		throw;
 	}
