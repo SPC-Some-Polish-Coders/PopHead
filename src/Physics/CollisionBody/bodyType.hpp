@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_BODYTYPE_H_
-#define POPHEAD_PHYSICS_BODYTYPE_H_
+#pragma once
 
 namespace ph {
 
@@ -10,5 +9,3 @@ enum class BodyType
 };
 
 }
-
-#endif // !POPHEAD_PHYSICS_BODYTYPE_H_

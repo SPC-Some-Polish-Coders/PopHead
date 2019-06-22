@@ -1,12 +1,22 @@
 #include "soundDataHolder.hpp"
-
 #include "soundData.hpp"
+#include "Utilities/xml.hpp"
 
 ph::SoundDataHolder::SoundDataHolder()
 {
-	using namespace std::string_literals;
-	mAllSoundsData["sounds/barretaShot.wav"s] = SoundData(1.4f);
-	mAllSoundsData["sounds/zombieGetsAttacked.wav"s] = SoundData(5.f, false, 50.f, 600.f);
+	Xml soundDataXml;
+	soundDataXml.loadFromFile("sounds/soundData.xml");
+	const Xml soundDataNode = soundDataXml.getChild("soundData");
+	const std::vector<Xml> soundNodes = soundDataNode.getChildren("sound");
+	for(const auto& soundNode : soundNodes) {
+		const std::string fileName = soundNode.getAttribute("fileName").toString();
+		const std::string filePath = "sounds/" + fileName;
+		const float volumeMultiplier = soundNode.getAttribute("volumeMultiplier").toFloat();
+		const bool loop = soundNode.getAttribute("loop").toBool();
+		const float maximalFullVolumeDistance = soundNode.getAttribute("maximalFullVolumeDistance").toFloat();
+		const float maximalHearableDistance = soundNode.getAttribute("maximalHearableDistance").toFloat();
+		mAllSoundsData[filePath] = SoundData(volumeMultiplier, loop, maximalFullVolumeDistance, maximalHearableDistance);
+	}
 }
 
 auto ph::SoundDataHolder::getSoundData(const std::string& filePath) -> SoundData

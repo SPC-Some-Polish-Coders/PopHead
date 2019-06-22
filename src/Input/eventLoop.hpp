@@ -1,5 +1,4 @@
-#ifndef POPHEAD_INPUT_EVENTLOOP_H_
-#define POPHEAD_INPUT_EVENTLOOP_H_
+#pragma once
 
 #include <SFML/Window.hpp>
 
@@ -39,5 +38,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_INPUT_EVENTLOOP_H_

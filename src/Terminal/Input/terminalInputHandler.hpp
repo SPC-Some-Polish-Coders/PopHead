@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
-#define POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -39,5 +38,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_COMMANDPROMPT_KEYBOARDINPUTHANDLER_H_

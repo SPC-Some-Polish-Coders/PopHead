@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RENDERER_RENDERER_H_
-#define POPHEAD_RENDERER_RENDERER_H_
+#pragma once
 
 #include <map>
 #include <string>
@@ -58,5 +57,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_RENDERER_RENDERER_H_

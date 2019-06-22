@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_DEBUG_H_
-#define POPHEAD_UTILITIES_DEBUG_H_
+#pragma once
 
 #include "Logs/logger.hpp"
 
@@ -21,9 +20,7 @@
 #define PH_LOG(logType, message)\
 	ph::Logger::getInstance().writeLog(ph::LogData{message, ph::Path::toModuleName(std::string(__FILE__)), logType})
 
-#define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), 0))
+#define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Exception, message), PH_BREAKPOINT(), 0))
 
-#define PH_EXCEPTION(message) (void)(PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), throw std::runtime_error(message), 0)
+#define PH_EXCEPTION(message) (void)(PH_LOG(ph::LogType::Exception, message), PH_BREAKPOINT(), throw std::runtime_error(message), 0)
 #endif // !PH_DISTRIBUTION
-
-#endif // !POPHEAD_UTILITIES_DEBUG_H_

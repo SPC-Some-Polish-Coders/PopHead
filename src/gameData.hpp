@@ -1,5 +1,4 @@
-#ifndef POPHEAD_BASE_GAMEDATA_H_
-#define POPHEAD_BASE_GAMEDATA_H_
+#pragma once
 
 #include <memory>
 
@@ -90,5 +89,3 @@ inline GameData::GameData(
 }
 
 }
-
-#endif // !POPHEAD_BASE_GAMEDATA_H_

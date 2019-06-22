@@ -1,8 +1,4 @@
-
-
-#ifndef BEHAVIOR_TYPE_ENUM
-#define BEHAVIOR_TYPE_ENUM
-
+#pragma once
 
 enum behaviorType {
 
@@ -11,8 +7,3 @@ enum behaviorType {
 	onReleased
 
 };
-
-
-
-
-#endif

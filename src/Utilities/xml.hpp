@@ -19,6 +19,8 @@ public:
 
 	std::string toString() const;
 
+	bool toBool() const;
+
 	int toInt() const { return std::stoi(mContent); }
 
 	unsigned toUnsigned() const { return Cast::toUnsigned(mContent); }

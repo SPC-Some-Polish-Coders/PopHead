@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_MUSICPLAYER_H_
-#define POPHEAD_AUDIO_MUSICPLAYER_H_
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include "MusicData/musicDataHolder.hpp"
@@ -29,5 +28,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_AUDIO_MUSICPLAYER_H_

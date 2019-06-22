@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_MATH_H_
-#define POPHEAD_UTILITIES_MATH_H_
+#pragma once
 
 #include "Utilities/debug.hpp"
 #include <SFML/Graphics.hpp>
@@ -27,5 +26,3 @@ namespace Math {
 }
 
 }
-
-#endif

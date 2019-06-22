@@ -1,5 +1,4 @@
-#ifndef POPHEAD_STATES_STATEIDENTIFIERS_HPP
-#define POPHEAD_STATES_STATEIDENTIFIERS_HPP
+#pragma once
 
 namespace ph{
 
@@ -21,5 +20,3 @@ enum class StateID
 };
 
 }
-
-#endif // !POPHEAD_STATES_STATEIDENTIFIERS_HPP

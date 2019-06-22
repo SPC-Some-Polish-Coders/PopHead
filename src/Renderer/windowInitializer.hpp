@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RENDERER_RENDERERINILOADER_H_
-#define POPHEAD_RENDERER_RENDERERINILOADER_H_
+#pragma once
 
 #include "Utilities/iniLoader.hpp"
 #include "SFML/Graphics.hpp"
@@ -19,5 +18,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_RENDERER_WINDOWINITIALIZER_H_

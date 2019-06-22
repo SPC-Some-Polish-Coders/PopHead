@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_CSV_H_
-#define POPHEAD_UTILITIES_CSV_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -15,5 +14,3 @@ namespace Csv {
 }
 
 }
-
-#endif // !POPHEAD_UTILITIES_CSV_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOGSETTINGS_H_
-#define POPHEAD_LOGS_LOGSETTINGS_H_
+#pragma once
 
 #include "log.hpp"
 #include <vector>
@@ -45,5 +44,3 @@ private:
 };
 
 }
-
-#endif //POPHEAD_LOGS_LOGSETTINGS_H_

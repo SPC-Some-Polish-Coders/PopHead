@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMY_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMY_H_
+#pragma once
 
 #include "World/Entity/Objects/character.hpp"
 #include <set>
@@ -19,5 +18,3 @@ protected:
 };
 
 }
-
-#endif // !POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_ENEMY_H_

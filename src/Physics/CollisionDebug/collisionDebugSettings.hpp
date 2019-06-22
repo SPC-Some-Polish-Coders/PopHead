@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
-#define POPHEAD_PHYSICS_COLLISIONSDEBUG_H_
+#pragma once
 
 #include <vector>
 #include "collisionDebugRect.hpp"
@@ -47,5 +46,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_PHYSICS_COLLISIONSDEBUG_H_

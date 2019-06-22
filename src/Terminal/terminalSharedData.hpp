@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_TERMINALSHAREDDATA_H_
-#define POPHEAD_TERMINAL_TERMINALSHAREDDATA_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -19,6 +18,3 @@ struct TerminalData
 using TerminalSharedData = std::shared_ptr<TerminalData>;
 
 }
-
-#endif // !POPHEAD_TERMINAL_TERMINALSHAREDDATA_H_
-

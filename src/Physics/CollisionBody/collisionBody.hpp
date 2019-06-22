@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_COLLISIONSBODY_H_
-#define POPHEAD_PHYSICS_COLLISIONSBODY_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "gameData.hpp"
@@ -55,5 +54,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_PHYSICS_COLLISIONSBODY_H_

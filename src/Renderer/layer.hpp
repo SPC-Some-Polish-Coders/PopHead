@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RENDERER_LAYER_H_
-#define POPHEAD_RENDERER_LAYER_H_
+#pragma once
 
 #include <list>
 #include <string>
@@ -25,5 +24,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_RENDERER_LAYER_H_

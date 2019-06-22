@@ -1,5 +1,4 @@
-#ifndef POPHEAD_RESOURCES_RESOURCESHOLDER_H_
-#define POPHEAD_RESOURCES_RESOURCESHOLDER_H_
+#pragma once
 
 #include <memory>
 #include <string>
@@ -30,5 +29,3 @@ using ShaderHolder = ResourceHolder< sf::Shader>;
 }
 
 #include "Resources/resourceHolder.inl"
-
-#endif // !POPHEAD_RESOURCES_RESOURCESHOLDER_H_

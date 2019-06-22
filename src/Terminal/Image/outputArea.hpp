@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_IMAGE_OUTPUTAREA_H_
-#define POPHEAD_TERMINAL_IMAGE_OUTPUTAREA_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -32,5 +31,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_TERMINAL_IMAGE_OUTPUTAREA_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESS_H_
-#define POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESS_H_
+#pragma once
 
 #include "damageWeaknessType.hpp"
 
@@ -18,5 +17,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_DAMAGEWEAKNESS_DAMAGEWEAKNESS_H_

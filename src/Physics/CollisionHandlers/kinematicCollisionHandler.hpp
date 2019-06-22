@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_KINEMATICCOLLISIONHANDLER_H_
-#define POPHEAD_PHYSICS_KINEMATICCOLLISIONHANDLER_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -32,5 +31,3 @@ private:
 };
 
 }
-
-#endif

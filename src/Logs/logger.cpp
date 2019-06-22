@@ -24,6 +24,12 @@ static std::ostream& operator<<(std::ostream& os, const ph::LogType& logType)
 	case ph::LogType::FromUser:
 		os << "FROM USER";
 		break;
+	case ph::LogType::Exception:
+		os << "EXCEPTION";
+		break;
+	case ph::LogType::UnhandledException:
+		os << "UNHANDLED EXCEPTION";
+		break;
 	}
 	return os;
 }
@@ -80,17 +86,23 @@ void ph::Logger::writeLogInInternalTerminal(const LogData& log)
 		switch (log.type)
 		{
 		case LogType::Info:
-		line.mColor = sf::Color(127, 244, 44);
-		break;
+			line.mColor = sf::Color(127, 244, 44);
+			break;
 		case LogType::Error:
-		line.mColor = sf::Color(255, 25, 33);
-		break;
+			line.mColor = sf::Color(255, 25, 33);
+			break;
 		case LogType::Warning:
-		line.mColor = sf::Color(235, 135, 30);
-		break;
+			line.mColor = sf::Color(235, 135, 30);
+			break;
 		case LogType::FromUser:
-		line.mColor = sf::Color(79, 202, 255);
-		break;
+			line.mColor = sf::Color(79, 202, 255);
+			break;
+		case LogType::Exception:
+			line.mColor = sf::Color(255, 25, 33);
+			break;
+		case LogType::UnhandledException:
+			line.mColor = sf::Color(255, 25, 33);
+			break;
 		}
 		mGameData->getTerminal().pushOutputLine(line);
 	}

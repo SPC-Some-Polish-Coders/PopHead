@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_INILOADER_H_
-#define	POPHEAD_UTILITIES_INILOADER_H_
+#pragma once
 
 #include <fstream>
 #include <vector>
@@ -24,6 +23,3 @@ private:
 };
 
 }
-
-#endif //!POPHEAD_UTILITIES_INILOADER_H_
-

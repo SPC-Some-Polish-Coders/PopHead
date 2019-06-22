@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_PHYSICSENGINE_H_
-#define POPHEAD_PHYSICS_PHYSICSENGINE_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -40,5 +39,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_PHYSICS_PHYSICSENGINE_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_COMMANDPROMPT_H_
-#define POPHEAD_TERMINAL_COMMANDPROMPT_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -34,5 +33,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_CMD_COMMANDPROMPT_H_

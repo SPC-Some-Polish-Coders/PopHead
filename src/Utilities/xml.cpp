@@ -181,3 +181,13 @@ std::string ph::Xml::toString() const
 	++begin;
 	return mContent.substr(begin, mContent.size() - begin);
 }
+
+bool ph::Xml::toBool() const
+{
+	if(mContent == "true" || mContent == "1")
+		return true;
+	else if(mContent == "false" || mContent == "0")
+		return false;
+	else
+		PH_EXCEPTION("Casting Xml to bool failed!");
+}

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_BASE_GAME_H_
-#define POPHEAD_BASE_GAME_H_
+#pragma once
 
 #include <memory>
 
@@ -43,5 +42,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_BASE_GAME_H_

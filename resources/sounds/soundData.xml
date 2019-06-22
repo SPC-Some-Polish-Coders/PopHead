@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soundData>
+ <sound fileName="barretaShot.wav" volumeMultiplier="1.2" loop="false" maximalFullVolumeDistance="40" maximalHearableDistance="1000"/>
+ <sound fileName="zombieGetsAttacked.wav" volumeMultiplier="5" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="600"/>
+</soundData>
