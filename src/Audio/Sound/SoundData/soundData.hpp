@@ -6,7 +6,7 @@ struct SoundData
 {
 	float mVolumeMultiplier;
 	float mMaximalFullVolumeDistance;
-	float mMaximalHearableDistance;
+	float mMaximalHearableDistance;	
 	bool mLoop;
 
 	SoundData(const float volumeMultiplier = 1.f, const bool loop = false,
