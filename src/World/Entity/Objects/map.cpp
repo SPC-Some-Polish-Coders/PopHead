@@ -174,49 +174,26 @@ void ph::Map::loadTiles(
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
 
+			const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+			tile.setOrigin(center);
+			position += center;
 			if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
 				tile.setRotation(270);
 				tile.setScale(1.f, -1.f);
-				position += center;
 			}
-			else if (isHorizontallyFlipped && isVerticallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
+			else if (isHorizontallyFlipped && isVerticallyFlipped)
 				tile.setScale(-1.f, -1.f);
-				position += center;
-			}
-			else if (isHorizontallyFlipped && isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
+			else if (isHorizontallyFlipped && isDiagonallyFlipped)
 				tile.setRotation(90);
-				position += center;
-			}
-			else if (isHorizontallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
+			else if (isHorizontallyFlipped)
 				tile.setScale(-1.f, 1.f);
-				position += center;
-			}
-			else if (isVerticallyFlipped && isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
+			else if (isVerticallyFlipped && isDiagonallyFlipped)
 				tile.setRotation(270);
-				position += center;
-			}
-			else if (isVerticallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
+			else if (isVerticallyFlipped)
 				tile.setScale(1.f, -1.f);
-				position += center;
-			}
 			else if (isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
 				tile.setRotation(270);
 				tile.setScale(-1.f, 1.f);
-				position += center;
 			}
 			tile.setPosition(position);
 			mTiles.push_back(tile);
