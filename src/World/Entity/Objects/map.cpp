@@ -169,20 +169,20 @@ void ph::Map::loadTiles(
 		const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
 		if (hasTile(globalTileId)) {
-			const std::size_t j = findTilesetIndex(globalTileId, tilesets);
-			if (j == std::string::npos) {
+			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
+			if (tilesetIndex == std::string::npos) {
 				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
-			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[j];
-			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[j]);
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[tilesetIndex]);
 			tileRectPosition.x *= tileSize.x;
 			tileRectPosition.y *= tileSize.y;
 			const sf::IntRect tileRect(
 				static_cast<sf::Vector2i>(tileRectPosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			const std::string textureName = pathToMapTextures + tilesets.sources[j];
+			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
 			const sf::Texture& texture = mGameData->getTextures().get(textureName);
 			sf::Sprite tile(texture, tileRect);
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
@@ -214,14 +214,13 @@ void ph::Map::loadTiles(
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 
-			for (std::size_t k = 0; k < tilesets.tiles.size(); ++k) {
-				if (tilesets.firstGlobalTileIds[j] == tilesets.tiles[k].firstGlobalTileId) { 
-					for (std::size_t l = 0; l < tilesets.tiles[k].ids.size(); ++l) {
-						if (tileId == tilesets.tiles[k].ids[l]) {
-							sf::FloatRect bounds = tilesets.tiles[k].bounds[l];
+			for (std::size_t j = 0; j < tilesets.tiles.size(); ++j) {
+				if (tilesets.firstGlobalTileIds[tilesetIndex] == tilesets.tiles[j].firstGlobalTileId) { 
+					for (std::size_t k = 0; k < tilesets.tiles[j].ids.size(); ++k) {
+						if (tileId == tilesets.tiles[j].ids[k]) {
+							sf::FloatRect bounds = tilesets.tiles[j].bounds[k];
 							bounds.left += position.x;
 							bounds.top += position.y;
-							// TODO: Should pass this?
 							std::unique_ptr<CollisionBody> collisionBody =
 								std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);
 							mCollisionBodies.push_back(std::move(collisionBody));
