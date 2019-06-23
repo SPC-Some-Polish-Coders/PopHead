@@ -18,12 +18,11 @@ ph::GameState::GameState(GameData* const gameData)
 
 void ph::GameState::loadResources()
 {
+	mGameData->getTextures().load("textures/map/FULL_DESERT_TILESET_WIP.png");
 	mGameData->getTextures().load("textures/characters/vaultManSheet.png");
 	mGameData->getTextures().load("textures/vehicles/boat.png");
 	mGameData->getTextures().load("textures/characters/vaultMan.png");
 	mGameData->getTextures().load("textures/characters/zombie.png");
-	mGameData->getTextures().load("textures/map/wolf.png");
-	mGameData->getTextures().load("textures/map/supermario.jpg");
 	mGameData->getTextures().load("textures/others/box.png");
 	mGameData->getTextures().load("textures/others/ball.png");
 }
@@ -44,8 +43,8 @@ void ph::GameState::makeSceneTree()
 
 void ph::GameState::makeMap()
 {
-	auto map = std::make_unique<Map>(mGameData, "testMap");
-	map->loadFromFile("maps/testMap.tmx");
+	auto map = std::make_unique<Map>(mGameData, "desertMap");
+	map->loadFromFile("maps/desertMap.tmx");
 	mRoot.addChild(std::move(map));
 }
 
@@ -53,14 +52,14 @@ void ph::GameState::makeWall()
 {
 	auto wall = std::make_unique<ShapeWithCollision>(mGameData);
 	wall->setPosition(sf::Vector2f(50, 50));
-	mRoot.getChild("testMap").addChild(std::move(wall));
+	mRoot.getChild("desertMap").addChild(std::move(wall));
 }
 
 void ph::GameState::makeBoat()
 {
 	std::unique_ptr<Character> boat(new Character(mGameData, "boat"));
 	boat->getSprite().setTexture(mGameData->getTextures().get("textures/vehicles/boat.png"));
-	boat->setPosition(sf::Vector2f(500, 700));
+	boat->setPosition(sf::Vector2f(-300, 700));
 
 	mRoot.addChild(std::move(boat));
 }
@@ -69,7 +68,7 @@ void ph::GameState::makeNpc()
 {
 	std::unique_ptr<Character> npc(new Character(mGameData, "npc"));
 	npc->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
-	npc->setPosition(sf::Vector2f(650, 760));
+	npc->setPosition(sf::Vector2f(-150, 760));
 
 	mRoot.getChild("boat").addChild(std::move(npc));
 }
