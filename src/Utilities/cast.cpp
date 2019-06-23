@@ -16,3 +16,13 @@ std::string ph::Cast::toString(const sf::Vector2f& vec)
 	std::string yVal = std::to_string(vec.y);
 	return "x:" + xVal + " y:" + yVal;
 }
+
+bool ph::Cast::toBool(const std::string& str)
+{
+	if (str == "true" || str == "1")
+		return true;
+	else if (str == "false" || str == "0")
+		return false;
+	else
+		PH_EXCEPTION("Cast to bool failed!");
+}

@@ -19,7 +19,7 @@ public:
 
 	std::string toString() const;
 
-	bool toBool() const;
+	bool toBool() const { return Cast::toBool(mContent); }
 
 	int toInt() const { return std::stoi(mContent); }
 

@@ -103,14 +103,10 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 			const Xml objectGroupNode = tileNode.getChild("objectgroup");
 			/*
 				TODO:
-				* What if collisions from tile would be deleted in Tiled?
-				Does tile tag would disappear too?
-				If no there would be a problem -> getChild would search for objectgroup which no longer exists.
-
 				* Could objectGroupNode contain more than one object?
 				If that would be true there would be a possibility to have
 				more than one CollisionBody per tile.
-				(Maybe some of them could be wrapped into one).
+				(If it would be possible wrap some of them into one?).
 
 				* Inform that other types are not allowed? Allow some of them?
 				For example:
@@ -119,6 +115,12 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 					- polygon
 					- polyline
 					- text
+
+				* Check whether objectNode has width and height attributes. 
+				- If there is no width set it to 0
+				- If there is no height set it to 0
+				- If there is no width and height ignore this object
+				(In Tiled when you create CollisionBody without width and height they are not created in .tmx file)
 			*/
 			const Xml objectNode = objectGroupNode.getChild("object");
 			const sf::FloatRect bounds(
