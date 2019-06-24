@@ -150,7 +150,7 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 		{
 		case WindowSizeState::fullScreen:
 			windowSizeState = WindowSizeState::notFullScreen;
-			mGameData->getRenderer().getWindow().create(sf::VideoMode(1000, 760), "PopHead", sf::Style::Default);
+			mGameData->getRenderer().getWindow().create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
 			break;
 		case WindowSizeState::notFullScreen:
 			windowSizeState = WindowSizeState::fullScreen;

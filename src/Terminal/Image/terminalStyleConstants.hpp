@@ -20,7 +20,7 @@ namespace TerminalStyleConstants
 	const sf::Vector2f inputTextPosition(textXposition, terminalYPosition);
 
 	const sf::Vector2f separatorBetweenInputAndOutputAreaSize(terminalWidth, 5);
-	const sf::Vector2f separatorBetweenInputAndOutputAreaPosition(terminalXPosition, terminalYPosition + 20);
+	const sf::Vector2f separatorBetweenInputAndOutputAreaPosition(terminalXPosition, terminalYPosition + 15);
 
 	const std::string inputFontPath("fonts/joystixMonospace.ttf");
 	constexpr unsigned int inputCharacterSize = 10;
