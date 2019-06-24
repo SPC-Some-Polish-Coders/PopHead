@@ -4,7 +4,7 @@
 namespace ph {
 
 EfficencyRegister::EfficencyRegister()
-	:mBackground({60, 25})
+	:mBackground({100, 25})
 	,mFramesPerSecond(0)
 	,mRenderCallPerFrame(0)
 	,mShouldBeDrawn(false)
@@ -33,9 +33,11 @@ void EfficencyRegister::input()
 
 void EfficencyRegister::update()
 {
+
 	if(mShouldBeDrawn) {
 		mFramesPerSecondText.setString("FPS:  " + std::to_string(mFramesPerSecond));
-		mRenderCallPerFrameText.setString("RCPS: " + std::to_string(mRenderCallPerFrame));
+		mRenderCallPerFrameText.setString("RCPF: " + std::to_string(mRenderCallPerFrame));
+		mRenderCallPerFrame = 0;
 	}
 }
 

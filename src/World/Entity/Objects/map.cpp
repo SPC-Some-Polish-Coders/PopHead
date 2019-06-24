@@ -263,8 +263,10 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		screen.top -= bounds.height;
 		screen.width += bounds.width;
 		screen.height += bounds.height;
-		if (screen.contains(bounds.left, bounds.top))
+		if(screen.contains(bounds.left, bounds.top)) {
 			target.draw(sprite, states);
+			mGameData->getEfficencyRegister().registerRenderCall();
+		}
 	}
 }
 

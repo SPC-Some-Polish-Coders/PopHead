@@ -41,8 +41,10 @@ void Renderer::draw() const
 	mWindow.clear();
 
 	for(const auto& layer : mLayers)
-		for(const auto& object : layer.second)
+		for(const auto& object : layer.second) {
 			mWindow.draw(*object);
+			mGameData->getEfficencyRegister().registerRenderCall();
+		}
 
 	mWindow.draw(mGameData->getTerminal().getImage());
 	mWindow.draw(mGameData->getEfficencyRegister());
