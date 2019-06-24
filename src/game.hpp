@@ -11,6 +11,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
+#include "EfficencyRegister/efficencyRegister.hpp"
 
 namespace ph {
 
@@ -27,18 +28,19 @@ private:
 
 	inline auto getGameData() const -> const GameData& { return *(mGameData); };
 
-	std::unique_ptr< GameData >			mGameData;
-	std::unique_ptr< SoundPlayer >		mSoundPlayer;
-	std::unique_ptr< MusicPlayer >		mMusicPlayer;
-	std::unique_ptr< TextureHolder >	mTextures;
-	std::unique_ptr< FontHolder >		mFonts;
-	std::unique_ptr< ShaderHolder >		mShaders;
-	std::unique_ptr< StateMachine >		mStateMachine;
-	std::unique_ptr< Input >			mInput;
-	std::unique_ptr< Renderer >			mRenderer;
-	std::unique_ptr< PhysicsEngine >	mPhysicsEngine;
-	std::unique_ptr< Terminal >			mTerminal;
-	std::unique_ptr< GUI >				mGui;
+	std::unique_ptr< GameData >          mGameData;
+	std::unique_ptr< SoundPlayer >       mSoundPlayer;
+	std::unique_ptr< MusicPlayer >       mMusicPlayer;
+	std::unique_ptr< TextureHolder >     mTextures;
+	std::unique_ptr< FontHolder >        mFonts;
+	std::unique_ptr< ShaderHolder >      mShaders;
+	std::unique_ptr< StateMachine >      mStateMachine;
+	std::unique_ptr< Input >             mInput;
+	std::unique_ptr< Renderer >          mRenderer;
+	std::unique_ptr< PhysicsEngine >     mPhysicsEngine;
+	std::unique_ptr< Terminal >          mTerminal;
+	std::unique_ptr< EfficencyRegister > mEfficencyRegister;
+	std::unique_ptr< GUI >               mGui;
 };
 
 }

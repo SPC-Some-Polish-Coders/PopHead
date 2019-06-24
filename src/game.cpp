@@ -22,6 +22,7 @@ Game::Game()
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
+	,mEfficencyRegister{new EfficencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
@@ -35,6 +36,7 @@ Game::Game()
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
+		mEfficencyRegister.get(),
 		mGui.get()
 	));
 
