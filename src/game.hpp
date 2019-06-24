@@ -24,7 +24,6 @@ public:
 private:
 	void input();
 	void update(sf::Time delta);
-	void draw();
 
 	inline auto getGameData() const -> const GameData& { return *(mGameData); };
 

@@ -10,17 +10,23 @@ class EfficencyRegister : public sf::Drawable
 {
 public:
 	EfficencyRegister();
+	void init(GameData* const gameData);
 
-	void update() const;
+	void input();
+	void update();
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 
+	void move(sf::Vector2f offset);
 	void registerRenderCall() { ++mRenderCallPerFrame; }
 
 private:
 	sf::Text mFramesPerSecondText;
 	sf::Text mRenderCallPerFrameText;
+	sf::RectangleShape mBackground;
+	GameData* mGameData;
 	int mFramesPerSecond;
 	int mRenderCallPerFrame;
+	bool mShouldBeDrawn;
 };
 
 }

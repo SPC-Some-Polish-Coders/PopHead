@@ -47,6 +47,8 @@ Game::Game()
 	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
 	Logger::getInstance().setGameData(mGameData.get());
 
+	mEfficencyRegister->init(mGameData.get());
+
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
 
@@ -80,7 +82,7 @@ void Game::run()
 			timeSinceLastUpdate -= timePerFrame;
 
 			update(timePerFrame);
-			draw();
+			mRenderer->draw();
 		}
 	}
 }
@@ -90,6 +92,7 @@ void Game::input()
 	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
 	mTerminal->input();
+	mEfficencyRegister->input();
 }
 
 void Game::update(sf::Time delta)
@@ -98,11 +101,7 @@ void Game::update(sf::Time delta)
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);
-}
-
-void Game::draw()
-{
-	mRenderer->draw();
+	mEfficencyRegister->update();
 }
 
 }

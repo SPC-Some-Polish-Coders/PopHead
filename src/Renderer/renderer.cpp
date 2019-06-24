@@ -45,6 +45,7 @@ void Renderer::draw() const
 			mWindow.draw(*object);
 
 	mWindow.draw(mGameData->getTerminal().getImage());
+	mWindow.draw(mGameData->getEfficencyRegister());
 
 	mWindow.display();
 }
@@ -86,6 +87,7 @@ void Renderer::setPositionOfStaticObjectsToCamera()
 		guiObject->move(movementFromLastFrame);
 	}
 	mGameData->getTerminal().getImage().move(movementFromLastFrame);
+	mGameData->getEfficencyRegister().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const
