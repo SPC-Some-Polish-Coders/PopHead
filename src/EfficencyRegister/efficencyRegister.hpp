@@ -1,12 +1,13 @@
 #pragma once
 
+#include "efficencyDisplayer.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
 class GameData;
 
-class EfficencyRegister : public sf::Drawable
+class EfficencyRegister
 {
 public:
 	EfficencyRegister();
@@ -14,21 +15,19 @@ public:
 
 	void input();
 	void update();
-	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 
-	void move(sf::Vector2f offset);
 	void registerRenderCall() { ++mRenderCallPerFrame; }
 
+	auto getDisplayer() -> EfficencyDisplayer& { return mEfficencyDisplayer; }
+
 private:
-	sf::Text mFramesPerSecondText;
-	sf::Text mRenderCallPerFrameText;
-	sf::RectangleShape mBackground;
+	EfficencyDisplayer mEfficencyDisplayer;
 	sf::Clock mClock;
 	GameData* mGameData;
 	unsigned mFramesPerSecond;
 	unsigned mRenderCallPerFrame;
 	unsigned mFramesFromLastSecond;
-	bool mShouldBeDrawn;
-};
+	bool mIsActive;
+	};
 
-}
+};
