@@ -45,7 +45,7 @@ void TerminalImage::init(GameData* gameData)
 void TerminalImage::initializeText(GameData* gameData)
 {
 	auto& text = mTerminalSharedData->mInputLine;
-	text.setFont(gameData->getFonts().get(fontPath));
+	text.setFont(gameData->getFonts().get(inputFontPath));
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(inputCharacterSize);
 	text.setPosition(inputTextPosition);

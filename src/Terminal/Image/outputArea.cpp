@@ -3,16 +3,15 @@
 #include "gameData.hpp"
 #include "Logs/log.hpp"
 
-
 namespace ph {
 
 using namespace TerminalStyleConstants;
 
 void OutputArea::init(GameData* gameData)
 {
-	float positionY = 70;
+	float positionY = terminalYPosition + 23;
 	for(int i = 0; i < numberOfOutputLines; ++i, positionY += spaceBetweenTheLines) {
-		sf::Text text("", gameData->getFonts().get(fontPath), outputCharacterSize);
+		sf::Text text("", gameData->getFonts().get(outputFontPath), outputCharacterSize);
 		text.setPosition(textXposition, positionY);
 		mTexts.emplace_back(std::move(text));
 	}

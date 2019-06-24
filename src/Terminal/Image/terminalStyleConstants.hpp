@@ -6,11 +6,11 @@ namespace ph{
 
 namespace TerminalStyleConstants
 {
-	constexpr float terminalWidth = 455.f;
+	constexpr float terminalWidth = 640.f;
 	constexpr float terminalHeight = 200.f;
 	const sf::Vector2f terminalSize(terminalWidth, terminalHeight);
 
-	constexpr float terminalXPosition = -240.f;
+	constexpr float terminalXPosition = -320.f;
 	constexpr float terminalYPosition = 50.f;
 	const sf::Vector2f terminalPosition(terminalXPosition, terminalYPosition);
 
@@ -20,14 +20,15 @@ namespace TerminalStyleConstants
 	const sf::Vector2f inputTextPosition(textXposition, terminalYPosition);
 
 	const sf::Vector2f separatorBetweenInputAndOutputAreaSize(terminalWidth, 5);
-	const sf::Vector2f separatorBetweenInputAndOutputAreaPosition(terminalXPosition, terminalYPosition + 13);
+	const sf::Vector2f separatorBetweenInputAndOutputAreaPosition(terminalXPosition, terminalYPosition + 20);
 
-	const std::string fontPath("fonts/tahoma.ttf");
+	const std::string inputFontPath("fonts/joystixMonospace.ttf");
 	constexpr unsigned int inputCharacterSize = 10;
-	constexpr unsigned int outputCharacterSize = 8;
+	const std::string outputFontPath("fonts/consola.ttf");
+	constexpr unsigned int outputCharacterSize = 9;
 
-	constexpr unsigned int numberOfOutputLines = 19;
-	constexpr float spaceBetweenTheLines = 9;
+	constexpr unsigned int numberOfOutputLines = 12;
+	constexpr float spaceBetweenTheLines = 14;
 }
 
 }
