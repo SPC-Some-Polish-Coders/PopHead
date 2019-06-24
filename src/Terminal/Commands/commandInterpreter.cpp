@@ -15,18 +15,19 @@ void CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "echo")                 executeEcho();
-	else if (commandWithoutArguments == "exit")            executeExit();
-	else if (commandWithoutArguments == "teleport")        executeTeleport();
-	else if (commandWithoutArguments == "currentpos")      executeCurrentPos();
-	else if (commandWithoutArguments == "collisiondebug")  executeCollisionDebug();
-	else if (commandWithoutArguments == "mute")            executeMute();
-	else if (commandWithoutArguments == "unmute")          executeUnmute();
-	else if (commandWithoutArguments == "setvolume")       executeSetVolume();
-	else if (commandWithoutArguments == "log")             executeLog();
-	else if (commandWithoutArguments == "history")		   executeHistory();
-	else if (commandWithoutArguments == "help")			   executeHelp();
-	else if (commandWithoutArguments == "clear")		   executeClear();
+	if(commandWithoutArguments == "echo")                executeEcho();
+	else if(commandWithoutArguments == "exit")           executeExit();
+	else if(commandWithoutArguments == "teleport")       executeTeleport();
+	else if(commandWithoutArguments == "currentpos")     executeCurrentPos();
+	else if(commandWithoutArguments == "collisiondebug") executeCollisionDebug();
+	else if(commandWithoutArguments == "mute")           executeMute();
+	else if(commandWithoutArguments == "unmute")         executeUnmute();
+	else if(commandWithoutArguments == "setvolume")      executeSetVolume();
+	else if(commandWithoutArguments == "log")            executeLog();
+	else if(commandWithoutArguments == "history")        executeHistory();
+	else if(commandWithoutArguments == "help")           executeHelp();
+	else if(commandWithoutArguments == "clear")          executeClear();
+	else if(commandWithoutArguments == "view")           executeView();
 	else if(commandWithoutArguments == "") PH_LOG(LogType::Info, "This is terminal. Enter 'help' to see availible commands.");
 	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
 }
@@ -97,40 +98,10 @@ void CommandInterpreter::executeExit()
 void CommandInterpreter::executeTeleport()
 {
 	auto& player = getPlayer();
-	sf::Vector2f newPosition = getTeleportPositionFromCommand();
+	const sf::Vector2f newPosition = getVector2Argument();
+	if(newPosition == sf::Vector2f(-1, -1))
+		return;
 	player.setPosition(newPosition);
-}
-
-sf::Vector2f CommandInterpreter::getTeleportPositionFromCommand() const
-{
-	const std::string numbers("1234567890");
-
-	if(mCommand.find_first_of(numbers) == std::string::npos)
-		return handleTeleportArgumentError();
-
-	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
-	if(xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
-		return handleTeleportArgumentError();
-	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
-	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
-	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
-	float positionX = std::strtof(xArgument.c_str(), nullptr);
-
-	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
-	if(yArgumentPositionInCommand == std::string::npos)
-		return handleTeleportArgumentError();
-	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
-	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
-	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
-	float positionY = std::strtof(yArgument.c_str(), nullptr);
-
-	return sf::Vector2f(positionX, positionY);
-}
-
-sf::Vector2f CommandInterpreter::handleTeleportArgumentError() const
-{
-	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
-	return getPlayer().getPosition();
 }
 
 void CommandInterpreter::executeCurrentPos()
@@ -322,6 +293,47 @@ bool CommandInterpreter::areArgumentsToModulesToLogInvalid()
 		commandContains("world") || commandContains("terminal") || commandContains("none") ||
 		commandContains("all") || commandContains("clear")
 	));
+}
+
+void CommandInterpreter::executeView()
+{
+	auto& camera = mGameData->getRenderer().getCamera();
+	const sf::Vector2f newViewSize = getVector2Argument();
+	if(newViewSize == sf::Vector2f(-1, -1))
+		return;
+	camera.setSize(newViewSize);
+}
+
+auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
+{
+	const std::string numbers("1234567890");
+
+	if(mCommand.find_first_of(numbers) == std::string::npos)
+		return handleGetVector2ArgumentError();
+
+	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
+	if(xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
+		return handleGetVector2ArgumentError();
+	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
+	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
+	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
+	float positionX = std::strtof(xArgument.c_str(), nullptr);
+
+	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
+	if(yArgumentPositionInCommand == std::string::npos)
+		return handleGetVector2ArgumentError();
+	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
+	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
+	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
+	float positionY = std::strtof(yArgument.c_str(), nullptr);
+
+	return sf::Vector2f(positionX, positionY);
+}
+
+sf::Vector2f CommandInterpreter::handleGetVector2ArgumentError() const
+{
+	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
+	return sf::Vector2f(-1, -1);
 }
 
 bool CommandInterpreter::commandContains(const char c)
