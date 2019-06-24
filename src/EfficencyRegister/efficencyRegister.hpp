@@ -23,9 +23,11 @@ private:
 	sf::Text mFramesPerSecondText;
 	sf::Text mRenderCallPerFrameText;
 	sf::RectangleShape mBackground;
+	sf::Clock mClock;
 	GameData* mGameData;
-	int mFramesPerSecond;
-	int mRenderCallPerFrame;
+	unsigned mFramesPerSecond;
+	unsigned mRenderCallPerFrame;
+	unsigned mFramesFromLastSecond;
 	bool mShouldBeDrawn;
 };
 

@@ -7,6 +7,7 @@ EfficencyRegister::EfficencyRegister()
 	:mBackground({100, 25})
 	,mFramesPerSecond(0)
 	,mRenderCallPerFrame(0)
+	,mFramesFromLastSecond(0)
 	,mShouldBeDrawn(false)
 {
 }
@@ -33,12 +34,19 @@ void EfficencyRegister::input()
 
 void EfficencyRegister::update()
 {
-
 	if(mShouldBeDrawn) {
 		mFramesPerSecondText.setString("FPS:  " + std::to_string(mFramesPerSecond));
 		mRenderCallPerFrameText.setString("RCPF: " + std::to_string(mRenderCallPerFrame));
 		mRenderCallPerFrame = 0;
 	}
+
+	if(mClock.getElapsedTime().asSeconds() >= 1) {
+		mFramesPerSecond = mFramesFromLastSecond;
+		mClock.restart();
+		mFramesFromLastSecond = 0;
+	}
+	else
+		++mFramesFromLastSecond;
 }
 
 void EfficencyRegister::draw(sf::RenderTarget& target, const sf::RenderStates states) const
