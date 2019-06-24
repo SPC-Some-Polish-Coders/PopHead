@@ -7,6 +7,7 @@ namespace ph {
 void loadFonts(GameData* gameData)
 {
 	gameData->getFonts().load("fonts/consolab.ttf");
+	gameData->getFonts().load("fonts/tahoma.ttf");
 }
 
 }

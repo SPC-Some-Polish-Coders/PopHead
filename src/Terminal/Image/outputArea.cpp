@@ -10,7 +10,7 @@ using namespace TerminalStyleConstants;
 
 void OutputArea::init(GameData* gameData)
 {
-	float positionY = 135;
+	float positionY = 70;
 	for(int i = 0; i < numberOfOutputLines; ++i, positionY += spaceBetweenTheLines) {
 		sf::Text text("", gameData->getFonts().get(fontPath), outputCharacterSize);
 		text.setPosition(textXposition, positionY);
