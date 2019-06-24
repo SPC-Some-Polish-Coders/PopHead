@@ -2,7 +2,9 @@
 
 #include "gameData.hpp"
 
-ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
+namespace ph {
+
+TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
 	,mContent(mTerminalSharedData->mContent)
 	,mIsEnterClicked(false)
@@ -11,7 +13,7 @@ ph::TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalShared
 {
 }
 
-void ph::TerminalInputHandler::handleInput()
+void TerminalInputHandler::handleInput()
 {
 	if(mTerminalSharedData->mIsVisible){
 		handleKeyboardCharactersInput();
@@ -24,7 +26,7 @@ void ph::TerminalInputHandler::handleInput()
 	mTerminalSharedData->mInputLine.setString(mContent);
 }
 
-void ph::TerminalInputHandler::handleKeyboardCharactersInput()
+void TerminalInputHandler::handleKeyboardCharactersInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 
@@ -67,7 +69,7 @@ void ph::TerminalInputHandler::handleKeyboardCharactersInput()
 	else if (keyboard.isKeyJustPressed(sf::Keyboard::Space)) mContent += " ";
 }
 
-void ph::TerminalInputHandler::handleBackspace()
+void TerminalInputHandler::handleBackspace()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::BackSpace)) {
@@ -76,7 +78,7 @@ void ph::TerminalInputHandler::handleBackspace()
 	}
 }
 
-void ph::TerminalInputHandler::handleEnter()
+void TerminalInputHandler::handleEnter()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	mIsEnterClicked = keyboard.isKeyJustPressed(sf::Keyboard::Enter);
@@ -85,7 +87,7 @@ void ph::TerminalInputHandler::handleEnter()
 		updateLastCommands();
 }
 
-void ph::TerminalInputHandler::updateLastCommands()
+void TerminalInputHandler::updateLastCommands()
 {
 	mIndexOfCurrentLastCommand = -1;
 	auto& content = mTerminalSharedData->mContent;
@@ -97,7 +99,7 @@ void ph::TerminalInputHandler::updateLastCommands()
 	}
 }
 
-void ph::TerminalInputHandler::handleLastCommandShortcut()
+void TerminalInputHandler::handleLastCommandShortcut()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	auto& lastCommands = mTerminalSharedData->mLastCommands;
@@ -112,14 +114,14 @@ void ph::TerminalInputHandler::handleLastCommandShortcut()
 		mContent = lastCommands[mIndexOfCurrentLastCommand];
 }
 
-void ph::TerminalInputHandler::clearTextShortcut()
+void TerminalInputHandler::clearTextShortcut()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Down) && mIndexOfCurrentLastCommand == -1)
 		mContent.clear();
 }
 
-void ph::TerminalInputHandler::showOrHideCommandPromptInput()
+void TerminalInputHandler::showOrHideCommandPromptInput()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::Tab)) {
@@ -131,8 +133,10 @@ void ph::TerminalInputHandler::showOrHideCommandPromptInput()
 	}
 }
 
-void ph::TerminalInputHandler::setKeyRepeatEnabled(bool enabled)
+void TerminalInputHandler::setKeyRepeatEnabled(bool enabled)
 {
 	auto& window = mGameData->getRenderer().getWindow();
 	window.setKeyRepeatEnabled(enabled);
+}
+
 }

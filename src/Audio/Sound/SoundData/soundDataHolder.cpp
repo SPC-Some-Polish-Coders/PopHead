@@ -2,7 +2,9 @@
 #include "soundData.hpp"
 #include "Utilities/xml.hpp"
 
-ph::SoundDataHolder::SoundDataHolder()
+namespace ph {
+
+SoundDataHolder::SoundDataHolder()
 {
 	Xml soundDataXml;
 	soundDataXml.loadFromFile("sounds/soundData.xml");
@@ -19,8 +21,10 @@ ph::SoundDataHolder::SoundDataHolder()
 	}
 }
 
-auto ph::SoundDataHolder::getSoundData(const std::string& filePath) -> SoundData
+auto SoundDataHolder::getSoundData(const std::string& filePath) -> SoundData
 {
 	const auto found = mAllSoundsData.find(filePath);
 	return found->second;
+}
+
 }

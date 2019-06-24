@@ -4,12 +4,14 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
-ph::Map::Map(GameData* gameData, std::string name)
+namespace ph {
+
+Map::Map(GameData* gameData, std::string name)
 	:Object(gameData, name, LayerID::floorEntities)
 {
 }
 
-void ph::Map::loadFromFile(const std::string& filename)
+void Map::loadFromFile(const std::string& filename)
 {
 	Xml document;
 	document.loadFromFile(filename);
@@ -28,7 +30,7 @@ void ph::Map::loadFromFile(const std::string& filename)
 	}
 }
 
-void ph::Map::checkMapSupport(const Xml& mapNode) const
+void Map::checkMapSupport(const Xml& mapNode) const
 {
 	const std::string orientation = mapNode.getAttribute("orientation").toString();
 	if (orientation != "orthogonal")
@@ -38,7 +40,7 @@ void ph::Map::checkMapSupport(const Xml& mapNode) const
 		PH_EXCEPTION("Infinite maps are not supported");
 }
 
-sf::Vector2u ph::Map::getMapSize(const Xml& mapNode) const
+sf::Vector2u Map::getMapSize(const Xml& mapNode) const
 {
 	return sf::Vector2u(
 		mapNode.getAttribute("width").toUnsigned(),
@@ -46,7 +48,7 @@ sf::Vector2u ph::Map::getMapSize(const Xml& mapNode) const
 	);
 }
 
-sf::Vector2u ph::Map::getTileSize(const Xml& mapNode) const
+sf::Vector2u Map::getTileSize(const Xml& mapNode) const
 {
 	return sf::Vector2u(
 		mapNode.getAttribute("tilewidth").toUnsigned(),
@@ -54,7 +56,7 @@ sf::Vector2u ph::Map::getTileSize(const Xml& mapNode) const
 	);
 }
 
-std::vector<ph::Xml> ph::Map::getTilesetNodes(const Xml& mapNode) const
+std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	if (tilesetNodes.size() == 0)
@@ -62,7 +64,7 @@ std::vector<ph::Xml> ph::Map::getTilesetNodes(const Xml& mapNode) const
 	return tilesetNodes;
 }
 
-ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const
+Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const
 {
 	/*
 		TODO:
@@ -136,7 +138,7 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 	return tilesets;
 }
 
-std::vector<ph::Xml> ph::Map::getLayerNodes(const Xml& mapNode) const
+std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
 	if (layerNodes.size() == 0)
@@ -144,7 +146,7 @@ std::vector<ph::Xml> ph::Map::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-std::vector<unsigned> ph::Map::toGlobalTileIds(const Xml& dataNode) const
+std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
 {
 	const std::string encoding = dataNode.getAttribute("encoding").toString();
 	if (encoding == "csv")
@@ -152,7 +154,7 @@ std::vector<unsigned> ph::Map::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void ph::Map::loadTiles(
+void Map::loadTiles(
 	const std::vector<unsigned>& globalTileIds,
 	const TilesetsData& tilesets,
 	sf::Vector2u mapSize,
@@ -235,7 +237,7 @@ void ph::Map::loadTiles(
 	}
 }
 
-std::size_t ph::Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
+std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
 {
 	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
 		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
@@ -246,7 +248,7 @@ std::size_t ph::Map::findTilesetIndex(unsigned globalTileId, const TilesetsData&
 	return std::string::npos;
 }
 
-void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
@@ -264,4 +266,6 @@ void ph::Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (screen.contains(bounds.left, bounds.top))
 			target.draw(sprite, states);
 	}
+}
+
 }

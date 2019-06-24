@@ -5,18 +5,20 @@
 #include <string>
 #include <sstream>
 
-std::fstream ph::IniLoader::iniSettingsFile;
-std::string ph::IniLoader::currentLine;
+namespace ph {
+
+std::fstream IniLoader::iniSettingsFile;
+std::string IniLoader::currentLine;
 
 // WARNING: Don't use PH_EXCEPTION or PH_LOG if Logger constructor is using this method because it can result in recursion
 
-void ph::IniLoader::handleException(const std::string& message)
+void IniLoader::handleException(const std::string& message)
 {
 	std::cout << message << std::endl;
 	throw std::runtime_error(message);
 }
 
-void ph::IniLoader::openTheFile()
+void IniLoader::openTheFile()
 {
 	iniSettingsFile.open("config.ini", std::ios::in);
 	if (!iniSettingsFile.is_open())
@@ -25,7 +27,7 @@ void ph::IniLoader::openTheFile()
 	}
 }
 
-void ph::IniLoader::closeTheFile()
+void IniLoader::closeTheFile()
 {
 	iniSettingsFile.close();
 	if (iniSettingsFile.is_open())
@@ -34,7 +36,7 @@ void ph::IniLoader::closeTheFile()
 	}
 }
 
-bool ph::IniLoader::findPhrase(const std::string& searchedPhrase)
+bool IniLoader::findPhrase(const std::string& searchedPhrase)
 {
 	while (std::getline(iniSettingsFile, currentLine)) {
 		if (currentLine.find(searchedPhrase) != std::string::npos)
@@ -46,7 +48,7 @@ bool ph::IniLoader::findPhrase(const std::string& searchedPhrase)
 	}
 }
 
-bool ph::IniLoader::findValue(const std::string& searchedValue)
+bool IniLoader::findValue(const std::string& searchedValue)
 {
 	if (currentLine.find(searchedValue) != std::string::npos)
 		return true;
@@ -54,7 +56,7 @@ bool ph::IniLoader::findValue(const std::string& searchedValue)
 		return false;
 }
 
-bool ph::IniLoader::getBool(const std::string& currentLine)
+bool IniLoader::getBool(const std::string& currentLine)
 {
 	if (findValue("true")) return true;
 	else if (findValue("false")) return false;
@@ -63,4 +65,6 @@ bool ph::IniLoader::getBool(const std::string& currentLine)
 		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'. Assumed 'true'" << std::endl;
 		return true;
 	}
+}
+
 }

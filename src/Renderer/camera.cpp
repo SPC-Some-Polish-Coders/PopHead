@@ -4,23 +4,25 @@
 
 #include <iostream>
 
-ph::Camera::Camera(sf::Vector2f center, sf::Vector2f size)
+namespace ph {
+
+Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	: mView(center, size), mCenterWithoutShake(center)
 {
 }
 
-void ph::Camera::update(sf::Time delta)
+void Camera::update(sf::Time delta)
 {
 	shake(mShakeStrengthLoss * delta.asSeconds());
 }
 
-void ph::Camera::setCenter(sf::Vector2f center)
+void Camera::setCenter(sf::Vector2f center)
 {
 	mCenterWithoutShake = center;
 	mView.setCenter(center);
 }
 
-void ph::Camera::shake(float shakeStrengthLoss)
+void Camera::shake(float shakeStrengthLoss)
 {
 	if (mShakeStrength > 0.f) {
 		const float randomNumber = Random::generateNumber(-mShakeStrength, mShakeStrength);
@@ -29,7 +31,7 @@ void ph::Camera::shake(float shakeStrengthLoss)
 	}
 }
 
-void ph::Camera::move(sf::Vector2f center, float speed)
+void Camera::move(sf::Vector2f center, float speed)
 {
 	mCenterWithoutShake = Math::lerp(mCenterWithoutShake, center, speed);
 	mView.setCenter(mCenterWithoutShake);
@@ -37,17 +39,19 @@ void ph::Camera::move(sf::Vector2f center, float speed)
 	updateLastCameraPosition();
 }
 
-void ph::Camera::applyTo(sf::RenderTarget& renderTarget) const
+void Camera::applyTo(sf::RenderTarget& renderTarget) const
 {
 	renderTarget.setView(mView);
 }
 
-void ph::Camera::updateCameraMoveFromLastFrame()
+void Camera::updateCameraMoveFromLastFrame()
 {
 	mCameraMoveFromLastFrame = mCenterWithoutShake - mLastFrameCameraCenterPosition;
 }
 
-void ph::Camera::updateLastCameraPosition()
+void Camera::updateLastCameraPosition()
 {
 	mLastFrameCameraCenterPosition = mCenterWithoutShake;
+}
+
 }

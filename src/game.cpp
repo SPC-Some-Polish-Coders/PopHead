@@ -6,9 +6,11 @@
 #include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
-namespace ph { enum class StateID; }
+namespace ph {
 
-ph::Game::Game()
+enum class StateID; 
+
+Game::Game()
 	:mGameData{}
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
@@ -54,7 +56,7 @@ ph::Game::Game()
 	mRenderer->setGameData(mGameData.get());
 }
 
-void ph::Game::run()
+void Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -81,14 +83,14 @@ void ph::Game::run()
 	}
 }
 
-void ph::Game::input()
+void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
 	mTerminal->input();
 }
 
-void ph::Game::update(sf::Time delta)
+void Game::update(sf::Time delta)
 {
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
@@ -96,7 +98,9 @@ void ph::Game::update(sf::Time delta)
 	mGui->update(delta);
 }
 
-void ph::Game::draw()
+void Game::draw()
 {
 	mRenderer->draw();
+}
+
 }

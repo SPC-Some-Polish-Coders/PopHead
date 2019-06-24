@@ -7,7 +7,9 @@
 
 #include "state.hpp"
 
-ph::StateMachine::StateMachine()
+namespace ph {
+
+StateMachine::StateMachine()
 	:mGameData(nullptr)
 	,mIsPushing(false)
 	,mIsReplacing(false)
@@ -16,7 +18,7 @@ ph::StateMachine::StateMachine()
 {
 }
 
-void ph::StateMachine::changingStatesProcess()
+void StateMachine::changingStatesProcess()
 {
 	if (mIsClearing)
 		clearAction();
@@ -31,7 +33,7 @@ void ph::StateMachine::changingStatesProcess()
 		replaceAction();
 }
 
-void ph::StateMachine::clearAction()
+void StateMachine::clearAction()
 {
 	if (mActiveStates.empty())
 		PH_LOG(LogType::Warning, "You are trying to clear active states, but there are no states in vector.");
@@ -42,7 +44,7 @@ void ph::StateMachine::clearAction()
 	mIsClearing = false;
 }
 
-void ph::StateMachine::popAction()
+void StateMachine::popAction()
 {
 	if (mActiveStates.empty())
 		PH_LOG(LogType::Warning, "You are trying to pop state, but there are no states in vector.");
@@ -53,7 +55,7 @@ void ph::StateMachine::popAction()
 	mIsPopping = false;
 }
 
-void ph::StateMachine::pushAction()
+void StateMachine::pushAction()
 {
 	while (!mPendingStates.empty()) {
 		mActiveStates.emplace_back(std::move(mPendingStates.front()));
@@ -63,7 +65,7 @@ void ph::StateMachine::pushAction()
 	mIsPushing = false;
 }
 
-void ph::StateMachine::replaceAction()
+void StateMachine::replaceAction()
 {
 	mActiveStates.emplace_back(std::move(mPendingStates.back()));
 	mPendingStates.clear();
@@ -71,7 +73,7 @@ void ph::StateMachine::replaceAction()
 	mIsReplacing = false;
 }
 
-void ph::StateMachine::input()
+void StateMachine::input()
 {
     if(mActiveStates.empty())
 		PH_LOG(LogType::Error, "Cannot execute input because there are no States on the vector.");
@@ -79,7 +81,7 @@ void ph::StateMachine::input()
         mActiveStates.back()->input();
 }
 
-void ph::StateMachine::update(sf::Time delta)
+void StateMachine::update(sf::Time delta)
 {
     if(mActiveStates.empty())
 		PH_LOG(LogType::Error, "Cannot execute update because there are no States on the vector.");
@@ -87,7 +89,7 @@ void ph::StateMachine::update(sf::Time delta)
         mActiveStates.back()->update(delta);
 }
 
-void ph::StateMachine::pushState(ph::StateID id)
+void StateMachine::pushState(StateID id)
 {
     if(mIsReplacing == false){
         mPendingStates.emplace_back( std::move(getStatePtr(id)) );
@@ -97,7 +99,7 @@ void ph::StateMachine::pushState(ph::StateID id)
 		PH_LOG(LogType::Error, "Couldn't push state because another state is replacing.");
 }
 
-void ph::StateMachine::replaceState(ph::StateID id)
+void StateMachine::replaceState(StateID id)
 {
     if(mIsPushing == false){
         mPendingStates.clear();
@@ -108,37 +110,37 @@ void ph::StateMachine::replaceState(ph::StateID id)
 		PH_LOG(LogType::Error, "Couldn't replace state because another state is pushing.");
 }
 
-void ph::StateMachine::popState()
+void StateMachine::popState()
 {
     mIsPopping = true;
 }
 
-void ph::StateMachine::clearStates()
+void StateMachine::clearStates()
 {
     mIsClearing = true;
 }
 
-bool ph::StateMachine::getHideInStateNr(unsigned int nrOfState) const
+bool StateMachine::getHideInStateNr(unsigned int nrOfState) const
 {
     return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getHide();
 }
 
-bool ph::StateMachine::getPauseInStateNr(unsigned int nrOfState) const
+bool StateMachine::getPauseInStateNr(unsigned int nrOfState) const
 {
     return mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->getPause();
 }
 
-void ph::StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
+void StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
 {
     mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setHide(hide);
 }
 
-void ph::StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
+void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
 {
     mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
 }
 
-auto ph::StateMachine::getStatePtr(ph::StateID id) const -> std::unique_ptr<State>
+auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
 {
     switch(id)
     {
@@ -149,3 +151,4 @@ auto ph::StateMachine::getStatePtr(ph::StateID id) const -> std::unique_ptr<Stat
     }
 }
 
+}

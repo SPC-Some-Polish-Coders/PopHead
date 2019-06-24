@@ -2,7 +2,9 @@
 
 #include "gameData.hpp"
 
-ph::Terminal::Terminal()
+namespace ph {
+
+Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
 	,mTerminalImage(mTerminalSharedData)
 	,mKeyboardInputHandler(mTerminalSharedData)
@@ -10,7 +12,7 @@ ph::Terminal::Terminal()
 {
 }
 
-void ph::Terminal::init(GameData* gameData)
+void Terminal::init(GameData* gameData)
 {
 	mGameData = gameData;
 	mKeyboardInputHandler.setGameData(mGameData);
@@ -18,7 +20,7 @@ void ph::Terminal::init(GameData* gameData)
 	mTerminalImage.init(gameData);
 }
 
-void ph::Terminal::input()
+void Terminal::input()
 {
 	mKeyboardInputHandler.handleInput();
 
@@ -29,7 +31,9 @@ void ph::Terminal::input()
 	}
 }
 
-void ph::Terminal::pushOutputLine(const OutputLine& line)
+void Terminal::pushOutputLine(const OutputLine& line)
 {
 	mTerminalImage.getOutputArea().pushOutputLine(line);
+}
+
 }

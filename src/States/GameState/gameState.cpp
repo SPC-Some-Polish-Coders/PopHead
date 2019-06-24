@@ -9,14 +9,16 @@
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
-ph::GameState::GameState(GameData* const gameData)
+namespace ph {
+
+GameState::GameState(GameData* const gameData)
 	:State(gameData)
 {
 	loadResources();
 	makeSceneTree();
 }
 
-void ph::GameState::loadResources()
+void GameState::loadResources()
 {
 	mGameData->getTextures().load("textures/characters/vaultManSheet.png");
 	mGameData->getTextures().load("textures/vehicles/boat.png");
@@ -28,7 +30,7 @@ void ph::GameState::loadResources()
 	mGameData->getTextures().load("textures/others/ball.png");
 }
 
-void ph::GameState::makeSceneTree()
+void GameState::makeSceneTree()
 {
 	makeMap();
 	makeWall();
@@ -42,21 +44,21 @@ void ph::GameState::makeSceneTree()
 	playMusic();
 }
 
-void ph::GameState::makeMap()
+void GameState::makeMap()
 {
 	auto map = std::make_unique<Map>(mGameData, "testMap");
 	map->loadFromFile("maps/testMap.tmx");
 	mRoot.addChild(std::move(map));
 }
 
-void ph::GameState::makeWall()
+void GameState::makeWall()
 {
 	auto wall = std::make_unique<ShapeWithCollision>(mGameData);
 	wall->setPosition(sf::Vector2f(50, 50));
 	mRoot.getChild("testMap").addChild(std::move(wall));
 }
 
-void ph::GameState::makeBoat()
+void GameState::makeBoat()
 {
 	std::unique_ptr<Character> boat(new Character(mGameData, "boat"));
 	boat->getSprite().setTexture(mGameData->getTextures().get("textures/vehicles/boat.png"));
@@ -65,7 +67,7 @@ void ph::GameState::makeBoat()
 	mRoot.addChild(std::move(boat));
 }
 
-void ph::GameState::makeNpc()
+void GameState::makeNpc()
 {
 	std::unique_ptr<Character> npc(new Character(mGameData, "npc"));
 	npc->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
@@ -74,7 +76,7 @@ void ph::GameState::makeNpc()
 	mRoot.getChild("boat").addChild(std::move(npc));
 }
 
-void ph::GameState::makeNpcToBeAbleToTestDynamicCollisions()
+void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 {
 	constexpr float mass = 50.f;
 	std::unique_ptr<Character> npcq(new Character(
@@ -85,21 +87,21 @@ void ph::GameState::makeNpcToBeAbleToTestDynamicCollisions()
 	mRoot.addChild(std::move(npcq));
 }
 
-void ph::GameState::makePlayer()
+void GameState::makePlayer()
 {
 	std::unique_ptr<Player> player(new Player(mGameData));
 	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultManSheet.png"));
 	mRoot.addChild(std::move(player));
 }
 
-void ph::GameState::makeZombie()
+void GameState::makeZombie()
 {
 	auto zombie = std::make_unique<Zombie>(mGameData);
 	zombie->setPosition(sf::Vector2f(800, 300));
 	mRoot.addChild(std::move(zombie));
 }
 
-void ph::GameState::makeBox()
+void GameState::makeBox()
 {
 	constexpr float mass = 49.5f;
 	auto box = std::make_unique<Character>(
@@ -109,7 +111,7 @@ void ph::GameState::makeBox()
 	mRoot.addChild(std::move(box));
 }
 
-void ph::GameState::makeBall()
+void GameState::makeBall()
 {
 	constexpr float mass = 15.f;
 	auto ball = std::make_unique<Character>(
@@ -120,12 +122,12 @@ void ph::GameState::makeBall()
 	mRoot.addChild(std::move(ball));
 }
 
-void ph::GameState::playMusic()
+void GameState::playMusic()
 {
 	mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
 }
 
-void ph::GameState::input()
+void GameState::input()
 {
 	mRoot.input();
 	handleCameraShakeShortcut();
@@ -133,13 +135,13 @@ void ph::GameState::input()
 	shotgunShot();
 }
 
-void ph::GameState::handleCameraShakeShortcut()
+void GameState::handleCameraShakeShortcut()
 {
 	if(mGameData->getInput().getAction().isActionJustPressed("cameraShake"))
 		mShouldCameraShake = true;
 }
 
-void ph::GameState::windowMinimalizeAndMaximalizeShortcut()
+void GameState::windowMinimalizeAndMaximalizeShortcut()
 {
 	enum class WindowSizeState {fullScreen, notFullScreen};
 	static WindowSizeState windowSizeState = WindowSizeState::fullScreen;
@@ -159,14 +161,14 @@ void ph::GameState::windowMinimalizeAndMaximalizeShortcut()
 	}
 }
 
-void ph::GameState::shotgunShot()
+void GameState::shotgunShot()
 {
 	// It's an sound player test.
 	if(mGameData->getInput().getAction().isActionJustPressed("shotgunShot"))
 		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 }
 
-void ph::GameState::update(sf::Time delta)
+void GameState::update(sf::Time delta)
 {
 	mRoot.update(delta);
 	if (mShouldCameraShake)
@@ -176,28 +178,30 @@ void ph::GameState::update(sf::Time delta)
 	updateListenerPosition();
 }
 
-void ph::GameState::cameraShake()
+void GameState::cameraShake()
 {
 	constexpr float cameraShakeStrength = 10.f;
 	mGameData->getRenderer().startShaking(cameraShakeStrength);
 	mShouldCameraShake = false;
 }
 
-void ph::GameState::cameraMovement(sf::Time delta) const
+void GameState::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
 	const sf::FloatRect characterBounds = dynamic_cast<Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 
-void ph::GameState::boatMovement(sf::Time delta)
+void GameState::boatMovement(sf::Time delta)
 {
 	auto& boat = dynamic_cast<Character&>(mRoot.getChild("boat"));
 	boat.move(sf::Vector2f(delta.asSeconds() * -15, 0));
 }
 
-void ph::GameState::updateListenerPosition()
+void GameState::updateListenerPosition()
 {
 	Object& player = dynamic_cast<Object&>(mRoot.getChild("player"));
 	mGameData->getSoundPlayer().setListenerPosition(player.getPosition());
+}
+
 }

@@ -7,7 +7,9 @@
 #include "Logs/logger.hpp"
 #include "Utilities/cast.hpp"
 
-void ph::CommandInterpreter::handleCommand(const std::string& command)
+namespace ph {
+
+void CommandInterpreter::handleCommand(const std::string& command)
 {
 	mCommand = command;
 
@@ -29,18 +31,18 @@ void ph::CommandInterpreter::handleCommand(const std::string& command)
 	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
 }
 
-std::string ph::CommandInterpreter::getCommandWithoutArguments()
+std::string CommandInterpreter::getCommandWithoutArguments()
 {
 	return mCommand.substr(0, getArgumentPositionInCommand());
 }
 
-int ph::CommandInterpreter::getArgumentPositionInCommand()
+int CommandInterpreter::getArgumentPositionInCommand()
 {
 	size_t argumentPosition = mCommand.find(' ');
 	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
-void ph::CommandInterpreter::executeEcho()
+void CommandInterpreter::executeEcho()
 {
 	size_t spacePosition = mCommand.find(' ');
 	size_t messageStartPos = spacePosition + 1;
@@ -49,7 +51,7 @@ void ph::CommandInterpreter::executeEcho()
 	PH_LOG(LogType::FromUser, message);
 }
 
-void ph::CommandInterpreter::executeHistory()
+void CommandInterpreter::executeHistory()
 {
 	auto& terminalData = mGameData->getTerminal();
 	auto& commandsHistory = mGameData->getTerminal().getSharedData()->mLastCommands;
@@ -60,7 +62,7 @@ void ph::CommandInterpreter::executeHistory()
 	terminalData.pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
 }
 
-void ph::CommandInterpreter::executeHelp()
+void CommandInterpreter::executeHelp()
 {
 	std::vector<std::string> commandsList1 {
 		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", "SETVOLUME",
@@ -81,25 +83,25 @@ void ph::CommandInterpreter::executeHelp()
 	}
 }
 
-void ph::CommandInterpreter::executeClear()
+void CommandInterpreter::executeClear()
 {
 	for (int i = 0; i < 20; ++i)
 		mGameData->getTerminal().pushOutputLine({"", sf::Color::Transparent});
 }
 
-void ph::CommandInterpreter::executeExit()
+void CommandInterpreter::executeExit()
 {
 	mGameData->getRenderer().getWindow().close();
 }
 
-void ph::CommandInterpreter::executeTeleport()
+void CommandInterpreter::executeTeleport()
 {
 	auto& player = getPlayer();
 	sf::Vector2f newPosition = getTeleportPositionFromCommand();
 	player.setPosition(newPosition);
 }
 
-sf::Vector2f ph::CommandInterpreter::getTeleportPositionFromCommand() const
+sf::Vector2f CommandInterpreter::getTeleportPositionFromCommand() const
 {
 	const std::string numbers("1234567890");
 
@@ -125,19 +127,19 @@ sf::Vector2f ph::CommandInterpreter::getTeleportPositionFromCommand() const
 	return sf::Vector2f(positionX, positionY);
 }
 
-sf::Vector2f ph::CommandInterpreter::handleTeleportArgumentError() const
+sf::Vector2f CommandInterpreter::handleTeleportArgumentError() const
 {
 	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
 	return getPlayer().getPosition();
 }
 
-void ph::CommandInterpreter::executeCurrentPos()
+void CommandInterpreter::executeCurrentPos()
 {
 	auto& playerPosition = getPlayer().getPosition();
 	PH_LOG(LogType::Info, "player position: " + Cast::toString(playerPosition));
 }
 
-auto ph::CommandInterpreter::getPlayer() const -> Object&
+auto CommandInterpreter::getPlayer() const -> Object&
 {
 	auto& gameState = mGameData->getStateMachine().getTopState();
 	auto& root = gameState.getRoot();
@@ -145,7 +147,7 @@ auto ph::CommandInterpreter::getPlayer() const -> Object&
 	return player;
 }
 
-void ph::CommandInterpreter::executeCollisionDebug()
+void CommandInterpreter::executeCollisionDebug()
 {
 	if(commandContains("turn"))          turnOnOrTurnOffCollisionDebug();
 	else if(commandContains("color"))    changeCollisionDebugColor();
@@ -154,7 +156,7 @@ void ph::CommandInterpreter::executeCollisionDebug()
 		PH_LOG(LogType::Error, "Incorrect argument! First argument has to be 'turn', 'color' or 'display'.");
 }
 
-void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
+void CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
@@ -167,7 +169,7 @@ void ph::CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.");
 }
 
-void ph::CommandInterpreter::changeCollisionDebugColor()
+void CommandInterpreter::changeCollisionDebugColor()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
@@ -178,7 +180,7 @@ void ph::CommandInterpreter::changeCollisionDebugColor()
 		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
 }
 
-void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
+void CommandInterpreter::changeCollisionDebugDisplayMode()
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
@@ -189,17 +191,17 @@ void ph::CommandInterpreter::changeCollisionDebugDisplayMode()
 		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.");
 }
 
-void ph::CommandInterpreter::executeMute()
+void CommandInterpreter::executeMute()
 {
 	setAudioMuted(true);
 }
 
-void ph::CommandInterpreter::executeUnmute()
+void CommandInterpreter::executeUnmute()
 {
 	setAudioMuted(false);
 }
 
-void ph::CommandInterpreter::setAudioMuted(bool mute)
+void CommandInterpreter::setAudioMuted(bool mute)
 {
 	if(commandContains("music"))
 		mGameData->getMusicPlayer().setMuted(mute);
@@ -213,7 +215,7 @@ void ph::CommandInterpreter::setAudioMuted(bool mute)
 		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'music', 'sound' or 'all'.");
 }
 
-void ph::CommandInterpreter::executeSetVolume()
+void CommandInterpreter::executeSetVolume()
 {
 	float newVolume = getVolumeFromCommand();
 	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
@@ -231,7 +233,7 @@ void ph::CommandInterpreter::executeSetVolume()
 	}
 }
 
-float ph::CommandInterpreter::getVolumeFromCommand()
+float CommandInterpreter::getVolumeFromCommand()
 {
 	size_t spacePosition = mCommand.find_last_of(' ');
 	size_t valueStartPos = spacePosition + 1;
@@ -240,7 +242,7 @@ float ph::CommandInterpreter::getVolumeFromCommand()
 	return std::strtof(volumeValue.c_str(), nullptr);
 }
 
-void ph::CommandInterpreter::executeLog()
+void CommandInterpreter::executeLog()
 {
 	if (commandContains("into"))          logInto();
 	else if (commandContains("types"))    setLogTypesToLog();
@@ -249,7 +251,7 @@ void ph::CommandInterpreter::executeLog()
 		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");
 }
 
-void ph::CommandInterpreter::logInto()
+void CommandInterpreter::logInto()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
@@ -264,7 +266,7 @@ void ph::CommandInterpreter::logInto()
 		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");
 }
 
-void ph::CommandInterpreter::setLogTypesToLog()
+void CommandInterpreter::setLogTypesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
@@ -280,7 +282,7 @@ void ph::CommandInterpreter::setLogTypesToLog()
 		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");
 }
 
-bool ph::CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
+bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
 {
 	return(!(
 		commandContains("info") || commandContains("warning") ||
@@ -289,7 +291,7 @@ bool ph::CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
 	));
 }
 
-void ph::CommandInterpreter::setModulesToLog()
+void CommandInterpreter::setModulesToLog()
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
@@ -312,7 +314,7 @@ void ph::CommandInterpreter::setModulesToLog()
 		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");
 }
 
-bool ph::CommandInterpreter::areArgumentsToModulesToLogInvalid()
+bool CommandInterpreter::areArgumentsToModulesToLogInvalid()
 {
 	return(!(commandContains("audio") || commandContains("base") || commandContains("input") ||
 		commandContains("logs") || commandContains("physics") || commandContains("renderer") ||
@@ -322,12 +324,14 @@ bool ph::CommandInterpreter::areArgumentsToModulesToLogInvalid()
 	));
 }
 
-bool ph::CommandInterpreter::commandContains(const char c)
+bool CommandInterpreter::commandContains(const char c)
 {
 	return mCommand.find(c) != std::string::npos;
 }
 
-bool ph::CommandInterpreter::commandContains(const char* c)
+bool CommandInterpreter::commandContains(const char* c)
 {
 	return mCommand.find(c) != std::string::npos;
+}
+
 }

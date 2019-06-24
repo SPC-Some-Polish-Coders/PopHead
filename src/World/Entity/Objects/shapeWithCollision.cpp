@@ -2,7 +2,9 @@
 
 #include "Physics/CollisionBody/bodyType.hpp"
 
-ph::ShapeWithCollision::ShapeWithCollision(GameData* gameData)
+namespace ph {
+
+ShapeWithCollision::ShapeWithCollision(GameData* gameData)
 	:Object(gameData, "shapeWithCollision", LayerID::staticEntities)
 	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, BodyType::staticBody, this, gameData)
 	,mShape(sf::Vector2f(100, 50))
@@ -10,14 +12,16 @@ ph::ShapeWithCollision::ShapeWithCollision(GameData* gameData)
 	mShape.setFillColor(sf::Color::Black);
 }
 
-void ph::ShapeWithCollision::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ShapeWithCollision::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mShape, states);
 }
 
-void ph::ShapeWithCollision::setPosition(sf::Vector2f position, bool recursive)
+void ShapeWithCollision::setPosition(sf::Vector2f position, bool recursive)
 {
 	mShape.setPosition(position);
 	mCollisionBody.setPosition(position);
 	Object::setPosition(position, recursive);
+}
+
 }

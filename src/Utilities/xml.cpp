@@ -2,7 +2,9 @@
 #include "Utilities/debug.hpp"
 #include <fstream>
 
-void ph::Xml::loadFromFile(const std::string& filePath)
+namespace ph {
+
+void Xml::loadFromFile(const std::string& filePath)
 {
 	mContent.clear();
 	std::string fullFilePath = "resources/" + filePath;
@@ -24,7 +26,7 @@ void ph::Xml::loadFromFile(const std::string& filePath)
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + mContent);
 }
 
-ph::Xml ph::Xml::getChild(std::string name) const
+Xml Xml::getChild(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	name.insert(0, "<");
@@ -61,7 +63,7 @@ ph::Xml ph::Xml::getChild(std::string name) const
 	return xml;
 }
 
-std::vector<ph::Xml> ph::Xml::getChildren(std::string name) const
+std::vector<Xml> Xml::getChildren(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	name.insert(0, "<");
@@ -132,7 +134,7 @@ std::vector<ph::Xml> ph::Xml::getChildren(std::string name) const
 	return children;
 }
 
-ph::Xml ph::Xml::getAttribute(std::string name) const
+Xml Xml::getAttribute(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "attribute name cannot be empty");
 	/*
@@ -173,11 +175,13 @@ ph::Xml ph::Xml::getAttribute(std::string name) const
 	return xml;
 }
 
-std::string ph::Xml::toString() const
+std::string Xml::toString() const
 {
 	std::size_t begin = findEndOfCurrentTagAttributes();
 	if (begin == std::string::npos)
 		return mContent;
 	++begin;
 	return mContent.substr(begin, mContent.size() - begin);
+}
+
 }

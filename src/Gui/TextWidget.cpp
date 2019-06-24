@@ -3,8 +3,6 @@
 
 namespace ph {
 
-
-
 	TextWidget::TextWidget()
 		:mTextPosition{ 0,0 }
 	{

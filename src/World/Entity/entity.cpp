@@ -1,7 +1,9 @@
 #include "entity.hpp"
 #include "Utilities/debug.hpp"
 
-ph::Entity::Entity(EntityType type, GameData* gameData, std::string name)
+namespace ph {
+
+Entity::Entity(EntityType type, GameData* gameData, std::string name)
 	:mEntityType(type)
 	,mGameData(gameData)
 	,mName(name)
@@ -10,13 +12,13 @@ ph::Entity::Entity(EntityType type, GameData* gameData, std::string name)
 
 }
 
-void ph::Entity::input()
+void Entity::input()
 {
     for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
         (*it)->input();
 }
 
-void ph::Entity::update(sf::Time delta)
+void Entity::update(sf::Time delta)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
 	{
@@ -24,7 +26,7 @@ void ph::Entity::update(sf::Time delta)
 	}
 }
 
-std::string ph::Entity::checkName(std::string& childName)
+std::string Entity::checkName(std::string& childName)
 {
 	for (const auto& child : mChildren)
 	{
@@ -37,7 +39,7 @@ std::string ph::Entity::checkName(std::string& childName)
 	return childName;
 }
 
-void ph::Entity::correctChildName(std::string& childNameToCorrect)
+void Entity::correctChildName(std::string& childNameToCorrect)
 {
 	if (childNameToCorrect.find('_') != std::string::npos)
 		incrementNumber(childNameToCorrect);
@@ -45,14 +47,14 @@ void ph::Entity::correctChildName(std::string& childNameToCorrect)
 		childNameToCorrect += "_2";
 }
 
-void ph::Entity::incrementNumber(std::string& childNameToIncrement)
+void Entity::incrementNumber(std::string& childNameToIncrement)
 {
 	std::size_t begin = childNameToIncrement.find('_');
 	childNameToIncrement.replace(begin + 1, std::string::npos,
 		std::to_string(std::stoi(childNameToIncrement.substr(begin + 1))+1));
 }
 
-void ph::Entity::addChild(EntityPtr newChild)
+void Entity::addChild(EntityPtr newChild)
 {
 	const std::string nameOfNewChild = checkName(newChild->mName);
 	newChild->mName = nameOfNewChild;
@@ -61,7 +63,7 @@ void ph::Entity::addChild(EntityPtr newChild)
 	PH_LOG(LogType::Info, "Entity \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
 }
 
-void ph::Entity::removeChild(const std::string& name)
+void Entity::removeChild(const std::string& name)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		if ((*it)->getName() == name) {
@@ -72,7 +74,7 @@ void ph::Entity::removeChild(const std::string& name)
 	PH_LOG(LogType::Info, "Entity \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-void ph::Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
+void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 {
 	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		if ((*it).get() == pointerToChildWhichIsSupposedToBeRemoved) {
@@ -84,10 +86,12 @@ void ph::Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
 		                  "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-auto ph::Entity::getChild(std::string name) const -> Entity&
+auto Entity::getChild(std::string name) const -> Entity&
 {
     for(auto const &child : mChildren){
         if(child->getName() == name)
             return *(child.get());
     }
+}
+
 }

@@ -1,16 +1,18 @@
 #include "Renderer/windowInitializer.hpp"
 
-sf::VideoMode ph::WindowInitializer::getWindowSize()
+namespace ph {
+
+sf::VideoMode WindowInitializer::getWindowSize()
 {
 	return sf::VideoMode(getWindowWidth(), getWindowHeight());
 }
 
-sf::Uint32 ph::WindowInitializer::getStyle()
+sf::Uint32 WindowInitializer::getStyle()
 {
 	return getFullscreenMode() ? sf::Style::Fullscreen : sf::Style::Default;
 }
 
-int ph::WindowInitializer::getWindowWidth()
+int WindowInitializer::getWindowWidth()
 {
 	openTheFile();
 	if (findPhrase("WindowWidth="))
@@ -29,7 +31,7 @@ int ph::WindowInitializer::getWindowWidth()
 	}
 }
 
-int ph::WindowInitializer::getWindowHeight()
+int WindowInitializer::getWindowHeight()
 {
 	openTheFile();
 	if (findPhrase("WindowHeight="))
@@ -48,18 +50,20 @@ int ph::WindowInitializer::getWindowHeight()
 	}
 }
 
-int ph::WindowInitializer::getResolutionValue()
+int WindowInitializer::getResolutionValue()
 {
 	std::size_t equalSignPosition = currentLine.find("=") + 1;
 	currentLine = currentLine.substr(equalSignPosition, 4);
 	return std::stoi(currentLine);
 }
 
-bool ph::WindowInitializer::getFullscreenMode()
+bool WindowInitializer::getFullscreenMode()
 {
 	openTheFile();
 	if (findPhrase("FullscreenMode="))
 	{
 		return getBool(currentLine);
 	}
+}
+
 }
