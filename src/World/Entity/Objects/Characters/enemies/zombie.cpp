@@ -17,7 +17,7 @@ namespace
 		CollisionRectData::ZOMBIE_WIDTH,
 		CollisionRectData::ZOMBIE_HEIGHT
 	);
-	constexpr float mass = 70;
+	constexpr float mass = 40;
 }
 
 Zombie::Zombie(GameData* gameData)

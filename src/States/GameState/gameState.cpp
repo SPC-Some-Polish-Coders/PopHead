@@ -77,9 +77,9 @@ void GameState::makeNpc()
 
 void GameState::makeNpcToBeAbleToTestDynamicCollisions()
 {
-	constexpr float mass = 50.f;
+	constexpr float mass = 25.f;
 	std::unique_ptr<Character> npcq(new Character(
-		mGameData, "dynamicCollisionsTesterNPC", Animation(), 50, 100, 100, sf::FloatRect(0, 0, 30, 44), mass));
+		mGameData, "dynamicCollisionsTesterNPC", Animation(), 50, 100, 100, sf::FloatRect(0, 0, 15, 22), mass));
 	npcq->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
 	npcq->setPosition(sf::Vector2f(400, 400));
 
@@ -102,9 +102,9 @@ void GameState::makeZombie()
 
 void GameState::makeBox()
 {
-	constexpr float mass = 49.5f;
+	constexpr float mass = 24.f;
 	auto box = std::make_unique<Character>(
-		mGameData, "box", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 57, 81), mass);
+		mGameData, "box", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 28.5, 40.5), mass);
 	box->setPosition(sf::Vector2f(100, 300));
 	box->getSprite().setTexture(mGameData->getTextures().get("textures/others/box.png"));
 	mRoot.addChild(std::move(box));
@@ -112,9 +112,9 @@ void GameState::makeBox()
 
 void GameState::makeBall()
 {
-	constexpr float mass = 15.f;
+	constexpr float mass = 10.f;
 	auto ball = std::make_unique<Character>(
-		mGameData, "ball", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 30, 30), mass);
+		mGameData, "ball", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 15, 15), mass);
 	ball->setPosition(sf::Vector2f(505, 505));
 	ball->setScale(sf::Vector2f(0.4f, 0.4f));
 	ball->getSprite().setTexture(mGameData->getTextures().get("textures/others/ball.png"));

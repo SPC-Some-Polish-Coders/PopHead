@@ -11,7 +11,7 @@ namespace ph {
 namespace
 {
 	std::string name = "player";
-	unsigned int movementSpeed = 150;
+	unsigned int movementSpeed = 75;
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
 	sf::FloatRect posAndSize(
@@ -20,7 +20,7 @@ namespace
 		CollisionRectData::PLAYER_WIDTH,
 		CollisionRectData::PLAYER_HEIGHT
 	);
-	float mass = 50;
+	float mass = 25;
 
 	Animation animation{
 		std::array<std::string, 4>{"down", "left", "right", "up"},
