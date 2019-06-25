@@ -64,19 +64,22 @@ std::vector<ph::Xml> ph::Map::getTilesetNodes(const Xml& mapNode) const
 
 ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const
 {
-	/*
-		TODO:
-		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
-			- Make method hasAttribute(name) in Xml
-	*/
 	TilesetsData tilesets;
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
 	tilesets.sources.reserve(tilesetNodes.size()); // WARNING: Change it when tilesets based on collection of images would be allowed
-	for (const Xml& tilesetNode : tilesetNodes) {
+	for (Xml tilesetNode : tilesetNodes) {
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
+		if (tilesetNode.hasAttribute("source")) {
+			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
+			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
+			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
+			Xml tilesetDocument;
+			tilesetDocument.loadFromFile(tilesetNodeSource);
+			tilesetNode = tilesetDocument.getChild("tileset");
+		}
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
@@ -233,7 +236,7 @@ std::size_t ph::Map::findTilesetIndex(unsigned globalTileId, const TilesetsData&
 
 std::size_t ph::Map::findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
 {
-	for (std::size_t i = 0; i < tilesData.size(); ++i) 
+	for (std::size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
 			return i;
 	return std::string::npos;

@@ -65,6 +65,7 @@ private:
 	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
 	inline static const std::string pathToMapTextures = "textures/map/";
+	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::vector<sf::Sprite> mTiles;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
