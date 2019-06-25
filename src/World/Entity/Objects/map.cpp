@@ -84,20 +84,20 @@ ph::Map::TilesetsData ph::Map::getTilesetsData(const std::vector<Xml>& tilesetNo
 		source = Path::toFilename(source, '/');
 		tilesets.sources.push_back(source);
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
-		TilesetsData::TilesData tiles = getTilesData(tileNodes);
-		tiles.firstGlobalTileId = firstGlobalTileId;
-		tilesets.tilesData.push_back(tiles);
+		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
+		tilesData.firstGlobalTileId = firstGlobalTileId;
+		tilesets.tilesData.push_back(tilesData);
 	}
 	return tilesets;
 }
 
 ph::Map::TilesetsData::TilesData ph::Map::getTilesData(const std::vector<Xml>& tileNodes) const
 {
-	TilesetsData::TilesData tiles{};
-	tiles.ids.reserve(tileNodes.size());
-	tiles.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
+	TilesetsData::TilesData tilesData{};
+	tilesData.ids.reserve(tileNodes.size());
+	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
 	for (const Xml& tileNode : tileNodes) {
-		tiles.ids.push_back(tileNode.getAttribute("id").toUnsigned());
+		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
 		const Xml objectGroupNode = tileNode.getChild("objectgroup");
 		/*
 			TODO:
@@ -127,9 +127,9 @@ ph::Map::TilesetsData::TilesData ph::Map::getTilesData(const std::vector<Xml>& t
 			objectNode.getAttribute("width").toFloat(),
 			objectNode.getAttribute("height").toFloat()
 		);
-		tiles.bounds.push_back(bounds);
+		tilesData.bounds.push_back(bounds);
 	}
-	return tiles;
+	return tilesData;
 }
 
 std::vector<ph::Xml> ph::Map::getLayerNodes(const Xml& mapNode) const
@@ -212,10 +212,10 @@ void ph::Map::loadTiles(
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 
-			const std::size_t tilesIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
-			if (tilesIndex == std::string::npos)
+			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
+			if (tilesDataIndex == std::string::npos)
 				continue;
-			loadCollisionBodies(tileId, tilesets.tilesData[tilesIndex], position);
+			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
 	}
 }
@@ -241,12 +241,12 @@ std::size_t ph::Map::findTilesIndex(unsigned firstGlobalTileId, const std::vecto
 
 void ph::Map::loadCollisionBodies(
 	unsigned tileId,
-	const TilesetsData::TilesData& tiles,
+	const TilesetsData::TilesData& tilesData,
 	sf::Vector2f position)
 {
-	for (std::size_t i = 0; i < tiles.ids.size(); ++i) {
-		if (tileId == tiles.ids[i]) {
-			sf::FloatRect bounds = tiles.bounds[i];
+	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
+		if (tileId == tilesData.ids[i]) {
+			sf::FloatRect bounds = tilesData.bounds[i];
 			bounds.left += position.x;
 			bounds.top += position.y;
 			auto collisionBody = std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);

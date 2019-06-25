@@ -62,7 +62,7 @@ private:
 
 	std::size_t findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const;
 
-	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tiles, sf::Vector2f position);
+	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
 	inline static const std::string pathToMapTextures = "textures/map/";
 	std::vector<sf::Sprite> mTiles;
