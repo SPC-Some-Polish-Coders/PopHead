@@ -66,76 +66,75 @@ std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 
 Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const
 {
-	/*
-		TODO:
-		What if tileset is self-closing tag (firstgid and source is defined, but he is in different file)?
-		- (BEST) Do something with Xml impl to check if there is source attribute defined? ->
-			* return std::optional?
-			* return iterator in getAttribute(name)?
-			* return std::pair in getAttribute(name)?
-			* return struct in getAttribute(name)?
-			* make output argument?
-			* make method hasAttribute(name)? -> bad performance (double find or hard impl based on temp buffer)
-		- Assume that there is not such? -> Maybe it would be better to just allow them.
-		- Try to find it and catch corresponding exception by checking error message
-			(much better: define proper exception type in Xml impl)?
-	*/
 	TilesetsData tilesets;
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
-	tilesets.sources.reserve(tilesetNodes.size());
-	for (const Xml& tilesetNode : tilesetNodes) {
+	tilesets.sources.reserve(tilesetNodes.size()); // WARNING: Change it when tilesets based on collection of images would be allowed
+	for (Xml tilesetNode : tilesetNodes) {
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
+		if (tilesetNode.hasAttribute("source")) {
+			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
+			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
+			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
+			Xml tilesetDocument;
+			tilesetDocument.loadFromFile(tilesetNodeSource);
+			tilesetNode = tilesetDocument.getChild("tileset");
+		}
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
 		std::string source = imageNode.getAttribute("source").toString();
 		source = Path::toFilename(source, '/');
 		tilesets.sources.push_back(source);
-
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
-		TilesetsData::TilesData tiles;
-		tiles.ids.reserve(tileNodes.size());
-		tiles.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
-		tiles.firstGlobalTileId = firstGlobalTileId;
-		for (const Xml& tileNode : tileNodes) {
-			tiles.ids.push_back(tileNode.getAttribute("id").toUnsigned());
-			const Xml objectGroupNode = tileNode.getChild("objectgroup");
-			/*
-				TODO:
-				* Could objectGroupNode contain more than one object?
-				If that would be true there would be a possibility to have
-				more than one CollisionBody per tile.
-				(If it would be possible wrap some of them into one?).
-
-				* Inform that other types are not allowed? Allow some of them?
-				For example:
-					- ellipse
-					- point
-					- polygon
-					- polyline
-					- text
-
-				* Check whether objectNode has width and height attributes. 
-				- If there is no width set it to 0
-				- If there is no height set it to 0
-				- If there is no width and height ignore this object
-				(In Tiled when you create CollisionBody without width and height they are not created in .tmx file)
-			*/
-			const Xml objectNode = objectGroupNode.getChild("object");
-			const sf::FloatRect bounds(
-				objectNode.getAttribute("x").toFloat(),
-				objectNode.getAttribute("y").toFloat(),
-				objectNode.getAttribute("width").toFloat(),
-				objectNode.getAttribute("height").toFloat()
-			);
-			tiles.bounds.push_back(bounds);
-		}
-		tilesets.tiles.push_back(tiles);
+		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
+		tilesData.firstGlobalTileId = firstGlobalTileId;
+		tilesets.tilesData.push_back(tilesData);
 	}
 	return tilesets;
+}
+
+Map::TilesetsData::TilesData Map::getTilesData(const std::vector<Xml>& tileNodes) const
+{
+	TilesetsData::TilesData tilesData{};
+	tilesData.ids.reserve(tileNodes.size());
+	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
+	for (const Xml& tileNode : tileNodes) {
+		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
+		const Xml objectGroupNode = tileNode.getChild("objectgroup");
+		/*
+			TODO:
+			* Could objectGroupNode contain more than one object?
+			If that would be true there would be a possibility to have
+			more than one CollisionBody per tile.
+			(If it would be possible wrap some of them into one?).
+
+			* Inform that other types are not allowed? Allow some of them?
+			For example:
+				- ellipse
+				- point
+				- polygon
+				- polyline
+				- text
+
+			* Check whether objectNode has width and height attributes.
+			- If there is no width set it to 0
+			- If there is no height set it to 0
+			- If there is no width and height ignore this object
+			(In Tiled when you create CollisionBody without width and height they are not created in .tmx file)
+		*/
+		const Xml objectNode = objectGroupNode.getChild("object");
+		const sf::FloatRect bounds(
+			objectNode.getAttribute("x").toFloat(),
+			objectNode.getAttribute("y").toFloat(),
+			objectNode.getAttribute("width").toFloat(),
+			objectNode.getAttribute("height").toFloat()
+		);
+		tilesData.bounds.push_back(bounds);
+	}
+	return tilesData;
 }
 
 std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
@@ -162,9 +161,9 @@ void Map::loadTiles(
 {
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		const unsigned bitsInByte = 8;
-		const unsigned flippedHorizontally = 0B1u << (sizeof(unsigned) * bitsInByte - 1);
-		const unsigned flippedVertically = 0B1u << (sizeof(unsigned) * bitsInByte - 2);
-		const unsigned flippedDiagonally = 0B1u << (sizeof(unsigned) * bitsInByte - 3);
+		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
+		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
+		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
 
 		const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
 		const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
@@ -218,21 +217,10 @@ void Map::loadTiles(
 			tile.setPosition(position);
 			mTiles.push_back(tile);
 
-			for (std::size_t j = 0; j < tilesets.tiles.size(); ++j) {
-				if (tilesets.firstGlobalTileIds[tilesetIndex] == tilesets.tiles[j].firstGlobalTileId) { 
-					for (std::size_t k = 0; k < tilesets.tiles[j].ids.size(); ++k) {
-						if (tileId == tilesets.tiles[j].ids[k]) {
-							sf::FloatRect bounds = tilesets.tiles[j].bounds[k];
-							bounds.left += position.x;
-							bounds.top += position.y;
-							std::unique_ptr<CollisionBody> collisionBody =
-								std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);
-							mCollisionBodies.push_back(std::move(collisionBody));
-						}
-					}
-					break; 
-				}
-			}
+			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
+			if (tilesDataIndex == std::string::npos)
+				continue;
+			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
 	}
 }
@@ -241,11 +229,35 @@ std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& til
 {
 	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
 		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
-		const unsigned lastGlobalTileId = tilesets.firstGlobalTileIds[i] + tilesets.tileCounts[i] - 1;
+		const unsigned lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
 		if (globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
 			return i;
 	}
 	return std::string::npos;
+}
+
+std::size_t Map::findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
+{
+	for (std::size_t i = 0; i < tilesData.size(); ++i)
+		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
+			return i;
+	return std::string::npos;
+}
+
+void Map::loadCollisionBodies(
+	unsigned tileId,
+	const TilesetsData::TilesData& tilesData,
+	sf::Vector2f position)
+{
+	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
+		if (tileId == tilesData.ids[i]) {
+			sf::FloatRect bounds = tilesData.bounds[i];
+			bounds.left += position.x;
+			bounds.top += position.y;
+			auto collisionBody = std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);
+			mCollisionBodies.push_back(std::move(collisionBody));
+		}
+	}
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const

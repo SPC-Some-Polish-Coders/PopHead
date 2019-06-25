@@ -31,7 +31,7 @@ private:
 		std::vector<unsigned> tileCounts;
 		std::vector<unsigned> columnsCounts;
 		std::vector<std::string> sources;
-		std::vector<TilesData> tiles;
+		std::vector<TilesData> tilesData;
 	};
 
 	void checkMapSupport(const Xml& mapNode) const;
@@ -43,6 +43,8 @@ private:
 	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
 
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
+
+	TilesetsData::TilesData getTilesData(const std::vector<Xml>& tileNodes) const;
 
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
@@ -58,7 +60,12 @@ private:
 
 	std::size_t findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const;
 
+	std::size_t findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const;
+
+	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
+
 	inline static const std::string pathToMapTextures = "textures/map/";
+	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::vector<sf::Sprite> mTiles;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
