@@ -5,6 +5,7 @@
 #include "World/Entity/Objects/map.hpp"
 #include "World/Entity/Objects/shapeWithCollision.hpp"
 #include "World/Entity/Objects/Characters/enemies/zombie.hpp"
+#include "World/Entity/Objects/Characters/npc.hpp"
 #include "gameData.hpp"
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -22,24 +23,16 @@ void GameState::loadResources()
 {
 	mGameData->getTextures().load("textures/map/FULL_DESERT_TILESET_WIP.png");
 	mGameData->getTextures().load("textures/characters/vaultManSheet.png");
-	mGameData->getTextures().load("textures/vehicles/boat.png");
 	mGameData->getTextures().load("textures/characters/vaultMan.png");
 	mGameData->getTextures().load("textures/characters/zombie.png");
-	mGameData->getTextures().load("textures/others/box.png");
-	mGameData->getTextures().load("textures/others/ball.png");
 }
 
 void GameState::makeSceneTree()
 {
 	makeMap();
-	makeWall();
-	makeBoat();
 	makeNpc();
-	makeNpcToBeAbleToTestDynamicCollisions();
 	makePlayer();
 	makeZombie();
-	makeBox();
-	makeBall();
 	playMusic();
 }
 
@@ -50,45 +43,17 @@ void GameState::makeMap()
 	mRoot.addChild(std::move(map));
 }
 
-void GameState::makeWall()
-{
-	auto wall = std::make_unique<ShapeWithCollision>(mGameData);
-	wall->setPosition(sf::Vector2f(50, 50));
-	mRoot.getChild("desertMap").addChild(std::move(wall));
-}
-
-void GameState::makeBoat()
-{
-	std::unique_ptr<Character> boat(new Character(mGameData, "boat"));
-	boat->getSprite().setTexture(mGameData->getTextures().get("textures/vehicles/boat.png"));
-	boat->setPosition(sf::Vector2f(-300, 700));
-
-	mRoot.addChild(std::move(boat));
-}
-
 void GameState::makeNpc()
 {
-	std::unique_ptr<Character> npc(new Character(mGameData, "npc"));
-	npc->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
-	npc->setPosition(sf::Vector2f(-150, 760));
-
-	mRoot.getChild("boat").addChild(std::move(npc));
-}
-
-void GameState::makeNpcToBeAbleToTestDynamicCollisions()
-{
-	constexpr float mass = 25.f;
-	std::unique_ptr<Character> npcq(new Character(
-		mGameData, "dynamicCollisionsTesterNPC", Animation(), 50, 100, 100, sf::FloatRect(0, 0, 15, 22), mass));
-	npcq->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
-	npcq->setPosition(sf::Vector2f(400, 400));
-
-	mRoot.addChild(std::move(npcq));
+	auto npc = std::make_unique<Npc>(mGameData);
+	npc->setPosition(sf::Vector2f(50, 50));
+	mRoot.addChild(std::move(npc));
 }
 
 void GameState::makePlayer()
 {
-	std::unique_ptr<Player> player(new Player(mGameData));
+	auto player = std::make_unique<Player>(mGameData);
+	//std::unique_ptr<Player> player(new Player(mGameData));
 	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultManSheet.png"));
 	mRoot.addChild(std::move(player));
 }
@@ -98,27 +63,6 @@ void GameState::makeZombie()
 	auto zombie = std::make_unique<Zombie>(mGameData);
 	zombie->setPosition(sf::Vector2f(800, 300));
 	mRoot.addChild(std::move(zombie));
-}
-
-void GameState::makeBox()
-{
-	constexpr float mass = 24.f;
-	auto box = std::make_unique<Character>(
-		mGameData, "box", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 28.5, 40.5), mass);
-	box->setPosition(sf::Vector2f(100, 300));
-	box->getSprite().setTexture(mGameData->getTextures().get("textures/others/box.png"));
-	mRoot.addChild(std::move(box));
-}
-
-void GameState::makeBall()
-{
-	constexpr float mass = 10.f;
-	auto ball = std::make_unique<Character>(
-		mGameData, "ball", Animation(), 0, 0, 0, sf::FloatRect(0, 0, 15, 15), mass);
-	ball->setPosition(sf::Vector2f(505, 505));
-	ball->setScale(sf::Vector2f(0.4f, 0.4f));
-	ball->getSprite().setTexture(mGameData->getTextures().get("textures/others/ball.png"));
-	mRoot.addChild(std::move(ball));
 }
 
 void GameState::playMusic()
@@ -173,7 +117,6 @@ void GameState::update(sf::Time delta)
 	if (mShouldCameraShake)
 		cameraShake();
 	cameraMovement(delta);
-	boatMovement(delta);
 	updateListenerPosition();
 }
 
@@ -191,11 +134,6 @@ void GameState::cameraMovement(sf::Time delta) const
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 
-void GameState::boatMovement(sf::Time delta)
-{
-	auto& boat = dynamic_cast<Character&>(mRoot.getChild("boat"));
-	boat.move(sf::Vector2f(delta.asSeconds() * -15, 0));
-}
 
 void GameState::updateListenerPosition()
 {

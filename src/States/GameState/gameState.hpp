@@ -13,14 +13,9 @@ private:
 	void loadResources();
 	void makeSceneTree();
 	void makeMap();
-	void makeWall();
-	void makeBoat();
 	void makeNpc();
-	void makeNpcToBeAbleToTestDynamicCollisions();
 	void makePlayer();
 	void makeZombie();
-	void makeBox();
-	void makeBall();
 	void playMusic();
 
 public:
@@ -35,7 +30,6 @@ public:
 private:
 	void cameraShake();
 	void cameraMovement(sf::Time delta) const;
-	void boatMovement(sf::Time delta);
 	void updateListenerPosition();
 
 private:
