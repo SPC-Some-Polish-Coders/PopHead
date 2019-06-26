@@ -21,10 +21,13 @@ GameState::GameState(GameData* const gameData)
 
 void GameState::loadResources()
 {
-	mGameData->getTextures().load("textures/map/FULL_DESERT_TILESET_WIP.png");
-	mGameData->getTextures().load("textures/characters/vaultManSheet.png");
-	mGameData->getTextures().load("textures/characters/vaultMan.png");
-	mGameData->getTextures().load("textures/characters/zombie.png");
+	std::vector<std::string> resources = mSceneParser.loadResources();
+	for (const auto& fileName : resources)
+	{
+		if (fileName.find("textures/") != std::string::npos)
+			mGameData->getTextures().load(fileName);
+		//else if (fileName.find("other resource type"))	
+	}
 }
 
 void GameState::makeSceneTree()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "States/state.hpp"
+#include "States/GameState/sceneParser.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
@@ -33,6 +34,7 @@ private:
 	void updateListenerPosition();
 
 private:
+	SceneParser mSceneParser;
 	bool mShouldCameraShake = false;
 	bool mIsCollisionDebugTurnOn = false;
 	int mCollisionDebugMode = 1;
