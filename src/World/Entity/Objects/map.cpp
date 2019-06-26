@@ -265,11 +265,9 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
-	const sf::Vector2f tileSize(32, 32);
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
-	sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
-
 	for (const sf::Sprite& sprite : mTiles) {
+		sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 		const sf::FloatRect bounds = sprite.getGlobalBounds();
 		screen.left -= bounds.width;
 		screen.top -= bounds.height;
