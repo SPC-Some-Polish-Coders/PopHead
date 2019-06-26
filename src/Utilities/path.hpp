@@ -11,7 +11,7 @@
 namespace ph {
 
 namespace Path {
-	std::string toModuleName(const std::string& path);
+	std::string toModuleName(std::string path);
 
 	std::string toFilename(const std::string& path, char separator = PH_PATH_SEPARATOR);
 }
