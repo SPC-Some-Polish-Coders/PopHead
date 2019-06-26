@@ -1,8 +1,8 @@
 #pragma once
 
 #include "States/state.hpp"
-#include "States/GameState/sceneParser.hpp"
 #include <SFML/Graphics.hpp>
+#include "States/sceneParser.hpp"
 
 namespace ph {
 
@@ -11,14 +11,7 @@ class GameState : public State
 public:
 	GameState(GameData* const);
 private:
-	void loadResources();
-	void makeSceneTree();
-	void makeMap();
-	void makeNpc();
-	void makePlayer();
-	void makeZombie();
 	void playMusic();
-
 public:
 	void input() override;
 private:
@@ -34,7 +27,6 @@ private:
 	void updateListenerPosition();
 
 private:
-	SceneParser mSceneParser;
 	bool mShouldCameraShake = false;
 	bool mIsCollisionDebugTurnOn = false;
 	int mCollisionDebugMode = 1;

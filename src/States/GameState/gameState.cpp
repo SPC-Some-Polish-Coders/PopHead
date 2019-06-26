@@ -2,10 +2,6 @@
 
 #include "SFML/Graphics.hpp"
 #include "World/Entity/Objects/Characters/player.hpp"
-#include "World/Entity/Objects/map.hpp"
-#include "World/Entity/Objects/shapeWithCollision.hpp"
-#include "World/Entity/Objects/Characters/enemies/zombie.hpp"
-#include "World/Entity/Objects/Characters/npc.hpp"
 #include "gameData.hpp"
 #include "Utilities/math.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -15,57 +11,7 @@ namespace ph {
 GameState::GameState(GameData* const gameData)
 	:State(gameData)
 {
-	loadResources();
-	makeSceneTree();
-}
-
-void GameState::loadResources()
-{
-	std::vector<std::string> resources = mSceneParser.loadResources();
-	for (const auto& fileName : resources)
-	{
-		if (fileName.find("textures/") != std::string::npos)
-			mGameData->getTextures().load(fileName);
-		//else if (fileName.find("other resource type"))	
-	}
-}
-
-void GameState::makeSceneTree()
-{
-	makeMap();
-	makeNpc();
-	makePlayer();
-	makeZombie();
 	playMusic();
-}
-
-void GameState::makeMap()
-{
-	auto map = std::make_unique<Map>(mGameData, "desertMap");
-	map->loadFromFile("maps/desertMap.tmx");
-	mRoot.addChild(std::move(map));
-}
-
-void GameState::makeNpc()
-{
-	auto npc = std::make_unique<Npc>(mGameData);
-	npc->setPosition(sf::Vector2f(50, 50));
-	mRoot.addChild(std::move(npc));
-}
-
-void GameState::makePlayer()
-{
-	auto player = std::make_unique<Player>(mGameData);
-	//std::unique_ptr<Player> player(new Player(mGameData));
-	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultManSheet.png"));
-	mRoot.addChild(std::move(player));
-}
-
-void GameState::makeZombie()
-{
-	auto zombie = std::make_unique<Zombie>(mGameData);
-	zombie->setPosition(sf::Vector2f(800, 300));
-	mRoot.addChild(std::move(zombie));
 }
 
 void GameState::playMusic()
