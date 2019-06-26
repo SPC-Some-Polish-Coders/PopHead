@@ -23,8 +23,9 @@ void Chunk::create()
 			//TODO: avail copying
 			Tile tile = mTilesToCreate[tileIdInChunk];
 
-			const sf::Vector2f textureRectTopLeftCorner = tile.mTextureRectTopLeftCorner;
-			quad[0].texCoords = tile.mTextureRectTopLeftCorner;
+			//TODO: Make rotaion and flipping possible
+			const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tile.mTextureRectTopLeftCorner);
+			quad[0].texCoords = textureRectTopLeftCorner;
 			quad[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSize.x, textureRectTopLeftCorner.y);
 			quad[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSize.x, textureRectTopLeftCorner.y + mTileSize.y);
 			quad[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + mTileSize.y);

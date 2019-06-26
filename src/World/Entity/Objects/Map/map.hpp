@@ -3,7 +3,7 @@
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "chunk.hpp"
+#include "chunkMap.hpp"
 
 #include <string>
 #include <vector>
@@ -66,9 +66,9 @@ private:
 
 	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
-	inline static const std::string pathToMapTextures = "textures/map/";
+	inline static const std::string pathToTileset = "textures/map/FULL_DESERT_TILESET_WIP.png";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
-	std::vector<Chunk> mChunks;
+	std::unique_ptr<ChunkMap> mChunks;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 

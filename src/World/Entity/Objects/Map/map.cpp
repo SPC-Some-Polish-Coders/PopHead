@@ -24,7 +24,6 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
@@ -161,6 +160,10 @@ void Map::loadTiles(
 	sf::Vector2u mapSize,
 	sf::Vector2u tileSize)
 {
+	const sf::Texture& texture = mGameData->getTextures().get(pathToTileset);
+
+	mChunks = std::make_unique<ChunkMap>(mapSize, texture);
+
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		const unsigned bitsInByte = 8;
 		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
@@ -183,21 +186,17 @@ void Map::loadTiles(
 			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[tilesetIndex]);
 			tileRectPosition.x *= tileSize.x;
 			tileRectPosition.y *= tileSize.y;
-			const sf::IntRect tileRect(
-				static_cast<sf::Vector2i>(tileRectPosition),
-				static_cast<sf::Vector2i>(tileSize)
-			);
 
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
 
-			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
-			const sf::Texture& texture = mGameData->getTextures().get(textureName);
+			Tile tile;
+			tile.mTextureRectTopLeftCorner = tileRectPosition;
+			tile.mTopLeftCornerPositionInWorld = position;
 
-			std::array<sf::Vector2f, 24 * 24> textureRectLeftCorners;
-			Chunk chunk(texture, {10, 10}, textureRectLeftCorners);
-			//sf::Sprite tile(texture, tileRect);
+			mChunks->addTile(tile);
+			
 			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
 			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
 			//	tile.setOrigin(center);
@@ -269,25 +268,27 @@ void Map::loadCollisionBodies(
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	auto& camera = mGameData->getRenderer().getCamera();
-	const sf::Vector2f center = camera.getCenter();
-	//const sf::Vector2f size = camera.getSize();
-	const sf::Vector2f size(16*40, 16*30);
-	const sf::Vector2f tileSize(16, 16);
-	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
-	sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
+	mChunks->draw(target, states);
 
-	for (const sf::Sprite& sprite : mTiles) {
-		const sf::FloatRect bounds = sprite.getGlobalBounds();
-		screen.left -= bounds.width;
-		screen.top -= bounds.height;
-		screen.width += bounds.width;
-		screen.height += bounds.height;
-		if(screen.contains(bounds.left, bounds.top)) {
-			target.draw(sprite, states);
-			mGameData->getEfficencyRegister().registerRenderCall();
-		}
-	}
+	//auto& camera = mGameData->getRenderer().getCamera();
+	//const sf::Vector2f center = camera.getCenter();
+	////const sf::Vector2f size = camera.getSize();
+	//const sf::Vector2f size(16*40, 16*30);
+	//const sf::Vector2f tileSize(16, 16);
+	//const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
+	//sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
+
+	//for (const sf::Sprite& sprite : mTiles) {
+	//	const sf::FloatRect bounds = sprite.getGlobalBounds();
+	//	screen.left -= bounds.width;
+	//	screen.top -= bounds.height;
+	//	screen.width += bounds.width;
+	//	screen.height += bounds.height;
+	//	if(screen.contains(bounds.left, bounds.top)) {
+	//		target.draw(sprite, states);
+	//		mGameData->getEfficencyRegister().registerRenderCall();
+	//	}
+	//}
 }
 
 }

@@ -8,19 +8,20 @@ namespace ph {
 struct Tile
 {
 	sf::Vector2f mTopLeftCornerPositionInWorld;
-	sf::Vector2f mTextureRectTopLeftCorner;
+	sf::Vector2u mTextureRectTopLeftCorner;
 	int mIndexInChunk;
-	bool mIsHorizontallyFlipped;
+	//TODO: Make rotaion and flipping possible
+	/*bool mIsHorizontallyFlipped;
 	bool mIsVerticallyFlipped;
-	bool mIsDiagonallyFlipped;
+	bool mIsDiagonallyFlipped;*/
 };
 
-class Chunk : sf::Drawable
+class Chunk : public sf::Drawable
 {
 public:
 	Chunk(const sf::Texture& tileset);
 
-	void addTile(const Tile&& tile) { mTilesToCreate.emplace_back(tile); };
+	void addTile(const Tile& tile) { mTilesToCreate.emplace_back(tile); };
 
 	void create();
 
