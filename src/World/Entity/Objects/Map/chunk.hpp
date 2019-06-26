@@ -5,14 +5,32 @@
 
 namespace ph {
 
-class Chunk
+struct Tile
+{
+	sf::Vector2f mTopLeftCornerPositionInWorld;
+	sf::Vector2f mTextureRectTopLeftCorner;
+	int mIndexInChunk;
+	bool mIsHorizontallyFlipped;
+	bool mIsVerticallyFlipped;
+	bool mIsDiagonallyFlipped;
+};
+
+class Chunk : sf::Drawable
 {
 public:
-	Chunk(const sf::Texture&, sf::Vector2f topLeftCornerPosition, const std::array<sf::IntRect, 24 * 24>& textureRects);
+	Chunk(const sf::Texture& tileset);
+
+	void addTile(const Tile&& tile) { mTilesToCreate.emplace_back(tile); };
+
+	void create();
+
+	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 private:
 	sf::VertexArray mVertexArray;
-	const sf::Texture& mTexture;
+	std::vector<Tile> mTilesToCreate;
+	const sf::Texture& mTileset;
+
 	inline static const sf::Vector2f mChunkSize = sf::Vector2f(24.f, 24.f);
 	inline static const sf::Vector2f mTileSize = sf::Vector2f(16.f, 16.f);
 };

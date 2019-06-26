@@ -3,6 +3,8 @@
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "chunk.hpp"
+
 #include <string>
 #include <vector>
 
@@ -66,7 +68,7 @@ private:
 
 	inline static const std::string pathToMapTextures = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
-	std::vector<sf::VertexArray> mChunks;
+	std::vector<Chunk> mChunks;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 

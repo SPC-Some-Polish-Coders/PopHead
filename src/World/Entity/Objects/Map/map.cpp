@@ -4,6 +4,8 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
+#include <array>
+
 namespace ph {
 
 Map::Map(GameData* gameData, std::string name)
@@ -193,6 +195,8 @@ void Map::loadTiles(
 			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
 			const sf::Texture& texture = mGameData->getTextures().get(textureName);
 
+			std::array<sf::Vector2f, 24 * 24> textureRectLeftCorners;
+			Chunk chunk(texture, {10, 10}, textureRectLeftCorners);
 			//sf::Sprite tile(texture, tileRect);
 			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
 			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
