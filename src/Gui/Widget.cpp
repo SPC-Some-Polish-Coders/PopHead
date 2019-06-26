@@ -159,8 +159,8 @@ namespace ph {
 
 	void Widget::scale(const sf::Vector2f& scale)
 	{
-		mSize.x *= scale.x;
-		mSize.y *= scale.y;
+		mSize.x = unsigned int(scale.x * mSize.x);
+		mSize.y = unsigned int(scale.y * mSize.y);
 		mSprite.setOrigin(mOrigin);
 		mSprite.scale(scale);
 		rePosition();
