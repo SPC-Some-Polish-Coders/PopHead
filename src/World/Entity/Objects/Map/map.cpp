@@ -185,37 +185,40 @@ void Map::loadTiles(
 				static_cast<sf::Vector2i>(tileRectPosition),
 				static_cast<sf::Vector2i>(tileSize)
 			);
-			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
-			const sf::Texture& texture = mGameData->getTextures().get(textureName);
-			sf::Sprite tile(texture, tileRect);
+
 			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
-			if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
-				position += center;
-				if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-					tile.setRotation(270);
-					tile.setScale(1.f, -1.f);
-				}
-				else if (isHorizontallyFlipped && isVerticallyFlipped)
-					tile.setScale(-1.f, -1.f);
-				else if (isHorizontallyFlipped && isDiagonallyFlipped)
-					tile.setRotation(90);
-				else if (isHorizontallyFlipped)
-					tile.setScale(-1.f, 1.f);
-				else if (isVerticallyFlipped && isDiagonallyFlipped)
-					tile.setRotation(270);
-				else if (isVerticallyFlipped)
-					tile.setScale(1.f, -1.f);
-				else if (isDiagonallyFlipped) {
-					tile.setRotation(270);
-					tile.setScale(-1.f, 1.f);
-				}
-			}
-			tile.setPosition(position);
-			mTiles.push_back(tile);
+
+			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
+			const sf::Texture& texture = mGameData->getTextures().get(textureName);
+
+			//sf::Sprite tile(texture, tileRect);
+			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
+			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
+			//	tile.setOrigin(center);
+			//	position += center;
+			//	if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+			//		tile.setRotation(270);
+			//		tile.setScale(1.f, -1.f);
+			//	}
+			//	else if (isHorizontallyFlipped && isVerticallyFlipped)
+			//		tile.setScale(-1.f, -1.f);
+			//	else if (isHorizontallyFlipped && isDiagonallyFlipped)
+			//		tile.setRotation(90);
+			//	else if (isHorizontallyFlipped)
+			//		tile.setScale(-1.f, 1.f);
+			//	else if (isVerticallyFlipped && isDiagonallyFlipped)
+			//		tile.setRotation(270);
+			//	else if (isVerticallyFlipped)
+			//		tile.setScale(1.f, -1.f);
+			//	else if (isDiagonallyFlipped) {
+			//		tile.setRotation(270);
+			//		tile.setScale(-1.f, 1.f);
+			//	}
+			//}
+			//tile.setPosition(position);
+			//mTiles.push_back(tile);
 
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
@@ -264,8 +267,9 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size = camera.getSize();
-	const sf::Vector2f tileSize(32, 32);
+	//const sf::Vector2f size = camera.getSize();
+	const sf::Vector2f size(16*40, 16*30);
+	const sf::Vector2f tileSize(16, 16);
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
 	sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 

@@ -66,7 +66,7 @@ private:
 
 	inline static const std::string pathToMapTextures = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
-	std::vector<sf::Sprite> mTiles;
+	std::vector<sf::VertexArray> mChunks;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 
