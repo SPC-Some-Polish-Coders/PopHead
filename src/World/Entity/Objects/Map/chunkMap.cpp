@@ -1,4 +1,5 @@
 #include "chunkMap.hpp"
+#include "Utilities/debug.hpp"
 
 namespace ph {
 
@@ -37,10 +38,24 @@ void ChunkMap::addTile(const Tile& tile)
 
 sf::Vector2u ChunkMap::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile& tile)
 {
+	const unsigned posX = tile.mTopLeftCornerPositionInWorld.x / mTileSize.x / mChunkSize.x;
+	const unsigned posY = tile.mTopLeftCornerPositionInWorld.y / mTileSize.y / mChunkSize.y;
+
 	return sf::Vector2u(
-		mMapSizeInTiles.x / (tile.mTopLeftCornerPositionInWorld.x == 0 ? 1 : tile.mTopLeftCornerPositionInWorld.x / mTileSize.x) / mChunkSize.x,
-		mMapSizeInTiles.y / (tile.mTopLeftCornerPositionInWorld.y == 0 ? 1 : tile.mTopLeftCornerPositionInWorld.y / mTileSize.y) / mChunkSize.y
+		posX, 
+		posY
 	);
+}
+
+void ChunkMap::create()
+{
+	int numberOfChunkWhichIsBeignCreated = 1;
+	for(auto& chunkRow : mChunks)
+		for(Chunk& chunk : chunkRow) {
+			++numberOfChunkWhichIsBeignCreated;
+			PH_LOG(LogType::Info, "chunkNumber:" + std::to_string(numberOfChunkWhichIsBeignCreated));
+			chunk.create();
+		}
 }
 
 void ChunkMap::draw(sf::RenderTarget& target, const sf::RenderStates states)

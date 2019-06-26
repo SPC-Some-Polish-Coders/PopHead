@@ -16,6 +16,8 @@ public:
 	void addTile(const Tile&);
 	sf::Vector2u getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile&);
 
+	void create();
+
 	void draw(sf::RenderTarget&, const sf::RenderStates);
 
 private:

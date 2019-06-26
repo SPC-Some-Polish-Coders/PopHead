@@ -5,7 +5,7 @@ namespace ph {
 Chunk::Chunk(const sf::Texture& tileset)
 	:mTileset(tileset)
 {
-	mTilesToCreate.reserve(mChunkSize.x * mChunkSize.y);
+	mTilesToCreate.reserve(mChunkSize.x * mChunkSize.y );
 }
 
 void Chunk::create()

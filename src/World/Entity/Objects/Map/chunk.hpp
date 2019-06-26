@@ -9,7 +9,6 @@ struct Tile
 {
 	sf::Vector2f mTopLeftCornerPositionInWorld;
 	sf::Vector2u mTextureRectTopLeftCorner;
-	int mIndexInChunk;
 	//TODO: Make rotaion and flipping possible
 	/*bool mIsHorizontallyFlipped;
 	bool mIsVerticallyFlipped;

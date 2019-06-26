@@ -229,6 +229,8 @@ void Map::loadTiles(
 			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
 	}
+
+	mChunks->create();
 }
 
 std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
