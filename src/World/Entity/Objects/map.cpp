@@ -266,14 +266,10 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
+	const sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 	for (const sf::Sprite& sprite : mTiles) {
-		sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 		const sf::FloatRect bounds = sprite.getGlobalBounds();
-		screen.left -= bounds.width;
-		screen.top -= bounds.height;
-		screen.width += bounds.width;
-		screen.height += bounds.height;
-		if(screen.contains(bounds.left, bounds.top)) {
+		if(screen.intersects(bounds)) {
 			target.draw(sprite, states);
 			mGameData->getEfficencyRegister().registerRenderCall();
 		}
