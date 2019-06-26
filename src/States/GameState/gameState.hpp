@@ -1,7 +1,7 @@
-#ifndef POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP
-#define POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP
+#pragma once
 
 #include "States/state.hpp"
+#include "States/GameState/sceneParser.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
@@ -14,26 +14,16 @@ private:
 	void loadResources();
 	void makeSceneTree();
 	void makeMap();
-	void makeWall();
-	void makeBoat();
 	void makeNpc();
-	void makeNpcToBeAbleToTestDynamicCollisions();
 	void makePlayer();
 	void makeZombie();
-	void makeBox();
-	void makeBall();
 	void playMusic();
 
 public:
 	void input() override;
 private:
 	void handleCameraShakeShortcut();
-	void handleCollisionDebugShortcuts();
-	void switchCollisionDebugMode();
-	void turnOnAndTurnOffCollisionDebugSettings();
 	void windowMinimalizeAndMaximalizeShortcut();
-	void audioMuteShortcut();
-	bool isAudioMuteShortcutPressed();
 	void shotgunShot();
 
 public:
@@ -41,15 +31,13 @@ public:
 private:
 	void cameraShake();
 	void cameraMovement(sf::Time delta) const;
-	void boatMovement(sf::Time delta);
 	void updateListenerPosition();
 
 private:
+	SceneParser mSceneParser;
 	bool mShouldCameraShake = false;
 	bool mIsCollisionDebugTurnOn = false;
 	int mCollisionDebugMode = 1;
 };
 
 }
-
-#endif // !POPHEAD_STATES_GAMESTATE_GAMESTATE_HPP

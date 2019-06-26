@@ -2,10 +2,14 @@
 
 #include "World/Entity/entityType.hpp"
 
-ph::State::State(GameData* const gameData)
+namespace ph {
+
+State::State(GameData* const gameData)
         :mGameData { gameData }
         ,mRoot { EntityType::none, gameData, "root" }
         ,mHide { false }
         ,mPause { false }
 {
+}
+
 }

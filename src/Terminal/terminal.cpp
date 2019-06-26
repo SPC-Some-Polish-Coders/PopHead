@@ -1,57 +1,39 @@
 #include "terminal.hpp"
 
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
-ph::Terminal::Terminal()
+namespace ph {
+
+Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
-	,mTerminalBackground(sf::Vector2f(650, 200))
+	,mTerminalImage(mTerminalSharedData)
 	,mKeyboardInputHandler(mTerminalSharedData)
+	,mGameData(nullptr)
 {
-	mTerminalBackground.setFillColor(sf::Color(0, 0, 0, 230));
-	mTerminalBackground.setPosition(-450.f, 300.f);
 }
 
-void ph::Terminal::input()
+void Terminal::init(GameData* gameData)
+{
+	mGameData = gameData;
+	mKeyboardInputHandler.setGameData(mGameData);
+	mCommandInterpreter.setGameData(mGameData);
+	mTerminalImage.init(gameData);
+}
+
+void Terminal::input()
 {
 	mKeyboardInputHandler.handleInput();
 
 	if(mKeyboardInputHandler.isEnterClicked()) {
 		auto& content = mTerminalSharedData->mContent;
-		mTerminalSharedData->mLastCommand = content;
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
 }
 
-void ph::Terminal::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Terminal::pushOutputLine(const OutputLine& line)
 {
-	if(mTerminalSharedData->mIsVisible) {
-		target.draw(mTerminalBackground, states);
-		target.draw(mTerminalSharedData->mText, states);
-	}
+	mTerminalImage.getOutputArea().pushOutputLine(line);
 }
 
-void ph::Terminal::move(sf::Vector2f offset)
-{
-	mTerminalBackground.move(offset);
-	mTerminalSharedData->mText.move(offset);
-}
-
-void ph::Terminal::init(GameData* gameData)
-{
-	mGameData = gameData;
-	mKeyboardInputHandler.setGameData(mGameData);
-	mCommandInterpreter.setGameData(mGameData);
-	initializeText();
-}
-
-void ph::Terminal::initializeText()
-{
-	mGameData->getFonts().load("fonts/consolab.ttf");
-	auto& text = mTerminalSharedData->mText;
-	text.setFont(mGameData->getFonts().get("fonts/consolab.ttf"));
-	text.setFillColor(sf::Color::White);
-	text.setCharacterSize(18);
-	text.setString("PopHead command prompt:");
-	text.setPosition(-450.f, 300.f);
 }

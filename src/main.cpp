@@ -1,4 +1,4 @@
-#include "Base/game.hpp"
+#include "game.hpp"
 
 #include "Utilities/debug.hpp"
 
@@ -23,10 +23,12 @@ int main()
 		game.run();
 	}
 	catch (const std::exception& e) {
+		PH_LOG(ph::LogType::UnhandledException, e.what());
 		showErrorMessageBox("Error", e.what());
 		throw;
 	}
 	catch (...) {
+		PH_LOG(ph::LogType::UnhandledException, "Unknown error occurred!");
 		showErrorMessageBox("Error", "Unknown error occurred!");
 		throw;
 	}

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_XML_H_
-#define POPHEAD_UTILITIES_XML_H_
+#pragma once
 
 #include "cast.hpp"
 #include <string>
@@ -16,15 +15,19 @@ public:
 
 	std::vector<Xml> getChildren(std::string name) const;
 
+	bool hasAttribute(std::string name) const;
+
 	Xml getAttribute(std::string name) const;
 
-	Xml someMethod();
-
 	std::string toString() const;
+
+	bool toBool() const { return Cast::toBool(mContent); }
 
 	int toInt() const { return std::stoi(mContent); }
 
 	unsigned toUnsigned() const { return Cast::toUnsigned(mContent); }
+
+	float toFloat() const { return std::stof(mContent); }
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
@@ -40,5 +43,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_UTILITIES_XML_H_

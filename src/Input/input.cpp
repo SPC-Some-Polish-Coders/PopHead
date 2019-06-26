@@ -1,13 +1,17 @@
 #include "input.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 #include "eventLoop.hpp"
 
-ph::Input::Input()
+namespace ph {
+
+Input::Input()
 	:mAction()
 {
 }
 
-void ph::Input::setGameData(GameData* gameData)
+void Input::setGameData(GameData* gameData)
 {
 	mMouse.setGameData(gameData);
+}
+
 }

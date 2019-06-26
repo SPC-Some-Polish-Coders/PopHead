@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <functional>
@@ -5,14 +7,10 @@
 
 #include "BehaviorType.hpp"
 #include "World/Entity/object.hpp"
-#include "Base/gameData.hpp"
-#ifndef GUI_BASE_WIDGET
-#define GUI_BASE_WIDGET
 
 namespace ph {
 
-class GameData; 
-
+	class GameData; 
 
 	class Widget {
 	public:
@@ -92,5 +90,3 @@ class GameData;
 
 
 }
-
-#endif

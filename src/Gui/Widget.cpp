@@ -1,4 +1,6 @@
 #include "Widget.hpp"
+#include "gameData.hpp"
+
 namespace ph {
 
 	Widget::Widget()

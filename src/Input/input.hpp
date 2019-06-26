@@ -1,5 +1,4 @@
-#ifndef POPHEAD_INPUT_INPUT_H_
-#define POPHEAD_INPUT_INPUT_H_
+#pragma once
 
 #include "Input/actionManager.hpp"
 #include "Input/keyboardManager.hpp"
@@ -27,5 +26,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_INPUT_INPUT_H_

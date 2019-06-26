@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILES_BULLET_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILES_BULLET_H_
+#pragma once
 
 #include "World/Entity/Objects/projectile.hpp"
 
@@ -15,5 +14,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILES_BULLET_H_

@@ -25,11 +25,8 @@ template< typename ResourceType >
 void ph::ResourceHolder<ResourceType>::free(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
-	for (auto it = mResources.begin(); it != mResources.end(); ++it) {
-		if (it->first == fullFilePath) {
-			it = mResources.erase(it);
-			return;
-		}
-	}
-	PH_LOG(LogType::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
+	auto amountOfDeletedResources = mResources.erase(fullFilePath);   // can be equal 0 or 1
+
+	if (amountOfDeletedResources == 0)
+		PH_LOG(LogType::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
 }

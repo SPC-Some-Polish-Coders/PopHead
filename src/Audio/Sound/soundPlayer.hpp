@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_SOUNDPLAYER_H_
-#define POPHEAD_AUDIO_SOUNDPLAYER_H_
+#pragma once
 
 #include "Resources/resourceHolder.hpp"
 #include "Audio/Sound/SoundData/soundDataHolder.hpp"
@@ -40,5 +39,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_AUDIO_SOUNDPLAYER_H_

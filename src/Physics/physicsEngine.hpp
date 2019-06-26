@@ -1,5 +1,4 @@
-#ifndef POPHEAD_PHYSICS_PHYSICSENGINE_H_
-#define POPHEAD_PHYSICS_PHYSICSENGINE_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -30,7 +29,6 @@ private:
     void handleStaticCollisionsFor(CollisionBody* kinematicBody);
     void handleKinematicCollisionsFor(CollisionBody* kinematicBody);
     bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
-	void collisionLog(const std::string& collisionType, CollisionBody* bodyA, CollisionBody* bodyB);
 
 private:
     std::vector<CollisionBody*> mStaticBodies;
@@ -41,5 +39,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_PHYSICS_PHYSICSENGINE_H_

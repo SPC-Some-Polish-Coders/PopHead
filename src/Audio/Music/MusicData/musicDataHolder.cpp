@@ -1,22 +1,31 @@
 #include "musicDataHolder.hpp"
 
 #include "Utilities/debug.hpp"
+#include "Utilities/xml.hpp"
 
-ph::MusicDataHolder::MusicDataHolder()
+namespace ph{
+
+MusicDataHolder::MusicDataHolder()
 {
-	using namespace std::string_literals;
-	mAllThemesData["music/explorationTheme.ogg"s] = MusicData(1.2f, true);
+	Xml musicDataXml;
+	musicDataXml.loadFromFile("music/musicData.xml");
+	const Xml musicDataNode = musicDataXml.getChild("musicdata");
+	const std::vector<Xml> themeNodes = musicDataNode.getChildren("theme");
+	for(const auto& themeNode : themeNodes) {
+		const std::string fileName = themeNode.getAttribute("filename").toString();
+		const std::string filePath = "music/" + fileName;
+		const float volumeMultiplier = themeNode.getAttribute("volumemultiplier").toFloat();
+		const bool loop = themeNode.getAttribute("loop").toBool();
+		mAllThemesData[filePath] = MusicData(volumeMultiplier, loop);
+	}
 }
 
-auto ph::MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
+auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
 {
 	auto found = mAllThemesData.find(filePath);
-
-#ifndef PH_DISTRIBUTION
-	if(found == mAllThemesData.end())
-		PH_EXCEPTION("MusicData with filepath \"" + filePath + "\" was not found.");
-#endif // !PH_DISTRIBUTION
-
+	PH_ASSERT(found != mAllThemesData.end(), "MusicData with filepath \"" + filePath + "\" was not found.");
 	mCurrentThemeData = found->second;
 	return found->second;
+}
+
 }

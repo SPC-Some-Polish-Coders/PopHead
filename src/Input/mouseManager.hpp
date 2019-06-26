@@ -1,5 +1,4 @@
-#ifndef POPHEAD_INPUT_MOUSEMANAGER_H_
-#define POPHEAD_INPUT_MOUSEMANAGER_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -24,5 +23,3 @@ private:
 
 
 }
-
-#endif // !POPHEAD_INPUT_MOUSEMANAGER_H_

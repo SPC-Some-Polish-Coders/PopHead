@@ -1,5 +1,4 @@
-#ifndef POPHEAD_UTILITIES_PATH_H_
-#define POPHEAD_UTILITIES_PATH_H_
+#pragma once
 
 #ifdef _WIN32
 #define PH_PATH_SEPARATOR '\\'
@@ -18,5 +17,3 @@ namespace Path {
 }
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_STATES_STATE_H
-#define POPHEAD_STATES_STATE_H
+#pragma once
 
 #include <SFML/System.hpp>
 #include "World/Entity/entity.hpp"
@@ -32,5 +31,3 @@ private:
 };
 
 }
-
-#endif // !POPHEAD_STATES_STATE_H

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_COMMANDPROMPT_H_
-#define POPHEAD_TERMINAL_COMMANDPROMPT_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -7,32 +6,30 @@
 #include "terminalSharedData.hpp"
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
+#include "Image/terminalImage.hpp"
 
 namespace ph {
 
 class GameData;
 
-class Terminal : public sf::Drawable
+class Terminal
 {
 public:
 	Terminal();
+	void init(GameData*);
 
 	void input();
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void pushOutputLine(const OutputLine&);
 
-	void move(sf::Vector2f offset);
-	void init(GameData*);
-private:
-	void initializeText();
+	auto getImage() -> TerminalImage& { return mTerminalImage; }
+	auto getSharedData() -> TerminalSharedData & { return mTerminalSharedData; }
 
 private:
 	TerminalSharedData mTerminalSharedData;
-	sf::RectangleShape mTerminalBackground;
+	TerminalImage mTerminalImage;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
 	GameData* mGameData;
 };
 
 }
-
-#endif // !POPHEAD_CMD_COMMANDPROMPT_H_

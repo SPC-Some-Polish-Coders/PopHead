@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_COLLISIONDEBUGRECT_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_COLLISIONDEBUGRECT_H_
+#pragma once
 
 #include "World/Entity/object.hpp"
 #include "Physics/CollisionBody/bodyType.hpp"
@@ -29,5 +28,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_COLLISIONDEBUGRECT_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
-#define POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
+#pragma once
 
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -24,9 +23,12 @@ private:
 	void executeExit();
 
 	void executeTeleport();
-	sf::Vector2f getPositionFromCommand() const;
 	void executeCurrentPos();
 	auto getPlayer() const -> Object&;
+
+	void executeHistory();
+	void executeHelp();
+	void executeClear();
 
 	void executeCollisionDebug();
 	void changeCollisionDebugColor();
@@ -35,13 +37,21 @@ private:
 	
 	void executeMute();
 	void executeUnmute();
+	void setAudioMuted(bool mute);
 	void executeSetVolume();
 	float getVolumeFromCommand();
 
 	void executeLog();
 	void logInto();
 	void setLogTypesToLog();
+	bool areArgumentsToLogTypesToLogInvalid();
 	void setModulesToLog();
+	bool areArgumentsToModulesToLogInvalid();
+
+	void executeView();
+
+	auto getVector2Argument() const -> sf::Vector2f;
+	sf::Vector2f handleGetVector2ArgumentError() const;
 
 	bool commandContains(const char);
 	bool commandContains(const char*);
@@ -49,9 +59,7 @@ private:
 private:
 	std::string mCommand;
 	GameData* mGameData;
+
 };
 
 }
-
-#endif // !POPHEAD_TERMINAL_COMMANDS_COMMANDINTERPRETER_H_
-

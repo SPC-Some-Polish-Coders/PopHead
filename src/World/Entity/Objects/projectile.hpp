@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILE_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILE_H_
+#pragma once
 
 #include "World/Entity/object.hpp"
 
@@ -18,5 +17,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_PROJECTILE_H_

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOG_H_
-#define POPHEAD_LOGS_LOG_H_
+#pragma once
 
 #include <string>
 
@@ -10,6 +9,8 @@ enum class LogType : std::size_t {
 	Error,
 	Warning,
 	FromUser,
+	Exception,
+	UnhandledException,
 	Count // WARNING: Keep it last
 };
 
@@ -21,5 +22,3 @@ struct LogData
 };
 
 }
-
-#endif // !POPHEAD_LOG_LOG_H_

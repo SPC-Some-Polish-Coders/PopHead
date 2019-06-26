@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_SOUNDDATAHOLDER_H_
-#define POPHEAD_AUDIO_SOUNDDATAHOLDER_H_
+#pragma once
 
 #include "soundData.hpp"
 #include <string>
@@ -19,5 +18,3 @@ private:
 };
 
 }
-
-#endif

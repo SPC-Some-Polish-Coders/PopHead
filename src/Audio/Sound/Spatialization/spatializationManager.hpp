@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_SOUND_SPATIALIZATION_SPATIALSOUNDVOLUMECALCULATOR_H_
-#define POPHEAD_AUDIO_SOUND_SPATIALIZATION_SPATIALSOUNDVOLUMECALCULATOR_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "Audio/Sound/SoundData/SoundData.hpp"
@@ -29,5 +28,3 @@ private:
 };
 
 }
-
-#endif

@@ -1,12 +1,14 @@
 #include "animation.hpp"
 #include "Utilities/debug.hpp"
 
-ph::Animation::Animation(const sf::Time& delay)
+namespace ph {
+
+Animation::Animation(const sf::Time& delay)
     :mDelay(delay)
 {
 }
 
-void ph::Animation::addState(const std::string& stateName, const std::vector<sf::IntRect>& frames)
+void Animation::addState(const std::string& stateName, const std::vector<sf::IntRect>& frames)
 {
 	PH_ASSERT(frames.size() > 0, " state doesn't contain any frames");
 	auto result = mStates.insert(std::pair<std::string, std::vector<sf::IntRect>>(stateName, frames));
@@ -15,7 +17,7 @@ void ph::Animation::addState(const std::string& stateName, const std::vector<sf:
 		mCurrentStateName = stateName;
 }
 
-void ph::Animation::addState(const std::string& stateName, sf::IntRect frame, unsigned framesCount)
+void Animation::addState(const std::string& stateName, sf::IntRect frame, unsigned framesCount)
 {
 	PH_ASSERT(framesCount > 0, "Frames count must be greater than 0");
 	std::vector<sf::IntRect> frames(framesCount);
@@ -29,14 +31,14 @@ void ph::Animation::addState(const std::string& stateName, sf::IntRect frame, un
 		mCurrentStateName = stateName;
 }
 
-void ph::Animation::changeState(const std::string& stateName)
+void Animation::changeState(const std::string& stateName)
 {
 	PH_ASSERT(mStates.find(stateName) != mStates.end(), stateName + " state doesn't exist in animation");
 	mCurrentStateName = stateName;
 	mCurrentFrameIndex = 0;
 }
 
-void ph::Animation::animate(sf::Sprite& sprite)
+void Animation::animate(sf::Sprite& sprite)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
@@ -45,7 +47,7 @@ void ph::Animation::animate(sf::Sprite& sprite)
 		mCurrentFrameIndex = 0;
 }
 
-void ph::Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
+void Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	mElapsedTime += deltaTime;
@@ -58,8 +60,10 @@ void ph::Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
 	}
 }
 
-std::string ph::Animation::getCurrentStateName() const
+std::string Animation::getCurrentStateName() const
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to get current state name");
 	return mCurrentStateName;
+}
+
 }

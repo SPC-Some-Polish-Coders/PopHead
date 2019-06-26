@@ -1,5 +1,4 @@
-#ifndef POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
-#define POPHEAD_TERMINAL_KEYBOARDINPUTHANDLER_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -24,15 +23,18 @@ private:
 	void handleKeyboardCharactersInput();
 	void handleBackspace();
 	void handleEnter();
+	void updateLastCommands();
+	void handleLastCommandShortcut();
+	void clearTextShortcut();
 	void showOrHideCommandPromptInput();
+	inline void setKeyRepeatEnabled(bool enabled);
 
 private:
 	GameData* mGameData;
 	TerminalSharedData mTerminalSharedData;
 	std::string& mContent;
+	int mIndexOfCurrentLastCommand;
 	bool mIsEnterClicked;
 };
 
 }
-
-#endif // !POPHEAD_COMMANDPROMPT_KEYBOARDINPUTHANDLER_H_

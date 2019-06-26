@@ -2,7 +2,9 @@
 #include "Utilities/cast.hpp"
 #include <sstream>
 
-std::vector<std::string> ph::Csv::toStrings(const std::string& csv)
+namespace ph {
+
+std::vector<std::string> Csv::toStrings(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<std::string> values;
@@ -12,7 +14,7 @@ std::vector<std::string> ph::Csv::toStrings(const std::string& csv)
 	return values;
 }
 
-std::vector<int> ph::Csv::toInts(const std::string& csv)
+std::vector<int> Csv::toInts(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<int> values;
@@ -24,7 +26,7 @@ std::vector<int> ph::Csv::toInts(const std::string& csv)
 	return values;
 }
 
-std::vector<unsigned> ph::Csv::toUnsigneds(const std::string& csv)
+std::vector<unsigned> Csv::toUnsigneds(const std::string& csv)
 {
 	std::istringstream iss(csv);
 	std::vector<unsigned> values;
@@ -34,4 +36,6 @@ std::vector<unsigned> ph::Csv::toUnsigneds(const std::string& csv)
 		values.push_back(value);
 	}
 	return values;
+}
+
 }

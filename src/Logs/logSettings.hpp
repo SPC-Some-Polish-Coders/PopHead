@@ -1,5 +1,4 @@
-#ifndef POPHEAD_LOGS_LOGSETTINGS_H_
-#define POPHEAD_LOGS_LOGSETTINGS_H_
+#pragma once
 
 #include "log.hpp"
 #include <vector>
@@ -15,8 +14,9 @@ public:
 	void setWritingLogs(bool enabled);
 	void setWritingLogsIntoConsole(bool enabled) { mShouldLogIntoConsole = enabled; }
 	void setWritingLogsIntoFile(bool enabled) { mShouldLogIntoFile = enabled; }
-	void addLogType(const LogType&);
-	void addModuleName(const std::string&);
+	void setWritingLogsIntoTerminal(bool enabled) { mShouldLogIntoTerminal = enabled; }
+	void addToVector(const LogType&);
+	void addToVector(const std::string&);
 
 	void turnOnWritingEachLog();
 
@@ -28,6 +28,7 @@ public:
 
 	bool shouldBeWrittenIntoConsole(const LogData&) const;
 	bool shouldBeWrittenIntoFile(const LogData&) const;
+	bool shouldBeWrittenIntoTerminal(const LogData&) const;
 
 private:
 	bool shouldBeWritten(const LogData&) const;
@@ -39,8 +40,7 @@ private:
 	std::vector<LogType> mLogTypesToWrite;
 	bool mShouldLogIntoConsole;
 	bool mShouldLogIntoFile;
+	bool mShouldLogIntoTerminal;
 };
 
 }
-
-#endif //POPHEAD_LOGS_LOGSETTINGS_H_

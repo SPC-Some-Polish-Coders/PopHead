@@ -1,14 +1,16 @@
 #include "object.hpp"
-#include "Base/gameData.hpp"
+#include "gameData.hpp"
 
-ph::Object::Object(GameData* gameData, std::string name, LayerID layerID)
+namespace ph {
+
+Object::Object(GameData* gameData, std::string name, LayerID layerID)
 	:Entity(EntityType::object, gameData, name)
 	,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);
 }
 
-void ph::Object::setVisibility(bool visibility, bool recursive)
+void Object::setVisibility(bool visibility, bool recursive)
 {
 	mVisibility = visibility;
 
@@ -18,7 +20,7 @@ void ph::Object::setVisibility(bool visibility, bool recursive)
 	}
 }
 
-void ph::Object::setPosition(sf::Vector2f pos, bool recursive)
+void Object::setPosition(sf::Vector2f pos, bool recursive)
 {
 	mPosition = pos;
 
@@ -28,7 +30,7 @@ void ph::Object::setPosition(sf::Vector2f pos, bool recursive)
 	}
 }
 
-void ph::Object::move(sf::Vector2f offset, bool recursive)
+void Object::move(sf::Vector2f offset, bool recursive)
 {
 	mPosition += offset;
 
@@ -38,7 +40,7 @@ void ph::Object::move(sf::Vector2f offset, bool recursive)
 	}
 }
 
-void ph::Object::setScale(sf::Vector2f scale, bool recursive)
+void Object::setScale(sf::Vector2f scale, bool recursive)
 {
 	mScale = scale;
 
@@ -48,7 +50,7 @@ void ph::Object::setScale(sf::Vector2f scale, bool recursive)
 	}
 }
 
-void ph::Object::setRotation(float angle, bool recursive)
+void Object::setRotation(float angle, bool recursive)
 {
 	mRotation = angle;
 
@@ -58,7 +60,7 @@ void ph::Object::setRotation(float angle, bool recursive)
 	}
 }
 
-void ph::Object::rotate(float angle, bool recursive)
+void Object::rotate(float angle, bool recursive)
 {
 	mRotation += angle;
 
@@ -66,4 +68,6 @@ void ph::Object::rotate(float angle, bool recursive)
 		std::function<void(Object*, float)> func = [=](Object * object, float angle) { object->rotate(angle, recursive); };
 		forEachChildWhichIsObject(func, angle);
 	}
+}
+
 }

@@ -2,7 +2,9 @@
 #include "Utilities/debug.hpp"
 #include <fstream>
 
-void ph::Xml::loadFromFile(const std::string& filePath)
+namespace ph {
+
+void Xml::loadFromFile(const std::string& filePath)
 {
 	mContent.clear();
 	std::string fullFilePath = "resources/" + filePath;
@@ -24,7 +26,7 @@ void ph::Xml::loadFromFile(const std::string& filePath)
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + mContent);
 }
 
-ph::Xml ph::Xml::getChild(std::string name) const
+Xml Xml::getChild(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	name.insert(0, "<");
@@ -61,7 +63,7 @@ ph::Xml ph::Xml::getChild(std::string name) const
 	return xml;
 }
 
-std::vector<ph::Xml> ph::Xml::getChildren(std::string name) const
+std::vector<Xml> Xml::getChildren(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	name.insert(0, "<");
@@ -132,7 +134,7 @@ std::vector<ph::Xml> ph::Xml::getChildren(std::string name) const
 	return children;
 }
 
-ph::Xml ph::Xml::getAttribute(std::string name) const
+bool Xml::hasAttribute(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "attribute name cannot be empty");
 	/*
@@ -147,7 +149,50 @@ ph::Xml ph::Xml::getAttribute(std::string name) const
 	name.push_back('=');
 	name.push_back('\"');
 
-	// TODO: Improve performance by doing reverse find from end?
+	std::size_t begin = mContent.find(name);
+	if (begin == std::string::npos) {
+		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+		return false;
+	}
+	begin += name.size();
+
+	std::size_t end = mContent.find('>');
+	if (end == std::string::npos)
+		PH_EXCEPTION("missing angle bracket in child opening tag");
+	if (isSelfClosingTag(end))
+		--end;
+	if (begin >= end) {
+		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+		return false;
+	}
+	if (isEmptyAttributeValue(begin)) {
+		PH_LOG(LogType::Info, "Xml hasAttribute(): true");
+		return true;
+	}
+
+	end = mContent.find('\"', begin + 1);
+	if (end == std::string::npos)
+		PH_EXCEPTION("missing closing quote");
+
+	PH_LOG(LogType::Info, "Xml hasAttribute(): true");
+	return true;
+}
+
+Xml Xml::getAttribute(std::string name) const
+{
+	PH_ASSERT(!name.empty(), "attribute name cannot be empty");
+	/*
+		NOTE:
+		This partly protects against situation when attribute name will
+		be in part of other attribute name or in attribute value
+
+		WARNING: It fails with spaces: <foo bar  =    ""
+		TODO: Delete unnecessary spaces in loadFromFile()?
+	*/
+	name.insert(0, " ");
+	name.push_back('=');
+	name.push_back('\"');
+
 	std::size_t begin = mContent.find(name);
 	if (begin == std::string::npos)
 		PH_EXCEPTION("attribute name cannot be found");
@@ -173,11 +218,13 @@ ph::Xml ph::Xml::getAttribute(std::string name) const
 	return xml;
 }
 
-std::string ph::Xml::toString() const
+std::string Xml::toString() const
 {
 	std::size_t begin = findEndOfCurrentTagAttributes();
 	if (begin == std::string::npos)
 		return mContent;
 	++begin;
 	return mContent.substr(begin, mContent.size() - begin);
+}
+
 }

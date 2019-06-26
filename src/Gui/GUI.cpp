@@ -2,10 +2,6 @@
 
 namespace ph {
 
-
-		
-
-
 		GUI::GUI()
 			: mGuiDrawer(nullptr)
 		{

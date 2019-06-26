@@ -1,8 +1,7 @@
 #include "TextWidget.hpp"
+#include "gameData.hpp"
 
 namespace ph {
-
-
 
 	TextWidget::TextWidget()
 		:mTextPosition{ 0,0 }

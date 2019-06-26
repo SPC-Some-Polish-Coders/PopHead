@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_NPC_H_
-#define POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_NPC_H_
+#pragma once
 
 #include "World/Entity/Objects/character.hpp"
 
@@ -8,7 +7,7 @@ namespace ph{
 class Npc : public Character
 {
 public:
-    Npc(GameData* gameData, std::string name);
+    Npc(GameData*);
 
     void input() override;
     void update(sf::Time delta) override;
@@ -20,5 +19,3 @@ private:
 };
 
 }
-
-#endif // POPHEAD_WORLD_ENTITY_OBJECTS_CHARACTERS_NPC_H_

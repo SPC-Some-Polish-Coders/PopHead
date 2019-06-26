@@ -1,5 +1,4 @@
-#ifndef POPHEAD_AUDIO_SOUNDDATA_H_
-#define POPHEAD_AUDIO_SOUNDDATA_H_
+#pragma once
 
 namespace ph {
 
@@ -7,7 +6,7 @@ struct SoundData
 {
 	float mVolumeMultiplier;
 	float mMaximalFullVolumeDistance;
-	float mMaximalHearableDistance;
+	float mMaximalHearableDistance;	
 	bool mLoop;
 
 	SoundData(const float volumeMultiplier = 1.f, const bool loop = false,
@@ -15,5 +14,3 @@ struct SoundData
 };
 
 }
-
-#endif

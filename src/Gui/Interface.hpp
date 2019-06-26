@@ -1,12 +1,10 @@
+#pragma once
 
 #include "TextWidget.hpp"
 
-#ifndef GUI_INTERFACE
-#define GUI_INTERFACE
-
 namespace ph {
 
-
+	class GameData;
 
 	class Interface 
 		:public Widget
@@ -32,6 +30,3 @@ namespace ph {
 	};
 
 }
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef POPHEAD_WORLD_ANIMATION_ANIMATION_H_
-#define POPHEAD_WORLD_ANIMATION_ANIMATION_H_
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -53,5 +52,3 @@ private:
 #include "animation.inl"
 
 }
-
-#endif
