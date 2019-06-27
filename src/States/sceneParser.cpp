@@ -11,7 +11,7 @@ namespace ph {
 
 SceneParser::SceneParser(GameData* const gameDatas, Entity& root, const std::string fileName)
 	:sourceName(fileName)
-	,mGameDataS(gameDatas)
+	,mGameData(gameDatas)
 	,mRoot(root) 
 {
 	getResources();
@@ -34,7 +34,7 @@ void SceneParser::loadTextures(Xml& loadingNode)
 	for (auto& node : textureNodes)
 	{
 		const std::string filename = node.getAttribute("respath").toString();
-		mGameDataS->getTextures().load("textures/" + filename);
+		mGameData->getTextures().load("textures/" + filename);
 	}
 }
 
@@ -53,7 +53,7 @@ void SceneParser::makeScene()
 void SceneParser::loadMap(Xml& rootNode)
 {
 	std::vector<Xml> rootNodes = rootNode.getChildren("map");
-	auto map = std::make_unique<Map>(mGameDataS, rootNodes[0].getAttribute("name").toString()); 	
+	auto map = std::make_unique<Map>(mGameData, rootNodes[0].getAttribute("name").toString()); 	
 	//Presumed that map can be only one
 	map->loadFromFile(rootNodes[0].getAttribute("filepath").toString());
 	mRoot.addChild(std::move(map));
@@ -62,8 +62,8 @@ void SceneParser::loadMap(Xml& rootNode)
 void SceneParser::loadPlayer(Xml& rootNode)
 {
 	std::vector<Xml> rootNodes = rootNode.getChildren("player");
-	auto player = std::make_unique<Player>(mGameDataS);
-	player->getSprite().setTexture(mGameDataS->getTextures().get(rootNodes[0].getAttribute("texturepath").toString()));
+	auto player = std::make_unique<Player>(mGameData);
+	player->getSprite().setTexture(mGameData->getTextures().get(rootNodes[0].getAttribute("texturepath").toString()));
 	//Presumed that player can be only one
 	mRoot.addChild(std::move(player));
 }
@@ -84,7 +84,7 @@ void SceneParser::loadTestNpcs(Xml& npcGroupNode)
 	std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
 	for (auto& npc : npcs)
 	{
-		auto npcTest = std::make_unique<Npc>(mGameDataS);
+		auto npcTest = std::make_unique<Npc>(mGameData);
 		npcTest->setPosition(sf::Vector2f(npc.getAttribute("positionX").toFloat(),
 			npc.getAttribute("positionY").toFloat()));
 		mRoot.addChild(std::move(npcTest));
@@ -107,7 +107,7 @@ void SceneParser::loadZombies(Xml& enemiesGroupNode)
 	std::vector<Xml> enemies = enemiesGroupNode.getChildren("zombie");
 	for (auto& enemy : enemies)
 	{
-		auto zombie = std::make_unique<Zombie>(mGameDataS);
+		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(sf::Vector2f(enemy.getAttribute("positionX").toFloat(),
 			enemy.getAttribute("positionY").toFloat()));
 		mRoot.addChild(std::move(zombie));

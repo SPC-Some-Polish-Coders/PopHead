@@ -26,7 +26,7 @@ private:
 private:
 	const std::string sourceName;
 	Entity& mRoot;
-	GameData* const mGameDataS;
+	GameData* const mGameData;
 
 };
 
