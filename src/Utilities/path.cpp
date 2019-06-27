@@ -2,7 +2,6 @@
 #include "Utilities/debug.hpp"
 #include <iostream>
 #include <string>
-#include <algorithm>
 
 namespace ph {
 
@@ -10,8 +9,7 @@ std::string Path::toModuleName(std::string path)
 {
 	// WARNING: Don't use PH_EXCEPTION or PH_LOG here becouse they are using this method, so it can result in recursion
 
-	std::transform(path.begin(), path.end(), path.begin(), ::tolower);
-	const std::string searchedPath = std::string("pophead") + PH_PATH_SEPARATOR + "src";
+	const std::string searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
 	std::size_t begin = path.find(searchedPath);
 	if (begin == std::string::npos) {
 		std::cout << "[Path::toModuleName] Module location cannot be found" << std::endl;

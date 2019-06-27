@@ -13,12 +13,12 @@
     <map name="desertMap" filepath="maps/desertMap.tmx"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>
     <group name="npc">
-      <npcTest positionX="120" positionY="200"/>
-      <npcTest positionX="160" positionY="20"/>
+      <npcTest positionX="150" positionY="200"/>
+      <npcTest positionX="160" positionY="100"/>
     </group>
     <group name="enemies">
       <zombie positionX="100" positionY="200"/>
-      <zombie positionX="130" positionY="250"/>
+      <zombie positionX="140" positionY="250"/>
     </group>
     <group name="spawners">
       <spawner positionX="500" positionY="500" spawn="zombie" frequency="2"/>  
