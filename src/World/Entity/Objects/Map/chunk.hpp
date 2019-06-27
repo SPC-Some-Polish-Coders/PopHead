@@ -27,6 +27,9 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 private:
+	void addAdditionalEmptyTile();
+
+private:
 	sf::VertexArray mVertexArray;
 	std::vector<Tile> mTilesToCreate;
 	const sf::Texture& mTileset;

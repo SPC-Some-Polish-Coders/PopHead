@@ -49,7 +49,7 @@ sf::Vector2u ChunkMap::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdd
 
 void ChunkMap::create()
 {
-	int numberOfChunkWhichIsBeignCreated = 1;
+	int numberOfChunkWhichIsBeignCreated = 0;
 	for(auto& chunkRow : mChunks)
 		for(Chunk& chunk : chunkRow) {
 			++numberOfChunkWhichIsBeignCreated;

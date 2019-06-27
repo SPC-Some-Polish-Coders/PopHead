@@ -21,6 +21,9 @@ void Chunk::create()
 			sf::Vertex* const quad = &mVertexArray[tileIdInChunk * 4];
 
 			//TODO: avail copying
+			if(tileIdInChunk >= mTilesToCreate.size())
+				break;
+
 			Tile tile = mTilesToCreate[tileIdInChunk];
 
 			//TODO: Make rotaion and flipping possible
@@ -39,6 +42,13 @@ void Chunk::create()
 	}
 
 	mTilesToCreate.clear();
+}
+
+void Chunk::addAdditionalEmptyTile()
+{
+	/*Tile tile;
+	tile.
+	addTile(std::move(tile));*/
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
