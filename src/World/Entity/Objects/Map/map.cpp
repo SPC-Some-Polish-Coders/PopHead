@@ -10,6 +10,7 @@ namespace ph {
 
 Map::Map(GameData* gameData, std::string name)
 	:Object(gameData, name, LayerID::floorEntities)
+	,mChunks(nullptr)
 {
 }
 
@@ -24,6 +25,7 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
+	mChunks = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTileset));
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
@@ -162,7 +164,7 @@ void Map::loadTiles(
 {
 	const sf::Texture& texture = mGameData->getTextures().get(pathToTileset);
 
-	mChunks = std::make_unique<ChunkMap>(mapSize, texture);
+	mChunks->addNewLayerOfChunks();
 
 	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
 		const unsigned bitsInByte = 8;

@@ -1,31 +1,26 @@
 #pragma once
 
-#include "chunk.hpp"
-
-#include <vector>
+#include "layerOfChunks.hpp"
 
 namespace ph {
 
-class ChunkMap
+class ChunkMap : public sf::Drawable
 {
 public:
-	ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
-	bool doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles);
-	bool doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles);
+	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
 
-	void addTile(const Tile&);
-	sf::Vector2u getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile&);
+	void addNewLayerOfChunks() { mLayers.emplace_back(mMapSizeInTiles, mTileset); };
 
-	void create();
+	void addTile(const Tile& tile) { mLayers.back().addTile(tile); }
 
-	void draw(sf::RenderTarget&, const sf::RenderStates);
+	void create() { mLayers.back().create(); }
+
+	void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
 
 private:
-	std::vector<std::vector<Chunk>> mChunks;
+	std::vector<LayerOfChunks> mLayers;
 	sf::Vector2u mMapSizeInTiles;
-	const sf::Vector2u mChunkSize = sf::Vector2u(24, 24);
-	const sf::Vector2f mTileSize = sf::Vector2f(16.f, 16.f);
-	//TODO: Move this constant somewhere where Chunk can use it as well. Maybe separate file (mapConstants.hpp)
+	const sf::Texture& mTileset;
 };
 
 }
