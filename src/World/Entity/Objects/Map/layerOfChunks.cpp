@@ -22,10 +22,10 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 		mapSizeInChunks.y = 1;
 
 	std::vector<Chunk> rowOfChunks;
-	for(int x = 0; x < mapSizeInChunks.x; ++x)
+	for(unsigned x = 0; x < mapSizeInChunks.x; ++x)
 		rowOfChunks.emplace_back(Chunk(tileset));
 
-	for(int y = 0; y < mapSizeInChunks.y; ++y)
+	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
 		mChunks.emplace_back(rowOfChunks);
 }
 
@@ -48,9 +48,10 @@ void LayerOfChunks::addTile(const TileData& tile)
 sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData& tile)
 {
 	using namespace MapConstants;
+	auto tilePosition = static_cast<sf::Vector2u>(tile.mTopLeftCornerPositionInWorld);
 	return sf::Vector2u(
-		tile.mTopLeftCornerPositionInWorld.x / mTileSize.x / mChunkSize.x,
-		tile.mTopLeftCornerPositionInWorld.y / mTileSize.y / mChunkSize.y
+		tilePosition.x / mTileSize.x / mChunkSize.x,
+		tilePosition.y / mTileSize.y / mChunkSize.y
 	);
 }
 

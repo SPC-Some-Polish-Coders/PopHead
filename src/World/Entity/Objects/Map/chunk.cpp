@@ -21,7 +21,7 @@ void Chunk::initializeGraphics()
 	{
 		for(int x = 0; x < 24; ++x)
 		{
-			const int tileIdInChunk = y * mChunkSize.x + x;
+			const unsigned int tileIdInChunk = y * mChunkSize.x + x;
 			sf::Vertex* const tile = &mVertexArray[tileIdInChunk * 4];
 
 			if(tileIdInChunk >= mTilesToCreate.size())
