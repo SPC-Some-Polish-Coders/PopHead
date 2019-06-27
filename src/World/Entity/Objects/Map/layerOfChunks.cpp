@@ -10,10 +10,16 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 	using namespace MapConstants;
 
 	sf::Vector2u mapSizeInChunks(mapSizeInTiles.x / mChunkSize.x, mapSizeInTiles.y / mChunkSize.y);
+
 	if(doesMapNotFitInChunksOnXAxis(mapSizeInChunks))
 		mapSizeInChunks.x += 1;
 	if(doesMapNotFitInChunksOnYAxis(mapSizeInChunks))
 		mapSizeInChunks.y += 1;
+
+	if(mapSizeInTiles.x < mChunkSize.x && mapSizeInTiles.x > 0)
+		mapSizeInChunks.x = 1;
+	if(mapSizeInTiles.y < mChunkSize.y && mapSizeInTiles.y > 0)
+		mapSizeInChunks.y = 1;
 
 	std::vector<Chunk> rowOfChunks;
 	for(int x = 0; x < mapSizeInChunks.x; ++x)
