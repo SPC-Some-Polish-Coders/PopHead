@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _WIN32
+#ifdef PH_WINDOWS
 #define PH_PATH_SEPARATOR '\\'
 #else
 #define PH_PATH_SEPARATOR '/'

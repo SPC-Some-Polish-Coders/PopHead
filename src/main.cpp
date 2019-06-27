@@ -2,17 +2,17 @@
 
 #include "Utilities/debug.hpp"
 
-#ifdef _WIN32
+#ifdef PH_WINDOWS
 #include <Windows.h>
-#endif // _WIN32
+#endif // PH_WINDOWS
 #include <stdexcept>
 #include <string>
 
 void showErrorMessageBox(const std::string& title, const std::string& message)
 {
-#ifdef _WIN32
+#ifdef PH_WINDOWS
 	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
-#endif // _WIN32
+#endif // PH_WINDOWS
 }
 
 int main()
