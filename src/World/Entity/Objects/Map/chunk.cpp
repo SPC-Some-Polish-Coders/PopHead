@@ -1,15 +1,19 @@
 #include "chunk.hpp"
+#include "mapConstants.hpp"
 
 namespace ph {
 
 Chunk::Chunk(const sf::Texture& tileset)
 	:mTileset(tileset)
 {
-	mTilesToCreate.reserve(mChunkSize.x * mChunkSize.y );
+	using namespace MapConstants;
+	mTilesToCreate.reserve(mChunkSize.x * mChunkSize.y);
 }
 
 void Chunk::create()
 {
+	using namespace MapConstants;
+
 	mVertexArray.setPrimitiveType(sf::Quads);
 	mVertexArray.resize(mChunkSize.x * mChunkSize.y * 4);
 
@@ -42,13 +46,6 @@ void Chunk::create()
 	}
 
 	mTilesToCreate.clear();
-}
-
-void Chunk::addAdditionalEmptyTile()
-{
-	/*Tile tile;
-	tile.
-	addTile(std::move(tile));*/
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const

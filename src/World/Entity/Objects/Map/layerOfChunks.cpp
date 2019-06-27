@@ -1,4 +1,5 @@
 #include "layerOfChunks.hpp"
+#include "mapConstants.hpp"
 #include "Utilities/debug.hpp"
 
 namespace ph {
@@ -6,6 +7,8 @@ namespace ph {
 LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset)
 	:mMapSizeInTiles(mapSizeInTiles)
 {
+	using namespace MapConstants;
+
 	sf::Vector2u mapSizeInChunks(mapSizeInTiles.x / mChunkSize.x, mapSizeInTiles.y / mChunkSize.y);
 	if(doesMapNotFitInChunksOnXAxis(mapSizeInChunks))
 		mapSizeInChunks.x += 1;
@@ -22,12 +25,12 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 
 bool LayerOfChunks::doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.x % mChunkSize.x != 0;
+	return mapSizeInTiles.x % MapConstants::mChunkSize.x != 0;
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.y % mChunkSize.y != 0;
+	return mapSizeInTiles.y % MapConstants::mChunkSize.y != 0;
 }
 
 void LayerOfChunks::addTile(const Tile& tile)
@@ -39,13 +42,10 @@ void LayerOfChunks::addTile(const Tile& tile)
 
 sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile& tile)
 {
-	//TODO: refactor it
-	const unsigned posX = tile.mTopLeftCornerPositionInWorld.x / mTileSize.x / mChunkSize.x;
-	const unsigned posY = tile.mTopLeftCornerPositionInWorld.y / mTileSize.y / mChunkSize.y;
-
+	using namespace MapConstants;
 	return sf::Vector2u(
-		posX, 
-		posY
+		tile.mTopLeftCornerPositionInWorld.x / mTileSize.x / mChunkSize.x,
+		tile.mTopLeftCornerPositionInWorld.y / mTileSize.y / mChunkSize.y
 	);
 }
 

@@ -27,15 +27,9 @@ public:
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 private:
-	void addAdditionalEmptyTile();
-
-private:
 	sf::VertexArray mVertexArray;
 	std::vector<Tile> mTilesToCreate;
 	const sf::Texture& mTileset;
-
-	inline static const sf::Vector2f mChunkSize = sf::Vector2f(24.f, 24.f);
-	inline static const sf::Vector2f mTileSize = sf::Vector2f(16.f, 16.f);
 };
 
 }
