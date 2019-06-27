@@ -2,8 +2,9 @@
 
 namespace ph {
 
-		GUI::GUI()
-			: mGuiDrawer(nullptr)
+	GUI::GUI()
+		: mGuiDrawer(nullptr),
+		  mGameData(nullptr)
 		{
 		}
 		GUI::~GUI()
