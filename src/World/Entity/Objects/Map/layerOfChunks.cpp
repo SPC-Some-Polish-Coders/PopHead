@@ -51,13 +51,9 @@ sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShould
 
 void LayerOfChunks::create()
 {
-	int numberOfChunkWhichIsBeignCreated = 0;
 	for(auto& chunkRow : mChunks)
-		for(Chunk& chunk : chunkRow) {
-			++numberOfChunkWhichIsBeignCreated;
-			PH_LOG(LogType::Info, "chunkNumber:" + std::to_string(numberOfChunkWhichIsBeignCreated));
+		for(Chunk& chunk : chunkRow)
 			chunk.create();
-		}
 }
 
 void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states) const

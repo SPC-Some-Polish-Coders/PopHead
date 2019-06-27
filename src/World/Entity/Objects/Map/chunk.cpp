@@ -24,11 +24,10 @@ void Chunk::create()
 			const int tileIdInChunk = y * mChunkSize.x + x;
 			sf::Vertex* const quad = &mVertexArray[tileIdInChunk * 4];
 
-			//TODO: avail copying
 			if(tileIdInChunk >= mTilesToCreate.size())
 				break;
 
-			Tile tile = mTilesToCreate[tileIdInChunk];
+			const Tile& tile = mTilesToCreate.at(tileIdInChunk);
 
 			//TODO: Make rotaion and flipping possible
 			const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tile.mTextureRectTopLeftCorner);
