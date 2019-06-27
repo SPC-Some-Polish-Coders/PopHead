@@ -39,7 +39,7 @@ void GameState::makeSceneTree()
 void GameState::makeMap()
 {
 	auto map = std::make_unique<Map>(mGameData, "desertMap");
-	map->loadFromFile("maps/desertMap.tmx");
+	map->loadFromFile("maps/mediumDesertMap.tmx");
 	mRoot.addChild(std::move(map));
 }
 

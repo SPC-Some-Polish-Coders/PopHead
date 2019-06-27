@@ -11,7 +11,7 @@ namespace ph {
 namespace
 {
 	std::string name = "player";
-	unsigned int movementSpeed = 75;
+	unsigned int movementSpeed = 375;//75
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
 	sf::FloatRect posAndSize(

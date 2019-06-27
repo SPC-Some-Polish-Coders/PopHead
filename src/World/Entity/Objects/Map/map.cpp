@@ -232,7 +232,7 @@ void Map::loadTiles(
 		}
 	}
 
-	mChunks->createGraphicsForCurrentLayer();
+	mChunks->initializeGraphicsForCurrentLayer();
 }
 
 std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const

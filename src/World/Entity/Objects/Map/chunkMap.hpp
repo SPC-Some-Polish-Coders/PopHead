@@ -13,7 +13,7 @@ public:
 
 	void addTile(const TileData& tile) { mLayers.back().addTile(tile); }
 
-	void createGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
+	void initializeGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const;
 
