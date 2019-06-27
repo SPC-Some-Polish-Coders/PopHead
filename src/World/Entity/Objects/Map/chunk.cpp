@@ -37,7 +37,7 @@ void Chunk::create()
 			quad[0].position = vertexTopLeftCornerPosition;
 			quad[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSize.x, vertexTopLeftCornerPosition.y);
 			quad[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSize.x, vertexTopLeftCornerPosition.y + mTileSize.y);
-			quad[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + mTileSize.y);
+			quad[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + mTileSize.y);
 		}
 	}
 

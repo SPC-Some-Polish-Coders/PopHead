@@ -34,10 +34,12 @@ void ChunkMap::addTile(const Tile& tile)
 {
 	const sf::Vector2u chunkPosition = getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(tile);
 	mChunks[chunkPosition.x][chunkPosition.y].addTile(tile);
+	//TODO: Allow map size smaller then one chunk.
 }
 
 sf::Vector2u ChunkMap::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile& tile)
 {
+	//TODO: refactor it
 	const unsigned posX = tile.mTopLeftCornerPositionInWorld.x / mTileSize.x / mChunkSize.x;
 	const unsigned posY = tile.mTopLeftCornerPositionInWorld.y / mTileSize.y / mChunkSize.y;
 
