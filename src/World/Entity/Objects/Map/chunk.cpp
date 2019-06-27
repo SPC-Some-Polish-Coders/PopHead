@@ -53,4 +53,10 @@ void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(mVertexArray, states);
 }
 
+sf::FloatRect Chunk::getGlobalBounds() const
+{
+	const sf::Vector2f position = mVertexArray[0].position;
+	return sf::FloatRect(position.x, position.y, 384, 384);
+}
+
 }

@@ -8,10 +8,10 @@ ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset
 {
 }
 
-void ChunkMap::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+void ChunkMap::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
 {
 	for(const auto& layer : mLayers)
-		layer.draw(target, states);
+		layer.draw(target, states, cameraBounds);
 }
 
 }

@@ -26,6 +26,8 @@ public:
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
+	sf::FloatRect getGlobalBounds() const;
+
 private:
 	sf::VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;

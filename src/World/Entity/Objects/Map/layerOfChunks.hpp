@@ -6,7 +6,7 @@
 
 namespace ph {
 
-class LayerOfChunks : public sf::Drawable
+class LayerOfChunks
 {
 public:
 	explicit LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
@@ -18,7 +18,9 @@ public:
 
 	void initializeGraphics();
 
-	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
+	void draw(sf::RenderTarget&, const sf::RenderStates, const sf::FloatRect&) const;
+private:
+	bool isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const;
 
 private:
 	std::vector<std::vector<Chunk>> mChunks;

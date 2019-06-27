@@ -62,11 +62,18 @@ void LayerOfChunks::initializeGraphics()
 			chunk.initializeGraphics();
 }
 
-void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
 {
 	for(const auto& chunkRow : mChunks)
 		for(const Chunk& chunk : chunkRow)
-			chunk.draw(target, states);
+			if(isChunkInCamera(chunk, cameraBounds))
+				chunk.draw(target, states);
+}
+
+bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const
+{
+	const sf::FloatRect chunkBounds = chunk.getGlobalBounds();
+	return chunkBounds.intersects(cameraBounds);
 }
 
 }

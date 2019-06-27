@@ -4,7 +4,7 @@
 
 namespace ph {
 
-class ChunkMap : public sf::Drawable
+class ChunkMap
 {
 public:
 	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
@@ -15,7 +15,7 @@ public:
 
 	void createGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
 
-	void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
+	void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const;
 
 private:
 	std::vector<LayerOfChunks> mLayers;
