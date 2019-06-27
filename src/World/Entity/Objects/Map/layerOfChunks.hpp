@@ -9,14 +9,14 @@ namespace ph {
 class LayerOfChunks : public sf::Drawable
 {
 public:
-	LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
+	explicit LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Texture& tileset);
 	bool doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles);
 	bool doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles);
 
-	void addTile(const Tile&);
-	sf::Vector2u getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile&);
+	void addTile(const TileData&);
+	sf::Vector2u getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData&);
 
-	void create();
+	void initializeGraphics();
 
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 

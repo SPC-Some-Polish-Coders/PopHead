@@ -193,11 +193,11 @@ void Map::loadTiles(
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
 
-			Tile tile;
-			tile.mTextureRectTopLeftCorner = tileRectPosition;
-			tile.mTopLeftCornerPositionInWorld = position;
+			TileData tileData;
+			tileData.mTextureRectTopLeftCorner = tileRectPosition;
+			tileData.mTopLeftCornerPositionInWorld = position;
 
-			mChunks->addTile(tile);
+			mChunks->addTile(tileData);
 			
 			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
 			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
@@ -232,7 +232,7 @@ void Map::loadTiles(
 		}
 	}
 
-	mChunks->create();
+	mChunks->createGraphicsForCurrentLayer();
 }
 
 std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const

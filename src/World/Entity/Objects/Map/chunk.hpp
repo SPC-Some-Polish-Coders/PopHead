@@ -5,7 +5,7 @@
 
 namespace ph {
 
-struct Tile
+struct TileData
 {
 	sf::Vector2f mTopLeftCornerPositionInWorld;
 	sf::Vector2u mTextureRectTopLeftCorner;
@@ -18,17 +18,17 @@ struct Tile
 class Chunk : public sf::Drawable
 {
 public:
-	Chunk(const sf::Texture& tileset);
+	explicit Chunk(const sf::Texture& tileset);
 
-	void addTile(const Tile& tile) { mTilesToCreate.emplace_back(tile); };
+	void addTile(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
 
-	void create();
+	void initializeGraphics();
 
 	void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
 private:
 	sf::VertexArray mVertexArray;
-	std::vector<Tile> mTilesToCreate;
+	std::vector<TileData> mTilesToCreate;
 	const sf::Texture& mTileset;
 };
 

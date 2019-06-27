@@ -39,14 +39,13 @@ bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTil
 	return mapSizeInTiles.y % MapConstants::mChunkSize.y != 0;
 }
 
-void LayerOfChunks::addTile(const Tile& tile)
+void LayerOfChunks::addTile(const TileData& tile)
 {
 	const sf::Vector2u chunkPosition = getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(tile);
 	mChunks[chunkPosition.x][chunkPosition.y].addTile(tile);
-	//TODO: Allow map size smaller then one chunk.
 }
 
-sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const Tile& tile)
+sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData& tile)
 {
 	using namespace MapConstants;
 	return sf::Vector2u(
@@ -55,11 +54,11 @@ sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShould
 	);
 }
 
-void LayerOfChunks::create()
+void LayerOfChunks::initializeGraphics()
 {
 	for(auto& chunkRow : mChunks)
 		for(Chunk& chunk : chunkRow)
-			chunk.create();
+			chunk.initializeGraphics();
 }
 
 void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states) const

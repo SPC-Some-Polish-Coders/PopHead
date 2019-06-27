@@ -11,9 +11,9 @@ public:
 
 	void addNewLayerOfChunks() { mLayers.emplace_back(mMapSizeInTiles, mTileset); };
 
-	void addTile(const Tile& tile) { mLayers.back().addTile(tile); }
+	void addTile(const TileData& tile) { mLayers.back().addTile(tile); }
 
-	void create() { mLayers.back().create(); }
+	void createGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
 
