@@ -1,7 +1,7 @@
 #include "States/sceneParser.hpp"
 
 #include "World/Entity/Objects/Characters/enemies/zombie.hpp"
-#include "World/Entity/Objects/map.hpp"
+#include "World/Entity/Objects/Map/map.hpp"
 #include "World/Entity/Objects/Characters/player.hpp"
 #include "World/Entity/Objects/Characters/npc.hpp"
 

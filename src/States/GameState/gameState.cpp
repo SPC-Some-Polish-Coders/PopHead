@@ -2,9 +2,12 @@
 
 #include "SFML/Graphics.hpp"
 #include "World/Entity/Objects/Characters/player.hpp"
+#include "World/Entity/Objects/Map/map.hpp"
+#include "World/Entity/Objects/shapeWithCollision.hpp"
+#include "World/Entity/Objects/Characters/enemies/zombie.hpp"
+#include "World/Entity/Objects/Characters/npc.hpp"
 #include "gameData.hpp"
 #include "Utilities/math.hpp"
-#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 
 namespace ph {
 

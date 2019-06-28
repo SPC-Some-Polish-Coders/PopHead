@@ -3,6 +3,8 @@
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "chunkMap.hpp"
+
 #include <string>
 #include <vector>
 
@@ -50,7 +52,7 @@ private:
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
-	void loadTiles(
+	void createLayer(
 		const std::vector<unsigned>& globalTileIds,
 		const TilesetsData& tilesets,
 		sf::Vector2u mapSize,
@@ -64,9 +66,9 @@ private:
 
 	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
-	inline static const std::string pathToMapTextures = "textures/map/";
+	inline static const std::string pathToTileset = "textures/map/FULL_DESERT_TILESET_WIP.png";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
-	std::vector<sf::Sprite> mTiles;
+	std::unique_ptr<ChunkMap> mChunkMap;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 

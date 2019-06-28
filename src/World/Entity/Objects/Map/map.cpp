@@ -4,10 +4,13 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
+#include <array>
+
 namespace ph {
 
 Map::Map(GameData* gameData, std::string name)
 	:Object(gameData, name, LayerID::floorEntities)
+	,mChunkMap(nullptr)
 {
 }
 
@@ -22,11 +25,11 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mTiles.reserve(mapSize.x * mapSize.y * layerNodes.size());
+	mChunkMap = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTileset));
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		loadTiles(globalTileIds, tilesets, mapSize, tileSize);
+		createLayer(globalTileIds, tilesets, mapSize, tileSize);
 	}
 }
 
@@ -153,23 +156,27 @@ std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void Map::loadTiles(
+void Map::createLayer(
 	const std::vector<unsigned>& globalTileIds,
 	const TilesetsData& tilesets,
 	sf::Vector2u mapSize,
 	sf::Vector2u tileSize)
 {
-	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
+	const sf::Texture& texture = mGameData->getTextures().get(pathToTileset);
+
+	mChunkMap->addNewLayerOfChunks();
+
+	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
 		const unsigned bitsInByte = 8;
 		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
 		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
 		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
 
-		const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
-		const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
-		const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
+		const bool isHorizontallyFlipped = globalTileIds[tileIndexInMap] & flippedHorizontally;
+		const bool isVerticallyFlipped = globalTileIds[tileIndexInMap] & flippedVertically;
+		const bool isDiagonallyFlipped = globalTileIds[tileIndexInMap] & flippedDiagonally;
 
-		const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+		const unsigned globalTileId = globalTileIds[tileIndexInMap] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
@@ -178,44 +185,24 @@ void Map::loadTiles(
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[tilesetIndex]);
+			sf::Vector2u tileRectPosition = 
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
 			tileRectPosition.x *= tileSize.x;
 			tileRectPosition.y *= tileSize.y;
-			const sf::IntRect tileRect(
-				static_cast<sf::Vector2i>(tileRectPosition),
-				static_cast<sf::Vector2i>(tileSize)
-			);
-			const std::string textureName = pathToMapTextures + tilesets.sources[tilesetIndex];
-			const sf::Texture& texture = mGameData->getTextures().get(textureName);
-			sf::Sprite tile(texture, tileRect);
-			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
+
+			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
-			if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
-				const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-				tile.setOrigin(center);
-				position += center;
-				if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-					tile.setRotation(270);
-					tile.setScale(1.f, -1.f);
-				}
-				else if (isHorizontallyFlipped && isVerticallyFlipped)
-					tile.setScale(-1.f, -1.f);
-				else if (isHorizontallyFlipped && isDiagonallyFlipped)
-					tile.setRotation(90);
-				else if (isHorizontallyFlipped)
-					tile.setScale(-1.f, 1.f);
-				else if (isVerticallyFlipped && isDiagonallyFlipped)
-					tile.setRotation(270);
-				else if (isVerticallyFlipped)
-					tile.setScale(1.f, -1.f);
-				else if (isDiagonallyFlipped) {
-					tile.setRotation(270);
-					tile.setScale(-1.f, 1.f);
-				}
-			}
-			tile.setPosition(position);
-			mTiles.push_back(tile);
+
+			TileData tileData;
+			tileData.mTextureRectTopLeftCorner = tileRectPosition;
+			tileData.mTopLeftCornerPositionInWorld = position;
+
+			tileData.mFlippingData.mIsHorizontallyFlipped = isHorizontallyFlipped;
+			tileData.mFlippingData.mIsVerticallyFlipped = isVerticallyFlipped;
+			tileData.mFlippingData.mIsDiagonallyFlipped = isDiagonallyFlipped;
+
+			mChunkMap->addTileData(tileData);
 
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
@@ -223,6 +210,8 @@ void Map::loadTiles(
 			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
 	}
+
+	mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
 std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
@@ -264,16 +253,11 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size = camera.getSize();
+	const sf::Vector2f size(16 * 40, 16 * 30);// = camera.getSize();
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
-	const sf::FloatRect screen(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
-	for (const sf::Sprite& sprite : mTiles) {
-		const sf::FloatRect bounds = sprite.getGlobalBounds();
-		if(screen.intersects(bounds)) {
-			target.draw(sprite, states);
-			mGameData->getEfficencyRegister().registerRenderCall();
-		}
-	}
+	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
+	
+	mChunkMap->draw(target, states, screenBounds);
 }
 
 }
