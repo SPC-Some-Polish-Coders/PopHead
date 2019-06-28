@@ -9,34 +9,44 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 {
 	using namespace MapConstants;
 
-	sf::Vector2u mapSizeInChunks(mapSizeInTiles.x / mChunkSize.x, mapSizeInTiles.y / mChunkSize.y);
+	sf::Vector2u mapSizeInChunks(mapSizeInTiles.x / mChunkSizeInTiles.x, mapSizeInTiles.y / mChunkSizeInTiles.y);
 
 	if(doesMapNotFitInChunksOnXAxis(mapSizeInChunks))
 		mapSizeInChunks.x += 1;
 	if(doesMapNotFitInChunksOnYAxis(mapSizeInChunks))
 		mapSizeInChunks.y += 1;
 
-	if(mapSizeInTiles.x < mChunkSize.x && mapSizeInTiles.x > 0)
+	if(mapSizeInTiles.x < mChunkSizeInTiles.x && mapSizeInTiles.x > 0)
 		mapSizeInChunks.x = 1;
-	if(mapSizeInTiles.y < mChunkSize.y && mapSizeInTiles.y > 0)
+	if(mapSizeInTiles.y < mChunkSizeInTiles.y && mapSizeInTiles.y > 0)
 		mapSizeInChunks.y = 1;
-
+/*
 	std::vector<Chunk> rowOfChunks;
 	for(unsigned x = 0; x < mapSizeInChunks.x; ++x)
-		rowOfChunks.emplace_back(Chunk(tileset));
+		rowOfChunks.emplace_back(Chunk(tileset, ));
 
 	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
+		mAllChunksInLayer.emplace_back(rowOfChunks);*/
+
+	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
+	{
+		std::vector<Chunk> rowOfChunks;
+		for(unsigned x = 0; x < mapSizeInChunks.x; ++x) {
+			rowOfChunks.emplace_back(Chunk(tileset, sf::Vector2f(y * mChunkSizeInPixels.y, x * mChunkSizeInPixels.x)));
+		}
 		mAllChunksInLayer.emplace_back(rowOfChunks);
+	}
+			
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.x % MapConstants::mChunkSize.x != 0;
+	return mapSizeInTiles.x % MapConstants::mChunkSizeInTiles.x != 0;
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.y % MapConstants::mChunkSize.y != 0;
+	return mapSizeInTiles.y % MapConstants::mChunkSizeInTiles.y != 0;
 }
 
 void LayerOfChunks::addTileData(const TileData& tile)
@@ -50,8 +60,8 @@ sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShould
 	using namespace MapConstants;
 	auto tilePosition = static_cast<sf::Vector2u>(tile.mTopLeftCornerPositionInWorld);
 	return sf::Vector2u(
-		tilePosition.x / mTileSize.x / mChunkSize.x,
-		tilePosition.y / mTileSize.y / mChunkSize.y
+		tilePosition.x / mTileSizeInPixels.x / mChunkSizeInTiles.x,
+		tilePosition.y / mTileSizeInPixels.y / mChunkSizeInTiles.y
 	);
 }
 

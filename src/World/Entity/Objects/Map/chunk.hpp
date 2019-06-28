@@ -18,7 +18,7 @@ struct TileData
 class Chunk : public sf::Drawable
 {
 public:
-	explicit Chunk(const sf::Texture& tileset);
+	explicit Chunk(const sf::Texture& tileset, const sf::Vector2f topLeftCornerPositionInWorld);
 
 	void addTileData(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
 
@@ -32,6 +32,7 @@ private:
 	sf::VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;
 	const sf::Texture& mTileset;
+	const sf::Vector2f mTopLeftCornerPositionInWorld;
 };
 
 }

@@ -3,11 +3,12 @@
 
 namespace ph {
 
-Chunk::Chunk(const sf::Texture& tileset)
+Chunk::Chunk(const sf::Texture& tileset, const sf::Vector2f topLeftCornerPositionInWorld)
 	:mTileset(tileset)
+	,mTopLeftCornerPositionInWorld(topLeftCornerPositionInWorld)
 {
 	using namespace MapConstants;
-	mTilesToCreate.reserve(mChunkSize.x * mChunkSize.y);
+	mTilesToCreate.reserve(mChunkSizeInTiles.x * mChunkSizeInTiles.y);
 }
 
 void Chunk::initializeGraphics()
@@ -15,13 +16,13 @@ void Chunk::initializeGraphics()
 	using namespace MapConstants;
 
 	mVertexArray.setPrimitiveType(sf::Quads);
-	mVertexArray.resize(mChunkSize.x * mChunkSize.y * 4);
+	mVertexArray.resize(mChunkSizeInTiles.x * mChunkSizeInTiles.y * 4);
 
 	for(int y = 0; y < 24; ++y)
 	{
 		for(int x = 0; x < 24; ++x)
 		{
-			const unsigned int tileIdInChunk = y * mChunkSize.x + x;
+			const unsigned int tileIdInChunk = y * mChunkSizeInTiles.x + x;
 			sf::Vertex* const tile = &mVertexArray[tileIdInChunk * 4];
 
 			if(tileIdInChunk >= mTilesToCreate.size())
@@ -32,15 +33,15 @@ void Chunk::initializeGraphics()
 			//TODO: Make rotaion and flipping possible
 			const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
 			tile[0].texCoords = textureRectTopLeftCorner;
-			tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSize.x, textureRectTopLeftCorner.y);
-			tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSize.x, textureRectTopLeftCorner.y + mTileSize.y);
-			tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + mTileSize.y);
+			tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSizeInPixels.x, textureRectTopLeftCorner.y);
+			tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + mTileSizeInPixels.x, textureRectTopLeftCorner.y + mTileSizeInPixels.y);
+			tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + mTileSizeInPixels.y);
 
 			const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
 			tile[0].position = vertexTopLeftCornerPosition;
-			tile[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSize.x, vertexTopLeftCornerPosition.y);
-			tile[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSize.x, vertexTopLeftCornerPosition.y + mTileSize.y);
-			tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + mTileSize.y);
+			tile[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSizeInPixels.x, vertexTopLeftCornerPosition.y);
+			tile[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + mTileSizeInPixels.x, vertexTopLeftCornerPosition.y + mTileSizeInPixels.y);
+			tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + mTileSizeInPixels.y);
 		}
 	}
 
@@ -55,8 +56,8 @@ void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 sf::FloatRect Chunk::getGlobalBounds() const
 {
-	const sf::Vector2f position = mVertexArray[0].position;
-	return sf::FloatRect(position.x, position.y, 384, 384);
+	constexpr float chunkSide = 384;
+	return sf::FloatRect(mTopLeftCornerPositionInWorld.x, mTopLeftCornerPositionInWorld.y, chunkSide, chunkSide);
 }
 
 }
