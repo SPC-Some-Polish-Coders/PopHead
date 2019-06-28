@@ -203,32 +203,6 @@ void Map::createLayer(
 			tileData.mFlippingData.mIsDiagonallyFlipped = isDiagonallyFlipped;
 
 			mChunkMap->addTileData(tileData);
-			
-			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
-			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
-			//	tile.setOrigin(center);
-			//	position += center;
-			//	if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-			//		tile.setRotation(270);
-			//		tile.setScale(1.f, -1.f);
-			//	}
-			//	else if (isHorizontallyFlipped && isVerticallyFlipped)  ----------DONE
-			//		tile.setScale(-1.f, -1.f);
-			//	else if (isHorizontallyFlipped && isDiagonallyFlipped) ----------DONE
-			//		tile.setRotation(90);
-			//	else if (isHorizontallyFlipped) ----------DONE
-			//		tile.setScale(-1.f, 1.f);
-			//	else if (isVerticallyFlipped && isDiagonallyFlipped) ----------DONE
-			//		tile.setRotation(270);
-			//	else if (isVerticallyFlipped) ----------DONE
-			//		tile.setScale(1.f, -1.f);
-			//	else if (isDiagonallyFlipped) { ----------DONE
-			//		tile.setRotation(270);
-			//		tile.setScale(-1.f, 1.f);
-			//	}
-			//}
-			//tile.setPosition(position);
-			//mTiles.push_back(tile);
 
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)

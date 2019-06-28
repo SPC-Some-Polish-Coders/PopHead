@@ -20,13 +20,6 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 		mapSizeInChunks.x = 1;
 	if(mapSizeInTiles.y < mChunkSizeInTiles.y && mapSizeInTiles.y > 0)
 		mapSizeInChunks.y = 1;
-/*
-	std::vector<Chunk> rowOfChunks;
-	for(unsigned x = 0; x < mapSizeInChunks.x; ++x)
-		rowOfChunks.emplace_back(Chunk(tileset, ));
-
-	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
-		mAllChunksInLayer.emplace_back(rowOfChunks);*/
 
 	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
 	{
