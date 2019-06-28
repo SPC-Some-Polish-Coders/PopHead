@@ -29,7 +29,7 @@ void Map::loadFromFile(const std::string& filename)
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		loadTiles(globalTileIds, tilesets, mapSize, tileSize);
+		createLayer(globalTileIds, tilesets, mapSize, tileSize);
 	}
 }
 
@@ -156,7 +156,7 @@ std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void Map::loadTiles(
+void Map::createLayer(
 	const std::vector<unsigned>& globalTileIds,
 	const TilesetsData& tilesets,
 	sf::Vector2u mapSize,
@@ -166,17 +166,17 @@ void Map::loadTiles(
 
 	mChunks->addNewLayerOfChunks();
 
-	for (std::size_t i = 0; i < globalTileIds.size(); ++i) {
+	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
 		const unsigned bitsInByte = 8;
 		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
 		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
 		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
 
-		const bool isHorizontallyFlipped = globalTileIds[i] & flippedHorizontally;
-		const bool isVerticallyFlipped = globalTileIds[i] & flippedVertically;
-		const bool isDiagonallyFlipped = globalTileIds[i] & flippedDiagonally;
+		const bool isHorizontallyFlipped = globalTileIds[tileIndexInMap] & flippedHorizontally;
+		const bool isVerticallyFlipped = globalTileIds[tileIndexInMap] & flippedVertically;
+		const bool isDiagonallyFlipped = globalTileIds[tileIndexInMap] & flippedDiagonally;
 
-		const unsigned globalTileId = globalTileIds[i] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+		const unsigned globalTileId = globalTileIds[tileIndexInMap] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
@@ -185,11 +185,12 @@ void Map::loadTiles(
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			sf::Vector2u tileRectPosition = Math::toTwoDimensional(tileId, tilesets.columnsCounts[tilesetIndex]);
+			sf::Vector2u tileRectPosition = 
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
 			tileRectPosition.x *= tileSize.x;
 			tileRectPosition.y *= tileSize.y;
 
-			sf::Vector2f position(Math::toTwoDimensional(i, mapSize.x));
+			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, mapSize.x));
 			position.x *= tileSize.x;
 			position.y *= tileSize.y;
 

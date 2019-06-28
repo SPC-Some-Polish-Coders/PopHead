@@ -52,7 +52,7 @@ private:
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
-	void loadTiles(
+	void createLayer(
 		const std::vector<unsigned>& globalTileIds,
 		const TilesetsData& tilesets,
 		sf::Vector2u mapSize,
