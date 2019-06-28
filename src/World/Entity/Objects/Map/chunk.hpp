@@ -20,7 +20,7 @@ class Chunk : public sf::Drawable
 public:
 	explicit Chunk(const sf::Texture& tileset);
 
-	void addTile(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
+	void addTileData(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
 
 	void initializeGraphics();
 

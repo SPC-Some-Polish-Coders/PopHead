@@ -26,7 +26,7 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Textur
 		rowOfChunks.emplace_back(Chunk(tileset));
 
 	for(unsigned y = 0; y < mapSizeInChunks.y; ++y)
-		mChunks.emplace_back(rowOfChunks);
+		mAllChunksInLayer.emplace_back(rowOfChunks);
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles)
@@ -39,10 +39,10 @@ bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTil
 	return mapSizeInTiles.y % MapConstants::mChunkSize.y != 0;
 }
 
-void LayerOfChunks::addTile(const TileData& tile)
+void LayerOfChunks::addTileData(const TileData& tile)
 {
 	const sf::Vector2u chunkPosition = getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(tile);
-	mChunks[chunkPosition.x][chunkPosition.y].addTile(tile);
+	mAllChunksInLayer[chunkPosition.x][chunkPosition.y].addTileData(tile);
 }
 
 sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData& tile)
@@ -55,16 +55,17 @@ sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShould
 	);
 }
 
+
 void LayerOfChunks::initializeGraphics()
 {
-	for(auto& chunkRow : mChunks)
+	for(auto& chunkRow : mAllChunksInLayer)
 		for(Chunk& chunk : chunkRow)
 			chunk.initializeGraphics();
 }
 
 void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
 {
-	for(const auto& chunkRow : mChunks)
+	for(const auto& chunkRow : mAllChunksInLayer)
 		for(const Chunk& chunk : chunkRow)
 			if(isChunkInCamera(chunk, cameraBounds))
 				chunk.draw(target, states);

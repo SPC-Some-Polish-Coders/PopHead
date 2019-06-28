@@ -13,7 +13,7 @@ public:
 	bool doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles);
 	bool doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles);
 
-	void addTile(const TileData&);
+	void addTileData(const TileData&);
 	sf::Vector2u getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData&);
 
 	void initializeGraphics();
@@ -23,7 +23,9 @@ private:
 	bool isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const;
 
 private:
-	std::vector<std::vector<Chunk>> mChunks;
+	using RowOfChunks = std::vector<Chunk>;
+	using ChunkMatrix = std::vector<RowOfChunks>;
+	ChunkMatrix mAllChunksInLayer;
 	sf::Vector2u mMapSizeInTiles;
 };
 

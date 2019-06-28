@@ -197,7 +197,7 @@ void Map::loadTiles(
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
 			tileData.mTopLeftCornerPositionInWorld = position;
 
-			mChunks->addTile(tileData);
+			mChunks->addTileData(tileData);
 			
 			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
 			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);

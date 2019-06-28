@@ -11,7 +11,7 @@ public:
 
 	void addNewLayerOfChunks() { mLayers.emplace_back(mMapSizeInTiles, mTileset); };
 
-	void addTile(const TileData& tile) { mLayers.back().addTile(tile); }
+	void addTileData(const TileData& tile) { mLayers.back().addTileData(tile); }
 
 	void initializeGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
 
