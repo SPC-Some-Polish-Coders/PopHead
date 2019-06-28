@@ -10,7 +10,7 @@ namespace ph {
 
 Map::Map(GameData* gameData, std::string name)
 	:Object(gameData, name, LayerID::floorEntities)
-	,mChunks(nullptr)
+	,mChunkMap(nullptr)
 {
 }
 
@@ -25,7 +25,7 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mChunks = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTileset));
+	mChunkMap = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTileset));
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
@@ -164,7 +164,7 @@ void Map::createLayer(
 {
 	const sf::Texture& texture = mGameData->getTextures().get(pathToTileset);
 
-	mChunks->addNewLayerOfChunks();
+	mChunkMap->addNewLayerOfChunks();
 
 	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
 		const unsigned bitsInByte = 8;
@@ -198,7 +198,11 @@ void Map::createLayer(
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
 			tileData.mTopLeftCornerPositionInWorld = position;
 
-			mChunks->addTileData(tileData);
+			tileData.mFlippingData.mIsHorizontallyFlipped = isHorizontallyFlipped;
+			tileData.mFlippingData.mIsVerticallyFlipped = isVerticallyFlipped;
+			tileData.mFlippingData.mIsDiagonallyFlipped = isDiagonallyFlipped;
+
+			mChunkMap->addTileData(tileData);
 			
 			//if (isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped) {
 			//	const sf::Vector2f center(tileSize.x / 2.f, tileSize.y / 2.f);
@@ -208,17 +212,17 @@ void Map::createLayer(
 			//		tile.setRotation(270);
 			//		tile.setScale(1.f, -1.f);
 			//	}
-			//	else if (isHorizontallyFlipped && isVerticallyFlipped)
+			//	else if (isHorizontallyFlipped && isVerticallyFlipped)  ----------DONE
 			//		tile.setScale(-1.f, -1.f);
-			//	else if (isHorizontallyFlipped && isDiagonallyFlipped)
+			//	else if (isHorizontallyFlipped && isDiagonallyFlipped) ----------DONE
 			//		tile.setRotation(90);
-			//	else if (isHorizontallyFlipped)
+			//	else if (isHorizontallyFlipped) ----------DONE
 			//		tile.setScale(-1.f, 1.f);
-			//	else if (isVerticallyFlipped && isDiagonallyFlipped)
+			//	else if (isVerticallyFlipped && isDiagonallyFlipped) ----------DONE
 			//		tile.setRotation(270);
-			//	else if (isVerticallyFlipped)
+			//	else if (isVerticallyFlipped) ----------DONE
 			//		tile.setScale(1.f, -1.f);
-			//	else if (isDiagonallyFlipped) {
+			//	else if (isDiagonallyFlipped) { ----------DONE
 			//		tile.setRotation(270);
 			//		tile.setScale(-1.f, 1.f);
 			//	}
@@ -233,7 +237,7 @@ void Map::createLayer(
 		}
 	}
 
-	mChunks->initializeGraphicsForCurrentLayer();
+	mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
 std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
@@ -279,7 +283,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
 	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 	
-	mChunks->draw(target, states, screenBounds);
+	mChunkMap->draw(target, states, screenBounds);
 }
 
 }

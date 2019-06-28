@@ -68,7 +68,7 @@ private:
 
 	inline static const std::string pathToTileset = "textures/map/FULL_DESERT_TILESET_WIP.png";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
-	std::unique_ptr<ChunkMap> mChunks;
+	std::unique_ptr<ChunkMap> mChunkMap;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 

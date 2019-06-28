@@ -5,14 +5,18 @@
 
 namespace ph {
 
+struct FlippingData
+{
+	bool mIsHorizontallyFlipped;
+	bool mIsVerticallyFlipped;
+	bool mIsDiagonallyFlipped;
+};
+
 struct TileData
 {
 	sf::Vector2f mTopLeftCornerPositionInWorld;
 	sf::Vector2u mTextureRectTopLeftCorner;
-	//TODO: Make rotaion and flipping possible
-	/*bool mIsHorizontallyFlipped;
-	bool mIsVerticallyFlipped;
-	bool mIsDiagonallyFlipped;*/
+	FlippingData mFlippingData;
 };
 
 class Chunk : public sf::Drawable
