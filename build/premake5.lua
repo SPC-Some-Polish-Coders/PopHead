@@ -1,6 +1,7 @@
 workspace "PopHead"
     architecture "x86"
     location "../"
+    startproject "PopHead"
     
     configurations{
         "Debug",
