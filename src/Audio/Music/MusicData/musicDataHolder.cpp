@@ -23,7 +23,8 @@ MusicDataHolder::MusicDataHolder()
 auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
 {
 	auto found = mAllThemesData.find(filePath);
-	PH_ASSERT(found != mAllThemesData.end(), "MusicData with filepath \"" + filePath + "\" was not found.");
+	if (found == mAllThemesData.end())
+		PH_EXCEPTION("MusicData with filepath \"" + filePath + "\" was not found.");
 	mCurrentThemeData = found->second;
 	return found->second;
 }
