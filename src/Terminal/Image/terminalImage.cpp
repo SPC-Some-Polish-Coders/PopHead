@@ -2,9 +2,12 @@
 #include "terminalStyleConstants.hpp"
 #include "gameData.hpp"
 
-using namespace ph::TerminalStyleConstants;
 
-ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
+namespace ph {
+
+using namespace TerminalStyleConstants;
+
+TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	:mTerminalSharedData(terminalSharedData)
 	,mBackground(terminalSize)
 	,mSeparatorBetweenInputAndOutputArea(separatorBetweenInputAndOutputAreaSize)
@@ -15,7 +18,7 @@ ph::TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	mSeparatorBetweenInputAndOutputArea.setPosition(separatorBetweenInputAndOutputAreaPosition);
 }
 
-void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if(mTerminalSharedData->mIsVisible) {
 		target.draw(mBackground);
@@ -25,7 +28,7 @@ void ph::TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) 
 	}
 }
 
-void ph::TerminalImage::move(sf::Vector2f offset)
+void TerminalImage::move(sf::Vector2f offset)
 {
 	mBackground.move(offset);
 	mTerminalSharedData->mInputLine.move(offset);
@@ -33,17 +36,19 @@ void ph::TerminalImage::move(sf::Vector2f offset)
 	mOutputArea.move(offset);
 }
 
-void ph::TerminalImage::init(GameData* gameData)
+void TerminalImage::init(GameData* gameData)
 {
 	initializeText(gameData);
 	mOutputArea.init(gameData);
 }
 
-void ph::TerminalImage::initializeText(GameData* gameData)
+void TerminalImage::initializeText(GameData* gameData)
 {
 	auto& text = mTerminalSharedData->mInputLine;
-	text.setFont(gameData->getFonts().get(fontPath));
+	text.setFont(gameData->getFonts().get(inputFontPath));
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(inputCharacterSize);
 	text.setPosition(inputTextPosition);
+}
+
 }

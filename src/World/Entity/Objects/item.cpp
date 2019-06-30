@@ -1,6 +1,10 @@
 #include "item.hpp"
 
-void ph::Item::pickUp()
+namespace ph {
+
+void Item::pickUp()
 {
+
+}
 
 }

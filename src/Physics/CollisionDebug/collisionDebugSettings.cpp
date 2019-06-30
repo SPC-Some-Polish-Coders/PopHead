@@ -3,7 +3,9 @@
 #include "Utilities/debug.hpp"
 #include <string>
 
-ph::CollisionDebugSettings::CollisionDebugSettings()
+namespace ph {
+
+CollisionDebugSettings::CollisionDebugSettings()
 	:mShouldDisplay(false)
 	,mShouldDisplayKinematicBodies(true)
 	,mShouldDisplayStaticBodies(true)
@@ -11,33 +13,33 @@ ph::CollisionDebugSettings::CollisionDebugSettings()
 	setColors(1);
 }
 
-void ph::CollisionDebugSettings::turnOn()
+void CollisionDebugSettings::turnOn()
 {
 	mShouldDisplay = true;
 	PH_LOG(LogType::Info, "Collision debug was turned on.");
 }
 
-void ph::CollisionDebugSettings::turnOff()
+void CollisionDebugSettings::turnOff()
 {
 	mShouldDisplay = false;
 	PH_LOG(LogType::Info, "Collision debug was turned off.");
 }
 
-void ph::CollisionDebugSettings::displayOnlyKinematicBodies()
+void CollisionDebugSettings::displayOnlyKinematicBodies()
 {
 	mShouldDisplayKinematicBodies = true;
 	mShouldDisplayStaticBodies = false;
 	PH_LOG(LogType::Info, "Collision debug mode was changed. Now it should display only kinematic bodies.");
 }
 
-void ph::CollisionDebugSettings::displayOnlyStaticBodies()
+void CollisionDebugSettings::displayOnlyStaticBodies()
 {
 	mShouldDisplayKinematicBodies = false;
 	mShouldDisplayStaticBodies = true;
 	PH_LOG(LogType::Info, "Collision debug mode was changed. Now it should display only static bodies.");
 }
 
-void ph::CollisionDebugSettings::displayAllBodies()
+void CollisionDebugSettings::displayAllBodies()
 {
 	mShouldDisplayKinematicBodies = true;
 	mShouldDisplayStaticBodies = true;
@@ -45,7 +47,7 @@ void ph::CollisionDebugSettings::displayAllBodies()
 }
 
 
-bool ph::CollisionDebugSettings::shouldDisplay(BodyType bodyType)
+bool CollisionDebugSettings::shouldDisplay(BodyType bodyType)
 {
 	if (bodyType == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)
 		return false;
@@ -55,7 +57,7 @@ bool ph::CollisionDebugSettings::shouldDisplay(BodyType bodyType)
 	return mShouldDisplay;
 }
 
-auto ph::CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
+auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 {
 	switch (bodyType)
 	{
@@ -67,7 +69,7 @@ auto ph::CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Co
 	}
 }
 
-void ph::CollisionDebugSettings::setColors(int numberOfSet)
+void CollisionDebugSettings::setColors(int numberOfSet)
 {
 	static const sf::Color red(45, 100, 150, 140);
 	static const sf::Color blue(200, 0, 0, 140);
@@ -100,7 +102,9 @@ void ph::CollisionDebugSettings::setColors(int numberOfSet)
 	PH_LOG(LogType::Info, "Collision debug rect colors were set to " + std::to_string(numberOfSet) + ".");
 }
 
-void ph::CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)
+void CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)
 {
 	PH_EXCEPTION("You have to choose CollisionDebug color set from 1 to 3! There is no option " + std::to_string(numberOfSet) + ".");
+}
+
 }

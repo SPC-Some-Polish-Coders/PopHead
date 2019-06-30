@@ -15,6 +15,8 @@ public:
 
 	std::vector<Xml> getChildren(std::string name) const;
 
+	bool hasAttribute(std::string name) const;
+
 	Xml getAttribute(std::string name) const;
 
 	std::string toString() const;

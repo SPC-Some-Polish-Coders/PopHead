@@ -3,7 +3,9 @@
 #include "Utilities/debug.hpp"
 #include "Utilities/xml.hpp"
 
-ph::MusicDataHolder::MusicDataHolder()
+namespace ph{
+
+MusicDataHolder::MusicDataHolder()
 {
 	Xml musicDataXml;
 	musicDataXml.loadFromFile("music/musicData.xml");
@@ -18,10 +20,12 @@ ph::MusicDataHolder::MusicDataHolder()
 	}
 }
 
-auto ph::MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
+auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
 {
 	auto found = mAllThemesData.find(filePath);
 	PH_ASSERT(found != mAllThemesData.end(), "MusicData with filepath \"" + filePath + "\" was not found.");
 	mCurrentThemeData = found->second;
 	return found->second;
+}
+
 }

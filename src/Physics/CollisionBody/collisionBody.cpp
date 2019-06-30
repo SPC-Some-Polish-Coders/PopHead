@@ -1,7 +1,9 @@
 #include "collisionBody.hpp"
 #include "bodyType.hpp"
 
-ph::CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType,
+namespace ph {
+
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType,
 								Object* const owner, GameData* gameData)
 	:mRect(rect)
 	,mMass(mass)
@@ -23,7 +25,7 @@ ph::CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyTy
 	}
 }
 
-ph::CollisionBody::~CollisionBody()
+CollisionBody::~CollisionBody()
 {
 	switch (mBodyType)
 	{
@@ -37,7 +39,7 @@ ph::CollisionBody::~CollisionBody()
 	}
 }
 
-void ph::CollisionBody::move(sf::Vector2f velocity)
+void CollisionBody::move(sf::Vector2f velocity)
 {
 	mVelocity = velocity;
 	mRect.left += velocity.x;
@@ -45,32 +47,32 @@ void ph::CollisionBody::move(sf::Vector2f velocity)
 	mCollisionDebugRect.move(velocity);
 }
 
-void ph::CollisionBody::setPosition(sf::Vector2f position)
+void CollisionBody::setPosition(sf::Vector2f position)
 {
 	mRect.left = position.x;
 	mRect.top = position.y;
 	mCollisionDebugRect.setPosition(position);
 }
 
-void ph::CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
+void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 {
 	setPreviousPositionToCurrentPosition();
 	updateOwnerPosition();
 	mVelocity = sf::Vector2f();
 }
 
-void ph::CollisionBody::setPreviousPositionToCurrentPosition()
+void CollisionBody::setPreviousPositionToCurrentPosition()
 {
 	mPreviousPosition.x = mRect.left;
 	mPreviousPosition.y = mRect.top;
 }
 
-void ph::CollisionBody::updateOwnerPosition()
+void CollisionBody::updateOwnerPosition()
 {
 	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
-void ph::CollisionBody::updatePush(sf::Time delta)
+void CollisionBody::updatePush(sf::Time delta)
 {
 	if (mForceVector == sf::Vector2f())
 		return;
@@ -81,4 +83,6 @@ void ph::CollisionBody::updatePush(sf::Time delta)
 	if (mForceVector.x < 40 && mForceVector.x > -40 && mForceVector.y < 40 && mForceVector.y > -40) {
 		mForceVector = sf::Vector2f(0, 0);
 	}
+}
+
 }

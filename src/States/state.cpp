@@ -2,10 +2,16 @@
 
 #include "World/Entity/entityType.hpp"
 
-ph::State::State(GameData* const gameData)
-        :mGameData { gameData }
-        ,mRoot { EntityType::none, gameData, "root" }
+namespace ph {
+
+State::State(GameData* const gameData)
+		:mRoot{ EntityType::none, gameData, "root" }
+        ,mGameData { gameData }
+		,mSceneParser{ gameData, mRoot, "scene.xml" }
         ,mHide { false }
         ,mPause { false }
+
 {
+}
+
 }

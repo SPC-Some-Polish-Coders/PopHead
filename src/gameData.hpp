@@ -10,6 +10,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
+#include "EfficencyRegister/efficencyRegister.hpp"
 #include "Gui/GUI.hpp"
 
 namespace ph {
@@ -31,19 +32,21 @@ public:
 		Renderer* const,
 		PhysicsEngine* const,
 		Terminal* const,
+		EfficencyRegister* const,
 		GUI* const);
 
-	auto getSoundPlayer()	const -> SoundPlayer & { return *mSoundPlayer; }
-	auto getMusicPlayer()	const -> MusicPlayer & { return *mMusicPlayer; }
-	auto getTextures()		const -> TextureHolder & { return *mTextures; }
-	auto getFonts()			const -> FontHolder & { return *mFonts; }
-	auto getShaders()		const -> ShaderHolder & { return *mShaders; }
-	auto getStateMachine()	const -> StateMachine & { return *mStateMachine; }
-	auto getInput()			const -> Input & { return *mInput; }
-	auto getRenderer()		const -> Renderer & { return *mRenderer; }
-	auto getPhysicsEngine()	const -> PhysicsEngine & { return *mPhysicsEngine; }
-	auto getTerminal()		const -> Terminal & { return *mTerminal; }
-	auto getGui()			const -> GUI & { return *mGui; }
+	auto getSoundPlayer()	    const -> SoundPlayer & { return *mSoundPlayer; }
+	auto getMusicPlayer()	    const -> MusicPlayer & { return *mMusicPlayer; }
+	auto getTextures()		    const -> TextureHolder & { return *mTextures; }
+	auto getFonts()			    const -> FontHolder & { return *mFonts; }
+	auto getShaders()		    const -> ShaderHolder & { return *mShaders; }
+	auto getStateMachine()	    const -> StateMachine & { return *mStateMachine; }
+	auto getInput()			    const -> Input & { return *mInput; }
+	auto getRenderer()		    const -> Renderer & { return *mRenderer; }
+	auto getPhysicsEngine()	    const -> PhysicsEngine & { return *mPhysicsEngine; }
+	auto getTerminal()		    const -> Terminal & { return *mTerminal; }
+	auto getEfficencyRegister()	const -> EfficencyRegister & { return *mEfficencyRegister; }
+	auto getGui()			    const -> GUI & { return *mGui; }
 
 private:
 	SoundPlayer* const mSoundPlayer;
@@ -56,11 +59,12 @@ private:
 	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
+	EfficencyRegister* const mEfficencyRegister;
 	GUI* const mGui;
 };
 
 inline GameData::GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 
 inline GameData::GameData(
 	SoundPlayer* const soundPlayer,
@@ -73,7 +77,9 @@ inline GameData::GameData(
 	Renderer* const renderer,
 	PhysicsEngine* const physicsEngine,
 	Terminal* const Terminal,
-	GUI* const Gui)
+	EfficencyRegister* const efficencyRegister,
+	GUI* const Gui
+)
 	:mSoundPlayer{soundPlayer}
 	,mMusicPlayer{musicPlayer}
 	,mTextures{textures}
@@ -84,6 +90,7 @@ inline GameData::GameData(
 	,mRenderer{renderer}
 	,mPhysicsEngine{physicsEngine}
 	,mTerminal{Terminal}
+	,mEfficencyRegister{efficencyRegister}
 	,mGui(Gui)
 {
 }

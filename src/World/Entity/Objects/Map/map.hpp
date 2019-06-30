@@ -3,6 +3,8 @@
 #include "World/Entity/object.hpp"
 #include "Utilities/xml.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "chunkMap.hpp"
+
 #include <string>
 #include <vector>
 
@@ -31,7 +33,7 @@ private:
 		std::vector<unsigned> tileCounts;
 		std::vector<unsigned> columnsCounts;
 		std::vector<std::string> sources;
-		std::vector<TilesData> tiles;
+		std::vector<TilesData> tilesData;
 	};
 
 	void checkMapSupport(const Xml& mapNode) const;
@@ -44,11 +46,13 @@ private:
 
 	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
 
+	TilesetsData::TilesData getTilesData(const std::vector<Xml>& tileNodes) const;
+
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
-	void loadTiles(
+	void createLayer(
 		const std::vector<unsigned>& globalTileIds,
 		const TilesetsData& tilesets,
 		sf::Vector2u mapSize,
@@ -58,8 +62,13 @@ private:
 
 	std::size_t findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const;
 
-	inline static const std::string pathToMapTextures = "textures/map/";
-	std::vector<sf::Sprite> mTiles;
+	std::size_t findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const;
+
+	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
+
+	inline static const std::string pathToTileset = "textures/map/FULL_DESERT_TILESET_WIP.png";
+	inline static const std::string pathToMapNotEmbeddedTilesets = "";
+	std::unique_ptr<ChunkMap> mChunkMap;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 };
 

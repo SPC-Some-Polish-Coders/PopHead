@@ -6,9 +6,11 @@
 #include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
-namespace ph { enum class StateID; }
+namespace ph {
 
-ph::Game::Game()
+enum class StateID; 
+
+Game::Game()
 	:mGameData{}
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
@@ -20,6 +22,7 @@ ph::Game::Game()
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
+	,mEfficencyRegister{new EfficencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
@@ -33,6 +36,7 @@ ph::Game::Game()
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
+		mEfficencyRegister.get(),
 		mGui.get()
 	));
 
@@ -42,6 +46,8 @@ ph::Game::Game()
 
 	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
 	Logger::getInstance().setGameData(mGameData.get());
+
+	mEfficencyRegister->init(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
@@ -54,7 +60,7 @@ ph::Game::Game()
 	mRenderer->setGameData(mGameData.get());
 }
 
-void ph::Game::run()
+void Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -76,27 +82,26 @@ void ph::Game::run()
 			timeSinceLastUpdate -= timePerFrame;
 
 			update(timePerFrame);
-			draw();
+			mRenderer->draw();
 		}
 	}
 }
 
-void ph::Game::input()
+void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
 	mTerminal->input();
+	mEfficencyRegister->input();
 }
 
-void ph::Game::update(sf::Time delta)
+void Game::update(sf::Time delta)
 {
 	mStateMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);
+	mEfficencyRegister->update();
 }
 
-void ph::Game::draw()
-{
-	mRenderer->draw();
 }

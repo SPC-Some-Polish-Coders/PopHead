@@ -2,10 +2,11 @@
 
 #include <SFML/System.hpp>
 #include "World/Entity/entity.hpp"
+#include "States/sceneParser.hpp"
 
 namespace ph{
 
-namespace Base { class GameData; }
+class GameData; 
 
 class State
 {
@@ -20,11 +21,10 @@ public:
 	bool getHide() const { return mHide; }
 	
 	Entity& getRoot() { return mRoot; }
-
 protected:
-    GameData* const mGameData;
-    Entity mRoot;
-
+	Entity mRoot;
+	GameData* const mGameData;
+	SceneParser mSceneParser;
 private:
     bool mHide;
     bool mPause;

@@ -1,23 +1,25 @@
 #include "logsInitializer.hpp"
 #include "Logs/logger.hpp"
 
-bool ph::LogsInitializer::getShouldLogIntoConsole()
+namespace ph {
+
+bool LogsInitializer::getShouldLogIntoConsole()
 {
 	return getShouldLogInto(LogOutputTarget::console);
 }
 
-bool ph::LogsInitializer::getShouldLogIntoFile()
+bool LogsInitializer::getShouldLogIntoFile()
 {
 	return getShouldLogInto(LogOutputTarget::file);
 }
 
-bool ph::LogsInitializer::getShouldLogIntoTerminal()
+bool LogsInitializer::getShouldLogIntoTerminal()
 {
 	return getShouldLogInto(LogOutputTarget::terminal);
 }
 
 
-bool ph::LogsInitializer::getShouldLogInto(LogOutputTarget target)
+bool LogsInitializer::getShouldLogInto(LogOutputTarget target)
 {
 	openTheFile();
 	std::string phrase = "ShouldBeWrittenInto";
@@ -35,7 +37,7 @@ bool ph::LogsInitializer::getShouldLogInto(LogOutputTarget target)
 	closeTheFile();
 }
 
-std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
+std::vector<LogType> LogsInitializer::getLogTypesToWrite()
 {
 	openTheFile();
 	std::vector<LogType> InitLogTypesToWrite;
@@ -54,7 +56,7 @@ std::vector<ph::LogType> ph::LogsInitializer::getLogTypesToWrite()
 	return InitLogTypesToWrite;
 }
 
-std::vector<std::string> ph::LogsInitializer::getModuleNamesToWrite()
+std::vector<std::string> LogsInitializer::getModuleNamesToWrite()
 {
 	openTheFile();
 	std::vector<std::string> InitModuleNamesToWrite;
@@ -84,3 +86,4 @@ std::vector<std::string> ph::LogsInitializer::getModuleNamesToWrite()
 }
 
 
+}

@@ -9,38 +9,40 @@
 #pragma warning(disable:4996)
 #endif
 
-static std::ostream& operator<<(std::ostream& os, const ph::LogType& logType)
+namespace ph {
+
+static std::ostream& operator<<(std::ostream& os, const LogType& logType)
 {
 	switch(logType) {
-	case ph::LogType::Info:
+	case LogType::Info:
 		os << "INFO";
 		break;
-	case ph::LogType::Error:
+	case LogType::Error:
 		os << "ERROR";
 		break;
-	case ph::LogType::Warning:
+	case LogType::Warning:
 		os << "WARNING";
 		break;
-	case ph::LogType::FromUser:
+	case LogType::FromUser:
 		os << "FROM USER";
 		break;
-	case ph::LogType::Exception:
+	case LogType::Exception:
 		os << "EXCEPTION";
 		break;
-	case ph::LogType::UnhandledException:
+	case LogType::UnhandledException:
 		os << "UNHANDLED EXCEPTION";
 		break;
 	}
 	return os;
 }
 
-ph::Logger::Logger()
+Logger::Logger()
 	:mGameData(nullptr)
 {
 	openFile();
 }
 
-std::string ph::Logger::nameTheFile()
+std::string Logger::nameTheFile()
 {
 	std::time_t t = time(0);
 	std::tm* now = localtime(&t);
@@ -50,7 +52,7 @@ std::string ph::Logger::nameTheFile()
 		"-" + std::to_string(now->tm_sec);
 }
 
-void ph::Logger::openFile()
+void Logger::openFile()
 {
 	mLogFile.open("logs/log_" + nameTheFile() + ".txt", std::ofstream::out | std::ofstream::app);
 	if (!mLogFile.is_open()) {
@@ -60,7 +62,7 @@ void ph::Logger::openFile()
 	}
 }
 
-void ph::Logger::writeLog(const LogData& log)
+void Logger::writeLog(const LogData& log)
 {
 	if (mLogSettings.shouldBeWrittenIntoConsole(log))
 		writeLogInConsole(log);
@@ -72,12 +74,12 @@ void ph::Logger::writeLog(const LogData& log)
 		saveLogInFile(log);
 }
 
-void ph::Logger::writeLogInConsole(const LogData& log)
+void Logger::writeLogInConsole(const LogData& log)
 {
 	std::cout << printLog(log).str();
 }
 
-void ph::Logger::writeLogInInternalTerminal(const LogData& log)
+void Logger::writeLogInInternalTerminal(const LogData& log)
 {
 	if(mGameData != nullptr) {
 		std::string message = printLog(log).str();
@@ -108,12 +110,12 @@ void ph::Logger::writeLogInInternalTerminal(const LogData& log)
 	}
 }
 
-void ph::Logger::saveLogInFile(const LogData& log)
+void Logger::saveLogInFile(const LogData& log)
 {
 	mLogFile << printLog(log).str();
 }
 
-std::stringstream ph::Logger::printLog(const LogData& log)
+std::stringstream Logger::printLog(const LogData& log)
 {
 	std::stringstream ssLog;
 	ssLog << "[  " << std::left << std::setw(7)
@@ -124,9 +126,10 @@ std::stringstream ph::Logger::printLog(const LogData& log)
 	return ssLog;
 }
 
-sf::Time ph::Logger::getElapsedTimeSinceCreation()
+sf::Time Logger::getElapsedTimeSinceCreation()
 {
 	const sf::Time elapsedTime = mClock.getElapsedTime();
 	return elapsedTime;
 }
 
+}
