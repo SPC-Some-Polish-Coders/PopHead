@@ -3,6 +3,7 @@
 *.so
 *.bat
 !logFilesCleaner.bat
+!runTestsVS2019.bat
 
 # Build directories
 bin/
