@@ -199,9 +199,9 @@ void Map::createLayer(
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
 			tileData.mTopLeftCornerPositionInWorld = position;
 
-			tileData.mFlippingData.mIsHorizontallyFlipped = isHorizontallyFlipped;
-			tileData.mFlippingData.mIsVerticallyFlipped = isVerticallyFlipped;
-			tileData.mFlippingData.mIsDiagonallyFlipped = isDiagonallyFlipped;
+			tileData.mFlipData.mIsHorizontallyFlipped = isHorizontallyFlipped;
+			tileData.mFlipData.mIsVerticallyFlipped = isVerticallyFlipped;
+			tileData.mFlipData.mIsDiagonallyFlipped = isDiagonallyFlipped;
 
 			mChunkMap->addTileData(tileData);
 

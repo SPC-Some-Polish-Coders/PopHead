@@ -7,7 +7,7 @@
 
 namespace ph {
 
-struct FlippingData
+struct FlipData
 {
 	bool mIsHorizontallyFlipped;
 	bool mIsVerticallyFlipped;
@@ -18,7 +18,7 @@ struct TileData
 {
 	sf::Vector2f mTopLeftCornerPositionInWorld;
 	sf::Vector2u mTextureRectTopLeftCorner;
-	FlippingData mFlippingData;
+	FlipData mFlipData;
 };
 
 class Chunk : public sf::Drawable

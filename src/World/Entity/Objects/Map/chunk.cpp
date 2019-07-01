@@ -36,48 +36,48 @@ void Chunk::initializeGraphics()
 			const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
 
 			const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
-			if(tileData.mFlippingData.mIsHorizontallyFlipped || 
-			   tileData.mFlippingData.mIsVerticallyFlipped ||
-			   tileData.mFlippingData.mIsDiagonallyFlipped) 
+			if(tileData.mFlipData.mIsHorizontallyFlipped || 
+			   tileData.mFlipData.mIsVerticallyFlipped ||
+			   tileData.mFlipData.mIsDiagonallyFlipped) 
 			{
-				if(tileData.mFlippingData.mIsHorizontallyFlipped) {
+				if(tileData.mFlipData.mIsHorizontallyFlipped) {
 					tile[1].texCoords = textureRectTopLeftCorner;
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsVerticallyFlipped) {
+				else if(tileData.mFlipData.mIsVerticallyFlipped) {
 					tile[3].texCoords = textureRectTopLeftCorner;
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsDiagonallyFlipped) {
+				else if(tileData.mFlipData.mIsDiagonallyFlipped) {
 					tile[0].texCoords = textureRectTopLeftCorner;
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsVerticallyFlipped) {
+				else if(tileData.mFlipData.mIsHorizontallyFlipped && tileData.mFlipData.mIsVerticallyFlipped) {
 					//TODO: Here will be an error! Fix it! // Here is error in loading!
 					tile[2].texCoords = textureRectTopLeftCorner;
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
+				else if(tileData.mFlipData.mIsHorizontallyFlipped && tileData.mFlipData.mIsDiagonallyFlipped) {
 					tile[1].texCoords = textureRectTopLeftCorner;
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsVerticallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
+				else if(tileData.mFlipData.mIsVerticallyFlipped && tileData.mFlipData.mIsDiagonallyFlipped) {
 					tile[3].texCoords = textureRectTopLeftCorner;
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
-				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsVerticallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
+				else if(tileData.mFlipData.mIsHorizontallyFlipped && tileData.mFlipData.mIsVerticallyFlipped && tileData.mFlipData.mIsDiagonallyFlipped) {
 					//TODO: Here will be an error! Fix it!
 					tile[2].texCoords = textureRectTopLeftCorner;
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
