@@ -41,28 +41,24 @@ void Chunk::initializeGraphics()
 			   tileData.mFlippingData.mIsDiagonallyFlipped) 
 			{
 				if(tileData.mFlippingData.mIsHorizontallyFlipped) {
-					std::cout << "horizontally flipped" << std::endl;
 					tile[1].texCoords = textureRectTopLeftCorner;
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsVerticallyFlipped) {
-					std::cout << "vertically flipped" << std::endl;
 					tile[3].texCoords = textureRectTopLeftCorner;
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsDiagonallyFlipped) {
-					std::cout << "diagonaly flipped" << std::endl;
 					tile[0].texCoords = textureRectTopLeftCorner;
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsVerticallyFlipped) {
-					std::cout << "horizontally and vertically flipped" << std::endl;
 					//TODO: Here will be an error! Fix it! // Here is error in loading!
 					tile[2].texCoords = textureRectTopLeftCorner;
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
@@ -70,21 +66,18 @@ void Chunk::initializeGraphics()
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
-					std::cout << "horizontally and diagonally flipped" << std::endl;
 					tile[1].texCoords = textureRectTopLeftCorner;
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[3].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsVerticallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
-					std::cout << "vertically and diagonally flipped" << std::endl;
 					tile[3].texCoords = textureRectTopLeftCorner;
 					tile[0].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 					tile[2].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 				}
 				else if(tileData.mFlippingData.mIsHorizontallyFlipped && tileData.mFlippingData.mIsVerticallyFlipped && tileData.mFlippingData.mIsDiagonallyFlipped) {
-					std::cout << "vertically, horizontally and diagonally flipped" << std::endl;
 					//TODO: Here will be an error! Fix it!
 					tile[2].texCoords = textureRectTopLeftCorner;
 					tile[1].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
