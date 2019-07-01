@@ -1,14 +1,13 @@
 #include "chunkMap.hpp"
-#include "mapConstants.hpp"
+#include "chunkData.hpp"
 
 namespace ph {
 
-LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
-	:mMapSizeInTiles(mapSizeInTiles)
-	,mTileSizeInPixels(tileSizeInPixels)
+LayerOfChunks::LayerOfChunks(std::shared_ptr<ChunkData> chunkData)
+	:mChunkData(chunkData)
 {
-	using namespace MapConstants;
-
+	sf::Vector2u chunkSizeInTiles = mChunkData->getChunkSizeInTiles();
+	sf::Vector2u mapSizeInTiles = mChunkData->getMapSizeInTiles();
 	sf::Vector2u mapSizeInChunks(mapSizeInTiles.x / chunkSizeInTiles.x, mapSizeInTiles.y / chunkSizeInTiles.y);
 
 	if(doesMapNotFitInChunksOnXAxis(mapSizeInChunks))
@@ -25,9 +24,9 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Vector
 	{
 		std::vector<Chunk> rowOfChunks;
 		for(unsigned x = 0; x < mapSizeInChunks.x; ++x) {
-			const sf::Vector2f chunkSizeInPixels(chunkSizeInTiles.x * tileSizeInPixels.x, chunkSizeInTiles.y * tileSizeInPixels.y);
+			const sf::Vector2f chunkSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getChunkSizeInPixels());
 			const sf::Vector2f topLeftCornerPositionInWorldOfThisChunk(y * chunkSizeInPixels.y, x * chunkSizeInPixels.x);
-			rowOfChunks.emplace_back(Chunk(tileset, topLeftCornerPositionInWorldOfThisChunk, mTileSizeInPixels));
+			rowOfChunks.emplace_back(Chunk(topLeftCornerPositionInWorldOfThisChunk, mChunkData));
 		}
 		mAllChunksInLayer.emplace_back(rowOfChunks);
 	}
@@ -36,12 +35,12 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Vector
 
 bool LayerOfChunks::doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.x % MapConstants::chunkSizeInTiles.x != 0;
+	return mapSizeInTiles.x % mChunkData->getChunkSizeInTiles().x != 0;
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles)
 {
-	return mapSizeInTiles.y % MapConstants::chunkSizeInTiles.y != 0;
+	return mapSizeInTiles.y % mChunkData->getChunkSizeInTiles().y != 0;
 }
 
 void LayerOfChunks::addTileData(const TileData& tile)
@@ -52,11 +51,10 @@ void LayerOfChunks::addTileData(const TileData& tile)
 
 sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData& tile)
 {
-	using namespace MapConstants;
 	auto tilePosition = static_cast<sf::Vector2u>(tile.mTopLeftCornerPositionInWorld);
 	return sf::Vector2u(
-		tilePosition.x / mTileSizeInPixels.x / chunkSizeInTiles.x,
-		tilePosition.y / mTileSizeInPixels.y / chunkSizeInTiles.y
+		tilePosition.x / mChunkData->getTileSizeInPixels().x / mChunkData->getChunkSizeInTiles().x,
+		tilePosition.y / mChunkData->getTileSizeInPixels().y / mChunkData->getChunkSizeInTiles().y
 	);
 }
 
@@ -79,12 +77,11 @@ bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cam
 {
 	const sf::FloatRect chunkBounds = chunk.getGlobalBounds();
 	return chunkBounds.intersects(cameraBounds);
+	//TODO: Change to our own AABB function which should be in Utilities/math.hpp
 }
 
 ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
-	:mMapSizeInTiles(mapSizeInTiles)
-	,mTileSizeInPixels(tileSizeInPixels)
-	,mTileset(tileset)
+	:mChunkData(new ChunkData(mapSizeInTiles, tileSizeInPixels, tileset))
 {
 }
 

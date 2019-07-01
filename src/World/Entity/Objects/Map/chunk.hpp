@@ -1,6 +1,7 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
+#include "chunkData.hpp"
+#include <SFML/Graphics.hpp>
 #include <array>
 #include <vector>
 
@@ -24,9 +25,8 @@ class Chunk : public sf::Drawable
 {
 public:
 	explicit Chunk(
-		const sf::Texture& tileset,
 		const sf::Vector2f topLeftCornerPositionInWorld,
-		const sf::Vector2u tileSizeInPixels
+		std::shared_ptr<ChunkData>
 	);
 
 	void addTileData(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
@@ -40,9 +40,8 @@ public:
 private:
 	sf::VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;
-	const sf::Texture& mTileset;
 	const sf::Vector2f mTopLeftCornerPositionInWorld;
-	const sf::Vector2f mTileSizeInPixels;
+	std::shared_ptr<ChunkData> mChunkData;
 };
 
 }

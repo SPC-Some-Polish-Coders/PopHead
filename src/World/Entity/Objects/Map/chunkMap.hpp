@@ -1,14 +1,16 @@
 #pragma once
 
 #include "chunk.hpp"
+#include "chunkData.hpp"
 #include <vector>
+#include <memory>
 
 namespace ph {
 
 class LayerOfChunks
 {
 public:
-	explicit LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset);
+	explicit LayerOfChunks(std::shared_ptr<ChunkData>);
 	bool doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles);
 	bool doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTiles);
 
@@ -25,8 +27,7 @@ private:
 	using RowOfChunks = std::vector<Chunk>;
 	using ChunkMatrix = std::vector<RowOfChunks>;
 	ChunkMatrix mAllChunksInLayer;
-	const sf::Vector2u mMapSizeInTiles;
-	const sf::Vector2u mTileSizeInPixels;
+	std::shared_ptr<ChunkData> mChunkData;
 };
 
 class ChunkMap
@@ -34,7 +35,7 @@ class ChunkMap
 public:
 	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset);
 
-	void addNewLayerOfChunks() { mLayers.emplace_back(mMapSizeInTiles, mTileSizeInPixels, mTileset); };
+	void addNewLayerOfChunks() { mLayers.emplace_back(mChunkData); };
 
 	void addTileData(const TileData& tile) { mLayers.back().addTileData(tile); }
 
@@ -44,9 +45,7 @@ public:
 
 private:
 	std::vector<LayerOfChunks> mLayers;
-	const sf::Vector2u mMapSizeInTiles;
-	const sf::Vector2u mTileSizeInPixels;
-	const sf::Texture& mTileset;
+	std::shared_ptr<ChunkData> mChunkData;
 };
 
 }
