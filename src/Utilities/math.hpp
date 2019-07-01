@@ -6,7 +6,7 @@
 namespace ph {
 
 namespace Math {
-	inline float getRightBound(sf::FloatRect bounds) 
+	inline float getRightBound(sf::FloatRect bounds)
 	{ return bounds.left + bounds.width; }
 
 	inline float getBottomBound(sf::FloatRect bounds)  

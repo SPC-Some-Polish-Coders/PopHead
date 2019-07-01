@@ -1,4 +1,5 @@
 #include "chunk.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph {
 
@@ -44,10 +45,11 @@ void Chunk::initializeTextureCoordinates(const TileData& tileData, sf::Vertex* c
 	const auto textureCoordinateIndices = getTextureCoordinateIndices(tileData);
 	const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
 	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
+	const sf::FloatRect textureRect(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
-	tile[textureCoordinateIndices[1]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
-	tile[textureCoordinateIndices[2]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
-	tile[textureCoordinateIndices[3]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
+	tile[textureCoordinateIndices[1]].texCoords = sf::Vector2f(Math::getRightBound(textureRect), textureRectTopLeftCorner.y);
+	tile[textureCoordinateIndices[2]].texCoords = sf::Vector2f(Math::getRightBound(textureRect), Math::getBottomBound(textureRect));
+	tile[textureCoordinateIndices[3]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, Math::getBottomBound(textureRect));
 }
 
 auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>
@@ -80,12 +82,13 @@ auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::
 
 void Chunk::initializeVertexPositions(const TileData& tileData, sf::Vertex* const tile) const
 {
-	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
+	const sf::Vector2f tileSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getTileSizeInPixels());
 	const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
+	const sf::FloatRect tileBounds(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[0].position = vertexTopLeftCornerPosition;
-	tile[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y);
-	tile[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
-	tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
+	tile[1].position = sf::Vector2f(Math::getRightBound(tileBounds), vertexTopLeftCornerPosition.y);
+	tile[2].position = sf::Vector2f(Math::getRightBound(tileBounds), Math::getBottomBound(tileBounds));
+	tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, Math::getBottomBound(tileBounds));
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
