@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include <array>
+#include <vector>
 
 namespace ph {
 
