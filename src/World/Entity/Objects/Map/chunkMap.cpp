@@ -1,5 +1,6 @@
 #include "chunkMap.hpp"
 #include "chunkData.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph {
 
@@ -76,8 +77,7 @@ void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states
 bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const
 {
 	const sf::FloatRect chunkBounds = chunk.getGlobalBounds();
-	return chunkBounds.intersects(cameraBounds);
-	//TODO: Change to our own AABB function which should be in Utilities/math.hpp
+	return Math::areTheyOverlapping(chunkBounds, cameraBounds);
 }
 
 ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)

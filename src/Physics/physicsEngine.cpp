@@ -79,12 +79,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
 
 bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
 {
-	//AABB collision detection algorithm
-	return
-		A.left < Math::getRightBound(B) &&
-		Math::getRightBound(A) > B.left &&
-		A.top < Math::getBottomBound(B) &&
-		Math::getBottomBound(A) > B.top;
+	return Math::areTheyOverlapping(A, B);
 }
 
 }

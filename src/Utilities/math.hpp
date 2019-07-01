@@ -27,6 +27,16 @@ namespace Math {
 	inline sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(unsigned index, unsigned numberOfColumns)
 	{ return sf::Vector2u(index % numberOfColumns, index / numberOfColumns); }
 
+	inline bool areTheyOverlapping(sf::FloatRect A, sf::FloatRect B)
+	{
+		//AABB collision detection algorithm
+		return
+		A.left < getRightBound(B) &&
+		getRightBound(A) > B.left &&
+		A.top < getBottomBound(B) &&
+		getBottomBound(A) > B.top;
+	}
+
 	inline sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed)
 	{
 		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");

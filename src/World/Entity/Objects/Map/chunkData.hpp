@@ -9,10 +9,10 @@ class ChunkData
 public:
 	ChunkData(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
 		:mTileSizeInPixels(tileSizeInPixels)
-		, mChunkSizeInTiles(24, 24)
-		, mChunkSizeInPixels(mTileSizeInPixels.x * mChunkSizeInTiles.x, mTileSizeInPixels.y* mChunkSizeInTiles.y)
-		, mMapSizeInTiles(mapSizeInTiles)
-		, mTileset(tileset)
+		,mChunkSizeInTiles(24, 24)
+		,mChunkSizeInPixels(mTileSizeInPixels.x * mChunkSizeInTiles.x, mTileSizeInPixels.y* mChunkSizeInTiles.y)
+		,mMapSizeInTiles(mapSizeInTiles)
+		,mTileset(tileset)
 	{}
 
 	auto getTileSizeInPixels() const -> sf::Vector2u { return mTileSizeInPixels; }
