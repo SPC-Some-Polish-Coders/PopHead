@@ -31,25 +31,23 @@ void Chunk::initializeGraphics()
 				break;
 
 			const TileData& tileData = mTilesToCreate.at(tileIdInChunk);
-
-			const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
-
-			const auto textureCoordinateIndices = getTextureCoordinateIndices(tileData);
-			const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
-			tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
-			tile[textureCoordinateIndices[1]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
-			tile[textureCoordinateIndices[2]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
-			tile[textureCoordinateIndices[3]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
-
-			const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
-			tile[0].position = vertexTopLeftCornerPosition;
-			tile[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y);
-			tile[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
-			tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
+			initializeTextureCoordinates(tileData, tile);
+			initializeVertexPositions(tileData, tile);
 		}
 	}
 
 	mTilesToCreate.clear();
+}
+
+void Chunk::initializeTextureCoordinates(const TileData& tileData, sf::Vertex* const tile) const
+{
+	const auto textureCoordinateIndices = getTextureCoordinateIndices(tileData);
+	const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
+	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
+	tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
+	tile[textureCoordinateIndices[1]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y);
+	tile[textureCoordinateIndices[2]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x + tileSizeInPixels.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
+	tile[textureCoordinateIndices[3]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y + tileSizeInPixels.y);
 }
 
 auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>
@@ -78,6 +76,16 @@ auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::
 		textureIndices = {0, 3, 2, 1};
 
 	return textureIndices;
+}
+
+void Chunk::initializeVertexPositions(const TileData& tileData, sf::Vertex* const tile) const
+{
+	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
+	const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
+	tile[0].position = vertexTopLeftCornerPosition;
+	tile[1].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y);
+	tile[2].position = sf::Vector2f(vertexTopLeftCornerPosition.x + tileSizeInPixels.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
+	tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y + tileSizeInPixels.y);
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
