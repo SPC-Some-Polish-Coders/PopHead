@@ -10,7 +10,7 @@
   </loading>
   
   <root>
-    <map name="desertMap" filepath="maps/desertMap.tmx"/>
+    <map name="desertMap" filepath="maps/strangeTileSizeMap.tmx"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>
     <group name="npc">
       <npcTest positionX="150" positionY="200"/>

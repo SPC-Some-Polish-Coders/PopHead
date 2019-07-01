@@ -25,6 +25,7 @@ LayerOfChunks::LayerOfChunks(const sf::Vector2u mapSizeInTiles, const sf::Vector
 	{
 		std::vector<Chunk> rowOfChunks;
 		for(unsigned x = 0; x < mapSizeInChunks.x; ++x) {
+			const sf::Vector2f chunkSizeInPixels(chunkSizeInTiles.x * tileSizeInPixels.x, chunkSizeInTiles.y * tileSizeInPixels.y);
 			const sf::Vector2f topLeftCornerPositionInWorldOfThisChunk(y * chunkSizeInPixels.y, x * chunkSizeInPixels.x);
 			rowOfChunks.emplace_back(Chunk(tileset, topLeftCornerPositionInWorldOfThisChunk, mTileSizeInPixels));
 		}

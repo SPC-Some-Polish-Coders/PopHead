@@ -119,8 +119,9 @@ void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 sf::FloatRect Chunk::getGlobalBounds() const
 {
-	constexpr float chunkSide = 384;
-	return sf::FloatRect(mTopLeftCornerPositionInWorld.x, mTopLeftCornerPositionInWorld.y, chunkSide, chunkSide);
+	using namespace MapConstants;
+	const sf::Vector2f chunkSizeInPixels(chunkSizeInTiles.x * mTileSizeInPixels.x, chunkSizeInTiles.y * mTileSizeInPixels.y);
+	return sf::FloatRect(mTopLeftCornerPositionInWorld.x, mTopLeftCornerPositionInWorld.y, chunkSizeInPixels.x, chunkSizeInPixels.y);
 }
 
 }
