@@ -4,12 +4,17 @@
 
 namespace ph {
 
-Chunk::Chunk(const sf::Texture& tileset, const sf::Vector2f topLeftCornerPositionInWorld)
+Chunk::Chunk(
+	const sf::Texture& tileset,
+	const sf::Vector2f topLeftCornerPositionInWorld,
+	const sf::Vector2u tileSizeInPixels
+)
 	:mTileset(tileset)
 	,mTopLeftCornerPositionInWorld(topLeftCornerPositionInWorld)
+	,mTileSizeInPixels(tileSizeInPixels)
 {
 	using namespace MapConstants;
-	mTilesToCreate.reserve(mChunkSizeInTiles.x * mChunkSizeInTiles.y);
+	mTilesToCreate.reserve(chunkSizeInTiles.x * chunkSizeInTiles.y);
 }
 
 void Chunk::initializeGraphics()
@@ -17,13 +22,13 @@ void Chunk::initializeGraphics()
 	using namespace MapConstants;
 
 	mVertexArray.setPrimitiveType(sf::Quads);
-	mVertexArray.resize(mChunkSizeInTiles.x * mChunkSizeInTiles.y * 4);
+	mVertexArray.resize(chunkSizeInTiles.x * chunkSizeInTiles.y * 4);
 
 	for(int y = 0; y < 24; ++y)
 	{
 		for(int x = 0; x < 24; ++x)
 		{
-			const unsigned int tileIdInChunk = y * mChunkSizeInTiles.x + x;
+			const unsigned int tileIdInChunk = y * chunkSizeInTiles.x + x;
 			sf::Vertex* const tile = &mVertexArray[tileIdInChunk * 4];
 
 			if(tileIdInChunk >= mTilesToCreate.size())

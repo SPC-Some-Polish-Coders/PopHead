@@ -25,7 +25,11 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mChunkMap = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName));
+	mChunkMap = std::make_unique<ChunkMap>(
+		mapSize,
+		tileSize,
+		mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName)
+	);
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
