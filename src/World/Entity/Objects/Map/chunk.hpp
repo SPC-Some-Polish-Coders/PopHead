@@ -38,6 +38,9 @@ public:
 	sf::FloatRect getGlobalBounds() const;
 
 private:
+	auto getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>;
+
+private:
 	sf::VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;
 	const sf::Vector2f mTopLeftCornerPositionInWorld;
