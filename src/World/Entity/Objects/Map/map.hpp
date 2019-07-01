@@ -32,8 +32,8 @@ private:
 		std::vector<unsigned> firstGlobalTileIds;
 		std::vector<unsigned> tileCounts;
 		std::vector<unsigned> columnsCounts;
-		std::vector<std::string> sources;
 		std::vector<TilesData> tilesData;
+		std::string tilesetFileName;
 	};
 
 	void checkMapSupport(const Xml& mapNode) const;
@@ -66,7 +66,7 @@ private:
 
 	void loadCollisionBodies(unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
-	inline static const std::string pathToTileset = "textures/map/FULL_DESERT_TILESET_WIP.png";
+	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;

@@ -25,7 +25,7 @@ void Map::loadFromFile(const std::string& filename)
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mChunkMap = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTileset));
+	mChunkMap = std::make_unique<ChunkMap>(mapSize, mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName));
 	for (const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
@@ -73,7 +73,6 @@ Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) con
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
-	tilesets.sources.reserve(tilesetNodes.size()); // WARNING: Change it when tilesets based on collection of images would be allowed
 	for (Xml tilesetNode : tilesetNodes) {
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
@@ -88,9 +87,7 @@ Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) con
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
-		std::string source = imageNode.getAttribute("source").toString();
-		source = Path::toFilename(source, '/');
-		tilesets.sources.push_back(source);
+		tilesets.tilesetFileName = Path::toFilename(imageNode.getAttribute("source").toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
@@ -162,7 +159,7 @@ void Map::createLayer(
 	sf::Vector2u mapSize,
 	sf::Vector2u tileSize)
 {
-	const sf::Texture& texture = mGameData->getTextures().get(pathToTileset);
+	const sf::Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
 	mChunkMap->addNewLayerOfChunks();
 
@@ -253,7 +250,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size(16 * 40, 16 * 30);// = camera.getSize();
+	const sf::Vector2f size(16 * 40, 16 * 30);// = camera.getSize(); (TODO)
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
 	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 	
