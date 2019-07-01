@@ -108,35 +108,15 @@ Map::TilesetsData::TilesData Map::getTilesData(const std::vector<Xml>& tileNodes
 	for (const Xml& tileNode : tileNodes) {
 		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
 		const Xml objectGroupNode = tileNode.getChild("objectgroup");
-		/*
-			TODO:
-			* Could objectGroupNode contain more than one object?
-			If that would be true there would be a possibility to have
-			more than one CollisionBody per tile.
-			(If it would be possible wrap some of them into one?).
-
-			* Inform that other types are not allowed? Allow some of them?
-			For example:
-				- ellipse
-				- point
-				- polygon
-				- polyline
-				- text
-
-			* Check whether objectNode has width and height attributes.
-			- If there is no width set it to 0
-			- If there is no height set it to 0
-			- If there is no width and height ignore this object
-			(In Tiled when you create CollisionBody without width and height they are not created in .tmx file)
-		*/
 		const Xml objectNode = objectGroupNode.getChild("object");
 		const sf::FloatRect bounds(
 			objectNode.getAttribute("x").toFloat(),
 			objectNode.getAttribute("y").toFloat(),
-			objectNode.getAttribute("width").toFloat(),
-			objectNode.getAttribute("height").toFloat()
+			objectNode.hasAttribute("width") ? objectNode.getAttribute("width").toFloat() : 0.f,
+			objectNode.hasAttribute("height") ? objectNode.getAttribute("height").toFloat() : 0.f
 		);
-		tilesData.bounds.push_back(bounds);
+		if(!(bounds.width == 0.f && bounds.height == 0.f))
+			tilesData.bounds.push_back(bounds);
 	}
 	return tilesData;
 }
