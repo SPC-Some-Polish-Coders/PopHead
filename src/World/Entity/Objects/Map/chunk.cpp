@@ -47,9 +47,9 @@ void Chunk::initializeTextureCoordinates(const TileData& tileData, sf::Vertex* c
 	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
 	const sf::FloatRect textureRect(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
-	tile[textureCoordinateIndices[1]].texCoords = sf::Vector2f(Math::getRightBound(textureRect), textureRectTopLeftCorner.y);
-	tile[textureCoordinateIndices[2]].texCoords = sf::Vector2f(Math::getRightBound(textureRect), Math::getBottomBound(textureRect));
-	tile[textureCoordinateIndices[3]].texCoords = sf::Vector2f(textureRectTopLeftCorner.x, Math::getBottomBound(textureRect));
+	tile[textureCoordinateIndices[1]].texCoords = Math::getTopRightCorner(textureRect);
+	tile[textureCoordinateIndices[2]].texCoords = Math::getBottomRightCorner(textureRect);
+	tile[textureCoordinateIndices[3]].texCoords = Math::getBottomLeftCorner(textureRect);
 }
 
 auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>
@@ -86,9 +86,9 @@ void Chunk::initializeVertexPositions(const TileData& tileData, sf::Vertex* cons
 	const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
 	const sf::FloatRect tileBounds(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[0].position = vertexTopLeftCornerPosition;
-	tile[1].position = sf::Vector2f(Math::getRightBound(tileBounds), vertexTopLeftCornerPosition.y);
-	tile[2].position = sf::Vector2f(Math::getRightBound(tileBounds), Math::getBottomBound(tileBounds));
-	tile[3].position = sf::Vector2f(vertexTopLeftCornerPosition.x, Math::getBottomBound(tileBounds));
+	tile[1].position = Math::getTopRightCorner(tileBounds);
+	tile[2].position = Math::getBottomRightCorner(tileBounds);
+	tile[3].position = Math::getBottomLeftCorner(tileBounds);
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const
