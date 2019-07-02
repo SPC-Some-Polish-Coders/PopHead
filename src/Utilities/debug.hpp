@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Logs/logger.hpp"
+#include "Logs/logRecord.hpp"
+
+#include <stdexcept>
 
 #ifdef PH_DISTRIBUTION
 #define PH_BREAKPOINT() ((void)0)
@@ -18,9 +21,10 @@
 #endif // !_MSC_VER
 
 #define PH_LOG(logType, message)\
-	ph::Logger::getInstance().writeLog(ph::LogData{message, ph::Path::toModuleName(std::string(__FILE__)), logType})
+	ph::Logger::createLog(logType, message, __FILE__, static_cast<unsigned short>(__LINE__))
 
 #define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), 0))
 
 #define PH_EXCEPTION(message) (void)(PH_LOG(ph::LogType::Exception, message), PH_BREAKPOINT(), throw std::runtime_error(message), 0)
+
 #endif // !PH_DISTRIBUTION
