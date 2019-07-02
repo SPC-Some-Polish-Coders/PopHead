@@ -4,7 +4,7 @@
 #include "gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
-#include "Logs/logger.hpp"
+//#include "Logs/logger.hpp"
 #include "Utilities/cast.hpp"
 
 namespace ph {
@@ -23,7 +23,7 @@ void CommandInterpreter::handleCommand(const std::string& command)
 	else if(commandWithoutArguments == "mute")           executeMute();
 	else if(commandWithoutArguments == "unmute")         executeUnmute();
 	else if(commandWithoutArguments == "setvolume")      executeSetVolume();
-	else if(commandWithoutArguments == "log")            executeLog();
+	//else if(commandWithoutArguments == "log")            executeLog();
 	else if(commandWithoutArguments == "history")        executeHistory();
 	else if(commandWithoutArguments == "help")           executeHelp();
 	else if(commandWithoutArguments == "clear")          executeClear();
@@ -215,16 +215,16 @@ float CommandInterpreter::getVolumeFromCommand()
 
 void CommandInterpreter::executeLog()
 {
-	if (commandContains("into"))          logInto();
+	/*if (commandContains("into"))          logInto();
 	else if (commandContains("types"))    setLogTypesToLog();
 	else if (commandContains("modules"))  setModulesToLog();
 	else
-		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");
+		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");*/
 }
 
 void CommandInterpreter::logInto()
 {
-	auto& logSettings = Logger::getInstance().getLogSettings();
+	/*auto& logSettings = Logger::getInstance().getLogSettings();
 
 	int newValue = commandContains("not") ? false : true;
 	if (commandContains("console") || commandContains("all"))
@@ -234,12 +234,12 @@ void CommandInterpreter::logInto()
 	else if (commandContains("terminal") || commandContains("all"))
 		logSettings.setWritingLogsIntoTerminal(newValue);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");
+		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");*/
 }
 
 void CommandInterpreter::setLogTypesToLog()
 {
-	auto& logSettings = Logger::getInstance().getLogSettings();
+	/*auto& logSettings = Logger::getInstance().getLogSettings();
 
 	if(commandContains("info"))     logSettings.addToVector(LogType::Info);
 	if(commandContains("warning"))  logSettings.addToVector(LogType::Warning);
@@ -250,7 +250,7 @@ void CommandInterpreter::setLogTypesToLog()
 	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({LogType::Exception, LogType::UnhandledException});
 
 	if(areArgumentsToLogTypesToLogInvalid())
-		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");
+		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");*/
 }
 
 bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
@@ -264,7 +264,7 @@ bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
 
 void CommandInterpreter::setModulesToLog()
 {
-	auto& logSettings = Logger::getInstance().getLogSettings();
+	/*auto& logSettings = Logger::getInstance().getLogSettings();
 
 	if(commandContains("audio"))      logSettings.addToVector("Audio");
 	if(commandContains("base"))       logSettings.addToVector("Base");
@@ -282,7 +282,7 @@ void CommandInterpreter::setModulesToLog()
 	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))	logSettings.setModuleNamesToWrite({});
 	if(areArgumentsToModulesToLogInvalid())
-		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");
+		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");*/
 }
 
 bool CommandInterpreter::areArgumentsToModulesToLogInvalid()
