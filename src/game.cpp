@@ -3,7 +3,6 @@
 #include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
-#include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
 namespace ph {
@@ -43,9 +42,6 @@ Game::Game()
 	loadFonts(mGameData.get());
 
 	mTerminal->init(mGameData.get());
-
-	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
-	Logger::getInstance().setGameData(mGameData.get());
 
 	mEfficencyRegister->init(mGameData.get());
 
