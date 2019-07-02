@@ -108,6 +108,7 @@ void CommandInterpreter::executeCurrentPos()
 {
 	auto& playerPosition = getPlayer().getPosition();
 	PH_LOG(LogType::Info, "player position: " + Cast::toString(playerPosition));
+	// TODO: It should be displayed in Terminal, not in Logs
 }
 
 auto CommandInterpreter::getPlayer() const -> Object&
