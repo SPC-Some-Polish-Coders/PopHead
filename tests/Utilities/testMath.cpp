@@ -17,7 +17,7 @@ static bool areEqual(sf::Vector2f v1, sf::Vector2f v2)
 
 TEST_CASE("get bounds and center", "[Utilities][Math]")
 {
-	SECTION("rect is truly a point") {
+	SECTION("rect actualy is a point") {
 		sf::FloatRect rect(0, 0, 0, 0);
 		CHECK(Math::getRightBound(rect) == 0);
 		CHECK(Math::getBottomBound(rect) == 0);
@@ -46,5 +46,39 @@ TEST_CASE("get bounds and center", "[Utilities][Math]")
 		CHECK(Math::getRightBound(rect) == 123000 + 120);
 		CHECK(Math::getBottomBound(rect) == -456710 + 6);
 		CHECK(areEqual(Math::getCenter(rect), sf::Vector2f(123060.f, -456707)));
+	}
+}
+
+TEST_CASE("get corners", "[Utilities][Math]")
+{
+	SECTION("rect actualy is a point") {
+		sf::FloatRect rect(0, 0, 0, 0);
+		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(0, 0));
+		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(0, 0));
+		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(0, 0));
+	}
+	SECTION("top left corner at (0, 0)") {
+		sf::FloatRect rect(0, 0, 5, 8);
+		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(5, 0));
+		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(0, 8));
+		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(5, 8));
+	}
+	SECTION("top left corner has positive coordinates") {
+		sf::FloatRect rect(5, 5, 2, 3);
+		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(7, 5));
+		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(5, 8));
+		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(7, 8));
+	}
+	SECTION("top left corner has negative coordinates") {
+		sf::FloatRect rect(-5, -5, 2, 3);
+		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(-3, -5));
+		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(-5, -2));
+		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(-3, -2));
+	}
+	SECTION("top left corner has big coordinates") {
+		sf::FloatRect rect(123400, -98765430, 25, 30);
+		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(123425, -98765430));
+		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(123400, -98765400));
+		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(123425, -98765400));
 	}
 }
