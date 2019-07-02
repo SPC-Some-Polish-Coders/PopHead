@@ -1,7 +1,22 @@
 #include "logger.hpp"
 #include "Utilities/path.hpp"
 
+#include <ctime>
+#include <string>
+
 namespace ph {
+
+std::string getCurrentTimeAsString()
+{
+	// TODO: change this function to use <chrono> instead of ctime and add miliseconds
+
+	auto timePoint = std::time(nullptr);
+	auto calendarTime = std::localtime(&timePoint);
+	
+	return std::to_string(calendarTime->tm_hour) + ":" + 
+		   std::to_string(calendarTime->tm_min) + ":" + 
+		   std::to_string(calendarTime->tm_sec);
+}
 
 void Logger::createLog(LogType type, const std::string& message, const std::string& fileName, unsigned short fileLine)
 {
@@ -12,6 +27,7 @@ void Logger::createLog(LogType type, const std::string& message, const std::stri
 	logRecord.fileLine = fileLine;
 	logRecord.moduleName = Path::toModuleName(fileName);
 	logRecord.secondsFromStart = getInstance().mClock.getElapsedTime().asSeconds();
+	logRecord.time = getCurrentTimeAsString();
 
 	auto& handlers = getInstance().mHandlers;
 
