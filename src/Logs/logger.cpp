@@ -8,7 +8,7 @@ void Logger::createLog(LogType type, const std::string& message, const std::stri
 	LogRecord logRecord;
 	logRecord.type = type;
 	logRecord.message = message;
-	logRecord.fileName = fileName;
+	logRecord.fileName = Path::toFilename(fileName);
 	logRecord.fileLine = fileLine;
 	logRecord.moduleName = Path::toModuleName(fileName);
 	logRecord.secondsFromStart = getInstance().mClock.getElapsedTime().asSeconds();
