@@ -23,7 +23,7 @@ namespace ph {
 		std::string fileName;
 		std::string moduleName;
 		unsigned short fileLine;
-		unsigned int secondsFromStart;
+		float secondsFromStart;
 		std::string time;
 	};
 
