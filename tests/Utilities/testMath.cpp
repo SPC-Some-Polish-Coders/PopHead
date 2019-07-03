@@ -122,44 +122,40 @@ TEST_CASE("are they overlapping", "[Utilities][Math]")
 		const sf::FloatRect rect(-2, -2, 4, 4);
 		CHECK(Math::areTheyOverlapping(rect, rect));
 	}
-	SECTION("rects are not even touch each other") {
-		SECTION("when A rect's right side is left of B rect's left side, then they are not overlapping") {
-			const sf::FloatRect A(-3, 0, 2, 2);
-			const sf::FloatRect B(0, 0, 2, 5);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
-		SECTION("when A rect's left side is right of B rect's right side, then they are not overlapping") {
-			const sf::FloatRect A(3, 0, 2, 2);
-			const sf::FloatRect B(0, 0, 2, 5);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
-		SECTION("when A rect's bottom side is up of B rect's up side, then they are not overlapping") {
-			const sf::FloatRect A(0, -3, 2, 2);
-			const sf::FloatRect B(0, 0, 5, 2);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
-		SECTION("when A rect's up side is down of B rect's bottom side, then they are not overlapping") {
-			const sf::FloatRect A(0, 3, 2, 2);
-			const sf::FloatRect B(0, 0, 5, 2);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
+	SECTION("when A rect's right side is left of B rect's left side, then they are not overlapping") {
+		const sf::FloatRect A(-3, 0, 2, 2);
+		const sf::FloatRect B(0, 0, 2, 5);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
 	}
-	SECTION("rect's touch each other's sides, then they are not overlapping") {
-		SECTION("A rect's right side touches B rect's left side") {
-			const sf::FloatRect A(-2, 0, 2, 2);
-			const sf::FloatRect B(0, -1, 5, 4);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
-		SECTION("A rect's top side touches B rect's bottom side") {
-			const sf::FloatRect A(0, 2, 1, 2);
-			const sf::FloatRect B(0, -2, 5, 2);
-			CHECK_FALSE(Math::areTheyOverlapping(A, B));
-			CHECK_FALSE(Math::areTheyOverlapping(B, A));
-		}
+	SECTION("when A rect's left side is right of B rect's right side, then they are not overlapping") {
+		const sf::FloatRect A(3, 0, 2, 2);
+		const sf::FloatRect B(0, 0, 2, 5);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
+	}
+	SECTION("when A rect's bottom side is up of B rect's up side, then they are not overlapping") {
+		const sf::FloatRect A(0, -3, 2, 2);
+		const sf::FloatRect B(0, 0, 5, 2);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
+	}
+	SECTION("when A rect's up side is down of B rect's bottom side, then they are not overlapping") {
+		const sf::FloatRect A(0, 3, 2, 2);
+		const sf::FloatRect B(0, 0, 5, 2);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
+	}
+	SECTION("A rect's right side touches B rect's left side") {
+		const sf::FloatRect A(-2, 0, 2, 2);
+		const sf::FloatRect B(0, -1, 5, 4);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
+	}
+	SECTION("A rect's top side touches B rect's bottom side") {
+		const sf::FloatRect A(0, 2, 1, 2);
+		const sf::FloatRect B(0, -2, 5, 2);
+		CHECK_FALSE(Math::areTheyOverlapping(A, B));
+		CHECK_FALSE(Math::areTheyOverlapping(B, A));
 	}
 }
