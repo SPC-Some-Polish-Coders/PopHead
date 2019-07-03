@@ -1,18 +1,19 @@
 #include "catch.hpp"
 
 #include "Utilities/math.hpp"
-#include <iostream>
 
 using namespace ph;
 
-static bool areEqual(const float f1, const float f2)
-{
-	return Approx(f2).margin(0.001f) == f1;
-}
+namespace {
+	bool areEqual(const float f1, const float f2)
+	{
+		return Approx(f2).margin(0.001f) == f1;
+	}
 
-static bool areEqual(const sf::Vector2f v1, const sf::Vector2f v2)
-{
-	return areEqual(v1.x, v2.x) && areEqual(v1.y, v2.y);
+	bool areEqual(const sf::Vector2f v1, const sf::Vector2f v2)
+	{
+		return areEqual(v1.x, v2.x) && areEqual(v1.y, v2.y);
+	}
 }
 
 TEST_CASE("get bounds and center", "[Utilities][Math]")
@@ -85,13 +86,12 @@ TEST_CASE("get corners", "[Utilities][Math]")
 
 TEST_CASE("get two dimensional position from one dimensional array index", "[Utilities][Math]")
 {
-	// TODO: Make commented assertions work!
-	/*SECTION("index is 0 and array size is 0") {
-		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 0));
-	}*/
-	/*SECTION("index is positive and number of columns is 0") {
-		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(5, 0));
-	}*/
+	SECTION("index is 0 and array size is 0") {
+		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 0), "Number of columns cannot be 0");
+	}
+	SECTION("index is positive and number of columns is 0") {
+		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(5, 0), "Number of columns cannot be 0");
+	}
 	SECTION("index is 0 and number of columns is positive") {
 		CHECK(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 5) == sf::Vector2u(0, 0));
 	}
