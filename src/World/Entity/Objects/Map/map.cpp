@@ -8,7 +8,7 @@
 
 namespace ph {
 
-Map::Map(GameData* gameData, std::string name)
+Map::Map(GameData* const gameData, const std::string& name)
 	:Object(gameData, name, LayerID::floorEntities)
 	,mChunkMap(nullptr)
 {
@@ -122,14 +122,6 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
-{
-	const std::string encoding = dataNode.getAttribute("encoding").toString();
-	if (encoding == "csv")
-		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
-}
-
 void Map::createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
 {
 	mChunkMap = std::make_unique<ChunkMap>(
@@ -149,11 +141,16 @@ void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData
 	}
 }
 
-void Map::createLayer(
-	const std::vector<unsigned>& globalTileIds,
-	const TilesetsData& tilesets,
-	sf::Vector2u mapSize,
-	sf::Vector2u tileSize)
+std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
+{
+	const std::string encoding = dataNode.getAttribute("encoding").toString();
+	if (encoding == "csv")
+		return Csv::toUnsigneds(dataNode.toString());
+	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+}
+
+void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
+                      const sf::Vector2u mapSize, const sf::Vector2u tileSize)
 {
 	const sf::Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
@@ -207,7 +204,7 @@ void Map::createLayer(
 	mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
-std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& tilesets) const
+std::size_t Map::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
 {
 	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
 		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
@@ -218,7 +215,7 @@ std::size_t Map::findTilesetIndex(unsigned globalTileId, const TilesetsData& til
 	return std::string::npos;
 }
 
-std::size_t Map::findTilesIndex(unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
+std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
 {
 	for (std::size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
@@ -226,10 +223,7 @@ std::size_t Map::findTilesIndex(unsigned firstGlobalTileId, const std::vector<Ti
 	return std::string::npos;
 }
 
-void Map::loadCollisionBodies(
-	unsigned tileId,
-	const TilesetsData::TilesData& tilesData,
-	sf::Vector2f position)
+void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, const sf::Vector2f position)
 {
 	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
 		if (tileId == tilesData.ids[i]) {
@@ -242,7 +236,7 @@ void Map::loadCollisionBodies(
 	}
 }
 
-void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Map::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
