@@ -26,7 +26,7 @@ namespace ph {
 
 		bool isPassedByFilter(const LogRecord& logRecord) const;
 
-		std::vector<std::pair<std::string, bool>> allowedModules;
-		std::vector<std::pair<LogType, bool>> allowedTypes;
+		std::vector<std::pair<std::string, bool>> mAllowedModules;
+		std::vector<std::pair<LogType, bool>> mAllowedTypes;
 	};
 }

@@ -6,7 +6,7 @@ namespace ph {
 	
 	Handler::Handler()
 	{
-		allowedModules = {
+		mAllowedModules = {
 			{"Audio", true},
 			{"EfficiencyRegister", true},
 			{"Gui", true},
@@ -21,7 +21,7 @@ namespace ph {
 			{"World", true}
 		};
 
-		allowedTypes = {
+		mAllowedTypes = {
 			{LogType::Info, true},
 			{LogType::Error, true},
 			{LogType::FromUser, true},
@@ -39,40 +39,40 @@ namespace ph {
 
 	void Handler::setModuleAllowing(const std::string& moduleName, bool allowed)
 	{
-		auto iter = std::find_if(allowedModules.begin(), allowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
+		auto iter = std::find_if(mAllowedModules.begin(), mAllowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
 			return pair.first == moduleName;
 			});
 
-		if (iter != allowedModules.end())
+		if (iter != mAllowedModules.end())
 			iter->second = allowed;
 	}
 
 	void Handler::setTypeAllowing(LogType type, bool allowed)
 	{
-		auto iter = std::find_if(allowedTypes.begin(), allowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
+		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
 			return pair.first == type;
 			});
 
-		if (iter != allowedTypes.end())
+		if (iter != mAllowedTypes.end())
 			iter->second = allowed;
 	}
 
 	bool Handler::isModuleAllowed(const std::string& moduleName) const
 	{
-		auto iter = std::find_if(allowedModules.begin(), allowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
+		auto iter = std::find_if(mAllowedModules.begin(), mAllowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
 			return pair.first == moduleName;
 			});
 
-		return iter != allowedModules.end() && iter->second;
+		return iter != mAllowedModules.end() && iter->second;
 	}
 
 	bool Handler::isTypeAllowed(LogType type) const
 	{
-		auto iter = std::find_if(allowedTypes.begin(), allowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
+		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
 			return pair.first == type;
 			});
 
-		return iter != allowedTypes.end() && iter->second;
+		return iter != mAllowedTypes.end() && iter->second;
 	}
 
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
