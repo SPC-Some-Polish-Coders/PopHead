@@ -1,10 +1,10 @@
-#include "efficencyRegister.hpp"
+#include "efficiencyRegister.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-EfficencyRegister::EfficencyRegister()
-	:mEfficencyDisplayer()
+EfficiencyRegister::EfficiencyRegister()
+	:mEfficiencyDisplayer()
 	,mClock()
 	,mFramesPerSecond(0)
 	,mRenderCallPerFrame(0)
@@ -13,25 +13,25 @@ EfficencyRegister::EfficencyRegister()
 {
 }
 
-void EfficencyRegister::init(GameData* const gameData)
+void EfficiencyRegister::init(GameData* const gameData)
 {
 	mGameData = gameData;
-	mEfficencyDisplayer.init(gameData);
+	mEfficiencyDisplayer.init(gameData);
 }
 
-void EfficencyRegister::input()
+void EfficiencyRegister::input()
 {
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F2)) {
 		mIsActive = !mIsActive;
-		mEfficencyDisplayer.setShouldBeDrawn(mIsActive);
+		mEfficiencyDisplayer.setShouldBeDrawn(mIsActive);
 	}
 }
 
-void EfficencyRegister::update()
+void EfficiencyRegister::update()
 {
 	if(mIsActive) {
-		mEfficencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
-		mEfficencyDisplayer.setRenderCallPerFrameText("DCPF: " + std::to_string(mRenderCallPerFrame));
+		mEfficiencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
+		mEfficiencyDisplayer.setRenderCallPerFrameText("DCPF: " + std::to_string(mRenderCallPerFrame));
 		mRenderCallPerFrame = 0;
 	}
 

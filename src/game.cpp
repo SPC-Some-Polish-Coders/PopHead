@@ -22,7 +22,7 @@ Game::Game()
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
-	,mEfficencyRegister{new EfficencyRegister()}
+	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
@@ -36,7 +36,7 @@ Game::Game()
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
-		mEfficencyRegister.get(),
+		mEfficiencyRegister.get(),
 		mGui.get()
 	));
 
@@ -47,7 +47,7 @@ Game::Game()
 	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
 	Logger::getInstance().setGameData(mGameData.get());
 
-	mEfficencyRegister->init(mGameData.get());
+	mEfficiencyRegister->init(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
 	mStateMachine->pushState(StateID::GameState);
@@ -92,7 +92,7 @@ void Game::input()
 	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
 	mTerminal->input();
-	mEfficencyRegister->input();
+	mEfficiencyRegister->input();
 }
 
 void Game::update(sf::Time delta)
@@ -101,7 +101,7 @@ void Game::update(sf::Time delta)
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);
-	mEfficencyRegister->update();
+	mEfficiencyRegister->update();
 }
 
 }

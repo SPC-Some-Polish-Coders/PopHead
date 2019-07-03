@@ -6,10 +6,10 @@ namespace ph {
 
 class GameData;
 
-class EfficencyDisplayer : public sf::Drawable
+class EfficiencyDisplayer : public sf::Drawable
 {
 public:
-	EfficencyDisplayer();
+	EfficiencyDisplayer();
 	void init(GameData* const gameData);
 
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;

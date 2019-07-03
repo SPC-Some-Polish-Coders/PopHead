@@ -1,16 +1,16 @@
 #pragma once
 
-#include "efficencyDisplayer.hpp"
+#include "efficiencyDisplayer.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
 class GameData;
 
-class EfficencyRegister
+class EfficiencyRegister
 {
 public:
-	EfficencyRegister();
+	EfficiencyRegister();
 	void init(GameData* const gameData);
 
 	void input();
@@ -18,10 +18,10 @@ public:
 
 	void registerRenderCall() { ++mRenderCallPerFrame; }
 
-	auto getDisplayer() -> EfficencyDisplayer& { return mEfficencyDisplayer; }
+	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
 private:
-	EfficencyDisplayer mEfficencyDisplayer;
+	EfficiencyDisplayer mEfficiencyDisplayer;
 	sf::Clock mClock;
 	GameData* mGameData;
 	unsigned mFramesPerSecond;

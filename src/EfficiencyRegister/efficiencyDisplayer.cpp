@@ -1,14 +1,14 @@
-#include "efficencyDisplayer.hpp"
+#include "efficiencyDisplayer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-EfficencyDisplayer::EfficencyDisplayer()
+EfficiencyDisplayer::EfficiencyDisplayer()
 	:mShouldBeDrawn(false)
 {
 }
 
-void EfficencyDisplayer::init(GameData* const gameData)
+void EfficiencyDisplayer::init(GameData* const gameData)
 {
 	mBackground.setFillColor(sf::Color(0, 0, 0, 230));
 	mBackground.setPosition(220, -220);
@@ -25,7 +25,7 @@ void EfficencyDisplayer::init(GameData* const gameData)
 	mRenderCallPerFrameText.setCharacterSize(10);
 }
 
-void EfficencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+void EfficiencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	if(mShouldBeDrawn) {
 		target.draw(mBackground, states);
@@ -34,7 +34,7 @@ void EfficencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates s
 	}
 }
 
-void EfficencyDisplayer::move(sf::Vector2f offset)
+void EfficiencyDisplayer::move(sf::Vector2f offset)
 {
 	mBackground.move(offset);
 	mFramesPerSecondText.move(offset);
