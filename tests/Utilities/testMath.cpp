@@ -82,3 +82,26 @@ TEST_CASE("get corners", "[Utilities][Math]")
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(123425, -98765400));
 	}
 }
+
+TEST_CASE("get two dimensional position from one dimensional array index", "[Utilities][Math]")
+{
+	// TODO: Make commented assertions work!
+	/*SECTION("index is 0 and array size is 0") {
+		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 0));
+	}*/
+	/*SECTION("index is positive and number of columns is 0") {
+		CHECK_THROWS(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(5, 0));
+	}*/
+	SECTION("index is 0 and number of columns is positive") {
+		CHECK(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 5) == sf::Vector2u(0, 0));
+	}
+	SECTION("index and number of columns are positive but index is lesser then number of columns") {
+		CHECK(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(3, 5) == sf::Vector2u(3, 0));
+	}
+	SECTION("index and number of columns are positive and they match") {
+		CHECK(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(5, 5) == sf::Vector2u(0, 1));
+	}
+	SECTION("index is bigger then number of columns") {
+		CHECK(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(12, 5) == sf::Vector2u(2, 2));
+	}
+}

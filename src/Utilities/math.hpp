@@ -25,7 +25,10 @@ namespace Math {
 	{ return sf::Vector2f(getRightBound(bounds), getBottomBound(bounds)); }
 
 	inline sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(unsigned index, unsigned numberOfColumns)
-	{ return sf::Vector2u(index % numberOfColumns, index / numberOfColumns); }
+	{
+		PH_ASSERT_EXCEPTION(numberOfColumns != 0, "Number of columns cannot be 0");
+		return sf::Vector2u(index % numberOfColumns, index / numberOfColumns); 
+	}
 
 	inline bool areTheyOverlapping(sf::FloatRect A, sf::FloatRect B)
 	{
