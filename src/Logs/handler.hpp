@@ -18,10 +18,13 @@ namespace ph {
 		void setModuleAllowing(const std::string& moduleName, bool allowed);
 		void setTypeAllowing(LogType type, bool allowed);
 
+		bool isModuleAllowed(const std::string& moduleName) const;
+		bool isTypeAllowed(LogType type) const;
+
 	private:
 		virtual void utilizeLog(const LogRecord& logRecord) = 0;
 
-		bool isPassedByFilter(const LogRecord& logRecord);
+		bool isPassedByFilter(const LogRecord& logRecord) const;
 
 		std::vector<std::pair<std::string, bool>> allowedModules;
 		std::vector<std::pair<LogType, bool>> allowedTypes;

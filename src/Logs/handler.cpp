@@ -57,8 +57,26 @@ namespace ph {
 			iter->second = allowed;
 	}
 
-	bool Handler::isPassedByFilter(const LogRecord& logRecord)
+	bool Handler::isModuleAllowed(const std::string& moduleName) const
 	{
-		return true;
+		auto iter = std::find_if(allowedModules.begin(), allowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
+			return pair.first == moduleName;
+			});
+
+		return iter != allowedModules.end() && iter->second;
+	}
+
+	bool Handler::isTypeAllowed(LogType type) const
+	{
+		auto iter = std::find_if(allowedTypes.begin(), allowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
+			return pair.first == type;
+			});
+
+		return iter != allowedTypes.end() && iter->second;
+	}
+
+	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
+	{
+		return isModuleAllowed(logRecord.moduleName) && isTypeAllowed(logRecord.type);
 	}
 }
