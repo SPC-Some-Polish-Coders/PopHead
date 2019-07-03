@@ -16,25 +16,18 @@ Map::Map(GameData* gameData, std::string name)
 
 void Map::loadFromFile(const std::string& filename)
 {
-	Xml document;
-	document.loadFromFile(filename);
-	const Xml mapNode = document.getChild("map");
+	Xml mapFile;
+	mapFile.loadFromFile(filename);
+	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
 	const sf::Vector2u mapSize = getMapSize(mapNode);
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	mChunkMap = std::make_unique<ChunkMap>(
-		mapSize,
-		tileSize,
-		mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName)
-	);
-	for (const Xml& layerNode : layerNodes) {
-		const Xml dataNode = layerNode.getChild("data");
-		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		createLayer(globalTileIds, tilesets, mapSize, tileSize);
-	}
+	
+	createChunkMap(tilesets, mapSize, tileSize);
+	createAllLayers(layerNodes, tilesets, mapSize, tileSize);
 }
 
 void Map::checkMapSupport(const Xml& mapNode) const
@@ -71,7 +64,7 @@ std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 	return tilesetNodes;
 }
 
-Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const
+auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData
 {
 	TilesetsData tilesets;
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
@@ -100,7 +93,7 @@ Map::TilesetsData Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) con
 	return tilesets;
 }
 
-Map::TilesetsData::TilesData Map::getTilesData(const std::vector<Xml>& tileNodes) const
+auto Map::getTilesData(const std::vector<Xml>& tileNodes) const -> TilesetsData::TilesData
 {
 	TilesetsData::TilesData tilesData{};
 	tilesData.ids.reserve(tileNodes.size());
@@ -135,6 +128,25 @@ std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
 	if (encoding == "csv")
 		return Csv::toUnsigneds(dataNode.toString());
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+}
+
+void Map::createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+{
+	mChunkMap = std::make_unique<ChunkMap>(
+		mapSize,
+		tileSize,
+		mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName)
+	);
+}
+
+void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets,
+                          const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+{
+	for(const Xml& layerNode : layerNodes) {
+		const Xml dataNode = layerNode.getChild("data");
+		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
+		createLayer(globalTileIds, tilesets, mapSize, tileSize);
+	}
 }
 
 void Map::createLayer(

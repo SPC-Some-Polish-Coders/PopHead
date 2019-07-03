@@ -44,13 +44,18 @@ private:
 
 	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
 
-	TilesetsData getTilesetsData(const std::vector<Xml>& tilesetNodes) const;
+	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 
-	TilesetsData::TilesData getTilesData(const std::vector<Xml>& tileNodes) const;
+	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesetsData::TilesData;
 
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
+
+	void createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize);
+
+	void createAllLayers(const std::vector<Xml>&, const TilesetsData& tilesets,
+		                 const sf::Vector2u mapSize, const sf::Vector2u tileSize);
 
 	void createLayer(
 		const std::vector<unsigned>& globalTileIds,
