@@ -7,27 +7,27 @@ namespace ph {
 	Handler::Handler()
 	{
 		mAllowedModules = {
-			{"Audio", true},
-			{"EfficiencyRegister", true},
-			{"Gui", true},
-			{"Input", true},
-			{"Logs", true},
-			{"Physics", true},
-			{"Renderer", true},
-			{"Resources", true},
-			{"States", true},
-			{"Terminal", true},
-			{"Utilities", true},
-			{"World", true}
+			{"Audio", false},
+			{"EfficiencyRegister", false},
+			{"Gui", false},
+			{"Input", false},
+			{"Logs", false},
+			{"Physics", false},
+			{"Renderer", false},
+			{"Resources", false},
+			{"States", false},
+			{"Terminal", false},
+			{"Utilities", false},
+			{"World", false}
 		};
 
 		mAllowedTypes = {
-			{LogType::Info, true},
-			{LogType::Error, true},
-			{LogType::FromUser, true},
-			{LogType::Warning, true},
-			{LogType::Exception, true},
-			{LogType::UnhandledException, true}
+			{LogType::Info, false},
+			{LogType::Error, false},
+			{LogType::FromUser, false},
+			{LogType::Warning, false},
+			{LogType::Exception, false},
+			{LogType::UnhandledException, false}
 		};
 	}
 
