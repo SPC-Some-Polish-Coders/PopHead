@@ -26,12 +26,11 @@ LayerOfChunks::LayerOfChunks(std::shared_ptr<ChunkData> chunkData)
 		std::vector<Chunk> rowOfChunks;
 		for(unsigned x = 0; x < mapSizeInChunks.x; ++x) {
 			const sf::Vector2f chunkSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getChunkSizeInPixels());
-			const sf::Vector2f topLeftCornerPositionInWorldOfThisChunk(y * chunkSizeInPixels.y, x * chunkSizeInPixels.x);
+			const sf::Vector2f topLeftCornerPositionInWorldOfThisChunk(x * chunkSizeInPixels.x, y * chunkSizeInPixels.y);
 			rowOfChunks.emplace_back(Chunk(topLeftCornerPositionInWorldOfThisChunk, mChunkData));
 		}
 		mAllChunksInLayer.emplace_back(rowOfChunks);
 	}
-
 }
 
 bool LayerOfChunks::doesMapNotFitInChunksOnXAxis(const sf::Vector2u mapSizeInTiles)
@@ -47,7 +46,7 @@ bool LayerOfChunks::doesMapNotFitInChunksOnYAxis(const sf::Vector2u mapSizeInTil
 void LayerOfChunks::addTileData(const TileData& tile)
 {
 	const sf::Vector2u chunkPosition = getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(tile);
-	mAllChunksInLayer[chunkPosition.x][chunkPosition.y].addTileData(tile);
+	mAllChunksInLayer[chunkPosition.y][chunkPosition.x].addTileData(tile);
 }
 
 sf::Vector2u LayerOfChunks::getChunkPositionInVectorOfChunksToWhichNewTileShouldBeAdded(const TileData& tile)
