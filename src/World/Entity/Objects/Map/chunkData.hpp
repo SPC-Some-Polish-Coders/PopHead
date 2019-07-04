@@ -7,19 +7,17 @@ namespace ph {
 class ChunkData
 {
 public:
-	ChunkData(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
-		:mTileSizeInPixels(tileSizeInPixels)
-		,mChunkSizeInTiles(24, 24)
-		,mChunkSizeInPixels(mTileSizeInPixels.x * mChunkSizeInTiles.x, mTileSizeInPixels.y* mChunkSizeInTiles.y)
-		,mMapSizeInTiles(mapSizeInTiles)
-		,mTileset(tileset)
-	{}
+	ChunkData(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset);
 
 	auto getTileSizeInPixels() const -> sf::Vector2u { return mTileSizeInPixels; }
 	auto getChunkSizeInTiles() const -> sf::Vector2u { return mChunkSizeInTiles; }
 	auto getChunkSizeInPixels() const -> sf::Vector2u { return mChunkSizeInPixels; }
 	auto getMapSizeInTiles() const -> sf::Vector2u { return mMapSizeInTiles; }
 	auto getTileset() const -> const sf::Texture & { return mTileset; }
+
+private:
+	 auto calculateChunkSizeInTiles() const -> sf::Vector2u const;
+	 unsigned getChunkSideSizeInTiles(unsigned tileSideSizeInPixels) const;
 
 private:
 	const sf::Vector2u mTileSizeInPixels;
