@@ -16,7 +16,7 @@ SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::stri
 	Xml sceneSourceCode;
 	sceneSourceCode.loadFromFile(fileName);
 	getResources(sceneSourceCode);
-	makeScene(sceneSourceCode);
+	loadScene(sceneSourceCode);
 }
 
 void SceneParser::getResources(const Xml& sceneSourceCode)
@@ -35,45 +35,48 @@ void SceneParser::loadTextures(const Xml& loadingNode)
 	}
 }
 
-void SceneParser::makeScene(const Xml& sceneSourceCode)
+void SceneParser::loadScene(const Xml& sceneSourceCode)
 {
 	const Xml rootNode = sceneSourceCode.getChild("root");
 
 	loadMap(rootNode);
 	loadPlayer(rootNode);
-	loadEnemies(rootNode);
-	loadNpcs(rootNode);
+	loadGroups(rootNode);
 }
 
 void SceneParser::loadMap(const Xml& rootNode)
 {
-	const std::vector<Xml> rootNodes = rootNode.getChildren("map");
-	auto map = std::make_unique<Map>(mGameData, rootNodes[0].getAttribute("name").toString()); 	
-	//Presumed that map can be only one
-	map->loadFromFile(rootNodes[0].getAttribute("filepath").toString());
+	const Xml mapNode = rootNode.getChild("map");
+	auto map = std::make_unique<Map>(mGameData, mapNode.getAttribute("name").toString()); 	
+	map->loadFromFile(mapNode.getAttribute("filepath").toString());
 	mRoot.addChild(std::move(map));
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
 {
-	const std::vector<Xml> rootNodes = rootNode.getChildren("player");
+	const Xml playerNode = rootNode.getChild("player");
 	auto player = std::make_unique<Player>(mGameData);
-	player->getSprite().setTexture(mGameData->getTextures().get(rootNodes[0].getAttribute("texturepath").toString()));
-	//Presumed that player can be only one
+	player->getSprite().setTexture(mGameData->getTextures().get(playerNode.getAttribute("texturepath").toString()));
 	mRoot.addChild(std::move(player));
 }
 
-void SceneParser::loadNpcs(const Xml& rootNode)
+void SceneParser::loadGroups(const Xml& rootNode)
 {
-	const std::vector<Xml> rootElements = rootNode.getChildren("group");
-	for (auto& groupTypes : rootElements) {
-		if (groupTypes.getAttribute("name").toString() == "npc")
-			loadTestNpcs(groupTypes);
-			//loadOtherNpcs(groupTypes); etc...
+	const std::vector<Xml> groupNodes = rootNode.getChildren("group");
+	for(auto& groupNode : groupNodes) {
+		const std::string groupName = groupNode.getAttribute("name").toString();
+		if(groupName == "npc")
+			loadNpcGroup(groupNode);
+		else if(groupName == "enemies")
+			loadEnemiesGroup(groupNode);
+		else if(groupName == "spawners")
+			loadSpawners(groupNode);
+		else
+			PH_EXCEPTION("Syntax error: There is not such group: " + groupName);
 	}
 }
 
-void SceneParser::loadTestNpcs(const Xml& npcGroupNode)
+void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 {
 	const std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
 	for (auto& npc : npcs) {
@@ -84,25 +87,24 @@ void SceneParser::loadTestNpcs(const Xml& npcGroupNode)
 	}
 }
 
-void SceneParser::loadEnemies(const Xml& rootNode)
+void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 {
-	const std::vector<Xml> rootElements = rootNode.getChildren("group");
-	for (auto& groupTypes : rootElements) {
-		if (groupTypes.getAttribute("name").toString() == "enemies")
-			loadZombies(groupTypes);
-			//loadDevils(groupTypes); etc...
+	const std::vector<Xml> zombieNodes = enemyGroupNode.getChildren("zombie");
+	loadZombies(zombieNodes);
+}
+
+void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
+{
+	for (auto& zombieNode : zombieNodes) {
+		auto zombie = std::make_unique<Zombie>(mGameData);
+		zombie->setPosition(sf::Vector2f(zombieNode.getAttribute("positionX").toFloat(),
+			zombieNode.getAttribute("positionY").toFloat()));
+		mRoot.addChild(std::move(zombie));
 	}
 }
 
-void SceneParser::loadZombies(const Xml& enemiesGroupNode)
+void SceneParser::loadSpawners(const Xml& spawnersGroupNode)
 {
-	const std::vector<Xml> enemies = enemiesGroupNode.getChildren("zombie");
-	for (auto& enemy : enemies) {
-		auto zombie = std::make_unique<Zombie>(mGameData);
-		zombie->setPosition(sf::Vector2f(enemy.getAttribute("positionX").toFloat(),
-			enemy.getAttribute("positionY").toFloat()));
-		mRoot.addChild(std::move(zombie));
-	}
 }
 
 }

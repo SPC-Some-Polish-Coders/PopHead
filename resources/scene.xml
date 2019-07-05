@@ -8,7 +8,6 @@
       <resource respath="characters/zombie.png"/>
     </textures>
   </loading>
-  
   <root>
     <map name="map" filepath="maps/desertMap.tmx"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>

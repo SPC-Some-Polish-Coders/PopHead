@@ -15,18 +15,18 @@ private:
 	void getResources(const Xml& sceneSourceCode);
 	void loadTextures(const Xml& loadingNode);
 
-	void makeScene(const Xml& sceneSourceCode);
+	void loadScene(const Xml& sceneSourceCode);
 	void loadMap(const Xml& rootNode);
 	void loadPlayer(const Xml& rootNode);
-	void loadNpcs(const Xml& rootNode);
-	void loadTestNpcs(const Xml& npcGroupNode);
-	void loadEnemies(const Xml& rootNode);
-	void loadZombies(const Xml& enemiesGroupNode);
+	void loadGroups(const Xml& rootNode);
+	void loadNpcGroup(const Xml& npcGroupNode);
+	void loadEnemiesGroup(const Xml& enemyGroupNode);
+	void loadZombies(const std::vector<Xml>& zombieNodes);
+	void loadSpawners(const Xml& spawnersGroupNode);
 
 private:
 	Entity& mRoot;
 	GameData* const mGameData;
-
 };
 
 }
