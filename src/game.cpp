@@ -65,13 +65,13 @@ void Game::run()
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	while(mRenderer->getWindow().isOpen())
+	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mStateMachine->changingStatesProcess();
 
 		// temporary - TODO: move this somewhere else
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			break;
+			mGameData->getGameCloser().closeTheGame();
 
 		input();
 
@@ -84,6 +84,8 @@ void Game::run()
 			mRenderer->draw();
 		}
 	}
+
+	mRenderer->getWindow().close();
 }
 
 void Game::input()

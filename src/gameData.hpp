@@ -17,6 +17,16 @@ namespace ph {
 
 /// GameData is holder for observer pointers to Game Modules.
 
+class GameCloser
+{
+public:
+	void closeTheGame() { mShouldGameBeClosed = true; };
+	bool shouldGameBeClosed() { return mShouldGameBeClosed; };
+
+private:
+	bool mShouldGameBeClosed = false;
+};
+
 class GameData
 {
 public:
@@ -49,6 +59,7 @@ public:
 		,mTerminal{Terminal}
 		,mEfficiencyRegister{efficiencyRegister}
 		,mGui(Gui)
+		,mGameCloser()
 	{
 	}
 	
@@ -64,6 +75,7 @@ public:
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
 	auto getEfficiencyRegister() const -> EfficiencyRegister& { return *mEfficiencyRegister; }
 	auto getGui() const -> GUI& { return *mGui; }
+	auto getGameCloser() -> GameCloser& { return mGameCloser; }
 
 private:
 	SoundPlayer* const mSoundPlayer;
@@ -78,6 +90,7 @@ private:
 	Terminal* const mTerminal;
 	EfficiencyRegister* const mEfficiencyRegister;
 	GUI* const mGui;
+	GameCloser mGameCloser;
 };
 
 }

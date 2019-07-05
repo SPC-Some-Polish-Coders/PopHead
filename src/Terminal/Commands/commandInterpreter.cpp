@@ -93,7 +93,7 @@ void CommandInterpreter::executeClear() const
 
 void CommandInterpreter::executeExit() const
 {
-	mGameData->getRenderer().getWindow().close();
+	mGameData->getGameCloser().closeTheGame();
 }
 
 void CommandInterpreter::executeTeleport() const
