@@ -7,14 +7,19 @@ class GameData;
 class GlobalKeyboardShortcuts
 {
 public:
+	GlobalKeyboardShortcuts();
+
 	void setGameData(GameData* const gameData) { mGameData = gameData; }
-	void handle() const;
+	void handleShortcuts();
 
 private:
-	void windowMinimalizeAndMaximalizeShortcut() const;
+	void windowMinimalizeAndMaximalizeShortcut();
 
 private:
 	GameData* mGameData;
+
+	enum class WindowSizeState{fullScreen, notFullScreen};
+	WindowSizeState mWindowSizeState;
 };
 
 }

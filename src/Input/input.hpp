@@ -17,7 +17,7 @@ public:
     auto getKeyboard() -> const KeyboardManager& { return mKeyboard; }
     auto getMouse() -> const MouseManager& { return mMouse; }
     auto getAction() -> ActionManager& { return mAction; }
-	auto getGlobalKeyboardShortcutes() -> const GlobalKeyboardShortcuts& { return mGlobalKeyboardShortcuts; }
+	auto getGlobalKeyboardShortcutes() -> GlobalKeyboardShortcuts& { return mGlobalKeyboardShortcuts; }
 
     void setGameData(GameData*);
 

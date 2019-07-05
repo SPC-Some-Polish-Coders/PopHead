@@ -3,25 +3,28 @@
 
 namespace ph {
 
-void GlobalKeyboardShortcuts::handle() const
+GlobalKeyboardShortcuts::GlobalKeyboardShortcuts()
+	:mWindowSizeState(WindowSizeState::fullScreen)
+{
+}
+
+void GlobalKeyboardShortcuts::handleShortcuts()
 {
 	windowMinimalizeAndMaximalizeShortcut();
 }
 
-void GlobalKeyboardShortcuts::windowMinimalizeAndMaximalizeShortcut() const
+void GlobalKeyboardShortcuts::windowMinimalizeAndMaximalizeShortcut()
 {
-	enum class WindowSizeState{fullScreen, notFullScreen};
-	static WindowSizeState windowSizeState = WindowSizeState::fullScreen;
-
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F11)) {
-		switch(windowSizeState)
+	auto& keyboard = mGameData->getInput().getKeyboard();
+	if(keyboard.isKeyJustPressed(sf::Keyboard::F11)) {
+		switch(mWindowSizeState)
 		{
 		case WindowSizeState::fullScreen:
-			windowSizeState = WindowSizeState::notFullScreen;
+			mWindowSizeState = WindowSizeState::notFullScreen;
 			mGameData->getRenderer().getWindow().create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
 			break;
 		case WindowSizeState::notFullScreen:
-			windowSizeState = WindowSizeState::fullScreen;
+			mWindowSizeState = WindowSizeState::fullScreen;
 			mGameData->getRenderer().getWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
 			break;
 		}
