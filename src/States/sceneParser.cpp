@@ -81,7 +81,7 @@ void SceneParser::loadGroups(const Xml& rootNode)
 		else if(groupName == "enemies")
 			loadEnemiesGroup(groupNode);
 		else if(groupName == "spawners")
-			loadSpawners(groupNode);
+			loadSpawnersGroup(groupNode);
 		else
 			PH_EXCEPTION("Syntax error: There is not such group: " + groupName);
 	}
@@ -89,11 +89,10 @@ void SceneParser::loadGroups(const Xml& rootNode)
 
 void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 {
-	const std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
-	for (const auto& npc : npcs) {
+	const std::vector<Xml> npcNodes = npcGroupNode.getChildren("npcTest");
+	for (const auto& npcNode : npcNodes) {
 		auto npcTest = std::make_unique<Npc>(mGameData);
-		npcTest->setPosition(sf::Vector2f(npc.getAttribute("positionX").toFloat(),
-			npc.getAttribute("positionY").toFloat()));
+		npcTest->setPosition(getPositionAttribute(npcNode));
 		mRoot.addChild(std::move(npcTest));
 	}
 }
@@ -108,14 +107,22 @@ void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 {
 	for (const auto& zombieNode : zombieNodes) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
-		zombie->setPosition(sf::Vector2f(zombieNode.getAttribute("positionX").toFloat(),
-			zombieNode.getAttribute("positionY").toFloat()));
+		zombie->setPosition(getPositionAttribute(zombieNode));
 		mRoot.addChild(std::move(zombie));
 	}
 }
 
-void SceneParser::loadSpawners(const Xml& spawnersGroupNode)
+void SceneParser::loadSpawnersGroup(const Xml& spawnerGroupNode)
 {
+	// TODO: Implement this method when Spawner class will be ready.
+}
+
+auto SceneParser::getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f
+{
+	return sf::Vector2f(
+		objectNode.getAttribute("positionX").toFloat(),
+		objectNode.getAttribute("positionY").toFloat()
+	);
 }
 
 }

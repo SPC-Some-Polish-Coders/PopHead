@@ -24,7 +24,9 @@ private:
 	void loadNpcGroup(const Xml& npcGroupNode);
 	void loadEnemiesGroup(const Xml& enemyGroupNode);
 	void loadZombies(const std::vector<Xml>& zombieNodes);
-	void loadSpawners(const Xml& spawnersGroupNode);
+	void loadSpawnersGroup(const Xml& spawnerGroupNode);
+
+	auto getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f;
 
 private:
 	Entity& mRoot;
