@@ -16,6 +16,8 @@ private:
 	void movementInput();
 	void gunInput();
     void updateAnimation(const std::string& stateName);
+	void cameraMovement(sf::Time delta) const;
+	void updateListenerPosition() const;
 };
 
 

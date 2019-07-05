@@ -19,9 +19,6 @@ private:
 
 public:
 	void update(sf::Time delta) override;
-private:
-	void cameraMovement(sf::Time delta) const;
-	void updateListenerPosition();
 };
 
 }

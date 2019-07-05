@@ -51,21 +51,6 @@ void GameState::windowMinimalizeAndMaximalizeShortcut()
 void GameState::update(sf::Time delta)
 {
 	mRoot.update(delta);
-	cameraMovement(delta);
-	updateListenerPosition();
-}
-
-void GameState::cameraMovement(sf::Time delta) const
-{
-	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = dynamic_cast<Character&>(mRoot.getChild("player")).getSprite().getGlobalBounds();
-	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
-}
-
-void GameState::updateListenerPosition()
-{
-	Object& player = dynamic_cast<Object&>(mRoot.getChild("player"));
-	mGameData->getSoundPlayer().setListenerPosition(player.getPosition());
 }
 
 }

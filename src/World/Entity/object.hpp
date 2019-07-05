@@ -20,8 +20,8 @@ public:
 	virtual void setRotation(float angle, bool recursive = true);
 	virtual void rotate(float angle, bool recursive = true);
 
-	auto getPosition() -> sf::Vector2f const { return mPosition; }
-	auto getScale() -> sf::Vector2f const { return mScale; }
+	auto getPosition() const -> sf::Vector2f { return mPosition; }
+	auto getScale() const -> sf::Vector2f { return mScale; }
 	float getRotation() const { return mRotation; }
 	auto getLayerID() const -> ph::LayerID { return mLayerID; }
 	bool getVisibility() const { return mVisibility; }

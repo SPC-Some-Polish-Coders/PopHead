@@ -102,6 +102,10 @@ void Player::update(sf::Time delta)
 		mAnimation.animate(mSprite, delta);
 	}
 	mMotion.clear();
+
+	cameraMovement(delta);
+
+	updateListenerPosition();
 }
 
 void Player::updateAnimation(const std::string& stateName)
@@ -111,6 +115,18 @@ void Player::updateAnimation(const std::string& stateName)
 		mAnimation.changeState(stateName);
 		mAnimation.animate(mSprite);
 	}
+}
+
+void Player::cameraMovement(sf::Time delta) const
+{
+	constexpr float cameraMotionSpeed = 4.f;
+	const sf::FloatRect characterBounds = mSprite.getGlobalBounds();
+	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
+}
+
+void Player::updateListenerPosition() const
+{
+	mGameData->getSoundPlayer().setListenerPosition(getPosition());
 }
 
 }
