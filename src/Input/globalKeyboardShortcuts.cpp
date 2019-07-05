@@ -10,10 +10,11 @@ GlobalKeyboardShortcuts::GlobalKeyboardShortcuts()
 
 void GlobalKeyboardShortcuts::handleShortcuts()
 {
-	windowMinimalizeAndMaximalizeShortcut();
+	handleWindowMinimalizeAndMaximalizeShortcut();
+	handleCloseGameShortcut();
 }
 
-void GlobalKeyboardShortcuts::windowMinimalizeAndMaximalizeShortcut()
+void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyJustPressed(sf::Keyboard::F11)) {
@@ -29,6 +30,13 @@ void GlobalKeyboardShortcuts::windowMinimalizeAndMaximalizeShortcut()
 			break;
 		}
 	}
+}
+
+void GlobalKeyboardShortcuts::handleCloseGameShortcut()
+{
+	auto& keyboard = mGameData->getInput().getKeyboard();
+	if(keyboard.isKeyPressed(sf::Keyboard::Escape))
+		mGameData->getGameCloser().closeTheGame();
 }
 
 }

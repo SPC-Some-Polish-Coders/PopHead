@@ -13,7 +13,8 @@ public:
 	void handleShortcuts();
 
 private:
-	void windowMinimalizeAndMaximalizeShortcut();
+	void handleWindowMinimalizeAndMaximalizeShortcut();
+	void handleCloseGameShortcut();
 
 private:
 	GameData* mGameData;

@@ -68,11 +68,6 @@ void Game::run()
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mStateMachine->changingStatesProcess();
-
-		// temporary - TODO: move this somewhere else
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			mGameData->getGameCloser().closeTheGame();
-
 		input();
 
 		timeSinceLastUpdate += clock.restart();
