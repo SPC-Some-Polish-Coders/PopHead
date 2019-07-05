@@ -12,6 +12,7 @@ Input::Input()
 void Input::setGameData(GameData* gameData)
 {
 	mMouse.setGameData(gameData);
+	mGlobalKeyboardShortcuts.setGameData(gameData);
 }
 
 }

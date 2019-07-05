@@ -23,14 +23,9 @@ public:
 	Entity& getRoot() { return mRoot; }
 
 private:
-	void windowMinimalizeAndMaximalizeShortcut() const;
-
-protected:
 	Entity mRoot;
-	GameData* const mGameData;
 	SceneParser mSceneParser;
-
-private:
+	GameData* const mGameData;
     bool mHide;
     bool mPause;
 };

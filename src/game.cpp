@@ -90,6 +90,7 @@ void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
 	mStateMachine->input();
+	mInput->getGlobalKeyboardShortcutes().handle();
 	mTerminal->input();
 	mEfficiencyRegister->input();
 }
