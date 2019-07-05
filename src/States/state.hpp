@@ -21,10 +21,12 @@ public:
 	bool getHide() const { return mHide; }
 	
 	Entity& getRoot() { return mRoot; }
+
 protected:
 	Entity mRoot;
 	GameData* const mGameData;
 	SceneParser mSceneParser;
+
 private:
     bool mHide;
     bool mPause;

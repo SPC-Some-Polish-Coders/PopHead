@@ -5,12 +5,11 @@
 namespace ph {
 
 State::State(GameData* const gameData)
-		:mRoot{ EntityType::none, gameData, "root" }
-        ,mGameData { gameData }
-		,mSceneParser{ gameData, mRoot, "scene.xml" }
-        ,mHide { false }
-        ,mPause { false }
-
+	:mRoot(EntityType::none, gameData, "root")
+	,mGameData(gameData)
+	,mSceneParser(gameData, mRoot, "scene.xml")
+	,mHide(false)
+	,mPause(false)
 {
 }
 

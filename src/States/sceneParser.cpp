@@ -10,39 +10,34 @@
 namespace ph {
 
 SceneParser::SceneParser(GameData* const gameDatas, Entity& root, const std::string fileName)
-	:sourceName(fileName)
-	,mGameData(gameDatas)
+	:mGameData(gameDatas)
 	,mRoot(root) 
 {
-	getResources();
-	makeScene();
+	Xml sceneSourceCode;
+	sceneSourceCode.loadFromFile(fileName);
+	getResources(sceneSourceCode);
+	makeScene(sceneSourceCode);
 }
 
-void SceneParser::getResources()
+void SceneParser::getResources(const Xml& sceneSourceCode)
 {
-	Xml sceneFile;
-	sceneFile.loadFromFile(sourceName);
-	Xml loadingNode = sceneFile.getChild("loading");
+	const Xml loadingNode = sceneSourceCode.getChild("loading");
 	loadTextures(loadingNode);
 }
 
-void SceneParser::loadTextures(Xml& loadingNode)
+void SceneParser::loadTextures(const Xml& loadingNode)
 {
-
-	Xml textureNode = loadingNode.getChild("textures");
-	std::vector<Xml> textureNodes = textureNode.getChildren("resource");
-	for (auto& node : textureNodes)
-	{
+	const Xml textureNode = loadingNode.getChild("textures");
+	const std::vector<Xml> textureNodes = textureNode.getChildren("resource");
+	for (auto& node : textureNodes) {
 		const std::string filename = node.getAttribute("respath").toString();
 		mGameData->getTextures().load("textures/" + filename);
 	}
 }
 
-void SceneParser::makeScene()
+void SceneParser::makeScene(const Xml& sceneSourceCode)
 {
-	Xml sceneFile;
-	sceneFile.loadFromFile(sourceName);
-	Xml rootNode = sceneFile.getChild("root");
+	const Xml rootNode = sceneSourceCode.getChild("root");
 
 	loadMap(rootNode);
 	loadPlayer(rootNode);
@@ -50,27 +45,27 @@ void SceneParser::makeScene()
 	loadNpcs(rootNode);
 }
 
-void SceneParser::loadMap(Xml& rootNode)
+void SceneParser::loadMap(const Xml& rootNode)
 {
-	std::vector<Xml> rootNodes = rootNode.getChildren("map");
+	const std::vector<Xml> rootNodes = rootNode.getChildren("map");
 	auto map = std::make_unique<Map>(mGameData, rootNodes[0].getAttribute("name").toString()); 	
 	//Presumed that map can be only one
 	map->loadFromFile(rootNodes[0].getAttribute("filepath").toString());
 	mRoot.addChild(std::move(map));
 }
 
-void SceneParser::loadPlayer(Xml& rootNode)
+void SceneParser::loadPlayer(const Xml& rootNode)
 {
-	std::vector<Xml> rootNodes = rootNode.getChildren("player");
+	const std::vector<Xml> rootNodes = rootNode.getChildren("player");
 	auto player = std::make_unique<Player>(mGameData);
 	player->getSprite().setTexture(mGameData->getTextures().get(rootNodes[0].getAttribute("texturepath").toString()));
 	//Presumed that player can be only one
 	mRoot.addChild(std::move(player));
 }
 
-void SceneParser::loadNpcs(Xml& rootNode)
+void SceneParser::loadNpcs(const Xml& rootNode)
 {
-	std::vector<Xml> rootElements = rootNode.getChildren("group");
+	const std::vector<Xml> rootElements = rootNode.getChildren("group");
 	for (auto& groupTypes : rootElements)
 	{
 		if (groupTypes.getAttribute("name").toString() == "npc")
@@ -79,9 +74,9 @@ void SceneParser::loadNpcs(Xml& rootNode)
 	}
 }
 
-void SceneParser::loadTestNpcs(Xml& npcGroupNode)
+void SceneParser::loadTestNpcs(const Xml& npcGroupNode)
 {
-	std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
+	const std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
 	for (auto& npc : npcs)
 	{
 		auto npcTest = std::make_unique<Npc>(mGameData);
@@ -91,9 +86,9 @@ void SceneParser::loadTestNpcs(Xml& npcGroupNode)
 	}
 }
 
-void SceneParser::loadEnemies(Xml& rootNode)
+void SceneParser::loadEnemies(const Xml& rootNode)
 {
-	std::vector<Xml> rootElements = rootNode.getChildren("group");
+	const std::vector<Xml> rootElements = rootNode.getChildren("group");
 	for (auto& groupTypes : rootElements)
 	{
 		if (groupTypes.getAttribute("name").toString() == "enemies")
@@ -102,9 +97,9 @@ void SceneParser::loadEnemies(Xml& rootNode)
 	}
 }
 
-void SceneParser::loadZombies(Xml& enemiesGroupNode)
+void SceneParser::loadZombies(const Xml& enemiesGroupNode)
 {
-	std::vector<Xml> enemies = enemiesGroupNode.getChildren("zombie");
+	const std::vector<Xml> enemies = enemiesGroupNode.getChildren("zombie");
 	for (auto& enemy : enemies)
 	{
 		auto zombie = std::make_unique<Zombie>(mGameData);
