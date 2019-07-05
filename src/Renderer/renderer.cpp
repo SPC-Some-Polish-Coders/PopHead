@@ -2,7 +2,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 

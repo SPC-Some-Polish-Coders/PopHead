@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 
-#include "World/Entity/entity.hpp"
+#include "EntityComponentSystem/entity.hpp"
 #include "Renderer/layerID.hpp"
 
 namespace ph {

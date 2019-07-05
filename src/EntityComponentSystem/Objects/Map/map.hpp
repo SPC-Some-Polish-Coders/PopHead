@@ -1,6 +1,6 @@
 #pragma once
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Utilities/xml.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "chunkMap.hpp"

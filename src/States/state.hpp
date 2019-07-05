@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/System.hpp>
-#include "World/Entity/entity.hpp"
+#include "EntityComponentSystem/entity.hpp"
 #include "States/sceneParser.hpp"
 
 namespace ph{

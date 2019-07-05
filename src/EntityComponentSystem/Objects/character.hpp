@@ -1,7 +1,7 @@
 #pragma once
 
-#include "World/Entity/object.hpp"
-#include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
+#include "EntityComponentSystem/object.hpp"
+#include "EntityComponentSystem/Objects/Characters/Motion/characterMotion.hpp"
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 

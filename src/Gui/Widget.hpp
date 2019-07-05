@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "BehaviorType.hpp"
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 
 namespace ph {
 

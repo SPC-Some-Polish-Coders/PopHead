@@ -1,6 +1,6 @@
 #pragma once
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 
 namespace ph{
 

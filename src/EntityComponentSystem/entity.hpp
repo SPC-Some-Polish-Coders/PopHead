@@ -6,7 +6,7 @@
 
 #include <SFML/System.hpp>
 
-#include "World/Entity/entityType.hpp"
+#include "EntityComponentSystem/entityType.hpp"
 
 namespace ph {
 

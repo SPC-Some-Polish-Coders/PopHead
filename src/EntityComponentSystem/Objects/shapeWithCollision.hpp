@@ -1,6 +1,6 @@
 #pragma once
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 
 ///This class is for test purposes

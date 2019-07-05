@@ -2,7 +2,7 @@
 
 #include "Interface.hpp"
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 
 /* Uncomment if you want to experiment   */
 

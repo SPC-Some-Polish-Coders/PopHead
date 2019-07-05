@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utilities/xml.hpp"
-#include "World/Entity/entity.hpp"
+#include "EntityComponentSystem/entity.hpp"
 #include <string>
 #include <vector>
 

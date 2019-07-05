@@ -1,6 +1,6 @@
 #include "States/state.hpp"
 
-#include "World/Entity/entityType.hpp"
+#include "EntityComponentSystem/entityType.hpp"
 #include "gameData.hpp"
 #include <SFML/Graphics.hpp>
 
