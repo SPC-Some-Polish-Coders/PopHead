@@ -12,8 +12,8 @@ class State
 {
 public:
     State(GameData* const gameData);
-    virtual void input() = 0;
-    virtual void update(sf::Time delta) = 0;
+    void input();
+    void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }
@@ -21,6 +21,9 @@ public:
 	bool getHide() const { return mHide; }
 	
 	Entity& getRoot() { return mRoot; }
+
+private:
+	void windowMinimalizeAndMaximalizeShortcut() const;
 
 protected:
 	Entity mRoot;

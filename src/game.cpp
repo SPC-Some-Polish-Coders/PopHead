@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-#include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 #include "Logs/logger.hpp"
@@ -50,7 +49,7 @@ Game::Game()
 	mEfficiencyRegister->init(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
-	mStateMachine->pushState(StateID::GameState);
+	mStateMachine->pushState();
 
 	mGui->init(mGameData.get());
 

@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "GameState/gameState.hpp"
 #include "Utilities/debug.hpp"
 
 #include "state.hpp"
@@ -89,21 +88,21 @@ void StateMachine::update(sf::Time delta)
         mActiveStates.back()->update(delta);
 }
 
-void StateMachine::pushState(StateID id)
+void StateMachine::pushState()
 {
     if(mIsReplacing == false){
-        mPendingStates.emplace_back( std::move(getStatePtr(id)) );
+        mPendingStates.emplace_back(std::make_unique<State>(mGameData));
         mIsPushing = true;
     }
     else
 		PH_LOG(LogType::Error, "Couldn't push state because another state is replacing.");
 }
 
-void StateMachine::replaceState(StateID id)
+void StateMachine::replaceState()
 {
     if(mIsPushing == false){
         mPendingStates.clear();
-        mPendingStates.emplace_back( std::move(getStatePtr(id)) );
+        mPendingStates.emplace_back(std::make_unique<State>(mGameData));
         mIsReplacing = true;
     }
     else
@@ -138,17 +137,6 @@ void StateMachine::setHideInStateNr(unsigned int nrOfState, bool hide)
 void StateMachine::setPauseInStateNr(unsigned int nrOfState, bool pause)
 {
     mActiveStates[ mActiveStates.size() - nrOfState - 1 ]->setPause(pause);
-}
-
-auto StateMachine::getStatePtr(StateID id) const -> std::unique_ptr<State>
-{
-    switch(id)
-    {
-	case StateID::GameState:
-		return StatePtr(new GameState(mGameData));
-	default:
-		PH_LOG(LogType::Error, "This state was't implemented yet.");
-    }
 }
 
 }

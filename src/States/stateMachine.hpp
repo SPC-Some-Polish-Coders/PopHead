@@ -6,7 +6,6 @@
 #include <SFML/System.hpp>
 
 #include "States/state.hpp"
-#include "States/stateIdentifiers.hpp"
 
 namespace ph {
 
@@ -19,8 +18,8 @@ class StateMachine
 public:
     StateMachine();
 
-    void pushState(StateID);
-    void replaceState(StateID);
+    void pushState();
+    void replaceState();
     void popState();
     void clearStates();
     
@@ -46,8 +45,6 @@ public:
     void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
 
 private:
-    auto getStatePtr(StateID id) const -> std::unique_ptr<State>;
-
     std::vector<StatePtr> mActiveStates;
     std::deque<StatePtr> mPendingStates;
 
