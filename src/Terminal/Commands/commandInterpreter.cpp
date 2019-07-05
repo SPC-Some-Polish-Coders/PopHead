@@ -6,6 +6,7 @@
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Logs/logger.hpp"
 #include "Utilities/cast.hpp"
+#include "World/Entity/Objects/Map/map.hpp"
 
 namespace ph {
 
@@ -302,6 +303,19 @@ void CommandInterpreter::executeView()
 	if(newViewSize == sf::Vector2f(-1, -1))
 		return;
 	camera.setSize(newViewSize);
+	auto& map = getMap();
+	if(commandContains("chunkdebug"))
+		map.setRenderChunksMode(RenderChunksMode::for640x480CameraView);
+	else
+		map.setRenderChunksMode(RenderChunksMode::forCurrentCameraView);
+}
+
+auto CommandInterpreter::getMap() const -> Map&
+{
+	auto& topState = mGameData->getStateMachine().getTopState();
+	auto& root = topState.getRoot();
+	auto& map = dynamic_cast<Map&>(root.getChild("map"));
+	return map;
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

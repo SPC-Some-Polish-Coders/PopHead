@@ -7,6 +7,7 @@ namespace ph {
 
 class GameData;
 class Object;
+class Map;
 
 class CommandInterpreter
 {
@@ -49,6 +50,7 @@ private:
 	bool areArgumentsToModulesToLogInvalid();
 
 	void executeView();
+	auto getMap() const -> Map&;
 
 	auto getVector2Argument() const -> sf::Vector2f;
 	sf::Vector2f handleGetVector2ArgumentError() const;

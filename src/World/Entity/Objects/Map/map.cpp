@@ -11,6 +11,7 @@ namespace ph {
 Map::Map(GameData* const gameData, const std::string& name)
 	:Object(gameData, name, LayerID::floorEntities)
 	,mChunkMap(nullptr)
+	,mRenderChunksMode(RenderChunksMode::forCurrentCameraView)
 {
 }
 
@@ -240,7 +241,7 @@ void Map::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size(16 * 40, 16 * 30);// = camera.getSize(); (TODO)
+	const sf::Vector2f size = mRenderChunksMode == RenderChunksMode::forCurrentCameraView ? camera.getSize() : sf::Vector2f(640, 480);
 	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
 	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 	
