@@ -8,6 +8,9 @@
       <resource respath="characters/zombie.png"/>
     </textures>
   </loading>
+  <music>
+    <theme filename="explorationTheme.ogg"/>
+  </music>
   <root>
     <map name="map" filepath="maps/desertMap.tmx"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>

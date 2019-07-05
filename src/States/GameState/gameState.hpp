@@ -10,15 +10,12 @@ class GameState : public State
 {
 public:
 	GameState(GameData* const);
-private:
-	void playMusic();
-public:
+
 	void input() override;
+	void update(sf::Time delta) override;
+
 private:
 	void windowMinimalizeAndMaximalizeShortcut();
-
-public:
-	void update(sf::Time delta) override;
 };
 
 }

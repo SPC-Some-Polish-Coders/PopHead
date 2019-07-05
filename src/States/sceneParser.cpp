@@ -15,11 +15,13 @@ SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::stri
 {
 	Xml sceneSourceCode;
 	sceneSourceCode.loadFromFile(fileName);
-	getResources(sceneSourceCode);
+
+	loadResources(sceneSourceCode);
+	loadMusic(sceneSourceCode);
 	loadScene(sceneSourceCode);
 }
 
-void SceneParser::getResources(const Xml& sceneSourceCode)
+void SceneParser::loadResources(const Xml& sceneSourceCode)
 {
 	const Xml loadingNode = sceneSourceCode.getChild("loading");
 	loadTextures(loadingNode);
@@ -29,10 +31,19 @@ void SceneParser::loadTextures(const Xml& loadingNode)
 {
 	const Xml textureNode = loadingNode.getChild("textures");
 	const std::vector<Xml> textureNodes = textureNode.getChildren("resource");
-	for (auto& node : textureNodes) {
+	for (const auto& node : textureNodes) {
 		const std::string filename = node.getAttribute("respath").toString();
 		mGameData->getTextures().load("textures/" + filename);
 	}
+}
+
+void SceneParser::loadMusic(const Xml& sceneSourceCode)
+{
+	const Xml musicNode = sceneSourceCode.getChild("music");
+	const Xml startThemeNode = musicNode.getChild("theme");
+	const std::string themeFileName = startThemeNode.getAttribute("filename").toString();
+	const std::string themeFilePath = "music/" + themeFileName;
+	mGameData->getMusicPlayer().play(themeFilePath);
 }
 
 void SceneParser::loadScene(const Xml& sceneSourceCode)
@@ -63,7 +74,7 @@ void SceneParser::loadPlayer(const Xml& rootNode)
 void SceneParser::loadGroups(const Xml& rootNode)
 {
 	const std::vector<Xml> groupNodes = rootNode.getChildren("group");
-	for(auto& groupNode : groupNodes) {
+	for(const auto& groupNode : groupNodes) {
 		const std::string groupName = groupNode.getAttribute("name").toString();
 		if(groupName == "npc")
 			loadNpcGroup(groupNode);
@@ -79,7 +90,7 @@ void SceneParser::loadGroups(const Xml& rootNode)
 void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 {
 	const std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
-	for (auto& npc : npcs) {
+	for (const auto& npc : npcs) {
 		auto npcTest = std::make_unique<Npc>(mGameData);
 		npcTest->setPosition(sf::Vector2f(npc.getAttribute("positionX").toFloat(),
 			npc.getAttribute("positionY").toFloat()));
@@ -95,7 +106,7 @@ void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 
 void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 {
-	for (auto& zombieNode : zombieNodes) {
+	for (const auto& zombieNode : zombieNodes) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(sf::Vector2f(zombieNode.getAttribute("positionX").toFloat(),
 			zombieNode.getAttribute("positionY").toFloat()));

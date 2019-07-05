@@ -14,12 +14,6 @@ namespace ph {
 GameState::GameState(GameData* const gameData)
 	:State(gameData)
 {
-	playMusic();
-}
-
-void GameState::playMusic()
-{
-	mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
 }
 
 void GameState::input()

@@ -12,8 +12,10 @@ class SceneParser
 public:
 	SceneParser(GameData* const, Entity& root, const std::string fileName);
 private:
-	void getResources(const Xml& sceneSourceCode);
+	void loadResources(const Xml& sceneSourceCode);
 	void loadTextures(const Xml& loadingNode);
+
+	void loadMusic(const Xml& sceneSourceCode);
 
 	void loadScene(const Xml& sceneSourceCode);
 	void loadMap(const Xml& rootNode);
