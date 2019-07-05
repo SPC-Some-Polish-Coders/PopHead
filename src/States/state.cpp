@@ -6,10 +6,10 @@
 
 namespace ph {
 
-State::State(GameData* const gameData)
+State::State(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
 	:mRoot(EntityType::none, gameData, "root")
 	,mGameData(gameData)
-	,mSceneParser(gameData, mRoot, "scene.xml")
+	,mSceneParser(gameData, mRoot, sceneSourceCodeFilePath)
 	,mHide(false)
 	,mPause(false)
 {

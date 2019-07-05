@@ -88,21 +88,21 @@ void StateMachine::update(sf::Time delta)
         mActiveStates.back()->update(delta);
 }
 
-void StateMachine::pushState()
+void StateMachine::pushState(const std::string& sceneSourceCodeFilePath)
 {
     if(mIsReplacing == false){
-        mPendingStates.emplace_back(std::make_unique<State>(mGameData));
+        mPendingStates.emplace_back(std::make_unique<State>(mGameData, sceneSourceCodeFilePath));
         mIsPushing = true;
     }
     else
 		PH_LOG(LogType::Error, "Couldn't push state because another state is replacing.");
 }
 
-void StateMachine::replaceState()
+void StateMachine::replaceState(const std::string& sceneSourceCodeFilePath)
 {
     if(mIsPushing == false){
         mPendingStates.clear();
-        mPendingStates.emplace_back(std::make_unique<State>(mGameData));
+        mPendingStates.emplace_back(std::make_unique<State>(mGameData, sceneSourceCodeFilePath));
         mIsReplacing = true;
     }
     else

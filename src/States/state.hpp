@@ -11,7 +11,7 @@ class GameData;
 class State
 {
 public:
-    State(GameData* const gameData);
+    State(GameData* const gameData, const std::string& sceneSourceCodeFilePath);
     void input();
     void update(sf::Time delta);
 

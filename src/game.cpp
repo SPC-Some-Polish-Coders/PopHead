@@ -49,7 +49,7 @@ Game::Game()
 	mEfficiencyRegister->init(mGameData.get());
 
 	mStateMachine->setGameData(mGameData.get());
-	mStateMachine->pushState();
+	mStateMachine->pushState("scenes/desertScene.xml");
 
 	mGui->init(mGameData.get());
 

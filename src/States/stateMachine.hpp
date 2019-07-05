@@ -18,8 +18,8 @@ class StateMachine
 public:
     StateMachine();
 
-    void pushState();
-    void replaceState();
+    void pushState(const std::string& sceneSourceCodeFilePath);
+    void replaceState(const std::string& sceneSourceCodeFilePath);
     void popState();
     void clearStates();
     
