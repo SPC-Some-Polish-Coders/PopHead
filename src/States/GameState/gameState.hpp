@@ -15,21 +15,13 @@ private:
 public:
 	void input() override;
 private:
-	void handleCameraShakeShortcut();
 	void windowMinimalizeAndMaximalizeShortcut();
-	void shotgunShot();
 
 public:
 	void update(sf::Time delta) override;
 private:
-	void cameraShake();
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition();
-
-private:
-	bool mShouldCameraShake = false;
-	bool mIsCollisionDebugTurnOn = false;
-	int mCollisionDebugMode = 1;
 };
 
 }

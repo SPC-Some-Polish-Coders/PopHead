@@ -13,14 +13,9 @@ public:
     void update(sf::Time delta) override;
 
 private:
+	void movementInput();
+	void gunInput();
     void updateAnimation(const std::string& stateName);
-    ///void talkTo(Npc&);
-
-    ///auto getPerks() const -> const PerkManager&;
-
-private:
-    ///PerkManager mPerks;
-    ///AttributesManager mAttributes;
 };
 
 

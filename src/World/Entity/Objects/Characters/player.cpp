@@ -48,18 +48,26 @@ Player::Player(GameData* gameData)
 
 void Player::input()
 {
-	if (mGameData->getInput().getAction().isActionPressed("movingLeft")) {
+	movementInput();
+	gunInput();
+}
+
+void Player::movementInput()
+{
+	if (mGameData->getInput().getAction().isActionPressed("movingLeft"))
 		mMotion.isMovingLeft = true;
-	}
-	if (mGameData->getInput().getAction().isActionPressed("movingRight")) {
+	if (mGameData->getInput().getAction().isActionPressed("movingRight"))
 		mMotion.isMovingRight = true;
-	}
-	if (mGameData->getInput().getAction().isActionPressed("movingUp")) {
+	if (mGameData->getInput().getAction().isActionPressed("movingUp"))
 		mMotion.isMovingUp = true;
-	}
-	if (mGameData->getInput().getAction().isActionPressed("movingDown")) {
+	if (mGameData->getInput().getAction().isActionPressed("movingDown"))
 		mMotion.isMovingDown = true;
-	}
+}
+
+void Player::gunInput()
+{
+	if(mGameData->getInput().getAction().isActionJustPressed("shotgunShot"))
+		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 }
 
 void Player::update(sf::Time delta)
@@ -104,12 +112,5 @@ void Player::updateAnimation(const std::string& stateName)
 		mAnimation.animate(mSprite);
 	}
 }
-
-/*void talkTo(Npc&)
-{
-
-}*/
-
-//auto getPerks() const -> const PerkManager& { return mPerks; }
 
 }
