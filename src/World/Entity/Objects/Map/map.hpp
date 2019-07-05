@@ -10,6 +10,12 @@
 
 namespace ph{
 
+enum class RenderChunksMode
+{
+	forCurrentCameraView,
+	for640x480CameraView
+};
+
 class Map : public Object
 {
 public:
@@ -18,6 +24,8 @@ public:
 	void loadFromFile(const std::string& filename);
 
     void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
+
+	void setRenderChunksMode(const RenderChunksMode renderChunksMode) { mRenderChunksMode = renderChunksMode; }
 
 private:
 	struct TilesetsData 
@@ -72,6 +80,7 @@ private:
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
 	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
+	RenderChunksMode mRenderChunksMode;
 };
 
 }
