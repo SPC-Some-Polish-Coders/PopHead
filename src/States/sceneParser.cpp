@@ -9,8 +9,8 @@
 
 namespace ph {
 
-SceneParser::SceneParser(GameData* const gameDatas, Entity& root, const std::string fileName)
-	:mGameData(gameDatas)
+SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::string fileName)
+	:mGameData(gameData)
 	,mRoot(root) 
 {
 	Xml sceneSourceCode;
@@ -66,8 +66,7 @@ void SceneParser::loadPlayer(const Xml& rootNode)
 void SceneParser::loadNpcs(const Xml& rootNode)
 {
 	const std::vector<Xml> rootElements = rootNode.getChildren("group");
-	for (auto& groupTypes : rootElements)
-	{
+	for (auto& groupTypes : rootElements) {
 		if (groupTypes.getAttribute("name").toString() == "npc")
 			loadTestNpcs(groupTypes);
 			//loadOtherNpcs(groupTypes); etc...
@@ -77,8 +76,7 @@ void SceneParser::loadNpcs(const Xml& rootNode)
 void SceneParser::loadTestNpcs(const Xml& npcGroupNode)
 {
 	const std::vector<Xml> npcs = npcGroupNode.getChildren("npcTest");
-	for (auto& npc : npcs)
-	{
+	for (auto& npc : npcs) {
 		auto npcTest = std::make_unique<Npc>(mGameData);
 		npcTest->setPosition(sf::Vector2f(npc.getAttribute("positionX").toFloat(),
 			npc.getAttribute("positionY").toFloat()));
@@ -89,8 +87,7 @@ void SceneParser::loadTestNpcs(const Xml& npcGroupNode)
 void SceneParser::loadEnemies(const Xml& rootNode)
 {
 	const std::vector<Xml> rootElements = rootNode.getChildren("group");
-	for (auto& groupTypes : rootElements)
-	{
+	for (auto& groupTypes : rootElements) {
 		if (groupTypes.getAttribute("name").toString() == "enemies")
 			loadZombies(groupTypes);
 			//loadDevils(groupTypes); etc...
@@ -100,8 +97,7 @@ void SceneParser::loadEnemies(const Xml& rootNode)
 void SceneParser::loadZombies(const Xml& enemiesGroupNode)
 {
 	const std::vector<Xml> enemies = enemiesGroupNode.getChildren("zombie");
-	for (auto& enemy : enemies)
-	{
+	for (auto& enemy : enemies) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(sf::Vector2f(enemy.getAttribute("positionX").toFloat(),
 			enemy.getAttribute("positionY").toFloat()));

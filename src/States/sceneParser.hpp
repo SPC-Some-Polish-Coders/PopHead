@@ -10,18 +10,18 @@ namespace ph{
 class SceneParser
 {
 public:
-	SceneParser(GameData* const, Entity&, const std::string fileName);
+	SceneParser(GameData* const, Entity& root, const std::string fileName);
 private:
 	void getResources(const Xml& sceneSourceCode);
 	void loadTextures(const Xml& loadingNode);
 
 	void makeScene(const Xml& sceneSourceCode);
-	void loadMap(const Xml&);
-	void loadPlayer(const Xml&);
-	void loadNpcs(const Xml&);
-	void loadTestNpcs(const Xml&);
-	void loadEnemies(const Xml&);
-	void loadZombies(const Xml&);
+	void loadMap(const Xml& rootNode);
+	void loadPlayer(const Xml& rootNode);
+	void loadNpcs(const Xml& rootNode);
+	void loadTestNpcs(const Xml& npcGroupNode);
+	void loadEnemies(const Xml& rootNode);
+	void loadZombies(const Xml& enemiesGroupNode);
 
 private:
 	Entity& mRoot;
