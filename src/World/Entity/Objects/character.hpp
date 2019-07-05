@@ -2,7 +2,7 @@
 
 #include "World/Entity/object.hpp"
 #include "World/Entity/Objects/Characters/Motion/characterMotion.hpp"
-#include "World/Animation/animation.hpp"
+#include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 
 namespace ph {
@@ -23,14 +23,8 @@ public:
 	void rotate(float angle, bool recursive = true) override;
 
 	auto getSprite() -> sf::Sprite& { return mSprite; }
-	///auto getEquipment() const -> const Equipment&;
-	///auto getCurrentWeapon() const -> const Weapon&;
-	///auto getExperienceManager() const -> const ExperienceManager&;
 
 protected:
-	///Equipment mEquipment;
-	///Weapon* const mCurrentWeapon;
-	///ExperienceManager mExperienceManager;
 	unsigned int mHP;
 	unsigned int mMaxHP;
 	unsigned int mMovementSpeed;

@@ -3,7 +3,7 @@
 #include "gameData.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
-#include "World/Animation/animation.hpp"
+#include "Utilities/animation.hpp"
 #include <array>
 
 namespace ph {
