@@ -7,8 +7,6 @@
 
 namespace ph {
 
-enum class StateID; 
-
 Game::Game()
 	:mGameData{}
 	,mSoundPlayer{new SoundPlayer()}
@@ -16,7 +14,7 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mStateMachine{new StateMachine()}
+	,mSceneMachine{new SceneMachine()}
 	,mInput{new Input()}
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
@@ -30,7 +28,7 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		mStateMachine.get(),
+		mSceneMachine.get(),
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
@@ -48,8 +46,8 @@ Game::Game()
 
 	mEfficiencyRegister->init(mGameData.get());
 
-	mStateMachine->setGameData(mGameData.get());
-	mStateMachine->pushState("scenes/desertScene.xml");
+	mSceneMachine->setGameData(mGameData.get());
+	mSceneMachine->pushScene("scenes/desertScene.xml");
 
 	mGui->init(mGameData.get());
 
@@ -67,7 +65,7 @@ void Game::run()
 
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
-		mStateMachine->changingStatesProcess();
+		mSceneMachine->changingScenesProcess();
 		input();
 
 		timeSinceLastUpdate += clock.restart();
@@ -86,7 +84,7 @@ void Game::run()
 void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
-	mStateMachine->input();
+	mSceneMachine->input();
 	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
 	mTerminal->input();
 	mEfficiencyRegister->input();
@@ -94,7 +92,7 @@ void Game::input()
 
 void Game::update(sf::Time delta)
 {
-	mStateMachine->update(delta);
+	mSceneMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);

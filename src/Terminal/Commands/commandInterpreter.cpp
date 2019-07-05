@@ -1,5 +1,4 @@
 #include "commandInterpreter.hpp"
-
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
@@ -113,8 +112,8 @@ void CommandInterpreter::executeCurrentPos() const
 
 auto CommandInterpreter::getPlayer() const -> Object&
 {
-	auto& gameState = mGameData->getStateMachine().getTopState();
-	auto& root = gameState.getRoot();
+	auto& gameScene = mGameData->getSceneMachine().getTopScene();
+	auto& root = gameScene.getRoot();
 	Object& player = dynamic_cast<Object&>(root.getChild("player"));
 	return player;
 }
@@ -274,7 +273,7 @@ void CommandInterpreter::setModulesToLog() const
 	if(commandContains("physics"))    logSettings.addToVector("Physics");
 	if(commandContains("renderer"))   logSettings.addToVector("Renderer");
 	if(commandContains("resources"))  logSettings.addToVector("Resources");
-	if(commandContains("states"))     logSettings.addToVector("States");
+	if(commandContains("scenes"))     logSettings.addToVector("Scenes");
 	if(commandContains("utilities"))  logSettings.addToVector("Utilities");
 	if(commandContains("world"))      logSettings.addToVector("World");
 	if(commandContains("terminal"))   logSettings.addToVector("Terminal");
@@ -290,7 +289,7 @@ bool CommandInterpreter::areArgumentsToModulesToLogInvalid() const
 {
 	return(!(commandContains("audio") || commandContains("base") || commandContains("input") ||
 		commandContains("logs") || commandContains("physics") || commandContains("renderer") ||
-		commandContains("resources") || commandContains("states") || commandContains("utilities") ||
+		commandContains("resources") || commandContains("scenes") || commandContains("utilities") ||
 		commandContains("world") || commandContains("terminal") || commandContains("none") ||
 		commandContains("all") || commandContains("clear")
 	));
@@ -316,8 +315,8 @@ void CommandInterpreter::executeView() const
 
 auto CommandInterpreter::getMap() const -> Map&
 {
-	auto& topState = mGameData->getStateMachine().getTopState();
-	auto& root = topState.getRoot();
+	auto& topScene = mGameData->getSceneMachine().getTopScene();
+	auto& root = topScene.getRoot();
 	auto& map = dynamic_cast<Map&>(root.getChild("map"));
 	return map;
 }

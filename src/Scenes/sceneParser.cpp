@@ -1,11 +1,8 @@
-#include "States/sceneParser.hpp"
-
+#include "sceneParser.hpp"
 #include "EntityComponentSystem/Objects/Characters/enemies/zombie.hpp"
 #include "EntityComponentSystem/Objects/Map/map.hpp"
 #include "EntityComponentSystem/Objects/Characters/player.hpp"
 #include "EntityComponentSystem/Objects/Characters/npc.hpp"
-
-#include <iostream>
 
 namespace ph {
 

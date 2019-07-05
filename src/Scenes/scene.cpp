@@ -1,12 +1,11 @@
-#include "States/state.hpp"
-
-#include "EntityComponentSystem/entityType.hpp"
+#include "scene.hpp"
 #include "gameData.hpp"
+#include "EntityComponentSystem/entityType.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
-State::State(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
+Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
 	:mRoot(EntityType::none, gameData, "root")
 	,mGameData(gameData)
 	,mSceneParser(gameData, mRoot, sceneSourceCodeFilePath)
@@ -15,12 +14,12 @@ State::State(GameData* const gameData, const std::string& sceneSourceCodeFilePat
 {
 }
 
-void State::input()
+void Scene::input()
 {
 	mRoot.input();
 }
 
-void State::update(sf::Time delta)
+void Scene::update(sf::Time delta)
 {
 	mRoot.update(delta);
 }

@@ -1,6 +1,7 @@
 template<std::size_t SIZE>
 ph::Animation::Animation(
-	const std::array<std::string, SIZE>& statesNames,
+	const std::array<std::string, SIZE>& 
+	sNames,
 	const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
 	const sf::Time& delay)
 	:mDelay(delay)

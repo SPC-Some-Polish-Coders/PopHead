@@ -5,7 +5,7 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
-#include "States/stateMachine.hpp"
+#include "Scenes/sceneMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
@@ -39,7 +39,7 @@ public:
 		TextureHolder* const textures,
 		FontHolder* const fonts,
 		ShaderHolder* const shaders,
-		StateMachine* const stateMachine,
+		SceneMachine* const sceneMachine,
 		Input* const input,
 		Renderer* const renderer,
 		PhysicsEngine* const physicsEngine,
@@ -52,7 +52,7 @@ public:
 		,mTextures{textures}
 		,mFonts{fonts}
 		,mShaders{shaders}
-		,mStateMachine{stateMachine}
+		,mSceneMachine{sceneMachine}
 		,mInput{input}
 		,mRenderer{renderer}
 		,mPhysicsEngine{physicsEngine}
@@ -68,7 +68,7 @@ public:
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
-	auto getStateMachine() const -> StateMachine& { return *mStateMachine; }
+	auto getSceneMachine() const -> SceneMachine& { return *mSceneMachine; }
 	auto getInput()	const -> Input& { return *mInput; }
 	auto getRenderer() const -> Renderer& { return *mRenderer; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
@@ -83,7 +83,7 @@ private:
 	TextureHolder* const mTextures;
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
-	StateMachine* const mStateMachine;
+	SceneMachine* const mSceneMachine;
 	Input* const mInput;
 	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;

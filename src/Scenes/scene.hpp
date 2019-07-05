@@ -2,16 +2,16 @@
 
 #include <SFML/System.hpp>
 #include "EntityComponentSystem/entity.hpp"
-#include "States/sceneParser.hpp"
+#include "sceneParser.hpp"
 
 namespace ph{
 
 class GameData; 
 
-class State
+class Scene
 {
 public:
-    State(GameData* const gameData, const std::string& sceneSourceCodeFilePath);
+    Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath);
     void input();
     void update(sf::Time delta);
 
