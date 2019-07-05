@@ -60,8 +60,8 @@ private:
 
 private:
 	std::string mCommand;
+	const sf::Vector2f mVector2ArgumentError = {-1, -1};
 	GameData* mGameData;
-
 };
 
 }

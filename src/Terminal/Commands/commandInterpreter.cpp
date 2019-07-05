@@ -100,7 +100,7 @@ void CommandInterpreter::executeTeleport() const
 {
 	auto& player = getPlayer();
 	const sf::Vector2f newPosition = getVector2Argument();
-	if(newPosition == sf::Vector2f(-1, -1))
+	if(newPosition == mVector2ArgumentError)
 		return;
 	player.setPosition(newPosition);
 }
@@ -299,8 +299,12 @@ bool CommandInterpreter::areArgumentsToModulesToLogInvalid() const
 void CommandInterpreter::executeView() const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
+	if(commandContains("normal")) {
+		camera.setSize({640, 480});
+		return;
+	}
 	const sf::Vector2f newViewSize = getVector2Argument();
-	if(newViewSize == sf::Vector2f(-1, -1))
+	if(newViewSize == mVector2ArgumentError)
 		return;
 	camera.setSize(newViewSize);
 	auto& map = getMap();
@@ -347,7 +351,7 @@ auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 sf::Vector2f CommandInterpreter::handleGetVector2ArgumentError() const
 {
 	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
-	return sf::Vector2f(-1, -1);
+	return mVector2ArgumentError;
 }
 
 bool CommandInterpreter::commandContains(const char c) const
