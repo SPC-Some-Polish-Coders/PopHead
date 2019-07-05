@@ -33,27 +33,27 @@ void CommandInterpreter::handleCommand(const std::string& command)
 	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
 }
 
-std::string CommandInterpreter::getCommandWithoutArguments()
+std::string CommandInterpreter::getCommandWithoutArguments() const
 {
 	return mCommand.substr(0, getArgumentPositionInCommand());
 }
 
-int CommandInterpreter::getArgumentPositionInCommand()
+int CommandInterpreter::getArgumentPositionInCommand() const
 {
-	size_t argumentPosition = mCommand.find(' ');
+	const size_t argumentPosition = mCommand.find(' ');
 	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
-void CommandInterpreter::executeEcho()
+void CommandInterpreter::executeEcho() const
 {
-	size_t spacePosition = mCommand.find(' ');
-	size_t messageStartPos = spacePosition + 1;
-	size_t messageLength = mCommand.size() - messageStartPos;
-	std::string message = mCommand.substr(messageStartPos, messageLength);
+	const size_t spacePosition = mCommand.find(' ');
+	const size_t messageStartPos = spacePosition + 1;
+	const size_t messageLength = mCommand.size() - messageStartPos;
+	const std::string message = mCommand.substr(messageStartPos, messageLength);
 	PH_LOG(LogType::FromUser, message);
 }
 
-void CommandInterpreter::executeHistory()
+void CommandInterpreter::executeHistory() const
 {
 	auto& terminalData = mGameData->getTerminal();
 	auto& commandsHistory = mGameData->getTerminal().getSharedData()->mLastCommands;
@@ -64,14 +64,14 @@ void CommandInterpreter::executeHistory()
 	terminalData.pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
 }
 
-void CommandInterpreter::executeHelp()
+void CommandInterpreter::executeHelp() const
 {
-	std::vector<std::string> commandsList1 {
+	const std::vector<std::string> commandsList1 {
 		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", "SETVOLUME",
 		"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"
 	};
 
-	sf::Color infoColor = {127, 244, 44};
+	const sf::Color infoColor = {127, 244, 44};
 	auto& terminal = mGameData->getTerminal();
 
 	if (commandContains('2')){
@@ -85,18 +85,18 @@ void CommandInterpreter::executeHelp()
 	}
 }
 
-void CommandInterpreter::executeClear()
+void CommandInterpreter::executeClear() const
 {
 	for (int i = 0; i < 20; ++i)
 		mGameData->getTerminal().pushOutputLine({"", sf::Color::Transparent});
 }
 
-void CommandInterpreter::executeExit()
+void CommandInterpreter::executeExit() const
 {
 	mGameData->getRenderer().getWindow().close();
 }
 
-void CommandInterpreter::executeTeleport()
+void CommandInterpreter::executeTeleport() const
 {
 	auto& player = getPlayer();
 	const sf::Vector2f newPosition = getVector2Argument();
@@ -105,9 +105,9 @@ void CommandInterpreter::executeTeleport()
 	player.setPosition(newPosition);
 }
 
-void CommandInterpreter::executeCurrentPos()
+void CommandInterpreter::executeCurrentPos() const
 {
-	auto& playerPosition = getPlayer().getPosition();
+	const sf::Vector2f playerPosition = getPlayer().getPosition();
 	PH_LOG(LogType::Info, "player position: " + Cast::toString(playerPosition));
 }
 
@@ -119,7 +119,7 @@ auto CommandInterpreter::getPlayer() const -> Object&
 	return player;
 }
 
-void CommandInterpreter::executeCollisionDebug()
+void CommandInterpreter::executeCollisionDebug() const
 {
 	if(commandContains("turn"))          turnOnOrTurnOffCollisionDebug();
 	else if(commandContains("color"))    changeCollisionDebugColor();
@@ -128,11 +128,11 @@ void CommandInterpreter::executeCollisionDebug()
 		PH_LOG(LogType::Error, "Incorrect argument! First argument has to be 'turn', 'color' or 'display'.");
 }
 
-void CommandInterpreter::turnOnOrTurnOffCollisionDebug()
+void CommandInterpreter::turnOnOrTurnOffCollisionDebug() const
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
-	size_t endOfCommand = getCommandWithoutArguments().size();
+	const size_t endOfCommand = getCommandWithoutArguments().size();
 	if (mCommand.rfind("on") > endOfCommand)
 		collisionDebugSettings.turnOn();
 	else if (commandContains("off"))
@@ -141,7 +141,7 @@ void CommandInterpreter::turnOnOrTurnOffCollisionDebug()
 		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.");
 }
 
-void CommandInterpreter::changeCollisionDebugColor()
+void CommandInterpreter::changeCollisionDebugColor() const
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
@@ -152,7 +152,7 @@ void CommandInterpreter::changeCollisionDebugColor()
 		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
 }
 
-void CommandInterpreter::changeCollisionDebugDisplayMode()
+void CommandInterpreter::changeCollisionDebugDisplayMode() const
 {
 	auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
 
@@ -163,17 +163,17 @@ void CommandInterpreter::changeCollisionDebugDisplayMode()
 		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.");
 }
 
-void CommandInterpreter::executeMute()
+void CommandInterpreter::executeMute() const
 {
 	setAudioMuted(true);
 }
 
-void CommandInterpreter::executeUnmute()
+void CommandInterpreter::executeUnmute() const
 {
 	setAudioMuted(false);
 }
 
-void CommandInterpreter::setAudioMuted(bool mute)
+void CommandInterpreter::setAudioMuted(bool mute) const
 {
 	if(commandContains("music"))
 		mGameData->getMusicPlayer().setMuted(mute);
@@ -187,9 +187,9 @@ void CommandInterpreter::setAudioMuted(bool mute)
 		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'music', 'sound' or 'all'.");
 }
 
-void CommandInterpreter::executeSetVolume()
+void CommandInterpreter::executeSetVolume() const
 {
-	float newVolume = getVolumeFromCommand();
+	const float newVolume = getVolumeFromCommand();
 	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
 		PH_LOG(LogType::Error, "Incorrect volume value! Enter value from 0 to 100");
 		return;
@@ -205,16 +205,16 @@ void CommandInterpreter::executeSetVolume()
 	}
 }
 
-float CommandInterpreter::getVolumeFromCommand()
+float CommandInterpreter::getVolumeFromCommand() const
 {
-	size_t spacePosition = mCommand.find_last_of(' ');
-	size_t valueStartPos = spacePosition + 1;
-	size_t valueLength = mCommand.size() - valueStartPos;
-	std::string volumeValue = mCommand.substr(valueStartPos, valueLength);
+	const size_t spacePosition = mCommand.find_last_of(' ');
+	const size_t valueStartPos = spacePosition + 1;
+	const size_t valueLength = mCommand.size() - valueStartPos;
+	const std::string volumeValue = mCommand.substr(valueStartPos, valueLength);
 	return std::strtof(volumeValue.c_str(), nullptr);
 }
 
-void CommandInterpreter::executeLog()
+void CommandInterpreter::executeLog() const
 {
 	if (commandContains("into"))          logInto();
 	else if (commandContains("types"))    setLogTypesToLog();
@@ -223,11 +223,11 @@ void CommandInterpreter::executeLog()
 		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");
 }
 
-void CommandInterpreter::logInto()
+void CommandInterpreter::logInto() const
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
-	int newValue = commandContains("not") ? false : true;
+	const int newValue = commandContains("not") ? false : true;
 	if (commandContains("console") || commandContains("all"))
 		logSettings.setWritingLogsIntoConsole(newValue);
 	else if (commandContains("file") || commandContains("all"))
@@ -238,7 +238,7 @@ void CommandInterpreter::logInto()
 		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");
 }
 
-void CommandInterpreter::setLogTypesToLog()
+void CommandInterpreter::setLogTypesToLog() const
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
@@ -254,7 +254,7 @@ void CommandInterpreter::setLogTypesToLog()
 		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");
 }
 
-bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
+bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid() const
 {
 	return(!(
 		commandContains("info") || commandContains("warning") ||
@@ -263,7 +263,7 @@ bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid()
 	));
 }
 
-void CommandInterpreter::setModulesToLog()
+void CommandInterpreter::setModulesToLog() const
 {
 	auto& logSettings = Logger::getInstance().getLogSettings();
 
@@ -286,7 +286,7 @@ void CommandInterpreter::setModulesToLog()
 		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");
 }
 
-bool CommandInterpreter::areArgumentsToModulesToLogInvalid()
+bool CommandInterpreter::areArgumentsToModulesToLogInvalid() const
 {
 	return(!(commandContains("audio") || commandContains("base") || commandContains("input") ||
 		commandContains("logs") || commandContains("physics") || commandContains("renderer") ||
@@ -296,7 +296,7 @@ bool CommandInterpreter::areArgumentsToModulesToLogInvalid()
 	));
 }
 
-void CommandInterpreter::executeView()
+void CommandInterpreter::executeView() const
 {
 	auto& camera = mGameData->getRenderer().getCamera();
 	const sf::Vector2f newViewSize = getVector2Argument();
@@ -325,21 +325,21 @@ auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 	if(mCommand.find_first_of(numbers) == std::string::npos)
 		return handleGetVector2ArgumentError();
 
-	size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
+	const size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
 	if(xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
 		return handleGetVector2ArgumentError();
-	size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
-	size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
+	const size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
+	const size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
-	float positionX = std::strtof(xArgument.c_str(), nullptr);
+	const float positionX = std::strtof(xArgument.c_str(), nullptr);
 
-	size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
+	const size_t yArgumentPositionInCommand = mCommand.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
 	if(yArgumentPositionInCommand == std::string::npos)
 		return handleGetVector2ArgumentError();
-	size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
-	size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
-	std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
-	float positionY = std::strtof(yArgument.c_str(), nullptr);
+	const size_t yArgumentEndPositionInCommand = mCommand.find_first_not_of(numbers, yArgumentPositionInCommand);
+	const size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
+	const std::string yArgument = mCommand.substr(yArgumentPositionInCommand, yArgumentLength);
+	const float positionY = std::strtof(yArgument.c_str(), nullptr);
 
 	return sf::Vector2f(positionX, positionY);
 }
@@ -350,12 +350,12 @@ sf::Vector2f CommandInterpreter::handleGetVector2ArgumentError() const
 	return sf::Vector2f(-1, -1);
 }
 
-bool CommandInterpreter::commandContains(const char c)
+bool CommandInterpreter::commandContains(const char c) const
 {
 	return mCommand.find(c) != std::string::npos;
 }
 
-bool CommandInterpreter::commandContains(const char* c)
+bool CommandInterpreter::commandContains(const char* c) const
 {
 	return mCommand.find(c) != std::string::npos;
 }

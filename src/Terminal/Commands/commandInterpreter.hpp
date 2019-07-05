@@ -12,51 +12,51 @@ class Map;
 class CommandInterpreter
 {
 public:
-	void setGameData(GameData* gameData) { mGameData = gameData; }
+	void setGameData(GameData* const gameData) { mGameData = gameData; }
 
 	void handleCommand(const std::string&);
 private:
-	std::string getCommandWithoutArguments();
-	int getArgumentPositionInCommand();
+	std::string getCommandWithoutArguments() const;
+	int getArgumentPositionInCommand() const;
 
-	void executeEcho();
+	void executeEcho() const;
 
-	void executeExit();
+	void executeExit() const;
 
-	void executeTeleport();
-	void executeCurrentPos();
+	void executeTeleport() const;
+	void executeCurrentPos() const;
 	auto getPlayer() const -> Object&;
 
-	void executeHistory();
-	void executeHelp();
-	void executeClear();
+	void executeHistory() const;
+	void executeHelp() const;
+	void executeClear() const;
 
-	void executeCollisionDebug();
-	void changeCollisionDebugColor();
-	void changeCollisionDebugDisplayMode();
-	void turnOnOrTurnOffCollisionDebug();
+	void executeCollisionDebug() const;
+	void changeCollisionDebugColor() const;
+	void changeCollisionDebugDisplayMode() const;
+	void turnOnOrTurnOffCollisionDebug() const;
 	
-	void executeMute();
-	void executeUnmute();
-	void setAudioMuted(bool mute);
-	void executeSetVolume();
-	float getVolumeFromCommand();
+	void executeMute() const;
+	void executeUnmute() const;
+	void setAudioMuted(bool mute) const;
+	void executeSetVolume() const;
+	float getVolumeFromCommand() const;
 
-	void executeLog();
-	void logInto();
-	void setLogTypesToLog();
-	bool areArgumentsToLogTypesToLogInvalid();
-	void setModulesToLog();
-	bool areArgumentsToModulesToLogInvalid();
+	void executeLog() const;
+	void logInto() const;
+	void setLogTypesToLog() const;
+	bool areArgumentsToLogTypesToLogInvalid() const;
+	void setModulesToLog() const;
+	bool areArgumentsToModulesToLogInvalid() const;
 
-	void executeView();
+	void executeView() const;
 	auto getMap() const -> Map&;
 
 	auto getVector2Argument() const -> sf::Vector2f;
 	sf::Vector2f handleGetVector2ArgumentError() const;
 
-	bool commandContains(const char);
-	bool commandContains(const char*);
+	bool commandContains(const char) const;
+	bool commandContains(const char*) const;
 
 private:
 	std::string mCommand;
