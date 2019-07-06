@@ -161,3 +161,52 @@ TEST_CASE("are they overlapping", "[Utilities][Math]")
 		CHECK_FALSE(Math::areTheyOverlapping(B, A));
 	}
 }
+
+TEST_CASE("lerp", "[Utilities][Math]")
+{
+	// These section is commented because ini loader thrown exceptions and these tests did not work correcly.
+	// Uncomment this test when the logs are cleared.
+	/*SECTION("index is 0 and array size is 0") {
+		CHECK_THROWS_WITH(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(0, 0), "Number of columns cannot be 0");
+	}*/
+	SECTION("for positive source and destination") {
+		const sf::Vector2f source(5, 5);
+		const sf::Vector2f destination(10, 10);
+		{
+			const float speed = 2.f;
+			CHECK(areEqual(Math::lerp(source, destination, speed), {15, 15}));
+		}
+		{
+			const float speed = 1.f;
+			CHECK(areEqual(Math::lerp(source, destination, speed), {10, 10}));
+		}
+		{
+			const float speed = 0.5f;
+			CHECK(areEqual(Math::lerp(source, destination, speed), {7.5, 7.5}));
+		}
+		{
+			const float speed = 0.25f;
+			CHECK(areEqual(Math::lerp(source, destination, speed), {6.25, 6.25}));
+		}
+	}
+	SECTION("for negative source and destination") {
+		const sf::Vector2f source(-5, -5);
+		const sf::Vector2f destination(-10, -10);
+		const float speed = 0.5;
+		const sf::Vector2f result = Math::lerp(source, destination, speed);
+		CHECK(areEqual(result, {-7.5, -7.5}));
+	}
+	SECTION("When speed is 0.5, result equals (0, 0) when source and destination are negative values") {
+		const sf::Vector2f source(5, 5);
+		const sf::Vector2f destination(-5, -5);
+		const float speed = 0.5;
+		SECTION("for positive source and negative destination") {
+			const sf::Vector2f result = Math::lerp(source, destination, speed);
+			CHECK(areEqual(result, {0, 0}));
+		}
+		SECTION("for negative source and positive destination") {
+			const sf::Vector2f result = Math::lerp(-source, -destination, speed);
+			CHECK(areEqual(result, {0, 0}));
+		}
+	}
+}
