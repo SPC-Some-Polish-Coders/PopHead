@@ -8,26 +8,22 @@ namespace ph {
 
 void PhysicsEngine::addStaticBody(CollisionBody* staticBody)
 {
-    mStaticBodies.emplace_back(std::move(staticBody));
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was added to physics engine.");
+    mStaticBodies.emplace_back(staticBody);
 }
 
 void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBody)
 {
-    mKinematicBodies.emplace_back(std::move(kinematicBody));
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was added to physics engine.");
+    mKinematicBodies.emplace_back(kinematicBody);
 }
 
 void PhysicsEngine::removeStaticBody(CollisionBody* staticBody)
 {
 	removeBody(mStaticBodies, staticBody);
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
 void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBody)
 {
 	removeBody(mKinematicBodies, kinematicBody);
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was deleted from physics engine.");
 }
 
 void PhysicsEngine::removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body)
@@ -59,10 +55,9 @@ void PhysicsEngine::update(sf::Time delta)
 
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
 {
-	for (const auto& staticBody : mStaticBodies) {
+	for (const auto& staticBody : mStaticBodies)
 		if (isThereCollision(kinematicBody->getRect(), staticBody->getRect()))
 			mStaticCollisionHandler(kinematicBody, staticBody);
-	}
 }
 
 void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)

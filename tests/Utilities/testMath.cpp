@@ -2,7 +2,7 @@
 
 #include "Utilities/math.hpp"
 
-using namespace ph;
+namespace ph {
 
 namespace {
 	bool areEqual(const float f1, const float f2)
@@ -209,4 +209,6 @@ TEST_CASE("lerp", "[Utilities][Math]")
 			CHECK(areEqual(result, {0, 0}));
 		}
 	}
+}
+
 }

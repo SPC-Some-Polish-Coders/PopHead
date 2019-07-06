@@ -32,6 +32,8 @@ void Zombie::update(sf::Time delta)
 		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", mPosition);
 		timeFromLastGrowl.restart();
 	}
+
+	setPosition(mCollisionBody.getPosition());
 }
 
 }

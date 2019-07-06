@@ -13,7 +13,6 @@ public:
 
 private:
 	void init(CollisionBody* kinematicBody, CollisionBody* staticBody);
-	void collisionLog() const;
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX();
 	bool isKinematicBodyOnTheLeftOfTheStaticBody();

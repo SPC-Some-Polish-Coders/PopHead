@@ -12,7 +12,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mMotion()
 	,mAnimation(animation)
-	,mCollisionBody(posAndSize, mass, BodyType::kinematicBody, this, gameData)
+	,mCollisionBody(posAndSize, mass, BodyType::kinematicBody, gameData)
 {
 }
 

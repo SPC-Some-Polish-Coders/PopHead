@@ -231,7 +231,7 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			sf::FloatRect bounds = tilesData.bounds[i];
 			bounds.left += position.x;
 			bounds.top += position.y;
-			auto collisionBody = std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, this, mGameData);
+			auto collisionBody = std::make_unique<CollisionBody>(bounds, 0, BodyType::staticBody, mGameData);
 			mCollisionBodies.push_back(std::move(collisionBody));
 		}
 	}

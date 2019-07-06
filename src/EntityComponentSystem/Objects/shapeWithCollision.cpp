@@ -6,7 +6,7 @@ namespace ph {
 
 ShapeWithCollision::ShapeWithCollision(GameData* gameData)
 	:Object(gameData, "shapeWithCollision", LayerID::staticEntities)
-	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, BodyType::staticBody, this, gameData)
+	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, BodyType::staticBody, gameData)
 	,mShape(sf::Vector2f(100, 50))
 {
 	mShape.setFillColor(sf::Color::Black);

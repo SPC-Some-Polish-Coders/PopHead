@@ -14,7 +14,7 @@ class Object;
 class CollisionBody
 {
 public:
-	CollisionBody(sf::FloatRect rect, float mass, BodyType, Object* const owner, GameData*);
+	CollisionBody(sf::FloatRect rect, float mass, BodyType, GameData* const);
 	~CollisionBody();
 
 	//the methods below should be called from owner
@@ -29,27 +29,24 @@ public:
 	void actionsAtTheEndOfPhysicsLoopIteration();
 private:
 	void setPreviousPositionToCurrentPosition();
-	void updateOwnerPosition();
 
 public:
+	auto getPosition() const -> const sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
 	auto getBodyType() const -> const BodyType { return mBodyType; }
-	auto getNameOfOwner() -> const std::string& { return mOwner->getName(); }
 	auto getVelocity() -> sf::Vector2f { return mVelocity; }
-	auto getPosition() -> sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
 	auto getPositionOfCenter() -> sf::Vector2f { return ph::Math::getCenter(mRect); }
 	auto getRect() -> const sf::FloatRect& { return mRect; }
 	auto getPreviousRect() -> sf::FloatRect { return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height); }
 	float getMass() { return mMass; }
 
 private:
+	CollisionDebugRect mCollisionDebugRect;
 	sf::FloatRect mRect;
 	sf::Vector2f mPreviousPosition;
 	sf::Vector2f mVelocity;
 	sf::Vector2f mForceVector;
 	float mMass;
 	const BodyType mBodyType;
-	CollisionDebugRect mCollisionDebugRect;
-	Object* const mOwner;
 	GameData* mGameData;
 };
 

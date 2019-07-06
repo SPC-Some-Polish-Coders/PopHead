@@ -3,12 +3,10 @@
 
 namespace ph {
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType,
-								Object* const owner, GameData* gameData)
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType, GameData* const gameData)
 	:mRect(rect)
 	,mMass(mass)
 	,mPreviousPosition(rect.left, rect.top)
-	,mOwner(owner)
 	,mBodyType(bodyType)
 	,mCollisionDebugRect(gameData, rect, this)
 	,mGameData(gameData)
@@ -57,7 +55,6 @@ void CollisionBody::setPosition(sf::Vector2f position)
 void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 {
 	setPreviousPositionToCurrentPosition();
-	updateOwnerPosition();
 	mVelocity = sf::Vector2f();
 }
 
@@ -65,11 +62,6 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 {
 	mPreviousPosition.x = mRect.left;
 	mPreviousPosition.y = mRect.top;
-}
-
-void CollisionBody::updateOwnerPosition()
-{
-	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
 }
 
 void CollisionBody::updatePush(sf::Time delta)

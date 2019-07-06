@@ -103,8 +103,8 @@ void Player::update(sf::Time delta)
 	}
 	mMotion.clear();
 
+	setPosition(mCollisionBody.getPosition());
 	cameraMovement(delta);
-
 	updateListenerPosition();
 }
 

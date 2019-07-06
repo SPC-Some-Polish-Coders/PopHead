@@ -39,6 +39,8 @@ void Npc::update(sf::Time delta)
 {
     if(mWasDialogueButtonClicked)
         talk();
+
+	setPosition(mCollisionBody.getPosition());
 }
 
 void Npc::talk()
