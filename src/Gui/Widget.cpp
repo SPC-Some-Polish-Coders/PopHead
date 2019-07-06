@@ -1,30 +1,29 @@
-#include "Widget.hpp"
+#include "widget.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
 Widget::Widget()
-	:mAlpha(0),
-	mRoot(nullptr),
-	mPosition(0, 0),
-	mSize(0, 0),
-	mOrigin(0, 0),
-	mScale(1, 1),
-	misActive(true),
-	mGameData(nullptr),
-	mWindow(nullptr)
+	:mAlpha(0)
+	,mRoot(nullptr)
+	,mPosition(0, 0)
+	,mSize(0, 0)
+	,mOrigin(0, 0)
+	,mScale(1, 1)
+	,mIsActive(true)
+	,mGameData(nullptr)
+	,mWindow(nullptr)
 {
 }
+
 void Widget::draw()
 {
-	if(misActive)
+	if(mIsActive)
 	{
 		mWindow->draw(mSprite);
 		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
-		{
 			if(k->second->isActive())
 				k->second->draw();
-		}
 	}
 }
 
@@ -35,13 +34,11 @@ void Widget::setAlpha(unsigned int alpha)
 
 void Widget::update(sf::Time delta)
 {
-	if(misActive == false)
+	if(mIsActive == false)
 		return;
-
 
 	if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Left))
 	{
-
 		auto c = mGameData->getInput().getMouse().getMousePosition();
 		auto k = mWindow->mapPixelToCoords(c);
 
@@ -60,7 +57,6 @@ void Widget::update(sf::Time delta)
 
 	if(mGameData->getInput().getMouse().isMouseButtonJustReleased(sf::Mouse::Left))
 	{
-
 		auto c = mGameData->getInput().getMouse().getMousePosition();
 		auto k = mWindow->mapPixelToCoords(c);
 
@@ -68,31 +64,18 @@ void Widget::update(sf::Time delta)
 			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
 		{
 			for(const auto& k : mBehaviors)
-			{
 				if(k.first == behaviorType::onReleased)
-				{
 					k.second(this);
-				}
-			}
 		}
 	}
 
 	for(const auto& k : mBehaviors)
-	{
 		if(k.first == behaviorType::onUpdate)
-		{
 			k.second(this);
-		}
-	}
 
-
-	if(misActive)
-	{
+	if(mIsActive)
 		for(const auto& k : mWidgetList)
-		{
 			k.second->update(delta);
-		}
-	}
 }
 
 void Widget::addWidget(const std::string& name, Widget* ptr)
@@ -105,12 +88,12 @@ void Widget::addWidget(const std::string& name, Widget* ptr)
 
 void Widget::hide()
 {
-	misActive = false;
+	mIsActive = false;
 }
 
 void Widget::show()
 {
-	misActive = true;
+	mIsActive = true;
 }
 
 bool Widget::setContentPath(const std::string& path)
@@ -136,9 +119,7 @@ void Widget::setPosition(const sf::Vector2f& pos)
 		mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
 
 		for(const auto& k : mWidgetList)
-		{
 			k.second->rePosition();
-		}
 	}
 }
 
@@ -151,9 +132,7 @@ void Widget::moveAlongBranch(const sf::Vector2f& delta)
 {
 	this->move(delta);
 	for(const auto& k : mWidgetList)
-	{
 		k.second->moveAlongBranch(delta);
-	}
 }
 
 void Widget::scale(const sf::Vector2f& scale)
@@ -170,18 +149,14 @@ void Widget::scaleAlongBranch(const sf::Vector2f& scale)
 	this->scale(scale);
 	rePosition();
 	for(const auto& k : mWidgetList)
-	{
 		k.second->scaleAlongBranch(scale);
-	}
 }
 
 void Widget::setAlphaAlongBranch(unsigned int alpha)
 {
 	this->setAlpha(alpha);
 	for(const auto& k : mWidgetList)
-	{
 		k.second->setAlphaAlongBranch(alpha);
-	}
 }
 
 void Widget::setVirtualSize(const sf::Vector2f& size)
@@ -197,6 +172,7 @@ void Widget::addBehavior(behaviorType type, const std::function<void(Widget*)>& 
 {
 	mBehaviors.insert({type,func});
 }
+
 Widget* Widget::getWidget(const std::string& name)
 {
 	auto it = mWidgetList.find(name);
@@ -206,49 +182,55 @@ Widget* Widget::getWidget(const std::string& name)
 
 	return nullptr;
 }
+
 void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size)
 {
 }
+
 void Widget::setGameData(GameData* GameData)
 {
 	mGameData = GameData;
 	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getRenderer().getWindow());
 }
+
 bool Widget::isActive()
 {
-	return misActive;
+	return mIsActive;
 }
+
 void Widget::setRoot(Widget* ptr)
 {
 	mRoot = ptr;
 }
+
 void Widget::setOrigin(const sf::Vector2f& origin)
 {
 	mOrigin = origin;
 	rePosition();
 	for(const auto& k : mWidgetList)
-	{
 		k.second->rePosition();
-	}
 }
+
 sf::Vector2f Widget::getOrigin() const
 {
 	return mOrigin;
 }
+
 sf::Vector2f Widget::getPosition() const
 {
 	return mPosition;
 }
+
 sf::Vector2f Widget::getGlobalPosition() const
 {
 	return mSprite.getPosition();
 }
+
 void Widget::rePosition()
 {
 	setPosition(mPosition);
 	for(const auto& k : mWidgetList)
-	{
 		k.second->rePosition();
-	}
 }
+
 }
