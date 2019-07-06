@@ -13,6 +13,7 @@
 	- [Audio commands](#audio-commands)
 	- [Collision Debug commands](#collision-debug-commands)
 	- [Player location commands](#player-location-commands)
+	- [Camera commands](#camera-commands)
 
 </details>
 
@@ -188,4 +189,24 @@ collisiondebug display static
 ```
 teleport 260 1255
 teleport 300
+```
+
+## Camera commands
+-------------------------
+### **`view`** is command which changes camera view size
+| **view arguments** | **Describe** |
+| -----------: | ------------ |
+| `<width value>` | argument is a number which sets camera view width |
+| `<height value>` | argument is a number which sets camera view height |
+| `<only one argument>` | if only one argument is given, second one implicitly gets its value |
+| `normal` | sets camera view size back to default value (640, 480); should be passed as a single argument |
+| `chunkdebug` | makes chunks render as for default camera view size; has to be passed as third argument; |
+#### Hint:
+Remember that default aspect ratio in PopHead is 4x3 so consider that using this command. Rather use ``view 2000 1500`` then ``view 2000``.
+#### Examples: 
+```
+view 2000 1500
+view 1000
+view normal
+view 1000 750 chunkdebug
 ```
