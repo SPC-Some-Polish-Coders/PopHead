@@ -33,10 +33,13 @@ private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
 	{ return mContent[openingTagEndPosition - 1] == '/'; }
 
+	bool isClosingTag(std::size_t tagNamePosition) const 
+	{ return mContent[tagNamePosition - 2] == '<' && mContent[tagNamePosition - 1] == '/'; }
+
 	bool isEmptyAttributeValue(std::size_t onePositionAfterAttributeValueOpeningQuote) const
 	{ return mContent[onePositionAfterAttributeValueOpeningQuote] == '\"'; }
 
-	std::size_t findEndOfCurrentTagAttributes(std::size_t offset = 0) const
+	std::size_t findEndOfTagAttributes(std::size_t offset = 0) const
 	{ return mContent.find('>', offset); }
 
 	std::string mContent;

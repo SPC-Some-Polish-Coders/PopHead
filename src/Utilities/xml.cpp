@@ -26,22 +26,10 @@ void Xml::loadFromFile(const std::string& filePath)
 	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + mContent);
 }
 
-/*
-	NOTE: There is always only one "root" tag in every getChild() and getChildren() calls which has children.
-	TODO: Disallow to have more than one root tag? It could be done in loadFromFile() probably. But is it necessary? VS informs when it happens. But what about external users?
-
-	Example implementation of getChild():
-	Find first <.
-	Check is it equel to name by finding "space" character or closing angle bracket.
-	* If yes return.
-	* If not check if is it self closing tag
-		* If yes seach for next <
-		* If no seach for closing tag (but be carefull about tags with same name. Do it until count is not equel 0. What if some tag won't have closing tag?
-*/
 Xml Xml::getChild(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
-	std::size_t begin = findEndOfCurrentTagAttributes();
+	std::size_t begin = findEndOfTagAttributes();
 	PH_ASSERT(begin != std::string::npos, "missing closing angle bracket");
 	if (isSelfClosingTag(begin))
 		PH_EXCEPTION("current tag cannot have children");
@@ -58,8 +46,7 @@ Xml Xml::getChild(std::string name) const
 			TODO:
 				* Delete unnecessary spaces in loadFromFile() ?
 				* Or maybe just use one more find ?
-
-			Add characters like \t to find_first_of()?
+			Add characters like \t to find_first_of()? Or maybe replace them with spaces in loadFromFile()?
 			Create method like isTagWithAttributes() and put find_first_of() there?
 		*/
 		std::size_t end = mContent.find_first_of(" >", begin + 1);
@@ -75,63 +62,69 @@ Xml Xml::getChild(std::string name) const
 			else
 				begin = end;
 		}
-		else {
-			if (mContent.compare(begin, end - begin, name) == 0) {
-				unsigned count = 0;
-				// TODO: If it is tag with attributes skip them ???
-				while (true) {
-					end = mContent.find(name, end + 2);
+		else if (mContent.compare(begin, end - begin, name) == 0) {
+			unsigned count = 0;
+			end = findEndOfTagAttributes(end);
+			if (end == std::string::npos)
+				PH_EXCEPTION("missing closing angle bracket in child opening tag");
+			while (true) {
+				end = mContent.find(name, end + 2);
+				if (end == std::string::npos)
+					PH_EXCEPTION("missing child closing tag");
+				if (isClosingTag(end) && count == 0) {
+					Xml xml;
+					xml.mContent = mContent.substr(begin, end - begin - 2);
+					PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
+					return xml;
+				}
+				else if (isClosingTag(end)) {
+					--count;
+					end += name.size();
+				}
+				else if (mContent[end - 1] == '<') {
+					end = findEndOfTagAttributes(end + name.size());
 					if (end == std::string::npos)
-						PH_EXCEPTION("missing child closing tag");
-					// NOTE: Is closing tag
-					if (mContent[end - 2] == '<' && mContent[end - 1] == '/' && count == 0) {
-						Xml xml;
-						xml.mContent = mContent.substr(begin, end - begin - 2);
-						PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
-						return xml;
-					}
-					else if (mContent[end - 2] == '<' && mContent[end - 1] == '/') {
-						--count;
-						end += name.size();
-					}
-					else if (mContent[end - 1] == '<') {
-						end = findEndOfCurrentTagAttributes(end + name.size());
-						if (end == std::string::npos)
-							PH_EXCEPTION("missing closing angle bracket in child opening tag");
-						if (!isSelfClosingTag(end))
-							++count;
-					}
-					else
-						end += name.size() - 1;
+						PH_EXCEPTION("missing closing angle bracket in child opening tag");
+					if (!isSelfClosingTag(end))
+						++count;
 				}
+				else
+					end += name.size() - 1;
 			}
-			else {
-				// NOTE: Set begin to > of ending tag. Be carefull about childs with same name as parent.
-				// TODO: If it is tag with attributes skip them ???
-				const std::string currentTagName = mContent.substr(begin, end - begin);
-				begin = end;
-				unsigned count = 0;
-				while (true) {
-					begin = mContent.find(currentTagName, begin + 2);
-					if (begin == std::string::npos)
-						PH_EXCEPTION("missing child closing tag");
-					// NOTE: Is closing tag
-					if (mContent[begin - 2] == '<' && mContent[begin - 1] == '/' && count == 0) {
-						begin += currentTagName.size();
-						break;
-					}
-					else if (mContent[begin - 2] == '<' && mContent[begin - 1] == '/') {
-						--count;
-						begin += currentTagName.size();
-					}
-					else if (mContent[begin - 1] == '<') {
-						begin = findEndOfCurrentTagAttributes(begin + currentTagName.size());
-						if (!isSelfClosingTag(begin))
-							++count;
-					}
-					else
-						begin += currentTagName.size() - 1;
+		}
+		else {
+			/* 
+				NOTE:
+				It is child which is not equel to given name paramiter.
+				So we need to find his ending tag to skip him and his children.
+			*/
+			const std::string childName = mContent.substr(begin, end - begin);
+			begin = end;
+			begin = findEndOfTagAttributes(begin);
+			if (begin == std::string::npos)
+				PH_EXCEPTION("missing closing angle bracket in child opening tag");
+			unsigned count = 0;
+			while (true) {
+				begin = mContent.find(childName, begin + 2);
+				if (begin == std::string::npos)
+					PH_EXCEPTION("missing child closing tag");
+				if (isClosingTag(begin) && count == 0) {
+					begin += childName.size();
+					break;
 				}
+				else if (isClosingTag(begin)) {
+					--count;
+					begin += childName.size();
+				}
+				else if (mContent[begin - 1] == '<') {
+					begin = findEndOfTagAttributes(begin + childName.size());
+					if (begin == std::string::npos)
+						PH_EXCEPTION("missing closing angle bracket in child opening tag");
+					if (!isSelfClosingTag(begin))
+						++count;
+				}
+				else
+					begin += childName.size() - 1;
 			}
 		}
 	}
@@ -142,7 +135,7 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	name.insert(0, "<");
 
-	std::size_t begin = findEndOfCurrentTagAttributes();
+	std::size_t begin = findEndOfTagAttributes();
 	PH_ASSERT(begin != std::string::npos, "missing closing angle bracket");
 	if (isSelfClosingTag(begin))
 		return std::vector<Xml>();
@@ -293,7 +286,7 @@ Xml Xml::getAttribute(std::string name) const
 
 std::string Xml::toString() const
 {
-	std::size_t begin = findEndOfCurrentTagAttributes();
+	std::size_t begin = findEndOfTagAttributes();
 	if (begin == std::string::npos)
 		return mContent;
 	++begin;
