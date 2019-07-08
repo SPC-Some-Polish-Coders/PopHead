@@ -54,6 +54,8 @@ sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 
 	sf::Vector2f directionOfPush;
 	float hypotenuse = std::hypotf(sides.x, sides.y);
+	if(hypotenuse == 0.f)
+		return sf::Vector2f(0, 0);
 	float sineResult = std::abs(sides.x / hypotenuse);
 
 	directionOfPush.x = posOfBody1.x > posOfBody2.x ? sineResult : -1 * sineResult;

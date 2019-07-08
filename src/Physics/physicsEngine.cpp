@@ -5,6 +5,12 @@
 
 namespace ph {
 
+PhysicsEngine::PhysicsEngine()
+{
+	mStaticBodies.reserve(10000);
+	mKinematicBodies.reserve(1000);
+}
+
 CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
 	mStaticBodies.emplace_back(rect, 0, BodyType::staticBody);
@@ -28,7 +34,7 @@ void PhysicsEngine::update(sf::Time delta)
     for(auto kinematicBody : mKinematicBodies)
     {
 		handleKinematicCollisionsFor(&kinematicBody);
-		kinematicBody.updatePush(delta);
+		//kinematicBody.updatePush(delta);
 		handleStaticCollisionsFor(&kinematicBody);
 		kinematicBody.actionsAtTheEndOfPhysicsLoopIteration();
     }

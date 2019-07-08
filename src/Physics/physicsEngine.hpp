@@ -12,6 +12,8 @@ namespace ph{
 class PhysicsEngine
 {
 public:
+	PhysicsEngine();
+
     CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
 	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass);
 
