@@ -5,48 +5,77 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
-#include "States/stateMachine.hpp"
+#include "Scenes/sceneMachine.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
-#include "EfficencyRegister/efficencyRegister.hpp"
+#include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Gui/GUI.hpp"
 
 namespace ph {
 
 /// GameData is holder for observer pointers to Game Modules.
 
+class GameCloser
+{
+public:
+	void closeTheGame() { mShouldGameBeClosed = true; };
+	bool shouldGameBeClosed() { return mShouldGameBeClosed; };
+
+private:
+	bool mShouldGameBeClosed = false;
+};
+
 class GameData
 {
 public:
-	inline GameData();
-	inline GameData(
-		SoundPlayer* const,
-		MusicPlayer* const,
-		TextureHolder* const,
-		FontHolder* const,
-		ShaderHolder* const,
-		StateMachine* const,
-		Input* const,
-		Renderer* const,
-		PhysicsEngine* const,
-		Terminal* const,
-		EfficencyRegister* const,
-		GUI* const);
-
-	auto getSoundPlayer()	    const -> SoundPlayer & { return *mSoundPlayer; }
-	auto getMusicPlayer()	    const -> MusicPlayer & { return *mMusicPlayer; }
-	auto getTextures()		    const -> TextureHolder & { return *mTextures; }
-	auto getFonts()			    const -> FontHolder & { return *mFonts; }
-	auto getShaders()		    const -> ShaderHolder & { return *mShaders; }
-	auto getStateMachine()	    const -> StateMachine & { return *mStateMachine; }
-	auto getInput()			    const -> Input & { return *mInput; }
-	auto getRenderer()		    const -> Renderer & { return *mRenderer; }
-	auto getPhysicsEngine()	    const -> PhysicsEngine & { return *mPhysicsEngine; }
-	auto getTerminal()		    const -> Terminal & { return *mTerminal; }
-	auto getEfficencyRegister()	const -> EfficencyRegister & { return *mEfficencyRegister; }
-	auto getGui()			    const -> GUI & { return *mGui; }
+	GameData()
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	
+	GameData(
+		SoundPlayer* const soundPlayer,
+		MusicPlayer* const musicPlayer,
+		TextureHolder* const textures,
+		FontHolder* const fonts,
+		ShaderHolder* const shaders,
+		SceneMachine* const sceneMachine,
+		Input* const input,
+		Renderer* const renderer,
+		PhysicsEngine* const physicsEngine,
+		Terminal* const Terminal,
+		EfficiencyRegister* const efficiencyRegister,
+		GUI* const Gui
+	)
+		:mSoundPlayer{soundPlayer}
+		,mMusicPlayer{musicPlayer}
+		,mTextures{textures}
+		,mFonts{fonts}
+		,mShaders{shaders}
+		,mSceneMachine{sceneMachine}
+		,mInput{input}
+		,mRenderer{renderer}
+		,mPhysicsEngine{physicsEngine}
+		,mTerminal{Terminal}
+		,mEfficiencyRegister{efficiencyRegister}
+		,mGui(Gui)
+		,mGameCloser()
+	{
+	}
+	
+	auto getSoundPlayer() const -> SoundPlayer& { return *mSoundPlayer; }
+	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
+	auto getTextures() const -> TextureHolder& { return *mTextures; }
+	auto getFonts()	const -> FontHolder& { return *mFonts; }
+	auto getShaders() const -> ShaderHolder& { return *mShaders; }
+	auto getSceneMachine() const -> SceneMachine& { return *mSceneMachine; }
+	auto getInput()	const -> Input& { return *mInput; }
+	auto getRenderer() const -> Renderer& { return *mRenderer; }
+	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
+	auto getTerminal() const -> Terminal& { return *mTerminal; }
+	auto getEfficiencyRegister() const -> EfficiencyRegister& { return *mEfficiencyRegister; }
+	auto getGui() const -> GUI& { return *mGui; }
+	auto getGameCloser() -> GameCloser& { return mGameCloser; }
 
 private:
 	SoundPlayer* const mSoundPlayer;
@@ -54,45 +83,14 @@ private:
 	TextureHolder* const mTextures;
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
-	StateMachine* const mStateMachine;
+	SceneMachine* const mSceneMachine;
 	Input* const mInput;
 	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
-	EfficencyRegister* const mEfficencyRegister;
+	EfficiencyRegister* const mEfficiencyRegister;
 	GUI* const mGui;
+	GameCloser mGameCloser;
 };
-
-inline GameData::GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
-
-inline GameData::GameData(
-	SoundPlayer* const soundPlayer,
-	MusicPlayer* const musicPlayer,
-	TextureHolder* const textures,
-	FontHolder* const fonts,
-	ShaderHolder* const shaders,
-	StateMachine* const stateMachine,
-	Input* const input,
-	Renderer* const renderer,
-	PhysicsEngine* const physicsEngine,
-	Terminal* const Terminal,
-	EfficencyRegister* const efficencyRegister,
-	GUI* const Gui
-)
-	:mSoundPlayer{soundPlayer}
-	,mMusicPlayer{musicPlayer}
-	,mTextures{textures}
-	,mFonts{fonts}
-	,mShaders{shaders}
-	,mStateMachine{stateMachine}
-	,mInput{input}
-	,mRenderer{renderer}
-	,mPhysicsEngine{physicsEngine}
-	,mTerminal{Terminal}
-	,mEfficencyRegister{efficencyRegister}
-	,mGui(Gui)
-{
-}
 
 }

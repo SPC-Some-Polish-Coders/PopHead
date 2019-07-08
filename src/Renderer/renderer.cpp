@@ -2,7 +2,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
 
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 
@@ -43,11 +43,11 @@ void Renderer::draw() const
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
 			mWindow.draw(*object);
-			mGameData->getEfficencyRegister().registerRenderCall();
+			mGameData->getEfficiencyRegister().registerRenderCall();
 		}
 
 	mWindow.draw(mGameData->getTerminal().getImage());
-	mWindow.draw(mGameData->getEfficencyRegister().getDisplayer());
+	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
 
 	mWindow.display();
 }
@@ -89,7 +89,7 @@ void Renderer::setPositionOfStaticObjectsToCamera()
 		guiObject->move(movementFromLastFrame);
 	}
 	mGameData->getTerminal().getImage().move(movementFromLastFrame);
-	mGameData->getEfficencyRegister().getDisplayer().move(movementFromLastFrame);
+	mGameData->getEfficiencyRegister().getDisplayer().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const

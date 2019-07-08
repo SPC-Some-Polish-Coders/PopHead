@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "gameData.hpp"
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Physics/CollisionDebug/collisionDebugRect.hpp"
 #include "bodyType.hpp"
 #include "Utilities/math.hpp"

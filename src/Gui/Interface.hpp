@@ -1,32 +1,31 @@
 #pragma once
 
-#include "TextWidget.hpp"
+#include "textWidget.hpp"
 
 namespace ph {
 
-	class GameData;
+class GameData;
 
-	class Interface 
-		:public Widget
-	{
-	public:
-		Interface();
+class Interface : public Widget
+{
+public:
+	Interface();
 
-		Interface(GameData* data);
+	Interface(GameData* data);
 
-		void update(sf::Time delta);
+	void update(sf::Time delta);
 
-		void draw();
+	void draw();
 
-		bool setContentPath(const std::string& path);
+	bool setContentPath(const std::string& path);
 
-		void setPosition(const sf::Vector2f& pos);
+	void setPosition(const sf::Vector2f& pos);
 
-		void addWidget(const std::string& name, Widget* ptr);
+	void addWidget(const std::string& name, Widget* ptr);
 
-		void move(const sf::Vector2f& delta);
+	void move(const sf::Vector2f& delta);
 
-		sf::Vector2f getGlobalPosition() const;
-	};
+	sf::Vector2f getGlobalPosition() const;
+};
 
 }

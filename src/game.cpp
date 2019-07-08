@@ -1,14 +1,11 @@
 #include "game.hpp"
 
-#include "States/stateIdentifiers.hpp"
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
 #include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
 namespace ph {
-
-enum class StateID; 
 
 Game::Game()
 	:mGameData{}
@@ -17,12 +14,12 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mStateMachine{new StateMachine()}
+	,mSceneMachine{new SceneMachine()}
 	,mInput{new Input()}
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
-	,mEfficencyRegister{new EfficencyRegister()}
+	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
@@ -31,12 +28,12 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		mStateMachine.get(),
+		mSceneMachine.get(),
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
-		mEfficencyRegister.get(),
+		mEfficiencyRegister.get(),
 		mGui.get()
 	));
 
@@ -47,10 +44,10 @@ Game::Game()
 	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
 	Logger::getInstance().setGameData(mGameData.get());
 
-	mEfficencyRegister->init(mGameData.get());
+	mEfficiencyRegister->init(mGameData.get());
 
-	mStateMachine->setGameData(mGameData.get());
-	mStateMachine->pushState(StateID::GameState);
+	mSceneMachine->setGameData(mGameData.get());
+	mSceneMachine->pushScene("scenes/desertScene.xml");
 
 	mGui->init(mGameData.get());
 
@@ -66,14 +63,9 @@ void Game::run()
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	while(mRenderer->getWindow().isOpen())
+	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
-		mStateMachine->changingStatesProcess();
-
-		// temporary - TODO: move this somewhere else
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			break;
-
+		mSceneMachine->changingScenesProcess();
 		input();
 
 		timeSinceLastUpdate += clock.restart();
@@ -85,23 +77,26 @@ void Game::run()
 			mRenderer->draw();
 		}
 	}
+
+	mRenderer->getWindow().close();
 }
 
 void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
-	mStateMachine->input();
+	mSceneMachine->input();
+	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
 	mTerminal->input();
-	mEfficencyRegister->input();
+	mEfficiencyRegister->input();
 }
 
 void Game::update(sf::Time delta)
 {
-	mStateMachine->update(delta);
+	mSceneMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);
 	mGui->update(delta);
-	mEfficencyRegister->update();
+	mEfficiencyRegister->update();
 }
 
 }
