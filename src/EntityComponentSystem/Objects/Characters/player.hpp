@@ -20,5 +20,4 @@ private:
 	void updateListenerPosition() const;
 };
 
-
 }

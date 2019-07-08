@@ -79,7 +79,6 @@ private:
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
-	std::vector<std::unique_ptr<CollisionBody>> mCollisionBodies;
 	RenderChunksMode mRenderChunksMode;
 };
 

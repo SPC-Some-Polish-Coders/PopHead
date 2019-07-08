@@ -3,9 +3,10 @@
 #include "EntityComponentSystem/object.hpp"
 #include "EntityComponentSystem/Objects/Characters/Motion/characterMotion.hpp"
 #include "Utilities/animation.hpp"
-#include "Physics/CollisionBody/collisionBody.hpp"
 
 namespace ph {
+
+class CollisionBody;
 
 class Character : public Object
 {
@@ -31,7 +32,7 @@ protected:
 	CharacterMotion mMotion;
 	sf::Sprite mSprite;
 	Animation mAnimation;
-	CollisionBody mCollisionBody;
+	CollisionBody& mCollisionBody;
 };
 
 }

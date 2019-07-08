@@ -8,6 +8,8 @@
 
 namespace ph {
 
+class CollisionBody;
+
 class ShapeWithCollision : public Object
 {
 public:
@@ -18,7 +20,7 @@ public:
 
 private:
 	sf::RectangleShape mShape;
-	CollisionBody mCollisionBody;
+	CollisionBody& mCollisionBody;
 };
 
 

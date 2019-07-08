@@ -3,6 +3,7 @@
 #include "EntityComponentSystem/Objects/Map/map.hpp"
 #include "EntityComponentSystem/Objects/Characters/player.hpp"
 #include "EntityComponentSystem/Objects/Characters/npc.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 

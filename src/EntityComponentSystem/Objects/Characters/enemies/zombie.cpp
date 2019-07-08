@@ -1,6 +1,8 @@
 #include "zombie.hpp"
 
 #include "Resources/collisionRectData.hpp"
+#include "gameData.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 
 namespace ph {
 

@@ -1,6 +1,8 @@
 #include "character.hpp"
 
 #include "Physics/CollisionBody/bodyType.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -12,7 +14,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mMotion()
 	,mAnimation(animation)
-	,mCollisionBody(posAndSize, mass, BodyType::kinematicBody, gameData)
+	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 {
 }
 

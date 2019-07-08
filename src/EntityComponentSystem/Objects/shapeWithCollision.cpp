@@ -1,12 +1,14 @@
 #include "shapeWithCollision.hpp"
 
 #include "Physics/CollisionBody/bodyType.hpp"
+#include "gameData.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 
 namespace ph {
 
 ShapeWithCollision::ShapeWithCollision(GameData* gameData)
 	:Object(gameData, "shapeWithCollision", LayerID::staticEntities)
-	,mCollisionBody(sf::FloatRect(0, 0, 100, 50), 200, BodyType::staticBody, gameData)
+	,mCollisionBody(mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(sf::FloatRect(0, 0, 100, 50)))
 	,mShape(sf::Vector2f(100, 50))
 {
 	mShape.setFillColor(sf::Color::Black);

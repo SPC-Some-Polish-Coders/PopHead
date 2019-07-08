@@ -5,21 +5,15 @@
 
 #include "CollisionHandlers/staticCollisionHandler.hpp"
 #include "CollisionHandlers/kinematicCollisionHandler.hpp"
+#include "CollisionBody/collisionBody.hpp"
 
 namespace ph{
-
-class CollisionBody;
 
 class PhysicsEngine
 {
 public:
-    void addStaticBody(CollisionBody* staticBodyPtr);
-    void addKinematicBody(CollisionBody* kinematicBodyPtr);
-
-    void removeStaticBody(CollisionBody* staticBodyPtr);
-    void removeKinematicBody(CollisionBody* kinematicBodyPtr);
-private:
-	void removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body);
+    CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
+	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass);
 
 public:
     void clear() noexcept;
@@ -31,8 +25,8 @@ private:
     bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
 
 private:
-    std::vector<CollisionBody*> mStaticBodies;
-    std::vector<CollisionBody*> mKinematicBodies;
+    std::vector<CollisionBody> mStaticBodies;
+    std::vector<CollisionBody> mKinematicBodies;
 
     StaticCollisionHandler mStaticCollisionHandler;
     KinematicCollisionHandler mKinematicCollisionHandler;

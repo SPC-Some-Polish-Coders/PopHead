@@ -1,21 +1,15 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "gameData.hpp"
-#include "EntityComponentSystem/object.hpp"
-#include "Physics/CollisionDebug/collisionDebugRect.hpp"
 #include "bodyType.hpp"
 #include "Utilities/math.hpp"
 
 namespace ph {
 
-class Object;
-
 class CollisionBody
 {
 public:
-	CollisionBody(sf::FloatRect rect, float mass, BodyType, GameData* const);
-	~CollisionBody();
+	CollisionBody(sf::FloatRect rect, float mass, BodyType);
 
 	//the methods below should be called from owner
 	void move(sf::Vector2f velocity);
@@ -40,14 +34,12 @@ public:
 	float getMass() { return mMass; }
 
 private:
-	CollisionDebugRect mCollisionDebugRect;
 	sf::FloatRect mRect;
 	sf::Vector2f mPreviousPosition;
 	sf::Vector2f mVelocity;
 	sf::Vector2f mForceVector;
 	float mMass;
 	const BodyType mBodyType;
-	GameData* mGameData;
 };
 
 }

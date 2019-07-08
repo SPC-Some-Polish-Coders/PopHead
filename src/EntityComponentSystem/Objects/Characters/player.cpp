@@ -4,6 +4,7 @@
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 #include <array>
 
 namespace ph {
