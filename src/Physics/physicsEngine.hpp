@@ -25,7 +25,7 @@ public:
 private:
     void handleStaticCollisionsFor(CollisionBody& kinematicBody);
     void handleKinematicCollisionsFor(CollisionBody& kinematicBody);
-    bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
+    bool isThereCollision(const CollisionBody& a, const CollisionBody& b);
 
 private:
     std::vector<std::unique_ptr<CollisionBody>> mStaticBodies;

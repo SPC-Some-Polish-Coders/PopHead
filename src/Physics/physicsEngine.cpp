@@ -43,7 +43,7 @@ void PhysicsEngine::update(sf::Time delta)
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 {
 	for (auto& staticBody : mStaticBodies)
-		if (isThereCollision(kinematicBody.getRect(), staticBody->getRect()))
+		if (isThereCollision(kinematicBody, *staticBody))
 			mStaticCollisionHandler(kinematicBody, *staticBody);
 }
 
@@ -54,14 +54,14 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 		if (std::addressof(kinematicBody) == std::addressof(kinematicBody2))
 			continue;
 
-		if (isThereCollision(kinematicBody.getRect(), kinematicBody2.getRect()))
+		if (isThereCollision(kinematicBody, kinematicBody2))
             mKinematicCollisionHandler(kinematicBody, kinematicBody2);
     }
 }
 
-bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
+bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b)
 {
-	return Math::areTheyOverlapping(A, B);
+	return Math::areTheyOverlapping(a.getRect(), b.getRect());
 }
 
 }

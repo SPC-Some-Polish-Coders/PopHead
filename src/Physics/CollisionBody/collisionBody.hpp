@@ -27,11 +27,11 @@ private:
 public:
 	auto getPosition() const -> const sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
 	auto getBodyType() const -> const BodyType { return mBodyType; }
-	auto getVelocity() -> sf::Vector2f { return mVelocity; }
-	auto getPositionOfCenter() -> sf::Vector2f { return ph::Math::getCenter(mRect); }
-	auto getRect() -> const sf::FloatRect& { return mRect; }
-	auto getPreviousRect() -> sf::FloatRect { return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height); }
-	float getMass() { return mMass; }
+	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
+	auto getPositionOfCenter() const -> sf::Vector2f { return ph::Math::getCenter(mRect); }
+	auto getRect() const -> const sf::FloatRect& { return mRect; }
+	auto getPreviousRect() const -> sf::FloatRect { return sf::FloatRect(mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height); }
+	float getMass() const { return mMass; }
 
 private:
 	sf::FloatRect mRect;
