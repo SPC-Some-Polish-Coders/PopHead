@@ -14,8 +14,8 @@ class PhysicsEngine
 public:
 	PhysicsEngine();
 
-    CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect, const std::string& name);
-	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass, const std::string& name);
+    CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
+	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass);
 
 public:
     void clear() noexcept;

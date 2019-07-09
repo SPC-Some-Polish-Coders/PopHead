@@ -8,17 +8,19 @@ namespace ph {
 
 PhysicsEngine::PhysicsEngine()
 {
+	mStaticBodies.reserve(300);
+	mKinematicBodies.reserve(150);
 }
 
-CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect, const std::string& name)
+CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
-	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0, BodyType::staticBody, name));
+	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0, BodyType::staticBody));
 	return *mStaticBodies.back().get();
 }
 
-CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass, const std::string& name)
+CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass)
 {
-	mKinematicBodies.emplace_back(std::make_unique<CollisionBody>(rect, mass, BodyType::kinematicBody, name));
+	mKinematicBodies.emplace_back(std::make_unique<CollisionBody>(rect, mass, BodyType::kinematicBody));
 	return *mKinematicBodies.back().get();
 }
 

@@ -231,7 +231,7 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			sf::FloatRect bounds = tilesData.bounds[i];
 			bounds.left += position.x;
 			bounds.top += position.y;
-			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds, mName);
+			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
 		}
 	}
 }
