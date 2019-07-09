@@ -9,7 +9,7 @@ namespace ph {
 class CollisionBody
 {
 public:
-	CollisionBody(sf::FloatRect rect, float mass, BodyType);
+	CollisionBody(sf::FloatRect rect, float mass, BodyType, const std::string& name);
 
 	//the methods below should be called from owner
 	void move(sf::Vector2f velocity);
@@ -34,6 +34,7 @@ public:
 	float getMass() { return mMass; }
 
 private:
+	const std::string mName;
 	sf::FloatRect mRect;
 	sf::Vector2f mPreviousPosition;
 	sf::Vector2f mVelocity;

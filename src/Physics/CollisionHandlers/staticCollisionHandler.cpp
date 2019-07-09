@@ -6,16 +6,16 @@
 
 namespace ph {
 
-void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
+void StaticCollisionHandler::operator()(CollisionBody& kinematicBody, CollisionBody& staticBody)
 {
 	init(kinematicBody, staticBody);
 	makeKinematicBodyStickToStaticBody();
 }
 
-void StaticCollisionHandler::init(CollisionBody* kinematicBody, CollisionBody* staticBody)
+void StaticCollisionHandler::init(CollisionBody& kinematicBody, CollisionBody& staticBody)
 {
-	mKinematicBody = kinematicBody;
-	mStaticBody = staticBody;
+	mKinematicBody = &kinematicBody;
+	mStaticBody = &staticBody;
 
 	mKinematicBodyRect = mKinematicBody->getRect();
 	mStaticBodyRect = mStaticBody->getRect();

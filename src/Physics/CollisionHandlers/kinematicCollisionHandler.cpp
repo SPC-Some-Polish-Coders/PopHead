@@ -5,17 +5,17 @@
 
 namespace ph {
 
-void KinematicCollisionHandler::operator()(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
+void KinematicCollisionHandler::operator()(CollisionBody& firstKinematicBody, CollisionBody& secondKinematicBody)
 {
 	init(firstKinematicBody, secondKinematicBody);
 	calculateForceVector();
 	applyForceVector();
 }
 
-void KinematicCollisionHandler::init(CollisionBody* firstKinematicBody, CollisionBody* secondKinematicBody)
+void KinematicCollisionHandler::init(CollisionBody& firstKinematicBody, CollisionBody& secondKinematicBody)
 {
-	mFirstKinematicBody = firstKinematicBody;
-	mSecondKinematicBody = secondKinematicBody;
+	mFirstKinematicBody = &firstKinematicBody;
+	mSecondKinematicBody = &secondKinematicBody;
 
 	mMass1 = mFirstKinematicBody->getMass();
 	mMass2 = mSecondKinematicBody->getMass();

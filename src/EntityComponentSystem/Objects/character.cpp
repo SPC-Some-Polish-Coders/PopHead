@@ -14,7 +14,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mMotion()
 	,mAnimation(animation)
-	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
+	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass, name))
 {
 }
 

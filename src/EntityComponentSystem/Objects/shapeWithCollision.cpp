@@ -8,7 +8,7 @@ namespace ph {
 
 ShapeWithCollision::ShapeWithCollision(GameData* gameData)
 	:Object(gameData, "shapeWithCollision", LayerID::staticEntities)
-	,mCollisionBody(mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(sf::FloatRect(0, 0, 100, 50)))
+	,mCollisionBody(mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(sf::FloatRect(0, 0, 100, 50), "shape with collision"))
 	,mShape(sf::Vector2f(100, 50))
 {
 	mShape.setFillColor(sf::Color::Black);

@@ -9,10 +9,10 @@ class CollisionBody;
 class StaticCollisionHandler
 {
 public:
-	void operator()(CollisionBody* kinematicBody, CollisionBody* staticBody);
+	void operator()(CollisionBody& kinematicBody, CollisionBody& staticBody);
 
 private:
-	void init(CollisionBody* kinematicBody, CollisionBody* staticBody);
+	void init(CollisionBody& kinematicBody, CollisionBody& staticBody);
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX();
 	bool isKinematicBodyOnTheLeftOfTheStaticBody();
