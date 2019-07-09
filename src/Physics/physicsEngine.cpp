@@ -9,7 +9,6 @@ namespace ph {
 PhysicsEngine::PhysicsEngine()
 {
 	mStaticBodies.reserve(300);
-	mKinematicBodies.reserve(150);
 }
 
 CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
@@ -20,8 +19,8 @@ CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::Float
 
 CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass)
 {
-	mKinematicBodies.emplace_back(std::make_unique<CollisionBody>(rect, mass, BodyType::kinematicBody));
-	return *mKinematicBodies.back().get();
+	mKinematicBodies.emplace_back(rect, mass, BodyType::kinematicBody);
+	return mKinematicBodies.back();
 }
 
 void PhysicsEngine::clear() noexcept
@@ -34,10 +33,10 @@ void PhysicsEngine::update(sf::Time delta)
 {
     for(auto &kinematicBody : mKinematicBodies)
     {
-		handleKinematicCollisionsFor(kinematicBody.get());
-		kinematicBody->updatePush(delta);
-		handleStaticCollisionsFor(*kinematicBody);
-		kinematicBody->actionsAtTheEndOfPhysicsLoopIteration();
+		handleKinematicCollisionsFor(kinematicBody);
+		kinematicBody.updatePush(delta);
+		handleStaticCollisionsFor(kinematicBody);
+		kinematicBody.actionsAtTheEndOfPhysicsLoopIteration();
     }
 }
 
@@ -48,15 +47,15 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 			mStaticCollisionHandler(kinematicBody, *staticBody);
 }
 
-void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
+void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 {
     for (auto& kinematicBody2 : mKinematicBodies)
     {
-		if (kinematicBody == kinematicBody2.get())
+		if (std::addressof(kinematicBody) == std::addressof(kinematicBody2))
 			continue;
 
-		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect()))
-            mKinematicCollisionHandler(*kinematicBody, *kinematicBody2);
+		if (isThereCollision(kinematicBody.getRect(), kinematicBody2.getRect()))
+            mKinematicCollisionHandler(kinematicBody, kinematicBody2);
     }
 }
 
