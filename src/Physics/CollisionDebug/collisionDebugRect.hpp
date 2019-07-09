@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EntityComponentSystem/object.hpp"
-#include "Physics/CollisionBody/bodyType.hpp"
 
 namespace ph {
 

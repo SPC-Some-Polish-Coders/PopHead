@@ -1,15 +1,13 @@
 #include "collisionBody.hpp"
-#include "bodyType.hpp"
 
 namespace ph {
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType)
+CollisionBody::CollisionBody(sf::FloatRect rect, float mass)
 	:mRect(rect)
 	,mPreviousPosition(rect.left, rect.top)
 	,mVelocity(0, 0)
 	,mForceVector(0, 0)
 	,mMass(mass)
-	,mBodyType(bodyType)
 {
 }
 

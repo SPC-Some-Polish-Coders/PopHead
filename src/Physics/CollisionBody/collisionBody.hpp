@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "bodyType.hpp"
 #include "Utilities/math.hpp"
 
 namespace ph {
@@ -9,7 +8,7 @@ namespace ph {
 class CollisionBody
 {
 public:
-	CollisionBody(sf::FloatRect rect, float mass, BodyType);
+	CollisionBody(sf::FloatRect rect, float mass);
 
 	//the methods below should be called from owner
 	void move(sf::Vector2f velocity);
@@ -26,7 +25,6 @@ private:
 
 public:
 	auto getPosition() const -> const sf::Vector2f { return sf::Vector2f(mRect.left, mRect.top); }
-	auto getBodyType() const -> const BodyType { return mBodyType; }
 	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
 	auto getPositionOfCenter() const -> sf::Vector2f { return ph::Math::getCenter(mRect); }
 	auto getRect() const -> const sf::FloatRect& { return mRect; }
@@ -39,7 +37,6 @@ private:
 	sf::Vector2f mVelocity;
 	sf::Vector2f mForceVector;
 	float mMass;
-	const BodyType mBodyType;
 };
 
 }

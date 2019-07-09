@@ -1,5 +1,4 @@
 #include "collisionDebugSettings.hpp"
-#include "Physics/CollisionBody/bodyType.hpp"
 #include "Utilities/debug.hpp"
 #include <string>
 
@@ -49,24 +48,25 @@ void CollisionDebugSettings::displayAllBodies()
 
 bool CollisionDebugSettings::shouldDisplay(BodyType bodyType)
 {
-	if (bodyType == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)
+	/*if (bodyType == BodyType::kinematicBody && !mShouldDisplayKinematicBodies)
 		return false;
 	if (bodyType == BodyType::staticBody && !mShouldDisplayStaticBodies)
-		return false;
+		return false;*/
 
 	return mShouldDisplay;
 }
 
 auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 {
-	switch (bodyType)
+	/*switch (bodyType)
 	{
 	case BodyType::kinematicBody:
 		return mKinematicBodiesColor;
 
 	case BodyType::staticBody:
 		return mStaticBodiesColor;
-	}
+	}*/
+	return sf::Color::Magenta;
 }
 
 void CollisionDebugSettings::setColors(int numberOfSet)

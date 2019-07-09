@@ -1,6 +1,5 @@
 #include "character.hpp"
 
-#include "Physics/CollisionBody/bodyType.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "gameData.hpp"
 
