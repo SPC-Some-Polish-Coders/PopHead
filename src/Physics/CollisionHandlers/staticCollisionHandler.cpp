@@ -6,13 +6,13 @@
 
 namespace ph {
 
-void StaticCollisionHandler::operator()(CollisionBody& kinematicBody, CollisionBody& staticBody)
+void StaticCollisionHandler::operator()(CollisionBody& kinematicBody, const CollisionBody& staticBody)
 {
 	init(kinematicBody, staticBody);
 	makeKinematicBodyStickToStaticBody();
 }
 
-void StaticCollisionHandler::init(CollisionBody& kinematicBody, CollisionBody& staticBody)
+void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionBody& staticBody)
 {
 	mKinematicBody = &kinematicBody;
 	mStaticBody = &staticBody;
@@ -39,40 +39,40 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 	}
 }
 
-bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX()
+bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX() const
 {
 	return (mKinematicBodyPreviousRect.top + mKinematicBodyPreviousRect.height > mStaticBodyRect.top &&
 		    mKinematicBodyPreviousRect.top < mStaticBodyRect.top + mStaticBodyRect.height);
 }
 
-bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody()
+bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody() const
 {
 	return mKinematicBodyPreviousRect.left < mStaticBodyRect.left;
 }
 
 void StaticCollisionHandler::stickToLeft()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mStaticBodyRect.left - mKinematicBodyRect.width, mKinematicBodyRect.top));
+	mKinematicBody->setPosition({mStaticBodyRect.left - mKinematicBodyRect.width, mKinematicBodyRect.top});
 }
 
 void StaticCollisionHandler::stickToRight()
 {
-	mKinematicBody->setPosition(sf::Vector2f(Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top));
+	mKinematicBody->setPosition({Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top});
 }
 
-bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody()
+bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody() const
 {
 	return mKinematicBodyPreviousRect.top < mStaticBodyRect.top;
 }
 
 void StaticCollisionHandler::stickToTop()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, mStaticBodyRect.top - mKinematicBodyRect.height));
+	mKinematicBody->setPosition({mKinematicBodyRect.left, mStaticBodyRect.top - mKinematicBodyRect.height});
 }
 
 void StaticCollisionHandler::stickToBottom()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)));
+	mKinematicBody->setPosition({mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)});
 }
 
 }

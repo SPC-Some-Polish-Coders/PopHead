@@ -26,7 +26,7 @@ public:
 private:
     void handleStaticCollisionsFor(CollisionBody& kinematicBody);
     void handleKinematicCollisionsFor(CollisionBody& kinematicBody);
-    bool isThereCollision(const CollisionBody& a, const CollisionBody& b);
+    bool isThereCollision(const CollisionBody& a, const CollisionBody& b) const;
 	void updatePositionsOfDebugRects();
 
 private:

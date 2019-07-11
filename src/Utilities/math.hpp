@@ -30,7 +30,7 @@ namespace Math {
 		return sf::Vector2u(index % numberOfColumns, index / numberOfColumns); 
 	}
 
-	inline bool areTheyOverlapping(sf::FloatRect A, sf::FloatRect B)
+	inline bool areTheyOverlapping(const sf::FloatRect& A, const sf::FloatRect& B)
 	{
 		//AABB collision detection algorithm
 		return

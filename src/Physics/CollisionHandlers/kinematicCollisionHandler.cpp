@@ -47,21 +47,20 @@ float KinematicCollisionHandler::getForce() const
 
 sf::Vector2f KinematicCollisionHandler::getDirectionOfPush() const
 {
-	sf::Vector2f posOfBody1 = mFirstKinematicBody->getPositionOfCenter();
-	sf::Vector2f posOfBody2 = mSecondKinematicBody->getPositionOfCenter();
+	const sf::Vector2f posOfBody1 = mFirstKinematicBody->getPositionOfCenter();
+	const sf::Vector2f posOfBody2 = mSecondKinematicBody->getPositionOfCenter();
 
 	sf::Vector2f sides = posOfBody1 - posOfBody2;
 
-	sf::Vector2f directionOfPush;
 	float hypotenuse = std::hypotf(sides.x, sides.y);
 	if(hypotenuse == 0.f)
 		return sf::Vector2f(0, 0);
 	float sineResult = std::abs(sides.x / hypotenuse);
 
-	directionOfPush.x = posOfBody1.x > posOfBody2.x ? sineResult : -1 * sineResult;
-	directionOfPush.y = posOfBody1.y > posOfBody2.y ? 1 - sineResult : -1 * (1 - sineResult);
-
-	return directionOfPush;
+	return sf::Vector2f(
+		posOfBody1.x > posOfBody2.x ? sineResult : -1 * sineResult,
+		posOfBody1.y > posOfBody2.y ? 1 - sineResult : -1 * (1 - sineResult)
+	);
 }
 
 void KinematicCollisionHandler::applyForceVector() const

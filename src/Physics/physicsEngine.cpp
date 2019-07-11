@@ -64,7 +64,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
     }
 }
 
-bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b)
+bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b) const
 {
 	return Math::areTheyOverlapping(a.getRect(), b.getRect());
 }
