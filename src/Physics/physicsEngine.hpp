@@ -17,7 +17,7 @@ public:
 	PhysicsEngine();
 
     CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
-	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass);
+	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass);
     void clear() noexcept;
 
 	auto getCollisionDebugManager() const -> const CollisionDebugManager& { return mCollisionDebugManager; }

@@ -19,7 +19,7 @@ CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::Float
 	return staticBody;
 }
 
-CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass)
+CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass)
 {
 	mKinematicBodies.emplace_back(rect, mass);
 	auto& kinematicBody = mKinematicBodies.back();
