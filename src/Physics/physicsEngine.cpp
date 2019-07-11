@@ -27,6 +27,24 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::Fl
 	return kinematicBody;
 }
 
+void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
+{
+	for(auto it = mStaticBodies.begin(); it != mStaticBodies.end(); ++it)
+		if(it->get() == std::addressof(bodyToDelete)) {
+			mStaticBodies.erase(it);
+			break;
+		}
+}
+
+void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
+{
+	for(auto it = mKinematicBodies.begin(); it != mKinematicBodies.end(); ++it)
+		if(std::addressof(*it) == std::addressof(bodyToDelete)) {
+			mKinematicBodies.erase(it);
+			break;
+		}
+}
+
 void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
