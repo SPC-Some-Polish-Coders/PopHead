@@ -54,30 +54,35 @@ TEST_CASE("get corners", "[Utilities][Math]")
 {
 	SECTION("rect actualy is a point") {
 		sf::FloatRect rect(0, 0, 0, 0);
+		CHECK(Math::getTopLeftCorner(rect) == sf::Vector2f(0, 0));
 		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(0, 0));
 		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(0, 0));
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(0, 0));
 	}
 	SECTION("top left corner at (0, 0)") {
 		sf::FloatRect rect(0, 0, 5, 8);
+		CHECK(Math::getTopLeftCorner(rect) == sf::Vector2f(0, 0));
 		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(5, 0));
 		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(0, 8));
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(5, 8));
 	}
 	SECTION("top left corner has positive coordinates") {
 		sf::FloatRect rect(5, 5, 2, 3);
+		CHECK(Math::getTopLeftCorner(rect) == sf::Vector2f(5, 5));
 		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(7, 5));
 		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(5, 8));
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(7, 8));
 	}
 	SECTION("top left corner has negative coordinates") {
 		sf::FloatRect rect(-5, -5, 2, 3);
+		CHECK(Math::getTopLeftCorner(rect) == sf::Vector2f(-5, -5));
 		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(-3, -5));
 		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(-5, -2));
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(-3, -2));
 	}
 	SECTION("top left corner has big coordinates") {
 		sf::FloatRect rect(123400.f, -98765430.f, 25.f, 30.f);
+		CHECK(Math::getTopLeftCorner(rect) == sf::Vector2f(123400.f, -98765430.f));
 		CHECK(Math::getTopRightCorner(rect) == sf::Vector2f(123425.f, -98765430.f));
 		CHECK(Math::getBottomLeftCorner(rect) == sf::Vector2f(123400.f, -98765400.f));
 		CHECK(Math::getBottomRightCorner(rect) == sf::Vector2f(123425.f, -98765400.f));

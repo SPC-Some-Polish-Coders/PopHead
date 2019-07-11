@@ -15,6 +15,9 @@ namespace Math {
 	inline sf::Vector2f getCenter(sf::FloatRect bounds)
 	{ return sf::Vector2f(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f); }
 
+	inline sf::Vector2f getTopLeftCorner(const sf::FloatRect& bounds)
+	{ return sf::Vector2f(bounds.left, bounds.top); }
+
 	inline sf::Vector2f getTopRightCorner(sf::FloatRect bounds)
 	{ return sf::Vector2f(getRightBound(bounds), bounds.top); }
 
