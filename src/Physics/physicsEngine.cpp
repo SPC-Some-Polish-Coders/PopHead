@@ -42,6 +42,7 @@ void PhysicsEngine::update(sf::Time delta)
 		handleStaticCollisionsFor(kinematicBody);
 		kinematicBody.actionsAtTheEndOfPhysicsLoopIteration();
     }
+	updatePositionsOfDebugRects();
 }
 
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
@@ -66,6 +67,16 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b)
 {
 	return Math::areTheyOverlapping(a.getRect(), b.getRect());
+}
+
+void PhysicsEngine::updatePositionsOfDebugRects()
+{
+	int i = 0;
+	for(const auto& kinematicBody : mKinematicBodies) {
+		auto pos = kinematicBody.getPosition();
+		mCollisionDebugManager.mKinematicBodyCollisionDebugRects[i].setPosition(pos);
+		++i;
+	}
 }
 
 }

@@ -7,6 +7,7 @@
 namespace ph {
 
 class CollisionBody;
+class PhysicsEngine;
 
 class CollisionDebugManager : public sf::Drawable
 {
@@ -19,6 +20,7 @@ public:
 private:
 	mutable std::vector<CollisionDebugRect> mStaticBodyCollisionDebugRects;
 	mutable std::vector<CollisionDebugRect> mKinematicBodyCollisionDebugRects;
+	friend PhysicsEngine;
 };
 
 }

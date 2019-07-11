@@ -27,6 +27,7 @@ private:
     void handleStaticCollisionsFor(CollisionBody& kinematicBody);
     void handleKinematicCollisionsFor(CollisionBody& kinematicBody);
     bool isThereCollision(const CollisionBody& a, const CollisionBody& b);
+	void updatePositionsOfDebugRects();
 
 private:
     std::vector<std::unique_ptr<CollisionBody>> mStaticBodies;
