@@ -5,7 +5,7 @@
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Logs/logger.hpp"
 #include "Utilities/cast.hpp"
-#include "EntityComponentSystem/Objects/Map/map.hpp"
+#include "Map/map.hpp"
 
 namespace ph {
 

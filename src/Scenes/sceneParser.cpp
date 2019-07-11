@@ -1,6 +1,6 @@
 #include "sceneParser.hpp"
 #include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
-#include "EntityComponentSystem/Objects/Map/map.hpp"
+#include "Map/map.hpp"
 #include "EntityComponentSystem/Objects/Characters/player.hpp"
 #include "EntityComponentSystem/Objects/Characters/npc.hpp"
 #include "gameData.hpp"
