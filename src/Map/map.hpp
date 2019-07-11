@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Utilities/xml.hpp"
+#include "chunkMap.hpp"
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace ph{
 
-class ChunkMap;
 class GameData;
 
 enum class RenderChunksMode
@@ -16,14 +17,14 @@ enum class RenderChunksMode
 	for640x480CameraView
 };
 
-class Map : public sf::Drawable
+class Map
 {
 public:
     Map();
 
 	void loadFromFile(const std::string& filename);
 
-    void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
+    void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const;
 
 	void setRenderChunksMode(const RenderChunksMode renderChunksMode) { mRenderChunksMode = renderChunksMode; }
 

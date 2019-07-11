@@ -39,7 +39,7 @@ void Renderer::draw() const
 	mCamera.applyTo(mWindow);
 	mWindow.clear();
 
-	mWindow.draw(mGameData->getMap());
+	mGameData->getMap().draw(mWindow, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
 
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
