@@ -24,9 +24,9 @@ private:
 	void setPreviousPositionToCurrentPosition();
 
 public:
-	auto getPosition() const -> const sf::Vector2f { return {mRect.left, mRect.top}; }
+	auto getPosition() const -> const sf::Vector2f { return Math::getTopLeftCorner(mRect); }
 	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
-	auto getPositionOfCenter() const -> sf::Vector2f { return ph::Math::getCenter(mRect); }
+	auto getPositionOfCenter() const -> sf::Vector2f { return Math::getCenter(mRect); }
 	auto getRect() const -> const sf::FloatRect& { return mRect; }
 	auto getPreviousRect() const -> sf::FloatRect { return {mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height}; }
 	float getMass() const { return mMass; }

@@ -32,8 +32,7 @@ void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 
 void CollisionBody::setPreviousPositionToCurrentPosition()
 {
-	mPreviousPosition.x = mRect.left;
-	mPreviousPosition.y = mRect.top;
+	mPreviousPosition = getPosition();
 }
 
 void CollisionBody::updatePush(const sf::Time delta)
