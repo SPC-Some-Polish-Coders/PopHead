@@ -45,9 +45,9 @@ void Renderer::draw() const
 			mGameData->getEfficiencyRegister().registerRenderCall();
 		}
 
-	mWindow.draw(mGameData->getTerminal().getImage());
-	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
 	mWindow.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
+	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
+	mWindow.draw(mGameData->getTerminal().getImage());
 
 	mWindow.display();
 }

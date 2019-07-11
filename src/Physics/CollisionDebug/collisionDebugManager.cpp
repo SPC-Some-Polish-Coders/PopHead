@@ -1,5 +1,6 @@
 #include "collisionDebugManager.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "collisionDebugSettings.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
@@ -16,11 +17,23 @@ void CollisionDebugManager::addKinematicBodyCollisionDebugRect(const CollisionBo
 
 void CollisionDebugManager::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
-	for(const auto& debugRect : mStaticBodyCollisionDebugRects)
-		debugRect.draw(target, states);
+	auto& settings = CollisionDebugSettings::getInstance();
 
-	for(const auto& debugRect : mKinematicBodyCollisionDebugRects)
-		debugRect.draw(target, states);
+	if(settings.shouldDisplay(BodyType::staticBody)) {
+		auto& color = settings.getFillColor(BodyType::staticBody);
+		for(auto& debugRect : mStaticBodyCollisionDebugRects) {
+			debugRect.setColor(color);
+			debugRect.draw(target, states);
+		}
+	}
+
+	if(settings.shouldDisplay(BodyType::kinematicBody)) {
+		auto& color = settings.getFillColor(BodyType::kinematicBody);
+		for(auto& debugRect : mKinematicBodyCollisionDebugRects) {
+			debugRect.setColor(color);
+			debugRect.draw(target, states);
+		}
+	}
 }
 
 }

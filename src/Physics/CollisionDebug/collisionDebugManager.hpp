@@ -15,10 +15,10 @@ public:
 	void addKinematicBodyCollisionDebugRect(const CollisionBody&);
 
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
-
+	
 private:
-	std::vector<CollisionDebugRect> mStaticBodyCollisionDebugRects;
-	std::vector<CollisionDebugRect> mKinematicBodyCollisionDebugRects;
+	mutable std::vector<CollisionDebugRect> mStaticBodyCollisionDebugRects;
+	mutable std::vector<CollisionDebugRect> mKinematicBodyCollisionDebugRects;
 };
 
 }

@@ -15,9 +15,6 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void setColor(sf::Color color) { mShape.setFillColor(color); }
 
-    void updateColor() const;
-    bool shouldDisplay() const;
-
 private:
     mutable sf::RectangleShape mShape;
 };
