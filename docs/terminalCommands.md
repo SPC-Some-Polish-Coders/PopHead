@@ -170,7 +170,7 @@ setvolume sound 100
 	
 #### Examples: 
 ```
-collisiondebug off
+collisiondebug turn on
 collisiondebug color 3
 collisiondebug display static
 ```
