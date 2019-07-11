@@ -71,8 +71,7 @@ clear
 | `console` | argument makes logs appear in console	|
 | `terminal` | argument makes logs appear in terminal	|
 | `all` | argument makes logs appear in both places |
-| `not` | argument needs to be combined with one of above. It makes whole command opposite
-- logs won't appear in specified place |
+| `not` | argument needs to be combined with one of above. It makes whole command opposite - logs won't appear in specified place |
 
 #### Examples: 
 ```
