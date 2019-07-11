@@ -15,6 +15,7 @@ Game::Game()
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
 	,mSceneMachine{new SceneMachine()}
+	,mMap(new Map())
 	,mInput{new Input()}
 	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
@@ -29,6 +30,7 @@ Game::Game()
 		mFonts.get(),
 		mShaders.get(),
 		mSceneMachine.get(),
+		mMap.get(),
 		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
@@ -45,6 +47,8 @@ Game::Game()
 	Logger::getInstance().setGameData(mGameData.get());
 
 	mEfficiencyRegister->init(mGameData.get());
+
+	mMap->setGameData(mGameData.get());
 
 	mSceneMachine->setGameData(mGameData.get());
 	mSceneMachine->pushScene("scenes/desertScene.xml");

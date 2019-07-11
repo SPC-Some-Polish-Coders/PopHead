@@ -1,14 +1,14 @@
 #pragma once
 
-#include "EntityComponentSystem/object.hpp"
 #include "Utilities/xml.hpp"
-#include "Physics/CollisionBody/collisionBody.hpp"
-#include "chunkMap.hpp"
-
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
 
 namespace ph{
+
+class ChunkMap;
+class GameData;
 
 enum class RenderChunksMode
 {
@@ -16,16 +16,18 @@ enum class RenderChunksMode
 	for640x480CameraView
 };
 
-class Map : public Object
+class Map : public sf::Drawable
 {
 public:
-    Map(GameData* const gameData, const std::string& name);
+    Map();
 
 	void loadFromFile(const std::string& filename);
 
     void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
 
 	void setRenderChunksMode(const RenderChunksMode renderChunksMode) { mRenderChunksMode = renderChunksMode; }
+
+	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
 private:
 	struct TilesetsData 
@@ -79,6 +81,7 @@ private:
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
+	GameData* mGameData;
 	RenderChunksMode mRenderChunksMode;
 };
 

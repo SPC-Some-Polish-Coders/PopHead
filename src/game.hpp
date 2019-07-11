@@ -7,6 +7,7 @@
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
 #include "Scenes/sceneMachine.hpp"
+#include "Map/map.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
@@ -25,7 +26,7 @@ private:
 	void input();
 	void update(sf::Time delta);
 
-	inline auto getGameData() const -> const GameData& { return *(mGameData); };
+	auto getGameData() const -> const GameData& { return *(mGameData); };
 
 	std::unique_ptr< GameData >           mGameData;
 	std::unique_ptr< SoundPlayer >        mSoundPlayer;
@@ -34,6 +35,7 @@ private:
 	std::unique_ptr< FontHolder >         mFonts;
 	std::unique_ptr< ShaderHolder >       mShaders;
 	std::unique_ptr< SceneMachine >       mSceneMachine;
+	std::unique_ptr< Map >                mMap;
 	std::unique_ptr< Input >              mInput;
 	std::unique_ptr< Renderer >           mRenderer;
 	std::unique_ptr< PhysicsEngine >      mPhysicsEngine;

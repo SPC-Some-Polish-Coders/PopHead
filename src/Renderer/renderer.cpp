@@ -39,6 +39,8 @@ void Renderer::draw() const
 	mCamera.applyTo(mWindow);
 	mWindow.clear();
 
+	mWindow.draw(mGameData->getMap());
+
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
 			mWindow.draw(*object);

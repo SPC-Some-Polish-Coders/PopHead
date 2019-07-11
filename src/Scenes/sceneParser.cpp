@@ -56,9 +56,8 @@ void SceneParser::loadScene(const Xml& sceneSourceCode)
 void SceneParser::loadMap(const Xml& rootNode)
 {
 	const Xml mapNode = rootNode.getChild("map");
-	auto map = std::make_unique<Map>(mGameData, mapNode.getAttribute("name").toString()); 	
-	map->loadFromFile(mapNode.getAttribute("filepath").toString());
-	mRoot.addChild(std::move(map));
+	auto& map = mGameData->getMap();
+	map.loadFromFile(mapNode.getAttribute("filepath").toString());
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)

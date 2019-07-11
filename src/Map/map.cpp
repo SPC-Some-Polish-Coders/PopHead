@@ -1,16 +1,14 @@
 #include "map.hpp"
 #include "gameData.hpp"
+#include "chunkMap.hpp"
 #include "Utilities/debug.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
 
-#include <array>
-
 namespace ph {
 
-Map::Map(GameData* const gameData, const std::string& name)
-	:Object(gameData, name, LayerID::floorEntities)
-	,mChunkMap(nullptr)
+Map::Map()
+	:mChunkMap(nullptr)
 	,mRenderChunksMode(RenderChunksMode::forCurrentCameraView)
 {
 }

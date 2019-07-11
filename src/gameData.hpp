@@ -6,6 +6,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
 #include "Scenes/sceneMachine.hpp"
+#include "Map/map.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
@@ -31,7 +32,7 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		SoundPlayer* const soundPlayer,
@@ -40,6 +41,7 @@ public:
 		FontHolder* const fonts,
 		ShaderHolder* const shaders,
 		SceneMachine* const sceneMachine,
+		Map* const map,
 		Input* const input,
 		Renderer* const renderer,
 		PhysicsEngine* const physicsEngine,
@@ -53,6 +55,7 @@ public:
 		,mFonts{fonts}
 		,mShaders{shaders}
 		,mSceneMachine{sceneMachine}
+		,mMap(map)
 		,mInput{input}
 		,mRenderer{renderer}
 		,mPhysicsEngine{physicsEngine}
@@ -69,6 +72,7 @@ public:
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
 	auto getSceneMachine() const -> SceneMachine& { return *mSceneMachine; }
+	auto getMap() const -> Map& { return *mMap; }
 	auto getInput()	const -> Input& { return *mInput; }
 	auto getRenderer() const -> Renderer& { return *mRenderer; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
@@ -84,6 +88,7 @@ private:
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
 	SceneMachine* const mSceneMachine;
+	Map* const mMap;
 	Input* const mInput;
 	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;
