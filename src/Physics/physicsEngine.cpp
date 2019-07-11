@@ -14,13 +14,17 @@ PhysicsEngine::PhysicsEngine()
 CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
 	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0));
-	return *mStaticBodies.back().get();
+	auto& staticBody = *mStaticBodies.back().get();
+	mCollisionDebugManager.addStaticBodyCollisionDebugRect(staticBody);
+	return staticBody;
 }
 
 CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass)
 {
 	mKinematicBodies.emplace_back(rect, mass);
-	return mKinematicBodies.back();
+	auto& kinematicBody = mKinematicBodies.back();
+	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
+	return kinematicBody;
 }
 
 void PhysicsEngine::clear() noexcept

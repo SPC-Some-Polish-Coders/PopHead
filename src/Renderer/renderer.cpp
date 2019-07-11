@@ -1,7 +1,6 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
-
 #include "EntityComponentSystem/object.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
@@ -48,6 +47,7 @@ void Renderer::draw() const
 
 	mWindow.draw(mGameData->getTerminal().getImage());
 	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
+	mWindow.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
 
 	mWindow.display();
 }

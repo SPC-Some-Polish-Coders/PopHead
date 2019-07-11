@@ -1,16 +1,13 @@
 #pragma once
 
-#include "EntityComponentSystem/object.hpp"
+#include "SFML/Graphics.hpp"
 
 namespace ph {
 
-class CollisionDebugSettings;
-class CollisionBody;
-
-class CollisionDebugRect : public Object
+class CollisionDebugRect : public sf::Drawable
 {
 public:
-    CollisionDebugRect(GameData* gameData, sf::FloatRect rect, CollisionBody* owner);
+    CollisionDebugRect(sf::FloatRect rect);
 
     void move(sf::Vector2f velocity) { mShape.move(velocity); }
     void setPosition(sf::Vector2f position) { mShape.setPosition(position); }
@@ -23,7 +20,6 @@ public:
 
 private:
     mutable sf::RectangleShape mShape;
-    CollisionBody* mOwner;
 };
 
 }

@@ -3,6 +3,7 @@
 #include "CollisionHandlers/staticCollisionHandler.hpp"
 #include "CollisionHandlers/kinematicCollisionHandler.hpp"
 #include "CollisionBody/collisionBody.hpp"
+#include "CollisionDebug/collisionDebugManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
@@ -17,9 +18,9 @@ public:
 
     CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
 	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, float mass);
-
-public:
     void clear() noexcept;
+
+	auto getCollisionDebugManager() const -> const CollisionDebugManager& { return mCollisionDebugManager; }
 
     void update(sf::Time delta);
 private:
@@ -30,7 +31,7 @@ private:
 private:
     std::vector<std::unique_ptr<CollisionBody>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
-
+	CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;
     KinematicCollisionHandler mKinematicCollisionHandler;
 };
