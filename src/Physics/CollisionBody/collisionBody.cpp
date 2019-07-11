@@ -2,7 +2,7 @@
 
 namespace ph {
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass)
+CollisionBody::CollisionBody(const sf::FloatRect& rect, const float mass)
 	:mRect(rect)
 	,mPreviousPosition(rect.left, rect.top)
 	,mVelocity(0, 0)
@@ -11,14 +11,14 @@ CollisionBody::CollisionBody(sf::FloatRect rect, float mass)
 {
 }
 
-void CollisionBody::move(sf::Vector2f velocity)
+void CollisionBody::move(const sf::Vector2f velocity)
 {
 	mVelocity = velocity;
 	mRect.left += velocity.x;
 	mRect.top += velocity.y;
 }
 
-void CollisionBody::setPosition(sf::Vector2f position)
+void CollisionBody::setPosition(const sf::Vector2f position)
 {
 	mRect.left = position.x;
 	mRect.top = position.y;
@@ -36,7 +36,7 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 	mPreviousPosition.y = mRect.top;
 }
 
-void CollisionBody::updatePush(sf::Time delta)
+void CollisionBody::updatePush(const sf::Time delta)
 {
 	if (mForceVector == sf::Vector2f())
 		return;
