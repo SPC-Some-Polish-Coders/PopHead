@@ -236,11 +236,15 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 
 void Map::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const
 {
+	const sf::FloatRect screenBounds = getScreenBounds(cameraCenter, cameraSize);
+	mChunkMap->draw(target, states, screenBounds);
+}
+
+auto Map::getScreenBounds(const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const -> const sf::FloatRect
+{
 	const sf::Vector2f size = mRenderChunksMode == RenderChunksMode::forCurrentCameraView ? cameraSize : sf::Vector2f(640, 480);
 	const sf::Vector2f topLeftCornerPosition(cameraCenter.x - size.x / 2, cameraCenter.y - size.y / 2);
-	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
-	
-	mChunkMap->draw(target, states, screenBounds);
+	return sf::FloatRect(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
 }
 
 }

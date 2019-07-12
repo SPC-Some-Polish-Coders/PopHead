@@ -79,6 +79,8 @@ private:
 
 	void loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
+	auto getScreenBounds(const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const -> const sf::FloatRect;
+
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
