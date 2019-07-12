@@ -1,6 +1,7 @@
 #include "sceneMachine.hpp"
 #include "scene.hpp"
 #include "Utilities/debug.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -34,6 +35,7 @@ void SceneMachine::clearAction()
 		PH_LOG(LogType::Warning, "You are trying to clear active scenes, but there are no scenes in vector.");
 	else {
 		mActiveScenes.clear();
+		mGameData->getPhysicsEngine().clear();
 		PH_LOG(LogType::Info, "Vector of active scenes was cleared.");
 	}
 	mIsClearing = false;
@@ -62,6 +64,7 @@ void SceneMachine::pushAction()
 
 void SceneMachine::replaceAction()
 {
+	mGameData->getPhysicsEngine().clear();
 	mActiveScenes.emplace_back(std::move(mPendingScenes.back()));
 	mPendingScenes.clear();
 	PH_LOG(LogType::Info, "The scene in the back of the vector was replaced by new scene.");

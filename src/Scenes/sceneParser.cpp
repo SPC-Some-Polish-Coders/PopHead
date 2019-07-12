@@ -18,6 +18,8 @@ SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::stri
 	loadResources(sceneNode);
 	loadMusic(sceneNode);
 	loadScene(sceneNode);
+
+	mGameData->getRenderer().getCamera().setCenter({0, 0});
 }
 
 void SceneParser::loadResources(const Xml& sceneNode)
