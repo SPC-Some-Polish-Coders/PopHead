@@ -306,19 +306,11 @@ void CommandInterpreter::executeView() const
 	if(newViewSize == mVector2ArgumentError)
 		return;
 	camera.setSize(newViewSize);
-	auto& map = getMap();
+	auto& map = mGameData->getMap();
 	if(commandContains("chunkdebug"))
 		map.setRenderChunksMode(RenderChunksMode::for640x480CameraView);
 	else
 		map.setRenderChunksMode(RenderChunksMode::forCurrentCameraView);
-}
-
-auto CommandInterpreter::getMap() const -> Map&
-{
-	auto& topScene = mGameData->getSceneMachine().getTopScene();
-	auto& root = topScene.getRoot();
-	auto& map = dynamic_cast<Map&>(root.getChild("map"));
-	return map;
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
