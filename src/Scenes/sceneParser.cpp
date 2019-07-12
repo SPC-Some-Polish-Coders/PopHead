@@ -13,15 +13,16 @@ SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::stri
 {
 	Xml sceneSourceCode;
 	sceneSourceCode.loadFromFile(fileName);
+	const Xml sceneNode = sceneSourceCode.getChild("scene");
 
-	loadResources(sceneSourceCode);
-	loadMusic(sceneSourceCode);
-	loadScene(sceneSourceCode);
+	loadResources(sceneNode);
+	loadMusic(sceneNode);
+	loadScene(sceneNode);
 }
 
-void SceneParser::loadResources(const Xml& sceneSourceCode)
+void SceneParser::loadResources(const Xml& sceneNode)
 {
-	const Xml loadingNode = sceneSourceCode.getChild("loading");
+	const Xml loadingNode = sceneNode.getChild("loading");
 	loadTextures(loadingNode);
 }
 
@@ -35,18 +36,18 @@ void SceneParser::loadTextures(const Xml& loadingNode)
 	}
 }
 
-void SceneParser::loadMusic(const Xml& sceneSourceCode)
+void SceneParser::loadMusic(const Xml& sceneNode)
 {
-	const Xml musicNode = sceneSourceCode.getChild("music");
+	const Xml musicNode = sceneNode.getChild("music");
 	const Xml startThemeNode = musicNode.getChild("theme");
 	const std::string themeFileName = startThemeNode.getAttribute("filename").toString();
 	const std::string themeFilePath = "music/" + themeFileName;
 	mGameData->getMusicPlayer().play(themeFilePath);
 }
 
-void SceneParser::loadScene(const Xml& sceneSourceCode)
+void SceneParser::loadScene(const Xml& sceneNode)
 {
-	const Xml rootNode = sceneSourceCode.getChild("root");
+	const Xml rootNode = sceneNode.getChild("root");
 
 	loadMap(rootNode);
 	loadPlayer(rootNode);
