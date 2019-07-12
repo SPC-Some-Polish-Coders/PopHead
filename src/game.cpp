@@ -39,26 +39,19 @@ Game::Game()
 		mGui.get()
 	));
 
-	loadFonts(mGameData.get());
+	GameData* gameData = mGameData.get();
 
-	mTerminal->init(mGameData.get());
-
-	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
-	Logger::getInstance().setGameData(mGameData.get());
-
-	mEfficiencyRegister->init(mGameData.get());
-
-	mMap->setGameData(mGameData.get());
-
-	mSceneMachine->setGameData(mGameData.get());
+	loadFonts(gameData);
+	mTerminal->init(gameData);
+	Logger::getInstance().setGameData(gameData); // logger.setGameData() must be called after mTerminal.init()
+	mEfficiencyRegister->init(gameData);
+	mMap->setGameData(gameData);
+	mGui->init(gameData);
+	EventLoop::init(gameData);
+	mInput->setGameData(gameData);
+	mRenderer->setGameData(gameData);
+	mSceneMachine->setGameData(gameData);
 	mSceneMachine->pushScene("scenes/desertScene.xml");
-
-	mGui->init(mGameData.get());
-
-	EventLoop::init(mGameData.get());
-	mInput->setGameData(mGameData.get());
-
-	mRenderer->setGameData(mGameData.get());
 }
 
 void Game::run()
