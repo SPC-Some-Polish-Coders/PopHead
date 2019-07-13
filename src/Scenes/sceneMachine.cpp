@@ -55,7 +55,7 @@ void SceneMachine::popAction()
 void SceneMachine::pushAction()
 {
 	while (!mPendingScenesSourceCodePaths.empty()) {
-		mActiveScenes.emplace_back(std::make_unique<Scene>(mGameData, mPendingScenesSourceCodePaths.front()));
+		mActiveScenes.emplace_back(mGameData, mPendingScenesSourceCodePaths.front());
 		mPendingScenesSourceCodePaths.pop_front();
 		PH_LOG(LogType::Info, "The new scene was pushed into back of the vector.");
 	}
@@ -65,7 +65,7 @@ void SceneMachine::pushAction()
 void SceneMachine::replaceAction()
 {
 	mGameData->getPhysicsEngine().clear();
-	mActiveScenes.emplace_back(std::make_unique<Scene>(mGameData, mPendingScenesSourceCodePaths.front()));
+	mActiveScenes.emplace_back(mGameData, mPendingScenesSourceCodePaths.front());
 	mPendingScenesSourceCodePaths.clear();
 	PH_LOG(LogType::Info, "The scene in the back of the vector was replaced by new scene.");
 	mIsReplacing = false;
@@ -76,7 +76,7 @@ void SceneMachine::input()
     if(mActiveScenes.empty())
 		PH_LOG(LogType::Error, "Cannot execute input because there are no scene on the vector.");
     else
-        mActiveScenes.back()->input();
+        mActiveScenes.back().input();
 }
 
 void SceneMachine::update(sf::Time delta)
@@ -84,7 +84,7 @@ void SceneMachine::update(sf::Time delta)
     if(mActiveScenes.empty())
 		PH_LOG(LogType::Error, "Cannot execute update because there are no scenes on the vector.");
     else
-        mActiveScenes.back()->update(delta);
+        mActiveScenes.back().update(delta);
 }
 
 void SceneMachine::pushScene(const std::string& sceneSourceCodeFilePath)
@@ -120,22 +120,22 @@ void SceneMachine::clearScenes()
 
 bool SceneMachine::getHideInSceneNr(unsigned int nrOfScene) const
 {
-    return mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ]->getHide();
+    return mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ].getHide();
 }
 
 bool SceneMachine::getPauseInSceneNr(unsigned int nrOfScene) const
 {
-    return mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ]->getPause();
+    return mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ].getPause();
 }
 
 void SceneMachine::setHideInSceneNr(unsigned int nrOfScene, bool hide)
 {
-    mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ]->setHide(hide);
+    mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ].setHide(hide);
 }
 
 void SceneMachine::setPauseInSceneNr(unsigned int nrOfScene, bool pause)
 {
-    mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ]->setPause(pause);
+    mActiveScenes[ mActiveScenes.size() - nrOfScene - 1 ].setPause(pause);
 }
 
 }
