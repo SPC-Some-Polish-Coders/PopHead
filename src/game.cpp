@@ -14,7 +14,7 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mSceneMachine{new SceneMachine()}
+	,mSceneMachine{new SceneManager()}
 	,mMap(new Map())
 	,mInput{new Input()}
 	,mRenderer{new Renderer()}

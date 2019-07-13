@@ -1,11 +1,11 @@
-#include "sceneMachine.hpp"
+#include "sceneManager.hpp"
 #include "scene.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-SceneMachine::SceneMachine()
+SceneManager::SceneManager()
 	:mScene(nullptr)
 	,mGameData(nullptr)
 	,mIsReplacing(false)
@@ -13,7 +13,7 @@ SceneMachine::SceneMachine()
 {
 }
 
-void SceneMachine::changingScenesProcess()
+void SceneManager::changingScenesProcess()
 {
 	if (mIsPopping)
 		popAction();
@@ -22,7 +22,7 @@ void SceneMachine::changingScenesProcess()
 		replaceAction();
 }
 
-void SceneMachine::popAction()
+void SceneManager::popAction()
 {
 	if (mScene == nullptr)
 		PH_LOG(LogType::Warning, "You are trying to pop scene but there is no scene to pop.");
@@ -35,7 +35,7 @@ void SceneMachine::popAction()
 	mIsPopping = false;
 }
 
-void SceneMachine::replaceAction()
+void SceneManager::replaceAction()
 {
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
@@ -44,25 +44,25 @@ void SceneMachine::replaceAction()
 	mIsReplacing = false;
 }
 
-void SceneMachine::input()
+void SceneManager::input()
 {
 	if(mScene != nullptr)
 		mScene->input();
 }
 
-void SceneMachine::update(sf::Time delta)
+void SceneManager::update(sf::Time delta)
 {
 	if(mScene != nullptr)
 		mScene->update(delta);
 }
 
-void SceneMachine::replaceScene(const std::string& sceneSourceCodeFilePath)
+void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
 	mSceneToMakeSourceCodeFilepath = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 }
 
-void SceneMachine::popScene()
+void SceneManager::popScene()
 {
     mIsPopping = true;
 }

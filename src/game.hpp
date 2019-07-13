@@ -6,7 +6,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
-#include "Scenes/sceneMachine.hpp"
+#include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
@@ -34,7 +34,7 @@ private:
 	std::unique_ptr< TextureHolder >      mTextures;
 	std::unique_ptr< FontHolder >         mFonts;
 	std::unique_ptr< ShaderHolder >       mShaders;
-	std::unique_ptr< SceneMachine >       mSceneMachine;
+	std::unique_ptr< SceneManager >       mSceneMachine;
 	std::unique_ptr< Map >                mMap;
 	std::unique_ptr< Input >              mInput;
 	std::unique_ptr< Renderer >           mRenderer;

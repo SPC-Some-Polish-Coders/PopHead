@@ -5,7 +5,7 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
-#include "Scenes/sceneMachine.hpp"
+#include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
@@ -40,7 +40,7 @@ public:
 		TextureHolder* const textures,
 		FontHolder* const fonts,
 		ShaderHolder* const shaders,
-		SceneMachine* const sceneMachine,
+		SceneManager* const sceneMachine,
 		Map* const map,
 		Input* const input,
 		Renderer* const renderer,
@@ -71,7 +71,7 @@ public:
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
-	auto getSceneMachine() const -> SceneMachine& { return *mSceneMachine; }
+	auto getSceneMachine() const -> SceneManager& { return *mSceneMachine; }
 	auto getMap() const -> Map& { return *mMap; }
 	auto getInput()	const -> Input& { return *mInput; }
 	auto getRenderer() const -> Renderer& { return *mRenderer; }
@@ -87,7 +87,7 @@ private:
 	TextureHolder* const mTextures;
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
-	SceneMachine* const mSceneMachine;
+	SceneManager* const mSceneMachine;
 	Map* const mMap;
 	Input* const mInput;
 	Renderer* const mRenderer;
