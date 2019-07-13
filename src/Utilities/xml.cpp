@@ -38,8 +38,7 @@ Xml Xml::getChild(std::string name) const
 		if (begin == std::string::npos)
 			PH_EXCEPTION("cannot find child");
 		++begin;
-		// TODO: Add characters like \t to find_first_of()? Or maybe replace them with spaces in loadFromFile()? 
-		std::size_t end = mContent.find_first_of(" >", begin + 1);
+		std::size_t end = mContent.find_first_of(whitespaceCharacters + ">", begin + 1);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing angle bracket in child opening tag");
 		if (isSelfClosingTag(end)) {
@@ -142,8 +141,7 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 	std::vector<Xml> children;
 	while ((begin = mContent.find('<', begin + 1)) != std::string::npos) {
 		++begin;
-		// TODO: Add characters like \t to find_first_of()? Or maybe replace them with spaces in loadFromFile()?
-		std::size_t end = mContent.find_first_of(" >", begin + 1);
+		std::size_t end = mContent.find_first_of(whitespaceCharacters + " >", begin + 1);
 		if (end == std::string::npos)
 			PH_EXCEPTION("missing angle bracket in child opening tag");
 		if (isSelfClosingTag(end)) {
