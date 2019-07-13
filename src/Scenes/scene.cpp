@@ -7,8 +7,8 @@ namespace ph {
 
 Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
 	:mRoot(EntityType::none, gameData, "root")
-	,mGameData(gameData)
 	,mSceneParser(gameData, mRoot, sceneSourceCodeFilePath)
+	,mGameData(gameData)
 	,mHide(false)
 	,mPause(false)
 {

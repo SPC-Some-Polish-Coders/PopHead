@@ -46,7 +46,7 @@ public:
 
 private:
     std::vector<ScenePtr> mActiveScenes;
-    std::deque<ScenePtr> mPendingScenes;
+    std::deque<std::string> mPendingScenesSourceCodePaths;
 
     GameData* mGameData;
 
