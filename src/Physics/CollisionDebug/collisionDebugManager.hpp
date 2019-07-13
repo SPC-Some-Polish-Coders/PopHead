@@ -14,7 +14,7 @@ class CollisionDebugManager : public sf::Drawable
 public:
 	void addStaticBodyCollisionDebugRect(const CollisionBody&);
 	void addKinematicBodyCollisionDebugRect(const CollisionBody&);
-	void clear();
+	void clear() noexcept;
 
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 	

@@ -51,7 +51,7 @@ Game::Game()
 	mInput->setGameData(gameData);
 	mRenderer->setGameData(gameData);
 	mSceneMachine->setGameData(gameData);
-	mSceneMachine->pushScene("scenes/desertScene.xml");
+	mSceneMachine->replaceScene("scenes/desertScene.xml");
 }
 
 void Game::run()
