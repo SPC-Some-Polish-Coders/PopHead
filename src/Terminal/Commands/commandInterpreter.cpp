@@ -112,7 +112,7 @@ void CommandInterpreter::executeCurrentPos() const
 
 auto CommandInterpreter::getPlayer() const -> Object&
 {
-	auto& gameScene = mGameData->getSceneMachine().getTopScene();
+	auto& gameScene = mGameData->getSceneMachine().getScene();
 	auto& root = gameScene.getRoot();
 	Object& player = dynamic_cast<Object&>(root.getChild("player"));
 	return player;

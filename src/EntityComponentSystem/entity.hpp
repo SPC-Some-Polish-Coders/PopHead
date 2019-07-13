@@ -44,7 +44,6 @@ protected:
 	std::list< std::unique_ptr<Entity> > mChildren;
 
 	std::string mName;
-
 };
 
 }

@@ -84,6 +84,12 @@ void Renderer::removeAllObjectsFromLayer(LayerID layerID)
 	PH_LOG(LogType::Info, "All objects were removed from " + getLayerName(layerID) + " layer.");
 }
 
+void Renderer::clear() noexcept
+{
+	for(auto& layer : mLayers)
+		layer.second.clear();
+}
+
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
 	const sf::Vector2f movementFromLastFrame = mCamera.getCameraMoveFromLastFrame();

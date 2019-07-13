@@ -42,7 +42,7 @@ namespace
 }
 
 Player::Player(GameData* gameData)
-	:Character(gameData, name, std::move(animation), movementSpeed, HP, maxHP, posAndSize, mass)
+	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
 {
 	mAnimation.animate(mSprite);
 }
@@ -51,6 +51,9 @@ void Player::input()
 {
 	movementInput();
 	gunInput();
+
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
+		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
 }
 
 void Player::movementInput()

@@ -6,9 +6,9 @@
 namespace ph {
 
 Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
-	:mRoot(EntityType::none, gameData, "root")
+	:mRoot(std::make_unique<Entity>(EntityType::none, gameData, "root"))
+	,mSceneParser(gameData, *mRoot.get(), sceneSourceCodeFilePath)
 	,mGameData(gameData)
-	,mSceneParser(gameData, mRoot, sceneSourceCodeFilePath)
 	,mHide(false)
 	,mPause(false)
 {
@@ -16,12 +16,12 @@ Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePat
 
 void Scene::input()
 {
-	mRoot.input();
+	mRoot->input();
 }
 
 void Scene::update(sf::Time delta)
 {
-	mRoot.update(delta);
+	mRoot->update(delta);
 }
 
 }

@@ -49,6 +49,7 @@ void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
+	mCollisionDebugManager.clear();
 }
 
 void PhysicsEngine::update(sf::Time delta)
