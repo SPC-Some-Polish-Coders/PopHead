@@ -1,12 +1,9 @@
 #pragma once
 
+#include <SFML/System.hpp>
 #include <string>
 #include <list>
 #include <memory>
-
-#include <SFML/System.hpp>
-
-#include "EntityComponentSystem/entityType.hpp"
 
 namespace ph {
 
@@ -17,7 +14,7 @@ class Entity
 public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
-	Entity(EntityType, GameData*, std::string name);
+	Entity(GameData*, std::string name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
@@ -36,14 +33,11 @@ protected:
 	void incrementNumber(std::string&);
 
 protected:
+	std::list<std::unique_ptr<Entity>> mChildren;
+	std::string mName;
+	Entity* mParent;
 	GameData* mGameData;
 
-	const EntityType mEntityType;
-
-	Entity* mParent;
-	std::list< std::unique_ptr<Entity> > mChildren;
-
-	std::string mName;
 };
 
 }

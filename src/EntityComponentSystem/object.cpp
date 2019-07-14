@@ -4,7 +4,7 @@
 namespace ph {
 
 Object::Object(GameData* gameData, std::string name, LayerID layerID)
-	:Entity(EntityType::object, gameData, name)
+	:Entity(gameData, name)
 	,mLayerID(layerID)
 {
     mGameData->getRenderer().addObject(this, layerID);

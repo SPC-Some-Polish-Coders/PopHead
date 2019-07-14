@@ -1,12 +1,11 @@
 #include "scene.hpp"
 #include "gameData.hpp"
-#include "EntityComponentSystem/entityType.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
 Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
-	:mRoot(std::make_unique<Entity>(EntityType::none, gameData, "root"))
+	:mRoot(std::make_unique<Entity>(gameData, "root"))
 	,mSceneParser(gameData, *mRoot.get(), sceneSourceCodeFilePath)
 	,mGameData(gameData)
 	,mHide(false)
