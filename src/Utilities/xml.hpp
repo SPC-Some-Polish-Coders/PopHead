@@ -21,13 +21,13 @@ public:
 
 	std::string toString() const;
 
-	bool toBool() const { return Cast::toBool(toString()); }
+	bool toBool() const { const std::string str = toString(); return Cast::toBool(str); }
 
-	int toInt() const { return std::stoi(toString()); }
+	int toInt() const { const std::string str = toString(); return std::stoi(str); }
 
-	unsigned toUnsigned() const { return Cast::toUnsigned(toString()); }
+	unsigned toUnsigned() const { const std::string str = toString(); return Cast::toUnsigned(str); }
 
-	float toFloat() const { return std::stof(toString()); }
+	float toFloat() const { const std::string str = toString(); return std::stof(str); }
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
