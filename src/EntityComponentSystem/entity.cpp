@@ -3,7 +3,7 @@
 
 namespace ph {
 
-Entity::Entity(GameData* gameData, std::string name)
+Entity::Entity(GameData* const gameData, const std::string& name)
 	:mName(name)
 	,mParent(nullptr)
 	,mGameData(gameData)
@@ -22,37 +22,33 @@ void Entity::update(sf::Time delta)
 		(*it)->update(delta);
 }
 
-std::string Entity::checkName(std::string& childName)
+std::string Entity::getUniqueName(std::string& childName) const
 {
 	for (const auto& child : mChildren)
-	{
 		if (child->getName() == childName)
-		{
-			while (child->getName() == childName)
+			while(child->getName() == childName)
 				correctChildName(childName);
-		}
-	}
 	return childName;
 }
 
-void Entity::correctChildName(std::string& childNameToCorrect)
+void Entity::correctChildName(std::string& childName) const
 {
-	if (childNameToCorrect.find('_') != std::string::npos)
-		incrementNumber(childNameToCorrect);
+	if (childName.find('_') != std::string::npos)
+		incrementNumberInChildName(childName);
 	else
-		childNameToCorrect += "_2";
+		childName += "_2";
 }
 
-void Entity::incrementNumber(std::string& childNameToIncrement)
+void Entity::incrementNumberInChildName(std::string& childName) const
 {
-	std::size_t begin = childNameToIncrement.find('_');
-	childNameToIncrement.replace(begin + 1, std::string::npos,
-		std::to_string(std::stoi(childNameToIncrement.substr(begin + 1))+1));
+	std::size_t begin = childName.find('_');
+	childName.replace(begin + 1, std::string::npos,
+		std::to_string(std::stoi(childName.substr(begin + 1))+1));
 }
 
 void Entity::addChild(EntityPtr newChild)
 {
-	const std::string nameOfNewChild = checkName(newChild->mName);
+	const std::string nameOfNewChild = getUniqueName(newChild->mName);
 	newChild->mName = nameOfNewChild;
     newChild->mParent = this;
     mChildren.emplace_back(std::move(newChild));
@@ -70,19 +66,18 @@ void Entity::removeChild(const std::string& name)
 	PH_LOG(LogType::Info, "Entity \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-void Entity::removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved)
+void Entity::removeChild(Entity* childToRemove)
 {
-	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
-		if ((*it).get() == pointerToChildWhichIsSupposedToBeRemoved) {
+	for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
+		if(it->get() == childToRemove) {
 			mChildren.erase(it);
 			break;
 		}
 
-	PH_LOG(LogType::Info, "Entity \"" + pointerToChildWhichIsSupposedToBeRemoved->getName() + 
-		                  "\" was removed. It was a child of the \"" + mName + "\"");
+	PH_LOG(LogType::Info, "Entity \"" + childToRemove->getName() + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
-auto Entity::getChild(std::string name) const -> Entity&
+auto Entity::getChild(const std::string& name) const -> Entity&
 {
     for(auto const &child : mChildren)
         if(child->getName() == name)

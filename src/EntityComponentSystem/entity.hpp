@@ -14,30 +14,29 @@ class Entity
 public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
-	Entity(GameData*, std::string name);
+	Entity(GameData* const, const std::string& name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
 
 	void addChild(EntityPtr);
 	void removeChild(const std::string& name);
-	void removeChild(Entity* pointerToChildWhichIsSupposedToBeRemoved);
+	void removeChild(Entity* childToRemove);
 
 	auto getParent() const -> Entity& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }
-	auto getChild(std::string name) const->Entity&;
+	auto getChild(const std::string& name) const -> Entity&;
 
 protected:
-	std::string checkName(std::string&);
-	void correctChildName(std::string&);
-	void incrementNumber(std::string&);
+	std::string getUniqueName(std::string& childName) const;
+	void correctChildName(std::string& childName) const;
+	void incrementNumberInChildName(std::string& childName) const;
 
 protected:
 	std::list<std::unique_ptr<Entity>> mChildren;
 	std::string mName;
 	Entity* mParent;
 	GameData* mGameData;
-
 };
 
 }
