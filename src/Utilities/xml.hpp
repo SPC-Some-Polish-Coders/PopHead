@@ -9,7 +9,7 @@ namespace ph {
 class Xml 
 {
 public:
-	void loadFromFile(const std::string& filePath);
+	void loadFromFile(std::string filePath);
 
 	Xml getChild(std::string name) const;
 
@@ -21,13 +21,17 @@ public:
 
 	std::string toString() const;
 
-	bool toBool() const { const std::string str = toString(); return Cast::toBool(str); }
+	bool toBool() const 
+	{ const std::string str = toString(); return Cast::toBool(str); }
 
-	int toInt() const { const std::string str = toString(); return std::stoi(str); }
+	int toInt() const 
+	{ const std::string str = toString(); return std::stoi(str); }
 
-	unsigned toUnsigned() const { const std::string str = toString(); return Cast::toUnsigned(str); }
+	unsigned toUnsigned() const 
+	{ const std::string str = toString(); return Cast::toUnsigned(str); }
 
-	float toFloat() const { const std::string str = toString(); return std::stof(str); }
+	float toFloat() const 
+	{ const std::string str = toString(); return std::stof(str); }
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
