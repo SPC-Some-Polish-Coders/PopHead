@@ -2,8 +2,6 @@
 
 #include "Physics/CollisionHandlers/staticCollisionHandler.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "EntityComponentSystem/Objects/Characters/player.hpp"
-#include "gameData.hpp"
 
 namespace ph {
 
