@@ -71,10 +71,18 @@ void Player::movementInput()
 void Player::gunInput()
 {
 	if(mGameData->getInput().getAction().isActionJustPressed("shotgunShot"))
-		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
+		mIsShooting = true;
 }
 
 void Player::update(sf::Time delta)
+{
+	updateMovement(delta);
+	shootingUpdate(delta);
+	cameraMovement(delta);
+	updateListenerPosition();
+}
+
+void Player::updateMovement(const sf::Time delta)
 {
 	sf::Vector2f velocity;
 
@@ -106,10 +114,15 @@ void Player::update(sf::Time delta)
 		mAnimation.animate(mSprite, delta);
 	}
 	mMotion.clear();
-
 	setPosition(mCollisionBody.getPosition());
-	cameraMovement(delta);
-	updateListenerPosition();
+}
+
+void Player::shootingUpdate(const sf::Time delta)
+{
+	if(mIsShooting) {
+		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
+		mIsShooting = false;
+	}
 }
 
 void Player::updateAnimation(const std::string& stateName)
