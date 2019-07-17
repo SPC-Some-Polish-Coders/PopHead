@@ -16,8 +16,9 @@ private:
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX() const;
 	bool isKinematicBodyOnTheLeftOfTheStaticBody() const;
-	void stickToRight();
 	void stickToLeft();
+	void stickToRight();
+	bool isKinematicBodyCollidingOnAxisY() const;
 	bool isKinematicBodyUpOfTheStaticBody() const;
 	void stickToTop();
 	void stickToBottom();

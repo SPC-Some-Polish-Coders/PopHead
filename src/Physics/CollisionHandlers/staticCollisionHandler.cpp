@@ -25,14 +25,14 @@ void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionB
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 {
-	if (isKinematicBodyCollidingOnAxisX()) {
-		if (isKinematicBodyOnTheLeftOfTheStaticBody())
+	if(isKinematicBodyCollidingOnAxisX()) {
+		if(isKinematicBodyOnTheLeftOfTheStaticBody())
 			stickToLeft();
 		else
 			stickToRight();
 	}
-	else {
-		if (isKinematicBodyUpOfTheStaticBody())
+	else if(isKinematicBodyCollidingOnAxisY()){
+		if(isKinematicBodyUpOfTheStaticBody())
 			stickToTop();
 		else
 			stickToBottom();
@@ -41,8 +41,8 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 
 bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX() const
 {
-	return (mKinematicBodyPreviousRect.top + mKinematicBodyPreviousRect.height > mStaticBodyRect.top &&
-		    mKinematicBodyPreviousRect.top < mStaticBodyRect.top + mStaticBodyRect.height);
+	return (Math::getBottomBound(mKinematicBodyPreviousRect) > mStaticBodyRect.top &&
+		mKinematicBodyPreviousRect.top < Math::getBottomBound(mStaticBodyRect));
 }
 
 bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody() const
@@ -58,6 +58,12 @@ void StaticCollisionHandler::stickToLeft()
 void StaticCollisionHandler::stickToRight()
 {
 	mKinematicBody->setPosition({Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top});
+}
+
+bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisY() const
+{
+	return (Math::getRightBound(mKinematicBodyPreviousRect) > mStaticBodyRect.left &&
+		mKinematicBodyPreviousRect.left < Math::getRightBound(mStaticBodyRect));
 }
 
 bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody() const
