@@ -1,78 +1,41 @@
 #include "collisionBody.hpp"
-#include "bodyType.hpp"
 
 namespace ph {
 
-CollisionBody::CollisionBody(sf::FloatRect rect, float mass, BodyType bodyType,
-								Object* const owner, GameData* gameData)
+CollisionBody::CollisionBody(const sf::FloatRect& rect, const float mass)
 	:mRect(rect)
-	,mMass(mass)
 	,mPreviousPosition(rect.left, rect.top)
-	,mOwner(owner)
-	,mBodyType(bodyType)
-	,mCollisionDebugRect(gameData, rect, this)
-	,mGameData(gameData)
+	,mVelocity(0, 0)
+	,mForceVector(0, 0)
+	,mMass(mass)
 {
-	switch (bodyType)
-	{
-	case BodyType::staticBody:
-		gameData->getPhysicsEngine().addStaticBody(this);
-		break;
-
-	case BodyType::kinematicBody:
-		gameData->getPhysicsEngine().addKinematicBody(this);
-		break;
-	}
 }
 
-CollisionBody::~CollisionBody()
-{
-	switch (mBodyType)
-	{
-	case BodyType::staticBody:
-		mGameData->getPhysicsEngine().removeStaticBody(this);
-		break;
-
-	case BodyType::kinematicBody:
-		mGameData->getPhysicsEngine().removeKinematicBody(this);
-		break;
-	}
-}
-
-void CollisionBody::move(sf::Vector2f velocity)
+void CollisionBody::move(const sf::Vector2f velocity)
 {
 	mVelocity = velocity;
 	mRect.left += velocity.x;
 	mRect.top += velocity.y;
-	mCollisionDebugRect.move(velocity);
 }
 
-void CollisionBody::setPosition(sf::Vector2f position)
+void CollisionBody::setPosition(const sf::Vector2f position)
 {
 	mRect.left = position.x;
 	mRect.top = position.y;
-	mCollisionDebugRect.setPosition(position);
 }
 
 void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 {
 	setPreviousPositionToCurrentPosition();
-	updateOwnerPosition();
 	mVelocity = sf::Vector2f();
 }
 
 void CollisionBody::setPreviousPositionToCurrentPosition()
 {
-	mPreviousPosition.x = mRect.left;
-	mPreviousPosition.y = mRect.top;
+	mPreviousPosition = getPosition();
 }
 
-void CollisionBody::updateOwnerPosition()
-{
-	mOwner->setPosition(sf::Vector2f(mRect.left, mRect.top), false);
-}
-
-void CollisionBody::updatePush(sf::Time delta)
+void CollisionBody::updatePush(const sf::Time delta)
 {
 	if (mForceVector == sf::Vector2f())
 		return;

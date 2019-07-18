@@ -1,39 +1,42 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <vector>
-
 #include "CollisionHandlers/staticCollisionHandler.hpp"
 #include "CollisionHandlers/kinematicCollisionHandler.hpp"
+#include "CollisionBody/collisionBody.hpp"
+#include "CollisionDebug/collisionDebugManager.hpp"
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <list>
+#include <memory>
 
 namespace ph{
-
-class CollisionBody;
 
 class PhysicsEngine
 {
 public:
-    void addStaticBody(CollisionBody* staticBodyPtr);
-    void addKinematicBody(CollisionBody* kinematicBodyPtr);
+	PhysicsEngine();
 
-    void removeStaticBody(CollisionBody* staticBodyPtr);
-    void removeKinematicBody(CollisionBody* kinematicBodyPtr);
-private:
-	void removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body);
-
-public:
+    CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
+	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass);
+	void removeStaticBody(const CollisionBody&);
+	void removeKinematicBody(const CollisionBody&);
     void clear() noexcept;
+
+	const size_t howManyStaticBodiesAreThere() const { return mStaticBodies.size(); }
+	const size_t howManyKinematicBodiesAreThere() const { return mKinematicBodies.size(); }
+	auto getCollisionDebugManager() const -> const CollisionDebugManager& { return mCollisionDebugManager; }
 
     void update(sf::Time delta);
 private:
-    void handleStaticCollisionsFor(CollisionBody* kinematicBody);
-    void handleKinematicCollisionsFor(CollisionBody* kinematicBody);
-    bool isThereCollision(sf::FloatRect bodyA, sf::FloatRect bodyB);
+    void handleStaticCollisionsFor(CollisionBody& kinematicBody);
+    void handleKinematicCollisionsFor(CollisionBody& kinematicBody);
+    bool isThereCollision(const CollisionBody& a, const CollisionBody& b) const;
+	void updatePositionsOfDebugRects();
 
 private:
-    std::vector<CollisionBody*> mStaticBodies;
-    std::vector<CollisionBody*> mKinematicBodies;
-
+    std::vector<std::unique_ptr<CollisionBody>> mStaticBodies;
+    std::list<CollisionBody> mKinematicBodies;
+	CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;
     KinematicCollisionHandler mKinematicCollisionHandler;
 };

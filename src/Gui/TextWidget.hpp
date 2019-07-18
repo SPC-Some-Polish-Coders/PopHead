@@ -1,45 +1,43 @@
 #pragma once
 
-#include "Widget.hpp"
+#include "widget.hpp"
 
 namespace ph {
 
-	class TextWidget : public Widget {
+class TextWidget : public Widget 
+{
+public:
+	TextWidget();
 
-	public:
-		TextWidget();
+	void setString(const std::string& text);
 
-		void setString(const std::string& text);
+	void setColor(const sf::Color& color);
 
-		void setColor(const sf::Color& color);
+	void setTextPosition(const sf::Vector2f& pos);
 
-		void setTextPosition(const sf::Vector2f& pos);
+	void setAlpha(unsigned int alpha);
 
-		void setAlpha(unsigned int alpha);
+	void setTextOrigin(const sf::Vector2f& origin);
 
-		void setTextOrigin(const sf::Vector2f& origin);
+	void setTextAlpha(unsigned int alpha);
 
-		void setTextAlpha(unsigned int alpha);
+	void scaleText(const sf::Vector2f& scale);
 
-		void scaleText(const sf::Vector2f& scale);
+	void setPosition(const sf::Vector2f& pos);
 
-		void setPosition(const sf::Vector2f& pos);
+	void move(const sf::Vector2f& delta);
 
-		void move(const sf::Vector2f& delta);
+	void setCharacterSize(unsigned int size);
 
-		void setCharacterSize(unsigned int size);
+	void setFontPath(const std::string& path);
 
-		void setFontPath(const std::string& path);
+	void scale(const sf::Vector2f& scale);
 
-		void scale(const sf::Vector2f& scale);
+	void draw();
 
-		void draw();
-
-	private:
-		sf::Text mText;
-		sf::Vector2f mTextPosition;
-		
-	};
-
+private:
+	sf::Text mText;
+	sf::Vector2f mTextPosition;
+};
 
 }

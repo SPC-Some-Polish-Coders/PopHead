@@ -6,17 +6,16 @@
 
 namespace ph {
 
-void StaticCollisionHandler::operator()(CollisionBody* kinematicBody, CollisionBody* staticBody)
+void StaticCollisionHandler::operator()(CollisionBody& kinematicBody, const CollisionBody& staticBody)
 {
 	init(kinematicBody, staticBody);
-	collisionLog();
 	makeKinematicBodyStickToStaticBody();
 }
 
-void StaticCollisionHandler::init(CollisionBody* kinematicBody, CollisionBody* staticBody)
+void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionBody& staticBody)
 {
-	mKinematicBody = kinematicBody;
-	mStaticBody = staticBody;
+	mKinematicBody = &kinematicBody;
+	mStaticBody = &staticBody;
 
 	mKinematicBodyRect = mKinematicBody->getRect();
 	mStaticBodyRect = mStaticBody->getRect();
@@ -24,62 +23,62 @@ void StaticCollisionHandler::init(CollisionBody* kinematicBody, CollisionBody* s
 	mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
 }
 
-void StaticCollisionHandler::collisionLog() const
-{
-	PH_LOG(LogType::Info, "There is static collision between " +
-		mKinematicBody->getNameOfOwner() + " and " + mStaticBody->getNameOfOwner() + ".");
-}
-
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 {
-	if (isKinematicBodyCollidingOnAxisX()) {
-		if (isKinematicBodyOnTheLeftOfTheStaticBody())
+	if(isKinematicBodyCollidingOnAxisX()) {
+		if(isKinematicBodyOnTheLeftOfTheStaticBody())
 			stickToLeft();
 		else
 			stickToRight();
 	}
-	else {
-		if (isKinematicBodyUpOfTheStaticBody())
+	else if(isKinematicBodyCollidingOnAxisY()){
+		if(isKinematicBodyUpOfTheStaticBody())
 			stickToTop();
 		else
 			stickToBottom();
 	}
 }
 
-bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX()
+bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX() const
 {
-	return (mKinematicBodyPreviousRect.top + mKinematicBodyPreviousRect.height > mStaticBodyRect.top &&
-		    mKinematicBodyPreviousRect.top < mStaticBodyRect.top + mStaticBodyRect.height);
+	return (Math::getBottomBound(mKinematicBodyPreviousRect) > mStaticBodyRect.top &&
+		mKinematicBodyPreviousRect.top < Math::getBottomBound(mStaticBodyRect));
 }
 
-bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody()
+bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody() const
 {
 	return mKinematicBodyPreviousRect.left < mStaticBodyRect.left;
 }
 
 void StaticCollisionHandler::stickToLeft()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mStaticBodyRect.left - mKinematicBodyRect.width, mKinematicBodyRect.top));
+	mKinematicBody->setPosition({mStaticBodyRect.left - mKinematicBodyRect.width, mKinematicBodyRect.top});
 }
 
 void StaticCollisionHandler::stickToRight()
 {
-	mKinematicBody->setPosition(sf::Vector2f(Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top));
+	mKinematicBody->setPosition({Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top});
 }
 
-bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody()
+bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisY() const
+{
+	return (Math::getRightBound(mKinematicBodyPreviousRect) > mStaticBodyRect.left &&
+		mKinematicBodyPreviousRect.left < Math::getRightBound(mStaticBodyRect));
+}
+
+bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody() const
 {
 	return mKinematicBodyPreviousRect.top < mStaticBodyRect.top;
 }
 
 void StaticCollisionHandler::stickToTop()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, mStaticBodyRect.top - mKinematicBodyRect.height));
+	mKinematicBody->setPosition({mKinematicBodyRect.left, mStaticBodyRect.top - mKinematicBodyRect.height});
 }
 
 void StaticCollisionHandler::stickToBottom()
 {
-	mKinematicBody->setPosition(sf::Vector2f(mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)));
+	mKinematicBody->setPosition({mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)});
 }
 
 }

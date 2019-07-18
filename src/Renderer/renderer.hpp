@@ -35,6 +35,7 @@ public:
 	void removeObject(const Object* const);
 	void removeObject(std::string name, LayerID);
 	void removeAllObjectsFromLayer(LayerID);
+	void clear() noexcept;
 
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }

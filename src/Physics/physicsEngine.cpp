@@ -1,90 +1,101 @@
 #include "physicsEngine.hpp"
 
-#include "CollisionBody/collisionBody.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
+#include <memory>
 
 namespace ph {
 
-void PhysicsEngine::addStaticBody(CollisionBody* staticBody)
+PhysicsEngine::PhysicsEngine()
 {
-    mStaticBodies.emplace_back(std::move(staticBody));
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was added to physics engine.");
+	mStaticBodies.reserve(300);
 }
 
-void PhysicsEngine::addKinematicBody(CollisionBody* kinematicBody)
+CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
-    mKinematicBodies.emplace_back(std::move(kinematicBody));
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was added to physics engine.");
+	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0));
+	auto& staticBody = *mStaticBodies.back().get();
+	mCollisionDebugManager.addStaticBodyCollisionDebugRect(staticBody);
+	return staticBody;
 }
 
-void PhysicsEngine::removeStaticBody(CollisionBody* staticBody)
+CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass)
 {
-	removeBody(mStaticBodies, staticBody);
-	PH_LOG(LogType::Info, "Static collision body of " + staticBody->getNameOfOwner() + " was deleted from physics engine.");
+	mKinematicBodies.emplace_back(rect, mass);
+	auto& kinematicBody = mKinematicBodies.back();
+	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
+	return kinematicBody;
 }
 
-void PhysicsEngine::removeKinematicBody(CollisionBody* kinematicBody)
+void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
 {
-	removeBody(mKinematicBodies, kinematicBody);
-	PH_LOG(LogType::Info, "Kinematic collision body of " + kinematicBody->getNameOfOwner() + " was deleted from physics engine.");
-}
-
-void PhysicsEngine::removeBody(std::vector<CollisionBody*>& bodies, CollisionBody* body)
-{
-	for (auto it = bodies.begin(); it != bodies.end(); ++it) {
-		if (*it == body) {
-			bodies.erase(it);
+	for(auto it = mStaticBodies.begin(); it != mStaticBodies.end(); ++it)
+		if(it->get() == std::addressof(bodyToDelete)) {
+			mStaticBodies.erase(it);
 			break;
 		}
-	}
+}
+
+void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
+{
+	for(auto it = mKinematicBodies.begin(); it != mKinematicBodies.end(); ++it)
+		if(std::addressof(*it) == std::addressof(bodyToDelete)) {
+			mKinematicBodies.erase(it);
+			break;
+		}
 }
 
 void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
+	mCollisionDebugManager.clear();
 }
 
 void PhysicsEngine::update(sf::Time delta)
 {
-    for(auto kinematicBody : mKinematicBodies)
+    for(auto &kinematicBody : mKinematicBodies)
     {
 		handleKinematicCollisionsFor(kinematicBody);
-		kinematicBody->updatePush(delta);
+		kinematicBody.updatePush(delta);
 		handleStaticCollisionsFor(kinematicBody);
-		kinematicBody->actionsAtTheEndOfPhysicsLoopIteration();
+		kinematicBody.actionsAtTheEndOfPhysicsLoopIteration();
     }
+	updatePositionsOfDebugRects();
 }
 
-void PhysicsEngine::handleStaticCollisionsFor(CollisionBody* kinematicBody)
+void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 {
-	for (const auto& staticBody : mStaticBodies) {
-		if (isThereCollision(kinematicBody->getRect(), staticBody->getRect()))
-			mStaticCollisionHandler(kinematicBody, staticBody);
-	}
+	for (auto& staticBody : mStaticBodies)
+		if (isThereCollision(kinematicBody, *staticBody))
+			mStaticCollisionHandler(kinematicBody, *staticBody);
 }
 
-void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody* kinematicBody)
+void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 {
-    for (const auto& kinematicBody2 : mKinematicBodies)
+    for (auto& kinematicBody2 : mKinematicBodies)
     {
-		if (kinematicBody == kinematicBody2)
+		if (std::addressof(kinematicBody) == std::addressof(kinematicBody2))
 			continue;
 
-		if (isThereCollision(kinematicBody->getRect(), kinematicBody2->getRect()))
+		if (isThereCollision(kinematicBody, kinematicBody2))
             mKinematicCollisionHandler(kinematicBody, kinematicBody2);
     }
 }
 
-bool PhysicsEngine::isThereCollision(sf::FloatRect A, sf::FloatRect B)
+bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b) const
 {
-	//AABB collision detection algorithm
-	return
-		A.left < Math::getRightBound(B) &&
-		Math::getRightBound(A) > B.left &&
-		A.top < Math::getBottomBound(B) &&
-		Math::getBottomBound(A) > B.top;
+	return Math::areTheyOverlapping(a.getRect(), b.getRect());
+}
+
+void PhysicsEngine::updatePositionsOfDebugRects()
+{
+	int i = 0;
+	for(const auto& kinematicBody : mKinematicBodies) {
+		auto pos = kinematicBody.getPosition();
+		mCollisionDebugManager.mKinematicBodyCollisionDebugRects[i].setPosition(pos);
+		++i;
+	}
 }
 
 }

@@ -1,5 +1,4 @@
 #include "collisionDebugSettings.hpp"
-#include "Physics/CollisionBody/bodyType.hpp"
 #include "Utilities/debug.hpp"
 #include <string>
 

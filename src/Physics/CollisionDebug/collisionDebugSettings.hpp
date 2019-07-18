@@ -6,7 +6,8 @@
 namespace ph{
 
 class CollisionBody;
-enum class BodyType;
+
+enum class BodyType {staticBody, kinematicBody};
 
 class CollisionDebugSettings
 {

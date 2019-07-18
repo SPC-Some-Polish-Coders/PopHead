@@ -1,8 +1,7 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
-
-#include "World/Entity/object.hpp"
+#include "EntityComponentSystem/object.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 
@@ -40,14 +39,17 @@ void Renderer::draw() const
 	mCamera.applyTo(mWindow);
 	mWindow.clear();
 
+	mGameData->getMap().draw(mWindow, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
+
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
 			mWindow.draw(*object);
-			mGameData->getEfficencyRegister().registerRenderCall();
+			mGameData->getEfficiencyRegister().registerRenderCall();
 		}
 
+	mWindow.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
+	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
 	mWindow.draw(mGameData->getTerminal().getImage());
-	mWindow.draw(mGameData->getEfficencyRegister().getDisplayer());
 
 	mWindow.display();
 }
@@ -82,6 +84,12 @@ void Renderer::removeAllObjectsFromLayer(LayerID layerID)
 	PH_LOG(LogType::Info, "All objects were removed from " + getLayerName(layerID) + " layer.");
 }
 
+void Renderer::clear() noexcept
+{
+	for(auto& layer : mLayers)
+		layer.second.clear();
+}
+
 void Renderer::setPositionOfStaticObjectsToCamera()
 {
 	const sf::Vector2f movementFromLastFrame = mCamera.getCameraMoveFromLastFrame();
@@ -89,7 +97,7 @@ void Renderer::setPositionOfStaticObjectsToCamera()
 		guiObject->move(movementFromLastFrame);
 	}
 	mGameData->getTerminal().getImage().move(movementFromLastFrame);
-	mGameData->getEfficencyRegister().getDisplayer().move(movementFromLastFrame);
+	mGameData->getEfficiencyRegister().getDisplayer().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const
