@@ -11,7 +11,6 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mHP(HP)
 	,mMaxHP(maxHP)
 	,mMovementSpeed(movementSpeed)
-	,mMotion()
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 {

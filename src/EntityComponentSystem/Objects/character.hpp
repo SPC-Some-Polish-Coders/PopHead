@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EntityComponentSystem/object.hpp"
-#include "EntityComponentSystem/Objects/Characters/Motion/characterMotion.hpp"
 #include "Utilities/animation.hpp"
 
 namespace ph {
@@ -29,7 +28,6 @@ protected:
 	unsigned int mHP;
 	unsigned int mMaxHP;
 	unsigned int mMovementSpeed;
-	CharacterMotion mMotion;
 	sf::Sprite mSprite;
 	Animation mAnimation;
 	CollisionBody& mCollisionBody;

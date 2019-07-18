@@ -117,6 +117,26 @@ void Player::updateMovement(const sf::Time delta)
 	setPosition(mCollisionBody.getPosition());
 }
 
+PlayerMotion::PlayerMotion()
+{
+	clear();
+}
+
+bool PlayerMotion::isMoving()
+{
+	return isMovingLeft || isMovingRight || isMovingUp || isMovingDown;
+}
+
+bool PlayerMotion::isMovingDiagonally()
+{
+	return (isMovingLeft || isMovingRight) && (isMovingUp || isMovingDown);
+}
+
+void PlayerMotion::clear()
+{
+	isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
+}
+
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {

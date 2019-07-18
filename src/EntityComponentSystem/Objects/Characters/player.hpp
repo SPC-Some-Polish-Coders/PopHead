@@ -4,6 +4,19 @@
 
 namespace ph{
 
+struct PlayerMotion
+{
+	PlayerMotion();
+	bool isMoving();
+	bool isMovingDiagonally();
+	void clear();
+
+	bool isMovingLeft;
+	bool isMovingRight;
+	bool isMovingUp;
+	bool isMovingDown;
+};
+
 class Player : public Character
 {
 public:
@@ -22,6 +35,7 @@ private:
 	void updateListenerPosition() const;
 
 private:
+	PlayerMotion mMotion;
 	bool mIsShooting;
 };
 
