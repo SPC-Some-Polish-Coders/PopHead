@@ -1,4 +1,5 @@
 #include "gun.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -13,12 +14,17 @@ void Bullet::dealDamage()
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
-	:Object(gameData, "bullet", LayerID::kinematicEntities)
+	:Object(gameData, "gun", LayerID::kinematicEntities)
 	,mDamage(damage)
 {
 }
 
 void Gun::shoot(const ShootDirection)
+{
+	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
+}
+
+void Gun::draw(sf::RenderTarget&, const sf::RenderStates) const
 {
 }
 

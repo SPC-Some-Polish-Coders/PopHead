@@ -36,6 +36,7 @@ private:
 
 private:
 	PlayerMotion mMotion;
+	PlayerMotion mLastMotion;
 	bool mIsShooting;
 };
 

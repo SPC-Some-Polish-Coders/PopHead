@@ -28,6 +28,7 @@ public:
 	Gun(GameData* const, const float damage);
 
 	void shoot(const ShootDirection);
+	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 
 private:
 	const float mDamage;

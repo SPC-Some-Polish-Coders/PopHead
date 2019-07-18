@@ -1,10 +1,10 @@
 #include "player.hpp"
-
 #include "gameData.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "EntityComponentSystem/Objects/gun.hpp"
 #include <array>
 
 namespace ph {
@@ -43,8 +43,10 @@ namespace
 
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
+	,mIsShooting(false)
 {
 	mAnimation.animate(mSprite);
+	addChild(std::make_unique<Gun>(mGameData, 5));
 }
 
 void Player::input()
@@ -88,6 +90,7 @@ void Player::updateMovement(const sf::Time delta)
 
 	if (mMotion.isMoving() && !mCollisionBody.isBeingPushed())
 	{
+		mLastMotion = mMotion;
 		if (mMotion.isMovingLeft) {
 			velocity.x -= mMovementSpeed * delta.asSeconds();
 			updateAnimation("left");
@@ -140,7 +143,23 @@ void PlayerMotion::clear()
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {
-		mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
+		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
+		if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+			gun.shoot(ShootDirection::northEast);
+		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+			gun.shoot(ShootDirection::northWest);
+		else if(mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+			gun.shoot(ShootDirection::southEast);
+		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+			gun.shoot(ShootDirection::southWest);
+		else if(mLastMotion.isMovingRight)
+			gun.shoot(ShootDirection::east);
+		else if(mLastMotion.isMovingLeft)
+			gun.shoot(ShootDirection::west);
+		else if(mLastMotion.isMovingUp)
+			gun.shoot(ShootDirection::north);
+		else if(mLastMotion.isMovingDown)
+			gun.shoot(ShootDirection::south);
 		mIsShooting = false;
 	}
 }
