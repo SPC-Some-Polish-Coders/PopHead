@@ -7,8 +7,6 @@
 #include <string>
 
 #include "Logs/logger.hpp"
-#include "Logs/ConcreteHandlers/consoleHandler.hpp"
-#include "Logs/ConcreteHandlers/fileHandler.hpp"
 
 #include "Logs/logsInitializing.hpp"
 
