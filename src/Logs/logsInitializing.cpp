@@ -2,7 +2,6 @@
 
 #include "ConcreteHandlers/consoleHandler.hpp"
 #include "ConcreteHandlers/fileHandler.hpp"
-#include "ConcreteHandlers/terminalHandler.hpp"
 
 #include "logger.hpp"
 
@@ -10,7 +9,7 @@
 
 namespace ph {
 
-	void initializeLogsModule(const std::string& configFileName)
+	void initializeLogsModule(const std::string& configFileName, Terminal* terminal)
 	{
 		Xml document;
 		document.loadFromFile(configFileName);
@@ -27,7 +26,6 @@ namespace ph {
 				handler.reset(new FileHandler("logs\\log_"));
 			else if (type == "consoleHandler")
 				handler.reset(new ConsoleHandler());
-			//else if (type == "terminalHandler")
 
 			if (!handler)
 				continue;

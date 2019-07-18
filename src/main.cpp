@@ -6,11 +6,18 @@
 #include <stdexcept>
 #include <string>
 
+#include "Logs/logger.hpp"
+#include "Logs/ConcreteHandlers/consoleHandler.hpp"
+#include "Logs/ConcreteHandlers/fileHandler.hpp"
+
+#include "Logs/logsInitializing.hpp"
+
 int main()
 {
 	try {
 		PH_LOG(ph::LogType::Info, "start executing PopHead!");
 		ph::Game game;
+		ph::initializeLogsModule("../logsConfig.ini", game.getTerminal());
 		game.run();
 	}
 	catch (const std::exception& e) {

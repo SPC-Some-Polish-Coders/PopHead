@@ -22,11 +22,12 @@ public:
 	Game();
 
 	void run();
+	inline auto getGameData() const -> const GameData & { return *(mGameData); };
+	Terminal* getTerminal() { return mTerminal.get(); }
+
 private:
 	void input();
 	void update(sf::Time delta);
-
-	auto getGameData() const -> const GameData& { return *(mGameData); };
 
 	std::unique_ptr< GameData >           mGameData;
 	std::unique_ptr< SoundPlayer >        mSoundPlayer;
