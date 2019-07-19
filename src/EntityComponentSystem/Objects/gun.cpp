@@ -4,7 +4,7 @@
 namespace ph {
 
 Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
-               const float damage, const unsigned range)
+               const unsigned  damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
 	,mEnemiesNode(enemiesNode)
@@ -12,11 +12,11 @@ Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf
 	,mRange(range)
 	,mDamage(damage)
 {
-	const auto* characterWhoWasShot = getCharacterWhoWasShot();
+	auto* characterWhoWasShot = getCharacterWhoWasShot();
 	if(characterWhoWasShot == nullptr)
 		return;
 	makeSpriteOfShot();
-	dealDamage();
+	characterWhoWasShot->takeDamage(mDamage);
 }
 
 auto Bullet::getCharacterWhoWasShot() -> Character*
@@ -50,10 +50,6 @@ void Bullet::makeSpriteOfShot()
 {
 }
 
-void Bullet::dealDamage()
-{
-}
-
 Gun::Gun(GameData* const gameData, const float damage)
 	:Object(gameData, "gun", LayerID::kinematicEntities)
 	,mDamage(damage)
@@ -65,7 +61,7 @@ void Gun::shoot(const ShotDirection shotDirection) const
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 	auto& player = getParent();
 	auto& root = player.getParent();
-	auto& enemies = root.getChild("enemies");
+	auto& enemies = root.getChild("enemy_container");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
 	Bullet(enemies, shotDirectionVector, mPosition, 50, 1000);
 }

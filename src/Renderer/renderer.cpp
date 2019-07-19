@@ -66,16 +66,16 @@ void Renderer::addObject(Object* const object, LayerID layerID)
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
 }
 
-void Renderer::removeObject(std::string name, LayerID layerID)
+void Renderer::removeObject(std::string name, LayerID layerId)
 {
-	mLayers[layerID].removeObject(name);
-	PH_LOG(LogType::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerID) + " layer.");
+	mLayers[layerId].removeObject(name);
+	PH_LOG(LogType::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerId) + " layer.");
 }
 
 void Renderer::removeObject(const Object* const object)
 {
-	mLayers[object->getLayerID()].removeObject(object);
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");
+	mLayers[object->getLayerID()].removeObject(object);
 }
 
 void Renderer::removeAllObjectsFromLayer(LayerID layerID)

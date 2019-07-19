@@ -1,13 +1,11 @@
 #pragma once
 
-#include <map>
-#include <string>
-
-#include <SFML/Graphics.hpp>
-
+#include "Renderer/camera.hpp"
 #include "Renderer/layer.hpp"
 #include "Renderer/layerID.hpp"
-#include "Renderer/camera.hpp"
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <map>
 
 namespace ph {
 

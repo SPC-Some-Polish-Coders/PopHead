@@ -1,8 +1,9 @@
 #include "sceneParser.hpp"
-#include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
 #include "Map/map.hpp"
+#include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
 #include "EntityComponentSystem/Objects/Characters/player.hpp"
 #include "EntityComponentSystem/Objects/Characters/npc.hpp"
+#include "EntityComponentSystem/EntityContainers/enemyContainer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -99,14 +100,14 @@ void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 
 void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 {
-	mRoot.addChild(std::make_unique<Entity>("enemies"));
+	mRoot.addChild(std::make_unique<EnemyContainer>(&mGameData->getRenderer()));
 	const std::vector<Xml> zombieNodes = enemyGroupNode.getChildren("zombie");
 	loadZombies(zombieNodes);
 }
 
 void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 {
-	auto& enemies = mRoot.getChild("enemies");
+	auto& enemies = mRoot.getChild("enemy_container");
 	for (const auto& zombieNode : zombieNodes) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(getPositionAttribute(zombieNode));

@@ -1,8 +1,9 @@
 #include "zombie.hpp"
 
-#include "Resources/collisionRectData.hpp"
 #include "gameData.hpp"
+#include "Resources/collisionRectData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "EntityComponentSystem/EntityContainers/enemyContainer.hpp"
 
 namespace ph {
 
@@ -34,8 +35,12 @@ void Zombie::update(sf::Time delta)
 		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", mPosition);
 		timeFromLastGrowl.restart();
 	}
-
 	setPosition(mCollisionBody.getPosition());
+
+	if(mHP <= 0) {
+		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
+		enemyContainer->addEnemyToDie(this);
+	}
 }
 
 }

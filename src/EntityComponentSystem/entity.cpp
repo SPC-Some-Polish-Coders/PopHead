@@ -68,13 +68,13 @@ void Entity::removeChild(const std::string& name)
 
 void Entity::removeChild(Entity* childToRemove)
 {
+	PH_LOG(LogType::Info, "Entity \"" + childToRemove->getName() + "\" was removed. It was a child of the \"" + mName + "\"");
+
 	for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
 		if(it->get() == childToRemove) {
 			mChildren.erase(it);
 			break;
 		}
-
-	PH_LOG(LogType::Info, "Entity \"" + childToRemove->getName() + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
 auto Entity::getChild(const std::string& name) const -> Entity&

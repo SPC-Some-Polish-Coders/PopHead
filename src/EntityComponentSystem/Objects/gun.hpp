@@ -13,14 +13,13 @@ class Bullet
 {
 public:
 	Bullet(const Entity& opponentsNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
-           const float damage, const unsigned range);
+           const unsigned damage, const unsigned range);
 
 private:
 	auto getCharacterWhoWasShot() -> Character*;
 	bool wasEnemyShot(Character&);
 	bool isBulletStillInItsRange();
 	void makeSpriteOfShot();
-	void dealDamage();
 
 private:
 	const sf::Vector2f mDirection;
@@ -28,7 +27,7 @@ private:
 	const Entity& mEnemiesNode;
 	unsigned mTraveledDistance;
 	const unsigned mRange;
-	const float mDamage;
+	const unsigned mDamage;
 };
 
 class Gun : public Object
