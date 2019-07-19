@@ -99,16 +99,18 @@ void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 
 void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 {
+	mRoot.addChild(std::make_unique<Entity>(mGameData, "enemies"));
 	const std::vector<Xml> zombieNodes = enemyGroupNode.getChildren("zombie");
 	loadZombies(zombieNodes);
 }
 
 void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 {
+	auto& enemies = mRoot.getChild("enemies");
 	for (const auto& zombieNode : zombieNodes) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(getPositionAttribute(zombieNode));
-		mRoot.addChild(std::move(zombie));
+		enemies.addChild(std::move(zombie));
 	}
 }
 

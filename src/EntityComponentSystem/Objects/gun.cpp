@@ -3,9 +3,9 @@
 
 namespace ph {
 
-Bullet::Bullet(const Entity& opponentsNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
+Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
                const float damage, const float range)
-	:mOpponentsNode(opponentsNode)
+	:mEnemiesNode(enemiesNode)
 	,mDirection(direction)
 	,mDamage(damage)
 	,mRange(range)
@@ -34,9 +34,9 @@ void Gun::shoot(const ShotDirection shotDirection) const
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 	auto& player = getParent();
 	auto& root = player.getParent();
-	auto& opponents = root.getChild("opponents");
+	auto& enemies = root.getChild("enemies");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
-	Bullet(opponents, shotDirectionVector, mPosition, 50, 200);
+	Bullet(enemies, shotDirectionVector, mPosition, 50, 200);
 }
 
 auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> const sf::Vector2f

@@ -20,7 +20,7 @@ private:
 	void dealDamage(const std::string nameOfObjectWhoWasShot);
 
 private:
-	const Entity& mOpponentsNode;
+	const Entity& mEnemiesNode;
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
 	const float mDamage;
