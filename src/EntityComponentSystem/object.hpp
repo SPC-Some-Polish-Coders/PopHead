@@ -13,6 +13,7 @@ class Object : public Entity, public sf::Drawable
 {
 public:
 	Object(GameData*, std::string name, LayerID);
+	virtual ~Object();
 
 	void setVisibility(bool visibility, bool recursive = true);
 	virtual void setPosition(sf::Vector2f, bool recursive = true);

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "gameData.hpp"
@@ -13,6 +11,7 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
+#include <memory>
 
 namespace ph {
 
@@ -33,15 +32,15 @@ private:
 	std::unique_ptr< MusicPlayer >        mMusicPlayer;
 	std::unique_ptr< TextureHolder >      mTextures;
 	std::unique_ptr< FontHolder >         mFonts;
+	std::unique_ptr< Terminal >           mTerminal;
 	std::unique_ptr< ShaderHolder >       mShaders;
-	std::unique_ptr< SceneManager >       mSceneMachine;
 	std::unique_ptr< Map >                mMap;
 	std::unique_ptr< Input >              mInput;
 	std::unique_ptr< Renderer >           mRenderer;
 	std::unique_ptr< PhysicsEngine >      mPhysicsEngine;
-	std::unique_ptr< Terminal >           mTerminal;
 	std::unique_ptr< EfficiencyRegister > mEfficiencyRegister;
 	std::unique_ptr< GUI >                mGui;
+	std::unique_ptr< SceneManager >       mSceneMachine;
 };
 
 }

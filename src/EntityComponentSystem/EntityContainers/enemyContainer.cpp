@@ -2,9 +2,8 @@
 
 namespace ph {
 
-EnemyContainer::EnemyContainer(Renderer* const rendererPointer)
+EnemyContainer::EnemyContainer()
 	:Entity("enemy_container")
-	,mRednererPointer(rendererPointer)
 {
 }
 
@@ -14,7 +13,6 @@ void EnemyContainer::update(sf::Time delta)
 		(*it)->update(delta);
 
 	for(Enemy* dyingEnemy : mDyingEnemies) {
-		mRednererPointer->removeObject(dyingEnemy);
 		removeChild(dyingEnemy);
 		mDyingEnemies.clear();
 	}

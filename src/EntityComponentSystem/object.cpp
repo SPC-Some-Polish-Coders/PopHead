@@ -15,6 +15,11 @@ Object::Object(GameData* gameData, std::string name, LayerID layerID)
     mGameData->getRenderer().addObject(this, layerID);
 }
 
+Object::~Object()
+{
+	mGameData->getRenderer().removeObject(this);
+}
+
 void Object::setVisibility(bool visibility, bool recursive)
 {
 	mVisibility = visibility;
