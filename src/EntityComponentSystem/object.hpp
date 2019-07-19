@@ -1,10 +1,9 @@
 #pragma once
 
+#include "entity.hpp"
+#include "Renderer/layerID.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
-
-#include "EntityComponentSystem/entity.hpp"
-#include "Renderer/layerID.hpp"
 
 namespace ph {
 

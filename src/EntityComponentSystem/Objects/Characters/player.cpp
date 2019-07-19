@@ -145,21 +145,21 @@ void Player::shootingUpdate(const sf::Time delta)
 	if(mIsShooting) {
 		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
 		if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			gun.shoot(ShootDirection::northEast);
+			gun.shoot(ShotDirection::northEast);
 		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			gun.shoot(ShootDirection::northWest);
+			gun.shoot(ShotDirection::northWest);
 		else if(mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			gun.shoot(ShootDirection::southEast);
+			gun.shoot(ShotDirection::southEast);
 		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			gun.shoot(ShootDirection::southWest);
+			gun.shoot(ShotDirection::southWest);
 		else if(mLastMotion.isMovingRight)
-			gun.shoot(ShootDirection::east);
+			gun.shoot(ShotDirection::east);
 		else if(mLastMotion.isMovingLeft)
-			gun.shoot(ShootDirection::west);
+			gun.shoot(ShotDirection::west);
 		else if(mLastMotion.isMovingUp)
-			gun.shoot(ShootDirection::north);
+			gun.shoot(ShotDirection::north);
 		else if(mLastMotion.isMovingDown)
-			gun.shoot(ShootDirection::south);
+			gun.shoot(ShotDirection::south);
 		mIsShooting = false;
 	}
 }

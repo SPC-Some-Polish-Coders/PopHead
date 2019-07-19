@@ -21,13 +21,14 @@ public:
 	void setScale(sf::Vector2f, bool recursive = true) override;
 	void setRotation(float angle, bool recursive = true) override;
 	void rotate(float angle, bool recursive = true) override;
+	void takeDamage(const unsigned damage) { mHP -= damage; }
 
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 
 protected:
-	unsigned int mHP;
-	unsigned int mMaxHP;
-	unsigned int mMovementSpeed;
+	unsigned mHP;
+	unsigned mMaxHP;
+	unsigned mMovementSpeed;
 	sf::Sprite mSprite;
 	Animation mAnimation;
 	CollisionBody& mCollisionBody;

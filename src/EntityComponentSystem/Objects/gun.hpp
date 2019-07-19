@@ -4,7 +4,7 @@
 
 namespace ph {
 
-enum class ShootDirection 
+enum class ShotDirection 
 {
 	east, northEast, north, northWest, west, southWest, south, southEast
 };
@@ -12,12 +12,17 @@ enum class ShootDirection
 class Bullet
 {
 public:
-	Bullet(const float damage, const float range);
+	Bullet(const Entity& opponentsNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
+           const float damage, const float range);
 
 private:
-	void dealDamage();
+	const std::string getNameOfCharacterWhoWasShot();
+	void dealDamage(const std::string nameOfObjectWhoWasShot);
 
 private:
+	const Entity& mOpponentsNode;
+	const sf::Vector2f mDirection;
+	const sf::Vector2f mStartPosition;
 	const float mDamage;
 	const float mRange;
 };
@@ -27,7 +32,8 @@ class Gun : public Object
 public:
 	Gun(GameData* const, const float damage);
 
-	void shoot(const ShootDirection);
+	void shoot(const ShotDirection) const;
+	auto getShotDirectionVector(const ShotDirection) const -> const sf::Vector2f;
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 
 private:
