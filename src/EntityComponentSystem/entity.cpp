@@ -1,5 +1,6 @@
 #include "entity.hpp"
 #include "Utilities/debug.hpp"
+#include <stdexcept>
 
 namespace ph {
 
@@ -81,6 +82,7 @@ auto Entity::getChild(const std::string& name) const -> Entity&
     for(auto const &child : mChildren)
         if(child->getName() == name)
             return *(child.get());
+	throw std::runtime_error("Child was not found!");
 }
 
 }
