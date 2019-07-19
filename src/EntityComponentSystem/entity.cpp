@@ -3,10 +3,9 @@
 
 namespace ph {
 
-Entity::Entity(GameData* const gameData, const std::string& name)
+Entity::Entity(const std::string& name)
 	:mName(name)
 	,mParent(nullptr)
-	,mGameData(gameData)
 {
 }
 

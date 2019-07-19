@@ -99,7 +99,7 @@ void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 
 void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 {
-	mRoot.addChild(std::make_unique<Entity>(mGameData, "enemies"));
+	mRoot.addChild(std::make_unique<Entity>("enemies"));
 	const std::vector<Xml> zombieNodes = enemyGroupNode.getChildren("zombie");
 	loadZombies(zombieNodes);
 }

@@ -4,11 +4,13 @@
 namespace ph {
 
 Object::Object(GameData* gameData, std::string name, LayerID layerID)
-	:Entity(gameData, name)
+	:Entity(name)
 	,mPosition(0, 0)
 	,mScale(0, 0)
-	,mRotation(0)
+	,mGameData(gameData)
 	,mLayerID(layerID)
+	,mRotation(0)
+	,mVisibility(true)
 {
     mGameData->getRenderer().addObject(this, layerID);
 }

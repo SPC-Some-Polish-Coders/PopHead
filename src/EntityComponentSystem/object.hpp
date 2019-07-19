@@ -7,6 +7,8 @@
 
 namespace ph {
 
+class GameData;
+
 class Object : public Entity, public sf::Drawable
 {
 public:
@@ -32,9 +34,10 @@ private:
 protected:
 	sf::Vector2f mPosition;
 	sf::Vector2f mScale;
+	GameData* mGameData;
+	const LayerID mLayerID;
 	float mRotation;
 	bool mVisibility;
-	const LayerID mLayerID;
 };
 
 }

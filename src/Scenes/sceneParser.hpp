@@ -7,6 +7,8 @@
 
 namespace ph{
 
+class GameData;
+
 class SceneParser
 {
 public:

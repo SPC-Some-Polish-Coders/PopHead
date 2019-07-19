@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EntityComponentSystem/object.hpp"
+#include "EntityComponentSystem/Objects/character.hpp"
 
 namespace ph {
 
@@ -16,13 +16,15 @@ public:
            const float damage, const float range);
 
 private:
-	const std::string getNameOfCharacterWhoWasShot();
-	void dealDamage(const std::string nameOfObjectWhoWasShot);
+	auto getCharacterWhoWasShot() -> Character*;
+	void makeSpriteOfShot();
+	void dealDamage();
 
 private:
-	const Entity& mEnemiesNode;
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
+	const Entity& mEnemiesNode;
+	Character* characterWhoWasShot;
 	const float mDamage;
 	const float mRange;
 };

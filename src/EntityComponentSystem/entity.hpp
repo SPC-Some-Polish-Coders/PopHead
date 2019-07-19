@@ -7,14 +7,12 @@
 
 namespace ph {
 
-class GameData;
-
 class Entity
 {
 public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
-	Entity(GameData* const, const std::string& name);
+	Entity(const std::string& name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
@@ -36,7 +34,6 @@ protected:
 	std::list<std::unique_ptr<Entity>> mChildren;
 	std::string mName;
 	Entity* mParent;
-	GameData* mGameData;
 };
 
 }

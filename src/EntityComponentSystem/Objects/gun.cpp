@@ -10,16 +10,21 @@ Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf
 	,mDamage(damage)
 	,mRange(range)
 {
-	const std::string nameOfCharacterWhoWasShot = getNameOfCharacterWhoWasShot();
-	dealDamage(nameOfCharacterWhoWasShot);
+	characterWhoWasShot = getCharacterWhoWasShot();
+
+	dealDamage();
 }
 
-auto Bullet::getNameOfCharacterWhoWasShot() -> const std::string
+auto Bullet::getCharacterWhoWasShot() -> Character*
 {
-	return std::string();
+	return nullptr;
 }
 
-void Bullet::dealDamage(const std::string nameOfObjectWhoWasShot)
+void Bullet::makeSpriteOfShot()
+{
+}
+
+void Bullet::dealDamage()
 {
 }
 
