@@ -5,11 +5,12 @@ namespace ph {
 
 Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
                const float damage, const unsigned range)
-	:mEnemiesNode(enemiesNode)
-	,mDirection(direction)
-	,mDamage(damage)
-	,mRange(range)
+	:mDirection(direction)
+	,mStartPosition(startPosition)
+	,mEnemiesNode(enemiesNode)
 	,mTraveledDistance(1)
+	,mRange(range)
+	,mDamage(damage)
 {
 	const auto* characterWhoWasShot = getCharacterWhoWasShot();
 	if(characterWhoWasShot == nullptr)
@@ -40,7 +41,7 @@ bool Bullet::wasEnemyShot(Character& character)
 {
 	const auto& sprite = character.getSprite();
 	const sf::FloatRect hitbox = sprite.getGlobalBounds();
-	const sf::Vector2f currentPosition = mDirection	* static_cast<float>(mTraveledDistance);
+	const sf::Vector2f currentPosition = mStartPosition + (mDirection	* static_cast<float>(mTraveledDistance));
 	return hitbox.contains(currentPosition);
 	// TODO: Make and use our own contains function
 }

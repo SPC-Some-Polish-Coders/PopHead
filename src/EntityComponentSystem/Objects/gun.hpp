@@ -25,10 +25,10 @@ private:
 private:
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
-	unsigned mTraveledDistance;
 	const Entity& mEnemiesNode;
-	const float mDamage;
+	unsigned mTraveledDistance;
 	const unsigned mRange;
+	const float mDamage;
 };
 
 class Gun : public Object
