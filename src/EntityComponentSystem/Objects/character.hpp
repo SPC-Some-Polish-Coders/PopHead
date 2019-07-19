@@ -14,6 +14,8 @@ public:
 		unsigned int mMovementSpeed = 50, unsigned int HP = 100, unsigned int maxHP = 100,
 		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50);
 
+	virtual ~Character();
+
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void setPosition(sf::Vector2f, bool recursive = true) override;

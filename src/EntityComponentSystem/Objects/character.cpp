@@ -16,6 +16,11 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 {
 }
 
+Character::~Character()
+{
+	mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
+}
+
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);

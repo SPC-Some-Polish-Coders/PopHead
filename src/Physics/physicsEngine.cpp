@@ -1,5 +1,4 @@
 #include "physicsEngine.hpp"
-
 #include "Utilities/math.hpp"
 #include "Utilities/debug.hpp"
 #include <memory>
