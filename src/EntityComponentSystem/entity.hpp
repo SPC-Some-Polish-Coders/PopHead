@@ -24,6 +24,7 @@ public:
 	auto getParent() const -> Entity& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }
 	auto getChild(const std::string& name) const -> Entity&;
+	auto getChildren() const -> const std::list<std::unique_ptr<Entity>>& { return mChildren; }
 
 protected:
 	std::string getUniqueName(std::string& childName) const;

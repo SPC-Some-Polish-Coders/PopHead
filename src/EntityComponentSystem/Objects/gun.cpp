@@ -4,20 +4,45 @@
 namespace ph {
 
 Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
-               const float damage, const float range)
+               const float damage, const unsigned range)
 	:mEnemiesNode(enemiesNode)
 	,mDirection(direction)
 	,mDamage(damage)
 	,mRange(range)
+	,mTraveledDistance(1)
 {
-	characterWhoWasShot = getCharacterWhoWasShot();
-
+	const auto* characterWhoWasShot = getCharacterWhoWasShot();
+	if(characterWhoWasShot == nullptr)
+		return;
+	makeSpriteOfShot();
 	dealDamage();
 }
 
 auto Bullet::getCharacterWhoWasShot() -> Character*
 {
+	while(isBulletStillInItsRange()) {
+		for(auto& enemy : mEnemiesNode.getChildren()) {
+			auto& e = dynamic_cast<Character&>(*enemy);
+			if(wasEnemyShot(e))
+				return &e;
+		}
+		++mTraveledDistance;
+	}
 	return nullptr;
+}
+
+bool Bullet::isBulletStillInItsRange()
+{
+	return mTraveledDistance < mRange;
+}
+
+bool Bullet::wasEnemyShot(Character& character)
+{
+	const auto& sprite = character.getSprite();
+	const sf::FloatRect hitbox = sprite.getGlobalBounds();
+	const sf::Vector2f currentPosition = mDirection	* static_cast<float>(mTraveledDistance);
+	return hitbox.contains(currentPosition);
+	// TODO: Make and use our own contains function
 }
 
 void Bullet::makeSpriteOfShot()
@@ -41,7 +66,7 @@ void Gun::shoot(const ShotDirection shotDirection) const
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemies");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
-	Bullet(enemies, shotDirectionVector, mPosition, 50, 200);
+	Bullet(enemies, shotDirectionVector, mPosition, 50, 1000);
 }
 
 auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> const sf::Vector2f
