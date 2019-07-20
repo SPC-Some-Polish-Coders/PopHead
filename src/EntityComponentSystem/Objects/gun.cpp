@@ -58,8 +58,9 @@ void Gun::shoot(const ShotDirection shotDirection)
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemy_container");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
-	const Bullet bullet(enemies, shotDirectionVector, mPosition, 50, 500);
+	const Bullet bullet(enemies, shotDirectionVector, mPosition, 50, 250);
 	initializeShotGraphics(bullet);
+	mTimeFromTrigerPull.restart();
 }
 
 auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> const sf::Vector2f
@@ -89,6 +90,18 @@ void Gun::initializeShotGraphics(const Bullet& bullet)
 {
 	mShotGraphics[0].position = bullet.getStartPosition();
 	mShotGraphics[1].position = bullet.getCurrentPosition();
+}
+
+void Gun::update(const sf::Time delta)
+{
+	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f)
+		resetShotGraphics();
+}
+
+void Gun::resetShotGraphics()
+{
+	mShotGraphics[0].position = {0, 0};
+	mShotGraphics[1].position = {0, 0};
 }
 
 void Gun::draw(sf::RenderTarget& target, const sf::RenderStates) const

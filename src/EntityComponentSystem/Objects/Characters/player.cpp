@@ -82,6 +82,9 @@ void Player::update(sf::Time delta)
 	shootingUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
+
+	for(auto& child : mChildren)
+		child->update(delta);
 }
 
 void Player::updateMovement(const sf::Time delta)

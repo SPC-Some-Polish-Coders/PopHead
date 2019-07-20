@@ -38,14 +38,19 @@ class Gun : public Object
 public:
 	Gun(GameData* const, const float damage);
 
-	void shoot(const ShotDirection);
-	auto getShotDirectionVector(const ShotDirection) const -> const sf::Vector2f;
-	void initializeShotGraphics(const Bullet&);
+	void update(const sf::Time delta) override;
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
+	void shoot(const ShotDirection);
 
 private:
-	const float mDamage;
+	auto getShotDirectionVector(const ShotDirection) const -> const sf::Vector2f;
+	void initializeShotGraphics(const Bullet&);
+	void resetShotGraphics();
+
+private:
 	std::array<sf::Vertex, 2> mShotGraphics;
+	sf::Clock mTimeFromTrigerPull;
+	const float mDamage;
 };
 
 }
