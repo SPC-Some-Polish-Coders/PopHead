@@ -23,7 +23,7 @@ void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboar
 	auto last = std::unique(buttons.begin(), buttons.end());
 	buttons.erase(last, buttons.end());
 	mActions[action] = buttons;
-	PH_LOG(LogType::Info, "Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionManager.");
 }
 
 void ActionManager::addAction(const std::string& action, sf::Keyboard::Key button)

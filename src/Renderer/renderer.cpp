@@ -57,13 +57,13 @@ void Renderer::draw() const
 void Renderer::addObject(Object* const object)
 {
 	mLayers[object->getLayerID()].addObject(object);
-	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was added to " + getLayerName(object->getLayerID()) + " layer.");
+	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(object->getLayerID()) + " layer.");
 }
 
 void Renderer::addObject(Object* const object, LayerID layerID)
 {
 	mLayers[layerID].addObject(object);
-	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
+	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
 }
 
 void Renderer::removeObject(std::string name, LayerID layerID)

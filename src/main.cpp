@@ -7,7 +7,6 @@
 #include <string>
 
 #include "Logs/logger.hpp"
-
 #include "Logs/logsInitializing.hpp"
 
 int main()
