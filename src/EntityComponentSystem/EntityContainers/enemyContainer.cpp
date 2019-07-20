@@ -1,10 +1,11 @@
 #include "enemyContainer.hpp" 
+#include "gameData.hpp"
 
 namespace ph {
 
-EnemyContainer::EnemyContainer(Renderer* const rendererPointer)
+EnemyContainer::EnemyContainer(GameData* const gameData)
 	:Entity("enemy_container")
-	,mRednererPointer(rendererPointer)
+	,mGameData(gameData)
 {
 }
 
@@ -14,7 +15,8 @@ void EnemyContainer::update(sf::Time delta)
 		(*it)->update(delta);
 
 	for(Enemy* dyingEnemy : mDyingEnemies) {
-		mRednererPointer->removeObject(dyingEnemy);
+		mGameData->getRenderer().removeObject(dyingEnemy);
+		mGameData->getPhysicsEngine().removeKinematicBody(dyingEnemy->mCollisionBody);
 		removeChild(dyingEnemy);
 		mDyingEnemies.clear();
 	}
