@@ -2,7 +2,6 @@
 
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
-#include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
 namespace ph {
@@ -43,7 +42,7 @@ Game::Game()
 
 	loadFonts(gameData);
 	mTerminal->init(gameData);
-	Logger::getInstance().setGameData(gameData); // logger.setGameData() must be called after mTerminal.init()
+	//Logger::getInstance().setGameData(gameData); // logger.setGameData() must be called after mTerminal.init()
 	mEfficiencyRegister->init(gameData);
 	mMap->setGameData(gameData);
 	mGui->init(gameData);
