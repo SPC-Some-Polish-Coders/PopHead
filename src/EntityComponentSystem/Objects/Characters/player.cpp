@@ -72,7 +72,7 @@ void Player::movementInput()
 
 void Player::gunInput()
 {
-	if(mGameData->getInput().getAction().isActionJustPressed("shotgunShot"))
+	if(mGameData->getInput().getAction().isActionJustPressed("attack"))
 		mIsShooting = true;
 }
 
