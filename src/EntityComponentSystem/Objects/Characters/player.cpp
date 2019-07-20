@@ -121,8 +121,6 @@ void Player::updateMovement(const sf::Time delta)
 	}
 	mMotion.clear();
 	setPosition(mCollisionBody.getPosition());
-	auto& gun = dynamic_cast<Object&>(getChild("gun"));
-	gun.setPosition(mPosition);
 }
 
 PlayerMotion::PlayerMotion()

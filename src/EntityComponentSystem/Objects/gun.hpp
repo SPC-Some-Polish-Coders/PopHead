@@ -44,6 +44,7 @@ public:
 
 private:
 	auto getShotDirectionVector(const ShotDirection) const -> const sf::Vector2f;
+	void setGunPositionToRightHand(const ShotDirection);
 	void initializeShotGraphics(const Bullet&);
 	void resetShotGraphics();
 

@@ -58,6 +58,7 @@ void Gun::shoot(const ShotDirection shotDirection)
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemy_container");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
+	setGunPositionToRightHand(shotDirection);
 	const Bullet bullet(enemies, shotDirectionVector, mPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
@@ -83,6 +84,37 @@ auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> con
 			return sf::Vector2f(1, 1);
 		case ShotDirection::southWest:
 			return sf::Vector2f(-1, 1);
+	}
+}
+
+void Gun::setGunPositionToRightHand(const ShotDirection shotDirection)
+{
+	switch(shotDirection)
+	{
+	case ShotDirection::east:
+		mPosition += {20, 20};
+		break;
+	case ShotDirection::west:
+		mPosition += {5, 15};
+		break;
+	case ShotDirection::south:
+		mPosition += {3, 20};
+		break;
+	case ShotDirection::north:
+		mPosition += {15, 15};
+		break;
+	case ShotDirection::northEast:
+		mPosition += {20, 3};
+		break;
+	case ShotDirection::northWest:
+		mPosition += {3, 3};
+		break;
+	case ShotDirection::southEast:
+		mPosition += {10, 20};
+		break;
+	case ShotDirection::southWest:
+		mPosition += {0, 10};
+		break;
 	}
 }
 
