@@ -10,14 +10,12 @@ namespace ph {
 class Entity
 {
 public:
-	using EntityPtr = std::unique_ptr<Entity>;
-
 	Entity(const std::string& name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
 
-	void addChild(EntityPtr);
+	void addChild(std::unique_ptr<Entity>);
 	void removeChild(const std::string& name);
 	void removeChild(Entity* childToRemove);
 

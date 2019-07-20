@@ -46,7 +46,7 @@ void Entity::incrementNumberInChildName(std::string& childName) const
 		std::to_string(std::stoi(childName.substr(begin + 1))+1));
 }
 
-void Entity::addChild(EntityPtr newChild)
+void Entity::addChild(std::unique_ptr<Entity> newChild)
 {
 	const std::string nameOfNewChild = getUniqueName(newChild->mName);
 	newChild->mName = nameOfNewChild;
