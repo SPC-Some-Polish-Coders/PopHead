@@ -19,6 +19,7 @@ namespace Math
 	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns);
 
 	bool areTheyOverlapping(const sf::FloatRect& A, const sf::FloatRect& B);
+	bool isPointInsideRect(const sf::Vector2f point, const sf::FloatRect& rect);
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed);
 }

@@ -56,6 +56,12 @@ namespace Math
 			getBottomBound(A) > B.top;
 	}
 
+	bool isPointInsideRect(const sf::Vector2f point, const sf::FloatRect& rect)
+	{
+		return point.x >= rect.left && point.x <= rect.left + rect.width
+			&& point.y >= rect.top && point.y <= rect.top + rect.height;
+	}
+
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed)
 	{
 		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");

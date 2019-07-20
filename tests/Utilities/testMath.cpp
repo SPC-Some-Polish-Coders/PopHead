@@ -167,6 +167,20 @@ TEST_CASE("are they overlapping", "[Utilities][Math]")
 	}
 }
 
+TEST_CASE("is point inside rect", "[Utilities][Math]")
+{
+	const sf::FloatRect rect(0, 0, 5, 5);
+	CHECK(Math::isPointInsideRect({0, 0}, rect));
+	CHECK(Math::isPointInsideRect({2, 0}, rect));
+	CHECK(Math::isPointInsideRect({0, 2}, rect));
+	CHECK(Math::isPointInsideRect({2, 2}, rect));
+	CHECK(Math::isPointInsideRect({5, 5}, rect));
+	CHECK_FALSE(Math::isPointInsideRect({-2, 0}, rect));
+	CHECK_FALSE(Math::isPointInsideRect({6, 0}, rect));
+	CHECK_FALSE(Math::isPointInsideRect({0, -2}, rect));
+	CHECK_FALSE(Math::isPointInsideRect({0, 6}, rect));
+}
+
 TEST_CASE("lerp", "[Utilities][Math]")
 {
 	// These section is commented because ini loader thrown exceptions and these tests did not work correcly.

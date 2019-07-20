@@ -41,8 +41,7 @@ bool Bullet::wasEnemyShot(Character& character)
 	const auto& sprite = character.getSprite();
 	const sf::FloatRect hitbox = sprite.getGlobalBounds();
 	const sf::Vector2f currentPosition = mStartPosition + (mDirection	* static_cast<float>(mTraveledDistance));
-	return hitbox.contains(currentPosition);
-	// TODO: Make and use our own contains function
+	return Math::isPointInsideRect(currentPosition, hitbox);
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
