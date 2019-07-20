@@ -7,7 +7,7 @@ namespace ph {
 
 std::string Path::toModuleName(std::string path)
 {
-	// WARNING: Don't use PH_EXCEPTION or PH_LOG here becouse they are using this method, so it can result in recursion
+	// WARNING: Don't use PH_EXCEPTION or PH_LOG here because they are using this method, so it can result in recursion
 
 	std::string searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
 
