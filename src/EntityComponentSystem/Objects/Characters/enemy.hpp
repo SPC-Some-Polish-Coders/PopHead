@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EntityComponentSystem/Objects/character.hpp"
-#include <set>
 
 namespace ph {
 

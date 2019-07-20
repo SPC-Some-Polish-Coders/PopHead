@@ -15,7 +15,6 @@ Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf
 	auto* characterWhoWasShot = getCharacterWhoWasShot();
 	if(characterWhoWasShot == nullptr)
 		return;
-	makeSpriteOfShot();
 	characterWhoWasShot->takeDamage(mDamage);
 }
 
@@ -46,24 +45,21 @@ bool Bullet::wasEnemyShot(Character& character)
 	// TODO: Make and use our own contains function
 }
 
-void Bullet::makeSpriteOfShot()
-{
-}
-
 Gun::Gun(GameData* const gameData, const float damage)
 	:Object(gameData, "gun", LayerID::kinematicEntities)
 	,mDamage(damage)
 {
 }
 
-void Gun::shoot(const ShotDirection shotDirection) const
+void Gun::shoot(const ShotDirection shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 	auto& player = getParent();
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemy_container");
 	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
-	Bullet(enemies, shotDirectionVector, mPosition, 50, 1000);
+	const Bullet bullet(enemies, shotDirectionVector, mPosition, 50, 500);
+	initializeShotGraphics(bullet);
 }
 
 auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> const sf::Vector2f
@@ -89,8 +85,15 @@ auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> con
 	}
 }
 
-void Gun::draw(sf::RenderTarget&, const sf::RenderStates) const
+void Gun::initializeShotGraphics(const Bullet& bullet)
 {
+	mShotGraphics[0].position = bullet.getStartPosition();
+	mShotGraphics[1].position = bullet.getCurrentPosition();
+}
+
+void Gun::draw(sf::RenderTarget& target, const sf::RenderStates) const
+{
+	target.draw(mShotGraphics.data(), 2, sf::Lines);
 }
 
 }
