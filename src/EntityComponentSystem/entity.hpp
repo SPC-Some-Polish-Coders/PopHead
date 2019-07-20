@@ -13,7 +13,6 @@ public:
 	using EntityPtr = std::unique_ptr<Entity>;
 
 	Entity(const std::string& name);
-	virtual ~Entity() {};
 
 	virtual void input();
 	virtual void update(sf::Time delta);

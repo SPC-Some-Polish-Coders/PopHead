@@ -1,8 +1,9 @@
 #include "game.hpp"
-#include "Input/eventLoop.hpp"
+
+#include <SFML/System.hpp>
+#include <Input/eventLoop.hpp>
 #include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
-#include <SFML/System.hpp>
 
 namespace ph {
 
