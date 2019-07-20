@@ -12,14 +12,14 @@ Entity::Entity(const std::string& name)
 
 void Entity::input()
 {
-    for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
-        (*it)->input();
+	for(auto& child : mChildren)
+		child->input();
 }
 
 void Entity::update(sf::Time delta)
 {
-	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
-		(*it)->update(delta);
+	for(auto& child : mChildren)
+		child->update(delta);
 }
 
 std::string Entity::getUniqueName(std::string& childName) const
