@@ -11,9 +11,12 @@ EnemyContainer::EnemyContainer(GameData* const gameData)
 
 void EnemyContainer::update(sf::Time delta)
 {
-	for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
-		(*it)->update(delta);
+	Entity::update(delta);
+	handleDyingEnemies();
+}
 
+void EnemyContainer::handleDyingEnemies()
+{
 	for(Enemy* dyingEnemy : mDyingEnemies) {
 		mGameData->getRenderer().removeObject(dyingEnemy);
 		mGameData->getPhysicsEngine().removeKinematicBody(dyingEnemy->mCollisionBody);
