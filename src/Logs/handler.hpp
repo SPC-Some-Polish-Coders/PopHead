@@ -21,6 +21,9 @@ namespace ph {
 		bool isModuleAllowed(const std::string& moduleName) const;
 		bool isTypeAllowed(LogType type) const;
 
+		void enableAllModules();
+		void enableAllTypes();
+
 	private:
 		virtual void utilizeLog(const LogRecord& logRecord) = 0;
 

@@ -75,6 +75,18 @@ namespace ph {
 		return iter != mAllowedTypes.end() && iter->second;
 	}
 
+	void Handler::enableAllModules()
+	{
+		for (auto& module : mAllowedModules)
+			module.second = true;
+	}
+
+	void Handler::enableAllTypes()
+	{
+		for (auto& type : mAllowedTypes)
+			type.second = true;
+	}
+
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
 	{
 		return isModuleAllowed(logRecord.moduleName) && isTypeAllowed(logRecord.type);
