@@ -146,23 +146,27 @@ void PlayerMotion::clear()
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {
-		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
+		sf::Vector2f shotDirection;
 		if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			gun.shoot(ShotDirection::northEast);
+			shotDirection = {0.7f, -0.7f};
 		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			gun.shoot(ShotDirection::northWest);
+			shotDirection = {-0.7f, -0.7f};
 		else if(mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			gun.shoot(ShotDirection::southEast);
+			shotDirection = {0.7f, 0.7f};
 		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			gun.shoot(ShotDirection::southWest);
+			shotDirection = {-0.7f, 0.7f};
 		else if(mLastMotion.isMovingRight)
-			gun.shoot(ShotDirection::east);
+			shotDirection = {1.f, 0.f};
 		else if(mLastMotion.isMovingLeft)
-			gun.shoot(ShotDirection::west);
+			shotDirection = {-1.f, 0.f};
 		else if(mLastMotion.isMovingUp)
-			gun.shoot(ShotDirection::north);
+			shotDirection = {0.f, -1.f};
 		else if(mLastMotion.isMovingDown)
-			gun.shoot(ShotDirection::south);
+			shotDirection = {0.f, 1.f};
+
+		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
+		gun.shoot(shotDirection);
+
 		mIsShooting = false;
 	}
 }

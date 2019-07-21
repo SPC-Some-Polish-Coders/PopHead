@@ -5,11 +5,6 @@
 
 namespace ph {
 
-enum class ShotDirection 
-{
-	east, northEast, north, northWest, west, southWest, south, southEast
-};
-
 class Bullet
 {
 public:
@@ -40,11 +35,10 @@ public:
 
 	void update(const sf::Time delta) override;
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
-	void shoot(const ShotDirection);
+	void shoot(const sf::Vector2f shotDirection);
 
 private:
-	auto getShotDirectionVector(const ShotDirection) const -> const sf::Vector2f;
-	void setGunPositionToRightHand(const ShotDirection);
+	void setGunPositionToRightHand(const sf::Vector2f shotDirection);
 	void initializeShotGraphics(const Bullet&);
 	void resetShotGraphics();
 

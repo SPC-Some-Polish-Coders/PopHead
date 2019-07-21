@@ -1,5 +1,6 @@
 #include "gun.hpp"
 #include "gameData.hpp"
+#include "Utilities/debug.hpp"
 
 namespace ph {
 
@@ -50,71 +51,38 @@ Gun::Gun(GameData* const gameData, const float damage)
 {
 }
 
-void Gun::shoot(const ShotDirection shotDirection)
+void Gun::shoot(const sf::Vector2f shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
 	auto& player = getParent();
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemy_container");
-	const sf::Vector2f shotDirectionVector = getShotDirectionVector(shotDirection);
 	setGunPositionToRightHand(shotDirection);
-	const Bullet bullet(enemies, shotDirectionVector, mPosition, 50, 250);
+	const Bullet bullet(enemies, shotDirection, mPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
 }
 
-auto Gun::getShotDirectionVector(const ShotDirection shotDirection) const -> const sf::Vector2f
+void Gun::setGunPositionToRightHand(const sf::Vector2f shotDirection)
 {
-	switch(shotDirection)
-	{
-		case ShotDirection::east:
-			return sf::Vector2f(1, 0);
-		case ShotDirection::west:
-			return sf::Vector2f(-1, 0);
-		case ShotDirection::south:
-			return sf::Vector2f(0, 1);
-		case ShotDirection::north:
-			return sf::Vector2f(0, -1);
-		case ShotDirection::northEast:
-			return sf::Vector2f(1, -1);
-		case ShotDirection::northWest:
-			return sf::Vector2f(-1, -1);
-		case ShotDirection::southEast:
-			return sf::Vector2f(1, 1);
-		case ShotDirection::southWest:
-			return sf::Vector2f(-1, 1);
-	}
-}
-
-void Gun::setGunPositionToRightHand(const ShotDirection shotDirection)
-{
-	switch(shotDirection)
-	{
-	case ShotDirection::east:
+	if(shotDirection == sf::Vector2f(1, 0))
 		mPosition += {20, 20};
-		break;
-	case ShotDirection::west:
+	else if(shotDirection == sf::Vector2f(-1, 0))
 		mPosition += {5, 15};
-		break;
-	case ShotDirection::south:
+	else if(shotDirection == sf::Vector2f(0, 1))
 		mPosition += {3, 20};
-		break;
-	case ShotDirection::north:
+	else if(shotDirection == sf::Vector2f(0, -1))
 		mPosition += {15, 15};
-		break;
-	case ShotDirection::northEast:
+	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
 		mPosition += {20, 3};
-		break;
-	case ShotDirection::northWest:
+	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
 		mPosition += {3, 3};
-		break;
-	case ShotDirection::southEast:
+	else if(shotDirection == sf::Vector2f(0.7f, 0.7f))
 		mPosition += {10, 20};
-		break;
-	case ShotDirection::southWest:
+	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f))
 		mPosition += {0, 10};
-		break;
-	}
+	else
+		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
 void Gun::initializeShotGraphics(const Bullet& bullet)
