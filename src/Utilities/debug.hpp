@@ -4,20 +4,29 @@
 
 #include <stdexcept>
 
-#ifdef PH_DISTRIBUTION
 #define PH_BREAKPOINT() ((void)0)
+
+#ifndef PH_DISTRIBUTION
+#ifndef PH_TESTS
+#ifdef _MSC_VER
+
+#undef PH_BREAKPOINT
+#define PH_BREAKPOINT() __debugbreak()
+
+#endif // _MSC_VER
+#endif // !PH_TESTS
+#endif // !PH_DISTRIBUTION
+
+
+#ifdef PH_DISTRIBUTION
 
 #define PH_ASSERT(expression, message) ((void)0)
 
 #define PH_EXCEPTION(message) throw std::runtime_error(message)
 
 #define PH_ASSERT_EXCEPTION(expression, message) ((void)0)
-#else
-#ifdef _MSC_VER
-#define PH_BREAKPOINT() __debugbreak()
-#else
-#define PH_BREAKPOINT() ((void)0)
-#endif // !_MSC_VER
+
+#else // !PH_DISTRIBUTION
 
 #define PH_ASSERT(expression, message) (void)((expression) || (PH_LOG(ph::LogType::Error, message), PH_BREAKPOINT(), 0))
 
