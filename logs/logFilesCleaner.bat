@@ -1,1 +1,0 @@
-del /S log*.txt
