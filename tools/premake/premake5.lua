@@ -1,6 +1,6 @@
 workspace "PopHead"
     architecture "x86"
-    location "../"
+    location "../../"
     startproject "PopHead"
     
     configurations{
@@ -11,25 +11,25 @@ workspace "PopHead"
     }
 
 project "PopHead"
-    location "../"
+    location "../../"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     
-    targetdir ("../PopHeadProj/bin/bin/")
-	objdir ("../PopHeadProj/bin/obj/")
+    targetdir ("../../PopHeadProj/bin/bin/")
+	objdir ("../../PopHeadProj/bin/obj/")
     
     includedirs{
-        "../src",
-        "../vendor/SFML_2.5.1/include"
+        "../../src",
+        "../../vendor/SFML_2.5.1/include"
     }
 
-    libdirs{"../vendor/SFML_2.5.1/lib-VisualStudio"}
+    libdirs{"../../vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
-        "../src/**.hpp",
-        "../src/**.cpp",
-        "../src/**.inl"
+        "../../src/**.hpp",
+        "../../src/**.cpp",
+        "../../src/**.inl"
     }
 
     links{
@@ -84,31 +84,31 @@ project "PopHead"
     filter{}
 
 project "Tests"
-    location "../"
+    location "../../"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
 
-    targetdir ("../TestsProj/bin/bin/")
-	objdir ("../TestsProj/bin/obj/")
+    targetdir ("../../TestsProj/bin/bin/")
+	objdir ("../../TestsProj/bin/obj/")
     
     includedirs{
-        "../src",
-        "../vendor/SFML_2.5.1/include",
-        "../vendor/catch2"
+        "../../src",
+        "../../vendor/SFML_2.5.1/include",
+        "../../vendor/catch2"
     }
 
-    libdirs{"../vendor/SFML_2.5.1/lib-VisualStudio"}
+    libdirs{"../../vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
-        "../src/**.hpp",
-        "../src/**.cpp",
-        "../src/**.inl",
-        "../tests/**.cpp"
+        "../../src/**.hpp",
+        "../../src/**.cpp",
+        "../../src/**.inl",
+        "../../tests/**.cpp"
     }
     
     removefiles{
-        "../src/main.cpp"
+        "../../src/main.cpp"
     }
 
     links{
