@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity.hpp"
+#include "GameObject.hpp"
 #include "Renderer/layerID.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -9,10 +9,10 @@ namespace ph {
 
 class GameData;
 
-class Object : public Entity, public sf::Drawable
+class DrawableGameObject : public GameObject, public sf::Drawable
 {
 public:
-	Object(GameData*, std::string name, LayerID);
+	DrawableGameObject(GameData*, std::string name, LayerID);
 
 	void setVisibility(bool visibility, bool recursive = true);
 	virtual void setPosition(sf::Vector2f, bool recursive = true);
@@ -29,7 +29,7 @@ public:
 
 private:
 	template <typename T>
-	void forEachChildWhichIsObject(std::function<void(Object*, T)> func, T param);
+	void forEachChildWhichIsDrawableGameObject(std::function<void(DrawableGameObject*, T)> func, T param);
 
 protected:
 	sf::Vector2f mPosition;
@@ -42,4 +42,4 @@ protected:
 
 }
 
-#include "object.inl"
+#include "drawableGameObject.inl"

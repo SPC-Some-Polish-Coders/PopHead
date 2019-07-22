@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "behaviorType.hpp"
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/DrawableGameObject.hpp"
 
 namespace ph {
 

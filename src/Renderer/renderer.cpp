@@ -1,7 +1,7 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 
@@ -49,25 +49,25 @@ void Renderer::draw() const
 	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
-void Renderer::addObject(Object* const object)
+void Renderer::addObject(DrawableGameObject* const object)
 {
 	mLayers[object->getLayerID()].addObject(object);
 	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(object->getLayerID()) + " layer.");
 }
 
-void Renderer::addObject(Object* const object, LayerID layerID)
+void Renderer::addObject(DrawableGameObject* const object, LayerID layerID)
 {
 	mLayers[layerID].addObject(object);
 	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
 }
 
-void Renderer::removeObject(std::string name, LayerID layerId)
+void Renderer::removeDrawableGameObject(std::string name, LayerID layerId)
 {
 	mLayers[layerId].removeObject(name);
 	PH_LOG(LogType::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerId) + " layer.");
 }
 
-void Renderer::removeObject(const Object* const object)
+void Renderer::removeDrawableGameObject(const DrawableGameObject* const object)
 {
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");
 	mLayers[object->getLayerID()].removeObject(object);

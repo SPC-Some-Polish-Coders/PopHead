@@ -97,7 +97,7 @@ void GUI::init(GameData* gamedata)
 	mGameData = gamedata;
 	mGuiDrawer = new Gui_drawer(gamedata, "GUI_DRAWER", LayerID::gui);
 	mGuiDrawer->init(this);
-	//mGameData->getRenderer().addObject(mGuiDrawer);
+	//mGameData->getRenderer().addDrawableGameObject(mGuiDrawer);
 
 #ifdef GUI_TEST
 	/* some wild examples */

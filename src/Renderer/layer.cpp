@@ -2,16 +2,16 @@
 
 #include "Renderer/layerID.hpp"
 
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 
 namespace ph {
 
-void Layer::addObject(Object* const object)
+void Layer::addObject(DrawableGameObject* const object)
 {
     mObjects.emplace_back( object );
 }
 
-void Layer::removeObject(const Object* const object)
+void Layer::removeObject(const DrawableGameObject* const object)
 {
     for(auto it = mObjects.begin(); it != mObjects.end(); ++it )
         if(*it == object)

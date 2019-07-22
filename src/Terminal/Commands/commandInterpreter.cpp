@@ -111,11 +111,11 @@ void CommandInterpreter::executeCurrentPos() const
 	// TODO: It should be displayed in Terminal, not in Logs
 }
 
-auto CommandInterpreter::getPlayer() const -> Object&
+auto CommandInterpreter::getPlayer() const -> DrawableGameObject&
 {
 	auto& gameScene = mGameData->getSceneMachine().getScene();
 	auto& root = gameScene.getRoot();
-	Object& player = dynamic_cast<Object&>(root.getChild("player"));
+	DrawableGameObject& player = dynamic_cast<DrawableGameObject&>(root.getChild("player"));
 	return player;
 }
 

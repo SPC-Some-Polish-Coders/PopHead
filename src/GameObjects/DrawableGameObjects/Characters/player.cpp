@@ -4,7 +4,7 @@
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "EntityComponentSystem/Objects/gun.hpp"
+#include "GameObjects/DrawableGameObjects/gun.hpp"
 #include <array>
 
 namespace ph {
