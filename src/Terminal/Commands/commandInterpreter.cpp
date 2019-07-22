@@ -1,10 +1,11 @@
-#include "commandInterpreter.hpp"
-#include "Utilities/debug.hpp"
-#include "gameData.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
-//#include "Logs/logger.hpp"
+#include "Terminal/Commands/messageType.hpp"
+#include "commandInterpreter.hpp"
+#include "Terminal/terminal.hpp"
+#include "Utilities/debug.hpp"
 #include "Utilities/cast.hpp"
+#include "gameData.hpp"
 #include "Map/map.hpp"
 
 namespace ph {
@@ -15,21 +16,21 @@ void CommandInterpreter::handleCommand(const std::string& command)
 
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if(commandWithoutArguments == "echo")                executeEcho();
-	else if(commandWithoutArguments == "exit")           executeExit();
-	else if(commandWithoutArguments == "teleport")       executeTeleport();
-	else if(commandWithoutArguments == "currentpos")     executeCurrentPos();
-	else if(commandWithoutArguments == "collisiondebug") executeCollisionDebug();
-	else if(commandWithoutArguments == "mute")           executeMute();
-	else if(commandWithoutArguments == "unmute")         executeUnmute();
-	else if(commandWithoutArguments == "setvolume")      executeSetVolume();
-	//else if(commandWithoutArguments == "log")            executeLog();
-	else if(commandWithoutArguments == "history")        executeHistory();
-	else if(commandWithoutArguments == "help")           executeHelp();
-	else if(commandWithoutArguments == "clear")          executeClear();
-	else if(commandWithoutArguments == "view")           executeView();
-	else if(commandWithoutArguments == "") PH_LOG(LogType::Info, "This is terminal. Enter 'help' to see availible commands.");
-	else PH_LOG(LogType::Error, "Entered command wasn't recognised. Enter 'help' to see availible commands.");
+	if (commandWithoutArguments == "echo")                executeEcho();
+	else if (commandWithoutArguments == "exit")           executeExit();
+	else if (commandWithoutArguments == "teleport")       executeTeleport();
+	else if (commandWithoutArguments == "currentpos")     executeCurrentPos();
+	else if (commandWithoutArguments == "collisiondebug") executeCollisionDebug();
+	else if (commandWithoutArguments == "mute")           executeMute();
+	else if (commandWithoutArguments == "unmute")         executeUnmute();
+	else if (commandWithoutArguments == "setvolume")      executeSetVolume();
+   //else if(commandWithoutArguments == "log")            executeLog();
+	else if (commandWithoutArguments == "history")        executeHistory();
+	else if (commandWithoutArguments == "help")           executeHelp();
+	else if (commandWithoutArguments == "clear")          executeClear();
+	else if (commandWithoutArguments == "view")           executeView();
+	else if (commandWithoutArguments == "")				  executeMessage("This is terminal. Enter 'help' to see availible commands.", MessageType::INFO);
+	else executeMessage( "Entered command wasn't recognised. Enter 'help' to see availible commands.", MessageType::ERROR);
 }
 
 std::string CommandInterpreter::getCommandWithoutArguments() const
@@ -49,7 +50,7 @@ void CommandInterpreter::executeEcho() const
 	const size_t messageStartPos = spacePosition + 1;
 	const size_t messageLength = mCommand.size() - messageStartPos;
 	const std::string message = mCommand.substr(messageStartPos, messageLength);
-	PH_LOG(LogType::FromUser, message);
+	executeMessage(message, MessageType::USER);
 }
 
 void CommandInterpreter::executeHistory() const
@@ -59,8 +60,8 @@ void CommandInterpreter::executeHistory() const
 	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
 	for (; it != commandsHistory.rend(); ++it)
-		terminalData.pushOutputLine({ "- " + *it, sf::Color(127, 244, 44) });
-	terminalData.pushOutputLine({ "Ten last used commands: ",sf::Color(127, 244, 44) });
+		executeMessage("- " + *it, MessageType::INFO);
+	executeMessage("Ten last used commands: ", MessageType::INFO);
 }
 
 void CommandInterpreter::executeHelp() const
@@ -70,24 +71,21 @@ void CommandInterpreter::executeHelp() const
 		"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"
 	};
 
-	const sf::Color infoColor = {127, 244, 44};
-	auto& terminal = mGameData->getTerminal();
-
 	if (commandContains('2')){
-		terminal.pushOutputLine({ "Will be fulfilled if necessary", infoColor });
-		terminal.pushOutputLine({ "Avalible commands, PAGE 2 of 2.", infoColor });
+		executeMessage("Will be fulfilled if necessary", MessageType::INFO);
+			executeMessage("Avalible commands, PAGE 2 of 2.", MessageType::INFO);
 	}
 	else{
 		for (size_t i = 0; i < commandsList1.size(); ++i)
-			terminal.pushOutputLine({ "- " + commandsList1[i], infoColor });
-		terminal.pushOutputLine({ "Avalible commands, PAGE 1 of 2.", infoColor });
+			executeMessage("- " + commandsList1[i], MessageType::INFO);
+		executeMessage("Avalible commands, PAGE 1 of 2.", MessageType::INFO);
 	}
 }
 
 void CommandInterpreter::executeClear() const
 {
 	for (int i = 0; i < 20; ++i)
-		mGameData->getTerminal().pushOutputLine({"", sf::Color::Transparent});
+		executeMessage("", MessageType::BLANK);
 }
 
 void CommandInterpreter::executeExit() const
@@ -107,8 +105,7 @@ void CommandInterpreter::executeTeleport() const
 void CommandInterpreter::executeCurrentPos() const
 {
 	const sf::Vector2f playerPosition = getPlayer().getPosition();
-	PH_LOG(LogType::Info, "player position: " + Cast::toString(playerPosition));
-	// TODO: It should be displayed in Terminal, not in Logs
+	executeMessage("player position: " + Cast::toString(playerPosition), MessageType::INFO);
 }
 
 auto CommandInterpreter::getPlayer() const -> Object&
@@ -125,7 +122,7 @@ void CommandInterpreter::executeCollisionDebug() const
 	else if(commandContains("color"))    changeCollisionDebugColor();
 	else if(commandContains("display"))  changeCollisionDebugDisplayMode();
 	else
-		PH_LOG(LogType::Error, "Incorrect argument! First argument has to be 'turn', 'color' or 'display'.");
+		executeMessage("Incorrect argument! First argument has to be 'turn', 'color' or 'display'.", MessageType::ERROR);
 }
 
 void CommandInterpreter::turnOnOrTurnOffCollisionDebug() const
@@ -138,7 +135,7 @@ void CommandInterpreter::turnOnOrTurnOffCollisionDebug() const
 	else if (commandContains("off"))
 		collisionDebugSettings.turnOff();
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.");
+		executeMessage("Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.", MessageType::ERROR);
 }
 
 void CommandInterpreter::changeCollisionDebugColor() const
@@ -149,7 +146,7 @@ void CommandInterpreter::changeCollisionDebugColor() const
 	else if(commandContains('2'))  collisionDebugSettings.setColors(2);
 	else if(commandContains('3'))  collisionDebugSettings.setColors(3);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! You can set collision debug color only from 1 to 3.");
+		executeMessage("Incorrect second argument! You can set collision debug color only from 1 to 3.", MessageType::ERROR);
 }
 
 void CommandInterpreter::changeCollisionDebugDisplayMode() const
@@ -160,7 +157,7 @@ void CommandInterpreter::changeCollisionDebugDisplayMode() const
 	else if(commandContains("static"))  collisionDebugSettings.displayOnlyStaticBodies();
 	else if(commandContains("all"))     collisionDebugSettings.displayAllBodies();
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.");
+		executeMessage("Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.", MessageType::ERROR);
 }
 
 void CommandInterpreter::executeMute() const
@@ -184,14 +181,14 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 		mGameData->getSoundPlayer().setMuted(mute);
 	}
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! You have to enter 'music', 'sound' or 'all'.");
+		executeMessage("Incorrect second argument! You have to enter 'music', 'sound' or 'all'.", MessageType::ERROR);
 }
 
 void CommandInterpreter::executeSetVolume() const
 {
 	const float newVolume = getVolumeFromCommand();
 	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
-		PH_LOG(LogType::Error, "Incorrect volume value! Enter value from 0 to 100");
+		executeMessage("Incorrect volume value! Enter value from 0 to 100", MessageType::ERROR);
 		return;
 	}
 
@@ -342,7 +339,7 @@ auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 
 sf::Vector2f CommandInterpreter::handleGetVector2ArgumentError() const
 {
-	PH_LOG(LogType::Error, "Incorrect argument! Argument has to be a number.");
+	executeMessage("Incorrect argument! Argument has to be a number.", MessageType::ERROR);
 	return mVector2ArgumentError;
 }
 
@@ -354,6 +351,28 @@ bool CommandInterpreter::commandContains(const char c) const
 bool CommandInterpreter::commandContains(const char* c) const
 {
 	return mCommand.find(c) != std::string::npos;
+}
+
+void CommandInterpreter::executeMessage(const std::string& message, const MessageType colorType) const
+{
+	sf::Color color;
+	switch (colorType)
+	{
+	case MessageType::ERROR:
+		color = { 255, 25, 33 };
+		break;
+	case MessageType::INFO:
+		color = { 127, 244, 44 };
+		break;
+	case MessageType::USER:
+		color = sf::Color(79, 202, 255);
+		break;
+	case MessageType::BLANK:
+		color = sf::Color::Transparent;
+		break;
+	}
+
+	mGameData->getTerminal().pushOutputLine(OutputLine{ message, color });
 }
 
 }

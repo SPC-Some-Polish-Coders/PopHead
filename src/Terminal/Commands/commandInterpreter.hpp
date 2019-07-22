@@ -2,6 +2,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "Terminal/Commands/messageType.hpp"
 
 namespace ph {
 
@@ -55,6 +56,8 @@ private:
 
 	bool commandContains(const char) const;
 	bool commandContains(const char*) const;
+
+	void executeMessage(const std::string&, const MessageType) const;
 
 private:
 	std::string mCommand;
