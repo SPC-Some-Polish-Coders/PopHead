@@ -48,7 +48,7 @@ Player::Player(GameData* gameData)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
-	addChild(std::make_unique<Sword>(mGameData, 5, 20));
+	addChild(std::make_unique<MeeleWeapon>(mGameData, 5, 20));
 }
 
 void Player::input()
@@ -202,7 +202,7 @@ void Player::meeleAttackUpdate(const sf::Time delta)
 		else if (mLastMotion.isMovingDown)
 			meeleAttackDirection = { 0.f, 1.f };
 
-		auto& meeleWeapon = dynamic_cast<Sword&>(getChild("sword"));
+		auto& meeleWeapon = dynamic_cast<MeeleWeapon&>(getChild("sword"));
 		meeleWeapon.attack(meeleAttackDirection);
 
 		mIsAttacking = false;

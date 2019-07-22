@@ -18,10 +18,10 @@ private:
 };
 
 
-class Sword : public Object
+class MeeleWeapon : public Object
 {
 public:
-	Sword(GameData* const, const float damage, const float range);
+	MeeleWeapon(GameData* const, const float damage, const float range);
 
 	void update(const sf::Time delta) override;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
