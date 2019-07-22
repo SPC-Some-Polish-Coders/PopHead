@@ -1,13 +1,13 @@
 #pragma once
 
-#include"EntityComponentSystem/entity.hpp"
+#include"GameObjects/gameObject.hpp"
 #include"SFML/Graphics.hpp"
 
 namespace ph {
 
 class GameData;
 
-class Entrance : public Entity
+class Entrance : public GameObject
 {
 public:
 	Entrance(GameData* const, const std::string filepath, const std::string name, 

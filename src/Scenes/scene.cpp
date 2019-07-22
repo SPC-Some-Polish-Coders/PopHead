@@ -5,7 +5,7 @@
 namespace ph {
 
 Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
-	:mRoot(std::make_unique<Entity>("root"))
+	:mRoot(std::make_unique<GameObject>("root"))
 	,mSceneParser(gameData, *mRoot.get(), sceneSourceCodeFilePath)
 	,mGameData(gameData)
 	,mHide(false)

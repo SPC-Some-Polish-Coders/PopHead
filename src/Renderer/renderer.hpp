@@ -24,11 +24,11 @@ public:
 	void update(sf::Time delta);
 	void draw() const;
 
-	void addObject(Object* const);
-	void addObject(Object* const, LayerID);
+	void addObject(DrawableGameObject* const);
+	void addObject(DrawableGameObject* const, LayerID);
 
-	void removeObject(const Object* const);
-	void removeObject(std::string name, LayerID);
+	void removeDrawableGameObject(const DrawableGameObject* const);
+	void removeDrawableGameObject(std::string name, LayerID);
 	void removeAllObjectsFromLayer(LayerID);
 	void clear() noexcept;
 

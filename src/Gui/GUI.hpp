@@ -1,7 +1,7 @@
 #pragma once
 
 #include "interface.hpp"
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 
 /* Uncomment if you want to experiment   */
 // #define GUI_TEST
@@ -14,11 +14,11 @@ public:
 	GUI();
 	~GUI();
 
-	class Gui_drawer : public Object
+	class Gui_drawer : public DrawableGameObject
 	{
 	public:
 		Gui_drawer(GameData* gameData, std::string name, LayerID id)
-			: Object(gameData, name, id)
+			: DrawableGameObject(gameData, name, id)
 			, mGui(nullptr)
 		{
 
@@ -28,7 +28,7 @@ public:
 			mGui = gui;
 		}
 
-		void onCollision(Object&) {};
+		void onCollision(DrawableGameObject&) {};
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 		{

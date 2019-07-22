@@ -108,11 +108,11 @@ void CommandInterpreter::executeCurrentPos() const
 	executeMessage("player position: " + Cast::toString(playerPosition), MessageType::INFO);
 }
 
-auto CommandInterpreter::getPlayer() const -> Object&
+auto CommandInterpreter::getPlayer() const -> DrawableGameObject&
 {
 	auto& gameScene = mGameData->getSceneMachine().getScene();
 	auto& root = gameScene.getRoot();
-	Object& player = dynamic_cast<Object&>(root.getChild("player"));
+	DrawableGameObject& player = dynamic_cast<DrawableGameObject&>(root.getChild("player"));
 	return player;
 }
 

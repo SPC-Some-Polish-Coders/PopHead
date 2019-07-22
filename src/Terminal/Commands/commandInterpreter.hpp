@@ -7,7 +7,7 @@
 namespace ph {
 
 class GameData;
-class Object;
+class DrawableGameObject;
 
 class CommandInterpreter
 {
@@ -25,7 +25,7 @@ private:
 
 	void executeTeleport() const;
 	void executeCurrentPos() const;
-	auto getPlayer() const -> Object&;
+	auto getPlayer() const -> DrawableGameObject&;
 
 	void executeHistory() const;
 	void executeHelp() const;

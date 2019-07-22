@@ -3,7 +3,7 @@
 #include "gameData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "EntityComponentSystem/EntityContainers/enemyContainer.hpp"
+#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 
 namespace ph {
 

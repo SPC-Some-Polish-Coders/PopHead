@@ -1,14 +1,14 @@
 #include <catch.hpp>
 
-#include "EntityComponentSystem/entity.hpp"
+#include "GameObjects/DrawableGameObject.hpp"
 #include <memory>
 
 namespace ph {
 
-class Guy : public Entity
+class Guy : public DrawableGameObject
 {
 public:
-	Guy() : Entity("guy"), mHp(100), mWasInputHandled(false), mWasUpdated(false) {}
+	Guy() : DrawableGameObject("guy"), mHp(100), mWasInputHandled(false), mWasUpdated(false) {}
 
 	void input() override { mWasInputHandled = true; }
 	void update(const sf::Time delta) override { mWasUpdated = true; }
@@ -24,10 +24,10 @@ private:
 	bool mWasUpdated;
 };
 
-TEST_CASE("Childs can be added to Entity object and are acessible.", "[EntityComponentSystem][Entity]")
+TEST_CASE("Childs can be added to DrawableGameObject DrawableGameObject and are acessible.", "[DrawableGameObjects][DrawableGameObject]")
 {
-	Entity root("root");
-	root.addChild(std::make_unique<Entity>("kiddo"));
+	DrawableGameObject root("root");
+	root.addChild(std::make_unique<DrawableGameObject>("kiddo"));
 	auto& guy = std::make_unique<Guy>();
 	guy->setHp(10);
 	root.addChild(std::move(guy));
@@ -36,15 +36,15 @@ TEST_CASE("Childs can be added to Entity object and are acessible.", "[EntityCom
 	CHECK(theSameGuy.getHp() == 10);
 }
 
-TEST_CASE("Exception is thrown when you try to get child which doesn't exist", "[EntityComponentSystem][Entity]")
+TEST_CASE("Exception is thrown when you try to get child which doesn't exist", "[DrawableGameObjects][DrawableGameObject]")
 {
-	Entity root("root");
+	DrawableGameObject root("root");
 	CHECK_THROWS_WITH(root.getChild("rhinoceros"), "Child was not found!");
 }
 
-TEST_CASE("Right prefix is added to new child name when child of the same name already exists", "[EntityComponentSystem][Entity]")
+TEST_CASE("Right prefix is added to new child name when child of the same name already exists", "[DrawableGameObjects][DrawableGameObject]")
 {
-	Entity root("root");
+	DrawableGameObject root("root");
 	for(int i = 0; i < 15; ++i)
 		root.addChild(std::make_unique<Guy>());
 	for(int i = 0; i < 15; ++i) {
@@ -53,11 +53,11 @@ TEST_CASE("Right prefix is added to new child name when child of the same name a
 	}
 }
 
-TEST_CASE("Child can be removed", "[EntityComponentSystem][Entity]")
+TEST_CASE("Child can be removed", "[DrawableGameObjects][DrawableGameObject]")
 {
-	Entity root("root");
+	DrawableGameObject root("root");
 	root.addChild(std::make_unique<Guy>());
-	root.addChild(std::make_unique<Entity>("Monkey"));
+	root.addChild(std::make_unique<DrawableGameObject>("Monkey"));
 	auto& guy = root.getChild("guy");
 	root.removeChild(&guy);
 	CHECK_THROWS_WITH(root.getChild("guy"), "Child was not found!");
@@ -66,11 +66,11 @@ TEST_CASE("Child can be removed", "[EntityComponentSystem][Entity]")
 	CHECK_THROWS_WITH(root.getChild("Monkey"), "Child was not found!");
 }
 
-TEST_CASE("Input and update of all children of entity are called")
+TEST_CASE("Input and update of all children of DrawableGameObject are called")
 {
-	Entity root("root");
+	DrawableGameObject root("root");
 	root.addChild(std::make_unique<Guy>());
-	auto ship = std::make_unique<Entity>("ship");
+	auto ship = std::make_unique<DrawableGameObject>("ship");
 	ship->addChild(std::make_unique<Guy>());
 	root.addChild(std::move(ship));
 

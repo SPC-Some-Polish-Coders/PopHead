@@ -7,22 +7,22 @@
 
 namespace ph {
 
-class Entity
+class GameObject
 {
 public:
-	Entity(const std::string& name);
+	GameObject(const std::string& name);
 
 	virtual void input();
 	virtual void update(sf::Time delta);
 
-	void addChild(std::unique_ptr<Entity>);
+	void addChild(std::unique_ptr<GameObject>);
 	void removeChild(const std::string& name);
-	void removeChild(Entity* childToRemove);
+	void removeChild(GameObject* childToRemove);
 
-	auto getParent() const -> Entity& { return *mParent; }
+	auto getParent() const -> GameObject& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }
-	auto getChild(const std::string& name) const -> Entity&;
-	auto getChildren() const -> const std::list<std::unique_ptr<Entity>>& { return mChildren; }
+	auto getChild(const std::string& name) const -> GameObject&;
+	auto getChildren() const -> const std::list<std::unique_ptr<GameObject>>& { return mChildren; }
 
 protected:
 	std::string getUniqueName(std::string& childName) const;
@@ -30,9 +30,9 @@ protected:
 	void incrementNumberInChildName(std::string& childName) const;
 
 protected:
-	std::list<std::unique_ptr<Entity>> mChildren;
+	std::list<std::unique_ptr<GameObject>> mChildren;
 	std::string mName;
-	Entity* mParent;
+	GameObject* mParent;
 };
 
 }

@@ -1,5 +1,5 @@
-#include "EntityComponentSystem/Objects/entrance.hpp"
-#include "EntityComponentSystem/Objects/Characters/player.hpp"
+#include "entrance.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Utilities/math.hpp"
 #include "gameData.hpp"
 
@@ -7,7 +7,7 @@ namespace ph{
 
 Entrance::Entrance(GameData* const gameData, const std::string filepath, const std::string name,
 	const sf::Vector2f size, const sf::Vector2f position)
-	:Entity(name)
+	:GameObject(name)
 	,mGameData(gameData)
 	,mEntranceArea(size)
 	,mFilepath(filepath)

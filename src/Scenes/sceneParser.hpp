@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utilities/xml.hpp"
-#include "EntityComponentSystem/entity.hpp"
+#include "GameObjects/DrawableGameObject.hpp"
 #include <string>
 #include <vector>
 
@@ -12,7 +12,7 @@ class GameData;
 class SceneParser
 {
 public:
-	SceneParser(GameData* const, Entity& root, const std::string fileName);
+	SceneParser(GameData* const, GameObject& root, const std::string fileName);
 private:
 	void loadResources(const Xml& sceneNode);
 	void loadTextures(const Xml& loadingNode);
@@ -31,9 +31,8 @@ private:
 
 	auto getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f;
 	auto getSizeAttribute(const Xml& objectNode) const -> const sf::Vector2f;
-
 private:
-	Entity& mRoot;
+	GameObject& mRoot;
 	GameData* const mGameData;
 };
 

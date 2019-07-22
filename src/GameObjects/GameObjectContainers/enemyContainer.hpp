@@ -1,12 +1,11 @@
 #pragma once 
  
-#include "EntityComponentSystem/entity.hpp"
-#include "EntityComponentSystem/Objects/Characters/enemy.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/enemy.hpp"
 #include <vector>
 
 namespace ph { 
 
-class EnemyContainer : public Entity
+class EnemyContainer : public GameObject
 {
 public:
 	EnemyContainer(GameData* const);

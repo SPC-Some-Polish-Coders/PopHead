@@ -1,15 +1,15 @@
 #include "sceneParser.hpp"
 #include "Map/map.hpp"
-#include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
-#include "EntityComponentSystem/Objects/Characters/player.hpp"
-#include "EntityComponentSystem/Objects/Characters/npc.hpp"
-#include "EntityComponentSystem/EntityContainers/enemyContainer.hpp"
-#include "EntityComponentSystem/Objects/entrance.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
+#include "GameObjects/NotDrawableGameObjects/entrance.hpp"
+#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::string fileName)
+SceneParser::SceneParser(GameData* const gameData, GameObject& root, const std::string fileName)
 	:mGameData(gameData)
 	,mRoot(root) 
 {
@@ -134,11 +134,11 @@ void SceneParser::loadSpawnersGroup(const Xml& spawnerGroupNode)
 	// TODO: Implement this method when Spawner class will be ready.
 }
 
-auto SceneParser::getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f
+auto SceneParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const -> const sf::Vector2f
 {
 	return sf::Vector2f(
-		objectNode.getAttribute("positionX").toFloat(),
-		objectNode.getAttribute("positionY").toFloat()
+		DrawableGameObjectNode.getAttribute("positionX").toFloat(),
+		DrawableGameObjectNode.getAttribute("positionY").toFloat()
 	);
 }
 
