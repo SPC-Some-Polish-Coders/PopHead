@@ -5,11 +5,9 @@
 # Build directories
 bin/
 
-
 # Generated documentation
 doc/html
 doc/latex
-logs/*.txt
 
 # IDE's
 .vscode
@@ -17,3 +15,7 @@ logs/*.txt
 *.vcxproj
 *.sln
 *.workspace
+
+# Generated files
+logs/*.txt
+conf/modules.txt
