@@ -21,6 +21,7 @@ private:
 
 	void loadScene(const Xml& sceneNode);
 	void loadMap(const Xml& rootNode);
+	void loadEntrances(const Xml& rootNode);
 	void loadPlayer(const Xml& rootNode);
 	void loadGroups(const Xml& rootNode);
 	void loadNpcGroup(const Xml& npcGroupNode);
@@ -28,8 +29,8 @@ private:
 	void loadZombies(const std::vector<Xml>& zombieNodes);
 	void loadSpawnersGroup(const Xml& spawnerGroupNode);
 
-	auto getPositionAttribute(const Xml& DrawableGameObjectNode) const -> const sf::Vector2f;
-
+	auto getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f;
+	auto getSizeAttribute(const Xml& objectNode) const -> const sf::Vector2f;
 private:
 	GameObject& mRoot;
 	GameData* const mGameData;
