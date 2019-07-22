@@ -3,42 +3,69 @@
 
 namespace ph {
 
+Swoosh::Swoosh(const Entity& opponentsNode, const sf::Vector2f direction, const unsigned damage, 
+	const unsigned range)
+	:mEnemiesNode(opponentsNode)
+	,mDirection(direction)
+	,mDamage(damage)
+	,mRange(range)
+{
+}
+
+
 Sword::Sword(GameData* const gameData, const float damage, const float range)
 	:Object(gameData, "sword", LayerID::kinematicEntities)
 	,mDamage(damage)
 	,mRange(range)
-	,mHitGraphic(sf::Triangles, 3)
 {
 }
 
-void Sword::hit(const sf::Vector2f hitDirection)
+void Sword::attack(const sf::Vector2f hitDirection)
 {
-	mGameData->getSoundPlayer().playAmbientSound("sounds/testSwordHit.wav");
-	auto& player = getParent();
-	auto& root = player.getParent();
-	auto& enemies = root.getChild("enemy_container");
-	initializeHit();
+	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
+	setMeeleWeaponPositionToRightHand(hitDirection);
+	initializeAttackGraphics();
 }
 
-void Sword::initializeHit()
+void Sword::setMeeleWeaponPositionToRightHand(const sf::Vector2f attackDirection)
+{
+	if (attackDirection == sf::Vector2f(1, 0))
+		mPosition += {20, 20};
+	else if (attackDirection == sf::Vector2f(-1, 0))
+		mPosition += {5, 15};
+	else if (attackDirection == sf::Vector2f(0, 1))
+		mPosition += {3, 20};
+	else if (attackDirection == sf::Vector2f(0, -1))
+		mPosition += {15, 15};
+	else if (attackDirection == sf::Vector2f(0.7f, -0.7f))
+		mPosition += {20, 3};
+	else if (attackDirection == sf::Vector2f(-0.7f, -0.7f))
+		mPosition += {3, 3};
+	else if (attackDirection == sf::Vector2f(0.7f, 0.7f))
+		mPosition += {10, 20};
+	else if (attackDirection == sf::Vector2f(-0.7f, 0.7f))
+		mPosition += {0, 10};
+	else
+		PH_EXCEPTION("Direction vector like this shouldn't exist.");
+}
+
+void Sword::initializeAttackGraphics()
 {
 
 }
 
-void Sword::resetHit()
+void Sword::resetAttack()
 {
 
 }
 
 void Sword::update(const sf::Time delta)
 {
-	if (mTimeFromLastHit.getElapsedTime().asSeconds() > 0.5f) 
-		resetHit();
 }
 
 void Sword::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
-	target.draw(mHitGraphic);
+
 }
 
 }

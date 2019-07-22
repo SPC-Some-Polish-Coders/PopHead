@@ -28,16 +28,20 @@ public:
 private:
 	void movementInput();
 	void gunInput();
+	void meeleWeaponInput();
 	void updateMovement(const sf::Time delta);
 	void shootingUpdate(const sf::Time delta);
+	void meeleAttackUpdate(const sf::Time delta);
     void updateAnimation(const std::string& stateName);
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition() const;
+	sf::Vector2f attackDirection();
 
 private:
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	bool mIsShooting;
+	bool mIsAttacking;
 };
 
 }

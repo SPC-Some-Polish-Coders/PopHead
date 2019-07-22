@@ -5,6 +5,7 @@
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "EntityComponentSystem/Objects/gun.hpp"
+#include "EntityComponentSystem/Objects/meele.hpp"
 #include <array>
 
 namespace ph {
@@ -43,16 +44,18 @@ namespace
 
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
-	,mIsShooting(false)
+	,mIsShooting(false), mIsAttacking(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
+	addChild(std::make_unique<Sword>(mGameData, 5, 20));
 }
 
 void Player::input()
 {
 	movementInput();
 	gunInput();
+	meeleWeaponInput();
 
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
 		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
@@ -76,10 +79,17 @@ void Player::gunInput()
 		mIsShooting = true;
 }
 
+void Player::meeleWeaponInput()
+{
+	if(mGameData->getInput().getAction().isActionJustPressed("meeleAttack"))
+		mIsAttacking = true;
+}
+
 void Player::update(sf::Time delta)
 {
 	updateMovement(delta);
 	shootingUpdate(delta);
+	meeleAttackUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
 
@@ -170,6 +180,56 @@ void Player::shootingUpdate(const sf::Time delta)
 		mIsShooting = false;
 	}
 }
+
+void Player::meeleAttackUpdate(const sf::Time delta)
+{
+	if (mIsAttacking) {
+		sf::Vector2f meeleAttackDirection;
+		if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+			meeleAttackDirection = { 0.7f, -0.7f };
+		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+			meeleAttackDirection = { -0.7f, -0.7f };
+		else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+			meeleAttackDirection = { 0.7f, 0.7f };
+		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+			meeleAttackDirection = { -0.7f, 0.7f };
+		else if (mLastMotion.isMovingRight)
+			meeleAttackDirection = { 1.f, 0.f };
+		else if (mLastMotion.isMovingLeft)
+			meeleAttackDirection = { -1.f, 0.f };
+		else if (mLastMotion.isMovingUp)
+			meeleAttackDirection = { 0.f, -1.f };
+		else if (mLastMotion.isMovingDown)
+			meeleAttackDirection = { 0.f, 1.f };
+
+		auto& meeleWeapon = dynamic_cast<Sword&>(getChild("sword"));
+		meeleWeapon.attack(meeleAttackDirection);
+
+		mIsAttacking = false;
+	}
+}
+
+//SUGGESTION: We could use this function so we omit the repetition of the code above
+//
+//sf::Vector2f Player::attackDirection()
+//{
+//	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+//		return  { 0.7f, -0.7f };
+//	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+//		return  { -0.7f, -0.7f };
+//	else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+//		return  { 0.7f, 0.7f };
+//	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+//		return  { -0.7f, 0.7f };
+//	else if (mLastMotion.isMovingRight)
+//		return  { 1.f, 0.f };
+//	else if (mLastMotion.isMovingLeft)
+//		return  { -1.f, 0.f };
+//	else if (mLastMotion.isMovingUp)
+//		return  { 0.f, -1.f };
+//	else if (mLastMotion.isMovingDown)
+//		return  { 0.f, 1.f };
+//}
 
 void Player::updateAnimation(const std::string& stateName)
 {
