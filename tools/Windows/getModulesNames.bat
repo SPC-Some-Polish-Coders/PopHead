@@ -1,2 +1,2 @@
-mkdir ..\..\conf
-dir ..\..\src /AD /B > ..\..\conf\modules.txt
+mkdir ..\..\config
+dir ..\..\src /AD /B > ..\..\config\modules.txt
