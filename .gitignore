@@ -1,9 +1,6 @@
 # Executables, env dependend files
 *.o
 *.so
-*.bat
-!logFilesCleaner.bat
-!runTestsVS2019.bat
 
 # Build directories
 bin/
@@ -12,7 +9,7 @@ bin/
 # Generated documentation
 doc/html
 doc/latex
-Logs/*.txt
+logs/*.txt
 
 # IDE's
 .vscode
