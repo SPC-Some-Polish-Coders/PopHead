@@ -8,6 +8,7 @@ namespace ph {
 
 Game::Game()
 	:mGameData{}
+	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead")
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
@@ -16,13 +17,14 @@ Game::Game()
 	,mSceneMachine{new SceneManager()}
 	,mMap(new Map())
 	,mInput{new Input()}
-	,mRenderer{new Renderer()}
+	,mRenderer{new Renderer(mRenderWindow)}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
+		&mRenderWindow,
 		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
@@ -70,11 +72,11 @@ void Game::run()
 			timeSinceLastUpdate -= timePerFrame;
 
 			update(timePerFrame);
-			mRenderer->draw();
+			draw();
 		}
 	}
 
-	mRenderer->getWindow().close();
+	mRenderWindow.close();
 }
 
 void Game::input()
@@ -93,6 +95,12 @@ void Game::update(sf::Time delta)
 	mRenderer->update(delta);
 	mGui->update(delta);
 	mEfficiencyRegister->update();
+}
+
+void Game::draw()
+{
+	mRenderer->draw();
+	mRenderWindow.display();
 }
 
 }

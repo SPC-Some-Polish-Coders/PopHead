@@ -14,15 +14,12 @@ class GameData;
 class Renderer
 {
 public:
-	Renderer();
+	Renderer(sf::RenderTarget&);
 	~Renderer();
 	Renderer(Renderer&) = delete;
 	Renderer& operator=(Renderer&) = delete;
 
-	enum Viewports
-	{
-		FullScreenViewport
-	};
+	enum Viewports{ FullScreenViewport };
 
 	void update(sf::Time delta);
 	void draw() const;
@@ -37,8 +34,6 @@ public:
 
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
-
-	auto getWindow() const -> sf::RenderWindow& { return mWindow; }
 	auto getCamera() -> Camera& { return mCamera; }
 
 	void setGameData(GameData* gameData) { mGameData = gameData; }
@@ -50,8 +45,8 @@ private:
 private:
 	Camera mCamera;
 	const std::map< Viewports, sf::Rect< float > > mViewports;
-	mutable sf::RenderWindow mWindow;
 	std::map< LayerID, Layer > mLayers;
+	sf::RenderTarget& mRenderTarget;
 	GameData* mGameData;
 };
 
