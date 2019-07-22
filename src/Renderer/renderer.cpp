@@ -7,11 +7,10 @@
 
 namespace ph {
 
-Renderer::Renderer()
-	:mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
+Renderer::Renderer(sf::RenderTarget& renderTarget)
+	:mRenderTarget(renderTarget)
+	,mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-	,mWindow{ WindowInitializer::getWindowSize(),
-		"PopHead", WindowInitializer::getStyle(), sf::ContextSettings() }
 	,mLayers{  { LayerID::floorEntities, Layer() },
 				{ LayerID::staticEntities, Layer() },
 				{ LayerID::kinematicEntities, Layer() },
@@ -20,12 +19,10 @@ Renderer::Renderer()
 				{ LayerID::cmd, Layer() } }
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
-	mWindow.setVerticalSyncEnabled(false);
 }
 
 Renderer::~Renderer()
 {
-	mWindow.close();
 }
 
 void Renderer::update(sf::Time delta)
@@ -36,22 +33,20 @@ void Renderer::update(sf::Time delta)
 
 void Renderer::draw() const
 {
-	mCamera.applyTo(mWindow);
-	mWindow.clear();
+	mCamera.applyTo(mRenderTarget);
+	mRenderTarget.clear();
 
-	mGameData->getMap().draw(mWindow, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
+	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
 
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
-			mWindow.draw(*object);
+			mRenderTarget.draw(*object);
 			mGameData->getEfficiencyRegister().registerRenderCall();
 		}
 
-	mWindow.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
-	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
-	mWindow.draw(mGameData->getTerminal().getImage());
-
-	mWindow.display();
+	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
+	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
+	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
 void Renderer::addObject(Object* const object)

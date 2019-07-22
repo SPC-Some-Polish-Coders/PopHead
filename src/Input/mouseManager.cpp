@@ -6,7 +6,7 @@ namespace ph {
 
 auto MouseManager::getMousePosition() const -> sf::Vector2i
 {
-    return sf::Mouse::getPosition( mGameData->getRenderer().getWindow() );
+    return sf::Mouse::getPosition( mGameData->getRenderWindow() );
 }
 
 bool MouseManager::hasMouseJustMoved() const
