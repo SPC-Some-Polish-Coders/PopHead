@@ -14,6 +14,7 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
+	,mAIManager(new AIManager())
 	,mSceneMachine{new SceneManager()}
 	,mMap(new Map())
 	,mInput{new Input()}
@@ -30,6 +31,7 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
+		mAIManager.get(),
 		mSceneMachine.get(),
 		mMap.get(),
 		mInput.get(),

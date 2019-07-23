@@ -66,7 +66,7 @@ TEST_CASE("Child can be removed", "[GameObjects][GameObject]")
 	CHECK_THROWS_WITH(root.getChild("Monkey"), "Child was not found!");
 }
 
-TEST_CASE("Input and update of all children of GameObject are called")
+TEST_CASE("Input and update of all children of GameObject are called", "[GameObjects][GameObject]")
 {
 	GameObject root("root");
 	root.addChild(std::make_unique<Guy>());
