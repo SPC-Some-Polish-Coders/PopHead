@@ -4,12 +4,8 @@
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-<<<<<<< HEAD:src/EntityComponentSystem/Objects/Characters/player.cpp
-#include "EntityComponentSystem/Objects/gun.hpp"
-#include "EntityComponentSystem/Objects/melee.hpp"
-=======
 #include "GameObjects/DrawableGameObjects/gun.hpp"
->>>>>>> master:src/GameObjects/DrawableGameObjects/Characters/player.cpp
+#include "GameObjects/DrawableGameObjects/melee.hpp"
 #include <array>
 
 namespace ph {

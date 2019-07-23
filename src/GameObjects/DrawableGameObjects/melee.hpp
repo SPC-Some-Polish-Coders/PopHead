@@ -1,24 +1,24 @@
 #pragma once
 
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/DrawableGameObject.hpp"
 #include <array>
 
 namespace ph{
 
 class Swoosh {
 public:
-	Swoosh(const Entity& opponentsNode, const sf::Vector2f direction, const unsigned damage, 
+	Swoosh(const GameObject& opponentsNode, const sf::Vector2f direction, const unsigned damage, 
 		const unsigned range);
 
 private:
 	const sf::Vector2f mDirection;
-	const Entity& mEnemiesNode;
+	const GameObject& mEnemiesNode;
 	const float mDamage;
 	const float mRange;
 };
 
 
-class MeleeWeapon : public Object
+class MeleeWeapon : public DrawableGameObject
 {
 public:
 	MeleeWeapon(GameData* const, const float damage, const float range);

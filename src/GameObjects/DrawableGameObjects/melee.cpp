@@ -3,7 +3,7 @@
 
 namespace ph {
 
-Swoosh::Swoosh(const Entity& opponentsNode, const sf::Vector2f direction, const unsigned damage, 
+Swoosh::Swoosh(const GameObject& opponentsNode, const sf::Vector2f direction, const unsigned damage, 
 	const unsigned range)
 	:mEnemiesNode(opponentsNode)
 	,mDirection(direction)
@@ -14,7 +14,7 @@ Swoosh::Swoosh(const Entity& opponentsNode, const sf::Vector2f direction, const 
 
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range)
-	:Object(gameData, "sword", LayerID::kinematicEntities)
+	:DrawableGameObject(gameData, "sword", LayerID::kinematicEntities)
 	,mDamage(damage)
 	,mRange(range)
 {
