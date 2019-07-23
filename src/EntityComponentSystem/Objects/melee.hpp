@@ -18,17 +18,17 @@ private:
 };
 
 
-class MeeleWeapon : public Object
+class MeleeWeapon : public Object
 {
 public:
-	MeeleWeapon(GameData* const, const float damage, const float range);
+	MeleeWeapon(GameData* const, const float damage, const float range);
 
 	void update(const sf::Time delta) override;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void attack(const sf::Vector2f hitDirection);
 
 private:
-	void setMeeleWeaponPositionToRightHand(const sf::Vector2f attackDirection);
+	void setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection);
 	void initializeAttackGraphics();
 	void resetAttack();
 

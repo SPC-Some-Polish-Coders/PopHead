@@ -1,5 +1,5 @@
 #include "gameData.hpp"
-#include "meele.hpp"
+#include "melee.hpp"
 
 namespace ph {
 
@@ -13,21 +13,21 @@ Swoosh::Swoosh(const Entity& opponentsNode, const sf::Vector2f direction, const 
 }
 
 
-MeeleWeapon::MeeleWeapon(GameData* const gameData, const float damage, const float range)
+MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range)
 	:Object(gameData, "sword", LayerID::kinematicEntities)
 	,mDamage(damage)
 	,mRange(range)
 {
 }
 
-void MeeleWeapon::attack(const sf::Vector2f hitDirection)
+void MeleeWeapon::attack(const sf::Vector2f hitDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
-	setMeeleWeaponPositionToRightHand(hitDirection);
+	setMeleeWeaponPositionToRightHand(hitDirection);
 	initializeAttackGraphics();
 }
 
-void MeeleWeapon::setMeeleWeaponPositionToRightHand(const sf::Vector2f attackDirection)
+void MeleeWeapon::setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection)
 {
 	if (attackDirection == sf::Vector2f(1, 0))
 		mPosition += {20, 20};
@@ -49,21 +49,21 @@ void MeeleWeapon::setMeeleWeaponPositionToRightHand(const sf::Vector2f attackDir
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
-void MeeleWeapon::initializeAttackGraphics()
+void MeleeWeapon::initializeAttackGraphics()
 {
 
 }
 
-void MeeleWeapon::resetAttack()
+void MeleeWeapon::resetAttack()
 {
 
 }
 
-void MeeleWeapon::update(const sf::Time delta)
+void MeleeWeapon::update(const sf::Time delta)
 {
 }
 
-void MeeleWeapon::draw(sf::RenderTarget& target, sf::RenderStates) const
+void MeleeWeapon::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
 
 }

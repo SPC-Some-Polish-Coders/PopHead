@@ -5,7 +5,7 @@
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "EntityComponentSystem/Objects/gun.hpp"
-#include "EntityComponentSystem/Objects/meele.hpp"
+#include "EntityComponentSystem/Objects/melee.hpp"
 #include <array>
 
 namespace ph {
@@ -48,14 +48,14 @@ Player::Player(GameData* gameData)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
-	addChild(std::make_unique<MeeleWeapon>(mGameData, 5, 20));
+	addChild(std::make_unique<MeleeWeapon>(mGameData, 5, 20));
 }
 
 void Player::input()
 {
 	movementInput();
 	gunInput();
-	meeleWeaponInput();
+	meleeWeaponInput();
 
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
 		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
@@ -79,9 +79,9 @@ void Player::gunInput()
 		mIsShooting = true;
 }
 
-void Player::meeleWeaponInput()
+void Player::meleeWeaponInput()
 {
-	if(mGameData->getInput().getAction().isActionJustPressed("meeleAttack"))
+	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack"))
 		mIsAttacking = true;
 }
 
@@ -89,7 +89,7 @@ void Player::update(sf::Time delta)
 {
 	updateMovement(delta);
 	shootingUpdate(delta);
-	meeleAttackUpdate(delta);
+	meleeAttackUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
 
@@ -181,29 +181,29 @@ void Player::shootingUpdate(const sf::Time delta)
 	}
 }
 
-void Player::meeleAttackUpdate(const sf::Time delta)
+void Player::meleeAttackUpdate(const sf::Time delta)
 {
 	if (mIsAttacking) {
-		sf::Vector2f meeleAttackDirection;
+		sf::Vector2f meleeAttackDirection;
 		if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			meeleAttackDirection = { 0.7f, -0.7f };
+			meleeAttackDirection = { 0.7f, -0.7f };
 		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			meeleAttackDirection = { -0.7f, -0.7f };
+			meleeAttackDirection = { -0.7f, -0.7f };
 		else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			meeleAttackDirection = { 0.7f, 0.7f };
+			meleeAttackDirection = { 0.7f, 0.7f };
 		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			meeleAttackDirection = { -0.7f, 0.7f };
+			meleeAttackDirection = { -0.7f, 0.7f };
 		else if (mLastMotion.isMovingRight)
-			meeleAttackDirection = { 1.f, 0.f };
+			meleeAttackDirection = { 1.f, 0.f };
 		else if (mLastMotion.isMovingLeft)
-			meeleAttackDirection = { -1.f, 0.f };
+			meleeAttackDirection = { -1.f, 0.f };
 		else if (mLastMotion.isMovingUp)
-			meeleAttackDirection = { 0.f, -1.f };
+			meleeAttackDirection = { 0.f, -1.f };
 		else if (mLastMotion.isMovingDown)
-			meeleAttackDirection = { 0.f, 1.f };
+			meleeAttackDirection = { 0.f, 1.f };
 
-		auto& meeleWeapon = dynamic_cast<MeeleWeapon&>(getChild("sword"));
-		meeleWeapon.attack(meeleAttackDirection);
+		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
+		meleeWeapon.attack(meleeAttackDirection);
 
 		mIsAttacking = false;
 	}
