@@ -3,7 +3,7 @@
 #include "Terminal/Commands/messageType.hpp"
 #include "commandInterpreter.hpp"
 #include "Terminal/terminal.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
 #include "gameData.hpp"
 #include "Map/map.hpp"

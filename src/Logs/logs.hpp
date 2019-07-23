@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Utilities/debug.hpp"
+
 #include "Logs/logger.hpp"
 #include "Logs/logRecord.hpp"
 

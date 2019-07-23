@@ -1,5 +1,5 @@
 #include "xml.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <fstream>
 
 namespace ph {

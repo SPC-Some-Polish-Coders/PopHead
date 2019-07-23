@@ -1,4 +1,4 @@
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "resourceHolder.hpp"
 
 template< typename ResourceType >

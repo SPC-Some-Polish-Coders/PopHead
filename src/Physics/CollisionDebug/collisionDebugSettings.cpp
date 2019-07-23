@@ -1,5 +1,5 @@
 #include "collisionDebugSettings.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <string>
 
 namespace ph {

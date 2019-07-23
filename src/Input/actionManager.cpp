@@ -1,7 +1,7 @@
 #include "actionManager.hpp"
 #include "eventLoop.hpp"
 #include <algorithm>
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 

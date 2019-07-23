@@ -2,7 +2,7 @@
 
 #include "game.hpp"
 
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "Gui/messageBox.hpp"
 
 #include <stdexcept>

@@ -2,7 +2,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
 #include "GameObjects/drawableGameObject.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "gameData.hpp"
 
 namespace ph {

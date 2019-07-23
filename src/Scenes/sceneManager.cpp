@@ -1,6 +1,6 @@
 #include "sceneManager.hpp"
 #include "scene.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "gameData.hpp"
 
 namespace ph {

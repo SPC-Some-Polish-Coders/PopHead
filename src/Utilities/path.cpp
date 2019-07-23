@@ -1,5 +1,5 @@
 #include "Utilities/path.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <iostream>
 #include <string>
 
