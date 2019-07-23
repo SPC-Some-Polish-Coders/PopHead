@@ -18,10 +18,10 @@ std::string getCurrentTimeAsString()
 		   std::to_string(calendarTime->tm_sec);
 }
 
-void Logger::createLog(LogType type, const std::string& message, const std::string& fileName, unsigned short fileLine)
+void Logger::createLog(LogLevel level, const std::string& message, const std::string& fileName, unsigned short fileLine)
 {
 	LogRecord logRecord;
-	logRecord.type = type;
+	logRecord.level = level;
 	logRecord.message = message;
 	logRecord.fileName = Path::toFilename(fileName);
 	logRecord.fileLine = fileLine;

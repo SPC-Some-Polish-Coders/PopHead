@@ -217,7 +217,7 @@ void CommandInterpreter::executeLog() const
 	else if (commandContains("types"))    setLogTypesToLog();
 	else if (commandContains("modules"))  setModulesToLog();
 	else
-		PH_LOG(LogType::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");*/
+		PH_LOG(LogLevel::Error, "Incorrect first argument! Enter 'into' 'types' or 'modules'.");*/
 }
 
 void CommandInterpreter::logInto() const
@@ -232,23 +232,23 @@ void CommandInterpreter::logInto() const
 	else if (commandContains("terminal") || commandContains("all"))
 		logSettings.setWritingLogsIntoTerminal(newValue);
 	else
-		PH_LOG(LogType::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");*/
+		PH_LOG(LogLevel::Error, "Incorrect second argument! Enter 'console', 'file', 'terminal' or 'all'.");*/
 }
 
 void CommandInterpreter::setLogTypesToLog() const
 {
 	/*auto& logSettings = Logger::getInstance().getLogSettings();
 
-	if(commandContains("info"))     logSettings.addToVector(LogType::Info);
-	if(commandContains("warning"))  logSettings.addToVector(LogType::Warning);
-	if(commandContains("error"))    logSettings.addToVector(LogType::Error);
-	if(commandContains("user"))     logSettings.addToVector(LogType::FromUser);
+	if(commandContains("info"))     logSettings.addToVector(LogLevel::Info);
+	if(commandContains("warning"))  logSettings.addToVector(LogLevel::Warning);
+	if(commandContains("error"))    logSettings.addToVector(LogLevel::Error);
+	if(commandContains("user"))     logSettings.addToVector(LogLevel::FromUser);
 
 	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachLogTypes();
-	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({LogType::Exception, LogType::UnhandledException});
+	else if(commandContains("clear")) 	logSettings.setLogTypesToWrite({LogLevel::Critical, LogLevel::UnhandledException});
 
 	if(areArgumentsToLogTypesToLogInvalid())
-		PH_LOG(LogType::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");*/
+		PH_LOG(LogLevel::Error, "Incorrect 2nd argument! Use one of log types or 'all'/'clear'.");*/
 }
 
 bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid() const
@@ -280,7 +280,7 @@ void CommandInterpreter::setModulesToLog() const
 	if(commandContains("all"))			logSettings.turnOnWritingLogsFromEachModule();
 	else if (commandContains("clear"))	logSettings.setModuleNamesToWrite({});
 	if(areArgumentsToModulesToLogInvalid())
-		PH_LOG(LogType::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");*/
+		PH_LOG(LogLevel::Error, "Incorrect second argument! Use one of modules or 'all'/'clear'.");*/
 }
 
 bool CommandInterpreter::areArgumentsToModulesToLogInvalid() const

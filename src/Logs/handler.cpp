@@ -21,13 +21,11 @@ namespace ph {
 			{"World", false}
 		};
 
-		mAllowedTypes = {
-			{LogType::Info, false},
-			{LogType::Error, false},
-			{LogType::FromUser, false},
-			{LogType::Warning, false},
-			{LogType::Exception, false},
-			{LogType::UnhandledException, false}
+		mAllowedLogLevels = {
+			{LogLevel::Info, false},
+			{LogLevel::Error, false},
+			{LogLevel::Warning, false},
+			{LogLevel::Critical, false}
 		};
 	}
 
@@ -47,13 +45,13 @@ namespace ph {
 			iter->second = allowed;
 	}
 
-	void Handler::setTypeAllowing(LogType type, bool allowed)
+	void Handler::setLogLevelAllowing(LogLevel level, bool allowed)
 	{
-		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
-			return pair.first == type;
+		auto iter = std::find_if(mAllowedLogLevels.begin(), mAllowedLogLevels.end(), [&level](const std::pair<LogLevel, bool>& pair) {
+			return pair.first == level;
 			});
 
-		if (iter != mAllowedTypes.end())
+		if (iter != mAllowedLogLevels.end())
 			iter->second = allowed;
 	}
 
@@ -66,13 +64,13 @@ namespace ph {
 		return iter != mAllowedModules.end() && iter->second;
 	}
 
-	bool Handler::isTypeAllowed(LogType type) const
+	bool Handler::isLogLevelAllowed(LogLevel level) const
 	{
-		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
-			return pair.first == type;
+		auto iter = std::find_if(mAllowedLogLevels.begin(), mAllowedLogLevels.end(), [&level](const std::pair<LogLevel, bool>& pair) {
+			return pair.first == level;
 			});
 
-		return iter != mAllowedTypes.end() && iter->second;
+		return iter != mAllowedLogLevels.end() && iter->second;
 	}
 
 	void Handler::enableAllModules()
@@ -81,14 +79,14 @@ namespace ph {
 			module.second = true;
 	}
 
-	void Handler::enableAllTypes()
+	void Handler::enableAllLogLevels()
 	{
-		for (auto& type : mAllowedTypes)
-			type.second = true;
+		for (auto& level : mAllowedLogLevels)
+			level.second = true;
 	}
 
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
 	{
-		return isModuleAllowed(logRecord.moduleName) && isTypeAllowed(logRecord.type);
+		return isModuleAllowed(logRecord.moduleName) && isLogLevelAllowed(logRecord.level);
 	}
 }

@@ -60,7 +60,7 @@ std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	if (tilesetNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any tilesets");
+		PH_LOG(LogLevel::Warning, "Map doesn't have any tilesets");
 	return tilesetNodes;
 }
 
@@ -76,7 +76,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		if (tilesetNode.hasAttribute("source")) {
 			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
 			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
-			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
+			PH_LOG(LogLevel::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
 			tilesetNode = tilesetDocument.getChild("tileset");
@@ -118,7 +118,7 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
 	if (layerNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any layers");
+		PH_LOG(LogLevel::Warning, "Map doesn't have any layers");
 	return layerNodes;
 }
 
@@ -171,7 +171,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) {
-				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
+				PH_LOG(LogLevel::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];

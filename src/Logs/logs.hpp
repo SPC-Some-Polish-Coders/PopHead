@@ -12,7 +12,7 @@
 #ifdef INFO_LOGS_ENABLED
 
 #define PH_LOG_INFO(message)\
-	PH_LOG(ph::LogType::Info, message)
+	PH_LOG(ph::LogLevel::Info, message)
 
 #else
 

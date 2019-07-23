@@ -28,5 +28,5 @@ void ph::ResourceHolder<ResourceType>::free(const std::string& filePath)
 	auto amountOfDeletedResources = mResources.erase(fullFilePath);   // can be equal 0 or 1
 
 	if (amountOfDeletedResources == 0)
-		PH_LOG(LogType::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
+		PH_LOG(LogLevel::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
 }
