@@ -6,12 +6,12 @@ AIManager::AIManager()
 {
 }
 
-Direction AIManager::whereShouldIgo(const Zombie*)
+std::deque<Direction> AIManager::whereShouldIgo(const Zombie*)
 {
-	return Direction();
+	return std::deque<Direction>();
 }
 
-void AIManager::removeOpponentFromManagedObjects(const Zombie*)
+void AIManager::removeOpponentFromManagedObjects(const Object*)
 {
 }
 
