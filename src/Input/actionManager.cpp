@@ -6,6 +6,7 @@
 namespace ph {
 
 ActionManager::ActionManager()
+	:mEnabled(true)
 {
 	///TODO: loading player's favorite controls from file
 
