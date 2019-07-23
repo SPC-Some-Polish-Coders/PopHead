@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "gameData.hpp"
@@ -13,6 +11,8 @@
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 namespace ph {
 
@@ -28,8 +28,10 @@ public:
 private:
 	void input();
 	void update(sf::Time delta);
+	void draw();
 
 	std::unique_ptr< GameData >           mGameData;
+	sf::RenderWindow                      mRenderWindow;
 	std::unique_ptr< SoundPlayer >        mSoundPlayer;
 	std::unique_ptr< MusicPlayer >        mMusicPlayer;
 	std::unique_ptr< TextureHolder >      mTextures;

@@ -1,14 +1,15 @@
 #include "sceneParser.hpp"
 #include "Map/map.hpp"
-#include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
-#include "EntityComponentSystem/Objects/Characters/player.hpp"
-#include "EntityComponentSystem/Objects/Characters/npc.hpp"
-#include "EntityComponentSystem/EntityContainers/enemyContainer.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
+#include "GameObjects/NotDrawableGameObjects/entrance.hpp"
+#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::string fileName)
+SceneParser::SceneParser(GameData* const gameData, GameObject& root, const std::string fileName)
 	:mGameData(gameData)
 	,mRoot(root) 
 {
@@ -53,6 +54,7 @@ void SceneParser::loadScene(const Xml& sceneNode)
 	const Xml rootNode = sceneNode.getChild("root");
 
 	loadMap(rootNode);
+	loadEntrances(rootNode);
 	loadPlayer(rootNode);
 	loadGroups(rootNode);
 }
@@ -62,6 +64,18 @@ void SceneParser::loadMap(const Xml& rootNode)
 	const Xml mapNode = rootNode.getChild("map");
 	auto& map = mGameData->getMap();
 	map.loadFromFile(mapNode.getAttribute("filepath").toString());
+}
+
+void SceneParser::loadEntrances(const Xml& rootNode)
+{
+	const std::vector<Xml> entranceNodes = rootNode.getChildren("entrance");
+	for (const auto& entranceNode : entranceNodes)
+	{
+		const std::string filepath = entranceNode.getAttribute("filepath").toString();
+		const std::string name = entranceNode.getAttribute("name").toString();
+		auto entrance = std::make_unique<Entrance>(mGameData, filepath, name, getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+		mRoot.addChild(std::move(entrance));
+	}
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
@@ -120,11 +134,19 @@ void SceneParser::loadSpawnersGroup(const Xml& spawnerGroupNode)
 	// TODO: Implement this method when Spawner class will be ready.
 }
 
-auto SceneParser::getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f
+auto SceneParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const -> const sf::Vector2f
 {
 	return sf::Vector2f(
-		objectNode.getAttribute("positionX").toFloat(),
-		objectNode.getAttribute("positionY").toFloat()
+		DrawableGameObjectNode.getAttribute("positionX").toFloat(),
+		DrawableGameObjectNode.getAttribute("positionY").toFloat()
+	);
+}
+
+auto SceneParser::getSizeAttribute(const Xml& objectNode) const -> const sf::Vector2f
+{
+	return sf::Vector2f(
+		objectNode.getAttribute("width").toFloat(),
+		objectNode.getAttribute("height").toFloat()
 	);
 }
 

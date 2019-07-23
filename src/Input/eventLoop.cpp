@@ -14,7 +14,7 @@ sf::Mouse::Button EventLoop::mMouseButton;
 
 void EventLoop::init(GameData* gameData)
 {
-	gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
+	gameData->getRenderWindow().setKeyRepeatEnabled(false);
 }
 
 void EventLoop::eventLoop(GameData* gameData)
@@ -22,7 +22,7 @@ void EventLoop::eventLoop(GameData* gameData)
 	clear();
 	sf::Event event;
 
-	while(gameData->getRenderer().getWindow().pollEvent(event))
+	while(gameData->getRenderWindow().pollEvent(event))
 	{
 		switch(event.type)
 		{

@@ -2,11 +2,12 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "Terminal/Commands/messageType.hpp"
 
 namespace ph {
 
 class GameData;
-class Object;
+class DrawableGameObject;
 
 class CommandInterpreter
 {
@@ -24,7 +25,7 @@ private:
 
 	void executeTeleport() const;
 	void executeCurrentPos() const;
-	auto getPlayer() const -> Object&;
+	auto getPlayer() const -> DrawableGameObject&;
 
 	void executeHistory() const;
 	void executeHelp() const;
@@ -55,6 +56,8 @@ private:
 
 	bool commandContains(const char) const;
 	bool commandContains(const char*) const;
+
+	void executeMessage(const std::string&, const MessageType) const;
 
 private:
 	std::string mCommand;

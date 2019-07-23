@@ -1,13 +1,13 @@
 #pragma once
 
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 #include "Utilities/animation.hpp"
 
 namespace ph {
 
 class CollisionBody;
 
-class Character : public Object
+class Character : public DrawableGameObject
 {
 public:
 	Character(GameData*, std::string name, Animation animation = Animation(),

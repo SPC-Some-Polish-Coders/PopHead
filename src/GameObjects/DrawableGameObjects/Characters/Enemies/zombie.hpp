@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EntityComponentSystem/Objects/Characters/enemy.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/enemy.hpp"
 
 namespace ph {
 

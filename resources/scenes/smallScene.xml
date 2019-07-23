@@ -13,6 +13,7 @@
   </music>
   <root>
     <map name="map" filepath="maps/verySmallMap.tmx"/>
+	<entrance name="desertMap" filepath="scenes/desertScene.xml" positionX="0" positionY="40" width="20" height="20"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>
     <group name="npc">
       <npcTest positionX="30" positionY="30"/>

@@ -1,17 +1,16 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/iniLoader.hpp"
 #include "windowInitializer.hpp"
-#include "EntityComponentSystem/object.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 #include "Utilities/debug.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-Renderer::Renderer()
-	:mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
+Renderer::Renderer(sf::RenderTarget& renderTarget)
+	:mRenderTarget(renderTarget)
+	,mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-	,mWindow{ WindowInitializer::getWindowSize(),
-		"PopHead", WindowInitializer::getStyle(), sf::ContextSettings() }
 	,mLayers{  { LayerID::floorEntities, Layer() },
 				{ LayerID::staticEntities, Layer() },
 				{ LayerID::kinematicEntities, Layer() },
@@ -20,12 +19,10 @@ Renderer::Renderer()
 				{ LayerID::cmd, Layer() } }
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
-	mWindow.setVerticalSyncEnabled(false);
 }
 
 Renderer::~Renderer()
 {
-	mWindow.close();
 }
 
 void Renderer::update(sf::Time delta)
@@ -36,43 +33,41 @@ void Renderer::update(sf::Time delta)
 
 void Renderer::draw() const
 {
-	mCamera.applyTo(mWindow);
-	mWindow.clear();
+	mCamera.applyTo(mRenderTarget);
+	mRenderTarget.clear();
 
-	mGameData->getMap().draw(mWindow, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
+	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
 
 	for(const auto& layer : mLayers)
 		for(const auto& object : layer.second) {
-			mWindow.draw(*object);
+			mRenderTarget.draw(*object);
 			mGameData->getEfficiencyRegister().registerRenderCall();
 		}
 
-	mWindow.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
-	mWindow.draw(mGameData->getEfficiencyRegister().getDisplayer());
-	mWindow.draw(mGameData->getTerminal().getImage());
-
-	mWindow.display();
+	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
+	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
+	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
-void Renderer::addObject(Object* const object)
+void Renderer::addObject(DrawableGameObject* const object)
 {
 	mLayers[object->getLayerID()].addObject(object);
 	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(object->getLayerID()) + " layer.");
 }
 
-void Renderer::addObject(Object* const object, LayerID layerID)
+void Renderer::addObject(DrawableGameObject* const object, LayerID layerID)
 {
 	mLayers[layerID].addObject(object);
 	PH_LOG_INFO("Object \"" + object->getName() + "\" was added to " + getLayerName(layerID) + " layer.");
 }
 
-void Renderer::removeObject(std::string name, LayerID layerId)
+void Renderer::removeDrawableGameObject(std::string name, LayerID layerId)
 {
 	mLayers[layerId].removeObject(name);
 	PH_LOG(LogType::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerId) + " layer.");
 }
 
-void Renderer::removeObject(const Object* const object)
+void Renderer::removeDrawableGameObject(const DrawableGameObject* const object)
 {
 	PH_LOG(LogType::Info, "Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");
 	mLayers[object->getLayerID()].removeObject(object);

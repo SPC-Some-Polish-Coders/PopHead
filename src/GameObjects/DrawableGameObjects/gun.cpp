@@ -4,7 +4,7 @@
 
 namespace ph {
 
-Bullet::Bullet(const Entity& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
+Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
                const unsigned  damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
@@ -46,7 +46,7 @@ bool Bullet::wasEnemyShot(Character& character)
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
-	:Object(gameData, "gun", LayerID::kinematicEntities)
+	:DrawableGameObject(gameData, "gun", LayerID::kinematicEntities)
 	,mDamage(damage)
 {
 }

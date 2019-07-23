@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
@@ -13,10 +11,10 @@
 #include "Terminal/terminal.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Gui/GUI.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 namespace ph {
-
-/// GameData is holder for observer pointers to Game Modules.
 
 class GameCloser
 {
@@ -28,13 +26,16 @@ private:
 	bool mShouldGameBeClosed = false;
 };
 
+/// GameData is holder for observer pointers to Game Modules.
+
 class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
+		sf::RenderWindow* const renderWindow,
 		SoundPlayer* const soundPlayer,
 		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
@@ -49,7 +50,8 @@ public:
 		EfficiencyRegister* const efficiencyRegister,
 		GUI* const Gui
 	)
-		:mSoundPlayer{soundPlayer}
+		:mRenderWindow(renderWindow)
+		,mSoundPlayer{soundPlayer}
 		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
 		,mFonts{fonts}
@@ -66,6 +68,7 @@ public:
 	{
 	}
 	
+	auto getRenderWindow() const -> sf::RenderWindow& { return *mRenderWindow; }
 	auto getSoundPlayer() const -> SoundPlayer& { return *mSoundPlayer; }
 	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
@@ -82,6 +85,7 @@ public:
 	auto getGameCloser() -> GameCloser& { return mGameCloser; }
 
 private:
+	sf::RenderWindow* const mRenderWindow;
 	SoundPlayer* const mSoundPlayer;
 	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;
