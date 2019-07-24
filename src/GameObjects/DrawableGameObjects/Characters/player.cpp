@@ -48,7 +48,7 @@ Player::Player(GameData* gameData)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
-	addChild(std::make_unique<MeleeWeapon>(mGameData, 5, 20));
+	addChild(std::make_unique<MeleeWeapon>(mGameData, 25, 30));
 }
 
 void Player::input()
@@ -156,23 +156,7 @@ void PlayerMotion::clear()
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {
-		sf::Vector2f shotDirection;
-		if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			shotDirection = {0.7f, -0.7f};
-		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			shotDirection = {-0.7f, -0.7f};
-		else if(mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			shotDirection = {0.7f, 0.7f};
-		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			shotDirection = {-0.7f, 0.7f};
-		else if(mLastMotion.isMovingRight)
-			shotDirection = {1.f, 0.f};
-		else if(mLastMotion.isMovingLeft)
-			shotDirection = {-1.f, 0.f};
-		else if(mLastMotion.isMovingUp)
-			shotDirection = {0.f, -1.f};
-		else if(mLastMotion.isMovingDown)
-			shotDirection = {0.f, 1.f};
+		sf::Vector2f shotDirection = attackDirection();
 
 		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
 		gun.shoot(shotDirection);
@@ -184,24 +168,8 @@ void Player::shootingUpdate(const sf::Time delta)
 void Player::meleeAttackUpdate(const sf::Time delta)
 {
 	if (mIsAttacking) {
-		sf::Vector2f meleeAttackDirection;
-		if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			meleeAttackDirection = { 0.7f, -0.7f };
-		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			meleeAttackDirection = { -0.7f, -0.7f };
-		else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			meleeAttackDirection = { 0.7f, 0.7f };
-		else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			meleeAttackDirection = { -0.7f, 0.7f };
-		else if (mLastMotion.isMovingRight)
-			meleeAttackDirection = { 1.f, 0.f };
-		else if (mLastMotion.isMovingLeft)
-			meleeAttackDirection = { -1.f, 0.f };
-		else if (mLastMotion.isMovingUp)
-			meleeAttackDirection = { 0.f, -1.f };
-		else if (mLastMotion.isMovingDown)
-			meleeAttackDirection = { 0.f, 1.f };
-
+		sf::Vector2f meleeAttackDirection = attackDirection();
+	
 		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
 		meleeWeapon.attack(meleeAttackDirection);
 
@@ -209,27 +177,25 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 	}
 }
 
-//SUGGESTION: We could use this function so we omit the repetition of the code above
-//
-//sf::Vector2f Player::attackDirection()
-//{
-//	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-//		return  { 0.7f, -0.7f };
-//	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-//		return  { -0.7f, -0.7f };
-//	else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-//		return  { 0.7f, 0.7f };
-//	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-//		return  { -0.7f, 0.7f };
-//	else if (mLastMotion.isMovingRight)
-//		return  { 1.f, 0.f };
-//	else if (mLastMotion.isMovingLeft)
-//		return  { -1.f, 0.f };
-//	else if (mLastMotion.isMovingUp)
-//		return  { 0.f, -1.f };
-//	else if (mLastMotion.isMovingDown)
-//		return  { 0.f, 1.f };
-//}
+sf::Vector2f Player::attackDirection()
+{
+	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+		return  { 0.7f, -0.7f };
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+		return  { -0.7f, -0.7f };
+	else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+		return  { 0.7f, 0.7f };
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+		return  { -0.7f, 0.7f };
+	else if (mLastMotion.isMovingRight)
+		return  { 1.f, 0.f };
+	else if (mLastMotion.isMovingLeft)
+		return  { -1.f, 0.f };
+	else if (mLastMotion.isMovingUp)
+		return  { 0.f, -1.f };
+	else if (mLastMotion.isMovingDown)
+		return  { 0.f, 1.f };
+}
 
 void Player::updateAnimation(const std::string& stateName)
 {
