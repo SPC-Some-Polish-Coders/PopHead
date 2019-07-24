@@ -7,7 +7,8 @@ namespace ph {
 
 std::string Path::toModuleName(std::string path)
 {
-	// WARNING: Don't use PH_EXCEPTION or PH_LOG here because they are using this method, so it can result in recursion
+	// WARNING: Logging macros can be used here only for errors, or problems reporting.
+	// When used in a place that execute always (for example in the first line) they cause endless recursion.
 
 	std::string searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
 
@@ -16,17 +17,17 @@ std::string Path::toModuleName(std::string path)
 		searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "tests";
 		begin = path.find(searchedPath);
 		if (begin == std::string::npos) {
-			std::cout << "[Path::toModuleName] Module location cannot be found. Path: " << path << std::endl;
+			//std::cout << "[Path::toModuleName] Module location cannot be found. Path: " << path << std::endl;
 			throw std::runtime_error("[Path::toModuleName] Module location cannot be found. Path: " + path);
 		}
 	}
 	begin += searchedPath.size() + 1;
 	if (path.find(searchedPath, begin) != std::string::npos) {
-		std::cout << "[Path::toModuleName] Move folder with project to another location. Path cannot have more than one: " << searchedPath << std::endl;
+		//std::cout << "[Path::toModuleName] Move folder with project to another location. Path cannot have more than one: " << searchedPath << std::endl;
 		throw std::runtime_error("[Path::toModuleName] Move folder with project to another location. Path cannot have more than one: " + searchedPath);
 	}
 	if (begin >= path.size()) {
-		std::cout << "[Path::toModuleName] There should be at least one letter after source path" << std::endl;
+		//std::cout << "[Path::toModuleName] There should be at least one letter after source path" << std::endl;
 		throw std::runtime_error("[Path::toModuleName] There should be at least one letter after source path");
 	}
 
