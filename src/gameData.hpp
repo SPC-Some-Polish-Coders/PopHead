@@ -3,6 +3,7 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
+#include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
 #include "Input/input.hpp"
@@ -32,7 +33,8 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+	          nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::RenderWindow* const renderWindow,
@@ -41,6 +43,7 @@ public:
 		TextureHolder* const textures,
 		FontHolder* const fonts,
 		ShaderHolder* const shaders,
+		AIManager* const aiManager,
 		SceneManager* const sceneMachine,
 		Map* const map,
 		Input* const input,
@@ -56,6 +59,7 @@ public:
 		,mTextures{textures}
 		,mFonts{fonts}
 		,mShaders{shaders}
+		,mAIMangager(aiManager)
 		,mSceneMachine{sceneMachine}
 		,mMap(map)
 		,mInput{input}
@@ -74,6 +78,7 @@ public:
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
+	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneMachine() const -> SceneManager& { return *mSceneMachine; }
 	auto getMap() const -> Map& { return *mMap; }
 	auto getInput()	const -> Input& { return *mInput; }
@@ -91,6 +96,7 @@ private:
 	TextureHolder* const mTextures;
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
+	AIManager* const mAIMangager;
 	SceneManager* const mSceneMachine;
 	Map* const mMap;
 	Input* const mInput;

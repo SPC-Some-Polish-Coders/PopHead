@@ -41,6 +41,14 @@ void Zombie::update(sf::Time delta)
 		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
 		enemyContainer->addEnemyToDie(this);
 	}
+
+	move();
+}
+
+void Zombie::move()
+{
+	if(mMovementPath.empty())
+		mMovementPath = mGameData->getAIManager().whereShouldIgo(this);
 }
 
 }

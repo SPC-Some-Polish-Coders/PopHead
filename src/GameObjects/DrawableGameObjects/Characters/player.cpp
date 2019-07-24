@@ -121,6 +121,7 @@ void Player::updateMovement(const sf::Time delta)
 	}
 	mMotion.clear();
 	setPosition(mCollisionBody.getPosition());
+	mGameData->getAIManager().setPlayerPosition(mPosition);
 }
 
 PlayerMotion::PlayerMotion()
