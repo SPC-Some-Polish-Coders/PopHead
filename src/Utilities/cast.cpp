@@ -29,4 +29,14 @@ bool Cast::toBool(const std::string& str)
 		PH_EXCEPTION("Cast to bool failed!");
 }
 
+ObjectType Cast::toObjectType(const std::string& str)
+{
+	if (str == "zombie")
+		return ObjectType::Zombie;
+	else if (str == "npc")
+		return ObjectType::Npc;
+	else 
+		return;
+}
+
 }

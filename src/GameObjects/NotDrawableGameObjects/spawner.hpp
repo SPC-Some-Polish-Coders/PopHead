@@ -1,0 +1,29 @@
+#pragma once
+
+#include "GameObjects/gameObject.hpp"
+#include "Utilities/spawn.hpp"
+
+namespace ph {
+
+class GameData;
+
+class Spawner : public GameObject
+{
+public:
+	Spawner(GameData* const, const std::string, const ObjectType objectType, const sf::Time, const sf::Vector2f);
+	
+private:
+	void update(const sf::Time delta) override;
+	void spawnObject();
+
+private:
+	GameData* const mGameData;
+	const ObjectType mObjectType;
+	const sf::Time mSpawnFrequency;
+	const std::string mSpawnerName;
+	const sf::Vector2f mPosition;
+
+	sf::Clock mTimeFromLastSpawn;
+};
+
+}

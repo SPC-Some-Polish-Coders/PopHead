@@ -4,6 +4,7 @@
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
 #include "GameObjects/NotDrawableGameObjects/entrance.hpp"
+#include "GameObjects/NotDrawableGameObjects/spawner.hpp"
 #include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 #include "gameData.hpp"
 
@@ -96,7 +97,7 @@ void SceneParser::loadGroups(const Xml& rootNode)
 		else if(groupName == "enemies")
 			loadEnemiesGroup(groupNode);
 		else if(groupName == "spawners")
-			loadSpawnersGroup(groupNode);
+			loadSpawners(groupNode);
 		else
 			PH_EXCEPTION("Syntax error: There is not such group: " + groupName);
 	}
@@ -129,9 +130,18 @@ void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 	}
 }
 
-void SceneParser::loadSpawnersGroup(const Xml& spawnerGroupNode)
+void SceneParser::loadSpawners(const Xml& spawnerGroupNode)
 {
-	// TODO: Implement this method when Spawner class will be ready.
+	const std::vector<Xml> spawnerNodes = spawnerGroupNode.getChildren("spawner");
+	for (const auto& spawnerNode : spawnerNodes)
+	{
+		const float frequency = spawnerNode.getAttribute("frequency").toFloat();
+		const std::string name = spawnerNode.getAttribute("name").toString();
+		auto objectSpawner = std::make_unique<Spawner>(
+			mGameData, (name+"Spawner"), Cast::toObjectType(name), sf::seconds(frequency), getPositionAttribute(spawnerNode)
+			);
+		mRoot.addChild(std::move(objectSpawner));
+	}
 }
 
 auto SceneParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const -> const sf::Vector2f
