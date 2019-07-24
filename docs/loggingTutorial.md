@@ -29,8 +29,15 @@ Additional macros:
 
 (not described for now)
 
+Deprecated macros:
+- PH_ASSERT(expression, message);
+- PH_EXCEPTION(message);
+- PH_ASSERT_EXCEPTION(expression, message);
+
+These macros were created in first version of debug/log system. Now they are replaced with logging macros described above. They will be eventually removed both from code and documentation.
+
 ## Precise description and use cases of logging levels
-- Info - tells that an operation succeeded, or gives debug informations (e.g. statistics). Can only be used with positive messages (not errors or problems). It must contain enough informations to distinctly identify an operation, but not everything, like content of files.
+- Info - tells that an operation succeeded, or gives debug informations (e.g. statistics). Can only be used with positive messages (not errors or problems). It must contain enough informations to distinctly identify an operation, but not everything, like whole content of file.
 	
     Bad use cases:
 	```cpp
@@ -82,7 +89,8 @@ Additional macros:
         if (mScene == nullptr)
             PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
         else {...}
-        // ok, missing action doesn't cause any problems, or errors, but it's not good idea to call this function for no reason
+        // ok, missing action doesn't cause any problems, or errors,
+        // but it's not good idea to call this function for no reason
     }
 
     std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const {
@@ -90,8 +98,11 @@ Additional macros:
         if (tilesetNodes.size() == 0)
             PH_LOG_WARNING("Map doesn't have any tilesets");
         return tilesetNodes;
-        // this is fine, the signature of function indicates that there SHOULD be some tileset nodes, but that's not a problem, if there aren't any
-        // NOTE: a caller of this function can still treat that (missing tilesets) as serious problem, and use Error, or even Critical, but in this exact context it would be too much of assumption
+        // this is fine, the signature of function indicates that there 
+        // SHOULD be some tileset nodes, but that's not a problem, if there aren't any
+        // NOTE: a caller of this function can still treat that (missing tilesets)
+        // as a serious problem, and use Error, or even Critical, but in this exact context
+        //  it would be too much of assumption
     }
     ```
 
