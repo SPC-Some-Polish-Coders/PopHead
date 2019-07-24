@@ -102,11 +102,11 @@ These macros were created in first version of debug/log system. Now they are rep
         // SHOULD be some tileset nodes, but that's not a problem, if there aren't any
         // NOTE: a caller of this function can still treat that (missing tilesets)
         // as a serious problem, and use Error, or even Critical, but in this exact context
-        //  it would be too much of assumption
+        // it would be too much of assumption
     }
     ```
 
-- Error - the current operation cannot be completely executed. The problem should be handled in a way, that doesn't crash the application. Note that this level will not throw an exception. It depends only on you, if a problem is handled internally in current function, or somewhere above in calling function by catching an exception.
+- Error - the current operation cannot be completely executed. The problem should be handled in a way, that doesn't crash the application. Note that this level will not throw an exception. It depends only on you, if a problem is handled internally in current function, or somewhere above in caller by catching an exception.
 	
     Bad use cases:
 	```cpp
@@ -123,3 +123,6 @@ These macros were created in first version of debug/log system. Now they are rep
 	Good use cases:
 	```cpp
     ```
+
+## Additional help
+![Choosing Log level](choosingLogLevel.jpg)
