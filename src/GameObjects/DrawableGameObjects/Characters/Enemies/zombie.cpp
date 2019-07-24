@@ -48,7 +48,7 @@ void Zombie::update(sf::Time delta)
 void Zombie::move()
 {
 	if(mMovementPath.empty())
-		mMovementPath = mGameData->getAIManager().whereShouldIgo(this);
+		mMovementPath = mGameData->getAIManager().getZombiePath(mPosition);
 }
 
 }
