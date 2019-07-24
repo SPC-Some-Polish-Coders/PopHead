@@ -34,7 +34,19 @@ int main()
 
 #else // !PH_TESTS
 
-#define CATCH_CONFIG_MAIN
+#include "TestsUtilities/testHandler.hpp"
+#include "Logs/logger.hpp"
+
+#define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
+
+int main()
+{
+	std::unique_ptr<ph::Handler> testHandler(new Tests::TestHandler);
+	testHandler->enableAllModules();
+	testHandler->enableAllLogLevels();
+	ph::Logger::addLogsHandler(std::move(testHandler));
+	return Catch::Session().run();
+}
 
 #endif // !PH_TESTS

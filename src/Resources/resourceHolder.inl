@@ -17,7 +17,8 @@ auto ph::ResourceHolder<ResourceType>::get(const std::string& filePath) -> Resou
 {
 	std::string fullFilePath = "resources/" + filePath;
 	auto found = mResources.find(fullFilePath);
-	PH_ASSERT(found != mResources.end(), "Resource \"" + fullFilePath + "\" was not found!");
+	if (found == mResources.end())
+		PH_EXCEPTION("Resource \"" + fullFilePath + "\" was not found!");
 	return *found->second;
 }
 
