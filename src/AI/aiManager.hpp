@@ -11,8 +11,6 @@ enum class Direction {east, west, north, south, northEast, northWest, southEast,
 class AIManager
 {
 public:
-	AIManager();
-
 	std::deque<Direction> getZombiePath(const sf::Vector2f zombiePosition) const;
 
 	void setPlayerPosition(const sf::Vector2f playerPosition) { this->mPlayerPosition = playerPosition; }
@@ -28,7 +26,7 @@ private:
 	enum class AreaType { walkable, obstacle };
 	std::vector<std::vector<AreaType>> mGrid;
 	sf::Vector2f mPlayerPosition;
-	const float spotSideLength = 16.f;
+	const unsigned spotSideLength = 16;
 };
 
 } 

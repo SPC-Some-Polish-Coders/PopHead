@@ -4,10 +4,6 @@
 
 namespace ph {
 
-AIManager::AIManager()
-{
-}
-
 std::deque<Direction> AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
 	if(doesZombieSeePlayer(zombiePosition))
@@ -27,8 +23,8 @@ void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
 
 void AIManager::registerStaticCollisionBody(const sf::Vector2f collisionBodyPosition)
 {
-	const int gridPositionX = collisionBodyPosition.x / spotSideLength;
-	const int gridPositionY = collisionBodyPosition.y / spotSideLength;
+	const unsigned gridPositionX = static_cast<unsigned>(collisionBodyPosition.x) / spotSideLength;
+	const unsigned gridPositionY = static_cast<unsigned>(collisionBodyPosition.y) / spotSideLength;
 	mGrid[gridPositionX][gridPositionY] = AreaType::obstacle;
 }
 
