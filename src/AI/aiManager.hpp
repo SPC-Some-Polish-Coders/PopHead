@@ -14,7 +14,10 @@ public:
 	AIManager();
 
 	std::deque<Direction> getZombiePath(const sf::Vector2f zombiePosition) const;
+
 	void setPlayerPosition(const sf::Vector2f playerPosition) { this->mPlayerPosition = playerPosition; }
+	void registerMapSize(const sf::Vector2u mapSizeInTiles);
+	void registerStaticCollisionBody(const sf::Vector2f collisionBodyPosition);
 
 private:
 	bool doesZombieSeePlayer(const sf::Vector2f zombiePosition) const;
@@ -23,9 +26,9 @@ private:
 
 private:
 	enum class AreaType { walkable, obstacle };
-	std::vector<sf::FloatRect> mOpponentsPositions;
 	std::vector<std::vector<AreaType>> mGrid;
 	sf::Vector2f mPlayerPosition;
+	const float spotSideLength = 16.f;
 };
 
 } 

@@ -21,6 +21,7 @@ void Map::loadFromFile(const std::string& filename)
 	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
 	const sf::Vector2u mapSize = getMapSize(mapNode);
+	mGameData->getAIManager().registerMapSize(mapSize);
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
@@ -231,6 +232,7 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			bounds.left += position.x;
 			bounds.top += position.y;
 			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
+			mGameData->getAIManager().registerStaticCollisionBody({bounds.left, bounds.top});
 		}
 	}
 }
