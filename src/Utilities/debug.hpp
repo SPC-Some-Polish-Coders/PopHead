@@ -16,6 +16,13 @@
 #endif // !PH_DISTRIBUTION
 
 
+#ifndef PH_DISTRIBUTION
+
+#define PH_DEBUG_LOGS_ENABLED
+
+#endif // !PH_DISTRIBUTION
+
+
 #ifdef PH_DISTRIBUTION
 
 #define PH_ASSERT(expression, message) ((void)0)

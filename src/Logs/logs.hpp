@@ -8,10 +8,11 @@
 #define PH_LOG(logType, message)\
 	ph::Logger::createLog(logType, message, __FILE__, static_cast<unsigned short>(__LINE__))
 
-// temporary macro
-#define INFO_LOGS_ENABLED
+#define PH_ASSERT_EXPRESSION(expression, code)\
+	if(!(expression)) code
 
-#ifdef INFO_LOGS_ENABLED
+
+#ifdef PH_DEBUG_LOGS_ENABLED
 
 #define PH_LOG_INFO(message)\
 	PH_LOG(ph::LogLevel::Info, message)
@@ -20,4 +21,4 @@
 
 #define PH_LOG_INFO(message)
 
-#endif // INFO_LOGS_ENABLED
+#endif // PH_DEBUG_LOGS_ENABLED
