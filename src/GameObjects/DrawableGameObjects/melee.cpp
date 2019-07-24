@@ -4,110 +4,97 @@
 
 namespace ph {
 
-Swoosh::Swoosh(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
-	const unsigned damage, const unsigned range)
+Swing::Swing(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
+	const unsigned damage, const unsigned range, const unsigned rotationRange)
 	:mEnemiesNode(opponentsNode)
 	,mDirection(direction)
+	,mStartPositionBeginning(position)
 	,mDamage(damage)
 	,mRange(range)
+	,mRotationRange(rotationRange)
+	,mRotation(0.f)
 {
-	setMeeleWeaponHitArea(direction, position);
-	auto* characterWhoWasHit = getCharacterWhoWasShot();
+	setMeeleWeaponStartingPosition(direction);
+	handleHitCharacters();
+}
+
+void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
+{
+	sf::Transform rotation;
+	rotation.rotate(-mRotationRange / 2, mStartPositionBeginning);
+	mHitArea[0].position = mStartPositionBeginning;
+	mHitArea[1].position = mStartPositionBeginning + (attackDirection * mRange);
+	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
+	mStartPositionEnd = mHitArea[1].position;
+}
+
+void Swing::handleHitCharacters()
+{
+	auto* characterWhoWasHit = getCharacterWhoWasHit();
 	if (characterWhoWasHit == nullptr)
 		return;
 	characterWhoWasHit->takeDamage(mDamage);
 }
 
-
-auto Swoosh::getCharacterWhoWasShot() -> Character*
+auto Swing::getCharacterWhoWasHit() -> Character*
 {
+	while(mRotation < mRotationRange)
+	{ 
 	for (auto& enemy : mEnemiesNode.getChildren()) {
 		auto& e = dynamic_cast<Character&>(*enemy);
 		if (wasEnemyHit(e))
 			return &e;
+		}
+	incrementRotation();
 	}
 	return nullptr;
 }
 
-bool Swoosh::wasEnemyHit(Character& character)
+bool Swing::wasEnemyHit(Character& character)
 {
 	const auto& sprite = character.getSprite();
 	const sf::FloatRect hitbox = sprite.getGlobalBounds();
-	return Math::isPointInsideRect(mHitArea[2].position , hitbox);
+	return Math::isPointInsideRect(mHitArea[1].position, hitbox);
 }
 
-void Swoosh::setMeeleWeaponHitArea(const sf::Vector2f attackDirection, const sf::Vector2f startPosition)
+void Swing::incrementRotation()
 {
-	mHitArea[0].position = startPosition;
-	mHitArea[1].position = startPosition + (attackDirection * mRange);
-	mHitArea[2].position = startPosition + (attackDirection * mRange);
-	mHitArea[3].position = startPosition + (attackDirection * mRange);
-
-	if (attackDirection == sf::Vector2f(1, 0))
-	{
-		mHitArea[1].position += {-5.f, 10.f};
-		mHitArea[3].position += {-5.f, -10.f};
-	}
-	else if (attackDirection == sf::Vector2f(-1, 0))
-	{
-		mHitArea[1].position += {5.f, -10.f};
-		mHitArea[3].position += {5.f, 10.f};
-	}
-	else if (attackDirection == sf::Vector2f(0, 1))
-	{
-		mHitArea[1].position += {-10.f, -5.f};
-		mHitArea[3].position += {10.f, -5.f};
-	}
-	else if (attackDirection == sf::Vector2f(0, -1))
-	{
-		mHitArea[1].position += {10.f, 5.f};
-		mHitArea[3].position += {-10.f, 5.f};
-	}
-	else if (attackDirection == sf::Vector2f(0.7f, -0.7f))
-	{
-		mHitArea[1].position += {0.f, 12.f};
-		mHitArea[3].position += {-12.f, 0.f};
-	}
-	else if (attackDirection == sf::Vector2f(-0.7f, -0.7f))
-	{
-		mHitArea[1].position += {12.f, 0.f};
-		mHitArea[3].position += {0.f, 12.f};
-	}
-	else if (attackDirection == sf::Vector2f(0.7f, 0.7f))
-	{
-		mHitArea[1].position += {0.f, -12.f};
-		mHitArea[3].position += {-12.f, 0.f};
-	}
-	else if (attackDirection == sf::Vector2f(-0.7f, 0.7f))
-	{
-		mHitArea[1].position += {0.f, -12.f};
-		mHitArea[3].position += {12.f, 0.f};
-	}
+	++mRotation;
+	sf::Transform rotation;
+	rotation.rotate(5.f, mStartPositionBeginning);
+	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
 }
 
-MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range)
+
+MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
 	:DrawableGameObject(gameData, "sword", LayerID::kinematicEntities)
 	,mDamage(damage)
 	,mRange(range)
+	,mRotationRange(rotatationRange)
+	,mGraphicsRotation(0.f)
+	,mShouldDrawSwing(false)
 {
 }
 
 void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
+	setMeleeWeaponPositionToRightHand(attackDirection);
+	Swing swing(getEnemies(), attackDirection, mPosition, mDamage, mRange, mRotationRange);
+	initializeAttackGraphics(swing);
+}
+
+auto MeleeWeapon::getEnemies() -> GameObject&
+{
 	auto& player = getParent();
 	auto& root = player.getParent();
-	auto& enemies = root.getChild("enemy_container");
-	setMeleeWeaponPositionToRightHand(attackDirection);
-	Swoosh swoosh(enemies, attackDirection, mPosition, mDamage, mRange);
-	initializeAttackGraphics(swoosh);
-	mTimeFromLastAttack.restart();
+	return root.getChild("enemy_container");
 }
 
 void MeleeWeapon::setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection)
 {
 	if (attackDirection == sf::Vector2f(1, 0))
-		mPosition += {20, 20};
+		mPosition += {10, 20};
 	else if (attackDirection == sf::Vector2f(-1, 0))
 		mPosition += {5, 15};
 	else if (attackDirection == sf::Vector2f(0, 1))
@@ -126,29 +113,39 @@ void MeleeWeapon::setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDir
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
-void MeleeWeapon::initializeAttackGraphics(const Swoosh& swoosh)
+void MeleeWeapon::initializeAttackGraphics(const Swing& swing)
 {
-	mHitGraphics = swoosh.getHitArea();
-	for (auto& hitPoint : mHitGraphics)
-		hitPoint.color = sf::Color(255, 0, 0, 100);
+	mHitGraphics = swing.getPositionFromBeginning();
+	mShouldDrawSwing = true;
+}
+
+void MeleeWeapon::updateHitGraphicsRotation()
+{
+	sf::Transform rotate;
+	rotate.rotate(15.f, mHitGraphics[0].position);
+	mHitGraphics[1] = rotate.transformPoint(mHitGraphics[1].position);
+	mGraphicsRotation += 15.f;
 }
 
 void MeleeWeapon::resetAttackGraphics()
 {
-	for (auto& areaPoint : mHitGraphics)
-		areaPoint.position = { 0, 0 };
+	mHitGraphics[0].position = { 0, 0 };
+	mHitGraphics[1].position = { 0, 0 };
+	mGraphicsRotation = 0.f;
+	mShouldDrawSwing = false;
 }
 
 void MeleeWeapon::update(const sf::Time delta)
 {
-	if (mTimeFromLastAttack.getElapsedTime().asSeconds() > .05f)
+	if (mGraphicsRotation < mRotationRange && mShouldDrawSwing)
+		updateHitGraphicsRotation();
+	else
 		resetAttackGraphics();
 }
 
 void MeleeWeapon::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
-
-	target.draw(mHitGraphics.data(), 4, sf::TrianglesFan);
+	target.draw(mHitGraphics.data(), 2, sf::Lines);
 }
 
 }
