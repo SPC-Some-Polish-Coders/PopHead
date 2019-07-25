@@ -174,7 +174,23 @@ if (condition) {
         else {
             PH_LOG_ERROR("There is not such ObjectType!");
             throw std::runtime_error("Bad object's name");
-            // ok, we assume that the caller can take care of that
+            // ok, we assume that the caller will take care of that
+        }
+    }
+
+    template< typename ResourceType >
+    void ph::ResourceHolder<ResourceType>::load(const std::string& filePath) {
+        std::string fullFilePath = "resources/" + filePath;
+        auto resource = std::make_unique< ResourceType >();
+        if (resource->loadFromFile(fullFilePath))
+            mResources.insert(std::make_pair(fullFilePath, std::move(resource)));
+        else {
+            PH_LOG_ERROR("Unable to load file " + fullFilePath + "! Probably there is not such a file.");
+            throw std::runtime_error("Missing resource: " + filePath);
+            // missing file is always serious problem, but we don't know how important current resource is
+            // for the user of this function, he must decide on his own how to deal with it
+            // he can then either use Critical, Error or Warning
+            // Note: in this example we used an exception, but we could also return a variable of type bool
         }
     }
     ```
@@ -183,15 +199,49 @@ if (condition) {
 	
     Bad use cases:
 	```cpp
+    template< typename ResourceType >
+    void ph::ResourceHolder<ResourceType>::load(const std::string& filePath) {
+        std::string fullFilePath = "resources/" + filePath;
+        auto resource = std::make_unique< ResourceType >();
+        if (resource->loadFromFile(fullFilePath))
+            mResources.insert(std::make_pair(fullFilePath, std::move(resource)));
+        else {
+            PH_LOG_CRITICAL("Unable to load file " + fullFilePath + "! Probably there is not such a file.");
+            // we can't assume, that missing resource will crash tha application
+            // the user of ResourceHolder::load() should decide on his own
+            // more proper here is Error (see above)
+        }
+    }
     ```
 	Good use cases:
 	```cpp
+    void loadFonts(GameData* gameData) {
+        try {
+            // for method load() look at the Error's good use example
+            gameData->getFonts().load("fonts/consola.ttf");
+            gameData->getFonts().load("fonts/joystixMonospace.ttf");
+        }
+        catch (const std::exception& e) {
+            PH_LOG_CRITICAL(string("Couldn't load any fonts") + e.what());
+            // we decided that without any fonts we can't run the application
+        }
+    }
     ```
 
-- Unexpected situation
+- Unexpected situation (description in 'Logging macros' section)
 
     Bad use cases:
 	```cpp
+    void CommandInterpreter::handleCommand(const std::string& command) {
+        const std::string commandWithoutArguments = getCommandWithoutArguments();
+
+        if (commandWithoutArguments == "echo")                executeEcho();
+        else if (commandWithoutArguments == "exit")           executeExit();
+        else if (commandWithoutArguments == "teleport")       executeTeleport();
+        // ...
+        else PH_UNEXPECTED_SITUATION( "Entered command wasn't recognised.");
+        // we can't be sure if user never makes mistakes
+    }
     ```
 	Good use cases:
 	```cpp
