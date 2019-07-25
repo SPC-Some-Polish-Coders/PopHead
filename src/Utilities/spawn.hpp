@@ -23,6 +23,8 @@ private:
 
 	template<typename T>
 	void spawn();
+	template<typename T>
+	void spawnEnemy();
 	
 	auto getRoot() -> GameObject &;
 

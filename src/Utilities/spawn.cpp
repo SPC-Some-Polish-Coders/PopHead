@@ -18,7 +18,7 @@ void Spawn::spawnObject()
 	switch (mObjectType)
 	{
 	case ObjectType::Zombie:
-		spawn<Zombie>();
+		spawnEnemy<Zombie>();
 		return;
 	case ObjectType::Npc:
 		spawn<Npc>();
