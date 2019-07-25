@@ -1,4 +1,4 @@
-#include "Utilities/path.hpp"
+#include "Utilities/filePath.hpp"
 #include "catch.hpp"
 #include <string>
 
@@ -11,10 +11,10 @@ TEST_CASE("is filepath properly converted to module name", "[Utilities][Path]")
 	std::string utilitiesModuleFilePath = PH_PATH_SEPARATOR + std::string("PopHead") + PH_PATH_SEPARATOR + "src" + PH_PATH_SEPARATOR + "Utilities" + PH_PATH_SEPARATOR;
 	std::string noneFilePath = PH_PATH_SEPARATOR + std::string("PopHead") + PH_PATH_SEPARATOR + "src" + PH_PATH_SEPARATOR + "main.cpp";
 
-	CHECK(Path::toModuleName(audioModuleFilePath) == "Audio");
-	CHECK(Path::toModuleName(inputModuleFilePath) == "Input");
-	CHECK(Path::toModuleName(utilitiesModuleFilePath) == "Utilities");
-	CHECK(Path::toModuleName(noneFilePath) == "None");
+	CHECK(FilePath::toModuleName(audioModuleFilePath) == "Audio");
+	CHECK(FilePath::toModuleName(inputModuleFilePath) == "Input");
+	CHECK(FilePath::toModuleName(utilitiesModuleFilePath) == "Utilities");
+	CHECK(FilePath::toModuleName(noneFilePath) == "None");
 }
 
 TEST_CASE("is filepath properly converted to file name", "[Utilities][Path]")
@@ -24,9 +24,9 @@ TEST_CASE("is filepath properly converted to file name", "[Utilities][Path]")
 	std::string musicPlayerFilePath = PH_PATH_SEPARATOR + std::string("PopHead") + PH_PATH_SEPARATOR + "src" + PH_PATH_SEPARATOR + "Audio" + PH_PATH_SEPARATOR + "Music" + 
 		PH_PATH_SEPARATOR + "musicPlayer.cpp";
 
-	CHECK(Path::toFilename(terminalFilePath) == "terminal.cpp");
-	CHECK(Path::toFilename(rendererFilePath) == "renderer.cpp");
-	CHECK(Path::toFilename(musicPlayerFilePath) == "musicPlayer.cpp");
+	CHECK(FilePath::toFilename(terminalFilePath) == "terminal.cpp");
+	CHECK(FilePath::toFilename(rendererFilePath) == "renderer.cpp");
+	CHECK(FilePath::toFilename(musicPlayerFilePath) == "musicPlayer.cpp");
 }
 
 TEST_CASE("are exceptions called properly", "[Utilities][Path]")
@@ -37,13 +37,13 @@ TEST_CASE("are exceptions called properly", "[Utilities][Path]")
 	std::string incompleteFilePath = PH_PATH_SEPARATOR + std::string("PopHead") + PH_PATH_SEPARATOR +"src" + PH_PATH_SEPARATOR;
 
 	SECTION("lack of module") {
-		CHECK_THROWS(Path::toModuleName(nonexistentFilePath));
+		CHECK_THROWS(FilePath::toModuleName(nonexistentFilePath));
 	}
 	SECTION("duplicated path") {
-		CHECK_THROWS(Path::toModuleName(duplicatedFilePath));
+		CHECK_THROWS(FilePath::toModuleName(duplicatedFilePath));
 	}
 	SECTION("incomplete path") {
-		CHECK_THROWS(Path::toModuleName(incompleteFilePath));
+		CHECK_THROWS(FilePath::toModuleName(incompleteFilePath));
 	}
 
 }
