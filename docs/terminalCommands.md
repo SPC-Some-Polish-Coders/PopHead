@@ -192,7 +192,7 @@ teleport 300
 
 ## Camera commands
 -------------------------
-### **`view`** is command which changes camera view size
+### **`view`** is **many-argumented** command which changes camera view size
 | **view arguments** | **Describe** |
 | -----------: | ------------ |
 | `<width value>` | argument is a number which sets camera view width |
@@ -208,4 +208,19 @@ view 2000 1500
 view 1000
 view normal
 view 1000 750 chunkdebug
+```
+
+## Spawn commands
+------------------------
+### **`spawn`** is **many-argumented** command which spawns game object to given coordinates
+| **spawn arguments** | **Describe** |
+| -----------: | ------------ |
+| `<game object>` | argument which is one of the game objects |
+| `<X coordinate>` | argument is a number which sets the object on X axis |
+| `<Y coordinate>` | argument is a number which sets the object on Y axis |
+
+#### Examples: 
+```
+spawn npc 200 250
+spawn zombie 500
 ```
