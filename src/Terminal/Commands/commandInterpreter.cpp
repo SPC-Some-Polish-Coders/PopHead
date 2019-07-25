@@ -270,6 +270,7 @@ bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid() const
 	//	commandContains("error") || commandContains("user") ||
 	//	commandContains("all") || commandContains("clear")
 	//));
+	return true;
 }
 
 void CommandInterpreter::setModulesToLog() const
