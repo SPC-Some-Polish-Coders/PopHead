@@ -31,12 +31,12 @@ bool Cast::toBool(const std::string& str)
 
 ObjectType Cast::toObjectType(const std::string& str)
 {
-	if (str == "zombie")
+	if(str == "zombie")
 		return ObjectType::Zombie;
-	else if (str == "npc")
+	else if(str == "npc")
 		return ObjectType::Npc;
-	else 
-		return;
+	else
+		PH_EXCEPTION("There is not such ObjectType!");
 }
 
 }

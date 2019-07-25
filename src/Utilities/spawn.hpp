@@ -20,10 +20,11 @@ public:
 
 private:
 	void spawnObject();
-	auto getRoot() -> GameObject &;
 
-	void spawnZombie();
-	void spawnNpc();
+	template<typename T>
+	void spawn();
+	
+	auto getRoot() -> GameObject &;
 
 private:
 	GameData* const mGameData;
@@ -31,4 +32,6 @@ private:
 	const ObjectType mObjectType;
 
 };
+
 }
+#include "spawn.inl"

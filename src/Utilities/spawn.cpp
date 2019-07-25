@@ -18,31 +18,15 @@ void Spawn::spawnObject()
 	switch (mObjectType)
 	{
 	case ObjectType::Zombie:
-		spawnZombie();
+		spawn<Zombie>();
 		return;
 	case ObjectType::Npc:
-		spawnNpc();
+		spawn<Npc>();
 		return;
 	}
 }
 
-void Spawn::spawnZombie()
-{
-	auto& zombie = std::make_unique<Zombie>(mGameData);
-	auto& root = getRoot();
-	zombie->setPosition(mSpawnPosition);
-	root.addChild(std::move(zombie));
-}
-
-void Spawn::spawnNpc()
-{
-	auto& npc = std::make_unique<Npc>(mGameData);
-	auto& root = getRoot();
-	npc->setPosition(mSpawnPosition);
-	root.addChild(std::move(npc));
-}
-
-auto Spawn::getRoot() -> GameObject &
+auto Spawn::getRoot() -> GameObject&
 {
 	auto& scene = mGameData->getSceneMachine().getScene();
 	return scene.getRoot();
