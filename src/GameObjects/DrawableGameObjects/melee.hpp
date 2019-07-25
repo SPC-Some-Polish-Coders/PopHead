@@ -11,7 +11,7 @@ class Character;
 class Swing {
 public:
 	Swing(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
-		const unsigned damage, const unsigned range, const unsigned rotationRange);
+		const float damage, const float range, const float rotationRange);
 
 	auto getPositionFromBeginning() const -> std::array<sf::Vertex, 2> { return { mStartPositionBeginning, mStartPositionEnd }; }
 

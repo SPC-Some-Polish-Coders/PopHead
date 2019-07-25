@@ -5,7 +5,7 @@
 namespace ph {
 
 Swing::Swing(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
-	const unsigned damage, const unsigned range, const unsigned rotationRange)
+	const float damage, const float range, const float rotationRange)
 	:mEnemiesNode(opponentsNode)
 	,mDirection(direction)
 	,mStartPositionBeginning(position)
