@@ -19,11 +19,20 @@ struct Node
 	const float mCost;
 };
 
+inline bool operator<(const Node& lhs, const Node& rhs)
+{
+	return false;
+}
+
 class AStar
 {
 public:
 	AStar(const Grid& grid, const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
 	Path getPath();
+
+private:
+	bool didWeReachTheDestination(const sf::Vector2u currentNodePosition);
+	float getManhatanDistance(const sf::Vector2f currentNodePosition);
 
 private:
 	const sf::Vector2u mStartNodePosition;
