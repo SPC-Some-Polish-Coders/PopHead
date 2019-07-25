@@ -5,6 +5,7 @@
 #include "Utilities/animation.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
+#include "GameObjects/DrawableGameObjects/melee.hpp"
 #include <array>
 
 namespace ph {
@@ -43,16 +44,18 @@ namespace
 
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
-	,mIsShooting(false)
+	,mIsShooting(false), mIsAttacking(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
+	addChild(std::make_unique<MeleeWeapon>(mGameData, 25, 25, 60));
 }
 
 void Player::input()
 {
 	movementInput();
 	gunInput();
+	meleeWeaponInput();
 
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
 		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
@@ -76,10 +79,17 @@ void Player::gunInput()
 		mIsShooting = true;
 }
 
+void Player::meleeWeaponInput()
+{
+	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack"))
+		mIsAttacking = true;
+}
+
 void Player::update(sf::Time delta)
 {
 	updateMovement(delta);
 	shootingUpdate(delta);
+	meleeAttackUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
 
@@ -147,29 +157,47 @@ void PlayerMotion::clear()
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {
-		sf::Vector2f shotDirection;
-		if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
-			shotDirection = {0.7f, -0.7f};
-		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
-			shotDirection = {-0.7f, -0.7f};
-		else if(mLastMotion.isMovingRight && mLastMotion.isMovingDown)
-			shotDirection = {0.7f, 0.7f};
-		else if(mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
-			shotDirection = {-0.7f, 0.7f};
-		else if(mLastMotion.isMovingRight)
-			shotDirection = {1.f, 0.f};
-		else if(mLastMotion.isMovingLeft)
-			shotDirection = {-1.f, 0.f};
-		else if(mLastMotion.isMovingUp)
-			shotDirection = {0.f, -1.f};
-		else if(mLastMotion.isMovingDown)
-			shotDirection = {0.f, 1.f};
+		sf::Vector2f shotDirection = attackDirection();
 
 		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
 		gun.shoot(shotDirection);
 
 		mIsShooting = false;
 	}
+}
+
+void Player::meleeAttackUpdate(const sf::Time delta)
+{
+	if (mIsAttacking) {
+		sf::Vector2f meleeAttackDirection = attackDirection();
+	
+		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
+		meleeWeapon.attack(meleeAttackDirection);
+
+		mIsAttacking = false;
+	}
+}
+
+sf::Vector2f Player::attackDirection()
+{
+	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+		return  { 0.7f, -0.7f };
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+		return  { -0.7f, -0.7f };
+	else if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+		return  { 0.7f, 0.7f };
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+		return  { -0.7f, 0.7f };
+	else if (mLastMotion.isMovingRight)
+		return  { 1.f, 0.f };
+	else if (mLastMotion.isMovingLeft)
+		return  { -1.f, 0.f };
+	else if (mLastMotion.isMovingUp)
+		return  { 0.f, -1.f };
+	else if (mLastMotion.isMovingDown)
+		return  { 0.f, 1.f };
+	else
+		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
 void Player::updateAnimation(const std::string& stateName)

@@ -29,4 +29,14 @@ bool Cast::toBool(const std::string& str)
 		PH_EXCEPTION("Cast to bool failed!");
 }
 
+ObjectType Cast::toObjectType(const std::string& str)
+{
+	if(str.find("zombie") != std::string::npos)
+		return ObjectType::Zombie;
+	else if (str.find("npc") != std::string::npos)
+		return ObjectType::Npc;
+	else
+		PH_EXCEPTION("There is not such ObjectType!");
+}
+
 }

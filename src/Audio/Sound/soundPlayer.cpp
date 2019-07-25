@@ -15,6 +15,7 @@ SoundPlayer::SoundPlayer()
 void SoundPlayer::loadEverySound()
 {
 	mSoundBuffers.load("sounds/barretaShot.wav");
+	mSoundBuffers.load("sounds/swordAttack.wav");
 	mSoundBuffers.load("sounds/zombieGetsAttacked.wav");
 }
 

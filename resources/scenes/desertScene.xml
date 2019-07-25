@@ -24,8 +24,8 @@
       <zombie positionX="140" positionY="250"/>
     </group>
     <group name="spawners">
-      <spawner positionX="500" positionY="500" spawn="zombie" frequency="2"/>  
-      <spawner positionX="1500" positionY="1500" spawn="devils" frequency="20"/>  
+      <spawner positionX="100" positionY="150" name="zombie" frequency="5"/>  
+      <spawner positionX="50" positionY="100" name="npc" frequency="10"/>  
     </group>
   </root>
 </scene>
