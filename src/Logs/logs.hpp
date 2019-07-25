@@ -4,6 +4,7 @@
 
 #include "Logs/logger.hpp"
 #include "Logs/logRecord.hpp"
+#include "Logs/criticalError.hpp"
 
 #define PH_LOG(logLevel, message)\
 	ph::Logger::createLog(logLevel, message, __FILE__, static_cast<unsigned short>(__LINE__))
@@ -35,7 +36,7 @@
 #define PH_LOG_ERROR(message)\
 	PH_LOG(ph::LogLevel::Error, message)
 #define PH_LOG_CRITICAL(message)\
-	{ PH_LOG(ph::LogLevel::Critical, message); throw std::runtime_error(message); }
+	{ PH_LOG(ph::LogLevel::Critical, message); throw ph::CriticalError(message); }
 
 #define PH_ASSERT_ERROR(expression, message)\
 	PH_ASSERT_EXPRESSION(expression, PH_LOG_ERROR(message))
