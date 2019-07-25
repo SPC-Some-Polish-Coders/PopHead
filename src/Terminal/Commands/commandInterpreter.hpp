@@ -23,6 +23,7 @@ private:
 
 	void executeExit() const;
 
+	void executeSpawn() const;
 	void executeTeleport() const;
 	void executeCurrentPos() const;
 	auto getPlayer() const -> DrawableGameObject&;

@@ -31,9 +31,9 @@ bool Cast::toBool(const std::string& str)
 
 ObjectType Cast::toObjectType(const std::string& str)
 {
-	if(str == "zombie")
+	if(str.find("zombie") != std::string::npos)
 		return ObjectType::Zombie;
-	else if(str == "npc")
+	else if (str.find("npc") != std::string::npos)
 		return ObjectType::Npc;
 	else
 		PH_EXCEPTION("There is not such ObjectType!");

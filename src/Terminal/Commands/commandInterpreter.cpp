@@ -5,6 +5,7 @@
 #include "Terminal/terminal.hpp"
 #include "Utilities/debug.hpp"
 #include "Utilities/cast.hpp"
+#include "Utilities/spawn.hpp"
 #include "gameData.hpp"
 #include "Map/map.hpp"
 
@@ -29,6 +30,7 @@ void CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "help")           executeHelp();
 	else if (commandWithoutArguments == "clear")          executeClear();
 	else if (commandWithoutArguments == "view")           executeView();
+	else if (commandWithoutArguments == "spawn")          executeSpawn();
 	else if (commandWithoutArguments == "")				  executeMessage("This is terminal. Enter 'help' to see availible commands.", MessageType::INFO);
 	else executeMessage( "Entered command wasn't recognised. Enter 'help' to see availible commands.", MessageType::ERROR);
 }
@@ -67,19 +69,29 @@ void CommandInterpreter::executeHistory() const
 void CommandInterpreter::executeHelp() const
 {
 	const std::vector<std::string> commandsList1 {
-		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", "SETVOLUME",
-		"TELEPORT","CURRENTPOS", "LOG", "COLLISIONDEBUG"
+		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", 
+		"SETVOLUME", "TELEPORT"
+	};
+	const std::vector<std::string> commandsList2{
+		"CURRENTPOS", "LOG", "COLLISIONDEBUG", "SPAWN", "VIEW"
 	};
 
 	if (commandContains('2')){
-		executeMessage("Will be fulfilled if necessary", MessageType::INFO);
-			executeMessage("Avalible commands, PAGE 2 of 2.", MessageType::INFO);
+		for (const auto& command : commandsList2)
+			executeMessage("- " + command, MessageType::INFO);
+		executeMessage("Avalible commands, PAGE 2 of 2.", MessageType::INFO);
 	}
 	else{
-		for (size_t i = 0; i < commandsList1.size(); ++i)
-			executeMessage("- " + commandsList1[i], MessageType::INFO);
+		for (const auto& command : commandsList1)
+			executeMessage("- " + command, MessageType::INFO);
 		executeMessage("Avalible commands, PAGE 1 of 2.", MessageType::INFO);
 	}
+}
+
+void CommandInterpreter::executeSpawn() const
+{
+	//TODO: Handle possible improper ObjectType
+	Spawn(mGameData, Cast::toObjectType(mCommand), getVector2Argument());
 }
 
 void CommandInterpreter::executeClear() const
@@ -253,11 +265,11 @@ void CommandInterpreter::setLogTypesToLog() const
 
 bool CommandInterpreter::areArgumentsToLogTypesToLogInvalid() const
 {
-	return(!(
-		commandContains("info") || commandContains("warning") ||
-		commandContains("error") || commandContains("user") ||
-		commandContains("all") || commandContains("clear")
-	));
+	//return(!(
+	//	commandContains("info") || commandContains("warning") ||
+	//	commandContains("error") || commandContains("user") ||
+	//	commandContains("all") || commandContains("clear")
+	//));
 }
 
 void CommandInterpreter::setModulesToLog() const
@@ -319,8 +331,6 @@ auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 		return handleGetVector2ArgumentError();
 
 	const size_t xArgumentPositionInCommand = mCommand.find_first_of(numbers);
-	if(xArgumentPositionInCommand != std::string::npos && xArgumentPositionInCommand > 9)
-		return handleGetVector2ArgumentError();
 	const size_t xArgumentEndPositionInCommand = mCommand.find(' ', xArgumentPositionInCommand);
 	const size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = mCommand.substr(xArgumentPositionInCommand, xArgumentLength);
