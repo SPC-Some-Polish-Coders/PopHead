@@ -1,5 +1,3 @@
-#include "spawn.hpp"
-
 template<typename T>
 void ph::Spawn::spawn()
 {
