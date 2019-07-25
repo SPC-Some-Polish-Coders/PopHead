@@ -4,7 +4,7 @@
 
 namespace ph {
 
-std::deque<Direction> AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
+Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
 	if(doesZombieSeePlayer(zombiePosition))
 		return getPath(zombiePosition, mPlayerPosition);
@@ -23,8 +23,8 @@ void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
 
 void AIManager::registerStaticCollisionBody(const sf::Vector2f collisionBodyPosition)
 {
-	const unsigned gridPositionX = static_cast<unsigned>(collisionBodyPosition.x) / spotSideLength;
-	const unsigned gridPositionY = static_cast<unsigned>(collisionBodyPosition.y) / spotSideLength;
+	const unsigned gridPositionX = static_cast<unsigned>(collisionBodyPosition.x) / mSpotSideLength;
+	const unsigned gridPositionY = static_cast<unsigned>(collisionBodyPosition.y) / mSpotSideLength;
 	mGrid[gridPositionX][gridPositionY] = AreaType::obstacle;
 }
 
@@ -37,14 +37,14 @@ bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 	return distanceBetweenZombieAndPlayer <= maximalDistanceFromWhichZombieSeesPlayer;
 }
 
-std::deque<Direction> AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destination) const
+Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destination) const
 {
-	return std::deque<Direction>();
+	return Path();
 }
 
-std::deque<Direction> AIManager::getRandomPath(const sf::Vector2f startPosition) const
+Path AIManager::getRandomPath(const sf::Vector2f startPosition) const
 {
-	return std::deque<Direction>();
+	return Path();
 }
 
 }

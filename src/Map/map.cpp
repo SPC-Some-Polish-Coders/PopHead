@@ -76,7 +76,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
 		if (tilesetNode.hasAttribute("source")) {
 			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
-			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
+			tilesetNodeSource = pathToMapNotEmbeddedTilesets + FilePath::toFilename(tilesetNodeSource, '/');
 			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
@@ -85,7 +85,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
-		tilesets.tilesetFileName = Path::toFilename(imageNode.getAttribute("source").toString(), '/');
+		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
