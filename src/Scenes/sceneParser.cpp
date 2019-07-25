@@ -138,8 +138,8 @@ void SceneParser::loadSpawners(const Xml& spawnerGroupNode)
 		const float frequency = spawnerNode.getAttribute("frequency").toFloat();
 		const std::string name = spawnerNode.getAttribute("name").toString();
 		auto objectSpawner = std::make_unique<Spawner>(
-			mGameData, (name+"Spawner"), Cast::toObjectType(name), sf::seconds(frequency), getPositionAttribute(spawnerNode)
-			);
+			mGameData, name + "Spawner", Cast::toObjectType(name), sf::seconds(frequency), getPositionAttribute(spawnerNode)
+		);
 		mRoot.addChild(std::move(objectSpawner));
 	}
 }
