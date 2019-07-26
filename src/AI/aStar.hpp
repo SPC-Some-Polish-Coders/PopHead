@@ -12,11 +12,11 @@ namespace ph {
 class AStar
 {
 public:
-	AStar(const ObstacleGrid& grid, const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
-	Path getPath();
+	AStar(const ObstacleGrid& grid);
+	Path getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
 
 private:
-	bool didWeReachTheDestination(const sf::Vector2u currentNodePosition);
+	bool isNodeInSet(const Node&, std::set<Node>);
 	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition);
 
 private:

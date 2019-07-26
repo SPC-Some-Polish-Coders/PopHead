@@ -8,8 +8,8 @@ namespace ph {
 
 struct Node
 {
-	Node(const sf::Vector2u position, const sf::Vector2u parentPosition,
-		const float realDistanceFromStartNode, const float evaluatedDistanceToDestination);
+	Node() = default;
+	Node(const bool isObstacle);
 
 	sf::Vector2u mPosition;
 	sf::Vector2u mParentPosition;
@@ -33,6 +33,8 @@ class Grid
 {
 public:
 	Grid(const ObstacleGrid&);
+	Node getNodeOfPosition(const sf::Vector2u position);
+	std::vector<Node> getNeighboursOf(const Node&);
 
 private:
 	std::vector<std::vector<Node>> mNodes;

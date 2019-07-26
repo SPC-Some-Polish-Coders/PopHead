@@ -3,33 +3,41 @@
 
 namespace ph {
 
-AStar::AStar(const ObstacleGrid& obstacleGrid, const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
+AStar::AStar(const ObstacleGrid& obstacleGrid)
 	:mGrid(obstacleGrid)
-	,mStartNodePosition(startNodePosition)
-	,mDestinationNodePosition(destinationNodePosition)
 {
 }
 
-Path AStar::getPath()
+Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
 {
 	std::set<Node> openNodes;
 	std::set<Node> closedNodes;
 
-	Node startNode(mStartNodePosition, {0, 0}, 0, getManhatanDistanceToDestination(mStartNodePosition));
+	Node startNode = mGrid.getNodeOfPosition(startNodePosition);
 	openNodes.emplace(startNode);
 
 	while(!openNodes.empty()) {
 		Node currentNode = *openNodes.begin();
 		openNodes.erase(openNodes.begin());
 		closedNodes.emplace(currentNode);
-		if(didWeReachTheDestination(currentNode.mPosition))
+
+		if(currentNode.mPosition == destinationNodePosition)
 			return Path();
+
+		for(const Node& neighbour : mGrid.getNeighboursOf(currentNode)) {
+			if(neighbour.mIsObstacle || isNodeInSet(neighbour, closedNodes))
+				continue;
+
+		}
 	}
+
+	return Path(); // temporary
 }
 
-bool AStar::didWeReachTheDestination(const sf::Vector2u currentNodePosition)
+bool AStar::isNodeInSet(const Node& node, std::set<Node> set)
 {
-	return currentNodePosition == mDestinationNodePosition;
+	auto search = set.find(node);
+	return search != set.end();
 }
 
 float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
@@ -39,6 +47,5 @@ float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosi
 	float legY = std::abs(static_cast<int>(mDestinationNodePosition.y - currentNodePosition.y));
 	return legX + legY;
 }
-
 
 }
