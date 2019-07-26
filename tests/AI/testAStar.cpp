@@ -4,7 +4,7 @@
 
 namespace ph {
 
-TEST_CASE("Node operator< works correctly")
+TEST_CASE("Node operator < works correctly")
 {
 	Node node({1, 0}, {0, 0}, 1, 2);
 	

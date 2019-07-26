@@ -21,7 +21,10 @@ struct Node
 
 inline bool operator<(const Node& lhs, const Node& rhs)
 {
-	return false;
+	if(lhs.mCost == rhs.mCost)
+		return lhs.mRealDistanceFromStartNode < rhs.mRealDistanceFromStartNode;
+	else
+		return lhs.mCost < rhs.mCost;
 }
 
 class AStar
