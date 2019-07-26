@@ -10,19 +10,19 @@ namespace ph {
 struct Node
 {
 	Node(const sf::Vector2f position, const sf::Vector2f parentPosition,
-		const float realDistanceFromStartNode, const float straightLineDistanceToDestination);
+		const float realDistanceFromStartNode, const float evaluatedDistanceToDestination);
 
 	const sf::Vector2f mPosition;
 	const sf::Vector2f mParentPosition;
 	const float mRealDistanceFromStartNode;
-	const float mStraightLineDistanceToDestination;
+	const float mEvaluatedDistanceToDestination;
 	const float mCost;
 };
 
 inline bool operator<(const Node& lhs, const Node& rhs)
 {
 	if(lhs.mCost == rhs.mCost)
-		return lhs.mRealDistanceFromStartNode < rhs.mRealDistanceFromStartNode;
+		return lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
 	else
 		return lhs.mCost < rhs.mCost;
 }

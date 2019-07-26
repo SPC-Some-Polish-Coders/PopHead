@@ -8,13 +8,13 @@ Grid getWalkableGrid3x4();
 
 TEST_CASE("Node operator < works correctly", "[AI][AStar]")
 {
-	Node node({1, 0}, {0, 0}, 1, 2);
+	Node node({1, 0}, {0, 0}, 2, 1);
 	
 	Node nodeWithBiggerTotalCost({1, 0}, {0, 0}, 2, 2);
 	CHECK(node < nodeWithBiggerTotalCost);
 
-	Node nodeWithTheSameTotalCostButWithBiggerRealDistanceFromStartNode({1, 0}, {0, 0}, 2, 1);
-	CHECK(node < nodeWithTheSameTotalCostButWithBiggerRealDistanceFromStartNode);
+	Node nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination({1, 0}, {0, 0}, 1, 2);
+	CHECK(node < nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination);
 }
 
 TEST_CASE("A* algorithm choose the quickest path when path is straight and there are no obstacles", "[AI][AStar]")
