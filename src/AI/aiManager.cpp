@@ -17,15 +17,15 @@ void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
 	mGrid.resize(mapSizeInTiles.y);
 	for(auto& row : mGrid) {
 		row.resize(mapSizeInTiles.x);
-		std::fill(row.begin(), row.end(), AreaType::walkable);
+		std::fill(row.begin(), row.end(), false);
 	}
 }
 
-void AIManager::registerStaticCollisionBody(const sf::Vector2f collisionBodyPosition)
+void AIManager::registerObstacle(const sf::Vector2f collisionBodyPosition)
 {
 	const unsigned gridPositionX = static_cast<unsigned>(collisionBodyPosition.x) / mSpotSideLength;
 	const unsigned gridPositionY = static_cast<unsigned>(collisionBodyPosition.y) / mSpotSideLength;
-	mGrid[gridPositionX][gridPositionY] = AreaType::obstacle;
+	mGrid[gridPositionX][gridPositionY] = true;
 }
 
 bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const

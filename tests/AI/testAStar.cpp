@@ -4,7 +4,7 @@
 
 namespace ph {
 
-Grid getWalkableGrid3x4();
+ObstacleGrid getWalkableGrid3x4();
 
 TEST_CASE("Node operator < works correctly", "[AI][AStar]")
 {
@@ -25,10 +25,10 @@ TEST_CASE("A* algorithm choose the quickest path when path is straight and there
 	REQUIRE(path == Path{Direction::south, Direction::south, Direction::south});
 }
 
-Grid getWalkableGrid3x4()
+ObstacleGrid getWalkableGrid3x4()
 {
-	std::vector<AreaType> row{AreaType::walkable, AreaType::walkable, AreaType::walkable};
-	Grid grid = {row, row, row, row};
+	std::vector<bool> row{false, false, false};
+	ObstacleGrid grid = {row, row, row, row};
 	return grid;
 }
 

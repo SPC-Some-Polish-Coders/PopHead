@@ -3,18 +3,8 @@
 
 namespace ph {
 
-Node::Node(const sf::Vector2f position, const sf::Vector2f parentPosition, 
-           const float realDistanceFromStartNode, const float evaluatedDistanceToDestination)
-		:mPosition(position)
-		,mParentPosition(parentPosition)
-		,mRealDistanceFromStartNode(realDistanceFromStartNode)
-		,mEvaluatedDistanceToDestination(evaluatedDistanceToDestination)
-		,mCost(realDistanceFromStartNode + evaluatedDistanceToDestination)
-{
-}
-
-AStar::AStar(const Grid& grid, const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
-	:mGrid(grid)
+AStar::AStar(const ObstacleGrid& obstacleGrid, const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
+	:mGrid(obstacleGrid)
 	,mStartNodePosition(startNodePosition)
 	,mDestinationNodePosition(destinationNodePosition)
 {
@@ -22,8 +12,19 @@ AStar::AStar(const Grid& grid, const sf::Vector2u startNodePosition, const sf::V
 
 Path AStar::getPath()
 {
-	Path path;
-	return path;
+	std::set<Node> openNodes;
+	std::set<Node> closedNodes;
+
+	Node startNode(mStartNodePosition, {0, 0}, 0, getManhatanDistanceToDestination(mStartNodePosition));
+	openNodes.emplace(startNode);
+
+	while(!openNodes.empty()) {
+		Node currentNode = *openNodes.begin();
+		openNodes.erase(openNodes.begin());
+		closedNodes.emplace(currentNode);
+		if(didWeReachTheDestination(currentNode.mPosition))
+			return Path();
+	}
 }
 
 bool AStar::didWeReachTheDestination(const sf::Vector2u currentNodePosition)
@@ -31,11 +32,11 @@ bool AStar::didWeReachTheDestination(const sf::Vector2u currentNodePosition)
 	return currentNodePosition == mDestinationNodePosition;
 }
 
-float AStar::getManhatanDistance(const sf::Vector2f currentNodePosition)
+float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
 {
 	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
-	float legX = std::abs(mDestinationNodePosition.x - currentNodePosition.x);
-	float legY = std::abs(mDestinationNodePosition.y - currentNodePosition.y);
+	float legX = std::abs(static_cast<int>(mDestinationNodePosition.x - currentNodePosition.x));
+	float legY = std::abs(static_cast<int>(mDestinationNodePosition.y - currentNodePosition.y));
 	return legX + legY;
 }
 
