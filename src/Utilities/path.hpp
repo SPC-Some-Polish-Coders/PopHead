@@ -1,9 +1,9 @@
 #pragma once
 
 #ifdef PH_WINDOWS
-#define PH_PATH_SEPARATOR '\\'
+constexpr char PH_PATH_SEPARATOR = '\\';
 #else
-#define PH_PATH_SEPARATOR '/'
+constexpr char PH_PATH_SEPARATOR = '/';
 #endif
 
 #include <string>
