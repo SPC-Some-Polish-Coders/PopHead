@@ -23,7 +23,8 @@ AStar::AStar(const Grid& grid, const sf::Vector2u startNodePosition, const sf::V
 
 Path AStar::getPath()
 {
-	return Path();
+	Path path;
+	return path;
 }
 
 bool AStar::didWeReachTheDestination(const sf::Vector2u currentNodePosition)
