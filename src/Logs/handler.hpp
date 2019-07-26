@@ -26,8 +26,12 @@ namespace ph {
 
 	private:
 		virtual void utilizeLog(const LogRecord& logRecord) = 0;
-
 		bool isPassedByFilter(const LogRecord& logRecord) const;
+
+		void initializeModules();
+		void initializeLogLevels();
+
+	private:
 
 		std::vector<std::pair<std::string, bool>> mAllowedModules;
 		std::vector<std::pair<LogLevel, bool>> mAllowedLogLevels;

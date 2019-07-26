@@ -1,32 +1,14 @@
 #include "handler.hpp"
 
 #include <algorithm>
+#include <fstream>
 
 namespace ph {
 	
 	Handler::Handler()
 	{
-		mAllowedModules = {
-			{"Audio", false},
-			{"EfficiencyRegister", false},
-			{"Gui", false},
-			{"Input", false},
-			{"Logs", false},
-			{"Physics", false},
-			{"Renderer", false},
-			{"Resources", false},
-			{"States", false},
-			{"Terminal", false},
-			{"Utilities", false},
-			{"World", false}
-		};
-
-		mAllowedLogLevels = {
-			{LogLevel::Info, false},
-			{LogLevel::Error, false},
-			{LogLevel::Warning, false},
-			{LogLevel::Critical, false}
-		};
+		initializeModules();
+		initializeLogLevels();
 	}
 
 	void Handler::handleLog(const LogRecord& logRecord)
@@ -88,5 +70,22 @@ namespace ph {
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
 	{
 		return isModuleAllowed(logRecord.moduleName) && isLogLevelAllowed(logRecord.level);
+	}
+	void Handler::initializeModules()
+	{
+		// in Distribution it should be replaced by static list of modules
+		std::ifstream modulesNames("config/modules.txt");
+
+		std::string module;
+		while (modulesNames >> module)
+			mAllowedModules.emplace_back(module, false);
+	}
+	void Handler::initializeLogLevels()
+	{
+		auto levelsCount = static_cast<std::size_t>(LogLevel::Count);
+		mAllowedLogLevels.resize(levelsCount);
+
+		for (std::size_t level = 0; level < levelsCount; ++level)
+			mAllowedLogLevels.at(level) = std::make_pair(static_cast<LogLevel>(level), false);
 	}
 }

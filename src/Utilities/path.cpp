@@ -34,7 +34,7 @@ std::string Path::toModuleName(const std::string& filePath)
 	const auto endOfModuleName = filePath.find(PH_PATH_SEPARATOR, foundIndex);
 
 	if (foundIndex < filePath.size() && endOfModuleName == std::string::npos)
-		return "Main directory";
+		return "MainDirectory";
 
 	return filePath.substr(foundIndex, endOfModuleName - foundIndex);
 }
