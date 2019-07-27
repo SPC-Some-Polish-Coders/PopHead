@@ -1,4 +1,5 @@
 #include "aStar.hpp"
+#include "Utilities/debug.hpp"
 #include <cmath>
 
 namespace ph {
@@ -22,7 +23,7 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 		closedNodes.emplace(currentNode);
 
 		if(currentNode.mPosition == destinationNodePosition)
-			return Path();
+			return retracePath(mGrid.getNodeOfPosition(startNodePosition), mGrid.getNodeOfPosition(destinationNodePosition));
 
 		for(Node& neighbour : mGrid.getNeighboursOf(currentNode)) {
 			if(neighbour.mIsObstacle || isNodeInSet(neighbour, closedNodes))
@@ -38,7 +39,41 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 		}
 	}
 
-	return Path(); // temporary
+	PH_LOG(LogType::Warning, "Path wasn't found!");
+	return Path();
+}
+
+Path AStar::retracePath(const Node& startNode, const Node& endNode)
+{
+	std::deque<Node> nodePath;
+	Node currentNode = endNode;
+	while(currentNode != startNode) {
+		nodePath.emplace_front(currentNode);
+		currentNode = mGrid.getNodeOfPosition(currentNode.mParentPosition);
+	}
+	return toDirectionPath(nodePath);
+}
+
+Path AStar::toDirectionPath(const std::deque<Node>& nodePath)
+{
+	Path path;
+	for(int i = 0; i < nodePath.size() - 1; ++i) {
+		Direction direction = getDirectionBetweenNodes(nodePath[i], nodePath[i + 1]);
+		path.emplace_back(direction);
+	}
+	return path;
+}
+
+Direction AStar::getDirectionBetweenNodes(const Node& startNode, const Node& endNode)
+{
+	if(endNode.mPosition.x > startNode.mPosition.x)
+		return Direction::east;
+	else if(endNode.mPosition.x < startNode.mPosition.x)
+		return Direction::west;
+	else if(endNode.mPosition.y > startNode.mPosition.y)
+		return Direction::south;
+	else if(endNode.mPosition.y < startNode.mPosition.y)
+		return Direction::north;
 }
 
 bool AStar::isNodeInSet(const Node& node, std::set<Node> set)
