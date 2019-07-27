@@ -18,7 +18,7 @@ namespace ph {
 		CHECK(Path::toModuleName(audioModuleFilePath) == "Audio");
 		CHECK(Path::toModuleName(inputModuleFilePath) == "Input");
 		CHECK(Path::toModuleName(utilitiesModuleFilePath) == "Utilities");
-		CHECK(Path::toModuleName(mainFilePath) == "Main directory");
+		CHECK(Path::toModuleName(mainFilePath) == "MainDirectory");
 	}
 
 	TEST_CASE("Filepath in tests/ is properly converted to module name", "[Utilities][Path]")
