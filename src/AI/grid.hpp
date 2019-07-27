@@ -9,7 +9,7 @@ namespace ph {
 struct Node
 {
 	Node() = default;
-	Node(const bool isObstacle);
+	Node(const bool isObstacle, const sf::Vector2u position);
 
 	sf::Vector2u mPosition;
 	sf::Vector2u mParentPosition;

@@ -14,10 +14,10 @@ Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 
 void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
 {
-	mGrid.resize(mapSizeInTiles.y);
-	for(auto& row : mGrid) {
-		row.resize(mapSizeInTiles.x);
-		std::fill(row.begin(), row.end(), false);
+	mGrid.resize(mapSizeInTiles.x);
+	for(auto& column : mGrid) {
+		column.resize(mapSizeInTiles.y);
+		std::fill(column.begin(), column.end(), false);
 	}
 }
 
