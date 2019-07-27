@@ -29,15 +29,15 @@ Node Grid::getNodeOfPosition(const sf::Vector2u position)
 std::vector<Node> Grid::getNeighboursOf(const Node& node)
 {
 	std::vector<Node> neighbours;
-
-	if(node.mPosition.x + 1 < mNodes[0].size())
-		neighbours.emplace_back(mNodes[node.mPosition.x + 1][node.mPosition.y].mIsObstacle, sf::Vector2u(node.mPosition.x + 1, node.mPosition.y));
-	if(node.mPosition.x - 1 >= 0)
-		neighbours.emplace_back(mNodes[node.mPosition.x - 1][node.mPosition.y].mIsObstacle, sf::Vector2u(node.mPosition.x - 1, node.mPosition.y));
-	if(node.mPosition.y + 1 < mNodes.size())
-		neighbours.emplace_back(mNodes[node.mPosition.x][node.mPosition.y + 1].mIsObstacle, sf::Vector2u(node.mPosition.x, node.mPosition.y + 1));
-	if(node.mPosition.y - 1 >= 0)
-		neighbours.emplace_back(mNodes[node.mPosition.x][node.mPosition.y - 1].mIsObstacle, sf::Vector2u(node.mPosition.x, node.mPosition.y - 1));
+	
+	if(node.mPosition.x + 1 < mNodes.size())
+		neighbours.push_back(mNodes[node.mPosition.x + 1][node.mPosition.y]);
+	if(node.mPosition.x > 0)
+		neighbours.push_back(mNodes[node.mPosition.x - 1][node.mPosition.y]);
+	if(node.mPosition.y + 1 < mNodes[0].size())
+		neighbours.push_back(mNodes[node.mPosition.x][node.mPosition.y + 1]);
+	if(node.mPosition.y > 0)
+		neighbours.push_back(mNodes[node.mPosition.x][node.mPosition.y - 1]);
 
 	return neighbours;
 }

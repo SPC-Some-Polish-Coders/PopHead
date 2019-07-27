@@ -24,10 +24,17 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 		if(currentNode.mPosition == destinationNodePosition)
 			return Path();
 
-		for(const Node& neighbour : mGrid.getNeighboursOf(currentNode)) {
+		for(Node& neighbour : mGrid.getNeighboursOf(currentNode)) {
 			if(neighbour.mIsObstacle || isNodeInSet(neighbour, closedNodes))
 				continue;
 
+			if(neighbour.mRealDistanceFromStartNode > currentNode.mRealDistanceFromStartNode + 1 || !isNodeInSet(neighbour, openNodes)) {
+				neighbour.mRealDistanceFromStartNode = currentNode.mRealDistanceFromStartNode + 1;
+				neighbour.mEvaluatedDistanceToDestination = getManhatanDistanceToDestination(neighbour.mPosition);
+				neighbour.mParentPosition = currentNode.mPosition;
+				if(!isNodeInSet(neighbour, openNodes))
+					openNodes.emplace(neighbour);
+			}
 		}
 	}
 
