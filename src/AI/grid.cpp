@@ -5,6 +5,8 @@ namespace ph {
 
 Node::Node(const bool isObstacle)
 	:mIsObstacle(isObstacle)
+	,mRealDistanceFromStartNode(0.f)
+	,mEvaluatedDistanceToDestination(0.f)
 {
 }
 

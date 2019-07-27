@@ -43,8 +43,8 @@ bool AStar::isNodeInSet(const Node& node, std::set<Node> set)
 float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
 {
 	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
-	float legX = std::abs(static_cast<int>(mDestinationNodePosition.x - currentNodePosition.x));
-	float legY = std::abs(static_cast<int>(mDestinationNodePosition.y - currentNodePosition.y));
+	float legX = std::abs(static_cast<float>(mDestinationNodePosition.x - currentNodePosition.x));
+	float legY = std::abs(static_cast<float>(mDestinationNodePosition.y - currentNodePosition.y));
 	return legX + legY;
 }
 
