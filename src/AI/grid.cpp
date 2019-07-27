@@ -38,7 +38,7 @@ Grid::Grid(const ObstacleGrid& obstacleGrid)
 
 Node Grid::getNodeOfPosition(const sf::Vector2u position)
 {
-	return mNodes[position.y][position.x];
+	return mNodes[position.x][position.y];
 }
 
 std::vector<Node> Grid::getNeighboursOf(const Node& node)

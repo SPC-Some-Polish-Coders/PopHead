@@ -78,8 +78,10 @@ Direction AStar::getDirectionBetweenNodes(const Node& startNode, const Node& end
 
 bool AStar::isNodeInSet(const Node& node, std::set<Node> set)
 {
-	auto search = set.find(node);
-	return search != set.end();
+	for(const auto& n : set)
+		if(n == node)
+			return true;
+	return false;
 }
 
 float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
