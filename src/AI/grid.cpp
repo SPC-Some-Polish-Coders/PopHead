@@ -11,6 +11,11 @@ Node::Node(const bool isObstacle, const sf::Vector2u position)
 {
 }
 
+bool operator < (const Node& lhs, const Node& rhs)
+{
+	return lhs.getFullCost() < rhs.getFullCost() || lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
+}
+
 Grid::Grid(const ObstacleGrid& obstacleGrid)
 {
 	for(unsigned x = 0; x < obstacleGrid.size(); ++x) {

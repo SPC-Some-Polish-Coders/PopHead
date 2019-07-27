@@ -20,14 +20,7 @@ struct Node
 	float getFullCost() const { return mRealDistanceFromStartNode + mEvaluatedDistanceToDestination; }
 };
 
-inline bool operator<(const Node& lhs, const Node& rhs)
-{
-	// TODO: refactor this function
-	if(lhs.getFullCost() == rhs.getFullCost())
-		return lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
-	else
-		return lhs.getFullCost() < rhs.getFullCost();
-}
+bool operator < (const Node& lhs, const Node& rhs);
 
 class Grid
 {
