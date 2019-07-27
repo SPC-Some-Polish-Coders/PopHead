@@ -16,6 +16,11 @@ bool operator < (const Node& lhs, const Node& rhs)
 	return lhs.getFullCost() < rhs.getFullCost() || lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
 }
 
+bool operator == (const Node& lhs, const Node& rhs)
+{
+	return lhs.mIsObstacle == rhs.mIsObstacle && lhs.mPosition == rhs.mPosition;
+}
+
 Grid::Grid(const ObstacleGrid& obstacleGrid)
 {
 	for(unsigned x = 0; x < obstacleGrid.size(); ++x) {
@@ -28,7 +33,7 @@ Grid::Grid(const ObstacleGrid& obstacleGrid)
 
 Node Grid::getNodeOfPosition(const sf::Vector2u position)
 {
-	return mNodes[position.x][position.y];
+	return mNodes[position.y][position.x];
 }
 
 std::vector<Node> Grid::getNeighboursOf(const Node& node)

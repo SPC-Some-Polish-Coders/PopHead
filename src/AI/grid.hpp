@@ -21,6 +21,7 @@ struct Node
 };
 
 bool operator < (const Node& lhs, const Node& rhs);
+bool operator == (const Node& lhs, const Node& rhs);
 
 class Grid
 {
