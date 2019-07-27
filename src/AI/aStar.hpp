@@ -16,10 +16,10 @@ public:
 	Path getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
 
 private:
-	Path retracePath(const Node& startNode, const Node& endNode);
-	Path toDirectionPath(const std::deque<Node>& nodePath);
-	Direction getDirectionBetweenNodes(const Node& startNode, const Node& endNode);
-	bool isNodeInSet(const Node&, std::set<Node>);
+	Path retracePath(const Node* const startNode, Node* const endNode);
+	Path toDirectionPath(const std::deque<Node*>& nodePath);
+	Direction getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode);
+	bool isNodeInSet(const Node&, const std::set<Node*>&);
 	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition);
 
 private:

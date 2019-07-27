@@ -28,8 +28,8 @@ class Grid
 {
 public:
 	Grid(const ObstacleGrid&);
-	Node getNodeOfPosition(const sf::Vector2u position);
-	std::vector<Node> getNeighboursOf(const Node&);
+	Node* getNodeOfPosition(const sf::Vector2u position);
+	std::vector<Node*> getNeighboursOf(const Node&);
 
 private:
 	std::vector<std::vector<Node>> mNodes;

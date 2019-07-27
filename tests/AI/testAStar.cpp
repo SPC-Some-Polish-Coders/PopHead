@@ -11,7 +11,7 @@ TEST_CASE("A* algorithm choose the quickest path when path is straight and there
 	auto grid = getWalkableGrid3x4();
 	AStar a(grid);
 	auto path = a.getPath({1, 0}, {1, 3});
-	REQUIRE(path == Path{Direction::south, Direction::south, Direction::south});
+	REQUIRE(path == Path{Direction::south, Direction::south});
 }
 
 ObstacleGrid getWalkableGrid3x4()

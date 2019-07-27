@@ -32,14 +32,14 @@ TEST_CASE("Grid can be created and node of certain position can be get", "[AI][G
 	};
 
 	Grid grid(obstacles);
-	CHECK(grid.getNodeOfPosition({0, 0}).mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({1, 0}).mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({0, 1}).mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({1, 1}).mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({0, 2}).mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({1, 2}).mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({0, 3}).mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({1, 3}).mIsObstacle == true);
+	CHECK(grid.getNodeOfPosition({0, 0})->mIsObstacle == true);
+	CHECK(grid.getNodeOfPosition({0, 1})->mIsObstacle == false);
+	CHECK(grid.getNodeOfPosition({1, 0})->mIsObstacle == false);
+	CHECK(grid.getNodeOfPosition({1, 1})->mIsObstacle == true);
+	CHECK(grid.getNodeOfPosition({2, 0})->mIsObstacle == false);
+	CHECK(grid.getNodeOfPosition({2, 1})->mIsObstacle == false);
+	CHECK(grid.getNodeOfPosition({3, 0})->mIsObstacle == true);
+	CHECK(grid.getNodeOfPosition({3, 1})->mIsObstacle == true);
 }
 
 TEST_CASE("Neighbours of node can be get", "[AI][Grid]")
@@ -56,28 +56,28 @@ TEST_CASE("Neighbours of node can be get", "[AI][Grid]")
 	Grid grid(obstacles);
 
 	{ // Current node is on center
-		Node right(true, {2, 1});
-		Node left(true, {0, 1});
-		Node up(false, {1, 0});
-		Node down(false, {1, 2});
+		auto right = grid.getNodeOfPosition({2, 1});
+		auto left = grid.getNodeOfPosition({0, 1});
+		auto up = grid.getNodeOfPosition({1, 0});
+		auto down = grid.getNodeOfPosition({1, 2});
 		sf::Vector2u currentNodePosition(1, 1);
-		auto neighbours = grid.getNeighboursOf(grid.getNodeOfPosition(currentNodePosition));
-		CHECK_THAT(neighbours, Contains(std::vector<Node>{right, left, up, down}));
+		auto neighbours = grid.getNeighboursOf(*grid.getNodeOfPosition(currentNodePosition));
+		CHECK_THAT(neighbours, Contains(std::vector<Node*>{right, left, up, down}));
 	}
 	{ // Current node is on left
-		Node right(true, {1, 1});
-		Node up(true, {0, 0});
-		Node down(false, {0, 2});
+		auto right = grid.getNodeOfPosition({1, 1});
+		auto up = grid.getNodeOfPosition({0, 0});
+		auto down = grid.getNodeOfPosition({2, 0});
 		sf::Vector2u currentNodePosition(1, 0);
-		auto neighbours = grid.getNeighboursOf(grid.getNodeOfPosition(currentNodePosition));
-		CHECK_THAT(neighbours, Contains(std::vector<Node>{right, up, down}));
+		auto neighbours = grid.getNeighboursOf(*grid.getNodeOfPosition(currentNodePosition));
+		CHECK_THAT(neighbours, Contains(std::vector<Node*>{right, up, down}));
 	}
 	{ // Current node is on down right corner
-		Node left(false, {1, 2});
-		Node up(true, {2, 1});
+		auto left = grid.getNodeOfPosition({1, 2});
+		auto up = grid.getNodeOfPosition({2, 1});
 		sf::Vector2u currentNodePosition(2, 2);
-		auto neighbours = grid.getNeighboursOf(grid.getNodeOfPosition(currentNodePosition));
-		CHECK_THAT(neighbours, Contains(std::vector<Node>{left, up}));
+		auto neighbours = grid.getNeighboursOf(*grid.getNodeOfPosition(currentNodePosition));
+		CHECK_THAT(neighbours, Contains(std::vector<Node*>{left, up}));
 	}
 }
 

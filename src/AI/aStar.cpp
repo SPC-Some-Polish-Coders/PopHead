@@ -11,29 +11,29 @@ AStar::AStar(const ObstacleGrid& obstacleGrid)
 
 Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
 {
-	std::set<Node> openNodes;
-	std::set<Node> closedNodes;
+	std::set<Node*> openNodes;
+	std::set<Node*> closedNodes;
 
-	Node startNode = mGrid.getNodeOfPosition(startNodePosition);
+	Node* startNode = mGrid.getNodeOfPosition(startNodePosition);
 	openNodes.emplace(startNode);
 
 	while(!openNodes.empty()) {
-		Node currentNode = *openNodes.begin();
+		Node* currentNode = *openNodes.begin();
 		openNodes.erase(openNodes.begin());
 		closedNodes.emplace(currentNode);
 
-		if(currentNode.mPosition == destinationNodePosition)
+		if(currentNode->mPosition == destinationNodePosition)
 			return retracePath(mGrid.getNodeOfPosition(startNodePosition), mGrid.getNodeOfPosition(destinationNodePosition));
 
-		for(Node& neighbour : mGrid.getNeighboursOf(currentNode)) {
-			if(neighbour.mIsObstacle || isNodeInSet(neighbour, closedNodes))
+		for(Node* neighbour : mGrid.getNeighboursOf(*currentNode)) {
+			if(neighbour->mIsObstacle || isNodeInSet(*neighbour, closedNodes))
 				continue;
 
-			if(neighbour.mRealDistanceFromStartNode > currentNode.mRealDistanceFromStartNode + 1 || !isNodeInSet(neighbour, openNodes)) {
-				neighbour.mRealDistanceFromStartNode = currentNode.mRealDistanceFromStartNode + 1;
-				neighbour.mEvaluatedDistanceToDestination = getManhatanDistanceToDestination(neighbour.mPosition);
-				neighbour.mParentPosition = currentNode.mPosition;
-				if(!isNodeInSet(neighbour, openNodes))
+			if(neighbour->mRealDistanceFromStartNode > currentNode->mRealDistanceFromStartNode + 1 || !isNodeInSet(*neighbour, openNodes)) {
+				neighbour->mRealDistanceFromStartNode = currentNode->mRealDistanceFromStartNode + 1;
+				neighbour->mEvaluatedDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition);
+				neighbour->mParentPosition = currentNode->mPosition;
+				if(!isNodeInSet(*neighbour, openNodes))
 					openNodes.emplace(neighbour);
 			}
 		}
@@ -43,18 +43,18 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 	return Path();
 }
 
-Path AStar::retracePath(const Node& startNode, const Node& endNode)
+Path AStar::retracePath(const Node* const startNode, Node* const endNode)
 {
-	std::deque<Node> nodePath;
-	Node currentNode = endNode;
+	std::deque<Node*> nodePath;
+	Node* currentNode = endNode;
 	while(currentNode != startNode) {
 		nodePath.emplace_front(currentNode);
-		currentNode = mGrid.getNodeOfPosition(currentNode.mParentPosition);
+		currentNode = mGrid.getNodeOfPosition(currentNode->mParentPosition);
 	}
 	return toDirectionPath(nodePath);
 }
 
-Path AStar::toDirectionPath(const std::deque<Node>& nodePath)
+Path AStar::toDirectionPath(const std::deque<Node*>& nodePath)
 {
 	Path path;
 	for(int i = 0; i < nodePath.size() - 1; ++i) {
@@ -64,22 +64,22 @@ Path AStar::toDirectionPath(const std::deque<Node>& nodePath)
 	return path;
 }
 
-Direction AStar::getDirectionBetweenNodes(const Node& startNode, const Node& endNode)
+Direction AStar::getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode)
 {
-	if(endNode.mPosition.x > startNode.mPosition.x)
+	if(endNode->mPosition.x > startNode->mPosition.x)
 		return Direction::east;
-	else if(endNode.mPosition.x < startNode.mPosition.x)
+	else if(endNode->mPosition.x < startNode->mPosition.x)
 		return Direction::west;
-	else if(endNode.mPosition.y > startNode.mPosition.y)
+	else if(endNode->mPosition.y > startNode->mPosition.y)
 		return Direction::south;
-	else if(endNode.mPosition.y < startNode.mPosition.y)
+	else if(endNode->mPosition.y < startNode->mPosition.y)
 		return Direction::north;
 }
 
-bool AStar::isNodeInSet(const Node& node, std::set<Node> set)
+bool AStar::isNodeInSet(const Node& node, const std::set<Node*>& set)
 {
 	for(const auto& n : set)
-		if(n == node)
+		if(*n == node)
 			return true;
 	return false;
 }
