@@ -6,23 +6,6 @@ namespace ph {
 
 ObstacleGrid getWalkableGrid3x4();
 
-TEST_CASE("Node operator < works correctly", "[AI][AStar]")
-{
-	Node node;
-	node.mRealDistanceFromStartNode = 2;
-	node.mEvaluatedDistanceToDestination = 1;
-	
-	Node nodeWithBiggerTotalCost;
-	nodeWithBiggerTotalCost.mRealDistanceFromStartNode = 2;
-	nodeWithBiggerTotalCost.mEvaluatedDistanceToDestination = 2;
-	CHECK(node < nodeWithBiggerTotalCost);
-
-	Node nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination;
-	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mRealDistanceFromStartNode = 1;
-	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mEvaluatedDistanceToDestination = 2;
-	CHECK(node < nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination);
-}
-
 TEST_CASE("A* algorithm choose the quickest path when path is straight and there are no obstacles", "[AI][AStar]")
 {
 	auto grid = getWalkableGrid3x4();
