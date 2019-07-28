@@ -1,11 +1,11 @@
-#include "Utilities/path.hpp"
+#include "Utilities/filePath.hpp"
 #include "Utilities/debug.hpp"
 #include <iostream>
 #include <string>
 
 namespace ph {
 
-std::string Path::toModuleName(std::string path)
+std::string FilePath::toModuleName(std::string path)
 {
 	// WARNING: Don't use PH_EXCEPTION or PH_LOG here because they are using this method, so it can result in recursion
 
@@ -37,7 +37,7 @@ std::string Path::toModuleName(std::string path)
 		return path.substr(begin, end - begin);
 }
 
-std::string Path::toFilename(const std::string& path, char separator)
+std::string FilePath::toFilename(const std::string& path, char separator)
 {
 	const std::size_t begin = path.rfind(separator);
 	if(begin != std::string::npos)

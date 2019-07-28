@@ -1,5 +1,5 @@
 #include "logger.hpp"
-#include "Utilities/path.hpp"
+#include "Utilities/filePath.hpp"
 
 #include <ctime>
 #include <string>
@@ -23,9 +23,9 @@ void Logger::createLog(LogType type, const std::string& message, const std::stri
 	LogRecord logRecord;
 	logRecord.type = type;
 	logRecord.message = message;
-	logRecord.fileName = Path::toFilename(fileName);
+	logRecord.fileName = FilePath::toFilename(fileName);
 	logRecord.fileLine = fileLine;
-	logRecord.moduleName = Path::toModuleName(fileName);
+	logRecord.moduleName = FilePath::toModuleName(fileName);
 	logRecord.secondsFromStart = getInstance().mClock.getElapsedTime().asSeconds();
 	logRecord.time = getCurrentTimeAsString();
 
