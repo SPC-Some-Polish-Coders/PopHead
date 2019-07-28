@@ -1,6 +1,8 @@
 #include "character.hpp"
 
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "GameObjects/GameObjectContainers/particlesSystem.hpp"
+#include "GameObjects/DrawableGameObjects/particles.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -51,6 +53,25 @@ void Character::rotate(float angle, bool recursive)
 {
 	mSprite.rotate(angle);
 	DrawableGameObject::rotate(angle, recursive);
+}
+
+auto Character::getSpriteCenter() -> sf::Vector2f
+{
+	sf::IntRect spriteRect = getSprite().getTextureRect();
+	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
+}
+
+void Character::drawBlood()
+{
+	auto& root = mGameData->getSceneMachine().getScene().getRoot();
+	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
+	particlesSystem.addChild(std::make_unique<Particles>(mGameData, getSpriteCenter() + mPosition));
+}
+
+void Character::takeDamage(const unsigned damage)
+{ 
+	mHP -= damage;		
+	drawBlood();
 }
 
 }
