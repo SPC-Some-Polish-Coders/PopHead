@@ -1,21 +1,17 @@
 #include "logRecord.hpp"
 
-std::string ph::logTypeToString(LogType type)
+std::string ph::logLevelToString(LogLevel level)
 {
-	switch (type)
+	switch (level)
 	{
-	case ph::LogType::Info:
-		return "INFO";
-	case ph::LogType::Error:
+	case ph::LogLevel::Info:
+		return "Info";
+	case ph::LogLevel::Error:
 		return "Error";
-	case ph::LogType::Warning:
+	case ph::LogLevel::Warning:
 		return "Warning";
-	case ph::LogType::FromUser:
-		return "FromUser";
-	case ph::LogType::Exception:
-		return "Exception";
-	case ph::LogType::UnhandledException:
-		return "UnhandledException";
+	case ph::LogLevel::Critical:
+		return "Critical";
 	}
 
 	// TODO: add exception throwing

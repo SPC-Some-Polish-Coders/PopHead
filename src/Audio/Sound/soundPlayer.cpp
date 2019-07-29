@@ -1,7 +1,7 @@
 #include "soundPlayer.hpp"
 
 #include <cmath>
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 
@@ -48,7 +48,7 @@ void SoundPlayer::playSound(const std::string& filePath, const float volume, con
 
 void SoundPlayer::removeStoppedSounds()
 {
-	mSounds.remove_if([](const sf::Sound sound) {
+	mSounds.remove_if([](const sf::Sound& sound) {
 		return sound.getStatus() == sf::Sound::Status::Stopped;
 	});
 }

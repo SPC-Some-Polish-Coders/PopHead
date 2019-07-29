@@ -1,5 +1,5 @@
 #include "math.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 

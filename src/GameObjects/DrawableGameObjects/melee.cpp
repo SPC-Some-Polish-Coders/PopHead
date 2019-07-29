@@ -59,7 +59,7 @@ bool Swing::wasEnemyHit(Character& character)
 
 void Swing::incrementRotation()
 {
-	++mRotation;
+	mRotation += 5.f;
 	sf::Transform rotation;
 	rotation.rotate(5.f, mStartPositionBeginning);
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);

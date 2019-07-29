@@ -1,6 +1,6 @@
 #include "physicsEngine.hpp"
 #include "Utilities/math.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <memory>
 
 namespace ph {

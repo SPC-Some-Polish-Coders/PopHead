@@ -1,5 +1,6 @@
 #include "cast.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
+
 #include <unordered_map>
 
 namespace ph {

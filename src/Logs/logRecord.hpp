@@ -4,21 +4,19 @@
 
 namespace ph {
 
-	enum class LogType : std::size_t {
+	enum class LogLevel : std::size_t {
 		Info,
-		Error,
 		Warning,
-		FromUser,
-		Exception,
-		UnhandledException,
+		Error,
+		Critical,
 		Count // WARNING: Keep it last
 	};
 
-	std::string logTypeToString(LogType type);
+	std::string logLevelToString(LogLevel level);
 
 	struct LogRecord
 	{
-		LogType type;
+		LogLevel level;
 		std::string message;
 		std::string fileName;
 		std::string moduleName;
