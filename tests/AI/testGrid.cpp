@@ -20,6 +20,11 @@ TEST_CASE("Node operator < works correctly", "[AI][Grid]")
 	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mRealDistanceFromStartNode = 1;
 	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mEvaluatedDistanceToDestination = 2;
 	CHECK(node < nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination);
+
+	Node nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination;
+	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mEvaluatedDistanceToDestination = 1;
+	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mRealDistanceFromStartNode = 4;
+	CHECK(nodeWithBiggerTotalCost < nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination);
 }
 
 TEST_CASE("Grid can be created and node of certain position can be get", "[AI][Grid]")

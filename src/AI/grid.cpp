@@ -13,7 +13,11 @@ Node::Node(const bool isObstacle, const sf::Vector2u position)
 
 bool operator < (const Node& lhs, const Node& rhs)
 {
-	return lhs.getFullCost() < rhs.getFullCost() || lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
+	if (lhs.getFullCost() < rhs.getFullCost())
+		return true;
+	if(lhs.getFullCost() == rhs.getFullCost())
+		return lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
+	return false;
 }
 
 bool operator == (const Node& lhs, const Node& rhs)
