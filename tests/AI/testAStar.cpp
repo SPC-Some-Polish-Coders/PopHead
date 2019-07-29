@@ -48,8 +48,8 @@ ObstacleGrid getWalkableGrid2x2()
 
 ObstacleGrid getGrid5x3WithObstacleInCenter()
 {
-	std::vector<bool> emptyColumn{false, false, false};
-	std::vector<bool> columnWithObstacleInCenter{false, true, false};
+	std::vector<bool> emptyColumn{false, false, false, false};
+	std::vector<bool> columnWithObstacleInCenter{false, true, false, false};
 	ObstacleGrid grid = {emptyColumn, columnWithObstacleInCenter, columnWithObstacleInCenter, columnWithObstacleInCenter, emptyColumn};
 	return grid;
 }
