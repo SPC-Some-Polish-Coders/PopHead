@@ -9,7 +9,7 @@ constexpr char PH_PATH_SEPARATOR = '/';
 #include <string>
 
 namespace ph {
-	namespace Path {
+	namespace FilePath {
 		std::string toModuleName(const std::string& filePath);
 
 		std::string toFilename(const std::string& path, char separator = PH_PATH_SEPARATOR);

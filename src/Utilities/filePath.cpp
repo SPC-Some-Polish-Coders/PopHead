@@ -1,11 +1,11 @@
-#include "Utilities/path.hpp"
+#include "Utilities/filePath.hpp"
 #include "Logs/logs.hpp"
 
 #include <string>
 
 namespace ph {
 
-std::string Path::toModuleName(const std::string& filePath)
+std::string FilePath::toModuleName(const std::string& filePath)
 {
 	// WARNING: Logging macros can be used here only for errors, or problems reporting.
 	// When used in a place that execute always (for example in the first line) they cause endless recursion.
@@ -39,7 +39,7 @@ std::string Path::toModuleName(const std::string& filePath)
 	return filePath.substr(foundIndex, endOfModuleName - foundIndex);
 }
 
-std::string Path::toFilename(const std::string& path, char separator)
+std::string FilePath::toFilename(const std::string& path, char separator)
 {
 	const std::size_t begin = path.rfind(separator);
 	if(begin != std::string::npos)
