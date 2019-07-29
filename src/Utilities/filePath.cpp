@@ -1,40 +1,42 @@
 #include "Utilities/filePath.hpp"
-#include "Utilities/debug.hpp"
-#include <iostream>
+#include "Logs/logs.hpp"
+
 #include <string>
 
 namespace ph {
 
-std::string FilePath::toModuleName(std::string path)
+std::string FilePath::toModuleName(const std::string& filePath)
 {
-	// WARNING: Don't use PH_EXCEPTION or PH_LOG here because they are using this method, so it can result in recursion
+	// WARNING: Logging macros can be used here only for errors, or problems reporting.
+	// When used in a place that execute always (for example in the first line) they cause endless recursion.
 
-	std::string searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
+	std::string sourceCodeDirectory = std::string("PopHead") + PH_PATH_SEPARATOR + "src";
+	auto foundIndex = filePath.rfind(sourceCodeDirectory);
 
-	std::size_t begin = path.find(searchedPath);
-	if (begin == std::string::npos) {
-		searchedPath = std::string("PopHead") + PH_PATH_SEPARATOR + "tests";
-		begin = path.find(searchedPath);
-		if (begin == std::string::npos) {
-			std::cout << "[Path::toModuleName] Module location cannot be found. Path: " << path << std::endl;
-			throw std::runtime_error("[Path::toModuleName] Module location cannot be found. Path: " + path);
-		}
-	}
-	begin += searchedPath.size() + 1;
-	if (path.find(searchedPath, begin) != std::string::npos) {
-		std::cout << "[Path::toModuleName] Move folder with project to another location. Path cannot have more than one: " << searchedPath << std::endl;
-		throw std::runtime_error("[Path::toModuleName] Move folder with project to another location. Path cannot have more than one: " + searchedPath);
-	}
-	if (begin >= path.size()) {
-		std::cout << "[Path::toModuleName] There should be at least one letter after source path" << std::endl;
-		throw std::runtime_error("[Path::toModuleName] There should be at least one letter after source path");
+	if (foundIndex == std::string::npos)
+	{
+		sourceCodeDirectory = std::string("PopHead") + PH_PATH_SEPARATOR + "tests";
+		foundIndex = filePath.rfind(sourceCodeDirectory);
+
+		PH_ASSERT_UNEXPECTED_SITUATION(foundIndex != std::string::npos, 
+									   '(' + filePath + ") - source code files must be either in src/ or tests/ directory");
+
+		return "Tests";
 	}
 
-	const std::size_t end = path.find(PH_PATH_SEPARATOR, begin + 1);
-	if (end == std::string::npos)
-		return "None";
-	else
-		return path.substr(begin, end - begin);
+	// we're looking for the first directory name after sourceCodeDirectory
+	foundIndex += sourceCodeDirectory.size() + 1;
+
+	PH_ASSERT_UNEXPECTED_SITUATION(foundIndex < filePath.size(),
+								   '(' + filePath + ") - probably given only directory without module and file");
+
+	// we retrieve the separator after module's name
+	const auto endOfModuleName = filePath.find(PH_PATH_SEPARATOR, foundIndex);
+
+	if (foundIndex < filePath.size() && endOfModuleName == std::string::npos)
+		return "MainDirectory";
+
+	return filePath.substr(foundIndex, endOfModuleName - foundIndex);
 }
 
 std::string FilePath::toFilename(const std::string& path, char separator)

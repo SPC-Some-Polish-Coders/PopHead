@@ -1,6 +1,6 @@
 #include "kinematicCollisionHandler.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <cmath>
 
 namespace ph {

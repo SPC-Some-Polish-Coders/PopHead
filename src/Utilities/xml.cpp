@@ -1,5 +1,5 @@
 #include "xml.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <fstream>
 
 namespace ph {
@@ -23,7 +23,7 @@ void Xml::loadFromFile(const std::string& filePath)
 	mContent += temp;
 	while (std::getline(ifs, temp))
 		mContent += temp;
-	PH_LOG(LogType::Info, std::string("Xml loadFromFile(): ") + mContent);
+	PH_LOG(LogLevel::Info, std::string("Xml loadFromFile(): ") + mContent);
 }
 
 Xml Xml::getChild(std::string name) const
@@ -45,7 +45,7 @@ Xml Xml::getChild(std::string name) const
 			if (mContent.compare(begin, end - begin - 1, name) == 0) {
 				Xml xml;
 				xml.mContent = mContent.substr(begin, end - begin + 1);
-				PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
+				PH_LOG(LogLevel::Info, "Xml getChild(): " + xml.mContent);
 				return xml;
 			}
 			else
@@ -60,7 +60,7 @@ Xml Xml::getChild(std::string name) const
 			if (isSelfClosingTag(end)) {
 				Xml xml;
 				xml.mContent = mContent.substr(begin, end - begin + 1);
-				PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
+				PH_LOG(LogLevel::Info, "Xml getChild(): " + xml.mContent);
 				return xml;
 			}
 			unsigned count = 0;
@@ -71,7 +71,7 @@ Xml Xml::getChild(std::string name) const
 				if (isClosingTag(end) && count == 0) {
 					Xml xml;
 					xml.mContent = mContent.substr(begin, end - begin - 2);
-					PH_LOG(LogType::Info, "Xml getChild(): " + xml.mContent);
+					PH_LOG(LogLevel::Info, "Xml getChild(): " + xml.mContent);
 					return xml;
 				}
 				else if (isClosingTag(end)) {
@@ -148,7 +148,7 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 			if (mContent.compare(begin, end - begin - 1, name) == 0) {
 				Xml xml;
 				xml.mContent = mContent.substr(begin, end - begin + 1);
-				PH_LOG(LogType::Info, "Xml getChildren(): " + xml.mContent);
+				PH_LOG(LogLevel::Info, "Xml getChildren(): " + xml.mContent);
 				children.push_back(xml);
 				begin = end;
 				continue;
@@ -164,7 +164,7 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 				if (isSelfClosingTag(end)) {
 					Xml xml;
 					xml.mContent = mContent.substr(begin, end - begin + 1);
-					PH_LOG(LogType::Info, "Xml getChildren(): " + xml.mContent);
+					PH_LOG(LogLevel::Info, "Xml getChildren(): " + xml.mContent);
 					children.push_back(xml);
 					begin = end;
 					continue;
@@ -178,7 +178,7 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 				if (isClosingTag(end) && count == 0) {
 					Xml xml;
 					xml.mContent = mContent.substr(begin, end - begin - 2);
-					PH_LOG(LogType::Info, "Xml getChildren(): " + xml.mContent);
+					PH_LOG(LogLevel::Info, "Xml getChildren(): " + xml.mContent);
 					children.push_back(xml);
 					begin = end + name.size();
 					break;
@@ -258,7 +258,7 @@ bool Xml::hasAttribute(std::string name) const
 
 	std::size_t begin = mContent.find(name);
 	if (begin == std::string::npos) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+		PH_LOG(LogLevel::Info, "Xml hasAttribute(): false");
 		return false;
 	}
 	begin += name.size();
@@ -269,11 +269,11 @@ bool Xml::hasAttribute(std::string name) const
 	if (isSelfClosingTag(end))
 		--end;
 	if (begin >= end) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+		PH_LOG(LogLevel::Info, "Xml hasAttribute(): false");
 		return false;
 	}
 	if (isEmptyAttributeValue(begin)) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): true");
+		PH_LOG(LogLevel::Info, "Xml hasAttribute(): true");
 		return true;
 	}
 
@@ -281,7 +281,7 @@ bool Xml::hasAttribute(std::string name) const
 	if (end == std::string::npos)
 		PH_EXCEPTION("missing closing quote");
 
-	PH_LOG(LogType::Info, "Xml hasAttribute(): true");
+	PH_LOG(LogLevel::Info, "Xml hasAttribute(): true");
 	return true;
 }
 
@@ -321,7 +321,7 @@ Xml Xml::getAttribute(std::string name) const
 
 	Xml xml;
 	xml.mContent = mContent.substr(begin, end - begin);
-	PH_LOG(LogType::Info, "Xml getAttribute(): " + xml.mContent);
+	PH_LOG(LogLevel::Info, "Xml getAttribute(): " + xml.mContent);
 	return xml;
 }
 
