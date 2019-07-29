@@ -13,11 +13,11 @@ struct Node
 
 	sf::Vector2u mPosition;
 	sf::Vector2u mParentPosition;
-	float mRealDistanceFromStartNode;
-	float mEvaluatedDistanceToDestination;
+	float mDistanceFromStart;
+	float mDistanceToDestination;
 	bool mIsObstacle;
 
-	float getFullCost() const { return mRealDistanceFromStartNode + mEvaluatedDistanceToDestination; }
+	float getFullCost() const { return mDistanceFromStart + mDistanceToDestination; }
 };
 
 bool operator < (const Node& lhs, const Node& rhs);

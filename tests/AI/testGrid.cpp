@@ -8,22 +8,22 @@ namespace ph {
 TEST_CASE("Node operator < works correctly", "[AI][Grid]")
 {
 	Node node;
-	node.mRealDistanceFromStartNode = 2;
-	node.mEvaluatedDistanceToDestination = 1;
+	node.mDistanceFromStart = 2;
+	node.mDistanceToDestination = 1;
 
 	Node nodeWithBiggerTotalCost;
-	nodeWithBiggerTotalCost.mRealDistanceFromStartNode = 2;
-	nodeWithBiggerTotalCost.mEvaluatedDistanceToDestination = 2;
+	nodeWithBiggerTotalCost.mDistanceFromStart = 2;
+	nodeWithBiggerTotalCost.mDistanceToDestination = 2;
 	CHECK(node < nodeWithBiggerTotalCost);
 
 	Node nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination;
-	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mRealDistanceFromStartNode = 1;
-	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mEvaluatedDistanceToDestination = 2;
+	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mDistanceFromStart = 1;
+	nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination.mDistanceToDestination = 2;
 	CHECK(node < nodeWithTheSameTotalCostButWithBiggerEvaluatedDistanceToDestination);
 
 	Node nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination;
-	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mEvaluatedDistanceToDestination = 1;
-	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mRealDistanceFromStartNode = 4;
+	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mDistanceToDestination = 1;
+	nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination.mDistanceFromStart = 4;
 	CHECK(nodeWithBiggerTotalCost < nodeWithBiggerTotalCostAndShorterEvaluatedDistanceToDestination);
 }
 

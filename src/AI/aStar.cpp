@@ -13,8 +13,8 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 {
 	mDestinationNodePosition = destinationNodePosition;
 
-	auto lesser = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
-	std::multiset<Node*, decltype(lesser)> openNodes(lesser);
+	auto compareCosts = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
+	std::multiset<Node*, decltype(compareCosts)> openNodes(compareCosts);
 	std::set<Node*> openNodesPointers;
 	std::set<Node*> closedNodes;
 
@@ -35,26 +35,24 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 			if(neighbour->mIsObstacle || isNodeInSet(*neighbour, closedNodes))
 				continue;
 
-			bool justMade = false;
 			if (!isNodeInSet(*neighbour, openNodesPointers)) {
-				neighbour->mRealDistanceFromStartNode = currentNode->mRealDistanceFromStartNode + 1;
-				neighbour->mEvaluatedDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition);
+				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
+				neighbour->mDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition);
 				neighbour->mParentPosition = currentNode->mPosition;
 				openNodes.emplace(neighbour);
 				openNodesPointers.emplace(neighbour);
 
-				justMade = true;
 			}
-			if(!justMade && neighbour->mRealDistanceFromStartNode > currentNode->mRealDistanceFromStartNode + 1) {
-				decltype(openNodes)::iterator iter;
-				for (iter = openNodes.begin(); iter != openNodes.end(); ++iter)
+			if(neighbour->mDistanceFromStart > currentNode->mDistanceFromStart + 1) {
+				auto iter = openNodes.begin();
+				for (; iter != openNodes.end(); ++iter)
 				{
 					if(*iter == neighbour) {
 						break;
 					}
 				}
 				openNodes.erase(iter);
-				neighbour->mRealDistanceFromStartNode = currentNode->mRealDistanceFromStartNode + 1;
+				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
 				neighbour->mParentPosition = currentNode->mPosition;
 				openNodes.emplace(neighbour);
 			}
