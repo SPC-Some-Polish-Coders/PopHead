@@ -20,11 +20,9 @@ private:
 	Path toDirectionPath(const std::deque<Node*>& nodePath);
 	Direction getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode);
 	bool isNodeInSet(Node&, const std::set<Node*>&);
-	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition);
+	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition);
 
 private:
-	//sf::Vector2u mStartNodePosition;
-	sf::Vector2u mDestinationNodePosition;
 	Grid mGrid;
 };
 

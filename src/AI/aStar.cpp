@@ -11,8 +11,6 @@ AStar::AStar(const ObstacleGrid& obstacleGrid)
 
 Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
 {
-	mDestinationNodePosition = destinationNodePosition;
-
 	auto compareCosts = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
 	std::multiset<Node*, decltype(compareCosts)> openNodes(compareCosts);
 	std::set<Node*> openNodesPointers;
@@ -37,7 +35,7 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 
 			if (!isNodeInSet(*neighbour, openNodesPointers)) {
 				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
-				neighbour->mDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition);
+				neighbour->mDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition, destinationNodePosition);
 				neighbour->mParentPosition = currentNode->mPosition;
 				openNodes.emplace(neighbour);
 				openNodesPointers.emplace(neighbour);
@@ -103,11 +101,11 @@ bool AStar::isNodeInSet(Node& node, const std::set<Node*>& set)
 	return found != set.cend();
 }
 
-float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
+float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition)
 {
 	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
-	float legX = std::abs(static_cast<float>(mDestinationNodePosition.x) - currentNodePosition.x);
-	float legY = std::abs(static_cast<float>(mDestinationNodePosition.y) - currentNodePosition.y);
+	float legX = std::abs(static_cast<float>(destinationNodePosition.x) - currentNodePosition.x);
+	float legY = std::abs(static_cast<float>(destinationNodePosition.y) - currentNodePosition.y);
 	return legX + legY;
 }
 
