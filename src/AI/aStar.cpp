@@ -76,7 +76,7 @@ Path AStar::retracePath(const Node* const startNode, Node* const endNode)
 Path AStar::toDirectionPath(const std::deque<Node*>& nodePath)
 {
 	Path path;
-	for(int i = 0; i < nodePath.size() - 1; ++i) {
+	for(unsigned i = 0; i < nodePath.size() - 1; ++i) {
 		Direction direction = getDirectionBetweenNodes(nodePath[i], nodePath[i + 1]);
 		path.emplace_back(direction);
 	}
