@@ -7,7 +7,7 @@ namespace ph {
 
 Particles::Particles(GameData* const gameData, const sf::Vector2f startPosition)
 	:DrawableGameObject(gameData, "particles", LayerID::airEntities)
-	,mNumberOfParticles(200)
+	,mNumberOfParticles(150)
 	,mLifetime(sf::milliseconds(250))
 	,mPosition(startPosition)
 	,mVertecies(sf::Points, mNumberOfParticles)
