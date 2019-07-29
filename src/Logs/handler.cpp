@@ -74,7 +74,7 @@ namespace ph {
 	void Handler::initializeModules()
 	{
 		// in Distribution it should be replaced by static list of modules
-		std::ifstream modulesNames("../../config/modules.txt");
+		std::ifstream modulesNames("config/modules.txt");
 
 		std::string module;
 		while (modulesNames >> module)
