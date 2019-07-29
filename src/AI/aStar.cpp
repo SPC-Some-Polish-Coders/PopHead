@@ -11,15 +11,19 @@ AStar::AStar(const ObstacleGrid& obstacleGrid)
 
 Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
 {
-	std::set<Node*> openNodes;
+	auto compareCosts = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
+	std::multiset<Node*, decltype(compareCosts)> openNodes(compareCosts);
+	std::set<Node*> openNodesPointers;
 	std::set<Node*> closedNodes;
 
 	Node* startNode = mGrid.getNodeOfPosition(startNodePosition);
+	openNodesPointers.emplace(startNode);
 	openNodes.emplace(startNode);
 
-	while(!openNodes.empty()) {
+	while(!openNodesPointers.empty()) {
 		Node* currentNode = *openNodes.begin();
 		openNodes.erase(openNodes.begin());
+		openNodesPointers.erase(currentNode);
 		closedNodes.emplace(currentNode);
 
 		if(currentNode->mPosition == destinationNodePosition)
@@ -29,12 +33,26 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 			if(neighbour->mIsObstacle || isNodeInSet(*neighbour, closedNodes))
 				continue;
 
-			if(neighbour->mRealDistanceFromStartNode > currentNode->mRealDistanceFromStartNode + 1 || !isNodeInSet(*neighbour, openNodes)) {
-				neighbour->mRealDistanceFromStartNode = currentNode->mRealDistanceFromStartNode + 1;
-				neighbour->mEvaluatedDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition);
+			if (!isNodeInSet(*neighbour, openNodesPointers)) {
+				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
+				neighbour->mDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition, destinationNodePosition);
 				neighbour->mParentPosition = currentNode->mPosition;
-				if(!isNodeInSet(*neighbour, openNodes))
-					openNodes.emplace(neighbour);
+				openNodes.emplace(neighbour);
+				openNodesPointers.emplace(neighbour);
+
+			}
+			if(neighbour->mDistanceFromStart > currentNode->mDistanceFromStart + 1) {
+				auto iter = openNodes.begin();
+				for (; iter != openNodes.end(); ++iter)
+				{
+					if(*iter == neighbour) {
+						break;
+					}
+				}
+				openNodes.erase(iter);
+				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
+				neighbour->mParentPosition = currentNode->mPosition;
+				openNodes.emplace(neighbour);
 			}
 		}
 	}
@@ -58,7 +76,7 @@ Path AStar::retracePath(const Node* const startNode, Node* const endNode)
 Path AStar::toDirectionPath(const std::deque<Node*>& nodePath)
 {
 	Path path;
-	for(int i = 0; i < nodePath.size() - 1; ++i) {
+	for(unsigned i = 0; i < nodePath.size() - 1; ++i) {
 		Direction direction = getDirectionBetweenNodes(nodePath[i], nodePath[i + 1]);
 		path.emplace_back(direction);
 	}
@@ -77,19 +95,17 @@ Direction AStar::getDirectionBetweenNodes(const Node* const startNode, const Nod
 		return Direction::north;
 }
 
-bool AStar::isNodeInSet(const Node& node, const std::set<Node*>& set)
+bool AStar::isNodeInSet(Node& node, const std::set<Node*>& set)
 {
-	for(const auto& n : set)
-		if(*n == node)
-			return true;
-	return false;
+	auto found = set.find(&node);
+	return found != set.cend();
 }
 
-float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition)
+float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition)
 {
 	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
-	float legX = std::abs(static_cast<float>(mDestinationNodePosition.x - currentNodePosition.x));
-	float legY = std::abs(static_cast<float>(mDestinationNodePosition.y - currentNodePosition.y));
+	float legX = std::abs(static_cast<float>(destinationNodePosition.x) - currentNodePosition.x);
+	float legY = std::abs(static_cast<float>(destinationNodePosition.y) - currentNodePosition.y);
 	return legX + legY;
 }
 

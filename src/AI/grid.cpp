@@ -6,8 +6,8 @@ namespace ph {
 Node::Node(const bool isObstacle, const sf::Vector2u position)
 	:mIsObstacle(isObstacle)
 	,mPosition(position)
-	,mRealDistanceFromStartNode(0.f)
-	,mEvaluatedDistanceToDestination(0.f)
+	,mDistanceFromStart(0.f)
+	,mDistanceToDestination(0.f)
 {
 }
 
@@ -16,7 +16,7 @@ bool operator < (const Node& lhs, const Node& rhs)
 	if (lhs.getFullCost() < rhs.getFullCost())
 		return true;
 	if(lhs.getFullCost() == rhs.getFullCost())
-		return lhs.mEvaluatedDistanceToDestination < rhs.mEvaluatedDistanceToDestination;
+		return lhs.mDistanceToDestination < rhs.mDistanceToDestination;
 	return false;
 }
 
