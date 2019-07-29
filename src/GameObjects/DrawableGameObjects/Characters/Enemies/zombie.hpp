@@ -15,7 +15,7 @@ private:
 	void move();
 
 private:
-	std::deque<Direction> mMovementPath;
+	Path mMovementPath;
 	sf::Clock timeFromLastGrowl;
 };
 

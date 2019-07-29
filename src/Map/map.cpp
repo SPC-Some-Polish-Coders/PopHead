@@ -77,7 +77,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		if (tilesetNode.hasAttribute("source")) {
 			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
 			tilesetNodeSource = pathToMapNotEmbeddedTilesets + FilePath::toFilename(tilesetNodeSource, '/');
-			PH_LOG(LogLevel::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
+			PH_LOG(LogLevel::Info, "Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
 			tilesetNode = tilesetDocument.getChild("tileset");
@@ -232,7 +232,7 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			bounds.left += position.x;
 			bounds.top += position.y;
 			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
-			mGameData->getAIManager().registerStaticCollisionBody({bounds.left, bounds.top});
+			mGameData->getAIManager().registerObstacle({bounds.left, bounds.top});
 		}
 	}
 }

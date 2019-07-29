@@ -1,6 +1,8 @@
 #include "cast.hpp"
 #include "Logs/logs.hpp"
 
+#include <unordered_map>
+
 namespace ph {
 
 unsigned Cast::toUnsigned(const std::string& str)
@@ -31,12 +33,12 @@ bool Cast::toBool(const std::string& str)
 
 ObjectType Cast::toObjectType(const std::string& str)
 {
-	if(str.find("zombie") != std::string::npos)
-		return ObjectType::Zombie;
-	else if (str.find("npc") != std::string::npos)
-		return ObjectType::Npc;
-	else
-		PH_EXCEPTION("There is not such ObjectType!");
+	for (auto& it : objectTypeMap)
+	{
+		if (str.find(it.first) != std::string::npos)
+			return it.second;
+	}
+		PH_EXCEPTION("There is no such ObjectType!");
 }
 
 }

@@ -126,7 +126,7 @@ project "Tests"
 
     defines{"SFML_STATIC"}
 
-    filter "configurations:Debug"
+    filter "configurations:Debug or Tests"
         symbols "On"
 
         links{
@@ -137,7 +137,7 @@ project "Tests"
             "sfml-system-s-d"
         }
 
-    filter{"configurations:Release or Distribution or Tests"}
+    filter{"configurations:Release or Distribution"}
         optimize "On"
 
         links{

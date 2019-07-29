@@ -31,8 +31,8 @@ void CommandInterpreter::handleCommand(const std::string& command)
 	else if (commandWithoutArguments == "clear")          executeClear();
 	else if (commandWithoutArguments == "view")           executeView();
 	else if (commandWithoutArguments == "spawn")          executeSpawn();
-	else if (commandWithoutArguments == "")				  executeMessage("This is terminal. Enter 'help' to see availible commands.", MessageType::INFO);
-	else executeMessage( "Entered command wasn't recognised. Enter 'help' to see availible commands.", MessageType::ERROR);
+	else if (commandWithoutArguments == "")				  executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
+	else executeMessage( "Entered command wasn't recognised. Enter 'help' to see available commands.", MessageType::ERROR);
 }
 
 std::string CommandInterpreter::getCommandWithoutArguments() const
@@ -79,12 +79,12 @@ void CommandInterpreter::executeHelp() const
 	if (commandContains('2')){
 		for (const auto& command : commandsList2)
 			executeMessage("- " + command, MessageType::INFO);
-		executeMessage("Avalible commands, PAGE 2 of 2.", MessageType::INFO);
+		executeMessage("Available commands, PAGE 2 of 2.", MessageType::INFO);
 	}
 	else{
 		for (const auto& command : commandsList1)
 			executeMessage("- " + command, MessageType::INFO);
-		executeMessage("Avalible commands, PAGE 1 of 2.", MessageType::INFO);
+		executeMessage("Available commands, PAGE 1 of 2.", MessageType::INFO);
 	}
 }
 
