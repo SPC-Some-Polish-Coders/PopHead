@@ -18,24 +18,18 @@ namespace ph {
 		std::string message = logRecordToString(logRecord);
 		OutputLine line{ message, sf::Color::White };
 		
-		switch (logRecord.type)
+		switch (logRecord.level)
 		{
-		case LogType::Info:
+		case LogLevel::Info:
 			line.mColor = sf::Color(127, 244, 44);
 			break;
-		case LogType::Error:
+		case LogLevel::Error:
 			line.mColor = sf::Color(255, 25, 33);
 			break;
-		case LogType::Warning:
+		case LogLevel::Warning:
 			line.mColor = sf::Color(235, 135, 30);
 			break;
-		case LogType::FromUser:
-			line.mColor = sf::Color(79, 202, 255);
-			break;
-		case LogType::Exception:
-			line.mColor = sf::Color(255, 25, 33);
-			break;
-		case LogType::UnhandledException:
+		case LogLevel::Critical:
 			line.mColor = sf::Color(255, 25, 33);
 			break;
 		}
@@ -47,7 +41,7 @@ namespace ph {
 		std::ostringstream stream;
 		stream << "[  " << std::left << std::setw(7)
 			   << std::to_string(logRecord.secondsFromStart).erase(5, 4) << "s ]"
-			   << " | " << std::setw(9) << std::left << logTypeToString(logRecord.type)
+			   << " | " << std::setw(9) << std::left << logLevelToString(logRecord.level)
 			   << " | " << std::setw(9) << std::left << logRecord.moduleName
 			   << " | " << std::left << logRecord.message << std::endl;
 

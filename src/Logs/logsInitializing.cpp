@@ -41,24 +41,20 @@ namespace ph {
 				handler->setModuleAllowing(moduleName, true);
 			}
 
-			auto types = handlerTag.getChild("types").getChildren("typeT");
+			auto logLevels = handlerTag.getChild("levels").getChildren("level");
 
-			for (const auto& typeTag : types)
+			for (const auto& logLevel : logLevels)
 			{
-				std::string type = typeTag.toString();
+				std::string levelStr = logLevel.toString();
 
-				if (type == "Info")
-					handler->setTypeAllowing(LogType::Info, true);
-				if (type == "Error")
-					handler->setTypeAllowing(LogType::Error, true);
-				if (type == "Warning")
-					handler->setTypeAllowing(LogType::Warning, true);
-				if (type == "FromUser")
-					handler->setTypeAllowing(LogType::FromUser, true);
-				if (type == "Exception")
-					handler->setTypeAllowing(LogType::Exception, true);
-				if (type == "UnhandledException")
-					handler->setTypeAllowing(LogType::UnhandledException, true);
+				if (levelStr == "Info")
+					handler->setLogLevelAllowing(LogLevel::Info, true);
+				if (levelStr == "Error")
+					handler->setLogLevelAllowing(LogLevel::Error, true);
+				if (levelStr == "Warning")
+					handler->setLogLevelAllowing(LogLevel::Warning, true);
+				if (levelStr == "Critical")
+					handler->setLogLevelAllowing(LogLevel::Critical, true);
 			}
 
 			Logger::addLogsHandler(std::move(handler));

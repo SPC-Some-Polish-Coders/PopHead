@@ -1,6 +1,6 @@
 #include "musicDataHolder.hpp"
 
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "Utilities/xml.hpp"
 
 namespace ph{

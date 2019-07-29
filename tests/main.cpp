@@ -2,7 +2,7 @@
 
 #include "game.hpp"
 
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "Gui/messageBox.hpp"
 
 #include <stdexcept>
@@ -14,17 +14,17 @@
 int main()
 {
 	try {
-		PH_LOG(ph::LogType::Info, "start executing PopHead!");
+		PH_LOG(ph::LogLevel::Info, "start executing PopHead!");
 		ph::Game game;
 		game.run();
 	}
 	catch (const std::exception& e) {
-		PH_LOG(ph::LogType::UnhandledException, e.what());
+		//PH_LOG(ph::LogLevel::UnhandledException, e.what());
 		ph::showErrorMessageBox("Error", e.what());
 		throw;
 	}
 	catch (...) {
-		PH_LOG(ph::LogType::UnhandledException, "Unknown error occurred!");
+		//PH_LOG(ph::LogLevel::UnhandledException, "Unknown error occurred!");
 		ph::showErrorMessageBox("Error", "Unknown error occurred!");
 		throw;
 	}
@@ -34,7 +34,19 @@ int main()
 
 #else // !PH_TESTS
 
-#define CATCH_CONFIG_MAIN
+#include "TestsUtilities/testHandler.hpp"
+#include "Logs/logger.hpp"
+
+#define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
+
+int main()
+{
+	std::unique_ptr<ph::Handler> testHandler(new Tests::TestHandler);
+	testHandler->enableAllModules();
+	testHandler->enableAllLogLevels();
+	ph::Logger::addLogsHandler(std::move(testHandler));
+	return Catch::Session().run();
+}
 
 #endif // !PH_TESTS
