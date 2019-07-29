@@ -22,6 +22,7 @@ private:
 	void loadScene(const Xml& sceneNode);
 	void loadMap(const Xml& rootNode);
 	void loadEntrances(const Xml& rootNode);
+	void loadParticlesSystem();
 	void loadPlayer(const Xml& rootNode);
 	void loadGroups(const Xml& rootNode);
 	void loadNpcGroup(const Xml& npcGroupNode);

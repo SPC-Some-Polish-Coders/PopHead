@@ -3,6 +3,7 @@
 
 #include <ctime>
 #include <string>
+#include <algorithm>
 
 namespace ph {
 
@@ -41,6 +42,20 @@ void Logger::addLogsHandler(std::unique_ptr<Handler> handler)
 {
 	if (handler)
 		getInstance().mHandlers.emplace_back(std::move(handler));
+}
+
+bool Logger::removeLogsHandler(const Handler& handler)
+{
+	auto& handlers = getInstance().mHandlers;
+	auto iter = std::find_if(handlers.begin(), handlers.end(),
+		[&handler](const std::unique_ptr<Handler>& elem) { return elem.get() == &handler; });
+	
+	if (iter != handlers.end())
+	{
+		handlers.erase(iter);
+		return true;
+	}
+	return false;
 }
 
 Logger& Logger::getInstance()

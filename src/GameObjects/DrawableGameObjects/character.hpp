@@ -3,6 +3,7 @@
 #include "GameObjects/drawableGameObject.hpp"
 #include "Utilities/animation.hpp"
 
+
 namespace ph {
 
 class CollisionBody;
@@ -21,9 +22,11 @@ public:
 	void setScale(sf::Vector2f, bool recursive = true) override;
 	void setRotation(float angle, bool recursive = true) override;
 	void rotate(float angle, bool recursive = true) override;
-	void takeDamage(const unsigned damage) { mHP -= damage; }
+	void takeDamage(const unsigned damage);
+	void drawBlood();
 
 	auto getSprite() -> sf::Sprite& { return mSprite; }
+	auto getSpriteCenter() -> sf::Vector2f;
 
 protected:
 	unsigned mHP;

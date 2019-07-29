@@ -6,6 +6,7 @@
 #include "GameObjects/NotDrawableGameObjects/entrance.hpp"
 #include "GameObjects/NotDrawableGameObjects/spawner.hpp"
 #include "GameObjects/GameObjectContainers/enemyContainer.hpp"
+#include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -56,6 +57,7 @@ void SceneParser::loadScene(const Xml& sceneNode)
 
 	loadMap(rootNode);
 	loadEntrances(rootNode);
+	loadParticlesSystem();
 	loadPlayer(rootNode);
 	loadGroups(rootNode);
 }
@@ -77,6 +79,11 @@ void SceneParser::loadEntrances(const Xml& rootNode)
 		auto entrance = std::make_unique<Entrance>(mGameData, filepath, name, getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
 		mRoot.addChild(std::move(entrance));
 	}
+}
+
+void SceneParser::loadParticlesSystem()
+{
+	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData));
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
