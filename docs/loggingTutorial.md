@@ -12,9 +12,9 @@ Basic macros:
 - PH_LOG_INFO(message);
 - PH_LOG_WARNING(message);
 - PH_LOG_ERROR(message);
-- PH_LOG_CRITICAL(message);
+- PH_EXIT_GAME(message);
 
-They are used to report a log of corresponding level to global Log system. PH_LOG_INFO and PH_LOG_WARNING are turned off in Distribution version of application for optimazation purposes. PH_LOG_CRITICAL is the only one of them that throws an exception of type ph::CriticalError. The more precise description of logging levels can be found below.
+They are used to report a log of corresponding level to global Log system. PH_LOG_INFO and PH_LOG_WARNING are turned off in Distribution version of application for optimazation purposes. PH_EXIT_GAME is the only one of them that stops the application. This macro has unusual name, but it basically logs critical message and calls exit() function. The more precise description of logging levels can be found below.
 
 Assert macros:
 - PH_ASSERT_WARNING(expression, message);
@@ -206,7 +206,7 @@ if (condition) {
         if (resource->loadFromFile(fullFilePath))
             mResources.insert(std::make_pair(fullFilePath, std::move(resource)));
         else {
-            PH_LOG_CRITICAL("Unable to load file " + fullFilePath + "! Probably there is not such a file.");
+            PH_EXIT_GAME("Unable to load file " + fullFilePath + "! Probably there is not such a file.");
             // we can't assume, that missing resource will crash tha application
             // the user of ResourceHolder::load() should decide on his own
             // more proper here is Error (see above)
@@ -222,7 +222,7 @@ if (condition) {
             gameData->getFonts().load("fonts/joystixMonospace.ttf");
         }
         catch (const std::exception& e) {
-            PH_LOG_CRITICAL(string("Couldn't load any fonts") + e.what());
+            PH_EXIT_GAME(string("Couldn't load any fonts") + e.what());
             // we decided that without any fonts we can't run the application
         }
     }

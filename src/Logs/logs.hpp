@@ -35,19 +35,19 @@
 
 #define PH_LOG_ERROR(message)\
 	PH_LOG(ph::LogLevel::Error, message)
-#define PH_LOG_CRITICAL(message)\
+#define PH_EXIT_GAME(message)\
 	{ PH_LOG(ph::LogLevel::Critical, message); throw ph::CriticalError(message); }
 
 #define PH_ASSERT_ERROR(expression, message)\
 	PH_ASSERT_EXPRESSION(expression, PH_LOG_ERROR(message))
 #define PH_ASSERT_CRITICAL(expression, message)\
-	PH_ASSERT_EXPRESSION(expression, PH_LOG_CRITICAL(message))
+	PH_ASSERT_EXPRESSION(expression, PH_EXIT_GAME(message))
 
 
 #ifdef PH_DEBUG_LOGS_ENABLED
 
 #define PH_UNEXPECTED_SITUATION(message)\
-	PH_LOG_CRITICAL(message)
+	PH_EXIT_GAME(message)
 #define PH_ASSERT_UNEXPECTED_SITUATION(expression, message)\
 	PH_ASSERT_EXPRESSION(expression, PH_UNEXPECTED_SITUATION(message))
 
