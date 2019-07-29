@@ -5,7 +5,7 @@
 
 namespace ph {
 
-TEST_CASE("static bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
+TEST_CASE("Static bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
 {
 	PhysicsEngine physicsEngine;
 
@@ -35,7 +35,7 @@ TEST_CASE("static bodies can be created and are accessible by returned reference
 	REQUIRE(b5.getRect() == sf::FloatRect(5, 5, 1, 1));
 }
 
-TEST_CASE("kinematic bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
+TEST_CASE("Kinematic bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
 {
 	PhysicsEngine physicsEngine;
 
@@ -65,7 +65,7 @@ TEST_CASE("kinematic bodies can be created and are accessible by returned refere
 	REQUIRE(b5.getMass() == 5);
 }
 
-TEST_CASE("static bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
+TEST_CASE("Static bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
 {
 	PhysicsEngine physicsEngine;
 
@@ -77,7 +77,7 @@ TEST_CASE("static bodies can be removed from physics engine", "[Physics][Physics
 	CHECK(b2.getRect() == sf::FloatRect(7, 7, 3, 3));
 }
 
-TEST_CASE("kinematic bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
+TEST_CASE("Kinematic bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
 {
 	PhysicsEngine physicsEngine;
 
@@ -94,18 +94,18 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 	PhysicsEngine physicsEngine;
 	const sf::Time deltaTime = sf::seconds(1.f / 60.f);
 
-	SECTION("wall is on the left of player") {
+	SECTION("Wall is on the left of player") {
 		physicsEngine.createStaticBodyAndGetTheReference({-30, 0, 30, 10});
 		physicsEngine.createStaticBodyAndGetTheReference({-30, 10, 30, 10});
 		
-		SECTION("player moves left down") {
+		SECTION("Player moves left down") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
 			player.move({-10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
 			CHECK(player.getPosition().y == 15);
 		}
-		SECTION("player moves left up") {
+		SECTION("Player moves left up") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
 			player.move({-10, -10});
 			physicsEngine.update(deltaTime);
@@ -114,18 +114,18 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		}
 	}
 
-	SECTION("wall is on the right of player") {
+	SECTION("Wall is on the right of player") {
 		physicsEngine.createStaticBodyAndGetTheReference({10, 0, 30, 10});
 		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 30, 10});
 		
-		SECTION("player moves right down") {
+		SECTION("Player moves right down") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
 			player.move({10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
 			CHECK(player.getPosition().y == 15);
 		}
-		SECTION("player moves right up") {
+		SECTION("Player moves right up") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
 			player.move({10, -10});
 			physicsEngine.update(deltaTime);
@@ -134,18 +134,18 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		}
 	}
 	
-	SECTION("wall is above the player") {
+	SECTION("Wall is above the player") {
 		physicsEngine.createStaticBodyAndGetTheReference({0, -30, 10, 30});
 		physicsEngine.createStaticBodyAndGetTheReference({10, -30, 10, 30});
 
-		SECTION("player moves right up") {
+		SECTION("Player moves right up") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
 			player.move({10, -10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 15);
 			CHECK(player.getPosition().y == 0);
 		}
-		SECTION("player moves left up") {
+		SECTION("Player moves left up") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
 			player.move({-10, -10});
 			physicsEngine.update(deltaTime);
@@ -154,18 +154,18 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		}
 	}
 	
-	SECTION("wall is beneath the player") {
+	SECTION("Wall is beneath the player") {
 		physicsEngine.createStaticBodyAndGetTheReference({0, 10, 10, 30});
 		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 10, 30});
 
-		SECTION("player moves right down") {
+		SECTION("Player moves right down") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
 			player.move({10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 15);
 			CHECK(player.getPosition().y == 0);
 		}
-		SECTION("player moves left down") {
+		SECTION("Player moves left down") {
 			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
 			player.move({-10, 10});
 			physicsEngine.update(deltaTime);
