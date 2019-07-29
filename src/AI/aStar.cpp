@@ -51,6 +51,7 @@ Path AStar::retracePath(const Node* const startNode, Node* const endNode)
 		nodePath.emplace_front(currentNode);
 		currentNode = mGrid.getNodeOfPosition(currentNode->mParentPosition);
 	}
+	nodePath.emplace_front(currentNode);
 	return toDirectionPath(nodePath);
 }
 
