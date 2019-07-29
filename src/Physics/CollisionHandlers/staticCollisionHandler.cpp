@@ -2,7 +2,7 @@
 
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "Utilities/math.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 

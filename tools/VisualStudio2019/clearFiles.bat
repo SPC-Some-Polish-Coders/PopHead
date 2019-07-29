@@ -1,3 +1,3 @@
 del ..\..\*.sln
 del ..\..\*.vcxproj*
-del ..\..\conf\modules.txt
+del ..\..\config\modules.txt

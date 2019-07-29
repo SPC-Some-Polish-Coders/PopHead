@@ -1,4 +1,4 @@
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "resourceHolder.hpp"
 
 template< typename ResourceType >
@@ -17,7 +17,8 @@ auto ph::ResourceHolder<ResourceType>::get(const std::string& filePath) -> Resou
 {
 	std::string fullFilePath = "resources/" + filePath;
 	auto found = mResources.find(fullFilePath);
-	PH_ASSERT(found != mResources.end(), "Resource \"" + fullFilePath + "\" was not found!");
+	if (found == mResources.end())
+		PH_EXCEPTION("Resource \"" + fullFilePath + "\" was not found!");
 	return *found->second;
 }
 
@@ -28,5 +29,5 @@ void ph::ResourceHolder<ResourceType>::free(const std::string& filePath)
 	auto amountOfDeletedResources = mResources.erase(fullFilePath);   // can be equal 0 or 1
 
 	if (amountOfDeletedResources == 0)
-		PH_LOG(LogType::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
+		PH_LOG(LogLevel::Error, "You try to free " + fullFilePath + ". A resource with this name does not exist.");
 }

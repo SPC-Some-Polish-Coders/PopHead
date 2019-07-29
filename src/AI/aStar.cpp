@@ -1,5 +1,5 @@
 #include "aStar.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <cmath>
 
 namespace ph {
@@ -39,7 +39,7 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 		}
 	}
 
-	PH_LOG(LogType::Warning, "Path wasn't found!");
+	PH_LOG(LogLevel::Warning, "Path wasn't found!");
 	return Path();
 }
 

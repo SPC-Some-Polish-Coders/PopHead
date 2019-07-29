@@ -1,7 +1,7 @@
 #include "soundPlayer.hpp"
 
 #include <cmath>
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 

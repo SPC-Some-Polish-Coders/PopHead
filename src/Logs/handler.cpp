@@ -1,34 +1,14 @@
 #include "handler.hpp"
 
 #include <algorithm>
+#include <fstream>
 
 namespace ph {
 	
 	Handler::Handler()
 	{
-		mAllowedModules = {
-			{"Audio", false},
-			{"EfficiencyRegister", false},
-			{"Gui", false},
-			{"Input", false},
-			{"Logs", false},
-			{"Physics", false},
-			{"Renderer", false},
-			{"Resources", false},
-			{"States", false},
-			{"Terminal", false},
-			{"Utilities", false},
-			{"World", false}
-		};
-
-		mAllowedTypes = {
-			{LogType::Info, false},
-			{LogType::Error, false},
-			{LogType::FromUser, false},
-			{LogType::Warning, false},
-			{LogType::Exception, false},
-			{LogType::UnhandledException, false}
-		};
+		initializeModules();
+		initializeLogLevels();
 	}
 
 	void Handler::handleLog(const LogRecord& logRecord)
@@ -47,13 +27,13 @@ namespace ph {
 			iter->second = allowed;
 	}
 
-	void Handler::setTypeAllowing(LogType type, bool allowed)
+	void Handler::setLogLevelAllowing(LogLevel level, bool allowed)
 	{
-		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
-			return pair.first == type;
+		auto iter = std::find_if(mAllowedLogLevels.begin(), mAllowedLogLevels.end(), [&level](const std::pair<LogLevel, bool>& pair) {
+			return pair.first == level;
 			});
 
-		if (iter != mAllowedTypes.end())
+		if (iter != mAllowedLogLevels.end())
 			iter->second = allowed;
 	}
 
@@ -66,13 +46,13 @@ namespace ph {
 		return iter != mAllowedModules.end() && iter->second;
 	}
 
-	bool Handler::isTypeAllowed(LogType type) const
+	bool Handler::isLogLevelAllowed(LogLevel level) const
 	{
-		auto iter = std::find_if(mAllowedTypes.begin(), mAllowedTypes.end(), [&type](const std::pair<LogType, bool>& pair) {
-			return pair.first == type;
+		auto iter = std::find_if(mAllowedLogLevels.begin(), mAllowedLogLevels.end(), [&level](const std::pair<LogLevel, bool>& pair) {
+			return pair.first == level;
 			});
 
-		return iter != mAllowedTypes.end() && iter->second;
+		return iter != mAllowedLogLevels.end() && iter->second;
 	}
 
 	void Handler::enableAllModules()
@@ -81,14 +61,31 @@ namespace ph {
 			module.second = true;
 	}
 
-	void Handler::enableAllTypes()
+	void Handler::enableAllLogLevels()
 	{
-		for (auto& type : mAllowedTypes)
-			type.second = true;
+		for (auto& level : mAllowedLogLevels)
+			level.second = true;
 	}
 
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
 	{
-		return isModuleAllowed(logRecord.moduleName) && isTypeAllowed(logRecord.type);
+		return isModuleAllowed(logRecord.moduleName) && isLogLevelAllowed(logRecord.level);
+	}
+	void Handler::initializeModules()
+	{
+		// in Distribution it should be replaced by static list of modules
+		std::ifstream modulesNames("../../config/modules.txt");
+
+		std::string module;
+		while (modulesNames >> module)
+			mAllowedModules.emplace_back(module, false);
+	}
+	void Handler::initializeLogLevels()
+	{
+		auto levelsCount = static_cast<std::size_t>(LogLevel::Count);
+		mAllowedLogLevels.resize(levelsCount);
+
+		for (std::size_t level = 0; level < levelsCount; ++level)
+			mAllowedLogLevels.at(level) = std::make_pair(static_cast<LogLevel>(level), false);
 	}
 }
