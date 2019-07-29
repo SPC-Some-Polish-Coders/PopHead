@@ -21,6 +21,7 @@ namespace ph {
 		static void createLog(LogLevel level, const std::string& message, const std::string& fileName, unsigned short fileLine);
 
 		static void addLogsHandler(std::unique_ptr<Handler> handler);
+		static bool removeLogsHandler(const Handler& handler);
 
 	private:
 		static Logger& getInstance();
