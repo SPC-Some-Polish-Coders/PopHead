@@ -104,7 +104,9 @@ project "Tests"
         "../../src/**.hpp",
         "../../src/**.cpp",
         "../../src/**.inl",
-        "../../tests/**.cpp"
+        "../../tests/**.hpp",
+        "../../tests/**.cpp",
+        "../../tests/**.inl"
     }
     
     removefiles{
