@@ -33,28 +33,42 @@ namespace ph {
 			if (!handler)
 				continue;
 
-			auto modules = handlerTag.getChild("modules").getChildren("module");
+			auto modulesTag = handlerTag.getChild("modules");
 
-			for (const auto& moduleTag : modules)
+			if (modulesTag.hasAttribute("all"))
+				handler->enableAllModules();
+			else
 			{
-				std::string moduleName = moduleTag.toString();
-				handler->setModuleAllowing(moduleName, true);
+				auto modules = modulesTag.getChildren("module");
+
+				for (const auto& moduleTag : modules)
+				{
+					std::string moduleName = moduleTag.toString();
+					handler->setModuleAllowing(moduleName, true);
+				}
 			}
 
-			auto logLevels = handlerTag.getChild("levels").getChildren("level");
+			auto logLevelsTag = handlerTag.getChild("levels");
 
-			for (const auto& logLevel : logLevels)
+			if (logLevelsTag.hasAttribute("all"))
+				handler->enableAllLogLevels();
+			else
 			{
-				std::string levelStr = logLevel.toString();
+				auto logLevels = logLevelsTag.getChildren("level");
 
-				if (levelStr == "Info")
-					handler->setLogLevelAllowing(LogLevel::Info, true);
-				if (levelStr == "Error")
-					handler->setLogLevelAllowing(LogLevel::Error, true);
-				if (levelStr == "Warning")
-					handler->setLogLevelAllowing(LogLevel::Warning, true);
-				if (levelStr == "Critical")
-					handler->setLogLevelAllowing(LogLevel::Critical, true);
+				for (const auto& logLevel : logLevels)
+				{
+					std::string levelStr = logLevel.toString();
+
+					if (levelStr == "Info")
+						handler->setLogLevelAllowing(LogLevel::Info, true);
+					if (levelStr == "Error")
+						handler->setLogLevelAllowing(LogLevel::Error, true);
+					if (levelStr == "Warning")
+						handler->setLogLevelAllowing(LogLevel::Warning, true);
+					if (levelStr == "Critical")
+						handler->setLogLevelAllowing(LogLevel::Critical, true);
+				}
 			}
 
 			Logger::addLogsHandler(std::move(handler));
