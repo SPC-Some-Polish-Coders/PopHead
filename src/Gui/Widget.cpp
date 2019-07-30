@@ -190,7 +190,7 @@ void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size)
 void Widget::setGameData(GameData* GameData)
 {
 	mGameData = GameData;
-	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getRenderer().getWindow());
+	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getRenderWindow());
 }
 
 bool Widget::isActive()

@@ -1,9 +1,10 @@
 #include "map.hpp"
 #include "gameData.hpp"
 #include "chunkMap.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/filePath.hpp"
 
 namespace ph {
 
@@ -20,6 +21,7 @@ void Map::loadFromFile(const std::string& filename)
 	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
 	const sf::Vector2u mapSize = getMapSize(mapNode);
+	mGameData->getAIManager().registerMapSize(mapSize);
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
@@ -59,7 +61,7 @@ std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	if (tilesetNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any tilesets");
+		PH_LOG(LogLevel::Warning, "Map doesn't have any tilesets");
 	return tilesetNodes;
 }
 
@@ -74,8 +76,8 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
 		if (tilesetNode.hasAttribute("source")) {
 			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
-			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
-			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
+			tilesetNodeSource = pathToMapNotEmbeddedTilesets + FilePath::toFilename(tilesetNodeSource, '/');
+			PH_LOG(LogLevel::Info, "Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
 			tilesetNode = tilesetDocument.getChild("tileset");
@@ -83,7 +85,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
-		tilesets.tilesetFileName = Path::toFilename(imageNode.getAttribute("source").toString(), '/');
+		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
@@ -117,7 +119,7 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
 	if (layerNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any layers");
+		PH_LOG(LogLevel::Warning, "Map doesn't have any layers");
 	return layerNodes;
 }
 
@@ -170,7 +172,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) {
-				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
+				PH_LOG(LogLevel::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
@@ -230,6 +232,7 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			bounds.left += position.x;
 			bounds.top += position.y;
 			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
+			mGameData->getAIManager().registerObstacle({bounds.left, bounds.top});
 		}
 	}
 }

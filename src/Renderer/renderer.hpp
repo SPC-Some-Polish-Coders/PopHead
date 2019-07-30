@@ -1,13 +1,11 @@
 #pragma once
 
-#include <map>
-#include <string>
-
-#include <SFML/Graphics.hpp>
-
+#include "Renderer/camera.hpp"
 #include "Renderer/layer.hpp"
 #include "Renderer/layerID.hpp"
-#include "Renderer/camera.hpp"
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <map>
 
 namespace ph {
 
@@ -16,30 +14,26 @@ class GameData;
 class Renderer
 {
 public:
-	Renderer();
+	Renderer(sf::RenderTarget&);
 	~Renderer();
 	Renderer(Renderer&) = delete;
 	Renderer& operator=(Renderer&) = delete;
 
-	enum Viewports
-	{
-		FullScreenViewport
-	};
+	enum Viewports{ FullScreenViewport };
 
 	void update(sf::Time delta);
 	void draw() const;
 
-	void addObject(Object* const);
-	void addObject(Object* const, LayerID);
+	void addObject(DrawableGameObject* const);
+	void addObject(DrawableGameObject* const, LayerID);
 
-	void removeObject(const Object* const);
-	void removeObject(std::string name, LayerID);
+	void removeDrawableGameObject(const DrawableGameObject* const);
+	void removeDrawableGameObject(std::string name, LayerID);
 	void removeAllObjectsFromLayer(LayerID);
+	void clear() noexcept;
 
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
-
-	auto getWindow() const -> sf::RenderWindow& { return mWindow; }
 	auto getCamera() -> Camera& { return mCamera; }
 
 	void setGameData(GameData* gameData) { mGameData = gameData; }
@@ -51,8 +45,8 @@ private:
 private:
 	Camera mCamera;
 	const std::map< Viewports, sf::Rect< float > > mViewports;
-	mutable sf::RenderWindow mWindow;
 	std::map< LayerID, Layer > mLayers;
+	sf::RenderTarget& mRenderTarget;
 	GameData* mGameData;
 };
 

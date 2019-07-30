@@ -1,7 +1,6 @@
 #include "physicsEngine.hpp"
-
 #include "Utilities/math.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <memory>
 
 namespace ph {
@@ -49,6 +48,7 @@ void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
+	mCollisionDebugManager.clear();
 }
 
 void PhysicsEngine::update(sf::Time delta)

@@ -135,7 +135,7 @@ void TerminalInputHandler::showOrHideCommandPromptInput()
 
 void TerminalInputHandler::setKeyRepeatEnabled(bool enabled)
 {
-	auto& window = mGameData->getRenderer().getWindow();
+	auto& window = mGameData->getRenderWindow();
 	window.setKeyRepeatEnabled(enabled);
 }
 

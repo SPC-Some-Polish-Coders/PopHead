@@ -1,7 +1,6 @@
 #include "outputArea.hpp"
 #include "terminalStyleConstants.hpp"
 #include "gameData.hpp"
-#include "Logs/log.hpp"
 
 namespace ph {
 

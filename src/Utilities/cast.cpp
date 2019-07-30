@@ -1,5 +1,7 @@
 #include "cast.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
+
+#include <unordered_map>
 
 namespace ph {
 
@@ -27,6 +29,16 @@ bool Cast::toBool(const std::string& str)
 		return false;
 	else
 		PH_EXCEPTION("Cast to bool failed!");
+}
+
+ObjectType Cast::toObjectType(const std::string& str)
+{
+	for (auto& it : objectTypeMap)
+	{
+		if (str.find(it.first) != std::string::npos)
+			return it.second;
+	}
+		PH_EXCEPTION("There is no such ObjectType!");
 }
 
 }

@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SFML/System.hpp>
-#include "EntityComponentSystem/entity.hpp"
+#include "GameObjects/DrawableGameObject.hpp"
 #include "sceneParser.hpp"
+#include <SFML/System.hpp>
+#include <memory>
 
 namespace ph{
 
@@ -20,10 +21,10 @@ public:
 	void setHide(bool hide) { mHide = hide; }
 	bool getHide() const { return mHide; }
 	
-	Entity& getRoot() { return mRoot; }
+	GameObject& getRoot() { return *mRoot.get(); }
 
 private:
-	Entity mRoot;
+	std::unique_ptr<GameObject> mRoot;
 	SceneParser mSceneParser;
 	GameData* const mGameData;
     bool mHide;

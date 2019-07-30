@@ -1,13 +1,17 @@
 #include "sceneParser.hpp"
-#include "EntityComponentSystem/Objects/Characters/Enemies/zombie.hpp"
 #include "Map/map.hpp"
-#include "EntityComponentSystem/Objects/Characters/player.hpp"
-#include "EntityComponentSystem/Objects/Characters/npc.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
+#include "GameObjects/NotDrawableGameObjects/entrance.hpp"
+#include "GameObjects/NotDrawableGameObjects/spawner.hpp"
+#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
+#include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::string fileName)
+SceneParser::SceneParser(GameData* const gameData, GameObject& root, const std::string fileName)
 	:mGameData(gameData)
 	,mRoot(root) 
 {
@@ -18,6 +22,8 @@ SceneParser::SceneParser(GameData* const gameData, Entity& root, const std::stri
 	loadResources(sceneNode);
 	loadMusic(sceneNode);
 	loadScene(sceneNode);
+
+	mGameData->getRenderer().getCamera().setCenter({0, 0});
 }
 
 void SceneParser::loadResources(const Xml& sceneNode)
@@ -50,6 +56,8 @@ void SceneParser::loadScene(const Xml& sceneNode)
 	const Xml rootNode = sceneNode.getChild("root");
 
 	loadMap(rootNode);
+	loadEntrances(rootNode);
+	loadParticlesSystem();
 	loadPlayer(rootNode);
 	loadGroups(rootNode);
 }
@@ -59,6 +67,23 @@ void SceneParser::loadMap(const Xml& rootNode)
 	const Xml mapNode = rootNode.getChild("map");
 	auto& map = mGameData->getMap();
 	map.loadFromFile(mapNode.getAttribute("filepath").toString());
+}
+
+void SceneParser::loadEntrances(const Xml& rootNode)
+{
+	const std::vector<Xml> entranceNodes = rootNode.getChildren("entrance");
+	for (const auto& entranceNode : entranceNodes)
+	{
+		const std::string filepath = entranceNode.getAttribute("filepath").toString();
+		const std::string name = entranceNode.getAttribute("name").toString();
+		auto entrance = std::make_unique<Entrance>(mGameData, filepath, name, getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+		mRoot.addChild(std::move(entrance));
+	}
+}
+
+void SceneParser::loadParticlesSystem()
+{
+	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData));
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
@@ -79,7 +104,7 @@ void SceneParser::loadGroups(const Xml& rootNode)
 		else if(groupName == "enemies")
 			loadEnemiesGroup(groupNode);
 		else if(groupName == "spawners")
-			loadSpawnersGroup(groupNode);
+			loadSpawners(groupNode);
 		else
 			PH_EXCEPTION("Syntax error: There is not such group: " + groupName);
 	}
@@ -97,29 +122,48 @@ void SceneParser::loadNpcGroup(const Xml& npcGroupNode)
 
 void SceneParser::loadEnemiesGroup(const Xml& enemyGroupNode)
 {
+	mRoot.addChild(std::make_unique<EnemyContainer>(mGameData));
 	const std::vector<Xml> zombieNodes = enemyGroupNode.getChildren("zombie");
 	loadZombies(zombieNodes);
 }
 
 void SceneParser::loadZombies(const std::vector<Xml>& zombieNodes)
 {
+	auto& enemies = mRoot.getChild("enemy_container");
 	for (const auto& zombieNode : zombieNodes) {
 		auto zombie = std::make_unique<Zombie>(mGameData);
 		zombie->setPosition(getPositionAttribute(zombieNode));
-		mRoot.addChild(std::move(zombie));
+		enemies.addChild(std::move(zombie));
 	}
 }
 
-void SceneParser::loadSpawnersGroup(const Xml& spawnerGroupNode)
+void SceneParser::loadSpawners(const Xml& spawnerGroupNode)
 {
-	// TODO: Implement this method when Spawner class will be ready.
+	const std::vector<Xml> spawnerNodes = spawnerGroupNode.getChildren("spawner");
+	for (const auto& spawnerNode : spawnerNodes)
+	{
+		const float frequency = spawnerNode.getAttribute("frequency").toFloat();
+		const std::string name = spawnerNode.getAttribute("name").toString();
+		auto objectSpawner = std::make_unique<Spawner>(
+			mGameData, name + "Spawner", Cast::toObjectType(name), sf::seconds(frequency), getPositionAttribute(spawnerNode)
+		);
+		mRoot.addChild(std::move(objectSpawner));
+	}
 }
 
-auto SceneParser::getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f
+auto SceneParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const -> const sf::Vector2f
 {
 	return sf::Vector2f(
-		objectNode.getAttribute("positionX").toFloat(),
-		objectNode.getAttribute("positionY").toFloat()
+		DrawableGameObjectNode.getAttribute("positionX").toFloat(),
+		DrawableGameObjectNode.getAttribute("positionY").toFloat()
+	);
+}
+
+auto SceneParser::getSizeAttribute(const Xml& objectNode) const -> const sf::Vector2f
+{
+	return sf::Vector2f(
+		objectNode.getAttribute("width").toFloat(),
+		objectNode.getAttribute("height").toFloat()
 	);
 }
 

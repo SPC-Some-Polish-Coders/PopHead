@@ -20,10 +20,10 @@ void IniLoader::handleException(const std::string& message)
 
 void IniLoader::openTheFile()
 {
-	iniSettingsFile.open("config.ini", std::ios::in);
+	iniSettingsFile.open("config/config.ini", std::ios::in);
 	if (!iniSettingsFile.is_open())
 	{
-		handleException("[IniLoader::openTheFile] 'config.ini' file could not be opened!");
+		handleException("[IniLoader::openTheFile] 'config/config.ini' file could not be opened!");
 	}
 }
 
@@ -32,7 +32,7 @@ void IniLoader::closeTheFile()
 	iniSettingsFile.close();
 	if (iniSettingsFile.is_open())
 	{
-		handleException("[IniLoader::closeTheFile] 'config.ini' file could not be closed!");
+		handleException("[IniLoader::closeTheFile] 'config/config.ini' file could not be closed!");
 	}
 }
 

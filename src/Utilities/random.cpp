@@ -1,5 +1,5 @@
 #include "random.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <ctime>
 
 namespace ph {

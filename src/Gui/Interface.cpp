@@ -15,7 +15,7 @@ Interface::Interface(GameData* data)
 {
 	mGameData = data;
 
-	mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getRenderer().getWindow());
+	mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getRenderWindow());
 
 	//mSize = sf::Vector2u(300, 300);
 	mSize = mWindow->getSize();
@@ -47,7 +47,7 @@ bool Interface::setContentPath(const std::string& path)
 
 void Interface::setPosition(const sf::Vector2f& pos)
 {
-	auto k = mGameData->getRenderer().getWindow().getSize();
+	auto k = mGameData->getRenderWindow().getSize();
 	mPosition.x = pos.x * k.x /2;
 	mPosition.y = pos.y * k.y /2;
 	for(const auto& k : mWidgetList)
