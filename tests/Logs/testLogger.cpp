@@ -2,6 +2,7 @@
 
 #include "Logs/logger.hpp"
 #include "../TestsUtilities/bufferedHandler.hpp"
+#include "mockHandler.hpp"
 
 #include <vector>
 
@@ -34,11 +35,6 @@ namespace ph {
 
 	TEST_CASE("You can add and remove Handler from Logger", "[Logs][Logger][Handler]")
 	{
-		class MockHandler : public Handler
-		{
-			virtual void utilizeLog(const LogRecord& logRecord) override {}
-		};
-
 		auto makePointer = []() -> std::unique_ptr<Handler> {
 			std::unique_ptr<Handler> handler(new MockHandler);
 			return std::move(handler);
