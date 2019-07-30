@@ -244,89 +244,79 @@ std::vector<Xml> Xml::getChildren(std::string name) const
 bool Xml::hasAttribute(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "attribute name cannot be empty");
-	/*
-		NOTE:
-		This partly protects against situation when attribute name will
-		be in part of other attribute name or in attribute value
-
-		WARNING: It fails with spaces: <foo bar  =    ""
-		TODO: Delete unnecessary spaces in loadFromFile()?
-	*/
-	name.insert(0, " ");
-	name.push_back('=');
-	name.push_back('\"');
-
-	std::size_t begin = mContent.find(name);
-	if (begin == std::string::npos) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
-		return false;
+	std::size_t endOfTagAttributes = findEndOfTagAttributes();
+	if (endOfTagAttributes == std::string::npos)
+		PH_EXCEPTION("missing closing angle bracket in child opening tag");
+	if (isSelfClosingTag(endOfTagAttributes))
+		--endOfTagAttributes;
+	std::size_t begin = 0;
+	while (true) {
+		begin = mContent.find_first_of(whitespaceCharacters, begin + 1);
+		if (begin == std::string::npos || begin > endOfTagAttributes) {
+			PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+			return false;
+		}
+		begin = mContent.find_first_not_of(whitespaceCharacters, begin + 1);
+		PH_ASSERT(begin != std::string::npos && begin <= endOfTagAttributes, "it should be farthest at endOfTagAttributes");
+		if (begin == endOfTagAttributes) {
+			PH_LOG(LogType::Info, "Xml hasAttribute(): false");
+			return false;
+		}
+		std::size_t end = mContent.find_first_of("=" + whitespaceCharacters, begin + 1);
+		if (end == std::string::npos || end > endOfTagAttributes)
+			PH_EXCEPTION("missing attribute value");
+		if (mContent.compare(begin, end - begin, name) == 0) {
+			PH_LOG(LogType::Info, "Xml hasAttribute(): true");
+			return true;
+		}
+		begin = mContent.find('\"', end + 1);
+		if (begin == std::string::npos || begin > endOfTagAttributes)
+			PH_EXCEPTION("missing attribute value opening quote");
+		begin = mContent.find('\"', begin + 1);
+		if (begin == std::string::npos || begin > endOfTagAttributes)
+			PH_EXCEPTION("missing attribute value closing quote");
 	}
-	begin += name.size();
-
-	std::size_t end = mContent.find('>');
-	if (end == std::string::npos)
-		PH_EXCEPTION("missing angle bracket in child opening tag");
-	if (isSelfClosingTag(end))
-		--end;
-	if (begin >= end) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): false");
-		return false;
-	}
-	if (isEmptyAttributeValue(begin)) {
-		PH_LOG(LogType::Info, "Xml hasAttribute(): true");
-		return true;
-	}
-
-	end = mContent.find('\"', begin + 1);
-	if (end == std::string::npos)
-		PH_EXCEPTION("missing closing quote");
-
-	PH_LOG(LogType::Info, "Xml hasAttribute(): true");
-	return true;
 }
 
 Xml Xml::getAttribute(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "attribute name cannot be empty");
-	std::size_t endOfTag = findEndOfTagAttributes();
-	if (endOfTag == std::string::npos)
+	std::size_t endOfTagAttributes = findEndOfTagAttributes();
+	if (endOfTagAttributes == std::string::npos)
 		PH_EXCEPTION("missing closing angle bracket in child opening tag");
-	if (isSelfClosingTag(endOfTag))
-		--endOfTag;
+	if (isSelfClosingTag(endOfTagAttributes))
+		--endOfTagAttributes;
 	std::size_t begin = 0;
 	while (true) {
 		begin = mContent.find_first_of(whitespaceCharacters, begin + 1);
-		if(begin == std::string::npos || begin > endOfTag)
+		if(begin == std::string::npos || begin > endOfTagAttributes)
 			PH_EXCEPTION("attribute name cannot be found");
 		begin = mContent.find_first_not_of(whitespaceCharacters, begin + 1);
-		if (begin == std::string::npos || begin >= endOfTag)
+		PH_ASSERT(begin != std::string::npos && begin <= endOfTagAttributes, "it should be farthest at endOfTagAttributes");
+		if (begin == endOfTagAttributes)
 			PH_EXCEPTION("attribute name cannot be found");
 		std::size_t end = mContent.find_first_of("=" + whitespaceCharacters, begin + 1);
-		if(end == std::string::npos || end > endOfTag)
+		if(end == std::string::npos || end > endOfTagAttributes)
 			PH_EXCEPTION("missing attribute value");
 		if (mContent.compare(begin, end - begin, name) == 0) {
 			begin = mContent.find('\"', end + 1);
-			if (begin == std::string::npos || begin > endOfTag)
-				PH_EXCEPTION("missing attribute value");
+			if (begin == std::string::npos || begin > endOfTagAttributes)
+				PH_EXCEPTION("missing attribute value opening quote");
 			++begin;
 			end = mContent.find('\"', begin);
-			if (end == std::string::npos || end > endOfTag)
-				PH_EXCEPTION("missing attribute closing quote");
-			if (begin == end) {
-				PH_LOG(LogType::Info, "Xml getAttribute(): ");
-				return Xml();
-			}
+			if (end == std::string::npos || end > endOfTagAttributes)
+				PH_EXCEPTION("missing attribute value closing quote");
 			Xml xml;
 			xml.mContent = mContent.substr(begin, end - begin);
 			PH_LOG(LogType::Info, "Xml getAttribute(): " + xml.mContent);
 			return xml;
 		}
 		begin = mContent.find('\"', end + 1);
-		if(begin == std::string::npos || begin > endOfTag)
-			PH_EXCEPTION("missing attribute value");
+		if(begin == std::string::npos || begin > endOfTagAttributes)
+			PH_EXCEPTION("missing attribute value opening quote");
 		begin = mContent.find('\"', begin + 1);
-		if (begin == std::string::npos || begin > endOfTag)
-			PH_EXCEPTION("missing attribute value");
+		if (begin == std::string::npos || begin > endOfTagAttributes)
+			PH_EXCEPTION("missing attribute value closing quote");
 	}
 }
 
