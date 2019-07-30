@@ -6,7 +6,7 @@
 
 namespace Tests {
 
-	class TestHandler : public ph::Handler
+	class BufferedHandler : public ph::Handler
 	{
 	public:
 		ph::LogRecord getLogRecordFromStart(size_t index = 0) const;

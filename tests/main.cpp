@@ -34,7 +34,7 @@ int main()
 
 #else // !PH_TESTS
 
-#include "TestsUtilities/testHandler.hpp"
+#include "TestsUtilities/bufferedHandler.hpp"
 #include "Logs/logger.hpp"
 
 #define CATCH_CONFIG_RUNNER
@@ -42,10 +42,10 @@ int main()
 
 int main()
 {
-	std::unique_ptr<ph::Handler> testHandler(new Tests::TestHandler);
-	testHandler->enableAllModules();
-	testHandler->enableAllLogLevels();
-	ph::Logger::addLogsHandler(std::move(testHandler));
+	std::unique_ptr<ph::Handler> bufferedHandler(new Tests::BufferedHandler);
+	bufferedHandler->enableAllModules();
+	bufferedHandler->enableAllLogLevels();
+	ph::Logger::addLogsHandler(std::move(bufferedHandler));
 	return Catch::Session().run();
 }
 

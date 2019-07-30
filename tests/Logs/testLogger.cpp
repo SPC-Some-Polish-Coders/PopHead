@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include "Logs/logger.hpp"
-#include "../TestsUtilities/testHandler.hpp"
+#include "../TestsUtilities/bufferedHandler.hpp"
 
 #include <vector>
 
@@ -9,7 +9,7 @@ namespace ph {
 
 	TEST_CASE("Logger creates correct log record", "[Logs][Logger]")
 	{
-		Tests::TestHandler handler;
+		Tests::BufferedHandler handler;
 		handler.clearRecords();
 
 		const static std::vector<ph::LogLevel> logLevels{ LogLevel::Info, LogLevel::Warning, LogLevel::Error, LogLevel::Critical };

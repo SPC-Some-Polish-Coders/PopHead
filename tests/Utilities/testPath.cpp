@@ -2,7 +2,7 @@
 
 #include "Utilities/filePath.hpp"
 #include "Logs/criticalError.hpp"
-#include "../TestsUtilities/testHandler.hpp"
+#include "../TestsUtilities/bufferedHandler.hpp"
 
 #include <string>
 
@@ -52,7 +52,7 @@ namespace ph {
 		std::string nonexistentFilePath = PH_PATH_SEPARATOR+ std::string("PopHead") + PH_PATH_SEPARATOR + "github" + PH_PATH_SEPARATOR + "git" + PH_PATH_SEPARATOR;
 		std::string incompleteFilePath = PH_PATH_SEPARATOR + std::string("PopHead") + PH_PATH_SEPARATOR +"src" + PH_PATH_SEPARATOR;
 
-		Tests::TestHandler logs;
+		Tests::BufferedHandler logs;
 		logs.clearRecords();
 
 		CHECK_THROWS_AS(FilePath::toModuleName(nonsens), ph::CriticalError);

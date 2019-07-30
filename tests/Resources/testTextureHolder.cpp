@@ -1,13 +1,13 @@
 #include <catch.hpp>
 
 #include "Resources/resourceHolder.hpp"
-#include "../TestsUtilities/testHandler.hpp"
+#include "../TestsUtilities/bufferedHandler.hpp"
 
 namespace ph {
 
 	TEST_CASE("Cannot get non-existing texture", "[TextureHolder][ResourceHolder]")
 	{
-		Tests::TestHandler logs;
+		Tests::BufferedHandler logs;
 		logs.clearRecords();
 
 		TextureHolder textures;
