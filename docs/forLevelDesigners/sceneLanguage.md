@@ -11,6 +11,22 @@ as a map are listed there. We don't put sound resources there because it's done 
 
 > [sceneParser.cpp](https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/src/Scenes/sceneParser.cpp)
 
+## List of content
+
+<details>
+<summary>"Click to expand"</summary>
+  
+- [Tutorial](#tutorial)
+- [Scene element](#scene-element)
+- Scene's elements
+	- [Loading element](#loading-element)
+	- [Music element](#music-element)
+	- [Root element](#root-element)
+		- [Groups](#groups) 
+- [List of game elements](#list-of-game-elements)
+
+</details>
+
 # Tutorial
 
 Best explanations are followed by some examples so here's the one:
@@ -121,11 +137,40 @@ It's the most developed one but it doesn't mean it's difficult. Here you provide
   <music></music>
   <root>
     <map name="map" filepath="maps/verySmallMap.tmx"/>
-	  <entrance name="desertMap" filepath="scenes/desertScene.xml" positionX="0" positionY="40" width="20" height="20"/>
+    <entrance name="desertMap" filepath="scenes/desertScene.xml" positionX="0" positionY="40" width="20" height="20"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>
     <group name="npc"> <!--Some content--> </group>
     <group name="enemy"> <!--Some content--> </group>
   </root>
 </scene>
 ```
+
+##### Let's start from `<map>` - it's very basic. All you have to do is to enter a name of a map and its filepath. Name can be anything. And path is relative to resources/. There can be only one!
+
+##### The `<entrance>` is simply a defined rectangle with defined filepath to a new map. Name and filepath works the same way as above. PositionX and positionY are the coordinates of a left upper corner of a rectangle. Width and height are... width and height of the rectangle! There can be many.
+
+##### We must define texturepath for our `<player>` as well. again - path relative to resources/. There can be only one!
+
+##### Then we come to `<groups>`. These are more complicated but you need to know that they take specified name corresponding the game character so you cannot write whatever you want.
+
+### Groups
+
+```xml
+    <group name="npc">
+      <npcTest positionX="30" positionY="30"/>
+    </group>
+    <group name="enemies">
+      <zombie positionX="50" positionY="50"/>
+    </group>
+```
+
+After entering a name for a group, we again need to define element which again must be predefined in the game. All you need to do is write an element's type - `<npcTest <!--Content-->/>` and then as arguments you write positionX and positionY which are coordinates of the left upper corner of the character's sprite.
+
+## List of game elements
+
+-------------------------
+| **Group** | **Element ** |
+| ----------: | ----------- |
+| **`npc`**  | `npcTest` |
+| **`enemies`** | `zombie` |
 
