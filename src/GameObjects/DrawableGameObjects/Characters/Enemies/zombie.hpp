@@ -19,10 +19,7 @@ private:
 	sf::Clock timeFromLastGrowl;
 
 	Path mMovementPath;
-	enum class MovementState { isGoingToCenterOfTheTile, isFollowingThePath, none };
-	MovementState mMovementState = MovementState::none;
 	sf::Vector2f mCurrentDirectionVector;
-	sf::Clock mTimeFromLastPathSearching;
 	sf::Clock mTimeFromStartingThisMove;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };

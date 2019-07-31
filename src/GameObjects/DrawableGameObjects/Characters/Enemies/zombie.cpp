@@ -46,28 +46,21 @@ void Zombie::update(sf::Time delta)
 
 void Zombie::move(sf::Time delta)
 {
+	setPosition(mCollisionBody.getPosition());
+
 	if(mMovementPath.empty()) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mPosition);
-		mMovementState = MovementState::isGoingToCenterOfTheTile;
-		
-	}
-	if(mMovementState == MovementState::isGoingToCenterOfTheTile) {
-		// TODO: go to center of start tile
-		// if(isOnCenterOfTheTile)
-		mMovementState = MovementState::isFollowingThePath;
 		mTimeFromStartingThisMove.restart();
 	}
-	else if(mMovementState == MovementState::isFollowingThePath) {
-		if(mTimeFromStartingThisMove.getElapsedTime().asSeconds() > mTimeInSecondsToMoveToAnotherTile) {
-			mTimeFromStartingThisMove.restart();
-			Direction currentDirection = mMovementPath.front();
-			mMovementPath.pop_front();
-			mCurrentDirectionVector = toDirectionVector(currentDirection);
-		}
-		mCollisionBody.move(movementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+
+	if(mTimeFromStartingThisMove.getElapsedTime().asSeconds() > mTimeInSecondsToMoveToAnotherTile) {
+		mTimeFromStartingThisMove.restart();
+		Direction currentDirection = mMovementPath.front();
+		mMovementPath.pop_front();
+		mCurrentDirectionVector = toDirectionVector(currentDirection);
 	}
 
-	setPosition(mCollisionBody.getPosition());
+	mCollisionBody.move(movementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
 sf::Vector2f Zombie::toDirectionVector(Direction direction)
