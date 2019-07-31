@@ -46,8 +46,7 @@ void Zombie::update(sf::Time delta)
 
 void Zombie::move(sf::Time delta)
 {
-	if(mMovementPath.empty() ||
-		(mGameData->getAIManager().hasPlayerMovedSinceLastUpdate() && mTimeFromLastPathSearching.getElapsedTime().asSeconds() > 10)) {
+	if(mMovementPath.empty()) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mPosition);
 		mMovementState = MovementState::isGoingToCenterOfTheTile;
 		

@@ -24,7 +24,7 @@ private:
 	sf::Vector2f mCurrentDirectionVector;
 	sf::Clock mTimeFromLastPathSearching;
 	sf::Clock mTimeFromStartingThisMove;
-	static constexpr float mTimeInSecondsToMoveToAnotherTile = 2;
+	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 
 }

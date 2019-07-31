@@ -17,8 +17,8 @@ namespace
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
 	sf::FloatRect posAndSize(
-		0,
-		0,
+		50,
+		50,
 		CollisionRectData::PLAYER_WIDTH,
 		CollisionRectData::PLAYER_HEIGHT
 	);
