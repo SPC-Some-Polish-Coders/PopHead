@@ -73,6 +73,7 @@ void Game::run()
 		while(timeSinceLastUpdate >= timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
 
+			input();
 			update(timePerFrame);
 			draw();
 		}
@@ -92,6 +93,7 @@ void Game::input()
 
 void Game::update(sf::Time delta)
 {
+	mAIManager->update();
 	mSceneMachine->update(delta);
 	mPhysicsEngine->update(delta);
 	mRenderer->update(delta);

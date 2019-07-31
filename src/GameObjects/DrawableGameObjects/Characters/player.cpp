@@ -17,8 +17,8 @@ namespace
 	unsigned int HP = 100;
 	unsigned int maxHP = 100;
 	sf::FloatRect posAndSize(
-		0,
-		0,
+		50,
+		50,
 		CollisionRectData::PLAYER_WIDTH,
 		CollisionRectData::PLAYER_HEIGHT
 	);
@@ -44,7 +44,10 @@ namespace
 
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
-	,mIsShooting(false), mIsAttacking(false)
+	,mMotion()
+	,mLastMotion()
+	,mIsShooting(false) 
+	,mIsAttacking(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5));
@@ -197,7 +200,7 @@ sf::Vector2f Player::attackDirection()
 	else if (mLastMotion.isMovingDown)
 		return  { 0.f, 1.f };
 	else
-		PH_EXCEPTION("Direction vector like this shouldn't exist.");
+		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
 }
 
 void Player::updateAnimation(const std::string& stateName)

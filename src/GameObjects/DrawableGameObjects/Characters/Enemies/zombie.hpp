@@ -12,11 +12,16 @@ public:
 
 	void update(sf::Time delta) override;
 private:
-	void move();
+	void move(sf::Time delta);
+	sf::Vector2f toDirectionVector(Direction);
 
 private:
-	Path mMovementPath;
 	sf::Clock timeFromLastGrowl;
+
+	Path mMovementPath;
+	sf::Vector2f mCurrentDirectionVector;
+	sf::Clock mTimeFromStartingThisMove;
+	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 
 }
