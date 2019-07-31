@@ -73,6 +73,7 @@ void Game::run()
 		while(timeSinceLastUpdate >= timePerFrame) {
 			timeSinceLastUpdate -= timePerFrame;
 
+			input();
 			update(timePerFrame);
 			draw();
 		}
