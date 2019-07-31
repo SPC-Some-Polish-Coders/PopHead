@@ -254,4 +254,4 @@ if (condition) {
     ```
 
 ## Additional help
-![Choosing Log level](choosingLogLevel.jpg)
+![Choosing Log level](res/choosingLogLevel.jpg)
