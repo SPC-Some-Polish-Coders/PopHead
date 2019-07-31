@@ -11,19 +11,24 @@ class AIManager
 public:
 	Path getZombiePath(const sf::Vector2f zombiePosition) const;
 
-	void setPlayerPosition(const sf::Vector2f playerPosition) { this->mPlayerPosition = playerPosition; }
+	void setPlayerPosition(const sf::Vector2f playerPosition);
+	bool hasPlayerMovedSinceLastUpdate() const { return mHasPlayerMovedSinceLastUpdate; }
 	void registerMapSize(const sf::Vector2u mapSizeInTiles);
 	void registerObstacle(const sf::Vector2f collisionBodyPosition);
 
+	void update();
+
 private:
 	bool doesZombieSeePlayer(const sf::Vector2f zombiePosition) const;
-	Path getPath(const sf::Vector2f startPosition, const sf::Vector2f destination) const;
+	Path getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const;
+	sf::Vector2u toNodePosition(sf::Vector2f) const;
 	Path getRandomPath(const sf::Vector2f startPosition) const;
 
 private:
 	ObstacleGrid mGrid;
 	sf::Vector2f mPlayerPosition;
 	const unsigned mSpotSideLength = 16;
+	bool mHasPlayerMovedSinceLastUpdate = false;
 };
 
 } 

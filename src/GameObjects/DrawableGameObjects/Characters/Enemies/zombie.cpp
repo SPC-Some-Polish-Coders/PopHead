@@ -1,5 +1,4 @@
 #include "zombie.hpp"
-
 #include "gameData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
@@ -11,9 +10,9 @@ namespace
 {
 	const std::string name = "zombie";
 	const Animation animation;
-	constexpr unsigned int movementSpeed = 100;
-	constexpr unsigned int hp = 100;
-	constexpr unsigned int maxHp = 100;
+	constexpr float movementSpeed = 50.f;
+	constexpr unsigned hp = 100;
+	constexpr unsigned maxHp = 100;
 	const sf::FloatRect posAndSize(
 		0,
 		0,
@@ -42,13 +41,49 @@ void Zombie::update(sf::Time delta)
 		enemyContainer->addEnemyToDie(this);
 	}
 
-	move();
+	move(delta);
 }
 
-void Zombie::move()
+void Zombie::move(sf::Time delta)
 {
-	if(mMovementPath.empty())
+	if(mMovementPath.empty() ||
+		(mGameData->getAIManager().hasPlayerMovedSinceLastUpdate() && mTimeFromLastPathSearching.getElapsedTime().asSeconds() > 10)) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mPosition);
+		mMovementState = MovementState::isGoingToCenterOfTheTile;
+		
+	}
+	if(mMovementState == MovementState::isGoingToCenterOfTheTile) {
+		// TODO: go to center of start tile
+		// if(isOnCenterOfTheTile)
+		mMovementState = MovementState::isFollowingThePath;
+		mTimeFromStartingThisMove.restart();
+	}
+	else if(mMovementState == MovementState::isFollowingThePath) {
+		if(mTimeFromStartingThisMove.getElapsedTime().asSeconds() > mTimeInSecondsToMoveToAnotherTile) {
+			mTimeFromStartingThisMove.restart();
+			Direction currentDirection = mMovementPath.front();
+			mMovementPath.pop_front();
+			mCurrentDirectionVector = toDirectionVector(currentDirection);
+		}
+		mCollisionBody.move(movementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	}
+
+	setPosition(mCollisionBody.getPosition());
+}
+
+sf::Vector2f Zombie::toDirectionVector(Direction direction)
+{
+	switch(direction)
+	{
+	case ph::Direction::east:
+		return sf::Vector2f(1.f, 0.f);
+	case ph::Direction::west:
+		return sf::Vector2f(-1.f, 0.f);
+	case ph::Direction::north:
+		return sf::Vector2f(0.f, -1.f);
+	case ph::Direction::south:
+		return sf::Vector2f(0.f, 1.f);
+	}
 }
 
 }
