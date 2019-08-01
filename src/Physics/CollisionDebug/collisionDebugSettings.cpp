@@ -65,6 +65,8 @@ auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 
 	case BodyType::staticBody:
 		return mStaticBodiesColor;
+	default:
+		PH_UNEXPECTED_SITUATION("Not all types of BodyType were handled");
 	}
 }
 

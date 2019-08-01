@@ -12,7 +12,7 @@ PhysicsEngine::PhysicsEngine()
 
 CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
-	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0));
+	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0.f));
 	auto& staticBody = *mStaticBodies.back().get();
 	mCollisionDebugManager.addStaticBodyCollisionDebugRect(staticBody);
 	return staticBody;

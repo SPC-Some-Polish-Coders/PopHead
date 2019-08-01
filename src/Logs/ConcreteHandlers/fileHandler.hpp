@@ -9,7 +9,7 @@ namespace ph {
 	class FileHandler : public Handler
 	{
 	public:
-		FileHandler(const std::string& baseFileName);
+		FileHandler(std::string fileName);
 
 	private:
 		virtual void utilizeLog(const LogRecord& logRecord);

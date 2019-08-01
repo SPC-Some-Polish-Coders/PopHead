@@ -1,6 +1,8 @@
-#include "Logs/logger.hpp"
+#include "Logs/logs.hpp"
 #include "iniLoader.hpp"
+
 #include "SFML/Graphics.hpp"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -46,6 +48,8 @@ bool IniLoader::findPhrase(const std::string& searchedPhrase)
 			handleException("[IniLoader::findPhrase] ' " + searchedPhrase + "' phrase in settings.ini file could not be found!");
 		}
 	}
+	PH_LOG_WARNING("Phrase was not found in file");
+	return false;
 }
 
 bool IniLoader::findValue(const std::string& searchedValue)

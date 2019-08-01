@@ -58,7 +58,7 @@ Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f des
 sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
 {
 	// TODO: Support other tile size then 16x16
-	return sf::Vector2u(position.x / 16, position.y / 16);
+	return static_cast<sf::Vector2u>(position) / 16u;
 }
 
 Path AIManager::getRandomPath(const sf::Vector2f startPosition) const

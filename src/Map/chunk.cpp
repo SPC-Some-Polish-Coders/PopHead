@@ -44,7 +44,7 @@ void Chunk::initializeTextureCoordinates(const TileData& tileData, sf::Vertex* c
 {
 	const auto textureCoordinateIndices = getTextureCoordinateIndices(tileData);
 	const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
-	const sf::Vector2u tileSizeInPixels = mChunkData->getTileSizeInPixels();
+	const auto tileSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getTileSizeInPixels());
 	const sf::FloatRect textureRect(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
 	tile[textureCoordinateIndices[1]].texCoords = Math::getTopRightCorner(textureRect);
