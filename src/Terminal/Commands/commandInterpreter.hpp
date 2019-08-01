@@ -43,13 +43,6 @@ private:
 	void executeSetVolume() const;
 	float getVolumeFromCommand() const;
 
-	void executeLog() const;
-	void logInto() const;
-	void setLogTypesToLog() const;
-	bool areArgumentsToLogTypesToLogInvalid() const;
-	void setModulesToLog() const;
-	bool areArgumentsToModulesToLogInvalid() const;
-
 	void executeView() const;
 
 	auto getVector2Argument() const -> sf::Vector2f;
