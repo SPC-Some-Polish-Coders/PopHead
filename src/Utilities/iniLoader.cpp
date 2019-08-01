@@ -16,7 +16,6 @@ std::string IniLoader::currentLine;
 
 void IniLoader::handleException(const std::string& message)
 {
-	std::cout << message << std::endl;
 	throw std::runtime_error(message);
 }
 
@@ -66,7 +65,7 @@ bool IniLoader::getBool(const std::string& currentLine)
 	else if (findValue("false")) return false;
 	else
 	{
-		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'. Assumed 'true'" << std::endl;
+		PH_LOG_ERROR("No specified logical value detected for '" + currentLine + "'. Assumed 'true'");
 		return true;
 	}
 }
