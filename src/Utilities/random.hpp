@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <ctime>
 
 namespace ph {
 
@@ -9,7 +10,7 @@ public:
 	static float generateNumber(float min, float max);
 
 private:
-	static std::default_random_engine mEngine;
+	inline static std::default_random_engine mEngine = std::default_random_engine(static_cast<unsigned>(time(nullptr)));
 };
 
 }
