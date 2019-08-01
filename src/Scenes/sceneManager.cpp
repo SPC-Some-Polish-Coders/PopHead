@@ -25,7 +25,7 @@ void SceneManager::changingScenesProcess()
 void SceneManager::popAction()
 {
 	if (mScene == nullptr)
-		PH_LOG(LogLevel::Warning, "You are trying to pop scene but there is no scene to pop.");
+		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
 		mGameData->getRenderer().clear();
 		mGameData->getPhysicsEngine().clear();

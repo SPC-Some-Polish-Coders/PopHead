@@ -61,7 +61,7 @@ std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	if (tilesetNodes.size() == 0)
-		PH_LOG(LogLevel::Warning, "Map doesn't have any tilesets");
+		PH_LOG_WARNING("Map doesn't have any tilesets");
 	return tilesetNodes;
 }
 
@@ -119,7 +119,7 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 {
 	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
 	if (layerNodes.size() == 0)
-		PH_LOG(LogLevel::Warning, "Map doesn't have any layers");
+		PH_LOG_WARNING("Map doesn't have any layers");
 	return layerNodes;
 }
 
@@ -172,7 +172,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) {
-				PH_LOG(LogLevel::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
+				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
