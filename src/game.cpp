@@ -72,9 +72,9 @@ void Game::run()
 
 		while(deltaTime >= timePerFrame) {
 			input();
-			update(deltaTime);
-			draw();
+			update(getProperDeltaTime(deltaTime));
 			deltaTime = sf::Time::Zero;
+			draw();
 		}
 	}
 
@@ -90,13 +90,19 @@ void Game::input()
 	mEfficiencyRegister->input();
 }
 
-void Game::update(sf::Time delta)
+sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
+{
+	const sf::Time minimalDeltaTimeConstrain = sf::seconds(1.f/20.f);
+	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
+}
+
+void Game::update(sf::Time deltaTime)
 {
 	mAIManager->update();
-	mSceneMachine->update(delta);
-	mPhysicsEngine->update(delta);
-	mRenderer->update(delta);
-	mGui->update(delta);
+	mSceneMachine->update(deltaTime);
+	mPhysicsEngine->update(deltaTime);
+	mRenderer->update(deltaTime);
+	mGui->update(deltaTime);
 	mEfficiencyRegister->update();
 }
 
