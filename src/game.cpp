@@ -61,21 +61,20 @@ void Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	sf::Time deltaTime = sf::Time::Zero;
 
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mSceneMachine->changingScenesProcess();
 		input();
 
-		timeSinceLastUpdate += clock.restart();
+		deltaTime += clock.restart();
 
-		while(timeSinceLastUpdate >= timePerFrame) {
-			timeSinceLastUpdate -= timePerFrame;
-
+		while(deltaTime >= timePerFrame) {
 			input();
-			update(timePerFrame);
+			update(deltaTime);
 			draw();
+			deltaTime = sf::Time::Zero;
 		}
 	}
 
