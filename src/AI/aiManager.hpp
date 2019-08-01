@@ -25,7 +25,7 @@ private:
 	Path getRandomPath(const sf::Vector2f startPosition) const;
 
 private:
-	ObstacleGrid mGrid;
+	ObstacleGrid mObstacleGrid;
 	sf::Vector2f mPlayerPosition;
 	const unsigned mSpotSideLength = 16;
 	bool mHasPlayerMovedSinceLastUpdate = false;
