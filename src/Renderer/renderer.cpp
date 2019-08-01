@@ -64,19 +64,19 @@ void Renderer::addObject(DrawableGameObject* const object, LayerID layerID)
 void Renderer::removeDrawableGameObject(std::string name, LayerID layerId)
 {
 	mLayers[layerId].removeObject(name);
-	PH_LOG(LogLevel::Info, "Object \"" + name + "\" was removed from " + getLayerName(layerId) + " layer.");
+	PH_LOG_INFO("Object \"" + name + "\" was removed from " + getLayerName(layerId) + " layer.");
 }
 
 void Renderer::removeDrawableGameObject(const DrawableGameObject* const object)
 {
-	PH_LOG(LogLevel::Info, "Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");
+	PH_LOG_INFO("Object \"" + object->getName() + "\" was removed from " + getLayerName(object->getLayerID()) + " layer.");
 	mLayers[object->getLayerID()].removeObject(object);
 }
 
 void Renderer::removeAllObjectsFromLayer(LayerID layerID)
 {
 	mLayers[layerID].clear();
-	PH_LOG(LogLevel::Info, "All objects were removed from " + getLayerName(layerID) + " layer.");
+	PH_LOG_INFO("All objects were removed from " + getLayerName(layerID) + " layer.");
 }
 
 void Renderer::clear() noexcept

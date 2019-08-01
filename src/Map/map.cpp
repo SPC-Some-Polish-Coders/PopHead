@@ -77,7 +77,7 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		if (tilesetNode.hasAttribute("source")) {
 			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
 			tilesetNodeSource = pathToMapNotEmbeddedTilesets + FilePath::toFilename(tilesetNodeSource, '/');
-			PH_LOG(LogLevel::Info, "Detected not embedded tileset in Map: " + tilesetNodeSource);
+			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
 			tilesetNode = tilesetDocument.getChild("tileset");

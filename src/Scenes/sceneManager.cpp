@@ -30,7 +30,7 @@ void SceneManager::popAction()
 		mGameData->getRenderer().clear();
 		mGameData->getPhysicsEngine().clear();
 		mScene = nullptr;
-		PH_LOG(LogLevel::Info, "The scene was popped.");
+		PH_LOG_INFO("The scene was popped.");
 	}
 	mIsPopping = false;
 }
@@ -40,7 +40,7 @@ void SceneManager::replaceAction()
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
 	mScene = std::make_unique<Scene>(mGameData, mSceneToMakeSourceCodeFilepath);
-	PH_LOG(LogLevel::Info, "The scene was replaced by new scene (" + mSceneToMakeSourceCodeFilepath + ").");
+	PH_LOG_INFO("The scene was replaced by new scene (" + mSceneToMakeSourceCodeFilepath + ").");
 	mIsReplacing = false;
 }
 
