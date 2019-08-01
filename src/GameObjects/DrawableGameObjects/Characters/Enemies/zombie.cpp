@@ -13,6 +13,7 @@ namespace
 	constexpr float movementSpeed = 50.f;
 	constexpr unsigned hp = 100;
 	constexpr unsigned maxHp = 100;
+	constexpr unsigned damage = 20;
 	const sf::FloatRect posAndSize(
 		0,
 		0,
@@ -23,7 +24,7 @@ namespace
 }
 
 Zombie::Zombie(GameData* gameData)
-	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass)
+	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombie.png"));
 }
@@ -35,6 +36,7 @@ void Zombie::update(sf::Time delta)
 		timeFromLastGrowl.restart();
 	}
 	setPosition(mCollisionBody.getPosition());
+	handlePlayerHit();
 
 	if(mHP <= 0) {
 		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
@@ -42,6 +44,16 @@ void Zombie::update(sf::Time delta)
 	}
 
 	move(delta);
+}
+
+void Zombie::handlePlayerHit()
+{
+	auto& gameScene = mGameData->getSceneMachine().getScene();
+	auto& root = gameScene.getRoot();
+	Character& player = dynamic_cast<Character&>(root.getChild("player"));
+
+	if (Math::areTheyOverlapping(getSprite().getGlobalBounds(), player.getSprite().getGlobalBounds()))
+		player.takeDamage(damage);
 }
 
 void Zombie::move(sf::Time delta)

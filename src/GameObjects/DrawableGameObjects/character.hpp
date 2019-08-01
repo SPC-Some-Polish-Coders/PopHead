@@ -35,6 +35,8 @@ protected:
 	sf::Sprite mSprite;
 	Animation mAnimation;
 	CollisionBody& mCollisionBody;
+
+	sf::Clock mTimeFromLastHit;
 };
 
 }

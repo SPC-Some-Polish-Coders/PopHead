@@ -15,6 +15,8 @@ private:
 	void move(sf::Time delta);
 	sf::Vector2f toDirectionVector(Direction);
 
+	void handlePlayerHit();
+
 private:
 	sf::Clock timeFromLastGrowl;
 
