@@ -28,7 +28,8 @@ public:
 
 private:
 	void input();
-	void update(sf::Time delta);
+	sf::Time getProperDeltaTime(sf::Time deltaTime);
+	void update(sf::Time deltaTime);
 	void draw();
 
 	std::unique_ptr< GameData >           mGameData;
