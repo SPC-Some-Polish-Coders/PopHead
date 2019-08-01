@@ -57,7 +57,7 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 		}
 	}
 
-	PH_LOG(LogLevel::Warning, "Path wasn't found!");
+	PH_LOG_WARNING("Path wasn't found!");
 	return Path();
 }
 
@@ -93,6 +93,7 @@ Direction AStar::getDirectionBetweenNodes(const Node* const startNode, const Nod
 		return Direction::south;
 	else if(endNode->mPosition.y < startNode->mPosition.y)
 		return Direction::north;
+	PH_UNEXPECTED_SITUATION("Two identical nodes were given");
 }
 
 bool AStar::isNodeInSet(Node& node, const std::set<Node*>& set)

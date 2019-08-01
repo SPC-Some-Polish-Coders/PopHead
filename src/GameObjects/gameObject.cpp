@@ -53,7 +53,7 @@ void GameObject::addChild(std::unique_ptr<GameObject> newChild)
 	newChild->mName = nameOfNewChild;
     newChild->mParent = this;
     mChildren.emplace_back(std::move(newChild));
-	PH_LOG(LogLevel::Info, "GameObject \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
+	PH_LOG_INFO("GameObject \"" + nameOfNewChild + "\" was added as child of the \"" + mName + "\"");
 }
 
 void GameObject::removeChild(const std::string& name)
@@ -64,12 +64,12 @@ void GameObject::removeChild(const std::string& name)
 			break;
 		}
 
-	PH_LOG(LogLevel::Info, "GameObject \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
+	PH_LOG_INFO("GameObject \"" + name + "\" was removed. It was a child of the \"" + mName + "\"");
 }
 
 void GameObject::removeChild(GameObject* childToRemove)
 {
-	PH_LOG(LogLevel::Info, "GameObject \"" + childToRemove->getName() + "\" was removed. It was a child of the \"" + mName + "\"");
+	PH_LOG_INFO("GameObject \"" + childToRemove->getName() + "\" was removed. It was a child of the \"" + mName + "\"");
 
 	for(auto it = mChildren.begin(); it != mChildren.end(); ++it)
 		if(it->get() == childToRemove) {

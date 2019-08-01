@@ -24,7 +24,7 @@ namespace ph {
 
 			std::unique_ptr<Handler> handler;
 			if (type == "fileHandler")
-				handler.reset(new FileHandler("logs\\log_"));
+				handler.reset(new FileHandler("logs\\log"));
 			else if (type == "consoleHandler")
 				handler.reset(new ConsoleHandler());
 			else if (type == "terminalHandler")

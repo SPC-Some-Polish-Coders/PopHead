@@ -1,18 +1,33 @@
 #include "fileHandler.hpp"
 
+#include <chrono>
 #include <ctime>
 #include <iomanip>
 
-ph::FileHandler::FileHandler(const std::string& baseFileName)
+namespace {
+
+	std::string numberToStringWithTwoDigits(unsigned int number)
+	{
+		if (number >= 10)
+			return std::to_string(number);
+		return '0' + std::to_string(number);
+	}
+}
+
+ph::FileHandler::FileHandler(std::string fileName)
 {
 	// TODO: change this function to use <chrono> instead of ctime
 
-	std::time_t t = time(0);
-	std::tm* now = localtime(&t);
-	std::string fileName = baseFileName;
-	fileName += std::to_string(now->tm_mon + 1) + "." + std::to_string(now->tm_mday) +
-		"_" + std::to_string(now->tm_hour) + "-" + std::to_string(now->tm_min) +
-		"-" + std::to_string(now->tm_sec) + ".txt";
+	auto timePoint = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	tm calendarTime;
+	localtime_s(&calendarTime, &timePoint);
+
+	fileName += '_' +
+				numberToStringWithTwoDigits(calendarTime.tm_mon + 1) + '-' +
+				numberToStringWithTwoDigits(calendarTime.tm_mday) + '_' +
+				numberToStringWithTwoDigits(calendarTime.tm_hour) + '-' +
+				numberToStringWithTwoDigits(calendarTime.tm_min) + '-' +
+				numberToStringWithTwoDigits(calendarTime.tm_sec) + ".txt";
 
 	mLogFile.open(fileName);
 }

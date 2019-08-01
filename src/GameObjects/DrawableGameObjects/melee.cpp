@@ -33,7 +33,7 @@ void Swing::handleHitCharacters()
 	auto* characterWhoWasHit = getCharacterWhoWasHit();
 	if (characterWhoWasHit == nullptr)
 		return;
-	characterWhoWasHit->takeDamage(mDamage);
+	characterWhoWasHit->takeDamage(static_cast<unsigned int>(mDamage));
 }
 
 auto Swing::getCharacterWhoWasHit() -> Character*

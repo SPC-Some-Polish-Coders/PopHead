@@ -30,7 +30,7 @@ void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboar
 void ActionManager::addAction(const std::string& action, sf::Keyboard::Key button)
 {
 	mActions[action] = std::vector<sf::Keyboard::Key>{button};
-	PH_LOG(LogLevel::Info, "Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionManager.");
 }
 
 void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key button)
@@ -42,7 +42,7 @@ void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key 
 		if(std::find(vec.begin(), vec.end(), button) == vec.end())
 			found->second.emplace_back(button);
 	}
-	PH_LOG(LogLevel::Info, "Key was added to action.");
+	PH_LOG_INFO("Key was added to action.");
 }
 
 void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard::Key button)
@@ -53,20 +53,20 @@ void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard:
 		auto& vec = found->second;
 		vec.erase(std::remove(vec.begin(), vec.end(), button), vec.end());
 	}
-	PH_LOG(LogLevel::Info, "Key was deleted from action.");
+	PH_LOG_INFO("Key was deleted from action.");
 }
 
 void ActionManager::deleteAction(const std::string& action)
 {
 	auto found = mActions.find(action);
 	mActions.erase(found);
-	PH_LOG(LogLevel::Info, "Action was deleted from ActionManager.");
+	PH_LOG_INFO("Action was deleted from ActionManager.");
 }
 
 void ActionManager::clearAllActions() noexcept
 {
 	mActions.clear();
-	PH_LOG(LogLevel::Info, "All actions were cleared.");
+	PH_LOG_INFO("All actions were cleared.");
 }
 
 bool ActionManager::isActionPressed(const std::string& action)

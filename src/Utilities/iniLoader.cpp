@@ -1,6 +1,8 @@
-#include "Logs/logger.hpp"
+#include "Logs/logs.hpp"
 #include "iniLoader.hpp"
+
 #include "SFML/Graphics.hpp"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -14,7 +16,6 @@ std::string IniLoader::currentLine;
 
 void IniLoader::handleException(const std::string& message)
 {
-	std::cout << message << std::endl;
 	throw std::runtime_error(message);
 }
 
@@ -46,6 +47,8 @@ bool IniLoader::findPhrase(const std::string& searchedPhrase)
 			handleException("[IniLoader::findPhrase] ' " + searchedPhrase + "' phrase in settings.ini file could not be found!");
 		}
 	}
+	PH_LOG_WARNING("Phrase was not found in file");
+	return false;
 }
 
 bool IniLoader::findValue(const std::string& searchedValue)
@@ -62,7 +65,7 @@ bool IniLoader::getBool(const std::string& currentLine)
 	else if (findValue("false")) return false;
 	else
 	{
-		std::cout << "[IniLoader::getBool] No specified logical value detected for '" + currentLine + "'. Assumed 'true'" << std::endl;
+		PH_LOG_ERROR("No specified logical value detected for '" + currentLine + "'. Assumed 'true'");
 		return true;
 	}
 }

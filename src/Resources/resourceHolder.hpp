@@ -13,9 +13,9 @@ template< typename ResourceType >
 class ResourceHolder
 {
 public:
-    void load(const std::string& filePath);
+    bool load(const std::string& filePath);
     auto get(const std::string& filePath) ->ResourceType&;
-    void free(const std::string& filePath);
+    bool free(const std::string& filePath);
 
 private:
 	std::unordered_map< std::string, std::unique_ptr<ResourceType> > mResources;

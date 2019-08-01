@@ -1,4 +1,5 @@
 #include "Renderer/windowInitializer.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 
@@ -29,6 +30,8 @@ int WindowInitializer::getWindowWidth()
 			return width;
 		}
 	}
+	PH_LOG_ERROR("Window width wasn't found in file");
+	return 0;   // TODO: change to another default value
 }
 
 int WindowInitializer::getWindowHeight()
@@ -48,6 +51,8 @@ int WindowInitializer::getWindowHeight()
 			return height;
 		}
 	}
+	PH_LOG_ERROR("Window height wasn't found in file");
+	return 0;   // TODO: change to another default value
 }
 
 int WindowInitializer::getResolutionValue()
@@ -64,6 +69,8 @@ bool WindowInitializer::getFullscreenMode()
 	{
 		return getBool(currentLine);
 	}
+	PH_LOG_ERROR("Value of fullscreen mode was not found in file");
+	return false;
 }
 
 }

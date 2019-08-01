@@ -23,7 +23,7 @@ namespace
 }
 
 Zombie::Zombie(GameData* gameData)
-	:Enemy(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
+	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombie.png"));
 }
@@ -75,6 +75,8 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 		return sf::Vector2f(0.f, -1.f);
 	case ph::Direction::south:
 		return sf::Vector2f(0.f, 1.f);
+	default:
+		PH_UNEXPECTED_SITUATION("Not all directions were handled in switch");
 	}
 }
 

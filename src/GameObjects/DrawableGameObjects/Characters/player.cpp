@@ -50,8 +50,8 @@ Player::Player(GameData* gameData)
 	,mIsAttacking(false)
 {
 	mAnimation.animate(mSprite);
-	addChild(std::make_unique<Gun>(mGameData, 5));
-	addChild(std::make_unique<MeleeWeapon>(mGameData, 25, 25, 60));
+	addChild(std::make_unique<Gun>(mGameData, 5.f));
+	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
 }
 
 void Player::input()
