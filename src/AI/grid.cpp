@@ -19,15 +19,15 @@ bool operator < (const Node& lhs, const Node& rhs)
 	return false;
 }
 
-bool operator == (const Node& lhs, const Node& rhs)
-{
-	return lhs.mIsObstacle == rhs.mIsObstacle && lhs.mPosition == rhs.mPosition;
-}
-
-bool operator != (const Node& lhs, const Node& rhs)
-{
-	return !(lhs == rhs);
-}
+//bool operator == (const Node& lhs, const Node& rhs)
+//{
+//	return lhs.mPosition == rhs.mPosition;
+//}
+//
+//bool operator != (const Node& lhs, const Node& rhs)
+//{
+//	return !(lhs == rhs);
+//}
 
 Grid::Grid(const ObstacleGrid& obstacleGrid)
 	: mObstacleGrid(obstacleGrid)
