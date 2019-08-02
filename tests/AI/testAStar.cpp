@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include <AI/aStar.hpp>
+#include <AI/aStarAlgorithm.hpp>
 
 namespace ph {
 
@@ -13,7 +13,7 @@ ObstacleGrid getGrid8x8WithLabirinth();
 TEST_CASE("A* algorithm choose the quickest path when path is straight and there are no obstacles", "[AI][AStar]")
 {
 	auto grid = getWalkableGrid3x4();
-	AStar a(grid);
+	AStarAlgorithm a(grid);
 	auto path = a.getPath({1, 0}, {1, 3});
 	REQUIRE(path == Path{Direction::south, Direction::south, Direction::south});
 }
@@ -28,7 +28,7 @@ ObstacleGrid getWalkableGrid3x4()
 TEST_CASE("A* algorithm choose the quickest path with one turn without obstacles", "[AI][AStar]")
 {
 	auto grid = getWalkableGrid3x4();
-	AStar a(grid);
+	AStarAlgorithm a(grid);
 	auto path = a.getPath({0, 1}, {1, 0});
 	REQUIRE((path == Path{Direction::north, Direction::east} || path == Path{Direction::east, Direction::north}));
 }
@@ -43,7 +43,7 @@ ObstacleGrid getWalkableGrid2x2()
 TEST_CASE("A* algorithm choose the quickest path with 2 turns with obstacles", "[AI][AStar]")
 {
 	auto grid = getGrid5x3WithObstacleInCenter();
-	AStar a(grid);
+	AStarAlgorithm a(grid);
 	auto path = a.getPath({3, 2}, {2, 0});
 	REQUIRE(path == Path{Direction::east, Direction::north, Direction::north, Direction::west, Direction::west});
 }
@@ -59,7 +59,7 @@ ObstacleGrid getGrid5x3WithObstacleInCenter()
 TEST_CASE("A* algorithm choose the quickest path with many turns and long obstacle", "[AI][AStar]")
 {
 	auto grid = getGrid6x6WithLongObstacle();
-	AStar a(grid);
+	AStarAlgorithm a(grid);
 	auto path = a.getPath({3, 4}, {0, 1});
 	REQUIRE((path == Path{Direction::east, Direction::north, Direction::north, Direction::north, 
 		Direction::west, Direction::west, Direction::west, Direction::west} || 
@@ -79,7 +79,7 @@ ObstacleGrid getGrid6x6WithLongObstacle()
 TEST_CASE("A* algorithm choose the quickest path through the labyrint", "[AI][AStar]")
 {
 	auto grid = getGrid8x8WithLabirinth();
-	AStar a(grid);
+	AStarAlgorithm a(grid);
 	auto path = a.getPath({4, 0}, {0, 4});
 	REQUIRE(
 		path == Path{Direction::east, Direction::east, Direction::south, Direction::south,

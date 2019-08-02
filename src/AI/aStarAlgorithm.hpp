@@ -7,12 +7,10 @@
 
 namespace ph {
 
-// This is implementation of A* path finding algorithm
-
-class AStar
+class AStarAlgorithm
 {
 public:
-	AStar(const ObstacleGrid& grid);
+	AStarAlgorithm(const ObstacleGrid& grid);
 	Path getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
 
 private:
