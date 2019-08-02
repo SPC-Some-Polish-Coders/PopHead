@@ -4,14 +4,6 @@
 
 namespace ph {
 
-bool EventLoop::mIsKeyJustPressed;
-bool EventLoop::mIsKeyJustReleased;
-bool EventLoop::mIsMouseButtonJustPressed;
-bool EventLoop::mIsMouseButtonJustReleased;
-bool EventLoop::mHasMouseJustMoved;
-sf::Keyboard::Key EventLoop::mKey;
-sf::Mouse::Button EventLoop::mMouseButton;
-
 void EventLoop::init(GameData* gameData)
 {
 	gameData->getRenderWindow().setKeyRepeatEnabled(false);

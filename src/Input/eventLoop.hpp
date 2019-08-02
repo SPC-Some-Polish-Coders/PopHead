@@ -27,14 +27,13 @@ private:
     static void clear();
 
 private:
-    static bool mIsKeyJustPressed;
-    static bool mIsKeyJustReleased;
-    static bool mIsMouseButtonJustPressed;
-    static bool mIsMouseButtonJustReleased;
-    static bool mHasMouseJustMoved;
-
-    static sf::Keyboard::Key mKey;
-    static sf::Mouse::Button mMouseButton;
+    inline static sf::Keyboard::Key mKey;
+    inline static sf::Mouse::Button mMouseButton;
+    inline static bool mIsKeyJustPressed;
+    inline static bool mIsKeyJustReleased;
+    inline static bool mIsMouseButtonJustPressed;
+    inline static bool mIsMouseButtonJustReleased;
+    inline static bool mHasMouseJustMoved;
 };
 
 }
