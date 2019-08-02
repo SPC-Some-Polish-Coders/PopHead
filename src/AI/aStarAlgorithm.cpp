@@ -30,7 +30,7 @@ Path AStarAlgorithm::getPath(const sf::Vector2u startNodePosition, const sf::Vec
 			return retracePath(mGrid.getNodeOfPosition(startNodePosition), mGrid.getNodeOfPosition(destinationNodePosition));
 
 		for(Node* neighbour : mGrid.getNeighboursOf(*currentNode)) {
-			if(neighbour->mIsObstacle || isNodeInSet(*neighbour, closedNodes))
+			if(mGrid.isObstacle(neighbour->mPosition) || isNodeInSet(*neighbour, closedNodes))
 				continue;
 
 			if (!isNodeInSet(*neighbour, openNodesPointers)) {

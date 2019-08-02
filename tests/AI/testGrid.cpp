@@ -37,14 +37,14 @@ TEST_CASE("Grid can be created and node of certain position can be get", "[AI][G
 	};
 
 	Grid grid(obstacles);
-	CHECK(grid.getNodeOfPosition({0, 0})->mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({0, 1})->mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({1, 0})->mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({1, 1})->mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({2, 0})->mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({2, 1})->mIsObstacle == false);
-	CHECK(grid.getNodeOfPosition({3, 0})->mIsObstacle == true);
-	CHECK(grid.getNodeOfPosition({3, 1})->mIsObstacle == true);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({0, 0})->mPosition) == true);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({0, 1})->mPosition) == false);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({1, 0})->mPosition) == false);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({1, 1})->mPosition) == true);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({2, 0})->mPosition) == false);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({2, 1})->mPosition) == false);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({3, 0})->mPosition) == true);
+	CHECK(grid.isObstacle(grid.getNodeOfPosition({3, 1})->mPosition) == true);
 }
 
 TEST_CASE("Neighbours of node can be get", "[AI][Grid]")

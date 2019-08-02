@@ -3,9 +3,8 @@
 
 namespace ph {
 
-Node::Node(const bool isObstacle, const sf::Vector2u position)
-	:mIsObstacle(isObstacle)
-	,mPosition(position)
+Node::Node(const sf::Vector2u position)
+	:mPosition(position)
 	,mDistanceFromStart(0.f)
 	,mDistanceToDestination(0.f)
 {
@@ -31,11 +30,12 @@ bool operator != (const Node& lhs, const Node& rhs)
 }
 
 Grid::Grid(const ObstacleGrid& obstacleGrid)
+	: mObstacleGrid(obstacleGrid)
 {
 	for(unsigned x = 0; x < obstacleGrid.size(); ++x) {
 		std::vector<Node> row;
 		for(unsigned y = 0; y < obstacleGrid[x].size(); ++y)
-			row.emplace_back(obstacleGrid[x][y], sf::Vector2u(x, y));
+			row.emplace_back(sf::Vector2u(x, y));
 		mNodes.emplace_back(row);
 	}
 }
@@ -59,6 +59,11 @@ std::vector<Node*> Grid::getNeighboursOf(const Node& node)
 		neighbours.push_back(&mNodes[node.mPosition.x][node.mPosition.y - 1]);
 
 	return neighbours;
+}
+
+bool Grid::isObstacle(const sf::Vector2u& position) const
+{
+	return mObstacleGrid[position.x][position.y];
 }
 
 }
