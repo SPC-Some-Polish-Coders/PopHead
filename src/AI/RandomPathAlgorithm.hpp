@@ -9,7 +9,6 @@ class RandomPathAlgorithm
 {
 public:
 	RandomPathAlgorithm(const ObstacleGrid&);
-
 	Path getRandomPath(const sf::Vector2u startNodePosition);
 
 private:
