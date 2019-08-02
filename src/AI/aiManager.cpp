@@ -64,8 +64,8 @@ sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
 
 Path AIManager::getRandomPath(const sf::Vector2f startPosition) const
 {
-	RandomPathAlgorithm rpa(mObstacleGrid);
-	return rpa.getRandomPath(toNodePosition(startPosition));
+	RandomPathAlgorithm rpa(mObstacleGrid, toNodePosition(startPosition));
+	return rpa.getRandomPath();
 }
 
 }
