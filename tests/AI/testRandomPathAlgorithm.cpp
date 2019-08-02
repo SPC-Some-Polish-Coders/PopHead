@@ -30,7 +30,10 @@ TEST_CASE("Random path finding algorithm works properly with no obstacles", "[AI
 		( path == Path{Direction::south, Direction::south} ) ||
 		( path == Path{Direction::south, Direction::south, Direction::south} ) ||
 		( path == Path{Direction::south, Direction::south, Direction::south, Direction::south} ) ||
-		( path == Path{Direction::south, Direction::south, Direction::south, Direction::south, Direction::south} )
+		( path == Path{Direction::south, Direction::south, Direction::south, Direction::south, Direction::south} ) ||
+		( path == Path{Direction::none, Direction::none, Direction::none} ) ||
+		( path == Path{Direction::none, Direction::none} ) ||
+		( path == Path{Direction::none} )
 	));
 }
 
@@ -58,7 +61,10 @@ TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][R
 			(path == Path{Direction::east, Direction::east, Direction::east, Direction::east}) ||
 			(path == Path{Direction::west, Direction::west}) ||
 			(path == Path{Direction::west, Direction::west, Direction::west}) ||
-			(path == Path{Direction::north, Direction::north})
+			(path == Path{Direction::north, Direction::north}) ||
+			(path == Path{Direction::none, Direction::none, Direction::none} ) ||
+			(path == Path{Direction::none, Direction::none} ) ||
+			(path == Path{Direction::none} )
 		));
 	}
 }
