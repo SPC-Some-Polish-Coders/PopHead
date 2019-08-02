@@ -75,6 +75,8 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 		return sf::Vector2f(0.f, -1.f);
 	case ph::Direction::south:
 		return sf::Vector2f(0.f, 1.f);
+	case ph::Direction::none:
+		return sf::Vector2f();
 	default:
 		PH_UNEXPECTED_SITUATION("Not all directions were handled in switch");
 	}

@@ -12,6 +12,8 @@ public:
 	Path getRandomPath();
 
 private:
+	Path getRandomStayingPath();
+	Path getRandomWalkingPath();
 	unsigned getWalkableDistanceBetweenObstacleNodeIn(const Direction);
 	unsigned getWalkableDistanceBetweenObstacleNodeOnEast();
 	unsigned getWalkableDistanceBetweenObstacleNodeOnWest();

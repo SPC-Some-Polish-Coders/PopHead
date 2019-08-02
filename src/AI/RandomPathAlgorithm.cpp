@@ -15,6 +15,24 @@ RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const
 
 Path RandomPathAlgorithm::getRandomPath()
 {
+	const int isGonnaWalk = Random::generateNumber(0, 1);
+	if(isGonnaWalk)
+		return getRandomWalkingPath();
+	else
+		return getRandomStayingPath();
+}
+
+Path RandomPathAlgorithm::getRandomStayingPath()
+{
+	const int howMuchStayingInTheSamePlace = Random::generateNumber(1, 3);
+	Path path;
+	path.resize(howMuchStayingInTheSamePlace);
+	std::fill(path.begin(), path.end(), Direction::none);
+	return path;
+}
+
+Path RandomPathAlgorithm::getRandomWalkingPath()
+{
 	if(mNumberOfRecurrencyCalls > 5)
 		return Path();
 
