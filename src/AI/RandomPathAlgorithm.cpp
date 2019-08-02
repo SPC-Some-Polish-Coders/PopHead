@@ -9,21 +9,23 @@ RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const
 	:mObstacleGrid(obstacleGrid)
 	,mStartNodePosition(startNodePosition)
 	,mMaximalWalkableDistance(5)
+	,mNumberOfRecurrencyCalls(0)
 {
 }
 
 Path RandomPathAlgorithm::getRandomPath()
 {
+	if(mNumberOfRecurrencyCalls > 5)
+		return Path();
+
 	Path path;
 	Direction direction = static_cast<Direction>(Random::generateNumber(0, 3));
 	const unsigned walkableDistanceBetweenObstacleNode = getWalkableDistanceBetweenObstacleNodeIn(direction);
-	if(walkableDistanceBetweenObstacleNode < 2)
+	if(walkableDistanceBetweenObstacleNode < 2) {
+		++mNumberOfRecurrencyCalls;
 		return getRandomPath();
-	int lengthOfPath;
-	if(walkableDistanceBetweenObstacleNode > 5)
-		lengthOfPath = Random::generateNumber(2, 5);
-	else
-		lengthOfPath = Random::generateNumber(2, walkableDistanceBetweenObstacleNode);
+	}
+	const int lengthOfPath = Random::generateNumber(2, walkableDistanceBetweenObstacleNode);
 	path.resize(lengthOfPath);
 	std::fill(path.begin(), path.end(), direction);
 	return path;
