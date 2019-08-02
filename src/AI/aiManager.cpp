@@ -1,5 +1,5 @@
 #include "aiManager.hpp" 
-#include "aStar.hpp"
+#include "aStarAlgorithm.hpp"
 #include "RandomPathAlgorithm.hpp"
 #include <algorithm>
 #include <cmath>
@@ -52,7 +52,7 @@ bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 
 Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const
 {
-	AStar a(mObstacleGrid);
+	AStarAlgorithm a(mObstacleGrid);
 	return a.getPath(toNodePosition(startPosition), toNodePosition(destinationPosition));
 }
 

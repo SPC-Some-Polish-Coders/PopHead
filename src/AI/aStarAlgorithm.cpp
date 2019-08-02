@@ -1,15 +1,15 @@
-#include "aStar.hpp"
+#include "AStarAlgorithm.hpp"
 #include "Logs/logs.hpp"
 #include <cmath>
 
 namespace ph {
 
-AStar::AStar(const ObstacleGrid& obstacleGrid)
+AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid)
 	:mGrid(obstacleGrid)
 {
 }
 
-Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
+Path AStarAlgorithm::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
 {
 	auto compareCosts = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
 	std::multiset<Node*, decltype(compareCosts)> openNodes(compareCosts);
@@ -61,7 +61,7 @@ Path AStar::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u des
 	return Path();
 }
 
-Path AStar::retracePath(const Node* const startNode, Node* const endNode)
+Path AStarAlgorithm::retracePath(const Node* const startNode, Node* const endNode)
 {
 	std::deque<Node*> nodePath;
 	Node* currentNode = endNode;
@@ -73,7 +73,7 @@ Path AStar::retracePath(const Node* const startNode, Node* const endNode)
 	return toDirectionPath(nodePath);
 }
 
-Path AStar::toDirectionPath(const std::deque<Node*>& nodePath)
+Path AStarAlgorithm::toDirectionPath(const std::deque<Node*>& nodePath)
 {
 	Path path;
 	for(unsigned i = 0; i < nodePath.size() - 1; ++i) {
@@ -83,7 +83,7 @@ Path AStar::toDirectionPath(const std::deque<Node*>& nodePath)
 	return path;
 }
 
-Direction AStar::getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode)
+Direction AStarAlgorithm::getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode)
 {
 	if(endNode->mPosition.x > startNode->mPosition.x)
 		return Direction::east;
@@ -96,13 +96,13 @@ Direction AStar::getDirectionBetweenNodes(const Node* const startNode, const Nod
 	PH_UNEXPECTED_SITUATION("Two identical nodes were given");
 }
 
-bool AStar::isNodeInSet(Node& node, const std::set<Node*>& set)
+bool AStarAlgorithm::isNodeInSet(Node& node, const std::set<Node*>& set)
 {
 	auto found = set.find(&node);
 	return found != set.cend();
 }
 
-float AStar::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition)
+float AStarAlgorithm::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition)
 {
 	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
 	float legX = std::abs(static_cast<float>(destinationNodePosition.x) - currentNodePosition.x);
