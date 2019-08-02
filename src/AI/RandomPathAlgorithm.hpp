@@ -12,11 +12,16 @@ public:
 	Path getRandomPath();
 
 private:
-	unsigned getWalkableDistanceBetweenObstacleNodeIn(Direction);
+	unsigned getWalkableDistanceBetweenObstacleNodeIn(const Direction);
+	unsigned getWalkableDistanceBetweenObstacleNodeOnEast();
+	unsigned getWalkableDistanceBetweenObstacleNodeOnWest();
+	unsigned getWalkableDistanceBetweenObstacleNodeToTheNorth();
+	unsigned getWalkableDistanceBetweenObstacleNodeToTheSouth();
 
 private:
 	const ObstacleGrid& mObstacleGrid;
 	const sf::Vector2u mStartNodePosition;
+	const unsigned mMaximalWalkableDistance;
 };
 
 } 
