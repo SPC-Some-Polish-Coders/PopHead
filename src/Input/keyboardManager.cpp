@@ -11,9 +11,7 @@ bool KeyboardManager::isKeyPressed( sf::Keyboard::Key key ) const
 
 bool KeyboardManager::isKeyJustPressed( sf::Keyboard::Key key ) const
 {
-	const auto& pendingJustPressedKeys = EventLoop::getPendingJustPressedKeys();
-	auto found = std::find(pendingJustPressedKeys.begin(), pendingJustPressedKeys.end(), key);
-    return (found != pendingJustPressedKeys.end());
+    return (EventLoop::isKeyJustPressed() && EventLoop::getPressedKey() == key);
 }
 
 bool KeyboardManager::isKeyJustReleased( sf::Keyboard::Key key ) const

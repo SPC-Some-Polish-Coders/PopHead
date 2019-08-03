@@ -86,10 +86,8 @@ bool ActionManager::isActionJustPressed(const std::string& action)
 	if(!mEnabled)
 		return false;
 
-	const auto& pendingKeys = EventLoop::getPendingJustPressedKeys();
 	for(const auto& button : mActions[action]) {
-		auto found = std::find(pendingKeys.begin(), pendingKeys.end(), button);
-		if(found != pendingKeys.end())
+		if(EventLoop::isKeyJustPressed() && EventLoop::getPressedKey() == button)
 			return true;
 	}
 	return false;
