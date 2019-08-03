@@ -27,7 +27,7 @@ TEST_CASE("Kinematic collisions are handled properly when one body is way heavie
 		CHECK(Approx(forceVector.y).margin(2) == -52);
 	}
 	SECTION("When ligterBody is going to collide with heavierBody at aomething about PI/4 radians in unit circle") {
-		CollisionBody lighterBody({11, -9.99, 10, 10}, 25);
+		CollisionBody lighterBody({11, -9.99f, 10, 10}, 25);
 		lighterBody.move({-1, 0});
 		kinematicCollisionHandler(lighterBody, heavierBody);
 		auto forceVector = lighterBody.getForceVector();
