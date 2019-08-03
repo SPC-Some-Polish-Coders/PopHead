@@ -233,11 +233,8 @@ void CommandInterpreter::executeView() const
 	if(newViewSize == mVector2ArgumentError)
 		return;
 	camera.setSize(newViewSize);
-	auto& map = mGameData->getMap();
-	if(commandContains("chunkdebug"))
-		map.setRenderChunksMode(RenderChunksMode::for640x480CameraView);
-	else
-		map.setRenderChunksMode(RenderChunksMode::forCurrentCameraView);
+	auto& renderer = mGameData->getRenderer();
+	renderer.setDebugRenderingMode(commandContains("debugmode"));
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

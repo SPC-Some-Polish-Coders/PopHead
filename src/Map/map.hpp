@@ -11,12 +11,6 @@ namespace ph{
 
 class GameData;
 
-enum class RenderChunksMode
-{
-	forCurrentCameraView,
-	for640x480CameraView
-};
-
 class Map
 {
 public:
@@ -24,9 +18,7 @@ public:
 
 	void loadFromFile(const std::string& filename);
 
-    void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const;
-
-	void setRenderChunksMode(const RenderChunksMode renderChunksMode) { mRenderChunksMode = renderChunksMode; }
+    void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const;
 
 	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
@@ -79,13 +71,10 @@ private:
 
 	void loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
 
-	auto getScreenBounds(const sf::Vector2f cameraCenter, const sf::Vector2f cameraSize) const -> const sf::FloatRect;
-
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
 	GameData* mGameData;
-	RenderChunksMode mRenderChunksMode;
 };
 
 }

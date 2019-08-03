@@ -17,6 +17,7 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 				{ LayerID::airEntities, Layer() },
 				{ LayerID::gui, Layer() },
 				{ LayerID::cmd, Layer() } }
+	,mDebugRenderingMode(false)
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
 }
@@ -36,24 +37,40 @@ void Renderer::draw() const
 	mCamera.applyTo(mRenderTarget);
 	mRenderTarget.clear();
 
-	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
-	drawSceneLayers();
+	sf::FloatRect properCameraBounds = getProperCameraBounds();
+	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, properCameraBounds);
+	drawSceneLayers(properCameraBounds);
 	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
 	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
 	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
-void Renderer::drawSceneLayers() const
+void Renderer::drawSceneLayers(sf::FloatRect properCameraBounds) const
 {
 	for(const auto& layer : mLayers)
 		for(const auto& drawableGameObject : layer.second) {
 			auto objectPosition = drawableGameObject->getPosition();
 			sf::FloatRect objectBounds(objectPosition.x - 100, objectPosition.y - 100, 200, 200);
-			if(Math::areTheyOverlapping(mCamera.getBounds(), objectBounds)) {
+			if(Math::areTheyOverlapping(properCameraBounds, objectBounds)) {
 				mRenderTarget.draw(*drawableGameObject);
 				mGameData->getEfficiencyRegister().registerRenderCall();
 			}
 		}
+}
+
+sf::FloatRect Renderer::getProperCameraBounds() const
+{
+	if(mDebugRenderingMode) {
+		sf::Vector2f cameraCommonSize(640, 480);
+		const sf::Vector2f cameraCommonLeftCornerPosition(
+			mCamera.getCenter().x - cameraCommonSize.x / 2,
+			mCamera.getCenter().y - cameraCommonSize.x / 2
+		);
+		return sf::FloatRect(cameraCommonLeftCornerPosition.x, cameraCommonLeftCornerPosition.y,
+			cameraCommonSize.x, cameraCommonSize.y);
+	}
+	else
+		return mCamera.getBounds();
 }
 
 void Renderer::addObject(DrawableGameObject* const object)

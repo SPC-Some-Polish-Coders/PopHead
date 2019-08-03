@@ -37,9 +37,11 @@ public:
 	auto getCamera() -> Camera& { return mCamera; }
 
 	void setGameData(GameData* gameData) { mGameData = gameData; }
+	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
 
 private:
-	void drawSceneLayers() const;
+	void drawSceneLayers(sf::FloatRect properCameraBounds) const;
+	sf::FloatRect getProperCameraBounds() const;
 	void setPositionOfStaticObjectsToCamera();
 	std::string getLayerName(LayerID) const;
 
@@ -49,6 +51,7 @@ private:
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	sf::RenderTarget& mRenderTarget;
 	GameData* mGameData;
+	bool mDebugRenderingMode;
 };
 
 }
