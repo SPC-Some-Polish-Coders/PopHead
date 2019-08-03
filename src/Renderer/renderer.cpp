@@ -1,6 +1,5 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/iniLoader.hpp"
-#include "windowInitializer.hpp"
 #include "GameObjects/drawableGameObject.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
