@@ -15,8 +15,8 @@ ActionManager::ActionManager()
 	addAction("movingDown", {sf::Keyboard::S, sf::Keyboard::Down});
 	addAction("movingRight", {sf::Keyboard::D, sf::Keyboard::Right});
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
-	addAction("attack", sf::Keyboard::X);
-	addAction("meleeAttack", sf::Keyboard::Z);
+	addAction("attack", sf::Keyboard::Enter);
+	addAction("meleeAttack", sf::Keyboard::BackSlash);
 }
 
 void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)

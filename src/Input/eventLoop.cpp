@@ -47,6 +47,7 @@ void EventLoop::eventLoop(GameData* gameData)
 
 void EventLoop::clear()
 {
+	mPendingJustPressedKeys.clear();
 	mReleasedKey = sf::Keyboard::Unknown;
 	mMouseButton = sf::Mouse::ButtonCount;
 	mIsKeyJustPressed = false;
