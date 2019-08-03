@@ -21,12 +21,12 @@ bool MouseManager::isMouseButtonPressed(sf::Mouse::Button button) const
 
 bool MouseManager::isMouseButtonJustPressed(sf::Mouse::Button button) const
 {
-    return (EventLoop::isMouseButtonJustPressed() && EventLoop::getMouseButton() == button);
+    return (EventLoop::isMouseButtonJustPressed() && EventLoop::getMousePressedButton() == button);
 }
 
 bool MouseManager::isMouseButtonJustReleased(sf::Mouse::Button button) const
 {
-    return (EventLoop::isMouseButtonJustReleased() && EventLoop::getMouseButton() == button);
+	return (EventLoop::isMouseButtonJustReleased() && EventLoop::getMouseReleasedButton() == button);
 }
 
 }

@@ -17,7 +17,8 @@ public:
 
 	static auto getPressedKey() -> sf::Keyboard::Key { return mPressedKey; }
     static auto getReleasedKey() -> sf::Keyboard::Key { return mReleasedKey; }
-    static auto getMouseButton() -> sf::Mouse::Button { return mMouseButton; }
+    static auto getMousePressedButton() -> sf::Mouse::Button { return mMousePressedButton; }
+    static auto getMouseReleasedButton() -> sf::Mouse::Button { return mMouseReleasedButton; }
     static bool isKeyJustPressed(){ return mIsKeyJustPressed; }
     static bool isKeyJustReleased(){ return mIsKeyJustReleased; }
     static bool isMouseButtonJustPressed(){ return mIsMouseButtonJustPressed; }
@@ -30,7 +31,8 @@ private:
 private:
 	inline static sf::Keyboard::Key mPressedKey;
     inline static sf::Keyboard::Key mReleasedKey;
-    inline static sf::Mouse::Button mMouseButton;
+    inline static sf::Mouse::Button mMousePressedButton;
+    inline static sf::Mouse::Button mMouseReleasedButton;
     inline static bool mIsKeyJustPressed;
     inline static bool mIsKeyJustReleased;
     inline static bool mIsMouseButtonJustPressed;
