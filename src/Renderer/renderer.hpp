@@ -45,8 +45,8 @@ private:
 
 private:
 	Camera mCamera;
-	const std::map< Viewports, sf::Rect< float > > mViewports;
 	std::map< LayerID, Layer > mLayers;
+	const std::map< Viewports, sf::Rect< float > > mViewports;
 	sf::RenderTarget& mRenderTarget;
 	GameData* mGameData;
 };

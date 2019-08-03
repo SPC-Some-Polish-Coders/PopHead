@@ -113,7 +113,8 @@ std::string Renderer::getLayerName(LayerID layerID) const
 	case LayerID::collisionDebug:    return "collisionDebug";
 	case LayerID::gui:               return "gui";
 	case LayerID::cmd:               return "cmd";
-	default:                         return "ERROR: Every object has to be bind to the certain layer.";
+	default:
+		PH_UNEXPECTED_SITUATION("Every object should be bound to the certain layer!");
 	}
 }
 
