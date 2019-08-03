@@ -2,6 +2,7 @@
 #include "Utilities/iniLoader.hpp"
 #include "GameObjects/drawableGameObject.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/math.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -36,16 +37,23 @@ void Renderer::draw() const
 	mRenderTarget.clear();
 
 	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, mCamera.getCenter(), mCamera.getSize());
-
-	for(const auto& layer : mLayers)
-		for(const auto& object : layer.second) {
-			mRenderTarget.draw(*object);
-			mGameData->getEfficiencyRegister().registerRenderCall();
-		}
-
+	drawSceneLayers();
 	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
 	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
 	mRenderTarget.draw(mGameData->getTerminal().getImage());
+}
+
+void Renderer::drawSceneLayers() const
+{
+	for(const auto& layer : mLayers)
+		for(const auto& drawableGameObject : layer.second) {
+			auto objectPosition = drawableGameObject->getPosition();
+			sf::FloatRect objectBounds(objectPosition.x - 100, objectPosition.y - 100, 200, 200);
+			if(Math::areTheyOverlapping(mCamera.getBounds(), objectBounds)) {
+				mRenderTarget.draw(*drawableGameObject);
+				mGameData->getEfficiencyRegister().registerRenderCall();
+			}
+		}
 }
 
 void Renderer::addObject(DrawableGameObject* const object)

@@ -22,6 +22,12 @@ void Camera::setCenter(sf::Vector2f center)
 	mView.setCenter(center);
 }
 
+auto Camera::getBounds() const -> sf::FloatRect
+{
+	const sf::Vector2f topLeftCornerPosition(mCenterWithoutShake.x - getSize().x / 2, mCenterWithoutShake.y - getSize().y / 2);
+	return sf::FloatRect(topLeftCornerPosition.x, topLeftCornerPosition.y, getSize().x, getSize().y);
+}
+
 void Camera::shake(float shakeStrengthLoss)
 {
 	if (mShakeStrength > 0.f) {

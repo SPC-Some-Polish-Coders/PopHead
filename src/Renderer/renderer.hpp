@@ -39,6 +39,7 @@ public:
 	void setGameData(GameData* gameData) { mGameData = gameData; }
 
 private:
+	void drawSceneLayers() const;
 	void setPositionOfStaticObjectsToCamera();
 	std::string getLayerName(LayerID) const;
 
