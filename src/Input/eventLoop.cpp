@@ -20,12 +20,12 @@ void EventLoop::eventLoop(GameData* gameData)
 		{
 		case sf::Event::KeyPressed:
 			mIsKeyJustPressed = true;
-			mKey = event.key.code;
+			mPendingJustPressedKeys.push_back(event.key.code);
 			break;
 
 		case sf::Event::KeyReleased:
 			mIsKeyJustReleased = true;
-			mKey = event.key.code;
+			mReleasedKey = event.key.code;
 			break;
 
 		case sf::Event::MouseButtonPressed:
@@ -47,13 +47,13 @@ void EventLoop::eventLoop(GameData* gameData)
 
 void EventLoop::clear()
 {
+	mReleasedKey = sf::Keyboard::Unknown;
+	mMouseButton = sf::Mouse::ButtonCount;
 	mIsKeyJustPressed = false;
 	mIsKeyJustReleased = false;
 	mIsMouseButtonJustPressed = false;
 	mIsMouseButtonJustReleased = false;
 	mHasMouseJustMoved = false;
-	mKey = sf::Keyboard::Unknown;
-	mMouseButton = sf::Mouse::ButtonCount;
 }
 
 }

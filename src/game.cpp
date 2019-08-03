@@ -81,6 +81,12 @@ void Game::run()
 	mRenderWindow.close();
 }
 
+sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
+{
+	const sf::Time minimalDeltaTimeConstrain = sf::seconds(1.f/20.f);
+	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
+}
+
 void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
@@ -88,12 +94,6 @@ void Game::input()
 	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
 	mTerminal->input();
 	mEfficiencyRegister->input();
-}
-
-sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
-{
-	const sf::Time minimalDeltaTimeConstrain = sf::seconds(1.f/20.f);
-	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
 }
 
 void Game::update(sf::Time deltaTime)

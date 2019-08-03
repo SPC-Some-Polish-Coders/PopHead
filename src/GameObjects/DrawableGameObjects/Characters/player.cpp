@@ -200,7 +200,7 @@ sf::Vector2f Player::attackDirection()
 	else if (mLastMotion.isMovingDown)
 		return  { 0.f, 1.f };
 	else
-		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
+		return  {0.f, 1.f};
 }
 
 void Player::updateAnimation(const std::string& stateName)

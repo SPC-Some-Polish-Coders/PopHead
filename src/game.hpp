@@ -27,8 +27,8 @@ public:
 	Terminal* getTerminal() { return mTerminal.get(); }
 
 private:
-	void input();
 	sf::Time getProperDeltaTime(sf::Time deltaTime);
+	void input();
 	void update(sf::Time deltaTime);
 	void draw();
 

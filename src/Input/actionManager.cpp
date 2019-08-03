@@ -15,8 +15,8 @@ ActionManager::ActionManager()
 	addAction("movingDown", {sf::Keyboard::S, sf::Keyboard::Down});
 	addAction("movingRight", {sf::Keyboard::D, sf::Keyboard::Right});
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
-	addAction("attack", sf::Keyboard::Space);
-	addAction("meleeAttack", sf::Keyboard::LControl);
+	addAction("attack", sf::Keyboard::X);
+	addAction("meleeAttack", sf::Keyboard::Z);
 }
 
 void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
@@ -83,21 +83,25 @@ bool ActionManager::isActionPressed(const std::string& action)
 
 bool ActionManager::isActionJustPressed(const std::string& action)
 {
-	return isAction(action, EventLoop::isKeyJustPressed);
+	if(!mEnabled)
+		return false;
+
+	const auto& pendingKeys = EventLoop::getPendingJustPressedKeys();
+	for(const auto& button : mActions[action]) {
+		auto found = std::find(pendingKeys.begin(), pendingKeys.end(), button);
+		if(found != pendingKeys.end())
+			return true;
+	}
+	return false;
 }
 
 bool ActionManager::isActionJustReleased(const std::string& action)
-{
-	return isAction(action, EventLoop::isKeyJustReleased);
-}
-
-bool ActionManager::isAction(const std::string& action, std::function<bool(void)> func)
 {
 	if(!mEnabled)
 		return false;
 
 	for(const auto& button : mActions[action]) {
-		if(func() && EventLoop::getKey() == button)
+		if(EventLoop::isKeyJustReleased() && EventLoop::getReleasedKey() == button)
 			return true;
 	}
 	return false;
