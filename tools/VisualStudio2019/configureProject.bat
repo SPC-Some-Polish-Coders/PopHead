@@ -1,6 +1,6 @@
 call clearFiles.bat
-cd ..\premake
-premake5 vs2019
+cd ..\..\vendor\premake
+premake5 --file=..\..\tools\premake\premake5.lua vs2019
 cd ..\VisualStudio2019
 mkdir ..\..\logs
 PAUSE

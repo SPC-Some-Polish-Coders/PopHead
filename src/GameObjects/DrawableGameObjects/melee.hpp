@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObjects/DrawableGameObject.hpp"
-#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 #include <array>
 
 namespace ph{
