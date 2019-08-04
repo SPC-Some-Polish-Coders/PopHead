@@ -1,8 +1,9 @@
 #pragma once
 
 #include "GameObjects/DrawableGameObject.hpp"
-#include "sceneParser.hpp"
+
 #include <SFML/System.hpp>
+
 #include <memory>
 
 namespace ph{
@@ -12,7 +13,7 @@ class GameData;
 class Scene
 {
 public:
-    Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath);
+    Scene();
     void input();
     void update(sf::Time delta);
 
@@ -25,8 +26,6 @@ public:
 
 private:
 	std::unique_ptr<GameObject> mRoot;
-	SceneParser mSceneParser;
-	GameData* const mGameData;
     bool mHide;
     bool mPause;
 };

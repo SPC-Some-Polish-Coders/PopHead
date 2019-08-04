@@ -1,5 +1,6 @@
 #include "sceneManager.hpp"
 #include "scene.hpp"
+#include "sceneParser.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
@@ -39,7 +40,8 @@ void SceneManager::replaceAction()
 {
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
-	mScene = std::make_unique<Scene>(mGameData, mSceneToMakeSourceCodeFilepath);
+	mScene = std::make_unique<Scene>();
+	SceneParser sceneParser(mGameData, mScene->getRoot(), mSceneToMakeSourceCodeFilepath);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mSceneToMakeSourceCodeFilepath + ").");
 	mIsReplacing = false;
 }
