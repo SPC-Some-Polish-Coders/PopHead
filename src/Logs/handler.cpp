@@ -1,7 +1,7 @@
 #include "handler.hpp"
 
 #include <algorithm>
-#include <fstream>
+#include <filesystem>
 
 namespace ph {
 	
@@ -74,11 +74,18 @@ namespace ph {
 	void Handler::initializeModules()
 	{
 		// in Distribution it should be replaced by static list of modules
-		std::ifstream modulesNames("config/modules.txt");
 
 		std::string module;
-		while (modulesNames >> module)
-			mAllowedModules.emplace_back(module, false);
+		for (auto& p : std::filesystem::directory_iterator("src"))
+			if (p.is_directory())
+			{
+				module = p.path().string();
+				module.erase(0, 4);
+				mAllowedModules.emplace_back(module, false);
+			}
+
+		mAllowedModules.emplace_back("MainDirectory", false);
+		mAllowedModules.emplace_back("Tests", false);
 	}
 	void Handler::initializeLogLevels()
 	{
