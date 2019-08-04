@@ -11,7 +11,7 @@ namespace
 	const std::string name = "zombie";
 	const Animation animation;
 	constexpr float movementSpeed = 50.f;
-	constexpr unsigned hp = 100;
+	constexpr int hp = 100;
 	constexpr unsigned maxHp = 100;
 	constexpr unsigned damage = 20;
 	const sf::FloatRect posAndSize(
