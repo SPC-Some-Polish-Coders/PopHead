@@ -1,5 +1,4 @@
 #include "Renderer/renderer.hpp"
-#include "Utilities/iniLoader.hpp"
 #include "GameObjects/drawableGameObject.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/math.hpp"
