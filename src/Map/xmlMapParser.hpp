@@ -1,11 +1,14 @@
 #pragma once
 
-#include "Scenes/mapParser.hpp"
+#include <string>
 
 namespace ph {
 
-	class XmlMapParser : public MapParser
+	class GameData;
+
+	class XmlMapParser
 	{
-		virtual void parseFile(const std::string& fileName) override;
+	public:
+		void parseFile(GameData* const gameData, const std::string& fileName);
 	};
 }

@@ -2,7 +2,7 @@
 
 namespace ph {
 
-	void XmlGameObjectsParser::parseFile(const std::string& fileName)
+	void XmlGameObjectsParser::parseFile(GameData* const gameData, GameObject& root, const std::string& fileName)
 	{
 	}
 }

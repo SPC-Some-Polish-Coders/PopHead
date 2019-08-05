@@ -2,7 +2,7 @@
 
 namespace ph {
 
-	void XmlGuiParser::parseFile(const std::string& fileName)
+	void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileName)
 	{
 	}
 }

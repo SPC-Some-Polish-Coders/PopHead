@@ -1,11 +1,15 @@
 #pragma once
 
-#include "Scenes/gameObjectsParser.hpp"
+#include <string>
 
 namespace ph {
 
-	class XmlGameObjectsParser : public GameObjectsParser
+	class GameData;
+	class GameObject;
+
+	class XmlGameObjectsParser
 	{
-		virtual void parseFile(const std::string& fileName) override;
+	public:
+		void parseFile(GameData* const gameData, GameObject& root, const std::string& fileName);
 	};
 }

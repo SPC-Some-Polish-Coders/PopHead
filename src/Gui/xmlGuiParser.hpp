@@ -1,11 +1,14 @@
 #pragma once
 
-#include "Scenes/guiParser.hpp"
+#include <string>
 
 namespace ph {
 
-	class XmlGuiParser : public GUIParser
+	class GameData;
+
+	class XmlGuiParser
 	{
-		virtual void parseFile(const std::string& fileName) override;
+	public:
+		void parseFile(GameData* const gameData, const std::string& fileName);
 	};
 }
