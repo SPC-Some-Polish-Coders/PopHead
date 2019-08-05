@@ -2,6 +2,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 
 namespace ph {
 
@@ -17,12 +18,14 @@ class CommandInterpreter
 {
 public:
 	void setGameData(GameData* const gameData) { mGameData = gameData; }
+	void init();
 
 	void handleCommand(const std::string&);
 private:
 	std::string getCommandWithoutArguments() const;
 	int getArgumentPositionInCommand() const;
 
+	void executeInfoMessage() const;
 	void executeEcho() const;
 
 	void executeExit() const;
@@ -58,6 +61,7 @@ private:
 	void executeMessage(const std::string&, const MessageType) const;
 
 private:
+	std::unordered_map<std::string, void(CommandInterpreter::*)() const> mCommandsMap;
 	std::string mCommand;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
 	GameData* mGameData;

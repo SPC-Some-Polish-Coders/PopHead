@@ -10,27 +10,32 @@
 
 namespace ph {
 
+void CommandInterpreter::init()
+{
+	mCommandsMap["echo"] =		&CommandInterpreter::executeEcho;
+	mCommandsMap["exit"] =		&CommandInterpreter::executeExit;
+	mCommandsMap["teleport"] =	&CommandInterpreter::executeTeleport;
+	mCommandsMap["currentpos"] =	&CommandInterpreter::executeCurrentPos;
+	mCommandsMap["collisiondebug"] =&CommandInterpreter::executeCollisionDebug;
+	mCommandsMap["mute"] =		&CommandInterpreter::executeMute;
+	mCommandsMap["unmute"] =	&CommandInterpreter::executeUnmute;
+	mCommandsMap["setvolume"] =	&CommandInterpreter::executeSetVolume;
+	mCommandsMap["history"] =	&CommandInterpreter::executeHistory;
+	mCommandsMap["help"] =		&CommandInterpreter::executeHelp;
+	mCommandsMap["clear"] =		&CommandInterpreter::executeClear;
+	mCommandsMap["view"] =		&CommandInterpreter::executeView;
+	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
+	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
+}
+
 void CommandInterpreter::handleCommand(const std::string& command)
 {
 	mCommand = command;
-
 	const std::string commandWithoutArguments = getCommandWithoutArguments();
 
-	if (commandWithoutArguments == "echo")                executeEcho();
-	else if (commandWithoutArguments == "exit")           executeExit();
-	else if (commandWithoutArguments == "teleport")       executeTeleport();
-	else if (commandWithoutArguments == "currentpos")     executeCurrentPos();
-	else if (commandWithoutArguments == "collisiondebug") executeCollisionDebug();
-	else if (commandWithoutArguments == "mute")           executeMute();
-	else if (commandWithoutArguments == "unmute")         executeUnmute();
-	else if (commandWithoutArguments == "setvolume")      executeSetVolume();
-	else if (commandWithoutArguments == "history")        executeHistory();
-	else if (commandWithoutArguments == "help")           executeHelp();
-	else if (commandWithoutArguments == "clear")          executeClear();
-	else if (commandWithoutArguments == "view")           executeView();
-	else if (commandWithoutArguments == "spawn")          executeSpawn();
-	else if (commandWithoutArguments == "")				  executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
-	else executeMessage( "Entered command wasn't recognised. Enter 'help' to see available commands.", MessageType::ERROR);
+	if (mCommandsMap.count(commandWithoutArguments))
+		(this->*mCommandsMap.at(commandWithoutArguments))(); 
+	else executeMessage("Entered command wasn't recognised. Enter 'help' to see available commands.", MessageType::ERROR);
 }
 
 std::string CommandInterpreter::getCommandWithoutArguments() const
@@ -42,6 +47,11 @@ int CommandInterpreter::getArgumentPositionInCommand() const
 {
 	const size_t argumentPosition = mCommand.find(' ');
 	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
+}
+
+void CommandInterpreter::executeInfoMessage() const
+{
+	executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
 }
 
 void CommandInterpreter::executeEcho() const
