@@ -7,12 +7,12 @@
 
 namespace ph {
 
-class GameData;
+class Renderer;
 
 class DrawableGameObject : public GameObject, public sf::Drawable
 {
 public:
-	DrawableGameObject(GameData*, std::string name, LayerID);
+	DrawableGameObject(Renderer&, const std::string& name, LayerID);
 
 	void setVisibility(bool visibility, bool recursive = true);
 	virtual void setPosition(sf::Vector2f, bool recursive = true);
@@ -34,7 +34,6 @@ private:
 protected:
 	sf::Vector2f mPosition;
 	sf::Vector2f mScale;
-	GameData* mGameData;
 	const LayerID mLayerID;
 	float mRotation;
 	bool mVisibility;

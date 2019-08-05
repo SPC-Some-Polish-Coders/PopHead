@@ -9,7 +9,8 @@ namespace ph {
 
 Character::Character(GameData* gameData, std::string name, Animation animation,
 	unsigned int movementSpeed,  int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass)
-	:DrawableGameObject(gameData, name, LayerID::kinematicEntities)
+	:DrawableGameObject(gameData->getRenderer(), name, LayerID::kinematicEntities)
+	,mGameData(gameData)
 	,mHP(HP)
 	,mMaxHP(maxHP)
 	,mMovementSpeed(movementSpeed)
@@ -65,15 +66,14 @@ void Character::drawBlood()
 {
 	auto& root = mGameData->getSceneMachine().getScene().getRoot();
 	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
-	particlesSystem.addChild(std::make_unique<Particles>(mGameData, getSpriteCenter() + mPosition));
+	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + mPosition));
 }
 
 void Character::takeDamage(const unsigned damage)
 { 
 	//INFO: Temporary solution so the particles don't bug
 
-	if (mTimeFromLastHit.getElapsedTime().asSeconds() > 0.15f)
-	{
+	if (mTimeFromLastHit.getElapsedTime().asSeconds() > 0.15f) {
 		mHP -= damage;
 		drawBlood();
 		mTimeFromLastHit.restart();

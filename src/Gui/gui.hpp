@@ -8,6 +8,8 @@
 
 namespace ph {
 
+class GameData;
+
 class GUI
 {
 public:
@@ -17,33 +19,15 @@ public:
 	class Gui_drawer : public DrawableGameObject
 	{
 	public:
-		Gui_drawer(GameData* gameData, std::string name, LayerID id)
-			: DrawableGameObject(gameData, name, id)
-			, mGui(nullptr)
-		{
+		Gui_drawer(GameData* gameData, std::string name, LayerID id);
 
-		}
+		void init(GUI* gui);
 
-		void init(GUI* gui) {
-			mGui = gui;
-		}
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-		void onCollision(DrawableGameObject&) {};
+		void update(sf::Time delta);
 
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-		{
-			mGui->draw();
-		}
-
-		void update(sf::Time delta)
-		{
-			mGui->update(delta);
-		}
-
-		void move(sf::Vector2f delta, bool recursive = true)
-		{
-			mGui->move(delta);
-		}
+		void move(sf::Vector2f delta, bool recursive = true);
 
 	private:
 		GUI* mGui;

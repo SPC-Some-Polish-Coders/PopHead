@@ -1,6 +1,6 @@
-#include "gameData.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -67,7 +67,8 @@ void Swing::incrementRotation()
 
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
-	:DrawableGameObject(gameData, "sword", LayerID::kinematicEntities)
+	:DrawableGameObject(gameData->getRenderer(), "sword", LayerID::kinematicEntities)
+	,mGameData(gameData)
 	,mDamage(damage)
 	,mRange(range)
 	,mRotationRange(rotatationRange)
@@ -110,7 +111,7 @@ void MeleeWeapon::setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDir
 	else if (attackDirection == sf::Vector2f(-0.7f, 0.7f))
 		mPosition += {0, 10};
 	else
-		PH_EXCEPTION("Direction vector like this shouldn't exist.");
+		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
 }
 
 void MeleeWeapon::initializeAttackGraphics(const Swing& swing)

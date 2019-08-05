@@ -3,10 +3,10 @@
 #include "GameObjects/drawableGameObject.hpp"
 #include "Utilities/animation.hpp"
 
-
 namespace ph {
 
 class CollisionBody;
+class GameData;
 
 class Character : public DrawableGameObject
 {
@@ -29,6 +29,7 @@ public:
 	auto getSpriteCenter() -> sf::Vector2f;
 
 protected:
+	GameData* const mGameData;
 	int mHP;
 	unsigned mMaxHP;
 	unsigned mMovementSpeed;

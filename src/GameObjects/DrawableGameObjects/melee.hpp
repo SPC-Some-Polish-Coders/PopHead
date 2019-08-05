@@ -5,6 +5,7 @@
 
 namespace ph{
 
+class GameData;
 class Character;
 
 class Swing {
@@ -51,6 +52,7 @@ private:
 	auto getEnemies()->GameObject&;
 
 private:
+	GameData* const mGameData;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;

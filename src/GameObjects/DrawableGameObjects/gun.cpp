@@ -46,7 +46,8 @@ bool Bullet::wasEnemyShot(Character& character)
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
-	:DrawableGameObject(gameData, "gun", LayerID::kinematicEntities)
+	:DrawableGameObject(gameData->getRenderer(), "gun", LayerID::kinematicEntities)
+	,mGameData(gameData)
 	,mDamage(damage)
 {
 }

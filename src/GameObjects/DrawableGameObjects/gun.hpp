@@ -5,6 +5,8 @@
 
 namespace ph {
 
+class GameData;
+
 class Bullet
 {
 public:
@@ -45,6 +47,7 @@ private:
 private:
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
+	GameData* const mGameData;
 	const float mDamage;
 };
 

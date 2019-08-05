@@ -3,6 +3,32 @@
 
 namespace ph {
 
+GUI::Gui_drawer::Gui_drawer(GameData* gameData, std::string name, LayerID id)
+	: DrawableGameObject(gameData->getRenderer(), name, id)
+	, mGui(nullptr)
+{
+
+}
+
+void GUI::Gui_drawer::init(GUI* gui) {
+	mGui = gui;
+}
+
+void GUI::Gui_drawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	mGui->draw();
+}
+
+void GUI::Gui_drawer::update(sf::Time delta)
+{
+	mGui->update(delta);
+}
+
+void GUI::Gui_drawer::move(sf::Vector2f delta, bool recursive)
+{
+	mGui->move(delta);
+}
+
 GUI::GUI()
 	:mGuiDrawer(nullptr)
 	,mGameData(nullptr)
