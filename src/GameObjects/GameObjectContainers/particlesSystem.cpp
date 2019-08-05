@@ -1,23 +1,22 @@
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
-#include "gameData.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph {
 
-ParticlesSystem::ParticlesSystem(GameData* const gameData)
-	:mGameData(gameData)
+ParticlesSystem::ParticlesSystem(Renderer& renderer)
+	:mRenderer(renderer)
 	,GameObject("particlesSystem")
 {
 }
 
 void ParticlesSystem::handleParticlesToDelete()
 {
-	for (Particles* particles : mParticlesToDelete)
-	{
-		mGameData->getRenderer().removeDrawableGameObject(particles);
+	for (Particles* particles : mParticlesToDelete) {
+		mRenderer.removeDrawableGameObject(particles);
 		removeChild(particles);
 	}
-		mParticlesToDelete.clear();
+	mParticlesToDelete.clear();
 }
 
 void ParticlesSystem::update(const sf::Time delta)

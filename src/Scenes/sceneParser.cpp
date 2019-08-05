@@ -83,7 +83,7 @@ void SceneParser::loadEntrances(const Xml& rootNode)
 
 void SceneParser::loadParticlesSystem()
 {
-	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData));
+	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
