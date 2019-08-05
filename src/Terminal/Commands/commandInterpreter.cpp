@@ -1,7 +1,6 @@
+#include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
-#include "Terminal/Commands/messageType.hpp"
-#include "commandInterpreter.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
