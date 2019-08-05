@@ -1,11 +1,11 @@
 #pragma once
 
 #include "GameObjects/DrawableGameObject.hpp"
-#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 #include <array>
 
 namespace ph{
 
+class GameData;
 class Character;
 
 class Swing {
@@ -52,6 +52,7 @@ private:
 	auto getEnemies()->GameObject&;
 
 private:
+	GameData* const mGameData;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;

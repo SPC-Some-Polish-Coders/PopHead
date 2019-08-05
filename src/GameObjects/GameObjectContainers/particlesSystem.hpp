@@ -5,13 +5,13 @@
 
 namespace ph {
 
-class GameData;
+class Renderer;
 class Particles;
 
 class ParticlesSystem : public GameObject
 {
 public:
-	ParticlesSystem(GameData* const);
+	ParticlesSystem(Renderer& renderer);
 
 	void update(const sf::Time delta) override;
 	void addParticlesToDelete(Particles* deletingParticles) { mParticlesToDelete.emplace_back(deletingParticles); }
@@ -20,7 +20,7 @@ private:
 	void handleParticlesToDelete();
 
 private:
-	GameData* const mGameData;
+	Renderer& mRenderer;
 	std::vector<Particles*> mParticlesToDelete;
 };
 

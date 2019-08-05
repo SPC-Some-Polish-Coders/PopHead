@@ -3,16 +3,15 @@
 
 namespace ph {
 
-DrawableGameObject::DrawableGameObject(GameData* gameData, std::string name, LayerID layerID)
+DrawableGameObject::DrawableGameObject(Renderer& renderer, const std::string& name, LayerID layerID)
 	:GameObject(name)
 	,mPosition(0, 0)
 	,mScale(0, 0)
-	,mGameData(gameData)
 	,mLayerID(layerID)
 	,mRotation(0)
 	,mVisibility(true)
 {
-    mGameData->getRenderer().addObject(this, layerID);
+    renderer.addObject(this, layerID);
 }
 
 void DrawableGameObject::setVisibility(bool visibility, bool recursive)

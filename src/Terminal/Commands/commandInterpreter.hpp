@@ -2,12 +2,16 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "Terminal/Commands/messageType.hpp"
 
 namespace ph {
 
 class GameData;
 class DrawableGameObject;
+
+enum class MessageType 
+{ 
+	ERROR, INFO, USER, BLANK
+};
 
 class CommandInterpreter
 {

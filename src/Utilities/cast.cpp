@@ -38,7 +38,7 @@ ObjectType Cast::toObjectType(const std::string& str)
 		if (str.find(it.first) != std::string::npos)
 			return it.second;
 	}
-		PH_EXCEPTION("There is no such ObjectType!");
+	PH_EXCEPTION("There is no such ObjectType!");
 }
 
 }

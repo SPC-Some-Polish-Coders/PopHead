@@ -76,14 +76,14 @@ void SceneParser::loadEntrances(const Xml& rootNode)
 	{
 		const std::string filepath = entranceNode.getAttribute("filepath").toString();
 		const std::string name = entranceNode.getAttribute("name").toString();
-		auto entrance = std::make_unique<Entrance>(mGameData, filepath, name, getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+		auto entrance = std::make_unique<Entrance>(mGameData->getSceneMachine(), filepath, name, getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
 		mRoot.addChild(std::move(entrance));
 	}
 }
 
 void SceneParser::loadParticlesSystem()
 {
-	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData));
+	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 }
 
 void SceneParser::loadPlayer(const Xml& rootNode)
