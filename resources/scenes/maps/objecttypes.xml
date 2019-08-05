@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="Entrance" color="#000000">
+  <property name="gotoScene" type="file" default=""/>
+ </objecttype>
+ <objecttype name="Npc" color="#ffff00">
+  <property name="hp" type="file" default="50"/>
+  <property name="maxHp" type="file" default="50"/>
+ </objecttype>
+ <objecttype name="Spawner" color="#aa0000">
+  <property name="spawnFrequency" type="float" default="3"/>
+ </objecttype>
+ <objecttype name="Zombie" color="#00aa00">
+  <property name="hp" type="float" default="100"/>
+  <property name="maxHp" type="float" default="100"/>
+ </objecttype>
+</objecttypes>
