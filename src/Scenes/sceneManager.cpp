@@ -4,6 +4,10 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
+#include "Gui/xmlGuiParser.hpp"
+#include "Map/xmlMapParser.hpp"
+#include "GameObjects/xmlGameObjectsParser.hpp"
+
 namespace ph {
 
 SceneManager::SceneManager()
@@ -41,7 +45,7 @@ void SceneManager::replaceAction()
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
 	mScene = std::make_unique<Scene>();
-	SceneParser sceneParser(mGameData, mScene->getRoot(), mSceneToMakeSourceCodeFilepath);
+	SceneParser<XmlGuiParser, XmlMapParser, XmlGameObjectsParser> sceneParser(mGameData, mScene->getRoot(), mSceneToMakeSourceCodeFilepath);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mSceneToMakeSourceCodeFilepath + ").");
 	mIsReplacing = false;
 }
