@@ -12,8 +12,8 @@ namespace ph {
 		Xml sceneFile;
 		sceneFile.loadFromFile(sceneFileName);
 		const auto sceneLinksNode = sceneFile.getChild("scenelinks");
-		parseMap(gameData, sceneLinksNode);
 		parseGameObjects(gameData, root, sceneLinksNode);
+		parseMap(gameData, sceneLinksNode);
 		parseGui(gameData, sceneLinksNode);
 	}
 
@@ -21,9 +21,9 @@ namespace ph {
 	inline void SceneParser<GuiParser, MapParser, GameObjectsParser>::parseMap(GameData* const gameData, const Xml& sceneLinksNode)
 	{
 		const auto mapNode = sceneLinksNode.getChild("map");
-		const std::string mapFileName = mapNode.getAttribute("filename").toString();
+		const std::string mapFilePath = "scenes/maps/" + mapNode.getAttribute("filename").toString();
 		MapParser mapParser;
-		mapParser.parseFile(gameData, mapFileName);
+		mapParser.parseFile(gameData, mapFilePath);
 	}
 
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
