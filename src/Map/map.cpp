@@ -12,23 +12,10 @@ Map::Map()
 {
 }
 
-void Map::load(const std::string& filename, const GeneralMapInfo& info, const TilesetsData& tilesetsData)
+void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, const std::vector<Xml>& layerNodes)
 {
-	Xml mapFile;
-	mapFile.loadFromFile(filename);
-	const Xml mapNode = mapFile.getChild("map");
-	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	
 	createChunkMap(tilesetsData, info);
 	createAllLayers(layerNodes, tilesetsData, info);
-}
-
-std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
-	if (layerNodes.size() == 0)
-		PH_LOG_WARNING("Map doesn't have any layers");
-	return layerNodes;
 }
 
 void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)

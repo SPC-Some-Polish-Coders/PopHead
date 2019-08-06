@@ -22,6 +22,7 @@ private:
 	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
+	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 };
 
 }

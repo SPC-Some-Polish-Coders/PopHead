@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Utilities/xml.hpp"
 #include "chunkMap.hpp"
+#include "Utilities/xml.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <string>
@@ -38,15 +38,13 @@ class Map
 public:
     Map();
 
-	void load(const std::string& filename, const GeneralMapInfo&, const TilesetsData&);
+	void load(const GeneralMapInfo&, const TilesetsData&, const std::vector<Xml>& layerNodes);
 
     void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const;
 
 	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
 private:
-	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-
 	void createChunkMap(const TilesetsData& tilesets, const GeneralMapInfo&);
 
 	void createAllLayers(const std::vector<Xml>&, const TilesetsData& tilesets, const GeneralMapInfo& info);

@@ -19,9 +19,10 @@ void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileNa
 	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
+	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 
 	auto& map = gameData->getMap();
-	map.load(fileName, {mapSize, tileSize}, tilesetsData);
+	map.load({mapSize, tileSize}, tilesetsData, layerNodes);
 }
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
@@ -106,6 +107,14 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			tilesData.bounds.push_back(bounds);
 	}
 	return tilesData;
+}
+
+std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
+{
+	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
+	if(layerNodes.size() == 0)
+		PH_LOG_WARNING("Map doesn't have any layers");
+	return layerNodes;
 }
 
 }
