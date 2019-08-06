@@ -40,10 +40,10 @@ template<typename GuiParser, typename MapParser, typename GameObjectsParser, typ
 void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
 	::parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode)
 {
-	const auto gameObjectsNode = sceneLinksNode.getChildren("gameObjects");
+	const auto gameObjectsNode = sceneLinksNode.getChildren("map");
 	if (gameObjectsNode.size() == 1)
 	{
-		const std::string gameObjectsFileName = "scenes/gameObjects/" + gameObjectsNode[0].getAttribute("filename").toString();
+		const std::string gameObjectsFileName = "scenes/map/" + gameObjectsNode[0].getAttribute("filename").toString();
 		GameObjectsParser gameObjectsParser(gameData, root);
 		gameObjectsParser.parseFile(gameObjectsFileName);
 	}

@@ -2,7 +2,5 @@
 <scenelinks>
   <neededResources filename="desert.res.xml"/>
   <map filename="desertMap.tmx"/>
-  <gameObjects filename="desert.gobj.xml"/>
-  <gui filename="gameplay.gui.xml"/>
-  <music filename="desert.music.xml"/>
+  <gameObjects filename="desert.gobj.xml"/>  <music filename="desert.music.xml"/>
 </scenelinks>
