@@ -9,7 +9,7 @@ template<typename GuiParser, typename MapParser, typename GameObjectsParser, typ
 SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
 	::SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName)
 {
-	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is beign parsed.");
+	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
 	Xml sceneFile;
 	sceneFile.loadFromFile(sceneFileName);
