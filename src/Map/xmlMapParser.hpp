@@ -5,9 +5,9 @@
 
 namespace ph {
 
-class GeneralMapInfo;
-class TilesetsData;
-class TilesData;
+struct GeneralMapInfo;
+struct TilesetsData;
+struct TilesData;
 class GameData;
 class Xml;
 
