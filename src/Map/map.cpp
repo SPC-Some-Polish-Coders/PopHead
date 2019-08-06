@@ -86,16 +86,16 @@ auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const T
 		const Xml imageNode = tilesetNode.getChild("image");
 		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
-		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
+		TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
 		tilesets.tilesData.push_back(tilesData);
 	}
 	return tilesets;
 }
 
-auto Map::getTilesData(const std::vector<Xml>& tileNodes) const -> TilesetsData::TilesData
+auto Map::getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData
 {
-	TilesetsData::TilesData tilesData{};
+	TilesData tilesData{};
 	tilesData.ids.reserve(tileNodes.size());
 	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
 	for (const Xml& tileNode : tileNodes) {
@@ -215,7 +215,7 @@ std::size_t Map::findTilesetIndex(const unsigned globalTileId, const TilesetsDat
 	return std::string::npos;
 }
 
-std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
+std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const
 {
 	for (std::size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
@@ -223,7 +223,7 @@ std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vec
 	return std::string::npos;
 }
 
-void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, const sf::Vector2f position)
+void Map::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position)
 {
 	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
 		if (tileId == tilesData.ids[i]) {

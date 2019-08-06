@@ -11,6 +11,22 @@ namespace ph{
 
 class GameData;
 
+struct TilesData 
+{
+	unsigned firstGlobalTileId;
+	std::vector<unsigned> ids;
+	std::vector<sf::FloatRect> bounds;
+};
+
+struct TilesetsData 
+{
+	std::vector<unsigned> firstGlobalTileIds;
+	std::vector<unsigned> tileCounts;
+	std::vector<unsigned> columnsCounts;
+	std::vector<TilesData> tilesData;
+	std::string tilesetFileName;
+};
+
 class Map
 {
 public:
@@ -23,22 +39,6 @@ public:
 	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
 private:
-	struct TilesetsData 
-	{
-		struct TilesData 
-		{
-			unsigned firstGlobalTileId;
-			std::vector<unsigned> ids;
-			std::vector<sf::FloatRect> bounds;
-		};
-
-		std::vector<unsigned> firstGlobalTileIds;
-		std::vector<unsigned> tileCounts;
-		std::vector<unsigned> columnsCounts;
-		std::vector<TilesData> tilesData;
-		std::string tilesetFileName;
-	};
-
 	void checkMapSupport(const Xml& mapNode) const;
 
 	sf::Vector2u getMapSize(const Xml& mapNode) const;
@@ -49,7 +49,7 @@ private:
 
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 
-	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesetsData::TilesData;
+	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
@@ -67,10 +67,11 @@ private:
 
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 
-	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const;
+	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 
-	void loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, sf::Vector2f position);
+	void loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, sf::Vector2f position);
 
+private:
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
