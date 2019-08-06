@@ -30,7 +30,7 @@ public:
 
 private:
     std::unique_ptr<Scene> mScene;
-    std::string mSceneToMakeSourceCodeFilepath;
+    std::string mFileOfSceneToMake;
     GameData* mGameData;
     bool mIsReplacing;
     bool mIsPopping;

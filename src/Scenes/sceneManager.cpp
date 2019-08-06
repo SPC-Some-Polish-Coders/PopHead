@@ -44,9 +44,9 @@ void SceneManager::replaceAction()
 {
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
-	mScene = std::make_unique<Scene>();
-	SceneParser<XmlGuiParser, XmlMapParser, XmlGameObjectsParser> sceneParser(mGameData, mScene->getRoot(), mSceneToMakeSourceCodeFilepath);
-	PH_LOG_INFO("The scene was replaced by new scene (" + mSceneToMakeSourceCodeFilepath + ").");
+	mScene.reset(new Scene());
+	SceneParser<XmlGuiParser, XmlMapParser, XmlGameObjectsParser> sceneParser(mGameData, mScene->getRoot(), mFileOfSceneToMake);
+	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
 }
 
@@ -64,7 +64,7 @@ void SceneManager::update(sf::Time delta)
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
-	mSceneToMakeSourceCodeFilepath = sceneSourceCodeFilePath;
+	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 }
 

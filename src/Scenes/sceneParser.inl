@@ -18,12 +18,36 @@ namespace ph {
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
 	SceneParser<GuiParser, MapParser, GameObjectsParser>::SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName)
 	{
-		//GuiParser guiParser(gameData, sceneFileName);
-		//MapParser mapParser(gameData, sceneFileName);
-		//GameObjectsParser gameObjectsParser(gameData, root, sceneFileName);
-
 		Xml sceneFile;
 		sceneFile.loadFromFile(sceneFileName);
+		const auto sceneLinksNode = sceneFile.getChild("scenelinks");
+		parseMap(gameData, sceneLinksNode);
+		parseGameObjects(gameData, root, sceneLinksNode);
+		parseGui(gameData, sceneLinksNode);
+	}
+
+	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
+	inline void SceneParser<GuiParser, MapParser, GameObjectsParser>::parseMap(GameData* const gameData, const Xml& sceneLinksNode)
+	{
+		const auto mapNode = sceneLinksNode.getChild("map");
+		const std::string mapFileName = mapNode.getAttribute("filename").toString();
+		//MapParser mapParser(gameData, mapFileName);
+	}
+
+	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
+	inline void SceneParser<GuiParser, MapParser, GameObjectsParser>::parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode)
+	{
+		const auto gameObjectsNode = sceneLinksNode.getChild("gameObjects");
+		const std::string gameObjectsFileName = gameObjectsNode.getAttribute("filename").toString();
+		//GameObjectsParser gameObjectsParser(gameData, root, gameObjectsFileName);
+	}
+
+	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
+	inline void SceneParser<GuiParser, MapParser, GameObjectsParser>::parseGui(GameData* const gameData, const Xml& sceneLinksNode)
+	{
+		const auto guiNode = sceneLinksNode.getChild("gui");
+		const std::string guiFileName = guiNode.getAttribute("filename").toString();
+		//GuiParser guiParser(gameData, guiFileName);
 	}
 }
 
