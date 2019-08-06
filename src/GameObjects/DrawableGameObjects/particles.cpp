@@ -41,7 +41,10 @@ void Particles::update(const sf::Time delta)
 		killParticles();
 
 	for (size_t index = 0; index < mParticles.size(); ++index)
-		mVertecies[index].position += mParticles[index].velocity * delta.asSeconds();
+	{
+		mPosition = mVertecies[index].position += mParticles[index].velocity * delta.asSeconds();
+		setPosition(mPosition);
+	}
 }
 
 void Particles::draw(sf::RenderTarget& target, sf::RenderStates states) const
