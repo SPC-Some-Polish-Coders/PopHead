@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scene>
-  <music>
-    <theme filename="explorationTheme.ogg"/>
-  </music>
   <root>
     <map name="map" filepath="maps/desertMap.tmx"/>
     <player texturepath="textures/characters/vaultManSheet.png"/>

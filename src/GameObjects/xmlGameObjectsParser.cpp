@@ -26,19 +26,9 @@ void XmlGameObjectsParser::parseFile(const std::string& fileName)
 	gameObjectsFile.loadFromFile(fileName);
 	const Xml sceneNode = gameObjectsFile.getChild("scene");
 		
-	loadMusic(sceneNode);
 	loadScene(sceneNode);
 		
 	mGameData->getRenderer().getCamera().setCenter({0, 0});
-}
-
-void XmlGameObjectsParser::loadMusic(const Xml& sceneNode)
-{
-	const Xml musicNode = sceneNode.getChild("music");
-	const Xml startThemeNode = musicNode.getChild("theme");
-	const std::string themeFileName = startThemeNode.getAttribute("filename").toString();
-	const std::string themeFilePath = "music/" + themeFileName;
-	mGameData->getMusicPlayer().play(themeFilePath);
 }
 
 void XmlGameObjectsParser::loadScene(const Xml& sceneNode)

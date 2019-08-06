@@ -5,8 +5,8 @@
 
 namespace ph {
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
-SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
+SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
 	::SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is beign parsed.");
@@ -19,11 +19,12 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser>
 	parseGameObjects(gameData, root, sceneLinksNode);
 	parse<MapParser>(gameData, sceneLinksNode, "map");
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");
+	parse<MusicParser>(gameData, sceneLinksNode, "music");
 }
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
 template<typename Parser>
-void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser>
+void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
 	::parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName)
 {
 	const auto categoryNode = sceneLinksNode.getChild(categoryName);
@@ -32,8 +33,8 @@ void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser>
 	categoryParser.parseFile(gameData, categoryFilePath);
 }
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
-void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
+void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
 	::parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode)
 {
 	const auto gameObjectsNode = sceneLinksNode.getChild("gameObjects");

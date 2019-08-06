@@ -7,7 +7,7 @@ namespace ph{
 class GameData;
 class Xml;
 
-template <typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
+template <typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
 class SceneParser
 {
 public:

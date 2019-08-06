@@ -4,4 +4,5 @@
   <map filename="desertMap.tmx"/>
   <gameObjects filename="desert.gobj.xml"/>
   <gui filename="gameplay.gui.xml"/>
+  <music filename="desert.music.xml"/>
 </scenelinks>
