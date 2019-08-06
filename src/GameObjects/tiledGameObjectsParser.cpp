@@ -4,6 +4,7 @@
 #include "GameObjects/NotDrawableGameObjects/spawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Logs/logs.hpp"
 #include "gameObject.hpp"
 #include "gameData.hpp"
@@ -56,6 +57,11 @@ Xml TiledGameObjectsParser::findGameObjects(const Xml& mapFile)
 void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 {
 	std::vector<Xml> objects = gameObjectsNode.getChildren("object");
+
+	auto player = std::make_unique<Player>(mGameData);
+	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultManSheet.png"));
+	mRoot.addChild(std::move(player));
+
 	for (const auto& gameObjectNode : objects)
 	{
 		if (gameObjectNode.getAttribute("type").toString() == "Entrance") loadEntrance(gameObjectNode);
