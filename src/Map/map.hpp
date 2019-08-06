@@ -38,7 +38,7 @@ class Map
 public:
     Map();
 
-	void load(const std::string& filename, const GeneralMapInfo&);
+	void load(const std::string& filename, const GeneralMapInfo&, const TilesetsData&);
 
     void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const;
 
@@ -73,7 +73,6 @@ private:
 
 private:
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
-	inline static const std::string pathToMapNotEmbeddedTilesets = "";
 	std::unique_ptr<ChunkMap> mChunkMap;
 	GameData* mGameData;
 };

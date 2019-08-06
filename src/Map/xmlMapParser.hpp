@@ -5,6 +5,8 @@
 
 namespace ph {
 
+class TilesetsData;
+class TilesData;
 class GameData;
 class Xml;
 
@@ -17,6 +19,9 @@ private:
 	void checkMapSupport(const Xml& mapNode) const;
 	sf::Vector2u getMapSize(const Xml& mapNode) const;
 	sf::Vector2u getTileSize(const Xml& mapNode) const;
+	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
+	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
+	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 };
 
 }

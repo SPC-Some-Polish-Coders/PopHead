@@ -4,7 +4,6 @@
 #include "Logs/logs.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
-#include "Utilities/filePath.hpp"
 
 namespace ph {
 
@@ -13,75 +12,15 @@ Map::Map()
 {
 }
 
-void Map::load(const std::string& filename, const GeneralMapInfo& info)
+void Map::load(const std::string& filename, const GeneralMapInfo& info, const TilesetsData& tilesetsData)
 {
 	Xml mapFile;
 	mapFile.loadFromFile(filename);
 	const Xml mapNode = mapFile.getChild("map");
-	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
-	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	createChunkMap(tilesets, info.mapSize, info.tileSize);
-	createAllLayers(layerNodes, tilesets, info.mapSize, info.tileSize);
-}
-
-std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
-	if (tilesetNodes.size() == 0)
-		PH_LOG_WARNING("Map doesn't have any tilesets");
-	return tilesetNodes;
-}
-
-auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData
-{
-	TilesetsData tilesets;
-	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
-	tilesets.tileCounts.reserve(tilesetNodes.size());
-	tilesets.columnsCounts.reserve(tilesetNodes.size());
-	for (Xml tilesetNode : tilesetNodes) {
-		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
-		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
-		if (tilesetNode.hasAttribute("source")) {
-			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
-			tilesetNodeSource = pathToMapNotEmbeddedTilesets + FilePath::toFilename(tilesetNodeSource, '/');
-			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
-			Xml tilesetDocument;
-			tilesetDocument.loadFromFile(tilesetNodeSource);
-			tilesetNode = tilesetDocument.getChild("tileset");
-		}
-		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
-		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
-		const Xml imageNode = tilesetNode.getChild("image");
-		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
-		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
-		TilesData tilesData = getTilesData(tileNodes);
-		tilesData.firstGlobalTileId = firstGlobalTileId;
-		tilesets.tilesData.push_back(tilesData);
-	}
-	return tilesets;
-}
-
-auto Map::getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData
-{
-	TilesData tilesData{};
-	tilesData.ids.reserve(tileNodes.size());
-	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
-	for (const Xml& tileNode : tileNodes) {
-		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
-		const Xml objectGroupNode = tileNode.getChild("objectgroup");
-		const Xml objectNode = objectGroupNode.getChild("object");
-		const sf::FloatRect bounds(
-			objectNode.getAttribute("x").toFloat(),
-			objectNode.getAttribute("y").toFloat(),
-			objectNode.hasAttribute("width") ? objectNode.getAttribute("width").toFloat() : 0.f,
-			objectNode.hasAttribute("height") ? objectNode.getAttribute("height").toFloat() : 0.f
-		);
-		if(!(bounds.width == 0.f && bounds.height == 0.f))
-			tilesData.bounds.push_back(bounds);
-	}
-	return tilesData;
+	createChunkMap(tilesetsData, info.mapSize, info.tileSize);
+	createAllLayers(layerNodes, tilesetsData, info.mapSize, info.tileSize);
 }
 
 std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
@@ -92,12 +31,12 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void Map::createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createChunkMap(const TilesetsData& tilesetsData, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
 {
 	mChunkMap = std::make_unique<ChunkMap>(
 		mapSize,
 		tileSize,
-		mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName)
+		mGameData->getTextures().get(pathToTilesetsDirectory + tilesetsData.tilesetFileName)
 	);
 }
 
