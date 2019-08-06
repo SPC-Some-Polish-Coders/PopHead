@@ -45,23 +45,15 @@ public:
 	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
 private:
-	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
-
-	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
-
-	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
-
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 
-	void createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize);
+	void createChunkMap(const TilesetsData& tilesets, const GeneralMapInfo&);
 
-	void createAllLayers(const std::vector<Xml>&, const TilesetsData& tilesets,
-		                 const sf::Vector2u mapSize, const sf::Vector2u tileSize);
+	void createAllLayers(const std::vector<Xml>&, const TilesetsData& tilesets, const GeneralMapInfo& info);
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
-	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-	                 const sf::Vector2u mapSize, const sf::Vector2u tileSize);
+	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info);
 
 	bool hasTile(unsigned globalTileId) const { return globalTileId != 0; }
 

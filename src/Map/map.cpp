@@ -19,8 +19,8 @@ void Map::load(const std::string& filename, const GeneralMapInfo& info, const Ti
 	const Xml mapNode = mapFile.getChild("map");
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	createChunkMap(tilesetsData, info.mapSize, info.tileSize);
-	createAllLayers(layerNodes, tilesetsData, info.mapSize, info.tileSize);
+	createChunkMap(tilesetsData, info);
+	createAllLayers(layerNodes, tilesetsData, info);
 }
 
 std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
@@ -31,22 +31,21 @@ std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void Map::createChunkMap(const TilesetsData& tilesetsData, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
 {
 	mChunkMap = std::make_unique<ChunkMap>(
-		mapSize,
-		tileSize,
+		info.mapSize,
+		info.tileSize,
 		mGameData->getTextures().get(pathToTilesetsDirectory + tilesetsData.tilesetFileName)
 	);
 }
 
-void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets,
-                          const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
 	for(const Xml& layerNode : layerNodes) {
 		const Xml dataNode = layerNode.getChild("data");
 		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		createLayer(globalTileIds, tilesets, mapSize, tileSize);
+		createLayer(globalTileIds, tilesets, info);
 	}
 }
 
@@ -58,8 +57,7 @@ std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                      const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
 	const sf::Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
@@ -86,12 +84,12 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
 			sf::Vector2u tileRectPosition = 
 				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
-			tileRectPosition.x *= tileSize.x;
-			tileRectPosition.y *= tileSize.y;
+			tileRectPosition.x *= info.tileSize.x;
+			tileRectPosition.y *= info.tileSize.y;
 
-			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, mapSize.x));
-			position.x *= tileSize.x;
-			position.y *= tileSize.y;
+			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
+			position.x *= info.tileSize.x;
+			position.y *= info.tileSize.y;
 
 			TileData tileData;
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
