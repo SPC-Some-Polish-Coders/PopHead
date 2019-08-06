@@ -24,21 +24,14 @@ void XmlGameObjectsParser::parseFile(const std::string& fileName)
 
 	Xml gameObjectsFile;
 	gameObjectsFile.loadFromFile(fileName);
-	const Xml sceneNode = gameObjectsFile.getChild("scene");
-		
-	loadScene(sceneNode);
-		
-	mGameData->getRenderer().getCamera().setCenter({0, 0});
-}
-
-void XmlGameObjectsParser::loadScene(const Xml& sceneNode)
-{
-	const Xml rootNode = sceneNode.getChild("root");
+	const Xml rootNode = gameObjectsFile.getChild("root");
 
 	loadEntrances(rootNode);
 	loadParticlesSystem();
 	loadPlayer(rootNode);
 	loadGroups(rootNode);
+
+	mGameData->getRenderer().getCamera().setCenter({0, 0});
 }
 
 void XmlGameObjectsParser::loadEntrances(const Xml& rootNode)

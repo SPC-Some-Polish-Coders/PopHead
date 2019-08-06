@@ -18,7 +18,7 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParse
 	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	parseGameObjects(gameData, root, sceneLinksNode);
 	parse<MapParser>(gameData, sceneLinksNode, "map");
-	parse<GuiParser>(gameData, sceneLinksNode, "gui");
+	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<MusicParser>(gameData, sceneLinksNode, "music");
 }
 
