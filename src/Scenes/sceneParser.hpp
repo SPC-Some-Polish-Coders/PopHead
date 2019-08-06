@@ -1,14 +1,11 @@
 #pragma once
 
-#include "Utilities/xml.hpp"
-#include "GameObjects/DrawableGameObject.hpp"
-
 #include <string>
-#include <vector>
 
 namespace ph{
 
 class GameData;
+class Xml;
 
 template <typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
 class SceneParser
@@ -17,10 +14,10 @@ public:
 	SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName);
 
 private:
-	void parseResources(GameData* const gameData, const Xml& sceneLinksNode);
-	void parseMap(GameData* const gameData, const Xml& sceneLinksNode);
+	template<typename Parser>
+	void parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName);
+
 	void parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode);
-	void parseGui(GameData* const gameData, const Xml& sceneLinksNode);
 };
 
 }
