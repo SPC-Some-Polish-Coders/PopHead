@@ -11,6 +11,9 @@ struct TilesData;
 class GameData;
 class Xml;
 
+using GlobalTileIds = std::vector<unsigned>;
+using AllLayersGlobalTileIds = std::vector<GlobalTileIds>;
+
 class XmlMapParser
 {
 public:
@@ -25,6 +28,8 @@ private:
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
+	auto getAllLayersGlobalTileIds(const std::vector<Xml>& layerNodes) const -> AllLayersGlobalTileIds;
+	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 };
 
 }

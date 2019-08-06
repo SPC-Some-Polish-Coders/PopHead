@@ -2,6 +2,7 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 #include "Utilities/xml.hpp"
+#include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
 
 namespace ph {
@@ -19,9 +20,10 @@ void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileNa
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
+	AllLayersGlobalTileIds allLayersGlobalTileIds = getAllLayersGlobalTileIds(layerNodes);
 
 	auto& map = gameData->getMap();
-	map.load(generalMapInfo, tilesetsData, layerNodes);
+	map.load(generalMapInfo, tilesetsData, allLayersGlobalTileIds);
 }
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
@@ -119,6 +121,24 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	if(layerNodes.size() == 0)
 		PH_LOG_WARNING("Map doesn't have any layers");
 	return layerNodes;
+}
+
+auto XmlMapParser::getAllLayersGlobalTileIds(const std::vector<Xml>& layerNodes) const -> AllLayersGlobalTileIds
+{
+	AllLayersGlobalTileIds allLayersGlobalTileIds;
+	for(const Xml& layerNode : layerNodes) {
+		const Xml dataNode = layerNode.getChild("data");
+		allLayersGlobalTileIds.emplace_back(toGlobalTileIds(dataNode));
+	}
+	return allLayersGlobalTileIds;
+}
+
+std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
+{
+	const std::string encoding = dataNode.getAttribute("encoding").toString();
+	if(encoding == "csv")
+		return Csv::toUnsigneds(dataNode.toString());
+	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
 }

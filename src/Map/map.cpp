@@ -1,9 +1,8 @@
 #include "map.hpp"
-#include "gameData.hpp"
 #include "chunkMap.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
+#include "Logs/logs.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -12,10 +11,10 @@ Map::Map()
 {
 }
 
-void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, const std::vector<Xml>& layerNodes)
+void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, const AllLayersGlobalTileIds& allLayersGlobalTileIds)
 {
 	createChunkMap(tilesetsData, info);
-	createAllLayers(layerNodes, tilesetsData, info);
+	createAllLayers(allLayersGlobalTileIds, tilesetsData, info);
 }
 
 void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
@@ -27,21 +26,10 @@ void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo&
 	);
 }
 
-void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info)
+void Map::createAllLayers(const AllLayersGlobalTileIds& allLayers, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
-	for(const Xml& layerNode : layerNodes) {
-		const Xml dataNode = layerNode.getChild("data");
-		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
+	for(const GlobalTileIds& globalTileIds : allLayers)
 		createLayer(globalTileIds, tilesets, info);
-	}
-}
-
-std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
-{
-	const std::string encoding = dataNode.getAttribute("encoding").toString();
-	if (encoding == "csv")
-		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
 void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info)

@@ -33,12 +33,15 @@ struct TilesetsData
 	std::string tilesetFileName;
 };
 
+using GlobalTileIds = std::vector<unsigned>;
+using AllLayersGlobalTileIds = std::vector<GlobalTileIds>;
+
 class Map
 {
 public:
     Map();
 
-	void load(const GeneralMapInfo&, const TilesetsData&, const std::vector<Xml>& layerNodes);
+	void load(const GeneralMapInfo&, const TilesetsData&, const AllLayersGlobalTileIds&);
 
     void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const;
 
@@ -47,7 +50,7 @@ public:
 private:
 	void createChunkMap(const TilesetsData& tilesets, const GeneralMapInfo&);
 
-	void createAllLayers(const std::vector<Xml>&, const TilesetsData& tilesets, const GeneralMapInfo& info);
+	void createAllLayers(const AllLayersGlobalTileIds&, const TilesetsData&, const GeneralMapInfo&);
 
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 
