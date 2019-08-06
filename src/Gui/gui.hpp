@@ -3,9 +3,6 @@
 #include "interface.hpp"
 #include "GameObjects/drawableGameObject.hpp"
 
-/* Uncomment if you want to experiment   */
-// #define GUI_TEST
-
 namespace ph {
 
 class GameData;
@@ -56,6 +53,8 @@ public:
 	void draw();
 
 	void init(GameData* gamedata);
+
+	void clearGUI();
 
 private:
 	std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
