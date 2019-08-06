@@ -41,10 +41,13 @@ GUI::~GUI()
 
 Widget* GUI::addInterface(const std::string& name)
 {
-	mInterfaceList.insert({name,std::make_unique<Interface>(mGameData)});
-	auto k = mInterfaceList.rbegin();
-	k->second->setGameData(mGameData);
-	return  k->second.get();
+	auto iter = mInterfaceList.insert({name,std::make_unique<Interface>(mGameData)});
+	if (iter.second)
+	{
+		iter.first->second->setGameData(mGameData);
+		return iter.first->second.get();
+	}
+	return nullptr;
 }
 
 Widget* GUI::getInterface(const std::string& name)

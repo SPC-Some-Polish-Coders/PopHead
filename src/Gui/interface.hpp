@@ -13,19 +13,19 @@ public:
 
 	Interface(GameData* data);
 
-	void update(sf::Time delta);
+	void update(sf::Time delta) override;
 
-	void draw();
+	void draw() override;
 
-	bool setContentPath(const std::string& path);
+	bool setContentPath(const std::string& path) override;
 
-	void setPosition(const sf::Vector2f& pos);
+	void setPosition(const sf::Vector2f& pos) override;
 
-	void addWidget(const std::string& name, Widget* ptr);
+	void addWidget(const std::string& name, Widget* ptr) override;
 
-	void move(const sf::Vector2f& delta);
+	void move(const sf::Vector2f& delta) override;
 
-	sf::Vector2f getGlobalPosition() const;
+	sf::Vector2f getGlobalPosition() const override;
 };
 
 }
