@@ -14,15 +14,14 @@ void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileNa
 	mapFile.loadFromFile(fileName);
 	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
-	const sf::Vector2u mapSize = getMapSize(mapNode);
-	gameData->getAIManager().registerMapSize(mapSize);
-	const sf::Vector2u tileSize = getTileSize(mapNode);
+	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
+	gameData->getAIManager().registerMapSize(generalMapInfo.mapSize);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 
 	auto& map = gameData->getMap();
-	map.load({mapSize, tileSize}, tilesetsData, layerNodes);
+	map.load(generalMapInfo, tilesetsData, layerNodes);
 }
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
@@ -33,6 +32,11 @@ void XmlMapParser::checkMapSupport(const Xml& mapNode) const
 	const std::string infinite = mapNode.getAttribute("infinite").toString();
 	if(infinite != "0")
 		PH_EXCEPTION("Infinite maps are not supported");
+}
+
+auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
+{
+	return {getMapSize(mapNode), getTileSize(mapNode)};
 }
 
 sf::Vector2u XmlMapParser::getMapSize(const Xml& mapNode) const
@@ -92,7 +96,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 {
 	TilesData tilesData{};
 	tilesData.ids.reserve(tileNodes.size());
-	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
+	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) {
 		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
 		const Xml objectGroupNode = tileNode.getChild("objectgroup");
