@@ -10,13 +10,14 @@ namespace ph{
 
 class GameData;
 
-template <typename GuiParser, typename MapParser, typename GameObjectsParser>
+template <typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser>
 class SceneParser
 {
 public:
 	SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName);
 
 private:
+	void parseResources(GameData* const gameData, const Xml& sceneLinksNode);
 	void parseMap(GameData* const gameData, const Xml& sceneLinksNode);
 	void parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode);
 	void parseGui(GameData* const gameData, const Xml& sceneLinksNode);

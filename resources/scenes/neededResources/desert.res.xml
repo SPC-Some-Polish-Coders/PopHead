@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loading>
+  <textures>
+    <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
+    <resource respath="characters/vaultManSheet.png"/>
+    <resource respath="characters/vaultMan.png"/>
+    <resource respath="characters/zombie.png"/>
+  </textures>
+</loading>

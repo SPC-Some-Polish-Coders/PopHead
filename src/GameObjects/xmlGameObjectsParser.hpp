@@ -17,8 +17,6 @@ public:
 
 	void parseFile(const std::string& fileName);
 private:
-	void loadResources(const Xml& sceneNode);
-	void loadTextures(const Xml& loadingNode);
 	void loadMusic(const Xml& sceneNode);
 	void loadScene(const Xml& sceneNode);
 	void loadEntrances(const Xml& rootNode);

@@ -20,33 +20,16 @@ XmlGameObjectsParser::XmlGameObjectsParser(GameData* const gameData, GameObject&
 
 void XmlGameObjectsParser::parseFile(const std::string& fileName)
 {
-	PH_LOG_INFO("Xml file (" + fileName + ") is beign parsed.");
+	PH_LOG_INFO("Game objects file (" + fileName + ") is beign parsed.");
 
 	Xml gameObjectsFile;
 	gameObjectsFile.loadFromFile(fileName);
 	const Xml sceneNode = gameObjectsFile.getChild("scene");
 		
-	loadResources(sceneNode);
 	loadMusic(sceneNode);
 	loadScene(sceneNode);
 		
 	mGameData->getRenderer().getCamera().setCenter({0, 0});
-}
-
-void XmlGameObjectsParser::loadResources(const Xml& sceneNode)
-{
-	const Xml loadingNode = sceneNode.getChild("loading");
-	loadTextures(loadingNode);
-}
-
-void XmlGameObjectsParser::loadTextures(const Xml& loadingNode)
-{
-	const Xml textureNode = loadingNode.getChild("textures");
-	const std::vector<Xml> textureNodes = textureNode.getChildren("resource");
-	for (const auto& node : textureNodes) {
-		const std::string filename = node.getAttribute("respath").toString();
-		mGameData->getTextures().load("textures/" + filename);
-	}
 }
 
 void XmlGameObjectsParser::loadMusic(const Xml& sceneNode)
