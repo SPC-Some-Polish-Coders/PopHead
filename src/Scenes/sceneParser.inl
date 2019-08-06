@@ -12,12 +12,14 @@
 #include "sceneParser.hpp"
 #include "gameData.hpp"
 #include "Utilities/xml.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
 	SceneParser<GuiParser, MapParser, GameObjectsParser>::SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName)
 	{
+		PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is beign parsed.");
 		Xml sceneFile;
 		sceneFile.loadFromFile(sceneFileName);
 		const auto sceneLinksNode = sceneFile.getChild("scenelinks");
@@ -31,7 +33,8 @@ namespace ph {
 	{
 		const auto mapNode = sceneLinksNode.getChild("map");
 		const std::string mapFileName = mapNode.getAttribute("filename").toString();
-		//MapParser mapParser(gameData, mapFileName);
+		MapParser mapParser;
+		mapParser.parseFile(gameData, mapFileName);
 	}
 
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
@@ -39,7 +42,8 @@ namespace ph {
 	{
 		const auto gameObjectsNode = sceneLinksNode.getChild("gameObjects");
 		const std::string gameObjectsFileName = gameObjectsNode.getAttribute("filename").toString();
-		//GameObjectsParser gameObjectsParser(gameData, root, gameObjectsFileName);
+		GameObjectsParser gameObjectsParser;
+		gameObjectsParser.parseFile(gameData, root, gameObjectsFileName);
 	}
 
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
@@ -47,7 +51,8 @@ namespace ph {
 	{
 		const auto guiNode = sceneLinksNode.getChild("gui");
 		const std::string guiFileName = guiNode.getAttribute("filename").toString();
-		//GuiParser guiParser(gameData, guiFileName);
+		GuiParser guiParser;
+		guiParser.parseFile(gameData, guiFileName);
 	}
 }
 
