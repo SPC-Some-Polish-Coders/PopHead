@@ -13,47 +13,17 @@ Map::Map()
 {
 }
 
-void Map::loadFromFile(const std::string& filename)
+void Map::load(const std::string& filename, const GeneralMapInfo& info)
 {
 	Xml mapFile;
 	mapFile.loadFromFile(filename);
 	const Xml mapNode = mapFile.getChild("map");
-	checkMapSupport(mapNode);
-	const sf::Vector2u mapSize = getMapSize(mapNode);
-	mGameData->getAIManager().registerMapSize(mapSize);
-	const sf::Vector2u tileSize = getTileSize(mapNode);
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	createChunkMap(tilesets, mapSize, tileSize);
-	createAllLayers(layerNodes, tilesets, mapSize, tileSize);
-}
-
-void Map::checkMapSupport(const Xml& mapNode) const
-{
-	const std::string orientation = mapNode.getAttribute("orientation").toString();
-	if (orientation != "orthogonal")
-		PH_EXCEPTION("Used unsupported map orientation: " + orientation);
-	const std::string infinite = mapNode.getAttribute("infinite").toString();
-	if (infinite != "0")
-		PH_EXCEPTION("Infinite maps are not supported");
-}
-
-sf::Vector2u Map::getMapSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("width").toUnsigned(),
-		mapNode.getAttribute("height").toUnsigned()
-	);
-}
-
-sf::Vector2u Map::getTileSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("tilewidth").toUnsigned(),
-		mapNode.getAttribute("tileheight").toUnsigned()
-	);
+	createChunkMap(tilesets, info.mapSize, info.tileSize);
+	createAllLayers(layerNodes, tilesets, info.mapSize, info.tileSize);
 }
 
 std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
