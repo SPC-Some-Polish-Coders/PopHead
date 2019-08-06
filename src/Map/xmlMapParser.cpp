@@ -8,11 +8,8 @@ namespace ph {
 	{
 		PH_LOG_INFO("Map file (" + fileName + ") is beign parsed.");
 
-		// This is very very temporary! Just to make map load.
-		gameData->getTextures().load("textures/map/FULL_DESERT_TILESET_WIP.png");
-
 		// It is only temporary solution!
-		// Later the whole map file will be parsed right here and the data will be passed to map class.
+		// Later the whole map file will be parsed right here and the data will be passed to Map object.
 		auto& map = gameData->getMap();
 		map.loadFromFile(fileName);
 	}

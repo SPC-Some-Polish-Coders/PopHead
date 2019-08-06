@@ -30,9 +30,9 @@ namespace ph {
 	inline void SceneParser<GuiParser, MapParser, GameObjectsParser>::parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode)
 	{
 		const auto gameObjectsNode = sceneLinksNode.getChild("gameObjects");
-		const std::string gameObjectsFileName = gameObjectsNode.getAttribute("filename").toString();
-		GameObjectsParser gameObjectsParser;
-		gameObjectsParser.parseFile(gameData, root, gameObjectsFileName);
+		const std::string gameObjectsFileName = "scenes/gameObjects/" + gameObjectsNode.getAttribute("filename").toString();
+		GameObjectsParser gameObjectsParser(gameData, root);
+		gameObjectsParser.parseFile(gameObjectsFileName);
 	}
 
 	template<typename GuiParser, typename MapParser, typename GameObjectsParser>
