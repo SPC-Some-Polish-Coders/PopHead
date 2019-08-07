@@ -13,7 +13,7 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParse
 
 	Xml sceneFile;
 	sceneFile.loadFromFile(sceneFileName);
-	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
+	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
 
 	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	parseGameObjects(gameData, root, sceneLinksNode);

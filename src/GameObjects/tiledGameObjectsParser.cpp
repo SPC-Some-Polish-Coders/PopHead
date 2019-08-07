@@ -28,7 +28,7 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath)
 	Xml mapFile;
 	mapFile.loadFromFile(filePath);
 
-	Xml mapNode = mapFile.getChild("map");
+	Xml mapNode = *mapFile.getChild("map");
 	Xml gameObjects = findGameObjects(mapNode);
 	if (gameObjects.toString() == "")
 		return;
@@ -42,7 +42,7 @@ std::vector<Xml> TiledGameObjectsParser::getObjectTypeNodes()
 {
 	Xml objectTypesFile;
 	objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
-	Xml objectTypesNode = objectTypesFile.getChild("objecttypes");
+	auto objectTypesNode = *objectTypesFile.getChild("objecttypes");
 	std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
 	return getObjectTypeNodes;
 }
@@ -104,10 +104,17 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode)
 
 void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 {
-	auto objectNodes = getObjectTypeNodes();
-	auto spawner = std::make_unique<Spawner>(mGameData, "spawner", ObjectType::Zombie, sf::seconds(getDefaultProperties("Spawner", "spawnFrequency").toFloat()),getPositionAttribute(spawnerNode));
+	auto propertiesNode = spawnerNode.getChild("properties");
+
+	auto spawner = propertiesNode ?
+	std::make_unique<Spawner>(mGameData, "spawner", ObjectType::Zombie,
+		sf::seconds(getProperties(spawnerNode, "spawnFrequency").toFloat()), getPositionAttribute(spawnerNode))
+	: std::make_unique<Spawner>(mGameData, "spawner", ObjectType::Zombie,
+		sf::seconds(getDefaultProperties("Spawner", "spawnFrequency").toFloat()),getPositionAttribute(spawnerNode));
+
 	mRoot.addChild(std::move(spawner));
 }
+
 
 Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, const std::string& propertyName)
 {
@@ -129,7 +136,7 @@ Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, 
 
 Xml TiledGameObjectsParser::getProperties(const Xml& gameObjectNode, const std::string& name)
 {
-	Xml propertiesNode = gameObjectNode.getChild("properties");
+	Xml propertiesNode = *gameObjectNode.getChild("properties");
 	std::vector<Xml> properties = propertiesNode.getChildren("property");
 	for (const auto& property : properties)
 	{

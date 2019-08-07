@@ -24,7 +24,7 @@ void XmlGameObjectsParser::parseFile(const std::string& fileName)
 
 	Xml gameObjectsFile;
 	gameObjectsFile.loadFromFile(fileName);
-	const Xml rootNode = gameObjectsFile.getChild("root");
+	const auto rootNode = *gameObjectsFile.getChild("root");
 
 	loadEntrances(rootNode);
 	loadParticlesSystem();
@@ -53,7 +53,7 @@ void XmlGameObjectsParser::loadParticlesSystem()
 
 void XmlGameObjectsParser::loadPlayer(const Xml& rootNode)
 {
-	const Xml playerNode = rootNode.getChild("player");
+	const Xml playerNode = *rootNode.getChild("player");
 	auto player = std::make_unique<Player>(mGameData);
 	player->getSprite().setTexture(mGameData->getTextures().get(playerNode.getAttribute("texturepath").toString()));
 	mRoot.addChild(std::move(player));

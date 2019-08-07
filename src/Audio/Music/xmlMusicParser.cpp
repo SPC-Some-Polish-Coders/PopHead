@@ -11,8 +11,8 @@ void XmlMusicParser::parseFile(GameData* const gameData, const std::string& file
 
 	Xml musicFile;
 	musicFile.loadFromFile(filePath);
-	const Xml musicNode = musicFile.getChild("music");
-	const Xml startThemeNode = musicNode.getChild("starttheme");
+	const Xml musicNode = *musicFile.getChild("music");
+	const Xml startThemeNode = *musicNode.getChild("starttheme");
 	const std::string themeFilePath = "music/" + startThemeNode.getAttribute("filename").toString();
 	gameData->getMusicPlayer().play(themeFilePath);
 }
