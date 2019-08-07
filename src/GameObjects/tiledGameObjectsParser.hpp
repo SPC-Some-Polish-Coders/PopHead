@@ -19,8 +19,10 @@ public:
 private:
 	std::vector<Xml> getObjectTypeNodes();
 	Xml findGameObjects(const Xml& mapFile);
-	void loadObjects(const Xml& gameObjects);
+	Xml getProperties(const Xml& gameObjectNode, const std::string& name);
+	Xml getDefaultProperties(const std::string& name, const std::string& propertyName);
 
+	void loadObjects(const Xml& gameObjects);
 	void loadEntrance(const Xml& entranceNode);
 	void loadZombie(const Xml& zombieNode);
 	void loadSpawner(const Xml& spawnerNode);
@@ -31,6 +33,8 @@ private:
 
 	sf::Vector2f getPositionAttribute(const Xml& gameObjectNode) const;
 	sf::Vector2f getSizeAttribute(const Xml& gameObjectNode) const;
+	
+
 
 private:
 	GameData* const mGameData;
