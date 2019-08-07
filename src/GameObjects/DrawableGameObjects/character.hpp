@@ -18,6 +18,8 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void setPosition(sf::Vector2f, bool recursive = true) override;
+	void setHp(int hp) { mHp = hp; }
+	void setMaxHp(unsigned int maxHp) { mMaxHp = maxHp; }
 	void move(sf::Vector2f, bool recursive = true) override;
 	void setScale(sf::Vector2f, bool recursive = true) override;
 	void setRotation(float angle, bool recursive = true) override;
@@ -30,8 +32,8 @@ public:
 
 protected:
 	GameData* const mGameData;
-	int mHP;
-	unsigned mMaxHP;
+	int mHp;
+	unsigned mMaxHp;
 	unsigned mMovementSpeed;
 	sf::Sprite mSprite;
 	Animation mAnimation;

@@ -8,11 +8,11 @@
 namespace ph {
 
 Character::Character(GameData* gameData, std::string name, Animation animation,
-	unsigned int movementSpeed,  int HP, unsigned int maxHP, sf::FloatRect posAndSize, float mass)
+	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass)
 	:DrawableGameObject(gameData->getRenderer(), name, LayerID::kinematicEntities)
 	,mGameData(gameData)
-	,mHP(HP)
-	,mMaxHP(maxHP)
+	,mHp(Hp)
+	,mMaxHp(maxHp)
 	,mMovementSpeed(movementSpeed)
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
@@ -74,7 +74,7 @@ void Character::takeDamage(const unsigned damage)
 	//INFO: Temporary solution so the particles don't bug
 
 	if (mTimeFromLastHit.getElapsedTime().asSeconds() > 0.15f) {
-		mHP -= damage;
+		mHp -= damage;
 		drawBlood();
 		mTimeFromLastHit.restart();
 	}

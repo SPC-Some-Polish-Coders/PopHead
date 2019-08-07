@@ -2,6 +2,7 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <optional>
 
 namespace ph {
 
@@ -19,7 +20,7 @@ public:
 private:
 	std::vector<Xml> getObjectTypeNodes();
 	Xml findGameObjects(const Xml& mapFile);
-	Xml getProperties(const Xml& gameObjectNode, const std::string& name);
+	std::optional<Xml> getProperties(const Xml& gameObjectNode, const std::string& name);
 	Xml getDefaultProperties(const std::string& name, const std::string& propertyName);
 
 	void loadObjects(const Xml& gameObjects);

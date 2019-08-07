@@ -11,8 +11,8 @@ namespace
 	const std::string name = "npc";
 	const Animation animation;
 	constexpr unsigned int movementSpeed = 100;
-	constexpr unsigned int hp = 100;
-	constexpr unsigned int maxHp = 100;
+	constexpr unsigned int maxHp= 100;
+	constexpr int hp = 50;
 	const sf::FloatRect posAndSize(
 		0,
 		0,
