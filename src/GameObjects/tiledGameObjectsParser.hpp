@@ -23,6 +23,7 @@ private:
 	Xml getDefaultProperties(const std::string& name, const std::string& propertyName);
 
 	void loadObjects(const Xml& gameObjects);
+	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName);
 	void loadEntrance(const Xml& entranceNode);
 	void loadZombie(const Xml& zombieNode);
 	void loadSpawner(const Xml& spawnerNode);

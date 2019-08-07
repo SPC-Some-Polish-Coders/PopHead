@@ -73,17 +73,29 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 
 	for (const auto& gameObjectNode : objects)
 	{
-		if (gameObjectNode.getAttribute("type").toString() == "Entrance") loadEntrance(gameObjectNode);
-		else if (gameObjectNode.getAttribute("type").toString() == "Npc") loadNpc(gameObjectNode);
-		else if (gameObjectNode.getAttribute("type").toString() == "Zombie") loadZombie(gameObjectNode);
-		else if (gameObjectNode.getAttribute("type").toString() == "Spawner") loadSpawner(gameObjectNode);
+		if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
 		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
 
+bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName)
+{
+	return gameObjectNode.getAttribute("type").toString() == typeName;
+}
+
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode)
 {
-	auto entrance = std::make_unique<Entrance>(mGameData->getSceneMachine(), "somePath", "entrance", getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+	auto propertiesNode = entranceNode.getChild("properties");
+
+	auto entrance = propertiesNode ?
+	std::make_unique<Entrance>(mGameData->getSceneMachine(), getProperties(entranceNode, "gotoScene").toString(),
+		"entrance", getSizeAttribute(entranceNode), getPositionAttribute(entranceNode))
+	: std::make_unique<Entrance>(mGameData->getSceneMachine(), getDefaultProperties("Entrance", "gotoScene").toString(),
+		"entrance", getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+
 	mRoot.addChild(std::move(entrance));
 }
 

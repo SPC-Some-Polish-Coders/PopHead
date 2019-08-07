@@ -32,7 +32,7 @@ std::optional<Xml> Xml::getChild(std::string name) const
 	std::size_t begin = findEndOfTagAttributes();
 	PH_ASSERT(begin != std::string::npos, "missing closing angle bracket");
 	if (isSelfClosingTag(begin))
-		PH_EXCEPTION("current tag cannot have children");
+		return std::nullopt;
 	while (true) {
 		begin = mContent.find('<', begin + 1);
 		if (begin == std::string::npos)
