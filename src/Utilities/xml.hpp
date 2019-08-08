@@ -11,13 +11,13 @@ class Xml
 public:
 	void loadFromFile(std::string filePath);
 
-	Xml getChild(std::string name) const;
+	Xml getChild(const std::string& name) const;
 
-	std::vector<Xml> getChildren(std::string name) const;
+	std::vector<Xml> getChildren(const std::string& name) const;
 
-	bool hasAttribute(std::string name) const;
+	bool hasAttribute(const std::string& name) const;
 
-	Xml getAttribute(std::string name) const;
+	Xml getAttribute(const std::string& name) const;
 
 	std::string toString() const;
 
