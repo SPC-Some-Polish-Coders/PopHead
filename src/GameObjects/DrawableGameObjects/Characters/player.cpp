@@ -12,11 +12,11 @@ namespace ph {
 
 namespace
 {
-	std::string name = "player";
-	unsigned int movementSpeed = 75;
-	unsigned int HP = 100;
-	unsigned int maxHP = 100;
-	sf::FloatRect posAndSize(
+	const std::string name = "player";
+	const unsigned int movementSpeed = 55;
+	const unsigned int HP = 100;
+	const unsigned int maxHP = 100;
+	const sf::FloatRect posAndSize(
 		50,
 		50,
 		CollisionRectData::PLAYER_WIDTH,
@@ -24,22 +24,32 @@ namespace
 	);
 	float mass = 25;
 
-	Animation animation{
-		std::array<std::string, 4>{"down", "left", "right", "up"},
-		{
+	Animation animation(
+		std::array<std::string, 13>{
+			"down", "right", "left", "rightUp", "leftUp", "up",
+			"fightDown", "fightRight", "fightLeft", "fightRightUp", "fightLeftUp", "fightUp",
+			"dead"
+		},
+		std::array<sf::IntRect, 13>{
 			sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
 			sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
 			sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 4 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 5 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 6 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 7 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 8 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 9 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 10 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 11 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 12 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
 		},
 		{
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT,
-			SpriteSheetData::PLAYER_FRAMES_COUNT
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
 		},
-		sf::seconds(0.15f)
-	};
+		sf::seconds(0.10f)
+	);
 }
 
 Player::Player(GameData* gameData)
@@ -59,9 +69,6 @@ void Player::input()
 	movementInput();
 	gunInput();
 	meleeWeaponInput();
-
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
-		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
 }
 
 void Player::movementInput()
@@ -91,6 +98,8 @@ void Player::meleeWeaponInput()
 void Player::update(sf::Time delta)
 {
 	updateMovement(delta);
+	updateAnimation(delta);
+	mMotion.clear();
 	shootingUpdate(delta);
 	meleeAttackUpdate(delta);
 	cameraMovement(delta);
@@ -107,22 +116,14 @@ void Player::updateMovement(const sf::Time delta)
 	if (mMotion.isMoving() && !mCollisionBody.isBeingPushed())
 	{
 		mLastMotion = mMotion;
-		if (mMotion.isMovingLeft) {
+		if (mMotion.isMovingLeft)
 			velocity.x -= mMovementSpeed * delta.asSeconds();
-			updateAnimation("left");
-		}
-		if (mMotion.isMovingRight) {
+		if (mMotion.isMovingRight)
 			velocity.x += mMovementSpeed * delta.asSeconds();
-			updateAnimation("right");
-		}
-		if (mMotion.isMovingUp) {
+		if (mMotion.isMovingUp)
 			velocity.y -= mMovementSpeed * delta.asSeconds();
-			updateAnimation("up");
-		}
-		if (mMotion.isMovingDown) {
+		if (mMotion.isMovingDown)
 			velocity.y += mMovementSpeed * delta.asSeconds();
-			updateAnimation("down");
-		}
 
 		if (mMotion.isMovingDiagonally()) {
 			velocity.x *= std::sqrt(2.f) / 2.f;
@@ -130,11 +131,57 @@ void Player::updateMovement(const sf::Time delta)
 		}
 
 		mCollisionBody.move(velocity);
-		mAnimation.animate(mSprite, delta);
 	}
-	mMotion.clear();
 	setPosition(mCollisionBody.getPosition());
 	mGameData->getAIManager().setPlayerPosition(mPosition);
+}
+
+void Player::updateAnimation(const sf::Time delta)
+{
+	if(mTimeFromLastMeleeAtack.getElapsedTime().asSeconds() < 0.15f) {
+		if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+			setAnimationState("fightLeftUp");
+		else if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+			setAnimationState("fightRightUp");
+		else if(mLastMotion.isMovingLeft)
+			setAnimationState("fightLeft");
+		else if(mLastMotion.isMovingRight)
+			setAnimationState("fightRight");
+		else if(mLastMotion.isMovingUp)
+			setAnimationState("fightUp");
+		else if(mLastMotion.isMovingDown)
+			setAnimationState("fightDown");
+	}
+	else {
+		if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+			setAnimationState("leftUp");
+		else if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+			setAnimationState("rightUp");
+		else if(mLastMotion.isMovingLeft)
+			setAnimationState("left");
+		else if(mLastMotion.isMovingRight)
+			setAnimationState("right");
+		else if(mLastMotion.isMovingUp)
+			setAnimationState("up");
+		else if(mLastMotion.isMovingDown)
+			setAnimationState("down");
+	}
+	
+	if(!mMotion.isMoving()) {
+		mAnimation.goToFrontFrame();
+		return;
+	}
+
+	mAnimation.animate(mSprite, delta);
+}
+
+void Player::setAnimationState(const std::string& stateName)
+{
+	const std::string name = mAnimation.getCurrentStateName();
+	if (name != stateName) {
+		mAnimation.changeState(stateName);
+		mAnimation.animate(mSprite);
+	}
 }
 
 PlayerMotion::PlayerMotion()
@@ -161,10 +208,8 @@ void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting) {
 		sf::Vector2f shotDirection = attackDirection();
-
 		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
 		gun.shoot(shotDirection);
-
 		mIsShooting = false;
 	}
 }
@@ -172,11 +217,10 @@ void Player::shootingUpdate(const sf::Time delta)
 void Player::meleeAttackUpdate(const sf::Time delta)
 {
 	if (mIsAttacking) {
+		mTimeFromLastMeleeAtack.restart();
 		sf::Vector2f meleeAttackDirection = attackDirection();
-	
 		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
 		meleeWeapon.attack(meleeAttackDirection);
-
 		mIsAttacking = false;
 	}
 }
@@ -201,15 +245,6 @@ sf::Vector2f Player::attackDirection()
 		return  { 0.f, 1.f };
 	else
 		return  {0.f, 1.f};
-}
-
-void Player::updateAnimation(const std::string& stateName)
-{
-	const std::string name = mAnimation.getCurrentStateName();
-	if (name != stateName) {
-		mAnimation.changeState(stateName);
-		mAnimation.animate(mSprite);
-	}
 }
 
 void Player::cameraMovement(sf::Time delta) const

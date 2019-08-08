@@ -73,10 +73,10 @@ void Character::takeDamage(const unsigned damage)
 { 
 	//INFO: Temporary solution so the particles don't bug
 
-	if (mTimeFromLastHit.getElapsedTime().asSeconds() > 0.15f) {
+	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {
 		mHP -= damage;
 		drawBlood();
-		mTimeFromLastHit.restart();
+		mTimeSinceLastTakenDamage.restart();
 	}
 }
 
