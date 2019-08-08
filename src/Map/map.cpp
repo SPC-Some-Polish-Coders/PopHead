@@ -120,7 +120,8 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData,
 
 void Map::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const
 {
-	mChunkMap->draw(target, states, cameraBounds);
+	if (mChunkMap)
+		mChunkMap->draw(target, states, cameraBounds);
 }
 
 }
