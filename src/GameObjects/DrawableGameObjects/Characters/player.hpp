@@ -30,9 +30,10 @@ private:
 	void gunInput();
 	void meleeWeaponInput();
 	void updateMovement(const sf::Time delta);
+	void updateAnimation(const sf::Time delta);
+    void setAnimationState(const std::string& stateName);
 	void shootingUpdate(const sf::Time delta);
 	void meleeAttackUpdate(const sf::Time delta);
-    void updateAnimation(const std::string& stateName);
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition() const;
 	sf::Vector2f attackDirection();

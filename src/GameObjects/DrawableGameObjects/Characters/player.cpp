@@ -92,6 +92,8 @@ void Player::meleeWeaponInput()
 void Player::update(sf::Time delta)
 {
 	updateMovement(delta);
+	updateAnimation(delta);
+	mMotion.clear();
 	shootingUpdate(delta);
 	meleeAttackUpdate(delta);
 	cameraMovement(delta);
@@ -110,19 +112,15 @@ void Player::updateMovement(const sf::Time delta)
 		mLastMotion = mMotion;
 		if (mMotion.isMovingLeft) {
 			velocity.x -= mMovementSpeed * delta.asSeconds();
-			updateAnimation("left");
 		}
 		if (mMotion.isMovingRight) {
 			velocity.x += mMovementSpeed * delta.asSeconds();
-			updateAnimation("right");
 		}
 		if (mMotion.isMovingUp) {
 			velocity.y -= mMovementSpeed * delta.asSeconds();
-			updateAnimation("up");
 		}
 		if (mMotion.isMovingDown) {
 			velocity.y += mMovementSpeed * delta.asSeconds();
-			updateAnimation("down");
 		}
 
 		if (mMotion.isMovingDiagonally()) {
@@ -131,11 +129,36 @@ void Player::updateMovement(const sf::Time delta)
 		}
 
 		mCollisionBody.move(velocity);
-		mAnimation.animate(mSprite, delta);
 	}
-	mMotion.clear();
 	setPosition(mCollisionBody.getPosition());
 	mGameData->getAIManager().setPlayerPosition(mPosition);
+}
+
+void Player::updateAnimation(const sf::Time delta)
+{
+	if(mMotion.isMovingLeft && mMotion.isMovingUp)
+		setAnimationState("leftUp");
+	else if(mMotion.isMovingRight && mMotion.isMovingUp)
+		setAnimationState("rightUp");
+	else if(mMotion.isMovingLeft)
+		setAnimationState("left");
+	else if(mMotion.isMovingRight)
+		setAnimationState("right");
+	else if(mMotion.isMovingUp)
+		setAnimationState("up");
+	else if(mMotion.isMovingDown)
+		setAnimationState("down");
+		
+	mAnimation.animate(mSprite, delta);
+}
+
+void Player::setAnimationState(const std::string& stateName)
+{
+	const std::string name = mAnimation.getCurrentStateName();
+	if (name != stateName) {
+		mAnimation.changeState(stateName);
+		mAnimation.animate(mSprite);
+	}
 }
 
 PlayerMotion::PlayerMotion()
@@ -202,15 +225,6 @@ sf::Vector2f Player::attackDirection()
 		return  { 0.f, 1.f };
 	else
 		return  {0.f, 1.f};
-}
-
-void Player::updateAnimation(const std::string& stateName)
-{
-	const std::string name = mAnimation.getCurrentStateName();
-	if (name != stateName) {
-		mAnimation.changeState(stateName);
-		mAnimation.animate(mSprite);
-	}
 }
 
 void Player::cameraMovement(sf::Time delta) const
