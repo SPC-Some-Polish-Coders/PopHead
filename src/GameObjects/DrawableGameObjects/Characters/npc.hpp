@@ -11,11 +11,6 @@ public:
 
     void input() override;
     void update(sf::Time delta) override;
-
-    void talk();
-
-private:
-    bool mWasDialogueButtonClicked = false;
 };
 
 }

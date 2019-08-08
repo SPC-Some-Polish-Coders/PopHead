@@ -26,28 +26,15 @@ Npc::Npc(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
 {
 	getSprite().setTexture(mGameData->getTextures().get("textures/characters/vaultMan.png"));
-	//this may change depending on architecture of Npc class
 }
 
 void Npc::input()
 {
-    #if 0
-    if(mGameData->getInput().getAction().isActionJustPressed("talk with NPC"))
-        mWasDialogueButtonClicked = true;
-    #endif // 0
 }
 
 void Npc::update(sf::Time delta)
 {
-    if(mWasDialogueButtonClicked)
-        talk();
-
 	setPosition(mCollisionBody.getPosition());
-}
-
-void Npc::talk()
-{
-
 }
 
 }
