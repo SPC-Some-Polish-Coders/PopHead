@@ -1,5 +1,8 @@
 #pragma once
 
+#include "guiActionsParser.hpp"
+
+#include <memory>
 #include <string>
 
 #include <SFML/System/Vector2.hpp>
@@ -16,6 +19,8 @@ namespace ph {
 	class XmlGuiParser
 	{
 	public:
+		static void setActionsParser(std::unique_ptr<GuiActionsParser> actionsParser);
+
 		void parseFile(GameData* const gameData, const std::string& fileName);
 		void parseInterface(const Xml& interfaceTag, GUI& gui);
 		void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
@@ -29,5 +34,6 @@ namespace ph {
 
 	private:
 		GameData* mGameData;
+		static std::unique_ptr<GuiActionsParser> mActionsParser;
 	};
 }

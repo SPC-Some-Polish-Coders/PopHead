@@ -6,6 +6,13 @@
 
 namespace ph {
 
+	std::unique_ptr<GuiActionsParser> XmlGuiParser::mActionsParser = nullptr;
+	
+	void XmlGuiParser::setActionsParser(std::unique_ptr<GuiActionsParser> actionsParser)
+	{
+		mActionsParser = std::move(actionsParser);
+	}
+
 	void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileName)
 	{
 		PH_LOG_INFO("Gui file (" + fileName + ") is being parsed.");
@@ -44,6 +51,25 @@ namespace ph {
 			widget.setOrigin(getWidgetOrigin(widgetTag));
 		if (widgetTag.hasAttribute("positionX") && widgetTag.hasAttribute("positionY"))
 			widget.setPosition(getWidgetPosition(widgetTag));
+		
+		if (mActionsParser)
+		{
+			if (widgetTag.hasAttribute("onButtonPressed"))
+			{
+				auto action = widgetTag.getAttribute("onButtonPressed").toString();
+				widget.addBehavior(behaviorType::onPressed, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+			}
+			if (widgetTag.hasAttribute("onButtonReleased"))
+			{
+				auto action = widgetTag.getAttribute("onButtonReleased").toString();
+				widget.addBehavior(behaviorType::onReleased, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+			}
+			if (widgetTag.hasAttribute("onButtonUpdate"))
+			{
+				auto action = widgetTag.getAttribute("onButtonUpdate").toString();
+				widget.addBehavior(behaviorType::onUpdate, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+			}
+		}
 	}
 
 	void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget)
