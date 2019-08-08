@@ -13,7 +13,7 @@ namespace ph {
 namespace
 {
 	const std::string name = "player";
-	const unsigned int movementSpeed = 75;
+	const unsigned int movementSpeed = 55;
 	const unsigned int HP = 100;
 	const unsigned int maxHP = 100;
 	const sf::FloatRect posAndSize(
@@ -136,19 +136,25 @@ void Player::updateMovement(const sf::Time delta)
 
 void Player::updateAnimation(const sf::Time delta)
 {
-	if(mMotion.isMovingLeft && mMotion.isMovingUp)
-		setAnimationState("leftUp");
-	else if(mMotion.isMovingRight && mMotion.isMovingUp)
-		setAnimationState("rightUp");
-	else if(mMotion.isMovingLeft)
-		setAnimationState("left");
-	else if(mMotion.isMovingRight)
-		setAnimationState("right");
-	else if(mMotion.isMovingUp)
-		setAnimationState("up");
-	else if(mMotion.isMovingDown)
-		setAnimationState("down");
-		
+	if(mMotion.isMoving()) {
+		if(mMotion.isMovingLeft && mMotion.isMovingUp)
+			setAnimationState("leftUp");
+		else if(mMotion.isMovingRight && mMotion.isMovingUp)
+			setAnimationState("rightUp");
+		else if(mMotion.isMovingLeft)
+			setAnimationState("left");
+		else if(mMotion.isMovingRight)
+			setAnimationState("right");
+		else if(mMotion.isMovingUp)
+			setAnimationState("up");
+		else if(mMotion.isMovingDown)
+			setAnimationState("down");
+	}
+	else {
+		mAnimation.goToFrontFrame();
+		return;
+	}
+
 	mAnimation.animate(mSprite, delta);
 }
 
