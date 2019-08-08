@@ -12,11 +12,11 @@ namespace ph {
 
 namespace
 {
-	std::string name = "player";
-	unsigned int movementSpeed = 75;
-	unsigned int HP = 100;
-	unsigned int maxHP = 100;
-	sf::FloatRect posAndSize(
+	const std::string name = "player";
+	const unsigned int movementSpeed = 75;
+	const unsigned int HP = 100;
+	const unsigned int maxHP = 100;
+	const sf::FloatRect posAndSize(
 		50,
 		50,
 		CollisionRectData::PLAYER_WIDTH,
@@ -25,14 +25,18 @@ namespace
 	float mass = 25;
 
 	Animation animation{
-		std::array<std::string, 4>{"down", "left", "right", "up"},
+		std::array<std::string, 6>{"down", "right", "left", "rightUp", "leftUp", "up"},
 		{
 			sf::IntRect(0, 0 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
 			sf::IntRect(0, 1 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
 			sf::IntRect(0, 2 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
-			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
+			sf::IntRect(0, 3 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 4 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT),
+			sf::IntRect(0, 5 * SpriteSheetData::PLAYER_HEIGHT, SpriteSheetData::PLAYER_WIDTH, SpriteSheetData::PLAYER_HEIGHT)
 		},
 		{
+			SpriteSheetData::PLAYER_FRAMES_COUNT,
+			SpriteSheetData::PLAYER_FRAMES_COUNT,
 			SpriteSheetData::PLAYER_FRAMES_COUNT,
 			SpriteSheetData::PLAYER_FRAMES_COUNT,
 			SpriteSheetData::PLAYER_FRAMES_COUNT,
@@ -59,9 +63,6 @@ void Player::input()
 	movementInput();
 	gunInput();
 	meleeWeaponInput();
-
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F7))
-		mGameData->getSceneMachine().replaceScene("scenes/smallScene.xml");
 }
 
 void Player::movementInput()

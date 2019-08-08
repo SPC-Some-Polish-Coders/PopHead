@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
   <map name="map" filepath="maps/desertMap.tmx"/>
-  <player texturepath="textures/characters/vaultManSheet.png"/>
+  <player texturepath="textures/characters/playerFullAnimation.png"/>
   <group name="npc">
     <npcTest positionX="150" positionY="200"/>
     <npcTest positionX="160" positionY="100"/>
