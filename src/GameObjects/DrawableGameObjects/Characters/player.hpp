@@ -39,6 +39,7 @@ private:
 	sf::Vector2f attackDirection();
 
 private:
+	sf::Clock mTimeFromLastMeleeAtack;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	bool mIsShooting;
