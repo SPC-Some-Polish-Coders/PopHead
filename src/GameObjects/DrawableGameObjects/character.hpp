@@ -29,14 +29,14 @@ public:
 	auto getSpriteCenter() -> sf::Vector2f;
 
 protected:
-	int mHP;
-	GameData* const mGameData;
-	unsigned mMaxHP;
-	unsigned mMovementSpeed;
 	sf::Sprite mSprite;
 	Animation mAnimation;
-	CollisionBody& mCollisionBody;
 	sf::Clock mTimeSinceLastTakenDamage;
+	GameData* const mGameData;
+	CollisionBody& mCollisionBody;
+	int mHP;
+	unsigned mMaxHP;
+	unsigned mMovementSpeed;
 };
 
 }
