@@ -54,7 +54,7 @@ Game::Game()
 	mInput->setGameData(gameData);
 	mRenderer->setGameData(gameData);
 	mSceneMachine->setGameData(gameData);
-	mSceneMachine->replaceScene("scenes/desert.xml");
+	mSceneMachine->replaceScene("scenes/mainMenu.xml");
 }
 
 void Game::run()

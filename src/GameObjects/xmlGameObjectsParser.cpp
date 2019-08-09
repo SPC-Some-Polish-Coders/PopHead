@@ -20,7 +20,7 @@ XmlGameObjectsParser::XmlGameObjectsParser(GameData* const gameData, GameObject&
 
 void XmlGameObjectsParser::parseFile(const std::string& fileName)
 {
-	PH_LOG_INFO("Game objects file (" + fileName + ") is beign parsed.");
+	PH_LOG_INFO("Game objects file (" + fileName + ") is being parsed.");
 
 	Xml gameObjectsFile;
 	gameObjectsFile.loadFromFile(fileName);
