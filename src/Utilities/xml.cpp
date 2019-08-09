@@ -26,17 +26,17 @@ void Xml::loadFromFile(std::string filePath)
 	PH_LOG_INFO("Xml loadFromFile(): " + mContent);
 }
 
-std::optional<Xml> Xml::getChild(std::string name) const
+Xml Xml::getChild(std::string name) const
 {
 	PH_ASSERT(!name.empty(), "child name cannot be empty");
 	std::size_t begin = findEndOfTagAttributes();
 	PH_ASSERT(begin != std::string::npos, "missing closing angle bracket");
 	if (isSelfClosingTag(begin))
-		return std::nullopt;
+		PH_EXCEPTION("current tag cannot have children");
 	while (true) {
 		begin = mContent.find('<', begin + 1);
 		if (begin == std::string::npos)
-			return std::nullopt;
+			PH_EXCEPTION("cannot find child");
 		++begin;
 		std::size_t end = mContent.find_first_of(whitespaceCharacters + ">", begin + 1);
 		if (end == std::string::npos)

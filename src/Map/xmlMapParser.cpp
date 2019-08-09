@@ -13,7 +13,7 @@ void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileNa
 		
 	Xml mapFile;
 	mapFile.loadFromFile(fileName);
-	const Xml mapNode = *mapFile.getChild("map");
+	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
 	gameData->getAIManager().registerMapSize(generalMapInfo.mapSize);
@@ -80,11 +80,11 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
-			tilesetNode = *tilesetDocument.getChild("tileset");
+			tilesetNode = tilesetDocument.getChild("tileset");
 		}
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
-		const Xml imageNode = *tilesetNode.getChild("image");
+		const Xml imageNode = tilesetNode.getChild("image");
 		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesData tilesData = getTilesData(tileNodes);
@@ -101,8 +101,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) {
 		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
-		const Xml objectGroupNode = *tileNode.getChild("objectgroup");
-		const Xml objectNode = *objectGroupNode.getChild("object");
+		const Xml objectGroupNode = tileNode.getChild("objectgroup");
+		const Xml objectNode = objectGroupNode.getChild("object");
 		const sf::FloatRect bounds(
 			objectNode.getAttribute("x").toFloat(),
 			objectNode.getAttribute("y").toFloat(),
@@ -127,7 +127,7 @@ auto XmlMapParser::getAllLayersGlobalTileIds(const std::vector<Xml>& layerNodes)
 {
 	AllLayersGlobalTileIds allLayersGlobalTileIds;
 	for(const Xml& layerNode : layerNodes) {
-		const Xml dataNode = *layerNode.getChild("data");
+		const Xml dataNode = layerNode.getChild("data");
 		allLayersGlobalTileIds.emplace_back(toGlobalTileIds(dataNode));
 	}
 	return allLayersGlobalTileIds;

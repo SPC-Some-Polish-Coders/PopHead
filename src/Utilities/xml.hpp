@@ -3,7 +3,6 @@
 #include "cast.hpp"
 #include <string>
 #include <vector>
-#include <optional>
 
 namespace ph {
 
@@ -12,7 +11,7 @@ class Xml
 public:
 	void loadFromFile(std::string filePath);
 
-	std::optional<Xml> getChild(std::string name) const;
+	Xml getChild(std::string name) const;
 
 	std::vector<Xml> getChildren(std::string name) const;
 

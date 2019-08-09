@@ -10,8 +10,8 @@ void XmlResourceParser::parseFile(GameData* const gameData, const std::string& f
 
 	Xml neededResourcesFile;
 	neededResourcesFile.loadFromFile(filePath);
-	const Xml loadingNode = *neededResourcesFile.getChild("loading");
-	const Xml textureNode = *loadingNode.getChild("textures");
+	const Xml loadingNode = neededResourcesFile.getChild("loading");
+	const Xml textureNode = loadingNode.getChild("textures");
 	loadTextures(textureNode, gameData);
 }
 

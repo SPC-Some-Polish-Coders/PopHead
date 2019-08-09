@@ -28,7 +28,7 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath)
 	Xml mapFile;
 	mapFile.loadFromFile(filePath);
 
-	Xml mapNode = *mapFile.getChild("map");
+	Xml mapNode = mapFile.getChild("map");
 	Xml gameObjects = findGameObjects(mapNode);
 	if (gameObjects.toString() == "")
 		return;
@@ -42,7 +42,7 @@ std::vector<Xml> TiledGameObjectsParser::getObjectTypeNodes()
 {
 	Xml objectTypesFile;
 	objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
-	auto objectTypesNode = *objectTypesFile.getChild("objecttypes");
+	auto objectTypesNode = objectTypesFile.getChild("objecttypes");
 	std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
 	return getObjectTypeNodes;
 }
@@ -144,9 +144,9 @@ Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string
 
 bool TiledGameObjectsParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName)
 {
-	if (auto propertiesNode = gameObjectNode.getChild("properties"))
+	if (gameObjectNode.getChildren("properties").size() != 0)
 	{
-		auto properties = propertiesNode->getChildren("property");
+		auto properties = gameObjectNode.getChild("properties").getChildren("property");
 		for (const auto& property : properties)
 		{
 			if (property.getAttribute("name").toString() == propertyName)
@@ -178,7 +178,7 @@ Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, 
 Xml TiledGameObjectsParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name)
 {
 	auto propertiesNode = gameObjectNode.getChild("properties");
-	auto properties = propertiesNode->getChildren("property");
+	auto properties = propertiesNode.getChildren("property");
 	for (const auto& property : properties)
 		if (property.getAttribute("name").toString() == name)
 			return property.getAttribute("value");

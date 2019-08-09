@@ -15,7 +15,7 @@ namespace ph {
 		Xml document;
 		document.loadFromFile(configFileName);
 
-		auto mainTag = *document.getChild("handlers");
+		auto mainTag = document.getChild("handlers");
 		auto handlers = mainTag.getChildren("handler");
 
 		for (const auto& handlerTag : handlers)
@@ -33,7 +33,7 @@ namespace ph {
 			if (!handler)
 				continue;
 
-			auto modulesTag = *handlerTag.getChild("modules");
+			auto modulesTag = handlerTag.getChild("modules");
 
 			if (modulesTag.hasAttribute("all"))
 				handler->enableAllModules();
@@ -48,7 +48,7 @@ namespace ph {
 				}
 			}
 
-			auto logLevelsTag = *handlerTag.getChild("levels");
+			auto logLevelsTag = handlerTag.getChild("levels");
 
 			if (logLevelsTag.hasAttribute("all"))
 				handler->enableAllLogLevels();
