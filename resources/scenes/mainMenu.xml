@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenelinks>
- <gui filename="mainMenu.gui.xml"/>
+  <gui filename="mainMenu.gui.xml"/>
+  <map filename="mainMenuMap.tmx"/>
+  <neededResources filename="desert.res.xml"/>
+  <gameObjects filename="mainMenu.gobj.xml"/>
 </scenelinks>
