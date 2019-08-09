@@ -88,13 +88,12 @@ bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std
 
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode)
 {
-	auto propertiesNode = entranceNode.getChild("properties");
-
-	auto entrance = propertiesNode ?
-	std::make_unique<Entrance>(mGameData->getSceneMachine(), getProperties(entranceNode, "gotoScene")->toString(),
-		"entrance", getSizeAttribute(entranceNode), getPositionAttribute(entranceNode))
-	: std::make_unique<Entrance>(mGameData->getSceneMachine(), getDefaultProperties("Entrance", "gotoScene").toString(),
-		"entrance", getSizeAttribute(entranceNode), getPositionAttribute(entranceNode));
+	auto entrance = std::make_unique<Entrance>(
+		mGameData->getSceneMachine(),
+		getProperty(entranceNode, "gotoScene").toString(),
+		"entrance", getSizeAttribute(entranceNode),
+		getPositionAttribute(entranceNode)
+		);
 
 	mRoot.addChild(std::move(entrance));
 }
@@ -104,44 +103,20 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode)
 	auto npc = std::make_unique<Npc>(mGameData);
 
 	npc->setPosition(getPositionAttribute(npcNode));
-	auto propertiesNode = npcNode.getChild("properties");
-	if(propertiesNode){
-		auto hp = getProperties(npcNode, "hp");
-		if (hp)
-			npc->setHp(hp->toInt());
+	npc->setHp(getProperty(npcNode, "hp").toInt());
+	npc->setHp(getProperty(npcNode, "maxHp").toUnsigned());
 
-		auto maxHp = getProperties(npcNode, "maxHp");
-		if (maxHp)
-			npc->setMaxHp(maxHp->toUnsigned());
-	}
-	else{
-		npc->setHp(getDefaultProperties("Npc", "hp").toUnsigned());
-		npc->setMaxHp(getDefaultProperties("Npc", "maxHp").toUnsigned());
-	}
 	mRoot.addChild(std::move(npc));
 }
 
 void TiledGameObjectsParser::loadZombie(const Xml& zombieNode)
 {
-	auto propertiesNode = zombieNode.getChild("properties");
 	auto& enemies = mRoot.getChild("enemy_container");
-
 	auto zombie = std::make_unique<Zombie>(mGameData);
 
 	zombie->setPosition(getPositionAttribute(zombieNode));
-	if (propertiesNode) {
-		auto hp = getProperties(zombieNode, "hp");
-		if(hp)
-			zombie->setHp(hp->toInt());
-
-		auto maxHp = getProperties(zombieNode, "maxHp");
-		if(maxHp)
-			zombie->setMaxHp(maxHp->toUnsigned());
-	}
-	else{
-		zombie->setHp(getDefaultProperties("Zombie", "hp").toUnsigned());
-		zombie->setMaxHp(getDefaultProperties("Zombie", "maxHp").toUnsigned());
-	}
+	zombie->setHp(getProperty(zombieNode, "hp").toInt());
+	zombie->setMaxHp(getProperty(zombieNode, "maxHp").toUnsigned());
 
 	enemies.addChild(std::move(zombie));
 }
@@ -149,14 +124,36 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode)
 void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 {
 	auto propertiesNode = spawnerNode.getChild("properties");
-
-	auto spawner = propertiesNode ?
-	std::make_unique<Spawner>(mGameData, "spawner", ObjectType::Zombie,
-		sf::seconds(getProperties(spawnerNode, "spawnFrequency")->toFloat()), getPositionAttribute(spawnerNode))
-	: std::make_unique<Spawner>(mGameData, "spawner", ObjectType::Zombie,
-		sf::seconds(getDefaultProperties("Spawner", "spawnFrequency").toFloat()),getPositionAttribute(spawnerNode));
+	auto spawner = std::make_unique<Spawner>(
+		mGameData, "spawner", ObjectType::Zombie,
+		sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),
+		getPositionAttribute(spawnerNode)
+	);
 
 	mRoot.addChild(std::move(spawner));
+}
+
+Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName)
+{
+	if (hasCustomProperty(objectNode, propertyName))
+		return getCustomProperties(objectNode, propertyName);
+	else
+		return getDefaultProperties(objectNode.getAttribute("type").toString(), propertyName);
+}
+
+bool TiledGameObjectsParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName)
+{
+	if (auto propertiesNode = gameObjectNode.getChild("properties"))
+	{
+		auto properties = propertiesNode->getChildren("property");
+		for (const auto& property : properties)
+		{
+			if (property.getAttribute("name").toString() == propertyName)
+				return true;
+		}
+		return false;
+	}
+	return false;
 }
 
 Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, const std::string& propertyName)
@@ -177,15 +174,15 @@ Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, 
 	return Xml();
 }
 
-std::optional<Xml> TiledGameObjectsParser::getProperties(const Xml& gameObjectNode, const std::string& name)
+Xml TiledGameObjectsParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name)
 {
-	Xml propertiesNode = *gameObjectNode.getChild("properties");
-	std::vector<Xml> properties = propertiesNode.getChildren("property");
+	auto propertiesNode = gameObjectNode.getChild("properties");
+	auto properties = propertiesNode->getChildren("property");
 	for (const auto& property : properties)
 		if (property.getAttribute("name").toString() == name)
 			return property.getAttribute("value");
 
-	return std::nullopt;
+	return Xml();
 }
 
 sf::Vector2f TiledGameObjectsParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const
