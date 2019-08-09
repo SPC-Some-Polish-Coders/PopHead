@@ -46,11 +46,11 @@ namespace ph {
 			mGameData->getTextures().load(path);
 			widget.setContentPath(path);
 		}
-		if (widgetTag.hasAttribute("originX") && widgetTag.hasAttribute("originY"))
+		if (widgetTag.hasAttribute("origin"))
 			widget.setOrigin(getVector(widgetTag, "origin"));
-		if (widgetTag.hasAttribute("positionX") && widgetTag.hasAttribute("positionY"))
+		if (widgetTag.hasAttribute("position"))
 			widget.setPosition(getVector(widgetTag, "position"));
-		if (widgetTag.hasAttribute("scaleX") && widgetTag.hasAttribute("scaleY"))
+		if (widgetTag.hasAttribute("scale"))
 			widget.scale(getVector(widgetTag, "scale"));
 		if (widgetTag.hasAttribute("alpha"))
 			widget.setAlpha(widgetTag.getAttribute("alpha").toUnsigned());
@@ -83,7 +83,7 @@ namespace ph {
 			mGameData->getFonts().load(path);
 			widget.setFontPath(path);
 		}
-		if (textWidgetTag.hasAttribute("textPositionX") && textWidgetTag.hasAttribute("textPositionY"))
+		if (textWidgetTag.hasAttribute("textPosition"))
 			widget.setTextPosition(getVector(textWidgetTag, "textPosition"));
 		if (textWidgetTag.hasAttribute("color"))
 			widget.setColor(getColor(textWidgetTag));
@@ -91,11 +91,11 @@ namespace ph {
 			widget.setString(textWidgetTag.getAttribute("text").toString());
 		if (textWidgetTag.hasAttribute("characterSize"))
 			widget.setCharacterSize(textWidgetTag.getAttribute("characterSize").toUnsigned());
-		if (textWidgetTag.hasAttribute("textOriginX") && textWidgetTag.hasAttribute("textOriginY"))
+		if (textWidgetTag.hasAttribute("textOrigin"))
 			widget.setTextOrigin(getVector(textWidgetTag, "textOrigin"));
 		if (textWidgetTag.hasAttribute("textAlpha"))
 			widget.setTextAlpha(textWidgetTag.getAttribute("textAlpha").toUnsigned());
-		if (textWidgetTag.hasAttribute("scaleTextX") && textWidgetTag.hasAttribute("scaleTextY"))
+		if (textWidgetTag.hasAttribute("scaleText"))
 			widget.scaleText(getVector(textWidgetTag, "scaleText"));
 	}
 
@@ -123,10 +123,29 @@ namespace ph {
 		}
 	}
 
-	sf::Vector2f XmlGuiParser::getVector(const Xml& widgetTag, const std::string& baseName)
+	sf::Vector2f XmlGuiParser::getVector(const Xml& widgetTag, const std::string& attributeName)
 	{
-		return sf::Vector2f(widgetTag.getAttribute(baseName + 'X').toFloat(),
-							widgetTag.getAttribute(baseName + 'Y').toFloat());
+		auto pair = splitString(widgetTag.getAttribute(attributeName).toString());
+		
+		if (pair.second.empty())
+		{
+			auto value = std::stof(pair.first);
+			return { value, value };
+		}
+		else
+		{
+			return { std::stof(pair.first),
+					 std::stof(pair.second) };
+		}
+	}
+
+	std::pair<std::string, std::string> XmlGuiParser::splitString(const std::string& attributeValue)
+	{
+		auto commaPos = attributeValue.find(',');
+		std::pair<std::string, std::string> splittedAction;
+		splittedAction.first = attributeValue.substr(0, commaPos);
+		splittedAction.second = attributeValue.substr(commaPos + 1);
+		return splittedAction;
 	}
 	
 	sf::Color XmlGuiParser::getColor(const Xml& widgetTag)
