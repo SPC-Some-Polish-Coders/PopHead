@@ -47,9 +47,9 @@ namespace ph {
 			widget.setContentPath(path);
 		}
 		if (widgetTag.hasAttribute("originX") && widgetTag.hasAttribute("originY"))
-			widget.setOrigin(getWidgetOrigin(widgetTag));
+			widget.setOrigin(getVector(widgetTag, "origin"));
 		if (widgetTag.hasAttribute("positionX") && widgetTag.hasAttribute("positionY"))
-			widget.setPosition(getWidgetPosition(widgetTag));
+			widget.setPosition(getVector(widgetTag, "position"));
 		
 		if (mActionsParser)
 		{
@@ -80,7 +80,7 @@ namespace ph {
 			widget.setFontPath(path);
 		}
 		if (textWidgetTag.hasAttribute("textPositionX") && textWidgetTag.hasAttribute("textPositionY"))
-			widget.setTextPosition(getTextPosition(textWidgetTag));
+			widget.setTextPosition(getVector(textWidgetTag, "textPosition"));
 		if (textWidgetTag.hasAttribute("color"))
 			widget.setColor(getColor(textWidgetTag));
 		if (textWidgetTag.hasAttribute("text"))
@@ -111,22 +111,10 @@ namespace ph {
 		}
 	}
 
-	sf::Vector2f XmlGuiParser::getWidgetOrigin(const Xml& widgetTag)
+	sf::Vector2f XmlGuiParser::getVector(const Xml& widgetTag, const std::string& baseName)
 	{
-		return sf::Vector2f(widgetTag.getAttribute("originX").toFloat(),
-							widgetTag.getAttribute("originY").toFloat());
-	}
-
-	sf::Vector2f XmlGuiParser::getWidgetPosition(const Xml& widgetTag)
-	{
-		return sf::Vector2f(widgetTag.getAttribute("positionX").toFloat(),
-							widgetTag.getAttribute("positionY").toFloat());
-	}
-
-	sf::Vector2f XmlGuiParser::getTextPosition(const Xml& widgetTag)
-	{
-		return sf::Vector2f(widgetTag.getAttribute("textPositionX").toFloat(),
-							widgetTag.getAttribute("textPositionY").toFloat());
+		return sf::Vector2f(widgetTag.getAttribute(baseName + 'X').toFloat(),
+							widgetTag.getAttribute(baseName + 'Y').toFloat());
 	}
 	
 	sf::Color XmlGuiParser::getColor(const Xml& widgetTag)
