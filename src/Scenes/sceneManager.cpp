@@ -36,6 +36,7 @@ void SceneManager::popAction()
 	else {
 		mGameData->getRenderer().clear();
 		mGameData->getPhysicsEngine().clear();
+		mGameData->getGui().clearGUI();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
 	}
@@ -46,6 +47,7 @@ void SceneManager::replaceAction()
 {
 	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
+	mGameData->getGui().clearGUI();
 	mScene.reset(new Scene());
 	SceneParser<XmlGuiParser, XmlMapParser, XmlGameObjectsParser, XmlResourceParser, XmlMusicParser> 
 		sceneParser(mGameData, mScene->getRoot(), mFileOfSceneToMake);

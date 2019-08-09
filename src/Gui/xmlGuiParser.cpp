@@ -20,7 +20,6 @@ namespace ph {
 		mGameData = gameData;
 
 		auto& gui = gameData->getGui();
-		gui.clearGUI();
 
 		Xml guiTag;
 		guiTag.loadFromFile(fileName);
