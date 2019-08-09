@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <gui filename="credits.gui.xml"/>
+  <map filename="mainMenuMap.tmx"/>
+  <neededResources filename="desert.res.xml"/>
+  <gameObjects filename="mainMenu.gobj.xml"/>
+  <music filename="menu.music.xml"/>
+</scenelinks>
