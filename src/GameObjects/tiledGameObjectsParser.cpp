@@ -125,7 +125,8 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 {
 	auto propertiesNode = spawnerNode.getChild("properties");
 	auto spawner = std::make_unique<Spawner>(
-		mGameData, "spawner", ObjectType::Zombie,
+		mGameData, "spawner", 
+		Cast::toObjectType(getProperty(spawnerNode, "spawnType").toString()),
 		sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),
 		getPositionAttribute(spawnerNode)
 	);

@@ -479,11 +479,15 @@
    <point/>
   </object>
   <object id="58" type="Spawner" x="687" y="512.5">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="59" type="Spawner" x="293.333" y="449.167">
    <properties>
     <property name="spawnFrequency" type="float" value="0.7"/>
+    <property name="spawnType" value="zombie"/>
    </properties>
    <point/>
   </object>
