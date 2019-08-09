@@ -20,7 +20,7 @@ namespace ph {
 class GameCloser
 {
 public:
-	void closeTheGame() { mShouldGameBeClosed = true; };
+	void closeGame() { mShouldGameBeClosed = true; };
 	bool shouldGameBeClosed() { return mShouldGameBeClosed; };
 
 private:
