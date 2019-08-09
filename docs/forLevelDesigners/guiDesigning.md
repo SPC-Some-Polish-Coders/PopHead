@@ -1,0 +1,49 @@
+# GUI Designing
+In our application gui elements are saved in xml file. All files are in resources/scenes/gui. There is an example file:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<gui>
+    <interface name="game_pause_menu">
+        <widget name="buttonArea" contentPath="GuiTestContent/gui4.png" originX="0.5" originY="0.5">
+            <textWidget name="button1" contentPath="GuiTestContent/gui1.png" originX="0.5" originY="0.5" positionX="0.5" positionY="0.3" fontPath="GuiTestContent/testFont.ttf" textPositionX="0.4" textPositionY="0.3" color="green" onButtonPressed="replaceScene:scenes/desert.xml">Run Game
+            </textWidget>
+            <widget name="button2" contentPath="GuiTestContent/gui2.png" originX="0.5" originY="0.5" positionX="0.5" positionY="0.7">
+            </widget>
+        </widget>
+    </interface>
+</gui>
+```
+In this tutorial all elements of gui that can be modified by xml file will be described in detail.
+
+There are now 3 types of gui elements:
+- widget
+- interface
+- textWidget
+
+The first one is in code a base class for the rest. Very detailed description of these elements can be found in [Gui tutorial](../forProgrammers/guiTutorial.md).
+
+## Attributes
+- Widget attributes (apply also to derived classes like Interface and TextWidget):
+  - name - it's a 'must-be' attribute
+  - contentPath - path to texture displayed in widget
+  - originX and originY - both must be present to work (see origin in gui Tutorial)
+  - positionX and positionY - both must be present to work (see position in gui Tutorial)
+  - onButtonPressed - creates action that is performed when user clicks mouse over a widget (see [Actions](#widget-actions))
+  - onButtonReleased - creates action that is performed when user releases mouse over a widget (see [Actions](#widget-actions))
+  - onButtonUpdate - creates action that is performed on every gui update (see [Actions](#widget-actions))
+- TextWidget attributes:
+  - text - just text to display
+  - fontPath - path to font for text
+  - textPositionX and textPositionY - both must be present to work (see text position in gui Tutorial)
+  - color - color of text, for now supported only:
+    - black
+	- white
+	- red
+	- green
+	- blue
+	- yellow
+	- magenta
+	- cyan
+	- transparent
+
+### Widgets actions
