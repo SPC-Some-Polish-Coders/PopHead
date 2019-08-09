@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
     <interface name="credits">
-        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5">d
-		        <textWidget name="PROGAMMERS:" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.03,0.01" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="green" characterSize="15" text="Programmers:">
-                <textWidget name="Czapa" origin="0.2" position="1, 0.7" fontPath="fonts/joystixMonospace.ttf" textPosition="0.6, -0.3" color="green" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
-            </textWidget>
-            <textWidget name="Peter" origin="0.5" position="0.02, 0.1" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Piotr Gardocki"/>
-            <textWidget name="Simon" origin="0.5" position="0.02, 0.15" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Szymon 'Whitler' Strugala"/>
-            <textWidget name="Hubert" origin="0.5" position="0.02, 0.2" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Hubert Misiewicz"/>
-		        <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.9" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
+        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="Programers:" origin="0.5" position="0.04, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="green" characterSize="15" text="Programmers:"/>
+            <textWidget name="Czapa" origin="0.5" position="0.02, 0.15" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
+            <textWidget name="Simon" origin="0.5" position="0.02, 0.2" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Szymon 'Whittler' Strugala"/>
+            <textWidget name="Peter" origin="0.5" position="0.02, 0.25" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Piotr Gardocki"/>
+            <textWidget name="Hubert" origin="0.5" position="0.02, 0.3" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Hubert Misiewicz"/>
+            <textWidget name="Kamil Lewan" origin="0.5" position="0.02, 0.35" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Kamil Lewan"/>
+            <textWidget name="Kamil 'Sajko'" origin="0.5" position="0.02, 0.4" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="Kamil Sajko"/>
+            <textWidget name="'Thief'" origin="0.5" position="0.02, 0.45" fontPath="fonts/joystixMonospace.ttf" color="green" characterSize="10" text="'Thief'"/>
+		        
+		        <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.45, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.5" color="magenta" characterSize="15" text="Music and Sound creator:"/>
+            <textWidget name="'Thief'" origin="0.5" position="0.45, 0.15" fontPath="fonts/joystixMonospace.ttf" color="magenta" characterSize="10" text="Mateusz Stepka"/>
+
+            <textWidget name="GraphicsCreators" origin="0.5" position="0.45, 0.25" fontPath="fonts/joystixMonospace.ttf" textPosition="0.5" color="blue" characterSize="15" text="Graphics creators:"/>
+            <textWidget name="Jumbocube" origin="0.5" position="0.45, 0.3" fontPath="fonts/joystixMonospace.ttf" color="blue" characterSize="10" text="Andrzej 'Jumbocube' Brol"/>
+            <textWidget name="Czapa" origin="0.5" position="0.45, 0.35" fontPath="fonts/joystixMonospace.ttf" color="blue" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
+
+            <textWidget name="GameLevelDesigners" origin="0.5" position="0.45, 0.45" fontPath="fonts/joystixMonospace.ttf" textPosition="0.5" color="red" characterSize="15" text="Game/Level designer:"/>
+            <textWidget name="Prezes" origin="0.5" position="0.45, 0.5" fontPath="fonts/joystixMonospace.ttf" color="red" characterSize="10" text="Piotr 'Prezes'"/>
+
+            <textWidget name="SpecialThanks" origin="0.5" position="0.45, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.5" color="black" characterSize="15" text="Special thanks to:"/>
+            <textWidget name="Darkoss" origin="0.5" position="0.45, 0.65" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="'Lord Drarkoss'"/>
+            <textWidget name="Fureeish" origin="0.5" position="0.45, 0.7" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Filip Kwiatkowski"/>
+            <textWidget name="Julka" origin="0.5" position="0.45, 0.75" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Julka"/>
+
+          <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.9" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
         </widget>
     </interface>
 </gui>
