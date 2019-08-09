@@ -4,8 +4,7 @@
 namespace ph {
 
 GUI::Gui_drawer::Gui_drawer(GameData* gameData, std::string name, LayerID id)
-	: DrawableGameObject(gameData->getRenderer(), name, id)
-	, mGui(nullptr)
+	:mGui(nullptr)
 {
 
 }

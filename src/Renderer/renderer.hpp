@@ -42,11 +42,14 @@ public:
 private:
 	void drawSceneLayers(sf::FloatRect properCameraBounds) const;
 	sf::FloatRect getProperCameraBounds() const;
-	void setPositionOfStaticObjectsToCamera();
+
+	void drawStaticObjectsToCamera() const;
+
 	std::string getLayerName(LayerID) const;
 
 private:
 	Camera mCamera;
+	Camera mStaticObjectsCamera;
 	std::map< LayerID, Layer > mLayers;
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	sf::RenderTarget& mRenderTarget;

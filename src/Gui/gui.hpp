@@ -1,8 +1,7 @@
 #pragma once
 
 #include "interface.hpp"
-#include "GameObjects/drawableGameObject.hpp"
-
+#include <SFML/Graphics.hpp>
 #include <memory>
 
 namespace ph {
@@ -15,7 +14,7 @@ public:
 	GUI();
 	~GUI();
 
-	class Gui_drawer : public DrawableGameObject
+	class Gui_drawer : public sf::Drawable
 	{
 	public:
 		Gui_drawer(GameData* gameData, std::string name, LayerID id);
@@ -35,6 +34,8 @@ public:
 	Widget* addInterface(const std::string& name);
 
 	Widget* getInterface(const std::string& name);
+
+	Gui_drawer& getGuiDrawer() { return *mGuiDrawer; }
 
 	void move(const sf::Vector2f&);
 

@@ -9,6 +9,7 @@ namespace ph {
 Renderer::Renderer(sf::RenderTarget& renderTarget)
 	:mRenderTarget(renderTarget)
 	,mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
+	,mStaticObjectsCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
 	,mLayers{  { LayerID::floorEntities, Layer() },
 				{ LayerID::staticEntities, Layer() },
@@ -28,7 +29,6 @@ Renderer::~Renderer()
 void Renderer::update(sf::Time delta)
 {
 	mCamera.update(delta);
-	setPositionOfStaticObjectsToCamera();
 }
 
 void Renderer::draw() const
@@ -39,9 +39,7 @@ void Renderer::draw() const
 	sf::FloatRect properCameraBounds = getProperCameraBounds();
 	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, properCameraBounds);
 	drawSceneLayers(properCameraBounds);
-	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
-	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
-	mRenderTarget.draw(mGameData->getTerminal().getImage());
+	drawStaticObjectsToCamera();
 }
 
 void Renderer::drawSceneLayers(sf::FloatRect properCameraBounds) const
@@ -70,6 +68,15 @@ sf::FloatRect Renderer::getProperCameraBounds() const
 	}
 	else
 		return mCamera.getBounds();
+}
+
+void Renderer::drawStaticObjectsToCamera() const
+{
+	mStaticObjectsCamera.applyTo(mRenderTarget);
+	mRenderTarget.draw(mGameData->getGui().getGuiDrawer());
+	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
+	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
+	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
 void Renderer::addObject(DrawableGameObject* const object)
@@ -106,16 +113,6 @@ void Renderer::clear() noexcept
 {
 	for(auto& layer : mLayers)
 		layer.second.clear();
-}
-
-void Renderer::setPositionOfStaticObjectsToCamera()
-{
-	const sf::Vector2f movementFromLastFrame = mCamera.getCameraMoveFromLastFrame();
-	for(const auto& guiObject : mLayers[LayerID::gui]) {
-		guiObject->move(movementFromLastFrame);
-	}
-	mGameData->getTerminal().getImage().move(movementFromLastFrame);
-	mGameData->getEfficiencyRegister().getDisplayer().move(movementFromLastFrame);
 }
 
 std::string Renderer::getLayerName(LayerID layerID) const
