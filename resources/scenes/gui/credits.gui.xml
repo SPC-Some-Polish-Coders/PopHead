@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
     <interface name="credits">
-        <widget name="border" contentPath="textures/gui/menuBorder.png" originX="0.5" originY="0.5">
-		        <textWidget name="mainMenuButton" contentPath="textures/gui/exitButton.png" originX="0.5" originY="0.5" positionX="0.5" positionY="0.9" fontPath="fonts/joystixMonospace.ttf" textPositionX="0.1" textPositionY="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml">main menu</textWidget>
+        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="todoButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.8" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
         </widget>
     </interface>
 </gui>
