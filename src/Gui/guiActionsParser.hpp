@@ -9,10 +9,12 @@ namespace ph {
 
 class GUI;
 class SceneManager;
+class GameCloser;
 
 class GuiActionsParser
 {
 public:
-	virtual std::function<void(Widget*)> getGuiAction(GUI& gui, SceneManager& sceneManager, const std::string& actionStr) const = 0;
+	virtual std::function<void(Widget*)> getGuiAction(GUI&, SceneManager&, GameCloser&, const std::string& actionStr) const = 0;
 };
+
 }

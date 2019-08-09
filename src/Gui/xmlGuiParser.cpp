@@ -57,17 +57,17 @@ namespace ph {
 			if (widgetTag.hasAttribute("onButtonPressed"))
 			{
 				auto action = widgetTag.getAttribute("onButtonPressed").toString();
-				widget.addBehavior(behaviorType::onPressed, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+				widget.addBehavior(behaviorType::onPressed, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), mGameData->getGameCloser(), action));
 			}
 			if (widgetTag.hasAttribute("onButtonReleased"))
 			{
 				auto action = widgetTag.getAttribute("onButtonReleased").toString();
-				widget.addBehavior(behaviorType::onReleased, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+				widget.addBehavior(behaviorType::onReleased, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), mGameData->getGameCloser(), action));
 			}
 			if (widgetTag.hasAttribute("onButtonUpdate"))
 			{
 				auto action = widgetTag.getAttribute("onButtonUpdate").toString();
-				widget.addBehavior(behaviorType::onUpdate, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), action));
+				widget.addBehavior(behaviorType::onUpdate, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneMachine(), mGameData->getGameCloser(), action));
 			}
 		}
 	}

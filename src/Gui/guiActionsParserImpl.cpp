@@ -1,15 +1,18 @@
 #include "guiActionsParserImpl.hpp"
 #include "gui.hpp"
 #include "Scenes/sceneManager.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
-std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneManager& sceneManager, const std::string& actionStr) const
+std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneManager& sceneManager, GameCloser& gameCloser, const std::string& actionStr) const
 {
 	auto pair = splitAction(actionStr);
 
-	if (pair.first == "replaceScene")
+	if(pair.first == "replaceScene")
 		return [&sceneManager, pair](Widget*) { sceneManager.replaceScene(pair.second); };
+	else if(pair.first == "closeTheGame")
+		return [&gameCloser](Widget*) {gameCloser.closeTheGame(); };
 }
 
 std::pair<std::string, std::string> GuiActionsParserImpl::splitAction(const std::string& actionStr) const
@@ -20,4 +23,5 @@ std::pair<std::string, std::string> GuiActionsParserImpl::splitAction(const std:
 	splittedAction.second = actionStr.substr(colonPos + 1);
 	return splittedAction;
 }
+
 }
