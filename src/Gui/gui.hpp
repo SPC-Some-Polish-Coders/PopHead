@@ -3,6 +3,8 @@
 #include "interface.hpp"
 #include "GameObjects/drawableGameObject.hpp"
 
+#include <memory>
+
 namespace ph {
 
 class GameData;
@@ -58,7 +60,7 @@ public:
 
 private:
 	std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
-	Gui_drawer* mGuiDrawer;
+	std::unique_ptr<Gui_drawer> mGuiDrawer;
 	GameData* mGameData;
 };
 
