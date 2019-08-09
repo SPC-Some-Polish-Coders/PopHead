@@ -15,8 +15,8 @@ namespace
 	const sf::FloatRect posAndSize(
 		0,
 		0,
-		CollisionRectData::PLAYER_WIDTH,
-		CollisionRectData::PLAYER_HEIGHT
+		CollisionRectData::HUMAN_WIDTH,
+		CollisionRectData::HUMAN_HEIGHT
 	);
 	constexpr float mass = 25;
 
