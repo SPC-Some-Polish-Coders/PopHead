@@ -152,7 +152,11 @@ namespace ph {
 	{
 		auto colorStr = widgetTag.getAttribute("color").toString();
 
-		if (colorStr == "black")
+		if (colorStr.substr(0, 4) == "rgba")
+			return parseRGBA(colorStr);
+		else if (colorStr.substr(0, 3) == "rgb")
+			return parseRGB(colorStr);
+		else if (colorStr == "black")
 			return sf::Color::Black;
 		else if (colorStr == "white")
 			return sf::Color::White;
@@ -172,5 +176,50 @@ namespace ph {
 			return sf::Color::Transparent;
 		else
 			return sf::Color();
+	}
+
+	namespace {
+		sf::Uint8 intoUint8(const std::string& str)
+		{
+			return static_cast<sf::Uint8>(std::stoul(str));
+		}
+	}
+
+	sf::Color XmlGuiParser::parseRGB(std::string colorStr)
+	{
+		colorStr.pop_back();
+		auto bracketPos = colorStr.find('(');
+		
+		std::vector<size_t> commas;
+		commas.push_back(colorStr.find(','));
+		commas.push_back(colorStr.find(',', commas[0] + 1));
+
+		std::vector<sf::Uint8> values = { 
+			intoUint8(colorStr.substr(bracketPos + 1, commas[0] - bracketPos - 1)), 
+			intoUint8(colorStr.substr(commas[0] + 1, commas[1] - commas[0])),
+			intoUint8(colorStr.substr(commas[1] + 1))
+		};
+
+		return sf::Color(values[0], values[1], values[2]);
+	}
+
+	sf::Color XmlGuiParser::parseRGBA(std::string colorStr)
+	{
+		colorStr.pop_back();
+		auto bracketPos = colorStr.find('(');
+
+		std::vector<size_t> commas;
+		commas.push_back(colorStr.find(','));
+		commas.push_back(colorStr.find(',', commas[0] + 1));
+		commas.push_back(colorStr.find(',', commas[1] + 1));
+
+		std::vector<sf::Uint8> values = { 
+			intoUint8(colorStr.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
+			intoUint8(colorStr.substr(commas[0] + 1, commas[1] - commas[0])),
+			intoUint8(colorStr.substr(commas[1] + 1, commas[2] - commas[1])),
+			intoUint8(colorStr.substr(commas[2] + 1))
+		};
+
+		return sf::Color(values[0], values[1], values[2], values[3]);
 	}
 }

@@ -29,7 +29,10 @@ namespace ph {
 		
 		sf::Vector2f getVector(const Xml& widgetTag, const std::string& attributeName);
 		std::pair<std::string, std::string> splitString(const std::string& attributeValue);
+		
 		sf::Color getColor(const Xml& widgetTag);
+		sf::Color parseRGB(std::string colorStr);
+		sf::Color parseRGBA(std::string colorStr);
 
 	private:
 		GameData* mGameData;
