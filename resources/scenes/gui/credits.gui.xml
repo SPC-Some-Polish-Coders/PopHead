@@ -2,7 +2,7 @@
 <gui>
     <interface name="credits">
         <widget name="border" contentPath="textures/gui/menuBorder.png" originX="0.5" originY="0.5">
-		        <textWidget name="todoButton" originX="0.5" originY="0.5" positionX="0" positionY="0.4" fontPath="fonts/joystixMonospace.ttf" textPositionX="0.1" textPositionY="0.1" color="white">// TODO: Make old Gui disapperar</textWidget>
+		        <textWidget name="todoButton" originX="0.5" originY="0.5" positionX="0" positionY="0.4" fontPath="fonts/joystixMonospace.ttf" textPositionX="0.1" textPositionY="0.1" color="white" text="// TODO: Make old Gui disapperar"></textWidget>
         </widget>
     </interface>
 </gui>

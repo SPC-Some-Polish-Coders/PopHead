@@ -84,6 +84,8 @@ namespace ph {
 			widget.setTextPosition(getTextPosition(textWidgetTag));
 		if (textWidgetTag.hasAttribute("color"))
 			widget.setColor(getColor(textWidgetTag));
+		if (textWidgetTag.hasAttribute("text"))
+			widget.setString(textWidgetTag.getAttribute("text").toString());
 	}
 
 	void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
@@ -106,8 +108,7 @@ namespace ph {
 			widget.addWidget(name, childWidget);
 			parseWidgetAttributes(childTag, *childWidget);
 			parseTextWidgetAttributes(childTag, *childWidget);
-			auto str = childTag.toString();
-			childWidget->setString(str);
+			parseWidgetChildren(childTag, *childWidget);
 		}
 	}
 
