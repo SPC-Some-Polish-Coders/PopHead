@@ -5,6 +5,8 @@ template< typename ResourceType >
 bool ph::ResourceHolder<ResourceType>::load(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
+	if (mResources.find(fullFilePath) != mResources.end())
+		return false;
 	auto resource = std::make_unique< ResourceType >();
 	if (resource->loadFromFile(fullFilePath))
 	{

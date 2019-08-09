@@ -45,16 +45,19 @@ The first one is in code a base class for the rest. Very detailed description of
   - textOrigin - double value
   - scaleText - double value
   - textAlpha - alpha channel for text
-  - color - color of text, for now supported only:
-    - black
-	- white
-	- red
-	- green
-	- blue
-	- yellow
-	- magenta
-	- cyan
-	- transparent
+  - color - color of text, can take three formats:
+    - rgb(v1, v2, v3)
+    - rgba(v1, v2, v3, v4)
+    - predefined colors:
+      - black
+	  - white
+	  - red
+	  - green
+	  - blue
+	  - yellow
+	  - magenta
+	  - cyan
+	  - transparent
 
 ### Widgets actions
 Actions are written in form "actionName:parameter". Example: 
