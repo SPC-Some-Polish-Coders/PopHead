@@ -83,7 +83,6 @@ protected:
 
 private:
 	sf::Sprite mSprite;
-	sf::Texture mTexture;
 	Widget* mRoot;
 };
 
