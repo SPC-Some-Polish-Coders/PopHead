@@ -28,9 +28,9 @@ The first one is in code a base class for the rest. Very detailed description of
   - contentPath - path to texture displayed in widget
   - originX and originY - both must be present to work (see origin in gui Tutorial)
   - positionX and positionY - both must be present to work (see position in gui Tutorial)
-  - onButtonPressed - creates action that is performed when user clicks mouse over a widget (see [Actions](#widget-actions))
-  - onButtonReleased - creates action that is performed when user releases mouse over a widget (see [Actions](#widget-actions))
-  - onButtonUpdate - creates action that is performed on every gui update (see [Actions](#widget-actions))
+  - onButtonPressed - creates action that is performed when user clicks mouse over a widget (see [Actions](#widgets-actions))
+  - onButtonReleased - creates action that is performed when user releases mouse over a widget (see [Actions](#widgets-actions))
+  - onButtonUpdate - creates action that is performed on every gui update (see [Actions](#widgets-actions))
 - TextWidget attributes:
   - text - just text to display
   - fontPath - path to font for text
@@ -47,3 +47,10 @@ The first one is in code a base class for the rest. Very detailed description of
 	- transparent
 
 ### Widgets actions
+Actions are written in form "actionName:parameter". Example: 
+```xml
+<widget onButtonPressed="replaceScene:scenes/desert.xml" ...></widget>
+```
+Actions:
+- replaceScene - changes current scene in Game, takes scene file path
+- closeGame - closes the game, doesn't take any parameters
