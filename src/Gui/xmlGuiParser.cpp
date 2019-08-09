@@ -51,7 +51,7 @@ namespace ph {
 		if (widgetTag.hasAttribute("positionX") && widgetTag.hasAttribute("positionY"))
 			widget.setPosition(getVector(widgetTag, "position"));
 		if (widgetTag.hasAttribute("scaleX") && widgetTag.hasAttribute("scaleY"))
-			widget.setPosition(getVector(widgetTag, "scale"));
+			widget.scale(getVector(widgetTag, "scale"));
 		if (widgetTag.hasAttribute("alpha"))
 			widget.setAlpha(widgetTag.getAttribute("alpha").toUnsigned());
 		
@@ -96,7 +96,7 @@ namespace ph {
 		if (textWidgetTag.hasAttribute("textAlpha"))
 			widget.setTextAlpha(textWidgetTag.getAttribute("textAlpha").toUnsigned());
 		if (textWidgetTag.hasAttribute("scaleTextX") && textWidgetTag.hasAttribute("scaleTextY"))
-			widget.setTextOrigin(getVector(textWidgetTag, "scaleText"));
+			widget.scaleText(getVector(textWidgetTag, "scaleText"));
 	}
 
 	void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
