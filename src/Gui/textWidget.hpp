@@ -15,7 +15,7 @@ public:
 
 	void setTextPosition(const sf::Vector2f& pos);
 
-	void setAlpha(unsigned int alpha);
+	void setAlpha(unsigned int alpha) override;
 
 	void setTextOrigin(const sf::Vector2f& origin);
 
@@ -23,17 +23,17 @@ public:
 
 	void scaleText(const sf::Vector2f& scale);
 
-	void setPosition(const sf::Vector2f& pos);
+	void setPosition(const sf::Vector2f& pos) override;
 
-	void move(const sf::Vector2f& delta);
+	void move(const sf::Vector2f& delta) override;
 
 	void setCharacterSize(unsigned int size);
 
 	void setFontPath(const std::string& path);
 
-	void scale(const sf::Vector2f& scale);
+	void scale(const sf::Vector2f& scale) override;
 
-	void draw();
+	void draw() override;
 
 private:
 	sf::Text mText;
