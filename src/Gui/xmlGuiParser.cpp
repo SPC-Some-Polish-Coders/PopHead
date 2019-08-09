@@ -50,6 +50,10 @@ namespace ph {
 			widget.setOrigin(getVector(widgetTag, "origin"));
 		if (widgetTag.hasAttribute("positionX") && widgetTag.hasAttribute("positionY"))
 			widget.setPosition(getVector(widgetTag, "position"));
+		if (widgetTag.hasAttribute("scaleX") && widgetTag.hasAttribute("scaleY"))
+			widget.setPosition(getVector(widgetTag, "scale"));
+		if (widgetTag.hasAttribute("alpha"))
+			widget.setAlpha(widgetTag.getAttribute("alpha").toUnsigned());
 		
 		if (mActionsParser)
 		{
@@ -85,6 +89,14 @@ namespace ph {
 			widget.setColor(getColor(textWidgetTag));
 		if (textWidgetTag.hasAttribute("text"))
 			widget.setString(textWidgetTag.getAttribute("text").toString());
+		if (textWidgetTag.hasAttribute("characterSize"))
+			widget.setCharacterSize(textWidgetTag.getAttribute("characterSize").toUnsigned());
+		if (textWidgetTag.hasAttribute("textOriginX") && textWidgetTag.hasAttribute("textOriginY"))
+			widget.setTextOrigin(getVector(textWidgetTag, "textOrigin"));
+		if (textWidgetTag.hasAttribute("textAlpha"))
+			widget.setTextAlpha(textWidgetTag.getAttribute("textAlpha").toUnsigned());
+		if (textWidgetTag.hasAttribute("scaleTextX") && textWidgetTag.hasAttribute("scaleTextY"))
+			widget.setTextOrigin(getVector(textWidgetTag, "scaleText"));
 	}
 
 	void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
