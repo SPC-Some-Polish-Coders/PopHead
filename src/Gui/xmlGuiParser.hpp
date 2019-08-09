@@ -27,9 +27,7 @@ namespace ph {
 		void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
 		void parseWidgetChildren(const Xml& widgetTag, Widget& widget);
 		
-		sf::Vector2f getWidgetOrigin(const Xml& widgetTag);
-		sf::Vector2f getWidgetPosition(const Xml& widgetTag);
-		sf::Vector2f getTextPosition(const Xml& widgetTag);
+		sf::Vector2f getVector(const Xml& widgetTag, const std::string& baseName);
 		sf::Color getColor(const Xml& widgetTag);
 
 	private:

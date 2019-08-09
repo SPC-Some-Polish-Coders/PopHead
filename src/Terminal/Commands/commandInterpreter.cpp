@@ -110,7 +110,7 @@ void CommandInterpreter::executeClear() const
 
 void CommandInterpreter::executeExit() const
 {
-	mGameData->getGameCloser().closeTheGame();
+	mGameData->getGameCloser().closeGame();
 }
 
 void CommandInterpreter::executeTeleport() const

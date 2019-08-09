@@ -12,8 +12,8 @@ std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneM
 
 	if(pair.first == "replaceScene")
 		return [&sceneManager, pair](Widget*) { sceneManager.replaceScene(pair.second); };
-	else if(pair.first == "closeTheGame")
-		return [&gameCloser](Widget*) {gameCloser.closeTheGame(); };
+	else if(pair.first == "closeGame")
+		return [&gameCloser](Widget*) {gameCloser.closeGame(); };
 	PH_LOG_ERROR("Use of unsupported button action: " + actionStr);
 	return [](Widget*) {};
 }

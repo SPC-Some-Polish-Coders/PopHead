@@ -36,7 +36,7 @@ void GlobalKeyboardShortcuts::handleCloseGameShortcut()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
 	if(keyboard.isKeyPressed(sf::Keyboard::Escape))
-		mGameData->getGameCloser().closeTheGame();
+		mGameData->getGameCloser().closeGame();
 }
 
 }

@@ -20,21 +20,27 @@ There are now 3 types of gui elements:
 - interface
 - textWidget
 
-The first one is in code a base class for the rest. Very detailed description of these elements can be found in [Gui tutorial](../forProgrammers/guiTutorial.md).
+The first one is in code a base class for the rest. Very detailed description of these elements and their attributes can be found in [Gui tutorial](../forProgrammers/guiTutorial.md).
 
 ## Attributes
 - Widget attributes (apply also to derived classes like Interface and TextWidget):
   - name - it's a 'must-be' attribute
   - contentPath - path to texture displayed in widget
-  - originX and originY - both must be present to work (see origin in gui Tutorial)
-  - positionX and positionY - both must be present to work (see position in gui Tutorial)
-  - onButtonPressed - creates action that is performed when user clicks mouse over a widget (see [Actions](#widget-actions))
-  - onButtonReleased - creates action that is performed when user releases mouse over a widget (see [Actions](#widget-actions))
-  - onButtonUpdate - creates action that is performed on every gui update (see [Actions](#widget-actions))
+  - alpha - sets alpha channel
+  - originX and originY - both must be present to work
+  - positionX and positionY - both must be present to work
+  - scaleX and scaleY - both must be present to work
+  - onButtonPressed - creates action that is performed when user clicks mouse over a widget (see [Actions](#widgets-actions))
+  - onButtonReleased - creates action that is performed when user releases mouse over a widget (see [Actions](#widgets-actions))
+  - onButtonUpdate - creates action that is performed on every gui update (see [Actions](#widgets-actions))
 - TextWidget attributes:
   - text - just text to display
   - fontPath - path to font for text
   - textPositionX and textPositionY - both must be present to work (see text position in gui Tutorial)
+  - characterSize - size of text
+  - textOriginX and textOriginY - both must be present to work
+  - scaleTextX and scaleTextY - both must be present to work
+  - textAlpha - alpha channel for text
   - color - color of text, for now supported only:
     - black
 	- white
@@ -47,3 +53,10 @@ The first one is in code a base class for the rest. Very detailed description of
 	- transparent
 
 ### Widgets actions
+Actions are written in form "actionName:parameter". Example: 
+```xml
+<widget onButtonPressed="replaceScene:scenes/desert.xml" ...></widget>
+```
+Actions:
+- replaceScene - changes current scene in Game, takes scene file path
+- closeGame - closes the game, doesn't take any parameters
