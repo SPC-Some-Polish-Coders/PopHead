@@ -24,7 +24,7 @@ void XmlGameObjectsParser::parseFile(const std::string& fileName)
 
 	Xml gameObjectsFile;
 	gameObjectsFile.loadFromFile(fileName);
-	const Xml rootNode = gameObjectsFile.getChild("root");
+	const auto rootNode = gameObjectsFile.getChild("root");
 
 	loadEntrances(rootNode);
 	loadParticlesSystem();

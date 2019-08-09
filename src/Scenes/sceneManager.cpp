@@ -6,9 +6,10 @@
 
 #include "Gui/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
-#include "GameObjects/xmlGameObjectsParser.hpp"
 #include "Resources/xmlResourceParser.hpp"
 #include "Audio/Music/xmlMusicParser.hpp"
+#include "GameObjects/tiledGameObjectsParser.hpp"
+//#include "GameObjects/xmlGameObjectsParser.hpp"
 
 namespace ph {
 
@@ -49,7 +50,7 @@ void SceneManager::replaceAction()
 	mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 	mScene.reset(new Scene());
-	SceneParser<XmlGuiParser, XmlMapParser, XmlGameObjectsParser, XmlResourceParser, XmlMusicParser> 
+	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlMusicParser> 
 		sceneParser(mGameData, mScene->getRoot(), mFileOfSceneToMake);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;

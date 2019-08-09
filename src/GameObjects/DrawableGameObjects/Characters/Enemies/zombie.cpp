@@ -11,9 +11,9 @@ namespace
 	const std::string name = "zombie";
 	const Animation animation;
 	constexpr float movementSpeed = 50.f;
-	constexpr int hp = 100;
-	constexpr unsigned maxHp = 100;
 	constexpr unsigned damage = 20;
+	constexpr unsigned maxHp = 100;
+	constexpr int hp = 50;
 	const sf::FloatRect posAndSize(
 		0,
 		0,
@@ -38,7 +38,7 @@ void Zombie::update(sf::Time delta)
 	setPosition(mCollisionBody.getPosition());
 	handlePlayerHit();
 
-	if(mHP <= 0) {
+	if(mHp <= 0) {
 		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
 		enemyContainer->addEnemyToDie(this);
 	}
