@@ -3,7 +3,7 @@
   <textures>
     <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
     <resource respath="characters/playerFullAnimation.png"/>
-    <resource respath="characters/vaultMan.png"/>
+    <resource respath="characters/negroDudeWalkingAnimation.png"/>
     <resource respath="characters/zombie.png"/>
   </textures>
 </loading>
