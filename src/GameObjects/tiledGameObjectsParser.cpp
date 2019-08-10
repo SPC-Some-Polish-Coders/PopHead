@@ -1,5 +1,4 @@
 #include "GameObjects/tiledGameObjectsParser.hpp"
-#include "Utilities/xml.hpp"
 #include "GameObjects/NotDrawableGameObjects/entrance.hpp"
 #include "GameObjects/NotDrawableGameObjects/spawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
@@ -7,6 +6,8 @@
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
+#include "Utilities/xml.hpp"
+#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 #include "gameObject.hpp"
 #include "gameData.hpp"
@@ -138,9 +139,17 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode)
 {
+	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
+	const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
+	const sf::FloatRect cameraBounds(
+		cameraTopLeftCornerPosition.x, cameraTopLeftCornerPosition.y,
+		cameraViewSize.x, cameraViewSize.y
+	);
+	const sf::Vector2f cameraCenter = Math::getCenter(cameraBounds);
+	
 	auto& camera = mGameData->getRenderer().getCamera();
-	auto cameraCenterPosition = getPositionAttribute(cameraNode);
-	camera.setCenter(cameraCenterPosition);
+	camera.setSize(cameraViewSize);
+	camera.setCenter(cameraCenter);
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName)
