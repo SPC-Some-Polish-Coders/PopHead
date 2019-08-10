@@ -11,7 +11,7 @@ public:
 	std::function<void(Widget*)> getGuiAction(GUI&, SceneManager&, GameCloser&, const std::string& actionStr) const override;
 
 private:
-	std::pair<std::string, std::string> splitAction(const std::string& actionStr) const;
+	std::pair<std::string, std::string> getSplitAction(const std::string& actionStr) const;
 };
 
 }
