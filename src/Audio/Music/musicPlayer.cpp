@@ -4,7 +4,7 @@ namespace ph {
 
 MusicPlayer::MusicPlayer()
 	:mVolume(70.f)
-	,mIsMuted(true)
+	,mIsMuted(false)
 {
 }
 
