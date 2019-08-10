@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <player texturepath="textures/characters/playerFullAnimation.png"/>
-  <group name="npc">
-  </group>
-  <group name="enemies">
-  </group>
-</root>

@@ -2,7 +2,6 @@
 <scenelinks>
   <gui filename="mainMenu.gui.xml"/>
   <map filename="mainMenuMap.tmx"/>
-  <neededResources filename="desert.res.xml"/>
-  <gameObjects filename="mainMenu.gobj.xml"/>
+  <neededResources filename="menu.res.xml"/>
   <music filename="menu.music.xml"/>
 </scenelinks>
