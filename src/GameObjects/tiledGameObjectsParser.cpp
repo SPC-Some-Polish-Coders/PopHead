@@ -6,10 +6,10 @@
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
+#include "gameObject.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
-#include "gameObject.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -20,34 +20,24 @@ TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& r
 {
 }
 
-void TiledGameObjectsParser::parseFile(const std::string& filePath)
+void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 {
 	PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
 
-	std::vector<Xml> objectTypeNodes = getObjectTypeNodes();
 	Xml mapFile;
 	mapFile.loadFromFile(filePath);
 
-	Xml mapNode = mapFile.getChild("map");
-	Xml gameObjects = findGameObjects(mapNode);
+	const Xml mapNode = mapFile.getChild("map");
+	const Xml gameObjects = findGameObjects(mapNode);
 	if (gameObjects.toString() == "")
 		return;
 	
 	loadObjects(gameObjects);
 }
 
-std::vector<Xml> TiledGameObjectsParser::getObjectTypeNodes()
+Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode) const
 {
-	Xml objectTypesFile;
-	objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
-	auto objectTypesNode = objectTypesFile.getChild("objecttypes");
-	std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
-	return getObjectTypeNodes;
-}
-
-Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode)
-{
-	std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
+	const std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
 	for(const auto& objectGroupNode : objectGroupNodes)
 	{
 		if ((objectGroupNode.hasAttribute("name") && objectGroupNode.getAttribute("name").toString() == "gameObjects"))
@@ -56,63 +46,31 @@ Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode)
 	return Xml();
 }
 
-void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
+void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 {
-	std::vector<Xml> objects = gameObjectsNode.getChildren("object");
+	const std::vector<Xml> objects = gameObjectsNode.getChildren("object");
 
 	mRoot.addChild(std::make_unique<EnemyContainer>(mGameData));
 	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 
 	for (const auto& gameObjectNode : objects) 
 	{
-		if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
+		if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
 
-bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName)
+bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const
 {
 	return gameObjectNode.getAttribute("type").toString() == typeName;
 }
 
-void TiledGameObjectsParser::loadPlayer(const Xml& playerNode)
-{
-	auto player = std::make_unique<Player>(mGameData);
-	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
-	auto playerPosition = getPositionAttribute(playerNode);
-	player->setPosition(playerPosition);
-	mRoot.addChild(std::move(player));
-}
-
-void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode)
-{
-	auto entrance = std::make_unique<Entrance>(
-		mGameData->getSceneMachine(),
-		getProperty(entranceNode, "gotoScene").toString(),
-		"entrance", getSizeAttribute(entranceNode),
-		getPositionAttribute(entranceNode)
-	);
-
-	mRoot.addChild(std::move(entrance));
-}
-
-void TiledGameObjectsParser::loadNpc(const Xml& npcNode)
-{
-	auto npc = std::make_unique<Npc>(mGameData);
-
-	npc->setPosition(getPositionAttribute(npcNode));
-	npc->setHp(getProperty(npcNode, "hp").toInt());
-	npc->setHp(getProperty(npcNode, "maxHp").toUnsigned());
-
-	mRoot.addChild(std::move(npc));
-}
-
-void TiledGameObjectsParser::loadZombie(const Xml& zombieNode)
+void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 {
 	auto& enemies = mRoot.getChild("enemy_container");
 	auto zombie = std::make_unique<Zombie>(mGameData);
@@ -124,9 +82,19 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode)
 	enemies.addChild(std::move(zombie));
 }
 
-void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
+void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 {
-	auto propertiesNode = spawnerNode.getChild("properties");
+	auto npc = std::make_unique<Npc>(mGameData);
+
+	npc->setPosition(getPositionAttribute(npcNode));
+	npc->setHp(getProperty(npcNode, "hp").toInt());
+	npc->setHp(getProperty(npcNode, "maxHp").toUnsigned());
+
+	mRoot.addChild(std::move(npc));
+}
+
+void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
+{
 	auto spawner = std::make_unique<Spawner>(
 		mGameData, "spawner", 
 		Cast::toObjectType(getProperty(spawnerNode, "spawnType").toString()),
@@ -137,7 +105,19 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 	mRoot.addChild(std::move(spawner));
 }
 
-void TiledGameObjectsParser::loadCamera(const Xml& cameraNode)
+void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
+{
+	auto entrance = std::make_unique<Entrance>(
+		mGameData->getSceneMachine(),
+		getProperty(entranceNode, "gotoScene").toString(),
+		"entrance", getSizeAttribute(entranceNode),
+		getPositionAttribute(entranceNode)
+	);
+
+	mRoot.addChild(std::move(entrance));
+}
+
+void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 {
 	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
 	const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
@@ -152,7 +132,16 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode)
 	camera.setCenter(cameraCenter);
 }
 
-Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName)
+void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
+{
+	auto player = std::make_unique<Player>(mGameData);
+	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
+	auto playerPosition = getPositionAttribute(playerNode);
+	player->setPosition(playerPosition);
+	mRoot.addChild(std::move(player));
+}
+
+Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const
 {
 	if (hasCustomProperty(objectNode, propertyName))
 		return getCustomProperties(objectNode, propertyName);
@@ -160,7 +149,7 @@ Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string
 		return getDefaultProperties(objectNode.getAttribute("type").toString(), propertyName);
 }
 
-bool TiledGameObjectsParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName)
+bool TiledGameObjectsParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const
 {
 	if (gameObjectNode.getChildren("properties").size() != 0)
 	{
@@ -175,9 +164,20 @@ bool TiledGameObjectsParser::hasCustomProperty(const Xml& gameObjectNode, const 
 	return false;
 }
 
-Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, const std::string& propertyName)
+Xml TiledGameObjectsParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name) const
 {
-	std::vector<Xml> objectNodes = getObjectTypeNodes();
+	const Xml propertiesNode = gameObjectNode.getChild("properties");
+	auto properties = propertiesNode.getChildren("property");
+	for (const auto& property : properties)
+		if (property.getAttribute("name").toString() == name)
+			return property.getAttribute("value");
+
+	return Xml();
+}
+
+Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, const std::string& propertyName) const
+{
+	const std::vector<Xml> objectNodes = getObjectTypeNodes();
 	for (const auto& objectNode : objectNodes)
 	{
 		if (objectNode.getAttribute("name").toString() == objectName)
@@ -193,15 +193,13 @@ Xml TiledGameObjectsParser::getDefaultProperties(const std::string& objectName, 
 	return Xml();
 }
 
-Xml TiledGameObjectsParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name)
+std::vector<Xml> TiledGameObjectsParser::getObjectTypeNodes() const
 {
-	auto propertiesNode = gameObjectNode.getChild("properties");
-	auto properties = propertiesNode.getChildren("property");
-	for (const auto& property : properties)
-		if (property.getAttribute("name").toString() == name)
-			return property.getAttribute("value");
-
-	return Xml();
+	Xml objectTypesFile;
+	objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
+	const Xml objectTypesNode = objectTypesFile.getChild("objecttypes");
+	std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
+	return getObjectTypeNodes;
 }
 
 sf::Vector2f TiledGameObjectsParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const
