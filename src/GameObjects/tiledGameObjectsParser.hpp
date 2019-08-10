@@ -41,6 +41,7 @@ private:
 private:
 	GameData* const mGameData;
 	GameObject& mRoot;
+	mutable bool mHasLoadedPlayer;
 };
 
 }

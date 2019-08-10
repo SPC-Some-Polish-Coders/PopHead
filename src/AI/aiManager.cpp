@@ -8,7 +8,7 @@ namespace ph {
 
 Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
-	if(doesZombieSeePlayer(zombiePosition))
+	if(mIsPlayerOnScene && doesZombieSeePlayer(zombiePosition))
 		return getPath(zombiePosition, mPlayerPosition);
 	else
 		return getRandomPath(zombiePosition);

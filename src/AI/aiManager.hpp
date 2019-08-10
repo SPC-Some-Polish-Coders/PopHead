@@ -12,6 +12,7 @@ public:
 	Path getZombiePath(const sf::Vector2f zombiePosition) const;
 	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
+	void setIsPlayerOnScene(bool isPlayerOnScene) { mIsPlayerOnScene = isPlayerOnScene; }
 	void setPlayerPosition(const sf::Vector2f playerPosition);
 	bool hasPlayerMovedSinceLastUpdate() const { return mHasPlayerMovedSinceLastUpdate; }
 	void registerMapSize(const sf::Vector2u mapSizeInTiles);
@@ -30,6 +31,7 @@ private:
 	sf::Vector2f mPlayerPosition;
 	const unsigned mSpotSideLength = 16;
 	bool mHasPlayerMovedSinceLastUpdate = false;
+	bool mIsPlayerOnScene = false;
 };
 
 } 

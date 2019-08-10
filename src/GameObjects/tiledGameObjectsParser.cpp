@@ -17,6 +17,7 @@ namespace ph {
 TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root)
 	:mGameData(gameData)
 	,mRoot(root)
+	,mHasLoadedPlayer(false)
 {
 }
 
@@ -33,6 +34,8 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 		return;
 	
 	loadObjects(gameObjects);
+
+	mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 }
 
 Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode) const
@@ -152,6 +155,7 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	auto playerPosition = getPositionAttribute(playerNode);
 	player->setPosition(playerPosition);
 	mRoot.addChild(std::move(player));
+	mHasLoadedPlayer = true;
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

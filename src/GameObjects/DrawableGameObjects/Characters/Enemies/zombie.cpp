@@ -79,10 +79,13 @@ void Zombie::handlePlayerHit()
 {
 	auto& gameScene = mGameData->getSceneMachine().getScene();
 	auto& root = gameScene.getRoot();
-	Character& player = dynamic_cast<Character&>(root.getChild("player"));
 
-	if (Math::areTheyOverlapping(getSprite().getGlobalBounds(), player.getSprite().getGlobalBounds()))
-		player.takeDamage(damage);
+	try {
+		Character& player = dynamic_cast<Character&>(root.getChild("player"));
+		if (Math::areTheyOverlapping(getSprite().getGlobalBounds(), player.getSprite().getGlobalBounds()))
+			player.takeDamage(damage);
+	}
+	catch(std::runtime_error){}
 }
 
 void Zombie::move(sf::Time delta)

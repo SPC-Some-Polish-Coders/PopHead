@@ -1,6 +1,5 @@
 #include "gameObject.hpp"
 #include "Logs/logs.hpp"
-
 #include <stdexcept>
 
 namespace ph {
