@@ -1,7 +1,11 @@
 #pragma once
 
-enum behaviorType {
+namespace ph {
+
+enum class BehaviorType {
 	onUpdate,
 	onPressed,
 	onReleased
 };
+
+}

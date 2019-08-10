@@ -47,7 +47,7 @@ void Widget::update(sf::Time delta)
 		{
 			for(const auto& k : mBehaviors)
 			{
-				if(k.first == behaviorType::onPressed)
+				if(k.first == BehaviorType::onPressed)
 				{
 					k.second(this);
 				}
@@ -64,13 +64,13 @@ void Widget::update(sf::Time delta)
 			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
 		{
 			for(const auto& k : mBehaviors)
-				if(k.first == behaviorType::onReleased)
+				if(k.first == BehaviorType::onReleased)
 					k.second(this);
 		}
 	}
 
 	for(const auto& k : mBehaviors)
-		if(k.first == behaviorType::onUpdate)
+		if(k.first == BehaviorType::onUpdate)
 			k.second(this);
 
 	if(mIsActive)
@@ -168,7 +168,7 @@ sf::Vector2u Widget::getSize() const
 	return mSize;
 }
 
-void Widget::addBehavior(behaviorType type, const std::function<void(Widget*)>& func)
+void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
 {
 	mBehaviors.insert({type,func});
 }

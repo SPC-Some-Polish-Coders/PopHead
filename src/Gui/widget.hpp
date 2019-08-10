@@ -1,12 +1,11 @@
 #pragma once
 
+#include "behaviorType.hpp"
+#include "GameObjects/drawableGameObject.hpp"
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <functional>
 #include <memory>
-
-#include "behaviorType.hpp"
-#include "GameObjects/drawableGameObject.hpp"
 
 namespace ph {
 
@@ -45,7 +44,7 @@ public:
 
 	virtual sf::Vector2u getSize() const;
 
-	virtual void addBehavior(behaviorType type, const std::function<void(Widget*)>& func);
+	virtual void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
 	virtual Widget* getWidget(const std::string& name);
 
@@ -69,7 +68,7 @@ private:
 
 protected:
 	std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;
-	std::multimap < behaviorType, std::function<void(Widget*)>> mBehaviors;
+	std::multimap < BehaviorType, std::function<void(Widget*)>> mBehaviors;
 	GameData* mGameData;
 	sf::RenderWindow* mWindow;
 	sf::Vector2f mPosition;
