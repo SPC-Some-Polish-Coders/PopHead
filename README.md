@@ -6,4 +6,4 @@ You can join us if you want. Just write an Github issue with your email adress o
 
 #### Compiling PopHead
 You can generate the project files using premake. Here is tutorial: <br/>
-https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/premakeTutorial.md
+https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forProgrammers/premakeTutorial.md
