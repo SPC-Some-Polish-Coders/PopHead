@@ -6,7 +6,6 @@ namespace ph {
 
 Scene::Scene()
 	:mRoot(std::make_unique<GameObject>("root"))
-	,mHide(false)
 	,mPause(false)
 {
 }
@@ -18,7 +17,8 @@ void Scene::input()
 
 void Scene::update(sf::Time delta)
 {
-	mRoot->update(delta);
+	if(!mPause)
+		mRoot->update(delta);
 }
 
 }

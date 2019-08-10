@@ -29,6 +29,7 @@ private:
 	void movementInput();
 	void gunInput();
 	void meleeWeaponInput();
+	void pauseMenuInput();
 	void updateMovement(const sf::Time delta);
 	void updateAnimation(const sf::Time delta);
     void setAnimationState(const std::string& stateName);

@@ -69,6 +69,7 @@ void Player::input()
 	movementInput();
 	gunInput();
 	meleeWeaponInput();
+	pauseMenuInput();
 }
 
 void Player::movementInput()
@@ -93,6 +94,24 @@ void Player::meleeWeaponInput()
 {
 	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack"))
 		mIsAttacking = true;
+}
+
+void Player::pauseMenuInput()
+{
+	// TODO: Move this code to more appropriate place. For example to the scripting laguage.
+
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape)) 
+	{
+		bool isGamePaused = mGameData->getSceneMachine().getScene().getPause();
+		if(isGamePaused) {
+			mGameData->getGui().hideInterface("pauseScreen");
+			mGameData->getSceneMachine().getScene().setPause(false);
+		}
+		else {
+			mGameData->getGui().showInterface("pauseScreen");
+			mGameData->getSceneMachine().getScene().setPause(true);
+		}
+	}
 }
 
 void Player::update(sf::Time delta)
