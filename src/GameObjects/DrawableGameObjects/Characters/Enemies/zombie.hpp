@@ -12,17 +12,17 @@ public:
 
 	void update(sf::Time delta) override;
 private:
+	void handlePlayerHit();
 	void move(sf::Time delta);
 	sf::Vector2f toDirectionVector(Direction);
-
-	void handlePlayerHit();
+	void updateAnimation(sf::Time delta);
+	void setAnimationState(const std::string& stateName);
 
 private:
-	sf::Clock timeFromLastGrowl;
-
 	Path mMovementPath;
-	sf::Vector2f mCurrentDirectionVector;
+	sf::Clock timeFromLastGrowl;
 	sf::Clock mTimeFromStartingThisMove;
+	sf::Vector2f mCurrentDirectionVector;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 

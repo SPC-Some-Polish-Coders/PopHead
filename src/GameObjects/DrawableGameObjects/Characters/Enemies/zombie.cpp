@@ -72,7 +72,7 @@ void Zombie::update(sf::Time delta)
 	}
 
 	move(delta);
-	mAnimation.animate(mSprite, delta);
+	updateAnimation(delta);
 }
 
 void Zombie::handlePlayerHit()
@@ -121,6 +121,27 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 	default:
 		PH_UNEXPECTED_SITUATION("Not all directions were handled in switch");
 	}
+}
+
+void Zombie::updateAnimation(sf::Time delta)
+{
+	if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
+		setAnimationState("right");
+	else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))
+		setAnimationState("left");
+	else if(mCurrentDirectionVector == sf::Vector2f(0.f, -1.f))
+		setAnimationState("up");
+	else if(mCurrentDirectionVector == sf::Vector2f(0.f, 1.f))
+		setAnimationState("down");
+
+	mAnimation.animate(mSprite, delta);
+}
+
+void Zombie::setAnimationState(const std::string& stateName)
+{
+	const std::string name = mAnimation.getCurrentStateName();
+	if(name != stateName)
+		mAnimation.changeState(stateName);
 }
 
 }
