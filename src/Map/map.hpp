@@ -33,11 +33,12 @@ struct TilesetsData
 	std::string tilesetFileName;
 };
 
-using GlobalTileIds = std::vector<unsigned>;
-using AllLayersGlobalTileIds = std::vector<GlobalTileIds>;
-
 class Map
 {
+public:
+	using GlobalTileIds = std::vector<unsigned>;
+	using AllLayersGlobalTileIds = std::vector<GlobalTileIds>;
+
 public:
     Map();
 
