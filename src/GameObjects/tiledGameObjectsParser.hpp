@@ -31,6 +31,7 @@ private:
 	void loadZombie(const Xml& zombieNode);
 	void loadSpawner(const Xml& spawnerNode);
 	void loadNpc(const Xml& npcNode);
+	void loadCamera(const Xml& cameraNode);
 
 	void loadParticlesSystem();
 	void loadPlayer(const Xml& rootNode);

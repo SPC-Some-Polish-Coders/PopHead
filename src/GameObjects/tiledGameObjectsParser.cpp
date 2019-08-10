@@ -34,8 +34,6 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath)
 		return;
 	
 	loadObjects(gameObjects);
-
-	mGameData->getRenderer().getCamera().setCenter({0, 0});
 }
 
 std::vector<Xml> TiledGameObjectsParser::getObjectTypeNodes()
@@ -62,14 +60,12 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 {
 	std::vector<Xml> objects = gameObjectsNode.getChildren("object");
 
-	//Temporary load--
 	auto player = std::make_unique<Player>(mGameData);
 	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 	mRoot.addChild(std::move(player));
 
 	mRoot.addChild(std::make_unique<EnemyContainer>(mGameData));
 	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
-	//----------------
 
 	for (const auto& gameObjectNode : objects)
 	{
@@ -77,6 +73,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
@@ -93,7 +90,7 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode)
 		getProperty(entranceNode, "gotoScene").toString(),
 		"entrance", getSizeAttribute(entranceNode),
 		getPositionAttribute(entranceNode)
-		);
+	);
 
 	mRoot.addChild(std::move(entrance));
 }
@@ -132,6 +129,13 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode)
 	);
 
 	mRoot.addChild(std::move(spawner));
+}
+
+void TiledGameObjectsParser::loadCamera(const Xml& cameraNode)
+{
+	auto& camera = mGameData->getRenderer().getCamera();
+	auto cameraCenterPosition = getPositionAttribute(cameraNode);
+	camera.setCenter(cameraCenterPosition);
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName)
