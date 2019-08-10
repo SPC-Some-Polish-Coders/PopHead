@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <SFML/Graphics.hpp>
+#include <optional>
+#include <string>
 
 namespace ph {
 
@@ -24,6 +25,7 @@ private:
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
+	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 	void loadCamera(const Xml& cameraNode) const;
 	void loadPlayer(const Xml& playerNode) const;
 

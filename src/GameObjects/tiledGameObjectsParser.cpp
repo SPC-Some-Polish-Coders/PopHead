@@ -107,14 +107,27 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
 
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 {
+	const std::string scenePathRelativeToMapFile = getProperty(entranceNode, "gotoScene").toString();
+	const std::string sceneFileName = *getSceneFileName(scenePathRelativeToMapFile);
+	const std::string scenePathFromResources = "scenes/" + sceneFileName;
+
 	auto entrance = std::make_unique<Entrance>(
 		mGameData->getSceneMachine(),
-		getProperty(entranceNode, "gotoScene").toString(),
-		"entrance", getSizeAttribute(entranceNode),
+		scenePathFromResources,
+		"entrance",
+		getSizeAttribute(entranceNode),
 		getPositionAttribute(entranceNode)
 	);
 
 	mRoot.addChild(std::move(entrance));
+}
+
+std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
+{
+	std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
+	if(beginOfFileName == std::string::npos)
+		return std::nullopt;
+	return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
 }
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const

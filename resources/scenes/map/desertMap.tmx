@@ -438,7 +438,11 @@
     <property name="gotoScene" type="file" value="../desert.xml"/>
    </properties>
   </object>
-  <object id="28" type="Entrance" x="1213.63" y="1518.62" width="83.4492" height="36.1621" rotation="-0.659027"/>
+  <object id="28" type="Entrance" x="1213.63" y="1518.62" width="83.4492" height="36.1621" rotation="-0.659027">
+   <properties>
+    <property name="gotoScene" type="file" value="../mainMenu.xml"/>
+   </properties>
+  </object>
   <object id="45" type="Npc" x="581" y="198">
    <point/>
   </object>
