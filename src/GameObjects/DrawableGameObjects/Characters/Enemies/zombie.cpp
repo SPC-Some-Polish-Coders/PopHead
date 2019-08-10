@@ -1,6 +1,7 @@
 #include "zombie.hpp"
 #include "gameData.hpp"
 #include "Resources/collisionRectData.hpp"
+#include "Resources/spriteSheetData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 
@@ -9,7 +10,6 @@ namespace ph {
 namespace
 {
 	const std::string name = "zombie";
-	const Animation animation;
 	constexpr float movementSpeed = 50.f;
 	constexpr unsigned damage = 20;
 	constexpr unsigned maxHp = 100;
@@ -17,16 +17,44 @@ namespace
 	const sf::FloatRect posAndSize(
 		0,
 		0,
-		CollisionRectData::ZOMBIE_WIDTH,
-		CollisionRectData::ZOMBIE_HEIGHT
+		CollisionRectData::HUMAN_WIDTH,
+		CollisionRectData::HUMAN_HEIGHT
 	);
 	constexpr float mass = 40;
+
+	const Animation animation{
+		std::array<std::string, 13>{
+			"down", "right", "left", "rightUp", "leftUp", "up",
+			"fightDown", "fightRight", "fightLeft", "fightRightUp", "fightLeftUp", "fightUp",
+			"dead"
+		},
+		std::array<sf::IntRect, 13>{
+			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 3 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 4 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 5 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 6 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 7 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 8 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 9 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 10 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 11 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 12 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+		},
+		{
+			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
+		},
+		sf::seconds(0.10f)
+	};
 }
 
 Zombie::Zombie(GameData* gameData)
 	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
 {
-	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombie.png"));
+	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
+	mAnimation.animate(mSprite);
 }
 
 void Zombie::update(sf::Time delta)
@@ -44,6 +72,7 @@ void Zombie::update(sf::Time delta)
 	}
 
 	move(delta);
+	mAnimation.animate(mSprite, delta);
 }
 
 void Zombie::handlePlayerHit()

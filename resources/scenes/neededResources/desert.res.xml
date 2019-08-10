@@ -4,6 +4,6 @@
     <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
     <resource respath="characters/playerFullAnimation.png"/>
     <resource respath="characters/negroDudeWalkingAnimation.png"/>
-    <resource respath="characters/zombie.png"/>
+    <resource respath="characters/zombieFullAnimation.png"/>
   </textures>
 </loading>
