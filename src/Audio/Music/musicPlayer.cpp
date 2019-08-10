@@ -5,6 +5,7 @@ namespace ph {
 MusicPlayer::MusicPlayer()
 	:mVolume(70.f)
 	,mIsMuted(false)
+	,mCurrentThemeFilePath()
 {
 }
 
@@ -15,8 +16,13 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::play(const std::string& filePath)
 {
+	if(filePath == mCurrentThemeFilePath)
+		return;
+	mCurrentThemeFilePath = filePath;
+
 	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
 	const std::string fullFilePath = "resources/" + filePath;
+
 	mMusic.openFromFile(fullFilePath);
 	mMusic.setVolume(mVolume * currentThemeData.mVolumeMultiplier);
 	mMusic.setLoop(currentThemeData.mLoop);

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <SFML/Audio.hpp>
 #include "MusicData/musicDataHolder.hpp"
+#include <SFML/Audio.hpp>
+#include <string>
 
 namespace ph {
 
@@ -23,6 +24,7 @@ public:
 private:
 	MusicDataHolder mMusicDataHolder;
 	sf::Music mMusic;
+	std::string mCurrentThemeFilePath;
 	float mVolume;
 	bool mIsMuted;
 };
