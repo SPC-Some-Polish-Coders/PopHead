@@ -8,8 +8,8 @@
             <textWidget name="Peter"         origin="0.5" position="0.05, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Piotr Gardocki"/>
             <textWidget name="Hubert"        origin="0.5" position="0.05, 0.45" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Hubert Misiewicz"/>
             <textWidget name="Kamil Lewan"   origin="0.5" position="0.05, 0.5"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil Lewan"/>
-            <textWidget name="Kamil 'Sajko'" origin="0.5" position="0.05, 0.55" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil Sajko"/>
-            <textWidget name="'Thief'"       origin="0.5" position="0.05, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="'Thief'"/>
+            <textWidget name="Kamil Sajko"   origin="0.5" position="0.05, 0.55" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil 'Sajko'"/>
+            <textWidget name="Thief"         origin="0.5" position="0.05, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="'Thief'"/>
 
             <textWidget name="GameLevelDesigners" origin="0.5" position="0.05, 0.7"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="15" text="Game/Level designer:"/>
             <textWidget name="Prezes"             origin="0.5" position="0.05, 0.75" fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Piotr 'Prezes'"/>
