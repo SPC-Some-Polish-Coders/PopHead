@@ -2,5 +2,6 @@
 <scenelinks>
   <neededResources filename="desert.res.xml"/>
   <map filename="desertMap.tmx"/>
+  <gui filename="pauseScreen.gui.xml"/>
   <music filename="desert.music.xml"/>
 </scenelinks>
