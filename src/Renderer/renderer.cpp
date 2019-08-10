@@ -39,6 +39,7 @@ void Renderer::draw() const
 	sf::FloatRect properCameraBounds = getProperCameraBounds();
 	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, properCameraBounds);
 	drawSceneLayers(properCameraBounds);
+	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
 	drawStaticObjectsToCamera();
 }
 
@@ -74,7 +75,6 @@ void Renderer::drawStaticObjectsToCamera() const
 {
 	mStaticObjectsCamera.applyTo(mRenderTarget);
 	mRenderTarget.draw(mGameData->getGui().getGuiDrawer());
-	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
 	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
 	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
