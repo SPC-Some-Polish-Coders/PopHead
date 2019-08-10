@@ -10,6 +10,7 @@ class AIManager
 {
 public:
 	Path getZombiePath(const sf::Vector2f zombiePosition) const;
+	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
 	void setPlayerPosition(const sf::Vector2f playerPosition);
 	bool hasPlayerMovedSinceLastUpdate() const { return mHasPlayerMovedSinceLastUpdate; }

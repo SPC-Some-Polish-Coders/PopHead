@@ -14,6 +14,14 @@ Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 		return getRandomPath(zombiePosition);
 }
 
+bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const
+{
+	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
+	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
+	float distanceBetweenZombieAndPlayer = std::hypotf(legX, legY);
+	return distanceBetweenZombieAndPlayer < 25;
+}
+
 void AIManager::setPlayerPosition(const sf::Vector2f playerPosition) 
 { 
 	this->mPlayerPosition = playerPosition; 

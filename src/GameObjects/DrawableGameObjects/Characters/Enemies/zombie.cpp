@@ -125,14 +125,26 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 
 void Zombie::updateAnimation(sf::Time delta)
 {
-	if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
-		setAnimationState("right");
-	else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))
-		setAnimationState("left");
-	else if(mCurrentDirectionVector == sf::Vector2f(0.f, -1.f))
-		setAnimationState("up");
-	else if(mCurrentDirectionVector == sf::Vector2f(0.f, 1.f))
-		setAnimationState("down");
+	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(mPosition)) {
+		if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
+			setAnimationState("fightRight");
+		else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))
+			setAnimationState("fightLeft");
+		else if(mCurrentDirectionVector == sf::Vector2f(0.f, -1.f))
+			setAnimationState("fightUp");
+		else if(mCurrentDirectionVector == sf::Vector2f(0.f, 1.f))
+			setAnimationState("fightDown");
+	}
+	else {
+		if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
+			setAnimationState("right");
+		else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))
+			setAnimationState("left");
+		else if(mCurrentDirectionVector == sf::Vector2f(0.f, -1.f))
+			setAnimationState("up");
+		else if(mCurrentDirectionVector == sf::Vector2f(0.f, 1.f))
+			setAnimationState("down");
+	}
 
 	mAnimation.animate(mSprite, delta);
 }
