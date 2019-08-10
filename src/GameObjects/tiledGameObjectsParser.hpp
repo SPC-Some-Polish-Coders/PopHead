@@ -27,6 +27,7 @@ private:
 
 	void loadObjects(const Xml& gameObjects);
 	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName);
+	void loadPlayer(const Xml& playerNode);
 	void loadEntrance(const Xml& entranceNode);
 	void loadZombie(const Xml& zombieNode);
 	void loadSpawner(const Xml& spawnerNode);
@@ -34,7 +35,6 @@ private:
 	void loadCamera(const Xml& cameraNode);
 
 	void loadParticlesSystem();
-	void loadPlayer(const Xml& rootNode);
 
 	sf::Vector2f getPositionAttribute(const Xml& gameObjectNode) const;
 	sf::Vector2f getSizeAttribute(const Xml& gameObjectNode) const;

@@ -11,7 +11,6 @@
 #include "gameObject.hpp"
 #include "gameData.hpp"
 
-
 namespace ph {
 
 TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root)
@@ -60,19 +59,16 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 {
 	std::vector<Xml> objects = gameObjectsNode.getChildren("object");
 
-	auto player = std::make_unique<Player>(mGameData);
-	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
-	mRoot.addChild(std::move(player));
-
 	mRoot.addChild(std::make_unique<EnemyContainer>(mGameData));
 	mRoot.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 
-	for (const auto& gameObjectNode : objects)
+	for (const auto& gameObjectNode : objects) 
 	{
 		if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
@@ -81,6 +77,15 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode)
 bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName)
 {
 	return gameObjectNode.getAttribute("type").toString() == typeName;
+}
+
+void TiledGameObjectsParser::loadPlayer(const Xml& playerNode)
+{
+	auto player = std::make_unique<Player>(mGameData);
+	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
+	auto playerPosition = getPositionAttribute(playerNode);
+	player->setPosition(playerPosition);
+	mRoot.addChild(std::move(player));
 }
 
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode)

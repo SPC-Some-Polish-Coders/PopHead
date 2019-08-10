@@ -111,9 +111,5 @@
 39,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,39
 </data>
  </layer>
- <objectgroup id="4" name="gameObjects">
-  <object id="5" type="Camera" x="333.841" y="235.909">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="4" name="gameObjects"/>
 </map>
