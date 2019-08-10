@@ -2,7 +2,7 @@
 <gui>
     <interface name="pauseScreen" hide="true">
         <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		        <textWidget name="resumeButton"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  onButtonPressed="hideGuiInterface:pauseScreen" text="Resume"></textWidget>
+		        <textWidget name="resumeButton"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  onButtonPressed="setGamePause:false" text="Resume"></textWidget>
             <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
         </widget>
     </interface>

@@ -12,7 +12,7 @@ namespace Cast {
 	const std::unordered_map<std::string, ObjectType> objectTypeMap({
 		{ "zombie", ObjectType::Zombie },
 		{ "npc", ObjectType::Npc }
-		});
+	});
 
 	ObjectType toObjectType(const std::string& str);
 	unsigned toUnsigned(const std::string& str);
