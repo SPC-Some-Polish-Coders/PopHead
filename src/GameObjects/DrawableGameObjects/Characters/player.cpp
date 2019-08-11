@@ -162,7 +162,7 @@ void Player::updateCounters() const
 		bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
 	}
 	catch(const std::exception& e) {
-		PH_LOG_ERROR("Setting values to gameplay counters failed!");
+		PH_LOG_ERROR("Setting values to gameplay counters failed! (" + std::string(e.what()) + ")");
 	}
 }
 
