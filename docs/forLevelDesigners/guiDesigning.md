@@ -67,3 +67,6 @@ Actions are written in form "actionName:parameter". Example:
 Actions:
 - replaceScene - changes current scene in Game, takes scene file path
 - closeGame - closes the game, doesn't take any parameters
+- hideGuiInterface - hides gui interface, takes interface name
+- showGuiInterface - shows gui interface, takes interface name
+- setGamePause - takes true or false
