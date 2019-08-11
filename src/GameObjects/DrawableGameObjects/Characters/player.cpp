@@ -58,6 +58,9 @@ Player::Player(GameData* gameData)
 	,mLastMotion()
 	,mIsShooting(false) 
 	,mIsAttacking(false)
+	,mWasGamePauseButtonClicked(false)
+	,mIsDead(false)
+	,mHasJustDied(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
@@ -100,26 +103,22 @@ void Player::pauseMenuInput()
 {
 	// TODO: Move this code to more appropriate place. For example to the scripting laguage.
 
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape)) 
-	{
-		bool isGamePaused = mGameData->getSceneMachine().getScene().getPause();
-		if(isGamePaused) {
-			mGameData->getGui().hideInterface("pauseScreen");
-			mGameData->getSceneMachine().getScene().setPause(false);
-		}
-		else {
-			mGameData->getGui().showInterface("pauseScreen");
-			mGameData->getSceneMachine().getScene().setPause(true);
-		}
-	}
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
+		mWasGamePauseButtonClicked = true;
 }
 
 void Player::update(sf::Time delta)
 {
 	if(mIsDead) {
-		dyingUpdate();
+		dyingUpdate(delta);
 		return;
 	}
+
+	if(mHp <= 0) {
+		mIsDead = true;
+		mHasJustDied = true;
+	}
+		
 
 	updateMovement(delta);
 	updateAnimation(delta);
@@ -128,19 +127,18 @@ void Player::update(sf::Time delta)
 	meleeAttackUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
+	pauseMenuUpdate();
 
 	for(auto& child : mChildren)
 		child->update(delta);
 }
 
-void Player::dyingUpdate()
+void Player::dyingUpdate(const sf::Time delta)
 {
-	static bool hasJustDied = true;
-	if(hasJustDied) {
+	if(mHasJustDied) {
 		mTimeAfterDead.restart();
-		mAnimation.changeState("dead");
-		mAnimation.animate(mSprite);
-		hasJustDied = false;
+		setAnimationState("dead");
+		mHasJustDied = false;
 	}
 
 	if(mTimeAfterDead.getElapsedTime().asSeconds() > 1)
@@ -148,7 +146,6 @@ void Player::dyingUpdate()
 
 	if(mTimeAfterDead.getElapsedTime().asSeconds() > 4)
 		mGameData->getAIManager().setIsPlayerOnScene(false);
-
 }
 
 void Player::updateMovement(const sf::Time delta)
@@ -299,6 +296,23 @@ void Player::cameraMovement(sf::Time delta) const
 void Player::updateListenerPosition() const
 {
 	mGameData->getSoundPlayer().setListenerPosition(getPosition());
+}
+
+void Player::pauseMenuUpdate()
+{
+	if(mWasGamePauseButtonClicked)
+	{
+		bool isGamePaused = mGameData->getSceneMachine().getScene().getPause();
+		if(isGamePaused) {
+			mGameData->getGui().hideInterface("pauseScreen");
+			mGameData->getSceneMachine().getScene().setPause(false);
+		}
+		else {
+			mGameData->getGui().showInterface("pauseScreen");
+			mGameData->getSceneMachine().getScene().setPause(true);
+		}
+		mWasGamePauseButtonClicked = false;
+	}
 }
 
 }
