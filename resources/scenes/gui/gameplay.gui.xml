@@ -12,4 +12,9 @@
             <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
         </widget>
     </interface>
+    <interface name="gameplayCounter">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
+        </widget>
+    </interface>
 </gui>

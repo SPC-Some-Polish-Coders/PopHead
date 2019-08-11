@@ -7,6 +7,7 @@
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include <array>
+#include <exception>
 
 namespace ph {
 
@@ -119,7 +120,7 @@ void Player::update(sf::Time delta)
 		mHasJustDied = true;
 	}
 		
-
+	updateLifeCounter();
 	updateMovement(delta);
 	updateAnimation(delta);
 	mMotion.clear();
@@ -146,6 +147,19 @@ void Player::dyingUpdate(const sf::Time delta)
 
 	if(mTimeAfterDead.getElapsedTime().asSeconds() > 4)
 		mGameData->getAIManager().setIsPlayerOnScene(false);
+}
+
+void Player::updateLifeCounter() const
+{
+	auto gameplayCounter = mGameData->getGui().getInterface("gameplayCounter");
+	auto canvas = gameplayCounter->getWidget("canvas");
+	try {
+		auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
+		vitalityCounter->setString(std::to_string(mHp));
+	}
+	catch(const std::exception& e) {
+		PH_LOG_ERROR("Setting vitality value to vitality counter failed!");
+	}
 }
 
 void Player::updateMovement(const sf::Time delta)

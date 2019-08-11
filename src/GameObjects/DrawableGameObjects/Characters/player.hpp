@@ -31,6 +31,7 @@ private:
 	void meleeWeaponInput();
 	void pauseMenuInput();
 	void dyingUpdate(const sf::Time delta);
+	void updateLifeCounter() const;
 	void updateMovement(const sf::Time delta);
 	void updateAnimation(const sf::Time delta);
     void setAnimationState(const std::string& stateName);

@@ -17,14 +17,14 @@
 		        <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.5, 0.25" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Music and Sound creator:"/>
             <textWidget name="'Thief'"              origin="0.5" position="0.5, 0.3"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka"/>
 
-            <textWidget name="GraphicsCreators" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="15" text="Graphics creators:"/>
-            <textWidget name="Jumbocube"        origin="0.5" position="0.5, 0.45"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Andrzej 'Jumbocube' Brol"/>
-            <textWidget name="Czapa"            origin="0.5" position="0.5, 0.5" fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
+            <textWidget name="GraphicsCreators" origin="0.5" position="0.5, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="15" text="Graphics creators:"/>
+            <textWidget name="Jumbocube"        origin="0.5" position="0.5, 0.45" fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Andrzej 'Jumbocube' Brol"/>
+            <textWidget name="Czapa"            origin="0.5" position="0.5, 0.5"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
 
-            <textWidget name="SpecialThanks" origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="15" text="Special thanks to:"/>
-            <textWidget name="Darkoss"       origin="0.5" position="0.5, 0.65"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="'Lord Darkoss'"/>
-            <textWidget name="Fureeish"      origin="0.5" position="0.5, 0.7" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Filip Kwiatkowski"/>
-            <textWidget name="Julka"         origin="0.5" position="0.5, 0.75"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Julka"/>
+            <textWidget name="SpecialThanks" origin="0.5" position="0.5, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="15" text="Special thanks to:"/>
+            <textWidget name="Darkoss"       origin="0.5" position="0.5, 0.65" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="'Lord Darkoss'"/>
+            <textWidget name="Fureeish"      origin="0.5" position="0.5, 0.7"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Filip Kwiatkowski"/>
+            <textWidget name="Julka"         origin="0.5" position="0.5, 0.75" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Julka"/>
 
             <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.9" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
         </widget>
