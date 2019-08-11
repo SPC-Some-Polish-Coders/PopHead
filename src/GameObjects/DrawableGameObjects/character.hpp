@@ -39,6 +39,7 @@ protected:
 	int mHp;
 	unsigned mMaxHp;
 	unsigned mMovementSpeed;
+	bool mIsDead;
 };
 
 }

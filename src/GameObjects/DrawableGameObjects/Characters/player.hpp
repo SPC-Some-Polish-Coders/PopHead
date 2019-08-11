@@ -30,6 +30,7 @@ private:
 	void gunInput();
 	void meleeWeaponInput();
 	void pauseMenuInput();
+	void dyingUpdate();
 	void updateMovement(const sf::Time delta);
 	void updateAnimation(const sf::Time delta);
     void setAnimationState(const std::string& stateName);
@@ -41,6 +42,7 @@ private:
 
 private:
 	sf::Clock mTimeFromLastMeleeAtack;
+	sf::Clock mTimeAfterDead;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	bool mIsShooting;

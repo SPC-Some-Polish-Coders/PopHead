@@ -16,6 +16,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
+	,mIsDead(false)
 {
 }
 
@@ -62,13 +63,6 @@ auto Character::getSpriteCenter() -> sf::Vector2f
 	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
 }
 
-void Character::drawBlood()
-{
-	auto& root = mGameData->getSceneMachine().getScene().getRoot();
-	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
-	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + mPosition));
-}
-
 void Character::takeDamage(const unsigned damage)
 { 
 	//INFO: Temporary solution so the particles don't bug
@@ -78,6 +72,16 @@ void Character::takeDamage(const unsigned damage)
 		drawBlood();
 		mTimeSinceLastTakenDamage.restart();
 	}
+
+	if(mHp <= 0)
+		mIsDead = true;
+}
+
+void Character::drawBlood()
+{
+	auto& root = mGameData->getSceneMachine().getScene().getRoot();
+	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
+	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + mPosition));
 }
 
 }

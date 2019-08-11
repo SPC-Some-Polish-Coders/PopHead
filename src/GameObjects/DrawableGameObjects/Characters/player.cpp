@@ -116,6 +116,11 @@ void Player::pauseMenuInput()
 
 void Player::update(sf::Time delta)
 {
+	if(mIsDead) {
+		dyingUpdate();
+		return;
+	}
+
 	updateMovement(delta);
 	updateAnimation(delta);
 	mMotion.clear();
@@ -126,6 +131,24 @@ void Player::update(sf::Time delta)
 
 	for(auto& child : mChildren)
 		child->update(delta);
+}
+
+void Player::dyingUpdate()
+{
+	static bool hasJustDied = true;
+	if(hasJustDied) {
+		mTimeAfterDead.restart();
+		mAnimation.changeState("dead");
+		mAnimation.animate(mSprite);
+		hasJustDied = false;
+	}
+
+	if(mTimeAfterDead.getElapsedTime().asSeconds() > 1)
+		mGameData->getGui().showInterface("gameOverScreen");
+
+	if(mTimeAfterDead.getElapsedTime().asSeconds() > 4)
+		mGameData->getAIManager().setIsPlayerOnScene(false);
+
 }
 
 void Player::updateMovement(const sf::Time delta)
