@@ -16,7 +16,8 @@ void TextWidget::setString(const std::string& text)
 	mText.setString(text);
 	auto bounds = mText.getGlobalBounds();
 	auto size = getSize();
-	mSize = {std::max<unsigned int>(bounds.width, size.x), std::max<unsigned int>(bounds.height, size.y)};
+	mSize = {std::max(static_cast<unsigned int>(bounds.width), size.x), 
+			 std::max(static_cast<unsigned int>(bounds.height), size.y)};
 }
 
 void TextWidget::setColor(const sf::Color& color)
