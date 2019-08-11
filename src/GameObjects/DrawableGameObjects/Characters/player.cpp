@@ -57,6 +57,7 @@ Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
 	,mMotion()
 	,mLastMotion()
+	,mNumberOfOwnedBullets(20u)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
 	,mWasGamePauseButtonClicked(false)
@@ -102,7 +103,7 @@ void Player::meleeWeaponInput()
 
 void Player::pauseMenuInput()
 {
-	// TODO: Move this code to more appropriate place. For example to the scripting laguage.
+	// TODO: Move this code to more appropriate place.
 
 	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
 		mWasGamePauseButtonClicked = true;
@@ -120,7 +121,7 @@ void Player::update(sf::Time delta)
 		mHasJustDied = true;
 	}
 		
-	updateLifeCounter();
+	updateCounters();
 	updateMovement(delta);
 	updateAnimation(delta);
 	mMotion.clear();
@@ -149,16 +150,19 @@ void Player::dyingUpdate(const sf::Time delta)
 		mGameData->getAIManager().setIsPlayerOnScene(false);
 }
 
-void Player::updateLifeCounter() const
+void Player::updateCounters() const
 {
-	auto gameplayCounter = mGameData->getGui().getInterface("gameplayCounter");
-	auto canvas = gameplayCounter->getWidget("canvas");
+	auto gameplayCounters = mGameData->getGui().getInterface("gameplayCounters");
+	auto canvas = gameplayCounters->getWidget("canvas");
 	try {
 		auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
 		vitalityCounter->setString(std::to_string(mHp));
+
+		auto bulletCounter = dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"));
+		bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
 	}
 	catch(const std::exception& e) {
-		PH_LOG_ERROR("Setting vitality value to vitality counter failed!");
+		PH_LOG_ERROR("Setting values to gameplay counters failed!");
 	}
 }
 
@@ -259,7 +263,8 @@ void PlayerMotion::clear()
 
 void Player::shootingUpdate(const sf::Time delta)
 {
-	if(mIsShooting) {
+	if(mIsShooting && mNumberOfOwnedBullets > 0) {
+		--mNumberOfOwnedBullets;
 		sf::Vector2f shotDirection = attackDirection();
 		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
 		gun.shoot(shotDirection);

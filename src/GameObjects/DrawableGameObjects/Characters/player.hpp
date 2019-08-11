@@ -31,7 +31,7 @@ private:
 	void meleeWeaponInput();
 	void pauseMenuInput();
 	void dyingUpdate(const sf::Time delta);
-	void updateLifeCounter() const;
+	void updateCounters() const;
 	void updateMovement(const sf::Time delta);
 	void updateAnimation(const sf::Time delta);
     void setAnimationState(const std::string& stateName);
@@ -47,6 +47,7 @@ private:
 	sf::Clock mTimeAfterDead;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
+	unsigned mNumberOfOwnedBullets;
 	bool mIsShooting;
 	bool mIsAttacking;
 	bool mIsDead;
