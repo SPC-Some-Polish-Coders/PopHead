@@ -52,6 +52,7 @@ namespace
 
 Zombie::Zombie(GameData* gameData)
 	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
+	,mIsDead(false)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mAnimation.animate(mSprite);
@@ -59,6 +60,19 @@ Zombie::Zombie(GameData* gameData)
 
 void Zombie::update(sf::Time delta)
 {
+	if(mIsDead) {
+		deathUpdate();
+		return;
+	}
+
+	if(mHp <= 0) {
+		mIsDead = true;
+		mTimeFromDeath.restart();
+		mAnimation.changeState("dead");
+		mAnimation.animate(mSprite);
+		return;
+	}
+
 	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 2) {
 		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", mPosition);
 		timeFromLastGrowl.restart();
@@ -66,13 +80,16 @@ void Zombie::update(sf::Time delta)
 	setPosition(mCollisionBody.getPosition());
 	handlePlayerHit();
 
-	if(mHp <= 0) {
+	move(delta);
+	updateAnimation(delta);
+}
+
+void Zombie::deathUpdate()
+{
+	if(mTimeFromDeath.getElapsedTime().asSeconds() > 10) {
 		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
 		enemyContainer->addEnemyToDie(this);
 	}
-
-	move(delta);
-	updateAnimation(delta);
 }
 
 void Zombie::handlePlayerHit()
