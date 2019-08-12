@@ -20,7 +20,7 @@ void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionB
 	mKinematicBodyRect = mKinematicBody->getRect();
 	mStaticBodyRect = mStaticBody->getRect();
 	mKinematicBodyPreviousRect = mKinematicBody->getPreviousRect();
-	mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
+	//mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
 }
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()

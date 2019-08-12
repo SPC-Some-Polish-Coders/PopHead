@@ -6,16 +6,31 @@
 namespace ph {
 
 PhysicsEngine::PhysicsEngine()
+	: mStaticBodies(std::function<bool(const std::unique_ptr<CollisionBody>&, const std::unique_ptr<CollisionBody>&)>(
+		[](const std::unique_ptr<CollisionBody>& b1, const std::unique_ptr<CollisionBody>& b2) -> bool {
+			auto pos1 = b1->getPosition();
+			auto pos2 = b2->getPosition();
+
+			if (pos1.x < pos2.x)
+				return true;
+			else if (pos1.x == pos2.x && pos1.y < pos2.y)
+				return true;
+			return false;
+		}
+		))
 {
-	mStaticBodies.reserve(300);
+	//mStaticBodiesOld.reserve(300);
 }
 
-CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
+const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
-	mStaticBodies.emplace_back(std::make_unique<CollisionBody>(rect, 0.f));
-	auto& staticBody = *mStaticBodies.back().get();
+	auto iter = mStaticBodies.emplace(std::make_unique<CollisionBody>(rect, 0.f));
+	return *iter.first->get();
+
+	/*mStaticBodiesOld.emplace_back(std::make_unique<CollisionBody>(rect, 0.f));
+	auto& staticBody = *mStaticBodiesOld.back().get();
 	mCollisionDebugManager.addStaticBodyCollisionDebugRect(staticBody);
-	return staticBody;
+	return staticBody;*/
 }
 
 CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass)
@@ -28,11 +43,13 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::Fl
 
 void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
 {
-	for(auto it = mStaticBodies.begin(); it != mStaticBodies.end(); ++it)
+	mStaticBodies.erase(std::make_unique<CollisionBody>(bodyToDelete));
+
+	/*for(auto it = mStaticBodiesOld.begin(); it != mStaticBodiesOld.end(); ++it)
 		if(it->get() == std::addressof(bodyToDelete)) {
-			mStaticBodies.erase(it);
+			mStaticBodiesOld.erase(it);
 			break;
-		}
+		}*/
 }
 
 void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
@@ -46,6 +63,7 @@ void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
 
 void PhysicsEngine::clear() noexcept
 {
+	//mStaticBodiesOld.clear();
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
 	mCollisionDebugManager.clear();
@@ -65,9 +83,29 @@ void PhysicsEngine::update(sf::Time delta)
 
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 {
-	for (auto& staticBody : mStaticBodies)
+	/*for (auto& staticBody : mStaticBodiesOld)
 		if (isThereCollision(kinematicBody, *staticBody))
-			mStaticCollisionHandler(kinematicBody, *staticBody);
+			mStaticCollisionHandler(kinematicBody, *staticBody);*/
+
+	auto rect = kinematicBody.getRect();
+	rect.left -= 32.f;
+	rect.top -= 32.f;
+
+	auto iter = mStaticBodies.lower_bound(std::make_unique<CollisionBody>(rect, 0.f));
+	auto end = mStaticBodies.end();
+
+	auto maxPosition = kinematicBody.getPosition().x + 32.f;
+
+	while (iter != end)
+	{
+		if (iter->get()->getPosition().x > maxPosition)
+			break;
+
+		if (isThereCollision(kinematicBody, *iter->get()))
+			mStaticCollisionHandler(kinematicBody, *iter->get());
+
+		++iter;
+	}
 }
 
 void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)

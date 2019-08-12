@@ -5,35 +5,35 @@
 
 namespace ph {
 
-TEST_CASE("Static bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
-{
-	PhysicsEngine physicsEngine;
-
-	auto& b1 = physicsEngine.createStaticBodyAndGetTheReference({1, 1, 1, 1});
-	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
-
-	auto& b2 = physicsEngine.createStaticBodyAndGetTheReference({2, 2, 1, 1});
-	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
-	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
-
-	auto& b3 = physicsEngine.createStaticBodyAndGetTheReference({3, 3, 1, 1});
-	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
-	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
-	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
-
-	auto& b4 = physicsEngine.createStaticBodyAndGetTheReference({4, 4, 1, 1});
-	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
-	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
-	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
-	REQUIRE(b4.getRect() == sf::FloatRect(4, 4, 1, 1));
-
-	auto& b5 = physicsEngine.createStaticBodyAndGetTheReference({5, 5, 1, 1});
-	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
-	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
-	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
-	REQUIRE(b4.getRect() == sf::FloatRect(4, 4, 1, 1));
-	REQUIRE(b5.getRect() == sf::FloatRect(5, 5, 1, 1));
-}
+//TEST_CASE("Static bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
+//{
+//	PhysicsEngine physicsEngine;
+//
+//	auto& b1 = physicsEngine.createStaticBodyAndGetTheReference({1, 1, 1, 1});
+//	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
+//
+//	auto& b2 = physicsEngine.createStaticBodyAndGetTheReference({2, 2, 1, 1});
+//	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
+//	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
+//
+//	auto& b3 = physicsEngine.createStaticBodyAndGetTheReference({3, 3, 1, 1});
+//	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
+//	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
+//	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
+//
+//	auto& b4 = physicsEngine.createStaticBodyAndGetTheReference({4, 4, 1, 1});
+//	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
+//	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
+//	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
+//	REQUIRE(b4.getRect() == sf::FloatRect(4, 4, 1, 1));
+//
+//	auto& b5 = physicsEngine.createStaticBodyAndGetTheReference({5, 5, 1, 1});
+//	REQUIRE(b1.getRect() == sf::FloatRect(1, 1, 1, 1));
+//	REQUIRE(b2.getRect() == sf::FloatRect(2, 2, 1, 1));
+//	REQUIRE(b3.getRect() == sf::FloatRect(3, 3, 1, 1));
+//	REQUIRE(b4.getRect() == sf::FloatRect(4, 4, 1, 1));
+//	REQUIRE(b5.getRect() == sf::FloatRect(5, 5, 1, 1));
+//}
 
 TEST_CASE("Kinematic bodies can be created and are accessible by returned reference", "[Physics][PhysicsEngine]")
 {
@@ -65,17 +65,17 @@ TEST_CASE("Kinematic bodies can be created and are accessible by returned refere
 	REQUIRE(b5.getMass() == 5);
 }
 
-TEST_CASE("Static bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
-{
-	PhysicsEngine physicsEngine;
-
-	auto& b1 = physicsEngine.createStaticBodyAndGetTheReference({0, 0, 5, 5});
-	auto& b2 = physicsEngine.createStaticBodyAndGetTheReference({7, 7, 3, 3});
-
-	CHECK_NOTHROW(physicsEngine.removeStaticBody(b1));
-	CHECK(physicsEngine.howManyStaticBodiesAreThere() == 1);
-	CHECK(b2.getRect() == sf::FloatRect(7, 7, 3, 3));
-}
+//TEST_CASE("Static bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
+//{
+//	PhysicsEngine physicsEngine;
+//
+//	auto& b1 = physicsEngine.createStaticBodyAndGetTheReference({0, 0, 5, 5});
+//	auto& b2 = physicsEngine.createStaticBodyAndGetTheReference({7, 7, 3, 3});
+//
+//	CHECK_NOTHROW(physicsEngine.removeStaticBody(b1));
+//	CHECK(physicsEngine.howManyStaticBodiesAreThere() == 1);
+//	CHECK(b2.getRect() == sf::FloatRect(7, 7, 3, 3));
+//}
 
 TEST_CASE("Kinematic bodies can be removed from physics engine", "[Physics][PhysicsEngine]")
 {
@@ -89,90 +89,90 @@ TEST_CASE("Kinematic bodies can be removed from physics engine", "[Physics][Phys
 	CHECK(b2.getMass() == 2);
 }
 
-TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics][PhysicsEngine]")
-{
-	PhysicsEngine physicsEngine;
-	const sf::Time deltaTime = sf::seconds(1.f / 60.f);
-
-	SECTION("Wall is on the left of player") {
-		physicsEngine.createStaticBodyAndGetTheReference({-30, 0, 30, 10});
-		physicsEngine.createStaticBodyAndGetTheReference({-30, 10, 30, 10});
-		
-		SECTION("Player moves left down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
-			player.move({-10, 10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 0);
-			CHECK(player.getPosition().y == 15);
-		}
-		SECTION("Player moves left up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
-			player.move({-10, -10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 0);
-			CHECK(player.getPosition().y == 5); // this assertion catches the error
-		}
-	}
-
-	SECTION("Wall is on the right of player") {
-		physicsEngine.createStaticBodyAndGetTheReference({10, 0, 30, 10});
-		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 30, 10});
-		
-		SECTION("Player moves right down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
-			player.move({10, 10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 0);
-			CHECK(player.getPosition().y == 15);
-		}
-		SECTION("Player moves right up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
-			player.move({10, -10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 0);
-			CHECK(player.getPosition().y == 5); // this assertion catches the error
-		}
-	}
-	
-	SECTION("Wall is above the player") {
-		physicsEngine.createStaticBodyAndGetTheReference({0, -30, 10, 30});
-		physicsEngine.createStaticBodyAndGetTheReference({10, -30, 10, 30});
-
-		SECTION("Player moves right up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
-			player.move({10, -10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 15);
-			CHECK(player.getPosition().y == 0);
-		}
-		SECTION("Player moves left up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
-			player.move({-10, -10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 5);
-			CHECK(player.getPosition().y == 0);
-		}
-	}
-	
-	SECTION("Wall is beneath the player") {
-		physicsEngine.createStaticBodyAndGetTheReference({0, 10, 10, 30});
-		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 10, 30});
-
-		SECTION("Player moves right down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
-			player.move({10, 10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 15);
-			CHECK(player.getPosition().y == 0);
-		}
-		SECTION("Player moves left down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
-			player.move({-10, 10});
-			physicsEngine.update(deltaTime);
-			CHECK(player.getPosition().x == 5);
-			CHECK(player.getPosition().y == 0);
-		}
-	}
-}
-
-}
+//TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics][PhysicsEngine]")
+//{
+//	PhysicsEngine physicsEngine;
+//	const sf::Time deltaTime = sf::seconds(1.f / 60.f);
+//
+//	SECTION("Wall is on the left of player") {
+//		physicsEngine.createStaticBodyAndGetTheReference({-30, 0, 30, 10});
+//		physicsEngine.createStaticBodyAndGetTheReference({-30, 10, 30, 10});
+//		
+//		SECTION("Player moves left down") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
+//			player.move({-10, 10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 0);
+//			CHECK(player.getPosition().y == 15);
+//		}
+//		SECTION("Player moves left up") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
+//			player.move({-10, -10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 0);
+//			CHECK(player.getPosition().y == 5); // this assertion catches the error
+//		}
+//	}
+//
+//	SECTION("Wall is on the right of player") {
+//		physicsEngine.createStaticBodyAndGetTheReference({10, 0, 30, 10});
+//		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 30, 10});
+//		
+//		SECTION("Player moves right down") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
+//			player.move({10, 10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 0);
+//			CHECK(player.getPosition().y == 15);
+//		}
+//		SECTION("Player moves right up") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
+//			player.move({10, -10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 0);
+//			CHECK(player.getPosition().y == 5); // this assertion catches the error
+//		}
+//	}
+//	
+//	SECTION("Wall is above the player") {
+//		physicsEngine.createStaticBodyAndGetTheReference({0, -30, 10, 30});
+//		physicsEngine.createStaticBodyAndGetTheReference({10, -30, 10, 30});
+//
+//		SECTION("Player moves right up") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
+//			player.move({10, -10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 15);
+//			CHECK(player.getPosition().y == 0);
+//		}
+//		SECTION("Player moves left up") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
+//			player.move({-10, -10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 5);
+//			CHECK(player.getPosition().y == 0);
+//		}
+//	}
+//	
+//	SECTION("Wall is beneath the player") {
+//		physicsEngine.createStaticBodyAndGetTheReference({0, 10, 10, 30});
+//		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 10, 30});
+//
+//		SECTION("Player moves right down") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
+//			player.move({10, 10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 15);
+//			CHECK(player.getPosition().y == 0);
+//		}
+//		SECTION("Player moves left down") {
+//			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
+//			player.move({-10, 10});
+//			physicsEngine.update(deltaTime);
+//			CHECK(player.getPosition().x == 5);
+//			CHECK(player.getPosition().y == 0);
+//		}
+//	}
+//}
+//
+//}
