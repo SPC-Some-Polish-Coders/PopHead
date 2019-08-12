@@ -54,7 +54,7 @@ bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
 	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
 	float distanceBetweenZombieAndPlayer = std::hypotf(legX, legY);
-	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 420.f;
+	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
 	return distanceBetweenZombieAndPlayer <= maximalDistanceFromWhichZombieSeesPlayer;
 }
 

@@ -44,7 +44,7 @@ namespace
 			sf::IntRect(0, 12 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 		},
 		{
-			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
+			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1
 		},
 		sf::seconds(0.10f)
 	};
@@ -70,6 +70,7 @@ void Zombie::update(sf::Time delta)
 		mTimeFromDeath.restart();
 		mAnimation.changeState("dead");
 		mAnimation.animate(mSprite);
+		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 		return;
 	}
 
