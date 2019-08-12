@@ -4,6 +4,7 @@
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "DrawableGameObjects/car.hpp"
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "gameObject.hpp"
@@ -64,7 +65,8 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
-		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
+		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
+		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
 
@@ -123,6 +125,20 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 	);
 
 	mRoot.addChild(std::move(entrance));
+}
+
+void TiledGameObjectsParser::loadCar(const Xml& carNode) const
+{
+	auto car = std::make_unique<Car>(
+		mGameData->getRenderer(),
+		getProperty(carNode, "acceleration").toFloat(),
+		getProperty(carNode, "slowingDown").toFloat(),
+		sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),
+		mGameData->getTextures().get("textures/vehicles/car.png")
+	);
+	car->setPosition(getPositionAttribute(carNode));
+
+	mRoot.addChild(std::move(car));
 }
 
 std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const

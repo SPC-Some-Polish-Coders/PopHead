@@ -2,6 +2,7 @@
 #include "Utilities/math.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph{
 
@@ -18,9 +19,12 @@ Entrance::Entrance(SceneManager& sceneManager, const std::string filepath, const
 void Entrance::update(const sf::Time delta)
 {
 	auto &root = getParent();
-	auto& player = dynamic_cast<Player&>(root.getChild("player"));
-	if (Math::areTheyOverlapping(player.getSprite().getGlobalBounds(), mEntranceArea.getGlobalBounds()))
-		mSceneManager.replaceScene(mFilepath);
+	try {
+		auto& player = dynamic_cast<Player&>(root.getChild("player"));
+		if (Math::areTheyOverlapping(player.getSprite().getGlobalBounds(), mEntranceArea.getGlobalBounds()))
+			mSceneManager.replaceScene(mFilepath);
+	}
+	catch(const std::exception& e) {}
 }
 
 }
