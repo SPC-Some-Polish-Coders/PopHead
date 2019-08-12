@@ -70,6 +70,7 @@ void Zombie::update(sf::Time delta)
 		mTimeFromDeath.restart();
 		mAnimation.changeState("dead");
 		mAnimation.animate(mSprite);
+		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 		return;
 	}
 
