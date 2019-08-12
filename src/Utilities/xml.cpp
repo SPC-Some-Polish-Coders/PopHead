@@ -290,7 +290,7 @@ Xml Xml::getAttribute(const std::string& name) const
 	while (true) {
 		begin = mContent.find_first_not_of(whitespaceCharacters, begin + 1);
 		if (begin == endOfTagAttributes)
-			PH_EXCEPTION("attribute name cannot be found");
+		PH_EXCEPTION("attribute name cannot be found");
 		std::size_t end = mContent.find_first_of("=" + whitespaceCharacters, begin + 1);
 		if(end > endOfTagAttributes)
 			PH_EXCEPTION("missing attribute value");
