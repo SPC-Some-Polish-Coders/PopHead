@@ -190,6 +190,7 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mRoot,
 			mGameData->getRenderer().getCamera(),
 			mGameData->getSoundPlayer(),
+			mGameData->getMusicPlayer(),
 			mGameData->getGui()
 		);
 		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));

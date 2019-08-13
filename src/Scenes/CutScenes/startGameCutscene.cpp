@@ -3,16 +3,19 @@
 #include "GameObjects/DrawableGameObjects/car.hpp"
 #include "Renderer/camera.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
+#include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
 
 namespace ph {
 
-StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlayer& soundPlayer, GUI& gui)
+StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, GUI& gui)
 	:CutScene(root)
 	,mCamera(camera)
 	,mSoundPlayer(soundPlayer)
+	,mMusicPlayer(musicPlayer)
 	,mGui(gui)
 	,mHasStartedToSlowDown(false)
+	,mHasChangedTheMusic(false)
 {
 	auto& car = dynamic_cast<Car&>(root.getChild("car"));
 	car.setVelocity(120);
@@ -30,12 +33,17 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(cutsceneTimeInSeconds < 5)
 		car.speedUp();
 
-	if(car.getPosition().x > 5000) {
-		if(!mHasStartedToSlowDown) {
-			mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
-			mHasStartedToSlowDown = true;
-		}
+	if(car.getPosition().x > 4965 && !mHasStartedToSlowDown) {
+		mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
+		mHasStartedToSlowDown = true;
+	}
+	
+	if(car.getPosition().x > 5000)
 		car.slowDown();
+
+	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusic) {
+		mMusicPlayer.play("music/Menu.ogg");
+		mHasChangedTheMusic = true;
 	}
 }
 
