@@ -16,6 +16,8 @@ public:
 	void setPosition(sf::Vector2f position, bool recursive = true) override;
 
 	void setVelocity(float velocity) { mVelocity = velocity; }
+	float getVelocity() const { return mVelocity; }
+
 	void speedUp() { mShouldSpeedUp = true; }
 	void slowDown() { mShouldSlowDown = true; }
 
