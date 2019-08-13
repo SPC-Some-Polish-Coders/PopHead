@@ -24,7 +24,7 @@ auto Bullet::getCharacterWhoWasShot() -> Character*
 	while(isBulletStillInItsRange()) {
 		for(auto& enemy : mEnemiesNode.getChildren()) {
 			auto& e = dynamic_cast<Character&>(*enemy);
-			if(wasEnemyShot(e))
+			if(!e.isDead() && wasEnemyShot(e))
 				return &e;
 		}
 		++mTraveledDistance;

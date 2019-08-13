@@ -61,7 +61,6 @@ Player::Player(GameData* gameData)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
 	,mWasGamePauseButtonClicked(false)
-	,mIsDead(false)
 	,mHasJustDied(false)
 {
 	mAnimation.animate(mSprite);

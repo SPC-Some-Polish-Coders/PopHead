@@ -52,7 +52,6 @@ namespace
 
 Zombie::Zombie(GameData* gameData)
 	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
-	,mIsDead(false)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mAnimation.animate(mSprite);

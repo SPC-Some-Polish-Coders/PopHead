@@ -30,6 +30,7 @@ public:
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
 	auto getAnimation() -> Animation& { return mAnimation; }
+	bool isDead();
 
 protected:
 	sf::Sprite mSprite;
@@ -40,6 +41,7 @@ protected:
 	int mHp;
 	unsigned mMaxHp;
 	unsigned mMovementSpeed;
+	bool mIsDead;
 };
 
 }

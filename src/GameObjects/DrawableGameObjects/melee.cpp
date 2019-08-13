@@ -42,7 +42,7 @@ auto Swing::getCharacterWhoWasHit() -> Character*
 	{ 
 	for (auto& enemy : mEnemiesNode.getChildren()) {
 		auto& e = dynamic_cast<Character&>(*enemy);
-		if (wasEnemyHit(e))
+		if (!e.isDead() && wasEnemyHit(e))
 			return &e;
 		}
 	incrementRotation();

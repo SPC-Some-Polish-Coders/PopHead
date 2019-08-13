@@ -25,7 +25,6 @@ private:
 	sf::Clock mTimeFromStartingThisMove;
 	sf::Clock mTimeFromDeath;
 	sf::Vector2f mCurrentDirectionVector;
-	bool mIsDead;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 

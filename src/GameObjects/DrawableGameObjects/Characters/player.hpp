@@ -50,7 +50,6 @@ private:
 	unsigned mNumberOfOwnedBullets;
 	bool mIsShooting;
 	bool mIsAttacking;
-	bool mIsDead;
 	bool mHasJustDied;
 	bool mWasGamePauseButtonClicked;
 

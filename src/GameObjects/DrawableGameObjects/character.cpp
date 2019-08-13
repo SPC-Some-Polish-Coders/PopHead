@@ -16,6 +16,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
+	,mIsDead(false)
 {
 }
 
@@ -60,6 +61,11 @@ auto Character::getSpriteCenter() -> sf::Vector2f
 {
 	sf::IntRect spriteRect = getSprite().getTextureRect();
 	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
+}
+
+bool Character::isDead()
+{
+	return mIsDead;
 }
 
 void Character::takeDamage(const unsigned damage)
