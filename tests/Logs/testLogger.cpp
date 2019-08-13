@@ -26,9 +26,8 @@ namespace ph {
 
 				CHECK(logRecord.level == logLevels.at(i));
 				CHECK(logRecord.fileLine == i * 20);
-				CHECK(logRecord.fileName == "testLogger.cpp");
+				CHECK(logRecord.filePath.find("testLogger.cpp") != std::string::npos);
 				CHECK(logRecord.message == "my test message");
-				CHECK(logRecord.moduleName == "Tests");
 			}
 		}
 	}

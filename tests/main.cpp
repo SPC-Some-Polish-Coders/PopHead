@@ -52,7 +52,7 @@ int main()
 int main()
 {
 	std::unique_ptr<ph::Handler> bufferedHandler(new Tests::BufferedHandler);
-	bufferedHandler->enableAllModules();
+	bufferedHandler->enableAllPaths();
 	bufferedHandler->enableAllLogLevels();
 	ph::Logger::addLogsHandler(std::move(bufferedHandler));
 	return Catch::Session().run();

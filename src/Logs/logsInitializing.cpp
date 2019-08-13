@@ -36,7 +36,7 @@ namespace ph {
 			auto modulesTag = handlerTag.getChild("modules");
 
 			if (modulesTag.hasAttribute("all"))
-				handler->enableAllModules();
+				handler->enableAllPaths();
 			else
 			{
 				auto modules = modulesTag.getChildren("module");
@@ -44,7 +44,7 @@ namespace ph {
 				for (const auto& moduleTag : modules)
 				{
 					std::string moduleName = moduleTag.toString();
-					handler->setModuleAllowing(moduleName, true);
+					handler->setPathFilter(moduleName, true);
 				}
 			}
 
@@ -61,13 +61,13 @@ namespace ph {
 					std::string levelStr = logLevel.toString();
 
 					if (levelStr == "Info")
-						handler->setLogLevelAllowing(LogLevel::Info, true);
+						handler->setLogLevelFilter(LogLevel::Info, true);
 					if (levelStr == "Error")
-						handler->setLogLevelAllowing(LogLevel::Error, true);
+						handler->setLogLevelFilter(LogLevel::Error, true);
 					if (levelStr == "Warning")
-						handler->setLogLevelAllowing(LogLevel::Warning, true);
+						handler->setLogLevelFilter(LogLevel::Warning, true);
 					if (levelStr == "Critical")
-						handler->setLogLevelAllowing(LogLevel::Critical, true);
+						handler->setLogLevelFilter(LogLevel::Critical, true);
 				}
 			}
 

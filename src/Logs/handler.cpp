@@ -1,13 +1,11 @@
 #include "handler.hpp"
 
 #include <algorithm>
-#include <filesystem>
 
 namespace ph {
 	
 	Handler::Handler()
 	{
-		initializeModules();
 		initializeLogLevels();
 	}
 
@@ -17,17 +15,15 @@ namespace ph {
 			utilizeLog(logRecord);
 	}
 
-	void Handler::setModuleAllowing(const std::string& moduleName, bool allowed)
+	void Handler::setPathFilter(const std::string& path, bool allowed)
 	{
-		auto iter = std::find_if(mAllowedModules.begin(), mAllowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
-			return pair.first == moduleName;
-			});
-
-		if (iter != mAllowedModules.end())
-			iter->second = allowed;
+		if (allowed)
+			mAllowedPaths.emplace_back(path);
+		else
+			mDisallowedPaths.emplace_back(path);
 	}
 
-	void Handler::setLogLevelAllowing(LogLevel level, bool allowed)
+	void Handler::setLogLevelFilter(LogLevel level, bool allowed)
 	{
 		auto iter = std::find_if(mAllowedLogLevels.begin(), mAllowedLogLevels.end(), [&level](const std::pair<LogLevel, bool>& pair) {
 			return pair.first == level;
@@ -37,13 +33,27 @@ namespace ph {
 			iter->second = allowed;
 	}
 
-	bool Handler::isModuleAllowed(const std::string& moduleName) const
+	bool Handler::isPathAllowed(const std::string& path) const
 	{
-		auto iter = std::find_if(mAllowedModules.begin(), mAllowedModules.end(), [&moduleName](const std::pair<std::string, bool>& pair) {
-			return pair.first == moduleName;
-			});
+		bool allowed = false;
+		for (const auto& allowedPath : mAllowedPaths)
+			if (path.find(allowedPath) != std::string::npos)
+			{
+				allowed = true;
+				break;
+			}
 
-		return iter != mAllowedModules.end() && iter->second;
+		if (allowed)
+		{
+			for (const auto& disallowedPath : mDisallowedPaths)
+				if (path.find(disallowedPath) != std::string::npos)
+				{
+					allowed = false;
+					break;
+				}
+		}
+
+		return allowed;
 	}
 
 	bool Handler::isLogLevelAllowed(LogLevel level) const
@@ -55,10 +65,18 @@ namespace ph {
 		return iter != mAllowedLogLevels.end() && iter->second;
 	}
 
-	void Handler::enableAllModules()
+	void Handler::enableAllPaths()
 	{
-		for (auto& module : mAllowedModules)
-			module.second = true;
+		mAllowedPaths.clear();
+		mDisallowedPaths.clear();
+		mAllowedPaths.emplace_back(".");
+		mAllowedPaths.emplace_back("/");
+	}
+
+	void Handler::disableAllPaths()
+	{
+		mAllowedPaths.clear();
+		mDisallowedPaths.clear();
 	}
 
 	void Handler::enableAllLogLevels()
@@ -69,24 +87,9 @@ namespace ph {
 
 	bool Handler::isPassedByFilter(const LogRecord& logRecord) const
 	{
-		return isModuleAllowed(logRecord.moduleName) && isLogLevelAllowed(logRecord.level);
+		return isPathAllowed(logRecord.filePath) && isLogLevelAllowed(logRecord.level);
 	}
-	void Handler::initializeModules()
-	{
-		// in Distribution it should be replaced by static list of modules
 
-		std::string module;
-		for (auto& p : std::filesystem::directory_iterator("src"))
-			if (p.is_directory())
-			{
-				module = p.path().string();
-				module.erase(0, 4);
-				mAllowedModules.emplace_back(module, false);
-			}
-
-		mAllowedModules.emplace_back("MainDirectory", false);
-		mAllowedModules.emplace_back("Tests", false);
-	}
 	void Handler::initializeLogLevels()
 	{
 		auto levelsCount = static_cast<std::size_t>(LogLevel::Count);

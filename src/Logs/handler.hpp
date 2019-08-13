@@ -15,25 +15,25 @@ namespace ph {
 
 		void handleLog(const LogRecord& logRecord);
 
-		void setModuleAllowing(const std::string& moduleName, bool allowed);
-		void setLogLevelAllowing(LogLevel level, bool allowed);
+		void setPathFilter(const std::string& path, bool allowed);
+		void setLogLevelFilter(LogLevel level, bool allowed);
 
-		bool isModuleAllowed(const std::string& moduleName) const;
+		bool isPathAllowed(const std::string& path) const;
 		bool isLogLevelAllowed(LogLevel level) const;
 
-		void enableAllModules();
+		void enableAllPaths();
+		void disableAllPaths();
 		void enableAllLogLevels();
 
 	private:
 		virtual void utilizeLog(const LogRecord& logRecord) = 0;
 		bool isPassedByFilter(const LogRecord& logRecord) const;
 
-		void initializeModules();
 		void initializeLogLevels();
 
 	private:
-
-		std::vector<std::pair<std::string, bool>> mAllowedModules;
+		std::vector<std::string> mAllowedPaths;
+		std::vector<std::string> mDisallowedPaths;
 		std::vector<std::pair<LogLevel, bool>> mAllowedLogLevels;
 	};
 }

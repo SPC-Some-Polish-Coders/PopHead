@@ -18,8 +18,7 @@ namespace ph {
 	{
 		LogLevel level;
 		std::string message;
-		std::string fileName;
-		std::string moduleName;
+		std::string filePath;
 		unsigned short fileLine;
 		float secondsFromStart;
 		std::string time;

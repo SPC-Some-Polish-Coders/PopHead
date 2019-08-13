@@ -18,7 +18,7 @@ namespace ph {
 		Logger& operator=(const Logger&) = delete;
 
 	public:
-		static void createLog(LogLevel level, const std::string& message, const std::string& fileName, unsigned short fileLine);
+		static void createLog(LogLevel level, const std::string& message, const std::string& filePath, unsigned short fileLine);
 
 		static void addLogsHandler(std::unique_ptr<Handler> handler);
 		static bool removeLogsHandler(const Handler& handler);

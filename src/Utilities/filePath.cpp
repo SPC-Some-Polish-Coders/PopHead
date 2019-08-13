@@ -47,4 +47,18 @@ std::string FilePath::toFilename(const std::string& path, char separator)
 	return path;
 }
 
+std::string FilePath::cutFilePathAndFixSeparator(std::string filePath)
+{
+	auto sourceDirectoryPos = filePath.rfind("src");
+	sourceDirectoryPos += 4;
+	filePath.erase(0, sourceDirectoryPos);
+
+	if constexpr (PH_PATH_SEPARATOR == '\\')
+		for (auto& ch : filePath)
+			if (ch == '\\')
+				ch = '/';
+
+	return filePath;
+}
+
 }

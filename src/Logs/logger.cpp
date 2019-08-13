@@ -30,14 +30,13 @@ namespace {
 	}
 }
 
-void Logger::createLog(LogLevel level, const std::string& message, const std::string& fileName, unsigned short fileLine)
+void Logger::createLog(LogLevel level, const std::string& message, const std::string& filePath, unsigned short fileLine)
 {
 	LogRecord logRecord;
 	logRecord.level = level;
 	logRecord.message = message;
-	logRecord.fileName = FilePath::toFilename(fileName);
+	logRecord.filePath = FilePath::cutFilePathAndFixSeparator(filePath);
 	logRecord.fileLine = fileLine;
-	logRecord.moduleName = FilePath::toModuleName(fileName);
 	logRecord.secondsFromStart = getInstance().mClock.getElapsedTime().asSeconds();
 	logRecord.time = getCurrentTimeAsString();
 

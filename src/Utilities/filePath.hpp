@@ -13,5 +13,7 @@ namespace ph {
 		std::string toModuleName(const std::string& filePath);
 
 		std::string toFilename(const std::string& path, char separator = PH_PATH_SEPARATOR);
+
+		std::string cutFilePathAndFixSeparator(std::string filePath);
 	}
 }
