@@ -19,7 +19,7 @@ void CutSceneManager::updateCutScene(const sf::Time delta)
 
 bool CutSceneManager::isCutSceneActive()
 {
-	return mMapStaringCutScene != nullptr;
+	return mMapStaringCutScene != nullptr && mMapStaringCutScene->isActive();
 }
 
 }

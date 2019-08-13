@@ -9,11 +9,13 @@ class GameObject;
 class CutScene
 {
 public:
-	CutScene(GameObject& root) :mRoot(root) {}
+	CutScene(GameObject& root) :mRoot(root) ,mIsActive(true) {}
 	virtual void update(const sf::Time delta) = 0;
+	bool isActive() const { return mIsActive; }	
 
 protected:
 	GameObject& mRoot;
+	bool mIsActive;
 };
 
 }

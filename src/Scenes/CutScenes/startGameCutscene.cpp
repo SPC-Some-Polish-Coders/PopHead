@@ -88,6 +88,11 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(cutsceneTimeInSeconds > 45) {
 		mCamera.setSize({1280, 960});
 	}
+
+	if(cutsceneTimeInSeconds > 47) {
+		mGameData->getSceneMachine().replaceScene("scenes/desert.xml");
+		mIsActive = false;
+	}
 }
 
 void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
