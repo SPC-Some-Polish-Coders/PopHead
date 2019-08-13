@@ -28,6 +28,12 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	car.setVelocity(120);
 }
 
+void StartGameCutScene::input()
+{
+	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
+		closeCutScene();
+}
+
 void StartGameCutScene::update(const sf::Time delta)
 {
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
@@ -85,14 +91,11 @@ void StartGameCutScene::update(const sf::Time delta)
 		mCamera.setSize({640, 480});
 	}
 
-	if(cutsceneTimeInSeconds > 45) {
+	if(cutsceneTimeInSeconds > 45)
 		mCamera.setSize({1280, 960});
-	}
 
-	if(cutsceneTimeInSeconds > 47) {
-		mGameData->getSceneMachine().replaceScene("scenes/desert.xml");
-		mIsActive = false;
-	}
+	if(cutsceneTimeInSeconds > 47)
+		closeCutScene();
 }
 
 void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
@@ -226,6 +229,12 @@ void StartGameCutScene::createZombie(const sf::Vector2f position)
 	zombie->setPosition(position);
 	zombie->getSprite().setTexture(mGameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mRoot.addChild(std::move(zombie));
+}
+
+void StartGameCutScene::closeCutScene()
+{
+	mGameData->getSceneMachine().replaceScene("scenes/desert.xml");
+	mIsActive = false;
 }
 
 }

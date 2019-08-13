@@ -14,6 +14,9 @@ Scene::Scene()
 
 void Scene::input()
 {
+	if(mCutSceneManager.isCutSceneActive())
+		mCutSceneManager.handleCutSceneInput();
+
 	mRoot->input();
 }
 

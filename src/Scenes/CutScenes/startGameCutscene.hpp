@@ -17,6 +17,9 @@ class StartGameCutScene : public CutScene
 {
 public:
 	StartGameCutScene(GameObject& root, Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
+
+	void input() override;
+
 	void update(const sf::Time delta) override;
 
 private:
@@ -29,6 +32,7 @@ private:
 	void sayFuck(const float cutsceneTimeInSeconds);
 	void spawnZombies();
 	void createZombie(const sf::Vector2f position);
+	void closeCutScene();
 
 private:
 	Camera& mCamera;
