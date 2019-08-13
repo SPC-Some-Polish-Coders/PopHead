@@ -33,18 +33,26 @@ namespace ph {
 			if (!handler)
 				continue;
 
-			auto modulesTag = handlerTag.getChild("modules");
+			auto filesTag = handlerTag.getChild("filepaths");
 
-			if (modulesTag.hasAttribute("all"))
+			if (filesTag.hasAttribute("all"))
 				handler->enableAllPaths();
 			else
 			{
-				auto modules = modulesTag.getChildren("module");
+				auto enabledPaths = filesTag.getChildren("enable");
 
-				for (const auto& moduleTag : modules)
+				for (const auto& pathTag : enabledPaths)
 				{
-					std::string moduleName = moduleTag.toString();
-					handler->setPathFilter(moduleName, true);
+					std::string path = pathTag.toString();
+					handler->setPathFilter(path, true);
+				}
+
+				auto disabledPaths = filesTag.getChildren("disable");
+
+				for (const auto& pathTag : disabledPaths)
+				{
+					std::string path = pathTag.toString();
+					handler->setPathFilter(path, false);
 				}
 			}
 

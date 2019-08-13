@@ -4,8 +4,8 @@ Logs module is now configured by XML file 'config/logsConfig.ini'. The simplest,
 <?xml version="1.0" encoding="UTF-8"?>
 <handlers>
     <handler type="fileHandler">
-        <modules all="">
-        </modules>
+        <filepaths all="">
+        </filepaths>
         <levels all="">
         </levels>
     </handler>
@@ -21,19 +21,19 @@ There are three types of handlers:
 
 ##### Note: You can create at most only one instance of each type. In the near future it will be possible to create multiple files.
 
-Every handler has its own filter to know which logs save and which not. The default filter doesn't allow any logs. To enable some of them (or even all), you need to enable their modules and levels.
-##### Note: For now you can filter logs only by their module in which they were reported and their log level. There is also an idea to enable filterring by file's name, but it's not necessary now.
+Every handler has its own filter to know which logs save and which not. The default filter doesn't allow any logs. To enable some of them (or even all), you need to enable their paths and levels.
 
-'modules' and 'levels' tags are for enabling logs in current handler. You can enable all modules or all levels at once by simple adding all="" attribute. To enable only some modules or levels you need to use 'module' and 'level' tags. Example:
+'filepaths' and 'levels' tags are for enabling logs in current handler. You can enable all files or all levels at once by simple adding all="" attribute. To enable only some files or levels you need to use 'enable'/'disable' and 'level' tags. Example:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <handlers>
     <handler type="consoleHandler">
-        <modules>
-            <module>Physics</module>
-            <module>Scenes</module>
-            <module>Renderer</module>
-        </modules>
+        <filepaths>
+            <enable>Physics/CollisionDebug</enable>
+            <enable>Scenes</enable>
+            <enable>Renderer</enable>
+            <disable>camera.cpp</disable>
+        </filepaths>
         <levels>
             <level>Warning</level>
             <level>Error</level>
@@ -42,6 +42,8 @@ Every handler has its own filter to know which logs save and which not. The defa
     </handler>
 </handlers>
 ```
+Configuration above enables logs from files in Physics/CollisionDebug/, Scenes/ and Renderer/ directories, but without camera.cpp file. Please note that directories and files are case sensitive!
+
 Possible levels to allow:
 - Info
 - Warning
@@ -50,24 +52,22 @@ Possible levels to allow:
 
 See [logging tutorial](loggingTutorial.md)
 
-The names of modules are created by batch script in config/modules.txt file.
-
 Example of using multiple handlers:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <handlers>
     <handler type="fileHandler">
-        <modules all="">
-        </modules>
+        <filepaths all="">
+        </filepaths>
         <levels all="">
         </levels>
     </handler>
     <handler type="consoleHandler">
-        <modules>
-            <module>Physics</module>
-            <module>Scenes</module>
-            <module>Renderer</module>
-        </modules>
+        <filepaths>
+            <enable>Physics</enable>
+            <enable>Scenes</enable>
+            <enable>Renderer</enable>
+        </filepaths>
         <levels>
             <level>Warning</level>
             <level>Error</level>
