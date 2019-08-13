@@ -7,7 +7,7 @@ namespace ph {
 
 template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
 SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
-	::SceneParser(GameData* const gameData, GameObject& root, const std::string& sceneFileName)
+	::SceneParser(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const std::string& sceneFileName)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
@@ -16,7 +16,7 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParse
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
 	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
-	parseGameObjects(gameData, root, sceneLinksNode);
+	parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 	parse<MapParser>(gameData, sceneLinksNode, "map");
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<MusicParser>(gameData, sceneLinksNode, "music");
@@ -38,13 +38,13 @@ void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, Music
 
 template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
 void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
-	::parseGameObjects(GameData* const gameData, GameObject& root, const Xml& sceneLinksNode)
+	::parseGameObjects(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const Xml& sceneLinksNode)
 {
 	const auto gameObjectsNode = sceneLinksNode.getChildren("map");
 	if (gameObjectsNode.size() == 1)
 	{
 		const std::string gameObjectsFileName = "scenes/map/" + gameObjectsNode[0].getAttribute("filename").toString();
-		GameObjectsParser gameObjectsParser(gameData, root);
+		GameObjectsParser gameObjectsParser(gameData, root, cutSceneManager);
 		gameObjectsParser.parseFile(gameObjectsFileName);
 	}
 }

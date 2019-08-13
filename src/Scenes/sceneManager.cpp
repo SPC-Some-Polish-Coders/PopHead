@@ -51,7 +51,7 @@ void SceneManager::replaceAction()
 	mGameData->getGui().clearGUI();
 	mScene.reset(new Scene());
 	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlMusicParser> 
-		sceneParser(mGameData, mScene->getRoot(), mFileOfSceneToMake);
+		sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
 }

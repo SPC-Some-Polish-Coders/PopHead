@@ -8,6 +8,8 @@
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "gameObject.hpp"
+#include "Scenes/cutSceneManager.hpp"
+#include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
@@ -15,9 +17,10 @@
 
 namespace ph {
 
-TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root)
+TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root, CutSceneManager& cutSceneManager)
 	:mGameData(gameData)
 	,mRoot(root)
+	,mCutSceneManager(cutSceneManager)
 	,mHasLoadedPlayer(false)
 {
 }
@@ -66,6 +69,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
@@ -127,6 +131,14 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 	mRoot.addChild(std::move(entrance));
 }
 
+std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
+{
+	std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
+	if(beginOfFileName == std::string::npos)
+		return std::nullopt;
+	return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
+}
+
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 {
 	auto car = std::make_unique<Car>(
@@ -139,14 +151,6 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 	car->setPosition(getPositionAttribute(carNode));
 
 	mRoot.addChild(std::move(car));
-}
-
-std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
-{
-	std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
-	if(beginOfFileName == std::string::npos)
-		return std::nullopt;
-	return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
 }
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
@@ -172,6 +176,19 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	player->setPosition(playerPosition);
 	mRoot.addChild(std::move(player));
 	mHasLoadedPlayer = true;
+}
+
+void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
+{
+	if(!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool()) //temporary
+		return;
+
+	const std::string name = getProperty(cutSceneNode, "name").toString();
+
+	if(name == "startGameCutScene") {
+		auto startGameCutScene = std::make_unique<StartGameCutScene>(mRoot);
+		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));
+	}
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

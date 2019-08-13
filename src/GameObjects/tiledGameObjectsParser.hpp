@@ -8,12 +8,13 @@ namespace ph {
 
 class GameData;
 class GameObject;
+class CutSceneManager;
 class Xml;
 
 class TiledGameObjectsParser
 {
 public:
-	TiledGameObjectsParser(GameData* gameData, GameObject& root);
+	TiledGameObjectsParser(GameData* gameData, GameObject& root, CutSceneManager& cutSceneManager);
 
 	void parseFile(const std::string& filePath) const;
 
@@ -25,10 +26,11 @@ private:
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
-	void loadCar(const Xml& carNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
+	void loadCar(const Xml& carNode) const;
 	void loadCamera(const Xml& cameraNode) const;
 	void loadPlayer(const Xml& playerNode) const;
+	void loadCutScene(const Xml& cutSceneNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
@@ -42,6 +44,7 @@ private:
 private:
 	GameData* const mGameData;
 	GameObject& mRoot;
+	CutSceneManager& mCutSceneManager;
 	mutable bool mHasLoadedPlayer;
 };
 
