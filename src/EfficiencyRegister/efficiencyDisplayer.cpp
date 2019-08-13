@@ -20,9 +20,9 @@ void EfficiencyDisplayer::init(GameData* const gameData)
 	mFramesPerSecondText.setPosition(220, -220);
 	mFramesPerSecondText.setCharacterSize(10);
 
-	mRenderCallPerFrameText.setFont(font);
-	mRenderCallPerFrameText.setPosition(220, -208);
-	mRenderCallPerFrameText.setCharacterSize(10);
+	mDrawCallPerFrameText.setFont(font);
+	mDrawCallPerFrameText.setPosition(220, -208);
+	mDrawCallPerFrameText.setCharacterSize(10);
 }
 
 void EfficiencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates states) const
@@ -30,7 +30,7 @@ void EfficiencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates 
 	if(mShouldBeDrawn) {
 		target.draw(mBackground, states);
 		target.draw(mFramesPerSecondText, states);
-		target.draw(mRenderCallPerFrameText, states);
+		target.draw(mDrawCallPerFrameText, states);
 	}
 }
 
@@ -38,7 +38,7 @@ void EfficiencyDisplayer::move(sf::Vector2f offset)
 {
 	mBackground.move(offset);
 	mFramesPerSecondText.move(offset);
-	mRenderCallPerFrameText.move(offset);
+	mDrawCallPerFrameText.move(offset);
 }
 
 }

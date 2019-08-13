@@ -17,6 +17,7 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 				{ LayerID::airEntities, Layer() },
 				{ LayerID::gui, Layer() },
 				{ LayerID::cmd, Layer() } }
+	,mGameData(nullptr)
 	,mDebugRenderingMode(false)
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
@@ -51,7 +52,7 @@ void Renderer::drawSceneLayers(sf::FloatRect properCameraBounds) const
 			sf::FloatRect objectBounds(objectPosition.x - 100, objectPosition.y - 100, 200, 200);
 			if(Math::areTheyOverlapping(properCameraBounds, objectBounds)) {
 				mRenderTarget.draw(*drawableGameObject);
-				mGameData->getEfficiencyRegister().registerRenderCall();
+				mGameData->getEfficiencyRegister().registerDrawCall();
 			}
 		}
 }

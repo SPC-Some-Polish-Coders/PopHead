@@ -16,7 +16,7 @@ public:
 	void input();
 	void update();
 
-	void registerRenderCall() { ++mRenderCallPerFrame; }
+	void registerDrawCall() { ++mDrawCallPerFrame; }
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
@@ -25,7 +25,7 @@ private:
 	sf::Clock mClock;
 	GameData* mGameData;
 	unsigned mFramesPerSecond;
-	unsigned mRenderCallPerFrame;
+	unsigned mDrawCallPerFrame;
 	unsigned mFramesFromLastSecond;
 	bool mIsActive;
 	};
