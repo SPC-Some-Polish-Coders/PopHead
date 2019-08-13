@@ -22,6 +22,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mHasChangedTheMusic(false)
 	,mWasNpcCreated(false)
 	,mHasPlayerTurnedToNpc(false)
+	,mWereZombieSpawned(false)
 {
 	auto& car = dynamic_cast<Car&>(root.getChild("car"));
 	car.setVelocity(120);
@@ -56,8 +57,10 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated)
 		createPlayer();
 
-	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc)
+	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc) {
 		rotatePlayer();
+		mCamera.setSize({320, 240});
+	}
 
 	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 30)
 		updateSpeech(cutsceneTimeInSeconds);
@@ -75,6 +78,12 @@ void StartGameCutScene::update(const sf::Time delta)
 
 	if(cutsceneTimeInSeconds > 40)
 		sayFuck(cutsceneTimeInSeconds);
+
+	if(cutsceneTimeInSeconds > 43 && !mWereZombieSpawned) {
+		spawnZombieNearPlayer();
+		mWereZombieSpawned = true;
+		mCamera.setSize({640, 480});
+	}
 }
 
 void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
@@ -123,7 +132,6 @@ void StartGameCutScene::rotatePlayer()
 	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
 	playerNpc.setAnimationState("rightUp");
 	mHasPlayerTurnedToNpc = true;
-	mCamera.setSize({320, 240});
 }
 
 void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
@@ -182,6 +190,24 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 	}
 	else if(cutsceneTimeInSeconds > 43 && cutsceneTimeInSeconds < 44)
 		speechBubble->hide();
+}
+
+void StartGameCutScene::spawnZombieNearPlayer()
+{
+	createZombie({5770, 540});
+	createZombie({5610, 580});
+	createZombie({5460, 580});
+	createZombie({5450, 380});
+	createZombie({5482, 250});
+	createZombie({5670, 200});
+}
+
+void StartGameCutScene::createZombie(const sf::Vector2f position)
+{
+	auto zombie = std::make_unique<Npc>(mGameData);
+	zombie->setPosition(position);
+	zombie->getSprite().setTexture(mGameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
+	mRoot.addChild(std::move(zombie));
 }
 
 }
