@@ -3,7 +3,7 @@
     <interface name="labels">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
 		        <textWidget name="place"     origin="0.5" position="0.1,  0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text="Nevada, near to Rochester town"/>
-            <textWidget name="time"      origin="0.5" position="0.14, 0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text="12:09 PM - 20th july of 2044"/>
+            <textWidget name="time"      origin="0.5" position="0.14, 0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text="20th july of 2044 - 12:09 PM "/>
             <textWidget name="velocity"  origin="0.5" position="0.42, 0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text=""/>
         </widget>
     </interface>

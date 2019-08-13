@@ -26,7 +26,7 @@ public:
 	void rotate(float angle, bool recursive = true) override;
 	void takeDamage(const unsigned damage);
 	void drawBlood();
-
+	void setAnimationState(const std::string& stateName);
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
 

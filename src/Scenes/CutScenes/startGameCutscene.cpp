@@ -6,17 +6,22 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
-StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, GUI& gui)
+StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer,
+	GUI& gui, GameData* const gameData)
 	:CutScene(root)
 	,mCamera(camera)
 	,mSoundPlayer(soundPlayer)
 	,mMusicPlayer(musicPlayer)
 	,mGui(gui)
+	,mGameData(gameData)
 	,mHasStartedToSlowDown(false)
 	,mHasChangedTheMusic(false)
+	,mWasNpcCreated(false)
+	,mHasPlayerTurnedToNpc(false)
 {
 	auto& car = dynamic_cast<Car&>(root.getChild("car"));
 	car.setVelocity(120);
@@ -27,7 +32,7 @@ void StartGameCutScene::update(const sf::Time delta)
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
 
 	auto& car = dynamic_cast<Car&>(mRoot.getChild("car"));
-	mCamera.setCenter(car.getPosition());
+	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
 	updateGui(cutsceneTimeInSeconds, car);
 
@@ -47,7 +52,22 @@ void StartGameCutScene::update(const sf::Time delta)
 		mHasChangedTheMusic = true;
 	}
 
-	if(cutsceneTimeInSeconds > 25) {
+	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated) {
+		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
+		playerNpc->setPosition({5640, 400});
+		mRoot.addChild(std::move(playerNpc));
+		mWasNpcCreated = true;
+	}
+
+	if(cutsceneTimeInSeconds > 24) {
+		if(!mHasPlayerTurnedToNpc) {
+			auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+			playerNpc.setAnimationState("rightUp");
+			mHasPlayerTurnedToNpc = true;
+		}
+	}
+
+	if(cutsceneTimeInSeconds > 30) {
 		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
 		crawlingNpc.die();
 	}

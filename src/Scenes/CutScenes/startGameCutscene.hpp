@@ -11,11 +11,12 @@ class SoundPlayer;
 class MusicPlayer;
 class GUI;
 class Car;
+class GameData;
 
 class StartGameCutScene : public CutScene
 {
 public:
-	StartGameCutScene(GameObject& root, Camera&, SoundPlayer&, MusicPlayer&, GUI& gui);
+	StartGameCutScene(GameObject& root, Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
 	void update(const sf::Time delta) override;
 
 private:
@@ -26,9 +27,12 @@ private:
 	SoundPlayer& mSoundPlayer;
 	MusicPlayer& mMusicPlayer;
 	GUI& mGui;
+	GameData* const mGameData;
 	sf::Clock mClock;
 	bool mHasStartedToSlowDown;
 	bool mHasChangedTheMusic;
+	bool mWasNpcCreated;
+	bool mHasPlayerTurnedToNpc;
 };
 
 }

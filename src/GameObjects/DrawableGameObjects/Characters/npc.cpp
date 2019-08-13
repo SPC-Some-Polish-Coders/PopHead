@@ -43,13 +43,14 @@ namespace
 Npc::Npc(GameData* gameData, const std::string& name)
 	:Character(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
 {
-	getSprite().setTexture(mGameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
+	getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 	mAnimation.animate(mSprite);
 }
 
 void Npc::update(sf::Time delta)
 {
 	setPosition(mCollisionBody.getPosition());
+	mAnimation.animate(mSprite, delta);
 }
 
 }
