@@ -7,8 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
-#include <memory>
-
 #include <set>
 #include <functional>
 
@@ -38,8 +36,7 @@ private:
 
 private:
     //std::vector<std::unique_ptr<CollisionBody>> mStaticBodiesOld;
-	std::set<std::unique_ptr<CollisionBody>, std::function<bool(const std::unique_ptr<CollisionBody>&, const std::unique_ptr<CollisionBody>&)>> mStaticBodies;
-
+	std::set<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
 	CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;

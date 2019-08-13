@@ -1,15 +1,14 @@
 #include "physicsEngine.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
-#include <memory>
 
 namespace ph {
 
 PhysicsEngine::PhysicsEngine()
-	: mStaticBodies(std::function<bool(const std::unique_ptr<CollisionBody>&, const std::unique_ptr<CollisionBody>&)>(
-		[](const std::unique_ptr<CollisionBody>& b1, const std::unique_ptr<CollisionBody>& b2) -> bool {
-			auto pos1 = b1->getPosition();
-			auto pos2 = b2->getPosition();
+	: mStaticBodies(std::function<bool(const CollisionBody&, const CollisionBody&)>(
+		[](const CollisionBody& b1, const CollisionBody& b2) -> bool {
+			auto pos1 = b1.getPosition();
+			auto pos2 = b2.getPosition();
 
 			if (pos1.x < pos2.x)
 				return true;
@@ -24,8 +23,8 @@ PhysicsEngine::PhysicsEngine()
 
 const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
-	auto iter = mStaticBodies.emplace(std::make_unique<CollisionBody>(rect, 0.f));
-	return *iter.first->get();
+	auto iter = mStaticBodies.emplace(rect, 0.f);
+	return *iter.first;
 
 	/*mStaticBodiesOld.emplace_back(std::make_unique<CollisionBody>(rect, 0.f));
 	auto& staticBody = *mStaticBodiesOld.back().get();
@@ -43,7 +42,7 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::Fl
 
 void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
 {
-	mStaticBodies.erase(std::make_unique<CollisionBody>(bodyToDelete));
+	mStaticBodies.erase(CollisionBody(bodyToDelete));
 
 	/*for(auto it = mStaticBodiesOld.begin(); it != mStaticBodiesOld.end(); ++it)
 		if(it->get() == std::addressof(bodyToDelete)) {
@@ -91,18 +90,18 @@ void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 	rect.left -= 32.f;
 	rect.top -= 32.f;
 
-	auto iter = mStaticBodies.lower_bound(std::make_unique<CollisionBody>(rect, 0.f));
+	auto iter = mStaticBodies.lower_bound(CollisionBody(rect, 0.f));
 	auto end = mStaticBodies.end();
 
 	auto maxPosition = kinematicBody.getPosition().x + 32.f;
 
 	while (iter != end)
 	{
-		if (iter->get()->getPosition().x > maxPosition)
+		if (iter->getPosition().x > maxPosition)
 			break;
 
-		if (isThereCollision(kinematicBody, *iter->get()))
-			mStaticCollisionHandler(kinematicBody, *iter->get());
+		if (isThereCollision(kinematicBody, *iter))
+			mStaticCollisionHandler(kinematicBody, *iter);
 
 		++iter;
 	}
