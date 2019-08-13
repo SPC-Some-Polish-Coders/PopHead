@@ -18,18 +18,12 @@ PhysicsEngine::PhysicsEngine()
 		}
 		))
 {
-	//mStaticBodiesOld.reserve(300);
 }
 
 const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
 	auto iter = mStaticBodies.emplace(rect, 0.f);
 	return *iter.first;
-
-	/*mStaticBodiesOld.emplace_back(std::make_unique<CollisionBody>(rect, 0.f));
-	auto& staticBody = *mStaticBodiesOld.back().get();
-	mCollisionDebugManager.addStaticBodyCollisionDebugRect(staticBody);
-	return staticBody;*/
 }
 
 CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass)
@@ -43,12 +37,6 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::Fl
 void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
 {
 	mStaticBodies.erase(CollisionBody(bodyToDelete));
-
-	/*for(auto it = mStaticBodiesOld.begin(); it != mStaticBodiesOld.end(); ++it)
-		if(it->get() == std::addressof(bodyToDelete)) {
-			mStaticBodiesOld.erase(it);
-			break;
-		}*/
 }
 
 void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
@@ -62,7 +50,6 @@ void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
 
 void PhysicsEngine::clear() noexcept
 {
-	//mStaticBodiesOld.clear();
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
 	mCollisionDebugManager.clear();
@@ -82,18 +69,15 @@ void PhysicsEngine::update(sf::Time delta)
 
 void PhysicsEngine::handleStaticCollisionsFor(CollisionBody& kinematicBody)
 {
-	/*for (auto& staticBody : mStaticBodiesOld)
-		if (isThereCollision(kinematicBody, *staticBody))
-			mStaticCollisionHandler(kinematicBody, *staticBody);*/
-
+	float marginOfCollisionsChecking = 48.f;
 	auto rect = kinematicBody.getRect();
-	rect.left -= 32.f;
-	rect.top -= 32.f;
+	rect.left -= marginOfCollisionsChecking;
+	rect.top -= marginOfCollisionsChecking;
 
 	auto iter = mStaticBodies.lower_bound(CollisionBody(rect, 0.f));
 	auto end = mStaticBodies.end();
 
-	auto maxPosition = kinematicBody.getPosition().x + 32.f;
+	auto maxPosition = kinematicBody.getPosition().x + marginOfCollisionsChecking;
 
 	while (iter != end)
 	{

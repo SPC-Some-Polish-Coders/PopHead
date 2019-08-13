@@ -35,7 +35,6 @@ private:
 	void updatePositionsOfDebugRects();
 
 private:
-    //std::vector<std::unique_ptr<CollisionBody>> mStaticBodiesOld;
 	std::set<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
 	CollisionDebugManager mCollisionDebugManager;
