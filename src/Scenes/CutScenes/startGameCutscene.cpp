@@ -59,15 +59,14 @@ void StartGameCutScene::update(const sf::Time delta)
 		mWasNpcCreated = true;
 	}
 
-	if(cutsceneTimeInSeconds > 24) {
-		if(!mHasPlayerTurnedToNpc) {
-			auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
-			playerNpc.setAnimationState("rightUp");
-			mHasPlayerTurnedToNpc = true;
-		}
+	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc) {
+		auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+		playerNpc.setAnimationState("rightUp");
+		mHasPlayerTurnedToNpc = true;
+		mCamera.setSize({320, 240});
 	}
 
-	if(cutsceneTimeInSeconds > 30) {
+	if(cutsceneTimeInSeconds > 26.5) {
 		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
 		crawlingNpc.die();
 	}
@@ -80,6 +79,7 @@ void StartGameCutScene::updateGui(const float cutsceneTimeInSeconds, Car& car)
 		canvas->getWidget("place")->hide();
 		canvas->getWidget("time")->hide();
 		canvas->getWidget("velocity")->hide();
+		canvas->getWidget("speechBubble")->hide();
 	}
 	else if(cutsceneTimeInSeconds > 4 && cutsceneTimeInSeconds < 8) {
 		canvas->getWidget("place")->show();
@@ -98,6 +98,26 @@ void StartGameCutScene::updateGui(const float cutsceneTimeInSeconds, Car& car)
 		velocityWidget->show();
 		int velocity = static_cast<int>(car.getVelocity() / 4.7);
 		velocityWidget->setString(std::to_string(velocity) + " MPH");
+	}
+	else if(cutsceneTimeInSeconds > 22 && cutsceneTimeInSeconds < 24.5) {
+		canvas->getWidget("velocity")->hide();
+	}
+	else if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 29) {
+		auto speechBubble = canvas->getWidget("speechBubble");
+		speechBubble->show();
+		speechBubble->getWidget("speech2")->hide();
+		speechBubble->getWidget("speech3")->hide();
+	}
+	else if(cutsceneTimeInSeconds > 28 && cutsceneTimeInSeconds < 31) {
+		auto speechBubble = canvas->getWidget("speechBubble");
+		speechBubble->getWidget("speech1")->hide();
+		speechBubble->getWidget("speech1b")->hide();
+		speechBubble->getWidget("speech2")->show();
+	}
+	else if(cutsceneTimeInSeconds > 31 && cutsceneTimeInSeconds < 35) {
+		auto speechBubble = canvas->getWidget("speechBubble");
+		speechBubble->getWidget("speech2")->hide();
+		speechBubble->getWidget("speech3")->show();
 	}
 }
 
