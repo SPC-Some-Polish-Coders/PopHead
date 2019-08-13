@@ -21,9 +21,11 @@ public:
 
 private:
 	void updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car);
-	void createNpc();
 	void createPlayer();
+	void rotatePlayer();
 	void updateSpeech(const float cutsceneTimeInSeconds);
+	void rotateAround(const float cutsceneTimeInSeconds);
+	void sayFuck(const float cutsceneTimeInSeconds);
 
 private:
 	Camera& mCamera;

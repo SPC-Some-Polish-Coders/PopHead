@@ -9,7 +9,7 @@
                 <textWidget name="speech1"  origin="0.5" position="0.1,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Dude, what the hell"/>
                 <textWidget name="speech1b" origin="0.5" position="0.1,  0.35" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="are you doing?"/>
                 <textWidget name="speech2"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="What the..."/>
-                <textWidget name="speech3"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="FUCK"/>
+                <textWidget name="speech3"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="30" color="black" text="FUCK"/>
             </widget>
         </widget>
     </interface>

@@ -54,18 +54,24 @@ void StartGameCutScene::update(const sf::Time delta)
 	}
 	
 	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated)
-		createNpc();
-
-	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc)
 		createPlayer();
 
-	if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 35)
+	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc)
+		rotatePlayer();
+
+	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 30)
 		updateSpeech(cutsceneTimeInSeconds);
 
-	if(cutsceneTimeInSeconds > 26.5) {
+	if(cutsceneTimeInSeconds > 27.5) {
 		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
 		crawlingNpc.die();
 	}
+
+	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 38)
+		rotateAround(cutsceneTimeInSeconds);
+
+	if(cutsceneTimeInSeconds > 38)
+		sayFuck(cutsceneTimeInSeconds);
 }
 
 void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
@@ -101,7 +107,7 @@ void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSecon
 	}
 }
 
-void StartGameCutScene::createNpc()
+void StartGameCutScene::createPlayer()
 {
 	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
 	playerNpc->setPosition({5640, 400});
@@ -109,7 +115,7 @@ void StartGameCutScene::createNpc()
 	mWasNpcCreated = true;
 }
 
-void StartGameCutScene::createPlayer()
+void StartGameCutScene::rotatePlayer()
 {
 	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
 	playerNpc.setAnimationState("rightUp");
@@ -122,19 +128,50 @@ void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
 	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
 	auto speechBubble = canvas->getWidget("speechBubble");
 
-	if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 29) {
+	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 29) {
 		speechBubble->show();
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->hide();
 	}
-	else if(cutsceneTimeInSeconds > 28 && cutsceneTimeInSeconds < 31) {
+	else if(cutsceneTimeInSeconds > 29 && cutsceneTimeInSeconds < 31) {
 		speechBubble->getWidget("speech1")->hide();
 		speechBubble->getWidget("speech1b")->hide();
 		speechBubble->getWidget("speech2")->show();
 	}
-	else if(cutsceneTimeInSeconds > 31 && cutsceneTimeInSeconds < 35) {
+}
+
+void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
+{
+	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& animation = playerNpc.getAnimation();
+
+	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
+		animation.changeState("right");
+	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 34)
+		animation.changeState("down");
+	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 35)
+		animation.changeState("left");
+	else if(cutsceneTimeInSeconds > 35 && cutsceneTimeInSeconds < 36)
+		animation.changeState("leftUp");
+	else if(cutsceneTimeInSeconds > 36 && cutsceneTimeInSeconds < 37)
+		animation.changeState("up");
+	else if(cutsceneTimeInSeconds > 37 && cutsceneTimeInSeconds < 38)
+		animation.changeState("rightUp");
+	else
+		animation.changeState("down");
+}
+
+void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
+{
+	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+	auto speechBubble = canvas->getWidget("speechBubble");
+
+	if(cutsceneTimeInSeconds > 39 && cutsceneTimeInSeconds < 41) {
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->show();
+	}
+	else if(cutsceneTimeInSeconds > 41 && cutsceneTimeInSeconds < 42) {
+		speechBubble->hide();
 	}
 }
 
