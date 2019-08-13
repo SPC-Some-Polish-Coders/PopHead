@@ -19,14 +19,16 @@ void Car::update(const sf::Time delta)
 	if(mShouldSpeedUp)
 		mVelocity += mAcceleration * delta.asSeconds();
 
-	if(mVelocity > 0) {
-		mVelocity -= 0.1f * delta.asSeconds();
+	if(mShouldSlowDown)
+		mVelocity -= mSlowingDown * delta.asSeconds();
+		
+	constexpr float frictionForce = 0.1f;
+	mVelocity -= frictionForce * delta.asSeconds();
 
-		if(mShouldSlowDown)
-			mVelocity -= mSlowingDown * delta.asSeconds();
+	if(mVelocity < 1)
+		mVelocity = 0;
 
-		move(mVelocity * mDirection * delta.asSeconds());
-	}
+	move(mVelocity * mDirection * delta.asSeconds());
 }
 
 void Car::draw(sf::RenderTarget& renderTarget, const sf::RenderStates states) const

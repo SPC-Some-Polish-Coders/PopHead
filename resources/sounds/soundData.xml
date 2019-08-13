@@ -3,4 +3,5 @@
  <sound fileName="barretaShot.wav" volumeMultiplier="1.2" loop="false" maximalFullVolumeDistance="40" maximalHearableDistance="1000"/>
  <sound fileName="swordAttack.wav" volumeMultiplier="1.3" loop="false" maximalFullVolumeDistance="40" maximalHearableDistance="400"/>
  <sound fileName="zombieGetsAttacked.wav" volumeMultiplier="5" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="600"/>
+ <sound fileName="carTireScreech.ogg" volumeMultiplier="5" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
 </soundData>

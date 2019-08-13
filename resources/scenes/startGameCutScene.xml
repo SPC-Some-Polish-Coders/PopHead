@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <neededResources filename="desert.res.xml"/>
+  <map filename="startGameCutsceneMap.tmx"/>
+  <music filename="desert.music.xml"/>
+</scenelinks>

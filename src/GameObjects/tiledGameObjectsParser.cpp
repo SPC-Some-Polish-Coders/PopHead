@@ -186,7 +186,11 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 	const std::string name = getProperty(cutSceneNode, "name").toString();
 
 	if(name == "startGameCutScene") {
-		auto startGameCutScene = std::make_unique<StartGameCutScene>(mRoot);
+		auto startGameCutScene = std::make_unique<StartGameCutScene>(
+			mRoot,
+			mGameData->getRenderer().getCamera(),
+			mGameData->getSoundPlayer()
+		);
 		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));
 	}
 }
