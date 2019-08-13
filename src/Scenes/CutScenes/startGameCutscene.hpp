@@ -42,10 +42,11 @@ private:
 	GameData* const mGameData;
 	sf::Clock mClock;
 	bool mHasStartedToSlowDown;
-	bool mHasChangedTheMusic;
+	bool mHasChangedTheMusicToMenuTheme;
 	bool mWasPlayerCreated;
 	bool mHasPlayerTurnedToNpc;
 	bool mWereZombieSpawned;
+	bool mHasChangedMusicToZombieAttackTheme;
 };
 
 }

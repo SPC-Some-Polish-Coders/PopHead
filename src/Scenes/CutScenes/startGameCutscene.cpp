@@ -19,10 +19,11 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mGui(gui)
 	,mGameData(gameData)
 	,mHasStartedToSlowDown(false)
-	,mHasChangedTheMusic(false)
+	,mHasChangedTheMusicToMenuTheme(false)
 	,mWasPlayerCreated(false)
 	,mHasPlayerTurnedToNpc(false)
 	,mWereZombieSpawned(false)
+	,mHasChangedMusicToZombieAttackTheme(false)
 {
 	auto& car = dynamic_cast<Car&>(root.getChild("car"));
 	car.setVelocity(120);
@@ -55,9 +56,9 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(car.getPosition().x > 5000)
 		car.slowDown();
 
-	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusic) {
+	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusicToMenuTheme) {
 		mMusicPlayer.play("music/Menu.ogg");
-		mHasChangedTheMusic = true;
+		mHasChangedTheMusicToMenuTheme = true;
 	}
 	
 	if(cutsceneTimeInSeconds > 23 && !mWasPlayerCreated)
@@ -78,6 +79,9 @@ void StartGameCutScene::update(const sf::Time delta)
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
 		rotateAround(cutsceneTimeInSeconds);
+
+	if(cutsceneTimeInSeconds > 37.5 && !mHasChangedMusicToZombieAttackTheme)
+		mMusicPlayer.play("music/zombieAttack.ogg");
 
 	if(cutsceneTimeInSeconds > 39)
 		lookSouth();
