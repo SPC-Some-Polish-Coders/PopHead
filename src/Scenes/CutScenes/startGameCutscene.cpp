@@ -67,10 +67,13 @@ void StartGameCutScene::update(const sf::Time delta)
 		crawlingNpc.die();
 	}
 
-	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 38)
+	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
 		rotateAround(cutsceneTimeInSeconds);
 
-	if(cutsceneTimeInSeconds > 38)
+	if(cutsceneTimeInSeconds > 39)
+		lookSouth();
+
+	if(cutsceneTimeInSeconds > 40)
 		sayFuck(cutsceneTimeInSeconds);
 }
 
@@ -147,7 +150,7 @@ void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
 		animation.changeState("right");
-	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 34)
+	else if(cutsceneTimeInSeconds > 33 && cutsceneTimeInSeconds < 34)
 		animation.changeState("down");
 	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 35)
 		animation.changeState("left");
@@ -157,8 +160,15 @@ void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 		animation.changeState("up");
 	else if(cutsceneTimeInSeconds > 37 && cutsceneTimeInSeconds < 38)
 		animation.changeState("rightUp");
-	else
-		animation.changeState("down");
+	else if(cutsceneTimeInSeconds > 38 && cutsceneTimeInSeconds < 39)
+		animation.changeState("right");
+}
+
+void StartGameCutScene::lookSouth()
+{
+	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& animation = playerNpc.getAnimation();
+	animation.changeState("down");
 }
 
 void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
@@ -166,13 +176,12 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
 	auto speechBubble = canvas->getWidget("speechBubble");
 
-	if(cutsceneTimeInSeconds > 39 && cutsceneTimeInSeconds < 41) {
+	if(cutsceneTimeInSeconds > 40 && cutsceneTimeInSeconds < 43) {
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->show();
 	}
-	else if(cutsceneTimeInSeconds > 41 && cutsceneTimeInSeconds < 42) {
+	else if(cutsceneTimeInSeconds > 43 && cutsceneTimeInSeconds < 44)
 		speechBubble->hide();
-	}
 }
 
 }

@@ -25,6 +25,7 @@ private:
 	void rotatePlayer();
 	void updateSpeech(const float cutsceneTimeInSeconds);
 	void rotateAround(const float cutsceneTimeInSeconds);
+	void lookSouth();
 	void sayFuck(const float cutsceneTimeInSeconds);
 
 private:
