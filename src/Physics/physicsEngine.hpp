@@ -7,7 +7,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
-#include <memory>
+#include <set>
+#include <functional>
 
 namespace ph{
 
@@ -16,7 +17,7 @@ class PhysicsEngine
 public:
 	PhysicsEngine();
 
-    CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
+    const CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
 	CollisionBody& createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass);
 	void removeStaticBody(const CollisionBody&);
 	void removeKinematicBody(const CollisionBody&);
@@ -34,7 +35,7 @@ private:
 	void updatePositionsOfDebugRects();
 
 private:
-    std::vector<std::unique_ptr<CollisionBody>> mStaticBodies;
+	std::set<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
 	CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;

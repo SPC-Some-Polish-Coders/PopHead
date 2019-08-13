@@ -30,7 +30,7 @@ private:
 	sf::FloatRect mKinematicBodyRect;
 	sf::FloatRect mStaticBodyRect;
 	sf::FloatRect mKinematicBodyPreviousRect;
-	sf::FloatRect mStaticBodyPreviousRect;
+	//sf::FloatRect mStaticBodyPreviousRect;
 };
 
 
