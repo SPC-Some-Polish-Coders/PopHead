@@ -20,7 +20,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mGameData(gameData)
 	,mHasStartedToSlowDown(false)
 	,mHasChangedTheMusic(false)
-	,mWasNpcCreated(false)
+	,mWasPlayerCreated(false)
 	,mHasPlayerTurnedToNpc(false)
 	,mWereZombieSpawned(false)
 {
@@ -54,7 +54,7 @@ void StartGameCutScene::update(const sf::Time delta)
 		mHasChangedTheMusic = true;
 	}
 	
-	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated)
+	if(cutsceneTimeInSeconds > 23 && !mWasPlayerCreated)
 		createPlayer();
 
 	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc) {
@@ -80,9 +80,13 @@ void StartGameCutScene::update(const sf::Time delta)
 		sayFuck(cutsceneTimeInSeconds);
 
 	if(cutsceneTimeInSeconds > 43 && !mWereZombieSpawned) {
-		spawnZombieNearPlayer();
+		spawnZombies();
 		mWereZombieSpawned = true;
 		mCamera.setSize({640, 480});
+	}
+
+	if(cutsceneTimeInSeconds > 45) {
+		mCamera.setSize({1280, 960});
 	}
 }
 
@@ -122,9 +126,9 @@ void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSecon
 void StartGameCutScene::createPlayer()
 {
 	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-	playerNpc->setPosition({5640, 400});
+	playerNpc->setPosition({5640, 800});
 	mRoot.addChild(std::move(playerNpc));
-	mWasNpcCreated = true;
+	mWasPlayerCreated = true;
 }
 
 void StartGameCutScene::rotatePlayer()
@@ -192,14 +196,23 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 		speechBubble->hide();
 }
 
-void StartGameCutScene::spawnZombieNearPlayer()
+void StartGameCutScene::spawnZombies()
 {
-	createZombie({5770, 540});
-	createZombie({5610, 580});
-	createZombie({5460, 580});
-	createZombie({5450, 380});
-	createZombie({5482, 250});
-	createZombie({5670, 200});
+	createZombie({5770, 940});
+	createZombie({5610, 980});
+	createZombie({5460, 980});
+	createZombie({5450, 780});
+	createZombie({5482, 650});
+	createZombie({5670, 600});
+	createZombie({5360, 980});
+	createZombie({5230, 820});
+	createZombie({5400, 755});
+	createZombie({5460, 600});
+	createZombie({5500, 725});
+	createZombie({5530, 930});
+	createZombie({5260, 735});
+	createZombie({5490, 970});
+	createZombie({5360, 770});
 }
 
 void StartGameCutScene::createZombie(const sf::Vector2f position)

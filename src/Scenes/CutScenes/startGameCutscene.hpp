@@ -27,7 +27,7 @@ private:
 	void rotateAround(const float cutsceneTimeInSeconds);
 	void lookSouth();
 	void sayFuck(const float cutsceneTimeInSeconds);
-	void spawnZombieNearPlayer();
+	void spawnZombies();
 	void createZombie(const sf::Vector2f position);
 
 private:
@@ -39,7 +39,7 @@ private:
 	sf::Clock mClock;
 	bool mHasStartedToSlowDown;
 	bool mHasChangedTheMusic;
-	bool mWasNpcCreated;
+	bool mWasPlayerCreated;
 	bool mHasPlayerTurnedToNpc;
 	bool mWereZombieSpawned;
 };
