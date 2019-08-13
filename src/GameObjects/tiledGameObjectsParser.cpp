@@ -99,7 +99,9 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 
 	npc->setPosition(getPositionAttribute(npcNode));
 	npc->setHp(getProperty(npcNode, "hp").toInt());
-	npc->setHp(getProperty(npcNode, "maxHp").toUnsigned());
+	npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
+	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
+	npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
 
 	mRoot.addChild(std::move(npc));
 }
