@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
+ <objecttype name="Camera" color="#55ffff"/>
+ <objecttype name="Car" color="#aa0000">
+  <property name="acceleration" type="float" default="1"/>
+  <property name="directionX" type="float" default="0"/>
+  <property name="directionY" type="float" default="0"/>
+  <property name="slowingDown" type="float" default="2"/>
+ </objecttype>
+ <objecttype name="CrawlingNpc" color="#f4ef5f"/>
+ <objecttype name="CutScene" color="#ffff00">
+  <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
+  <property name="name" type="string"/>
+ </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>
  </objecttype>
  <objecttype name="Npc" color="#ffff00">
   <property name="hp" type="file" default="50"/>
   <property name="maxHp" type="file" default="50"/>
+  <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
  </objecttype>
+ <objecttype name="Player" color="#55ffff"/>
  <objecttype name="Spawner" color="#aa0000">
   <property name="spawnFrequency" type="float" default="3"/>
  </objecttype>

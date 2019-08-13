@@ -80,4 +80,12 @@ void Character::drawBlood()
 	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + mPosition));
 }
 
+void Character::setAnimationState(const std::string& stateName)
+{
+	if(mAnimation.getCurrentStateName() != stateName) {
+		mAnimation.changeState(stateName);
+		mAnimation.animate(mSprite);
+	}
+}
+
 }

@@ -2,5 +2,5 @@
 <musicdata>
   <theme filename="Menu.ogg" volumemultiplier="1" loop="true"/>
   <theme filename="explorationTheme.ogg" volumemultiplier="1.2" loop="true"/>
-  <theme filename="Zombie_attack.ogg" volumemultiplier="1" loop="true"/>
+  <theme filename="zombieAttack.ogg" volumemultiplier="1" loop="true"/>
 </musicdata>

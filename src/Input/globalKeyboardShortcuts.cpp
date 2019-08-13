@@ -35,7 +35,8 @@ void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
 void GlobalKeyboardShortcuts::handleCloseGameShortcut()
 {
 	auto& keyboard = mGameData->getInput().getKeyboard();
-	if(keyboard.isKeyPressed(sf::Keyboard::LControl) && keyboard.isKeyPressed(sf::Keyboard::Escape))
+	if(keyboard.isKeyPressed(sf::Keyboard::LControl) && keyboard.isKeyPressed(sf::Keyboard::LSystem) 
+		&& keyboard.isKeyPressed(sf::Keyboard::LAlt))
 		mGameData->getGameCloser().closeGame();
 }
 

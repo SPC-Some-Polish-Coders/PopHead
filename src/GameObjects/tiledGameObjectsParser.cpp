@@ -2,11 +2,15 @@
 #include "GameObjects/NotDrawableGameObjects/entrance.hpp"
 #include "GameObjects/NotDrawableGameObjects/spawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
+#include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "DrawableGameObjects/car.hpp"
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "gameObject.hpp"
+#include "Scenes/cutSceneManager.hpp"
+#include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
@@ -14,9 +18,10 @@
 
 namespace ph {
 
-TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root)
+TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root, CutSceneManager& cutSceneManager)
 	:mGameData(gameData)
 	,mRoot(root)
+	,mCutSceneManager(cutSceneManager)
 	,mHasLoadedPlayer(false)
 {
 }
@@ -64,7 +69,10 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
-		else PH_EXIT_GAME("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
+		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
+		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
 
@@ -91,7 +99,9 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 
 	npc->setPosition(getPositionAttribute(npcNode));
 	npc->setHp(getProperty(npcNode, "hp").toInt());
-	npc->setHp(getProperty(npcNode, "maxHp").toUnsigned());
+	npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
+	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
+	npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
 
 	mRoot.addChild(std::move(npc));
 }
@@ -133,6 +143,20 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 	return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
 }
 
+void TiledGameObjectsParser::loadCar(const Xml& carNode) const
+{
+	auto car = std::make_unique<Car>(
+		mGameData->getRenderer(),
+		getProperty(carNode, "acceleration").toFloat(),
+		getProperty(carNode, "slowingDown").toFloat(),
+		sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),
+		mGameData->getTextures().get("textures/vehicles/car.png")
+	);
+	car->setPosition(getPositionAttribute(carNode));
+
+	mRoot.addChild(std::move(car));
+}
+
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 {
 	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
@@ -156,6 +180,33 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	player->setPosition(playerPosition);
 	mRoot.addChild(std::move(player));
 	mHasLoadedPlayer = true;
+}
+
+void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
+{
+	if(!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool()) //temporary
+		return;
+
+	const std::string name = getProperty(cutSceneNode, "name").toString();
+
+	if(name == "startGameCutScene") {
+		auto startGameCutScene = std::make_unique<StartGameCutScene>(
+			mRoot,
+			mGameData->getRenderer().getCamera(),
+			mGameData->getSoundPlayer(),
+			mGameData->getMusicPlayer(),
+			mGameData->getGui(),
+			mGameData
+		);
+		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));
+	}
+}
+
+void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
+{
+	auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
+	crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
+	mRoot.addChild(std::move(crawlingNpc));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

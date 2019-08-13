@@ -17,6 +17,7 @@ void SoundPlayer::loadEverySound()
 	mSoundBuffers.load("sounds/barretaShot.wav");
 	mSoundBuffers.load("sounds/swordAttack.wav");
 	mSoundBuffers.load("sounds/zombieGetsAttacked.wav");
+	mSoundBuffers.load("sounds/carTireScreech.ogg");
 }
 
 void SoundPlayer::playAmbientSound(const std::string& filePath)
