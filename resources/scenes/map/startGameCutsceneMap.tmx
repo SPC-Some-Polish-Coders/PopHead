@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="400" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="5">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="400" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="6">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
  </tileset>
@@ -128,7 +128,7 @@
    </properties>
    <point/>
   </object>
-  <object id="4" type="Npc" x="5460.67" y="396.667">
+  <object id="5" type="CrawlingNpc" x="5669.83" y="412.5">
    <point/>
   </object>
  </objectgroup>

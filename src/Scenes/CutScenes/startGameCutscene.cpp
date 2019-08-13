@@ -5,6 +5,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 
 namespace ph {
 
@@ -44,6 +45,11 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusic) {
 		mMusicPlayer.play("music/Menu.ogg");
 		mHasChangedTheMusic = true;
+	}
+
+	if(cutsceneTimeInSeconds > 25) {
+		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
+		crawlingNpc.die();
 	}
 }
 

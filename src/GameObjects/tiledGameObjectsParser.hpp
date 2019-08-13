@@ -31,6 +31,7 @@ private:
 	void loadCamera(const Xml& cameraNode) const;
 	void loadPlayer(const Xml& playerNode) const;
 	void loadCutScene(const Xml& cutSceneNode) const;
+	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
