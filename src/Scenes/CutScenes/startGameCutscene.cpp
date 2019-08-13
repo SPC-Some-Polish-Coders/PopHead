@@ -34,16 +34,17 @@ void StartGameCutScene::update(const sf::Time delta)
 	auto& car = dynamic_cast<Car&>(mRoot.getChild("car"));
 	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
-	updateGui(cutsceneTimeInSeconds, car);
-
 	if(cutsceneTimeInSeconds < 5)
 		car.speedUp();
+
+	if(cutsceneTimeInSeconds < 23)
+		updateNarrativeSubtitles(cutsceneTimeInSeconds, car);
 
 	if(car.getPosition().x > 4965 && !mHasStartedToSlowDown) {
 		mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
 		mHasStartedToSlowDown = true;
 	}
-	
+
 	if(car.getPosition().x > 5000)
 		car.slowDown();
 
@@ -51,20 +52,15 @@ void StartGameCutScene::update(const sf::Time delta)
 		mMusicPlayer.play("music/Menu.ogg");
 		mHasChangedTheMusic = true;
 	}
+	
+	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated)
+		createNpc();
 
-	if(cutsceneTimeInSeconds > 23 && !mWasNpcCreated) {
-		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-		playerNpc->setPosition({5640, 400});
-		mRoot.addChild(std::move(playerNpc));
-		mWasNpcCreated = true;
-	}
+	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc)
+		createPlayer();
 
-	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc) {
-		auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
-		playerNpc.setAnimationState("rightUp");
-		mHasPlayerTurnedToNpc = true;
-		mCamera.setSize({320, 240});
-	}
+	if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 35)
+		updateSpeech(cutsceneTimeInSeconds);
 
 	if(cutsceneTimeInSeconds > 26.5) {
 		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
@@ -72,9 +68,10 @@ void StartGameCutScene::update(const sf::Time delta)
 	}
 }
 
-void StartGameCutScene::updateGui(const float cutsceneTimeInSeconds, Car& car)
+void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
 {
 	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+
 	if(cutsceneTimeInSeconds < 4) {
 		canvas->getWidget("place")->hide();
 		canvas->getWidget("time")->hide();
@@ -102,20 +99,40 @@ void StartGameCutScene::updateGui(const float cutsceneTimeInSeconds, Car& car)
 	else if(cutsceneTimeInSeconds > 22 && cutsceneTimeInSeconds < 24.5) {
 		canvas->getWidget("velocity")->hide();
 	}
-	else if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 29) {
-		auto speechBubble = canvas->getWidget("speechBubble");
+}
+
+void StartGameCutScene::createNpc()
+{
+	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
+	playerNpc->setPosition({5640, 400});
+	mRoot.addChild(std::move(playerNpc));
+	mWasNpcCreated = true;
+}
+
+void StartGameCutScene::createPlayer()
+{
+	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	playerNpc.setAnimationState("rightUp");
+	mHasPlayerTurnedToNpc = true;
+	mCamera.setSize({320, 240});
+}
+
+void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
+{
+	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+	auto speechBubble = canvas->getWidget("speechBubble");
+
+	if(cutsceneTimeInSeconds > 24 && cutsceneTimeInSeconds < 29) {
 		speechBubble->show();
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->hide();
 	}
 	else if(cutsceneTimeInSeconds > 28 && cutsceneTimeInSeconds < 31) {
-		auto speechBubble = canvas->getWidget("speechBubble");
 		speechBubble->getWidget("speech1")->hide();
 		speechBubble->getWidget("speech1b")->hide();
 		speechBubble->getWidget("speech2")->show();
 	}
 	else if(cutsceneTimeInSeconds > 31 && cutsceneTimeInSeconds < 35) {
-		auto speechBubble = canvas->getWidget("speechBubble");
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->show();
 	}

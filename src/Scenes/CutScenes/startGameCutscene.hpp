@@ -20,7 +20,10 @@ public:
 	void update(const sf::Time delta) override;
 
 private:
-	void updateGui(const float cutsceneTimeInSeconds, Car& car);
+	void updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car);
+	void createNpc();
+	void createPlayer();
+	void updateSpeech(const float cutsceneTimeInSeconds);
 
 private:
 	Camera& mCamera;
