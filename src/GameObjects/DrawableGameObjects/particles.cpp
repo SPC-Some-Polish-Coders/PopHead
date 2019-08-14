@@ -34,7 +34,7 @@ void Particles::killParticles()
 	particlesSystem->addParticlesToDelete(this);
 }
 
-void Particles::update(const sf::Time delta)
+void Particles::updateCurrent(const sf::Time delta)
 {
 	mLifetime -= delta;
 	if (mLifetime < sf::Time::Zero)

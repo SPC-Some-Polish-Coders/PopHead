@@ -9,9 +9,8 @@ EnemyContainer::EnemyContainer(GameData* const gameData)
 {
 }
 
-void EnemyContainer::update(sf::Time delta)
+void EnemyContainer::updateCurrent(sf::Time delta)
 {
-	GameObject::update(delta);
 	handleDyingEnemies();
 }
 

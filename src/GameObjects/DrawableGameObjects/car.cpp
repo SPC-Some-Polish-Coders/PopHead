@@ -14,7 +14,7 @@ Car::Car(Renderer& renderer, const float acceleration, const float slowingDown, 
 	mSprite.setTexture(texture);
 }
 
-void Car::update(const sf::Time delta)
+void Car::updateCurrent(const sf::Time delta)
 {
 	if(mShouldSpeedUp)
 		mVelocity += mAcceleration * delta.asSeconds();

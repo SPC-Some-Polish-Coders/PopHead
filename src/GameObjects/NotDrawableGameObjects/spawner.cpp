@@ -20,7 +20,7 @@ void Spawner::spawnObject()
 	mTimeFromLastSpawn.restart();
 }
 
-void Spawner::update(const sf::Time delta)
+void Spawner::updateCurrent(const sf::Time delta)
 {
 	if (mTimeFromLastSpawn.getElapsedTime().asSeconds() > mSpawnFrequency.asSeconds())
 		spawnObject();

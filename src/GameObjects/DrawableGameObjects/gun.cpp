@@ -92,7 +92,7 @@ void Gun::initializeShotGraphics(const Bullet& bullet)
 	mShotGraphics[1].position = bullet.getCurrentPosition();
 }
 
-void Gun::update(const sf::Time delta)
+void Gun::updateCurrent(const sf::Time delta)
 {
 	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f)
 		resetShotGraphics();

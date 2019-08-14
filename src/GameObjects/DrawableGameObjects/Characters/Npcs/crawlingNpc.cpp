@@ -12,7 +12,7 @@ CrawlingNpc::CrawlingNpc(GameData* const gameData)
 	mAnimation.changeState("crawlingUp");
 }
 
-void CrawlingNpc::update(const sf::Time delta)
+void CrawlingNpc::updateCurrent(const sf::Time delta)
 {
 	if(!mIsDead) {
 		move(sf::Vector2f(0, -1) * delta.asSeconds());

@@ -9,7 +9,7 @@ class Car : public DrawableGameObject
 public:
 	Car(Renderer&, const float acceleration, const float slowingDown, const sf::Vector2f direction, sf::Texture&);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 
 	void move(sf::Vector2f offset, bool recursive = true) override;

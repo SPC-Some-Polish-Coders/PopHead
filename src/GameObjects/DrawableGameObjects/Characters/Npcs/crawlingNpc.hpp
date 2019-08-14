@@ -11,7 +11,7 @@ class CrawlingNpc : public Npc
 public:
 	CrawlingNpc(GameData* const);
 
-	void update(const sf::Time delta);
+	void updateCurrent(const sf::Time delta) override;
 	void die();
 
 private:

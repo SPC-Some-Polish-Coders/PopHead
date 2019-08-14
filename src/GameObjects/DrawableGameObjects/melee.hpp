@@ -40,7 +40,7 @@ class MeleeWeapon : public DrawableGameObject
 public:
 	MeleeWeapon(GameData* const, const float damage, const float range, const float rotationRange);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void attack(const sf::Vector2f attackDirection);
 

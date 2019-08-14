@@ -16,7 +16,7 @@ Entrance::Entrance(SceneManager& sceneManager, const std::string filepath, const
 	mEntranceArea.setPosition(position);
 }
 
-void Entrance::update(const sf::Time delta)
+void Entrance::updateCurrent(const sf::Time delta)
 {
 	auto &root = getParent();
 	try {

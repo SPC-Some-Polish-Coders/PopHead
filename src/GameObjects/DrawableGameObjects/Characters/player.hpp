@@ -23,7 +23,7 @@ public:
     Player(GameData*);
 
     void input() override;
-    void update(sf::Time delta) override;
+    void updateCurrent(sf::Time delta) override;
 
 private:
 	void movementInput();

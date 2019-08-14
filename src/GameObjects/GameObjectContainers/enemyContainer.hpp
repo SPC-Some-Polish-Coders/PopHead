@@ -11,7 +11,7 @@ public:
 	EnemyContainer(GameData* const);
 
 	void addEnemyToDie(Enemy* enemy) { mDyingEnemies.emplace_back(enemy); }
-	void update(sf::Time delta) override;
+	void updateCurrent(sf::Time delta) override;
 
 private:
 	void handleDyingEnemies();

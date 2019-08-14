@@ -18,6 +18,16 @@ void GameObject::input()
 
 void GameObject::update(sf::Time delta)
 {
+	updateCurrent(delta);
+	updateChildren(delta);
+}
+
+void GameObject::updateCurrent(sf::Time delta)
+{
+}
+
+void GameObject::updateChildren(sf::Time delta)
+{
 	for(auto& child : mChildren)
 		child->update(delta);
 }
@@ -45,6 +55,7 @@ void GameObject::incrementNumberInChildName(std::string& childName) const
 	childName.replace(begin + 1, std::string::npos,
 		std::to_string(std::stoi(childName.substr(begin + 1))+1));
 }
+
 
 void GameObject::addChild(std::unique_ptr<GameObject> newChild)
 {

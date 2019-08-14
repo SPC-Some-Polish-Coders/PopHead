@@ -13,7 +13,7 @@ public:
 	Spawner(GameData* const, const std::string&, const ObjectType objectType, const sf::Time, const sf::Vector2f);
 	
 private:
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void spawnObject();
 
 private:

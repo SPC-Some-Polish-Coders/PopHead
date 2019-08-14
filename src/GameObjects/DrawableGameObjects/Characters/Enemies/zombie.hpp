@@ -10,7 +10,7 @@ class Zombie : public Enemy
 public:
 	Zombie(GameData*);
 
-	void update(sf::Time delta) override;
+	void updateCurrent(sf::Time delta) override;
 private:
 	void deathUpdate();
 	void handlePlayerHit();

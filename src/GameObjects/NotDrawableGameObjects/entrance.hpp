@@ -13,7 +13,7 @@ public:
 	Entrance(SceneManager&, const std::string filepath, const std::string name,
 		const sf::Vector2f area, const sf::Vector2f position);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 
 private:
 	SceneManager& mSceneManager;

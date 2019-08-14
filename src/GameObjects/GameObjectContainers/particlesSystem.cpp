@@ -19,9 +19,8 @@ void ParticlesSystem::handleParticlesToDelete()
 	mParticlesToDelete.clear();
 }
 
-void ParticlesSystem::update(const sf::Time delta)
+void ParticlesSystem::updateCurrent(const sf::Time delta)
 {
-	GameObject::update(delta);
 	handleParticlesToDelete();
 }
 

@@ -13,7 +13,8 @@ public:
 	GameObject(const std::string& name);
 
 	virtual void input();
-	virtual void update(sf::Time delta);
+
+	void update(sf::Time delta);
 
 	void addChild(std::unique_ptr<GameObject>);
 	void removeChild(const std::string& name);
@@ -28,6 +29,9 @@ protected:
 	std::string getUniqueName(std::string& childName) const;
 	void correctChildName(std::string& childName) const;
 	void incrementNumberInChildName(std::string& childName) const;
+	
+	virtual void updateCurrent(sf::Time delta);
+	void updateChildren(sf::Time delta);
 
 protected:
 	std::list<std::unique_ptr<GameObject>> mChildren;

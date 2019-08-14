@@ -108,7 +108,7 @@ void Player::pauseMenuInput()
 		mWasGamePauseButtonClicked = true;
 }
 
-void Player::update(sf::Time delta)
+void Player::updateCurrent(sf::Time delta)
 {
 	if(mIsDead) {
 		dyingUpdate(delta);
@@ -129,9 +129,6 @@ void Player::update(sf::Time delta)
 	cameraMovement(delta);
 	updateListenerPosition();
 	pauseMenuUpdate();
-
-	for(auto& child : mChildren)
-		child->update(delta);
 }
 
 void Player::dyingUpdate(const sf::Time delta)

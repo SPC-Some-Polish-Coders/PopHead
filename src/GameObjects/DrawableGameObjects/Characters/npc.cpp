@@ -47,7 +47,7 @@ Npc::Npc(GameData* gameData, const std::string& name)
 	mAnimation.animate(mSprite);
 }
 
-void Npc::update(sf::Time delta)
+void Npc::updateCurrent(sf::Time delta)
 {
 	setPosition(mCollisionBody.getPosition());
 	mAnimation.animate(mSprite, delta);

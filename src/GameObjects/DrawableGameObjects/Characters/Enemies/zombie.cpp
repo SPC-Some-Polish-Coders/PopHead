@@ -57,7 +57,7 @@ Zombie::Zombie(GameData* gameData)
 	mAnimation.animate(mSprite);
 }
 
-void Zombie::update(sf::Time delta)
+void Zombie::updateCurrent(sf::Time delta)
 {
 	if(mIsDead) {
 		deathUpdate();

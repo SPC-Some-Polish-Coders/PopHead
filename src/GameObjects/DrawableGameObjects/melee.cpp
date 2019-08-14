@@ -136,7 +136,7 @@ void MeleeWeapon::resetAttackGraphics()
 	mShouldDrawSwing = false;
 }
 
-void MeleeWeapon::update(const sf::Time delta)
+void MeleeWeapon::updateCurrent(const sf::Time delta)
 {
 	if (mGraphicsRotation < mRotationRange && mShouldDrawSwing)
 		updateHitGraphicsRotation();

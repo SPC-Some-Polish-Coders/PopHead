@@ -14,7 +14,7 @@ class Particles : public DrawableGameObject
 public:
 	Particles(Renderer&, const sf::Vector2f);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void draw(sf::RenderTarget& target, sf::RenderStates) const override;
 
 private:

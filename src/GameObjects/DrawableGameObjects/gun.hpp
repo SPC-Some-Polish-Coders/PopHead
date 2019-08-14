@@ -35,7 +35,7 @@ class Gun : public DrawableGameObject
 public:
 	Gun(GameData* const, const float damage);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
 	void shoot(const sf::Vector2f shotDirection);
 

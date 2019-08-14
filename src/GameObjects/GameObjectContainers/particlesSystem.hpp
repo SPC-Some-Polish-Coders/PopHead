@@ -13,7 +13,7 @@ class ParticlesSystem : public GameObject
 public:
 	ParticlesSystem(Renderer& renderer);
 
-	void update(const sf::Time delta) override;
+	void updateCurrent(const sf::Time delta) override;
 	void addParticlesToDelete(Particles* deletingParticles) { mParticlesToDelete.emplace_back(deletingParticles); }
 
 private:
