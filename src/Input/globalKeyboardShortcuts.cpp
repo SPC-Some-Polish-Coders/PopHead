@@ -1,5 +1,6 @@
 #include "globalKeyboardShortcuts.hpp"
 #include "gameData.hpp"
+#include <SFML/Window.hpp>
 
 namespace ph {
 
@@ -34,9 +35,8 @@ void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
 
 void GlobalKeyboardShortcuts::handleCloseGameShortcut()
 {
-	auto& keyboard = mGameData->getInput().getKeyboard();
-	if(keyboard.isKeyPressed(sf::Keyboard::LControl) && keyboard.isKeyPressed(sf::Keyboard::LSystem) 
-		&& keyboard.isKeyPressed(sf::Keyboard::LAlt))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::LSystem) 
+		&& sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
 		mGameData->getGameCloser().closeGame();
 }
 
