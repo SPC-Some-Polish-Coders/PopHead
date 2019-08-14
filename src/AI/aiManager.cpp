@@ -25,7 +25,7 @@ bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePositio
 void AIManager::setPlayerPosition(const sf::Vector2f playerPosition) 
 { 
 	this->mPlayerPosition = playerPosition; 
-	mHasPlayerMovedSinceLastUpdate = true; 
+	mHasPlayerMovedSinceLastUpdate = true;
 }
 
 void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
@@ -60,8 +60,14 @@ bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 
 Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const
 {
+	auto dest = toNodePosition(destinationPosition);
+	if (mObstacleGrid.at(dest.x).at(dest.y))
+	{
+		dest += sf::Vector2u(1, 1);
+	}
+
 	AStarAlgorithm a(mObstacleGrid);
-	return a.getPath(toNodePosition(startPosition), toNodePosition(destinationPosition));
+	return a.getPath(toNodePosition(startPosition), dest);
 }
 
 sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
