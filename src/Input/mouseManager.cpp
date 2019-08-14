@@ -6,17 +6,12 @@ namespace ph {
 
 auto MouseManager::getMousePosition() const -> sf::Vector2i
 {
-    return sf::Mouse::getPosition( mGameData->getRenderWindow() );
+    return sf::Mouse::getPosition(mGameData->getRenderWindow());
 }
 
 bool MouseManager::hasMouseJustMoved() const
 {
     return EventLoop::hasMouseJustMoved();
-}
-
-bool MouseManager::isMouseButtonPressed(sf::Mouse::Button button) const
-{
-    return sf::Mouse::isButtonPressed(button);
 }
 
 bool MouseManager::isMouseButtonJustPressed(sf::Mouse::Button button) const

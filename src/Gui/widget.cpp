@@ -37,7 +37,7 @@ void Widget::update(sf::Time delta)
 	if(mIsActive == false)
 		return;
 
-	if(mGameData->getInput().getMouse().isMouseButtonPressed(sf::Mouse::Left))
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		auto c = mGameData->getInput().getMouse().getMousePosition();
 		auto k = mWindow->mapPixelToCoords(c);
