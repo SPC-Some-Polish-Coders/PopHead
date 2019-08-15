@@ -35,7 +35,7 @@ private:
 	void updatePositionsOfDebugRects();
 
 private:
-	std::set<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
+	std::multiset<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
 	CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;
