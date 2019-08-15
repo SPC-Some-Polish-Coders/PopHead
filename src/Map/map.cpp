@@ -125,7 +125,7 @@ void Map::createMapBorders(const GeneralMapInfo& mapInfo)
 	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
 	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
 
-	const sf::Vector2f size(mapInfo.tileSize.x, mapInfo.tileSize.y);
+	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
 
 	auto& physics = mGameData->getPhysicsEngine();
 

@@ -24,7 +24,7 @@ void Entrance::updateCurrent(const sf::Time delta)
 		if (Math::areTheyOverlapping(player.getSprite().getGlobalBounds(), mEntranceArea.getGlobalBounds()))
 			mSceneManager.replaceScene(mFilepath);
 	}
-	catch(const std::exception& e) {}
+	catch(const std::exception&) {}
 }
 
 }
