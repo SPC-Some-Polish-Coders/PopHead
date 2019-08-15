@@ -6,7 +6,7 @@
 namespace ph {
 
 Particles::Particles(Renderer& renderer, const sf::Vector2f startPosition)
-	:DrawableGameObject(renderer, "particles", LayerID::airEntities)
+	:GameObject("particles")
 	,mNumberOfParticles(150)
 	,mLifetime(sf::milliseconds(250))
 	,mPosition(startPosition)
@@ -47,7 +47,7 @@ void Particles::updateCurrent(const sf::Time delta)
 	}
 }
 
-void Particles::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Particles::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mVertecies);
 }

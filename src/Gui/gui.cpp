@@ -3,7 +3,7 @@
 
 namespace ph {
 
-GUI::Gui_drawer::Gui_drawer(GameData* gameData, std::string name, LayerID id)
+GUI::Gui_drawer::Gui_drawer(GameData* gameData, std::string name)
 	:mGui(nullptr)
 {
 
@@ -127,7 +127,7 @@ void GUI::init(GameData* gamedata)
 
 void GUI::clearGUI()
 {
-	mGuiDrawer.reset(new Gui_drawer(mGameData, "GUI_DRAWER", LayerID::gui));
+	mGuiDrawer.reset(new Gui_drawer(mGameData, "GUI_DRAWER"));
 	mGuiDrawer->init(this);
 	mInterfaceList.clear();
 }

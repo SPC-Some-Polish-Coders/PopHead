@@ -12,10 +12,9 @@ ParticlesSystem::ParticlesSystem(Renderer& renderer)
 
 void ParticlesSystem::handleParticlesToDelete()
 {
-	for (Particles* particles : mParticlesToDelete) {
-		mRenderer.removeDrawableGameObject(particles);
+	for (Particles* particles : mParticlesToDelete)
 		removeChild(particles);
-	}
+
 	mParticlesToDelete.clear();
 }
 

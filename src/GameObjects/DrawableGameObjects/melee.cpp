@@ -67,7 +67,7 @@ void Swing::incrementRotation()
 
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
-	:DrawableGameObject(gameData->getRenderer(), "sword", LayerID::kinematicEntities)
+	:GameObject("sword")
 	,mGameData(gameData)
 	,mDamage(damage)
 	,mRange(range)
@@ -81,7 +81,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
 	setMeleeWeaponPositionToRightHand(attackDirection);
-	Swing swing(getEnemies(), attackDirection, mPosition, mDamage, mRange, mRotationRange);
+	Swing swing(getEnemies(), attackDirection, getPosition(), mDamage, mRange, mRotationRange);
 	initializeAttackGraphics(swing);
 }
 
@@ -94,24 +94,28 @@ auto MeleeWeapon::getEnemies() -> GameObject&
 
 void MeleeWeapon::setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection)
 {
+	sf::Vector2f position = getPosition();
+
 	if (attackDirection == sf::Vector2f(1, 0))
-		mPosition += {10, 20};
-	else if (attackDirection == sf::Vector2f(-1, 0))
-		mPosition += {5, 15};
-	else if (attackDirection == sf::Vector2f(0, 1))
-		mPosition += {3, 20};
-	else if (attackDirection == sf::Vector2f(0, -1))
-		mPosition += {15, 15};
-	else if (attackDirection == sf::Vector2f(0.7f, -0.7f))
-		mPosition += {20, 3};
-	else if (attackDirection == sf::Vector2f(-0.7f, -0.7f))
-		mPosition += {3, 3};
-	else if (attackDirection == sf::Vector2f(0.7f, 0.7f))
-		mPosition += {10, 20};
-	else if (attackDirection == sf::Vector2f(-0.7f, 0.7f))
-		mPosition += {0, 10};
+		position += {10, 20};
+	else if(attackDirection == sf::Vector2f(-1, 0))
+		position += {5, 15};
+	else if(attackDirection == sf::Vector2f(0, 1))
+		position += {3, 20};
+	else if(attackDirection == sf::Vector2f(0, -1))
+		position += {15, 15};
+	else if(attackDirection == sf::Vector2f(0.7f, -0.7f))
+		position += {20, 3};
+	else if(attackDirection == sf::Vector2f(-0.7f, -0.7f))
+		position += {3, 3};
+	else if(attackDirection == sf::Vector2f(0.7f, 0.7f))
+		position += {10, 20};
+	else if(attackDirection == sf::Vector2f(-0.7f, 0.7f))
+		position += {0, 10};
 	else
 		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
+
+	setPosition(position);
 }
 
 void MeleeWeapon::initializeAttackGraphics(const Swing& swing)
@@ -144,7 +148,7 @@ void MeleeWeapon::updateCurrent(const sf::Time delta)
 		resetAttackGraphics();
 }
 
-void MeleeWeapon::draw(sf::RenderTarget& target, sf::RenderStates) const
+void MeleeWeapon::drawCurrent(sf::RenderTarget& target, sf::RenderStates) const
 {
 	target.draw(mHitGraphics.data(), 2, sf::Lines);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObjects/DrawableGameObject.hpp"
+#include "GameObjects/GameObject.hpp"
 #include "cutSceneManager.hpp"
 #include <SFML/System.hpp>
 #include <memory>

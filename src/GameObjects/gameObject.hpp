@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <list>
 #include <memory>
 
 namespace ph {
 
-class GameObject
+class GameObject : public sf::Drawable, public sf::Transformable
 {
 public:
 	GameObject(const std::string& name);
@@ -15,6 +15,8 @@ public:
 	virtual void input();
 
 	void update(sf::Time delta);
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void addChild(std::unique_ptr<GameObject>);
 	void removeChild(const std::string& name);
@@ -32,6 +34,9 @@ protected:
 	
 	virtual void updateCurrent(sf::Time delta);
 	void updateChildren(sf::Time delta);
+
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
 protected:
 	std::list<std::unique_ptr<GameObject>> mChildren;

@@ -17,7 +17,7 @@ public:
 	class Gui_drawer : public sf::Drawable
 	{
 	public:
-		Gui_drawer(GameData* gameData, std::string name, LayerID id);
+		Gui_drawer(GameData* gameData, std::string name);
 
 		void init(GUI* gui);
 

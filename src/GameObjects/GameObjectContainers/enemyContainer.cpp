@@ -17,7 +17,6 @@ void EnemyContainer::updateCurrent(sf::Time delta)
 void EnemyContainer::handleDyingEnemies()
 {
 	for(Enemy* dyingEnemy : mDyingEnemies) {
-		mGameData->getRenderer().removeDrawableGameObject(dyingEnemy);
 		mGameData->getPhysicsEngine().removeKinematicBody(dyingEnemy->mCollisionBody);
 		removeChild(dyingEnemy);
 		mDyingEnemies.clear();

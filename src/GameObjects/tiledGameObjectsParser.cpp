@@ -146,7 +146,6 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 {
 	auto car = std::make_unique<Car>(
-		mGameData->getRenderer(),
 		getProperty(carNode, "acceleration").toFloat(),
 		getProperty(carNode, "slowingDown").toFloat(),
 		sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),

@@ -1,19 +1,16 @@
 #pragma once
 
-#include "GameObjects/drawableGameObject.hpp"
+#include "GameObjects/gameObject.hpp"
 
 namespace ph {
 
-class Car : public DrawableGameObject
+class Car : public GameObject
 {
 public:
-	Car(Renderer&, const float acceleration, const float slowingDown, const sf::Vector2f direction, sf::Texture&);
+	Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, sf::Texture&);
 
 	void updateCurrent(const sf::Time delta) override;
-	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
-
-	void move(sf::Vector2f offset, bool recursive = true) override;
-	void setPosition(sf::Vector2f position, bool recursive = true) override;
+	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
 
 	void setVelocity(float velocity) { mVelocity = velocity; }
 	float getVelocity() const { return mVelocity; }

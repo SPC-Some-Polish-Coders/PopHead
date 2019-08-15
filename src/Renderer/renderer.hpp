@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Renderer/camera.hpp"
-#include "Renderer/layer.hpp"
-#include "Renderer/layerID.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
@@ -10,6 +8,7 @@
 namespace ph {
 
 class GameData;
+class GameObject;
 
 class Renderer
 {
@@ -24,36 +23,26 @@ public:
 	void update(sf::Time delta);
 	void draw() const;
 
-	void addObject(DrawableGameObject* const);
-	void addObject(DrawableGameObject* const, LayerID);
-
-	void removeDrawableGameObject(const DrawableGameObject* const);
-	void removeDrawableGameObject(std::string name, LayerID);
-	void removeAllObjectsFromLayer(LayerID);
-	void clear() noexcept;
-
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
 	auto getCamera() -> Camera& { return mCamera; }
-
+	void setSceneTreeRoot(const GameObject* sceneTreeRoot) { mSceneTreeRoot = sceneTreeRoot; }
 	void setGameData(GameData* gameData) { mGameData = gameData; }
 	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
 
 private:
-	void drawSceneLayers(sf::FloatRect properCameraBounds) const;
+	//void drawSceneLayers(sf::FloatRect properCameraBounds) const;
 	sf::FloatRect getProperCameraBounds() const;
 
 	void drawStaticObjectsToCamera() const;
 
-	std::string getLayerName(LayerID) const;
-
 private:
 	Camera mCamera;
 	Camera mStaticObjectsCamera;
-	std::map< LayerID, Layer > mLayers;
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	sf::RenderTarget& mRenderTarget;
 	GameData* mGameData;
+	const GameObject* mSceneTreeRoot;
 	bool mDebugRenderingMode;
 };
 
