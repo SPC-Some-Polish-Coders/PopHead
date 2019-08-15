@@ -22,7 +22,7 @@ private:
 
 private:
 	const ObstacleGrid& mObstacleGrid;
-	const sf::Vector2u mStartNodePosition;
+	const sf::Vector2i mStartNodePosition;
 	const unsigned mMaximalWalkableDistance;
 	unsigned mNumberOfRecurrencyCalls;
 };

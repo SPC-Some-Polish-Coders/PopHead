@@ -68,7 +68,7 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mObstacleGrid.size() <= mStartNodePosition.x + i)
 			return i;
 		if(mObstacleGrid[mStartNodePosition.x + i][mStartNodePosition.y])
@@ -79,7 +79,7 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mStartNodePosition.x - i < 0)
 			return i;
 		if(mObstacleGrid[mStartNodePosition.x - i][mStartNodePosition.y])
@@ -90,7 +90,7 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mStartNodePosition.y - i < 0)
 			return i;
 		if(mObstacleGrid[mStartNodePosition.x][mStartNodePosition.y - i])
@@ -101,7 +101,7 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheSouth()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mObstacleGrid.size() <= mStartNodePosition.y + i)
 			return i;
 		if(mObstacleGrid[mStartNodePosition.x][mStartNodePosition.y + i])
