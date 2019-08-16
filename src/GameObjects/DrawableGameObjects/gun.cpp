@@ -40,9 +40,8 @@ bool Bullet::isBulletStillInItsRange()
 
 bool Bullet::wasEnemyShot(Character& character)
 {
-	const auto& sprite = character.getSprite();
-	const sf::FloatRect hitbox = sprite.getGlobalBounds();
-	const sf::Vector2f currentPosition = mStartPosition + (mDirection	* static_cast<float>(mTraveledDistance));
+	const sf::FloatRect hitbox = character.getGlobalBounds();
+	const sf::Vector2f currentPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
 	return Math::isPointInsideRect(currentPosition, hitbox);
 }
 

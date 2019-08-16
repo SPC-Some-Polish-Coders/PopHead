@@ -52,8 +52,7 @@ auto Swing::getCharacterWhoWasHit() -> Character*
 
 bool Swing::wasEnemyHit(Character& character)
 {
-	const auto& sprite = character.getSprite();
-	const sf::FloatRect hitbox = sprite.getGlobalBounds();
+	const sf::FloatRect hitbox = character.getGlobalBounds();
 	return Math::isPointInsideRect(mHitArea[1].position, hitbox);
 }
 

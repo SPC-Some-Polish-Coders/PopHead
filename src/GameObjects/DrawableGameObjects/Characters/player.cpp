@@ -304,7 +304,7 @@ sf::Vector2f Player::attackDirection()
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = mSprite.getGlobalBounds();
+	const sf::FloatRect characterBounds = getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 

@@ -26,6 +26,7 @@ public:
 	void setAnimationState(const std::string& stateName);
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
+	sf::FloatRect getGlobalBounds() const override;
 	auto getAnimation() -> Animation& { return mAnimation; }
 	bool isDead();
 

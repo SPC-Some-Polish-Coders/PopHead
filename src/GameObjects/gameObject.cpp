@@ -114,4 +114,9 @@ auto GameObject::getChild(const std::string& name) const -> GameObject&
 	throw std::runtime_error("Child was not found!");
 }
 
+sf::FloatRect GameObject::getGlobalBounds() const
+{
+	return sf::FloatRect(getPosition().x, getPosition().y, 0, 0);
+}
+
 }

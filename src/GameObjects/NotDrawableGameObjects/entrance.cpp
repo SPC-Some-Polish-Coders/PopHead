@@ -21,7 +21,7 @@ void Entrance::updateCurrent(const sf::Time delta)
 	auto &root = getParent();
 	try {
 		auto& player = dynamic_cast<Player&>(root.getChild("player"));
-		if (Math::areTheyOverlapping(player.getSprite().getGlobalBounds(), mEntranceArea.getGlobalBounds()))
+		if (Math::areTheyOverlapping(player.getGlobalBounds(), mEntranceArea.getGlobalBounds()))
 			mSceneManager.replaceScene(mFilepath);
 	}
 	catch(const std::exception& e) {}

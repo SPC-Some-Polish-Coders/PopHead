@@ -99,7 +99,7 @@ void Zombie::handlePlayerHit()
 
 	try {
 		Character& player = dynamic_cast<Character&>(root.getChild("player"));
-		if (Math::areTheyOverlapping(getSprite().getGlobalBounds(), player.getSprite().getGlobalBounds()))
+		if(Math::areTheyOverlapping(getGlobalBounds(), player.getGlobalBounds()))
 			player.takeDamage(damage);
 	}
 	catch(std::runtime_error){}

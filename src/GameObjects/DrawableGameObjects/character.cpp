@@ -43,6 +43,11 @@ auto Character::getSpriteCenter() -> sf::Vector2f
 	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
 }
 
+sf::FloatRect Character::getGlobalBounds() const
+{
+	return mCollisionBody.getRect();
+}
+
 bool Character::isDead()
 {
 	return mIsDead;
