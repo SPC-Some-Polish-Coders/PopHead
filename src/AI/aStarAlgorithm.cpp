@@ -4,7 +4,7 @@
 
 namespace ph {
 
-AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid)
+AStarAlgorithm::AStarAlgorithm(const ObstacleGrids& obstacleGrid)
 	:mGrid(obstacleGrid)
 {
 }

@@ -29,7 +29,7 @@ TEST_CASE("Node operator < works correctly", "[AI][Grid]")
 
 TEST_CASE("Grid can be created and node of certain position can be get", "[AI][Grid]")
 {
-	const ObstacleGrid obstacles{
+	const ObstacleGrids obstacles{
 		{true, false},
 		{false, true},
 		{false, false},
@@ -52,7 +52,7 @@ TEST_CASE("Neighbours of node can be get", "[AI][Grid]")
 	using namespace Catch::Matchers;
 
 	// Remember that on this obstacle map up is left, down is right, left is up and right is down.
-	const ObstacleGrid obstacles{
+	const ObstacleGrids obstacles{
 		{true, true, false},
 		{false, true, false},
 		{true, true, true},

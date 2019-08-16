@@ -5,8 +5,8 @@
 
 namespace ph {
 
-ObstacleGrid getWalkableGrid11x11();
-ObstacleGrid getGridWithObstacles11x11();
+ObstacleGrids getWalkableGrid11x11();
+ObstacleGrids getGridWithObstacles11x11();
 
 TEST_CASE("Random path finding algorithm works properly with no obstacles", "[AI][RandomPathAlgorithm]")
 {
@@ -37,12 +37,12 @@ TEST_CASE("Random path finding algorithm works properly with no obstacles", "[AI
 	));
 }
 
-ObstacleGrid getWalkableGrid11x11()
+ObstacleGrids getWalkableGrid11x11()
 {
 	std::vector<bool> column;
 	column.resize(11);
 	std::fill(column.begin(), column.end(), false);
-	ObstacleGrid grid;
+	ObstacleGrids grid;
 	grid.resize(11);
 	std::fill(grid.begin(), grid.end(), column);
 	return grid;
@@ -69,12 +69,12 @@ TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][R
 	}
 }
 
-ObstacleGrid getGridWithObstacles11x11()
+ObstacleGrids getGridWithObstacles11x11()
 {
 	std::vector<bool> column;
 	column.resize(11);
 	std::fill(column.begin(), column.end(), false);
-	ObstacleGrid grid;
+	ObstacleGrids grid;
 	grid.resize(11);
 	std::fill(grid.begin(), grid.end(), column);
 	grid[10][5] = true;

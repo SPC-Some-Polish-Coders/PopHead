@@ -22,13 +22,11 @@ struct Node
 };
 
 bool operator < (const Node& lhs, const Node& rhs);
-//bool operator == (const Node& lhs, const Node& rhs);
-//bool operator != (const Node& lhs, const Node& rhs);
 
 class Grid
 {
 public:
-	Grid(const ObstacleGrid&);
+	explicit Grid(const ObstacleGrids&);
 	Node* getNodeOfPosition(const sf::Vector2u position);
 	std::vector<Node*> getNeighboursOf(const Node&);
 	bool isObstacle(const sf::Vector2u& position) const;
@@ -36,7 +34,7 @@ public:
 private:
 	std::vector<std::vector<Node>> mNodes;
 
-	const ObstacleGrid& mObstacleGrid;
+	const ObstacleGrids& mObstacleGrid;
 };
 
 }

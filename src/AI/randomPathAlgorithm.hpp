@@ -8,7 +8,7 @@ namespace ph {
 class RandomPathAlgorithm
 {
 public:
-	RandomPathAlgorithm(const ObstacleGrid&, const sf::Vector2u startNodePosition);
+	RandomPathAlgorithm(const ObstacleGrids&, const sf::Vector2u startNodePosition);
 	Path getRandomPath();
 
 private:
@@ -21,7 +21,7 @@ private:
 	unsigned getWalkableDistanceBetweenObstacleNodeToTheSouth();
 
 private:
-	const ObstacleGrid& mObstacleGrid;
+	const ObstacleGrids& mObstacleGrid;
 	const sf::Vector2i mStartNodePosition;
 	const unsigned mMaximalWalkableDistance;
 	unsigned mNumberOfRecurrencyCalls;

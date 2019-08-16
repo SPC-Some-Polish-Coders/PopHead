@@ -19,17 +19,7 @@ bool operator < (const Node& lhs, const Node& rhs)
 	return false;
 }
 
-//bool operator == (const Node& lhs, const Node& rhs)
-//{
-//	return lhs.mPosition == rhs.mPosition;
-//}
-//
-//bool operator != (const Node& lhs, const Node& rhs)
-//{
-//	return !(lhs == rhs);
-//}
-
-Grid::Grid(const ObstacleGrid& obstacleGrid)
+Grid::Grid(const ObstacleGrids& obstacleGrid)
 	: mObstacleGrid(obstacleGrid)
 {
 	for(unsigned x = 0; x < obstacleGrid.size(); ++x) {
