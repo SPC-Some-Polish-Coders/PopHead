@@ -14,10 +14,11 @@ namespace ph {
 class NodesGrid
 {
 public:
-	struct Node
+	class Node
 	{
 		friend NodesGrid;
 
+	public:
 		const sf::Vector2u mPosition;
 		const float mDistanceToDestination;
 		const Node* mParent = nullptr;
@@ -26,6 +27,7 @@ public:
 		float mDistanceFromStart = 0.f;
 
 	public:
+		Node(const sf::Vector2u& position, const float distanceToDestination);
 		float getFullCost() const;
 		float getDistanceFromStart() const;
 		bool isNewlyCreated() const;
@@ -37,7 +39,7 @@ public:
 	const Node& createStartNode(const sf::Vector2u& position);
 	void changeDistanceFromStartInNode(Node& node, float newDistance);
 	const Node& getNodeWithLowestCost() const;
-	std::vector<Node&> getNodeNeighbours(const Node& node);
+	std::vector<std::reference_wrapper<Node>> getNodeNeighbours(const Node& node);
 	void closeNode(const Node& node);
 
 private:

@@ -32,7 +32,7 @@ namespace ph {
 		return **(mNodesByCost.begin());
 	}
 
-	std::vector<NodesGrid::Node&> NodesGrid::getNodeNeighbours(const NodesGrid::Node& node)
+	std::vector<std::reference_wrapper<NodesGrid::Node>> NodesGrid::getNodeNeighbours(const NodesGrid::Node& node)
 	{
 		auto& position = node.mPosition;
 
@@ -47,7 +47,7 @@ namespace ph {
 			{position.x - 1, position.y - 1}
 		};
 
-		std::vector<Node&> neighbours;
+		std::vector<std::reference_wrapper<Node>> neighbours;
 		for (const auto& pos : neighboursPositions)
 		{
 			if (!isInBoundaries(pos))
@@ -55,12 +55,12 @@ namespace ph {
 			if (mGeneratedNodes.at(internalIndex(pos)))
 			{
 				// optimize this
-				auto iter = std::find_if(mNodes.begin(), mNodes.end(), [](const std::unique_ptr<Node>& node1, const std::unique_ptr<Node>& node2) { return node1->mPosition == node2->mPosition; });
+				auto iter = std::find_if(mNodes.begin(), mNodes.end(), [pos](const std::unique_ptr<Node>& node) { return node->mPosition == pos; });
 				auto& ref = *iter->get();
-				neighbours.emplace_back(ref);
+				neighbours.emplace_back(std::ref(ref));
 			}
 			else
-				neighbours.emplace_back(createNode(pos));
+				neighbours.emplace_back(std::ref(createNode(pos)));
 		}
 
 		return neighbours;
@@ -78,10 +78,11 @@ namespace ph {
 
 	NodesGrid::Node& NodesGrid::createNode(const sf::Vector2u& position)
 	{
-		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));  // calculate distance
+		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
 		auto& ref = *pointer.get();
 		mNodes.emplace(std::move(pointer));
 		mNodesByCost.insert(&ref);
+		mGeneratedNodes.at(internalIndex(position)) = true;
 		return ref;
 	}
 
@@ -113,6 +114,12 @@ namespace ph {
 				return std::make_pair(pos1.x, pos1.y) < std::make_pair(pos2.x, pos2.y);
 			}
 		);
+	}
+
+	NodesGrid::Node::Node(const sf::Vector2u& position, const float distanceToDestination)
+		: mPosition(position)
+		, mDistanceToDestination(distanceToDestination)
+	{
 	}
 
 	float NodesGrid::Node::getFullCost() const
