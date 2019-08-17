@@ -1,7 +1,10 @@
 #pragma once 
 
 #include "pathData.hpp"
+#include "obstacleGrid.hpp"
+
 #include <SFML/Graphics.hpp>
+
 #include <deque>
 
 namespace ph { 
@@ -27,7 +30,7 @@ private:
 	Path getRandomPath(const sf::Vector2f startPosition) const;
 
 private:
-	ObstacleGrids mObstacleGrid;
+	ObstacleGrid mObstacleGrid;
 	sf::Vector2f mPlayerPosition;
 	const unsigned mSpotSideLength = 16;
 	bool mHasPlayerMovedSinceLastUpdate = false;

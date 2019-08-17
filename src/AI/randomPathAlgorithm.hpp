@@ -1,6 +1,8 @@
 #pragma once 
- 
+
+#include "obstacleGrid.hpp"
 #include "pathData.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace ph { 
@@ -8,7 +10,7 @@ namespace ph {
 class RandomPathAlgorithm
 {
 public:
-	RandomPathAlgorithm(const ObstacleGrids&, const sf::Vector2u startNodePosition);
+	RandomPathAlgorithm(const ObstacleGrid&, const sf::Vector2u startNodePosition);
 	Path getRandomPath();
 
 private:
@@ -21,7 +23,7 @@ private:
 	unsigned getWalkableDistanceBetweenObstacleNodeToTheSouth();
 
 private:
-	const ObstacleGrids& mObstacleGrid;
+	const ObstacleGrid& mObstacleGrid;
 	const sf::Vector2i mStartNodePosition;
 	const unsigned mMaximalWalkableDistance;
 	unsigned mNumberOfRecurrencyCalls;

@@ -5,7 +5,6 @@
 
 namespace ph{
 
-using ObstacleGrids = std::vector<std::vector<bool>>;
 enum class Direction
 {
 	north,

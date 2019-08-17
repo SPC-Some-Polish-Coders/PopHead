@@ -1,11 +1,15 @@
 #include "AStarAlgorithm.hpp"
+#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
+
 #include <cmath>
 
 namespace ph {
 
-AStarAlgorithm::AStarAlgorithm(const ObstacleGrids& obstacleGrid)
-	:mGrid(obstacleGrid)
+AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2u& startNodePosition, const sf::Vector2u& destinationNodePosition)
+	: mNodesGrid(obstacleGrid, destinationNodePosition)
+	, mStartNodePosition(startNodePosition)
+	, mDestinationNodePosition(destinationNodePosition)
 {
 }
 

@@ -1,8 +1,11 @@
 #pragma once 
  
-#include "grid.hpp"
+#include "nodesGrid.hpp"
+#include "obstacleGrid.hpp"
 #include "pathData.hpp"
+
 #include <SFML/Graphics.hpp>
+
 #include <set>
 
 namespace ph {
@@ -21,7 +24,9 @@ private:
 	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition);
 
 private:
-	Grid mGrid;
+	NodesGrid mNodesGrid;
+	const sf::Vector2u mStartNodePosition;
+	const sf::Vector2u mDestinationNodePosition;
 };
 
 } 
