@@ -126,6 +126,7 @@ void Zombie::move(sf::Time delta)
 
 sf::Vector2f Zombie::toDirectionVector(Direction direction)
 {
+	static const float sq = static_cast<float>(std::sqrt(2)) / 2.f;
 	switch(direction)
 	{
 	case ph::Direction::east:
@@ -136,6 +137,14 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 		return sf::Vector2f(0.f, -1.f);
 	case ph::Direction::south:
 		return sf::Vector2f(0.f, 1.f);
+	case ph::Direction::north_east:
+		return sf::Vector2f(sq, -sq);
+	case ph::Direction::north_west:
+		return sf::Vector2f(-sq, -sq);
+	case ph::Direction::south_east:
+		return sf::Vector2f(sq, sq);
+	case ph::Direction::south_west:
+		return sf::Vector2f(-sq, sq);
 	case ph::Direction::none:
 		return sf::Vector2f();
 	default:
