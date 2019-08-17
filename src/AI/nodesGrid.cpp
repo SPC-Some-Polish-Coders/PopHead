@@ -29,7 +29,10 @@ namespace ph {
 
 	const NodesGrid::Node& NodesGrid::getNodeWithLowestCost() const
 	{
-		return **(mNodesByCost.begin());
+		auto iter = mNodesByCost.begin();
+		while (mClosedNodes.at(internalIndex((*iter)->mPosition)))
+			++iter;
+		return **iter;
 	}
 
 	std::vector<std::reference_wrapper<NodesGrid::Node>> NodesGrid::getNodeNeighbours(const NodesGrid::Node& node)
