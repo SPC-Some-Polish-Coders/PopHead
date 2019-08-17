@@ -15,7 +15,8 @@ enum class Direction
 	south,
 	south_west,
 	west,
-	north_west
+	north_west,
+	none
 };
 
 using Path = std::deque<Direction>;
