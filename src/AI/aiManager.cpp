@@ -1,7 +1,6 @@
 #include "aiManager.hpp" 
 #include "aStarAlgorithm.hpp"
 #include "RandomPathAlgorithm.hpp"
-#include "Logs/logs.hpp"
 
 #include <algorithm>
 #include <cmath>
