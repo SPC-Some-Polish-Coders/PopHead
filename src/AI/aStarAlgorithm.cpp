@@ -51,7 +51,7 @@ Path AStarAlgorithm::retracePath(const NodesGrid::Node& startNode, const NodesGr
 	const NodesGrid::Node* current = &endNode;
 	while (current != &startNode)
 	{
-		path.emplace_back(getDirectionBetweenNodes(*current->mParent, *current));
+		path.emplace_front(getDirectionBetweenNodes(*current->mParent, *current));
 		current = current->mParent;
 	}
 
