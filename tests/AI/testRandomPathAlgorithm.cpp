@@ -45,26 +45,26 @@ ObstacleGrid getWalkableGrid11x11()
 	return grid;
 }
 
-//TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][RandomPathAlgorithm]")
-//{
-//	for(int i = 0; i < 10; ++i) {
-//		auto obstacleGrid = getGridWithObstacles11x11();
-//		RandomPathAlgorithm rpa(obstacleGrid, {5, 5});
-//		Path path = rpa.getRandomPath();
-//		
-//		CHECK((
-//			(path == Path{Direction::east, Direction::east}) ||
-//			(path == Path{Direction::east, Direction::east, Direction::east}) ||
-//			(path == Path{Direction::east, Direction::east, Direction::east, Direction::east}) ||
-//			(path == Path{Direction::west, Direction::west}) ||
-//			(path == Path{Direction::west, Direction::west, Direction::west}) ||
-//			(path == Path{Direction::north, Direction::north}) ||
-//			(path == Path{Direction::none, Direction::none, Direction::none} ) ||
-//			(path == Path{Direction::none, Direction::none} ) ||
-//			(path == Path{Direction::none} )
-//		));
-//	}
-//}
+TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][RandomPathAlgorithm]")
+{
+	for(int i = 0; i < 10; ++i) {
+		auto obstacleGrid = getGridWithObstacles11x11();
+		RandomPathAlgorithm rpa(obstacleGrid, {5, 5});
+		Path path = rpa.getRandomPath();
+		
+		CHECK((
+			(path == Path{Direction::east, Direction::east}) ||
+			(path == Path{Direction::east, Direction::east, Direction::east}) ||
+			(path == Path{Direction::east, Direction::east, Direction::east, Direction::east}) ||
+			(path == Path{Direction::west, Direction::west}) ||
+			(path == Path{Direction::west, Direction::west, Direction::west}) ||
+			(path == Path{Direction::north, Direction::north}) ||
+			(path == Path{Direction::none, Direction::none, Direction::none} ) ||
+			(path == Path{Direction::none, Direction::none} ) ||
+			(path == Path{Direction::none} )
+		));
+	}
+}
 
 ObstacleGrid getGridWithObstacles11x11()
 {
