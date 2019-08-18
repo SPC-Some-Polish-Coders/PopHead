@@ -29,6 +29,7 @@ namespace ph {
 
 	const NodesGrid::Node& NodesGrid::getNodeWithLowestCost() const
 	{
+		// TODO: possible optimazation
 		auto iter = mNodesByCost.begin();
 		while (mClosedNodes.at(internalIndex((*iter)->mPosition)))
 			++iter;
@@ -57,7 +58,7 @@ namespace ph {
 				continue;
 			if (mGeneratedNodes.at(internalIndex(pos)))
 			{
-				// optimize this
+				// TODO: optimize this
 				auto iter = std::find_if(mNodes.begin(), mNodes.end(), [pos](const std::unique_ptr<Node>& node) { return node->mPosition == pos; });
 				auto& ref = *iter->get();
 				neighbours.emplace_back(std::ref(ref));
