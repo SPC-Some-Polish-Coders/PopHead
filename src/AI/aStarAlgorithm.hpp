@@ -13,15 +13,14 @@ namespace ph {
 class AStarAlgorithm
 {
 public:
-	AStarAlgorithm(const ObstacleGrids& grid);
-	Path getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition);
+	AStarAlgorithm(const ObstacleGrid& grid, const sf::Vector2u& startNodePosition, const sf::Vector2u& destinationNodePosition);
+	Path getPath();
 
 private:
-	Path retracePath(const Node* const startNode, Node* const endNode);
-	Path toDirectionPath(const std::deque<Node*>& nodePath);
-	Direction getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode);
-	bool isNodeInSet(Node&, const std::set<Node*>&);
-	float getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition);
+	Path retracePath(const NodesGrid::Node& startNode, const NodesGrid::Node& endNode);
+	Direction getDirectionBetweenNodes(const NodesGrid::Node& startNode, const NodesGrid::Node& endNode);
+
+	float distanceBetweenNodes(const NodesGrid::Node& pos1, const NodesGrid::Node& pos2);
 
 private:
 	NodesGrid mNodesGrid;

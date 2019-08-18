@@ -13,105 +13,92 @@ AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vecto
 {
 }
 
-Path AStarAlgorithm::getPath(const sf::Vector2u startNodePosition, const sf::Vector2u destinationNodePosition)
+Path AStarAlgorithm::getPath()
 {
-	auto compareCosts = [](const Node* lhs, const Node* rhs) {return *lhs < *rhs; };
-	std::multiset<Node*, decltype(compareCosts)> openNodes(compareCosts);
-	std::set<Node*> openNodesPointers;
-	std::set<Node*> closedNodes;
+	auto& startNode = mNodesGrid.createStartNode(mStartNodePosition);
 
-	Node* startNode = mGrid.getNodeOfPosition(startNodePosition);
-	openNodesPointers.emplace(startNode);
-	openNodes.emplace(startNode);
+	while (true)  // add statement
+	{
+		auto& currentNode = mNodesGrid.getNodeWithLowestCost();
+		mNodesGrid.closeNode(currentNode);
 
-	while(!openNodesPointers.empty()) {
-		Node* currentNode = *openNodes.begin();
-		openNodes.erase(openNodes.begin());
-		openNodesPointers.erase(currentNode);
-		closedNodes.emplace(currentNode);
+		if (currentNode.mPosition == mDestinationNodePosition)
+			return retracePath(startNode, currentNode);
 
-		if(currentNode->mPosition == destinationNodePosition)
-			return retracePath(mGrid.getNodeOfPosition(startNodePosition), mGrid.getNodeOfPosition(destinationNodePosition));
+		auto neighbours = mNodesGrid.getNodeNeighbours(currentNode);
 
-		for(Node* neighbour : mGrid.getNeighboursOf(*currentNode)) {
-			if(mGrid.isObstacle(neighbour->mPosition) || isNodeInSet(*neighbour, closedNodes))
+		for (auto& neighbourIter : neighbours)
+		{
+			auto& neighbour = neighbourIter.get();
+			auto newPath = currentNode.getDistanceFromStart() + distanceBetweenNodes(currentNode, neighbour);
+			
+			if (neighbour.isNewlyCreated() || newPath < neighbour.getDistanceFromStart())
+			{
+				mNodesGrid.changeDistanceFromStartInNode(neighbour, newPath);
+				neighbour.mParent = &currentNode;
 				continue;
-
-			if (!isNodeInSet(*neighbour, openNodesPointers)) {
-				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
-				neighbour->mDistanceToDestination = getManhatanDistanceToDestination(neighbour->mPosition, destinationNodePosition);
-				neighbour->mParentPosition = currentNode->mPosition;
-				openNodes.emplace(neighbour);
-				openNodesPointers.emplace(neighbour);
-
-			}
-			if(neighbour->mDistanceFromStart > currentNode->mDistanceFromStart + 1) {
-				auto iter = openNodes.begin();
-				for (; iter != openNodes.end(); ++iter)
-				{
-					if(*iter == neighbour) {
-						break;
-					}
-				}
-				openNodes.erase(iter);
-				neighbour->mDistanceFromStart = currentNode->mDistanceFromStart + 1;
-				neighbour->mParentPosition = currentNode->mPosition;
-				openNodes.emplace(neighbour);
 			}
 		}
 	}
 
-	PH_LOG_WARNING("Path wasn't found!");
 	return Path();
 }
 
-Path AStarAlgorithm::retracePath(const Node* const startNode, Node* const endNode)
-{
-	std::deque<Node*> nodePath;
-	Node* currentNode = endNode;
-	while(currentNode != startNode) {
-		nodePath.emplace_front(currentNode);
-		currentNode = mGrid.getNodeOfPosition(currentNode->mParentPosition);
-	}
-	nodePath.emplace_front(currentNode);
-	return toDirectionPath(nodePath);
-}
-
-Path AStarAlgorithm::toDirectionPath(const std::deque<Node*>& nodePath)
+Path AStarAlgorithm::retracePath(const NodesGrid::Node& startNode, const NodesGrid::Node& endNode)
 {
 	Path path;
-	for(unsigned i = 0; i < nodePath.size() - 1; ++i) {
-		Direction direction = getDirectionBetweenNodes(nodePath[i], nodePath[i + 1]);
-		path.emplace_back(direction);
+	
+	const NodesGrid::Node* current = &endNode;
+	while (current != &startNode)
+	{
+		path.emplace_back(getDirectionBetweenNodes(*current->mParent, *current));
+		current = current->mParent;
 	}
+
 	return path;
 }
 
-Direction AStarAlgorithm::getDirectionBetweenNodes(const Node* const startNode, const Node* const endNode)
+Direction AStarAlgorithm::getDirectionBetweenNodes(const NodesGrid::Node& startNode, const NodesGrid::Node& endNode)
 {
-	if(endNode->mPosition.x > startNode->mPosition.x)
-		return Direction::east;
-	else if(endNode->mPosition.x < startNode->mPosition.x)
-		return Direction::west;
-	else if(endNode->mPosition.y > startNode->mPosition.y)
-		return Direction::south;
-	else if(endNode->mPosition.y < startNode->mPosition.y)
+	auto& startPos = startNode.mPosition;
+	auto& endPos = endNode.mPosition;
+
+	short verticalDirection = 0;    // 0 - none, 1 - north, 2 - south
+	short horizontalDirection = 0;  // 0 - none, 1 - east, 2 - west
+
+	if (endPos.x > startPos.x)
+		horizontalDirection = 1;
+	else if (endPos.x < startPos.x)
+		horizontalDirection = 2;
+
+	if (endPos.y > startPos.y)
+		verticalDirection = 2;
+	else if (endPos.y < startPos.y)
+		verticalDirection = 1;
+
+	if (verticalDirection == 1 && horizontalDirection == 0)
 		return Direction::north;
+	if (verticalDirection == 1 && horizontalDirection == 1)
+		return Direction::north_east;
+	if (verticalDirection == 0 && horizontalDirection == 1)
+		return Direction::east;
+	if (verticalDirection == 2 && horizontalDirection == 1)
+		return Direction::south_east;
+	if (verticalDirection == 2 && horizontalDirection == 0)
+		return Direction::south;
+	if (verticalDirection == 2 && horizontalDirection == 2)
+		return Direction::south_west;
+	if (verticalDirection == 0 && horizontalDirection == 2)
+		return Direction::west;
+	if (verticalDirection == 1 && horizontalDirection == 2)
+		return Direction::north_west;
+
 	PH_UNEXPECTED_SITUATION("Two identical nodes were given");
 }
 
-bool AStarAlgorithm::isNodeInSet(Node& node, const std::set<Node*>& set)
+float AStarAlgorithm::distanceBetweenNodes(const NodesGrid::Node& pos1, const NodesGrid::Node& pos2)
 {
-	auto found = set.find(&node);
-	return found != set.cend();
-}
-
-float AStarAlgorithm::getManhatanDistanceToDestination(const sf::Vector2u currentNodePosition, const sf::Vector2u destinationNodePosition)
-{
-	// Change manhatan distance to some other heuristic when zombie can move in 8 directions
-	float legX = std::abs(static_cast<float>(destinationNodePosition.x) - currentNodePosition.x);
-	float legY = std::abs(static_cast<float>(destinationNodePosition.y) - currentNodePosition.y);
-	return legX + legY;
+	return Math::distanceBetweenPoints(pos1.mPosition, pos2.mPosition);
 }
 
 }
