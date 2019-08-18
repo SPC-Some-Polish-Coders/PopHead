@@ -51,11 +51,38 @@ namespace ph {
 			{position.x - 1, position.y - 1}
 		};
 
+		bool north		= isInBoundaries(neighboursPositions[0]) && !mObstacleGrid.isObstacle(neighboursPositions[0].x, neighboursPositions[0].y);
+		bool north_east = isInBoundaries(neighboursPositions[1]) && !mObstacleGrid.isObstacle(neighboursPositions[1].x, neighboursPositions[1].y);
+		bool east		= isInBoundaries(neighboursPositions[2]) && !mObstacleGrid.isObstacle(neighboursPositions[2].x, neighboursPositions[2].y);
+		bool south_east = isInBoundaries(neighboursPositions[3]) && !mObstacleGrid.isObstacle(neighboursPositions[3].x, neighboursPositions[3].y);
+		bool south		= isInBoundaries(neighboursPositions[4]) && !mObstacleGrid.isObstacle(neighboursPositions[4].x, neighboursPositions[4].y);
+		bool south_west = isInBoundaries(neighboursPositions[5]) && !mObstacleGrid.isObstacle(neighboursPositions[5].x, neighboursPositions[5].y);
+		bool west		= isInBoundaries(neighboursPositions[6]) && !mObstacleGrid.isObstacle(neighboursPositions[6].x, neighboursPositions[6].y);
+		bool north_west = isInBoundaries(neighboursPositions[7]) && !mObstacleGrid.isObstacle(neighboursPositions[7].x, neighboursPositions[7].y);
+
+		std::vector<size_t> neighboursIndexes;
+		if (north)
+			neighboursIndexes.push_back(0);
+		if (east)
+			neighboursIndexes.push_back(2);
+		if (south)
+			neighboursIndexes.push_back(4);
+		if (west)
+			neighboursIndexes.push_back(6);
+		if (north && east && north_east)
+			neighboursIndexes.push_back(1);
+		if (south && east && south_east)
+			neighboursIndexes.push_back(3);
+		if (south && west && south_west)
+			neighboursIndexes.push_back(5);
+		if (north && west && north_west)
+			neighboursIndexes.push_back(7);
+
 		std::vector<std::reference_wrapper<Node>> neighbours;
-		for (const auto& pos : neighboursPositions)
+
+		for (const auto index : neighboursIndexes)
 		{
-			if (!isInBoundaries(pos))
-				continue;
+			const auto& pos = neighboursPositions.at(index);
 			if (mGeneratedNodes.at(internalIndex(pos)))
 			{
 				// TODO: optimize this
