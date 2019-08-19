@@ -64,7 +64,10 @@ Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f des
 		dest += sf::Vector2u(1, 1);
 
 	AStarAlgorithm a(mObstacleGrid, toNodePosition(startPosition), dest);
-	return a.getPath();
+	auto path = a.getPath();
+	//if (path.size() > 3)
+	//	path.erase(path.cbegin() + 3, path.cend());
+	return path;
 }
 
 sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
