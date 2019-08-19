@@ -5,9 +5,19 @@
 
 namespace ph{
 
-using ObstacleGrid = std::vector<std::vector<bool>>;
+enum class Direction
+{
+	north,
+	north_east,
+	east,
+	south_east,
+	south,
+	south_west,
+	west,
+	north_west,
+	none
+};
 
-enum class Direction { east, west, north, south, none };
 using Path = std::deque<Direction>;
 
 }

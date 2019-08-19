@@ -1,6 +1,8 @@
 #pragma once 
- 
+
+#include "obstacleGrid.hpp"
 #include "pathData.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace ph { 
@@ -22,7 +24,7 @@ private:
 
 private:
 	const ObstacleGrid& mObstacleGrid;
-	const sf::Vector2u mStartNodePosition;
+	const sf::Vector2i mStartNodePosition;
 	const unsigned mMaximalWalkableDistance;
 	unsigned mNumberOfRecurrencyCalls;
 };

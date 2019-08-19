@@ -1,6 +1,7 @@
 #include "RandomPathAlgorithm.hpp"
 #include "Utilities/random.hpp"
 #include "Logs/logs.hpp"
+
 #include <algorithm>
 
 namespace ph {
@@ -37,7 +38,7 @@ Path RandomPathAlgorithm::getRandomWalkingPath()
 		return Path();
 
 	Path path;
-	Direction direction = static_cast<Direction>(Random::generateNumber(0, 3));
+	Direction direction = static_cast<Direction>(Random::generateNumber(0, 3) * 2);
 	const unsigned walkableDistanceBetweenObstacleNode = getWalkableDistanceBetweenObstacleNodeIn(direction);
 	if(walkableDistanceBetweenObstacleNode < 2) {
 		++mNumberOfRecurrencyCalls;
@@ -68,10 +69,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 {
-	for(unsigned i = 1; i < 7; ++i) {
-		if(mObstacleGrid.size() <= mStartNodePosition.x + i)
+	for(int i = 1; i < 7; ++i) {
+		if(static_cast<int>(mObstacleGrid.getColumnsCount()) <= mStartNodePosition.x + i)
 			return i;
-		if(mObstacleGrid[mStartNodePosition.x + i][mStartNodePosition.y])
+		if(mObstacleGrid.isObstacle(mStartNodePosition.x + i, mStartNodePosition.y))
 			return i - 1;
 	}
 	return mMaximalWalkableDistance;
@@ -79,10 +80,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mStartNodePosition.x - i < 0)
 			return i;
-		if(mObstacleGrid[mStartNodePosition.x - i][mStartNodePosition.y])
+		if(mObstacleGrid.isObstacle(mStartNodePosition.x - i, mStartNodePosition.y))
 			return i - 1;
 	}
 	return mMaximalWalkableDistance;
@@ -90,10 +91,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 {
-	for(unsigned i = 1; i < 7; ++i) {
+	for(int i = 1; i < 7; ++i) {
 		if(mStartNodePosition.y - i < 0)
 			return i;
-		if(mObstacleGrid[mStartNodePosition.x][mStartNodePosition.y - i])
+		if(mObstacleGrid.isObstacle(mStartNodePosition.x, mStartNodePosition.y - i))
 			return i - 1;
 	}
 	return mMaximalWalkableDistance;
@@ -101,10 +102,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 
 unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheSouth()
 {
-	for(unsigned i = 1; i < 7; ++i) {
-		if(mObstacleGrid.size() <= mStartNodePosition.y + i)
+	for(int i = 1; i < 7; ++i) {
+		if(static_cast<int>(mObstacleGrid.getRowsCount()) <= mStartNodePosition.y + i)
 			return i;
-		if(mObstacleGrid[mStartNodePosition.x][mStartNodePosition.y + i])
+		if(mObstacleGrid.isObstacle(mStartNodePosition.x, mStartNodePosition.y + i))
 			return i - 1;
 	}
 	return mMaximalWalkableDistance;

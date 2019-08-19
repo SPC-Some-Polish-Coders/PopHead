@@ -65,6 +65,8 @@ private:
 
 	void loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, sf::Vector2f position);
 
+	void createMapBorders(const GeneralMapInfo& mapInfo);
+
 private:
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	std::unique_ptr<ChunkMap> mChunkMap;

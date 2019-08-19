@@ -8,6 +8,7 @@ namespace ph {
 
 Map::Map()
 	:mChunkMap(nullptr)
+	,mGameData(nullptr)
 {
 }
 
@@ -15,6 +16,7 @@ void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, con
 {
 	createChunkMap(tilesetsData, info);
 	createAllLayers(allLayersGlobalTileIds, tilesetsData, info);
+	createMapBorders(info);
 }
 
 void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
@@ -115,6 +117,36 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData,
 			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
 			mGameData->getAIManager().registerObstacle({bounds.left, bounds.top});
 		}
+	}
+}
+
+void Map::createMapBorders(const GeneralMapInfo& mapInfo)
+{
+	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
+	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
+
+	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
+
+	auto& physics = mGameData->getPhysicsEngine();
+
+	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
+	{
+		// top border
+		sf::Vector2f positionTop(x * size.x, -size.y);
+		physics.createStaticBodyAndGetTheReference({ positionTop, size });
+		// bottom border
+		sf::Vector2f positionBottom(x * size.x, mapHeight);
+		physics.createStaticBodyAndGetTheReference({ positionBottom, size });
+	}
+
+	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
+	{
+		// left border
+		sf::Vector2f positionLeft(-size.x, y * size.y);
+		physics.createStaticBodyAndGetTheReference({ positionLeft, size });
+		// right border
+		sf::Vector2f positionRight(mapWidth, y * size.y);
+		physics.createStaticBodyAndGetTheReference({ positionRight, size });
 	}
 }
 
