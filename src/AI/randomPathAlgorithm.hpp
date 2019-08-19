@@ -1,6 +1,8 @@
 #pragma once 
- 
+
+#include "obstacleGrid.hpp"
 #include "pathData.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace ph { 

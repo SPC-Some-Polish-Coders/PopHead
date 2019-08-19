@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <cmath>
+
 namespace ph {
 
 namespace Math 
@@ -22,6 +24,10 @@ namespace Math
 	bool isPointInsideRect(const sf::Vector2f point, const sf::FloatRect& rect);
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed);
+
+	template <typename T>
+	float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2);
+}
 }
 
-}
+#include "math.inl"

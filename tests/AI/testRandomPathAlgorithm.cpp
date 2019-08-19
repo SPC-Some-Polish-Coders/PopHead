@@ -1,6 +1,8 @@
 #include <catch.hpp>
 
 #include "AI/RandomPathAlgorithm.hpp"
+#include "AI/obstacleGrid.hpp"
+
 #include <algorithm>
 
 namespace ph {
@@ -39,12 +41,7 @@ TEST_CASE("Random path finding algorithm works properly with no obstacles", "[AI
 
 ObstacleGrid getWalkableGrid11x11()
 {
-	std::vector<bool> column;
-	column.resize(11);
-	std::fill(column.begin(), column.end(), false);
-	ObstacleGrid grid;
-	grid.resize(11);
-	std::fill(grid.begin(), grid.end(), column);
+	ObstacleGrid grid(11, 11);
 	return grid;
 }
 
@@ -71,16 +68,13 @@ TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][R
 
 ObstacleGrid getGridWithObstacles11x11()
 {
-	std::vector<bool> column;
-	column.resize(11);
-	std::fill(column.begin(), column.end(), false);
-	ObstacleGrid grid;
-	grid.resize(11);
-	std::fill(grid.begin(), grid.end(), column);
-	grid[10][5] = true;
-	grid[1][5] = true;
-	grid[5][2] = true;
-	grid[5][7] = true;
+	auto grid = getWalkableGrid11x11();
+
+	grid.registerObstacle(10, 5);
+	grid.registerObstacle(1, 5);
+	grid.registerObstacle(5, 2);
+	grid.registerObstacle(5, 7);
+
 	return grid;
 }
 

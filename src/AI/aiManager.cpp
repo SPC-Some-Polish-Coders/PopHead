@@ -1,6 +1,7 @@
 #include "aiManager.hpp" 
 #include "aStarAlgorithm.hpp"
 #include "RandomPathAlgorithm.hpp"
+
 #include <algorithm>
 #include <cmath>
 
@@ -30,18 +31,16 @@ void AIManager::setPlayerPosition(const sf::Vector2f playerPosition)
 
 void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
 {
-	mObstacleGrid.resize(mapSizeInTiles.x);
-	for(auto& column : mObstacleGrid) {
-		column.resize(mapSizeInTiles.y);
-		std::fill(column.begin(), column.end(), false);
-	}
+	mObstacleGrid = ObstacleGrid(mapSizeInTiles.x, mapSizeInTiles.y);
 }
 
 void AIManager::registerObstacle(const sf::Vector2f collisionBodyPosition)
 {
-	const unsigned gridPositionX = static_cast<unsigned>(collisionBodyPosition.x) / mSpotSideLength;
-	const unsigned gridPositionY = static_cast<unsigned>(collisionBodyPosition.y) / mSpotSideLength;
-	mObstacleGrid[gridPositionX][gridPositionY] = true;
+	// TODO: It should be checked if collision body is on multiple grids (tiles)
+	const auto spotSide = static_cast<float>(mSpotSideLength);
+	const auto gridPositionX = static_cast<size_t>(collisionBodyPosition.x / mSpotSideLength);
+	const auto gridPositionY = static_cast<size_t>(collisionBodyPosition.y / mSpotSideLength);
+	mObstacleGrid.registerObstacle(gridPositionX, gridPositionY);
 }
 
 void AIManager::update()
@@ -61,13 +60,14 @@ bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const
 {
 	auto dest = toNodePosition(destinationPosition);
-	if (mObstacleGrid.at(dest.x).at(dest.y))
-	{
+	if (mObstacleGrid.isObstacle(dest.x, dest.y))
 		dest += sf::Vector2u(1, 1);
-	}
 
-	AStarAlgorithm a(mObstacleGrid);
-	return a.getPath(toNodePosition(startPosition), dest);
+	AStarAlgorithm a(mObstacleGrid, toNodePosition(startPosition), dest);
+	auto path = a.getPath();
+	//if (path.size() > 3)
+	//	path.erase(path.cbegin() + 3, path.cend());
+	return path;
 }
 
 sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const

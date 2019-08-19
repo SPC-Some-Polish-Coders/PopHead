@@ -230,4 +230,63 @@ TEST_CASE("Lerp", "[Utilities][Math]")
 	}
 }
 
+TEMPLATE_TEST_CASE("Distance between two points", "[Utilities][Math][distanceBetweenPoints]", int, unsigned, float, double)
+{
+	SECTION("Distance equal 0")
+	{
+		SECTION("1:")
+		{
+			sf::Vector2<TestType> point1(4, 5);
+			sf::Vector2<TestType> point2(4, 5);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(0).margin(0.00001));
+		}
+		SECTION("2:")
+		{
+			sf::Vector2<TestType> point1(0, 0);
+			sf::Vector2<TestType> point2(0, 0);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(0).margin(0.00001));
+		}
+		SECTION("3:")
+		{
+			sf::Vector2<TestType> point1(-8, 7);
+			sf::Vector2<TestType> point2(-8, 7);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(0).margin(0.00001));
+		}
+	}
+	SECTION("Distance is greater than 0")
+	{
+		SECTION("1:")
+		{
+			sf::Vector2<TestType> point1(0, 0);
+			sf::Vector2<TestType> point2(3, 4);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(5).margin(0.00001));
+		}
+		SECTION("2:")
+		{
+			sf::Vector2<TestType> point1(-2, -2);
+			sf::Vector2<TestType> point2(1, 2);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(5).margin(0.00001));
+		}
+		SECTION("3:")
+		{
+			sf::Vector2<TestType> point1(-3, 5);
+			sf::Vector2<TestType> point2(-3, 14);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(9).margin(0.00001));
+		}
+		SECTION("4:")
+		{
+			sf::Vector2<TestType> point1(-8, 7);
+			sf::Vector2<TestType> point2(15, 29);
+			float distance = Math::distanceBetweenPoints(point1, point2);
+			CHECK(distance == Approx(31.82766).margin(0.00001));
+		}
+	}
+}
+
 }
