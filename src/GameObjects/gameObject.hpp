@@ -26,6 +26,8 @@ public:
 	auto getName() const -> const std::string& { return mName; }
 	auto getChild(const std::string& name) const -> GameObject&;
 	auto getChildren() const -> const std::list<std::unique_ptr<GameObject>>& { return mChildren; }
+
+	sf::Vector2f getWorldPosition() const;
 	virtual sf::FloatRect getGlobalBounds() const;
 
 protected:

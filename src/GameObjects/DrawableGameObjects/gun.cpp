@@ -6,7 +6,7 @@
 namespace ph {
 
 Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
-               const unsigned  damage, const unsigned range)
+               const unsigned damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
 	,mEnemiesNode(enemiesNode)
@@ -58,15 +58,15 @@ void Gun::shoot(const sf::Vector2f shotDirection)
 	auto& player = getParent();
 	auto& root = player.getParent();
 	auto& enemies = root.getChild("enemy_container");
-	setGunPositionToRightHand(shotDirection);
-	const Bullet bullet(enemies, shotDirection, getPosition(), 50, 250);
+	sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
+	const Bullet bullet(enemies, shotDirection, rightHandPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
 }
 
-void Gun::setGunPositionToRightHand(const sf::Vector2f shotDirection)
+sf::Vector2f  Gun::getRightHandPosition(const sf::Vector2f shotDirection)
 {
-	sf::Vector2f position = getPosition();
+	sf::Vector2f position = getWorldPosition();
 
 	if(shotDirection == sf::Vector2f(1, 0))
 		position += {20, 20};
@@ -87,7 +87,7 @@ void Gun::setGunPositionToRightHand(const sf::Vector2f shotDirection)
 	else
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 
-	setPosition(position);
+	return position;
 }
 
 void Gun::initializeShotGraphics(const Bullet& bullet)

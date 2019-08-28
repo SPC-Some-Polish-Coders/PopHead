@@ -114,9 +114,19 @@ auto GameObject::getChild(const std::string& name) const -> GameObject&
 	throw std::runtime_error("Child was not found!");
 }
 
+sf::Vector2f GameObject::getWorldPosition() const
+{
+	sf::Vector2f position;
+	for(const GameObject* gameObject = this; gameObject != nullptr; gameObject = &gameObject->getParent())
+		position += gameObject->getPosition();
+
+	return position;
+}
+
 sf::FloatRect GameObject::getGlobalBounds() const
 {
-	return sf::FloatRect(getPosition().x, getPosition().y, 0, 0);
+	sf::Vector2f worldPosition = getWorldPosition();
+	return sf::FloatRect(worldPosition.x, worldPosition.y, 0, 0);
 }
 
 }

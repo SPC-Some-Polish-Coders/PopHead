@@ -45,7 +45,7 @@ public:
 	void attack(const sf::Vector2f attackDirection);
 
 private:
-	void setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection);
+	sf::Vector2f getRightHandPosition(const sf::Vector2f attackDirection);
 	void initializeAttackGraphics(const Swing& swing);
 	void updateHitGraphicsRotation();
 	void resetAttackGraphics();
