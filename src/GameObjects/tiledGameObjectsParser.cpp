@@ -8,6 +8,7 @@
 #include "DrawableGameObjects/car.hpp"
 #include "GameObjectContainers/enemyContainer.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
+#include "GameObjectContainers/itemsContainer.hpp"
 #include "gameObject.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -88,6 +89,7 @@ void TiledGameObjectsParser::loadContainerObjects() const
 	auto& standingObjects = getStandingObjects();
 	standingObjects.addChild(std::make_unique<EnemyContainer>(mGameData->getPhysicsEngine()));
 	standingObjects.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
+	standingObjects.addChild(std::make_unique<ItemsContainer>());
 
 	auto& lyingOnGroundObjects = mRoot.getChild("LAYER_lyingOnGroundObjects");
 	lyingOnGroundObjects.addChild(std::make_unique<DeadEnemyContainer>());
