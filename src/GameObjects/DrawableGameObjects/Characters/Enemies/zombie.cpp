@@ -99,7 +99,9 @@ void Zombie::handlePlayerHit()
 
 	try {
 		Character& player = dynamic_cast<Character&>(root.getChild("player"));
-		if(Math::areTheyOverlapping(getGlobalBounds(), player.getGlobalBounds()))
+		const sf::Vector2f zombieWorldPosition = getWorldPosition();
+		sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
+		if(Math::areTheyOverlapping(zombieDamageArea, player.getGlobalBounds()))
 			player.takeDamage(damage);
 	}
 	catch(std::runtime_error){}
