@@ -1,5 +1,4 @@
 #include "character.hpp"
-
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
@@ -9,7 +8,7 @@ namespace ph {
 
 Character::Character(GameData* gameData, std::string name, Animation animation,
 	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass)
-	:DrawableGameObject(gameData->getRenderer(), name, LayerID::kinematicEntities)
+	:GameObject(name)
 	,mGameData(gameData)
 	,mHp(Hp)
 	,mMaxHp(maxHp)
@@ -20,41 +19,21 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 {
 }
 
-void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
 }
 
-void Character::setPosition(sf::Vector2f position, bool recursive)
+void Character::setPosition(sf::Vector2f position)
 {
-	mSprite.setPosition(position);
 	mCollisionBody.setPosition(position);
-	DrawableGameObject::setPosition(position, recursive);
+	Transformable::setPosition(position);
 }
 
-void Character::move(sf::Vector2f offset, bool recursive)
+void Character::move(sf::Vector2f offset)
 {
-	mSprite.move(offset);
 	mCollisionBody.move(offset);
-	DrawableGameObject::move(offset, recursive);
-}
-
-void Character::setScale(sf::Vector2f factor, bool recursive)
-{
-	mSprite.setScale(factor);
-	DrawableGameObject::setScale(factor, recursive);
-}
-
-void Character::setRotation(float angle, bool recursive)
-{
-	mSprite.setRotation(angle);
-	DrawableGameObject::setRotation(angle, recursive);
-}
-
-void Character::rotate(float angle, bool recursive)
-{
-	mSprite.rotate(angle);
-	DrawableGameObject::rotate(angle, recursive);
+	Transformable::move(offset);
 }
 
 auto Character::getSpriteCenter() -> sf::Vector2f
@@ -63,15 +42,13 @@ auto Character::getSpriteCenter() -> sf::Vector2f
 	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
 }
 
-bool Character::isDead()
+sf::FloatRect Character::getGlobalBounds() const
 {
-	return mIsDead;
+	return mCollisionBody.getRect();
 }
 
 void Character::takeDamage(const unsigned damage)
 { 
-	//INFO: Temporary solution so the particles don't bug
-
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {
 		mHp -= damage;
 		drawBlood();
@@ -81,9 +58,9 @@ void Character::takeDamage(const unsigned damage)
 
 void Character::drawBlood()
 {
-	auto& root = mGameData->getSceneMachine().getScene().getRoot();
-	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
-	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + mPosition));
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(standingObjects.getChild("particlesSystem"));
+	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
 }
 
 void Character::setAnimationState(const std::string& stateName)

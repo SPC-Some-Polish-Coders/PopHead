@@ -25,7 +25,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mWereZombieSpawned(false)
 	,mHasChangedMusicToZombieAttackTheme(false)
 {
-	auto& car = dynamic_cast<Car&>(root.getChild("car"));
+	auto& car = dynamic_cast<Car&>(root.getChild("LAYER_standingObjects").getChild("car"));
 	car.setVelocity(120);
 }
 
@@ -39,7 +39,7 @@ void StartGameCutScene::update(const sf::Time delta)
 {
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
 
-	auto& car = dynamic_cast<Car&>(mRoot.getChild("car"));
+	auto& car = dynamic_cast<Car&>(mRoot.getChild("LAYER_standingObjects").getChild("car"));
 	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
 	if(cutsceneTimeInSeconds < 5)

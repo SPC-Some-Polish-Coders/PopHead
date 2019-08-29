@@ -188,7 +188,7 @@ void Player::updateMovement(const sf::Time delta)
 		mCollisionBody.move(velocity);
 	}
 	setPosition(mCollisionBody.getPosition());
-	mGameData->getAIManager().setPlayerPosition(mPosition);
+	mGameData->getAIManager().setPlayerPosition(getPosition());
 }
 
 void Player::updateAnimation(const sf::Time delta)
@@ -306,7 +306,7 @@ sf::Vector2f Player::attackDirection()
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = mSprite.getGlobalBounds();
+	const sf::FloatRect characterBounds = getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 

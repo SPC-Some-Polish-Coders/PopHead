@@ -1,11 +1,12 @@
 #pragma once
 
-#include "GameObjects/DrawableGameObjects/character.hpp"
+#include "GameObjects/gameObject.hpp"
 #include <array>
 
 namespace ph {
 
 class GameData;
+class Character;
 
 class Bullet
 {
@@ -30,17 +31,17 @@ private:
 	const unsigned mDamage;
 };
 
-class Gun : public DrawableGameObject
+class Gun : public GameObject
 {
 public:
 	Gun(GameData* const, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
-	void draw(sf::RenderTarget&, const sf::RenderStates) const override;
+	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
 	void shoot(const sf::Vector2f shotDirection);
 
 private:
-	void setGunPositionToRightHand(const sf::Vector2f shotDirection);
+	sf::Vector2f getRightHandPosition(const sf::Vector2f shotDirection);
 	void initializeShotGraphics(const Bullet&);
 	void resetShotGraphics();
 

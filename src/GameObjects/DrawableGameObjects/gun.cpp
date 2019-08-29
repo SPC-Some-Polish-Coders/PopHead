@@ -1,11 +1,12 @@
 #include "gun.hpp"
-#include "gameData.hpp"
+#include "character.hpp"
 #include "Logs/logs.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
 Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, const sf::Vector2f startPosition,
-               const unsigned  damage, const unsigned range)
+               const unsigned damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
 	,mEnemiesNode(enemiesNode)
@@ -39,14 +40,13 @@ bool Bullet::isBulletStillInItsRange()
 
 bool Bullet::wasEnemyShot(Character& character)
 {
-	const auto& sprite = character.getSprite();
-	const sf::FloatRect hitbox = sprite.getGlobalBounds();
-	const sf::Vector2f currentPosition = mStartPosition + (mDirection	* static_cast<float>(mTraveledDistance));
+	const sf::FloatRect hitbox = character.getGlobalBounds();
+	const sf::Vector2f currentPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
 	return Math::isPointInsideRect(currentPosition, hitbox);
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
-	:DrawableGameObject(gameData->getRenderer(), "gun", LayerID::kinematicEntities)
+	:GameObject("gun")
 	,mGameData(gameData)
 	,mDamage(damage)
 {
@@ -55,35 +55,37 @@ Gun::Gun(GameData* const gameData, const float damage)
 void Gun::shoot(const sf::Vector2f shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
-	auto& player = getParent();
-	auto& root = player.getParent();
-	auto& enemies = root.getChild("enemy_container");
-	setGunPositionToRightHand(shotDirection);
-	const Bullet bullet(enemies, shotDirection, mPosition, 50, 250);
+	auto& enemies = mRoot->getChild("LAYER_standingObjects").getChild("enemy_container");
+	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
+	const Bullet bullet(enemies, shotDirection, rightHandPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
 }
 
-void Gun::setGunPositionToRightHand(const sf::Vector2f shotDirection)
+sf::Vector2f  Gun::getRightHandPosition(const sf::Vector2f shotDirection)
 {
+	sf::Vector2f position = getWorldPosition();
+
 	if(shotDirection == sf::Vector2f(1, 0))
-		mPosition += {20, 20};
+		position += {20, 20};
 	else if(shotDirection == sf::Vector2f(-1, 0))
-		mPosition += {5, 15};
+		position += {5, 15};
 	else if(shotDirection == sf::Vector2f(0, 1))
-		mPosition += {3, 20};
+		position += {3, 20};
 	else if(shotDirection == sf::Vector2f(0, -1))
-		mPosition += {15, 15};
+		position += {15, 15};
 	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
-		mPosition += {20, 3};
+		position += {20, 3};
 	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
-		mPosition += {3, 3};
+		position += {3, 3};
 	else if(shotDirection == sf::Vector2f(0.7f, 0.7f))
-		mPosition += {10, 20};
+		position += {10, 20};
 	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f))
-		mPosition += {0, 10};
+		position += {0, 10};
 	else
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
+
+	return position;
 }
 
 void Gun::initializeShotGraphics(const Bullet& bullet)
@@ -104,7 +106,7 @@ void Gun::resetShotGraphics()
 	mShotGraphics[1].position = {0, 0};
 }
 
-void Gun::draw(sf::RenderTarget& target, const sf::RenderStates) const
+void Gun::drawCurrent(sf::RenderTarget& target, const sf::RenderStates) const
 {
 	target.draw(mShotGraphics.data(), 2, sf::Lines);
 }

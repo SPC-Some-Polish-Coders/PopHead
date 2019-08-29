@@ -74,7 +74,7 @@ void Zombie::updateCurrent(sf::Time delta)
 	}
 
 	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 2) {
-		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", mPosition);
+		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", getPosition());
 		timeFromLastGrowl.restart();
 	}
 	setPosition(mCollisionBody.getPosition());
@@ -94,12 +94,12 @@ void Zombie::deathUpdate()
 
 void Zombie::handlePlayerHit()
 {
-	auto& gameScene = mGameData->getSceneMachine().getScene();
-	auto& root = gameScene.getRoot();
-
 	try {
-		Character& player = dynamic_cast<Character&>(root.getChild("player"));
-		if (Math::areTheyOverlapping(getSprite().getGlobalBounds(), player.getSprite().getGlobalBounds()))
+		auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+		Character& player = dynamic_cast<Character&>(standingObjects.getChild("player"));
+		const sf::Vector2f zombieWorldPosition = getWorldPosition();
+		sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
+		if(Math::areTheyOverlapping(zombieDamageArea, player.getGlobalBounds()))
 			player.takeDamage(damage);
 	}
 	catch(std::runtime_error){}
@@ -110,7 +110,7 @@ void Zombie::move(sf::Time delta)
 	setPosition(mCollisionBody.getPosition());
 
 	if(mMovementPath.empty()) {
-		mMovementPath = mGameData->getAIManager().getZombiePath(mPosition);
+		mMovementPath = mGameData->getAIManager().getZombiePath(getPosition());
 		mTimeFromStartingThisMove.restart();
 	}
 
@@ -154,7 +154,7 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 
 void Zombie::updateAnimation(sf::Time delta)
 {
-	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(mPosition)) {
+	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(getPosition())) {
 		if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
 			setAnimationState("fightRight");
 		else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))

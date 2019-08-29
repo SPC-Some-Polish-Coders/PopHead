@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObjects/DrawableGameObject.hpp"
+#include "GameObjects/GameObject.hpp"
 #include <array>
 
 namespace ph{
@@ -35,17 +35,17 @@ private:
 	std::array<sf::Vertex, 2> mHitArea;
 };
 
-class MeleeWeapon : public DrawableGameObject
+class MeleeWeapon : public GameObject
 {
 public:
 	MeleeWeapon(GameData* const, const float damage, const float range, const float rotationRange);
 
 	void updateCurrent(const sf::Time delta) override;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void attack(const sf::Vector2f attackDirection);
 
 private:
-	void setMeleeWeaponPositionToRightHand(const sf::Vector2f attackDirection);
+	sf::Vector2f getRightHandPosition(const sf::Vector2f attackDirection);
 	void initializeAttackGraphics(const Swing& swing);
 	void updateHitGraphicsRotation();
 	void resetAttackGraphics();

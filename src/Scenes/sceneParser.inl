@@ -20,6 +20,8 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParse
 	parse<MapParser>(gameData, sceneLinksNode, "map");
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<MusicParser>(gameData, sceneLinksNode, "music");
+
+	gameData->getRenderer().setSceneTreeRoot(&root);
 }
 
 template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>

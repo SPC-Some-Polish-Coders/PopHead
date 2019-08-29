@@ -35,7 +35,6 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		mGameData->getRenderer().clear();
 		mGameData->getPhysicsEngine().clear();
 		mGameData->getGui().clearGUI();
 		mScene = nullptr;
@@ -46,7 +45,6 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getRenderer().clear();
 	mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 	mScene.reset(new Scene());

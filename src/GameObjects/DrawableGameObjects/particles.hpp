@@ -1,21 +1,23 @@
 #pragma once
 
-#include "GameObjects/drawableGameObject.hpp"
+#include "GameObjects/gameObject.hpp"
 
 namespace ph {
+
+class Renderer;
 
 struct Particle
 {
 	sf::Vector2f velocity;
 };
 
-class Particles : public DrawableGameObject
+class Particles : public GameObject
 {
 public:
 	Particles(Renderer&, const sf::Vector2f);
 
 	void updateCurrent(const sf::Time delta) override;
-	void draw(sf::RenderTarget& target, sf::RenderStates) const override;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates) const override;
 
 private:
 	void initializeParticles();

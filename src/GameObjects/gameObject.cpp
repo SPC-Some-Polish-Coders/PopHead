@@ -32,6 +32,24 @@ void GameObject::updateChildren(sf::Time delta)
 		child->update(delta);
 }
 
+void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	states.transform *= getTransform();
+
+	drawCurrent(target, states);
+	drawChildren(target, states);
+}
+
+void GameObject::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+}
+
+void GameObject::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	for(const auto& child : mChildren)
+		child->draw(target, states);
+}
+
 std::string GameObject::getUniqueName(std::string& childName) const
 {
 	for (const auto& child : mChildren)
@@ -94,6 +112,21 @@ auto GameObject::getChild(const std::string& name) const -> GameObject&
         if(child->getName() == name)
             return *(child.get());
 	throw std::runtime_error("Child was not found!");
+}
+
+sf::Vector2f GameObject::getWorldPosition() const
+{
+	sf::Vector2f position;
+	for(const GameObject* gameObject = this; gameObject != nullptr; gameObject = &gameObject->getParent())
+		position += gameObject->getPosition();
+
+	return position;
+}
+
+sf::FloatRect GameObject::getGlobalBounds() const
+{
+	sf::Vector2f worldPosition = getWorldPosition();
+	return sf::FloatRect(worldPosition.x, worldPosition.y, 0, 0);
 }
 
 }

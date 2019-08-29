@@ -52,7 +52,6 @@ private:
 	bool mIsAttacking;
 	bool mHasJustDied;
 	bool mWasGamePauseButtonClicked;
-
 };
 
 }
