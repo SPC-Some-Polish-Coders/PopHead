@@ -59,17 +59,12 @@ Zombie::Zombie(GameData* gameData)
 
 void Zombie::updateCurrent(sf::Time delta)
 {
-	if(mIsDead) {
-		deathUpdate();
-		return;
-	}
-
 	if(mHp <= 0) {
-		mIsDead = true;
-		mTimeFromDeath.restart();
 		mAnimation.changeState("dead");
 		mAnimation.animate(mSprite);
 		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
+		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
+		enemyContainer->addEnemyToDie(this);
 		return;
 	}
 
@@ -82,14 +77,6 @@ void Zombie::updateCurrent(sf::Time delta)
 
 	move(delta);
 	updateAnimation(delta);
-}
-
-void Zombie::deathUpdate()
-{
-	if(mTimeFromDeath.getElapsedTime().asSeconds() > 10) {
-		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
-		enemyContainer->addEnemyToDie(this);
-	}
 }
 
 void Zombie::handlePlayerHit()

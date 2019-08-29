@@ -5,10 +5,13 @@
 
 namespace ph { 
 
+class PhysicsEngine;
+class DyingCharacter;
+
 class EnemyContainer : public GameObject
 {
 public:
-	EnemyContainer(GameData* const);
+	EnemyContainer(PhysicsEngine& physicsEngine);
 
 	void addEnemyToDie(Enemy* enemy) { mDyingEnemies.emplace_back(enemy); }
 	void updateCurrent(sf::Time delta) override;
@@ -18,7 +21,21 @@ private:
 
 private:
 	std::vector<Enemy*> mDyingEnemies;
-	GameData* const mGameData;
+	PhysicsEngine& mPhysicsEngine;
+};
+
+class DeadEnemyContainer : public GameObject
+{
+public:
+	DeadEnemyContainer();
+	void removeDeadEnemy(DyingCharacter* enemy);
+	void updateCurrent(sf::Time delta) override;
+
+private:
+	void removeEnemies();
+
+private:
+	std::vector<DyingCharacter*> mEnemiesToRemove;
 };
 
 } 

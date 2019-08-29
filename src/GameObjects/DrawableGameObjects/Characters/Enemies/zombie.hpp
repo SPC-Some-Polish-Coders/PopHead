@@ -12,7 +12,6 @@ public:
 
 	void updateCurrent(sf::Time delta) override;
 private:
-	void deathUpdate();
 	void handlePlayerHit();
 	void move(sf::Time delta);
 	sf::Vector2f toDirectionVector(Direction);
@@ -23,7 +22,6 @@ private:
 	Path mMovementPath;
 	sf::Clock timeFromLastGrowl;
 	sf::Clock mTimeFromStartingThisMove;
-	sf::Clock mTimeFromDeath;
 	sf::Vector2f mCurrentDirectionVector;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };

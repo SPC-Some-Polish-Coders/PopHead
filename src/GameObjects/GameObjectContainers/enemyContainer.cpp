@@ -1,11 +1,12 @@
 #include "enemyContainer.hpp" 
-#include "gameData.hpp"
+#include "Physics/physicsEngine.hpp"
+#include "GameObjects/DrawableGameObjects/dyingCharacter.hpp"
 
 namespace ph {
 
-EnemyContainer::EnemyContainer(GameData* const gameData)
+EnemyContainer::EnemyContainer(PhysicsEngine& physicsEngine)
 	:GameObject("enemy_container")
-	,mGameData(gameData)
+	,mPhysicsEngine(physicsEngine)
 {
 }
 
@@ -17,10 +18,36 @@ void EnemyContainer::updateCurrent(sf::Time delta)
 void EnemyContainer::handleDyingEnemies()
 {
 	for(Enemy* dyingEnemy : mDyingEnemies) {
-		mGameData->getPhysicsEngine().removeKinematicBody(dyingEnemy->mCollisionBody);
+		auto& deadEnemyContainer = mRoot->getChild("LAYER_lyingOnGroundObjects").getChild("dead_enemy_container");
+		auto dyingCharacter = std::make_unique<DyingCharacter>(dyingEnemy->getSprite());
+		dyingCharacter->setPosition(dyingEnemy->getPosition());
+		deadEnemyContainer.addChild(std::move(dyingCharacter));
 		removeChild(dyingEnemy);
-		mDyingEnemies.clear();
 	}
+	mDyingEnemies.clear();
+}
+
+DeadEnemyContainer::DeadEnemyContainer()
+	:GameObject("dead_enemy_container")
+{
+}
+
+void DeadEnemyContainer::removeDeadEnemy(DyingCharacter* enemy)
+{
+	mEnemiesToRemove.emplace_back(enemy);
+}
+
+void DeadEnemyContainer::updateCurrent(sf::Time delta)
+{
+	removeEnemies();
+}
+
+void DeadEnemyContainer::removeEnemies()
+{
+	for(DyingCharacter* enemy : mEnemiesToRemove)
+		removeChild(enemy);
+
+	mEnemiesToRemove.clear();
 }
 
 }
