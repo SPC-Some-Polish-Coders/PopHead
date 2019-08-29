@@ -106,6 +106,19 @@ void GameObject::removeChild(GameObject* childToRemove)
 		}
 }
 
+void GameObject::changeParentOfChild(GameObject* child, GameObject* newParent)
+{
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it)
+		if (it->get() == child)
+		{
+			newParent->addChild(std::move(*it));
+			mChildren.erase(it);
+			break;
+		}
+
+	PH_LOG_INFO("GameObject \"" + child->getName() + "\" became a child of the \"" + newParent->getName() + "\". It was a child of the \"" + mName + "\"");
+}
+
 auto GameObject::getChild(const std::string& name) const -> GameObject&
 {
     for(auto const &child : mChildren)
