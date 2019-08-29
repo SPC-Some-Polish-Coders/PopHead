@@ -28,7 +28,7 @@ public:
 	auto getSpriteCenter() -> sf::Vector2f;
 	sf::FloatRect getGlobalBounds() const override;
 	auto getAnimation() -> Animation& { return mAnimation; }
-	bool isDead();
+	bool isDead() const { return mIsDead; };
 
 protected:
 	sf::Sprite mSprite;

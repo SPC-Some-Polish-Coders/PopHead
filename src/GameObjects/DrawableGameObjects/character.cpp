@@ -1,5 +1,4 @@
 #include "character.hpp"
-
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
@@ -48,15 +47,8 @@ sf::FloatRect Character::getGlobalBounds() const
 	return mCollisionBody.getRect();
 }
 
-bool Character::isDead()
-{
-	return mIsDead;
-}
-
 void Character::takeDamage(const unsigned damage)
 { 
-	//INFO: Temporary solution so the particles don't bug
-
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {
 		mHp -= damage;
 		drawBlood();

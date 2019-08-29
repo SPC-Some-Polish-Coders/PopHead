@@ -31,9 +31,7 @@ public:
 	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
 
 private:
-	//void drawSceneLayers(sf::FloatRect properCameraBounds) const;
 	sf::FloatRect getProperCameraBounds() const;
-
 	void drawStaticObjectsToCamera() const;
 
 private:
