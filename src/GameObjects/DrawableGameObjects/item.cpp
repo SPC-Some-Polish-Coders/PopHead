@@ -4,7 +4,7 @@
 
 namespace ph {
 
-Item::Item(GameData* const gameData, const std::string& name)
+Item::Item(const std::string& name)
 	:GameObject(name)
 	,mClickable(false)
 	,mInInventory(false)
