@@ -86,7 +86,7 @@ void TiledGameObjectsParser::loadLayerObjects() const
 void TiledGameObjectsParser::loadContainerObjects() const
 {
 	auto& standingObjects = getStandingObjects();
-	standingObjects.addChild(std::make_unique<EnemyContainer>(mGameData));
+	standingObjects.addChild(std::make_unique<EnemyContainer>(mGameData->getPhysicsEngine()));
 	standingObjects.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 }
 

@@ -1,11 +1,11 @@
 #include "enemyContainer.hpp" 
-#include "gameData.hpp"
+#include "Physics/physicsEngine.hpp"
 
 namespace ph {
 
-EnemyContainer::EnemyContainer(GameData* const gameData)
+EnemyContainer::EnemyContainer(PhysicsEngine& physicsEngine)
 	:GameObject("enemy_container")
-	,mGameData(gameData)
+	,mPhysicsEngine(physicsEngine)
 {
 }
 
@@ -17,7 +17,7 @@ void EnemyContainer::updateCurrent(sf::Time delta)
 void EnemyContainer::handleDyingEnemies()
 {
 	for(Enemy* dyingEnemy : mDyingEnemies) {
-		mGameData->getPhysicsEngine().removeKinematicBody(dyingEnemy->mCollisionBody);
+		mPhysicsEngine.removeKinematicBody(dyingEnemy->mCollisionBody);
 		removeChild(dyingEnemy);
 		mDyingEnemies.clear();
 	}
