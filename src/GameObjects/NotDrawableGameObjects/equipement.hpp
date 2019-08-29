@@ -16,8 +16,8 @@ public:
 
 	void updateCurrent(sf::Time delta) override;
 
-	void pickUpItem(Item* const itemToPick);
-	void dropItem(Item* const itemToDrop);
+	void pickUpItem(Item* itemToPick);
+	void dropItem(Item* itemToDrop);
 
 	//void openEqStash();
 	//void closeEqStash();

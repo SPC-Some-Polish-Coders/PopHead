@@ -6,7 +6,7 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
-#include "GameObjects/GameObjectContainers/equipement.hpp"
+#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
 #include <array>
 #include <exception>
 
