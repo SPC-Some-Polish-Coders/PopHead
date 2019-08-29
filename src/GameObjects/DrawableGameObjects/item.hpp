@@ -18,6 +18,8 @@ public:
 
 	void setClickable(const bool clickable) { mClickable = clickable; }
 	bool getClickable() { return mClickable; }
+	void setInInventory(const bool inInv) { mInInventory = inInv; }
+	bool getInInventory(){ return mInInventory; }
 
 private:
 	bool mClickable;

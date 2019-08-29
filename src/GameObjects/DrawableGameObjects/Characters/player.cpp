@@ -6,6 +6,7 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
+#include "GameObjects/GameObjectContainers/equipement.hpp"
 #include <array>
 #include <exception>
 
@@ -66,6 +67,7 @@ Player::Player(GameData* gameData)
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
 	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
+	addChild(std::make_unique<Equipement>(mGameData->getRenderer()));
 }
 
 void Player::input()
