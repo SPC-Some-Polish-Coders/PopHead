@@ -55,10 +55,8 @@ Gun::Gun(GameData* const gameData, const float damage)
 void Gun::shoot(const sf::Vector2f shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
-	auto& player = getParent();
-	auto& root = player.getParent();
-	auto& enemies = root.getChild("enemy_container");
-	sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
+	auto& enemies = mRoot->getChild("LAYER_standingObjects").getChild("enemy_container");
+	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
 	const Bullet bullet(enemies, shotDirection, rightHandPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();

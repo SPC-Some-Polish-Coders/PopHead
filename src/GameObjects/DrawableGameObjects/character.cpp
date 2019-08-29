@@ -58,8 +58,8 @@ void Character::takeDamage(const unsigned damage)
 
 void Character::drawBlood()
 {
-	auto& root = mGameData->getSceneMachine().getScene().getRoot();
-	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(root.getChild("particlesSystem"));
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(standingObjects.getChild("particlesSystem"));
 	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
 }
 

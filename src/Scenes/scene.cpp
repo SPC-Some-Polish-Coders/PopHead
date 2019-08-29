@@ -10,6 +10,7 @@ Scene::Scene()
 	,mRoot(std::make_unique<GameObject>("root"))
 	,mPause(false)
 {
+	GameObject::setRoot(mRoot.get());
 }
 
 void Scene::input()

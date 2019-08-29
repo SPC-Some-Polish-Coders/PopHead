@@ -94,11 +94,9 @@ void Zombie::deathUpdate()
 
 void Zombie::handlePlayerHit()
 {
-	auto& gameScene = mGameData->getSceneMachine().getScene();
-	auto& root = gameScene.getRoot();
-
 	try {
-		Character& player = dynamic_cast<Character&>(root.getChild("player"));
+		auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+		Character& player = dynamic_cast<Character&>(standingObjects.getChild("player"));
 		const sf::Vector2f zombieWorldPosition = getWorldPosition();
 		sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
 		if(Math::areTheyOverlapping(zombieDamageArea, player.getGlobalBounds()))

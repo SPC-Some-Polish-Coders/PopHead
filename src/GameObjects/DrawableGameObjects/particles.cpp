@@ -40,7 +40,7 @@ void Particles::updateCurrent(const sf::Time delta)
 	if (mLifetime < sf::Time::Zero)
 		killParticles();
 
-	for (size_t index = 0; index < mParticles.size(); ++index)
+	for (size_t index = 0; index < mParticles.size(); ++index) 
 	{
 		mPosition = mVertecies[index].position += mParticles[index].velocity * delta.asSeconds();
 		setPosition(mPosition);

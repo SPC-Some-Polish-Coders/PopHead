@@ -21,6 +21,8 @@ public:
 private:
 	Xml findGameObjects(const Xml& mapFile) const;
 	void loadObjects(const Xml& gameObjects) const;
+	void loadLayerObjects() const;
+	void loadContainerObjects() const;
 	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
 	void loadZombie(const Xml& zombieNode) const;
 	void loadNpc(const Xml& npcNode) const;
@@ -32,6 +34,7 @@ private:
 	void loadPlayer(const Xml& playerNode) const;
 	void loadCutScene(const Xml& cutSceneNode) const;
 	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
+	GameObject& getStandingObjects() const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;

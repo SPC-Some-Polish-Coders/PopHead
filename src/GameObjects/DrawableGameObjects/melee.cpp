@@ -86,9 +86,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 
 auto MeleeWeapon::getEnemies() -> GameObject&
 {
-	auto& player = getParent();
-	auto& root = player.getParent();
-	return root.getChild("enemy_container");
+	return mRoot->getChild("LAYER_standingObjects").getChild("enemy_container");
 }
 
 sf::Vector2f MeleeWeapon::getRightHandPosition(const sf::Vector2f attackDirection)

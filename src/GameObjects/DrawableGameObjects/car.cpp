@@ -4,12 +4,12 @@ namespace ph {
 
 Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, sf::Texture& texture)
 	:GameObject("car")
-	, mAcceleration(acceleration)
-	, mSlowingDown(slowingDown)
-	, mDirection(direction)
-	, mVelocity(0.f)
-	, mShouldSpeedUp(false)
-	, mShouldSlowDown(false)
+	,mAcceleration(acceleration)
+	,mSlowingDown(slowingDown)
+	,mDirection(direction)
+	,mVelocity(0.f)
+	,mShouldSpeedUp(false)
+	,mShouldSlowDown(false)
 {
 	mSprite.setTexture(texture);
 }
