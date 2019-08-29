@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameObjects/drawableGameObject.hpp"
+#include "GameObjects/gameObject.hpp"
 
 namespace ph {
 
 class GameData;
 
-class Item : public DrawableGameObject
+class Item : public GameObject
 {
 public:
 	Item(GameData* const gameData, const std::string& name);

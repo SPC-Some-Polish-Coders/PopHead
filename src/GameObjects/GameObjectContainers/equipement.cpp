@@ -4,9 +4,8 @@
 
 namespace ph {
 
-Equipement::Equipement(Renderer& renderer)
+Equipement::Equipement()
 	:GameObject("Equipement")
-	,mRenderer(renderer)
 {
 }
 
@@ -31,7 +30,6 @@ void Equipement::pickUpItem(Item* const itemToPick)
 
 	itemToPick->onPickUp();
 	//get equipement's parent and add an item as its child
-	mRenderer.removeDrawableGameObject(itemToPick);
 	mEquipementStash.emplace_back(itemToPick);
 }
 
@@ -43,7 +41,6 @@ void Equipement::dropItem(Item* const itemToDrop)
 		{
 			itemToDrop->onDrop();
 			mEquipementStash.erase(it);
-			mRenderer.addObject(itemToDrop);
 		}
 	}
 }

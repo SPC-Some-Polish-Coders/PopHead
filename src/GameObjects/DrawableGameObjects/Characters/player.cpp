@@ -67,7 +67,7 @@ Player::Player(GameData* gameData)
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
 	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
-	addChild(std::make_unique<Equipement>(mGameData->getRenderer()));
+	addChild(std::make_unique<Equipement>());
 }
 
 void Player::input()

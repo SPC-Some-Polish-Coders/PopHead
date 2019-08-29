@@ -12,7 +12,7 @@ class Renderer;
 class Equipement : public GameObject
 {
 public:
-	Equipement(Renderer& renderer);
+	Equipement();
 
 	void updateCurrent(sf::Time delta) override;
 
@@ -25,7 +25,6 @@ public:
 	//some more methods
 
 private:
-	Renderer& mRenderer;
 	std::vector<Item*> mEquipementStash;
 };
 

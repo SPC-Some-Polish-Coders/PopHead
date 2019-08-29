@@ -5,7 +5,7 @@
 namespace ph {
 
 Item::Item(GameData* const gameData, const std::string& name)
-	:DrawableGameObject(gameData->getRenderer(), name, LayerID::floorEntities)
+	:GameObject(name)
 	,mClickable(false)
 	,mInInventory(false)
 {
