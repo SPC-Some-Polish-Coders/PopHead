@@ -47,8 +47,9 @@ void PhysicsEngine::removeKinematicBody(const CollisionBody& bodyToDelete)
 	for(auto it = mKinematicBodies.begin(); it != mKinematicBodies.end(); ++it)
 		if(std::addressof(*it) == std::addressof(bodyToDelete)) {
 			mKinematicBodies.erase(it);
-			break;
+			return;
 		}
+	PH_LOG_WARNING("PhysicsEngine::removeKinematicBody() was called but physics engine doesn't have it");
 }
 
 void PhysicsEngine::clear() noexcept

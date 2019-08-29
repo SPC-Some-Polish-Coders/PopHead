@@ -79,8 +79,8 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 void TiledGameObjectsParser::loadLayerObjects() const
 {
 	mRoot.addChild(std::make_unique<GameObject>("LAYER_invisibleObjects"));
-	mRoot.addChild(std::make_unique<GameObject>("LAYER_standingObjects"));
 	mRoot.addChild(std::make_unique<GameObject>("LAYER_lyingOnGroundObjects"));
+	mRoot.addChild(std::make_unique<GameObject>("LAYER_standingObjects"));
 }
 
 void TiledGameObjectsParser::loadContainerObjects() const
@@ -88,6 +88,9 @@ void TiledGameObjectsParser::loadContainerObjects() const
 	auto& standingObjects = getStandingObjects();
 	standingObjects.addChild(std::make_unique<EnemyContainer>(mGameData->getPhysicsEngine()));
 	standingObjects.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
+
+	auto& lyingOnGroundObjects = mRoot.getChild("LAYER_lyingOnGroundObjects");
+	lyingOnGroundObjects.addChild(std::make_unique<DeadEnemyContainer>());
 }
 
 bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const

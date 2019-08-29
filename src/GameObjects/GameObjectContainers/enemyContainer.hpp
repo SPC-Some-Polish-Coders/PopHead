@@ -6,6 +6,7 @@
 namespace ph { 
 
 class PhysicsEngine;
+class DyingCharacter;
 
 class EnemyContainer : public GameObject
 {
@@ -21,6 +22,20 @@ private:
 private:
 	std::vector<Enemy*> mDyingEnemies;
 	PhysicsEngine& mPhysicsEngine;
+};
+
+class DeadEnemyContainer : public GameObject
+{
+public:
+	DeadEnemyContainer();
+	void removeDeadEnemy(DyingCharacter* enemy);
+	void updateCurrent(sf::Time delta) override;
+
+private:
+	void removeEnemies();
+
+private:
+	std::vector<DyingCharacter*> mEnemiesToRemove;
 };
 
 } 
