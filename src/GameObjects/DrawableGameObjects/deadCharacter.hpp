@@ -4,10 +4,10 @@
 
 namespace ph {
 
-class DyingCharacter : public GameObject
+class DeadCharacter : public GameObject
 {
 public:
-	DyingCharacter(const sf::Sprite&);
+	DeadCharacter(const sf::Sprite&);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;

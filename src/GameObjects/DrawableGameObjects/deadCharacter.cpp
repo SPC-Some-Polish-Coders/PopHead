@@ -1,15 +1,15 @@
-#include "dyingCharacter.hpp"
+#include "deadCharacter.hpp"
 #include "GameObjects/GameObjectContainers/enemyContainer.hpp"
 
 namespace ph {
 
-DyingCharacter::DyingCharacter(const sf::Sprite& sprite)
+DeadCharacter::DeadCharacter(const sf::Sprite& sprite)
 	:GameObject("dyingCharacter")
 	,mSprite(sprite)
 {
 }
 
-void DyingCharacter::updateCurrent(const sf::Time delta)
+void DeadCharacter::updateCurrent(const sf::Time delta)
 {
 	mTimeFromDeath += delta;
 	if(mTimeFromDeath.asSeconds() > 10) {
@@ -18,7 +18,7 @@ void DyingCharacter::updateCurrent(const sf::Time delta)
 	}
 }
 
-void DyingCharacter::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
+void DeadCharacter::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
 }
