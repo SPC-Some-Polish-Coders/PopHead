@@ -19,6 +19,11 @@ public:
 
 private:
 	auto getCharacterWhoWasShot() -> Character*;
+	auto getCharactersInShotArea() -> std::vector<Character*>;
+	sf::FloatRect getShotArea();
+	sf::Vector2f getShotAreaTopLeftCorner() const;
+	sf::Vector2f getShotAreaSize() const;
+	auto getFirstCharacterOnShotLine(std::vector<Character*> charactersInShotArea) -> Character*;
 	bool wasCharacterShot(Character*, const sf::Vector2f currentBulletPosition);
 	bool isBulletStillInItsRange();
 

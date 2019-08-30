@@ -23,32 +23,54 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
 
 auto Bullet::getCharacterWhoWasShot() -> Character*
 {
-	sf::Vector2f topLeftCorner(
-		mDirection.x < 0 ? mStartPosition.x - mRange : mStartPosition.x,
-		mDirection.y < 0 ? mStartPosition.y - mRange : mStartPosition.y
-	);
-	sf::Vector2f size(
-		std::abs(mDirection.x == 0 ? 1 : mDirection.x * mRange),
-		std::abs(mDirection.y == 0 ? 1 : mDirection.y * mRange)
-	);
-	sf::FloatRect shotArea(topLeftCorner.x, topLeftCorner.y, size.x, size.y);
-	
-	std::vector<Character*> charactersOnShotLine;
-	
+	auto charactersInShotArea = getCharactersInShotArea();
+	if(charactersInShotArea.empty())
+		return nullptr;
+	return getFirstCharacterOnShotLine(charactersInShotArea);
+}
+
+auto Bullet::getCharactersInShotArea() -> std::vector<Character*>
+{
+	sf::FloatRect shotArea = getShotArea();
+	std::vector<Character*> charactersInShotArea;
 	for(auto& object : mNodeWithAtackableObjects.getChildren()) {
 		auto character = dynamic_cast<Character*>(object.get());
 		if(character == nullptr)
 			continue;
 		if(Math::areTheyOverlapping(shotArea, character->getGlobalBounds()))
-			charactersOnShotLine.emplace_back(character);
+			charactersInShotArea.emplace_back(character);
 	}
+	return charactersInShotArea;
+}
 
-	if(charactersOnShotLine.empty())
-		return nullptr;
+sf::FloatRect Bullet::getShotArea()
+{
+	sf::Vector2f topLeftCorner = getShotAreaTopLeftCorner();
+	sf::Vector2f size = getShotAreaSize();
+	return sf::FloatRect(topLeftCorner.x, topLeftCorner.y, size.x, size.y);
+}
 
+sf::Vector2f Bullet::getShotAreaTopLeftCorner() const
+{
+	return sf::Vector2f(
+		mDirection.x < 0 ? mStartPosition.x - mRange : mStartPosition.x,
+		mDirection.y < 0 ? mStartPosition.y - mRange : mStartPosition.y
+	);
+}
+
+sf::Vector2f Bullet::getShotAreaSize() const
+{
+	return sf::Vector2f(
+		std::abs(mDirection.x == 0 ? 1 : mDirection.x * mRange),
+		std::abs(mDirection.y == 0 ? 1 : mDirection.y * mRange)
+	);
+}
+
+auto Bullet::getFirstCharacterOnShotLine(std::vector<Character*> charactersInShotArea) -> Character*
+{
 	while(isBulletStillInItsRange()) {
 		const sf::Vector2f currentBulletPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
-		for(auto& c : charactersOnShotLine) {
+		for(auto& c : charactersInShotArea) {
 			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable() && !c->isDead())
 				return c;
 		}
