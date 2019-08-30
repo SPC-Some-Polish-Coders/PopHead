@@ -70,7 +70,7 @@ void Equipement::dropItem(Item* itemToDrop)
 		{
 			itemToDrop->onDrop();
 			itemToDrop->setInInventory(false);
-			itemToDrop->setPosition(mInventoryOwner->getSpriteCenter());
+			itemToDrop->setPosition(mInventoryOwner->getWorldPosition()+sf::Vector2f(0, 20.f));
 			changeParentOfChild(itemToDrop, &dynamic_cast<GameObject&>(getItemsContainer()));
 			mEquipementStash.erase(it);
 			return;

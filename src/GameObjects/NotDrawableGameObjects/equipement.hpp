@@ -24,8 +24,8 @@ private:
 	void handleInteractableItems();
 	void handlePickArea();
 
-	void pickUpItem(Item* itemToPick);
 	void dropItem(Item* itemToDrop);
+	void pickUpItem(Item* itemToPick);
 
 	auto getItemsContainer()->ItemsContainer &;
 
