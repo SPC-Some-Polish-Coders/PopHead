@@ -6,6 +6,7 @@
 
 namespace ph {
 
+class Player;
 class Item;
 class ItemsContainer;
 
@@ -13,21 +14,26 @@ class Equipement : public GameObject
 {
 public:
 	Equipement();
+	void init();
 
 	void updateCurrent(sf::Time delta) override;
 
-	void pickUpItem(Item* itemToPick);
-	void dropItem(Item* itemToDrop);
-
-	//void openEqStash();
-	//void closeEqStash();
+	void dropAllItems();
 
 private:
+	void handleInteractableItems();
+	void handlePickArea();
+
+	void dropItem(Item* itemToDrop);
+	void pickUpItem(Item* itemToPick);
+
 	auto getItemsContainer()->ItemsContainer &;
 
 private:
+	Player* mInventoryOwner;
+	ItemsContainer* mItemsContainer;
 	std::deque<Item*> mEquipementStash;
-	std::vector<Item*> mInteractableItems;
+	std::deque<Item*> mInteractableItems;
 };
 
 }
