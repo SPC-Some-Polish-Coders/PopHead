@@ -63,11 +63,13 @@ Player::Player(GameData* gameData)
 	,mIsAttacking(false)
 	,mWasGamePauseButtonClicked(false)
 	,mHasJustDied(false)
+	,mPickRadius(20.f)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
 	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
 	addChild(std::make_unique<Equipement>());
+	dynamic_cast<Equipement&>(getChild("Equipement")).init();
 }
 
 void Player::input()
@@ -330,6 +332,11 @@ void Player::pauseMenuUpdate()
 		}
 		mWasGamePauseButtonClicked = false;
 	}
+}
+
+float Player::getPickRadius() const
+{
+	return mPickRadius;
 }
 
 }

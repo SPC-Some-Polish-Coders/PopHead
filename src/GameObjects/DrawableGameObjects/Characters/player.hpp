@@ -25,6 +25,8 @@ public:
     void input() override;
     void updateCurrent(sf::Time delta) override;
 
+	float getPickRadius() const;
+
 private:
 	void movementInput();
 	void gunInput();
@@ -52,6 +54,7 @@ private:
 	bool mIsAttacking;
 	bool mHasJustDied;
 	bool mWasGamePauseButtonClicked;
+	float mPickRadius;
 };
 
 }
