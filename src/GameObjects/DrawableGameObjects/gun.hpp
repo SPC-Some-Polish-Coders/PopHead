@@ -19,13 +19,13 @@ public:
 
 private:
 	auto getCharacterWhoWasShot() -> Character*;
-	bool wasEnemyShot(Character&);
+	bool wasCharacterShot(Character*, const sf::Vector2f currentBulletPosition);
 	bool isBulletStillInItsRange();
 
 private:
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
-	const GameObject& mEnemiesNode;
+	const GameObject& mNodeWithAtackableObjects;
 	unsigned mTraveledDistance;
 	const unsigned mRange;
 	const unsigned mDamage;

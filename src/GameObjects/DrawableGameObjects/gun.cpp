@@ -2,6 +2,7 @@
 #include "Characters/enemy.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
+#include <cmath>
 
 namespace ph {
 
@@ -9,7 +10,7 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
                const unsigned damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
-	,mEnemiesNode(enemiesNode)
+	,mNodeWithAtackableObjects(enemiesNode)
 	,mTraveledDistance(1)
 	,mRange(range)
 	,mDamage(damage)
@@ -22,18 +23,36 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
 
 auto Bullet::getCharacterWhoWasShot() -> Character*
 {
-	// TODO: Optimize this function
+	sf::Vector2f topLeftCorner(
+		mDirection.x < 0 ? mStartPosition.x - mRange : mStartPosition.x,
+		mDirection.y < 0 ? mStartPosition.y - mRange : mStartPosition.y
+	);
+	sf::Vector2f size(
+		std::abs(mDirection.x == 0 ? 1 : mDirection.x * mRange),
+		std::abs(mDirection.y == 0 ? 1 : mDirection.y * mRange)
+	);
+	sf::FloatRect shotArea(topLeftCorner.x, topLeftCorner.y, size.x, size.y);
+	
+	std::vector<Character*> charactersOnShotLine;
+	
+	for(auto& object : mNodeWithAtackableObjects.getChildren()) {
+		auto character = dynamic_cast<Character*>(object.get());
+		if(character == nullptr)
+			continue;
+		if(Math::areTheyOverlapping(shotArea, character->getGlobalBounds()))
+			charactersOnShotLine.emplace_back(character);
+	}
+
+	if(charactersOnShotLine.empty())
+		return nullptr;
 
 	while(isBulletStillInItsRange()) {
-		for(auto& enemy : mEnemiesNode.getChildren()) {
-			try {
-				auto& e = dynamic_cast<Enemy&>(*enemy);
-				if(e.isAtackable() && wasEnemyShot(e) && !e.isDead())
-					return &e;
-			}
-			catch(const std::exception&) { continue; }
+		const sf::Vector2f currentBulletPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
+		for(auto& c : charactersOnShotLine) {
+			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable() && !c->isDead())
+				return c;
 		}
-		mTraveledDistance += 10;
+		mTraveledDistance += 5;
 	}
 	return nullptr;
 }
@@ -43,11 +62,10 @@ bool Bullet::isBulletStillInItsRange()
 	return mTraveledDistance < mRange;
 }
 
-bool Bullet::wasEnemyShot(Character& character)
+bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBulletPosition)
 {
-	const sf::FloatRect hitbox = character.getGlobalBounds();
-	const sf::Vector2f currentPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
-	return Math::isPointInsideRect(currentPosition, hitbox);
+	const sf::FloatRect hitbox = character->getGlobalBounds();
+	return Math::isPointInsideRect(currentBulletPosition, hitbox);
 }
 
 Gun::Gun(GameData* const gameData, const float damage)
