@@ -11,6 +11,8 @@ namespace Math
 	float getRightBound(const sf::FloatRect& bounds);
 	float getBottomBound(const sf::FloatRect& bounds);
 
+	float getDistanceBetweenPoints(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint);
+
 	sf::Vector2f getCenter(const sf::FloatRect& bounds);
 
 	sf::Vector2f getTopLeftCorner(const sf::FloatRect& bounds);
@@ -22,6 +24,7 @@ namespace Math
 
 	bool areTheyOverlapping(const sf::FloatRect& A, const sf::FloatRect& B);
 	bool isPointInsideRect(const sf::Vector2f point, const sf::FloatRect& rect);
+	bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius);
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed);
 
