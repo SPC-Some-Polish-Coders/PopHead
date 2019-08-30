@@ -17,7 +17,7 @@ public:
 
 	virtual void updateWhileOnTheGround(const sf::Time time) = 0;
 
-	void updateCurrent(const sf::Time);
+	void updateCurrent(const sf::Time) override;
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void setInteractable(const bool interactable) { mInteractable = interactable; }
@@ -26,6 +26,8 @@ public:
 	bool getInInventory() const { return mInInventory; }
 
 private:
+	sf::Sprite mGroundSprite;
+	sf::Sprite mInventorySprite;
 	bool mInteractable;
 	bool mInInventory;
 };
