@@ -4,8 +4,6 @@
 
 namespace ph {
 
-class GameData;
-
 class Item : public GameObject
 {
 public:
@@ -14,15 +12,21 @@ public:
 	virtual void onUse();
 	virtual void onPickUp();
 	virtual void onDrop();
-	//Some other virtuals
 
-	void setClickable(const bool clickable) { mClickable = clickable; }
-	bool getClickable() { return mClickable; }
+	virtual void drawWhileOnTheGround(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+
+	virtual void updateWhileOnTheGround(const sf::Time time) = 0;
+
+	void updateCurrent(const sf::Time);
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	void setInteractable(const bool interactable) { mInteractable = interactable; }
+	bool getInteractable() const { return mInteractable; }
 	void setInInventory(const bool inInv) { mInInventory = inInv; }
-	bool getInInventory() { return mInInventory; }
+	bool getInInventory() const { return mInInventory; }
 
 private:
-	bool mClickable;
+	bool mInteractable;
 	bool mInInventory;
 };
 

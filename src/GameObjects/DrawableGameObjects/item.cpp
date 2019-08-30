@@ -6,9 +6,21 @@ namespace ph {
 
 Item::Item(const std::string& name)
 	:GameObject(name)
-	,mClickable(false)
+	,mInteractable(false)
 	,mInInventory(false)
 {
+}
+
+void Item::updateCurrent(const sf::Time time)
+{
+	if (!getInInventory())
+		updateWhileOnTheGround(time);
+}
+
+void Item::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	if (!getInInventory())
+		drawWhileOnTheGround(target, states);
 }
 
 void Item::onUse()
