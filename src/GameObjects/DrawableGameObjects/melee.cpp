@@ -41,9 +41,12 @@ auto Swing::getCharacterWhoWasHit() -> Character*
 	while(mRotation < mRotationRange)
 	{ 
 		for (auto& enemy : mEnemiesNode.getChildren()) {
-			auto& e = dynamic_cast<Character&>(*enemy);
-			if (!e.isDead() && wasEnemyHit(e))
-				return &e;
+			try{
+				auto& e = dynamic_cast<Character&>(*enemy);
+				if (!e.isDead() && wasEnemyHit(e))
+					return &e;
+			}
+			catch(const std::exception&) {}
 		}
 		incrementRotation();
 	}
@@ -80,13 +83,9 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
 	sf::Vector2f rightHandPosition = getRightHandPosition(attackDirection);
-	Swing swing(getEnemies(), attackDirection, rightHandPosition, mDamage, mRange, mRotationRange);
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	Swing swing(standingObjects, attackDirection, rightHandPosition, mDamage, mRange, mRotationRange);
 	initializeAttackGraphics(swing);
-}
-
-auto MeleeWeapon::getEnemies() -> GameObject&
-{
-	return mRoot->getChild("LAYER_standingObjects").getChild("enemy_container");
 }
 
 sf::Vector2f MeleeWeapon::getRightHandPosition(const sf::Vector2f attackDirection)

@@ -1,5 +1,5 @@
 #include "gun.hpp"
-#include "character.hpp"
+#include "Characters/enemy.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
@@ -24,9 +24,12 @@ auto Bullet::getCharacterWhoWasShot() -> Character*
 {
 	while(isBulletStillInItsRange()) {
 		for(auto& enemy : mEnemiesNode.getChildren()) {
-			auto& e = dynamic_cast<Character&>(*enemy);
-			if(!e.isDead() && wasEnemyShot(e))
-				return &e;
+			try {
+				auto& e = dynamic_cast<Enemy&>(*enemy);
+				if(!e.isDead() && wasEnemyShot(e))
+					return &e;
+			}
+			catch(const std::exception&) { continue; }
 		}
 		++mTraveledDistance;
 	}
@@ -55,9 +58,9 @@ Gun::Gun(GameData* const gameData, const float damage)
 void Gun::shoot(const sf::Vector2f shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/barretaShot.wav");
-	auto& enemies = mRoot->getChild("LAYER_standingObjects").getChild("enemy_container");
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
 	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
-	const Bullet bullet(enemies, shotDirection, rightHandPosition, 50, 250);
+	const Bullet bullet(standingObjects, shotDirection, rightHandPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
 }

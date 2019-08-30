@@ -1,12 +1,12 @@
-#include "GameObjects/tiledGameObjectsParser.hpp"
-#include "GameObjects/NotDrawableGameObjects/entrance.hpp"
-#include "GameObjects/NotDrawableGameObjects/spawner.hpp"
+#include "tiledGameObjectsParser.hpp"
+#include "NotDrawableGameObjects/entrance.hpp"
+#include "NotDrawableGameObjects/spawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "DrawableGameObjects/Characters/player.hpp"
 #include "DrawableGameObjects/car.hpp"
-#include "GameObjectContainers/enemyContainer.hpp"
+#include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
 #include "gameObject.hpp"
@@ -80,19 +80,15 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 void TiledGameObjectsParser::loadLayerObjects() const
 {
 	mRoot.addChild(std::make_unique<GameObject>("LAYER_invisibleObjects"));
-	mRoot.addChild(std::make_unique<GameObject>("LAYER_lyingOnGroundObjects"));
-	mRoot.addChild(std::make_unique<GameObject>("LAYER_standingObjects"));
+	mRoot.addChild(std::make_unique<LyingGameObjectsLayer>());
+	mRoot.addChild(std::make_unique<StandingGameObjectsLayer>(mGameData->getPhysicsEngine()));
 }
 
 void TiledGameObjectsParser::loadContainerObjects() const
 {
-	auto& standingObjects = getStandingObjects();
-	standingObjects.addChild(std::make_unique<EnemyContainer>(mGameData->getPhysicsEngine()));
+	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects.addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 	standingObjects.addChild(std::make_unique<ItemsContainer>());
-
-	auto& lyingOnGroundObjects = mRoot.getChild("LAYER_lyingOnGroundObjects");
-	lyingOnGroundObjects.addChild(std::make_unique<DeadEnemyContainer>());
 }
 
 bool TiledGameObjectsParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const
@@ -107,8 +103,8 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 	zombie->setHp(getProperty(zombieNode, "hp").toInt());
 	zombie->setMaxHp(getProperty(zombieNode, "maxHp").toUnsigned());
 
-	auto& enemies = getStandingObjects().getChild("enemy_container");
-	enemies.addChild(std::move(zombie));
+	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects.addChild(std::move(zombie));
 }
 
 void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
@@ -121,13 +117,14 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
 	npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
 
-	getStandingObjects().addChild(std::move(npc));
+	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects.addChild(std::move(npc));
 }
 
 void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
 {
 	auto spawner = std::make_unique<Spawner>(
-		mGameData, "spawner", 
+		mGameData, "spawner",
 		Cast::toObjectType(getProperty(spawnerNode, "spawnType").toString()),
 		sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),
 		getPositionAttribute(spawnerNode)
@@ -173,7 +170,8 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 	);
 	car->setPosition(getPositionAttribute(carNode));
 
-	getStandingObjects().addChild(std::move(car));
+	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects.addChild(std::move(car));
 }
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
@@ -197,7 +195,10 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 	auto playerPosition = getPositionAttribute(playerNode);
 	player->setPosition(playerPosition);
-	getStandingObjects().addChild(std::move(player));
+
+	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects.addChild(std::move(player));
+
 	mHasLoadedPlayer = true;
 }
 
@@ -226,11 +227,6 @@ void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
 	auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
 	crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
 	mRoot.addChild(std::move(crawlingNpc));
-}
-
-GameObject& TiledGameObjectsParser::getStandingObjects() const
-{
-	return mRoot.getChild("LAYER_standingObjects");
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

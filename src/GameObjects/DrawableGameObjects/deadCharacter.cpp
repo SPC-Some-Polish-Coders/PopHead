@@ -1,5 +1,5 @@
 #include "deadCharacter.hpp"
-#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
+#include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 
 namespace ph {
 
@@ -13,7 +13,7 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 {
 	mTimeFromDeath += delta;
 	if(mTimeFromDeath.asSeconds() > 10) {
-		auto deadCharacters = dynamic_cast<DeadEnemyContainer*>(mParent);
+		auto deadCharacters = dynamic_cast<LyingGameObjectsLayer*>(mParent);
 		deadCharacters->removeDeadEnemy(this);
 	}
 }

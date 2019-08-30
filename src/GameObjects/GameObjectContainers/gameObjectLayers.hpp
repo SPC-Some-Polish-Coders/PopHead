@@ -1,17 +1,17 @@
-#pragma once 
- 
-#include "GameObjects/DrawableGameObjects/Characters/enemy.hpp"
-#include <vector>
+#pragma once
 
-namespace ph { 
+#include "GameObjects/gameObject.hpp"
+
+namespace ph {
 
 class PhysicsEngine;
+class Enemy;
 class DeadCharacter;
 
-class EnemyContainer : public GameObject
+class StandingGameObjectsLayer : public GameObject
 {
 public:
-	EnemyContainer(PhysicsEngine& physicsEngine);
+	StandingGameObjectsLayer(PhysicsEngine& physicsEngine);
 
 	void addEnemyToDie(Enemy* enemy) { mDyingEnemies.emplace_back(enemy); }
 	void updateCurrent(sf::Time delta) override;
@@ -24,10 +24,10 @@ private:
 	PhysicsEngine& mPhysicsEngine;
 };
 
-class DeadEnemyContainer : public GameObject
+class LyingGameObjectsLayer : public GameObject
 {
 public:
-	DeadEnemyContainer();
+	LyingGameObjectsLayer();
 	void removeDeadEnemy(DeadCharacter* enemy);
 	void updateCurrent(sf::Time delta) override;
 
@@ -38,4 +38,4 @@ private:
 	std::vector<DeadCharacter*> mEnemiesToRemove;
 };
 
-} 
+}

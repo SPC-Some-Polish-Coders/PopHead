@@ -49,7 +49,6 @@ private:
 	void initializeAttackGraphics(const Swing& swing);
 	void updateHitGraphicsRotation();
 	void resetAttackGraphics();
-	auto getEnemies()->GameObject&;
 
 private:
 	GameData* const mGameData;

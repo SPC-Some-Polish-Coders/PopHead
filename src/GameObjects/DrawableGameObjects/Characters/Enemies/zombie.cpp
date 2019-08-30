@@ -3,7 +3,7 @@
 #include "Resources/collisionRectData.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "GameObjects/GameObjectContainers/enemyContainer.hpp"
+#include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 
 namespace ph {
 
@@ -63,8 +63,8 @@ void Zombie::updateCurrent(sf::Time delta)
 		mAnimation.changeState("dead");
 		mAnimation.animate(mSprite);
 		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
-		auto enemyContainer = dynamic_cast<EnemyContainer*>(mParent);
-		enemyContainer->addEnemyToDie(this);
+		auto standingGameObjectsLayer = dynamic_cast<StandingGameObjectsLayer*>(mParent);
+		standingGameObjectsLayer->addEnemyToDie(this);
 		return;
 	}
 
