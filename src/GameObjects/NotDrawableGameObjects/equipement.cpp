@@ -1,30 +1,45 @@
 #include "GameObjects/NotDrawableGameObjects/equipement.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjects/DrawableGameObjects/item.hpp"
+#include "GameObjects/gameObject.hpp"
 #include "Utilities/math.hpp"
 
 namespace ph {
 
 Equipement::Equipement()
 	:GameObject("Equipement")
+	,mItemsContainer(nullptr)
+	,mInventoryOwner(nullptr)
 {
+}
+
+void Equipement::init()
+{
+	mInventoryOwner = &dynamic_cast<Player&>(getParent());
+	mItemsContainer = &getItemsContainer();
 }
 
 void Equipement::updateCurrent(sf::Time delta) 
 {
-	auto& inventoryOwner = getParent();
+	handlePickArea();
+	handleInteractableItems();
+}
+
+void Equipement::handlePickArea()
+{
 	auto& itemsOnTheGround = getItemsContainer().getChildren();
-
-	//Will be divided into methods
-
 	for (auto& item : itemsOnTheGround)
-		if (Math::isPointInsideCircle(item->getPosition(), inventoryOwner.getPosition(), 20))
+		if (Math::isPointInsideCircle(item->getPosition(), mInventoryOwner->getPosition(), mInventoryOwner->getPickRadius()))
 		{
 			auto& interactableItem = dynamic_cast<Item&>((*item));
 			interactableItem.setInteractable(true);
 			mInteractableItems.emplace_back(&interactableItem);
 		}
+}
 
+void Equipement::handleInteractableItems()
+{
 	for (auto it = mInteractableItems.begin(); it != mInteractableItems.end(); ++it)
 	{
 		pickUpItem(*it);
@@ -32,13 +47,6 @@ void Equipement::updateCurrent(sf::Time delta)
 	}
 
 	mInteractableItems.clear();
-
-	//if (mC.getElapsedTime().asSeconds() > 7)
-	//{
-	//	dropItem(mEquipementStash[0]);
-	//	mC.restart();
-	//}
-	//Dropping was tested and works properly
 }
 
 void Equipement::pickUpItem(Item* itemToPick)
@@ -56,6 +64,7 @@ void Equipement::dropItem(Item* itemToDrop)
 		{
 			itemToDrop->onDrop();
 			itemToDrop->setInInventory(false);
+			itemToDrop->setPosition(mInventoryOwner->getPosition());
 			changeParentOfChild(itemToDrop, &dynamic_cast<GameObject&>(getItemsContainer()));
 			mEquipementStash.erase(it);
 			return;
@@ -64,8 +73,7 @@ void Equipement::dropItem(Item* itemToDrop)
 
 auto Equipement::getItemsContainer() -> ItemsContainer &
 {
-	auto& player = getParent();
-	auto& standingObjects = player.getParent();
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
 	return dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
 }
 
