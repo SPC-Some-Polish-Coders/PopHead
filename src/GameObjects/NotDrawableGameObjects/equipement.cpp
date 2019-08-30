@@ -1,9 +1,7 @@
 #include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/GameObjectContainers/itemsContainer.hpp"
 #include "GameObjects/DrawableGameObjects/item.hpp"
-#include "Renderer/renderer.hpp"
 #include "Utilities/math.hpp"
-#include "GameObjects/DrawableGameObjects/item.hpp"
-#include "GameObjects/rect.hpp"
 
 namespace ph {
 
@@ -14,52 +12,61 @@ Equipement::Equipement()
 
 void Equipement::updateCurrent(sf::Time delta) 
 {
-	//auto& player = getParent();
-	//auto& items = getParent().getParent().getChild("ItemsContainer").getChildren();
+	auto& inventoryOwner = getParent();
+	auto& itemsOnTheGround = getItemsContainer().getChildren();
 
-	//if(!items.empty())
-	//for (auto& item : items)
+	//Will be divided into methods
+
+	for (auto& item : itemsOnTheGround)
+		if (Math::isPointInsideCircle(item->getPosition(), inventoryOwner.getPosition(), 20))
+		{
+			auto& interactableItem = dynamic_cast<Item&>((*item));
+			interactableItem.setInteractable(true);
+			mInteractableItems.emplace_back(&interactableItem);
+		}
+
+	for (auto it = mInteractableItems.begin(); it != mInteractableItems.end(); ++it)
+	{
+		pickUpItem(*it);
+		(*it)->setInteractable(false);
+	}
+
+	mInteractableItems.clear();
+
+	//if (mC.getElapsedTime().asSeconds() > 7)
 	//{
-	//	if (Math::isPointInsideRect(item->getPosition(), player.getGlobalBounds()))
-	//	{
-	//		pickUpItem(&dynamic_cast<Item&>(*item));
-	//		return;
-	//	}
+	//	dropItem(mEquipementStash[0]);
+	//	mC.restart();
 	//}
-	//get Equipement's parent
-	//check if parent performed any actions to drop an item, if yes
-		//dropItem(item)
-
-	//check if any of the items in the area are in the parent's pick-radius,
-	//if yes, make them clickable
-
-	//check if parent performed any actions to pick up an item, if yes
-		//pickUpItem(item)
+	//Dropping was tested and works properly
 }
 
 void Equipement::pickUpItem(Item* itemToPick)
 {
-	//for (auto& item : mEquipementStash)
-	//	if (itemToPick == item)
-	//		return;
-
-	//itemToPick->onPickUp();
-	//itemToPick->setInInventory(true);
-	//getParent().getParent().getChild("ItemsContainer").changeParentOfChild(itemToPick, this);
-	////get equipement's parent and add an item as its child
-	//mEquipementStash.emplace_back(itemToPick);
+	itemToPick->onPickUp();
+	itemToPick->setInInventory(true);
+	getItemsContainer().changeParentOfChild(itemToPick, this);
+	mEquipementStash.emplace_back(itemToPick);
 }
 
 void Equipement::dropItem(Item* itemToDrop)
 {
-	//for (auto it = mEquipementStash.begin(); it != mEquipementStash.end(); ++it)
-	//{
-	//	if (*it == itemToDrop)
-	//	{
-	//		itemToDrop->onDrop();
-	//		mEquipementStash.erase(it);
-	//	}
-	//}
+	for (auto it = mEquipementStash.begin(); it != mEquipementStash.end(); ++it)
+		if (*it == itemToDrop)
+		{
+			itemToDrop->onDrop();
+			itemToDrop->setInInventory(false);
+			changeParentOfChild(itemToDrop, &dynamic_cast<GameObject&>(getItemsContainer()));
+			mEquipementStash.erase(it);
+			return;
+		}
+}
+
+auto Equipement::getItemsContainer() -> ItemsContainer &
+{
+	auto& player = getParent();
+	auto& standingObjects = player.getParent();
+	return dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
 }
 
 }

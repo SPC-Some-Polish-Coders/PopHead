@@ -2,12 +2,12 @@
 
 #include "GameObjects/gameObject.hpp"
 
-#include <Vector>
+#include <deque>
 
 namespace ph {
 
 class Item;
-class Renderer;
+class ItemsContainer;
 
 class Equipement : public GameObject
 {
@@ -22,10 +22,12 @@ public:
 	//void openEqStash();
 	//void closeEqStash();
 
-	//some more methods
+private:
+	auto getItemsContainer()->ItemsContainer &;
 
 private:
-	std::vector<Item*> mEquipementStash;
+	std::deque<Item*> mEquipementStash;
+	std::vector<Item*> mInteractableItems;
 };
 
 }
