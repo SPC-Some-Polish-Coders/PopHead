@@ -18,6 +18,8 @@ public:
 
 	void updateCurrent(sf::Time delta) override;
 
+	void dropAllItems();
+
 private:
 	void handleInteractableItems();
 	void handlePickArea();

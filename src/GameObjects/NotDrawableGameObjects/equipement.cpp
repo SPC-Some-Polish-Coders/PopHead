@@ -49,6 +49,12 @@ void Equipement::handleInteractableItems()
 	mInteractableItems.clear();
 }
 
+void Equipement::dropAllItems()
+{
+	for (auto& item : mEquipementStash)
+		dropItem(item);
+}
+
 void Equipement::pickUpItem(Item* itemToPick)
 {
 	itemToPick->onPickUp();
@@ -64,7 +70,7 @@ void Equipement::dropItem(Item* itemToDrop)
 		{
 			itemToDrop->onDrop();
 			itemToDrop->setInInventory(false);
-			itemToDrop->setPosition(mInventoryOwner->getPosition());
+			itemToDrop->setPosition(mInventoryOwner->getSpriteCenter());
 			changeParentOfChild(itemToDrop, &dynamic_cast<GameObject&>(getItemsContainer()));
 			mEquipementStash.erase(it);
 			return;
