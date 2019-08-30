@@ -39,15 +39,22 @@ void Swing::handleHitCharacters()
 auto Swing::getCharacterWhoWasHit() -> Character*
 {
 	while(mRotation < mRotationRange)
-	{ 
-		for (auto& enemy : mEnemiesNode.getChildren()) {
-			try{
-				auto& e = dynamic_cast<Character&>(*enemy);
-				if (!e.isDead() && wasEnemyHit(e))
-					return &e;
+	{
+		bool wasCollisionCheckedLastTime = false;
+		if(!wasCollisionCheckedLastTime) {
+			for(auto& enemy : mEnemiesNode.getChildren()) {
+				try {
+					auto& e = dynamic_cast<Character&>(*enemy);
+					if(e.isAtackable() && wasEnemyHit(e) && !e.isDead())
+						return &e;
+				}
+				catch(const std::exception&) {}
 			}
-			catch(const std::exception&) {}
+			wasCollisionCheckedLastTime = true;
 		}
+		else
+			wasCollisionCheckedLastTime = false;
+		
 		incrementRotation();
 	}
 	return nullptr;
@@ -66,7 +73,6 @@ void Swing::incrementRotation()
 	rotation.rotate(5.f, mStartPositionBeginning);
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
 }
-
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
 	:GameObject("sword")

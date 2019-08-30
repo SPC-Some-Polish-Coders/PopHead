@@ -55,7 +55,7 @@ namespace
 }
 
 Player::Player(GameData* gameData)
-	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass)
+	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
 	,mLastMotion()
 	,mNumberOfOwnedBullets(20u)

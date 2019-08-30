@@ -41,7 +41,7 @@ namespace
 }
 
 Npc::Npc(GameData* gameData, const std::string& name)
-	:Character(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass)
+	:Character(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass, false)
 {
 	getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 	mAnimation.animate(mSprite);

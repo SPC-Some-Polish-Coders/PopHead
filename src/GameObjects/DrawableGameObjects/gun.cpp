@@ -26,12 +26,12 @@ auto Bullet::getCharacterWhoWasShot() -> Character*
 		for(auto& enemy : mEnemiesNode.getChildren()) {
 			try {
 				auto& e = dynamic_cast<Enemy&>(*enemy);
-				if(!e.isDead() && wasEnemyShot(e))
+				if(e.isAtackable() && wasEnemyShot(e) && !e.isDead())
 					return &e;
 			}
 			catch(const std::exception&) { continue; }
 		}
-		++mTraveledDistance;
+		mTraveledDistance += 10;
 	}
 	return nullptr;
 }

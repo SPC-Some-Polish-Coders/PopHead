@@ -13,7 +13,7 @@ class Character : public GameObject
 public:
 	Character(GameData*, std::string name, Animation animation = Animation(),
 		unsigned int mMovementSpeed = 50, int HP = 100, unsigned int maxHP = 100,
-		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50);
+		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50, bool isAtackable = false);
 
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -29,6 +29,7 @@ public:
 	sf::FloatRect getGlobalBounds() const override;
 	auto getAnimation() -> Animation& { return mAnimation; }
 	bool isDead() const { return mIsDead; };
+	bool isAtackable() const { return mIsAtackable; }
 
 protected:
 	sf::Sprite mSprite;
@@ -40,6 +41,7 @@ protected:
 	unsigned mMaxHp;
 	unsigned mMovementSpeed;
 	bool mIsDead;
+	bool mIsAtackable;
 };
 
 }

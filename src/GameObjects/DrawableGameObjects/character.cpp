@@ -7,7 +7,7 @@
 namespace ph {
 
 Character::Character(GameData* gameData, std::string name, Animation animation,
-	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass)
+	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass, bool isAtackable)
 	:GameObject(name)
 	,mGameData(gameData)
 	,mHp(Hp)
@@ -16,6 +16,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mIsDead(false)
+	,mIsAtackable(isAtackable)
 {
 }
 
