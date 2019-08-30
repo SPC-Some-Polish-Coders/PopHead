@@ -38,6 +38,8 @@ void Swing::handleHitCharacters()
 
 auto Swing::getCharacterWhoWasHit() -> Character*
 {
+	// TODO: Optimize this function
+
 	while(mRotation < mRotationRange)
 	{
 		bool wasCollisionCheckedLastTime = false;

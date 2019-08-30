@@ -1,7 +1,7 @@
 #include "gameObjectLayers.hpp" 
 #include "Physics/physicsEngine.hpp"
 #include "GameObjects/DrawableGameObjects/deadCharacter.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/enemy.hpp"
+#include "GameObjects/DrawableGameObjects/character.hpp"
 
 namespace ph {
 
@@ -13,19 +13,19 @@ StandingGameObjectsLayer::StandingGameObjectsLayer(PhysicsEngine& physicsEngine)
 
 void StandingGameObjectsLayer::updateCurrent(sf::Time delta)
 {
-	handleDyingEnemies();
+	handleDyingCharaters();
 }
 
-void StandingGameObjectsLayer::handleDyingEnemies()
+void StandingGameObjectsLayer::handleDyingCharaters()
 {
-	for(Enemy* dyingEnemy : mDyingEnemies) {
+	for(Character* dyingCharacter : mDyingCharacters) {
 		auto& lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
-		auto deadCharacter = std::make_unique<DeadCharacter>(dyingEnemy->getSprite());
-		deadCharacter->setPosition(dyingEnemy->getPosition());
+		auto deadCharacter = std::make_unique<DeadCharacter>(dyingCharacter->getSprite());
+		deadCharacter->setPosition(dyingCharacter->getPosition());
 		lyingObjectsLayer.addChild(std::move(deadCharacter));
-		removeChild(dyingEnemy);
+		removeChild(dyingCharacter);
 	}
-	mDyingEnemies.clear();
+	mDyingCharacters.clear();
 }
 
 LyingGameObjectsLayer::LyingGameObjectsLayer()

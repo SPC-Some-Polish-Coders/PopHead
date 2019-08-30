@@ -30,7 +30,7 @@ private:
 	void gunInput();
 	void meleeWeaponInput();
 	void pauseMenuInput();
-	void dyingUpdate(const sf::Time delta);
+	void die();
 	void updateCounters() const;
 	void updateMovement(const sf::Time delta);
 	void updateAnimation(const sf::Time delta);
@@ -44,13 +44,11 @@ private:
 
 private:
 	sf::Clock mTimeFromLastMeleeAtack;
-	sf::Clock mTimeAfterDead;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	unsigned mNumberOfOwnedBullets;
 	bool mIsShooting;
 	bool mIsAttacking;
-	bool mHasJustDied;
 	bool mWasGamePauseButtonClicked;
 };
 

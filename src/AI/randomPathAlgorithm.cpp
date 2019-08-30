@@ -1,7 +1,6 @@
 #include "RandomPathAlgorithm.hpp"
 #include "Utilities/random.hpp"
 #include "Logs/logs.hpp"
-
 #include <algorithm>
 
 namespace ph {
@@ -63,7 +62,7 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction
 	case ph::Direction::south:
 		return getWalkableDistanceBetweenObstacleNodeToTheSouth();
 	default:
-		PH_UNEXPECTED_SITUATION("Direction has to be either east, west, north or south!")
+		PH_UNEXPECTED_SITUATION("Direction has to be either east, west, north or south!");
 	}
 }
 

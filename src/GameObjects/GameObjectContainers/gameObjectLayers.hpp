@@ -5,7 +5,7 @@
 namespace ph {
 
 class PhysicsEngine;
-class Enemy;
+class Character;
 class DeadCharacter;
 
 class StandingGameObjectsLayer : public GameObject
@@ -13,14 +13,14 @@ class StandingGameObjectsLayer : public GameObject
 public:
 	StandingGameObjectsLayer(PhysicsEngine& physicsEngine);
 
-	void addEnemyToDie(Enemy* enemy) { mDyingEnemies.emplace_back(enemy); }
+	void addCharacterToDie(Character* character) { mDyingCharacters.emplace_back(character); }
 	void updateCurrent(sf::Time delta) override;
 
 private:
-	void handleDyingEnemies();
+	void handleDyingCharaters();
 
 private:
-	std::vector<Enemy*> mDyingEnemies;
+	std::vector<Character*> mDyingCharacters;
 	PhysicsEngine& mPhysicsEngine;
 };
 

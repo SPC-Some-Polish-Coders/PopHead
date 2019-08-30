@@ -22,6 +22,8 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
 
 auto Bullet::getCharacterWhoWasShot() -> Character*
 {
+	// TODO: Optimize this function
+
 	while(isBulletStillInItsRange()) {
 		for(auto& enemy : mEnemiesNode.getChildren()) {
 			try {

@@ -7,6 +7,7 @@
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include <array>
 #include <exception>
 
@@ -62,7 +63,6 @@ Player::Player(GameData* gameData)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
 	,mWasGamePauseButtonClicked(false)
-	,mHasJustDied(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
@@ -112,14 +112,9 @@ void Player::pauseMenuInput()
 
 void Player::updateCurrent(sf::Time delta)
 {
-	if(mIsDead) {
-		dyingUpdate(delta);
-		return;
-	}
-
 	if(mHp <= 0) {
-		mIsDead = true;
-		mHasJustDied = true;
+		die();
+		return;
 	}
 		
 	updateCounters();
@@ -133,19 +128,14 @@ void Player::updateCurrent(sf::Time delta)
 	pauseMenuUpdate();
 }
 
-void Player::dyingUpdate(const sf::Time delta)
+void Player::die()
 {
-	if(mHasJustDied) {
-		mTimeAfterDead.restart();
-		setAnimationState("dead");
-		mHasJustDied = false;
-	}
-
-	if(mTimeAfterDead.getElapsedTime().asSeconds() > 1)
-		mGameData->getGui().showInterface("gameOverScreen");
-
-	if(mTimeAfterDead.getElapsedTime().asSeconds() > 4)
-		mGameData->getAIManager().setIsPlayerOnScene(false);
+	mIsDead = true;
+	setAnimationState("dead");
+	auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
+	standingObjects->addCharacterToDie(this);
+	mGameData->getGui().showInterface("gameOverScreen");
+	mGameData->getAIManager().setIsPlayerOnScene(false);
 }
 
 void Player::updateCounters() const

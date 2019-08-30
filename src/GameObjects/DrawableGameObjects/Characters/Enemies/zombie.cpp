@@ -64,7 +64,7 @@ void Zombie::updateCurrent(sf::Time delta)
 		mAnimation.animate(mSprite);
 		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 		auto standingGameObjectsLayer = dynamic_cast<StandingGameObjectsLayer*>(mParent);
-		standingGameObjectsLayer->addEnemyToDie(this);
+		standingGameObjectsLayer->addCharacterToDie(this);
 		return;
 	}
 
