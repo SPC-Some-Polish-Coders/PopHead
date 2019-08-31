@@ -13,7 +13,6 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
 	,mGameData(nullptr)
 	,mDebugRenderingMode(false)
-	,mSceneTreeRoot(nullptr)
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
 }
@@ -27,31 +26,27 @@ void Renderer::update(sf::Time delta)
 	mCamera.update(delta);
 }
 
-void Renderer::draw() const
+void Renderer::startSceneRendering()
 {
-	mCamera.applyTo(mRenderTarget);
+	mProperCameraBounds = getProperCameraBounds();
 	mRenderTarget.clear();
-
-	sf::FloatRect properCameraBounds = getProperCameraBounds();
-	mGameData->getMap().draw(mRenderTarget, sf::RenderStates::Default, properCameraBounds);
-	mSceneTreeRoot->draw(mRenderTarget, sf::RenderStates::Default);
-	//drawSceneLayers(properCameraBounds);
-	mRenderTarget.draw(mGameData->getPhysicsEngine().getCollisionDebugManager());
-	drawStaticObjectsToCamera();
+	mCamera.applyTo(mRenderTarget);
 }
 
-//void Renderer::drawSceneLayers(sf::FloatRect properCameraBounds) const
-//{
-//	for(const auto& layer : mLayers)
-//		for(const auto& drawableGameObject : layer.second) {
-//			auto objectPosition = drawableGameObject->getPosition();
-//			sf::FloatRect objectBounds(objectPosition.x - 100, objectPosition.y - 100, 200, 200);
-//			if(Math::areTheyOverlapping(properCameraBounds, objectBounds)) {
-//				mRenderTarget.draw(*drawableGameObject);
-//				mGameData->getEfficiencyRegister().registerDrawCall();
-//			}
-//		}
-//}
+void Renderer::startUIRendering()
+{
+	mStaticObjectsCamera.applyTo(mRenderTarget);
+}
+
+void Renderer::draw(const sf::Drawable& drawableObject) const
+{
+	mRenderTarget.draw(drawableObject);
+}
+
+void Renderer::draw(const Map& map) const
+{
+	map.draw(mRenderTarget, sf::RenderStates::Default, mProperCameraBounds);
+}
 
 sf::FloatRect Renderer::getProperCameraBounds() const
 {
@@ -66,14 +61,6 @@ sf::FloatRect Renderer::getProperCameraBounds() const
 	}
 	else
 		return mCamera.getBounds();
-}
-
-void Renderer::drawStaticObjectsToCamera() const
-{
-	mStaticObjectsCamera.applyTo(mRenderTarget);
-	mRenderTarget.draw(mGameData->getGui().getGuiDrawer());
-	mRenderTarget.draw(mGameData->getEfficiencyRegister().getDisplayer());
-	mRenderTarget.draw(mGameData->getTerminal().getImage());
 }
 
 }

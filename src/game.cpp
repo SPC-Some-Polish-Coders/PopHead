@@ -108,7 +108,16 @@ void Game::update(sf::Time deltaTime)
 
 void Game::draw()
 {
-	mRenderer->draw();
+	mRenderer->startSceneRendering();
+	mRenderer->draw(*mMap);
+	mRenderer->draw(mSceneMachine->getScene().getRoot());
+	mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
+
+	mRenderer->startUIRendering();
+	mRenderer->draw(mGui->getGuiDrawer());
+	mRenderer->draw(mEfficiencyRegister->getDisplayer());
+	mRenderer->draw(mTerminal->getImage());
+
 	mRenderWindow.display();
 }
 
