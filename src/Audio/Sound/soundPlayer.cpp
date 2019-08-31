@@ -14,10 +14,16 @@ SoundPlayer::SoundPlayer()
 
 void SoundPlayer::loadEverySound()
 {
-	mSoundBuffers.load("sounds/barretaShot.wav");
 	mSoundBuffers.load("sounds/swordAttack.wav");
-	mSoundBuffers.load("sounds/zombieGetsAttacked.wav");
 	mSoundBuffers.load("sounds/carTireScreech.ogg");
+	mSoundBuffers.load("sounds/zombieGrowl1.ogg");
+	mSoundBuffers.load("sounds/zombieGrowl2.ogg");
+	mSoundBuffers.load("sounds/zombieGrowl3.ogg");
+	mSoundBuffers.load("sounds/zombieGrowl4.ogg");
+	mSoundBuffers.load("sounds/reloadPistol.ogg");
+	mSoundBuffers.load("sounds/pistolShot.ogg");
+	mSoundBuffers.load("sounds/reloadShotgun.ogg");
+	mSoundBuffers.load("sounds/shotgunShot.ogg");
 }
 
 void SoundPlayer::playAmbientSound(const std::string& filePath)

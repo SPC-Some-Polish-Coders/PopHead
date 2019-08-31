@@ -4,6 +4,7 @@
 #include "Resources/spriteSheetData.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -69,7 +70,17 @@ void Zombie::updateCurrent(sf::Time delta)
 	}
 
 	if(timeFromLastGrowl.getElapsedTime().asSeconds() > 2) {
-		mGameData->getSoundPlayer().playSpatialSound("sounds/zombieGetsAttacked.wav", getPosition());
+		int randomNumber = Random::generateNumber(1, 4);
+		auto& soundPlayer = mGameData->getSoundPlayer();
+		switch(randomNumber)
+		{
+			case 1: soundPlayer.playSpatialSound("sounds/zombieGrowl1.ogg", getPosition()); break;
+			case 2: soundPlayer.playSpatialSound("sounds/zombieGrowl2.ogg", getPosition()); break;
+			case 3: soundPlayer.playSpatialSound("sounds/zombieGrowl3.ogg", getPosition()); break;
+			case 4: soundPlayer.playSpatialSound("sounds/zombieGrowl4.ogg", getPosition()); break;
+			default:
+				PH_UNEXPECTED_SITUATION("Random sound choosing in zombie failed!");
+		}
 		timeFromLastGrowl.restart();
 	}
 	setPosition(mCollisionBody.getPosition());
