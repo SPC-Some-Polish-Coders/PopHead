@@ -28,7 +28,7 @@ void Spawn::spawnObject()
 
 auto Spawn::getRoot() -> GameObject&
 {
-	auto& scene = mGameData->getSceneMachine().getScene();
+	auto& scene = mGameData->getSceneManager().getScene();
 	return scene.getRoot();
 }
 

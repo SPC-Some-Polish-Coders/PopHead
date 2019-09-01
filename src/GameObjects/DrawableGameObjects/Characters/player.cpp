@@ -310,14 +310,14 @@ void Player::pauseMenuUpdate()
 {
 	if(mWasGamePauseButtonClicked)
 	{
-		bool isGamePaused = mGameData->getSceneMachine().getScene().getPause();
+		bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
 		if(isGamePaused) {
 			mGameData->getGui().hideInterface("pauseScreen");
-			mGameData->getSceneMachine().getScene().setPause(false);
+			mGameData->getSceneManager().getScene().setPause(false);
 		}
 		else {
 			mGameData->getGui().showInterface("pauseScreen");
-			mGameData->getSceneMachine().getScene().setPause(true);
+			mGameData->getSceneManager().getScene().setPause(true);
 		}
 		mWasGamePauseButtonClicked = false;
 	}

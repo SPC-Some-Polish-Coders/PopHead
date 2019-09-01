@@ -237,7 +237,7 @@ void StartGameCutScene::createZombie(const sf::Vector2f position)
 
 void StartGameCutScene::closeCutScene()
 {
-	mGameData->getSceneMachine().replaceScene("scenes/southFromTheCity.xml");
+	mGameData->getSceneManager().replaceScene("scenes/southFromTheCity.xml");
 	mIsActive = false;
 }
 

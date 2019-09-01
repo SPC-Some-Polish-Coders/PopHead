@@ -130,7 +130,7 @@ void CommandInterpreter::executeCurrentPos() const
 
 auto CommandInterpreter::getPlayer() const -> GameObject&
 {
-	auto& gameScene = mGameData->getSceneMachine().getScene();
+	auto& gameScene = mGameData->getSceneManager().getScene();
 	auto& root = gameScene.getRoot();
 	GameObject& player = root.getChild("player");
 	return player;

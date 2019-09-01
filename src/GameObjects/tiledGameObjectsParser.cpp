@@ -141,7 +141,7 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 	const std::string scenePathFromResources = "scenes/" + sceneFileName;
 
 	auto entrance = std::make_unique<Entrance>(
-		mGameData->getSceneMachine(),
+		mGameData->getSceneManager(),
 		scenePathFromResources,
 		"entrance",
 		getSizeAttribute(entranceNode),

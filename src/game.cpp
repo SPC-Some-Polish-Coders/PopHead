@@ -15,7 +15,7 @@ Game::Game()
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
 	,mAIManager(new AIManager())
-	,mSceneMachine{new SceneManager()}
+	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
 	,mInput{new Input()}
 	,mRenderer{new Renderer(mRenderWindow)}
@@ -32,7 +32,7 @@ Game::Game()
 		mFonts.get(),
 		mShaders.get(),
 		mAIManager.get(),
-		mSceneMachine.get(),
+		mSceneManager.get(),
 		mMap.get(),
 		mInput.get(),
 		mRenderer.get(),
@@ -53,8 +53,8 @@ Game::Game()
 	EventLoop::init(gameData);
 	mInput->setGameData(gameData);
 	mRenderer->setGameData(gameData);
-	mSceneMachine->setGameData(gameData);
-	mSceneMachine->replaceScene("scenes/mainMenu.xml");
+	mSceneManager->setGameData(gameData);
+	mSceneManager->replaceScene("scenes/mainMenu.xml");
 }
 
 void Game::run()
@@ -65,7 +65,7 @@ void Game::run()
 
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
-		mSceneMachine->changingScenesProcess();
+		mSceneManager->changingScenesProcess();
 		input();
 
 		deltaTime += clock.restart();
@@ -90,7 +90,7 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
-	mSceneMachine->input();
+	mSceneManager->input();
 	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
 	mTerminal->input();
 	mEfficiencyRegister->input();
@@ -99,7 +99,7 @@ void Game::input()
 void Game::update(sf::Time deltaTime)
 {
 	mAIManager->update();
-	mSceneMachine->update(deltaTime);
+	mSceneManager->update(deltaTime);
 	mPhysicsEngine->update(deltaTime);
 	mRenderer->update(deltaTime);
 	mGui->update(deltaTime);
@@ -110,7 +110,7 @@ void Game::draw()
 {
 	mRenderer->startSceneRendering();
 	mRenderer->draw(*mMap);
-	mRenderer->draw(mSceneMachine->getScene().getRoot());
+	mRenderer->draw(mSceneManager->getScene().getRoot());
 	mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
 
 	mRenderer->startUIRendering();

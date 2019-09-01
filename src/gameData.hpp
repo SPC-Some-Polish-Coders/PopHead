@@ -44,7 +44,7 @@ public:
 		FontHolder* const fonts,
 		ShaderHolder* const shaders,
 		AIManager* const aiManager,
-		SceneManager* const sceneMachine,
+		SceneManager* const sceneManager,
 		Map* const map,
 		Input* const input,
 		Renderer* const renderer,
@@ -60,7 +60,7 @@ public:
 		,mFonts{fonts}
 		,mShaders{shaders}
 		,mAIMangager(aiManager)
-		,mSceneMachine{sceneMachine}
+		,mSceneManager{sceneManager}
 		,mMap(map)
 		,mInput{input}
 		,mRenderer{renderer}
@@ -79,7 +79,7 @@ public:
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
-	auto getSceneMachine() const -> SceneManager& { return *mSceneMachine; }
+	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
 	auto getMap() const -> Map& { return *mMap; }
 	auto getInput()	const -> Input& { return *mInput; }
 	auto getRenderer() const -> Renderer& { return *mRenderer; }
@@ -97,7 +97,7 @@ private:
 	FontHolder* const mFonts;
 	ShaderHolder* const mShaders;
 	AIManager* const mAIMangager;
-	SceneManager* const mSceneMachine;
+	SceneManager* const mSceneManager;
 	Map* const mMap;
 	Input* const mInput;
 	Renderer* const mRenderer;
