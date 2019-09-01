@@ -18,7 +18,8 @@ public:
 private:
 	void setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection);
 	void handleHitCharacters();
-	auto getCharacterWhoWasHit()->Character*;
+	auto getFirstCharacterWhoWouldBeHit(const std::vector<Character*>&) -> Character*;
+	auto getAtackableCharactersInHitArea() const -> std::vector<Character*>;
 	bool wasCharacterHit(Character*);
 	void incrementRotation();
 

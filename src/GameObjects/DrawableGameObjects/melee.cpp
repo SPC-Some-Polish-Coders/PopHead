@@ -30,13 +30,15 @@ void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
 
 void Swing::handleHitCharacters()
 {
-	auto* characterWhoWasHit = getCharacterWhoWasHit();
-	if (characterWhoWasHit == nullptr)
+	auto atackableCharactersInHitArea = getAtackableCharactersInHitArea();
+	if(atackableCharactersInHitArea.empty())
 		return;
-	characterWhoWasHit->takeDamage(static_cast<unsigned int>(mDamage));
+	auto firstChracterWhoWouldBeHit = getFirstCharacterWhoWouldBeHit(atackableCharactersInHitArea);
+	if(firstChracterWhoWouldBeHit != nullptr)
+		firstChracterWhoWouldBeHit->takeDamage(static_cast<unsigned>(mDamage));
 }
 
-auto Swing::getCharacterWhoWasHit() -> Character*
+auto Swing::getAtackableCharactersInHitArea() const -> std::vector<Character*>
 {
 	const sf::FloatRect hitArea(mStartPositionBeginning.x - 20, mStartPositionBeginning.y - 20, 40, 40);
 	std::vector<Character*> atackableCharactersInHitArea;
@@ -49,7 +51,11 @@ auto Swing::getCharacterWhoWasHit() -> Character*
 		}
 		catch(const std::exception&) {}
 	}
+	return atackableCharactersInHitArea;
+}
 
+auto Swing::getFirstCharacterWhoWouldBeHit(const std::vector<Character*>& atackableCharactersInHitArea) -> Character*
+{
 	while(mRotation < 100) {
 		incrementRotation();
 		for(auto* atackableCharacter : atackableCharactersInHitArea) {
