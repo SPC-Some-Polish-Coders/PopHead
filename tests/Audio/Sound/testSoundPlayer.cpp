@@ -4,12 +4,11 @@
 
 namespace ph {
 
-
 TEST_CASE("Ambient sound can be played", "[Audio][SoundPlayer]")
 {
 	SoundPlayer soundPlayer;
 
-	CHECK_NOTHROW(soundPlayer.playAmbientSound("sounds/barretaShot.wav"));
+	CHECK_NOTHROW(soundPlayer.playAmbientSound("sounds/pistolShot.ogg"));
 }
 
 TEST_CASE("Spatial sound can be played", "[Audio][SoundPlayer]")
@@ -19,7 +18,7 @@ TEST_CASE("Spatial sound can be played", "[Audio][SoundPlayer]")
 	sf::Vector2f playerPosition(150.f, 150.f);
 	soundPlayer.setListenerPosition(playerPosition);
 
-	CHECK_NOTHROW(soundPlayer.playSpatialSound("sounds/zombieGetsAttacked.wav", soundPosition));
+	CHECK_NOTHROW(soundPlayer.playSpatialSound("sounds/zombieGrowl1.ogg", soundPosition));
 }
 
 TEST_CASE("Mute is set and can be read", "[Audio][SoundPlayer]")
@@ -54,7 +53,5 @@ TEST_CASE("Volume is set and can be read", "[Audio][SoundPlayer]")
 		CHECK(soundPlayer.getVolume() == 250.f);
 	}
 }
-
-
 
 }
