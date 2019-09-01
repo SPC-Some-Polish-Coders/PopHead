@@ -10,7 +10,7 @@ class Character;
 
 class Swing {
 public:
-	Swing(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
+	Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
 		const float damage, const float range, const float rotationRange);
 
 	auto getPositionFromBeginning() const -> std::array<sf::Vertex, 2> { return { mStartPositionBeginning, mStartPositionEnd }; }
@@ -19,11 +19,11 @@ private:
 	void setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection);
 	void handleHitCharacters();
 	auto getCharacterWhoWasHit()->Character*;
-	bool wasEnemyHit(Character&);
+	bool wasCharacterHit(Character*);
 	void incrementRotation();
 
 private:
-	const GameObject& mEnemiesNode;
+	const GameObject& mNodeWithAtackableObjects;
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPositionBeginning;
 	const float mDamage;

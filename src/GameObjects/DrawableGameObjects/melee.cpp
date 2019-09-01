@@ -4,9 +4,9 @@
 
 namespace ph {
 
-Swing::Swing(const GameObject& opponentsNode, const sf::Vector2f direction, const sf::Vector2f position,
+Swing::Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
 	const float damage, const float range, const float rotationRange)
-	:mEnemiesNode(opponentsNode)
+	:mNodeWithAtackableObjects(nodeWithAtackableObjects)
 	,mDirection(direction)
 	,mStartPositionBeginning(position)
 	,mDamage(damage)
@@ -38,34 +38,26 @@ void Swing::handleHitCharacters()
 
 auto Swing::getCharacterWhoWasHit() -> Character*
 {
-	// TODO: Optimize this function
+	const sf::FloatRect hitArea(mStartPositionBeginning.x - 20, mStartPositionBeginning.y - 20, 40, 40);
+	std::vector<Character*> atackableCharactersInHitArea;
 
-	while(mRotation < mRotationRange)
-	{
-		bool wasCollisionCheckedLastTime = false;
-		if(!wasCollisionCheckedLastTime) {
-			for(auto& enemy : mEnemiesNode.getChildren()) {
-				try {
-					auto& e = dynamic_cast<Character&>(*enemy);
-					if(e.isAtackable() && wasEnemyHit(e) && !e.isDead())
-						return &e;
-				}
-				catch(const std::exception&) {}
-			}
-			wasCollisionCheckedLastTime = true;
+	for(auto& atackableObject : mNodeWithAtackableObjects.getChildren()) {
+		try {
+			auto& c = dynamic_cast<Character&>(*atackableObject);
+			if(c.isAtackable() && !c.isDead() && Math::areTheyOverlapping(hitArea, c.getGlobalBounds()))
+				atackableCharactersInHitArea.emplace_back(&c);
 		}
-		else
-			wasCollisionCheckedLastTime = false;
-		
+		catch(const std::exception&) {}
+	}
+
+	while(mRotation < 100) {
 		incrementRotation();
+		for(auto* atackableCharacter : atackableCharactersInHitArea) {
+			if(wasCharacterHit(atackableCharacter))
+				return atackableCharacter;
+		}
 	}
 	return nullptr;
-}
-
-bool Swing::wasEnemyHit(Character& character)
-{
-	const sf::FloatRect hitbox = character.getGlobalBounds();
-	return Math::isPointInsideRect(mHitArea[1].position, hitbox);
 }
 
 void Swing::incrementRotation()
@@ -74,6 +66,12 @@ void Swing::incrementRotation()
 	sf::Transform rotation;
 	rotation.rotate(5.f, mStartPositionBeginning);
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
+}
+
+bool Swing::wasCharacterHit(Character* character)
+{
+	const sf::FloatRect hitbox = character->getGlobalBounds();
+	return Math::isPointInsideRect(mHitArea[1].position, hitbox);
 }
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
