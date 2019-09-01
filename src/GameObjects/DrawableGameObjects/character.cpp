@@ -15,7 +15,6 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mMovementSpeed(movementSpeed)
 	,mAnimation(animation)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
-	,mIsDead(false)
 	,mIsAtackable(isAtackable)
 {
 }

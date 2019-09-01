@@ -132,7 +132,6 @@ void Player::updateCurrent(sf::Time delta)
 
 void Player::die()
 {
-	mIsDead = true;
 	setAnimationState("dead");
 	auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
 	standingObjects->addCharacterToDie(this);

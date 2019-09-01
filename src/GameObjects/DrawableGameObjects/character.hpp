@@ -28,7 +28,6 @@ public:
 	auto getSpriteCenter() -> sf::Vector2f;
 	sf::FloatRect getGlobalBounds() const override;
 	auto getAnimation() -> Animation& { return mAnimation; }
-	bool isDead() const { return mIsDead; };
 	bool isAtackable() const { return mIsAtackable; }
 
 protected:
@@ -40,7 +39,6 @@ protected:
 	int mHp;
 	unsigned mMaxHp;
 	unsigned mMovementSpeed;
-	bool mIsDead;
 	bool mIsAtackable;
 };
 

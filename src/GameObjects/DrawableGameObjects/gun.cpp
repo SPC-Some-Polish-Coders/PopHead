@@ -71,7 +71,7 @@ auto Bullet::getFirstCharacterOnShotLine(std::vector<Character*> charactersInSho
 	while(isBulletStillInItsRange()) {
 		const sf::Vector2f currentBulletPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
 		for(auto& c : charactersInShotArea) {
-			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable() && !c->isDead())
+			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable())
 				return c;
 		}
 		mTraveledDistance += 5;
