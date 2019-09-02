@@ -162,13 +162,18 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 {
+	auto& texture = mGameData->getTextures().get("textures/vehicles/car.png");
 	auto car = std::make_unique<Car>(
 		getProperty(carNode, "acceleration").toFloat(),
 		getProperty(carNode, "slowingDown").toFloat(),
 		sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),
-		mGameData->getTextures().get("textures/vehicles/car.png")
+		texture
 	);
-	car->setPosition(getPositionAttribute(carNode));
+	auto position = getPositionAttribute(carNode);
+	car->setPosition(position);
+
+	sf::FloatRect carRect(position, sf::Vector2f(texture.getSize()));
+	mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(carRect);
 
 	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects.addChild(std::move(car));
