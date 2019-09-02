@@ -114,12 +114,13 @@ void Player::pauseMenuInput()
 
 void Player::updateCurrent(sf::Time delta)
 {
+	updateCounters();
+
 	if(mHp <= 0) {
 		die();
 		return;
 	}
 		
-	updateCounters();
 	updateMovement(delta);
 	updateAnimation(delta);
 	mMotion.clear();
