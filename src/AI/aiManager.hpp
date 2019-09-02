@@ -16,6 +16,7 @@ public:
 	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
 	void setIsPlayerOnScene(bool isPlayerOnScene) { mIsPlayerOnScene = isPlayerOnScene; }
+	bool isPlayerOnScene() const { return mIsPlayerOnScene; }
 	void setPlayerPosition(const sf::Vector2f playerPosition);
 	bool hasPlayerMovedSinceLastUpdate() const { return mHasPlayerMovedSinceLastUpdate; }
 	void registerMapSize(const sf::Vector2u mapSizeInTiles);

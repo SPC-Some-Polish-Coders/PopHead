@@ -83,9 +83,10 @@ void Zombie::updateCurrent(sf::Time delta)
 		}
 		timeFromLastGrowl.restart();
 	}
-	setPosition(mCollisionBody.getPosition());
-	handlePlayerHit();
 
+	setPosition(mCollisionBody.getPosition());
+	if(mGameData->getAIManager().isPlayerOnScene())
+		handlePlayerHit();
 	move(delta);
 	updateAnimation(delta);
 }
