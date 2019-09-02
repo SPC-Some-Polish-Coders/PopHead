@@ -7,6 +7,7 @@ namespace ph{
 
 class GameData;
 class Character;
+class CollisionBody;
 
 class Swing 
 {
@@ -54,6 +55,7 @@ private:
 	const float mRotationRange;
 	float mRotationFromStart;
 	bool mShouldBeDrawn;
+	CollisionBody* mEndOfMelle = nullptr;
 };
 
 }
