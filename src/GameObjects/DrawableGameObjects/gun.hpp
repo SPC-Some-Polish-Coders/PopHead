@@ -30,7 +30,7 @@ private:
 private:
 	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
-	const GameObject& mNodeWithAtackableObjects;
+	const GameObject& mNodeWithAttackableObjects;
 	unsigned mTraveledDistance;
 	const unsigned mRange;
 	const unsigned mDamage;

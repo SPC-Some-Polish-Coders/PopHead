@@ -10,7 +10,7 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
                const unsigned damage, const unsigned range)
 	:mDirection(direction)
 	,mStartPosition(startPosition)
-	,mNodeWithAtackableObjects(enemiesNode)
+	,mNodeWithAttackableObjects(enemiesNode)
 	,mTraveledDistance(1)
 	,mRange(range)
 	,mDamage(damage)
@@ -35,7 +35,7 @@ auto Bullet::getCharactersInShotArea() -> std::vector<Character*>
 {
 	sf::FloatRect shotArea = getShotArea();
 	std::vector<Character*> charactersInShotArea;
-	for(auto& object : mNodeWithAtackableObjects.getChildren()) {
+	for(auto& object : mNodeWithAttackableObjects.getChildren()) {
 		auto character = dynamic_cast<Character*>(object.get());
 		if(character == nullptr)
 			continue;
@@ -73,7 +73,7 @@ auto Bullet::getFirstCharacterOnShotLine(std::vector<Character*> charactersInSho
 	while(isBulletStillInItsRange()) {
 		const sf::Vector2f currentBulletPosition = getCurrentPosition();
 		for(auto& c : charactersInShotArea) {
-			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable())
+			if(wasCharacterShot(c, currentBulletPosition) && c->isAttackable())
 				return c;
 		}
 		mTraveledDistance += 5;

@@ -185,7 +185,7 @@ void Player::updateMovement(const sf::Time delta)
 
 void Player::updateAnimation(const sf::Time delta)
 {
-	if(mTimeFromLastMeleeAtack.getElapsedTime().asSeconds() < 0.15f) {
+	if(mTimeFromLastMeleeAttack.getElapsedTime().asSeconds() < 0.15f) {
 		if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
 			setAnimationState("fightLeftUp");
 		else if(mLastMotion.isMovingRight && mLastMotion.isMovingUp)
@@ -265,7 +265,7 @@ void Player::shootingUpdate(const sf::Time delta)
 void Player::meleeAttackUpdate(const sf::Time delta)
 {
 	if (mIsAttacking) {
-		mTimeFromLastMeleeAtack.restart();
+		mTimeFromLastMeleeAttack.restart();
 		sf::Vector2f meleeAttackDirection = attackDirection();
 		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
 		meleeWeapon.attack(meleeAttackDirection);

@@ -45,7 +45,7 @@ private:
 	void pauseMenuUpdate();
 
 private:
-	sf::Clock mTimeFromLastMeleeAtack;
+	sf::Clock mTimeFromLastMeleeAttack;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	unsigned mNumberOfOwnedBullets;

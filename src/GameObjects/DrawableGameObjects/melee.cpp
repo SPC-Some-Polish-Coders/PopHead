@@ -4,9 +4,9 @@
 
 namespace ph {
 
-Swing::Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
+Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
 	const float damage, const float range, const float rotationRange)
-	:mNodeWithAtackableObjects(nodeWithAtackableObjects)
+	:mNodeWithAttackableObjects(nodeWithAttackableObjects)
 	,mDirection(direction)
 	,mStartPosition(position)
 	,mDamage(damage)
@@ -29,36 +29,36 @@ void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
 
 void Swing::handleHitCharacters()
 {
-	auto atackableCharactersInHitArea = getAtackableCharactersInHitArea();
-	if(atackableCharactersInHitArea.empty())
+	auto attackableCharactersInHitArea = getAttackableCharactersInHitArea();
+	if(attackableCharactersInHitArea.empty())
 		return;
-	auto firstChracterWhoWouldBeHit = getFirstCharacterWhoWouldBeHit(atackableCharactersInHitArea);
+	auto firstChracterWhoWouldBeHit = getFirstCharacterWhoWouldBeHit(attackableCharactersInHitArea);
 	if(firstChracterWhoWouldBeHit != nullptr)
 		firstChracterWhoWouldBeHit->takeDamage(static_cast<unsigned>(mDamage));
 }
 
-auto Swing::getAtackableCharactersInHitArea() const -> std::vector<Character*>
+auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 {
 	const sf::FloatRect hitArea(mStartPosition.x - 20, mStartPosition.y - 20, 40, 40);
-	std::vector<Character*> atackableCharactersInHitArea;
+	std::vector<Character*> attackableCharactersInHitArea;
 
-	for(auto& atackableObject : mNodeWithAtackableObjects.getChildren()) {
-		auto* c = dynamic_cast<Character*>(atackableObject.get());
+	for(auto& attackableObject : mNodeWithAttackableObjects.getChildren()) {
+		auto* c = dynamic_cast<Character*>(attackableObject.get());
 		if(c == nullptr)
 			continue;
-		if(c->isAtackable() && Math::areTheyOverlapping(hitArea, c->getGlobalBounds()))
-			atackableCharactersInHitArea.emplace_back(c);
+		if(c->isAttackable() && Math::areTheyOverlapping(hitArea, c->getGlobalBounds()))
+			attackableCharactersInHitArea.emplace_back(c);
 	}
-	return atackableCharactersInHitArea;
+	return attackableCharactersInHitArea;
 }
 
-auto Swing::getFirstCharacterWhoWouldBeHit(const std::vector<Character*>& atackableCharactersInHitArea) -> Character*
+auto Swing::getFirstCharacterWhoWouldBeHit(const std::vector<Character*>& attackableCharactersInHitArea) -> Character*
 {
 	while(mRotation < 100) {
 		incrementRotation();
-		for(auto* atackableCharacter : atackableCharactersInHitArea) {
-			if(wasCharacterHit(atackableCharacter))
-				return atackableCharacter;
+		for(auto* attackableCharacter : attackableCharactersInHitArea) {
+			if(wasCharacterHit(attackableCharacter))
+				return attackableCharacter;
 		}
 	}
 	return nullptr;
@@ -94,7 +94,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
 	setOrigin(0.f, 12.f);
-	setRotation(getStartAtackRotation(attackDirection));
+	setRotation(getStartAttackRotation(attackDirection));
 	sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
 	setPosition(rightHandLocalPosition);
 	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
@@ -102,7 +102,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 	mShouldBeDrawn = true;
 }
 
-float MeleeWeapon::getStartAtackRotation(const sf::Vector2f attackDirection) const
+float MeleeWeapon::getStartAttackRotation(const sf::Vector2f attackDirection) const
 {
 	if(attackDirection == sf::Vector2f(1, 0))
 		return 0.f;
