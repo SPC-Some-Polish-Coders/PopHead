@@ -1,2 +1,1 @@
-del ..\..\*.sln
-del ..\..\*.vcxproj*
+del ..\..\VS_Projects
