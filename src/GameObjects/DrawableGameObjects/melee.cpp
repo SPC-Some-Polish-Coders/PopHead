@@ -8,7 +8,7 @@ Swing::Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f dire
 	const float damage, const float range, const float rotationRange)
 	:mNodeWithAtackableObjects(nodeWithAtackableObjects)
 	,mDirection(direction)
-	,mStartPositionBeginning(position)
+	,mStartPosition(position)
 	,mDamage(damage)
 	,mRange(range)
 	,mRotationRange(rotationRange)
@@ -21,11 +21,10 @@ Swing::Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f dire
 void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
 {
 	sf::Transform rotation;
-	rotation.rotate(-mRotationRange / 2, mStartPositionBeginning);
-	mHitArea[0].position = mStartPositionBeginning;
-	mHitArea[1].position = mStartPositionBeginning + (attackDirection * mRange);
+	rotation.rotate(-mRotationRange / 2, mStartPosition);
+	mHitArea[0].position = mStartPosition;
+	mHitArea[1].position = mStartPosition + (attackDirection * mRange);
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
-	mStartPositionEnd = mHitArea[1].position;
 }
 
 void Swing::handleHitCharacters()
@@ -40,10 +39,11 @@ void Swing::handleHitCharacters()
 
 auto Swing::getAtackableCharactersInHitArea() const -> std::vector<Character*>
 {
-	const sf::FloatRect hitArea(mStartPositionBeginning.x - 20, mStartPositionBeginning.y - 20, 40, 40);
+	const sf::FloatRect hitArea(mStartPosition.x - 20, mStartPosition.y - 20, 40, 40);
 	std::vector<Character*> atackableCharactersInHitArea;
 
 	for(auto& atackableObject : mNodeWithAtackableObjects.getChildren()) {
+		// TODO: Don't use exceptions here
 		try {
 			auto& c = dynamic_cast<Character&>(*atackableObject);
 			if(c.isAtackable() && Math::areTheyOverlapping(hitArea, c.getGlobalBounds()))
@@ -70,7 +70,7 @@ void Swing::incrementRotation()
 {
 	mRotation += 5.f;
 	sf::Transform rotation;
-	rotation.rotate(5.f, mStartPositionBeginning);
+	rotation.rotate(5.f, mStartPosition);
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
 }
 
@@ -82,83 +82,91 @@ bool Swing::wasCharacterHit(Character* character)
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
 	:GameObject("sword")
+	,mSprite(gameData->getTextures().get("textures/others/baseballStick.png"))
 	,mGameData(gameData)
 	,mDamage(damage)
 	,mRange(range)
 	,mRotationRange(rotatationRange)
-	,mGraphicsRotation(0.f)
-	,mShouldDrawSwing(false)
+	,mRotationFromStart(0.f)
+	,mShouldBeDrawn(false)
 {
 }
 
 void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
-	sf::Vector2f rightHandPosition = getRightHandPosition(attackDirection);
+	setOrigin(0.f, 12.f);
+	setRotation(getStartAtackRotation(attackDirection));
+	sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
+	setPosition(rightHandLocalPosition);
 	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-	Swing swing(standingObjects, attackDirection, rightHandPosition, mDamage, mRange, mRotationRange);
-	initializeAttackGraphics(swing);
+	Swing swing(standingObjects, attackDirection, rightHandLocalPosition + getWorldPosition(), mDamage, mRange, mRotationRange);
+	mShouldBeDrawn = true;
 }
 
-sf::Vector2f MeleeWeapon::getRightHandPosition(const sf::Vector2f attackDirection)
+float MeleeWeapon::getStartAtackRotation(const sf::Vector2f attackDirection) const
 {
-	sf::Vector2f position = getWorldPosition();
-
-	if (attackDirection == sf::Vector2f(1, 0))
-		position += {10, 20};
+	if(attackDirection == sf::Vector2f(1, 0))
+		return 0.f;
 	else if(attackDirection == sf::Vector2f(-1, 0))
-		position += {5, 15};
+		return 180.f;
 	else if(attackDirection == sf::Vector2f(0, 1))
-		position += {3, 20};
+		return 90.f;
 	else if(attackDirection == sf::Vector2f(0, -1))
-		position += {15, 15};
+		return -90.f;
 	else if(attackDirection == sf::Vector2f(0.7f, -0.7f))
-		position += {20, 3};
+		return -45.f;
 	else if(attackDirection == sf::Vector2f(-0.7f, -0.7f))
-		position += {3, 3};
+		return -135.f;
 	else if(attackDirection == sf::Vector2f(0.7f, 0.7f))
-		position += {10, 20};
+		return 45.f;
 	else if(attackDirection == sf::Vector2f(-0.7f, 0.7f))
-		position += {0, 10};
+		return 135.f;
 	else
 		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
-
-	return position;
 }
 
-void MeleeWeapon::initializeAttackGraphics(const Swing& swing)
+sf::Vector2f MeleeWeapon::getRightHandLocalPosition(const sf::Vector2f attackDirection)
 {
-	mHitGraphics = swing.getPositionFromBeginning();
-	mShouldDrawSwing = true;
-}
-
-void MeleeWeapon::updateHitGraphicsRotation()
-{
-	sf::Transform rotate;
-	rotate.rotate(15.f, mHitGraphics[0].position);
-	mHitGraphics[1] = rotate.transformPoint(mHitGraphics[1].position);
-	mGraphicsRotation += 15.f;
-}
-
-void MeleeWeapon::resetAttackGraphics()
-{
-	mHitGraphics[0].position = {0, 0};
-	mHitGraphics[1].position = {0, 0};
-	mGraphicsRotation = 0.f;
-	mShouldDrawSwing = false;
+	if (attackDirection == sf::Vector2f(1, 0))
+		return {14, 17};
+	else if(attackDirection == sf::Vector2f(-1, 0))
+		return {5, 15};
+	else if(attackDirection == sf::Vector2f(0, 1))
+		return {3, 20};
+	else if(attackDirection == sf::Vector2f(0, -1))
+		return {15, 15};
+	else if(attackDirection == sf::Vector2f(0.7f, -0.7f))
+		return {15, 7};
+	else if(attackDirection == sf::Vector2f(-0.7f, -0.7f))
+		return {3, 3};
+	else if(attackDirection == sf::Vector2f(0.7f, 0.7f))
+		return {13, 17};
+	else if(attackDirection == sf::Vector2f(-0.7f, 0.7f))
+		return {0, 10};
+	else
+		PH_UNEXPECTED_SITUATION("Direction vector like this shouldn't exist.");
 }
 
 void MeleeWeapon::updateCurrent(const sf::Time delta)
 {
-	if (mGraphicsRotation < mRotationRange && mShouldDrawSwing)
-		updateHitGraphicsRotation();
-	else
-		resetAttackGraphics();
+	if(mShouldBeDrawn) {
+		if(mRotationFromStart < mRotationRange) {
+			rotate(3.f);
+			mRotationFromStart += 3.f;
+		}
+		else {
+			mShouldBeDrawn = false;
+			setRotation(0.f);
+			mRotationFromStart = 0.f;
+		}
+	}
 }
 
-void MeleeWeapon::drawCurrent(sf::RenderTarget& target, sf::RenderStates) const
+void MeleeWeapon::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(mHitGraphics.data(), 2, sf::Lines);
+	if(mShouldBeDrawn)
+		target.draw(mSprite, states);
 }
 
 }

@@ -8,12 +8,11 @@ namespace ph{
 class GameData;
 class Character;
 
-class Swing {
+class Swing 
+{
 public:
 	Swing(const GameObject& nodeWithAtackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
 		const float damage, const float range, const float rotationRange);
-
-	auto getPositionFromBeginning() const -> std::array<sf::Vertex, 2> { return { mStartPositionBeginning, mStartPositionEnd }; }
 
 private:
 	void setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection);
@@ -26,13 +25,11 @@ private:
 private:
 	const GameObject& mNodeWithAtackableObjects;
 	const sf::Vector2f mDirection;
-	const sf::Vector2f mStartPositionBeginning;
+	const sf::Vector2f mStartPosition;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;
-
 	float mRotation;
-	sf::Vector2f mStartPositionEnd;
 	std::array<sf::Vertex, 2> mHitArea;
 };
 
@@ -46,20 +43,17 @@ public:
 	void attack(const sf::Vector2f attackDirection);
 
 private:
-	sf::Vector2f getRightHandPosition(const sf::Vector2f attackDirection);
-	void initializeAttackGraphics(const Swing& swing);
-	void updateHitGraphicsRotation();
-	void resetAttackGraphics();
+	float getStartAtackRotation(const sf::Vector2f attackDirection) const;
+	sf::Vector2f getRightHandLocalPosition(const sf::Vector2f attackDirection);
 
 private:
+	sf::Sprite mSprite;
 	GameData* const mGameData;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;
-
-	std::array<sf::Vertex, 2> mHitGraphics;
-	float mGraphicsRotation;
-	bool mShouldDrawSwing;
+	float mRotationFromStart;
+	bool mShouldBeDrawn;
 };
 
 }

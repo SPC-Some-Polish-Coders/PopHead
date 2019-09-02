@@ -6,5 +6,6 @@
     <resource respath="characters/negroDudeWalkingAnimation.png"/>
     <resource respath="characters/zombieFullAnimation.png"/>
     <resource respath="vehicles/car.png"/>
+    <resource respath="others/baseballStick.png"/>
   </textures>
 </loading>
