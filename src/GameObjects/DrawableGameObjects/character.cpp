@@ -3,6 +3,7 @@
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
+#include "Utilities/random.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -34,6 +35,7 @@ void Character::dropItem(std::unique_ptr<Item> item)
 {
 	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto& itemsContainer = dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
+	item->setPosition(getPosition() + sf::Vector2f(Random::generateNumber(2.f, 10.f), Random::generateNumber(2.f, 10.f)));
 	itemsContainer.addChild(std::move(item));
 }
 

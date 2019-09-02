@@ -5,6 +5,7 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include "Utilities/random.hpp"
+#include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 
 namespace ph {
 
@@ -60,7 +61,7 @@ Zombie::Zombie(GameData* gameData)
 
 void Zombie::onDeath()
 {
-	
+	dropItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Zombie::updateCurrent(sf::Time delta)

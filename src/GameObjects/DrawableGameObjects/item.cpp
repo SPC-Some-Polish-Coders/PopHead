@@ -4,8 +4,9 @@
 
 namespace ph {
 
-Item::Item(const std::string& name)
+Item::Item(GameData* const gameData, const std::string& name)
 	:GameObject(name)
+	,mGameData(gameData)
 	,mInteractable(false)
 	,mInInventory(false)
 {
@@ -21,6 +22,12 @@ void Item::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (!getInInventory())
 		drawWhileOnTheGround(target, states);
+}
+
+void Item::setPosition(const sf::Vector2f& position)
+{
+	sf::Transformable::setPosition(position);
+	mGroundSprite.setPosition(position);
 }
 
 void Item::onUse()

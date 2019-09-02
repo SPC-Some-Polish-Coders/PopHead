@@ -102,6 +102,7 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 	zombie->setPosition(getPositionAttribute(zombieNode));
 	zombie->setHp(getProperty(zombieNode, "hp").toInt());
 	zombie->setMaxHp(getProperty(zombieNode, "maxHp").toUnsigned());
+	mGameData->getTextures().load("textures/others/bulletGround.png");
 
 	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects.addChild(std::move(zombie));

@@ -11,8 +11,9 @@ public:
 	Zombie(GameData*);
 
 	void updateCurrent(sf::Time delta) override;
-private:
 	void onDeath() override;
+
+private:
 	void handlePlayerHit();
 	void move(sf::Time delta);
 	sf::Vector2f toDirectionVector(Direction);
