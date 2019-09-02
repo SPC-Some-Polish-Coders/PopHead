@@ -16,8 +16,9 @@ private:
 	void makeKinematicBodyStickToStaticBody();
 	bool isKinematicBodyCollidingOnAxisX() const;
 	bool isKinematicBodyOnTheLeftOfTheStaticBody() const;
-	void stickToRight();
 	void stickToLeft();
+	void stickToRight();
+	bool isKinematicBodyCollidingOnAxisY() const;
 	bool isKinematicBodyUpOfTheStaticBody() const;
 	void stickToTop();
 	void stickToBottom();
@@ -29,7 +30,7 @@ private:
 	sf::FloatRect mKinematicBodyRect;
 	sf::FloatRect mStaticBodyRect;
 	sf::FloatRect mKinematicBodyPreviousRect;
-	sf::FloatRect mStaticBodyPreviousRect;
+	//sf::FloatRect mStaticBodyPreviousRect;
 };
 
 

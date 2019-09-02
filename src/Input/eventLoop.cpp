@@ -4,17 +4,9 @@
 
 namespace ph {
 
-bool EventLoop::mIsKeyJustPressed;
-bool EventLoop::mIsKeyJustReleased;
-bool EventLoop::mIsMouseButtonJustPressed;
-bool EventLoop::mIsMouseButtonJustReleased;
-bool EventLoop::mHasMouseJustMoved;
-sf::Keyboard::Key EventLoop::mKey;
-sf::Mouse::Button EventLoop::mMouseButton;
-
 void EventLoop::init(GameData* gameData)
 {
-	gameData->getRenderer().getWindow().setKeyRepeatEnabled(false);
+	gameData->getRenderWindow().setKeyRepeatEnabled(false);
 }
 
 void EventLoop::eventLoop(GameData* gameData)
@@ -22,28 +14,28 @@ void EventLoop::eventLoop(GameData* gameData)
 	clear();
 	sf::Event event;
 
-	while(gameData->getRenderer().getWindow().pollEvent(event))
+	while(gameData->getRenderWindow().pollEvent(event))
 	{
 		switch(event.type)
 		{
 		case sf::Event::KeyPressed:
 			mIsKeyJustPressed = true;
-			mKey = event.key.code;
+			mPressedKey = event.key.code;
 			break;
 
 		case sf::Event::KeyReleased:
 			mIsKeyJustReleased = true;
-			mKey = event.key.code;
+			mReleasedKey = event.key.code;
 			break;
 
 		case sf::Event::MouseButtonPressed:
 			mIsMouseButtonJustPressed = true;
-			mMouseButton = event.mouseButton.button;
+			mMousePressedButton = event.mouseButton.button;
 			break;
 
 		case sf::Event::MouseButtonReleased:
 			mIsMouseButtonJustReleased = true;
-			mMouseButton = event.mouseButton.button;
+			mMouseReleasedButton = event.mouseButton.button;
 			break;
 
 		case sf::Event::MouseMoved:
@@ -55,13 +47,15 @@ void EventLoop::eventLoop(GameData* gameData)
 
 void EventLoop::clear()
 {
+	mPressedKey = sf::Keyboard::Unknown;
+	mReleasedKey = sf::Keyboard::Unknown;
+	mMousePressedButton = sf::Mouse::ButtonCount;
+	mMouseReleasedButton = sf::Mouse::ButtonCount;
 	mIsKeyJustPressed = false;
 	mIsKeyJustReleased = false;
 	mIsMouseButtonJustPressed = false;
 	mIsMouseButtonJustReleased = false;
 	mHasMouseJustMoved = false;
-	mKey = sf::Keyboard::Unknown;
-	mMouseButton = sf::Mouse::ButtonCount;
 }
 
 }

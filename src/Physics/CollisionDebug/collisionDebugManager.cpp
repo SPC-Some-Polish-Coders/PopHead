@@ -15,6 +15,12 @@ void CollisionDebugManager::addKinematicBodyCollisionDebugRect(const CollisionBo
 	mKinematicBodyCollisionDebugRects.emplace_back(kinematicBody.getRect());
 }
 
+void CollisionDebugManager::clear() noexcept
+{
+	mStaticBodyCollisionDebugRects.clear();
+	mKinematicBodyCollisionDebugRects.clear();
+}
+
 void CollisionDebugManager::draw(sf::RenderTarget& target, const sf::RenderStates states) const
 {
 	auto& settings = CollisionDebugSettings::getInstance();

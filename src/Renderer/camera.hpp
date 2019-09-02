@@ -19,6 +19,8 @@ public:
 	void setSize(sf::Vector2f size) { mView.setSize(size); }
 	auto getSize() const -> sf::Vector2f { return mView.getSize(); }
 
+	auto getBounds() const -> sf::FloatRect;
+
 	void setViewport(sf::FloatRect viewport) { mView.setViewport(viewport); }
 
 	void setShakeStrength(float shakeStrength) { mShakeStrength = shakeStrength; }

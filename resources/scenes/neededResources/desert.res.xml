@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loading>
+  <textures>
+    <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
+    <resource respath="characters/playerFullAnimation.png"/>
+    <resource respath="characters/negroDudeWalkingAnimation.png"/>
+    <resource respath="characters/zombieFullAnimation.png"/>
+    <resource respath="vehicles/car.png"/>
+    <resource respath="others/baseballStick.png"/>
+    <resource respath="others/bulletGround.png"/>
+  </textures>
+</loading>

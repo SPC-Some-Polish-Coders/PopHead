@@ -1,5 +1,5 @@
 #include "math.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 
@@ -13,6 +13,11 @@ namespace Math
 	float getBottomBound(const sf::FloatRect& bounds)
 	{
 		return bounds.top + bounds.height;
+	}
+
+	float getDistanceBetweenPoints(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint)
+	{
+		return hypotf((secondPoint.x - firstPoint.x), (secondPoint.y - firstPoint.y));
 	}
 
 	sf::Vector2f getCenter(const sf::FloatRect& bounds)
@@ -54,6 +59,17 @@ namespace Math
 			getRightBound(A) > B.left &&
 			A.top < getBottomBound(B) &&
 			getBottomBound(A) > B.top;
+	}
+
+	bool isPointInsideRect(const sf::Vector2f point, const sf::FloatRect& rect)
+	{
+		return point.x >= rect.left && point.x <= rect.left + rect.width
+			&& point.y >= rect.top && point.y <= rect.top + rect.height;
+	}
+
+	bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius)
+	{
+		return (getDistanceBetweenPoints(point, circlePos) < radius);
 	}
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed)

@@ -6,8 +6,9 @@ namespace ph {
 EfficiencyRegister::EfficiencyRegister()
 	:mEfficiencyDisplayer()
 	,mClock()
+	,mGameData(nullptr)
 	,mFramesPerSecond(0)
-	,mRenderCallPerFrame(0)
+	,mDrawCallPerFrame(0)
 	,mFramesFromLastSecond(0)
 	,mIsActive(false)
 {
@@ -31,8 +32,8 @@ void EfficiencyRegister::update()
 {
 	if(mIsActive) {
 		mEfficiencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
-		mEfficiencyDisplayer.setRenderCallPerFrameText("DCPF: " + std::to_string(mRenderCallPerFrame));
-		mRenderCallPerFrame = 0;
+		mEfficiencyDisplayer.setDrawCallPerFrameText("DCPF: " + std::to_string(mDrawCallPerFrame));
+		mDrawCallPerFrame = 0;
 	}
 
 	if(mClock.getElapsedTime().asSeconds() >= 1) {

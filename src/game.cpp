@@ -2,34 +2,37 @@
 
 #include <SFML/System.hpp>
 #include <Input/eventLoop.hpp>
-#include "Logs/logger.hpp"
 #include "Resources/loadFonts.hpp"
 
 namespace ph {
 
 Game::Game()
 	:mGameData{}
+	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead")
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mSceneMachine{new SceneMachine()}
+	,mAIManager(new AIManager())
+	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
 	,mInput{new Input()}
-	,mRenderer{new Renderer()}
+	,mRenderer{new Renderer(mRenderWindow)}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
+		&mRenderWindow,
 		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		mSceneMachine.get(),
+		mAIManager.get(),
+		mSceneManager.get(),
 		mMap.get(),
 		mInput.get(),
 		mRenderer.get(),
@@ -39,68 +42,82 @@ Game::Game()
 		mGui.get()
 	));
 
-	loadFonts(mGameData.get());
+	GameData* gameData = mGameData.get();
 
-	mTerminal->init(mGameData.get());
-
-	//logger.setGameData() has to be called after mTerminal.init() - this comment should be replaced by proper unit test
-	Logger::getInstance().setGameData(mGameData.get());
-
-	mEfficiencyRegister->init(mGameData.get());
-
-	mMap->setGameData(mGameData.get());
-
-	mSceneMachine->setGameData(mGameData.get());
-	mSceneMachine->pushScene("scenes/desertScene.xml");
-
-	mGui->init(mGameData.get());
-
-	EventLoop::init(mGameData.get());
-	mInput->setGameData(mGameData.get());
-
-	mRenderer->setGameData(mGameData.get());
+	loadFonts(gameData);
+	mTerminal->init(gameData);
+	//Logger::getInstance().setGameData(gameData); // logger.setGameData() must be called after mTerminal.init()
+	mEfficiencyRegister->init(gameData);
+	mMap->setGameData(gameData);
+	mGui->init(gameData);
+	EventLoop::init(gameData);
+	mInput->setGameData(gameData);
+	mSceneManager->setGameData(gameData);
+	mSceneManager->replaceScene("scenes/mainMenu.xml");
 }
 
 void Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	sf::Time deltaTime = sf::Time::Zero;
 
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
-		mSceneMachine->changingScenesProcess();
+		mSceneManager->changingScenesProcess();
 		input();
 
-		timeSinceLastUpdate += clock.restart();
+		deltaTime += clock.restart();
 
-		while(timeSinceLastUpdate >= timePerFrame) {
-			timeSinceLastUpdate -= timePerFrame;
-
-			update(timePerFrame);
-			mRenderer->draw();
+		while(deltaTime >= timePerFrame) {
+			input();
+			update(getProperDeltaTime(deltaTime));
+			deltaTime = sf::Time::Zero;
+			draw();
 		}
 	}
 
-	mRenderer->getWindow().close();
+	mRenderWindow.close();
+}
+
+sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
+{
+	const sf::Time minimalDeltaTimeConstrain = sf::seconds(1.f/20.f);
+	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
 }
 
 void Game::input()
 {
 	EventLoop::eventLoop(mGameData.get());
-	mSceneMachine->input();
+	mSceneManager->input();
 	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
 	mTerminal->input();
 	mEfficiencyRegister->input();
 }
 
-void Game::update(sf::Time delta)
+void Game::update(sf::Time deltaTime)
 {
-	mSceneMachine->update(delta);
-	mPhysicsEngine->update(delta);
-	mRenderer->update(delta);
-	mGui->update(delta);
+	mAIManager->update();
+	mSceneManager->update(deltaTime);
+	mPhysicsEngine->update(deltaTime);
+	mRenderer->update(deltaTime);
+	mGui->update(deltaTime);
 	mEfficiencyRegister->update();
+}
+
+void Game::draw()
+{
+	mRenderer->startSceneRendering();
+	mRenderer->draw(*mMap);
+	mRenderer->draw(mSceneManager->getScene().getRoot());
+	mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
+
+	mRenderer->startUIRendering();
+	mRenderer->draw(mGui->getGuiDrawer());
+	mRenderer->draw(mEfficiencyRegister->getDisplayer());
+	mRenderer->draw(mTerminal->getImage());
+
+	mRenderWindow.display();
 }
 
 }

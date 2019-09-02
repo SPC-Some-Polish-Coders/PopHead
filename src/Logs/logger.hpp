@@ -1,52 +1,33 @@
 #pragma once
 
-#include "log.hpp"
-#include "logSettings.hpp"
-#include "Utilities/path.hpp"
-#include <SFML/System.hpp>
+#include "logRecord.hpp"
+#include "handler.hpp"
+
+#include <SFML/System/Clock.hpp>
+
 #include <vector>
-#include <fstream>
-#include <stdexcept>
-#include <sstream>
+#include <memory>
 
 namespace ph {
 
-class GameData;
+	class Logger
+	{
+	private:
+		Logger() = default;
+		Logger(const Logger&) = delete;
+		Logger& operator=(const Logger&) = delete;
 
-class Logger
-{
-private:
-	Logger();
+	public:
+		static void createLog(LogLevel level, const std::string& message, const std::string& filePath, unsigned short fileLine);
 
-public:
-	Logger(Logger&) = delete;
-	void operator=(Logger&) = delete;
+		static void addLogsHandler(std::unique_ptr<Handler> handler);
+		static bool removeLogsHandler(const Handler& handler);
 
-	static Logger& getInstance(){
-		static Logger Logger; 
-		return Logger;
-	}
+	private:
+		static Logger& getInstance();
 
-	void setGameData(GameData* gameData) { mGameData = gameData; }
-
-	auto getLogSettings() -> LogSettings& { return mLogSettings; }
-
-	void writeLog(const LogData& log);
-
-private:
-	void openFile();
-	void saveLogInFile(const LogData& log); 
-	void writeLogInConsole(const LogData& log);
-	void writeLogInInternalTerminal(const LogData& log);
-	std::stringstream printLog(const LogData& log);
-	std::string nameTheFile();
-	sf::Time getElapsedTimeSinceCreation();
-
-private:
-	LogSettings mLogSettings;
-	std::ofstream mLogFile;
-	sf::Clock mClock;
-	GameData* mGameData;
-};
-
+	private:
+		std::vector<std::unique_ptr<Handler>> mHandlers;
+		sf::Clock mClock;
+	};
 }

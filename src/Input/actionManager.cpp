@@ -1,11 +1,12 @@
 #include "actionManager.hpp"
 #include "eventLoop.hpp"
 #include <algorithm>
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph {
 
 ActionManager::ActionManager()
+	:mEnabled(true)
 {
 	///TODO: loading player's favorite controls from file
 
@@ -14,8 +15,8 @@ ActionManager::ActionManager()
 	addAction("movingDown", {sf::Keyboard::S, sf::Keyboard::Down});
 	addAction("movingRight", {sf::Keyboard::D, sf::Keyboard::Right});
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
-	addAction("shotgunShot", sf::Keyboard::Return);
-	addAction("cameraShake", sf::Keyboard::Space);
+	addAction("attack", sf::Keyboard::Enter);
+	addAction("meleeAttack", sf::Keyboard::BackSlash);
 }
 
 void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
@@ -23,13 +24,13 @@ void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboar
 	auto last = std::unique(buttons.begin(), buttons.end());
 	buttons.erase(last, buttons.end());
 	mActions[action] = buttons;
-	PH_LOG(LogType::Info, "Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionManager.");
 }
 
 void ActionManager::addAction(const std::string& action, sf::Keyboard::Key button)
 {
 	mActions[action] = std::vector<sf::Keyboard::Key>{button};
-	PH_LOG(LogType::Info, "Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionManager.");
 }
 
 void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key button)
@@ -41,7 +42,7 @@ void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key 
 		if(std::find(vec.begin(), vec.end(), button) == vec.end())
 			found->second.emplace_back(button);
 	}
-	PH_LOG(LogType::Info, "Key was added to action.");
+	PH_LOG_INFO("Key was added to action.");
 }
 
 void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard::Key button)
@@ -52,20 +53,20 @@ void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard:
 		auto& vec = found->second;
 		vec.erase(std::remove(vec.begin(), vec.end(), button), vec.end());
 	}
-	PH_LOG(LogType::Info, "Key was deleted from action.");
+	PH_LOG_INFO("Key was deleted from action.");
 }
 
 void ActionManager::deleteAction(const std::string& action)
 {
 	auto found = mActions.find(action);
 	mActions.erase(found);
-	PH_LOG(LogType::Info, "Action was deleted from ActionManager.");
+	PH_LOG_INFO("Action was deleted from ActionManager.");
 }
 
 void ActionManager::clearAllActions() noexcept
 {
 	mActions.clear();
-	PH_LOG(LogType::Info, "All actions were cleared.");
+	PH_LOG_INFO("All actions were cleared.");
 }
 
 bool ActionManager::isActionPressed(const std::string& action)
@@ -82,21 +83,23 @@ bool ActionManager::isActionPressed(const std::string& action)
 
 bool ActionManager::isActionJustPressed(const std::string& action)
 {
-	return isAction(action, EventLoop::isKeyJustPressed);
+	if(!mEnabled)
+		return false;
+
+	for(const auto& button : mActions[action]) {
+		if(EventLoop::isKeyJustPressed() && EventLoop::getPressedKey() == button)
+			return true;
+	}
+	return false;
 }
 
 bool ActionManager::isActionJustReleased(const std::string& action)
-{
-	return isAction(action, EventLoop::isKeyJustReleased);
-}
-
-bool ActionManager::isAction(const std::string& action, std::function<bool(void)> func)
 {
 	if(!mEnabled)
 		return false;
 
 	for(const auto& button : mActions[action]) {
-		if(func() && EventLoop::getKey() == button)
+		if(EventLoop::isKeyJustReleased() && EventLoop::getReleasedKey() == button)
 			return true;
 	}
 	return false;

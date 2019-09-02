@@ -25,8 +25,6 @@ public:
 	bool isActionPressed(const std::string& action);
 	bool isActionJustPressed(const std::string& action);
 	bool isActionJustReleased(const std::string& action);
-private:
-	bool isAction(const std::string& action, std::function<bool(void)> func);
 
 private:
 	std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;

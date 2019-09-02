@@ -18,11 +18,11 @@ public:
 
 	void setShouldBeDrawn(const bool shouldBeDrawn) { mShouldBeDrawn = shouldBeDrawn; }
 	void setFramePerSecondText(const std::string& text) { mFramesPerSecondText.setString(text); }
-	void setRenderCallPerFrameText(const std::string& text) { mRenderCallPerFrameText.setString(text); }
+	void setDrawCallPerFrameText(const std::string& text) { mDrawCallPerFrameText.setString(text); }
 
 private:
 	sf::Text mFramesPerSecondText;
-	sf::Text mRenderCallPerFrameText;
+	sf::Text mDrawCallPerFrameText;
 	sf::RectangleShape mBackground;
 	bool mShouldBeDrawn;
 };

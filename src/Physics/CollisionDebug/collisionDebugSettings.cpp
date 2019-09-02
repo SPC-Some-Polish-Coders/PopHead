@@ -1,5 +1,5 @@
 #include "collisionDebugSettings.hpp"
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
 #include <string>
 
 namespace ph {
@@ -15,34 +15,34 @@ CollisionDebugSettings::CollisionDebugSettings()
 void CollisionDebugSettings::turnOn()
 {
 	mShouldDisplay = true;
-	PH_LOG(LogType::Info, "Collision debug was turned on.");
+	PH_LOG_INFO("Collision debug was turned on.");
 }
 
 void CollisionDebugSettings::turnOff()
 {
 	mShouldDisplay = false;
-	PH_LOG(LogType::Info, "Collision debug was turned off.");
+	PH_LOG_INFO("Collision debug was turned off.");
 }
 
 void CollisionDebugSettings::displayOnlyKinematicBodies()
 {
 	mShouldDisplayKinematicBodies = true;
 	mShouldDisplayStaticBodies = false;
-	PH_LOG(LogType::Info, "Collision debug mode was changed. Now it should display only kinematic bodies.");
+	PH_LOG_INFO("Collision debug mode was changed. Now it should display only kinematic bodies.");
 }
 
 void CollisionDebugSettings::displayOnlyStaticBodies()
 {
 	mShouldDisplayKinematicBodies = false;
 	mShouldDisplayStaticBodies = true;
-	PH_LOG(LogType::Info, "Collision debug mode was changed. Now it should display only static bodies.");
+	PH_LOG_INFO("Collision debug mode was changed. Now it should display only static bodies.");
 }
 
 void CollisionDebugSettings::displayAllBodies()
 {
 	mShouldDisplayKinematicBodies = true;
 	mShouldDisplayStaticBodies = true;
-	PH_LOG(LogType::Info, "Collision debug mode was changed. Now it should display all bodies.");
+	PH_LOG_INFO("Collision debug mode was changed. Now it should display all bodies.");
 }
 
 
@@ -65,6 +65,8 @@ auto CollisionDebugSettings::getFillColor(BodyType bodyType) -> const sf::Color&
 
 	case BodyType::staticBody:
 		return mStaticBodiesColor;
+	default:
+		PH_UNEXPECTED_SITUATION("Not all types of BodyType were handled");
 	}
 }
 
@@ -98,7 +100,7 @@ void CollisionDebugSettings::setColors(int numberOfSet)
 		dealWithSetColorsError(numberOfSet);
 	}
 
-	PH_LOG(LogType::Info, "Collision debug rect colors were set to " + std::to_string(numberOfSet) + ".");
+	PH_LOG_INFO("Collision debug rect colors were set to " + std::to_string(numberOfSet) + ".");
 }
 
 void CollisionDebugSettings::dealWithSetColorsError(int numberOfSet)

@@ -1,36 +1,25 @@
 #pragma once
 
-#include "Utilities/xml.hpp"
-#include "EntityComponentSystem/entity.hpp"
 #include <string>
-#include <vector>
 
 namespace ph{
 
+class GameData;
+class Xml;
+class CutSceneManager;
+
+template <typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
 class SceneParser
 {
 public:
-	SceneParser(GameData* const, Entity& root, const std::string fileName);
-private:
-	void loadResources(const Xml& sceneSourceCode);
-	void loadTextures(const Xml& loadingNode);
-
-	void loadMusic(const Xml& sceneSourceCode);
-
-	void loadScene(const Xml& sceneSourceCode);
-	void loadMap(const Xml& rootNode);
-	void loadPlayer(const Xml& rootNode);
-	void loadGroups(const Xml& rootNode);
-	void loadNpcGroup(const Xml& npcGroupNode);
-	void loadEnemiesGroup(const Xml& enemyGroupNode);
-	void loadZombies(const std::vector<Xml>& zombieNodes);
-	void loadSpawnersGroup(const Xml& spawnerGroupNode);
-
-	auto getPositionAttribute(const Xml& objectNode) const -> const sf::Vector2f;
+	SceneParser(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const std::string& sceneFileName);
 
 private:
-	Entity& mRoot;
-	GameData* const mGameData;
+	template<typename Parser>
+	void parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName);
+
+	void parseGameObjects(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const Xml& sceneLinksNode);
 };
 
 }
+#include "sceneParser.inl"

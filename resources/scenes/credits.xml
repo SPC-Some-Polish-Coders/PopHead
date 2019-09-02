@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <gui filename="credits.gui.xml"/>
+  <map filename="creditsMap.tmx"/>
+  <neededResources filename="menu.res.xml"/>
+  <music filename="menu.music.xml"/>
+</scenelinks>

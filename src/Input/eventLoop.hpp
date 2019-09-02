@@ -15,26 +15,29 @@ public:
 
     static void eventLoop(GameData*);
 
-    static bool isKeyJustPressed(){return mIsKeyJustPressed;}
-    static bool isKeyJustReleased(){return mIsKeyJustReleased;}
-    static bool isMouseButtonJustPressed(){return mIsMouseButtonJustPressed;}
-    static bool isMouseButtonJustReleased(){return mIsMouseButtonJustReleased;}
-    static bool hasMouseJustMoved(){return mHasMouseJustMoved;}
-    static auto getKey() -> sf::Keyboard::Key {return mKey;}
-    static auto getMouseButton() -> sf::Mouse::Button {return mMouseButton;}
+	static auto getPressedKey() -> sf::Keyboard::Key { return mPressedKey; }
+    static auto getReleasedKey() -> sf::Keyboard::Key { return mReleasedKey; }
+    static auto getMousePressedButton() -> sf::Mouse::Button { return mMousePressedButton; }
+    static auto getMouseReleasedButton() -> sf::Mouse::Button { return mMouseReleasedButton; }
+    static bool isKeyJustPressed(){ return mIsKeyJustPressed; }
+    static bool isKeyJustReleased(){ return mIsKeyJustReleased; }
+    static bool isMouseButtonJustPressed(){ return mIsMouseButtonJustPressed; }
+    static bool isMouseButtonJustReleased(){ return mIsMouseButtonJustReleased; }
+    static bool hasMouseJustMoved(){ return mHasMouseJustMoved; }
 
 private:
     static void clear();
 
 private:
-    static bool mIsKeyJustPressed;
-    static bool mIsKeyJustReleased;
-    static bool mIsMouseButtonJustPressed;
-    static bool mIsMouseButtonJustReleased;
-    static bool mHasMouseJustMoved;
-
-    static sf::Keyboard::Key mKey;
-    static sf::Mouse::Button mMouseButton;
+	inline static sf::Keyboard::Key mPressedKey;
+    inline static sf::Keyboard::Key mReleasedKey;
+    inline static sf::Mouse::Button mMousePressedButton;
+    inline static sf::Mouse::Button mMouseReleasedButton;
+    inline static bool mIsKeyJustPressed;
+    inline static bool mIsKeyJustReleased;
+    inline static bool mIsMouseButtonJustPressed;
+    inline static bool mIsMouseButtonJustReleased;
+    inline static bool mHasMouseJustMoved;
 };
 
 }

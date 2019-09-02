@@ -1,5 +1,6 @@
 #include "globalKeyboardShortcuts.hpp"
 #include "gameData.hpp"
+#include <SFML/Window.hpp>
 
 namespace ph {
 
@@ -22,11 +23,11 @@ void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
 		{
 		case WindowSizeState::fullScreen:
 			mWindowSizeState = WindowSizeState::notFullScreen;
-			mGameData->getRenderer().getWindow().create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
+			mGameData->getRenderWindow().create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
 			break;
 		case WindowSizeState::notFullScreen:
 			mWindowSizeState = WindowSizeState::fullScreen;
-			mGameData->getRenderer().getWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
+			mGameData->getRenderWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
 			break;
 		}
 	}
@@ -34,9 +35,9 @@ void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
 
 void GlobalKeyboardShortcuts::handleCloseGameShortcut()
 {
-	auto& keyboard = mGameData->getInput().getKeyboard();
-	if(keyboard.isKeyPressed(sf::Keyboard::Escape))
-		mGameData->getGameCloser().closeTheGame();
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::LSystem) 
+		&& sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+		mGameData->getGameCloser().closeGame();
 }
 
 }

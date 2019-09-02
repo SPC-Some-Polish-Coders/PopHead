@@ -1,32 +1,30 @@
 #pragma once
 
+#include "GameObjects/GameObject.hpp"
+#include "cutSceneManager.hpp"
 #include <SFML/System.hpp>
-#include "EntityComponentSystem/entity.hpp"
-#include "sceneParser.hpp"
+#include <memory>
 
 namespace ph{
 
 class GameData; 
+class CutScene;
 
 class Scene
 {
 public:
-    Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath);
+    Scene();
     void input();
     void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }
-	void setHide(bool hide) { mHide = hide; }
-	bool getHide() const { return mHide; }
-	
-	Entity& getRoot() { return mRoot; }
+	GameObject& getRoot() { return *mRoot.get(); }
+	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
 
 private:
-	Entity mRoot;
-	SceneParser mSceneParser;
-	GameData* const mGameData;
-    bool mHide;
+	CutSceneManager mCutSceneManager;
+	std::unique_ptr<GameObject> mRoot;
     bool mPause;
 };
 

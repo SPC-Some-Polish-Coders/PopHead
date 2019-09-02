@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <musicdata>
- <theme filename="explorationTheme.ogg" volumemultiplier="1.2" loop="true"/>
+  <theme filename="Menu.ogg" volumemultiplier="1" loop="true"/>
+  <theme filename="explorationTheme.ogg" volumemultiplier="1.2" loop="true"/>
+  <theme filename="zombieAttack.ogg" volumemultiplier="1" loop="true"/>
 </musicdata>

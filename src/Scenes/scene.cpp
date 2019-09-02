@@ -1,27 +1,33 @@
 #include "scene.hpp"
+#include "cutScene.hpp"
 #include "gameData.hpp"
-#include "EntityComponentSystem/entityType.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
-Scene::Scene(GameData* const gameData, const std::string& sceneSourceCodeFilePath)
-	:mRoot(EntityType::none, gameData, "root")
-	,mGameData(gameData)
-	,mSceneParser(gameData, mRoot, sceneSourceCodeFilePath)
-	,mHide(false)
+Scene::Scene()
+	:mCutSceneManager()
+	,mRoot(std::make_unique<GameObject>("root"))
 	,mPause(false)
 {
+	GameObject::setRoot(mRoot.get());
 }
 
 void Scene::input()
 {
-	mRoot.input();
+	if(mCutSceneManager.isCutSceneActive())
+		mCutSceneManager.handleCutSceneInput();
+
+	mRoot->input();
 }
 
 void Scene::update(sf::Time delta)
 {
-	mRoot.update(delta);
+	if(mCutSceneManager.isCutSceneActive())
+		mCutSceneManager.updateCutScene(delta);
+
+	if(!mPause)
+		mRoot->update(delta);
 }
 
 }

@@ -1,18 +1,19 @@
 #pragma once
 
-#include <memory>
-
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
-#include "Scenes/sceneMachine.hpp"
+#include "AI/aiManager.hpp"
+#include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
 #include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 namespace ph {
 
@@ -22,19 +23,24 @@ public:
 	Game();
 
 	void run();
-private:
-	void input();
-	void update(sf::Time delta);
+	inline auto getGameData() const -> const GameData & { return *(mGameData); };
+	Terminal* getTerminal() { return mTerminal.get(); }
 
-	auto getGameData() const -> const GameData& { return *(mGameData); };
+private:
+	sf::Time getProperDeltaTime(sf::Time deltaTime);
+	void input();
+	void update(sf::Time deltaTime);
+	void draw();
 
 	std::unique_ptr< GameData >           mGameData;
+	sf::RenderWindow                      mRenderWindow;
 	std::unique_ptr< SoundPlayer >        mSoundPlayer;
 	std::unique_ptr< MusicPlayer >        mMusicPlayer;
 	std::unique_ptr< TextureHolder >      mTextures;
 	std::unique_ptr< FontHolder >         mFonts;
 	std::unique_ptr< ShaderHolder >       mShaders;
-	std::unique_ptr< SceneMachine >       mSceneMachine;
+	std::unique_ptr< AIManager >          mAIManager;
+	std::unique_ptr< SceneManager >       mSceneManager;
 	std::unique_ptr< Map >                mMap;
 	std::unique_ptr< Input >              mInput;
 	std::unique_ptr< Renderer >           mRenderer;

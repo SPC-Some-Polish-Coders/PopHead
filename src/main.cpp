@@ -1,36 +1,44 @@
 #include "game.hpp"
 
-#include "Utilities/debug.hpp"
+#include "Logs/logs.hpp"
+#include "Gui/messageBox.hpp"
 
-#ifdef PH_WINDOWS
-#include <Windows.h>
-#endif // PH_WINDOWS
 #include <stdexcept>
 #include <string>
 
-void showErrorMessageBox(const std::string& title, const std::string& message)
-{
-#ifdef PH_WINDOWS
-	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
-#endif // PH_WINDOWS
-}
+#include "Logs/logger.hpp"
+#include "Logs/logsInitializing.hpp"
+
+#include "Gui/xmlGuiParser.hpp"
+#include "Gui/guiActionsParserImpl.hpp"
 
 int main()
 {
 	try {
-		PH_LOG(ph::LogType::Info, "start executing PopHead!");
+		PH_LOG_INFO("start initializing PopHead");
 		ph::Game game;
+
+		ph::XmlGuiParser::setActionsParser(std::make_unique<ph::GuiActionsParserImpl>());
+
+		// TODO: change place of initializing logs to start of main(), because now it needs Terminal from Game
+		ph::initializeLogsModule("../config/logsConfig.ini", game.getTerminal());
+		
+		PH_LOG_INFO("start executing PopHead");
 		game.run();
 	}
+	catch (const ph::CriticalError& criticalError) {
+		ph::showErrorMessageBox("Critical Error: ", criticalError.what());
+		throw;
+	}
 	catch (const std::exception& e) {
-		PH_LOG(ph::LogType::UnhandledException, e.what());
-		showErrorMessageBox("Error", e.what());
+		PH_LOG_WARNING("Standard exceptions should be handled in code.");
+		ph::showErrorMessageBox("Error", e.what());
 		throw;
 	}
 	catch (...) {
-		PH_LOG(ph::LogType::UnhandledException, "Unknown error occurred!");
-		showErrorMessageBox("Error", "Unknown error occurred!");
+		ph::showErrorMessageBox("Error", "Unknown error occurred!");
 		throw;
 	}
+
 	return 0;
 }

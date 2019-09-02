@@ -1,155 +1,40 @@
 #include "map.hpp"
-#include "gameData.hpp"
 #include "chunkMap.hpp"
-#include "Utilities/debug.hpp"
-#include "Utilities/csv.hpp"
 #include "Utilities/math.hpp"
+#include "Logs/logs.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
 Map::Map()
 	:mChunkMap(nullptr)
-	,mRenderChunksMode(RenderChunksMode::forCurrentCameraView)
+	,mGameData(nullptr)
 {
 }
 
-void Map::loadFromFile(const std::string& filename)
+void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, const AllLayersGlobalTileIds& allLayersGlobalTileIds)
 {
-	Xml mapFile;
-	mapFile.loadFromFile(filename);
-	const Xml mapNode = mapFile.getChild("map");
-	checkMapSupport(mapNode);
-	const sf::Vector2u mapSize = getMapSize(mapNode);
-	const sf::Vector2u tileSize = getTileSize(mapNode);
-	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
-	const TilesetsData tilesets = getTilesetsData(tilesetNodes);
-	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	
-	createChunkMap(tilesets, mapSize, tileSize);
-	createAllLayers(layerNodes, tilesets, mapSize, tileSize);
+	createChunkMap(tilesetsData, info);
+	createAllLayers(allLayersGlobalTileIds, tilesetsData, info);
+	createMapBorders(info);
 }
 
-void Map::checkMapSupport(const Xml& mapNode) const
-{
-	const std::string orientation = mapNode.getAttribute("orientation").toString();
-	if (orientation != "orthogonal")
-		PH_EXCEPTION("Used unsupported map orientation: " + orientation);
-	const std::string infinite = mapNode.getAttribute("infinite").toString();
-	if (infinite != "0")
-		PH_EXCEPTION("Infinite maps are not supported");
-}
-
-sf::Vector2u Map::getMapSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("width").toUnsigned(),
-		mapNode.getAttribute("height").toUnsigned()
-	);
-}
-
-sf::Vector2u Map::getTileSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("tilewidth").toUnsigned(),
-		mapNode.getAttribute("tileheight").toUnsigned()
-	);
-}
-
-std::vector<Xml> Map::getTilesetNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
-	if (tilesetNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any tilesets");
-	return tilesetNodes;
-}
-
-auto Map::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData
-{
-	TilesetsData tilesets;
-	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
-	tilesets.tileCounts.reserve(tilesetNodes.size());
-	tilesets.columnsCounts.reserve(tilesetNodes.size());
-	for (Xml tilesetNode : tilesetNodes) {
-		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
-		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
-		if (tilesetNode.hasAttribute("source")) {
-			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
-			tilesetNodeSource = pathToMapNotEmbeddedTilesets + Path::toFilename(tilesetNodeSource, '/');
-			PH_LOG(LogType::Info, "Detected not embeded tileset in Map: " + tilesetNodeSource);
-			Xml tilesetDocument;
-			tilesetDocument.loadFromFile(tilesetNodeSource);
-			tilesetNode = tilesetDocument.getChild("tileset");
-		}
-		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
-		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
-		const Xml imageNode = tilesetNode.getChild("image");
-		tilesets.tilesetFileName = Path::toFilename(imageNode.getAttribute("source").toString(), '/');
-		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
-		TilesetsData::TilesData tilesData = getTilesData(tileNodes);
-		tilesData.firstGlobalTileId = firstGlobalTileId;
-		tilesets.tilesData.push_back(tilesData);
-	}
-	return tilesets;
-}
-
-auto Map::getTilesData(const std::vector<Xml>& tileNodes) const -> TilesetsData::TilesData
-{
-	TilesetsData::TilesData tilesData{};
-	tilesData.ids.reserve(tileNodes.size());
-	tilesData.bounds.reserve(tileNodes.size()); // WARNING: Change it when there would be possibility to have more than one CollisionBody per tile?
-	for (const Xml& tileNode : tileNodes) {
-		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
-		const Xml objectGroupNode = tileNode.getChild("objectgroup");
-		const Xml objectNode = objectGroupNode.getChild("object");
-		const sf::FloatRect bounds(
-			objectNode.getAttribute("x").toFloat(),
-			objectNode.getAttribute("y").toFloat(),
-			objectNode.hasAttribute("width") ? objectNode.getAttribute("width").toFloat() : 0.f,
-			objectNode.hasAttribute("height") ? objectNode.getAttribute("height").toFloat() : 0.f
-		);
-		if(!(bounds.width == 0.f && bounds.height == 0.f))
-			tilesData.bounds.push_back(bounds);
-	}
-	return tilesData;
-}
-
-std::vector<Xml> Map::getLayerNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
-	if (layerNodes.size() == 0)
-		PH_LOG(LogType::Warning, "Map doesn't have any layers");
-	return layerNodes;
-}
-
-void Map::createChunkMap(const TilesetsData& tilesets, const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
 {
 	mChunkMap = std::make_unique<ChunkMap>(
-		mapSize,
-		tileSize,
-		mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName)
+		info.mapSize,
+		info.tileSize,
+		mGameData->getTextures().get(pathToTilesetsDirectory + tilesetsData.tilesetFileName)
 	);
 }
 
-void Map::createAllLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets,
-                          const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createAllLayers(const AllLayersGlobalTileIds& allLayers, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
-	for(const Xml& layerNode : layerNodes) {
-		const Xml dataNode = layerNode.getChild("data");
-		const std::vector<unsigned> globalTileIds = toGlobalTileIds(dataNode);
-		createLayer(globalTileIds, tilesets, mapSize, tileSize);
-	}
+	for(const GlobalTileIds& globalTileIds : allLayers)
+		createLayer(globalTileIds, tilesets, info);
 }
 
-std::vector<unsigned> Map::toGlobalTileIds(const Xml& dataNode) const
-{
-	const std::string encoding = dataNode.getAttribute("encoding").toString();
-	if (encoding == "csv")
-		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
-}
-
-void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                      const sf::Vector2u mapSize, const sf::Vector2u tileSize)
+void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
 	const sf::Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
@@ -170,18 +55,18 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 		if (hasTile(globalTileId)) {
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) {
-				PH_LOG(LogType::Warning, "It was not possible to find tileset for " + std::to_string(globalTileId));
+				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
 			sf::Vector2u tileRectPosition = 
 				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
-			tileRectPosition.x *= tileSize.x;
-			tileRectPosition.y *= tileSize.y;
+			tileRectPosition.x *= info.tileSize.x;
+			tileRectPosition.y *= info.tileSize.y;
 
-			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, mapSize.x));
-			position.x *= tileSize.x;
-			position.y *= tileSize.y;
+			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
+			position.x *= info.tileSize.x;
+			position.y *= info.tileSize.y;
 
 			TileData tileData;
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
@@ -214,7 +99,7 @@ std::size_t Map::findTilesetIndex(const unsigned globalTileId, const TilesetsDat
 	return std::string::npos;
 }
 
-std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesetsData::TilesData>& tilesData) const
+std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const
 {
 	for (std::size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
@@ -222,7 +107,7 @@ std::size_t Map::findTilesIndex(const unsigned firstGlobalTileId, const std::vec
 	return std::string::npos;
 }
 
-void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesData& tilesData, const sf::Vector2f position)
+void Map::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position)
 {
 	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
 		if (tileId == tilesData.ids[i]) {
@@ -230,19 +115,45 @@ void Map::loadCollisionBodies(const unsigned tileId, const TilesetsData::TilesDa
 			bounds.left += position.x;
 			bounds.top += position.y;
 			mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);
+			mGameData->getAIManager().registerObstacle({bounds.left, bounds.top});
 		}
 	}
 }
 
-void Map::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+void Map::createMapBorders(const GeneralMapInfo& mapInfo)
 {
-	auto& camera = mGameData->getRenderer().getCamera();
-	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size = mRenderChunksMode == RenderChunksMode::forCurrentCameraView ? camera.getSize() : sf::Vector2f(640, 480);
-	const sf::Vector2f topLeftCornerPosition(center.x - size.x / 2, center.y - size.y / 2);
-	const sf::FloatRect screenBounds(topLeftCornerPosition.x, topLeftCornerPosition.y, size.x, size.y);
-	
-	mChunkMap->draw(target, states, screenBounds);
+	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
+	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
+
+	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
+
+	auto& physics = mGameData->getPhysicsEngine();
+
+	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
+	{
+		// top border
+		sf::Vector2f positionTop(x * size.x, -size.y);
+		physics.createStaticBodyAndGetTheReference({ positionTop, size });
+		// bottom border
+		sf::Vector2f positionBottom(x * size.x, mapHeight);
+		physics.createStaticBodyAndGetTheReference({ positionBottom, size });
+	}
+
+	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
+	{
+		// left border
+		sf::Vector2f positionLeft(-size.x, y * size.y);
+		physics.createStaticBodyAndGetTheReference({ positionLeft, size });
+		// right border
+		sf::Vector2f positionRight(mapWidth, y * size.y);
+		physics.createStaticBodyAndGetTheReference({ positionRight, size });
+	}
+}
+
+void Map::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const
+{
+	if (mChunkMap)
+		mChunkMap->draw(target, states, cameraBounds);
 }
 
 }

@@ -2,20 +2,12 @@
 
 #include "game.hpp"
 
-#include "Utilities/debug.hpp"
+#include "Gui/messageBox.hpp"
+#include "Logs/logs.hpp"
+#include "Logs/logsInitializing.hpp"
 
-#ifdef _WIN32
-#include <Windows.h>
-#endif // _WIN32
 #include <stdexcept>
 #include <string>
-
-void showErrorMessageBox(const std::string& title, const std::string& message)
-{
-#ifdef _WIN32
-	MessageBoxA(nullptr, message.c_str(), title.c_str(), MB_OK | MB_ICONERROR);
-#endif // _WIN32
-}
 
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
@@ -23,18 +15,26 @@ void showErrorMessageBox(const std::string& title, const std::string& message)
 int main()
 {
 	try {
-		PH_LOG(ph::LogType::Info, "start executing PopHead!");
+		PH_LOG_INFO("start initializing PopHead");
 		ph::Game game;
+
+		// TODO: change place of initializing logs to start of main(), because now it needs Terminal from Game
+		ph::initializeLogsModule("../config/logsConfig.ini", game.getTerminal());
+
+		PH_LOG_INFO("start executing PopHead");
 		game.run();
 	}
+	catch (const ph::CriticalError& criticalError) {
+		ph::showErrorMessageBox("Critical Error: ", criticalError.what());
+		throw;
+	}
 	catch (const std::exception& e) {
-		PH_LOG(ph::LogType::UnhandledException, e.what());
-		showErrorMessageBox("Error", e.what());
+		PH_LOG_WARNING("Standard exceptions should be handled in code.");
+		ph::showErrorMessageBox("Error", e.what());
 		throw;
 	}
 	catch (...) {
-		PH_LOG(ph::LogType::UnhandledException, "Unknown error occurred!");
-		showErrorMessageBox("Error", "Unknown error occurred!");
+		ph::showErrorMessageBox("Error", "Unknown error occurred!");
 		throw;
 	}
 
@@ -43,7 +43,19 @@ int main()
 
 #else // !PH_TESTS
 
-#define CATCH_CONFIG_MAIN
+#include "TestsUtilities/bufferedHandler.hpp"
+#include "Logs/logger.hpp"
+
+#define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
+
+int main()
+{
+	std::unique_ptr<ph::Handler> bufferedHandler(new Tests::BufferedHandler);
+	bufferedHandler->enableAllPaths();
+	bufferedHandler->enableAllLogLevels();
+	ph::Logger::addLogsHandler(std::move(bufferedHandler));
+	return Catch::Session().run();
+}
 
 #endif // !PH_TESTS
