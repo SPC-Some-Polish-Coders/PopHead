@@ -88,11 +88,14 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 
 void Game::input()
 {
-	EventLoop::eventLoop(mGameData.get());
-	mSceneManager->input();
-	mInput->getGlobalKeyboardShortcutes().handleShortcuts();
-	mTerminal->input();
-	mEfficiencyRegister->input();
+	if (mRenderWindow.hasFocus())
+	{
+		EventLoop::eventLoop(mGameData.get());
+		mSceneManager->input();
+		mInput->getGlobalKeyboardShortcutes().handleShortcuts();
+		mTerminal->input();
+		mEfficiencyRegister->input();
+	}
 }
 
 void Game::update(sf::Time deltaTime)
