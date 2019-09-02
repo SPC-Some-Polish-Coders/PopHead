@@ -12,6 +12,7 @@ public:
 
 	void updateCurrent(sf::Time delta) override;
 private:
+	void onDeath() override;
 	void handlePlayerHit();
 	void move(sf::Time delta);
 	sf::Vector2f toDirectionVector(Direction);

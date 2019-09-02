@@ -19,6 +19,7 @@ void StandingGameObjectsLayer::updateCurrent(sf::Time delta)
 void StandingGameObjectsLayer::handleDyingCharaters()
 {
 	for(Character* dyingCharacter : mDyingCharacters) {
+		dyingCharacter->onDeath();
 		auto& lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
 		auto deadCharacter = std::make_unique<DeadCharacter>(dyingCharacter->getSprite());
 		deadCharacter->setPosition(dyingCharacter->getPosition());

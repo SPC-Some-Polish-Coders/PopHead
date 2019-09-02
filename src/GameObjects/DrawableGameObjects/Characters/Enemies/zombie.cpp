@@ -58,6 +58,11 @@ Zombie::Zombie(GameData* gameData)
 	mAnimation.animate(mSprite);
 }
 
+void Zombie::onDeath()
+{
+	
+}
+
 void Zombie::updateCurrent(sf::Time delta)
 {
 	if(mHp <= 0) {

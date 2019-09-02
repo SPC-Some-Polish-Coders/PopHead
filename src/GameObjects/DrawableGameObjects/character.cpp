@@ -2,6 +2,7 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
+#include "GameObjects/GameObjectContainers/itemsContainer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -22,6 +23,18 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);
+}
+
+void Character::onDeath()
+{
+
+}
+
+void Character::dropItem(std::unique_ptr<Item> item)
+{
+	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto& itemsContainer = dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
+	itemsContainer.addChild(std::move(item));
 }
 
 void Character::setPosition(sf::Vector2f position)
