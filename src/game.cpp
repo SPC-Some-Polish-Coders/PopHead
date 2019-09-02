@@ -52,7 +52,6 @@ Game::Game()
 	mGui->init(gameData);
 	EventLoop::init(gameData);
 	mInput->setGameData(gameData);
-	mRenderer->setGameData(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 }

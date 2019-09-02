@@ -7,7 +7,6 @@
 
 namespace ph {
 
-class GameData;
 class GameObject;
 class Map;
 
@@ -32,7 +31,6 @@ public:
 	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
 	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
 	auto getCamera() -> Camera& { return mCamera; }
-	void setGameData(GameData* gameData) { mGameData = gameData; }
 	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
 
 private:
@@ -44,7 +42,6 @@ private:
 	const std::map< Viewports, sf::Rect< float > > mViewports;
 	sf::RenderTarget& mRenderTarget;
 	sf::FloatRect mProperCameraBounds;
-	GameData* mGameData;
 	bool mDebugRenderingMode;
 };
 

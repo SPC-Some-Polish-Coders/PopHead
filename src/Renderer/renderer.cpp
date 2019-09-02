@@ -2,7 +2,7 @@
 #include "GameObjects/gameObject.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/math.hpp"
-#include "gameData.hpp"
+#include "Map/map.hpp"
 
 namespace ph {
 
@@ -11,7 +11,6 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 	,mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mStaticObjectsCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
-	,mGameData(nullptr)
 	,mDebugRenderingMode(false)
 {
 	mCamera.setViewport(mViewports.at(FullScreenViewport));
