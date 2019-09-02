@@ -43,13 +43,11 @@ auto Swing::getAtackableCharactersInHitArea() const -> std::vector<Character*>
 	std::vector<Character*> atackableCharactersInHitArea;
 
 	for(auto& atackableObject : mNodeWithAtackableObjects.getChildren()) {
-		// TODO: Don't use exceptions here
-		try {
-			auto& c = dynamic_cast<Character&>(*atackableObject);
-			if(c.isAtackable() && Math::areTheyOverlapping(hitArea, c.getGlobalBounds()))
-				atackableCharactersInHitArea.emplace_back(&c);
-		}
-		catch(const std::exception&) {}
+		auto* c = dynamic_cast<Character*>(atackableObject.get());
+		if(c == nullptr)
+			continue;
+		if(c->isAtackable() && Math::areTheyOverlapping(hitArea, c->getGlobalBounds()))
+			atackableCharactersInHitArea.emplace_back(c);
 	}
 	return atackableCharactersInHitArea;
 }
