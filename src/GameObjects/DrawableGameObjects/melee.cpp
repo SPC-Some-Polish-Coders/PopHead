@@ -1,5 +1,6 @@
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "Physics/CollisionBody/collisionBody.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -100,6 +101,18 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
 	Swing swing(standingObjects, attackDirection, rightHandLocalPosition + getWorldPosition(), mDamage, mRange, mRotationRange);
 	mShouldBeDrawn = true;
+
+	if (mEndOfMelle != nullptr)
+	{
+		mGameData->getPhysicsEngine().removeKinematicBody(*mEndOfMelle);
+		mEndOfMelle = nullptr;
+	}
+	sf::Transform local;
+	local.rotate(getRotation());
+	sf::Vector2f endOfMeleePosition = getWorldPosition() + local.transformPoint(sf::Vector2f(12.f, -12.f));
+	sf::FloatRect endOfMeleeRect({ endOfMeleePosition - sf::Vector2f(1.f, 8.f) }, { 2.f, 2.f });
+	const float massOfKinematicObject = 50;
+	mEndOfMelle = &(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(endOfMeleeRect, massOfKinematicObject));
 }
 
 float MeleeWeapon::getStartAttackRotation(const sf::Vector2f attackDirection) const
@@ -157,6 +170,8 @@ void MeleeWeapon::updateCurrent(const sf::Time delta)
 			mShouldBeDrawn = false;
 			setRotation(0.f);
 			mRotationFromStart = 0.f;
+			mGameData->getPhysicsEngine().removeKinematicBody(*mEndOfMelle);
+			mEndOfMelle = nullptr;
 		}
 	}
 }
