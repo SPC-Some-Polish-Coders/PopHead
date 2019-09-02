@@ -1,1 +1,1 @@
-del ..\..\VS_Projects
+del /Q ..\..\VS_Projects
