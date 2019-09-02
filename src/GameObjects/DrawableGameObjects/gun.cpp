@@ -63,8 +63,8 @@ sf::Vector2f Bullet::getShotAreaTopLeftCorner() const
 sf::Vector2f Bullet::getShotAreaSize() const
 {
 	return sf::Vector2f(
-		mDirection.x == 0 ? 1 : mRange,
-		mDirection.y == 0 ? 1 : mRange
+		mDirection.x == 0 ? 1 : static_cast<float>(mRange),
+		mDirection.y == 0 ? 1 : static_cast<float>(mRange)
 	);
 }
 
