@@ -1,6 +1,11 @@
+root_dir = "../../"
+config_dir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+exe_dir = root_dir .. "bin/" .. config_dir .. "/%{prj.name}"
+obj_dir = root_dir .. "bin-obj/" .. config_dir .. "/%{prj.name}"
+
 workspace "PopHead"
     architecture "x86"
-    location "../../"
+    location (root_dir)
     startproject "PopHead"
     
     configurations{
@@ -11,27 +16,27 @@ workspace "PopHead"
     }
 
 project "PopHead"
-    location "../../VS_Projects"
+    location (root_dir .. "VS_Projects")
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     
-    targetdir ("../../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
-	objdir ("../../bin-obj/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+    targetdir (exe_dir)
+	objdir (obj_dir)
     
     debugdir "%{wks.location}"
     
     includedirs{
-        "../../src",
-        "../../vendor/SFML_2.5.1/include"
+        root_dir .. "src",
+        root_dir .. "vendor/SFML_2.5.1/include"
     }
 
-    libdirs{"../../vendor/SFML_2.5.1/lib-VisualStudio"}
+    libdirs{root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
-        "../../src/**.hpp",
-        "../../src/**.cpp",
-        "../../src/**.inl"
+        root_dir .. "src/**.hpp",
+        root_dir .. "src/**.cpp",
+        root_dir .. "src/**.inl"
     }
 
     links{
@@ -86,35 +91,35 @@ project "PopHead"
     filter{}
 
 project "Tests"
-    location "../../VS_Projects"
+    location (root_dir .. "VS_Projects")
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
 
-    targetdir ("../../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
-	objdir ("../../bin-obj/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+    targetdir (exe_dir)
+	objdir (obj_dir)
     
     debugdir "%{wks.location}"
     
     includedirs{
-        "../../src",
-        "../../vendor/SFML_2.5.1/include",
-        "../../vendor/catch2"
+        root_dir .. "src",
+        root_dir .. "vendor/SFML_2.5.1/include",
+        root_dir .. "vendor/catch2"
     }
 
-    libdirs{"../../vendor/SFML_2.5.1/lib-VisualStudio"}
+    libdirs{root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio"}
 
     files{
-        "../../src/**.hpp",
-        "../../src/**.cpp",
-        "../../src/**.inl",
-        "../../tests/**.hpp",
-        "../../tests/**.cpp",
-        "../../tests/**.inl"
+        root_dir .. "src/**.hpp",
+        root_dir .. "src/**.cpp",
+        root_dir .. "src/**.inl",
+        root_dir .. "tests/**.hpp",
+        root_dir .. "tests/**.cpp",
+        root_dir .. "tests/**.inl"
     }
     
     removefiles{
-        "../../src/main.cpp"
+        root_dir .. "src/main.cpp"
     }
 
     links{
