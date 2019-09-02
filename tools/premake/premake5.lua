@@ -11,13 +11,15 @@ workspace "PopHead"
     }
 
 project "PopHead"
-    location "../../"
+    location "../../VS_Projects"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     
-    targetdir ("../../PopHeadProj/bin/bin/")
-	objdir ("../../PopHeadProj/bin/obj/")
+    targetdir ("../../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+	objdir ("../../bin-obj/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+    
+    debugdir "%{wks.location}"
     
     includedirs{
         "../../src",
@@ -84,13 +86,15 @@ project "PopHead"
     filter{}
 
 project "Tests"
-    location "../../"
+    location "../../VS_Projects"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
 
-    targetdir ("../../TestsProj/bin/bin/")
-	objdir ("../../TestsProj/bin/obj/")
+    targetdir ("../../bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+	objdir ("../../bin-obj/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}/%{prj.name}")
+    
+    debugdir "%{wks.location}"
     
     includedirs{
         "../../src",
