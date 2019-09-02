@@ -24,8 +24,10 @@ Bullet::Bullet(const GameObject& enemiesNode, const sf::Vector2f direction, cons
 auto Bullet::getCharacterWhoWasShot() -> Character*
 {
 	auto charactersInShotArea = getCharactersInShotArea();
-	if(charactersInShotArea.empty())
+	if(charactersInShotArea.empty()) {
+		mTraveledDistance = mRange;
 		return nullptr;
+	}
 	return getFirstCharacterOnShotLine(charactersInShotArea);
 }
 
@@ -61,15 +63,15 @@ sf::Vector2f Bullet::getShotAreaTopLeftCorner() const
 sf::Vector2f Bullet::getShotAreaSize() const
 {
 	return sf::Vector2f(
-		std::abs(mDirection.x == 0 ? 1 : mDirection.x * mRange),
-		std::abs(mDirection.y == 0 ? 1 : mDirection.y * mRange)
+		mDirection.x == 0 ? 1 : mRange,
+		mDirection.y == 0 ? 1 : mRange
 	);
 }
 
 auto Bullet::getFirstCharacterOnShotLine(std::vector<Character*> charactersInShotArea) -> Character*
 {
 	while(isBulletStillInItsRange()) {
-		const sf::Vector2f currentBulletPosition = mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
+		const sf::Vector2f currentBulletPosition = getCurrentPosition();
 		for(auto& c : charactersInShotArea) {
 			if(wasCharacterShot(c, currentBulletPosition) && c->isAtackable())
 				return c;
@@ -82,6 +84,11 @@ auto Bullet::getFirstCharacterOnShotLine(std::vector<Character*> charactersInSho
 bool Bullet::isBulletStillInItsRange()
 {
 	return mTraveledDistance < mRange;
+}
+
+auto Bullet::getCurrentPosition() const -> const sf::Vector2f
+{
+	return  mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
 }
 
 bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBulletPosition)
@@ -107,7 +114,7 @@ void Gun::shoot(const sf::Vector2f shotDirection)
 	mTimeFromTrigerPull.restart();
 }
 
-sf::Vector2f  Gun::getRightHandPosition(const sf::Vector2f shotDirection)
+sf::Vector2f Gun::getRightHandPosition(const sf::Vector2f shotDirection)
 {
 	sf::Vector2f position = getWorldPosition();
 

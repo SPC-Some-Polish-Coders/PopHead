@@ -15,7 +15,7 @@ public:
            const unsigned damage, const unsigned range);
 
 	auto getStartPosition() const -> const sf::Vector2f { return mStartPosition; }
-	auto getCurrentPosition() const -> const sf::Vector2f { return mStartPosition + (mDirection * static_cast<float>(mTraveledDistance)); }
+	auto getCurrentPosition() const -> const sf::Vector2f;
 
 private:
 	auto getCharacterWhoWasShot() -> Character*;
