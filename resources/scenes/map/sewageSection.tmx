@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="50" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="50" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -322,6 +322,12 @@
 331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,331,408,408,408,408,408,408,408,331,407,407,407,407,407,407,407,267,331,331,331,331
 </data>
  </layer>
+ <objectgroup id="3" name="gameObjects">
+  <object id="1" type="Player" x="523" y="1213">
+   <point/>
+  </object>
+  <object id="2" type="Camera" x="205" y="940.167" width="640" height="480"/>
+ </objectgroup>
  <layer id="2" name="Barriers" width="50" height="80">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,2147483837,0,0,0,0,0,189,0,2147483837,0,0,0,0,0,0,189,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
