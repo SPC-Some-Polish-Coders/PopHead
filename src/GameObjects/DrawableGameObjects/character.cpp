@@ -62,6 +62,11 @@ sf::FloatRect Character::getGlobalBounds() const
 	return mCollisionBody.getRect();
 }
 
+void Character::pushCharacter(const sf::Vector2f& pushVector)
+{
+	mCollisionBody.setForceVector(pushVector);
+}
+
 void Character::takeDamage(const unsigned damage)
 { 
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {

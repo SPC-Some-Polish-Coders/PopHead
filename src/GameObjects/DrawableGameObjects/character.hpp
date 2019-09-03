@@ -35,6 +35,8 @@ public:
 	auto getAnimation() -> Animation& { return mAnimation; }
 	bool isAttackable() const { return mIsAttackable; }
 
+	void pushCharacter(const sf::Vector2f& pushVector);
+
 protected:
 	sf::Sprite mSprite;
 	Animation mAnimation;
