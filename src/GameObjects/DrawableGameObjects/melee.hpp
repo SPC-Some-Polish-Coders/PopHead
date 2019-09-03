@@ -16,9 +16,8 @@ public:
 		const float damage, const float range, const float rotationRange);
 
 private:
-	void setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection);
-	void handleHitCharacters();
-	auto getFirstCharacterWhoWouldBeHit(const std::vector<Character*>&) -> Character*;
+	void setMeeleWeaponStartingPosition(const sf::Vector2f& attackDirection);
+	void handleHitCharacters(const sf::Vector2f& attackDirection);
 	auto getAttackableCharactersInHitArea() const -> std::vector<Character*>;
 	bool wasCharacterHit(Character*);
 	void incrementRotation();

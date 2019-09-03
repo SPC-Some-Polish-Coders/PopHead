@@ -16,10 +16,10 @@ Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f dir
 	,mRotation(0.f)
 {
 	setMeeleWeaponStartingPosition(direction);
-	handleHitCharacters();
+	handleHitCharacters(direction);
 }
 
-void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
+void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f& attackDirection)
 {
 	sf::Transform rotation;
 	rotation.rotate(-mRotationRange / 2, mStartPosition);
@@ -28,14 +28,24 @@ void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f attackDirection)
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
 }
 
-void Swing::handleHitCharacters()
+void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
 {
 	auto attackableCharactersInHitArea = getAttackableCharactersInHitArea();
 	if(attackableCharactersInHitArea.empty())
 		return;
-	auto firstChracterWhoWouldBeHit = getFirstCharacterWhoWouldBeHit(attackableCharactersInHitArea);
-	if(firstChracterWhoWouldBeHit != nullptr)
-		firstChracterWhoWouldBeHit->takeDamage(static_cast<unsigned>(mDamage));
+
+	while (mRotation < 100)
+	{
+		incrementRotation();
+		for (auto* attackableCharacter : attackableCharactersInHitArea)
+		{
+			if (wasCharacterHit(attackableCharacter))
+			{
+				attackableCharacter->takeDamage(static_cast<unsigned>(mDamage));
+				attackableCharacter->pushCharacter(attackDirection * 100.f);
+			}
+		}
+	}
 }
 
 auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
@@ -51,18 +61,6 @@ auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 			attackableCharactersInHitArea.emplace_back(c);
 	}
 	return attackableCharactersInHitArea;
-}
-
-auto Swing::getFirstCharacterWhoWouldBeHit(const std::vector<Character*>& attackableCharactersInHitArea) -> Character*
-{
-	while(mRotation < 100) {
-		incrementRotation();
-		for(auto* attackableCharacter : attackableCharactersInHitArea) {
-			if(wasCharacterHit(attackableCharacter))
-				return attackableCharacter;
-		}
-	}
-	return nullptr;
 }
 
 void Swing::incrementRotation()
@@ -99,20 +97,12 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 	sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
 	setPosition(rightHandLocalPosition);
 	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-	Swing swing(standingObjects, attackDirection, rightHandLocalPosition + getWorldPosition(), mDamage, mRange, mRotationRange);
-	mShouldBeDrawn = true;
 
-	if (mEndOfMelle != nullptr)
-	{
-		mGameData->getPhysicsEngine().removeKinematicBody(*mEndOfMelle);
-		mEndOfMelle = nullptr;
-	}
-	sf::Transform local;
-	local.rotate(getRotation());
-	sf::Vector2f endOfMeleePosition = getWorldPosition() + local.transformPoint(sf::Vector2f(12.f, -12.f));
-	sf::FloatRect endOfMeleeRect({ endOfMeleePosition - sf::Vector2f(1.f, 8.f) }, { 2.f, 2.f });
-	const float massOfKinematicObject = 50;
-	mEndOfMelle = &(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(endOfMeleeRect, massOfKinematicObject));
+	auto playerRect = mParent->getGlobalBounds();
+	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
+
+	Swing swing(standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange);
+	mShouldBeDrawn = true;
 }
 
 float MeleeWeapon::getStartAttackRotation(const sf::Vector2f attackDirection) const
@@ -170,8 +160,6 @@ void MeleeWeapon::updateCurrent(const sf::Time delta)
 			mShouldBeDrawn = false;
 			setRotation(0.f);
 			mRotationFromStart = 0.f;
-			mGameData->getPhysicsEngine().removeKinematicBody(*mEndOfMelle);
-			mEndOfMelle = nullptr;
 		}
 	}
 }
