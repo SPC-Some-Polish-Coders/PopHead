@@ -1,6 +1,6 @@
 #include "tiledGameObjectsParser.hpp"
-#include "NotDrawableGameObjects/entrance.hpp"
-#include "NotDrawableGameObjects/spawner.hpp"
+#include "NonDrawableGameObjects/entrance.hpp"
+#include "NonDrawableGameObjects/spawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"

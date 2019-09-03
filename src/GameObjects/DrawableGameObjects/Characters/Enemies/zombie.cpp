@@ -6,7 +6,7 @@
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include "Utilities/random.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
-#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
 
 namespace ph {
 

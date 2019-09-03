@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
 
 namespace ph {
 

@@ -1,4 +1,4 @@
-#include "GameObjects/NotDrawableGameObjects/playerEquipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipement.hpp"
 #include "Utilities/math.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"

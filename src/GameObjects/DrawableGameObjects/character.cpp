@@ -3,7 +3,7 @@
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
-#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
 #include "Utilities/random.hpp"
 #include "gameData.hpp"
 
