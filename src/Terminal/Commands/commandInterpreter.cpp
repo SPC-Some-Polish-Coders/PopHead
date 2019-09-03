@@ -25,6 +25,7 @@ void CommandInterpreter::init()
 	mCommandsMap["clear"] =		&CommandInterpreter::executeClear;
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
+	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
 
@@ -94,6 +95,13 @@ void CommandInterpreter::executeHelp() const
 			executeMessage("- " + command, MessageType::INFO);
 		executeMessage("Available commands, PAGE 1 of 2.", MessageType::INFO);
 	}
+}
+
+void CommandInterpreter::executeGotoScene() const
+{
+	const int spacePosition = mCommand.find_first_of(' ') + 1;
+	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
+	mGameData->getSceneManager().replaceScene(scenePath);
 }
 
 void CommandInterpreter::executeSpawn() const
