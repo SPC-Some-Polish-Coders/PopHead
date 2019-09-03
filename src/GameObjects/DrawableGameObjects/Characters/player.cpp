@@ -6,7 +6,7 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
-#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NotDrawableGameObjects/playerEquipement.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include <array>
 #include <exception>
@@ -63,12 +63,14 @@ Player::Player(GameData* gameData)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
 	,mWasGamePauseButtonClicked(false)
-	,mPickRadius(20.f)
+	,mPickRadius(10.f)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData, 5.f));
 	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
-	addChild(std::make_unique<Equipement>());
+
+	removeChild("Equipement");
+	addChild(std::make_unique<PlayerEquipement>());
 	dynamic_cast<Equipement&>(getChild("Equipement")).init();
 }
 

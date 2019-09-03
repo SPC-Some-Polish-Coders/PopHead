@@ -3,6 +3,7 @@
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
+#include "GameObjects/NotDrawableGameObjects/equipement.hpp"
 #include "Utilities/random.hpp"
 #include "gameData.hpp"
 
@@ -19,6 +20,8 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mIsAttackable(isAttackable)
 {
+	addChild(std::make_unique<Equipement>());
+	dynamic_cast<Equipement&>(getChild("Equipement")).init();
 }
 
 void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -26,17 +29,9 @@ void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
 	target.draw(mSprite, states);
 }
 
-void Character::onDeath()
+void Character::dropItems()
 {
-
-}
-
-void Character::dropItem(std::unique_ptr<Item> item)
-{
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-	auto& itemsContainer = dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
-	item->setPosition(getPosition() + sf::Vector2f(Random::generateNumber(2.f, 10.f), Random::generateNumber(2.f, 10.f)));
-	itemsContainer.addChild(std::move(item));
+	dynamic_cast<Equipement&>(getChild("Equipement")).dropAllItems();
 }
 
 void Character::setPosition(sf::Vector2f position)

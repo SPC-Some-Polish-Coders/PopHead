@@ -4,6 +4,7 @@
 #include "GameObjects/DrawableGameObjects/item.hpp"
 #include "GameObjects/gameObject.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -16,51 +17,21 @@ Equipement::Equipement()
 
 void Equipement::init()
 {
-	mInventoryOwner = &dynamic_cast<Player&>(getParent());
+	mInventoryOwner = &dynamic_cast<Character&>(getParent());
 	mItemsContainer = &getItemsContainer();
 }
 
-void Equipement::updateCurrent(sf::Time delta) 
+void Equipement::putItem(std::unique_ptr<Item> itemToPut)
 {
-	handlePickArea();
-	handleInteractableItems();
-}
-
-void Equipement::handlePickArea()
-{
-	auto& itemsOnTheGround = getItemsContainer().getChildren();
-	for (auto& item : itemsOnTheGround)
-		if (Math::isPointInsideCircle(item->getPosition(), mInventoryOwner->getPosition(), mInventoryOwner->getPickRadius()))
-		{
-			auto& interactableItem = dynamic_cast<Item&>((*item));
-			interactableItem.setInteractable(true);
-			mInteractableItems.emplace_back(&interactableItem);
-		}
-}
-
-void Equipement::handleInteractableItems()
-{
-	for (auto it = mInteractableItems.begin(); it != mInteractableItems.end(); ++it)
-	{
-		pickUpItem(*it);
-		(*it)->setInteractable(false);
-	}
-
-	mInteractableItems.clear();
+	itemToPut->setInInventory(true);
+	mEquipementStash.emplace_back(itemToPut.get());
+	addChild(std::move(itemToPut));
 }
 
 void Equipement::dropAllItems()
 {
 	for (auto& item : mEquipementStash)
 		dropItem(item);
-}
-
-void Equipement::pickUpItem(Item* itemToPick)
-{
-	itemToPick->onPickUp();
-	itemToPick->setInInventory(true);
-	getItemsContainer().changeParentOfChild(itemToPick, this);
-	mEquipementStash.emplace_back(itemToPick);
 }
 
 void Equipement::dropItem(Item* itemToDrop)
@@ -70,7 +41,7 @@ void Equipement::dropItem(Item* itemToDrop)
 		{
 			itemToDrop->onDrop();
 			itemToDrop->setInInventory(false);
-			itemToDrop->setPosition(mInventoryOwner->getWorldPosition()+sf::Vector2f(0, 20.f));
+			itemToDrop->setPosition(mInventoryOwner->getWorldPosition()+sf::Vector2f(Random::generateNumber(-10.f, 10.f), Random::generateNumber(-10.f, 10.f)));
 			changeParentOfChild(itemToDrop, &dynamic_cast<GameObject&>(getItemsContainer()));
 			mEquipementStash.erase(it);
 			return;

@@ -11,7 +11,6 @@ public:
 	Zombie(GameData*);
 
 	void updateCurrent(sf::Time delta) override;
-	void onDeath() override;
 
 private:
 	void handlePlayerHit();
