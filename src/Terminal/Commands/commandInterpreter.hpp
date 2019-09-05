@@ -30,6 +30,7 @@ private:
 
 	void executeExit() const;
 
+	void executeGotoScene() const;
 	void executeSpawn() const;
 	void executeTeleport() const;
 	void executeCurrentPos() const;

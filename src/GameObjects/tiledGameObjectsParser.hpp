@@ -29,6 +29,8 @@ private:
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
+	void loadGate(const Xml& gateNode) const;
+	void loadLever(const Xml& leverNode) const;
 	void loadCar(const Xml& carNode) const;
 	void loadCamera(const Xml& cameraNode) const;
 	void loadPlayer(const Xml& playerNode) const;
