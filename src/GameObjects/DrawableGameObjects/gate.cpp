@@ -23,8 +23,7 @@ void Gate::open()
 {
 	if(mIsOpen)
 		return;
-	// TODO: Fix bug that gate can be closed only one time, it requires changes in PhysicsEngine
-	mPhysicsEngine.createStaticBodyAndGetTheReference(sf::FloatRect(getPosition().x, getPosition().y + 6, 32, 10));
+	mPhysicsEngine.removeStaticBody(mCollisionBody);
 	mIsOpen = true;
 }
 
@@ -32,7 +31,8 @@ void Gate::close()
 {
 	if(!mIsOpen)
 		return;
-	mPhysicsEngine.removeStaticBody(mCollisionBody);
+	// TODO: Fix bug that gate can be closed only one time, Fixing this requires changes in PhysicsEngine
+	mPhysicsEngine.createStaticBodyAndGetTheReference(sf::FloatRect(getPosition().x, getPosition().y + 6, 32, 10));
 	mIsOpen = false;
 }
 

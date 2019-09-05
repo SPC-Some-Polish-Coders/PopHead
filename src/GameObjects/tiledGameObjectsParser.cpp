@@ -6,10 +6,11 @@
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
 #include "DrawableGameObjects/Characters/player.hpp"
 #include "DrawableGameObjects/car.hpp"
+#include "DrawableGameObjects/gate.hpp"
+#include "DrawableGameObjects/lever.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
-#include "GameObjects/DrawableGameObjects/gate.hpp"
 #include "gameObject.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -73,6 +74,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
@@ -169,6 +171,15 @@ void TiledGameObjectsParser::loadGate(const Xml& gateNode) const
 	auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);
 	auto& lyingObjects = mRoot.getChild("LAYER_lyingObjects");
 	lyingObjects.addChild(std::move(gate));
+}
+
+void TiledGameObjectsParser::loadLever(const Xml& leverNode) const
+{
+	auto& texture = mGameData->getTextures().get("textures/others/lever.png");
+	auto lever = std::make_unique<Lever>(texture);
+	lever->setPosition(getPositionAttribute(leverNode));
+	auto& lyingObjects = mRoot.getChild("LAYER_lyingObjects");
+	lyingObjects.addChild(std::move(lever));
 }
 
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
