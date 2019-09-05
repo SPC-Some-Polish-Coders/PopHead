@@ -475,9 +475,6 @@
   <object id="21" type="Lever" x="961" y="826">
    <point/>
   </object>
-  <object id="22" type="Lever" x="543" y="1474">
-   <point/>
-  </object>
  </objectgroup>
  <layer id="9" name="Barriers" width="75" height="100">
   <data encoding="csv">
