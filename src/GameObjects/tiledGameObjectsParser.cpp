@@ -9,6 +9,7 @@
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
+#include "GameObjects/DrawableGameObjects/gate.hpp"
 #include "gameObject.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -71,6 +72,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
@@ -159,6 +161,14 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 	if(beginOfFileName == std::string::npos)
 		return std::nullopt;
 	return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
+}
+
+void TiledGameObjectsParser::loadGate(const Xml& gateNode) const
+{
+	auto& texture = mGameData->getTextures().get("textures/others/gate.png");
+	auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);
+	auto& lyingObjects = mRoot.getChild("LAYER_lyingObjects");
+	lyingObjects.addChild(std::move(gate));
 }
 
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
