@@ -46,6 +46,7 @@ Above examples **mean the same**!
 | **Command** | **Describe** |
 | ----------: | ----------- |
 | **`exit`**  | is **no-argument** command which closes the program |
+| **`gotoscene`**  | is **single-argumented** command which change the scene argument is scene linking file but without file extension |
 | **`echo`** | is **single-argumented** command which prints out the message given by the user |
 | **`help`** | is **single-argumented** command which prints out availible commands. Needs to be combined with a number of a page |
 | **`history`** | is **no-argument** command which prints out ten last used commands |
@@ -53,6 +54,7 @@ Above examples **mean the same**!
 
 #### Examples: 
 ```
+gotoscene sewage
 echo hello world
 exit
 help 2
