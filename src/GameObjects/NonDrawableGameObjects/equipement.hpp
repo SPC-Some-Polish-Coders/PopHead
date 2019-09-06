@@ -6,7 +6,7 @@
 
 namespace ph {
 
-class Player;
+class Character;
 class Item;
 class ItemsContainer;
 
@@ -15,25 +15,18 @@ class Equipement : public GameObject
 public:
 	Equipement();
 	void init();
-
-	void updateCurrent(sf::Time delta) override;
+	void putItem(std::unique_ptr<Item> itemToPut);
 
 	void dropAllItems();
 
-private:
-	void handleInteractableItems();
-	void handlePickArea();
-
 	void dropItem(Item* itemToDrop);
-	void pickUpItem(Item* itemToPick);
 
 	auto getItemsContainer()->ItemsContainer &;
 
-private:
-	Player* mInventoryOwner;
+protected:
+	Character* mInventoryOwner;
 	ItemsContainer* mItemsContainer;
 	std::deque<Item*> mEquipementStash;
-	std::deque<Item*> mInteractableItems;
 };
 
 }

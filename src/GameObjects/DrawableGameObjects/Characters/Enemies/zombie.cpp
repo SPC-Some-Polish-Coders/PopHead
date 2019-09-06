@@ -6,6 +6,7 @@
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include "Utilities/random.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
 
 namespace ph {
 
@@ -58,11 +59,11 @@ Zombie::Zombie(GameData* gameData)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mAnimation.animate(mSprite);
-}
 
-void Zombie::onDeath()
-{
-	dropItem(std::make_unique<BulletItem>(mGameData));
+	//temporary random generate until we develop this system
+	int numberOfBullets = Random::generateNumber(0, 2);
+	for(int i = 0; i < numberOfBullets; ++i)
+		dynamic_cast<Equipement&>(getChild("Equipement")).putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Zombie::updateCurrent(sf::Time delta)
@@ -129,7 +130,7 @@ void Zombie::move(sf::Time delta)
 		mCurrentDirectionVector = toDirectionVector(currentDirection);
 	}
 
-	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6 : mMovementSpeed;
+	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
 	mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
