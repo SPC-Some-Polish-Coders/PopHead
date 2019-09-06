@@ -1,6 +1,7 @@
 #include "tiledGameObjectsParser.hpp"
 #include "NotDrawableGameObjects/entrance.hpp"
 #include "NotDrawableGameObjects/spawner.hpp"
+#include "NotDrawableGameObjects/slowDownArea.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
@@ -70,6 +71,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "SlowDownArea")) loadSlowDownArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
@@ -155,6 +157,16 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 
 	auto& invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects.addChild(std::move(entrance));
+}
+
+void TiledGameObjectsParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
+{
+	const sf::Vector2f position = getPositionAttribute(slowDownAreaNode);
+	const sf::Vector2f size = getSizeAttribute(slowDownAreaNode);
+	const sf::FloatRect area(position.x, position.y, size.x, size.y);
+	auto slowDownArea = std::make_unique<SlowDownArea>(area);
+	auto& invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects.addChild(std::move(slowDownArea));
 }
 
 std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const

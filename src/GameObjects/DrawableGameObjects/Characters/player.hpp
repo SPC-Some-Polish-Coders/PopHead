@@ -25,7 +25,8 @@ public:
     void input() override;
     void updateCurrent(sf::Time delta) override;
 
-	float getPickRadius() const;
+	void slowDown() { mIsSlownDown = true; }
+	float getPickRadius() const { return mPickRadius; }
 
 private:
 	void movementInput();
@@ -49,10 +50,11 @@ private:
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
 	unsigned mNumberOfOwnedBullets;
+	float mPickRadius;
 	bool mIsShooting;
 	bool mIsAttacking;
+	bool mIsSlownDown;
 	bool mWasGamePauseButtonClicked;
-	float mPickRadius;
 };
 
 }

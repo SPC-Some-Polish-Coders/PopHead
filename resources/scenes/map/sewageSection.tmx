@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="34">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="63">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -525,6 +525,32 @@
   <object id="30" type="Zombie" x="261" y="417">
    <point/>
   </object>
+  <object id="34" type="SlowDownArea" x="232.667" y="0" width="76.6667" height="848.667"/>
+  <object id="35" type="SlowDownArea" x="403.333" y="960.667" width="155.333" height="116.667"/>
+  <object id="36" type="SlowDownArea" x="257.417" y="911.333" width="140.25" height="16.3333"/>
+  <object id="37" type="SlowDownArea" x="242.75" y="895.667" width="124.75" height="16.3333"/>
+  <object id="38" type="SlowDownArea" x="273.5" y="927.667" width="140.833" height="16.3333"/>
+  <object id="39" type="SlowDownArea" x="290.417" y="943.333" width="140.25" height="16.3333"/>
+  <object id="40" type="SlowDownArea" x="306.667" y="960.333" width="94.6667" height="16.3333"/>
+  <object id="41" type="SlowDownArea" x="322.583" y="977" width="79.4167" height="14.697"/>
+  <object id="42" type="SlowDownArea" x="340.833" y="993.333" width="61.5" height="16.3333"/>
+  <object id="43" type="SlowDownArea" x="355.333" y="1009" width="47.3333" height="16.3333"/>
+  <object id="44" type="SlowDownArea" x="371.417" y="1023.67" width="30.5833" height="16.3333"/>
+  <object id="45" type="SlowDownArea" x="387.583" y="1039.67" width="15.0833" height="16.3333"/>
+  <object id="47" type="SlowDownArea" x="623.333" y="1121.17" width="95.8333" height="478"/>
+  <object id="48" type="SlowDownArea" x="722" y="1463.83" width="349.833" height="46.6667"/>
+  <object id="49" type="SlowDownArea" x="232.5" y="880.667" width="118.5" height="16.3333"/>
+  <object id="50" type="SlowDownArea" x="232.667" y="865" width="102.333" height="16.3333"/>
+  <object id="51" type="SlowDownArea" x="232.333" y="849" width="86.3333" height="16.3333"/>
+  <object id="53" type="SlowDownArea" x="562" y="977.333" width="12.6667" height="119.606"/>
+  <object id="54" type="SlowDownArea" x="577.333" y="992.667" width="12.6667" height="103.485"/>
+  <object id="55" type="SlowDownArea" x="597.75" y="1008.67" width="8.91667" height="157.667"/>
+  <object id="56" type="SlowDownArea" x="610.667" y="1024.67" width="12.6667" height="139.333"/>
+  <object id="57" type="SlowDownArea" x="626.333" y="1040.67" width="12.6667" height="77.3333"/>
+  <object id="58" type="SlowDownArea" x="642" y="1054" width="12.6667" height="64.8333"/>
+  <object id="59" type="SlowDownArea" x="658" y="1072" width="12.6667" height="47.5833"/>
+  <object id="60" type="SlowDownArea" x="673.333" y="1088.67" width="12.6667" height="29.8333"/>
+  <object id="61" type="SlowDownArea" x="689.083" y="1104.67" width="12.6667" height="14.0833"/>
  </objectgroup>
  <layer id="9" name="Barriers" width="75" height="100">
   <data encoding="csv">

@@ -54,6 +54,7 @@ namespace
 
 Zombie::Zombie(GameData* gameData)
 	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
+	,mIsSlownDown(false)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mAnimation.animate(mSprite);
@@ -95,6 +96,8 @@ void Zombie::updateCurrent(sf::Time delta)
 		handlePlayerHit();
 	move(delta);
 	updateAnimation(delta);
+
+	mIsSlownDown = false;
 }
 
 void Zombie::handlePlayerHit()
@@ -126,7 +129,8 @@ void Zombie::move(sf::Time delta)
 		mCurrentDirectionVector = toDirectionVector(currentDirection);
 	}
 
-	mCollisionBody.move(movementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6 : mMovementSpeed;
+	mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
 sf::Vector2f Zombie::toDirectionVector(Direction direction)
@@ -159,6 +163,11 @@ sf::Vector2f Zombie::toDirectionVector(Direction direction)
 
 void Zombie::updateAnimation(sf::Time delta)
 {
+	if(mIsSlownDown)
+		mAnimation.setDelay(sf::seconds(0.24f));
+	else
+		mAnimation.setDelay(sf::seconds(0.12f));
+
 	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(getPosition())) {
 		if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
 			setAnimationState("fightRight");

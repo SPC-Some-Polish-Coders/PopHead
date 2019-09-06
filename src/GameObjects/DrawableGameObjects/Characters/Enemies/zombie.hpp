@@ -13,6 +13,8 @@ public:
 	void updateCurrent(sf::Time delta) override;
 	void onDeath() override;
 
+	void slowDown() { mIsSlownDown = true; }
+
 private:
 	void handlePlayerHit();
 	void move(sf::Time delta);
@@ -25,6 +27,7 @@ private:
 	sf::Clock timeFromLastGrowl;
 	sf::Clock mTimeFromStartingThisMove;
 	sf::Vector2f mCurrentDirectionVector;
+	bool mIsSlownDown;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 

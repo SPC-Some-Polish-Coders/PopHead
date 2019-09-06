@@ -62,6 +62,7 @@ Player::Player(GameData* gameData)
 	,mNumberOfOwnedBullets(20u)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
+	,mIsSlownDown(false)
 	,mWasGamePauseButtonClicked(false)
 	,mPickRadius(20.f)
 {
@@ -129,6 +130,8 @@ void Player::updateCurrent(sf::Time delta)
 	cameraMovement(delta);
 	updateListenerPosition();
 	pauseMenuUpdate();
+
+	mIsSlownDown = false;
 }
 
 void Player::die()
@@ -160,17 +163,19 @@ void Player::updateMovement(const sf::Time delta)
 {
 	sf::Vector2f velocity;
 
+	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.8f : mMovementSpeed;
+
 	if (mMotion.isMoving() && !mCollisionBody.isBeingPushed())
 	{
 		mLastMotion = mMotion;
 		if (mMotion.isMovingLeft)
-			velocity.x -= mMovementSpeed * delta.asSeconds();
+			velocity.x -= currentMovementSpeed * delta.asSeconds();
 		if (mMotion.isMovingRight)
-			velocity.x += mMovementSpeed * delta.asSeconds();
+			velocity.x += currentMovementSpeed * delta.asSeconds();
 		if (mMotion.isMovingUp)
-			velocity.y -= mMovementSpeed * delta.asSeconds();
+			velocity.y -= currentMovementSpeed * delta.asSeconds();
 		if (mMotion.isMovingDown)
-			velocity.y += mMovementSpeed * delta.asSeconds();
+			velocity.y += currentMovementSpeed * delta.asSeconds();
 
 		if (mMotion.isMovingDiagonally()) {
 			velocity.x *= std::sqrt(2.f) / 2.f;
@@ -185,6 +190,11 @@ void Player::updateMovement(const sf::Time delta)
 
 void Player::updateAnimation(const sf::Time delta)
 {
+	if(mIsSlownDown)
+		mAnimation.setDelay(sf::seconds(0.24f));
+	else
+		mAnimation.setDelay(sf::seconds(0.12f));
+
 	if(mTimeFromLastMeleeAttack.getElapsedTime().asSeconds() < 0.15f) {
 		if(mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
 			setAnimationState("fightLeftUp");
@@ -322,11 +332,6 @@ void Player::pauseMenuUpdate()
 		}
 		mWasGamePauseButtonClicked = false;
 	}
-}
-
-float Player::getPickRadius() const
-{
-	return mPickRadius;
 }
 
 }
