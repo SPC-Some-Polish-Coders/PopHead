@@ -26,6 +26,7 @@ public:
 
 private:
 	bool doesZombieSeePlayer(const sf::Vector2f zombiePosition) const;
+	float getDistanceBetweenZombieAndPlayer(const sf::Vector2f zombiePosition) const;
 	Path getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const;
 	sf::Vector2u toNodePosition(sf::Vector2f) const;
 	Path getRandomPath(const sf::Vector2f startPosition) const;
