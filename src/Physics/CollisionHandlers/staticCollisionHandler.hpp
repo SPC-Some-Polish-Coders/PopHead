@@ -23,6 +23,8 @@ private:
 	void stickToTop();
 	void stickToBottom();
 
+	void cutRectInHalf(sf::FloatRect& rect);
+
 private:
 	CollisionBody* mKinematicBody;
 	const CollisionBody* mStaticBody;
