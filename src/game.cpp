@@ -54,6 +54,8 @@ Game::Game()
 	mInput->setGameData(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
+
+	mRenderWindow.setVerticalSyncEnabled(true);
 }
 
 void Game::run()
