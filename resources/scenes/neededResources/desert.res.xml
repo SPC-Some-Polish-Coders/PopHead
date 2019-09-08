@@ -10,5 +10,6 @@
     <resource respath="others/bulletGround.png"/>
     <resource respath="others/gate.png"/>
     <resource respath="others/lever.png"/>
+    <resource respath="others/leverHint.png"/>
   </textures>
 </loading>

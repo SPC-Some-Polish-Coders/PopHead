@@ -7,14 +7,16 @@ namespace ph {
 class Lever : public GameObject
 {
 public:
-	Lever(sf::Texture& texture);
+	Lever(sf::Texture& leverTexture, sf::Texture& hintTexture);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
 private:
-	sf::Sprite mSprite;
+	sf::Sprite mLeverSprite;
+	sf::Sprite mHintSprite;
 	bool mIsLeverDown;
+	bool mIsPlayerInHintArea;
 };
 
 }
