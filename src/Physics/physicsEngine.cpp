@@ -27,8 +27,11 @@ const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf:
 	return *iter;
 }
 
-CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(const sf::FloatRect rect, const float mass)
+CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(sf::FloatRect rect, const float mass)
 {
+	rect.height /= 2.f;
+	rect.top += rect.height;
+
 	mKinematicBodies.emplace_back(rect, mass);
 	auto& kinematicBody = mKinematicBodies.back();
 	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
