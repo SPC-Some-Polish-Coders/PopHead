@@ -13,25 +13,22 @@ SlowDownArea::SlowDownArea(const sf::FloatRect& area)
 
 void SlowDownArea::updateCurrent(const sf::Time delta)
 {
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	
-	try {
-		auto* player = dynamic_cast<Player*>(&standingObjects.getChild("player"));
+	auto* playerGameObject = standingObjects->getChild("player");
+	if(playerGameObject != nullptr) {
+		auto* player = dynamic_cast<Player*>(playerGameObject);
 		if(Math::areTheyOverlapping(player->getGlobalBounds(), mArea))
 			player->slowDown();
 	}
-	catch(const std::runtime_error&) {}
 
-	try {
-		for(auto& child : standingObjects.getChildren()) {
-			auto* zombie = dynamic_cast<Zombie*>(child.get());
-			if(zombie == nullptr)
-				continue;
-			if(Math::areTheyOverlapping(zombie->getGlobalBounds(), mArea))
-				zombie->slowDown();
-		}
+	for(auto& child : standingObjects->getChildren()) {
+		auto* zombie = dynamic_cast<Zombie*>(child.get());
+		if(zombie == nullptr)
+			continue;
+		if(Math::areTheyOverlapping(zombie->getGlobalBounds(), mArea))
+			zombie->slowDown();
 	}
-	catch(const std::runtime_error&) {}
 }
 
 }
