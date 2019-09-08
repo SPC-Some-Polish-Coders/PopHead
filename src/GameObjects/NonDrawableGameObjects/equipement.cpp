@@ -50,8 +50,8 @@ void Equipement::dropItem(Item* itemToDrop)
 
 auto Equipement::getItemsContainer() -> ItemsContainer &
 {
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-	return dynamic_cast<ItemsContainer&>(standingObjects.getChild("ItemsContainer"));
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
+	return dynamic_cast<ItemsContainer&>(*standingObjects->getChild("ItemsContainer"));
 }
 
 }

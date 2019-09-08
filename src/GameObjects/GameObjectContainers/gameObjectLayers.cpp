@@ -20,10 +20,10 @@ void StandingGameObjectsLayer::handleDyingCharaters()
 {
 	for(Character* dyingCharacter : mDyingCharacters) {
 		dyingCharacter->dropItems();
-		auto& lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
+		auto* lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
 		auto deadCharacter = std::make_unique<DeadCharacter>(dyingCharacter->getSprite());
 		deadCharacter->setPosition(dyingCharacter->getPosition());
-		lyingObjectsLayer.addChild(std::move(deadCharacter));
+		lyingObjectsLayer->addChild(std::move(deadCharacter));
 		removeChild(dyingCharacter);
 	}
 	mDyingCharacters.clear();

@@ -119,12 +119,12 @@ void GameObject::changeParentOfChild(GameObject* child, GameObject* newParent)
 	PH_LOG_INFO("GameObject \"" + child->getName() + "\" became a child of the \"" + newParent->getName() + "\". It was a child of the \"" + mName + "\"");
 }
 
-auto GameObject::getChild(const std::string& name) const -> GameObject&
+auto GameObject::getChild(const std::string& name) const -> GameObject*
 {
     for(auto const &child : mChildren)
         if(child->getName() == name)
-            return *(child.get());
-	throw std::runtime_error("Child was not found!");
+            return child.get();
+	return nullptr;
 }
 
 sf::Vector2f GameObject::getWorldPosition() const

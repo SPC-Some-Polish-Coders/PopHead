@@ -72,7 +72,7 @@ Player::Player(GameData* gameData)
 
 	removeChild("Equipement");
 	addChild(std::make_unique<PlayerEquipement>());
-	dynamic_cast<Equipement&>(getChild("Equipement")).init();
+	dynamic_cast<Equipement*>(getChild("Equipement"))->init();
 }
 
 void Player::input()
@@ -268,8 +268,8 @@ void Player::shootingUpdate(const sf::Time delta)
 	if(mIsShooting && mNumberOfOwnedBullets > 0) {
 		--mNumberOfOwnedBullets;
 		sf::Vector2f shotDirection = attackDirection();
-		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
-		gun.shoot(shotDirection);
+		auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+		gun->shoot(shotDirection);
 		mIsShooting = false;
 	}
 }
@@ -279,8 +279,8 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 	if (mIsAttacking) {
 		mTimeFromLastMeleeAttack.restart();
 		sf::Vector2f meleeAttackDirection = attackDirection();
-		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
-		meleeWeapon.attack(meleeAttackDirection);
+		auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
+		meleeWeapon->attack(meleeAttackDirection);
 		mIsAttacking = false;
 	}
 }

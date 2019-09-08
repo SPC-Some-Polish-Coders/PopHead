@@ -63,7 +63,7 @@ Zombie::Zombie(GameData* gameData)
 	//temporary random generate until we develop this system
 	int numberOfBullets = Random::generateNumber(0, 2);
 	for(int i = 0; i < numberOfBullets; ++i)
-		dynamic_cast<Equipement&>(getChild("Equipement")).putItem(std::make_unique<BulletItem>(mGameData));
+		dynamic_cast<Equipement*>(getChild("Equipement"))->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Zombie::updateCurrent(sf::Time delta)
@@ -103,15 +103,14 @@ void Zombie::updateCurrent(sf::Time delta)
 
 void Zombie::handlePlayerHit()
 {
-	try {
-		auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-		Character& player = dynamic_cast<Character&>(standingObjects.getChild("player"));
-		const sf::Vector2f zombieWorldPosition = getWorldPosition();
-		sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
-		if(Math::areTheyOverlapping(zombieDamageArea, player.getGlobalBounds()))
-			player.takeDamage(damage);
-	}
-	catch(std::runtime_error){}
+	auto* playerGameObject = mRoot->getChild("LAYER_standingObjects")->getChild("player");
+	if(playerGameObject == nullptr)
+		return;
+	auto* player = dynamic_cast<Character*>(playerGameObject);
+	const sf::Vector2f zombieWorldPosition = getWorldPosition();
+	sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
+	if(Math::areTheyOverlapping(zombieDamageArea, player->getGlobalBounds()))
+		player->takeDamage(damage);
 }
 
 void Zombie::move(sf::Time delta)

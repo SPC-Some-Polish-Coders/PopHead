@@ -25,8 +25,8 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mWereZombieSpawned(false)
 	,mHasChangedMusicToZombieAttackTheme(false)
 {
-	auto& car = dynamic_cast<Car&>(root.getChild("LAYER_standingObjects").getChild("car"));
-	car.setVelocity(120);
+	auto* car = dynamic_cast<Car*>(root.getChild("LAYER_standingObjects")->getChild("car"));
+	car->setVelocity(120);
 }
 
 void StartGameCutScene::input()
@@ -39,7 +39,7 @@ void StartGameCutScene::update(const sf::Time delta)
 {
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
 
-	auto& car = dynamic_cast<Car&>(mRoot.getChild("LAYER_standingObjects").getChild("car"));
+	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
 	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
 	if(cutsceneTimeInSeconds < 5)
@@ -73,8 +73,8 @@ void StartGameCutScene::update(const sf::Time delta)
 		updateSpeech(cutsceneTimeInSeconds);
 
 	if(cutsceneTimeInSeconds > 27.5) {
-		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
-		crawlingNpc.die();
+		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("crawlingNpc"));
+		crawlingNpc->die();
 	}
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
@@ -145,7 +145,7 @@ void StartGameCutScene::createPlayer()
 
 void StartGameCutScene::rotatePlayer()
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	playerNpc.setAnimationState("rightUp");
 	mHasPlayerTurnedToNpc = true;
 }
@@ -169,7 +169,7 @@ void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	auto& animation = playerNpc.getAnimation();
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
@@ -190,7 +190,7 @@ void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::lookSouth()
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	auto& animation = playerNpc.getAnimation();
 	animation.changeState("down");
 }
