@@ -20,10 +20,6 @@ void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionB
 	mKinematicBodyRect = mKinematicBody->getRect();
 	mStaticBodyRect = mStaticBody->getRect();
 	mKinematicBodyPreviousRect = mKinematicBody->getPreviousRect();
-
-	//cutRectInHalf(mKinematicBodyRect);
-	//cutRectInHalf(mKinematicBodyPreviousRect);
-	//mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
 }
 
 void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
@@ -82,12 +78,6 @@ void StaticCollisionHandler::stickToTop()
 void StaticCollisionHandler::stickToBottom()
 {
 	mKinematicBody->setPosition({mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)});
-}
-
-void StaticCollisionHandler::cutRectInHalf(sf::FloatRect& rect)
-{
-	rect.height /= 2.f;
-	rect.top += rect.height;
 }
 
 }
