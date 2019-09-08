@@ -96,9 +96,6 @@ void StartGameCutScene::update(const sf::Time delta)
 	}
 
 	if(cutsceneTimeInSeconds > 45)
-		mCamera.setSize({1280, 960});
-
-	if(cutsceneTimeInSeconds > 47)
 		closeCutScene();
 }
 
@@ -138,7 +135,7 @@ void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSecon
 void StartGameCutScene::createPlayer()
 {
 	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-	playerNpc->setPosition({5640, 800});
+	playerNpc->setPosition({5640, 400});
 	mRoot.addChild(std::move(playerNpc));
 	mWasPlayerCreated = true;
 }
@@ -210,21 +207,7 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::spawnZombies()
 {
-	createZombie({5770, 940});
-	createZombie({5610, 980});
-	createZombie({5460, 980});
-	createZombie({5450, 780});
-	createZombie({5482, 650});
-	createZombie({5670, 600});
-	createZombie({5360, 980});
-	createZombie({5230, 820});
-	createZombie({5400, 755});
-	createZombie({5460, 600});
-	createZombie({5500, 725});
-	createZombie({5530, 930});
-	createZombie({5260, 735});
-	createZombie({5490, 970});
-	createZombie({5360, 770});
+	createZombie({5670, 270});
 }
 
 void StartGameCutScene::createZombie(const sf::Vector2f position)
