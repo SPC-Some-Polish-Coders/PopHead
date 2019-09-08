@@ -184,10 +184,9 @@ void Player::updateMovement(const sf::Time delta)
 			velocity.y *= std::sqrt(2.f) / 2.f;
 		}
 
-		mCollisionBody.move(velocity);
+		move(velocity);
 	}
-	setPosition(mCollisionBody.getPosition());
-	mGameData->getAIManager().setPlayerPosition(getPosition());
+	mGameData->getAIManager().setPlayerPosition(mCollisionBody.getPosition());
 }
 
 void Player::updateAnimation(const sf::Time delta)
@@ -310,7 +309,7 @@ sf::Vector2f Player::attackDirection()
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = getGlobalBounds();
+	const sf::FloatRect characterBounds = GameObject::getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 

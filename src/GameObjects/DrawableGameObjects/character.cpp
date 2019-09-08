@@ -36,8 +36,9 @@ void Character::dropItems()
 
 void Character::setPosition(sf::Vector2f position)
 {
-	mCollisionBody.setPosition(position);
+	auto collisionBodyOffset = mCollisionBody.getPosition() - getPosition();
 	Transformable::setPosition(position);
+	mCollisionBody.setPosition(position + collisionBodyOffset);
 }
 
 void Character::move(sf::Vector2f offset)

@@ -92,7 +92,7 @@ void Zombie::updateCurrent(sf::Time delta)
 		timeFromLastGrowl.restart();
 	}
 
-	setPosition(mCollisionBody.getPosition());
+	setPosition(mCollisionBody.getFixedPosition());
 	if(mGameData->getAIManager().isPlayerOnScene())
 		handlePlayerHit();
 	move(delta);
@@ -116,10 +116,10 @@ void Zombie::handlePlayerHit()
 
 void Zombie::move(sf::Time delta)
 {
-	setPosition(mCollisionBody.getPosition());
+	setPosition(mCollisionBody.getFixedPosition());
 
 	if(mMovementPath.empty()) {
-		mMovementPath = mGameData->getAIManager().getZombiePath(getPosition());
+		mMovementPath = mGameData->getAIManager().getZombiePath(mCollisionBody.getPosition());
 		mTimeFromStartingThisMove.restart();
 	}
 
@@ -131,7 +131,8 @@ void Zombie::move(sf::Time delta)
 	}
 
 	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
-	mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	//mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
 sf::Vector2f Zombie::toDirectionVector(Direction direction)
@@ -169,7 +170,7 @@ void Zombie::updateAnimation(sf::Time delta)
 	else
 		mAnimation.setDelay(sf::seconds(0.12f));
 
-	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(getPosition())) {
+	if(mGameData->getAIManager().shouldZombiePlayAttackAnimation(mCollisionBody.getPosition())) {
 		if(mCurrentDirectionVector == sf::Vector2f(1.f, 0.f))
 			setAnimationState("fightRight");
 		else if(mCurrentDirectionVector == sf::Vector2f(-1.f, 0.f))
