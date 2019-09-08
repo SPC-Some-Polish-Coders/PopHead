@@ -14,12 +14,12 @@ class Equipement : public GameObject
 {
 public:
 	Equipement();
-	void init();
-	void putItem(std::unique_ptr<Item> itemToPut);
+
+	virtual void init();
+	virtual void dropItem(Item* itemToDrop);
+	virtual void putItem(std::unique_ptr<Item> itemToPut);
 
 	void dropAllItems();
-
-	void dropItem(Item* itemToDrop);
 
 	auto getItemsContainer()->ItemsContainer &;
 
