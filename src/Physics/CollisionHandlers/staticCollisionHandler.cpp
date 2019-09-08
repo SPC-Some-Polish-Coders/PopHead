@@ -21,8 +21,8 @@ void StaticCollisionHandler::init(CollisionBody& kinematicBody, const CollisionB
 	mStaticBodyRect = mStaticBody->getRect();
 	mKinematicBodyPreviousRect = mKinematicBody->getPreviousRect();
 
-	cutRectInHalf(mKinematicBodyRect);
-	cutRectInHalf(mKinematicBodyPreviousRect);
+	//cutRectInHalf(mKinematicBodyRect);
+	//cutRectInHalf(mKinematicBodyPreviousRect);
 	//mStaticBodyPreviousRect = mStaticBody->getPreviousRect();
 }
 
