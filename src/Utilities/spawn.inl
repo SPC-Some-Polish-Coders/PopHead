@@ -1,20 +1,17 @@
 template<typename T>
 void ph::Spawn::spawn()
 {
-	// TODO: Fix this
 	auto creature = std::make_unique<T>(mGameData);
 	creature->setPosition(mSpawnPosition);
-	auto* standingObjects = getRoot().getChild("standingObjects");
+	auto* standingObjects = getRoot().getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(creature));
 }
 
 template<typename T>
 void ph::Spawn::spawnEnemy()
 {
-	// TODO: Fix this
-	auto& enemy = std::make_unique<T>(mGameData);
+	auto enemy = std::make_unique<T>(mGameData);
 	enemy->setPosition(mSpawnPosition);
-	auto* standingObjects = getRoot().getChild("standingObjects");
-	auto* enemies = standingObjects->getChild("enemy_container");
-	enemies->addChild(std::move(enemy));
+	auto* standingObjects = getRoot().getChild("LAYER_standingObjects");
+	standingObjects->addChild(std::move(enemy));
 }
