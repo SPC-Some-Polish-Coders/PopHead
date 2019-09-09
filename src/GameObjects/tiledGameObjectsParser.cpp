@@ -274,8 +274,8 @@ void TiledGameObjectsParser::loadBulletItem(const Xml& bulletItemNode) const
 {
 	auto bulletItem = std::make_unique<BulletItem>(mGameData);
 	bulletItem->setPosition(getPositionAttribute(bulletItemNode));
-	auto& standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects.getChild("ItemsContainer").addChild(std::move(bulletItem));
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const
