@@ -109,7 +109,10 @@ void Player::gunInput()
 
 void Player::meleeWeaponInput()
 {
-	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack"))
+	const sf::Time meleeAttackInterval = sf::seconds(0.5f);
+	auto timeFromLastAttack = mTimeFromLastMeleeAttack.getElapsedTime();
+
+	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack") && timeFromLastAttack >= meleeAttackInterval)
 		mIsAttacking = true;
 }
 
