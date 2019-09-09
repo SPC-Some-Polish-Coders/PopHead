@@ -25,7 +25,7 @@ public:
 
 	auto getParent() const -> GameObject& { return *mParent; }
 	auto getName() const -> const std::string& { return mName; }
-	auto getChild(const std::string& name) const -> GameObject&;
+	auto getChild(const std::string& name) const -> GameObject*;
 	auto getChildren() const -> const std::list<std::unique_ptr<GameObject>>& { return mChildren; }
 
 	static void setRoot(GameObject* const root) { GameObject::mRoot = root; }

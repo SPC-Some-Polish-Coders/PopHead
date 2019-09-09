@@ -6,10 +6,12 @@
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
+#include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "GameObjects/NonDrawableGameObjects/playerEquipement.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include <array>
 #include <exception>
+
 
 namespace ph {
 
@@ -59,7 +61,7 @@ Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
 	,mLastMotion()
-	,mNumberOfOwnedBullets(20u)
+	,mNumberOfOwnedBullets(200u)
 	,mIsShooting(false) 
 	,mIsAttacking(false)
 	,mIsSlownDown(false)
@@ -72,7 +74,11 @@ Player::Player(GameData* gameData)
 
 	removeChild("Equipement");
 	addChild(std::make_unique<PlayerEquipement>());
-	dynamic_cast<Equipement&>(getChild("Equipement")).init();
+
+	auto* equipement = dynamic_cast<PlayerEquipement*>(getChild("Equipement"));
+	equipement->init();
+	for (unsigned i = 0; i < mNumberOfOwnedBullets; ++i)
+		equipement->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Player::input()
@@ -132,6 +138,8 @@ void Player::updateCurrent(sf::Time delta)
 	cameraMovement(delta);
 	updateListenerPosition();
 	pauseMenuUpdate();
+
+	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->getItemQuantity("Bullet");
 
 	mIsSlownDown = false;
 }
@@ -267,10 +275,10 @@ void PlayerMotion::clear()
 void Player::shootingUpdate(const sf::Time delta)
 {
 	if(mIsShooting && mNumberOfOwnedBullets > 0) {
-		--mNumberOfOwnedBullets;
+		dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->destroyItem("Bullet");
 		sf::Vector2f shotDirection = attackDirection();
-		auto& gun = dynamic_cast<Gun&>(getChild("gun"));
-		gun.shoot(shotDirection);
+		auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+		gun->shoot(shotDirection);
 		mIsShooting = false;
 	}
 }
@@ -280,8 +288,8 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 	if (mIsAttacking) {
 		mTimeFromLastMeleeAttack.restart();
 		sf::Vector2f meleeAttackDirection = attackDirection();
-		auto& meleeWeapon = dynamic_cast<MeleeWeapon&>(getChild("sword"));
-		meleeWeapon.attack(meleeAttackDirection);
+		auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
+		meleeWeapon->attack(meleeAttackDirection);
 		mIsAttacking = false;
 	}
 }

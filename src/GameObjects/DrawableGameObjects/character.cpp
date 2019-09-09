@@ -21,7 +21,7 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mIsAttackable(isAttackable)
 {
 	addChild(std::make_unique<Equipement>());
-	dynamic_cast<Equipement&>(getChild("Equipement")).init();
+	dynamic_cast<Equipement*>(getChild("Equipement"))->init();
 }
 
 void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -31,7 +31,7 @@ void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
 
 void Character::dropItems()
 {
-	dynamic_cast<Equipement&>(getChild("Equipement")).dropAllItems();
+	dynamic_cast<Equipement*>(getChild("Equipement"))->dropAllItems();
 }
 
 void Character::setPosition(sf::Vector2f position)
@@ -74,9 +74,9 @@ void Character::takeDamage(const unsigned damage)
 
 void Character::drawBlood()
 {
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
-	auto& particlesSystem = dynamic_cast<ParticlesSystem&>(standingObjects.getChild("particlesSystem"));
-	particlesSystem.addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* particlesSystem = dynamic_cast<ParticlesSystem*>(standingObjects->getChild("particlesSystem"));
+	particlesSystem->addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
 }
 
 void Character::setAnimationState(const std::string& stateName)
