@@ -107,9 +107,9 @@ Gun::Gun(GameData* const gameData, const float damage)
 void Gun::shoot(const sf::Vector2f shotDirection)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/pistolShot.ogg");
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
-	const Bullet bullet(standingObjects, shotDirection, rightHandPosition, 50, 250);
+	const Bullet bullet(*standingObjects, shotDirection, rightHandPosition, 50, 250);
 	initializeShotGraphics(bullet);
 	mTimeFromTrigerPull.restart();
 }

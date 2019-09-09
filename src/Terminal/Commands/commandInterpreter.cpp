@@ -140,7 +140,7 @@ auto CommandInterpreter::getPlayer() const -> GameObject&
 {
 	auto& gameScene = mGameData->getSceneManager().getScene();
 	auto& root = gameScene.getRoot();
-	GameObject& player = root.getChild("player");
+	GameObject& player = *root.getChild("player");
 	return player;
 }
 

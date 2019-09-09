@@ -18,13 +18,13 @@ Entrance::Entrance(SceneManager& sceneManager, const std::string filepath, const
 
 void Entrance::updateCurrent(const sf::Time delta)
 {
-	auto &standingObjects = mRoot->getChild("LAYER_standingObjects");
-	try {
-		auto& player = dynamic_cast<Player&>(standingObjects.getChild("player"));
-		if (Math::areTheyOverlapping(player.getGlobalBounds(), mEntranceArea.getGlobalBounds()))
-			mSceneManager.replaceScene(mFilepath);
-	}
-	catch(const std::exception&) {}
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* playerGameObject = standingObjects->getChild("player");
+	if(playerGameObject == nullptr)
+		return;
+	auto* player = dynamic_cast<Player*>(playerGameObject);
+	if (Math::areTheyOverlapping(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
+		mSceneManager.replaceScene(mFilepath);
 }
 
 }

@@ -96,12 +96,12 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 	setRotation(getStartAttackRotation(attackDirection));
 	sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
 	setPosition(rightHandLocalPosition);
-	auto& standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 
 	auto playerRect = mParent->getGlobalBounds();
 	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
 
-	Swing swing(standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange);
+	Swing swing(*standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange);
 	mShouldBeDrawn = true;
 }
 

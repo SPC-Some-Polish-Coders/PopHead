@@ -511,7 +511,7 @@
   <object id="18" type="Zombie" x="954" y="913">
    <point/>
   </object>
-  <object id="19" type="Entrance" x="609.875" y="111.375" width="30" height="30">
+  <object id="19" type="Entrance" x="609.375" y="106.625" width="30" height="30">
    <properties>
     <property name="gotoScene" type="file" value="../citySouth.xml"/>
    </properties>
