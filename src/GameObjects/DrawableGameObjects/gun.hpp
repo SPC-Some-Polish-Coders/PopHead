@@ -5,7 +5,7 @@
 
 namespace ph {
 
-class GameData;
+class SoundPlayer;
 class Character;
 
 class Bullet
@@ -39,7 +39,7 @@ private:
 class Gun : public GameObject
 {
 public:
-	Gun(GameData* const, const float damage);
+	Gun(SoundPlayer&, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
@@ -53,7 +53,7 @@ private:
 private:
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
-	GameData* const mGameData;
+	SoundPlayer& mSoundPlayer;
 	const float mDamage;
 };
 

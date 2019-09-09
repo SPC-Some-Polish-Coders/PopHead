@@ -1,7 +1,7 @@
 #include "gun.hpp"
 #include "Characters/enemy.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
 #include <cmath>
 
 namespace ph {
@@ -97,16 +97,16 @@ bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBu
 	return Math::isPointInsideRect(currentBulletPosition, hitbox);
 }
 
-Gun::Gun(GameData* const gameData, const float damage)
+Gun::Gun(SoundPlayer& soundPlayer, const float damage)
 	:GameObject("gun")
-	,mGameData(gameData)
+	,mSoundPlayer(soundPlayer)
 	,mDamage(damage)
 {
 }
 
 void Gun::shoot(const sf::Vector2f shotDirection)
 {
-	mGameData->getSoundPlayer().playAmbientSound("sounds/pistolShot.ogg");
+	mSoundPlayer.playAmbientSound("sounds/pistolShot.ogg");
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
 	const Bullet bullet(*standingObjects, shotDirection, rightHandPosition, 50, 250);
