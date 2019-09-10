@@ -39,7 +39,7 @@ private:
 class Gun : public GameObject
 {
 public:
-	Gun(SoundPlayer&, const float damage);
+	Gun(SoundPlayer&, const sf::Texture&, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
@@ -47,14 +47,15 @@ public:
 
 private:
 	sf::Vector2f getRightHandPosition(const sf::Vector2f shotDirection);
-	void initializeShotGraphics(const Bullet&);
-	void resetShotGraphics();
+	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPostion, const sf::Vector2f shotDirection);
 
 private:
+	sf::Sprite mGunSprite;
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
 	SoundPlayer& mSoundPlayer;
 	const float mDamage;
+	bool mShouldDisplayGunAndShotGraphics;
 };
 
 }

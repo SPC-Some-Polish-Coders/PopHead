@@ -69,7 +69,7 @@ Player::Player(GameData* gameData)
 	,mPickRadius(10.f)
 {
 	mAnimation.animate(mSprite);
-	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), 5.f));
+	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
 	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
 
 	removeChild("Equipement");
