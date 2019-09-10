@@ -28,6 +28,8 @@ public:
 	Scene& getScene() { return *mScene.get(); }
     void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
 
+	std::string getCurrentMapName() const { return mFileOfSceneToMake; }
+
 private:
     std::unique_ptr<Scene> mScene;
     std::string mFileOfSceneToMake;

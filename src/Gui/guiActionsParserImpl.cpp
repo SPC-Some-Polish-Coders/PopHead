@@ -11,8 +11,11 @@ std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneM
 {
 	auto pair = getSplitAction(actionStr);
 
-	if(pair.first == "replaceScene")
+	if (pair.first == "replaceScene")
 		return [&sceneManager, pair](Widget*) { sceneManager.replaceScene(pair.second); };
+
+	else if (pair.first == "loadLastSave")
+		return [&sceneManager, pair](Widget*) { sceneManager.replaceScene(sceneManager.getCurrentMapName()); };
 
 	else if(pair.first == "closeGame")
 		return [&gameCloser](Widget*) {gameCloser.closeGame(); };
