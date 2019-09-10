@@ -124,9 +124,9 @@ sf::Vector2f Gun::getRightHandPosition(const sf::Vector2f shotDirection)
 	else if(shotDirection == sf::Vector2f(-1, 0))
 		return {0, 7};
 	else if(shotDirection == sf::Vector2f(0, 1))
-		return {7, 15};
+		return {10, 15};
 	else if(shotDirection == sf::Vector2f(0, -1))
-		return {7, -10};
+		return {10, -10};
 	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
 		return {17, -3};
 	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
@@ -144,30 +144,42 @@ void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightH
 	mShotGraphics[0].position = shotDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
 	mShotGraphics[1].position = bullet.getCurrentPosition();
 
-	if(shotDirection.y == 0)
+	if(shotDirection == sf::Vector2f(1.f, 0.f) || shotDirection == sf::Vector2f(-1.f, 0.f))
 		mGunSprite.setTextureRect({0, 0, 12, 7});
-	else
-		mGunSprite.setTextureRect({15, 0, 2, 10});
+	else if(shotDirection == sf::Vector2f(0.f, 1.f) || shotDirection == sf::Vector2f(0.f, -1.f))
+		mGunSprite.setTextureRect({14, 0, 3, 8});
+	else if(shotDirection == sf::Vector2f(-0.7f, - 0.7f) || shotDirection == sf::Vector2f(0.7f, -0.7f))
+		mGunSprite.setTextureRect({19, 0, 8, 10});
+	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f) || shotDirection == sf::Vector2f(0.7f, 0.7f))
+		mGunSprite.setTextureRect({0, 9, 8, 11});
 
-	if(shotDirection == sf::Vector2f(1, 0)) {
-		mGunSprite.setScale({1, 1});
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(0, -3));
-	}
-	else if(shotDirection == sf::Vector2f(-1, 0)) {
-		mGunSprite.setScale({-1, 1});
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(3, -3));
-	}
-	else {
+	if(shotDirection.x > 0)
+		mGunSprite.setScale({1.f, 1.f});
+	else if(shotDirection.x < 0)
+		mGunSprite.setScale({-1.f, 1.f});
+
+	if(shotDirection == sf::Vector2f(1.f, 0.f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(0.f, -3.f));
+	else if(shotDirection == sf::Vector2f(-1.f, 0.f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(3.f, -3.f));
+	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(2.f, -6.f));
+	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(-2.f, -6.f));
+	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(2.f, 0.f));
+	else if(shotDirection == sf::Vector2f(0.7f, 0.7f))
+		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(-2.f, 0.f));
+	else
 		mGunSprite.setPosition(rightHandPostion);
-	}
 
 	mShouldDisplayGunAndShotGraphics = true;
 }
 
 void Gun::updateCurrent(const sf::Time delta)
 {
-	/*if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f)
-		mShouldDisplayGunAndShotGraphics = false;*/
+	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f)
+		mShouldDisplayGunAndShotGraphics = false;
 }
 
 void Gun::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
