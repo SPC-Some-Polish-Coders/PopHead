@@ -1,11 +1,11 @@
-#include "xmlMusicParser.hpp"
+#include "xmlAudioParser.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-void XmlMusicParser::parseFile(GameData* const gameData, const std::string& filePath)
+void XmlAudioParser::parseFile(GameData* const gameData, const std::string& filePath)
 {
 	PH_LOG_INFO("Music file (" + filePath + ") is being parsed.");
 

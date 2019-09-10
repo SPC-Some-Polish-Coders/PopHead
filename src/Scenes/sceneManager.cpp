@@ -7,7 +7,7 @@
 #include "Gui/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
 #include "Resources/xmlResourceParser.hpp"
-#include "Audio/Music/xmlMusicParser.hpp"
+#include "Audio/Music/xmlAudioParser.hpp"
 #include "GameObjects/tiledGameObjectsParser.hpp"
 //#include "GameObjects/xmlGameObjectsParser.hpp"
 
@@ -48,7 +48,7 @@ void SceneManager::replaceAction()
 	mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 	mScene.reset(new Scene());
-	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlMusicParser> 
+	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser> 
 		sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
