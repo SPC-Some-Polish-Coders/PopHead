@@ -27,6 +27,7 @@ void CommandInterpreter::init()
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
+	mCommandsMap["m"] =			&CommandInterpreter::executeMove;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
 
@@ -129,6 +130,18 @@ void CommandInterpreter::executeTeleport() const
 	if(newPosition == mVector2ArgumentError)
 		return;
 	player.setPosition(newPosition);
+}
+
+void CommandInterpreter::executeMove() const
+{
+	auto& player = dynamic_cast<Player&>(getPlayer());
+	const sf::Vector2f moveOffset = getVector2Argument();
+	if (mCommand.find("x") != std::string::npos)
+		player.move(sf::Vector2f(moveOffset.x, 0.f));
+	else if (mCommand.find("y") != std::string::npos)
+		player.move(sf::Vector2f(0.f, moveOffset.y));
+	else
+		player.move(moveOffset);
 }
 
 void CommandInterpreter::executeCurrentPos() const
@@ -257,7 +270,7 @@ void CommandInterpreter::executeView() const
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 {
-	const std::string numbers("1234567890");
+	const std::string numbers("1234567890-");
 
 	if(mCommand.find_first_of(numbers) == std::string::npos)
 		return handleGetVector2ArgumentError();
