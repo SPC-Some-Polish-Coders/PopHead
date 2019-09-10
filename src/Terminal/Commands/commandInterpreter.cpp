@@ -1,5 +1,6 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
@@ -123,7 +124,7 @@ void CommandInterpreter::executeExit() const
 
 void CommandInterpreter::executeTeleport() const
 {
-	auto& player = getPlayer();
+	auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f newPosition = getVector2Argument();
 	if(newPosition == mVector2ArgumentError)
 		return;
@@ -139,8 +140,8 @@ void CommandInterpreter::executeCurrentPos() const
 auto CommandInterpreter::getPlayer() const -> GameObject&
 {
 	auto& gameScene = mGameData->getSceneManager().getScene();
-	auto& root = gameScene.getRoot();
-	GameObject& player = *root.getChild("player");
+	auto* standingObjects = gameScene.getRoot().getChild("LAYER_standingObjects");
+	GameObject& player = *standingObjects->getChild("player");
 	return player;
 }
 
