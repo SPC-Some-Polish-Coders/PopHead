@@ -118,28 +118,6 @@ void Gun::shoot()
 	mTimeFromTrigerPull.restart();
 }
 
-sf::Vector2f Gun::getRightHandPosition()
-{
-	if(mCurrentPlayerDirection == sf::Vector2f(1, 0))
-		return {14, 7};
-	else if(mCurrentPlayerDirection == sf::Vector2f(-1, 0))
-		return {0, 7};
-	else if(mCurrentPlayerDirection == sf::Vector2f(0, 1))
-		return {10, 15};
-	else if(mCurrentPlayerDirection == sf::Vector2f(0, -1))
-		return {10, -10};
-	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
-		return {17, -3};
-	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
-		return {-3, -3};
-	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
-		return {17, 17};
-	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
-		return {-3, 17};
-	else
-		PH_EXCEPTION("Direction vector like this shouldn't exist.");
-}
-
 void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightHandPosition)
 {
 	mShotGraphics[0].position = mCurrentPlayerDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
@@ -169,13 +147,13 @@ void Gun::updateCurrent(const sf::Time delta)
 void Gun::updateGunTextureRect(const int offsetX)
 {
 	if(mCurrentPlayerDirection == sf::Vector2f(1.f, 0.f) || mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
-		mGunSprite.setTextureRect({offsetX, 0, 10, 11});
+		mGunSprite.setTextureRect({offsetX, 0, 13, 8});
 	else if(mCurrentPlayerDirection == sf::Vector2f(0.f, 1.f) || mCurrentPlayerDirection == sf::Vector2f(0.f, -1.f))
-		mGunSprite.setTextureRect({offsetX, 10, 10, 11});
+		mGunSprite.setTextureRect({offsetX, 10, 13, 11});
 	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
-		mGunSprite.setTextureRect({offsetX, 21, 10, 11});
+		mGunSprite.setTextureRect({offsetX, 21, 13, 11});
 	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
-		mGunSprite.setTextureRect({offsetX, 34, 10, 11});
+		mGunSprite.setTextureRect({offsetX, 34, 13, 11});
 }
 
 void Gun::updateGunSpriteFlipping()
@@ -184,6 +162,10 @@ void Gun::updateGunSpriteFlipping()
 		mGunSprite.setScale({1.f, 1.f});
 	else if(mCurrentPlayerDirection.x < 0)
 		mGunSprite.setScale({-1.f, 1.f});
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, -1))
+		mGunSprite.setScale({1.f, 1.f});
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, 1))
+		mGunSprite.setScale({1.f, -1.f});
 }
 
 void Gun::updateGunSpritePosition()
@@ -193,16 +175,42 @@ void Gun::updateGunSpritePosition()
 		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(0.f, -3.f));
 	else if(mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
 		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(3.f, -3.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.f, -1.f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-3.f, 1.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.f, 1.f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-3.f, 9.f));
 	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
-		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, -6.f));
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(0.f, -8.f));
 	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
-		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, -6.f));
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(0.f, -8.f));
 	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
-		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, 0.f));
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(3.f, -3.f));
 	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
-		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, 0.f));
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-3.f, -1.f));
 	else
 		mGunSprite.setPosition(rightHandPosition);
+}
+
+sf::Vector2f Gun::getRightHandPosition()
+{
+	if(mCurrentPlayerDirection == sf::Vector2f(1, 0))
+		return {16, 7};
+	else if(mCurrentPlayerDirection == sf::Vector2f(-1, 0))
+		return {-2, 7};
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, 1))
+		return {10, 18};
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, -1))
+		return {9, -12};
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
+		return {15, -5};
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
+		return {-1, -1};
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
+		return {17, 17};
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
+		return {-3, 17};
+	else
+		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
 void Gun::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const

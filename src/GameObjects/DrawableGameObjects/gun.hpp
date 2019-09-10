@@ -48,11 +48,11 @@ public:
 	void setCurrentPlayerDirection(const sf::Vector2f cpd) { mCurrentPlayerDirection = cpd; }
 
 private:
-	sf::Vector2f getRightHandPosition();
 	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPosition);
 	void updateGunTextureRect(const int offsetX = 0);
 	void updateGunSpriteFlipping();
 	void updateGunSpritePosition();
+	sf::Vector2f getRightHandPosition();
 
 private:
 	sf::Sprite mGunSprite;
