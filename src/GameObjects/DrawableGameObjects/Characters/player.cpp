@@ -74,7 +74,6 @@ Player::Player(GameData* gameData)
 
 	removeChild("Equipement");
 	addChild(std::make_unique<PlayerEquipement>());
-
 	auto* equipement = dynamic_cast<PlayerEquipement*>(getChild("Equipement"));
 	equipement->init();
 	for (unsigned i = 0; i < mNumberOfOwnedBullets; ++i)
