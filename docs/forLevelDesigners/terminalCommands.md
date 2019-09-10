@@ -192,6 +192,19 @@ teleport 260 1255
 teleport 300
 ```
 
+### **`m`** is **many-argumented** command which moves player to other coordinates by the given offset
+| **teleport arguments** | **Describe** |
+| -----------: | ------------ |
+| `x` or `y` | argument chooses which in axis will be the player moved |
+| `<value>` | argument is a number offset which moves the player on given axis |
+	
+#### Examples: 
+```
+m 260 
+m y -200
+m x 1500
+```
+
 ## Camera commands
 -------------------------
 ### **`view`** is **many-argumented** command which changes camera view size
