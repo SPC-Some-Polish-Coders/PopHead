@@ -273,11 +273,12 @@ void PlayerMotion::clear()
 
 void Player::shootingUpdate(const sf::Time delta)
 {
+	auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+	gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
+
 	if(mIsShooting && mNumberOfOwnedBullets > 0) {
 		dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->destroyItem("Bullet");
-		sf::Vector2f shotDirection = attackDirection();
-		auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-		gun->shoot(shotDirection);
+		gun->shoot();
 		mIsShooting = false;
 	}
 }
@@ -286,14 +287,14 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 {
 	if (mIsAttacking) {
 		mTimeFromLastMeleeAttack.restart();
-		sf::Vector2f meleeAttackDirection = attackDirection();
+		sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
 		auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
 		meleeWeapon->attack(meleeAttackDirection);
 		mIsAttacking = false;
 	}
 }
 
-sf::Vector2f Player::attackDirection()
+sf::Vector2f Player::getCurrentPlayerDirection()
 {
 	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
 		return  { 0.7f, -0.7f };

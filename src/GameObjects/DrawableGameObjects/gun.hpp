@@ -43,19 +43,23 @@ public:
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
-	void shoot(const sf::Vector2f shotDirection);
+	void shoot();
+
+	void setCurrentPlayerDirection(const sf::Vector2f cpd) { mCurrentPlayerDirection = cpd; }
 
 private:
-	sf::Vector2f getRightHandPosition(const sf::Vector2f shotDirection);
-	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPostion, const sf::Vector2f shotDirection);
+	sf::Vector2f getRightHandPosition();
+	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPosition);
 
 private:
 	sf::Sprite mGunSprite;
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
+	sf::Vector2f mCurrentPlayerDirection;
 	SoundPlayer& mSoundPlayer;
 	const float mDamage;
-	bool mShouldDisplayGunAndShotGraphics;
+	bool mShouldDisplayShotGraphics;
+	bool mShouldDisplayGunSprite;
 };
 
 }

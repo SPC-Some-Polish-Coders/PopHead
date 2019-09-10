@@ -102,92 +102,127 @@ Gun::Gun(SoundPlayer& soundPlayer, const sf::Texture& texture, const float damag
 	,mGunSprite(texture)
 	,mSoundPlayer(soundPlayer)
 	,mDamage(damage)
-	,mShouldDisplayGunAndShotGraphics(false)
+	,mShouldDisplayShotGraphics(false)
+	,mShouldDisplayGunSprite(false)
 {
 }
 
-void Gun::shoot(const sf::Vector2f shotDirection)
+void Gun::shoot()
 {
 	mSoundPlayer.playAmbientSound("sounds/pistolShot.ogg");
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
-	const sf::Vector2f rightHandPosition = getRightHandPosition(shotDirection);
+	const sf::Vector2f rightHandPosition = getRightHandPosition();
 	const sf::Vector2f rightHandGlobalPosition(rightHandPosition + getWorldPosition());
-	const Bullet bullet(*standingObjects, shotDirection, rightHandGlobalPosition, 50, 250);
-	initializeShotGraphics(bullet, rightHandPosition, shotDirection);
+	const Bullet bullet(*standingObjects, mCurrentPlayerDirection, rightHandGlobalPosition, 50, 250);
+	initializeShotGraphics(bullet, rightHandPosition);
 	mTimeFromTrigerPull.restart();
 }
 
-sf::Vector2f Gun::getRightHandPosition(const sf::Vector2f shotDirection)
+sf::Vector2f Gun::getRightHandPosition()
 {
-	if(shotDirection == sf::Vector2f(1, 0))
+	if(mCurrentPlayerDirection == sf::Vector2f(1, 0))
 		return {14, 7};
-	else if(shotDirection == sf::Vector2f(-1, 0))
+	else if(mCurrentPlayerDirection == sf::Vector2f(-1, 0))
 		return {0, 7};
-	else if(shotDirection == sf::Vector2f(0, 1))
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, 1))
 		return {10, 15};
-	else if(shotDirection == sf::Vector2f(0, -1))
+	else if(mCurrentPlayerDirection == sf::Vector2f(0, -1))
 		return {10, -10};
-	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
 		return {17, -3};
-	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
 		return {-3, -3};
-	else if(shotDirection == sf::Vector2f(0.7f, 0.7f))
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
 		return {17, 17};
-	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f))
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
 		return {-3, 17};
 	else
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
-void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightHandPostion, const sf::Vector2f shotDirection)
+void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightHandPosition)
 {
-	mShotGraphics[0].position = shotDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
+	mShotGraphics[0].position = mCurrentPlayerDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
 	mShotGraphics[1].position = bullet.getCurrentPosition();
 
-	if(shotDirection == sf::Vector2f(1.f, 0.f) || shotDirection == sf::Vector2f(-1.f, 0.f))
-		mGunSprite.setTextureRect({0, 0, 12, 7});
-	else if(shotDirection == sf::Vector2f(0.f, 1.f) || shotDirection == sf::Vector2f(0.f, -1.f))
-		mGunSprite.setTextureRect({14, 0, 3, 8});
-	else if(shotDirection == sf::Vector2f(-0.7f, - 0.7f) || shotDirection == sf::Vector2f(0.7f, -0.7f))
-		mGunSprite.setTextureRect({19, 0, 8, 10});
-	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f) || shotDirection == sf::Vector2f(0.7f, 0.7f))
-		mGunSprite.setTextureRect({0, 9, 8, 11});
+	if(mCurrentPlayerDirection == sf::Vector2f(1.f, 0.f) || mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
+		mGunSprite.setTextureRect({0, 0, 13, 10});
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.f, 1.f) || mCurrentPlayerDirection == sf::Vector2f(0.f, -1.f))
+		mGunSprite.setTextureRect({0, 10, 13, 10});
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, - 0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
+		mGunSprite.setTextureRect({0, 21, 13, 10});
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
+		mGunSprite.setTextureRect({0, 34, 13, 10});
 
-	if(shotDirection.x > 0)
+	if(mCurrentPlayerDirection.x > 0)
 		mGunSprite.setScale({1.f, 1.f});
-	else if(shotDirection.x < 0)
+	else if(mCurrentPlayerDirection.x < 0)
 		mGunSprite.setScale({-1.f, 1.f});
 
-	if(shotDirection == sf::Vector2f(1.f, 0.f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(0.f, -3.f));
-	else if(shotDirection == sf::Vector2f(-1.f, 0.f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(3.f, -3.f));
-	else if(shotDirection == sf::Vector2f(-0.7f, -0.7f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(2.f, -6.f));
-	else if(shotDirection == sf::Vector2f(0.7f, -0.7f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(-2.f, -6.f));
-	else if(shotDirection == sf::Vector2f(-0.7f, 0.7f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(2.f, 0.f));
-	else if(shotDirection == sf::Vector2f(0.7f, 0.7f))
-		mGunSprite.setPosition(rightHandPostion + sf::Vector2f(-2.f, 0.f));
+	if(mCurrentPlayerDirection == sf::Vector2f(1.f, 0.f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(0.f, -3.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(3.f, -3.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, -6.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, -6.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, 0.f));
+	else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
+		mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, 0.f));
 	else
-		mGunSprite.setPosition(rightHandPostion);
+		mGunSprite.setPosition(rightHandPosition);
 
-	mShouldDisplayGunAndShotGraphics = true;
+	mShouldDisplayShotGraphics = true;
+	mShouldDisplayGunSprite = true;
 }
 
 void Gun::updateCurrent(const sf::Time delta)
 {
-	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f)
-		mShouldDisplayGunAndShotGraphics = false;
+	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 0.02f && mTimeFromTrigerPull.getElapsedTime().asSeconds() < 1.f) {
+		mShouldDisplayShotGraphics = false;
+
+		if(mCurrentPlayerDirection == sf::Vector2f(1.f, 0.f) || mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
+			mGunSprite.setTextureRect({16, 0, 10, 11});
+		else if(mCurrentPlayerDirection == sf::Vector2f(0.f, 1.f) || mCurrentPlayerDirection == sf::Vector2f(0.f, -1.f))
+			mGunSprite.setTextureRect({16, 10, 10, 11});
+		else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
+			mGunSprite.setTextureRect({16, 21, 10, 11});
+		else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f) || mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
+			mGunSprite.setTextureRect({16, 34, 10, 11});
+
+		if(mCurrentPlayerDirection.x > 0)
+			mGunSprite.setScale({1.f, 1.f});
+		else if(mCurrentPlayerDirection.x < 0)
+			mGunSprite.setScale({-1.f, 1.f});
+
+		const sf::Vector2f rightHandPosition = getRightHandPosition();
+		if(mCurrentPlayerDirection == sf::Vector2f(1.f, 0.f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(0.f, -3.f));
+		else if(mCurrentPlayerDirection == sf::Vector2f(-1.f, 0.f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(3.f, -3.f));
+		else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, -0.7f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, -6.f));
+		else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, -0.7f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, -6.f));
+		else if(mCurrentPlayerDirection == sf::Vector2f(-0.7f, 0.7f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(2.f, 0.f));
+		else if(mCurrentPlayerDirection == sf::Vector2f(0.7f, 0.7f))
+			mGunSprite.setPosition(rightHandPosition + sf::Vector2f(-2.f, 0.f));
+		else
+			mGunSprite.setPosition(rightHandPosition);
+	}
+	if(mTimeFromTrigerPull.getElapsedTime().asSeconds() > 1.f)
+		mShouldDisplayGunSprite = false;
 }
 
 void Gun::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
 {
-	if(mShouldDisplayGunAndShotGraphics) {
+	if(mShouldDisplayShotGraphics)
 		target.draw(mShotGraphics.data(), 2, sf::Lines);
+	if(mShouldDisplayGunSprite)
 		target.draw(mGunSprite, states);
-	}
 }
 
 }
