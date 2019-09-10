@@ -50,6 +50,9 @@ public:
 private:
 	sf::Vector2f getRightHandPosition();
 	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPosition);
+	void updateGunTextureRect(const int offsetX = 0);
+	void updateGunSpriteFlipping();
+	void updateGunSpritePosition();
 
 private:
 	sf::Sprite mGunSprite;
