@@ -6,6 +6,7 @@
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
 #include "DrawableGameObjects/Characters/player.hpp"
+#include "DrawableGameObjects/Items/bulletItem.hpp"
 #include "DrawableGameObjects/car.hpp"
 #include "DrawableGameObjects/gate.hpp"
 #include "DrawableGameObjects/lever.hpp"
@@ -79,6 +80,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "BulletItem")) loadBulletItem(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
@@ -108,7 +110,6 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 	zombie->setPosition(getPositionAttribute(zombieNode));
 	zombie->setHp(getProperty(zombieNode, "hp").toInt());
 	zombie->setMaxHp(getProperty(zombieNode, "maxHp").toUnsigned());
-	mGameData->getTextures().load("textures/others/bulletGround.png");
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(zombie));
@@ -267,6 +268,14 @@ void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
 	auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
 	crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
 	mRoot.addChild(std::move(crawlingNpc));
+}
+
+void TiledGameObjectsParser::loadBulletItem(const Xml& bulletItemNode) const
+{
+	auto bulletItem = std::make_unique<BulletItem>(mGameData);
+	bulletItem->setPosition(getPositionAttribute(bulletItemNode));
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

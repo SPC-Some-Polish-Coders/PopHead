@@ -6,7 +6,7 @@ namespace ph {
 
 class GameData;
 
-class XmlMusicParser
+class XmlAudioParser
 {
 public:
 	void parseFile(GameData* const gameData, const std::string& filePath);

@@ -42,7 +42,7 @@ private:
 	void meleeAttackUpdate(const sf::Time delta);
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition() const;
-	sf::Vector2f attackDirection();
+	sf::Vector2f getCurrentPlayerDirection();
 	void pauseMenuUpdate();
 
 private:

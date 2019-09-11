@@ -13,9 +13,4 @@ void BulletItem::drawWhileOnTheGround(sf::RenderTarget& target, sf::RenderStates
 	target.draw(getGroundSprite());
 }
 
-void BulletItem::onDrop()
-{
-
-}
-
 }

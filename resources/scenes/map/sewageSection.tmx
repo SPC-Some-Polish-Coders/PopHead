@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="63">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="121">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -551,6 +551,141 @@
   <object id="59" type="SlowDownArea" x="658" y="1072" width="12.6667" height="47.5833"/>
   <object id="60" type="SlowDownArea" x="673.333" y="1088.67" width="12.6667" height="29.8333"/>
   <object id="61" type="SlowDownArea" x="689.083" y="1104.67" width="12.6667" height="14.0833"/>
+  <object id="63" type="BulletItem" x="942.75" y="1448.58">
+   <point/>
+  </object>
+  <object id="64" type="BulletItem" x="942.667" y="1433">
+   <point/>
+  </object>
+  <object id="65" type="BulletItem" x="955.833" y="1432.08">
+   <point/>
+  </object>
+  <object id="66" type="BulletItem" x="968.917" y="1432.25">
+   <point/>
+  </object>
+  <object id="67" type="BulletItem" x="982.083" y="1432.67">
+   <point/>
+  </object>
+  <object id="68" type="BulletItem" x="994.167" y="1432">
+   <point/>
+  </object>
+  <object id="69" type="BulletItem" x="1007" y="1431.58">
+   <point/>
+  </object>
+  <object id="70" type="BulletItem" x="1019.67" y="1431.5">
+   <point/>
+  </object>
+  <object id="71" type="BulletItem" x="1032.42" y="1431">
+   <point/>
+  </object>
+  <object id="72" type="BulletItem" x="1033.08" y="1449.33">
+   <point/>
+  </object>
+  <object id="73" type="BulletItem" x="981.833" y="1417.58">
+   <point/>
+  </object>
+  <object id="86" type="BulletItem" x="995.083" y="1417.33">
+   <point/>
+  </object>
+  <object id="87" type="BulletItem" x="1009.08" y="1417.58">
+   <point/>
+  </object>
+  <object id="88" type="BulletItem" x="1020.08" y="1416.58">
+   <point/>
+  </object>
+  <object id="89" type="BulletItem" x="1032.58" y="1416.33">
+   <point/>
+  </object>
+  <object id="90" type="BulletItem" x="956" y="1449.08">
+   <point/>
+  </object>
+  <object id="92" type="BulletItem" x="969" y="1449.08">
+   <point/>
+  </object>
+  <object id="93" type="BulletItem" x="982" y="1449.08">
+   <point/>
+  </object>
+  <object id="94" type="BulletItem" x="995" y="1449.08">
+   <point/>
+  </object>
+  <object id="95" type="BulletItem" x="1008" y="1449.08">
+   <point/>
+  </object>
+  <object id="96" type="BulletItem" x="1021" y="1449.08">
+   <point/>
+  </object>
+  <object id="97" type="BulletItem" x="1030.42" y="1567.67">
+   <point/>
+  </object>
+  <object id="98" type="BulletItem" x="1018.33" y="1567.42">
+   <point/>
+  </object>
+  <object id="99" type="BulletItem" x="1005.33" y="1567.42">
+   <point/>
+  </object>
+  <object id="100" type="BulletItem" x="992.333" y="1567.42">
+   <point/>
+  </object>
+  <object id="101" type="BulletItem" x="979.333" y="1567.42">
+   <point/>
+  </object>
+  <object id="102" type="BulletItem" x="966.333" y="1567.42">
+   <point/>
+  </object>
+  <object id="103" type="BulletItem" x="953.333" y="1567.42">
+   <point/>
+  </object>
+  <object id="104" type="BulletItem" x="940.083" y="1566.92">
+   <point/>
+  </object>
+  <object id="105" type="BulletItem" x="940" y="1551.33">
+   <point/>
+  </object>
+  <object id="106" type="BulletItem" x="979.417" y="1551">
+   <point/>
+  </object>
+  <object id="107" type="BulletItem" x="966.25" y="1550.58">
+   <point/>
+  </object>
+  <object id="108" type="BulletItem" x="953.167" y="1550.42">
+   <point/>
+  </object>
+  <object id="109" type="BulletItem" x="991.5" y="1550.33">
+   <point/>
+  </object>
+  <object id="110" type="BulletItem" x="1004.33" y="1549.92">
+   <point/>
+  </object>
+  <object id="111" type="BulletItem" x="1017" y="1549.83">
+   <point/>
+  </object>
+  <object id="112" type="BulletItem" x="1029.75" y="1549.33">
+   <point/>
+  </object>
+  <object id="113" type="BulletItem" x="1006.42" y="1535.92">
+   <point/>
+  </object>
+  <object id="114" type="BulletItem" x="979.167" y="1535.92">
+   <point/>
+  </object>
+  <object id="115" type="BulletItem" x="992.417" y="1535.67">
+   <point/>
+  </object>
+  <object id="116" type="BulletItem" x="1017.42" y="1534.92">
+   <point/>
+  </object>
+  <object id="117" type="BulletItem" x="1029.92" y="1534.67">
+   <point/>
+  </object>
+  <object id="118" type="BulletItem" x="967" y="1535.33">
+   <point/>
+  </object>
+  <object id="119" type="BulletItem" x="954" y="1535.33">
+   <point/>
+  </object>
+  <object id="120" type="BulletItem" x="941" y="1536.08">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="9" name="Barriers" width="75" height="100">
   <data encoding="csv">

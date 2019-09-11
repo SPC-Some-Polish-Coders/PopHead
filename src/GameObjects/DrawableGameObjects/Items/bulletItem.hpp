@@ -13,7 +13,7 @@ public:
 
 	void onUse() override {}
 	void onPickUp() override {}
-	void onDrop() override;
+	void onDrop() override {}
 
 	void drawWhileOnTheGround(sf::RenderTarget& target, sf::RenderStates states) const override;
 
