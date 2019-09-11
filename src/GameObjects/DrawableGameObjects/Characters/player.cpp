@@ -297,7 +297,7 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 	}
 }
 
-sf::Vector2f Player::getCurrentPlayerDirection()
+sf::Vector2f Player::getCurrentPlayerDirection() const
 {
 	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
 		return  { 0.7f, -0.7f };
