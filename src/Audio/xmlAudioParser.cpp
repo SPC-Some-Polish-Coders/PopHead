@@ -9,12 +9,38 @@ void XmlAudioParser::parseFile(GameData* const gameData, const std::string& file
 {
 	PH_LOG_INFO("Music file (" + filePath + ") is being parsed.");
 
-	Xml musicFile;
-	musicFile.loadFromFile(filePath);
-	const Xml musicNode = musicFile.getChild("music");
-	const Xml startThemeNode = musicNode.getChild("starttheme");
+	mGameData = gameData;
+
+	Xml audioFile;
+	audioFile.loadFromFile(filePath);
+	const Xml audioNode = audioFile.getChild("audio");
+	parseVolume(audioNode);
+	parseMusicTheme(audioNode);
+}
+
+void XmlAudioParser::parseVolume(const Xml& audioNode)
+{
+	const std::string defaultVolume = "default";
+	const Xml volumeNode = audioNode.getChild("volume");
+
+	std::string soundVolume = volumeNode.getAttribute("soundvolume").toString();
+	if(soundVolume == defaultVolume)
+		mGameData->getSoundPlayer().setVolume(mGameData->getSoundPlayer().getVolume());
+	else
+		mGameData->getSoundPlayer().setVolume(std::stof(soundVolume));
+
+	std::string musicVolume = volumeNode.getAttribute("musicvolume").toString();
+	if (musicVolume == defaultVolume)
+		mGameData->getMusicPlayer().setVolume(mGameData->getMusicPlayer().getVolume());
+	else
+		mGameData->getMusicPlayer().setVolume(std::stof(musicVolume));
+}
+
+void XmlAudioParser::parseMusicTheme(const Xml& audioNode)
+{
+	const Xml startThemeNode = audioNode.getChild("starttheme");
 	const std::string themeFilePath = "music/" + startThemeNode.getAttribute("filename").toString();
-	gameData->getMusicPlayer().play(themeFilePath);
+	mGameData->getMusicPlayer().play(themeFilePath);
 }
 
 }

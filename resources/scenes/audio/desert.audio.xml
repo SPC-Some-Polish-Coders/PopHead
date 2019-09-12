@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<music>
-  <starttheme filename="zombieAttack.ogg"/>
-</music>
+<audio>
+	<volume soundvolume="default" musicvolume="default"/>
+	<starttheme filename="zombieAttack.ogg"/>
+</audio>

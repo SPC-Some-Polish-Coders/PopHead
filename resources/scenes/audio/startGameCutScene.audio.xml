@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<music>
-  <starttheme filename="explorationTheme.ogg"/>
-</music>
+<audio>
+	<volume soundvolume="default" musicvolume="default"/>
+	<starttheme filename="explorationTheme.ogg"/>
+</audio>
