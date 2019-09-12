@@ -5,10 +5,9 @@
 
 namespace ph {
 
-Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
+Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f position,
 	const float damage, const float range, const float rotationRange, float attackAngle)
 	:mNodeWithAttackableObjects(nodeWithAttackableObjects)
-	,mDirection(direction)
 	,mStartPosition(position)
 	,mDamage(damage)
 	,mRange(range)
@@ -16,20 +15,10 @@ Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f dir
 	,mRotation(0.f)
 	,mAttackAngle(attackAngle)
 {
-	setMeeleWeaponStartingPosition(direction);
-	handleHitCharacters(direction);
+	handleHitCharacters();
 }
 
-void Swing::setMeeleWeaponStartingPosition(const sf::Vector2f& attackDirection)
-{
-	sf::Transform rotation;
-	rotation.rotate(-mRotationRange / 2, mStartPosition);
-	mHitArea[0].position = mStartPosition;
-	mHitArea[1].position = mStartPosition + (attackDirection * mRange);
-	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
-}
-
-void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
+void Swing::handleHitCharacters()
 {
 	auto attackableCharactersInHitArea = getAttackableCharactersInHitArea();
 	if(attackableCharactersInHitArea.empty())
@@ -47,7 +36,7 @@ void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
 		if (isAngleInAttackRange(characterAngle))
 		{
 			character->takeDamage(static_cast<unsigned>(mDamage));
-			character->pushCharacter(attackDirection * 100.f);
+			character->pushCharacter(Math::getUnitVector(mAttackAngle) * 100.f);
 		}
 	}
 }
@@ -102,8 +91,8 @@ float Swing::angleOfPointToStart(sf::Vector2f point) const
 	point -= mStartPosition;
 
 	float angle = std::atan2f(point.y, point.x);
-	angle *= 180.f;
-	angle /= 3.14159f;
+	angle = Math::radiansToDegrees(angle);
+
 	if (angle < 0.f)
 		angle += 360.f;
 	return angle;
@@ -166,7 +155,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection, float attackRotatio
 	auto playerRect = mParent->getGlobalBounds();
 	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
 
-	Swing swing(*standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange, attackRotation);
+	Swing swing(*standingObjects, centerOfPlayer, mDamage, mRange, mRotationRange, attackRotation);
 	mShouldBeDrawn = true;
 }
 

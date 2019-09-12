@@ -12,12 +12,11 @@ class CollisionBody;
 class Swing 
 {
 public:
-	Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
+	Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f position,
 		const float damage, const float range, const float rotationRange, float attackAngle);
 
 private:
-	void setMeeleWeaponStartingPosition(const sf::Vector2f& attackDirection);
-	void handleHitCharacters(const sf::Vector2f& attackDirection);
+	void handleHitCharacters();
 	sf::Vector2f nearestPointOfCharacter(const Character& character) const;
 	float angleOfPointToStart(sf::Vector2f point) const;
 	auto getAttackableCharactersInHitArea() const -> std::vector<Character*>;
@@ -27,14 +26,12 @@ private:
 
 private:
 	const GameObject& mNodeWithAttackableObjects;
-	const sf::Vector2f mDirection;
 	const sf::Vector2f mStartPosition;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;
 	float mRotation;
 	float mAttackAngle;
-	std::array<sf::Vertex, 2> mHitArea;
 };
 
 class MeleeWeapon : public GameObject
