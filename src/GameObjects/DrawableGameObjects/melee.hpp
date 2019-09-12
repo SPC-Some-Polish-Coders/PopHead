@@ -21,8 +21,6 @@ private:
 	sf::Vector2f nearestPointOfCharacter(const Character& character) const;
 	float angleOfPointToStart(sf::Vector2f point) const;
 	auto getAttackableCharactersInHitArea() const -> std::vector<Character*>;
-	bool wasCharacterHit(Character*);
-	void incrementRotation();
 	bool isAngleInAttackRange(float angle) const;
 	
 	static float getFixedAngle(float angle);

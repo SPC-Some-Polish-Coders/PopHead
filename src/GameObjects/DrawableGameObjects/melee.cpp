@@ -50,20 +50,6 @@ void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
 			character->pushCharacter(attackDirection * 100.f);
 		}
 	}
-
-
-	/*while (mRotation < 100)
-	{
-		incrementRotation();
-		for (auto* attackableCharacter : attackableCharactersInHitArea)
-		{
-			if (wasCharacterHit(attackableCharacter))
-			{
-				attackableCharacter->takeDamage(static_cast<unsigned>(mDamage));
-				attackableCharacter->pushCharacter(attackDirection * 100.f);
-			}
-		}
-	}*/
 }
 
 sf::Vector2f Swing::nearestPointOfCharacter(const Character& character) const
@@ -115,21 +101,6 @@ float Swing::angleOfPointToStart(sf::Vector2f point) const
 {
 	point -= mStartPosition;
 
-	/*if (point.y == 0)
-	{
-		if (point.x > 0)
-			return 0.f;
-		else
-			return 180.f;
-	}
-	if (point.x == 0)
-	{
-		if (point.y > 0)
-			return 90.f;
-		else
-			return 270.f;
-	}*/
-
 	float angle = std::atan2f(point.y, point.x);
 	angle *= 180.f;
 	angle /= 3.14159f;
@@ -153,14 +124,6 @@ auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 	return attackableCharactersInHitArea;
 }
 
-void Swing::incrementRotation()
-{
-	mRotation += 5.f;
-	sf::Transform rotation;
-	rotation.rotate(5.f, mStartPosition);
-	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
-}
-
 bool Swing::isAngleInAttackRange(float angle) const
 {
 	float halfOfRotationRange = mRotationRange / 2.f;
@@ -177,12 +140,6 @@ float Swing::getFixedAngle(float angle)
 	if (angle < 0.f)
 		angle += 360.f;
 	return angle;
-}
-
-bool Swing::wasCharacterHit(Character* character)
-{
-	const sf::FloatRect hitbox = character->getGlobalBounds();
-	return Math::isPointInsideRect(mHitArea[1].position, hitbox);
 }
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
