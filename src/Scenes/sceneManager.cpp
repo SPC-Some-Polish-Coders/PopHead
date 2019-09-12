@@ -7,9 +7,8 @@
 #include "Gui/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
 #include "Resources/xmlResourceParser.hpp"
-#include "Audio/Music/xmlAudioParser.hpp"
+#include "Audio/xmlAudioParser.hpp"
 #include "GameObjects/tiledGameObjectsParser.hpp"
-//#include "GameObjects/xmlGameObjectsParser.hpp"
 
 namespace ph {
 

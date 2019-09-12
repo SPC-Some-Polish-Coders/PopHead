@@ -3,5 +3,5 @@
   <neededResources filename="desert.res.xml"/>
   <map filename="southFromTheCity.tmx"/>
   <gui filename="gameplay.gui.xml"/>
-  <music filename="desert.music.xml"/>
+  <audio filename="desert.audio.xml"/>
 </scenelinks>
