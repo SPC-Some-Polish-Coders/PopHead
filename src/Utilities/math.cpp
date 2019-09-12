@@ -45,6 +45,22 @@ namespace Math
 		return sf::Vector2f(getRightBound(bounds), getBottomBound(bounds));
 	}
 
+	sf::Vector2f getUnitVector(float angle)
+	{
+		auto radians = degreesToRadians(angle);
+		return sf::Vector2f(std::cosf(radians), std::sinf(radians));
+	}
+
+	float degreesToRadians(float angle)
+	{
+		return angle * 3.14159f / 180.f;
+	}
+
+	float radiansToDegrees(float angle)
+	{
+		return angle * 180.f / 3.14159f;
+	}
+
 	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns)
 	{
 		PH_ASSERT_EXCEPTION(numberOfColumns != 0, "Number of columns cannot be 0");
