@@ -44,6 +44,8 @@ private:
 	void updateListenerPosition() const;
 
 	sf::Vector2f getCurrentPlayerDirection() const;
+	float getPlayerRotation() const;
+
 	void pauseMenuUpdate();
 
 private:

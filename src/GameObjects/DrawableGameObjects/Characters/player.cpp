@@ -319,6 +319,28 @@ sf::Vector2f Player::getCurrentPlayerDirection() const
 		return  {0.f, 1.f};
 }
 
+float Player::getPlayerRotation() const
+{
+	if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+		return 45.f;
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+		return 135.f;
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+		return 225.f;
+	else if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+		return 315.f;
+	else if (mLastMotion.isMovingRight)
+		return 0.f;
+	else if (mLastMotion.isMovingDown)
+		return 90.f;
+	else if (mLastMotion.isMovingLeft)
+		return 180.f;
+	else if (mLastMotion.isMovingUp)
+		return 270.f;
+	
+	PH_UNEXPECTED_SITUATION("Unsupported player rotation");
+}
+
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
