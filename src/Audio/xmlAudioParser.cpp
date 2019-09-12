@@ -25,13 +25,13 @@ void XmlAudioParser::parseVolume(const Xml& audioNode)
 
 	std::string soundVolume = volumeNode.getAttribute("soundvolume").toString();
 	if(soundVolume == defaultVolume)
-		mGameData->getSoundPlayer().setVolume(mGameData->getSoundPlayer().getVolume());
+		mGameData->getSoundPlayer().setVolume(mGameData->getSoundPlayer().getDefaultVolume());
 	else
 		mGameData->getSoundPlayer().setVolume(std::stof(soundVolume));
 
 	std::string musicVolume = volumeNode.getAttribute("musicvolume").toString();
 	if (musicVolume == defaultVolume)
-		mGameData->getMusicPlayer().setVolume(mGameData->getMusicPlayer().getVolume());
+		mGameData->getMusicPlayer().setVolume(mGameData->getMusicPlayer().getDefaultVolume());
 	else
 		mGameData->getMusicPlayer().setVolume(std::stof(musicVolume));
 }
