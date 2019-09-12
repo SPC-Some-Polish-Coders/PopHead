@@ -6,7 +6,7 @@
 namespace ph {
 
 Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f direction, const sf::Vector2f position,
-	const float damage, const float range, const float rotationRange)
+	const float damage, const float range, const float rotationRange, float attackAngle)
 	:mNodeWithAttackableObjects(nodeWithAttackableObjects)
 	,mDirection(direction)
 	,mStartPosition(position)
@@ -14,6 +14,7 @@ Swing::Swing(const GameObject& nodeWithAttackableObjects, const sf::Vector2f dir
 	,mRange(range)
 	,mRotationRange(rotationRange)
 	,mRotation(0.f)
+	,mAttackAngle(attackAngle)
 {
 	setMeeleWeaponStartingPosition(direction);
 	handleHitCharacters(direction);
@@ -34,7 +35,24 @@ void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
 	if(attackableCharactersInHitArea.empty())
 		return;
 
-	while (mRotation < 100)
+	for (const auto& character : attackableCharactersInHitArea)
+	{
+		auto nearestPoint = nearestPointOfCharacter(*character);
+		auto distance = Math::getDistanceBetweenPoints(mStartPosition, nearestPoint);
+
+		if (distance > mRange)
+			continue;
+
+		auto characterAngle = angleOfPointToStart(nearestPoint);
+		if (isAngleInAttackRange(characterAngle))
+		{
+			character->takeDamage(static_cast<unsigned>(mDamage));
+			character->pushCharacter(attackDirection * 100.f);
+		}
+	}
+
+
+	/*while (mRotation < 100)
 	{
 		incrementRotation();
 		for (auto* attackableCharacter : attackableCharactersInHitArea)
@@ -45,12 +63,84 @@ void Swing::handleHitCharacters(const sf::Vector2f& attackDirection)
 				attackableCharacter->pushCharacter(attackDirection * 100.f);
 			}
 		}
+	}*/
+}
+
+sf::Vector2f Swing::nearestPointOfCharacter(const Character& character) const
+{
+	auto rect = character.getGlobalBounds();
+	auto right = rect.left + rect.width;
+	auto bottom = rect.top + rect.height;
+
+	bool onLeft = right < mStartPosition.x;
+	bool onRight = rect.left > mStartPosition.x;
+	bool above = bottom < mStartPosition.y;
+	bool under = rect.top > mStartPosition.y;
+
+	bool sameXAxis = !onLeft && !onRight;
+	bool sameYAxis = !above && !under;
+
+	if (sameXAxis && !sameYAxis)
+	{
+		if (under)
+			return sf::Vector2f(mStartPosition.x, rect.top);
+		else
+			return sf::Vector2f(mStartPosition.x, bottom);
 	}
+	if (!sameXAxis && sameYAxis)
+	{
+		if (onRight)
+			return sf::Vector2f(rect.left, mStartPosition.y);
+		else
+			return sf::Vector2f(right, mStartPosition.y);
+	}
+	if (sameXAxis && sameYAxis)
+	{
+		return mStartPosition;
+	}
+
+	if (onLeft && above)
+		return sf::Vector2f(right, bottom);
+	if (onLeft && under)
+		return sf::Vector2f(right, rect.top);
+	if (onRight && above)
+		return sf::Vector2f(rect.left, bottom);
+	if (onRight && under)
+		return sf::Vector2f(rect.left, rect.top);
+
+	PH_UNEXPECTED_SITUATION("Unhandled position of a character");
+}
+
+float Swing::angleOfPointToStart(sf::Vector2f point) const
+{
+	point -= mStartPosition;
+
+	/*if (point.y == 0)
+	{
+		if (point.x > 0)
+			return 0.f;
+		else
+			return 180.f;
+	}
+	if (point.x == 0)
+	{
+		if (point.y > 0)
+			return 90.f;
+		else
+			return 270.f;
+	}*/
+
+	float angle = std::atan2f(point.y, point.x);
+	angle *= 180.f;
+	angle /= 3.14159f;
+	if (angle < 0.f)
+		angle += 360.f;
+	return angle;
 }
 
 auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 {
-	const sf::FloatRect hitArea(mStartPosition.x - 20, mStartPosition.y - 20, 40, 40);
+	const sf::FloatRect hitArea(mStartPosition.x - 50, mStartPosition.y - 50, 100, 100);
 	std::vector<Character*> attackableCharactersInHitArea;
 
 	for(auto& attackableObject : mNodeWithAttackableObjects.getChildren()) {
@@ -71,6 +161,24 @@ void Swing::incrementRotation()
 	mHitArea[1] = rotation.transformPoint(mHitArea[1].position);
 }
 
+bool Swing::isAngleInAttackRange(float angle) const
+{
+	float halfOfRotationRange = mRotationRange / 2.f;
+	auto attackRange = std::make_pair(getFixedAngle(mAttackAngle - halfOfRotationRange), getFixedAngle(mAttackAngle + halfOfRotationRange));
+
+	if (attackRange.first < attackRange.second)
+		return angle >= attackRange.first && angle <= attackRange.second;
+	return angle >= attackRange.second || angle <= attackRange.first;
+}
+
+float Swing::getFixedAngle(float angle)
+{
+	angle -= (static_cast<unsigned>(angle) / 360) * 360.f;
+	if (angle < 0.f)
+		angle += 360.f;
+	return angle;
+}
+
 bool Swing::wasCharacterHit(Character* character)
 {
 	const sf::FloatRect hitbox = character->getGlobalBounds();
@@ -89,7 +197,7 @@ MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const flo
 {
 }
 
-void MeleeWeapon::attack(const sf::Vector2f attackDirection)
+void MeleeWeapon::attack(const sf::Vector2f attackDirection, float attackRotation)
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
 	setOrigin(0.f, 12.f);
@@ -101,7 +209,7 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection)
 	auto playerRect = mParent->getGlobalBounds();
 	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
 
-	Swing swing(*standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange);
+	Swing swing(*standingObjects, attackDirection, centerOfPlayer, mDamage, mRange, mRotationRange, attackRotation);
 	mShouldBeDrawn = true;
 }
 

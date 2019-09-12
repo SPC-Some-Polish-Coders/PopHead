@@ -292,7 +292,7 @@ void Player::meleeAttackUpdate(const sf::Time delta)
 		mTimeFromLastMeleeAttack.restart();
 		sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
 		auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
-		meleeWeapon->attack(meleeAttackDirection);
+		meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
 		mIsAttacking = false;
 	}
 }
