@@ -29,14 +29,11 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	car->setVelocity(120);
 }
 
-void StartGameCutScene::input()
-{
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
-		closeCutScene();
-}
-
 void StartGameCutScene::update(const sf::Time delta)
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		closeCutScene();
+
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
 
 	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));

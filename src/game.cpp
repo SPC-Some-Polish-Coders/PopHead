@@ -93,10 +93,8 @@ void Game::input()
 	if (mRenderWindow.hasFocus())
 	{
 		EventLoop::eventLoop(mGameData.get());
-		mSceneManager->input();
-		mInput->getGlobalKeyboardShortcutes().handleShortcuts();
+		mInput->getGlobalKeyboardShortcuts().handleShortcuts();
 		mTerminal->input();
-		mEfficiencyRegister->input();
 	}
 }
 
@@ -108,6 +106,8 @@ void Game::update(sf::Time deltaTime)
 	mRenderer->update(deltaTime);
 	mGui->update(deltaTime);
 	mEfficiencyRegister->update();
+
+	EventLoop::clear();
 }
 
 void Game::draw()

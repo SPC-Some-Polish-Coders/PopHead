@@ -12,8 +12,6 @@ class GameObject : public sf::Drawable, public sf::Transformable
 public:
 	GameObject(const std::string& name);
 
-	virtual void input();
-
 	void update(sf::Time delta);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

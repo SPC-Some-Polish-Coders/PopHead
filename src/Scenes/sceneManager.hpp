@@ -22,7 +22,6 @@ private:
 	void popAction();
 
 public:
-    void input();
     void update(sf::Time delta);
 
 	Scene& getScene() { return *mScene.get(); }

@@ -13,7 +13,6 @@ public:
 	EfficiencyRegister();
 	void init(GameData* const gameData);
 
-	void input();
 	void update();
 
 	void registerDrawCall() { ++mDrawCallPerFrame; }
@@ -28,6 +27,6 @@ private:
 	unsigned mDrawCallPerFrame;
 	unsigned mFramesFromLastSecond;
 	bool mIsActive;
-	};
-
 };
+
+}

@@ -11,7 +11,6 @@ void EventLoop::init(GameData* gameData)
 
 void EventLoop::eventLoop(GameData* gameData)
 {
-	clear();
 	sf::Event event;
 
 	while(gameData->getRenderWindow().pollEvent(event))

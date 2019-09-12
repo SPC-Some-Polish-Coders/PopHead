@@ -22,17 +22,12 @@ class Player : public Character
 public:
     Player(GameData*);
 
-    void input() override;
     void updateCurrent(sf::Time delta) override;
 
 	void slowDown() { mIsSlownDown = true; }
 	float getPickRadius() const { return mPickRadius; }
 
 private:
-	void movementInput();
-	void gunInput();
-	void meleeWeaponInput();
-	void pauseMenuInput();
 	void die();
 	void updateCounters() const;
 	void updateMovement(const sf::Time delta);
@@ -51,10 +46,7 @@ private:
 	PlayerMotion mLastMotion;
 	unsigned mNumberOfOwnedBullets;
 	float mPickRadius;
-	bool mIsShooting;
-	bool mIsAttacking;
 	bool mIsSlownDown;
-	bool mWasGamePauseButtonClicked;
 };
 
 }

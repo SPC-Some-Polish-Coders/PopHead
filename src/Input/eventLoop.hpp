@@ -12,8 +12,8 @@ public:
     EventLoop() = delete;
 
     static void init(GameData*);
-
     static void eventLoop(GameData*);
+    static void clear();
 
 	static auto getPressedKey() -> sf::Keyboard::Key { return mPressedKey; }
     static auto getReleasedKey() -> sf::Keyboard::Key { return mReleasedKey; }
@@ -24,9 +24,6 @@ public:
     static bool isMouseButtonJustPressed(){ return mIsMouseButtonJustPressed; }
     static bool isMouseButtonJustReleased(){ return mIsMouseButtonJustReleased; }
     static bool hasMouseJustMoved(){ return mHasMouseJustMoved; }
-
-private:
-    static void clear();
 
 private:
 	inline static sf::Keyboard::Key mPressedKey;

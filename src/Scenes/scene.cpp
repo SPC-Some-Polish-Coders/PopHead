@@ -13,14 +13,6 @@ Scene::Scene()
 	GameObject::setRoot(mRoot.get());
 }
 
-void Scene::input()
-{
-	if(mCutSceneManager.isCutSceneActive())
-		mCutSceneManager.handleCutSceneInput();
-
-	mRoot->input();
-}
-
 void Scene::update(sf::Time delta)
 {
 	if(mCutSceneManager.isCutSceneActive())

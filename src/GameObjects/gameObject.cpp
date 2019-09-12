@@ -10,12 +10,6 @@ GameObject::GameObject(const std::string& name)
 {
 }
 
-void GameObject::input()
-{
-	for(auto& child : mChildren)
-		child->input();
-}
-
 void GameObject::update(sf::Time delta)
 {
 	updateCurrent(delta);
