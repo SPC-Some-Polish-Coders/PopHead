@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenelinks>
   <neededResources filename="desert.res.xml"/>
-  <map filename="southFromTheCity.tmx"/>
+  <map filename="gateAreaMap.tmx"/>
   <gui filename="gameplay.gui.xml"/>
   <audio filename="desert.audio.xml"/>
 </scenelinks>
