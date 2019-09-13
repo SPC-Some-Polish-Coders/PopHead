@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui>
+    <interface name="mainMenu">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="storyButton" origin="0.5" position="0.01" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="Some world situation"></textWidget>
+		        <textWidget name="storyButton" origin="0.5" position="0.01, 0.2" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="explanation will be here"></textWidget>
+        </widget>
+    </interface>
+</gui>

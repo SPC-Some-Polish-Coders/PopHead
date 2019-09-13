@@ -17,6 +17,7 @@
 #include "gameObject.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
+#include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
@@ -252,7 +253,11 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 
 	const std::string name = getProperty(cutSceneNode, "name").toString();
 
-	if(name == "startGameCutScene") {
+	if(name == "subtitlesBeforeStartGameCutscene") {
+		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(mRoot, mGameData->getSceneManager());
+		mCutSceneManager.setMapStaringCutScene(std::move(subtitlesBeforeStartGameCutscene));
+	}
+	else if(name == "startGameCutScene") {
 		auto startGameCutScene = std::make_unique<StartGameCutScene>(
 			mRoot,
 			mGameData->getRenderer().getCamera(),
