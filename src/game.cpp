@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include "Resources/loadFonts.hpp"
+#include "Input/globalKeyboardShortcuts.hpp"
 #include <SFML/System.hpp>
-#include <Input/eventLoop.hpp>
 
 namespace ph {
 
@@ -48,7 +48,6 @@ Game::Game()
 	mEfficiencyRegister->init(gameData);
 	mMap->setGameData(gameData);
 	mGui->init(gameData);
-	mInput->setGameData(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
@@ -89,7 +88,7 @@ void Game::handleEvents()
 	sf::Event e;
 	while(mRenderWindow.pollEvent(e))
 	{
-		mInput->getGlobalKeyboardShortcuts().handleEvent(e);
+		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), e);
 		mEfficiencyRegister->handleEvent(e);
 		mTerminal->handleEvent(e);
 		mGui->handleEvent(e);
@@ -111,7 +110,6 @@ void Game::update(sf::Time deltaTime)
 		mRenderer->update(deltaTime);
 		mGui->update(deltaTime);
 		mTerminal->update();
-		mInput->getGlobalKeyboardShortcuts().update();
 	}
 }
 

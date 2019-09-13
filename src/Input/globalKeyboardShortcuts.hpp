@@ -1,30 +1,11 @@
 #pragma once
 
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace ph {
 
-class GameData;
+class GameCloser;
 
-class GlobalKeyboardShortcuts
-{
-public:
-	GlobalKeyboardShortcuts();
-
-	void setGameData(GameData* const gameData) { mGameData = gameData; }
-
-	void handleEvent(const sf::Event&);
-	void update();
-
-private:
-	void handleWindowMinimalizeAndMaximalizeShortcut();
-	void handleCloseGameShortcut();
-
-private:
-	GameData* mGameData;
-
-	enum class WindowSizeState{fullScreen, notFullScreen};
-	WindowSizeState mWindowSizeState;
-};
+void handleGlobalKeyboardShortcuts(sf::RenderWindow&, GameCloser&, const sf::Event&);
 
 }
