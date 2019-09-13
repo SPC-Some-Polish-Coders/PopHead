@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Window.hpp>
+
 namespace ph {
 
 class GameData;
@@ -10,7 +12,9 @@ public:
 	GlobalKeyboardShortcuts();
 
 	void setGameData(GameData* const gameData) { mGameData = gameData; }
-	void handleShortcuts();
+
+	void handleEvent(const sf::Event&);
+	void update();
 
 private:
 	void handleWindowMinimalizeAndMaximalizeShortcut();

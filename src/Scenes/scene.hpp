@@ -14,6 +14,8 @@ class Scene
 {
 public:
     Scene();
+
+	void handleEvent(const sf::Event&);
     void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }

@@ -10,6 +10,22 @@ GameObject::GameObject(const std::string& name)
 {
 }
 
+void GameObject::handleEvent(const sf::Event& e)
+{
+	handleEventOnCurrent(e);
+	handleEventOnChildren(e);
+}
+
+void GameObject::handleEventOnCurrent(const sf::Event&)
+{
+}
+
+void GameObject::handleEventOnChildren(const sf::Event& e)
+{
+	for(auto& child : mChildren)
+		child->handleEvent(e);
+}
+
 void GameObject::update(sf::Time delta)
 {
 	updateCurrent(delta);

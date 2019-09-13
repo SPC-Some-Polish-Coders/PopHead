@@ -52,6 +52,11 @@ void SceneManager::replaceAction()
 	mIsReplacing = false;
 }
 
+void SceneManager::handleEvent(const sf::Event& e)
+{
+	mScene->handleEvent(e);
+}
+
 void SceneManager::update(sf::Time delta)
 {
 	if(mScene != nullptr)

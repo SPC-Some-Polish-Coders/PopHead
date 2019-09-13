@@ -12,8 +12,8 @@ class GameObject : public sf::Drawable, public sf::Transformable
 public:
 	GameObject(const std::string& name);
 
+	void handleEvent(const sf::Event&);
 	void update(sf::Time delta);
-
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	void addChild(std::unique_ptr<GameObject>);
@@ -36,6 +36,9 @@ protected:
 	void correctChildName(std::string& childName) const;
 	void incrementNumberInChildName(std::string& childName) const;
 	
+	virtual void handleEventOnCurrent(const sf::Event&);
+	void handleEventOnChildren(const sf::Event&);
+
 	virtual void updateCurrent(sf::Time delta);
 	void updateChildren(sf::Time delta);
 

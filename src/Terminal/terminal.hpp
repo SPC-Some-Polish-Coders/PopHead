@@ -18,7 +18,8 @@ public:
 	Terminal();
 	void init(GameData*);
 
-	void input();
+	void handleEvent(const sf::Event&);
+	void update();
 	void pushOutputLine(const OutputLine&);
 
 	auto getImage() -> TerminalImage& { return mTerminalImage; }

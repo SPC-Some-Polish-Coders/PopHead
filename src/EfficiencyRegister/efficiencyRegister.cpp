@@ -20,13 +20,16 @@ void EfficiencyRegister::init(GameData* const gameData)
 	mEfficiencyDisplayer.init(gameData);
 }
 
-void EfficiencyRegister::update()
+void EfficiencyRegister::handleEvent(const sf::Event& e)
 {
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::F2)) {
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F2) {
 		mIsActive = !mIsActive;
 		mEfficiencyDisplayer.setShouldBeDrawn(mIsActive);
 	}
+}
 
+void EfficiencyRegister::update()
+{
 	if(mIsActive) {
 		mEfficiencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
 		mEfficiencyDisplayer.setDrawCallPerFrameText("DCPF: " + std::to_string(mDrawCallPerFrame));

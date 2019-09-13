@@ -28,7 +28,7 @@ public:
 
 private:
 	sf::Time getProperDeltaTime(sf::Time deltaTime);
-	void input();
+	void handleEvents();
 	void update(sf::Time deltaTime);
 	void draw();
 

@@ -13,6 +13,11 @@ Scene::Scene()
 	GameObject::setRoot(mRoot.get());
 }
 
+void Scene::handleEvent(const sf::Event& e)
+{
+	mRoot->handleEvent(e);
+}
+
 void Scene::update(sf::Time delta)
 {
 	if(mCutSceneManager.isCutSceneActive())

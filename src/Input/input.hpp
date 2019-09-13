@@ -14,17 +14,13 @@ class Input
 public:
 	Input();
 
-    auto getKeyboard() -> const KeyboardManager& { return mKeyboard; }
-    auto getMouse() -> const MouseManager& { return mMouse; }
     auto getAction() -> ActionManager& { return mAction; }
 	auto getGlobalKeyboardShortcuts() -> GlobalKeyboardShortcuts& { return mGlobalKeyboardShortcuts; }
 
     void setGameData(GameData*);
 
 private:
-    MouseManager mMouse;
     ActionManager mAction;
-    KeyboardManager mKeyboard;
 	GlobalKeyboardShortcuts mGlobalKeyboardShortcuts;
 };
 

@@ -13,6 +13,7 @@ public:
 	EfficiencyRegister();
 	void init(GameData* const gameData);
 
+	void handleEvent(const sf::Event&);
 	void update();
 
 	void registerDrawCall() { ++mDrawCallPerFrame; }

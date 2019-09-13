@@ -22,6 +22,7 @@ class Player : public Character
 public:
     Player(GameData*);
 
+	void handleEventOnCurrent(const sf::Event&) override;
     void updateCurrent(sf::Time delta) override;
 
 	void slowDown() { mIsSlownDown = true; }
@@ -34,11 +35,9 @@ private:
 	void updateAnimation(const sf::Time delta);
     void setAnimationState(const std::string& stateName);
 	void shootingUpdate(const sf::Time delta);
-	void meleeAttackUpdate(const sf::Time delta);
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition() const;
 	sf::Vector2f getCurrentPlayerDirection();
-	void pauseMenuUpdate();
 
 private:
 	sf::Clock mTimeFromLastMeleeAttack;
