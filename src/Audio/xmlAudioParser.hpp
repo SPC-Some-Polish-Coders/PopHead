@@ -13,7 +13,7 @@ public:
 	void parseFile(GameData* const gameData, const std::string& filePath);
 
 private:
-	void parseVolume(const Xml& audioNode);
+	void parseSoundMute(const Xml& audioNode);
 	void parseMusicTheme(const Xml& audioNode);
 
 private:
