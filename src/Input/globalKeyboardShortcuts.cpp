@@ -1,43 +1,23 @@
 #include "globalKeyboardShortcuts.hpp"
 #include "gameData.hpp"
-#include <SFML/Window.hpp>
 
 namespace ph {
 
-GlobalKeyboardShortcuts::GlobalKeyboardShortcuts()
-	:mWindowSizeState(WindowSizeState::fullScreen)
+void handleGlobalKeyboardShortcuts(sf::RenderWindow& renderWindow, GameCloser& gameCloser, const sf::Event& e)
 {
-}
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F11)
+	{
+		auto windowSize = renderWindow.getSize();
 
-void GlobalKeyboardShortcuts::handleShortcuts()
-{
-	handleWindowMinimalizeAndMaximalizeShortcut();
-	handleCloseGameShortcut();
-}
-
-void GlobalKeyboardShortcuts::handleWindowMinimalizeAndMaximalizeShortcut()
-{
-	auto& keyboard = mGameData->getInput().getKeyboard();
-	if(keyboard.isKeyJustPressed(sf::Keyboard::F11)) {
-		switch(mWindowSizeState)
-		{
-		case WindowSizeState::fullScreen:
-			mWindowSizeState = WindowSizeState::notFullScreen;
-			mGameData->getRenderWindow().create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
-			break;
-		case WindowSizeState::notFullScreen:
-			mWindowSizeState = WindowSizeState::fullScreen;
-			mGameData->getRenderWindow().create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
-			break;
-		}
+		if(windowSize == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height))
+			renderWindow.create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
+		else
+			renderWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
 	}
-}
 
-void GlobalKeyboardShortcuts::handleCloseGameShortcut()
-{
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::LSystem) 
 		&& sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		mGameData->getGameCloser().closeGame();
+		gameCloser.closeGame();
 }
 
 }

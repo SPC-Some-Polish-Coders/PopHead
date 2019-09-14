@@ -1,5 +1,5 @@
 #include "GameObjects/DrawableGameObjects/Characters/Enemies/zombie.hpp"
-#include "GameObjects/NotDrawableGameObjects/spawner.hpp"
+#include "GameObjects/NonDrawableGameObjects/spawner.hpp"
 #include "Utilities/spawn.hpp"
 
 namespace ph {

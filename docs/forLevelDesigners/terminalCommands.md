@@ -46,6 +46,7 @@ Above examples **mean the same**!
 | **Command** | **Describe** |
 | ----------: | ----------- |
 | **`exit`**  | is **no-argument** command which closes the program |
+| **`gotoscene`**  | is **single-argumented** command which change the scene argument is scene linking file but without file extension |
 | **`echo`** | is **single-argumented** command which prints out the message given by the user |
 | **`help`** | is **single-argumented** command which prints out availible commands. Needs to be combined with a number of a page |
 | **`history`** | is **no-argument** command which prints out ten last used commands |
@@ -53,6 +54,7 @@ Above examples **mean the same**!
 
 #### Examples: 
 ```
+gotoscene sewage
 echo hello world
 exit
 help 2
@@ -188,6 +190,19 @@ collisiondebug display static
 ```
 teleport 260 1255
 teleport 300
+```
+
+### **`m`** is **many-argumented** command which moves player to other coordinates by the given offset
+| **teleport arguments** | **Describe** |
+| -----------: | ------------ |
+| `x` or `y` | argument chooses which in axis will be the player moved |
+| `<value>` | argument is a number offset which moves the player on given axis |
+	
+#### Examples: 
+```
+m 260 
+m y -200
+m x 1500
 ```
 
 ## Camera commands

@@ -17,9 +17,7 @@ Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 
 bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const
 {
-	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
-	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
-	float distanceBetweenZombieAndPlayer = std::hypotf(legX, legY);
+	float distanceBetweenZombieAndPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	return distanceBetweenZombieAndPlayer < 25;
 }
 
@@ -50,11 +48,17 @@ void AIManager::update()
 
 bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
 {
-	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
-	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
-	float distanceBetweenZombieAndPlayer = std::hypotf(legX, legY);
+	float distanceBetweenZombieAndPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
 	return distanceBetweenZombieAndPlayer <= maximalDistanceFromWhichZombieSeesPlayer;
+}
+
+float AIManager::getDistanceBetweenZombieAndPlayer(const sf::Vector2f zombiePosition) const
+{
+	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
+	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
+	float distance = std::hypotf(legX, legY);
+	return distance;
 }
 
 Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const

@@ -34,6 +34,7 @@ private:
 	void executeSpawn() const;
 	void executeTeleport() const;
 	void executeCurrentPos() const;
+	void executeMove() const;
 	auto getPlayer() const -> GameObject&;
 
 	void executeHistory() const;

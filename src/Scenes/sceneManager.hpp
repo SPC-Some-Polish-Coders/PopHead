@@ -22,11 +22,13 @@ private:
 	void popAction();
 
 public:
-    void input();
+	void handleEvent(const sf::Event&);
     void update(sf::Time delta);
 
 	Scene& getScene() { return *mScene.get(); }
     void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
+
+	std::string getCurrentMapName() const { return mFileOfSceneToMake; }
 
 private:
     std::unique_ptr<Scene> mScene;

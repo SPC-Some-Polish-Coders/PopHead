@@ -1,5 +1,6 @@
 #include "nodesGrid.hpp"
 #include "Utilities/math.hpp"
+#include "Logs/logs.hpp"
 
 #include <algorithm>
 
@@ -29,11 +30,7 @@ namespace ph {
 
 	const NodesGrid::Node& NodesGrid::getNodeWithLowestCost() const
 	{
-		// TODO: possible optimazation
-		auto iter = mNodesByCost.begin();
-		while (mClosedNodes.at(internalIndex((*iter)->mPosition)))
-			++iter;
-		return **iter;
+		return **mNodesByCost.begin();
 	}
 
 	std::vector<std::reference_wrapper<NodesGrid::Node>> NodesGrid::getNodeNeighbours(const NodesGrid::Node& node)
@@ -100,6 +97,15 @@ namespace ph {
 	void NodesGrid::closeNode(const NodesGrid::Node& node)
 	{
 		mClosedNodes.at(internalIndex(node.mPosition)) = true;
+		Node* pointer = const_cast<Node*>(&node);
+		auto count = mNodesByCost.erase(pointer);
+
+		PH_ASSERT_UNEXPECTED_SITUATION(count == 1, "Attempt to close non-existing node");
+	}
+
+	bool NodesGrid::hasAnyOpenedNode() const
+	{
+		return !mNodesByCost.empty();
 	}
 
 	size_t NodesGrid::internalIndex(const sf::Vector2u& position) const

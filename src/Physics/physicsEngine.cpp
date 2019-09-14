@@ -23,8 +23,6 @@ PhysicsEngine::PhysicsEngine()
 const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
 	auto iter = mStaticBodies.emplace(rect, 0.f);
-	//mCollisionDebugManager.addStaticBodyCollisionDebugRect(*iter.first);
-	//return *iter.first;
 	mCollisionDebugManager.addStaticBodyCollisionDebugRect(*iter);
 	return *iter;
 }

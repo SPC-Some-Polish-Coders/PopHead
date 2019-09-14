@@ -28,12 +28,16 @@ private:
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
+	void loadSlowDownArea(const Xml& slowDownAreaNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
+	void loadGate(const Xml& gateNode) const;
+	void loadLever(const Xml& leverNode) const;
 	void loadCar(const Xml& carNode) const;
 	void loadCamera(const Xml& cameraNode) const;
 	void loadPlayer(const Xml& playerNode) const;
 	void loadCutScene(const Xml& cutSceneNode) const;
 	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
+	void loadBulletItem(const Xml& bulletItemNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;

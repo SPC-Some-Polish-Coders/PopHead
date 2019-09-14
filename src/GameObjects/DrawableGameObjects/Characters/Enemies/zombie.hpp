@@ -11,7 +11,8 @@ public:
 	Zombie(GameData*);
 
 	void updateCurrent(sf::Time delta) override;
-	void onDeath() override;
+
+	void slowDown() { mIsSlownDown = true; }
 
 private:
 	void handlePlayerHit();
@@ -25,6 +26,7 @@ private:
 	sf::Clock timeFromLastGrowl;
 	sf::Clock mTimeFromStartingThisMove;
 	sf::Vector2f mCurrentDirectionVector;
+	bool mIsSlownDown;
 	static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
 };
 

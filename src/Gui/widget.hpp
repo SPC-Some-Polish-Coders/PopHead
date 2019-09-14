@@ -19,6 +19,8 @@ public:
 
 	virtual void setAlpha(unsigned int alpha);
 
+	void handleEvent(const sf::Event&);
+
 	virtual void update(sf::Time delta);
 
 	virtual void addWidget(const std::string& name, Widget* ptr);
@@ -62,6 +64,8 @@ public:
 	virtual void rePosition();
 
 private:
+	virtual void handleEventOnCurrent(const sf::Event&);
+	virtual void handleEventOnChildren(const sf::Event&);
 	virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
 	void setVirtualSize(const sf::Vector2f& size);
 

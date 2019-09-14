@@ -22,6 +22,7 @@ public:
 	bool isMuted() { return mIsMuted; }
 	void setVolume(const float volume);
 	float getVolume() { return mVolume; }
+	float getDefaultVolume() { return mDefaultVolume; }
 	void removeEverySound();
 
 private:
@@ -35,6 +36,7 @@ private:
 	SoundDataHolder mSoundDataHolder;
 	SpatializationManager mSpatializationManager;
 	float mVolume;
+	float mDefaultVolume;
 	bool mIsMuted;
 };
 

@@ -42,6 +42,8 @@ public:
 	std::vector<std::reference_wrapper<Node>> getNodeNeighbours(const Node& node);
 	void closeNode(const Node& node);
 
+	bool hasAnyOpenedNode() const;
+
 private:
 	size_t internalIndex(const sf::Vector2u& position) const;
 	Node& createNode(const sf::Vector2u& position);

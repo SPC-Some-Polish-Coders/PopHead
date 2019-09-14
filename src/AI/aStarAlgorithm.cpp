@@ -17,7 +17,7 @@ Path AStarAlgorithm::getPath()
 {
 	auto& startNode = mNodesGrid.createStartNode(mStartNodePosition);
 
-	while (true)  // add statement
+	while (mNodesGrid.hasAnyOpenedNode())
 	{
 		auto& currentNode = mNodesGrid.getNodeWithLowestCost();
 		mNodesGrid.closeNode(currentNode);

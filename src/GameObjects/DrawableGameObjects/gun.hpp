@@ -5,7 +5,7 @@
 
 namespace ph {
 
-class GameData;
+class SoundPlayer;
 class Character;
 
 class Bullet
@@ -39,22 +39,30 @@ private:
 class Gun : public GameObject
 {
 public:
-	Gun(GameData* const, const float damage);
+	Gun(SoundPlayer&, const sf::Texture&, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
-	void shoot(const sf::Vector2f shotDirection);
+	void shoot();
+
+	void setCurrentPlayerDirection(const sf::Vector2f cpd) { mCurrentPlayerDirection = cpd; }
 
 private:
-	sf::Vector2f getRightHandPosition(const sf::Vector2f shotDirection);
-	void initializeShotGraphics(const Bullet&);
-	void resetShotGraphics();
+	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPosition);
+	void updateGunTextureRect(const int offsetX = 0);
+	void updateGunSpriteFlipping();
+	void updateGunSpritePosition();
+	sf::Vector2f getRightHandPosition();
 
 private:
+	sf::Sprite mGunSprite;
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
-	GameData* const mGameData;
+	sf::Vector2f mCurrentPlayerDirection;
+	SoundPlayer& mSoundPlayer;
 	const float mDamage;
+	bool mShouldDisplayShotGraphics;
+	bool mShouldDisplayGunSprite;
 };
 
 }

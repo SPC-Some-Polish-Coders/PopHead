@@ -13,7 +13,7 @@ public:
 	EfficiencyRegister();
 	void init(GameData* const gameData);
 
-	void input();
+	void handleEvent(const sf::Event&);
 	void update();
 
 	void registerDrawCall() { ++mDrawCallPerFrame; }
@@ -28,6 +28,6 @@ private:
 	unsigned mDrawCallPerFrame;
 	unsigned mFramesFromLastSecond;
 	bool mIsActive;
-	};
-
 };
+
+}

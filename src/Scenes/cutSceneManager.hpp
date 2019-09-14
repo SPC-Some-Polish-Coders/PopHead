@@ -15,8 +15,6 @@ public:
 
 	void setMapStaringCutScene(std::unique_ptr<CutScene> startingCutScene);
 
-	void handleCutSceneInput();
-
 	void updateCutScene(const sf::Time delta);
 
 	bool isCutSceneActive();

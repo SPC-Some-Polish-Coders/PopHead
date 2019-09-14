@@ -1,5 +1,4 @@
 #include "actionManager.hpp"
-#include "eventLoop.hpp"
 #include <algorithm>
 #include "Logs/logs.hpp"
 
@@ -81,28 +80,28 @@ bool ActionManager::isActionPressed(const std::string& action)
 	return false;
 }
 
-bool ActionManager::isActionJustPressed(const std::string& action)
-{
-	if(!mEnabled)
-		return false;
-
-	for(const auto& button : mActions[action]) {
-		if(EventLoop::isKeyJustPressed() && EventLoop::getPressedKey() == button)
-			return true;
-	}
-	return false;
-}
-
-bool ActionManager::isActionJustReleased(const std::string& action)
-{
-	if(!mEnabled)
-		return false;
-
-	for(const auto& button : mActions[action]) {
-		if(EventLoop::isKeyJustReleased() && EventLoop::getReleasedKey() == button)
-			return true;
-	}
-	return false;
-}
+//bool ActionManager::isActionJustPressed(const std::string& action)
+//{
+//	if(!mEnabled)
+//		return false;
+//
+//	for(const auto& button : mActions[action]) {
+//		if(EventLoop::isKeyJustPressed() && EventLoop::getPressedKey() == button)
+//			return true;
+//	}
+//	return false;
+//}
+//
+//bool ActionManager::isActionJustReleased(const std::string& action)
+//{
+//	if(!mEnabled)
+//		return false;
+//
+//	for(const auto& button : mActions[action]) {
+//		if(EventLoop::isKeyJustReleased() && EventLoop::getReleasedKey() == button)
+//			return true;
+//	}
+//	return false;
+//}
 
 }

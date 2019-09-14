@@ -32,6 +32,39 @@ void Widget::setAlpha(unsigned int alpha)
 	mSprite.setColor(sf::Color(255, 255, 255, alpha));
 }
 
+void Widget::handleEvent(const sf::Event& e)
+{
+	if(!mIsActive)
+		return;
+	
+	handleEventOnCurrent(e);
+	handleEventOnChildren(e);
+}
+
+void Widget::handleEventOnCurrent(const sf::Event& e)
+{
+	if(e.type == sf::Event::MouseButtonReleased && e.mouseButton.button == sf::Mouse::Left)
+	{
+		auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
+		auto k = mWindow->mapPixelToCoords(c);
+
+		// TODO: Maybe use Math::areTheyOverlapping()
+		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
+			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
+		{
+			for(const auto& k : mBehaviors)
+				if(k.first == BehaviorType::onReleased)
+					k.second(this);
+		}
+	}
+}
+
+void Widget::handleEventOnChildren(const sf::Event& e)
+{
+	for(const auto& widget : mWidgetList)
+		widget.second->handleEvent(e);
+}
+
 void Widget::update(sf::Time delta)
 {
 	if(mIsActive == false)
@@ -39,7 +72,7 @@ void Widget::update(sf::Time delta)
 
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		auto c = mGameData->getInput().getMouse().getMousePosition();
+		auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
 		auto k = mWindow->mapPixelToCoords(c);
 
 		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
@@ -55,27 +88,12 @@ void Widget::update(sf::Time delta)
 		}
 	}
 
-	if(mGameData->getInput().getMouse().isMouseButtonJustReleased(sf::Mouse::Left))
-	{
-		auto c = mGameData->getInput().getMouse().getMousePosition();
-		auto k = mWindow->mapPixelToCoords(c);
-
-		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
-			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
-		{
-			for(const auto& k : mBehaviors)
-				if(k.first == BehaviorType::onReleased)
-					k.second(this);
-		}
-	}
-
 	for(const auto& k : mBehaviors)
 		if(k.first == BehaviorType::onUpdate)
 			k.second(this);
 
-	if(mIsActive)
-		for(const auto& k : mWidgetList)
-			k.second->update(delta);
+	for(const auto& k : mWidgetList)
+		k.second->update(delta);
 }
 
 void Widget::addWidget(const std::string& name, Widget* ptr)

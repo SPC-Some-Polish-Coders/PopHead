@@ -25,21 +25,18 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mWereZombieSpawned(false)
 	,mHasChangedMusicToZombieAttackTheme(false)
 {
-	auto& car = dynamic_cast<Car&>(root.getChild("LAYER_standingObjects").getChild("car"));
-	car.setVelocity(120);
-}
-
-void StartGameCutScene::input()
-{
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
-		closeCutScene();
+	auto* car = dynamic_cast<Car*>(root.getChild("LAYER_standingObjects")->getChild("car"));
+	car->setVelocity(120);
 }
 
 void StartGameCutScene::update(const sf::Time delta)
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		closeCutScene();
+
 	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
 
-	auto& car = dynamic_cast<Car&>(mRoot.getChild("LAYER_standingObjects").getChild("car"));
+	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
 	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
 	if(cutsceneTimeInSeconds < 5)
@@ -73,8 +70,8 @@ void StartGameCutScene::update(const sf::Time delta)
 		updateSpeech(cutsceneTimeInSeconds);
 
 	if(cutsceneTimeInSeconds > 27.5) {
-		auto& crawlingNpc = dynamic_cast<CrawlingNpc&>(mRoot.getChild("crawlingNpc"));
-		crawlingNpc.die();
+		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("crawlingNpc"));
+		crawlingNpc->die();
 	}
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
@@ -96,9 +93,6 @@ void StartGameCutScene::update(const sf::Time delta)
 	}
 
 	if(cutsceneTimeInSeconds > 45)
-		mCamera.setSize({1280, 960});
-
-	if(cutsceneTimeInSeconds > 47)
 		closeCutScene();
 }
 
@@ -138,14 +132,14 @@ void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSecon
 void StartGameCutScene::createPlayer()
 {
 	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-	playerNpc->setPosition({5640, 800});
+	playerNpc->setPosition({5640, 400});
 	mRoot.addChild(std::move(playerNpc));
 	mWasPlayerCreated = true;
 }
 
 void StartGameCutScene::rotatePlayer()
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	playerNpc.setAnimationState("rightUp");
 	mHasPlayerTurnedToNpc = true;
 }
@@ -169,7 +163,7 @@ void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	auto& animation = playerNpc.getAnimation();
 
 	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
@@ -190,7 +184,7 @@ void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::lookSouth()
 {
-	auto& playerNpc = dynamic_cast<Character&>(mRoot.getChild("playerNpc"));
+	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 	auto& animation = playerNpc.getAnimation();
 	animation.changeState("down");
 }
@@ -210,21 +204,7 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::spawnZombies()
 {
-	createZombie({5770, 940});
-	createZombie({5610, 980});
-	createZombie({5460, 980});
-	createZombie({5450, 780});
-	createZombie({5482, 650});
-	createZombie({5670, 600});
-	createZombie({5360, 980});
-	createZombie({5230, 820});
-	createZombie({5400, 755});
-	createZombie({5460, 600});
-	createZombie({5500, 725});
-	createZombie({5530, 930});
-	createZombie({5260, 735});
-	createZombie({5490, 970});
-	createZombie({5360, 770});
+	createZombie({5670, 270});
 }
 
 void StartGameCutScene::createZombie(const sf::Vector2f position)
@@ -237,7 +217,7 @@ void StartGameCutScene::createZombie(const sf::Vector2f position)
 
 void StartGameCutScene::closeCutScene()
 {
-	mGameData->getSceneManager().replaceScene("scenes/southFromTheCity.xml");
+	mGameData->getSceneManager().replaceScene("scenes/gateAreaMap.xml");
 	mIsActive = false;
 }
 

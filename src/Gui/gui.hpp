@@ -49,6 +49,8 @@ public:
 
 	void moveUp(const std::string& name);
 
+	void handleEvent(const sf::Event&);
+
 	void update(sf::Time deltaTime);
 
 	void transform();

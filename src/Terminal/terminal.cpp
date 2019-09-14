@@ -21,15 +21,21 @@ void Terminal::init(GameData* gameData)
 	mTerminalImage.init(gameData);
 }
 
-void Terminal::input()
+void Terminal::handleEvent(const sf::Event& e)
 {
-	mKeyboardInputHandler.handleInput();
+	mKeyboardInputHandler.handleEvent(e);
+}
 
+void Terminal::update()
+{
 	if(mKeyboardInputHandler.isEnterClicked()) {
 		auto& content = mTerminalSharedData->mContent;
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
+
+	// TODO: Refactor this mess
+	mKeyboardInputHandler.update();
 }
 
 void Terminal::pushOutputLine(const OutputLine& line)

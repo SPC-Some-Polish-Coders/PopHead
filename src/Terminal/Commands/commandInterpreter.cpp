@@ -1,5 +1,6 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
@@ -26,6 +27,7 @@ void CommandInterpreter::init()
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
+	mCommandsMap["m"] =			&CommandInterpreter::executeMove;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
 
@@ -123,11 +125,23 @@ void CommandInterpreter::executeExit() const
 
 void CommandInterpreter::executeTeleport() const
 {
-	auto& player = getPlayer();
+	auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f newPosition = getVector2Argument();
 	if(newPosition == mVector2ArgumentError)
 		return;
 	player.setPosition(newPosition);
+}
+
+void CommandInterpreter::executeMove() const
+{
+	auto& player = dynamic_cast<Player&>(getPlayer());
+	const sf::Vector2f moveOffset = getVector2Argument();
+	if (mCommand.find("x") != std::string::npos)
+		player.move(sf::Vector2f(moveOffset.x, 0.f));
+	else if (mCommand.find("y") != std::string::npos)
+		player.move(sf::Vector2f(0.f, moveOffset.y));
+	else
+		player.move(moveOffset);
 }
 
 void CommandInterpreter::executeCurrentPos() const
@@ -139,8 +153,8 @@ void CommandInterpreter::executeCurrentPos() const
 auto CommandInterpreter::getPlayer() const -> GameObject&
 {
 	auto& gameScene = mGameData->getSceneManager().getScene();
-	auto& root = gameScene.getRoot();
-	GameObject& player = root.getChild("player");
+	auto* standingObjects = gameScene.getRoot().getChild("LAYER_standingObjects");
+	GameObject& player = *standingObjects->getChild("player");
 	return player;
 }
 
@@ -256,7 +270,7 @@ void CommandInterpreter::executeView() const
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 {
-	const std::string numbers("1234567890");
+	const std::string numbers("1234567890-");
 
 	if(mCommand.find_first_of(numbers) == std::string::npos)
 		return handleGetVector2ArgumentError();

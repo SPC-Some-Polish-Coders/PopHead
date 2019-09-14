@@ -18,9 +18,7 @@ public:
 
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	virtual void onDeath();
-
-	void dropItem(std::unique_ptr<Item> item);
+	void dropItems();
 
 	void setPosition(sf::Vector2f);
 	void setHp(int hp) { mHp = hp; }

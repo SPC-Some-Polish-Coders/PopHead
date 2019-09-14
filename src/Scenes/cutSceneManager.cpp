@@ -12,11 +12,6 @@ void CutSceneManager::setMapStaringCutScene(std::unique_ptr<CutScene> startingCu
 	mMapStaringCutScene = std::move(startingCutScene);
 }
 
-void CutSceneManager::handleCutSceneInput()
-{
-	mMapStaringCutScene->input();
-}
-
 void CutSceneManager::updateCutScene(const sf::Time delta)
 {
 	mMapStaringCutScene->update(delta);

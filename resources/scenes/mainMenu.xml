@@ -3,5 +3,5 @@
   <gui filename="mainMenu.gui.xml"/>
   <map filename="mainMenuMap.tmx"/>
   <neededResources filename="menu.res.xml"/>
-  <music filename="menu.music.xml"/>
+  <audio filename="menu.audio.xml"/>
 </scenelinks>

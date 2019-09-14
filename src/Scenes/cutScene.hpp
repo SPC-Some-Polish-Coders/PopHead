@@ -10,7 +10,6 @@ class CutScene
 {
 public:
 	CutScene(GameObject& root) :mRoot(root) ,mIsActive(true) {}
-	virtual void input() = 0;
 	virtual void update(const sf::Time delta) = 0;
 	bool isActive() const { return mIsActive; }	
 
