@@ -37,9 +37,12 @@ private:
 	void shootingUpdate(const sf::Time delta);
 	void cameraMovement(sf::Time delta) const;
 	void updateListenerPosition() const;
-	sf::Vector2f getCurrentPlayerDirection();
+
+	sf::Vector2f getCurrentPlayerDirection() const;
+	float getPlayerRotation() const;
 
 private:
+	static const sf::Time melleAttackInterval;
 	sf::Clock mTimeFromLastMeleeAttack;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;

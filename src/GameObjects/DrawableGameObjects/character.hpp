@@ -30,6 +30,7 @@ public:
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
 	sf::FloatRect getGlobalBounds() const override;
+	sf::FloatRect getTextureBounds() const;
 	auto getAnimation() -> Animation& { return mAnimation; }
 	bool isAttackable() const { return mIsAttackable; }
 

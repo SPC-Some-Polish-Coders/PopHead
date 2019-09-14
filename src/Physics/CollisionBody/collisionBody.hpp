@@ -25,6 +25,7 @@ private:
 
 public:
 	auto getPosition() const -> const sf::Vector2f { return Math::getTopLeftCorner(mRect); }
+	sf::Vector2f getFixedPosition() const;
 	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
 	auto getForceVector() const -> const sf::Vector2f { return mForceVector; }
 	auto getPositionOfCenter() const -> sf::Vector2f { return Math::getCenter(mRect); }

@@ -20,6 +20,10 @@ namespace Math
 	sf::Vector2f getBottomLeftCorner(const sf::FloatRect& bounds);
 	sf::Vector2f getBottomRightCorner(const sf::FloatRect& bounds);
 
+	sf::Vector2f getUnitVector(float angle);
+	float degreesToRadians(float angle);
+	float radiansToDegrees(float angle);
+
 	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns);
 
 	bool areTheyOverlapping(const sf::FloatRect& A, const sf::FloatRect& B);

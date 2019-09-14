@@ -35,6 +35,11 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 	mPreviousPosition = getPosition();
 }
 
+sf::Vector2f CollisionBody::getFixedPosition() const
+{
+	return { mRect.left, mRect.top - mRect.height };
+}
+
 void CollisionBody::updatePush(const sf::Time delta)
 {
 	if (mForceVector == sf::Vector2f())
