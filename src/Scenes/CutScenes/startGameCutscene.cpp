@@ -20,6 +20,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mGui(gui)
 	,mGameData(gameData)
 	,mCutsceneTimeInSeconds(0.f)
+	,mWasGuiHidden(false)
 	,mHasStartedToSlowDown(false)
 	,mHasChangedTheMusicToMenuTheme(false)
 	,mWasPlayerCreated(false)
@@ -38,22 +39,28 @@ void StartGameCutScene::update(const sf::Time delta)
 		closeCutScene();
 
 	mCutsceneTimeInSeconds += delta.asSeconds();
+	
+	// HIDE ALL GUI
+	if(!mWasGuiHidden) {
+		auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+		canvas->getWidget("place")->hide();
+		canvas->getWidget("time")->hide();
+		canvas->getWidget("velocity")->hide();
+		canvas->getWidget("speechBubble")->hide();
+		mWasGuiHidden = true;
+	}
 
 	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
-	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
+	
+	if(mCutsceneTimeInSeconds < 23)
+		mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
 	if(mCutsceneTimeInSeconds < 5)
 		car.speedUp();
 
 	// NARRATIVE SUBTITLES
 	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
-	if(mCutsceneTimeInSeconds < 4) {
-		canvas->getWidget("place")->hide();
-		canvas->getWidget("time")->hide();
-		canvas->getWidget("velocity")->hide();
-		canvas->getWidget("speechBubble")->hide();
-	}
-	else if(mCutsceneTimeInSeconds > 4 && mCutsceneTimeInSeconds < 8) {
+	if(mCutsceneTimeInSeconds > 4 && mCutsceneTimeInSeconds < 8) {
 		canvas->getWidget("place")->show();
 	}
 	else if(mCutsceneTimeInSeconds > 8 && mCutsceneTimeInSeconds < 10) {
@@ -134,27 +141,27 @@ void StartGameCutScene::update(const sf::Time delta)
 		animation.changeState("left");
 	}
 
-	if(mCutsceneTimeInSeconds > 37.5 && !mHasChangedMusicToZombieAttackTheme)
+	if(mCutsceneTimeInSeconds > 29.5 && !mHasChangedMusicToZombieAttackTheme)
 		mMusicPlayer.play("music/zombieAttack.ogg");
 
 	// SAY FUCK
-	if(mCutsceneTimeInSeconds > 40 && mCutsceneTimeInSeconds < 43) {
+	if(mCutsceneTimeInSeconds > 30 && mCutsceneTimeInSeconds < 33) {
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->show();
 	}
-	else if(mCutsceneTimeInSeconds > 43 && mCutsceneTimeInSeconds < 44)
+	else if(mCutsceneTimeInSeconds > 33 && mCutsceneTimeInSeconds < 34)
 		speechBubble->hide();
 
 	// SPAWN ZOMBIES AND EXPAND CAMERA VIEW
-	if(mCutsceneTimeInSeconds > 43 && !mWereZombieSpawned) {
-		createZombie({5560, 300});
+	if(mCutsceneTimeInSeconds > 34 && !mWereZombieSpawned) {
+		createZombie({5560, 340});
 		createZombie({5525, 380});
 		createZombie({5530, 420});
 		mWereZombieSpawned = true;
 		mCamera.setSize({640, 480});
 	}
 
-	if(mCutsceneTimeInSeconds > 45)
+	if(mCutsceneTimeInSeconds > 36)
 		closeCutScene();
 }
 

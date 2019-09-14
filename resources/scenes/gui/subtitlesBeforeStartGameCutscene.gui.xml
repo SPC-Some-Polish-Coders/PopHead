@@ -2,8 +2,14 @@
 <gui>
     <interface name="mainMenu">
         <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		        <textWidget name="storyButton" origin="0.5" position="0.01" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="Some world situation"></textWidget>
-		        <textWidget name="storyButton" origin="0.5" position="0.01, 0.2" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="explanation will be here"></textWidget>
+          <textWidget name="story1" origin="0.5" position="0.01, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="After the outbreak of evil"></textWidget>
+		      <textWidget name="story2" origin="0.5" position="0.01, 0.2" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="a secret agent is sent to a place "></textWidget>
+		      <textWidget name="story3" origin="0.5" position="0.01, 0.3" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="set near a former military base."></textWidget>
+		      <textWidget name="story4" origin="0.5" position="0.01, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="His mission is to infiltrate the town"></textWidget>
+          <textWidget name="story5" origin="0.5" position="0.01, 0.5" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="and inform the government"></textWidget>
+          <textWidget name="story5" origin="0.5" position="0.01, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="about everything he comes across."></textWidget>
+		      
+          <textWidget name="skip" origin="0.5" position="0.3, 0.8" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="rgb(180, 225, 0)" text="PRESS SPACE TO SKIP"></textWidget>
         </widget>
     </interface>
 </gui>

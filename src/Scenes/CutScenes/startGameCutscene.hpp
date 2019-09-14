@@ -31,6 +31,7 @@ private:
 	GUI& mGui;
 	GameData* const mGameData;
 	float mCutsceneTimeInSeconds;
+	bool mWasGuiHidden;
 	bool mHasStartedToSlowDown;
 	bool mHasChangedTheMusicToMenuTheme;
 	bool mWasPlayerCreated;

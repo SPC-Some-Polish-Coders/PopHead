@@ -14,7 +14,6 @@ public:
 	void update(sf::Time delta) override;
 
 private:
-	sf::Time mTimeFromStartOfCutscene;
 	SceneManager& mSceneManager;
 };
 
