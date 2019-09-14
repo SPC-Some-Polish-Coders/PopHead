@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="2">
+ <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
+ </tileset>
+ <objectgroup id="2" name="gameObjects">
+  <object id="1" type="CutScene" x="6.33333" y="7.66667">
+   <properties>
+    <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
+    <property name="name" value="subtitlesBeforeStartGameCutscene"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

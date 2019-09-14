@@ -10,12 +10,14 @@
 #include "DrawableGameObjects/car.hpp"
 #include "DrawableGameObjects/gate.hpp"
 #include "DrawableGameObjects/lever.hpp"
+#include "DrawableGameObjects/bilbord.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
 #include "gameObject.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
+#include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
@@ -81,6 +83,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "BulletItem")) loadBulletItem(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 }
@@ -250,7 +253,11 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 
 	const std::string name = getProperty(cutSceneNode, "name").toString();
 
-	if(name == "startGameCutScene") {
+	if(name == "subtitlesBeforeStartGameCutscene") {
+		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(mRoot, mGameData->getSceneManager());
+		mCutSceneManager.setMapStaringCutScene(std::move(subtitlesBeforeStartGameCutscene));
+	}
+	else if(name == "startGameCutScene") {
 		auto startGameCutScene = std::make_unique<StartGameCutScene>(
 			mRoot,
 			mGameData->getRenderer().getCamera(),
@@ -276,6 +283,18 @@ void TiledGameObjectsParser::loadBulletItem(const Xml& bulletItemNode) const
 	bulletItem->setPosition(getPositionAttribute(bulletItemNode));
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));
+}
+
+void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
+{
+	auto& textures = mGameData->getTextures();
+	auto bilbord = std::make_unique<Bilbord>(
+		textures.get("textures/others/standingBilbord.png"),
+		textures.get("textures/others/lyingBilbord.png")
+	);
+	bilbord->setPosition(getPositionAttribute(bilbordNode));
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->addChild(std::move(bilbord));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

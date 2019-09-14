@@ -16,7 +16,7 @@ workspace "PopHead"
     }
 
 project "PopHead"
-    location (root_dir .. "VS_Projects")
+    location (root_dir)
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -91,7 +91,7 @@ project "PopHead"
     filter{}
 
 project "Tests"
-    location (root_dir .. "VS_Projects")
+    location (root_dir)
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
