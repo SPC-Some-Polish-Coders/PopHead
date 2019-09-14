@@ -38,6 +38,14 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(sf::FloatRec
 	return kinematicBody;
 }
 
+CollisionBody& PhysicsEngine::createFullKinematicBodyAndGetTheReference(sf::FloatRect rect, const float mass)
+{
+	mKinematicBodies.emplace_back(rect, mass);
+	auto& kinematicBody = mKinematicBodies.back();
+	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
+	return kinematicBody;
+}
+
 void PhysicsEngine::removeStaticBody(const CollisionBody& bodyToDelete)
 {
 	mStaticBodies.erase(CollisionBody(bodyToDelete));

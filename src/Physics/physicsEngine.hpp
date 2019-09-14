@@ -19,6 +19,8 @@ public:
 
     const CollisionBody& createStaticBodyAndGetTheReference(const sf::FloatRect rect);
 	CollisionBody& createKinematicBodyAndGetTheReference(sf::FloatRect rect, const float mass);
+	CollisionBody& createFullKinematicBodyAndGetTheReference(sf::FloatRect rect, const float mass);
+
 	void removeStaticBody(const CollisionBody&);
 	void removeKinematicBody(const CollisionBody&);
     void clear() noexcept;
