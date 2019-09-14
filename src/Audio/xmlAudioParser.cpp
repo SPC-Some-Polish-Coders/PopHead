@@ -14,26 +14,19 @@ void XmlAudioParser::parseFile(GameData* const gameData, const std::string& file
 	Xml audioFile;
 	audioFile.loadFromFile(filePath);
 	const Xml audioNode = audioFile.getChild("audio");
-	parseVolume(audioNode);
+	parseSoundMute(audioNode);
 	parseMusicTheme(audioNode);
 }
 
-void XmlAudioParser::parseVolume(const Xml& audioNode)
+void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 {
-	const std::string defaultVolume = "default";
-	const Xml volumeNode = audioNode.getChild("volume");
+	const Xml volumeNode = audioNode.getChild("mute");
+	bool soundMute = volumeNode.getAttribute("soundmute").toBool();
 
-	std::string soundVolume = volumeNode.getAttribute("soundvolume").toString();
-	if(soundVolume == defaultVolume)
-		mGameData->getSoundPlayer().setVolume(mGameData->getSoundPlayer().getDefaultVolume());
+	if(soundMute)
+		mGameData->getSoundPlayer().setSceneMute(true);
 	else
-		mGameData->getSoundPlayer().setVolume(std::stof(soundVolume));
-
-	std::string musicVolume = volumeNode.getAttribute("musicvolume").toString();
-	if (musicVolume == defaultVolume)
-		mGameData->getMusicPlayer().setVolume(mGameData->getMusicPlayer().getDefaultVolume());
-	else
-		mGameData->getMusicPlayer().setVolume(std::stof(musicVolume));
+		mGameData->getSoundPlayer().setSceneMute(false);
 }
 
 void XmlAudioParser::parseMusicTheme(const Xml& audioNode)

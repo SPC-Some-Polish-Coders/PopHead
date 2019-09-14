@@ -20,14 +20,12 @@ public:
 	bool isMuted() { return mIsMuted; }
 	void setVolume(const float volume);
 	float getVolume() { return mVolume; }
-	float getDefaultVolume() { return mDefaultVolume; }
 
 private:
 	MusicDataHolder mMusicDataHolder;
 	sf::Music mMusic;
 	std::string mCurrentThemeFilePath;
 	float mVolume;
-	float mDefaultVolume;
 	bool mIsMuted;
 
 };
