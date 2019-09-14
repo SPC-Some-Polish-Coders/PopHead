@@ -147,13 +147,17 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection, float attackRotatio
 {
 	mGameData->getSoundPlayer().playAmbientSound("sounds/swordAttack.wav");
 	setOrigin(0.f, 12.f);
-	setRotation(getStartAttackRotation(attackDirection));
-	sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
-	setPosition(rightHandLocalPosition);
+	//setRotation(getStartAttackRotation(attackDirection));
+	setRotation(attackRotation + 45.f + mRotationRange / 2.f);
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 
 	auto playerRect = mParent->getGlobalBounds();
 	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
+
+	//sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
+	sf::Vector2f centerOfParentCollisionBody(playerRect.width / 2.f, playerRect.height / 2.f);
+	centerOfParentCollisionBody = Math::getTopLeftCorner(playerRect) - mParent->getPosition() + centerOfParentCollisionBody;
+	setPosition(centerOfParentCollisionBody);
 
 	Swing swing(*standingObjects, centerOfPlayer, mDamage, mRange, mRotationRange, attackRotation);
 	mShouldBeDrawn = true;
@@ -207,7 +211,7 @@ void MeleeWeapon::updateCurrent(const sf::Time delta)
 {
 	if(mShouldBeDrawn) {
 		if(mRotationFromStart < mRotationRange) {
-			rotate(3.f);
+			rotate(-3.f);
 			mRotationFromStart += 3.f;
 		}
 		else {
