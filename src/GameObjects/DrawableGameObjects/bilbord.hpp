@@ -11,6 +11,8 @@ public:
 
 	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
 
+	void fallOver();
+
 private:
 	sf::Sprite mSprite;
 	const sf::Texture& mStayingBilbordTexture;

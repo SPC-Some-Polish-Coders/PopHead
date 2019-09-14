@@ -15,4 +15,10 @@ void Bilbord::drawCurrent(sf::RenderTarget& renderTarget, const sf::RenderStates
 	renderTarget.draw(mSprite, states);
 }
 
+void Bilbord::fallOver()
+{
+	move(0.f, 40.f);
+	mSprite.setTexture(mLyingBilbordTexture);
+}
+
 }  

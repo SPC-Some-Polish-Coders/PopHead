@@ -6,6 +6,7 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
+#include "GameObjects/DrawableGameObjects/bilbord.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -22,6 +23,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mHasChangedTheMusicToMenuTheme(false)
 	,mWasPlayerCreated(false)
 	,mHasPlayerTurnedToNpc(false)
+	,mHasBilbordFallenOver(false)
 	,mWereZombieSpawned(false)
 	,mHasChangedMusicToZombieAttackTheme(false)
 {
@@ -50,7 +52,7 @@ void StartGameCutScene::update(const sf::Time delta)
 		mHasStartedToSlowDown = true;
 	}
 
-	if(car.getPosition().x > 5000)
+	if(car.getPosition().x > 4975)
 		car.slowDown();
 
 	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusicToMenuTheme) {
@@ -58,30 +60,60 @@ void StartGameCutScene::update(const sf::Time delta)
 		mHasChangedTheMusicToMenuTheme = true;
 	}
 	
-	if(cutsceneTimeInSeconds > 23 && !mWasPlayerCreated)
-		createPlayer();
-
-	if(cutsceneTimeInSeconds > 24 && !mHasPlayerTurnedToNpc) {
-		rotatePlayer();
-		mCamera.setSize({320, 240});
+	if(cutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
+		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
+		playerNpc->setPosition({5650, 380});
+		mRoot.addChild(std::move(playerNpc));
+		mWasPlayerCreated = true;
 	}
 
-	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 30)
-		updateSpeech(cutsceneTimeInSeconds);
+	if(cutsceneTimeInSeconds > 23.7 && !mHasPlayerTurnedToNpc) {
+		mCamera.setCenter({5735, 395});
+		mCamera.setSize({320, 240});
+		auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
+		playerNpc.setAnimationState("right");
+		mHasPlayerTurnedToNpc = true;
+	}
+
+	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+	auto speechBubble = canvas->getWidget("speechBubble");
+
+	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 29) {
+		speechBubble->show();
+		speechBubble->getWidget("speech2")->hide();
+		speechBubble->getWidget("speech3")->hide();
+	}
+	else if(cutsceneTimeInSeconds > 29 && cutsceneTimeInSeconds < 31) {
+		speechBubble->getWidget("speech1")->hide();
+		speechBubble->getWidget("speech1b")->hide();
+		speechBubble->getWidget("speech2")->show();
+	}
 
 	if(cutsceneTimeInSeconds > 27.5) {
 		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("crawlingNpc"));
 		crawlingNpc->die();
 	}
+	
+	if(cutsceneTimeInSeconds > 28 && !mHasBilbordFallenOver) {
+		auto* bilbord = dynamic_cast<Bilbord*>(mRoot.getChild("LAYER_standingObjects")->getChild("bilbord"));
+		bilbord->fallOver();
+		mHasBilbordFallenOver = true;
+	}
 
-	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
-		rotateAround(cutsceneTimeInSeconds);
+	if(cutsceneTimeInSeconds > 29) {
+		auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
+		auto& animation = playerNpc.getAnimation();
+		animation.changeState("left");
+	}
+
+	/*if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
+		rotateAround(cutsceneTimeInSeconds);*/
 
 	if(cutsceneTimeInSeconds > 37.5 && !mHasChangedMusicToZombieAttackTheme)
 		mMusicPlayer.play("music/zombieAttack.ogg");
 
-	if(cutsceneTimeInSeconds > 39)
-		lookSouth();
+	//if(cutsceneTimeInSeconds > 39)
+	//	lookSouth();
 
 	if(cutsceneTimeInSeconds > 40)
 		sayFuck(cutsceneTimeInSeconds);
@@ -129,65 +161,34 @@ void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSecon
 	}
 }
 
-void StartGameCutScene::createPlayer()
-{
-	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-	playerNpc->setPosition({5640, 400});
-	mRoot.addChild(std::move(playerNpc));
-	mWasPlayerCreated = true;
-}
-
-void StartGameCutScene::rotatePlayer()
-{
-	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
-	playerNpc.setAnimationState("rightUp");
-	mHasPlayerTurnedToNpc = true;
-}
-
-void StartGameCutScene::updateSpeech(const float cutsceneTimeInSeconds)
-{
-	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
-	auto speechBubble = canvas->getWidget("speechBubble");
-
-	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 29) {
-		speechBubble->show();
-		speechBubble->getWidget("speech2")->hide();
-		speechBubble->getWidget("speech3")->hide();
-	}
-	else if(cutsceneTimeInSeconds > 29 && cutsceneTimeInSeconds < 31) {
-		speechBubble->getWidget("speech1")->hide();
-		speechBubble->getWidget("speech1b")->hide();
-		speechBubble->getWidget("speech2")->show();
-	}
-}
-
-void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
-{
-	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
-	auto& animation = playerNpc.getAnimation();
-
-	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
-		animation.changeState("right");
-	else if(cutsceneTimeInSeconds > 33 && cutsceneTimeInSeconds < 34)
-		animation.changeState("down");
-	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 35)
-		animation.changeState("left");
-	else if(cutsceneTimeInSeconds > 35 && cutsceneTimeInSeconds < 36)
-		animation.changeState("leftUp");
-	else if(cutsceneTimeInSeconds > 36 && cutsceneTimeInSeconds < 37)
-		animation.changeState("up");
-	else if(cutsceneTimeInSeconds > 37 && cutsceneTimeInSeconds < 38)
-		animation.changeState("rightUp");
-	else if(cutsceneTimeInSeconds > 38 && cutsceneTimeInSeconds < 39)
-		animation.changeState("right");
-}
-
-void StartGameCutScene::lookSouth()
-{
-	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
-	auto& animation = playerNpc.getAnimation();
-	animation.changeState("down");
-}
+//
+//void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
+//{
+//	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
+//	auto& animation = playerNpc.getAnimation();
+//
+//	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
+//		animation.changeState("right");
+//	else if(cutsceneTimeInSeconds > 33 && cutsceneTimeInSeconds < 34)
+//		animation.changeState("down");
+//	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 35)
+//		animation.changeState("left");
+//	else if(cutsceneTimeInSeconds > 35 && cutsceneTimeInSeconds < 36)
+//		animation.changeState("leftUp");
+//	else if(cutsceneTimeInSeconds > 36 && cutsceneTimeInSeconds < 37)
+//		animation.changeState("up");
+//	else if(cutsceneTimeInSeconds > 37 && cutsceneTimeInSeconds < 38)
+//		animation.changeState("rightUp");
+//	else if(cutsceneTimeInSeconds > 38 && cutsceneTimeInSeconds < 39)
+//		animation.changeState("right");
+//}
+//
+//void StartGameCutScene::lookSouth()
+//{
+//	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
+//	auto& animation = playerNpc.getAnimation();
+//	animation.changeState("down");
+//}
 
 void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 {
@@ -204,7 +205,9 @@ void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
 
 void StartGameCutScene::spawnZombies()
 {
-	createZombie({5670, 270});
+	createZombie({5560, 300});
+	createZombie({5525, 380});
+	createZombie({5530, 420});
 }
 
 void StartGameCutScene::createZombie(const sf::Vector2f position)

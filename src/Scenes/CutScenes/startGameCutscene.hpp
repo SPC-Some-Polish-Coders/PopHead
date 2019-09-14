@@ -22,11 +22,7 @@ public:
 
 private:
 	void updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car);
-	void createPlayer();
-	void rotatePlayer();
 	void updateSpeech(const float cutsceneTimeInSeconds);
-	void rotateAround(const float cutsceneTimeInSeconds);
-	void lookSouth();
 	void sayFuck(const float cutsceneTimeInSeconds);
 	void spawnZombies();
 	void createZombie(const sf::Vector2f position);
@@ -43,6 +39,7 @@ private:
 	bool mHasChangedTheMusicToMenuTheme;
 	bool mWasPlayerCreated;
 	bool mHasPlayerTurnedToNpc;
+	bool mHasBilbordFallenOver;
 	bool mWereZombieSpawned;
 	bool mHasChangedMusicToZombieAttackTheme;
 };
