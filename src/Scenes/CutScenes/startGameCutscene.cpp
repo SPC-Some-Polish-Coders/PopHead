@@ -19,6 +19,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mMusicPlayer(musicPlayer)
 	,mGui(gui)
 	,mGameData(gameData)
+	,mCutsceneTimeInSeconds(0.f)
 	,mHasStartedToSlowDown(false)
 	,mHasChangedTheMusicToMenuTheme(false)
 	,mWasPlayerCreated(false)
@@ -36,178 +37,125 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		closeCutScene();
 
-	const float cutsceneTimeInSeconds = mClock.getElapsedTime().asSeconds();
+	mCutsceneTimeInSeconds += delta.asSeconds();
 
 	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
 	mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
 
-	if(cutsceneTimeInSeconds < 5)
+	if(mCutsceneTimeInSeconds < 5)
 		car.speedUp();
 
-	if(cutsceneTimeInSeconds < 23)
-		updateNarrativeSubtitles(cutsceneTimeInSeconds, car);
+	// NARRATIVE SUBTITLES
+	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+	if(mCutsceneTimeInSeconds < 4) {
+		canvas->getWidget("place")->hide();
+		canvas->getWidget("time")->hide();
+		canvas->getWidget("velocity")->hide();
+		canvas->getWidget("speechBubble")->hide();
+	}
+	else if(mCutsceneTimeInSeconds > 4 && mCutsceneTimeInSeconds < 8) {
+		canvas->getWidget("place")->show();
+	}
+	else if(mCutsceneTimeInSeconds > 8 && mCutsceneTimeInSeconds < 10) {
+		canvas->getWidget("place")->hide();
+	}
+	else if(mCutsceneTimeInSeconds > 10 && mCutsceneTimeInSeconds < 15) {
+		canvas->getWidget("time")->show();
+	}
+	else if(mCutsceneTimeInSeconds > 15 && mCutsceneTimeInSeconds < 17) {
+		canvas->getWidget("time")->hide();
+	}
+	else if(mCutsceneTimeInSeconds > 17 && mCutsceneTimeInSeconds < 22) {
+		auto velocityWidget = dynamic_cast<TextWidget*>(canvas->getWidget("velocity"));
+		velocityWidget->show();
+		int velocity = static_cast<int>(car.getVelocity() / 4.7);
+		velocityWidget->setString(std::to_string(velocity) + " MPH");
+	}
+	else if(mCutsceneTimeInSeconds > 22 && mCutsceneTimeInSeconds < 24.5) {
+		canvas->getWidget("velocity")->hide();
+	}
 
+	// CAR STARTS TO SLOW DOWN
 	if(car.getPosition().x > 4965 && !mHasStartedToSlowDown) {
 		mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
 		mHasStartedToSlowDown = true;
 	}
-
 	if(car.getPosition().x > 4975)
 		car.slowDown();
-
-	if(cutsceneTimeInSeconds > 19 && !mHasChangedTheMusicToMenuTheme) {
+	if(mCutsceneTimeInSeconds > 19 && !mHasChangedTheMusicToMenuTheme) {
 		mMusicPlayer.play("music/Menu.ogg");
 		mHasChangedTheMusicToMenuTheme = true;
 	}
-	
-	if(cutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
+
+	// PLAYER LEAVES CAR
+	if(mCutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
 		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
 		playerNpc->setPosition({5650, 380});
 		mRoot.addChild(std::move(playerNpc));
 		mWasPlayerCreated = true;
 	}
 
-	if(cutsceneTimeInSeconds > 23.7 && !mHasPlayerTurnedToNpc) {
-		mCamera.setCenter({5735, 395});
+	// CAMERA VIEW BECOMES SMALLER
+	if(mCutsceneTimeInSeconds > 23.7 && !mHasPlayerTurnedToNpc) {
 		mCamera.setSize({320, 240});
+		mCamera.setCenter({5745, 395});
 		auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 		playerNpc.setAnimationState("right");
 		mHasPlayerTurnedToNpc = true;
 	}
 
-	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
+	// PLAYER TALKS TO CRAWLING NPC, CRAWLING NPC DIES
 	auto speechBubble = canvas->getWidget("speechBubble");
 
-	if(cutsceneTimeInSeconds > 25 && cutsceneTimeInSeconds < 29) {
+	if(mCutsceneTimeInSeconds > 25 && mCutsceneTimeInSeconds < 27) {
 		speechBubble->show();
 		speechBubble->getWidget("speech2")->hide();
 		speechBubble->getWidget("speech3")->hide();
 	}
-	else if(cutsceneTimeInSeconds > 29 && cutsceneTimeInSeconds < 31) {
+	else if(mCutsceneTimeInSeconds > 27 && mCutsceneTimeInSeconds < 29) {
 		speechBubble->getWidget("speech1")->hide();
 		speechBubble->getWidget("speech1b")->hide();
 		speechBubble->getWidget("speech2")->show();
 	}
-
-	if(cutsceneTimeInSeconds > 27.5) {
+	if(mCutsceneTimeInSeconds > 27.5) {
 		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("crawlingNpc"));
 		crawlingNpc->die();
 	}
 	
-	if(cutsceneTimeInSeconds > 28 && !mHasBilbordFallenOver) {
+	// BILBORD FALLS OVER
+	if(mCutsceneTimeInSeconds > 28 && !mHasBilbordFallenOver) {
 		auto* bilbord = dynamic_cast<Bilbord*>(mRoot.getChild("LAYER_standingObjects")->getChild("bilbord"));
 		bilbord->fallOver();
 		mHasBilbordFallenOver = true;
 	}
-
-	if(cutsceneTimeInSeconds > 29) {
+	if(mCutsceneTimeInSeconds > 29) {
 		auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 		auto& animation = playerNpc.getAnimation();
 		animation.changeState("left");
 	}
 
-	/*if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 39)
-		rotateAround(cutsceneTimeInSeconds);*/
-
-	if(cutsceneTimeInSeconds > 37.5 && !mHasChangedMusicToZombieAttackTheme)
+	if(mCutsceneTimeInSeconds > 37.5 && !mHasChangedMusicToZombieAttackTheme)
 		mMusicPlayer.play("music/zombieAttack.ogg");
 
-	//if(cutsceneTimeInSeconds > 39)
-	//	lookSouth();
+	// SAY FUCK
+	if(mCutsceneTimeInSeconds > 40 && mCutsceneTimeInSeconds < 43) {
+		speechBubble->getWidget("speech2")->hide();
+		speechBubble->getWidget("speech3")->show();
+	}
+	else if(mCutsceneTimeInSeconds > 43 && mCutsceneTimeInSeconds < 44)
+		speechBubble->hide();
 
-	if(cutsceneTimeInSeconds > 40)
-		sayFuck(cutsceneTimeInSeconds);
-
-	if(cutsceneTimeInSeconds > 43 && !mWereZombieSpawned) {
-		spawnZombies();
+	// SPAWN ZOMBIES AND EXPAND CAMERA VIEW
+	if(mCutsceneTimeInSeconds > 43 && !mWereZombieSpawned) {
+		createZombie({5560, 300});
+		createZombie({5525, 380});
+		createZombie({5530, 420});
 		mWereZombieSpawned = true;
 		mCamera.setSize({640, 480});
 	}
 
-	if(cutsceneTimeInSeconds > 45)
+	if(mCutsceneTimeInSeconds > 45)
 		closeCutScene();
-}
-
-void StartGameCutScene::updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car)
-{
-	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
-
-	if(cutsceneTimeInSeconds < 4) {
-		canvas->getWidget("place")->hide();
-		canvas->getWidget("time")->hide();
-		canvas->getWidget("velocity")->hide();
-		canvas->getWidget("speechBubble")->hide();
-	}
-	else if(cutsceneTimeInSeconds > 4 && cutsceneTimeInSeconds < 8) {
-		canvas->getWidget("place")->show();
-	}
-	else if(cutsceneTimeInSeconds > 8 && cutsceneTimeInSeconds < 10) {
-		canvas->getWidget("place")->hide();
-	}
-	else if(cutsceneTimeInSeconds > 10 && cutsceneTimeInSeconds < 15) {
-		canvas->getWidget("time")->show();
-	}
-	else if(cutsceneTimeInSeconds > 15 && cutsceneTimeInSeconds < 17) {
-		canvas->getWidget("time")->hide();
-	}
-	else if(cutsceneTimeInSeconds > 17 && cutsceneTimeInSeconds < 22) {
-		auto velocityWidget = dynamic_cast<TextWidget*>(canvas->getWidget("velocity"));
-		velocityWidget->show();
-		int velocity = static_cast<int>(car.getVelocity() / 4.7);
-		velocityWidget->setString(std::to_string(velocity) + " MPH");
-	}
-	else if(cutsceneTimeInSeconds > 22 && cutsceneTimeInSeconds < 24.5) {
-		canvas->getWidget("velocity")->hide();
-	}
-}
-
-//
-//void StartGameCutScene::rotateAround(const float cutsceneTimeInSeconds)
-//{
-//	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
-//	auto& animation = playerNpc.getAnimation();
-//
-//	if(cutsceneTimeInSeconds > 32 && cutsceneTimeInSeconds < 33)
-//		animation.changeState("right");
-//	else if(cutsceneTimeInSeconds > 33 && cutsceneTimeInSeconds < 34)
-//		animation.changeState("down");
-//	else if(cutsceneTimeInSeconds > 34 && cutsceneTimeInSeconds < 35)
-//		animation.changeState("left");
-//	else if(cutsceneTimeInSeconds > 35 && cutsceneTimeInSeconds < 36)
-//		animation.changeState("leftUp");
-//	else if(cutsceneTimeInSeconds > 36 && cutsceneTimeInSeconds < 37)
-//		animation.changeState("up");
-//	else if(cutsceneTimeInSeconds > 37 && cutsceneTimeInSeconds < 38)
-//		animation.changeState("rightUp");
-//	else if(cutsceneTimeInSeconds > 38 && cutsceneTimeInSeconds < 39)
-//		animation.changeState("right");
-//}
-//
-//void StartGameCutScene::lookSouth()
-//{
-//	auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
-//	auto& animation = playerNpc.getAnimation();
-//	animation.changeState("down");
-//}
-
-void StartGameCutScene::sayFuck(const float cutsceneTimeInSeconds)
-{
-	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
-	auto speechBubble = canvas->getWidget("speechBubble");
-
-	if(cutsceneTimeInSeconds > 40 && cutsceneTimeInSeconds < 43) {
-		speechBubble->getWidget("speech2")->hide();
-		speechBubble->getWidget("speech3")->show();
-	}
-	else if(cutsceneTimeInSeconds > 43 && cutsceneTimeInSeconds < 44)
-		speechBubble->hide();
-}
-
-void StartGameCutScene::spawnZombies()
-{
-	createZombie({5560, 300});
-	createZombie({5525, 380});
-	createZombie({5530, 420});
 }
 
 void StartGameCutScene::createZombie(const sf::Vector2f position)

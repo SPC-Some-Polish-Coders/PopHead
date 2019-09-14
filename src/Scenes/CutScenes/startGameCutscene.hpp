@@ -21,10 +21,6 @@ public:
 	void update(const sf::Time delta) override;
 
 private:
-	void updateNarrativeSubtitles(const float cutsceneTimeInSeconds, Car& car);
-	void updateSpeech(const float cutsceneTimeInSeconds);
-	void sayFuck(const float cutsceneTimeInSeconds);
-	void spawnZombies();
 	void createZombie(const sf::Vector2f position);
 	void closeCutScene();
 
@@ -34,7 +30,7 @@ private:
 	MusicPlayer& mMusicPlayer;
 	GUI& mGui;
 	GameData* const mGameData;
-	sf::Clock mClock;
+	float mCutsceneTimeInSeconds;
 	bool mHasStartedToSlowDown;
 	bool mHasChangedTheMusicToMenuTheme;
 	bool mWasPlayerCreated;
