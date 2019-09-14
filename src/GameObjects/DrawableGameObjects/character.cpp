@@ -58,6 +58,12 @@ sf::FloatRect Character::getGlobalBounds() const
 	return mCollisionBody.getRect();
 }
 
+sf::FloatRect Character::getTextureBounds() const
+{
+	auto transform = getTransform();
+	return transform.transformRect(mSprite.getLocalBounds());
+}
+
 void Character::pushCharacter(const sf::Vector2f& pushVector)
 {
 	mCollisionBody.setForceVector(pushVector);
