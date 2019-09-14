@@ -29,6 +29,8 @@ void SoundPlayer::loadEverySound()
 void SoundPlayer::playAmbientSound(const std::string& filePath)
 {
 	removeStoppedSounds();
+	if (mSceneMute)
+		return;
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
 	playSound(filePath, mVolume * soundData.mVolumeMultiplier, soundData.mLoop);
@@ -37,6 +39,8 @@ void SoundPlayer::playAmbientSound(const std::string& filePath)
 void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition)
 {
 	removeStoppedSounds();
+	if (mSceneMute)
+		return;
 
 	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
 	const float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
@@ -60,7 +64,12 @@ void SoundPlayer::removeStoppedSounds()
 	});
 }
 
-void SoundPlayer::setMuted(bool mute)
+void SoundPlayer::setSceneMute(const bool mute)
+{
+	mSceneMute = mute;
+}
+
+void SoundPlayer::setMuted(const bool mute)
 {
 	static float previousVolume = mVolume;
 	setVolume(mute ? 0.f : previousVolume);

@@ -23,8 +23,8 @@ public:
 	void setEnabled(bool enabled) { mEnabled = enabled; }
 
 	bool isActionPressed(const std::string& action);
-	bool isActionJustPressed(const std::string& action);
-	bool isActionJustReleased(const std::string& action);
+	/*bool isActionJustPressed(const std::string& action);
+	bool isActionJustReleased(const std::string& action);*/
 
 private:
 	std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;

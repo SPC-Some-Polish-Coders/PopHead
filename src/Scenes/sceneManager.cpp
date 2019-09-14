@@ -1,15 +1,13 @@
 #include "sceneManager.hpp"
-#include "scene.hpp"
 #include "sceneParser.hpp"
-#include "Logs/logs.hpp"
-#include "gameData.hpp"
-
+#include "scene.hpp"
 #include "Gui/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
 #include "Resources/xmlResourceParser.hpp"
-#include "Audio/Music/xmlAudioParser.hpp"
+#include "Audio/xmlAudioParser.hpp"
 #include "GameObjects/tiledGameObjectsParser.hpp"
-//#include "GameObjects/xmlGameObjectsParser.hpp"
+#include "Logs/logs.hpp"
+#include "gameData.hpp"
 
 namespace ph {
 
@@ -54,10 +52,9 @@ void SceneManager::replaceAction()
 	mIsReplacing = false;
 }
 
-void SceneManager::input()
+void SceneManager::handleEvent(const sf::Event& e)
 {
-	if(mScene != nullptr)
-		mScene->input();
+	mScene->handleEvent(e);
 }
 
 void SceneManager::update(sf::Time delta)

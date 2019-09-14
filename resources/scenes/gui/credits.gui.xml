@@ -12,7 +12,7 @@
             <textWidget name="Thief"         origin="0.5" position="0.05, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="'Thief'"/>
 
             <textWidget name="GameLevelDesigners" origin="0.5" position="0.05, 0.7"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="15" text="Game/Level designer:"/>
-            <textWidget name="Prezes"             origin="0.5" position="0.05, 0.75" fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Piotr 'Prezes'"/>
+            <textWidget name="Prezes"             origin="0.5" position="0.05, 0.75" fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Piotr 'Prezes' Brzostowski"/>
 		        
 		        <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.5, 0.25" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Music and Sound creator:"/>
             <textWidget name="'Thief'"              origin="0.5" position="0.5, 0.3"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka"/>

@@ -3,5 +3,5 @@
   <gui filename="credits.gui.xml"/>
   <map filename="creditsMap.tmx"/>
   <neededResources filename="menu.res.xml"/>
-  <music filename="menu.music.xml"/>
+  <audio filename="menu.audio.xml"/>
 </scenelinks>

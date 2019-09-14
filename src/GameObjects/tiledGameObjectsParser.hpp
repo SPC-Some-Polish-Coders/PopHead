@@ -38,6 +38,7 @@ private:
 	void loadCutScene(const Xml& cutSceneNode) const;
 	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
 	void loadBulletItem(const Xml& bulletItemNode) const;
+	void loadBilbord(const Xml& bilbordNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;

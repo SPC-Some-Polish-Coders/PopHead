@@ -57,15 +57,14 @@ namespace
 	);
 }
 
+const sf::Time Player::melleAttackInterval = sf::seconds(0.5f);
+
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
 	,mLastMotion()
 	,mNumberOfOwnedBullets(200u)
-	,mIsShooting(false) 
-	,mIsAttacking(false)
 	,mIsSlownDown(false)
-	,mWasGamePauseButtonClicked(false)
 	,mPickRadius(10.f)
 {
 	mAnimation.animate(mSprite);
@@ -84,47 +83,38 @@ Player::Player(GameData* gameData)
 		equipement->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
-void Player::input()
+void Player::handleEventOnCurrent(const sf::Event& e)
 {
-	movementInput();
-	gunInput();
-	meleeWeaponInput();
-	pauseMenuInput();
-}
+	if(e.type == sf::Event::KeyPressed)
+	{
+		if(e.key.code == sf::Keyboard::Escape)
+		{
+			bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
+			if(isGamePaused) {
+				mGameData->getGui().hideInterface("pauseScreen");
+				mGameData->getSceneManager().getScene().setPause(false);
+			}
+			else {
+				mGameData->getGui().showInterface("pauseScreen");
+				mGameData->getSceneManager().getScene().setPause(true);
+			}
+		}
 
-void Player::movementInput()
-{
-	if (mGameData->getInput().getAction().isActionPressed("movingLeft"))
-		mMotion.isMovingLeft = true;
-	if (mGameData->getInput().getAction().isActionPressed("movingRight"))
-		mMotion.isMovingRight = true;
-	if (mGameData->getInput().getAction().isActionPressed("movingUp"))
-		mMotion.isMovingUp = true;
-	if (mGameData->getInput().getAction().isActionPressed("movingDown"))
-		mMotion.isMovingDown = true;
-}
+		// TODO: Change it to action event
+		if(e.key.code == sf::Keyboard::Enter && mNumberOfOwnedBullets > 0) {
+			dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->destroyItem("Bullet");
+			auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+			gun->shoot();
+		}
 
-void Player::gunInput()
-{
-	if(mGameData->getInput().getAction().isActionJustPressed("attack"))
-		mIsShooting = true;
-}
-
-void Player::meleeWeaponInput()
-{
-	const sf::Time meleeAttackInterval = sf::seconds(0.5f);
-	auto timeFromLastAttack = mTimeFromLastMeleeAttack.getElapsedTime();
-
-	if(mGameData->getInput().getAction().isActionJustPressed("meleeAttack") && timeFromLastAttack >= meleeAttackInterval)
-		mIsAttacking = true;
-}
-
-void Player::pauseMenuInput()
-{
-	// TODO: Move this code to more appropriate place.
-
-	if(mGameData->getInput().getKeyboard().isKeyJustPressed(sf::Keyboard::Escape))
-		mWasGamePauseButtonClicked = true;
+		// TODO: Change it to action event
+		if(e.key.code == sf::Keyboard::BackSlash && mTimeFromLastMeleeAttack.getElapsedTime() >= melleAttackInterval) {
+			mTimeFromLastMeleeAttack.restart();
+			auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
+			sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
+			meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+		}
+	}
 }
 
 void Player::updateCurrent(sf::Time delta)
@@ -140,10 +130,8 @@ void Player::updateCurrent(sf::Time delta)
 	updateAnimation(delta);
 	mMotion.clear();
 	shootingUpdate(delta);
-	meleeAttackUpdate(delta);
 	cameraMovement(delta);
 	updateListenerPosition();
-	pauseMenuUpdate();
 
 	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->getItemQuantity("Bullet");
 
@@ -177,8 +165,16 @@ void Player::updateCounters() const
 
 void Player::updateMovement(const sf::Time delta)
 {
-	sf::Vector2f velocity;
+	if(mGameData->getInput().getAction().isActionPressed("movingLeft"))
+		mMotion.isMovingLeft = true;
+	if(mGameData->getInput().getAction().isActionPressed("movingRight"))
+		mMotion.isMovingRight = true;
+	if(mGameData->getInput().getAction().isActionPressed("movingUp"))
+		mMotion.isMovingUp = true;
+	if(mGameData->getInput().getAction().isActionPressed("movingDown"))
+		mMotion.isMovingDown = true;
 
+	sf::Vector2f velocity;
 	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.8f : mMovementSpeed;
 
 	if (mMotion.isMoving() && !mCollisionBody.isBeingPushed())
@@ -258,6 +254,12 @@ void Player::setAnimationState(const std::string& stateName)
 	}
 }
 
+void Player::shootingUpdate(const sf::Time delta)
+{
+	auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+	gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
+}
+
 PlayerMotion::PlayerMotion()
 {
 	clear();
@@ -276,29 +278,6 @@ bool PlayerMotion::isMovingDiagonally()
 void PlayerMotion::clear()
 {
 	isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
-}
-
-void Player::shootingUpdate(const sf::Time delta)
-{
-	auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-	gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
-
-	if(mIsShooting && mNumberOfOwnedBullets > 0) {
-		dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->destroyItem("Bullet");
-		gun->shoot();
-		mIsShooting = false;
-	}
-}
-
-void Player::meleeAttackUpdate(const sf::Time delta)
-{
-	if (mIsAttacking) {
-		mTimeFromLastMeleeAttack.restart();
-		sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
-		auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
-		meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
-		mIsAttacking = false;
-	}
 }
 
 sf::Vector2f Player::getCurrentPlayerDirection() const
@@ -355,23 +334,6 @@ void Player::cameraMovement(sf::Time delta) const
 void Player::updateListenerPosition() const
 {
 	mGameData->getSoundPlayer().setListenerPosition(getPosition());
-}
-
-void Player::pauseMenuUpdate()
-{
-	if(mWasGamePauseButtonClicked)
-	{
-		bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
-		if(isGamePaused) {
-			mGameData->getGui().hideInterface("pauseScreen");
-			mGameData->getSceneManager().getScene().setPause(false);
-		}
-		else {
-			mGameData->getGui().showInterface("pauseScreen");
-			mGameData->getSceneManager().getScene().setPause(true);
-		}
-		mWasGamePauseButtonClicked = false;
-	}
 }
 
 }

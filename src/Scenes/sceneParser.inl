@@ -5,8 +5,8 @@
 
 namespace ph {
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
-SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename AudioParser>
+SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, AudioParser>
 	::SceneParser(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const std::string& sceneFileName)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
@@ -19,12 +19,12 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParse
 	parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 	parse<MapParser>(gameData, sceneLinksNode, "map");
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
-	parse<MusicParser>(gameData, sceneLinksNode, "music");
+	parse<AudioParser>(gameData, sceneLinksNode, "audio");
 }
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename AudioParser>
 template<typename Parser>
-void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
+void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, AudioParser>
 	::parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName)
 {
 	const auto categoryNode = sceneLinksNode.getChildren(categoryName);
@@ -36,8 +36,8 @@ void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, Music
 	}
 }
 
-template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename MusicParser>
-void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, MusicParser>
+template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename AudioParser>
+void SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, AudioParser>
 	::parseGameObjects(GameData* const gameData, GameObject& root, CutSceneManager& cutSceneManager, const Xml& sceneLinksNode)
 {
 	const auto gameObjectsNode = sceneLinksNode.getChildren("map");

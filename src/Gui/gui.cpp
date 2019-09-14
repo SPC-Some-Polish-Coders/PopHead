@@ -101,6 +101,12 @@ void GUI::moveUp(const std::string& name)
 	}
 }
 
+void GUI::handleEvent(const sf::Event& e)
+{
+	for(const auto& i : mInterfaceList)
+		i.second->handleEvent(e);
+}
+
 void GUI::update(sf::Time deltaTime)
 {
 	for(const auto& k : mInterfaceList) {

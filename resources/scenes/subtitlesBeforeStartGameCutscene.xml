@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <gui filename="subtitlesBeforeStartGameCutscene.gui.xml"/>
+  <map filename="subtitlesBeforeStartGameCutscene.tmx"/>
+  <neededResources filename="subtitlesBeforeStartGameCutscene.res.xml"/>
+</scenelinks>

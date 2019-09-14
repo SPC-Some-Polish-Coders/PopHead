@@ -18,16 +18,11 @@ public:
 	void setGameData(GameData* gameData) { mGameData = gameData; }
 	bool isEnterClicked() { return mIsEnterClicked; }
 
-	void handleInput();
+	void handleEvent(const sf::Event&);
+	void update();
 private:
-	void handleKeyboardCharactersInput();
-	void handleBackspace();
-	void handleEnter();
 	void updateLastCommands();
-	void handleLastCommandShortcut();
-	void clearTextShortcut();
-	void showOrHideCommandPromptInput();
-	inline void setKeyRepeatEnabled(bool enabled);
+	void showOrHideCommandPrompt();
 
 private:
 	GameData* mGameData;

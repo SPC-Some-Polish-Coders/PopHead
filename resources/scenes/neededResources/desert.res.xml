@@ -12,5 +12,7 @@
     <resource respath="others/lever.png"/>
     <resource respath="others/leverHint.png"/>
     <resource respath="others/pistol.png"/>
+    <resource respath="others/standingBilbord.png"/>
+    <resource respath="others/lyingBilbord.png"/>
   </textures>
 </loading>

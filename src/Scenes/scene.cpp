@@ -13,12 +13,9 @@ Scene::Scene()
 	GameObject::setRoot(mRoot.get());
 }
 
-void Scene::input()
+void Scene::handleEvent(const sf::Event& e)
 {
-	if(mCutSceneManager.isCutSceneActive())
-		mCutSceneManager.handleCutSceneInput();
-
-	mRoot->input();
+	mRoot->handleEvent(e);
 }
 
 void Scene::update(sf::Time delta)

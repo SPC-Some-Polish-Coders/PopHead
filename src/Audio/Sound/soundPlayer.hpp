@@ -18,7 +18,8 @@ public:
 	void playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition);
 
 	void setListenerPosition(const sf::Vector2f listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
-	void setMuted(bool muted);
+	void setMuted(const bool muted);
+	void setSceneMute(const bool mute);
 	bool isMuted() { return mIsMuted; }
 	void setVolume(const float volume);
 	float getVolume() { return mVolume; }
@@ -36,6 +37,7 @@ private:
 	SpatializationManager mSpatializationManager;
 	float mVolume;
 	bool mIsMuted;
+	bool mSceneMute;
 };
 
 }

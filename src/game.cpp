@@ -1,8 +1,7 @@
 #include "game.hpp"
-
-#include <SFML/System.hpp>
-#include <Input/eventLoop.hpp>
 #include "Resources/loadFonts.hpp"
+#include "Input/globalKeyboardShortcuts.hpp"
+#include <SFML/System.hpp>
 
 namespace ph {
 
@@ -46,12 +45,9 @@ Game::Game()
 
 	loadFonts(gameData);
 	mTerminal->init(gameData);
-	//Logger::getInstance().setGameData(gameData); // logger.setGameData() must be called after mTerminal.init()
 	mEfficiencyRegister->init(gameData);
 	mMap->setGameData(gameData);
 	mGui->init(gameData);
-	EventLoop::init(gameData);
-	mInput->setGameData(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
@@ -67,12 +63,11 @@ void Game::run()
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mSceneManager->changingScenesProcess();
-		input();
 
 		deltaTime += clock.restart();
 
 		while(deltaTime >= timePerFrame) {
-			input();
+			handleEvents();
 			update(getProperDeltaTime(deltaTime));
 			deltaTime = sf::Time::Zero;
 			draw();
@@ -88,26 +83,34 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
 }
 
-void Game::input()
+void Game::handleEvents()
 {
-	if (mRenderWindow.hasFocus())
+	sf::Event e;
+	while(mRenderWindow.pollEvent(e))
 	{
-		EventLoop::eventLoop(mGameData.get());
-		mSceneManager->input();
-		mInput->getGlobalKeyboardShortcutes().handleShortcuts();
-		mTerminal->input();
-		mEfficiencyRegister->input();
+		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), e);
+		mEfficiencyRegister->handleEvent(e);
+		mTerminal->handleEvent(e);
+		mGui->handleEvent(e);
+		
+		if(!mTerminal->getSharedData()->mIsVisible)
+			mSceneManager->handleEvent(e);
 	}
 }
 
 void Game::update(sf::Time deltaTime)
 {
-	mAIManager->update();
-	mSceneManager->update(deltaTime);
-	mPhysicsEngine->update(deltaTime);
-	mRenderer->update(deltaTime);
-	mGui->update(deltaTime);
 	mEfficiencyRegister->update();
+
+	if(mRenderWindow.hasFocus())
+	{
+		mAIManager->update();
+		mSceneManager->update(deltaTime);
+		mPhysicsEngine->update(deltaTime);
+		mRenderer->update(deltaTime);
+		mGui->update(deltaTime);
+		mTerminal->update();
+	}
 }
 
 void Game::draw()
