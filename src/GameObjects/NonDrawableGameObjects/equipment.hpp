@@ -10,10 +10,10 @@ class Character;
 class Item;
 class ItemsContainer;
 
-class Equipement : public GameObject
+class Equipment : public GameObject
 {
 public:
-	Equipement();
+	Equipment();
 
 	virtual void init();
 	virtual void dropItem(Item* itemToDrop);
@@ -26,7 +26,7 @@ public:
 protected:
 	Character* mInventoryOwner;
 	ItemsContainer* mItemsContainer;
-	std::deque<Item*> mEquipementStash;
+	std::deque<Item*> mEquipmentStash;
 };
 
 }

@@ -1,6 +1,6 @@
 #include "GameObjects/DrawableGameObjects/Items/medkit.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
-#include "GameObjects/NonDrawableGameObjects/playerEquipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 
 namespace ph {
 

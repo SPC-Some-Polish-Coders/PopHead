@@ -1,4 +1,4 @@
-#include "GameObjects/NonDrawableGameObjects/playerEquipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 #include "Utilities/math.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
@@ -6,13 +6,13 @@
 
 namespace ph {
 
-PlayerEquipement::PlayerEquipement()
+PlayerEquipment::PlayerEquipment()
 {
 }
 
-void PlayerEquipement::init()
+void PlayerEquipment::init()
 {
-	Equipement::init();
+	Equipment::init();
 	mItemsCounter = { 
 		{"Bullet", 0},
 		{"Medkit", 0} 
@@ -21,27 +21,27 @@ void PlayerEquipement::init()
 	countItems();
 }
 
-void PlayerEquipement::countItems()
+void PlayerEquipment::countItems()
 {
-	for (auto& item : mEquipementStash)
+	for (auto& item : mEquipmentStash)
 		mItemsCounter.at(getNameWithoutCounters(item->getName())) = 0;
 
-	for (auto& item : mEquipementStash)
+	for (auto& item : mEquipmentStash)
 		++mItemsCounter.at(getNameWithoutCounters(item->getName()));
 }
 
-int PlayerEquipement::getItemQuantity(const std::string& name)
+int PlayerEquipment::getItemQuantity(const std::string& name)
 {
 	return mItemsCounter.at(name);
 }
 
-void PlayerEquipement::updateCurrent(sf::Time delta)
+void PlayerEquipment::updateCurrent(sf::Time delta)
 {
 	handlePickArea();
 	handleInteractableItems();
 }
 
-void PlayerEquipement::handlePickArea()
+void PlayerEquipment::handlePickArea()
 {
 	auto& itemsOnTheGround = getItemsContainer().getChildren();
 	for (auto& item : itemsOnTheGround)
@@ -53,7 +53,7 @@ void PlayerEquipement::handlePickArea()
 		}
 }
 
-void PlayerEquipement::handleInteractableItems()
+void PlayerEquipment::handleInteractableItems()
 {
 	for (auto it = mInteractableItems.begin(); it != mInteractableItems.end(); ++it)
 	{
@@ -64,62 +64,62 @@ void PlayerEquipement::handleInteractableItems()
 	mInteractableItems.clear();
 }
 
-void PlayerEquipement::pickUpItem(Item* itemToPick)
+void PlayerEquipment::pickUpItem(Item* itemToPick)
 {
 	incrementQuantityOfItem(itemToPick->getName());
 	itemToPick->setInInventory(true);
 	getItemsContainer().changeParentOfChild(itemToPick, this);
-	mEquipementStash.emplace_back(itemToPick);
+	mEquipmentStash.emplace_back(itemToPick);
 	itemToPick->onPickUp();
 }
 
-void PlayerEquipement::putItem(std::unique_ptr<Item> itemToPut)
+void PlayerEquipment::putItem(std::unique_ptr<Item> itemToPut)
 {
 	incrementQuantityOfItem(itemToPut->getName());
-	Equipement::putItem(std::move(itemToPut));
+	Equipment::putItem(std::move(itemToPut));
 }
 
-void PlayerEquipement::dropItem(Item* itemToDrop)
+void PlayerEquipment::dropItem(Item* itemToDrop)
 {
 	decrementQuantityOfItem(itemToDrop->getName());
-	Equipement::dropItem(itemToDrop);
+	Equipment::dropItem(itemToDrop);
 }
 
-void PlayerEquipement::destroyItem(Item* itemToDestroy)
+void PlayerEquipment::destroyItem(Item* itemToDestroy)
 {
-	for (auto it = mEquipementStash.begin(); it != mEquipementStash.end(); ++it)
+	for (auto it = mEquipmentStash.begin(); it != mEquipmentStash.end(); ++it)
 		if (*it == itemToDestroy)
 		{
 			removeChild(*it);
-			mEquipementStash.erase(it);
+			mEquipmentStash.erase(it);
 			decrementQuantityOfItem(itemToDestroy->getName());
 			return;
 		}
 }
 
-void PlayerEquipement::destroyItem(const std::string& itemToDestroy)
+void PlayerEquipment::destroyItem(const std::string& itemToDestroy)
 {
-	for (auto it = mEquipementStash.begin(); it != mEquipementStash.end(); ++it)
+	for (auto it = mEquipmentStash.begin(); it != mEquipmentStash.end(); ++it)
 		if (itemToDestroy.find_first_of((*it)->getName()) != std::string::npos)
 		{
 			removeChild(*it);
-			mEquipementStash.erase(it);
+			mEquipmentStash.erase(it);
 			decrementQuantityOfItem(itemToDestroy);
 			return;
 		}
 }
 
-void PlayerEquipement::incrementQuantityOfItem(const std::string& itemName)
+void PlayerEquipment::incrementQuantityOfItem(const std::string& itemName)
 {
 	++mItemsCounter.at(getNameWithoutCounters(itemName));
 }
 
-void PlayerEquipement::decrementQuantityOfItem(const std::string& itemName)
+void PlayerEquipment::decrementQuantityOfItem(const std::string& itemName)
 {
 	--mItemsCounter.at(getNameWithoutCounters(itemName));
 }
 
-std::string PlayerEquipement::getNameWithoutCounters(const std::string& name)
+std::string PlayerEquipment::getNameWithoutCounters(const std::string& name)
 {
 	if (name.find('_') == std::string::npos)
 		return name;
