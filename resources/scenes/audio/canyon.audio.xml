@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <audio>
-	<volume soundvolume="default" musicvolume="default"/>
+  <mute soundmute="false"/>
 	<starttheme filename="Menu.ogg"/>
 </audio>
