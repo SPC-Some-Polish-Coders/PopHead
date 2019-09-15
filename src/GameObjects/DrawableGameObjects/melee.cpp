@@ -27,7 +27,7 @@ void Swing::handleHitCharacters()
 	for (const auto& character : attackableCharactersInHitArea)
 	{
 		auto nearestPoint = nearestPointOfCharacter(*character);
-		auto distance = Math::getDistanceBetweenPoints(mStartPosition, nearestPoint);
+		auto distance = Math::distanceBetweenPoints(mStartPosition, nearestPoint);
 
 		if (distance > mRange)
 			continue;

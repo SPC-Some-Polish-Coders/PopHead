@@ -15,11 +15,6 @@ namespace Math
 		return bounds.top + bounds.height;
 	}
 
-	float getDistanceBetweenPoints(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint)
-	{
-		return hypotf((secondPoint.x - firstPoint.x), (secondPoint.y - firstPoint.y));
-	}
-
 	sf::Vector2f getCenter(const sf::FloatRect& bounds)
 	{
 		return sf::Vector2f(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
@@ -85,7 +80,7 @@ namespace Math
 
 	bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius)
 	{
-		return (getDistanceBetweenPoints(point, circlePos) < radius);
+		return (distanceBetweenPoints(point, circlePos) < radius);
 	}
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed)
