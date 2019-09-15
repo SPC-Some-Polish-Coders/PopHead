@@ -7,7 +7,7 @@
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
-#include "GameObjects/NonDrawableGameObjects/playerEquipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include <array>
 #include <exception>
@@ -75,12 +75,12 @@ Player::Player(GameData* gameData)
 	const float rotationRange = 100.f;
 	addChild(std::make_unique<MeleeWeapon>(mGameData, meleeWeaponDamage, range, rotationRange));
 
-	removeChild("Equipement");
-	addChild(std::make_unique<PlayerEquipement>());
-	auto* equipement = dynamic_cast<PlayerEquipement*>(getChild("Equipement"));
-	equipement->init();
+	removeChild("Equipment");
+	addChild(std::make_unique<PlayerEquipment>());
+	auto* equipment = dynamic_cast<PlayerEquipment*>(getChild("Equipment"));
+	equipment->init();
 	for (unsigned i = 0; i < mNumberOfOwnedBullets; ++i)
-		equipement->putItem(std::make_unique<BulletItem>(mGameData));
+		equipment->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Player::handleEventOnCurrent(const sf::Event& e)
@@ -102,7 +102,7 @@ void Player::handleEventOnCurrent(const sf::Event& e)
 
 		// TODO: Change it to action event
 		if(e.key.code == sf::Keyboard::Enter && mNumberOfOwnedBullets > 0) {
-			dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->destroyItem("Bullet");
+			dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
 			auto* gun = dynamic_cast<Gun*>(getChild("gun"));
 			gun->shoot();
 		}
@@ -133,7 +133,7 @@ void Player::updateCurrent(sf::Time delta)
 	cameraMovement(delta);
 	updateListenerPosition();
 
-	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipement*>(getChild("Equipement"))->getItemQuantity("Bullet");
+	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->getItemQuantity("Bullet");
 
 	mIsSlownDown = false;
 }

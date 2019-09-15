@@ -3,7 +3,7 @@
 #include "GameObjects/GameObjectContainers/particlesSystem.hpp"
 #include "GameObjects/DrawableGameObjects/particles.hpp"
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
-#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipment.hpp"
 #include "Utilities/random.hpp"
 #include "gameData.hpp"
 
@@ -20,8 +20,8 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mIsAttackable(isAttackable)
 {
-	addChild(std::make_unique<Equipement>());
-	dynamic_cast<Equipement*>(getChild("Equipement"))->init();
+	addChild(std::make_unique<Equipment>());
+	dynamic_cast<Equipment*>(getChild("Equipment"))->init();
 }
 
 void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -31,7 +31,7 @@ void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
 
 void Character::dropItems()
 {
-	dynamic_cast<Equipement*>(getChild("Equipement"))->dropAllItems();
+	dynamic_cast<Equipment*>(getChild("Equipment"))->dropAllItems();
 }
 
 void Character::setPosition(sf::Vector2f position)
