@@ -67,10 +67,10 @@ void PlayerEquipement::handleInteractableItems()
 void PlayerEquipement::pickUpItem(Item* itemToPick)
 {
 	incrementQuantityOfItem(itemToPick->getName());
-	itemToPick->onPickUp();
 	itemToPick->setInInventory(true);
 	getItemsContainer().changeParentOfChild(itemToPick, this);
 	mEquipementStash.emplace_back(itemToPick);
+	itemToPick->onPickUp();
 }
 
 void PlayerEquipement::putItem(std::unique_ptr<Item> itemToPut)

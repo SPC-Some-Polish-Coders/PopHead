@@ -14,8 +14,9 @@ public:
 	void drawWhileOnTheGround(sf::RenderTarget& rt, sf::RenderStates rs) const;
 	void updateWhileOnTheGround(const sf::Time delta) override {}
 	void onPickUp();
-	void onDrop() {}
-	void onUse() {}
+
+private:
+	int healthAddValue;
 };
 
 }
