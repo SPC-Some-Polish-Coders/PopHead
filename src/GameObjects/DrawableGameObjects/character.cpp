@@ -69,6 +69,14 @@ void Character::pushCharacter(const sf::Vector2f& pushVector)
 	mCollisionBody.setForceVector(pushVector);
 }
 
+void Character::addHp(int hp)
+{
+	if (mHp + hp > mMaxHp)
+		mHp = mMaxHp;
+	else
+		mHp += hp;
+}
+
 void Character::takeDamage(const unsigned damage)
 { 
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {
