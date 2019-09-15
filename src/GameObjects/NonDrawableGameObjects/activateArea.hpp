@@ -4,7 +4,7 @@
 
 namespace ph {
 
-class Character;
+class Player;
 
 class ActivateArea : public GameObject
 {
@@ -15,7 +15,7 @@ public:
 	bool getActivated() const { return mActivated; }
 
 private:
-	Character* mPlayer;
+	Player* mPlayer;
 	const sf::FloatRect mArea;
 	bool mActivated;
 };

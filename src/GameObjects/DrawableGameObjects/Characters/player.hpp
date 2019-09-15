@@ -27,6 +27,7 @@ public:
 
 	void slowDown() { mIsSlownDown = true; }
 	float getPickRadius() const { return mPickRadius; }
+	bool isDead() const { return mIsDead; }
 
 private:
 	void die();
@@ -49,6 +50,7 @@ private:
 	unsigned mNumberOfOwnedBullets;
 	float mPickRadius;
 	bool mIsSlownDown;
+	bool mIsDead;
 };
 
 }
