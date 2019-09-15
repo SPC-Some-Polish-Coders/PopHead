@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="68" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="164">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="68" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="171">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -470,7 +470,7 @@
   <object id="78" name="Car" type="Car" x="399.631" y="769.945">
    <point/>
   </object>
-  <object id="82" type="Entrance" x="1224.5" y="-0.333333" width="394.5" height="174.5">
+  <object id="82" type="Entrance" x="1224.5" y="-0.333333" width="394.5" height="142">
    <properties>
     <property name="gotoScene" type="file" value="../citySouth.xml"/>
    </properties>
@@ -559,28 +559,32 @@
   <object id="153" name="Gate" type="Gate" x="1400" y="239.75">
    <point/>
   </object>
-  <object id="154" name="Lever" type="Lever" x="1441.42" y="259.333">
+  <object id="155" name="Medkit" type="Medkit" x="905.5" y="540">
    <point/>
   </object>
-  <object id="155" name="BulletItem" type="BulletItem" x="913.5" y="532">
+  <object id="164" name="GateGuardNpc" type="GateGuardNpc" x="1427.5" y="207.167">
    <point/>
   </object>
-  <object id="158" name="BulletItem" type="BulletItem" x="941" y="537.5">
+  <object id="165" name="OpenGateArea" type="OpenGateArea" x="1283.08" y="255.417" width="268.5" height="63">
+   <properties>
+    <property name="gotoScene" type="file" value="../citySouth.xml"/>
+   </properties>
+  </object>
+  <object id="166" name="CloseGateArea" type="CloseGateArea" x="1285.25" y="156.75" width="268.5" height="74.5">
+   <properties>
+    <property name="gotoScene" type="file" value="../citySouth.xml"/>
+   </properties>
+  </object>
+  <object id="167" name="BulletItem" type="BulletItem" x="933" y="537.667">
    <point/>
   </object>
-  <object id="159" name="BulletItem" type="BulletItem" x="920.5" y="551">
+  <object id="168" name="BulletItem" type="BulletItem" x="944.333" y="537.333">
    <point/>
   </object>
-  <object id="160" name="BulletItem" type="BulletItem" x="939.5" y="547.5">
+  <object id="169" name="BulletItem" type="BulletItem" x="932.667" y="546">
    <point/>
   </object>
-  <object id="161" name="BulletItem" type="BulletItem" x="909.5" y="553.5">
-   <point/>
-  </object>
-  <object id="162" name="BulletItem" type="BulletItem" x="920.5" y="559">
-   <point/>
-  </object>
-  <object id="163" name="BulletItem" type="BulletItem" x="948" y="563.5">
+  <object id="170" name="BulletItem" type="BulletItem" x="944.333" y="545.667">
    <point/>
   </object>
  </objectgroup>
