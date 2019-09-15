@@ -99,14 +99,14 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		physicsEngine.createStaticBodyAndGetTheReference({-30, 10, 30, 10});
 		
 		SECTION("Player moves left down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
 			player.move({-10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
 			CHECK(player.getPosition().y == 15);
 		}
 		SECTION("Player moves left up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
 			player.move({-10, -10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
@@ -119,14 +119,14 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 30, 10});
 		
 		SECTION("Player moves right down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({0, 5, 10, 10}, 25);
 			player.move({10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
 			CHECK(player.getPosition().y == 15);
 		}
 		SECTION("Player moves right up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({0, 15, 10, 10}, 25);
 			player.move({10, -10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 0);
@@ -139,14 +139,14 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		physicsEngine.createStaticBodyAndGetTheReference({10, -30, 10, 30});
 
 		SECTION("Player moves right up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
 			player.move({10, -10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 15);
 			CHECK(player.getPosition().y == 0);
 		}
 		SECTION("Player moves left up") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
 			player.move({-10, -10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 5);
@@ -159,14 +159,14 @@ TEST_CASE("Kinematic body moves diagonally wiping two static bodies", "[Physics]
 		physicsEngine.createStaticBodyAndGetTheReference({10, 10, 10, 30});
 
 		SECTION("Player moves right down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({5, 0, 10, 10}, 25);
 			player.move({10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 15);
 			CHECK(player.getPosition().y == 0);
 		}
 		SECTION("Player moves left down") {
-			auto& player = physicsEngine.createKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
+			auto& player = physicsEngine.createFullKinematicBodyAndGetTheReference({15, 0, 10, 10}, 25);
 			player.move({-10, 10});
 			physicsEngine.update(deltaTime);
 			CHECK(player.getPosition().x == 5);

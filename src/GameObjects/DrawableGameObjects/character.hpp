@@ -22,6 +22,7 @@ public:
 
 	void setPosition(sf::Vector2f);
 	void setHp(int hp) { mHp = hp; }
+	void addHp(int hp) { mHp += hp; }
 	void setMaxHp(unsigned int maxHp) { mMaxHp = maxHp; }
 	void move(sf::Vector2f);
 	void takeDamage(const unsigned damage);
@@ -30,6 +31,7 @@ public:
 	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
 	sf::FloatRect getGlobalBounds() const override;
+	sf::FloatRect getTextureBounds() const;
 	auto getAnimation() -> Animation& { return mAnimation; }
 	bool isAttackable() const { return mIsAttackable; }
 

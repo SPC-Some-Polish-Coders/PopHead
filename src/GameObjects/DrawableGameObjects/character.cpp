@@ -36,8 +36,9 @@ void Character::dropItems()
 
 void Character::setPosition(sf::Vector2f position)
 {
-	mCollisionBody.setPosition(position);
+	auto collisionBodyOffset = mCollisionBody.getPosition() - mCollisionBody.getFixedPosition();
 	Transformable::setPosition(position);
+	mCollisionBody.setPosition(position + collisionBodyOffset);
 }
 
 void Character::move(sf::Vector2f offset)
@@ -55,6 +56,12 @@ auto Character::getSpriteCenter() -> sf::Vector2f
 sf::FloatRect Character::getGlobalBounds() const
 {
 	return mCollisionBody.getRect();
+}
+
+sf::FloatRect Character::getTextureBounds() const
+{
+	auto transform = getTransform();
+	return transform.transformRect(mSprite.getLocalBounds());
 }
 
 void Character::pushCharacter(const sf::Vector2f& pushVector)

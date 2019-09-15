@@ -39,7 +39,7 @@ auto Bullet::getCharactersInShotArea() -> std::vector<Character*>
 		auto character = dynamic_cast<Character*>(object.get());
 		if(character == nullptr)
 			continue;
-		if(Math::areTheyOverlapping(shotArea, character->getGlobalBounds()))
+		if(Math::areTheyOverlapping(shotArea, character->getTextureBounds()))
 			charactersInShotArea.emplace_back(character);
 	}
 	return charactersInShotArea;
@@ -93,7 +93,7 @@ auto Bullet::getCurrentPosition() const -> const sf::Vector2f
 
 bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBulletPosition)
 {
-	const sf::FloatRect hitbox = character->getGlobalBounds();
+	const sf::FloatRect hitbox = character->getTextureBounds();
 	return Math::isPointInsideRect(currentBulletPosition, hitbox);
 }
 

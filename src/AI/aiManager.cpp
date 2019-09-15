@@ -9,10 +9,18 @@ namespace ph {
 
 Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
-	if(mIsPlayerOnScene && doesZombieSeePlayer(zombiePosition))
+	if (!mIsPlayerOnScene)
+		return Path();
+
+	float distanceToPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
+	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
+	constexpr float maximalDistanceFromWhichZombieWalksRandom = 350.f;
+
+	if (distanceToPlayer <= maximalDistanceFromWhichZombieSeesPlayer)
 		return getPath(zombiePosition, mPlayerPosition);
-	else
+	else if (distanceToPlayer <= maximalDistanceFromWhichZombieWalksRandom)
 		return getRandomPath(zombiePosition);
+	return Path();
 }
 
 bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const
@@ -44,13 +52,6 @@ void AIManager::registerObstacle(const sf::Vector2f collisionBodyPosition)
 void AIManager::update()
 {
 	mHasPlayerMovedSinceLastUpdate = false;
-}
-
-bool AIManager::doesZombieSeePlayer(const sf::Vector2f zombiePosition) const
-{
-	float distanceBetweenZombieAndPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
-	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
-	return distanceBetweenZombieAndPlayer <= maximalDistanceFromWhichZombieSeesPlayer;
 }
 
 float AIManager::getDistanceBetweenZombieAndPlayer(const sf::Vector2f zombiePosition) const

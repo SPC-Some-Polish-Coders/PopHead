@@ -57,6 +57,8 @@ namespace
 	);
 }
 
+const sf::Time Player::melleAttackInterval = sf::seconds(0.5f);
+
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
@@ -67,7 +69,11 @@ Player::Player(GameData* gameData)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
-	addChild(std::make_unique<MeleeWeapon>(mGameData, 25.f, 25.f, 60.f));
+
+	const float meleeWeaponDamage = 35.f;
+	const float range = 27.f;
+	const float rotationRange = 100.f;
+	addChild(std::make_unique<MeleeWeapon>(mGameData, meleeWeaponDamage, range, rotationRange));
 
 	removeChild("Equipement");
 	addChild(std::make_unique<PlayerEquipement>());
@@ -102,11 +108,11 @@ void Player::handleEventOnCurrent(const sf::Event& e)
 		}
 
 		// TODO: Change it to action event
-		if(e.key.code == sf::Keyboard::BackSlash) {
+		if(e.key.code == sf::Keyboard::BackSlash && mTimeFromLastMeleeAttack.getElapsedTime() >= melleAttackInterval) {
 			mTimeFromLastMeleeAttack.restart();
 			auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
 			sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
-			meleeWeapon->attack(meleeAttackDirection);
+			meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
 		}
 	}
 }
@@ -188,10 +194,11 @@ void Player::updateMovement(const sf::Time delta)
 			velocity.y *= std::sqrt(2.f) / 2.f;
 		}
 
-		mCollisionBody.move(velocity);
+		move(velocity);
 	}
-	setPosition(mCollisionBody.getPosition());
-	mGameData->getAIManager().setPlayerPosition(getPosition());
+
+	setPosition(mCollisionBody.getFixedPosition());
+	mGameData->getAIManager().setPlayerPosition(mCollisionBody.getPosition());
 }
 
 void Player::updateAnimation(const sf::Time delta)
@@ -273,7 +280,7 @@ void PlayerMotion::clear()
 	isMovingLeft = isMovingRight = isMovingUp = isMovingDown = false;
 }
 
-sf::Vector2f Player::getCurrentPlayerDirection()
+sf::Vector2f Player::getCurrentPlayerDirection() const
 {
 	if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
 		return  { 0.7f, -0.7f };
@@ -295,10 +302,32 @@ sf::Vector2f Player::getCurrentPlayerDirection()
 		return  {0.f, 1.f};
 }
 
+float Player::getPlayerRotation() const
+{
+	if (mLastMotion.isMovingRight && mLastMotion.isMovingDown)
+		return 45.f;
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingDown)
+		return 135.f;
+	else if (mLastMotion.isMovingLeft && mLastMotion.isMovingUp)
+		return 225.f;
+	else if (mLastMotion.isMovingRight && mLastMotion.isMovingUp)
+		return 315.f;
+	else if (mLastMotion.isMovingRight)
+		return 0.f;
+	else if (mLastMotion.isMovingDown)
+		return 90.f;
+	else if (mLastMotion.isMovingLeft)
+		return 180.f;
+	else if (mLastMotion.isMovingUp)
+		return 270.f;
+	
+	PH_UNEXPECTED_SITUATION("Unsupported player rotation");
+}
+
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = getGlobalBounds();
+	const sf::FloatRect characterBounds = GameObject::getGlobalBounds();
 	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
 }
 

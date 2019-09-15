@@ -29,6 +29,8 @@ private:
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
 	void loadSlowDownArea(const Xml& slowDownAreaNode) const;
+	void loadOpenGateArea(const Xml& openGateAreaNode) const;
+	void loadCloseGateArea(const Xml& closeGateAreaNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 	void loadGate(const Xml& gateNode) const;
 	void loadLever(const Xml& leverNode) const;
@@ -37,7 +39,9 @@ private:
 	void loadPlayer(const Xml& playerNode) const;
 	void loadCutScene(const Xml& cutSceneNode) const;
 	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
+	void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 	void loadBulletItem(const Xml& bulletItemNode) const;
+	void loadMedkit(const Xml& bulletItemNode) const;
 	void loadBilbord(const Xml& bilbordNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;

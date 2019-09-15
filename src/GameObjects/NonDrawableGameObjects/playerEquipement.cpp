@@ -13,7 +13,10 @@ PlayerEquipement::PlayerEquipement()
 void PlayerEquipement::init()
 {
 	Equipement::init();
-	mItemsCounter = { {"Bullet", 0} };
+	mItemsCounter = { 
+		{"Bullet", 0},
+		{"Medkit", 0} 
+	};
 	mOwnerPickRadius = dynamic_cast<Player&>(*mInventoryOwner).getPickRadius();
 	countItems();
 }
