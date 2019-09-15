@@ -2,6 +2,7 @@
 #include "NonDrawableGameObjects/entrance.hpp"
 #include "NonDrawableGameObjects/spawner.hpp"
 #include "NonDrawableGameObjects/slowDownArea.hpp"
+#include "NonDrawableGameObjects/activateGateAreas.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
@@ -73,19 +74,21 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 	for (const auto& gameObjectNode : objects) 
 	{
 		if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "BulletItem")) loadBulletItem(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Medkit")) loadMedkit(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "SlowDownArea")) loadSlowDownArea(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "OpenGateArea")) loadOpenGateArea(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "CloseGateArea")) loadCloseGateArea(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "BulletItem")) loadBulletItem(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Medkit")) loadMedkit(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
@@ -172,6 +175,26 @@ void TiledGameObjectsParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
 	const sf::Vector2f size = getSizeAttribute(slowDownAreaNode);
 	const sf::FloatRect area(position.x, position.y, size.x, size.y);
 	auto slowDownArea = std::make_unique<SlowDownArea>(area);
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(slowDownArea));
+}
+
+void TiledGameObjectsParser::loadOpenGateArea(const Xml& openGateAreaNode) const
+{
+	const sf::Vector2f position = getPositionAttribute(openGateAreaNode);
+	const sf::Vector2f size = getSizeAttribute(openGateAreaNode);
+	const sf::FloatRect area(position.x, position.y, size.x, size.y);
+	auto slowDownArea = std::make_unique<OpenGateArea>(area);
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(slowDownArea));
+}
+
+void TiledGameObjectsParser::loadCloseGateArea(const Xml& closeGateAreaNode) const
+{
+	const sf::Vector2f position = getPositionAttribute(closeGateAreaNode);
+	const sf::Vector2f size = getSizeAttribute(closeGateAreaNode);
+	const sf::FloatRect area(position.x, position.y, size.x, size.y);
+	auto slowDownArea = std::make_unique<CloseGateArea>(area);
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(slowDownArea));
 }

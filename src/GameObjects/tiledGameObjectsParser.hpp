@@ -29,6 +29,8 @@ private:
 	void loadSpawner(const Xml& spawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
 	void loadSlowDownArea(const Xml& slowDownAreaNode) const;
+	void loadOpenGateArea(const Xml& openGateAreaNode) const;
+	void loadCloseGateArea(const Xml& closeGateAreaNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 	void loadGate(const Xml& gateNode) const;
 	void loadLever(const Xml& leverNode) const;
