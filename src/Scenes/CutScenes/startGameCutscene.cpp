@@ -53,7 +53,7 @@ void StartGameCutScene::update(const sf::Time delta)
 	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
 	
 	if(mCutsceneTimeInSeconds < 23)
-		mCamera.setCenter(car.getPosition() + sf::Vector2f(15, 10));
+		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());
 
 	if(mCutsceneTimeInSeconds < 5)
 		car.speedUp();
