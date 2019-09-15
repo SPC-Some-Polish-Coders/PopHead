@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Utilities/rect.hpp"
+
 namespace ph {
 
 class CollisionBody;
@@ -27,9 +29,9 @@ private:
 	CollisionBody* mKinematicBody;
 	const CollisionBody* mStaticBody;
 	
-	sf::FloatRect mKinematicBodyRect;
-	sf::FloatRect mStaticBodyRect;
-	sf::FloatRect mKinematicBodyPreviousRect;
+	FloatRect mKinematicBodyRect;
+	FloatRect mStaticBodyRect;
+	FloatRect mKinematicBodyPreviousRect;
 	//sf::FloatRect mStaticBodyPreviousRect;
 };
 
