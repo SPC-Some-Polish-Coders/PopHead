@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="68" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="172">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="68" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="173">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -461,7 +461,7 @@
  </layer>
  <objectgroup id="4" name="gameObjects">
   <object id="1" type="Camera" x="250" y="528" width="640" height="480"/>
-  <object id="3" name="Player" type="Player" x="503.88" y="790.57">
+  <object id="3" name="Player" type="Player" x="573.213" y="787.903">
    <point/>
   </object>
   <object id="46" name="Zombie" type="Zombie" x="673.717" y="684.573">
@@ -565,7 +565,7 @@
   <object id="164" name="GateGuardNpc" type="GateGuardNpc" x="1427.5" y="207.167">
    <point/>
   </object>
-  <object id="166" name="ActivateArea" type="ActivateArea" x="1285.75" y="205.75" width="268.5" height="24">
+  <object id="166" name="ActivateArea" type="ActivateArea" x="1286.75" y="209.75" width="268.5" height="24">
    <properties>
     <property name="areaName" value="closeGate"/>
    </properties>
@@ -585,6 +585,11 @@
   <object id="171" name="ActivateArea" type="ActivateArea" x="1284.75" y="254" width="268.5" height="61.5">
    <properties>
     <property name="areaName" value="openGate"/>
+   </properties>
+  </object>
+  <object id="172" type="CutScene" x="1289.5" y="161" width="262.5" height="47">
+   <properties>
+    <property name="name" value="gateGuardDialogue"/>
    </properties>
   </object>
  </objectgroup>

@@ -10,10 +10,12 @@ GateGuard::GateGuard(GameData* const gameData)
 	,mOpened(false)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
+	mAnimation.changeState("down");
 }
 
 void GateGuard::updateCurrent(const sf::Time delta)
 {
+	mAnimation.animate(mSprite, delta);
 	auto* invisibleObjects = mRoot->getChild("LAYER_invisibleObjects");
 
 	if (!mOpened)
@@ -21,8 +23,11 @@ void GateGuard::updateCurrent(const sf::Time delta)
 		auto* openGateArea = dynamic_cast<ActivateArea*>(invisibleObjects->getChild("activateArea_openGate"));
 		if (openGateArea == nullptr)
 			return;
-		if(openGateArea->getActivated())
+		if (openGateArea->getActivated())
+		{
 			openGate();
+			mAnimation.changeState("left");
+		}
 	}
 
 	else

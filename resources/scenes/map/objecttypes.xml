@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="Camera" color="#55ffff"/>
+ <objecttype name="ActivateArea" color="#555500">
+  <property name="areaName" type="string"/>
+ </objecttype>
+ <objecttype name="BulletItem" color="#b67900"/>
+ <objecttype name="Camera" color="#ffd3f0"/>
  <objecttype name="Car" color="#aa0000">
   <property name="acceleration" type="float" default="1"/>
   <property name="directionX" type="float" default="0"/>
@@ -15,6 +19,10 @@
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>
  </objecttype>
+ <objecttype name="GateGuardNpc" color="#5500ff">
+  <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
+ </objecttype>
+ <objecttype name="Medkit" color="#61d4a8"/>
  <objecttype name="Npc" color="#ffff00">
   <property name="hp" type="file" default="50"/>
   <property name="maxHp" type="file" default="50"/>
