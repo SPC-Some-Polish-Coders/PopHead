@@ -10,7 +10,7 @@ namespace ph {
 Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
 	if (!mIsPlayerOnScene)
-		return Path();
+		return getRandomPath(zombiePosition);
 
 	float distanceToPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;

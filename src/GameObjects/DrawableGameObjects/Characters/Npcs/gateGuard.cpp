@@ -1,6 +1,6 @@
 #include "GameObjects/DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
 #include "GameObjects/DrawableGameObjects/gate.hpp"
-#include "GameObjects/NonDrawableGameObjects/activateGateAreas.hpp"
+#include "GameObjects/NonDrawableGameObjects/activateArea.hpp"
 #include "Utilities/math.hpp"
 
 namespace ph {
@@ -14,15 +14,11 @@ GateGuard::GateGuard(GameData* const gameData)
 
 void GateGuard::updateCurrent(const sf::Time delta)
 {
-	auto* playerGameObject = mRoot->getChild("LAYER_standingObjects")->getChild("player");
-	if (playerGameObject == nullptr)
-		return;
-	auto * player = dynamic_cast<Character*>(playerGameObject);
 	auto* invisibleObjects = mRoot->getChild("LAYER_invisibleObjects");
 
 	if (!mOpened)
 	{
-		auto* openGateArea = dynamic_cast<OpenGateArea*>(invisibleObjects->getChild("openGateArea"));
+		auto* openGateArea = dynamic_cast<ActivateArea*>(invisibleObjects->getChild("activateArea_openGate"));
 		if (openGateArea == nullptr)
 			return;
 		if(openGateArea->getActivated())
@@ -31,7 +27,7 @@ void GateGuard::updateCurrent(const sf::Time delta)
 
 	else
 	{
-		auto* closeGateArea = dynamic_cast<CloseGateArea*>(invisibleObjects->getChild("closeGateArea"));
+		auto* closeGateArea = dynamic_cast<ActivateArea*>(invisibleObjects->getChild("activateArea_closeGate"));
 		if (closeGateArea == nullptr)
 			return;
 		if (closeGateArea->getActivated())
