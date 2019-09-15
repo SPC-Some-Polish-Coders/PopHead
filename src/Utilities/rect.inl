@@ -1,6 +1,22 @@
 #include "rect.hpp"
 
 template<typename T>
+ph::Rect<T>& ph::Rect<T>::operator=(const sf::Rect<T>& rect)
+{
+	sf::Rect<T>& thisRect = *this;
+	thisRect = rect;
+	return *this;
+}
+
+template<typename T>
+ph::Rect<T>& ph::Rect<T>::operator=(sf::Rect<T>&& rect)
+{
+	sf::Rect<T>& thisRect = *this;
+	thisRect = rect;
+	return *this;
+}
+
+template<typename T>
 T ph::Rect<T>::right() const
 {
 	return left + width;
