@@ -22,6 +22,8 @@ void GateGuard::updateCurrent(const sf::Time delta)
 	if (!mOpened)
 	{
 		auto* openGateArea = dynamic_cast<OpenGateArea*>(invisibleObjects->getChild("openGateArea"));
+		if (openGateArea == nullptr)
+			return;
 		if(openGateArea->getActivated())
 			openGate();
 	}
@@ -29,6 +31,8 @@ void GateGuard::updateCurrent(const sf::Time delta)
 	else
 	{
 		auto* closeGateArea = dynamic_cast<CloseGateArea*>(invisibleObjects->getChild("closeGateArea"));
+		if (closeGateArea == nullptr)
+			return;
 		if (closeGateArea->getActivated())
 			closeGate();
 	}
