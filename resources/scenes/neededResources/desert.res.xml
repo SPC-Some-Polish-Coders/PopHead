@@ -15,5 +15,6 @@
     <resource respath="others/pistol.png"/>
     <resource respath="others/standingBilbord.png"/>
     <resource respath="others/lyingBilbord.png"/>
+    <resource respath="others/medkit.png"/>
   </textures>
 </loading>
