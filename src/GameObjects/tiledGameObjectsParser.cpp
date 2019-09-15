@@ -5,6 +5,7 @@
 #include "NonDrawableGameObjects/activateGateAreas.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
+#include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
 #include "DrawableGameObjects/Characters/player.hpp"
 #include "DrawableGameObjects/Items/bulletItem.hpp"
@@ -89,6 +90,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "GateGuardNpc")) loadGateGuardNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
@@ -300,6 +302,13 @@ void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
 {
 	auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
 	crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
+	mRoot.addChild(std::move(crawlingNpc));
+}
+
+void TiledGameObjectsParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
+{
+	auto crawlingNpc = std::make_unique<GateGuard>(mGameData);
+	crawlingNpc->setPosition(getPositionAttribute(gateGuardNpcNode));
 	mRoot.addChild(std::move(crawlingNpc));
 }
 

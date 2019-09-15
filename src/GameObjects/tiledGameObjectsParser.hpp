@@ -39,6 +39,7 @@ private:
 	void loadPlayer(const Xml& playerNode) const;
 	void loadCutScene(const Xml& cutSceneNode) const;
 	void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
+	void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 	void loadBulletItem(const Xml& bulletItemNode) const;
 	void loadMedkit(const Xml& bulletItemNode) const;
 	void loadBilbord(const Xml& bilbordNode) const;

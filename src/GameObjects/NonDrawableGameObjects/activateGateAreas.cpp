@@ -5,7 +5,7 @@
 namespace ph {
 
 OpenGateArea::OpenGateArea(const sf::FloatRect area)
-	:GameObject("OpenGateArea")
+	:GameObject("openGateArea")
 	,mArea(area)
 	,mActivated(false)
 {
@@ -24,7 +24,7 @@ void OpenGateArea::updateCurrent(const sf::Time delta)
 }
 
 CloseGateArea::CloseGateArea(const sf::FloatRect area)
-	:GameObject("OpenGateArea")
+	:GameObject("closeGateArea")
 	, mArea(area)
 	, mActivated(false)
 {

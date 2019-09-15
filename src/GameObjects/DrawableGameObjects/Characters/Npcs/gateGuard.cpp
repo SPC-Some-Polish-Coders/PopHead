@@ -1,5 +1,6 @@
 #include "GameObjects/DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
 #include "GameObjects/DrawableGameObjects/gate.hpp"
+#include "GameObjects/NonDrawableGameObjects/activateGateAreas.hpp"
 #include "Utilities/math.hpp"
 
 namespace ph {
@@ -20,16 +21,16 @@ void GateGuard::updateCurrent(const sf::Time delta)
 
 	if (!mOpened)
 	{
-		auto* openGateArea = invisibleObjects->getChild("openGateArea");
-		//if(Math::areTheyOverlapping(player->getGlobalBounds(), openGateArea->getPosition()))
-		//	openGate();
+		auto* openGateArea = dynamic_cast<OpenGateArea*>(invisibleObjects->getChild("openGateArea"));
+		if(openGateArea->getActivated())
+			openGate();
 	}
 
 	else
 	{
-		auto* closeGateArea = invisibleObjects->getChild("closeGateArea");
-		//if (Math::areTheyOverlapping(player->getGlobalBounds(), openGateArea->getPosition()))
-		//	closeGate();
+		auto* closeGateArea = dynamic_cast<CloseGateArea*>(invisibleObjects->getChild("closeGateArea"));
+		if (closeGateArea->getActivated())
+			closeGate();
 	}
 }
 
@@ -38,7 +39,7 @@ void GateGuard::openGate()
 	mOpened = true;
 	auto* lyingObjects = mRoot->getChild("LAYER_lyingObjects");
 	auto* gate = dynamic_cast<Gate*>(lyingObjects->getChild("gate"));
-	gate->close();
+	gate->open();
 }
 
 
@@ -46,7 +47,7 @@ void GateGuard::closeGate()
 {
 	auto* lyingObjects = mRoot->getChild("LAYER_lyingObjects");
 	auto* gate = dynamic_cast<Gate*>(lyingObjects->getChild("gate"));
-	gate->open();
+	gate->close();
 }
 
 }
