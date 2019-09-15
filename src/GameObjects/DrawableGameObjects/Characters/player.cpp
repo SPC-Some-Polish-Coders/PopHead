@@ -66,6 +66,7 @@ Player::Player(GameData* gameData)
 	,mNumberOfOwnedBullets(200u)
 	,mIsSlownDown(false)
 	,mPickRadius(10.f)
+	,mIsDead(false)
 {
 	mAnimation.animate(mSprite);
 	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
@@ -145,6 +146,7 @@ void Player::die()
 	standingObjects->addCharacterToDie(this);
 	mGameData->getGui().showInterface("gameOverScreen");
 	mGameData->getAIManager().setIsPlayerOnScene(false);
+	mIsDead = true;
 }
 
 void Player::updateCounters() const
