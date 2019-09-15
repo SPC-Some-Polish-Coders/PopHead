@@ -22,6 +22,7 @@ public:
 
 	void setPosition(sf::Vector2f);
 	void setHp(int hp) { mHp = hp; }
+	void addHp(int hp) { mHp += hp; }
 	void setMaxHp(unsigned int maxHp) { mMaxHp = maxHp; }
 	void move(sf::Vector2f);
 	void takeDamage(const unsigned damage);

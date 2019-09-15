@@ -23,6 +23,8 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
+#include "DrawableGameObjects/Items/medkit.hpp"
+
 namespace ph {
 
 TiledGameObjectsParser::TiledGameObjectsParser(GameData* gameData, GameObject& root, CutSceneManager& cutSceneManager)
@@ -83,6 +85,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "BulletItem")) loadBulletItem(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "Medkit")) loadMedkit(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
@@ -283,6 +286,14 @@ void TiledGameObjectsParser::loadBulletItem(const Xml& bulletItemNode) const
 	bulletItem->setPosition(getPositionAttribute(bulletItemNode));
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));
+}
+
+void TiledGameObjectsParser::loadMedkit(const Xml& bulletItemNode) const
+{
+	auto medkitItem = std::make_unique<Medkit>(mGameData);
+	medkitItem->setPosition(getPositionAttribute(bulletItemNode));
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->getChild("ItemsContainer")->addChild(std::move(medkitItem));
 }
 
 void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
