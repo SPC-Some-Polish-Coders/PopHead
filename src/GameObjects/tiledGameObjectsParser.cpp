@@ -2,7 +2,7 @@
 #include "NonDrawableGameObjects/entrance.hpp"
 #include "NonDrawableGameObjects/spawner.hpp"
 #include "NonDrawableGameObjects/slowDownArea.hpp"
-#include "NonDrawableGameObjects/activateGateAreas.hpp"
+#include "NonDrawableGameObjects/activateArea.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
@@ -82,8 +82,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Medkit")) loadMedkit(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "SlowDownArea")) loadSlowDownArea(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "OpenGateArea")) loadOpenGateArea(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "CloseGateArea")) loadCloseGateArea(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "ActivateArea")) loadActivateArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
@@ -181,24 +180,15 @@ void TiledGameObjectsParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
 	invisibleGameObjects->addChild(std::move(slowDownArea));
 }
 
-void TiledGameObjectsParser::loadOpenGateArea(const Xml& openGateAreaNode) const
+void TiledGameObjectsParser::loadActivateArea(const Xml& activateAreaNode) const
 {
-	const sf::Vector2f position = getPositionAttribute(openGateAreaNode);
-	const sf::Vector2f size = getSizeAttribute(openGateAreaNode);
+	const sf::Vector2f position = getPositionAttribute(activateAreaNode);
+	const sf::Vector2f size = getSizeAttribute(activateAreaNode);
 	const sf::FloatRect area(position.x, position.y, size.x, size.y);
-	auto slowDownArea = std::make_unique<OpenGateArea>(area);
+	const std::string areaName = getProperty(activateAreaNode, "areaName").toString();
+	auto activateArea = std::make_unique<ActivateArea>(areaName, area);
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-	invisibleGameObjects->addChild(std::move(slowDownArea));
-}
-
-void TiledGameObjectsParser::loadCloseGateArea(const Xml& closeGateAreaNode) const
-{
-	const sf::Vector2f position = getPositionAttribute(closeGateAreaNode);
-	const sf::Vector2f size = getSizeAttribute(closeGateAreaNode);
-	const sf::FloatRect area(position.x, position.y, size.x, size.y);
-	auto slowDownArea = std::make_unique<CloseGateArea>(area);
-	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-	invisibleGameObjects->addChild(std::move(slowDownArea));
+	invisibleGameObjects->addChild(std::move(activateArea));
 }
 
 std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
