@@ -8,6 +8,7 @@ namespace ph {
 ActivateArea::ActivateArea(const std::string& areaName, const sf::FloatRect area)
 	:GameObject("activateArea_" + areaName)
 	,mArea(area)
+	,mActivated(false)
 {
 	mPlayer = dynamic_cast<Player*>(mRoot->getChild("LAYER_standingObjects")->getChild("player"));
 }
