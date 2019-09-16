@@ -323,7 +323,8 @@ float Player::getPlayerRotation() const
 	else if (mLastMotion.isMovingUp)
 		return 270.f;
 	
-	PH_UNEXPECTED_SITUATION("Unsupported player rotation");
+	PH_LOG_WARNING("Unsupported player rotation");
+	return 90.f;
 }
 
 void Player::cameraMovement(sf::Time delta) const
