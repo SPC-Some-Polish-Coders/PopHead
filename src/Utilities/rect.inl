@@ -68,3 +68,23 @@ inline bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) co
 
 	return (point.x >= minX) && (point.x <= maxX) && (point.y >= minY) && (point.y <= maxY);
 }
+
+template<typename T>
+bool ph::Rect<T>::positiveRectsIntersects(const sf::Rect<T>& rect) const
+{
+	// this function only works properly for rects with positive width and height
+	return left < rect.left + rect.width
+		&& right() > rect.left
+		&& top < rect.top + rect.height
+		&& bottom() > rect.top;
+}
+
+template<typename T>
+bool ph::Rect<T>::positiveRectsIntersects(const sf::Rect<T>& a, const sf::Rect<T>& b)
+{
+	// this function only works properly for rects with positive width and height
+	return a.left < b.left + b.width
+		&& a.left + a.width > b.left
+		&& a.top < b.top + b.height
+		&& a.top + a.height > b.top;
+}
