@@ -40,7 +40,7 @@ auto Bullet::getCharactersInShotArea() -> std::vector<Character*>
 		auto character = dynamic_cast<Character*>(object.get());
 		if(character == nullptr)
 			continue;
-		if(shotArea.positiveRectsIntersects(character->getTextureBounds()))
+		if(shotArea.doPositiveRectsIntersect(character->getTextureBounds()))
 			charactersInShotArea.emplace_back(character);
 	}
 	return charactersInShotArea;

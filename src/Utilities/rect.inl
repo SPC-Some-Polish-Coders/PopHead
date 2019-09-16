@@ -70,7 +70,7 @@ inline bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) co
 }
 
 template<typename T>
-bool ph::Rect<T>::positiveRectsIntersects(const sf::Rect<T>& rect) const
+bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& rect) const
 {
 	// this function only works properly for rects with positive width and height
 	return left < rect.left + rect.width
@@ -80,7 +80,7 @@ bool ph::Rect<T>::positiveRectsIntersects(const sf::Rect<T>& rect) const
 }
 
 template<typename T>
-bool ph::Rect<T>::positiveRectsIntersects(const sf::Rect<T>& a, const sf::Rect<T>& b)
+bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b)
 {
 	// this function only works properly for rects with positive width and height
 	return a.left < b.left + b.width

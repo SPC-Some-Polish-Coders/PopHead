@@ -36,7 +36,7 @@ void Entrance::updateCurrent(const sf::Time delta)
 	if(playerGameObject == nullptr)
 		return;
 	auto* player = dynamic_cast<Player*>(playerGameObject);
-	if (FloatRect::positiveRectsIntersects(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
+	if (FloatRect::doPositiveRectsIntersect(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
 	{
 		if (mHasPositionToGo)
 			mSceneManager.replaceScene(mFilepath, mPositionToGo);

@@ -109,7 +109,7 @@ auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 		auto* c = dynamic_cast<Character*>(attackableObject.get());
 		if(c == nullptr)
 			continue;
-		if(c->isAttackable() && hitArea.positiveRectsIntersects(c->getGlobalBounds()))
+		if(c->isAttackable() && hitArea.doPositiveRectsIntersect(c->getGlobalBounds()))
 			attackableCharactersInHitArea.emplace_back(c);
 	}
 	return attackableCharactersInHitArea;

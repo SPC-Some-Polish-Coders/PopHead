@@ -76,7 +76,7 @@ void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states
 bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const
 {
 	const FloatRect chunkBounds = chunk.getGlobalBounds();
-	return chunkBounds.positiveRectsIntersects(cameraBounds);
+	return chunkBounds.doPositiveRectsIntersect(cameraBounds);
 }
 
 ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)

@@ -28,7 +28,7 @@ void Lever::updateCurrent(const sf::Time delta)
 	auto* player = dynamic_cast<Character*>(playerGameObject);
 
 	const FloatRect hintArea(getPosition().x, getPosition().y, 12.f, 8.f);
-	if(hintArea.positiveRectsIntersects(player->getGlobalBounds()))
+	if(hintArea.doPositiveRectsIntersect(player->getGlobalBounds()))
 	{
 		mIsPlayerInHintArea = true;
 

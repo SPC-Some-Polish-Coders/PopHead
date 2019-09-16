@@ -26,8 +26,8 @@ public:
 
 	bool containsIncludingBounds(const sf::Vector2<T>& point) const;
 
-	bool positiveRectsIntersects(const sf::Rect<T>& rect) const;
-	static bool positiveRectsIntersects(const sf::Rect<T>& a, const sf::Rect<T>& b);
+	bool doPositiveRectsIntersect(const sf::Rect<T>& rect) const;
+	static bool doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b);
 };
 
 using IntRect = Rect<int>;

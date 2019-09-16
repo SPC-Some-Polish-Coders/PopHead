@@ -17,7 +17,7 @@ void ActivateArea::updateCurrent(const sf::Time delta)
 {
 	if (mPlayer == nullptr || mPlayer->isDead())
 		return;
-	if (FloatRect::positiveRectsIntersects(mPlayer->getGlobalBounds(), mArea))
+	if (FloatRect::doPositiveRectsIntersect(mPlayer->getGlobalBounds(), mArea))
 		mActivated = true;
 	else
 		mActivated = false;

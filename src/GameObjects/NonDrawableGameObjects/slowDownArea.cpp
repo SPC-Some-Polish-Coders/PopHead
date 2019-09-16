@@ -18,7 +18,7 @@ void SlowDownArea::updateCurrent(const sf::Time delta)
 	auto* playerGameObject = standingObjects->getChild("player");
 	if(playerGameObject != nullptr) {
 		auto* player = dynamic_cast<Player*>(playerGameObject);
-		if(mArea.positiveRectsIntersects(player->getGlobalBounds()))
+		if(mArea.doPositiveRectsIntersect(player->getGlobalBounds()))
 			player->slowDown();
 	}
 
@@ -26,7 +26,7 @@ void SlowDownArea::updateCurrent(const sf::Time delta)
 		auto* zombie = dynamic_cast<Zombie*>(child.get());
 		if(zombie == nullptr)
 			continue;
-		if(mArea.positiveRectsIntersects(zombie->getGlobalBounds()))
+		if(mArea.doPositiveRectsIntersect(zombie->getGlobalBounds()))
 			zombie->slowDown();
 	}
 }

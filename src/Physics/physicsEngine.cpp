@@ -118,7 +118,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 
 bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b) const
 {
-	return FloatRect::positiveRectsIntersects(a.getRect(), b.getRect());
+	return FloatRect::doPositiveRectsIntersect(a.getRect(), b.getRect());
 }
 
 void PhysicsEngine::updatePositionsOfDebugRects()
