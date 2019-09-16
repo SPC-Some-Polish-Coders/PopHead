@@ -1,5 +1,5 @@
 #include "chunk.hpp"
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 
 namespace ph {
 
@@ -45,11 +45,11 @@ void Chunk::initializeTextureCoordinates(const TileData& tileData, sf::Vertex* c
 	const auto textureCoordinateIndices = getTextureCoordinateIndices(tileData);
 	const sf::Vector2f textureRectTopLeftCorner = static_cast<sf::Vector2f>(tileData.mTextureRectTopLeftCorner);
 	const auto tileSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getTileSizeInPixels());
-	const sf::FloatRect textureRect(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y, tileSizeInPixels.x, tileSizeInPixels.y);
+	const FloatRect textureRect(textureRectTopLeftCorner.x, textureRectTopLeftCorner.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[textureCoordinateIndices[0]].texCoords = textureRectTopLeftCorner;
-	tile[textureCoordinateIndices[1]].texCoords = Math::getTopRightCorner(textureRect);
-	tile[textureCoordinateIndices[2]].texCoords = Math::getBottomRightCorner(textureRect);
-	tile[textureCoordinateIndices[3]].texCoords = Math::getBottomLeftCorner(textureRect);
+	tile[textureCoordinateIndices[1]].texCoords = textureRect.getTopRight();
+	tile[textureCoordinateIndices[2]].texCoords = textureRect.getBottomRight();
+	tile[textureCoordinateIndices[3]].texCoords = textureRect.getBottomLeft();
 }
 
 auto Chunk::getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>
@@ -84,11 +84,11 @@ void Chunk::initializeVertexPositions(const TileData& tileData, sf::Vertex* cons
 {
 	const sf::Vector2f tileSizeInPixels = static_cast<sf::Vector2f>(mChunkData->getTileSizeInPixels());
 	const sf::Vector2f vertexTopLeftCornerPosition = tileData.mTopLeftCornerPositionInWorld;
-	const sf::FloatRect tileBounds(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y, tileSizeInPixels.x, tileSizeInPixels.y);
+	const FloatRect tileBounds(vertexTopLeftCornerPosition.x, vertexTopLeftCornerPosition.y, tileSizeInPixels.x, tileSizeInPixels.y);
 	tile[0].position = vertexTopLeftCornerPosition;
-	tile[1].position = Math::getTopRightCorner(tileBounds);
-	tile[2].position = Math::getBottomRightCorner(tileBounds);
-	tile[3].position = Math::getBottomLeftCorner(tileBounds);
+	tile[1].position = tileBounds.getTopRight();
+	tile[2].position = tileBounds.getBottomRight();
+	tile[3].position = tileBounds.getBottomLeft();
 }
 
 void Chunk::draw(sf::RenderTarget& target, sf::RenderStates states) const

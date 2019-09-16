@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "GameObjects/gameObject.hpp"
+#include "Utilities/rect.hpp"
 
 namespace ph { 
 
@@ -11,7 +12,7 @@ public:
 	void updateCurrent(const sf::Time delta) override;
 
 private:
-	const sf::FloatRect mArea;
+	const FloatRect mArea;
 };
 
 } 

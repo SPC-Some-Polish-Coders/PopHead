@@ -2,6 +2,7 @@
 #include "Characters/enemy.hpp"
 #include "Logs/logs.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
+#include "Utilities/rect.hpp"
 #include <cmath>
 
 namespace ph {
@@ -33,23 +34,23 @@ auto Bullet::getCharacterWhoWasShot() -> Character*
 
 auto Bullet::getCharactersInShotArea() -> std::vector<Character*>
 {
-	sf::FloatRect shotArea = getShotArea();
+	auto shotArea = getShotArea();
 	std::vector<Character*> charactersInShotArea;
 	for(auto& object : mNodeWithAttackableObjects.getChildren()) {
 		auto character = dynamic_cast<Character*>(object.get());
 		if(character == nullptr)
 			continue;
-		if(Math::areTheyOverlapping(shotArea, character->getTextureBounds()))
+		if(shotArea.doPositiveRectsIntersect(character->getTextureBounds()))
 			charactersInShotArea.emplace_back(character);
 	}
 	return charactersInShotArea;
 }
 
-sf::FloatRect Bullet::getShotArea()
+FloatRect Bullet::getShotArea()
 {
 	sf::Vector2f topLeftCorner = getShotAreaTopLeftCorner();
 	sf::Vector2f size = getShotAreaSize();
-	return sf::FloatRect(topLeftCorner.x, topLeftCorner.y, size.x, size.y);
+	return FloatRect(topLeftCorner.x, topLeftCorner.y, size.x, size.y);
 }
 
 sf::Vector2f Bullet::getShotAreaTopLeftCorner() const
@@ -88,13 +89,13 @@ bool Bullet::isBulletStillInItsRange()
 
 auto Bullet::getCurrentPosition() const -> const sf::Vector2f
 {
-	return  mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
+	return mStartPosition + (mDirection * static_cast<float>(mTraveledDistance));
 }
 
 bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBulletPosition)
 {
-	const sf::FloatRect hitbox = character->getTextureBounds();
-	return Math::isPointInsideRect(currentBulletPosition, hitbox);
+	const FloatRect hitbox = character->getTextureBounds();
+	return hitbox.containsIncludingBounds(currentBulletPosition);
 }
 
 Gun::Gun(SoundPlayer& soundPlayer, const sf::Texture& texture, const float damage)

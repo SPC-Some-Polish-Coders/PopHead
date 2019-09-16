@@ -1,18 +1,15 @@
 #include "rect.hpp"
 
 template<typename T>
-ph::Rect<T>& ph::Rect<T>::operator=(const sf::Rect<T>& rect)
+ph::Rect<T>::Rect(const sf::Rect<T>& rect)
+	: sf::Rect<T>(rect)
 {
-	sf::Rect<T>& thisRect = *this;
-	thisRect = rect;
-	return *this;
 }
 
 template<typename T>
-ph::Rect<T>& ph::Rect<T>::operator=(sf::Rect<T>&& rect)
+ph::Rect<T>& ph::Rect<T>::operator=(const sf::Rect<T>& rect)
 {
-	sf::Rect<T>& thisRect = *this;
-	thisRect = rect;
+	sf::Rect<T>::operator=(rect);
 	return *this;
 }
 
@@ -69,5 +66,25 @@ inline bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) co
 	T minY = std::min(top, b);
 	T maxY = std::max(top, b);
 
-	return (x >= minX) && (x <= maxX) && (y >= minY) && (y <= maxY);
+	return (point.x >= minX) && (point.x <= maxX) && (point.y >= minY) && (point.y <= maxY);
+}
+
+template<typename T>
+bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& rect) const
+{
+	// this function only works properly for rects with positive width and height
+	return left < rect.left + rect.width
+		&& right() > rect.left
+		&& top < rect.top + rect.height
+		&& bottom() > rect.top;
+}
+
+template<typename T>
+bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b)
+{
+	// this function only works properly for rects with positive width and height
+	return a.left < b.left + b.width
+		&& a.left + a.width > b.left
+		&& a.top < b.top + b.height
+		&& a.top + a.height > b.top;
 }

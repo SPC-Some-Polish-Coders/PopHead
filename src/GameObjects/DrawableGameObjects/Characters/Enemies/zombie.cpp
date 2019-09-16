@@ -108,8 +108,8 @@ void Zombie::handlePlayerHit()
 		return;
 	auto* player = dynamic_cast<Character*>(playerGameObject);
 	const sf::Vector2f zombieWorldPosition = getWorldPosition();
-	sf::FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
-	if(Math::areTheyOverlapping(zombieDamageArea, player->getGlobalBounds()))
+	FloatRect zombieDamageArea(zombieWorldPosition.x - 0.3f, zombieWorldPosition.y - 0.3f, 20.6f, 20.6f);
+	if(zombieDamageArea.doPositiveRectsIntersect(player->getGlobalBounds()))
 		player->takeDamage(damage);
 }
 

@@ -3,6 +3,7 @@
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
+#include "Utilities/rect.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
@@ -323,14 +324,15 @@ float Player::getPlayerRotation() const
 	else if (mLastMotion.isMovingUp)
 		return 270.f;
 	
-	PH_UNEXPECTED_SITUATION("Unsupported player rotation");
+	PH_LOG_WARNING("Unsupported player rotation");
+	return 90.f;
 }
 
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = GameObject::getGlobalBounds();
-	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
+	const FloatRect characterBounds = GameObject::getGlobalBounds();
+	mGameData->getRenderer().moveCamera(characterBounds.getCenter(), cameraMotionSpeed * delta.asSeconds());
 }
 
 void Player::updateListenerPosition() const

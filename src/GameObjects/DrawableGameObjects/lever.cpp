@@ -1,6 +1,6 @@
 #include "lever.hpp"
 #include "character.hpp"
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 #include "gate.hpp"
 
 namespace ph {
@@ -27,8 +27,8 @@ void Lever::updateCurrent(const sf::Time delta)
 		return;
 	auto* player = dynamic_cast<Character*>(playerGameObject);
 
-	const sf::FloatRect hintArea(getPosition().x, getPosition().y, 12.f, 8.f);
-	if(Math::areTheyOverlapping(hintArea, player->getGlobalBounds()))
+	const FloatRect hintArea(getPosition().x, getPosition().y, 12.f, 8.f);
+	if(hintArea.doPositiveRectsIntersect(player->getGlobalBounds()))
 	{
 		mIsPlayerInHintArea = true;
 

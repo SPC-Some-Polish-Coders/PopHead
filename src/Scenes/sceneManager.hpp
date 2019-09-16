@@ -14,9 +14,14 @@ public:
     SceneManager();
 
     void replaceScene(const std::string& sceneSourceCodeFilePath);
+    void replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition);
     void popScene();
     
 	void changingScenesProcess();
+
+	bool hasPlayerPosition() const;
+	const sf::Vector2f& getPlayerPosition() const;
+
 private:
 	void replaceAction();
 	void popAction();
@@ -36,6 +41,9 @@ private:
     GameData* mGameData;
     bool mIsReplacing;
     bool mIsPopping;
+	
+	bool mHasPlayerPosition;
+	sf::Vector2f mPlayerPosition;
 };
 
 }

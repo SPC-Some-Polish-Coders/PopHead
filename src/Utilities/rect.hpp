@@ -12,8 +12,8 @@ public:
 	// use all constructors from sf::Rect
 	using sf::Rect<T>::Rect;
 
+	Rect(const sf::Rect<T>& rect);
 	Rect& operator=(const sf::Rect<T>& rect);
-	Rect& operator=(sf::Rect<T>&& rect);
 
 	T right() const;
 	T bottom() const;
@@ -25,6 +25,9 @@ public:
 	sf::Vector2<T> getBottomRight() const;
 
 	bool containsIncludingBounds(const sf::Vector2<T>& point) const;
+
+	bool doPositiveRectsIntersect(const sf::Rect<T>& rect) const;
+	static bool doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b);
 };
 
 using IntRect = Rect<int>;

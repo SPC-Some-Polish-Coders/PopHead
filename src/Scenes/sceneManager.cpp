@@ -16,6 +16,7 @@ SceneManager::SceneManager()
 	,mGameData(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
+	,mHasPlayerPosition(false)
 {
 }
 
@@ -26,6 +27,16 @@ void SceneManager::changingScenesProcess()
 
 	if (mIsReplacing)
 		replaceAction();
+}
+
+bool SceneManager::hasPlayerPosition() const
+{
+	return mHasPlayerPosition;
+}
+
+const sf::Vector2f& SceneManager::getPlayerPosition() const
+{
+	return mPlayerPosition;
 }
 
 void SceneManager::popAction()
@@ -50,6 +61,7 @@ void SceneManager::replaceAction()
 		sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
+	mHasPlayerPosition = false;
 }
 
 void SceneManager::handleEvent(const sf::Event& e)
@@ -67,6 +79,14 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
 	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
+}
+
+void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
+{
+	mFileOfSceneToMake = sceneSourceCodeFilePath;
+	mIsReplacing = true;
+	mHasPlayerPosition = true;
+	mPlayerPosition = playerPosition;
 }
 
 void SceneManager::popScene()

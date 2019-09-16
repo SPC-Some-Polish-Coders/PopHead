@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
+#include "Utilities/rect.hpp"
 #include <array>
 
 namespace ph {
@@ -20,7 +21,7 @@ public:
 private:
 	auto getCharacterWhoWasShot() -> Character*;
 	auto getCharactersInShotArea() -> std::vector<Character*>;
-	sf::FloatRect getShotArea();
+	FloatRect getShotArea();
 	sf::Vector2f getShotAreaTopLeftCorner() const;
 	sf::Vector2f getShotAreaSize() const;
 	auto getFirstCharacterOnShotLine(std::vector<Character*> charactersInShotArea) -> Character*;
