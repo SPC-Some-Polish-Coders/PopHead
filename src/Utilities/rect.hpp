@@ -12,8 +12,8 @@ public:
 	// use all constructors from sf::Rect
 	using sf::Rect<T>::Rect;
 
+	Rect(const sf::Rect<T>& rect);
 	Rect& operator=(const sf::Rect<T>& rect);
-	Rect& operator=(sf::Rect<T>&& rect);
 
 	T right() const;
 	T bottom() const;
