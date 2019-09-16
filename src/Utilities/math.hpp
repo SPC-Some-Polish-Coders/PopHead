@@ -11,8 +11,6 @@ namespace Math
 	float getRightBound(const sf::FloatRect& bounds);
 	float getBottomBound(const sf::FloatRect& bounds);
 
-	float getDistanceBetweenPoints(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint);
-
 	sf::Vector2f getCenter(const sf::FloatRect& bounds);
 
 	sf::Vector2f getTopLeftCorner(const sf::FloatRect& bounds);

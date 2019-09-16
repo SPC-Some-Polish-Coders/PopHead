@@ -6,7 +6,7 @@
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
 #include "Utilities/random.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
-#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipment.hpp"
 
 namespace ph {
 
@@ -63,7 +63,7 @@ Zombie::Zombie(GameData* gameData)
 	//temporary random generate until we develop this system
 	int numberOfBullets = Random::generateNumber(0, 2);
 	for(int i = 0; i < numberOfBullets; ++i)
-		dynamic_cast<Equipement*>(getChild("Equipement"))->putItem(std::make_unique<BulletItem>(mGameData));
+		dynamic_cast<Equipment*>(getChild("Equipment"))->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Zombie::updateCurrent(sf::Time delta)

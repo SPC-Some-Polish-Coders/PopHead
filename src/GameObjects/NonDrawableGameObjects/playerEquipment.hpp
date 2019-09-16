@@ -1,15 +1,15 @@
 #pragma once
 
-#include "GameObjects/NonDrawableGameObjects/equipement.hpp"
+#include "GameObjects/NonDrawableGameObjects/equipment.hpp"
 
 namespace ph {
 
 class Item;
 
-class PlayerEquipement : public Equipement
+class PlayerEquipment : public Equipment
 {
 public:
-	PlayerEquipement();
+	PlayerEquipment();
 	
 	void updateCurrent(sf::Time delta) override;
 	void init() override;
