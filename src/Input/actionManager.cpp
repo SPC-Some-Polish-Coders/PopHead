@@ -4,9 +4,10 @@
 
 namespace ph {
 
-ActionManager::ActionManager()
-	:mEnabled(true)
+void ActionManager::init()
 {
+	mEnabled = true;
+
 	///TODO: loading player's favorite controls from file
 
 	//setting up default moving actions

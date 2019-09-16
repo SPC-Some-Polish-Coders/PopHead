@@ -4,31 +4,31 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <functional>
 
 namespace ph {
 
 class ActionManager
 {
 public:
-	ActionManager();
+	// TODO: Init it somewhere else
+	static void init();
 
-	void addAction(const std::string& action, std::vector<sf::Keyboard::Key>);
-	void addAction(const std::string& action, sf::Keyboard::Key);
-	void addKeyToAction(const std::string& action, sf::Keyboard::Key);
-	void deleteKeyFromAction(const std::string& action, sf::Keyboard::Key);
-	void deleteAction(const std::string& action);
-	void clearAllActions() noexcept;
+	static void addAction(const std::string& action, std::vector<sf::Keyboard::Key>);
+	static void addAction(const std::string& action, sf::Keyboard::Key);
+	static void addKeyToAction(const std::string& action, sf::Keyboard::Key);
+	static void deleteKeyFromAction(const std::string& action, sf::Keyboard::Key);
+	static void deleteAction(const std::string& action);
+	static void clearAllActions() noexcept;
 
-	void setEnabled(bool enabled) { mEnabled = enabled; }
+	static void setEnabled(bool enabled) { mEnabled = enabled; }
 
-	bool isActionPressed(const std::string& action);
+	static bool isActionPressed(const std::string& action);
 	/*bool isActionJustPressed(const std::string& action);
 	bool isActionJustReleased(const std::string& action);*/
 
 private:
-	std::map< std::string, std::vector<sf::Keyboard::Key> > mActions;
-	bool mEnabled;
+	inline static std::map<std::string, std::vector<sf::Keyboard::Key>> mActions;
+	inline static bool mEnabled;
 };
 
 }

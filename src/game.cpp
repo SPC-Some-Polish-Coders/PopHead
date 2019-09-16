@@ -2,6 +2,7 @@
 #include "Resources/loadFonts.hpp"
 #include "Input/globalKeyboardShortcuts.hpp"
 #include "Input/eventDispatcher.hpp"
+#include "Input/actionManager.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -17,7 +18,6 @@ Game::Game()
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
-	,mInput{new Input()}
 	,mRenderer{new Renderer(mRenderWindow)}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
@@ -34,7 +34,6 @@ Game::Game()
 		mAIManager.get(),
 		mSceneManager.get(),
 		mMap.get(),
-		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
@@ -53,6 +52,8 @@ Game::Game()
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mRenderWindow.setVerticalSyncEnabled(true);
+
+	ActionManager::init();
 }
 
 void Game::run()
