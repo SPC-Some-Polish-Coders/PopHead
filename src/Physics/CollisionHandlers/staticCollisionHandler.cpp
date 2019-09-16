@@ -1,7 +1,6 @@
 #include "staticCollisionHandler.hpp"
 
 #include "Physics/CollisionBody/collisionBody.hpp"
-#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 
 namespace ph {
@@ -40,8 +39,8 @@ void StaticCollisionHandler::makeKinematicBodyStickToStaticBody()
 
 bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisX() const
 {
-	return (Math::getBottomBound(mKinematicBodyPreviousRect) > mStaticBodyRect.top &&
-		mKinematicBodyPreviousRect.top < Math::getBottomBound(mStaticBodyRect));
+	return (mKinematicBodyPreviousRect.bottom() > mStaticBodyRect.top &&
+		mKinematicBodyPreviousRect.top < mStaticBodyRect.bottom());
 }
 
 bool StaticCollisionHandler::isKinematicBodyOnTheLeftOfTheStaticBody() const
@@ -56,13 +55,13 @@ void StaticCollisionHandler::stickToLeft()
 
 void StaticCollisionHandler::stickToRight()
 {
-	mKinematicBody->setPosition({Math::getRightBound(mStaticBodyRect), mKinematicBodyRect.top});
+	mKinematicBody->setPosition({mStaticBodyRect.right(), mKinematicBodyRect.top});
 }
 
 bool StaticCollisionHandler::isKinematicBodyCollidingOnAxisY() const
 {
-	return (Math::getRightBound(mKinematicBodyPreviousRect) > mStaticBodyRect.left &&
-		mKinematicBodyPreviousRect.left < Math::getRightBound(mStaticBodyRect));
+	return (mKinematicBodyPreviousRect.right() > mStaticBodyRect.left &&
+		mKinematicBodyPreviousRect.left < mStaticBodyRect.right());
 }
 
 bool StaticCollisionHandler::isKinematicBodyUpOfTheStaticBody() const
@@ -77,7 +76,7 @@ void StaticCollisionHandler::stickToTop()
 
 void StaticCollisionHandler::stickToBottom()
 {
-	mKinematicBody->setPosition({mKinematicBodyRect.left, Math::getBottomBound(mStaticBodyRect)});
+	mKinematicBody->setPosition({mKinematicBodyRect.left, mStaticBodyRect.bottom()});
 }
 
 }

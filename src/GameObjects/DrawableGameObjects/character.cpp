@@ -71,7 +71,7 @@ void Character::pushCharacter(const sf::Vector2f& pushVector)
 
 void Character::addHp(int hp)
 {
-	if (mHp + hp > mMaxHp)
+	if (mHp + hp > static_cast<int>(mMaxHp))
 		mHp = mMaxHp;
 	else
 		mHp += hp;
