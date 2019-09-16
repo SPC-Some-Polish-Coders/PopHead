@@ -1,6 +1,6 @@
 #include "GameObjects/NonDrawableGameObjects/activateArea.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
 
 namespace ph {
@@ -17,7 +17,7 @@ void ActivateArea::updateCurrent(const sf::Time delta)
 {
 	if (mPlayer == nullptr || mPlayer->isDead())
 		return;
-	if (Math::areTheyOverlapping(mPlayer->getGlobalBounds(), mArea))
+	if (FloatRect::positiveRectsIntersects(mPlayer->getGlobalBounds(), mArea))
 		mActivated = true;
 	else
 		mActivated = false;

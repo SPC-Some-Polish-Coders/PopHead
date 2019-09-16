@@ -1,5 +1,5 @@
 #include "entrance.hpp"
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Logs/logs.hpp"
@@ -23,7 +23,7 @@ void Entrance::updateCurrent(const sf::Time delta)
 	if(playerGameObject == nullptr)
 		return;
 	auto* player = dynamic_cast<Player*>(playerGameObject);
-	if (Math::areTheyOverlapping(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
+	if (FloatRect::positiveRectsIntersects(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
 		mSceneManager.replaceScene(mFilepath);
 }
 

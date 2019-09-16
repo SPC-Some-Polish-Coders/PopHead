@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 
 namespace ph {
 
@@ -24,17 +24,17 @@ private:
 	void setPreviousPositionToCurrentPosition();
 
 public:
-	auto getPosition() const -> const sf::Vector2f { return Math::getTopLeftCorner(mRect); }
+	auto getPosition() const -> const sf::Vector2f { return mRect.getTopLeft(); }
 	sf::Vector2f getFixedPosition() const;
 	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
 	auto getForceVector() const -> const sf::Vector2f { return mForceVector; }
-	auto getPositionOfCenter() const -> sf::Vector2f { return Math::getCenter(mRect); }
+	auto getPositionOfCenter() const -> sf::Vector2f { return mRect.getCenter(); }
 	auto getRect() const -> const sf::FloatRect& { return mRect; }
 	auto getPreviousRect() const -> sf::FloatRect { return {mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height}; }
 	float getMass() const { return mMass; }
 
 private:
-	sf::FloatRect mRect;
+	FloatRect mRect;
 	sf::Vector2f mPreviousPosition;
 	sf::Vector2f mVelocity;
 	sf::Vector2f mForceVector;

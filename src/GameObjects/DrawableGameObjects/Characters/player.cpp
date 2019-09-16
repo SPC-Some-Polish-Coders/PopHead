@@ -3,6 +3,7 @@
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
+#include "Utilities/rect.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
 #include "GameObjects/DrawableGameObjects/gun.hpp"
 #include "GameObjects/DrawableGameObjects/melee.hpp"
@@ -330,8 +331,8 @@ float Player::getPlayerRotation() const
 void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
-	const sf::FloatRect characterBounds = GameObject::getGlobalBounds();
-	mGameData->getRenderer().moveCamera(Math::getCenter(characterBounds), cameraMotionSpeed * delta.asSeconds());
+	const FloatRect characterBounds = GameObject::getGlobalBounds();
+	mGameData->getRenderer().moveCamera(characterBounds.getCenter(), cameraMotionSpeed * delta.asSeconds());
 }
 
 void Player::updateListenerPosition() const

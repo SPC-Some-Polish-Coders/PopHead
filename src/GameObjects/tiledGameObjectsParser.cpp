@@ -21,7 +21,7 @@
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Utilities/xml.hpp"
-#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
@@ -240,11 +240,11 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 {
 	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
 	const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
-	const sf::FloatRect cameraBounds(
+	const FloatRect cameraBounds(
 		cameraTopLeftCornerPosition.x, cameraTopLeftCornerPosition.y,
 		cameraViewSize.x, cameraViewSize.y
 	);
-	const sf::Vector2f cameraCenter = Math::getCenter(cameraBounds);
+	const sf::Vector2f cameraCenter = cameraBounds.getCenter();
 	
 	auto& camera = mGameData->getRenderer().getCamera();
 	camera.setSize(cameraViewSize);

@@ -1,6 +1,8 @@
 #include "GameObjects/DrawableGameObjects/melee.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Physics/CollisionBody/collisionBody.hpp"
+#include "Utilities/math.hpp"
+#include "Utilities/rect.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -100,14 +102,14 @@ float Swing::angleOfPointToStart(sf::Vector2f point) const
 
 auto Swing::getAttackableCharactersInHitArea() const -> std::vector<Character*>
 {
-	const sf::FloatRect hitArea(mStartPosition.x - 50, mStartPosition.y - 50, 100, 100);
+	const FloatRect hitArea(mStartPosition.x - 50, mStartPosition.y - 50, 100, 100);
 	std::vector<Character*> attackableCharactersInHitArea;
 
 	for(auto& attackableObject : mNodeWithAttackableObjects.getChildren()) {
 		auto* c = dynamic_cast<Character*>(attackableObject.get());
 		if(c == nullptr)
 			continue;
-		if(c->isAttackable() && Math::areTheyOverlapping(hitArea, c->getGlobalBounds()))
+		if(c->isAttackable() && hitArea.positiveRectsIntersects(c->getGlobalBounds()))
 			attackableCharactersInHitArea.emplace_back(c);
 	}
 	return attackableCharactersInHitArea;
@@ -151,15 +153,14 @@ void MeleeWeapon::attack(const sf::Vector2f attackDirection, float attackRotatio
 	setRotation(attackRotation + 45.f + mRotationRange / 2.f);
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 
-	auto playerRect = mParent->getGlobalBounds();
-	sf::Vector2f centerOfPlayer(playerRect.left + playerRect.width / 2.f, playerRect.top + playerRect.height / 2.f);
+	FloatRect playerRect = mParent->getGlobalBounds();
 
 	//sf::Vector2f rightHandLocalPosition = getRightHandLocalPosition(attackDirection);
 	sf::Vector2f centerOfParentCollisionBody(playerRect.width / 2.f, playerRect.height / 2.f);
-	centerOfParentCollisionBody = Math::getTopLeftCorner(playerRect) - mParent->getPosition() + centerOfParentCollisionBody;
+	centerOfParentCollisionBody = playerRect.getTopLeft() - mParent->getPosition() + centerOfParentCollisionBody;
 	setPosition(centerOfParentCollisionBody);
 
-	Swing swing(*standingObjects, centerOfPlayer, mDamage, mRange, mRotationRange, attackRotation);
+	Swing swing(*standingObjects, playerRect.getCenter(), mDamage, mRange, mRotationRange, attackRotation);
 	mShouldBeDrawn = true;
 }
 

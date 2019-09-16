@@ -1,6 +1,6 @@
 #include "physicsEngine.hpp"
-#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/rect.hpp"
 
 namespace ph {
 
@@ -118,7 +118,7 @@ void PhysicsEngine::handleKinematicCollisionsFor(CollisionBody& kinematicBody)
 
 bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody& b) const
 {
-	return Math::areTheyOverlapping(a.getRect(), b.getRect());
+	return FloatRect::positiveRectsIntersects(a.getRect(), b.getRect());
 }
 
 void PhysicsEngine::updatePositionsOfDebugRects()
