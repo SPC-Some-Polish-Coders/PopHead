@@ -158,13 +158,34 @@ void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
 	const std::string sceneFileName = *getSceneFileName(scenePathRelativeToMapFile);
 	const std::string scenePathFromResources = "scenes/" + sceneFileName;
 
-	auto entrance = std::make_unique<Entrance>(
-		mGameData->getSceneManager(),
-		scenePathFromResources,
-		"entrance",
-		getSizeAttribute(entranceNode),
-		getPositionAttribute(entranceNode)
-	);
+	std::unique_ptr<Entrance> entrance;
+
+	if (getProperty(entranceNode, "isEntranceWithCustomPosition").toBool())
+	{
+		sf::Vector2f positionToGo(
+			getProperty(entranceNode, "gotoX").toFloat(),
+			getProperty(entranceNode, "gotoY").toFloat()
+		);
+
+		entrance = std::make_unique<Entrance>(
+			mGameData->getSceneManager(),
+			scenePathFromResources,
+			"entrance",
+			getSizeAttribute(entranceNode),
+			getPositionAttribute(entranceNode),
+			positionToGo
+			);
+	}
+	else
+	{
+		entrance = std::make_unique<Entrance>(
+			mGameData->getSceneManager(),
+			scenePathFromResources,
+			"entrance",
+			getSizeAttribute(entranceNode),
+			getPositionAttribute(entranceNode)
+			);
+	}
 
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(entrance));
@@ -253,9 +274,16 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 
 void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 {
+	auto& sceneManager = mGameData->getSceneManager();
+
 	auto player = std::make_unique<Player>(mGameData);
 	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
-	auto playerPosition = getPositionAttribute(playerNode);
+
+	sf::Vector2f playerPosition;
+	if (sceneManager.hasPlayerPosition())
+		playerPosition = sceneManager.getPlayerPosition();
+	else
+		playerPosition = getPositionAttribute(playerNode);
 	player->setPosition(playerPosition);
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
@@ -266,7 +294,7 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 
 void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 {
-	if(!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool()) //temporary
+	if(!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool())
 		return;
 
 	const std::string name = getProperty(cutSceneNode, "name").toString();

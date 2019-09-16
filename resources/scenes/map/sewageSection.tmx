@@ -514,6 +514,7 @@
   <object id="19" type="Entrance" x="609.375" y="106.625" width="30" height="30">
    <properties>
     <property name="gotoScene" type="file" value="../citySouth.xml"/>
+    <property name="isEntranceWithCustomPosition" type="bool" value="false"/>
    </properties>
   </object>
   <object id="20" type="Gate" x="607.63" y="272.125">

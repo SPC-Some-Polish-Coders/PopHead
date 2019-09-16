@@ -7,11 +7,24 @@
 namespace ph{
 
 Entrance::Entrance(SceneManager& sceneManager, const std::string filepath, const std::string name,
-	const sf::Vector2f size, const sf::Vector2f position)
+	const sf::Vector2f size, const sf::Vector2f position, const sf::Vector2f positionToGo)
 	:GameObject(name)
 	,mSceneManager(sceneManager)
 	,mEntranceArea(size)
 	,mFilepath(filepath)
+	,mPositionToGo(positionToGo)
+	,mHasPositionToGo(true)
+{
+	mEntranceArea.setPosition(position);
+}
+
+Entrance::Entrance(SceneManager& sceneManager, const std::string filepath, const std::string name,
+	const sf::Vector2f size, const sf::Vector2f position)
+	:GameObject(name)
+	, mSceneManager(sceneManager)
+	, mEntranceArea(size)
+	, mFilepath(filepath)
+	, mHasPositionToGo(false)
 {
 	mEntranceArea.setPosition(position);
 }
@@ -24,7 +37,12 @@ void Entrance::updateCurrent(const sf::Time delta)
 		return;
 	auto* player = dynamic_cast<Player*>(playerGameObject);
 	if (FloatRect::positiveRectsIntersects(player->getGlobalBounds(), mEntranceArea.getGlobalBounds()))
-		mSceneManager.replaceScene(mFilepath);
+	{
+		if (mHasPositionToGo)
+			mSceneManager.replaceScene(mFilepath, mPositionToGo);
+		else
+			mSceneManager.replaceScene(mFilepath);
+	}
 }
 
 }

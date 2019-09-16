@@ -752,6 +752,7 @@
   <object id="3" type="Entrance" x="1760" y="240.667" width="16" height="16">
    <properties>
     <property name="gotoScene" type="file" value="../sewage.xml"/>
+    <property name="isEntranceWithCustomPosition" type="bool" value="false"/>
    </properties>
   </object>
   <object id="5" type="Entrance" x="2374" y="179.333" width="224.667" height="141.333">
