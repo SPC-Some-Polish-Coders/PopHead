@@ -66,5 +66,5 @@ inline bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) co
 	T minY = std::min(top, b);
 	T maxY = std::max(top, b);
 
-	return (x >= minX) && (x <= maxX) && (y >= minY) && (y <= maxY);
+	return (point.x >= minX) && (point.x <= maxX) && (point.y >= minY) && (point.y <= maxY);
 }
