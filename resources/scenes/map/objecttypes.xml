@@ -13,8 +13,8 @@
  </objecttype>
  <objecttype name="CrawlingNpc" color="#f4ef5f"/>
  <objecttype name="CutScene" color="#ffff00">
+  <property name="cutSceneName" type="string" default=""/>
   <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
-  <property name="name" type="string"/>
  </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>

@@ -3,6 +3,7 @@
 #include "NonDrawableGameObjects/spawner.hpp"
 #include "NonDrawableGameObjects/slowDownArea.hpp"
 #include "NonDrawableGameObjects/activateArea.hpp"
+#include "NonDrawableGameObjects/cutsceneArea.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
@@ -219,6 +220,17 @@ void TiledGameObjectsParser::loadActivateArea(const Xml& activateAreaNode) const
 	invisibleGameObjects->addChild(std::move(activateArea));
 }
 
+void TiledGameObjectsParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
+{
+	const sf::Vector2f position = getPositionAttribute(cutSceneAreaNode);
+	const sf::Vector2f size = getSizeAttribute(cutSceneAreaNode);
+	const sf::FloatRect area(position.x, position.y, size.x, size.y);
+	const std::string areaName = getProperty(cutSceneAreaNode, "cutSceneName").toString();
+	auto cutSceneArea = std::make_unique<CutSceneArea>(areaName, area);
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(cutSceneArea));
+}
+
 std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
 {
 	std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
@@ -301,10 +313,13 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 
 void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 {
-	if(!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool())
+	if (!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool())
+	{
+		loadCutSceneArea(cutSceneNode);
 		return;
+	}
 
-	const std::string name = getProperty(cutSceneNode, "name").toString();
+	const std::string name = getProperty(cutSceneNode, "cutSceneName").toString();
 
 	if(name == "subtitlesBeforeStartGameCutscene") {
 		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(mRoot, mGameData->getSceneManager());
