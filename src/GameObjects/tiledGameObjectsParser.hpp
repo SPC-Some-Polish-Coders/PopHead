@@ -30,6 +30,7 @@ private:
 	void loadEntrance(const Xml& entranceNode) const;
 	void loadSlowDownArea(const Xml& slowDownAreaNode) const;
 	void loadActivateArea(const Xml& openGateAreaNode) const;
+	void loadCutSceneArea(const Xml& cutSceneAreaNode) const;
 	std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 	void loadGate(const Xml& gateNode) const;
 	void loadLever(const Xml& leverNode) const;

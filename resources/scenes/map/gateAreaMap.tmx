@@ -461,7 +461,7 @@
  </layer>
  <objectgroup id="4" name="gameObjects">
   <object id="1" type="Camera" x="250" y="528" width="640" height="480"/>
-  <object id="3" name="Player" type="Player" x="573.213" y="787.903">
+  <object id="3" name="Player" type="Player" x="515.88" y="780.57">
    <point/>
   </object>
   <object id="46" name="Zombie" type="Zombie" x="673.717" y="684.573">
@@ -589,7 +589,7 @@
   </object>
   <object id="172" type="CutScene" x="1289.5" y="161" width="262.5" height="47">
    <properties>
-    <property name="name" value="gateGuardDialogue"/>
+    <property name="cutSceneName" value="gateGuardDialogue"/>
    </properties>
   </object>
  </objectgroup>
