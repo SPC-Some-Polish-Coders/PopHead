@@ -668,6 +668,7 @@
     <property name="gotoScene" type="file" value="canyonMap.tmx"/>
     <property name="gotoX" type="float" value="2400"/>
     <property name="gotoY" type="float" value="780"/>
+    <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
