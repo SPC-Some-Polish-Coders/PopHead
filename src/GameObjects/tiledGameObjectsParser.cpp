@@ -93,6 +93,13 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
+
+	if (mHasLoadedPlayer)
+	{
+		const auto& player = *mRoot.getChild("LAYER_standingObjects")->getChild("player");
+		auto playerPosition = player.getPosition();
+		mGameData->getRenderer().getCamera().setCenter(playerPosition);
+	}
 }
 
 void TiledGameObjectsParser::loadLayerObjects() const
