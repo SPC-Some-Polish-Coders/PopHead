@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "Resources/loadFonts.hpp"
 #include "Input/globalKeyboardShortcuts.hpp"
+#include "Input/eventDispatcher.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -85,9 +86,10 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 
 void Game::handleEvents()
 {
-	sf::Event e;
-	while(mRenderWindow.pollEvent(e))
+	ph::Event phEvent;
+	while(EventDispatcher::dispatchEvent(phEvent, mRenderWindow))
 	{
+		sf::Event e = std::get<sf::Event>(phEvent);
 		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), e);
 		mEfficiencyRegister->handleEvent(e);
 		mTerminal->handleEvent(e);
