@@ -212,6 +212,41 @@
     <object id="1" x="0" y="0" width="16" height="16"/>
    </objectgroup>
   </tile>
+  <tile id="238">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="239">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="240">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="241">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="243">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="244">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="245">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
   <tile id="294">
    <objectgroup draworder="index">
     <object id="1" x="0" y="0" width="16" height="16"/>
@@ -348,9 +383,9 @@
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
-69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,334,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
-69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,334,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
-69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,334,334,334,334,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
+69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
+69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
+69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
@@ -408,7 +443,7 @@
 0,0,0,0,0,0,0,39,359,360,359,360,359,360,359,360,359,360,231,232,289,290,322,0,0,0,0,0,0,0,0,193,0,0,238,239,240,241,242,244,245,246,0,71,72,0,41,0,0,0,0,0,1,2,487,488,489,490,490,490,490,490,491,0,0,71,72,0,206,207,208,209,210,211,0,0,225,0,0,7,
 0,0,0,0,0,0,0,0,327,328,327,328,327,328,327,328,327,328,135,136,194,353,354,0,0,0,0,0,0,0,0,225,0,0,270,271,272,273,274,276,277,278,0,103,104,0,0,0,0,0,0,353,354,0,0,0,258,0,0,0,0,0,0,0,0,103,104,135,136,239,240,241,242,243,0,0,257,0,0,7,
 0,0,0,0,0,0,0,0,359,360,359,360,359,360,359,360,359,360,167,168,130,0,0,0,0,0,0,0,0,0,0,257,0,0,0,0,0,0,0,0,0,0,9,260,0,0,0,0,0,0,193,0,0,0,0,130,0,0,0,0,0,0,0,0,0,0,0,167,168,271,272,273,274,275,0,0,289,0,0,39,
-0,0,0,0,0,0,0,0,327,328,327,328,327,328,327,328,327,328,135,136,193,0,0,0,0,0,0,0,0,0,0,353,0,0,0,0,0,0,0,0,0,0,41,292,0,0,0,0,12,225,0,0,0,258,193,0,0,0,0,0,0,0,0,0,0,0,0,199,200,0,0,0,0,0,0,0,130,0,0,7,
+0,0,0,0,0,0,0,0,327,328,327,328,327,328,327,328,327,328,135,136,193,0,0,0,0,0,0,0,0,0,0,353,0,0,0,0,0,0,0,0,0,0,41,292,0,0,0,0,12,318,0,0,0,258,193,0,0,0,0,0,0,0,0,0,0,0,0,199,200,0,0,0,0,0,0,0,130,0,0,7,
 0,0,0,0,0,0,0,0,359,360,359,360,359,360,359,360,359,360,167,168,132,7,8,0,0,0,0,0,0,0,0,353,0,0,0,0,0,0,0,0,0,0,135,136,0,0,0,243,44,0,0,0,162,0,0,0,0,0,0,0,0,0,0,7,0,0,0,231,232,0,0,0,0,0,0,0,162,0,0,39,
 0,0,0,0,0,0,0,0,327,328,327,328,327,328,327,328,327,328,193,193,164,39,40,0,0,0,0,0,0,0,0,193,0,0,78,79,80,81,82,83,0,0,167,168,0,0,0,275,130,0,0,0,0,0,0,0,0,0,7,8,9,10,0,39,323,324,199,200,0,0,0,0,0,0,0,0,194,0,0,7,
 0,0,0,0,0,0,0,0,359,360,359,360,359,360,359,360,359,360,354,71,72,73,74,0,0,0,0,0,0,0,0,225,0,0,110,111,112,113,114,115,0,9,327,328,7,0,0,0,9,0,0,9,0,0,0,0,289,290,39,40,41,42,354,260,355,356,231,232,78,79,80,81,82,83,0,0,226,0,0,7,
@@ -527,10 +562,10 @@
 </data>
  </layer>
  <objectgroup id="35" name="gameObjects">
-  <object id="9" name="Zombie" type="Zombie" x="569" y="1354">
+  <object id="9" name="Zombie" type="Zombie" x="589" y="1042">
    <point/>
   </object>
-  <object id="14" name="Zombie" type="Zombie" x="492" y="1370">
+  <object id="14" name="Zombie" type="Zombie" x="512" y="1058">
    <point/>
   </object>
   <object id="24" name="Zombie" type="Zombie" x="616" y="1100.67">
@@ -662,7 +697,7 @@
   <object id="433" type="Player" x="536.269" y="1919.18">
    <point/>
   </object>
-  <object id="434" type="Camera" x="220.939" y="1617.18" width="640" height="480"/>
+  <object id="434" type="Camera" x="224.939" y="1649.18" width="640" height="480"/>
   <object id="435" type="Entrance" x="426.833" y="1963.5" width="235.667" height="73">
    <properties>
     <property name="gotoScene" type="file" value="canyonMap.tmx"/>
@@ -673,109 +708,109 @@
   </object>
   <object id="436" type="Entrance" x="426.833" y="1963.5" width="235.667" height="73">
    <properties>
-    <property name="gotoScene" type="file" value="canyonMap.tmx"/>
+    <property name="gotoScene" type="file" value="../canyon.xml"/>
     <property name="gotoX" type="float" value="2400"/>
     <property name="gotoY" type="float" value="780"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="437" name="Zombie" type="Zombie" x="468.5" y="1452">
+  <object id="437" name="Zombie" type="Zombie" x="488.5" y="1140">
    <point/>
   </object>
-  <object id="438" name="Zombie" type="Zombie" x="509" y="1490">
+  <object id="438" name="Zombie" type="Zombie" x="529" y="1178">
    <point/>
   </object>
-  <object id="439" name="Zombie" type="Zombie" x="547" y="1442.5">
+  <object id="439" name="Zombie" type="Zombie" x="567" y="1130.5">
    <point/>
   </object>
-  <object id="440" name="Zombie" type="Zombie" x="649.5" y="1408.5">
+  <object id="440" name="Zombie" type="Zombie" x="669.5" y="1096.5">
    <point/>
   </object>
-  <object id="441" name="Zombie" type="Zombie" x="460" y="1545">
+  <object id="441" name="Zombie" type="Zombie" x="480" y="1233">
    <point/>
   </object>
-  <object id="442" name="Zombie" type="Zombie" x="503" y="1535">
+  <object id="442" name="Zombie" type="Zombie" x="523" y="1223">
    <point/>
   </object>
-  <object id="443" name="Zombie" type="Zombie" x="556" y="1522">
+  <object id="443" name="Zombie" type="Zombie" x="576" y="1210">
    <point/>
   </object>
-  <object id="444" name="Zombie" type="Zombie" x="610" y="1535">
+  <object id="444" name="Zombie" type="Zombie" x="630" y="1223">
    <point/>
   </object>
-  <object id="445" name="Zombie" type="Zombie" x="639" y="1549">
+  <object id="445" name="Zombie" type="Zombie" x="659" y="1237">
    <point/>
   </object>
-  <object id="446" name="Zombie" type="Zombie" x="613" y="1564">
+  <object id="446" name="Zombie" type="Zombie" x="633" y="1252">
    <point/>
   </object>
-  <object id="447" name="Zombie" type="Zombie" x="577" y="1562">
+  <object id="447" name="Zombie" type="Zombie" x="597" y="1250">
    <point/>
   </object>
-  <object id="448" name="Zombie" type="Zombie" x="536" y="1572">
+  <object id="448" name="Zombie" type="Zombie" x="556" y="1260">
    <point/>
   </object>
-  <object id="449" name="Zombie" type="Zombie" x="499" y="1577">
+  <object id="449" name="Zombie" type="Zombie" x="519" y="1265">
    <point/>
   </object>
-  <object id="450" name="Zombie" type="Zombie" x="456" y="1594">
+  <object id="450" name="Zombie" type="Zombie" x="476" y="1282">
    <point/>
   </object>
-  <object id="451" name="Zombie" type="Zombie" x="441" y="1626">
+  <object id="451" name="Zombie" type="Zombie" x="461" y="1314">
    <point/>
   </object>
-  <object id="452" name="Zombie" type="Zombie" x="488" y="1631">
+  <object id="452" name="Zombie" type="Zombie" x="508" y="1319">
    <point/>
   </object>
-  <object id="453" name="Zombie" type="Zombie" x="539" y="1626">
+  <object id="453" name="Zombie" type="Zombie" x="559" y="1314">
    <point/>
   </object>
-  <object id="454" name="Zombie" type="Zombie" x="577" y="1623">
+  <object id="454" name="Zombie" type="Zombie" x="597" y="1311">
    <point/>
   </object>
-  <object id="455" name="Zombie" type="Zombie" x="611" y="1621">
+  <object id="455" name="Zombie" type="Zombie" x="631" y="1309">
    <point/>
   </object>
-  <object id="456" name="Zombie" type="Zombie" x="634" y="1643">
+  <object id="456" name="Zombie" type="Zombie" x="654" y="1331">
    <point/>
   </object>
-  <object id="457" name="Zombie" type="Zombie" x="609" y="1659">
+  <object id="457" name="Zombie" type="Zombie" x="629" y="1347">
    <point/>
   </object>
-  <object id="458" name="Zombie" type="Zombie" x="575" y="1668">
+  <object id="458" name="Zombie" type="Zombie" x="595" y="1356">
    <point/>
   </object>
-  <object id="459" name="Zombie" type="Zombie" x="536" y="1668">
+  <object id="459" name="Zombie" type="Zombie" x="556" y="1356">
    <point/>
   </object>
-  <object id="460" name="Zombie" type="Zombie" x="489" y="1665">
+  <object id="460" name="Zombie" type="Zombie" x="509" y="1353">
    <point/>
   </object>
-  <object id="461" name="Zombie" type="Zombie" x="489" y="1665">
+  <object id="461" name="Zombie" type="Zombie" x="509" y="1353">
    <point/>
   </object>
-  <object id="462" name="Zombie" type="Zombie" x="519.5" y="1425.5">
+  <object id="462" name="Zombie" type="Zombie" x="539.5" y="1113.5">
    <point/>
   </object>
-  <object id="463" name="Zombie" type="Zombie" x="580.5" y="1408.5">
+  <object id="463" name="Zombie" type="Zombie" x="600.5" y="1096.5">
    <point/>
   </object>
-  <object id="464" name="Zombie" type="Zombie" x="538.5" y="1364.5">
+  <object id="464" name="Zombie" type="Zombie" x="558.5" y="1052.5">
    <point/>
   </object>
-  <object id="465" name="Zombie" type="Zombie" x="627.5" y="1367.5">
+  <object id="465" name="Zombie" type="Zombie" x="647.5" y="1055.5">
    <point/>
   </object>
-  <object id="466" name="Zombie" type="Zombie" x="616.5" y="1442.5">
+  <object id="466" name="Zombie" type="Zombie" x="636.5" y="1130.5">
    <point/>
   </object>
-  <object id="467" name="Zombie" type="Zombie" x="542.5" y="1711.5">
+  <object id="467" name="Zombie" type="Zombie" x="562.5" y="1399.5">
    <point/>
   </object>
-  <object id="468" name="Zombie" type="Zombie" x="585" y="1453">
+  <object id="468" name="Zombie" type="Zombie" x="605" y="1141">
    <point/>
   </object>
-  <object id="469" name="Zombie" type="Zombie" x="610" y="1467.5">
+  <object id="469" name="Zombie" type="Zombie" x="630" y="1155.5">
    <point/>
   </object>
  </objectgroup>
