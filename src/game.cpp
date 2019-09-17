@@ -2,7 +2,7 @@
 #include "Resources/loadFonts.hpp"
 #include "Input/globalKeyboardShortcuts.hpp"
 #include "Input/eventDispatcher.hpp"
-#include "Input/actionManager.hpp"
+#include "Input/actionEventManager.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -53,7 +53,7 @@ Game::Game()
 
 	mRenderWindow.setVerticalSyncEnabled(true);
 
-	ActionManager::init();
+	ActionEventManager::init();
 }
 
 void Game::run()

@@ -1,6 +1,6 @@
 #include "player.hpp"
 #include "gameData.hpp"
-#include "Input/actionManager.hpp"
+#include "Input/actionEventManager.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
@@ -171,13 +171,13 @@ void Player::updateCounters() const
 
 void Player::updateMovement(const sf::Time delta)
 {
-	if(ActionManager::isActionPressed("movingLeft"))
+	if(ActionEventManager::isActionPressed("movingLeft"))
 		mMotion.isMovingLeft = true;
-	if(ActionManager::isActionPressed("movingRight"))
+	if(ActionEventManager::isActionPressed("movingRight"))
 		mMotion.isMovingRight = true;
-	if(ActionManager::isActionPressed("movingUp"))
+	if(ActionEventManager::isActionPressed("movingUp"))
 		mMotion.isMovingUp = true;
-	if(ActionManager::isActionPressed("movingDown"))
+	if(ActionEventManager::isActionPressed("movingDown"))
 		mMotion.isMovingDown = true;
 
 	sf::Vector2f velocity;

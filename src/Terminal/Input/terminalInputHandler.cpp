@@ -1,5 +1,5 @@
 #include "TerminalInputHandler.hpp"
-#include "Input/actionManager.hpp"
+#include "Input/actionEventManager.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -119,7 +119,7 @@ void TerminalInputHandler::updateLastCommands()
 void TerminalInputHandler::showOrHideCommandPrompt()
 {
 	bool& isVisible = mTerminalSharedData->mIsVisible;
-	ActionManager::setEnabled(isVisible);
+	ActionEventManager::setEnabled(isVisible);
 	isVisible = !isVisible;
 	auto& window = mGameData->getRenderWindow();
 	window.setKeyRepeatEnabled(isVisible);

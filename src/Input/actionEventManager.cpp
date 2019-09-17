@@ -1,10 +1,10 @@
-#include "actionManager.hpp"
+#include "actionEventManager.hpp"
 #include <algorithm>
 #include "Logs/logs.hpp"
 
 namespace ph {
 
-void ActionManager::init()
+void ActionEventManager::init()
 {
 	mEnabled = true;
 
@@ -19,21 +19,21 @@ void ActionManager::init()
 	addAction("meleeAtack", sf::Keyboard::BackSlash);
 }
 
-void ActionManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
+void ActionEventManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
 {
 	auto last = std::unique(buttons.begin(), buttons.end());
 	buttons.erase(last, buttons.end());
 	mActions[action] = buttons;
-	PH_LOG_INFO("Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionEventManager.");
 }
 
-void ActionManager::addAction(const std::string& action, sf::Keyboard::Key button)
+void ActionEventManager::addAction(const std::string& action, sf::Keyboard::Key button)
 {
 	mActions[action] = std::vector<sf::Keyboard::Key>{button};
-	PH_LOG_INFO("Action was added to ActionManager.");
+	PH_LOG_INFO("Action was added to ActionEventManager.");
 }
 
-void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key button)
+void ActionEventManager::addKeyToAction(const std::string& action, sf::Keyboard::Key button)
 {
 	auto found = mActions.find(action);
 
@@ -45,7 +45,7 @@ void ActionManager::addKeyToAction(const std::string& action, sf::Keyboard::Key 
 	PH_LOG_INFO("Key was added to action.");
 }
 
-void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard::Key button)
+void ActionEventManager::deleteKeyFromAction(const std::string& action, sf::Keyboard::Key button)
 {
 	auto found = mActions.find(action);
 
@@ -56,20 +56,20 @@ void ActionManager::deleteKeyFromAction(const std::string& action, sf::Keyboard:
 	PH_LOG_INFO("Key was deleted from action.");
 }
 
-void ActionManager::deleteAction(const std::string& action)
+void ActionEventManager::deleteAction(const std::string& action)
 {
 	auto found = mActions.find(action);
 	mActions.erase(found);
-	PH_LOG_INFO("Action was deleted from ActionManager.");
+	PH_LOG_INFO("Action was deleted from ActionEventManager.");
 }
 
-void ActionManager::clearAllActions() noexcept
+void ActionEventManager::clearAllActions() noexcept
 {
 	mActions.clear();
 	PH_LOG_INFO("All actions were cleared.");
 }
 
-bool ActionManager::isActionPressed(const std::string& action)
+bool ActionEventManager::isActionPressed(const std::string& action)
 {
 	if(!mEnabled)
 		return false;
@@ -81,7 +81,7 @@ bool ActionManager::isActionPressed(const std::string& action)
 	return false;
 }
 
-void ActionManager::addActionEventsTo(std::vector<ActionEvent>& actionEvents, const sf::Event currentSfmlEvent)
+void ActionEventManager::addActionEventsTo(std::vector<ActionEvent>& actionEvents, const sf::Event currentSfmlEvent)
 {
 	if(currentSfmlEvent.type == sf::Event::KeyPressed || currentSfmlEvent.type == sf::Event::KeyReleased)
 	{

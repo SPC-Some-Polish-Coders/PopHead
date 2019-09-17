@@ -8,7 +8,7 @@
 
 namespace ph {
 
-class ActionManager
+class ActionEventManager
 {
 public:
 	// TODO: Init it somewhere else
