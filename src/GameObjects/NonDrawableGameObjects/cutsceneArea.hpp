@@ -5,11 +5,12 @@
 namespace ph {
 
 class Player;
+class GameData;
 
 class CutSceneArea : public GameObject
 {
 public:
-	CutSceneArea(const std::string& cutSceneName, const sf::FloatRect area);
+	CutSceneArea(GameData* const gameData, const std::string& cutSceneName, const sf::FloatRect area);
 
 	void updateCurrent(const sf::Time delta) override;
 	bool getActivated() const { return mActivated; }
@@ -19,6 +20,7 @@ private:
 
 private:
 	Player* mPlayer;
+	GameData* const mGameData;
 	std::string mCutSceneName;
 	const sf::FloatRect mArea;
 	bool mActivated;

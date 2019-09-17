@@ -227,7 +227,7 @@ void TiledGameObjectsParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
 	const sf::Vector2f size = getSizeAttribute(cutSceneAreaNode);
 	const sf::FloatRect area(position.x, position.y, size.x, size.y);
 	const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();
-	auto cutSceneArea = std::make_unique<CutSceneArea>(cutSceneName, area);
+	auto cutSceneArea = std::make_unique<CutSceneArea>(mGameData, cutSceneName, area);
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(cutSceneArea));
 }

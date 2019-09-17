@@ -2,11 +2,15 @@
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
+#include "gameData.hpp"
+
+#include "Scenes/CutScenes/gateGuardDialogue.hpp"
 
 namespace ph {
 
-	CutSceneArea::CutSceneArea(const std::string& cutSceneName, const sf::FloatRect area)
+	CutSceneArea::CutSceneArea(GameData* const gameData, const std::string& cutSceneName, const sf::FloatRect area)
 		:GameObject("cutSceneArea")
+		,mGameData(gameData)
 		,mArea(area)
 		,mActivated(false)
 		,mCutSceneName(cutSceneName)
@@ -30,8 +34,8 @@ namespace ph {
 
 	void CutSceneArea::createCutScene()
 	{
-		if (mCutSceneName == "gateGuardDialogue");
-			//createCutScene
+		if (mCutSceneName == "gateGuardDialogue")
+			mGameData->getSceneManager().getScene().getCutSceneManager().setMapStaringCutScene(std::make_unique<GateGuardDialogue>(mGameData));
 	}
 
 }
