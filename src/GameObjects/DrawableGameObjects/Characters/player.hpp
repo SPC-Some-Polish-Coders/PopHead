@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObjects/DrawableGameObjects/character.hpp"
+#include "Events/event.hpp"
 
 namespace ph{
 
@@ -22,7 +23,7 @@ class Player : public Character
 public:
     Player(GameData*);
 
-	void handleEventOnCurrent(const sf::Event&) override;
+	void handleEventOnCurrent(const ph::Event&) override;
     void updateCurrent(sf::Time delta) override;
 
 	void slowDown() { mIsSlownDown = true; }
@@ -43,7 +44,7 @@ private:
 	float getPlayerRotation() const;
 
 private:
-	static const sf::Time melleAttackInterval;
+	static const sf::Time meleeAttackInterval;
 	sf::Clock mTimeFromLastMeleeAttack;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;

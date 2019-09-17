@@ -6,7 +6,6 @@
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
-#include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
@@ -34,7 +33,7 @@ class GameData
 public:
 	GameData()
 	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-	          nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	          nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::RenderWindow* const renderWindow,
@@ -46,7 +45,6 @@ public:
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
 		Map* const map,
-		Input* const input,
 		Renderer* const renderer,
 		PhysicsEngine* const physicsEngine,
 		Terminal* const Terminal,
@@ -62,7 +60,6 @@ public:
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
 		,mMap(map)
-		,mInput{input}
 		,mRenderer{renderer}
 		,mPhysicsEngine{physicsEngine}
 		,mTerminal{Terminal}
@@ -81,7 +78,6 @@ public:
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
 	auto getMap() const -> Map& { return *mMap; }
-	auto getInput()	const -> Input& { return *mInput; }
 	auto getRenderer() const -> Renderer& { return *mRenderer; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
@@ -99,7 +95,6 @@ private:
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
 	Map* const mMap;
-	Input* const mInput;
 	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;

@@ -20,11 +20,14 @@ void EfficiencyRegister::init(GameData* const gameData)
 	mEfficiencyDisplayer.init(gameData);
 }
 
-void EfficiencyRegister::handleEvent(const sf::Event& e)
+void EfficiencyRegister::handleEvent(const ph::Event& phEvent)
 {
-	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F2) {
-		mIsActive = !mIsActive;
-		mEfficiencyDisplayer.setShouldBeDrawn(mIsActive);
+	if(auto* e = std::get_if<sf::Event>(&phEvent))
+	{
+		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F2) {
+			mIsActive = !mIsActive;
+			mEfficiencyDisplayer.setShouldBeDrawn(mIsActive);
+		}
 	}
 }
 

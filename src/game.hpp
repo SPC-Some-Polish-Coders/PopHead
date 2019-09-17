@@ -7,7 +7,6 @@
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
-#include "Input/input.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
@@ -42,7 +41,6 @@ private:
 	std::unique_ptr< AIManager >          mAIManager;
 	std::unique_ptr< SceneManager >       mSceneManager;
 	std::unique_ptr< Map >                mMap;
-	std::unique_ptr< Input >              mInput;
 	std::unique_ptr< Renderer >           mRenderer;
 	std::unique_ptr< PhysicsEngine >      mPhysicsEngine;
 	std::unique_ptr< Terminal >           mTerminal;

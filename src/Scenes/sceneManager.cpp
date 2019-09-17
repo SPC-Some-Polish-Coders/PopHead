@@ -64,7 +64,7 @@ void SceneManager::replaceAction()
 	mHasPlayerPosition = false;
 }
 
-void SceneManager::handleEvent(const sf::Event& e)
+void SceneManager::handleEvent(const ph::Event& e)
 {
 	mScene->handleEvent(e);
 }

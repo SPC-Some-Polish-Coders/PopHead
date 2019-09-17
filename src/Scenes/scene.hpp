@@ -2,6 +2,7 @@
 
 #include "GameObjects/GameObject.hpp"
 #include "cutSceneManager.hpp"
+#include "Events/event.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
@@ -15,7 +16,7 @@ class Scene
 public:
     Scene();
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
     void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }

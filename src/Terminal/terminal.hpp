@@ -7,6 +7,7 @@
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
 #include "Image/terminalImage.hpp"
+#include "Events/event.hpp"
 
 namespace ph {
 
@@ -18,7 +19,7 @@ public:
 	Terminal();
 	void init(GameData*);
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
 	void update();
 	void pushOutputLine(const OutputLine&);
 
