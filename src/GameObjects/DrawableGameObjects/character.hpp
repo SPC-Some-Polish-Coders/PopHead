@@ -21,9 +21,10 @@ public:
 	void dropItems();
 
 	void setPosition(sf::Vector2f);
-	void setHp(int hp) { mHp = hp; }
+	void setHp(unsigned hp);
 	void addHp(int hp);
-	void setMaxHp(unsigned int maxHp) { mMaxHp = maxHp; }
+	void setMaxHp(unsigned int maxHp);
+	bool isDead() const;
 	void move(sf::Vector2f);
 	void takeDamage(const unsigned damage);
 	void drawBlood();
@@ -36,6 +37,9 @@ public:
 	bool isAttackable() const { return mIsAttackable; }
 
 	void pushCharacter(const sf::Vector2f& pushVector);
+
+private:
+	void fixHp();
 
 protected:
 	sf::Sprite mSprite;

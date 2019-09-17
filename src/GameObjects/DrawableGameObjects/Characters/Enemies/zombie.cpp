@@ -68,7 +68,7 @@ Zombie::Zombie(GameData* gameData)
 
 void Zombie::updateCurrent(sf::Time delta)
 {
-	if(mHp <= 0) {
+	if(isDead()) {
 		mAnimation.changeState("dead");
 		mAnimation.animate(mSprite);
 		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);

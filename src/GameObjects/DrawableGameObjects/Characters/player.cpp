@@ -123,7 +123,7 @@ void Player::updateCurrent(sf::Time delta)
 {
 	updateCounters();
 
-	if(mHp <= 0) {
+	if(Character::isDead()) {
 		die();
 		return;
 	}
