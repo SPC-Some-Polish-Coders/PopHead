@@ -1,7 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
-#include "Input/event.hpp"
+#include "Events/event.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 

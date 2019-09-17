@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObjects/DrawableGameObjects/character.hpp"
-#include "Input/event.hpp"
+#include "Events/event.hpp"
 
 namespace ph{
 

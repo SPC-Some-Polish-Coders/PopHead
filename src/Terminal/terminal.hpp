@@ -7,7 +7,7 @@
 #include "Input/terminalInputHandler.hpp"
 #include "Commands/commandInterpreter.hpp"
 #include "Image/terminalImage.hpp"
-#include "Input/event.hpp"
+#include "Events/event.hpp"
 
 namespace ph {
 

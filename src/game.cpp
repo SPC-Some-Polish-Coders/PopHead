@@ -1,8 +1,8 @@
 #include "game.hpp"
 #include "Resources/loadFonts.hpp"
-#include "Input/globalKeyboardShortcuts.hpp"
-#include "Input/eventDispatcher.hpp"
-#include "Input/actionEventManager.hpp"
+#include "Events/globalKeyboardShortcuts.hpp"
+#include "Events/eventDispatcher.hpp"
+#include "Events/actionEventManager.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {

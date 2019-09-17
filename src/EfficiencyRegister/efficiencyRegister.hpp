@@ -1,7 +1,7 @@
 #pragma once
 
 #include "efficiencyDisplayer.hpp"
-#include "Input/event.hpp"
+#include "Events/event.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Input/event.hpp"
+#include "Events/event.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <list>
