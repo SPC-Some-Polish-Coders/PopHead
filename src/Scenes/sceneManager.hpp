@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scene.hpp"
+#include "Input/event.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
@@ -27,7 +28,7 @@ private:
 	void popAction();
 
 public:
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
     void update(sf::Time delta);
 
 	Scene& getScene() { return *mScene.get(); }

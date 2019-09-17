@@ -13,7 +13,7 @@ Scene::Scene()
 	GameObject::setRoot(mRoot.get());
 }
 
-void Scene::handleEvent(const sf::Event& e)
+void Scene::handleEvent(const ph::Event& e)
 {
 	mRoot->handleEvent(e);
 }

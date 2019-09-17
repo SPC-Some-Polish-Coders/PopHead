@@ -10,17 +10,17 @@ GameObject::GameObject(const std::string& name)
 {
 }
 
-void GameObject::handleEvent(const sf::Event& e)
+void GameObject::handleEvent(const ph::Event& e)
 {
 	handleEventOnCurrent(e);
 	handleEventOnChildren(e);
 }
 
-void GameObject::handleEventOnCurrent(const sf::Event&)
+void GameObject::handleEventOnCurrent(const ph::Event&)
 {
 }
 
-void GameObject::handleEventOnChildren(const sf::Event& e)
+void GameObject::handleEventOnChildren(const ph::Event& e)
 {
 	for(auto& child : mChildren)
 		child->handleEvent(e);

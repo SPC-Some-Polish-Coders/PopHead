@@ -90,14 +90,13 @@ void Game::handleEvents()
 	ph::Event phEvent;
 	while(EventDispatcher::dispatchEvent(phEvent, mRenderWindow))
 	{
-		sf::Event e = std::get<sf::Event>(phEvent);
-		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), e);
-		mEfficiencyRegister->handleEvent(e);
-		mTerminal->handleEvent(e);
-		mGui->handleEvent(e);
+		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), phEvent);
+		mEfficiencyRegister->handleEvent(phEvent);
+		mTerminal->handleEvent(phEvent);
+		mGui->handleEvent(phEvent);
 		
 		if(!mTerminal->getSharedData()->mIsVisible)
-			mSceneManager->handleEvent(e);
+			mSceneManager->handleEvent(phEvent);
 	}
 }
 

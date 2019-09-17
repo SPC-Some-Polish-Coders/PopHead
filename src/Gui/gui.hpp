@@ -1,6 +1,7 @@
 #pragma once
 
 #include "interface.hpp"
+#include "Input/event.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -49,7 +50,7 @@ public:
 
 	void moveUp(const std::string& name);
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
 
 	void update(sf::Time deltaTime);
 

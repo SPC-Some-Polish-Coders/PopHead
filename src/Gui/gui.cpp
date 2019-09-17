@@ -101,7 +101,7 @@ void GUI::moveUp(const std::string& name)
 	}
 }
 
-void GUI::handleEvent(const sf::Event& e)
+void GUI::handleEvent(const ph::Event& e)
 {
 	for(const auto& i : mInterfaceList)
 		i.second->handleEvent(e);

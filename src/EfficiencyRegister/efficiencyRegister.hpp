@@ -1,6 +1,7 @@
 #pragma once
 
 #include "efficiencyDisplayer.hpp"
+#include "Input/event.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {
@@ -13,7 +14,7 @@ public:
 	EfficiencyRegister();
 	void init(GameData* const gameData);
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
 	void update();
 
 	void registerDrawCall() { ++mDrawCallPerFrame; }

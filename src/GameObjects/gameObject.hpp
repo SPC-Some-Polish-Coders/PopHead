@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Input/event.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <list>
@@ -12,7 +13,7 @@ class GameObject : public sf::Drawable, public sf::Transformable
 public:
 	GameObject(const std::string& name);
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
 	void update(sf::Time delta);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -36,8 +37,8 @@ protected:
 	void correctChildName(std::string& childName) const;
 	void incrementNumberInChildName(std::string& childName) const;
 	
-	virtual void handleEventOnCurrent(const sf::Event&);
-	void handleEventOnChildren(const sf::Event&);
+	virtual void handleEventOnCurrent(const ph::Event&);
+	void handleEventOnChildren(const ph::Event&);
 
 	virtual void updateCurrent(sf::Time delta);
 	void updateChildren(sf::Time delta);

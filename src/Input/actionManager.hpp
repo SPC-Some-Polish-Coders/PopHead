@@ -1,5 +1,6 @@
 #pragma once
 
+#include "actionEvent.hpp"
 #include <SFML/Window.hpp>
 #include <string>
 #include <vector>
@@ -21,10 +22,11 @@ public:
 	static void clearAllActions() noexcept;
 
 	static void setEnabled(bool enabled) { mEnabled = enabled; }
+	static bool isEnabled() { return mEnabled; }
 
 	static bool isActionPressed(const std::string& action);
-	/*bool isActionJustPressed(const std::string& action);
-	bool isActionJustReleased(const std::string& action);*/
+
+	static void addActionEventsTo(std::vector<ActionEvent>&, const sf::Event currentSfmlEvent);
 
 private:
 	inline static std::map<std::string, std::vector<sf::Keyboard::Key>> mActions;
