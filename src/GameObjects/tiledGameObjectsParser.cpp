@@ -14,6 +14,7 @@
 #include "DrawableGameObjects/gate.hpp"
 #include "DrawableGameObjects/lever.hpp"
 #include "DrawableGameObjects/bilbord.hpp"
+#include "DrawableGameObjects/Items/medkit.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
@@ -21,12 +22,12 @@
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
+#include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
-#include "DrawableGameObjects/Items/medkit.hpp"
 
 namespace ph {
 
@@ -333,6 +334,15 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mGameData
 		);
 		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));
+	}
+	else if(name == "endingCutScene") {
+		auto endingCutscene = std::make_unique<EndingCutScene>(
+			mRoot,
+			mGameData->getGui(),
+			mGameData->getMusicPlayer(),
+			mGameData->getRenderer().getCamera()
+		);
+		// set area cutscene to ending cutscene
 	}
 }
 
