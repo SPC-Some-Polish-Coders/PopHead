@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="ActivateArea" color="#555500">
+ <objecttype name="ActivateArea" color="#ff3845">
   <property name="areaName" type="string"/>
  </objecttype>
  <objecttype name="BulletItem" color="#b67900"/>
@@ -15,6 +15,9 @@
  <objecttype name="CutScene" color="#ffff00">
   <property name="cutSceneName" type="string" default=""/>
   <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
+ </objecttype>
+ <objecttype name="CutSceneArea" color="#a49b1f">
+  <property name="cutSceneName" type="string" default=""/>
  </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>

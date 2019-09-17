@@ -84,6 +84,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "Entrance")) loadEntrance(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "SlowDownArea")) loadSlowDownArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "ActivateArea")) loadActivateArea(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "CutSceneArea")) loadCutSceneArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
@@ -225,8 +226,8 @@ void TiledGameObjectsParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
 	const sf::Vector2f position = getPositionAttribute(cutSceneAreaNode);
 	const sf::Vector2f size = getSizeAttribute(cutSceneAreaNode);
 	const sf::FloatRect area(position.x, position.y, size.x, size.y);
-	const std::string areaName = getProperty(cutSceneAreaNode, "cutSceneName").toString();
-	auto cutSceneArea = std::make_unique<CutSceneArea>(areaName, area);
+	const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();
+	auto cutSceneArea = std::make_unique<CutSceneArea>(cutSceneName, area);
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(cutSceneArea));
 }
@@ -314,10 +315,7 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 {
 	if (!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool())
-	{
-		loadCutSceneArea(cutSceneNode);
 		return;
-	}
 
 	const std::string name = getProperty(cutSceneNode, "cutSceneName").toString();
 

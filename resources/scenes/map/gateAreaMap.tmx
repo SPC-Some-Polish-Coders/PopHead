@@ -590,7 +590,7 @@
     <property name="areaName" value="openGate"/>
    </properties>
   </object>
-  <object id="172" type="CutScene" x="1289.5" y="161" width="262.5" height="47">
+  <object id="172" type="CutSceneArea" x="1289.5" y="161" width="262.5" height="47">
    <properties>
     <property name="cutSceneName" value="gateGuardDialogue"/>
    </properties>

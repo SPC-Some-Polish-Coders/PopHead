@@ -16,7 +16,7 @@ namespace ph {
 
 	void CutSceneArea::updateCurrent(const sf::Time delta)
 	{
-		if (mPlayer == nullptr || mPlayer->isDead())
+		if (mPlayer == nullptr || mPlayer->isDead() || mActivated)
 			return;
 
 		if (Rect<float>::doPositiveRectsIntersect(mPlayer->getGlobalBounds(), mArea))
