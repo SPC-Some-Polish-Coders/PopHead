@@ -2,6 +2,6 @@
 <scenelinks>
   <neededResources filename="desert.res.xml"/>
   <map filename="gateAreaMap.tmx"/>
-  <gui filename="gameplay.gui.xml"/>
+  <gui filename="gameplayGateArea.gui.xml"/>
   <audio filename="desert.audio.xml"/>
 </scenelinks>

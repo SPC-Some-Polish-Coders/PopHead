@@ -1,6 +1,7 @@
 #include "gateGuardDialogue.hpp"
 #include "gameData.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "Events/actionEventManager.hpp"
 
 namespace ph {
 
@@ -9,6 +10,7 @@ GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
 	,mGameData(gameData)
 {
 	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
+	ActionEventManager::setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
 	mViewBeforeCutScene = mGameData->getRenderer().getCamera().getSize();
 	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene - sf::Vector2f{200.f, 200.f});
@@ -28,6 +30,7 @@ void GateGuardDialogue::update(const sf::Time delta)
 
 void GateGuardDialogue::leaveCutScene()
 {
+	ActionEventManager::setEnabled(true);
 	mIsActive = false;
 	mGameData->getGui().showInterface("gameplayCounters");
 	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene);
