@@ -32,37 +32,40 @@ void Widget::setAlpha(unsigned int alpha)
 	mSprite.setColor(sf::Color(255, 255, 255, alpha));
 }
 
-void Widget::handleEvent(const sf::Event& e)
+void Widget::handleEvent(const ph::Event& phEvent)
 {
 	if(!mIsActive)
 		return;
 	
-	handleEventOnCurrent(e);
-	handleEventOnChildren(e);
+	handleEventOnCurrent(phEvent);
+	handleEventOnChildren(phEvent);
 }
 
-void Widget::handleEventOnCurrent(const sf::Event& e)
+void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 {
-	if(e.type == sf::Event::MouseButtonReleased && e.mouseButton.button == sf::Mouse::Left)
+	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
-		auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
-		auto k = mWindow->mapPixelToCoords(c);
-
-		// TODO: Maybe use Math::areTheyOverlapping()
-		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
-			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
+		if(e->type == sf::Event::MouseButtonReleased && e->mouseButton.button == sf::Mouse::Left)
 		{
-			for(const auto& k : mBehaviors)
-				if(k.first == BehaviorType::onReleased)
-					k.second(this);
+			auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
+			auto k = mWindow->mapPixelToCoords(c);
+
+			// TODO: Maybe use Rect::doPositiveRectsIntersect()
+			if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
+				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
+			{
+				for(const auto& k : mBehaviors)
+					if(k.first == BehaviorType::onReleased)
+						k.second(this);
+			}
 		}
 	}
 }
 
-void Widget::handleEventOnChildren(const sf::Event& e)
+void Widget::handleEventOnChildren(const ph::Event& phEvent)
 {
 	for(const auto& widget : mWidgetList)
-		widget.second->handleEvent(e);
+		widget.second->handleEvent(phEvent);
 }
 
 void Widget::update(sf::Time delta)

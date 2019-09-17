@@ -101,6 +101,7 @@ bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBu
 Gun::Gun(SoundPlayer& soundPlayer, const sf::Texture& texture, const float damage)
 	:GameObject("gun")
 	,mGunSprite(texture)
+	,mCurrentPlayerDirection({1.f, 0.f})
 	,mSoundPlayer(soundPlayer)
 	,mDamage(damage)
 	,mShouldDisplayShotGraphics(false)

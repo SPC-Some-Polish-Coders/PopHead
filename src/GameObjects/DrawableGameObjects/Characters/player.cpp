@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "gameData.hpp"
+#include "Events/actionEventManager.hpp"
 #include "Resources/spriteSheetData.hpp"
 #include "Resources/collisionRectData.hpp"
 #include "Utilities/animation.hpp"
@@ -58,7 +59,7 @@ namespace
 	);
 }
 
-const sf::Time Player::melleAttackInterval = sf::seconds(0.5f);
+const sf::Time Player::meleeAttackInterval = sf::seconds(0.5f);
 
 Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
@@ -85,11 +86,11 @@ Player::Player(GameData* gameData)
 		equipment->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
-void Player::handleEventOnCurrent(const sf::Event& e)
+void Player::handleEventOnCurrent(const ph::Event& phEvent)
 {
-	if(e.type == sf::Event::KeyPressed)
+	if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
 	{
-		if(e.key.code == sf::Keyboard::Escape)
+		if(sfEvent->type == sf::Event::KeyPressed && sfEvent->key.code == sf::Keyboard::Escape)
 		{
 			bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
 			if(isGamePaused) {
@@ -101,20 +102,22 @@ void Player::handleEventOnCurrent(const sf::Event& e)
 				mGameData->getSceneManager().getScene().setPause(true);
 			}
 		}
-
-		// TODO: Change it to action event
-		if(e.key.code == sf::Keyboard::Enter && mNumberOfOwnedBullets > 0) {
-			dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
-			auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-			gun->shoot();
-		}
-
-		// TODO: Change it to action event
-		if(e.key.code == sf::Keyboard::BackSlash && mTimeFromLastMeleeAttack.getElapsedTime() >= melleAttackInterval) {
-			mTimeFromLastMeleeAttack.restart();
-			auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
-			sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
-			meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+	}
+	else if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
+	{
+		if(actionEvent->mType == ActionEvent::Pressed) 
+		{
+			if(actionEvent->mAction == "gunAttack" && mNumberOfOwnedBullets > 0) {
+				dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
+				auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+				gun->shoot();
+			}
+			else if(actionEvent->mAction == "meleeAtack" && mTimeFromLastMeleeAttack.getElapsedTime() >= meleeAttackInterval) {
+				mTimeFromLastMeleeAttack.restart();
+				auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
+				sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
+				meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+			}
 		}
 	}
 }
@@ -123,7 +126,7 @@ void Player::updateCurrent(sf::Time delta)
 {
 	updateCounters();
 
-	if(mHp <= 0) {
+	if(Character::isDead()) {
 		die();
 		return;
 	}
@@ -168,13 +171,13 @@ void Player::updateCounters() const
 
 void Player::updateMovement(const sf::Time delta)
 {
-	if(mGameData->getInput().getAction().isActionPressed("movingLeft"))
+	if(ActionEventManager::isActionPressed("movingLeft"))
 		mMotion.isMovingLeft = true;
-	if(mGameData->getInput().getAction().isActionPressed("movingRight"))
+	if(ActionEventManager::isActionPressed("movingRight"))
 		mMotion.isMovingRight = true;
-	if(mGameData->getInput().getAction().isActionPressed("movingUp"))
+	if(ActionEventManager::isActionPressed("movingUp"))
 		mMotion.isMovingUp = true;
-	if(mGameData->getInput().getAction().isActionPressed("movingDown"))
+	if(ActionEventManager::isActionPressed("movingDown"))
 		mMotion.isMovingDown = true;
 
 	sf::Vector2f velocity;

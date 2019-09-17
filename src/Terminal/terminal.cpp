@@ -21,9 +21,10 @@ void Terminal::init(GameData* gameData)
 	mTerminalImage.init(gameData);
 }
 
-void Terminal::handleEvent(const sf::Event& e)
+void Terminal::handleEvent(const ph::Event& phEvent)
 {
-	mKeyboardInputHandler.handleEvent(e);
+	if(auto* e = std::get_if<sf::Event>(&phEvent))
+		mKeyboardInputHandler.handleEvent(*e);
 }
 
 void Terminal::update()

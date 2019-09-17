@@ -1,6 +1,8 @@
 #include "game.hpp"
 #include "Resources/loadFonts.hpp"
-#include "Input/globalKeyboardShortcuts.hpp"
+#include "Events/globalKeyboardShortcuts.hpp"
+#include "Events/eventDispatcher.hpp"
+#include "Events/actionEventManager.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -16,7 +18,6 @@ Game::Game()
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
-	,mInput{new Input()}
 	,mRenderer{new Renderer(mRenderWindow)}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
@@ -33,7 +34,6 @@ Game::Game()
 		mAIManager.get(),
 		mSceneManager.get(),
 		mMap.get(),
-		mInput.get(),
 		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
@@ -52,6 +52,8 @@ Game::Game()
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mRenderWindow.setVerticalSyncEnabled(true);
+
+	ActionEventManager::init();
 }
 
 void Game::run()
@@ -85,16 +87,16 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 
 void Game::handleEvents()
 {
-	sf::Event e;
-	while(mRenderWindow.pollEvent(e))
+	ph::Event phEvent;
+	while(EventDispatcher::dispatchEvent(phEvent, mRenderWindow))
 	{
-		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), e);
-		mEfficiencyRegister->handleEvent(e);
-		mTerminal->handleEvent(e);
-		mGui->handleEvent(e);
+		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), phEvent);
+		mEfficiencyRegister->handleEvent(phEvent);
+		mTerminal->handleEvent(phEvent);
+		mGui->handleEvent(phEvent);
 		
 		if(!mTerminal->getSharedData()->mIsVisible)
-			mSceneManager->handleEvent(e);
+			mSceneManager->handleEvent(phEvent);
 	}
 }
 

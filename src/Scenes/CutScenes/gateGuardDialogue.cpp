@@ -9,7 +9,6 @@ GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
 	,mGameData(gameData)
 {
 	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
-	mGameData->getInput().getAction().setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
 	mViewBeforeCutScene = mGameData->getRenderer().getCamera().getSize();
 	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene - sf::Vector2f{200.f, 200.f});
@@ -30,7 +29,6 @@ void GateGuardDialogue::update(const sf::Time delta)
 void GateGuardDialogue::leaveCutScene()
 {
 	mIsActive = false;
-	mGameData->getInput().getAction().setEnabled(true);
 	mGameData->getGui().showInterface("gameplayCounters");
 	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene);
 }

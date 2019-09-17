@@ -1,6 +1,7 @@
 #pragma once
 
 #include "behaviorType.hpp"
+#include "Events/event.hpp"
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <functional>
@@ -19,7 +20,7 @@ public:
 
 	virtual void setAlpha(unsigned int alpha);
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(const ph::Event&);
 
 	virtual void update(sf::Time delta);
 
@@ -64,8 +65,8 @@ public:
 	virtual void rePosition();
 
 private:
-	virtual void handleEventOnCurrent(const sf::Event&);
-	virtual void handleEventOnChildren(const sf::Event&);
+	virtual void handleEventOnCurrent(const ph::Event&);
+	virtual void handleEventOnChildren(const ph::Event&);
 	virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
 	void setVirtualSize(const sf::Vector2f& size);
 

@@ -41,6 +41,17 @@ void Character::setPosition(sf::Vector2f position)
 	mCollisionBody.setPosition(position + collisionBodyOffset);
 }
 
+void Character::setHp(unsigned hp)
+{
+	mHp = hp;
+	fixHp();
+}
+
+bool Character::isDead() const
+{
+	return mHp == 0;
+}
+
 void Character::move(sf::Vector2f offset)
 {
 	mCollisionBody.move(offset);
@@ -69,6 +80,12 @@ void Character::pushCharacter(const sf::Vector2f& pushVector)
 	mCollisionBody.setForceVector(pushVector);
 }
 
+void Character::fixHp()
+{
+	if (mHp > static_cast<int>(mMaxHp))
+		mHp = mMaxHp;
+}
+
 void Character::addHp(int hp)
 {
 	if (mHp + hp > static_cast<int>(mMaxHp))
@@ -77,10 +94,19 @@ void Character::addHp(int hp)
 		mHp += hp;
 }
 
+void Character::setMaxHp(unsigned int maxHp)
+{
+	mMaxHp = maxHp;
+	fixHp();
+}
+
 void Character::takeDamage(const unsigned damage)
 { 
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {
-		mHp -= damage;
+		if (static_cast<int>(damage) > mHp)
+			mHp = 0;
+		else
+			mHp -= damage;
 		drawBlood();
 		mTimeSinceLastTakenDamage.restart();
 	}
