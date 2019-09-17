@@ -476,7 +476,7 @@
  </layer>
  <objectgroup id="4" name="gameObjects">
   <object id="1" type="Camera" x="250" y="608" width="640" height="480"/>
-  <object id="3" name="Player" type="Player" x="1429.21" y="398.237">
+  <object id="3" name="Player" type="Player" x="475.213" y="863.237">
    <point/>
   </object>
   <object id="46" name="Zombie" type="Zombie" x="673.717" y="764.573">
