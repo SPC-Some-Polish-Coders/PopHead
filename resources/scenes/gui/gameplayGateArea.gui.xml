@@ -18,12 +18,20 @@
             <textWidget name="bulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
         </widget>
     </interface>
-	<interface name="labels">
-            <widget name="speechBubble"  origin="0.5" position="0.4, 0.3" contentPath="textures/gui/speechBubble.png">
-                <textWidget name="speech1"  origin="0.5" position="0.1,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Dude, what the hell"/>
-                <textWidget name="speech1b" origin="0.5" position="0.1,  0.35" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="are you doing?"/>
-                <textWidget name="speech2"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="black" text="What the..."/>
-                <textWidget name="speech3"  origin="0.5" position="0.12,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="35" color="black" text="FUCK ???"/>
+    <interface name="labels" hide="true">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <widget name="guardSpeechBubble"  origin="0.5" position="0.73, 0.23" contentPath="textures/gui/speechBubble.png">
+                <textWidget name="guard1"  origin="0.5" position="0.1,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Good to see someone that's still alive"/>
+                <textWidget name="guard2" origin="0.5" position="0.1,  0.35" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="are you doing?"/>
+                <textWidget name="guard3"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="black" text="What the..."/>
+                <textWidget name="guard4"  origin="0.5" position="0.12,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="35" color="black" text="FUCK ???"/>
             </widget>
+			      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
+                <textWidget name="player1"  origin="0.5" position="0.1,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Good to see someone\n that's still alive"/>
+                <textWidget name="player2" origin="0.5" position="0.1,  0.35" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="are you doing?"/>
+                <textWidget name="player3"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="black" text="What the..."/>
+                <textWidget name="player4"  origin="0.5" position="0.12,  0.2"  fontPath="fonts/joystixMonospace.ttf" characterSize="35" color="black" text="FUCK ???"/>
+            </widget>
+        </widget>
     </interface>
 </gui>
