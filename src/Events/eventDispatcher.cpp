@@ -7,7 +7,8 @@ bool EventDispatcher::dispatchEvent(ph::Event& event, sf::Window& window)
 	sf::Event sfmlEvent;
 	if(window.pollEvent(sfmlEvent)) {
 		event = sfmlEvent;
-		ActionEventManager::addActionEventsTo(mPendingActionEvents, sfmlEvent);
+		if(ActionEventManager::isEnabled())
+			ActionEventManager::addActionEventsTo(mPendingActionEvents, sfmlEvent);
 		return true;
 	}
 
