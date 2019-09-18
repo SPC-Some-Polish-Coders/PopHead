@@ -10,7 +10,7 @@ GateGuard::GateGuard(GameData* const gameData)
 	,mOpened(false)
 {
 	mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
-	mAnimation.changeState("down");
+	mAnimation.changeState("stayingDown");
 }
 
 void GateGuard::updateCurrent(const sf::Time delta)
@@ -26,7 +26,7 @@ void GateGuard::updateCurrent(const sf::Time delta)
 		if (openGateArea->getActivated())
 		{
 			openGate();
-			mAnimation.changeState("left");
+			mAnimation.changeState("stayingLeft");
 		}
 	}
 

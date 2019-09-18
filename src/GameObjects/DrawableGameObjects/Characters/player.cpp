@@ -204,7 +204,9 @@ void Player::updateMovement(const sf::Time delta)
 	}
 
 	setPosition(mCollisionBody.getFixedPosition());
-	mGameData->getAIManager().setPlayerPosition(mCollisionBody.getPosition());
+
+	FloatRect collisionRect = mCollisionBody.getRect();
+	mGameData->getAIManager().setPlayerPosition(collisionRect.getCenter());
 }
 
 void Player::updateAnimation(const sf::Time delta)

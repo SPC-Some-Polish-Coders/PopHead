@@ -15,7 +15,7 @@ EndingCutScene::EndingCutScene(GameObject& root, GUI& gui, MusicPlayer& musicPla
 	,mMusicPlayer(musicPlayer)
 	,mCamera(camera)
 	,mSceneManager(sceneManager)
-	,mTimesPressedSkip(1.f)
+	,mTimesPressedSkip(1)
 {
 	aiManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
 	camera.setSize({320, 240});

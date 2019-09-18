@@ -210,10 +210,13 @@ sf::Vector2f MeleeWeapon::getRightHandLocalPosition(const sf::Vector2f attackDir
 
 void MeleeWeapon::updateCurrent(const sf::Time delta)
 {
+	constexpr float anglesPerSecond = 240.f;
+
 	if(mShouldBeDrawn) {
 		if(mRotationFromStart < mRotationRange) {
-			rotate(-3.f);
-			mRotationFromStart += 3.f;
+			auto rotation = anglesPerSecond * delta.asSeconds();
+			rotate(-rotation);
+			mRotationFromStart += rotation;
 		}
 		else {
 			mShouldBeDrawn = false;
