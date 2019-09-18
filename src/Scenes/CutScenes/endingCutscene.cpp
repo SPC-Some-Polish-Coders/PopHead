@@ -18,6 +18,7 @@ EndingCutScene::EndingCutScene(GameObject& root, GUI& gui, MusicPlayer& musicPla
 	,mTimesPressedSkip(1.f)
 {
 	aiManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
+	camera.setSize({320, 240});
 	ActionEventManager::setEnabled(false);
 	gui.hideInterface("gameplayCounters");
 	initGui();

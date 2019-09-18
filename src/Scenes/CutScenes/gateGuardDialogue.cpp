@@ -14,10 +14,7 @@ GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
 	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
-
-	//TODO: Fix this messy view resolution
-	mViewBeforeCutScene = mGameData->getRenderer().getCamera().getSize();
-	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene - sf::Vector2f{200.f, 200.f});
+	mGameData->getRenderer().getCamera().setSize({320, 240});
 	initGui();
 }
 
@@ -253,7 +250,7 @@ void GateGuardDialogue::leaveCutScene()
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
 	mGameData->getGui().showInterface("gameplayCounters");
-	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene);
+	mGameData->getRenderer().getCamera().setSize({640, 480});
 }
 
 }

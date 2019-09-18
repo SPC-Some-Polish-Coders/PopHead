@@ -21,7 +21,6 @@ private:
 private:
 	GameData* const mGameData;
 	Player* mPlayer;
-	sf::Vector2f mViewBeforeCutScene;
 	sf::Clock mTimeSinceLastSkipPress;
 	int mTimesPressedSkip;
 	bool mPlayerOnThePosition;
