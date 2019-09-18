@@ -66,8 +66,8 @@ void GateGuardDialogue::update(const sf::Time delta)
 {
 	if (!mPlayerOnThePosition)
 	{
-		if (mPlayer->getPosition().y > 286.f)
-			mPlayer->move(sf::Vector2f(0.f, -0.3f));
+		if (mPlayer->getPosition().y > 600.f)
+			mPlayer->move(sf::Vector2f(0.f, -20.f * delta.asSeconds()));
 		else
 			mPlayerOnThePosition = true;
 	}
