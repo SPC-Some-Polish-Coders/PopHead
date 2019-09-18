@@ -23,18 +23,22 @@
             <widget name="guardSpeechBubble"  origin="0.5" position="0.73, 0.23" contentPath="textures/gui/speechBubble.png">
 				<textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Guy from vault"/>
                 <textWidget name="guy1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Who are you?"/>
-                <textWidget name="guy1b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="and how did you get here?"/>
-                <textWidget name="guy2" origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="How?"/>
-                <textWidget name="guy3" origin="0.5" position="0.1,  0.30" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="No it doesn't."/>
-                <textWidget name="guy4" origin="0.5" position="0.1,  0.45" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="It doesn't because.."/>
+                <textWidget name="guy1b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="and how did you"/>
+                <textWidget name="guy1c" origin="0.5" position="0.1,  0.45"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="get here?"/>
+                <textWidget name="guy2"  origin="0.5" position="0.4,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="How?"/>
+                <textWidget name="guy3"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="No it doesn't."/>
+                <textWidget name="guy4"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="It doesn't because.."/>
                 <textWidget name="guy5"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="demo of the game"/>
-                <textWidget name="guy5b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="has come to an end."/>
-                <textWidget name="guy6"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Wait for the next updates!"/>
+                <textWidget name="guy5b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="has come to an end."/>
+                <textWidget name="guy6"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Wait for"/>
+                <textWidget name="guy6b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="the next updates!"/>
             </widget>
 			      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
 				 <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
-                <textWidget name="player1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I went through the sewers."/>
-                <textWidget name="player2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Does it really matter?"/>
+                <textWidget name="player1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I went through"/>
+                <textWidget name="player1b"  origin="0.5" position="0.1,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="the sewers."/>
+                <textWidget name="player2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Does it really"/>
+                <textWidget name="player2b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="matter?"/>
             </widget>
         </widget>
     </interface>

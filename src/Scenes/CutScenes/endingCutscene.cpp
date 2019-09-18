@@ -35,17 +35,21 @@ void EndingCutScene::initGui()
 
 	guySpeechBubble->getWidget("characterName")->show();
 	playerSpeechBubble->getWidget("player1")->hide();
+	playerSpeechBubble->getWidget("player1b")->hide();
 	playerSpeechBubble->getWidget("player2")->hide();
+	playerSpeechBubble->getWidget("player2b")->hide();
 
 	guySpeechBubble->getWidget("characterName")->show();
 	guySpeechBubble->getWidget("guy1")->hide();
 	guySpeechBubble->getWidget("guy1b")->hide();
+	guySpeechBubble->getWidget("guy1c")->hide();
 	guySpeechBubble->getWidget("guy2")->hide();
 	guySpeechBubble->getWidget("guy3")->hide();
 	guySpeechBubble->getWidget("guy4")->hide();
 	guySpeechBubble->getWidget("guy5")->hide();
 	guySpeechBubble->getWidget("guy5b")->hide();
 	guySpeechBubble->getWidget("guy6")->hide();
+	guySpeechBubble->getWidget("guy6b")->hide();
 }
 
 void EndingCutScene::update(const sf::Time delta)
@@ -68,22 +72,26 @@ void EndingCutScene::update(const sf::Time delta)
 			guySpeechBubble->show();
 			guySpeechBubble->getWidget("guy1")->show();
 			guySpeechBubble->getWidget("guy1b")->show();
+			guySpeechBubble->getWidget("guy1c")->show();
 			break;
 		}
 		case 2:
 		{
 			guySpeechBubble->getWidget("guy1")->hide();
 			guySpeechBubble->getWidget("guy1b")->hide();
+			guySpeechBubble->getWidget("guy1c")->hide();
 			guySpeechBubble->hide();
 
 			playerSpeechBubble->show();
 			playerSpeechBubble->getWidget("player1")->show();
+			playerSpeechBubble->getWidget("player1b")->show();
 			break;
 		}
 		case 3:
 		{
 			playerSpeechBubble->hide();
 			playerSpeechBubble->getWidget("player1")->hide();
+			playerSpeechBubble->getWidget("player1b")->hide();
 
 			guySpeechBubble->show();
 			guySpeechBubble->getWidget("guy2")->show();
@@ -96,12 +104,14 @@ void EndingCutScene::update(const sf::Time delta)
 
 			playerSpeechBubble->show();
 			playerSpeechBubble->getWidget("player2")->show();
+			playerSpeechBubble->getWidget("player2b")->show();
 			break;
 		}
 		case 5:
 		{
 			playerSpeechBubble->hide();
 			playerSpeechBubble->getWidget("player2")->hide();
+			playerSpeechBubble->getWidget("player2b")->hide();
 
 			guySpeechBubble->show();
 			guySpeechBubble->getWidget("guy3")->show();
@@ -125,6 +135,7 @@ void EndingCutScene::update(const sf::Time delta)
 			guySpeechBubble->getWidget("guy5")->hide();
 			guySpeechBubble->getWidget("guy5b")->hide();
 			guySpeechBubble->getWidget("guy6")->show();
+			guySpeechBubble->getWidget("guy6b")->show();
 			break;
 		}
 		default:
