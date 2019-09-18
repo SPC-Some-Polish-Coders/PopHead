@@ -341,14 +341,17 @@ void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
 {
 	auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
 	crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
-	mRoot.addChild(std::move(crawlingNpc));
+	if(getProperty(crawlingNpcNode, "isAlreadyDead").toBool())
+		crawlingNpc->die();
+	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
+	lyingObjects->addChild(std::move(crawlingNpc));
 }
 
 void TiledGameObjectsParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
 {
-	auto crawlingNpc = std::make_unique<GateGuard>(mGameData);
-	crawlingNpc->setPosition(getPositionAttribute(gateGuardNpcNode));
-	mRoot.addChild(std::move(crawlingNpc));
+	auto gateGuardNpc = std::make_unique<GateGuard>(mGameData);
+	gateGuardNpc->setPosition(getPositionAttribute(gateGuardNpcNode));
+	mRoot.addChild(std::move(gateGuardNpc));
 }
 
 void TiledGameObjectsParser::loadBulletItem(const Xml& bulletItemNode) const

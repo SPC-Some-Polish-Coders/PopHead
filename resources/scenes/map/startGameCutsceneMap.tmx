@@ -123,12 +123,15 @@
   </object>
   <object id="3" name="startGameCutScene" type="CutScene" x="317.333" y="279.061">
    <properties>
-    <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
     <property name="cutSceneName" value="startGameCutScene"/>
+    <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="5" type="CrawlingNpc" x="5673.83" y="411">
+   <properties>
+    <property name="isAlreadyDead" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="84" type="Bilbord" x="5546" y="297">

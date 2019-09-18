@@ -125,7 +125,7 @@ void StartGameCutScene::update(const sf::Time delta)
 		speechBubble->getWidget("speech2")->show();
 	}
 	if(mCutsceneTimeInSeconds > 27.5) {
-		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("crawlingNpc"));
+		auto* crawlingNpc = dynamic_cast<CrawlingNpc*>(mRoot.getChild("LAYER_lyingObjects")->getChild("crawlingNpc"));
 		crawlingNpc->die();
 	}
 	
