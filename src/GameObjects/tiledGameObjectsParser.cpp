@@ -322,7 +322,7 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 
 	if(name == "subtitlesBeforeStartGameCutscene") {
 		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(mRoot, mGameData->getSceneManager());
-		mCutSceneManager.setMapStaringCutScene(std::move(subtitlesBeforeStartGameCutscene));
+		mCutSceneManager.activateCutscene(std::move(subtitlesBeforeStartGameCutscene));
 	}
 	else if(name == "startGameCutScene") {
 		auto startGameCutScene = std::make_unique<StartGameCutScene>(
@@ -333,7 +333,7 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mGameData->getGui(),
 			mGameData
 		);
-		mCutSceneManager.setMapStaringCutScene(std::move(startGameCutScene));
+		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
 	}
 	else if(name == "endingCutScene") {
 		auto endingCutscene = std::make_unique<EndingCutScene>(

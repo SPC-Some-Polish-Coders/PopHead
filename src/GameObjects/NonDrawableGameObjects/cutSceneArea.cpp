@@ -35,7 +35,7 @@ namespace ph {
 	void CutSceneArea::createCutScene()
 	{
 		if (mCutSceneName == "gateGuardDialogue")
-			mGameData->getSceneManager().getScene().getCutSceneManager().setMapStaringCutScene(std::make_unique<GateGuardDialogue>(mGameData));
+			mGameData->getSceneManager().getScene().getCutSceneManager().activateCutscene(std::make_unique<GateGuardDialogue>(mGameData));
 	}
 
 }

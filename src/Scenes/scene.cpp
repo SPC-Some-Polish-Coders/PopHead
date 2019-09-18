@@ -20,7 +20,7 @@ void Scene::handleEvent(const ph::Event& e)
 
 void Scene::update(sf::Time delta)
 {
-	if(mCutSceneManager.isCutSceneActive())
+ 	if(mCutSceneManager.isCutSceneActive())
 		mCutSceneManager.updateCutScene(delta);
 
 	if(!mPause)

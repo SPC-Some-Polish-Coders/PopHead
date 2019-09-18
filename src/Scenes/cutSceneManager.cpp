@@ -3,23 +3,23 @@
 namespace ph {
 
 CutSceneManager::CutSceneManager()
-	:mMapStaringCutScene(nullptr)
+	:mActiveCutscene(nullptr)
 {
 }
 
-void CutSceneManager::setMapStaringCutScene(std::unique_ptr<CutScene> startingCutScene)
+void CutSceneManager::activateCutscene(std::unique_ptr<CutScene> startingCutScene)
 {
-	mMapStaringCutScene = std::move(startingCutScene);
+	mActiveCutscene = std::move(startingCutScene);
 }
 
 void CutSceneManager::updateCutScene(const sf::Time delta)
 {
-	mMapStaringCutScene->update(delta);
+	mActiveCutscene->update(delta);
 }
 
 bool CutSceneManager::isCutSceneActive()
 {
-	return mMapStaringCutScene != nullptr && mMapStaringCutScene->isActive();
+	return mActiveCutscene != nullptr && mActiveCutscene->isActive();
 }
 
 }

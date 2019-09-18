@@ -13,14 +13,14 @@ class CutSceneManager
 public:
 	CutSceneManager();
 
-	void setMapStaringCutScene(std::unique_ptr<CutScene> startingCutScene);
+	void activateCutscene(std::unique_ptr<CutScene> startingCutScene);
 
 	void updateCutScene(const sf::Time delta);
 
 	bool isCutSceneActive();
 
 private:
-	std::unique_ptr<CutScene> mMapStaringCutScene;
+	std::unique_ptr<CutScene> mActiveCutscene;
 };
 
 }
