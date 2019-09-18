@@ -2,12 +2,15 @@
 
 #include "pathData.hpp"
 #include "obstacleGrid.hpp"
-
 #include <SFML/Graphics.hpp>
-
 #include <deque>
 
 namespace ph { 
+
+enum class AIMode {
+	normal,
+	zombieAlwaysWalkRandomly
+};
 
 class AIManager
 {
@@ -15,6 +18,7 @@ public:
 	Path getZombiePath(const sf::Vector2f zombiePosition) const;
 	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
+	void setAIMode(const AIMode aiMode) { mAIMode = aiMode; }
 	void setIsPlayerOnScene(bool isPlayerOnScene) { mIsPlayerOnScene = isPlayerOnScene; }
 	bool isPlayerOnScene() const { return mIsPlayerOnScene; }
 	void setPlayerPosition(const sf::Vector2f playerPosition);
@@ -34,6 +38,7 @@ private:
 	ObstacleGrid mObstacleGrid;
 	sf::Vector2f mPlayerPosition;
 	const unsigned mSpotSideLength = 16;
+	AIMode mAIMode = AIMode::normal;
 	bool mHasPlayerMovedSinceLastUpdate = false;
 	bool mIsPlayerOnScene = false;
 };
