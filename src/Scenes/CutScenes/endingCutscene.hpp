@@ -25,6 +25,7 @@ private:
 	GUI& mGui;
 	MusicPlayer& mMusicPlayer;
 	Camera& mCamera;
+	AIManager& mAIManager;
 	SceneManager& mSceneManager;
 	sf::Clock mTimeSinceLastSkipPress;
 	int mTimesPressedSkip;

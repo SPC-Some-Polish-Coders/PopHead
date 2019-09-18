@@ -14,6 +14,7 @@ EndingCutScene::EndingCutScene(GameObject& root, GUI& gui, MusicPlayer& musicPla
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mCamera(camera)
+	,mAIManager(aiManager)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {
@@ -147,6 +148,7 @@ void EndingCutScene::update(const sf::Time delta)
 
 void EndingCutScene::leaveCutScene()
 {
+	mAIManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
 	mSceneManager.replaceScene("scenes/mainMenu.xml");
