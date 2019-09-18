@@ -1,6 +1,7 @@
 # Executables, env dependend files
 *.o
 *.so
+openal32.dll
 
 # Build directories
 bin/
