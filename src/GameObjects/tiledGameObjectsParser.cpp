@@ -335,15 +335,6 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 		);
 		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
 	}
-	else if(name == "endingCutScene") {
-		auto endingCutscene = std::make_unique<EndingCutScene>(
-			mRoot,
-			mGameData->getGui(),
-			mGameData->getMusicPlayer(),
-			mGameData->getRenderer().getCamera()
-		);
-		// set area cutscene to ending cutscene
-	}
 }
 
 void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const

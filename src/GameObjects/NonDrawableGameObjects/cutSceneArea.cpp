@@ -5,6 +5,7 @@
 #include "gameData.hpp"
 
 #include "Scenes/CutScenes/gateGuardDialogue.hpp"
+#include "Scenes/CutScenes/endingCutscene.hpp"
 
 namespace ph {
 
@@ -23,19 +24,29 @@ namespace ph {
 		if (mPlayer == nullptr || mPlayer->isDead() || mActivated)
 			return;
 
-		if (Rect<float>::doPositiveRectsIntersect(mPlayer->getGlobalBounds(), mArea))
+		if(Rect<float>::doPositiveRectsIntersect(mPlayer->getGlobalBounds(), mArea)) {
 			mActivated = true;
+			createCutScene();
+		}
 		else
 			mActivated = false;
 
-		if (mActivated)
-			createCutScene();
 	}
 
 	void CutSceneArea::createCutScene()
 	{
-		if (mCutSceneName == "gateGuardDialogue")
-			mGameData->getSceneManager().getScene().getCutSceneManager().activateCutscene(std::make_unique<GateGuardDialogue>(mGameData));
+		auto& cutsceneManager = mGameData->getSceneManager().getScene().getCutSceneManager();
+		if(mCutSceneName == "gateGuardDialogue")
+			cutsceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mGameData));
+		else if(mCutSceneName == "endingDialogue")
+			cutsceneManager.activateCutscene(std::make_unique<EndingCutScene>(
+				*mRoot,
+				mGameData->getGui(),
+				mGameData->getMusicPlayer(),
+				mGameData->getRenderer().getCamera(),
+				mGameData->getAIManager(),
+				mGameData->getSceneManager()
+			));
 	}
 
 }

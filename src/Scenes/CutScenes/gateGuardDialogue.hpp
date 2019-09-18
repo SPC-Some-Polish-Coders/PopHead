@@ -15,8 +15,8 @@ public:
 	void update(const sf::Time delta) override;
 
 private:
-	void leaveCutScene();
 	void initGui();
+	void leaveCutScene();
 
 private:
 	GameData* const mGameData;

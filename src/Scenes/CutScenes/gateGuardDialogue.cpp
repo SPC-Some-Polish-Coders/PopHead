@@ -14,6 +14,8 @@ GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
 	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
+
+	//TODO: Fix this messy view resolution
 	mViewBeforeCutScene = mGameData->getRenderer().getCamera().getSize();
 	mGameData->getRenderer().getCamera().setSize(mViewBeforeCutScene - sf::Vector2f{200.f, 200.f});
 	initGui();
@@ -73,12 +75,12 @@ void GateGuardDialogue::update(const sf::Time delta)
 			mPlayerOnThePosition = true;
 	}
 
+	// TODO: Use events here
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f)
 	{
 		++mTimesPressedSkip;
 		mTimeSinceLastSkipPress.restart();
 	}
-
 
 	auto guardSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
 	auto playerSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");

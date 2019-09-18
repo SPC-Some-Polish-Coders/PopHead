@@ -54,6 +54,7 @@ bool Character::isDead() const
 
 void Character::move(sf::Vector2f offset)
 {
+
 	mCollisionBody.move(offset);
 	Transformable::move(offset);
 }

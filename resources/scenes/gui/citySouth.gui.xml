@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gui>
+    <interface name="pauseScreen" hide="true">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="resumeButton"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  onButtonPressed="setGamePause:false" text="Resume"></textWidget>
+            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
+        </widget>
+    </interface>
+    <interface name="gameOverScreen" hide="true">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <textWidget name="loadLastSave"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="loadLastSave:" text="Load last save"></textWidget>
+            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml"         text="Exit to menu"></textWidget>
+        </widget>
+    </interface>
+    <interface name="gameplayCounters">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
+            <textWidget name="bulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
+        </widget>
+    </interface>
+    <interface name="labels" hide="true">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <widget name="guardSpeechBubble"  origin="0.5" position="0.73, 0.23" contentPath="textures/gui/speechBubble.png">
+				<textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Guy from vault"/>
+                <textWidget name="guy1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Who are you?"/>
+                <textWidget name="guy1b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="and how did you get here?"/>
+                <textWidget name="guy2" origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="How?"/>
+                <textWidget name="guy3" origin="0.5" position="0.1,  0.30" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="No it doesn't."/>
+                <textWidget name="guy4" origin="0.5" position="0.1,  0.45" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="It doesn't because.."/>
+                <textWidget name="guy5"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="demo of the game"/>
+                <textWidget name="guy5b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="has come to an end."/>
+                <textWidget name="guy6"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Wait for the next updates!"/>
+            </widget>
+			      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
+				 <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
+                <textWidget name="player1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I went through the sewers."/>
+                <textWidget name="player2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Does it really matter?"/>
+            </widget>
+        </widget>
+    </interface>
+</gui>

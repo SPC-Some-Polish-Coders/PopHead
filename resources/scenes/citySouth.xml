@@ -2,6 +2,6 @@
 <scenelinks>
   <neededResources filename="desert.res.xml"/>
   <map filename="citySouth.tmx"/>
-  <gui filename="gameplay.gui.xml"/>
+  <gui filename="citySouth.gui.xml"/>
   <audio filename="desert.audio.xml"/>
 </scenelinks>
