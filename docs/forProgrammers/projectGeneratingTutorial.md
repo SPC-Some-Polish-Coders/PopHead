@@ -8,7 +8,7 @@
 - [What is Premake](#what-is-premake)
 - [How to use Premake to generate PopHead project files?](#how-to-use-premake-to-generate-pophead-project-files)
 - [Project's scripts](#projects-scripts)
-- [You have to copy openal32.dll](#you-have-to-copy-openal32-dll-file)
+  - [Batch scripts](#batch-scripts)
 - [What if I want to code on other IDE than Visual Studio?](#what-if-i-want-to-code-on-other-ide-than-visual-studio)
 - [What if I want to run premake on Linux or Mac?](#what-if-i-want-to-run-premake-on-linux-or-mac)
 - [Premake5 and Premake4](#premake5-and-premake4)
@@ -34,14 +34,9 @@ In 'tools/' directory we have a bunch of useful scripts. They are segregated by 
 - Windows
   - logsCleaner.bat - clears all logs files in logs/ directory
 - VisualStudio 2019
-  - configureProject.bat - runs premake script and generates project files fro VS2019
+  - configureProject.bat - runs premake script and generates project files for VS2019, copies one dll file (openal32.dll)
   - clearProjectFiles.bat - removes VS files (including executables) in all project directories
   - runTest.bat - convenient tool for running unit tests in project without running VS. To make it work you need to create environment variable in Windows called 'VSConsole' with the path to VS Console tool (example: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat). If you have a custom directory of VS you need to find it on your own
-
-## You have to copy openal32 dll file
-We link SFML statically so we don't need sfml dll files, but we need one certain .dll file which is openal32.dll.
-This file is in vendor/SFML_2.5.1/dll/
-You have to copy this file to directory from which you run PopHead.exe. Otherwise it won't work.
 
 ## What if I want to code on other IDE than Visual Studio
 In that case contact us (Piotr Gardocki or Grzegorz "Czapa" Bednorz). Probably we'll make support for this IDE as well. Premake works fine for every IDE.
