@@ -124,7 +124,7 @@
   <object id="3" name="startGameCutScene" type="CutScene" x="317.333" y="279.061">
    <properties>
     <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
-    <property name="name" value="startGameCutScene"/>
+    <property name="cutSceneName" value="startGameCutScene"/>
    </properties>
    <point/>
   </object>

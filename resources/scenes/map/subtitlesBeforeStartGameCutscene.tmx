@@ -7,7 +7,7 @@
   <object id="1" type="CutScene" x="6.33333" y="7.66667">
    <properties>
     <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
-    <property name="name" value="subtitlesBeforeStartGameCutscene"/>
+    <property name="cutSceneName" value="subtitlesBeforeStartGameCutscene"/>
    </properties>
    <point/>
   </object>
