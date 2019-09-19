@@ -34,11 +34,12 @@ public:
 	Scene& getScene() { return *mScene.get(); }
     void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
 
-	std::string getCurrentMapName() const { return mFileOfSceneToMake; }
+	std::string getCurrentMapName() const { return mCurrentSceneFile; }
 
 private:
     std::unique_ptr<Scene> mScene;
     std::string mFileOfSceneToMake;
+	std::string mCurrentSceneFile;
     GameData* mGameData;
     bool mIsReplacing;
     bool mIsPopping;
