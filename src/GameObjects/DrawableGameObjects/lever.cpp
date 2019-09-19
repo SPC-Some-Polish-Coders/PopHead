@@ -42,7 +42,6 @@ void Lever::updateCurrent(const sf::Time delta)
 				if(gate == nullptr)
 					continue;
 				gate->open();
-				return;
 			}
 		}
 	}
