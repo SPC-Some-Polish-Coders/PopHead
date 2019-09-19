@@ -76,7 +76,7 @@ void SceneManager::replaceAction()
 
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
-	mHasPlayerPosition = false;
+	mCurrentSceneFile = std::move(mFileOfSceneToMake);
 }
 
 void SceneManager::handleEvent(const ph::Event& e)
@@ -94,6 +94,9 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
 	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
+
+	if (mCurrentSceneFile != mFileOfSceneToMake)
+		mHasPlayerPosition = false;
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
