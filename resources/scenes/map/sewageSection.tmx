@@ -618,8 +618,8 @@
   <object id="19" type="Entrance" x="609.375" y="106.625" width="30" height="30">
    <properties>
     <property name="gotoScene" type="file" value="../citySouth.xml"/>
-    <property name="gotoX" type="float" value="820"/>
-    <property name="gotoY" type="float" value="390"/>
+    <property name="gotoX" type="float" value="800"/>
+    <property name="gotoY" type="float" value="375"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
   </object>

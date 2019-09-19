@@ -59,6 +59,7 @@ void EndingCutScene::initGui()
 void EndingCutScene::update(const sf::Time delta)
 {
 	// TODO: Use events here
+
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f)
 	{
 		++mTimesPressedSkip;

@@ -20,7 +20,7 @@
     </interface>
     <interface name="labels" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <widget name="guardSpeechBubble"  origin="0.5" position="0.65, 0.23" contentPath="textures/gui/speechBubble.png">
+            <widget name="guardSpeechBubble"  origin="0.5" position="0.80, 0.23" contentPath="textures/gui/speechBubble.png">
 				        <textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Guy from vault"/>
                 <textWidget name="guy1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Who are you?"/>
                 <textWidget name="guy1b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="and how did you"/>

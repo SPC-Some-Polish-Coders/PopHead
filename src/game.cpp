@@ -106,8 +106,8 @@ void Game::update(sf::Time deltaTime)
 
 	if(mRenderWindow.hasFocus())
 	{
-		mAIManager->update();
 		mSceneManager->update(deltaTime);
+		mAIManager->update();
 		mPhysicsEngine->update(deltaTime);
 		mRenderer->update(deltaTime);
 		mGui->update(deltaTime);
