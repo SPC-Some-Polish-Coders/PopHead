@@ -31,9 +31,18 @@ void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 
 void XmlAudioParser::parseMusicTheme(const Xml& audioNode)
 {
-	const Xml startThemeNode = audioNode.getChild("starttheme");
-	const std::string themeFilePath = "music/" + startThemeNode.getAttribute("filename").toString();
-	mGameData->getMusicPlayer().play(themeFilePath);
+	const auto themeNodes = audioNode.getChildren("theme");
+	std::string startTheme;
+
+	for (const auto& theme : themeNodes)
+	{
+		const std::string themeFilePath = "music/" + theme.getAttribute("filename").toString();
+		if (startTheme.empty())
+			startTheme = themeFilePath;
+		if (theme.hasAttribute("volumeMultiplier"))
+			mGameData->getMusicPlayer().setVolumeMultiplierForTheme(themeFilePath, theme.getAttribute("volumeMultiplier").toFloat());
+	}
+	mGameData->getMusicPlayer().play(startTheme);
 }
 
 }
