@@ -9,6 +9,8 @@
 
 namespace ph {
 
+bool Character::mIsInAttackingMode = false;
+
 Character::Character(GameData* gameData, std::string name, Animation animation,
 	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass, bool isAttackable)
 	:GameObject(name)

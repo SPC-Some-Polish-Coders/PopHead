@@ -12,10 +12,16 @@ enum class AIMode {
 	zombieAlwaysWalkRandomly
 };
 
+struct PathMode
+{
+	Path mPath;
+	bool mIsAttackingPath = false;
+};
+
 class AIManager
 {
 public:
-	Path getZombiePath(const sf::Vector2f zombiePosition) const;
+	PathMode getZombiePath(const sf::Vector2f zombiePosition) const;
 	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
 	void setAIMode(const AIMode aiMode) { mAIMode = aiMode; }

@@ -55,6 +55,7 @@ private:
 	float mPickRadius;
 	bool mIsSlownDown;
 	bool mIsDead;
+	bool mIsAttacked = false;
 };
 
 }
