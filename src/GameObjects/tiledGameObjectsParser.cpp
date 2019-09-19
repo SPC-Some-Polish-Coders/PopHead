@@ -253,7 +253,7 @@ void TiledGameObjectsParser::loadGate(const Xml& gateNode) const
 void TiledGameObjectsParser::loadLever(const Xml& leverNode) const
 {
 	auto& leverTexture = mGameData->getTextures().get("textures/others/lever.png");
-	auto& hintTexture = mGameData->getTextures().get("textures/others/hint.png");
+	auto& hintTexture = mGameData->getTextures().get("textures/others/pressSpaceHint.png");
 	auto lever = std::make_unique<Lever>(leverTexture, hintTexture);
 	lever->setPosition(getPositionAttribute(leverNode));
 	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");

@@ -56,22 +56,24 @@
                 <textWidget name="player6"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="And what about you?"/>
                 <textWidget name="player7"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Stay safe then..."/>
             </widget>
-            <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/hint.png"/>
+            <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/pressSpaceHint.png"/>
         </widget>
     </interface>
     <interface name="hints" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <widget name="smallGreyBackground" contentPath="textures/gui/smallGreyBackground.png" origin="0.5" position="0.5">
+                <textWidget name="controls" origin="0.5" position="0.3,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="controls:"/>
                 <widget name="awsdHint" contentPath="textures/others/awsdHint.png" origin="0.5" position="0.5">
-                    <textWidget name="moving"  origin="0.5" position="0.25,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - moving"/>
+                    <textWidget name="moving"  origin="0.5" position="0.4,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="moving"/>
                 </widget>
-                <widget name="enterHint" contentPath="textures/others/enterHint.png" origin="0.5" position="0.5">
-                    <textWidget name="shooting"  origin="0.5" position="0.2,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - shooting"/>
+                <widget name="enterHint" contentPath="textures/others/enterHint.png" origin="0.5" position="0.4, 0.5">
+                    <textWidget name="shooting"  origin="0.5" position="0.3,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="shooting"/>
                 </widget>
-                <widget name="backslashHint" contentPath="textures/others/backslashHint.png" origin="0.5" position="0.5">
-                    <textWidget name="hitting"  origin="0.5" position="0.2,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - hitting"/>
+                <widget name="backslashHint" contentPath="textures/others/backslashHint.png" origin="0.5" position="0.4, 0.5">
+                    <textWidget name="hitting"  origin="0.5" position="0.3,  0.01"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="hitting"/>
                 </widget>
             </widget>
+            <widget name="pressSpaceHint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/pressSpaceHint.png"/>
         </widget>
     </interface>
 </gui>
