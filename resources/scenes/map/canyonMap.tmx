@@ -1287,25 +1287,25 @@
   <object id="197" name="GateGuardNpc" type="GateGuardNpc" x="1399.5" y="1801.5">
    <point/>
   </object>
-  <object id="198" type="CrawlingNpc" x="610.333" y="253.333">
+  <object id="198" type="CrawlingNpc" x="590.333" y="196.833">
    <properties>
     <property name="isAlreadyDead" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="199" type="CrawlingNpc" x="448" y="244">
+  <object id="199" type="CrawlingNpc" x="471.5" y="197.5">
    <properties>
     <property name="isAlreadyDead" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="200" type="CrawlingNpc" x="1586.38" y="599.015">
+  <object id="200" type="CrawlingNpc" x="1570.05" y="579.348">
    <properties>
     <property name="isAlreadyDead" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="201" type="CrawlingNpc" x="2614.38" y="849.015">
+  <object id="201" type="CrawlingNpc" x="2691.38" y="844.015">
    <properties>
     <property name="isAlreadyDead" type="bool" value="true"/>
    </properties>

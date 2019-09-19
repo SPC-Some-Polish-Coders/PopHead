@@ -154,9 +154,13 @@ void StartGameCutScene::update(const sf::Time delta)
 
 	// SPAWN ZOMBIES AND EXPAND CAMERA VIEW
 	if(mCutsceneTimeInSeconds > 34 && !mWereZombieSpawned) {
+		createZombie({5585, 305});
 		createZombie({5560, 340});
 		createZombie({5525, 380});
 		createZombie({5530, 420});
+		createZombie({5520, 420});
+		createZombie({5580, 475});
+		createZombie({5605, 500});
 		mWereZombieSpawned = true;
 		mCamera.setSize({640, 480});
 	}

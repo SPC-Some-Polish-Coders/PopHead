@@ -1,10 +1,11 @@
 #include "bilbord.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph { 
  
-Bilbord::Bilbord(const sf::Texture& stayingBilbordTexture, const sf::Texture& lyingBilbordTexture)
+Bilbord::Bilbord(const sf::Texture& stayingBilbordTexture, const sf::Texture& lyingBilbordTexture, const bool isLying)
 	:GameObject("bilbord")
-	,mSprite(stayingBilbordTexture)
+	,mSprite(isLying ? lyingBilbordTexture : stayingBilbordTexture)
 	,mStayingBilbordTexture(stayingBilbordTexture)
 	,mLyingBilbordTexture(lyingBilbordTexture)
 {
