@@ -59,4 +59,19 @@
             <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/hint.png"/>
         </widget>
     </interface>
+    <interface name="hints" hide="true">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <widget name="smallGreyBackground" contentPath="textures/gui/smallGreyBackground.png" origin="0.5" position="0.5">
+                <widget name="awsdHint" contentPath="textures/others/awsdHint.png" origin="0.5" position="0.5">
+                    <textWidget name="moving"  origin="0.5" position="0.25,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - moving"/>
+                </widget>
+                <widget name="enterHint" contentPath="textures/others/enterHint.png" origin="0.5" position="0.5">
+                    <textWidget name="shooting"  origin="0.5" position="0.2,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - shooting"/>
+                </widget>
+                <widget name="backslashHint" contentPath="textures/others/backslashHint.png" origin="0.5" position="0.5">
+                    <textWidget name="hitting"  origin="0.5" position="0.2,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="white" text=" - hitting"/>
+                </widget>
+            </widget>
+        </widget>
+    </interface>
 </gui>

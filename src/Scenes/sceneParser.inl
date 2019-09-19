@@ -16,10 +16,10 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, AudioParse
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
 	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
-	parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 	parse<MapParser>(gameData, sceneLinksNode, "map");
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
+	parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 }
 
 template<typename GuiParser, typename MapParser, typename GameObjectsParser, typename ResourcesParser, typename AudioParser>

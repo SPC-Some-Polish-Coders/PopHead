@@ -21,6 +21,7 @@ void Widget::draw()
 	if(mIsActive)
 	{
 		mWindow->draw(mSprite);
+
 		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 			if(k->second->isActive())
 				k->second->draw();
@@ -253,5 +254,5 @@ void Widget::rePosition()
 	for(const auto& k : mWidgetList)
 		k.second->rePosition();
 }
-
+	
 }

@@ -15,8 +15,8 @@
   <property name="isAlreadyDead" type="bool" default="true"/>
  </objecttype>
  <objecttype name="CutScene" color="#ffff00">
+  <property name="cutSceneName" type="string"/>
   <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
-  <property name="name" type="string"/>
  </objecttype>
  <objecttype name="CutSceneArea" color="#ffff00">
   <property name="cutSceneName" type="string"/>

@@ -13,6 +13,9 @@
     <resource respath="others/gate.png"/>
     <resource respath="others/lever.png"/>
     <resource respath="others/hint.png"/>
+    <resource respath="others/awsdHint.png"/>
+    <resource respath="others/enterHint.png"/>
+    <resource respath="others/backslashHint.png"/>
     <resource respath="others/pistol.png"/>
     <resource respath="others/standingBilbord.png"/>
     <resource respath="others/lyingBilbord.png"/> 

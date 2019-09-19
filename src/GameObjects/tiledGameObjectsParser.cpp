@@ -23,6 +23,7 @@
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
+#include "Scenes/CutScenes/controlsGuide.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
@@ -321,7 +322,10 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 	const std::string name = getProperty(cutSceneNode, "cutSceneName").toString();
 
 	if(name == "subtitlesBeforeStartGameCutscene") {
-		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(mRoot, mGameData->getSceneManager());
+		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(
+			mRoot,
+			mGameData->getSceneManager()
+		);
 		mCutSceneManager.activateCutscene(std::move(subtitlesBeforeStartGameCutscene));
 	}
 	else if(name == "startGameCutScene") {
@@ -334,6 +338,14 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mGameData
 		);
 		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
+	}
+	else if(name == "controlsGuide") {
+		auto controlsGuide = std::make_unique<ContolsGuide>(
+			mRoot,
+			mGameData->getGui(),
+			mGameData->getSceneManager()
+		);
+		mCutSceneManager.activateCutscene(std::move(controlsGuide));
 	}
 }
 
