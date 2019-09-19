@@ -6,20 +6,20 @@
 
 namespace ph {
 
-Path AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
+PathMode AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
 	if (!mIsPlayerOnScene || mAIMode == AIMode::zombieAlwaysWalkRandomly)
-		return getRandomPath(zombiePosition);
+		return { getRandomPath(zombiePosition) };
 
 	float distanceToPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
 	constexpr float maximalDistanceFromWhichZombieWalksRandom = 350.f;
 
 	if (distanceToPlayer <= maximalDistanceFromWhichZombieSeesPlayer)
-		return getPath(zombiePosition, mPlayerPosition);
+		return { getPath(zombiePosition, mPlayerPosition), true };
 	else if (distanceToPlayer <= maximalDistanceFromWhichZombieWalksRandom)
-		return getRandomPath(zombiePosition);
-	return Path();
+		return { getRandomPath(zombiePosition) };
+	return { Path() };
 }
 
 bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const

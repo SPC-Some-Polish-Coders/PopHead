@@ -135,6 +135,17 @@ void Player::updateCurrent(sf::Time delta)
 	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->getItemQuantity("Bullet");
 
 	mIsSlownDown = false;
+
+	bool isAttacked = mIsInAttackingMode;
+	mIsInAttackingMode = false;
+	if (isAttacked == mIsAttacked)
+		return;
+	mIsAttacked = isAttacked;
+
+	if (mIsAttacked)
+		mGameData->getMusicPlayer().play("music/zombieAttack.ogg");
+	else
+		mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
 }
 
 unsigned Player::getNumOfBullets() const

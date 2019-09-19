@@ -15,6 +15,8 @@ public:
 	void play(const std::string& filePath);
 	void stop();
 
+	void setVolumeMultiplierForTheme(const std::string& theme, float multiplier);
+
 	void setPaused(const bool pause);
 	void setMuted(const bool mute);
 	bool isMuted() { return mIsMuted; }
@@ -22,7 +24,11 @@ public:
 	float getVolume() { return mVolume; }
 
 private:
+	float getMultiplier(const std::string& theme) const;
+
+private:
 	MusicDataHolder mMusicDataHolder;
+	std::map<std::string, float> mThemesVolumeMultipliers;
 	sf::Music mMusic;
 	std::string mCurrentThemeFilePath;
 	float mVolume;

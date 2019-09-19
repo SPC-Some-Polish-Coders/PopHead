@@ -22,7 +22,7 @@ private:
 	void setAnimationState(const std::string& stateName);
 
 private:
-	Path mMovementPath;
+	PathMode mMovementPath;
 	sf::Clock timeFromLastGrowl;
 	sf::Clock mTimeFromStartingThisMove;
 	sf::Vector2f mCurrentDirectionVector;

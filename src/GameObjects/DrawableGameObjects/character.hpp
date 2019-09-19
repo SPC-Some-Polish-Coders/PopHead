@@ -54,6 +54,8 @@ protected:
 	unsigned mMaxHp;
 	unsigned mMovementSpeed;
 	bool mIsAttackable;
+
+	static bool mIsInAttackingMode;
 };
 
 }

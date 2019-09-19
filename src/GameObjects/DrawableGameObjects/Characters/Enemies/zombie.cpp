@@ -117,17 +117,20 @@ void Zombie::move(sf::Time delta)
 {
 	setPosition(mCollisionBody.getFixedPosition());
 
-	if(mMovementPath.empty()) {
+	if(mMovementPath.mPath.empty()) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mCollisionBody.getPosition());
 		mTimeFromStartingThisMove.restart();
 	}
 
 	if(mTimeFromStartingThisMove.getElapsedTime().asSeconds() > mTimeInSecondsToMoveToAnotherTile) {
 		mTimeFromStartingThisMove.restart();
-		Direction currentDirection = mMovementPath.front();
-		mMovementPath.pop_front();
+		Direction currentDirection = mMovementPath.mPath.front();
+		mMovementPath.mPath.pop_front();
 		mCurrentDirectionVector = toDirectionVector(currentDirection);
 	}
+
+	if (mMovementPath.mIsAttackingPath)
+		mIsInAttackingMode = true;
 
 	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
 	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
