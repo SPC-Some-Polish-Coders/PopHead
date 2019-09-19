@@ -31,9 +31,11 @@ void EndingCutScene::initGui()
 	auto* canvas = mGui.getInterface("labels")->getWidget("canvas");
 	auto playerSpeechBubble = canvas->getWidget("playerSpeechBubble");
 	auto guySpeechBubble = canvas->getWidget("guardSpeechBubble");
+	auto hint = canvas->getWidget("hint");
 
 	playerSpeechBubble->hide();
 	guySpeechBubble->hide();
+	hint->hide();
 
 	guySpeechBubble->getWidget("characterName")->show();
 	playerSpeechBubble->getWidget("player1")->hide();
@@ -66,12 +68,14 @@ void EndingCutScene::update(const sf::Time delta)
 	auto* canvas = mGui.getInterface("labels")->getWidget("canvas");
 	auto playerSpeechBubble = canvas->getWidget("playerSpeechBubble");
 	auto guySpeechBubble = canvas->getWidget("guardSpeechBubble");
+	auto hint = canvas->getWidget("hint");
 
 	switch(mTimesPressedSkip)
 	{
 		case 1:
 		{
 			guySpeechBubble->show();
+			hint->show();
 			guySpeechBubble->getWidget("guy1")->show();
 			guySpeechBubble->getWidget("guy1b")->show();
 			guySpeechBubble->getWidget("guy1c")->show();
@@ -138,6 +142,7 @@ void EndingCutScene::update(const sf::Time delta)
 			guySpeechBubble->getWidget("guy5b")->hide();
 			guySpeechBubble->getWidget("guy6")->show();
 			guySpeechBubble->getWidget("guy6b")->show();
+			hint->hide();
 			break;
 		}
 		default:

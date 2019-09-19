@@ -23,9 +23,11 @@ void GateGuardDialogue::initGui()
 	mGameData->getGui().showInterface("labels");
 	auto playerSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
 	auto guardSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
+	auto hint = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("hint");
 	
 	playerSpeechBubble->hide();
 	guardSpeechBubble->hide();
+	hint->hide();
 
 	guardSpeechBubble->getWidget("characterName")->show();
 	playerSpeechBubble->getWidget("player1")->hide();
@@ -81,13 +83,15 @@ void GateGuardDialogue::update(const sf::Time delta)
 
 	auto guardSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
 	auto playerSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
+	auto hint = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("hint");
 
-	if (mPlayerOnThePosition) 
+	if(mPlayerOnThePosition) 
 	{
 		switch(mTimesPressedSkip)
 		{
 		case 1:
 		{
+			hint->show();
 			guardSpeechBubble->show();
 			guardSpeechBubble->getWidget("guard1")->show();
 			guardSpeechBubble->getWidget("guard1b")->show();
@@ -234,13 +238,13 @@ void GateGuardDialogue::update(const sf::Time delta)
 		{
 			playerSpeechBubble->getWidget("player7")->hide();
 			playerSpeechBubble->hide();
+			hint->hide();
 			leaveCutScene();
 		} break;
 
 		default:
 			leaveCutScene();
 			break;
-
 		}
 	}
 }

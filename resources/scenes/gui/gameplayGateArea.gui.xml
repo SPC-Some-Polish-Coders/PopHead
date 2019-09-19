@@ -21,7 +21,7 @@
     <interface name="labels" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <widget name="guardSpeechBubble"  origin="0.5" position="0.73, 0.23" contentPath="textures/gui/speechBubble.png">
-				<textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Gate Guard"/>
+				        <textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Gate Guard"/>
                 <textWidget name="guard1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Good to see someone"/>
                 <textWidget name="guard1b"  origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="that's still alive"/>
                 <textWidget name="guard2" origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Wish I knew it."/>
@@ -42,7 +42,7 @@
                 <textWidget name="guard7b"  origin="0.5" position="0.1,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="we will meet again."/>
             </widget>
 			      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
-				 <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
+				        <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
                 <textWidget name="player1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Who are... "/>
                 <textWidget name="player2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="What ar..."/>
                 <textWidget name="player3"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Just what is"/>
@@ -56,6 +56,7 @@
                 <textWidget name="player6"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="And what about you?"/>
                 <textWidget name="player7"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Stay safe then..."/>
             </widget>
+            <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/hint.png"/>
         </widget>
     </interface>
 </gui>
