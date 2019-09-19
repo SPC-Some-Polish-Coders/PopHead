@@ -56,9 +56,24 @@ void SceneManager::replaceAction()
 {
 	mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
-	mScene.reset(new Scene());
-	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser> 
-		sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+
+	if (mScene && mGameData->getAIManager().isPlayerOnScene())
+	{
+		auto playerStatus = mScene->getPlayerStatus();
+		mScene.reset(new Scene());
+		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
+			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+
+		if (mGameData->getAIManager().isPlayerOnScene())
+			mScene->setPlayerStatus(playerStatus);
+	}
+	else  // there was not a scene before
+	{
+		mScene.reset(new Scene());
+		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser> 
+			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+	}
+
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
 	mHasPlayerPosition = false;

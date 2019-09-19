@@ -65,7 +65,6 @@ Player::Player(GameData* gameData)
 	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
 	,mLastMotion()
-	,mNumberOfOwnedBullets(200u)
 	,mIsSlownDown(false)
 	,mPickRadius(10.f)
 	,mIsDead(false)
@@ -78,12 +77,7 @@ Player::Player(GameData* gameData)
 	const float rotationRange = 100.f;
 	addChild(std::make_unique<MeleeWeapon>(mGameData, meleeWeaponDamage, range, rotationRange));
 
-	removeChild("Equipment");
-	addChild(std::make_unique<PlayerEquipment>());
-	auto* equipment = dynamic_cast<PlayerEquipment*>(getChild("Equipment"));
-	equipment->init();
-	for (unsigned i = 0; i < mNumberOfOwnedBullets; ++i)
-		equipment->putItem(std::make_unique<BulletItem>(mGameData));
+	setNumOfBullets(200u);
 }
 
 void Player::handleEventOnCurrent(const ph::Event& phEvent)
@@ -141,6 +135,23 @@ void Player::updateCurrent(sf::Time delta)
 	mNumberOfOwnedBullets = dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->getItemQuantity("Bullet");
 
 	mIsSlownDown = false;
+}
+
+unsigned Player::getNumOfBullets() const
+{
+	return mNumberOfOwnedBullets;
+}
+
+void Player::setNumOfBullets(unsigned num)
+{
+	mNumberOfOwnedBullets = num;
+	
+	removeChild("Equipment");
+	addChild(std::make_unique<PlayerEquipment>());
+	auto* equipment = dynamic_cast<PlayerEquipment*>(getChild("Equipment"));
+	equipment->init();
+	for (unsigned i = 0; i < mNumberOfOwnedBullets; ++i)
+		equipment->putItem(std::make_unique<BulletItem>(mGameData));
 }
 
 void Player::die()

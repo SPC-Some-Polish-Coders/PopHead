@@ -100,6 +100,11 @@ void Character::setMaxHp(unsigned int maxHp)
 	fixHp();
 }
 
+int Character::getHp() const
+{
+	return mHp;
+}
+
 void Character::takeDamage(const unsigned damage)
 { 
 	if (mTimeSinceLastTakenDamage.getElapsedTime().asSeconds() > 0.15f) {

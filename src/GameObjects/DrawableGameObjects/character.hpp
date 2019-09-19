@@ -21,10 +21,13 @@ public:
 	void dropItems();
 
 	void setPosition(sf::Vector2f);
+	
 	void setHp(unsigned hp);
 	void addHp(int hp);
 	void setMaxHp(unsigned int maxHp);
+	int getHp() const;
 	bool isDead() const;
+
 	void move(sf::Vector2f);
 	void takeDamage(const unsigned damage);
 	void drawBlood();

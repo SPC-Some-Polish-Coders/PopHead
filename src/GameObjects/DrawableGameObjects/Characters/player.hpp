@@ -30,6 +30,9 @@ public:
 	float getPickRadius() const { return mPickRadius; }
 	bool isDead() const { return mIsDead; }
 
+	unsigned getNumOfBullets() const;
+	void setNumOfBullets(unsigned num);
+
 private:
 	void die();
 	void updateCounters() const;

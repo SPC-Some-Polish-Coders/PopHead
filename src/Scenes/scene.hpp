@@ -3,6 +3,7 @@
 #include "GameObjects/GameObject.hpp"
 #include "cutSceneManager.hpp"
 #include "Events/event.hpp"
+#include "playerStatus.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
@@ -10,6 +11,7 @@ namespace ph{
 
 class GameData; 
 class CutScene;
+class Player;
 
 class Scene
 {
@@ -23,6 +25,12 @@ public:
 	bool getPause() const { return mPause; }
 	GameObject& getRoot() { return *mRoot.get(); }
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
+
+	void setPlayerStatus(const PlayerStatus& status);
+	PlayerStatus getPlayerStatus() const;
+
+private:
+	Player& getPlayer() const;
 
 private:
 	CutSceneManager mCutSceneManager;
