@@ -27,6 +27,7 @@
 #include "Utilities/xml.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
+#include "Events/actionEventManager.hpp"
 #include "gameData.hpp"
 
 
@@ -55,6 +56,7 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 	loadObjects(gameObjects);
 
 	mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
+	ActionEventManager::setEnabled(true);
 }
 
 Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode) const

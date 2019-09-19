@@ -33,35 +33,32 @@ void GateGuardDialogue::initGui()
 	playerSpeechBubble->getWidget("player1")->hide();
 	playerSpeechBubble->getWidget("player2")->hide();
 	playerSpeechBubble->getWidget("player3")->hide();
-	playerSpeechBubble->getWidget("player3b")->hide();
-	playerSpeechBubble->getWidget("player4")->hide();
-	playerSpeechBubble->getWidget("player4b")->hide();
-	playerSpeechBubble->getWidget("player4c")->hide();
-	playerSpeechBubble->getWidget("player5")->hide();
-	playerSpeechBubble->getWidget("player5b")->hide();
-	playerSpeechBubble->getWidget("player5c")->hide();
-	playerSpeechBubble->getWidget("player6")->hide();
-	playerSpeechBubble->getWidget("player7")->hide();
 
 	guardSpeechBubble->getWidget("characterName")->show();
 	guardSpeechBubble->getWidget("guard1")->hide();
 	guardSpeechBubble->getWidget("guard1b")->hide();
+	guardSpeechBubble->getWidget("guard1c")->hide();
 	guardSpeechBubble->getWidget("guard2")->hide();
 	guardSpeechBubble->getWidget("guard2b")->hide();
 	guardSpeechBubble->getWidget("guard2c")->hide();
 	guardSpeechBubble->getWidget("guard3")->hide();
 	guardSpeechBubble->getWidget("guard3b")->hide();
+	guardSpeechBubble->getWidget("guard3c")->hide();
 	guardSpeechBubble->getWidget("guard4")->hide();
 	guardSpeechBubble->getWidget("guard4b")->hide();
-	guardSpeechBubble->getWidget("guard4c")->hide();
 	guardSpeechBubble->getWidget("guard5")->hide();
 	guardSpeechBubble->getWidget("guard5b")->hide();
+	guardSpeechBubble->getWidget("guard5c")->hide();
 	guardSpeechBubble->getWidget("guard5c")->hide();
 	guardSpeechBubble->getWidget("guard6")->hide();
 	guardSpeechBubble->getWidget("guard6b")->hide();
 	guardSpeechBubble->getWidget("guard6c")->hide();
 	guardSpeechBubble->getWidget("guard7")->hide();
-	guardSpeechBubble->getWidget("guard7b")->hide();
+	guardSpeechBubble->getWidget("guard8")->hide();
+	guardSpeechBubble->getWidget("guard8b")->hide();
+	guardSpeechBubble->getWidget("guard9")->hide();
+	guardSpeechBubble->getWidget("guard10")->hide();
+	guardSpeechBubble->getWidget("guard10b")->hide();
 }
 	
 void GateGuardDialogue::update(const sf::Time delta)
@@ -92,39 +89,38 @@ void GateGuardDialogue::update(const sf::Time delta)
 		case 1:
 		{
 			hint->show();
-			guardSpeechBubble->show();
-			guardSpeechBubble->getWidget("guard1")->show();
-			guardSpeechBubble->getWidget("guard1b")->show();
+			playerSpeechBubble->show();
+			playerSpeechBubble->getWidget("player1")->show();
+			playerSpeechBubble->getWidget("player1b")->show();
 		} break;
 
 		case 2:
 		{
-			guardSpeechBubble->getWidget("guard1")->hide();
-			guardSpeechBubble->getWidget("guard1b")->hide();
-			guardSpeechBubble->hide();
+			playerSpeechBubble->hide();
+			playerSpeechBubble->getWidget("player1")->hide();
+			playerSpeechBubble->getWidget("player1b")->hide();
 
-			playerSpeechBubble->show();
-			playerSpeechBubble->getWidget("player1")->show();
+			guardSpeechBubble->show();
+			guardSpeechBubble->getWidget("guard1")->show();
+			guardSpeechBubble->getWidget("guard1b")->show();
+			guardSpeechBubble->getWidget("guard1c")->show();
 		} break;
 
 		case 3:
 		{
-			playerSpeechBubble->getWidget("player1")->hide();
+			guardSpeechBubble->hide();
+			guardSpeechBubble->getWidget("guard1")->hide();
+			guardSpeechBubble->getWidget("guard1b")->hide();
+			guardSpeechBubble->getWidget("guard1c")->hide();
+
+			playerSpeechBubble->show();
 			playerSpeechBubble->getWidget("player2")->show();
 		} break;
 
 		case 4:
 		{
-			playerSpeechBubble->getWidget("player2")->hide();
-			playerSpeechBubble->getWidget("player3")->show();
-			playerSpeechBubble->getWidget("player3b")->show();
-		} break;
-
-		case 5:
-		{
-			playerSpeechBubble->getWidget("player3")->hide();
-			playerSpeechBubble->getWidget("player3b")->hide();
 			playerSpeechBubble->hide();
+			playerSpeechBubble->getWidget("player2")->hide();
 
 			guardSpeechBubble->show();
 			guardSpeechBubble->getWidget("guard2")->show();
@@ -132,112 +128,99 @@ void GateGuardDialogue::update(const sf::Time delta)
 			guardSpeechBubble->getWidget("guard2c")->show();
 		} break;
 
-		case 6:
+		case 5:
 		{
 			guardSpeechBubble->getWidget("guard2")->hide();
 			guardSpeechBubble->getWidget("guard2b")->hide();
 			guardSpeechBubble->getWidget("guard2c")->hide();
-			guardSpeechBubble->hide();
 
-			playerSpeechBubble->show();
-			playerSpeechBubble->getWidget("player4")->show();
-			playerSpeechBubble->getWidget("player4b")->show();
-			playerSpeechBubble->getWidget("player4c")->show();
+			guardSpeechBubble->getWidget("guard3")->show();
+			guardSpeechBubble->getWidget("guard3b")->show();
+			guardSpeechBubble->getWidget("guard3c")->show();
+		} break;
+
+		case 6:
+		{
+			guardSpeechBubble->getWidget("guard3")->hide();
+			guardSpeechBubble->getWidget("guard3b")->hide();
+			guardSpeechBubble->getWidget("guard3c")->hide();
+
+			guardSpeechBubble->getWidget("guard4")->show();
+			guardSpeechBubble->getWidget("guard4b")->show();
 		} break;
 
 		case 7:
 		{
-			playerSpeechBubble->getWidget("player4")->hide();
-			playerSpeechBubble->getWidget("player4b")->hide();
-			playerSpeechBubble->getWidget("player4c")->hide();
-
-			playerSpeechBubble->getWidget("player5")->show();
-			playerSpeechBubble->getWidget("player5b")->show();
-			playerSpeechBubble->getWidget("player5c")->show();
-		} break;
-
-		case 8:
-		{
-			playerSpeechBubble->getWidget("player5")->hide();
-			playerSpeechBubble->getWidget("player5b")->hide();
-			playerSpeechBubble->getWidget("player5c")->hide();
-			playerSpeechBubble->hide();
-
-			guardSpeechBubble->show();
-			guardSpeechBubble->getWidget("guard3")->show();
-			guardSpeechBubble->getWidget("guard3b")->show();
-		} break;
-
-
-		case 9:
-		{
-			guardSpeechBubble->getWidget("guard3")->hide();
-			guardSpeechBubble->getWidget("guard3b")->hide();
-
-			guardSpeechBubble->getWidget("guard4")->show();
-			guardSpeechBubble->getWidget("guard4b")->show();
-			guardSpeechBubble->getWidget("guard4c")->show();
-		} break;
-
-
-		case 10:
-		{
 			guardSpeechBubble->getWidget("guard4")->hide();
 			guardSpeechBubble->getWidget("guard4b")->hide();
-			guardSpeechBubble->getWidget("guard4c")->hide();
 
 			guardSpeechBubble->getWidget("guard5")->show();
 			guardSpeechBubble->getWidget("guard5b")->show();
 			guardSpeechBubble->getWidget("guard5c")->show();
 		} break;
 
-		case 11:
+		case 8:
 		{
-			guardSpeechBubble->hide();
 			guardSpeechBubble->getWidget("guard5")->hide();
 			guardSpeechBubble->getWidget("guard5b")->hide();
 			guardSpeechBubble->getWidget("guard5c")->hide();
 
-			playerSpeechBubble->show();
-			playerSpeechBubble->getWidget("player6")->show();
-		} break;
-
-		case 12:
-		{
-			playerSpeechBubble->getWidget("player6")->hide();
-			playerSpeechBubble->hide();
-			 
-			guardSpeechBubble->show();
 			guardSpeechBubble->getWidget("guard6")->show();
 			guardSpeechBubble->getWidget("guard6b")->show();
 			guardSpeechBubble->getWidget("guard6c")->show();
 		} break;
 
-		case 13:
+
+		case 9:
 		{
 			guardSpeechBubble->getWidget("guard6")->hide();
 			guardSpeechBubble->getWidget("guard6b")->hide();
 			guardSpeechBubble->getWidget("guard6c")->hide();
 
 			guardSpeechBubble->getWidget("guard7")->show();
-			guardSpeechBubble->getWidget("guard7b")->show();	
+		} break;
+
+
+		case 10:
+		{
+			guardSpeechBubble->getWidget("guard7")->hide();
+
+			guardSpeechBubble->getWidget("guard8")->show();
+			guardSpeechBubble->getWidget("guard8b")->show();
+		} break;
+
+		case 11:
+		{
+			guardSpeechBubble->hide();
+			guardSpeechBubble->getWidget("guard8")->hide();
+			guardSpeechBubble->getWidget("guard8b")->hide();
+
+			playerSpeechBubble->show();
+			playerSpeechBubble->getWidget("player3")->show();
+		} break;
+
+		case 12:
+		{
+			playerSpeechBubble->hide();
+			playerSpeechBubble->getWidget("player3")->hide();
+			 
+			guardSpeechBubble->show();
+			guardSpeechBubble->getWidget("guard9")->show();
+		} break;
+
+		case 13:
+		{
+			guardSpeechBubble->getWidget("guard9")->hide();
+
+			guardSpeechBubble->getWidget("guard10")->show();
+			guardSpeechBubble->getWidget("guard10b")->show();	
 		} break;
 
 		case 14:
 		{
-			guardSpeechBubble->getWidget("guard7")->hide();
-			guardSpeechBubble->getWidget("guard7b")->hide();
+			guardSpeechBubble->getWidget("guard10")->hide();
+			guardSpeechBubble->getWidget("guard10b")->hide();
 			guardSpeechBubble->hide();
-
-			playerSpeechBubble->show();
-			playerSpeechBubble->getWidget("player7")->show();
-
-		} break;
-
-		case 15:
-		{
-			playerSpeechBubble->getWidget("player7")->hide();
-			playerSpeechBubble->hide();
 			hint->hide();
 			leaveCutScene();
 		} break;
