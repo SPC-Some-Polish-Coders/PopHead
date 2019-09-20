@@ -17,6 +17,7 @@ SceneManager::SceneManager()
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPosition(false)
+	,mLastPlayerStatus()
 {
 }
 
@@ -57,15 +58,24 @@ void SceneManager::replaceAction()
 	mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 
-	if (mScene && mGameData->getAIManager().isPlayerOnScene())
+	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{
-		auto playerStatus = mScene->getPlayerStatus();
 		mScene.reset(new Scene());
 		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
 			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
 
 		if (mGameData->getAIManager().isPlayerOnScene())
-			mScene->setPlayerStatus(playerStatus);
+			mScene->setPlayerStatus(mLastPlayerStatus);
+	}
+	else if (mScene && mGameData->getAIManager().isPlayerOnScene())
+	{
+		mLastPlayerStatus = mScene->getPlayerStatus();
+		mScene.reset(new Scene());
+		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
+			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+
+		if (mGameData->getAIManager().isPlayerOnScene())
+			mScene->setPlayerStatus(mLastPlayerStatus);
 	}
 	else  // there was not a scene before
 	{
