@@ -61,7 +61,7 @@ Zombie::Zombie(GameData* gameData)
 	mAnimation.animate(mSprite);
 
 	//temporary random generate until we develop this system
-	int numberOfBullets = Random::generateNumber(0, 2);
+	int numberOfBullets = Random::generateNumber(0, 1);
 	for(int i = 0; i < numberOfBullets; ++i)
 		dynamic_cast<Equipment*>(getChild("Equipment"))->putItem(std::make_unique<BulletItem>(mGameData));
 }

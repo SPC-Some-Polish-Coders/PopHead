@@ -77,7 +77,7 @@ Player::Player(GameData* gameData)
 	const float rotationRange = 100.f;
 	addChild(std::make_unique<MeleeWeapon>(mGameData, meleeWeaponDamage, range, rotationRange));
 
-	setNumOfBullets(200u);
+	setNumOfBullets(60u);
 }
 
 void Player::handleEventOnCurrent(const ph::Event& phEvent)
