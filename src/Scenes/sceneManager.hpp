@@ -38,7 +38,8 @@ public:
 
 private:
     std::unique_ptr<Scene> mScene;
-    std::string mFileOfSceneToMake;
+	PlayerStatus mLastPlayerStatus;
+	std::string mFileOfSceneToMake;
 	std::string mCurrentSceneFile;
     GameData* mGameData;
     bool mIsReplacing;
