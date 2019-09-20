@@ -17,6 +17,7 @@ SceneManager::SceneManager()
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPosition(false)
+	,mLastPlayerStatus()
 {
 }
 
