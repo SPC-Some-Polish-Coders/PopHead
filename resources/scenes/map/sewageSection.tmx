@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="125">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="10" nextobjectid="127">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -582,28 +582,28 @@
   <object id="5" type="Zombie" x="261" y="417">
    <point/>
   </object>
-  <object id="6" type="Zombie" x="374" y="759">
+  <object id="6" type="Zombie" x="400.667" y="989.667">
    <point/>
   </object>
   <object id="7" type="Zombie" x="862.333" y="395.667">
    <point/>
   </object>
-  <object id="8" type="Zombie" x="1100.67" y="663.667">
+  <object id="8" type="Zombie" x="1008.67" y="727.667">
    <point/>
   </object>
-  <object id="9" type="Zombie" x="1101.33" y="546">
+  <object id="9" type="Zombie" x="694.663" y="399.333">
    <point/>
   </object>
-  <object id="10" type="Zombie" x="203" y="688">
+  <object id="10" type="Zombie" x="200.333" y="486.667">
    <point/>
   </object>
-  <object id="12" type="Zombie" x="309" y="602">
+  <object id="12" type="Zombie" x="350.333" y="492.667">
    <point/>
   </object>
   <object id="13" type="Zombie" x="630.667" y="360.667">
    <point/>
   </object>
-  <object id="15" type="Zombie" x="909.667" y="533">
+  <object id="15" type="Zombie" x="860.334" y="459.667">
    <point/>
   </object>
   <object id="16" type="Zombie" x="916.667" y="749">
@@ -814,6 +814,12 @@
     <property name="gotoY" type="float" value="410"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
+  </object>
+  <object id="125" type="Zombie" x="921.667" y="487.667">
+   <point/>
+  </object>
+  <object id="126" type="Zombie" x="286" y="961.667">
+   <point/>
   </object>
  </objectgroup>
 </map>
