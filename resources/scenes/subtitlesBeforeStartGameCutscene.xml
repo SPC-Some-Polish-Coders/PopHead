@@ -3,4 +3,5 @@
   <gui filename="subtitlesBeforeStartGameCutscene.gui.xml"/>
   <map filename="subtitlesBeforeStartGameCutscene.tmx"/>
   <neededResources filename="subtitlesBeforeStartGameCutscene.res.xml"/>
+  <audio filename="startGameCutScene.audio.xml"/>
 </scenelinks>

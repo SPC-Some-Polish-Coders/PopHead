@@ -3,5 +3,5 @@
   <neededResources filename="desert.res.xml"/>
   <map filename="sewageSection.tmx"/>
   <gui filename="gameplay.gui.xml"/>
-  <audio filename="canyon.audio.xml"/>
+  <audio filename="sewage.audio.xml"/>
 </scenelinks>

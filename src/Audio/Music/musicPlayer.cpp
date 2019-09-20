@@ -3,7 +3,7 @@
 namespace ph {
 
 MusicPlayer::MusicPlayer()
-	:mVolume(70.f)
+	:mVolume(60.f)
 	,mIsMuted(false)
 	,mCurrentThemeFilePath()
 {
