@@ -24,6 +24,7 @@ public:
 	float getVolume() { return mVolume; }
 
 private:
+	void adaptVolume();
 	float getMultiplier(const std::string& theme) const;
 
 private:
