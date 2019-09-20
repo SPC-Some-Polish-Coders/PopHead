@@ -2,5 +2,7 @@
 <loading>
   <textures>
     <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
+    <resource respath="characters/phoneCallPlayer.png"/>
+    <resource respath="vehicles/car.png"/>
   </textures>
 </loading>

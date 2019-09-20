@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui>
-    <interface name="mainMenu">
-        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-          <textWidget name="story1" origin="0.5" position="0.01, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="After the outbreak of evil"></textWidget>
-		      <textWidget name="story2" origin="0.5" position="0.01, 0.2" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="a secret agent is sent to a place "></textWidget>
-		      <textWidget name="story3" origin="0.5" position="0.01, 0.3" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="set near a former military base."></textWidget>
-		      <textWidget name="story4" origin="0.5" position="0.01, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="His mission is to infiltrate the town"></textWidget>
-          <textWidget name="story5" origin="0.5" position="0.01, 0.5" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="and inform the government"></textWidget>
-          <textWidget name="story5" origin="0.5" position="0.01, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="white" text="about everything he comes across."></textWidget>
-		      
-          <textWidget name="skip" origin="0.5" position="0.3, 0.8" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" characterSize="20" color="rgb(180, 225, 0)" text="PRESS SPACE TO SKIP"></textWidget>
-        </widget>
-    </interface>
+  <interface name="labels" hide="true">
+    <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+      <widget name="phoneSpeechBubble"  origin="0.5" position="0.73, 0.3" contentPath="textures/gui/speechBubble.png">
+        <textWidget name="characterName" origin="0.5" position="0.35, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="blue" text="Boss"/>
+        <textWidget name="phone1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Hello agent."/>
+        <textWidget name="phone2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I need you to head "/>
+        <textWidget name="phone2b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="to Rochester"/>
+        <textWidget name="phone2c" origin="0.5" position="0.1,  0.45"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="in Nevada."/>
+        <textWidget name="phone3"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Bring me a report"/>
+        <textWidget name="phone3b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="of the ongoings"/>
+        <textWidget name="phone3c" origin="0.5" position="0.1,  0.45"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="within the city."/>
+        <textWidget name="phone4"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I need you to go "/>
+        <textWidget name="phone4b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="as soon as possible!"/>
+      </widget>
+      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
+        <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
+        <textWidget name="player1"       origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Hello?"/>
+        <textWidget name="player2"       origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Is it urgent?"/>
+        <textWidget name="player3"       origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Yes, boss."/>
+        <textWidget name="player3b"      origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I'm on my way."/>
+      </widget>
+      <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/pressSpaceHint.png"/>
+    </widget>
+  </interface>
 </gui>

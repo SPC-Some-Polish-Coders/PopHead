@@ -15,6 +15,7 @@
 #include "DrawableGameObjects/lever.hpp"
 #include "DrawableGameObjects/bilbord.hpp"
 #include "DrawableGameObjects/Items/medkit.hpp"
+#include "DrawableGameObjects/spriteNode.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
@@ -97,6 +98,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "GateGuardNpc")) loadGateGuardNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "SpriteNode")) loadSpriteNode(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
 
@@ -326,7 +328,8 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 	if(name == "subtitlesBeforeStartGameCutscene") {
 		auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(
 			mRoot,
-			mGameData->getSceneManager()
+			mGameData->getSceneManager(),
+			mGameData->getGui()
 		);
 		mCutSceneManager.activateCutscene(std::move(subtitlesBeforeStartGameCutscene));
 	}
@@ -403,6 +406,15 @@ void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->addChild(std::move(bilbord));
 	}
+}
+
+void TiledGameObjectsParser::loadSpriteNode(const Xml& spriteNodeNode) const
+{
+	const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
+	auto spriteNode = std::make_unique<SpriteNode>(mGameData->getTextures().get(texturePath));
+	spriteNode->setPosition(getPositionAttribute(spriteNodeNode));
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->addChild(std::move(spriteNode));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

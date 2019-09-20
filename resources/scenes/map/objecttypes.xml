@@ -33,6 +33,7 @@
  <objecttype name="Npc" color="#ffff00">
   <property name="hp" type="file" default="50"/>
   <property name="maxHp" type="file" default="50"/>
+  <property name="shouldAnimate" type="bool" default="true"/>
   <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
  </objecttype>
  <objecttype name="Player" color="#55ffff"/>
@@ -40,6 +41,9 @@
  <objecttype name="Spawner" color="#aa0000">
   <property name="spawnFrequency" type="float" default="3"/>
   <property name="spawnType" type="string" default="zombie"/>
+ </objecttype>
+ <objecttype name="SpriteNode" color="#454fa4">
+  <property name="texturePath" type="string"/>
  </objecttype>
  <objecttype name="Zombie" color="#00aa00">
   <property name="hp" type="float" default="100"/>

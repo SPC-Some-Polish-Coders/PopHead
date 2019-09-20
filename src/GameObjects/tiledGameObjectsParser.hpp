@@ -43,6 +43,7 @@ private:
 	void loadBulletItem(const Xml& bulletItemNode) const;
 	void loadMedkit(const Xml& bulletItemNode) const;
 	void loadBilbord(const Xml& bilbordNode) const;
+	void loadSpriteNode(const Xml& spriteNodeNode) const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
