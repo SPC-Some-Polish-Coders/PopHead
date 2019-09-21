@@ -25,7 +25,7 @@ Download Tiled from [here](https://thorbjorn.itch.io/tiled) <br/>
 Download our tileset from [here](https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/resources/textures/map/FULL_DESERT_TILESET_WIP.png)
 
 ### Music creators
-We expecpt at least basic skills at making music. <br/>
+We expect at least basic skills at making music. <br/>
 You can use every tool you want. <br/>
 We mostly use ogg audio format in our game. <br/>
 We would sometimes ask you to make some sounds (not only music). <br/>
@@ -34,5 +34,5 @@ You can send us music which you made in the past. <br/>
 ### Testers
 We don't require any skills from testers.
 We would tell you to test something which we just added to the game and we would tell you to play through the game before bigger release. You will also have affect of how game looks like giving some ideas to game and level designers.
-Inside game we have special tool for testers which is internal termial (command prompt).
-You should check out the documentation on terminal [HERE](https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forLevelDesigners/terminalCommands.md)  
+Inside game we have special tool for testers which is internal terminal (command prompt).
+You should check out the documentation on terminal [here](https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forLevelDesigners/terminalCommands.md)  
