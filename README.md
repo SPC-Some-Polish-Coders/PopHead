@@ -1,4 +1,4 @@
-![](docs/res/header.png)
+![](docs/res/logo_header.png)
 
 ### PopHead is an 2D action RPG game with zombie, which is being made on our own engine. The engine is being written in C++.
 
@@ -25,6 +25,6 @@ https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forProgrammer
 -  Catch2: https://github.com/catchorg/Catch2
 
 ## Screenshots:
-![](docs/res/s1.png)
-![](docs/res/s2.png)
-![](docs/res/s3.png)
+![](docs/res/screenshot1.png)
+![](docs/res/screenshot2.png)
+![](docs/res/screenshot3.png)
