@@ -9,7 +9,7 @@ itch io: https://somepolishcoders.itch.io/pophead
 ## Recrutation:
 We're currently looking for: 
 C++ programmers, Graphics designers, Music creators, Game designers, Quest desigers, Level designers. <br/>
-For more information click [HERE](docs/recruttion.md)
+For more information click [HERE](docs/recrutation.md)
 
 ## Contact:
 To contact us just join our discord server or send an email. <br/> 
