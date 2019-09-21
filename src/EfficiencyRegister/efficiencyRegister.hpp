@@ -17,7 +17,7 @@ public:
 	void handleEvent(const ph::Event&);
 	void update();
 
-	void registerDrawCall() { ++mDrawCallPerFrame; }
+	void registerDrawCall();
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 

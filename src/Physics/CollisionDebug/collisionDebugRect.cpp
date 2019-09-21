@@ -17,4 +17,9 @@ void CollisionDebugRect::draw(sf::RenderTarget& target, sf::RenderStates states)
 	target.draw(mShape, states);
 }
 
+void CollisionDebugRect::setColor(sf::Color color)
+{
+	mShape.setFillColor(color);
+}
+
 }

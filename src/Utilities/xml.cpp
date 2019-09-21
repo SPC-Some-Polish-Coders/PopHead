@@ -321,4 +321,44 @@ std::string Xml::toString() const
 	return mContent.substr(begin, mContent.size() - begin);
 }
 
+bool Xml::toBool() const
+{
+	return Cast::toBool(toString());
+}
+
+int Xml::toInt() const
+{
+	return std::stoi(toString());
+}
+
+unsigned Xml::toUnsigned() const
+{
+	return Cast::toUnsigned(toString());
+}
+
+float Xml::toFloat() const
+{
+	return std::stof(toString());
+}
+
+bool Xml::isSelfClosingTag(std::size_t openingTagEndPosition) const
+{
+	return mContent[openingTagEndPosition - 1] == '/';
+}
+
+bool Xml::isClosingTag(std::size_t tagNamePosition) const
+{
+	return mContent[tagNamePosition - 2] == '<' && mContent[tagNamePosition - 1] == '/';
+}
+
+bool Xml::isEmptyAttributeValue(std::size_t onePositionAfterAttributeValueOpeningQuote) const
+{
+	return mContent[onePositionAfterAttributeValueOpeningQuote] == '\"';
+}
+
+std::size_t Xml::findEndOfTagAttributes(std::size_t offset) const
+{
+	return mContent.find('>', offset);
+}
+
 }

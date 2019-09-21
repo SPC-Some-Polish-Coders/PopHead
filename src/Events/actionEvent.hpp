@@ -11,7 +11,7 @@ struct ActionEvent
 	std::string mAction;
 	Type mType;
 
-	ActionEvent(const std::string action, const Type type) : mAction(action), mType(type) {}
+	ActionEvent(const std::string action, const Type type);
 };
 
 }

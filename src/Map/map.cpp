@@ -88,6 +88,11 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 	mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
+bool Map::hasTile(unsigned globalTileId) const
+{
+	return globalTileId != 0;
+}
+
 std::size_t Map::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
 {
 	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {

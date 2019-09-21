@@ -13,7 +13,7 @@ public:
     void setPosition(sf::Vector2f position) { mShape.setPosition(position); }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void setColor(sf::Color color) { mShape.setFillColor(color); }
+	void setColor(sf::Color color);
 
 private:
     mutable sf::RectangleShape mShape;

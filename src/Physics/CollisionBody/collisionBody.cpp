@@ -24,6 +24,11 @@ void CollisionBody::setPosition(const sf::Vector2f position)
 	mRect.top = position.y;
 }
 
+bool CollisionBody::isBeingPushed() const
+{
+	return (mForceVector.x != 0 || mForceVector.y != 0);
+}
+
 void CollisionBody::actionsAtTheEndOfPhysicsLoopIteration()
 {
 	setPreviousPositionToCurrentPosition();
@@ -35,9 +40,24 @@ void CollisionBody::setPreviousPositionToCurrentPosition()
 	mPreviousPosition = getPosition();
 }
 
+auto CollisionBody::getPosition() const -> const sf::Vector2f
+{
+	return mRect.getTopLeft();
+}
+
 sf::Vector2f CollisionBody::getFixedPosition() const
 {
 	return { mRect.left, mRect.top - mRect.height };
+}
+
+auto CollisionBody::getPositionOfCenter() const -> sf::Vector2f
+{
+	return mRect.getCenter();
+}
+
+auto CollisionBody::getPreviousRect() const -> sf::FloatRect
+{
+	return { mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height };
 }
 
 void CollisionBody::updatePush(const sf::Time delta)

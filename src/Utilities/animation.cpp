@@ -60,6 +60,11 @@ void Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
 	}
 }
 
+void Animation::goToFrontFrame()
+{
+	mCurrentFrameIndex = 0;
+}
+
 std::string Animation::getCurrentStateName() const
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to get current state name");

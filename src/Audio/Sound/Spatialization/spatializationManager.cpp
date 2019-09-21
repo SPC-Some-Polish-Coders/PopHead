@@ -2,6 +2,11 @@
 
 namespace ph {
 
+void SpatializationManager::setListenerPosition(const sf::Vector2f listenerPosition)
+{
+	mListenerPosition = listenerPosition;
+}
+
 float SpatializationManager::getSpatialVolume(const SoundData soundData, const sf::Vector2f soundPosition, const float volume)
 {
 	init(soundData, soundPosition, volume);

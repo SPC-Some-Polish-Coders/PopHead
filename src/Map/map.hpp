@@ -53,11 +53,9 @@ private:
 
 	void createAllLayers(const AllLayersGlobalTileIds&, const TilesetsData&, const GeneralMapInfo&);
 
-	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
-
 	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info);
 
-	bool hasTile(unsigned globalTileId) const { return globalTileId != 0; }
+	bool hasTile(unsigned globalTileId) const;
 
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 

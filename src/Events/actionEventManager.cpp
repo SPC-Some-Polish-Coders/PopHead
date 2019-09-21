@@ -69,6 +69,11 @@ void ActionEventManager::clearAllActions() noexcept
 	PH_LOG_INFO("All actions were cleared.");
 }
 
+void ActionEventManager::setEnabled(bool enabled)
+{
+	mEnabled = enabled;
+}
+
 bool ActionEventManager::isActionPressed(const std::string& action)
 {
 	if(!mEnabled)

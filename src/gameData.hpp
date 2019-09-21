@@ -19,8 +19,8 @@ namespace ph {
 class GameCloser
 {
 public:
-	void closeGame() { mShouldGameBeClosed = true; };
-	bool shouldGameBeClosed() { return mShouldGameBeClosed; };
+	void closeGame();
+	bool shouldGameBeClosed();
 
 private:
 	bool mShouldGameBeClosed = false;

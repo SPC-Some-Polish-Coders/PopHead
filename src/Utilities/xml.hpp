@@ -21,26 +21,22 @@ public:
 
 	std::string toString() const;
 
-	bool toBool() const { return Cast::toBool(toString()); }
+	bool toBool() const;
 
-	int toInt() const { return std::stoi(toString()); }
+	int toInt() const;
 
-	unsigned toUnsigned() const { return Cast::toUnsigned(toString()); }
+	unsigned toUnsigned() const;
 
-	float toFloat() const { return std::stof(toString()); }
+	float toFloat() const;
 
 private:
-	bool isSelfClosingTag(std::size_t openingTagEndPosition) const
-	{ return mContent[openingTagEndPosition - 1] == '/'; }
+	bool isSelfClosingTag(std::size_t openingTagEndPosition) const;
 
-	bool isClosingTag(std::size_t tagNamePosition) const 
-	{ return mContent[tagNamePosition - 2] == '<' && mContent[tagNamePosition - 1] == '/'; }
+	bool isClosingTag(std::size_t tagNamePosition) const;
 
-	bool isEmptyAttributeValue(std::size_t onePositionAfterAttributeValueOpeningQuote) const
-	{ return mContent[onePositionAfterAttributeValueOpeningQuote] == '\"'; }
+	bool isEmptyAttributeValue(std::size_t onePositionAfterAttributeValueOpeningQuote) const;
 
-	std::size_t findEndOfTagAttributes(std::size_t offset = 0) const
-	{ return mContent.find('>', offset); }
+	std::size_t findEndOfTagAttributes(std::size_t offset = 0) const;
 
 	inline static const std::string whitespaceCharacters = " \n\t\v\f\r";
 	std::string mContent;

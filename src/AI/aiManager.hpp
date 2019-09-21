@@ -24,9 +24,9 @@ public:
 	PathMode getZombiePath(const sf::Vector2f zombiePosition) const;
 	bool shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const;
 
-	void setAIMode(const AIMode aiMode) { mAIMode = aiMode; }
-	void setIsPlayerOnScene(bool isPlayerOnScene) { mIsPlayerOnScene = isPlayerOnScene; }
 	bool isPlayerOnScene() const { return mIsPlayerOnScene; }
+	void setAIMode(const AIMode aiMode);
+	void setIsPlayerOnScene(bool isPlayerOnScene);
 	void setPlayerPosition(const sf::Vector2f playerPosition);
 	bool hasPlayerMovedSinceLastUpdate() const { return mHasPlayerMovedSinceLastUpdate; }
 	void registerMapSize(const sf::Vector2u mapSizeInTiles);

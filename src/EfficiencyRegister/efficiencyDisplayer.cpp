@@ -41,4 +41,19 @@ void EfficiencyDisplayer::move(sf::Vector2f offset)
 	mDrawCallPerFrameText.move(offset);
 }
 
+void EfficiencyDisplayer::setShouldBeDrawn(const bool shouldBeDrawn)
+{
+	mShouldBeDrawn = shouldBeDrawn;
+}
+
+void EfficiencyDisplayer::setFramePerSecondText(const std::string& text)
+{
+	mFramesPerSecondText.setString(text);
+}
+
+void EfficiencyDisplayer::setDrawCallPerFrameText(const std::string& text)
+{
+	mDrawCallPerFrameText.setString(text);
+}
+
 }

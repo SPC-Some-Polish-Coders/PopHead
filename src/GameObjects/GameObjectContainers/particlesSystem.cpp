@@ -23,4 +23,9 @@ void ParticlesSystem::updateCurrent(const sf::Time delta)
 	handleParticlesToDelete();
 }
 
+void ParticlesSystem::addParticlesToDelete(Particles* deletingParticles)
+{
+	mParticlesToDelete.emplace_back(deletingParticles);
+}
+
 }

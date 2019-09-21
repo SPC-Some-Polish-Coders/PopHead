@@ -14,7 +14,7 @@ public:
 	ParticlesSystem(Renderer& renderer);
 
 	void updateCurrent(const sf::Time delta) override;
-	void addParticlesToDelete(Particles* deletingParticles) { mParticlesToDelete.emplace_back(deletingParticles); }
+	void addParticlesToDelete(Particles* deletingParticles);
 
 private:
 	void handleParticlesToDelete();

@@ -37,7 +37,7 @@ public:
 
 	void animate(sf::Sprite& sprite, const sf::Time& deltaTime);
 
-	void goToFrontFrame() { mCurrentFrameIndex = 0; }
+	void goToFrontFrame();
 
 	std::string getCurrentStateName() const;
 

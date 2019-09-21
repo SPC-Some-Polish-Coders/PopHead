@@ -13,7 +13,7 @@ class StandingGameObjectsLayer : public GameObject
 public:
 	StandingGameObjectsLayer(PhysicsEngine& physicsEngine);
 
-	void addCharacterToDie(Character* character) { mDyingCharacters.emplace_back(character); }
+	void addCharacterToDie(Character* character);
 	void updateCurrent(sf::Time delta) override;
 
 private:

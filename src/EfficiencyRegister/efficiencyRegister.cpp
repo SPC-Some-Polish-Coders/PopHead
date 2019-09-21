@@ -48,4 +48,9 @@ void EfficiencyRegister::update()
 		++mFramesFromLastSecond;
 }
 
+void EfficiencyRegister::registerDrawCall()
+{
+	++mDrawCallPerFrame;
+}
+
 }

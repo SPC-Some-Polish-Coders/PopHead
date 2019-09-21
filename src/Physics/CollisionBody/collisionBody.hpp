@@ -13,7 +13,7 @@ public:
 	//the methods below should be called from owner
 	void move(const sf::Vector2f velocity);
 	void setPosition(const sf::Vector2f position);
-	bool isBeingPushed() { return (mForceVector.x != 0 || mForceVector.y != 0); }
+	bool isBeingPushed() const;
 
 	//the methods below should be called only from physics module
 	void updatePush(const sf::Time delta);
@@ -24,14 +24,14 @@ private:
 	void setPreviousPositionToCurrentPosition();
 
 public:
-	auto getPosition() const -> const sf::Vector2f { return mRect.getTopLeft(); }
+	auto getPosition() const -> const sf::Vector2f;
 	sf::Vector2f getFixedPosition() const;
 	auto getVelocity() const -> sf::Vector2f { return mVelocity; }
 	auto getForceVector() const -> const sf::Vector2f { return mForceVector; }
-	auto getPositionOfCenter() const -> sf::Vector2f { return mRect.getCenter(); }
 	auto getRect() const -> const sf::FloatRect& { return mRect; }
-	auto getPreviousRect() const -> sf::FloatRect { return {mPreviousPosition.x, mPreviousPosition.y, mRect.width, mRect.height}; }
 	float getMass() const { return mMass; }
+	auto getPositionOfCenter() const->sf::Vector2f;
+	auto getPreviousRect() const->sf::FloatRect;
 
 private:
 	FloatRect mRect;

@@ -28,10 +28,10 @@ public:
 	void draw(const sf::Drawable&) const;
 	void draw(const Map&) const;
 
-	void startShaking(float shakeStrength) { mCamera.setShakeStrength(shakeStrength); }
-	void moveCamera(sf::Vector2f center, float speed) { mCamera.move(center, speed); }
 	auto getCamera() -> Camera& { return mCamera; }
 	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
+	void startShaking(float shakeStrength);
+	void moveCamera(sf::Vector2f center, float speed);
 
 private:
 	sf::FloatRect getProperCameraBounds() const;

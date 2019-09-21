@@ -17,7 +17,7 @@ public:
 	void playAmbientSound(const std::string& filePath);
 	void playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition);
 
-	void setListenerPosition(const sf::Vector2f listenerPosition){ mSpatializationManager.setListenerPosition(listenerPosition); }
+	void setListenerPosition(const sf::Vector2f listenerPosition);
 	void setMuted(const bool muted);
 	void setSceneMute(const bool mute);
 	bool isMuted() { return mIsMuted; }

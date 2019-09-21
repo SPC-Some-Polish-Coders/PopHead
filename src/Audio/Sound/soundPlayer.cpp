@@ -69,6 +69,11 @@ void SoundPlayer::setSceneMute(const bool mute)
 	mSceneMute = mute;
 }
 
+void SoundPlayer::setListenerPosition(const sf::Vector2f listenerPosition)
+{
+	mSpatializationManager.setListenerPosition(listenerPosition);
+}
+
 void SoundPlayer::setMuted(const bool mute)
 {
 	static float previousVolume = mVolume;

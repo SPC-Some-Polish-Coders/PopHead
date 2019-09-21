@@ -27,7 +27,7 @@ public:
 	auto getChild(const std::string& name) const -> GameObject*;
 	auto getChildren() const -> const std::list<std::unique_ptr<GameObject>>& { return mChildren; }
 
-	static void setRoot(GameObject* const root) { GameObject::mRoot = root; }
+	static void setRoot(GameObject* const root);
 
 	sf::Vector2f getWorldPosition() const;
 	virtual sf::FloatRect getGlobalBounds() const;

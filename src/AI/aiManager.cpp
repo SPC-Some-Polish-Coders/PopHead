@@ -28,6 +28,16 @@ bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePositio
 	return distanceBetweenZombieAndPlayer < 25;
 }
 
+void AIManager::setAIMode(const AIMode aiMode)
+{
+	mAIMode = aiMode;
+}
+
+void AIManager::setIsPlayerOnScene(bool isPlayerOnScene)
+{
+	mIsPlayerOnScene = isPlayerOnScene;
+}
+
 void AIManager::setPlayerPosition(const sf::Vector2f playerPosition) 
 { 
 	this->mPlayerPosition = playerPosition; 

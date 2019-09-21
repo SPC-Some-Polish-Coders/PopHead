@@ -47,6 +47,16 @@ void Renderer::draw(const Map& map) const
 	map.draw(mRenderTarget, sf::RenderStates::Default, mProperCameraBounds);
 }
 
+void Renderer::startShaking(float shakeStrength)
+{
+	mCamera.setShakeStrength(shakeStrength);
+}
+
+void Renderer::moveCamera(sf::Vector2f center, float speed)
+{
+	mCamera.move(center, speed);
+}
+
 sf::FloatRect Renderer::getProperCameraBounds() const
 {
 	if(mDebugRenderingMode) {

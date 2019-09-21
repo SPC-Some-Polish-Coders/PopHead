@@ -14,6 +14,11 @@ Chunk::Chunk(
 	mTilesToCreate.reserve(chunkSizeInTiles.x * chunkSizeInTiles.y);
 }
 
+void Chunk::addTileData(const TileData& tile)
+{
+	mTilesToCreate.emplace_back(tile);
+}
+
 void Chunk::initializeGraphics()
 {
 	mVertexArray.setPrimitiveType(sf::Quads);

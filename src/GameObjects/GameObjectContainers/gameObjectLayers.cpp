@@ -11,6 +11,11 @@ StandingGameObjectsLayer::StandingGameObjectsLayer(PhysicsEngine& physicsEngine)
 {
 }
 
+void StandingGameObjectsLayer::addCharacterToDie(Character* character)
+{
+	mDyingCharacters.emplace_back(character);
+}
+
 void StandingGameObjectsLayer::updateCurrent(sf::Time delta)
 {
 	handleDyingCharaters();

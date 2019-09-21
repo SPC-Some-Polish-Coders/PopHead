@@ -29,7 +29,7 @@ public:
 		std::shared_ptr<ChunkData>
 	);
 
-	void addTileData(const TileData& tile) { mTilesToCreate.emplace_back(tile); };
+	void addTileData(const TileData& tile);
 
 	void initializeGraphics();
 

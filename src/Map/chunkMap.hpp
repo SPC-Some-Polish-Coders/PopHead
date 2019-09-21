@@ -35,11 +35,11 @@ class ChunkMap
 public:
 	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset);
 
-	void addNewLayerOfChunks() { mLayers.emplace_back(mChunkData); };
+	void addNewLayerOfChunks();
 
-	void addTileData(const TileData& tile) { mLayers.back().addTileData(tile); }
+	void addTileData(const TileData& tile);
 
-	void initializeGraphicsForCurrentLayer() { mLayers.back().initializeGraphics(); }
+	void initializeGraphicsForCurrentLayer();
 
 	void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const;
 

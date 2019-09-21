@@ -8,7 +8,7 @@ namespace ph {
 class SpatializationManager
 {
 public:
-	void setListenerPosition(const sf::Vector2f listenerPosition) { mListenerPosition = listenerPosition; }
+	void setListenerPosition(const sf::Vector2f listenerPosition);
 	float getSpatialVolume(const SoundData, const sf::Vector2f soundPosition, const float volume);
 private:
 	void init(const SoundData, const sf::Vector2f soundPosition, const float volume);

@@ -16,9 +16,9 @@ public:
 
 	void move(sf::Vector2f offset);
 
-	void setShouldBeDrawn(const bool shouldBeDrawn) { mShouldBeDrawn = shouldBeDrawn; }
-	void setFramePerSecondText(const std::string& text) { mFramesPerSecondText.setString(text); }
-	void setDrawCallPerFrameText(const std::string& text) { mDrawCallPerFrameText.setString(text); }
+	void setShouldBeDrawn(const bool shouldBeDrawn);
+	void setFramePerSecondText(const std::string& text);
+	void setDrawCallPerFrameText(const std::string& text);
 
 private:
 	sf::Text mFramesPerSecondText;

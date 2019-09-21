@@ -84,6 +84,21 @@ ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSiz
 {
 }
 
+void ChunkMap::addNewLayerOfChunks()
+{
+	mLayers.emplace_back(mChunkData);
+}
+
+void ChunkMap::addTileData(const TileData& tile)
+{
+	mLayers.back().addTileData(tile);
+}
+
+void ChunkMap::initializeGraphicsForCurrentLayer()
+{
+	mLayers.back().initializeGraphics();
+}
+
 void ChunkMap::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
 {
 	for(const auto& layer : mLayers)

@@ -21,8 +21,8 @@ public:
 	static void deleteAction(const std::string& action);
 	static void clearAllActions() noexcept;
 
-	static void setEnabled(bool enabled) { mEnabled = enabled; }
 	static bool isEnabled() { return mEnabled; }
+	static void setEnabled(bool enabled);
 
 	static bool isActionPressed(const std::string& action);
 

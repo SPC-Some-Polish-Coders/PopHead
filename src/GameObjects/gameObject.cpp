@@ -137,6 +137,11 @@ auto GameObject::getChild(const std::string& name) const -> GameObject*
 	return nullptr;
 }
 
+void GameObject::setRoot(GameObject* const root)
+{
+	GameObject::mRoot = root;
+}
+
 sf::Vector2f GameObject::getWorldPosition() const
 {
 	sf::Vector2f position;
