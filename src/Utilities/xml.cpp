@@ -7,7 +7,6 @@ namespace ph {
 void Xml::loadFromFile(std::string filePath)
 {
 	mContent.clear();
-	filePath.insert(0, "resources/");
 	std::ifstream ifs(filePath);
 	if (!ifs.is_open())
 		PH_EXCEPTION("cannot open file: " + filePath);

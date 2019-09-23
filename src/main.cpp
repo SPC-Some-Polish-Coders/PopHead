@@ -21,7 +21,7 @@ int main()
 		ph::XmlGuiParser::setActionsParser(std::make_unique<ph::GuiActionsParserImpl>());
 
 		// TODO: change place of initializing logs to start of main(), because now it needs Terminal from Game
-		ph::initializeLogsModule("../config/logsConfig.ini", game.getTerminal());
+		ph::initializeLogsModule("config/logsConfig.ini", game.getTerminal());
 		
 		PH_LOG_INFO("start executing PopHead");
 		game.run();

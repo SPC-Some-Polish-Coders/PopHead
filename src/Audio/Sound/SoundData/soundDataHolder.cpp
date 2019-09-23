@@ -7,7 +7,7 @@ namespace ph {
 SoundDataHolder::SoundDataHolder()
 {
 	Xml soundDataXml;
-	soundDataXml.loadFromFile("sounds/soundData.xml");
+	soundDataXml.loadFromFile("resources/sounds/soundData.xml");
 	const auto soundDataNode = soundDataXml.getChild("soundData");
 	const std::vector<Xml> soundNodes = soundDataNode.getChildren("sound");
 	for(const auto& soundNode : soundNodes) {

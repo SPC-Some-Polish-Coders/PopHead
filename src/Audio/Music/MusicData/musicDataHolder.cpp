@@ -8,7 +8,7 @@ namespace ph{
 MusicDataHolder::MusicDataHolder()
 {
 	Xml musicDataXml;
-	musicDataXml.loadFromFile("music/musicData.xml");
+	musicDataXml.loadFromFile("resources/music/musicData.xml");
 	const Xml musicDataNode = musicDataXml.getChild("musicdata");
 	const std::vector<Xml> themeNodes = musicDataNode.getChildren("theme");
 	for(const auto& themeNode : themeNodes) {
