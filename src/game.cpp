@@ -9,7 +9,7 @@ namespace ph {
 
 Game::Game()
 	:mGameData{}
-	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen)
+	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead")
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
