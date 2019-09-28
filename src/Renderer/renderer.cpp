@@ -1,4 +1,4 @@
-#include "Renderer/renderer.hpp"
+#include "renderer.hpp"
 #include "GameObjects/gameObject.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/math.hpp"
@@ -10,51 +10,30 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 	:mRenderTarget(renderTarget)
 	,mCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
 	,mStaticObjectsCamera{ sf::Vector2f{0,0}, sf::Vector2f{16*40, 16*30} }
-	,mViewports{ { FullScreenViewport, { 0.f, 0.f, 1.f, 1.f } } }
 	,mDebugRenderingMode(false)
 {
-	mCamera.setViewport(mViewports.at(FullScreenViewport));
-}
-
-Renderer::~Renderer()
-{
-}
-
-void Renderer::update(sf::Time delta)
-{
-	mCamera.update(delta);
+	mCamera.setViewport({0.f, 0.f, 1.f, 1.f});
 }
 
 void Renderer::startSceneRendering()
 {
-	mProperCameraBounds = getProperCameraBounds();
-	mRenderTarget.clear();
-	mCamera.applyTo(mRenderTarget);
+	mRenderCommand.clear();
+	mRenderCommand.setView(mCamera.getView());
 }
 
 void Renderer::startUIRendering()
 {
-	mStaticObjectsCamera.applyTo(mRenderTarget);
+	mRenderCommand.setView(mStaticObjectsCamera.getView());
 }
 
-void Renderer::draw(const sf::Drawable& drawableObject) const
+void Renderer::draw(const sf::Drawable& drawableObject)
 {
-	mRenderTarget.draw(drawableObject);
+	mRenderCommand.draw(drawableObject, sf::RenderStates::Default);
 }
 
-void Renderer::draw(const Map& map) const
+void Renderer::draw(const Map& map)
 {
-	map.draw(mRenderTarget, sf::RenderStates::Default, mProperCameraBounds);
-}
-
-void Renderer::startShaking(float shakeStrength)
-{
-	mCamera.setShakeStrength(shakeStrength);
-}
-
-void Renderer::moveCamera(sf::Vector2f center, float speed)
-{
-	mCamera.move(center, speed);
+	map.draw(mRenderTarget, sf::RenderStates::Default, getProperCameraBounds());
 }
 
 sf::FloatRect Renderer::getProperCameraBounds() const

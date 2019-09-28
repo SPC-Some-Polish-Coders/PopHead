@@ -21,6 +21,8 @@ public:
 
 	auto getBounds() const -> sf::FloatRect;
 
+	auto getView() const -> sf::View { return mView; };
+
 	void setViewport(sf::FloatRect viewport) { mView.setViewport(viewport); }
 
 	void setShakeStrength(float shakeStrength) { mShakeStrength = shakeStrength; }
@@ -28,8 +30,6 @@ public:
 	void shake(float shakeStrengthLoss);
 
 	void move(sf::Vector2f center, float speed);
-
-	void applyTo(sf::RenderTarget& renderTarget) const;
 
 	auto getCameraMoveFromLastFrame() -> sf::Vector2f { return mCameraMoveFromLastFrame; }
 

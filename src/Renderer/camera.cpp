@@ -2,8 +2,6 @@
 #include "Utilities/math.hpp"
 #include "Utilities/random.hpp"
 
-#include <iostream>
-
 namespace ph {
 
 Camera::Camera(sf::Vector2f center, sf::Vector2f size)
@@ -43,11 +41,6 @@ void Camera::move(sf::Vector2f center, float speed)
 	mView.setCenter(mCenterWithoutShake);
 	updateCameraMoveFromLastFrame();
 	updateLastCameraPosition();
-}
-
-void Camera::applyTo(sf::RenderTarget& renderTarget) const
-{
-	renderTarget.setView(mView);
 }
 
 void Camera::updateCameraMoveFromLastFrame()

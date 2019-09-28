@@ -3,6 +3,7 @@
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
+#include "Renderer/LegacyOpenGl/legacyOpenGlRenderAPI.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -54,6 +55,8 @@ Game::Game()
 	mRenderWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
+
+	LegacyOpenGLRenderAPI::setRenderTarget(&mRenderWindow);
 }
 
 void Game::run()
@@ -109,7 +112,6 @@ void Game::update(sf::Time deltaTime)
 		mSceneManager->update(deltaTime);
 		mAIManager->update();
 		mPhysicsEngine->update(deltaTime);
-		mRenderer->update(deltaTime);
 		mGui->update(deltaTime);
 		mTerminal->update();
 	}
