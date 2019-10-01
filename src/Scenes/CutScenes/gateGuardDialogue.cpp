@@ -14,7 +14,7 @@ GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
 	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
-	mGameData->getRenderer().getCamera().setSize({320, 240});
+	/*mGameData->getRenderer().getCamera().setSize({320, 240});*/
 	initGui();
 }
 
@@ -237,7 +237,7 @@ void GateGuardDialogue::leaveCutScene()
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
 	mGameData->getGui().showInterface("gameplayCounters");
-	mGameData->getRenderer().getCamera().setSize({640, 480});
+	/*mGameData->getRenderer().getCamera().setSize({640, 480});*/
 }
 
 }

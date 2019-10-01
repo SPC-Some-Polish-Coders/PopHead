@@ -255,17 +255,17 @@ float CommandInterpreter::getVolumeFromCommand() const
 
 void CommandInterpreter::executeView() const
 {
-	auto& camera = mGameData->getRenderer().getCamera();
+	/*auto& camera = mGameData->getRenderer().getCamera();
 	if(commandContains("normal")) {
 		camera.setSize({640, 480});
 		return;
-	}
+	}*/
 	const sf::Vector2f newViewSize = getVector2Argument();
 	if(newViewSize == mVector2ArgumentError)
 		return;
-	camera.setSize(newViewSize);
+	/*camera.setSize(newViewSize);
 	auto& renderer = mGameData->getRenderer();
-	renderer.setDebugRenderingMode(commandContains("debugmode"));
+	renderer.setDebugRenderingMode(commandContains("debugmode"));*/
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

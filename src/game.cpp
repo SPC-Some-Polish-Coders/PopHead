@@ -22,7 +22,7 @@ Game::Game()
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
-	,mRenderer{new Renderer(mRenderWindow)}
+	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}

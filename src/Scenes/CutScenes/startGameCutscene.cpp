@@ -1,7 +1,7 @@
 #include "startGameCutscene.hpp"
 #include "GameObjects/gameObject.hpp"
 #include "GameObjects/DrawableGameObjects/car.hpp"
-#include "Renderer/camera.hpp"
+//#include "Renderer/camera.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
@@ -52,8 +52,8 @@ void StartGameCutScene::update(const sf::Time delta)
 
 	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
 	
-	if(mCutsceneTimeInSeconds < 23)
-		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());
+	/*if(mCutsceneTimeInSeconds < 23)
+		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());*/
 
 	if(mCutsceneTimeInSeconds < 5)
 		car.speedUp();
@@ -104,8 +104,8 @@ void StartGameCutScene::update(const sf::Time delta)
 
 	// CAMERA VIEW BECOMES SMALLER
 	if(mCutsceneTimeInSeconds > 23.7 && !mHasPlayerTurnedToNpc) {
-		mCamera.setSize({320, 240});
-		mCamera.setCenter({5745, 395});
+		/*mCamera.setSize({320, 240});
+		mCamera.setCenter({5745, 395});*/
 		auto& playerNpc = dynamic_cast<Character&>(*mRoot.getChild("playerNpc"));
 		playerNpc.setAnimationState("right");
 		mHasPlayerTurnedToNpc = true;
@@ -162,7 +162,7 @@ void StartGameCutScene::update(const sf::Time delta)
 		createZombie({5580, 475});
 		createZombie({5605, 500});
 		mWereZombieSpawned = true;
-		mCamera.setSize({640, 480});
+		/*mCamera.setSize({640, 480});*/
 	}
 
 	if(mCutsceneTimeInSeconds > 36)

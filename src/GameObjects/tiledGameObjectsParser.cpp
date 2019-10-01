@@ -106,7 +106,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 	{
 		const auto& player = *mRoot.getChild("LAYER_standingObjects")->getChild("player");
 		auto playerPosition = player.getPosition();
-		mGameData->getRenderer().getCamera().setCenter(playerPosition);
+		/*mGameData->getRenderer().getCamera().setCenter(playerPosition);*/
 	}
 }
 
@@ -293,9 +293,9 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 	);
 	const sf::Vector2f cameraCenter = cameraBounds.getCenter();
 	
-	auto& camera = mGameData->getRenderer().getCamera();
+	/*auto& camera = mGameData->getRenderer().getCamera();
 	camera.setSize(cameraViewSize);
-	camera.setCenter(cameraCenter);
+	camera.setCenter(cameraCenter);*/
 }
 
 void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
@@ -333,7 +333,7 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 		);
 		mCutSceneManager.activateCutscene(std::move(subtitlesBeforeStartGameCutscene));
 	}
-	else if(name == "startGameCutScene") {
+	/*else if(name == "startGameCutScene") {
 		auto startGameCutScene = std::make_unique<StartGameCutScene>(
 			mRoot,
 			mGameData->getRenderer().getCamera(),
@@ -343,7 +343,7 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mGameData
 		);
 		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
-	}
+	}*/
 	else if(name == "controlsGuide") {
 		auto controlsGuide = std::make_unique<ContolsGuide>(
 			mRoot,

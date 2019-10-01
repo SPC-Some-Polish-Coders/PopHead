@@ -38,7 +38,7 @@ namespace ph {
 		auto& cutsceneManager = mGameData->getSceneManager().getScene().getCutSceneManager();
 		if(mCutSceneName == "gateGuardDialogue")
 			cutsceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mGameData));
-		else if(mCutSceneName == "endingDialogue")
+		/*else if(mCutSceneName == "endingDialogue")
 			cutsceneManager.activateCutscene(std::make_unique<EndingCutScene>(
 				*mRoot,
 				mGameData->getGui(),
@@ -46,7 +46,7 @@ namespace ph {
 				mGameData->getRenderer().getCamera(),
 				mGameData->getAIManager(),
 				mGameData->getSceneManager()
-			));
+			));*/
 	}
 
 }
