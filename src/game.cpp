@@ -4,7 +4,6 @@
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
-#include "Renderer/LegacyOpenGl/legacyOpenGlRenderAPI.hpp"
 #include "Logs/logs.hpp"
 #include <SFML/System.hpp>
 
@@ -59,8 +58,6 @@ Game::Game()
 	mRenderWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
-
-	LegacyOpenGLRenderAPI::setRenderTarget(&mRenderWindow);	
 
 	mRenderer->setUpModernOpenGlTest();
 }

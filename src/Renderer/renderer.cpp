@@ -40,23 +40,23 @@ Renderer::Renderer(sf::RenderTarget& renderTarget)
 
 void Renderer::startSceneRendering()
 {
-	mRenderCommand.clear();
-	mRenderCommand.setView(mCamera.getView());
+	/*mRenderCommand.clear();
+	mRenderCommand.setView(mCamera.getView());*/
 }
 
 void Renderer::startUIRendering()
 {
-	mRenderCommand.setView(mStaticObjectsCamera.getView());
+	/*mRenderCommand.setView(mStaticObjectsCamera.getView());*/
 }
 
 void Renderer::draw(const sf::Drawable& drawableObject)
 {
-	mRenderCommand.draw(drawableObject, sf::RenderStates::Default);
+	//mRenderCommand.draw(drawableObject, sf::RenderStates::Default);
 }
 
 void Renderer::draw(const Map& map)
 {
-	map.draw(mRenderTarget, sf::RenderStates::Default, getProperCameraBounds());
+	//map.draw(mRenderTarget, sf::RenderStates::Default, getProperCameraBounds());
 }
 
 void Renderer::setUpModernOpenGlTest()

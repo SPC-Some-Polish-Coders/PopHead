@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Renderer/camera.hpp"
-#include "renderCommand.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
@@ -37,7 +36,6 @@ private:
 	unsigned shaderProgram, vao;
 	Camera mCamera;
 	Camera mStaticObjectsCamera;
-	RenderCommand mRenderCommand;
 	sf::RenderTarget& mRenderTarget;
 	bool mDebugRenderingMode;
 };
