@@ -29,9 +29,13 @@ project "PopHead"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include"
+		root_dir .. "vendor/glew-1.5.4/include"
     }
 
-    libdirs{root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio"}
+    libdirs{
+		root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio",
+		root_dir .. "vendor/glew-1.5.4/lib"
+	}
 
     files{
         root_dir .. "src/**.hpp",
@@ -40,6 +44,7 @@ project "PopHead"
     }
 
     links{
+		"glew32s.lib"
         "opengl32.lib",
         "winmm.lib",
         "gdi32.lib",
