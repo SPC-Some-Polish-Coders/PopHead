@@ -24,6 +24,8 @@ public:
 
 	void draw(const sf::Drawable&);
 	void draw(const Map&);
+	void setUpModernOpenGlTest();
+	void drawModernOpenGlTest();
 
 	auto getCamera() -> Camera& { return mCamera; }
 	void setDebugRenderingMode(bool mode) { mDebugRenderingMode = mode; }
@@ -32,6 +34,7 @@ private:
 	sf::FloatRect getProperCameraBounds() const;
 
 private:
+	unsigned shaderProgram, vao;
 	Camera mCamera;
 	Camera mStaticObjectsCamera;
 	RenderCommand mRenderCommand;

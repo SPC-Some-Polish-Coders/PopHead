@@ -28,7 +28,7 @@ project "PopHead"
     
     includedirs{
         root_dir .. "src",
-        root_dir .. "vendor/SFML_2.5.1/include"
+        root_dir .. "vendor/SFML_2.5.1/include",
 		root_dir .. "vendor/glew-1.5.4/include"
     }
 
@@ -44,7 +44,6 @@ project "PopHead"
     }
 
     links{
-		"glew32s.lib"
         "opengl32.lib",
         "winmm.lib",
         "gdi32.lib",
@@ -54,10 +53,14 @@ project "PopHead"
         "vorbisfile.lib",
         "vorbis.lib",
         "ogg.lib",
-        "openal32.lib"
+        "openal32.lib",
+		"glew32s.lib"
     }
 
-    defines{"SFML_STATIC"}
+    defines{
+		"SFML_STATIC",
+		"GLEW_STATIC"
+	}
 
     filter "configurations:Debug"
         symbols "On"

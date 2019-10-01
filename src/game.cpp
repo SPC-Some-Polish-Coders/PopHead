@@ -1,16 +1,20 @@
+#include <GL/glew.h>
 #include "game.hpp"
 #include "Resources/loadFonts.hpp"
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
 #include "Renderer/LegacyOpenGl/legacyOpenGlRenderAPI.hpp"
+#include "Logs/logs.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
 
 Game::Game()
 	:mGameData{}
-	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead")
+	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default,
+		sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core)
+	)
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
@@ -56,7 +60,9 @@ Game::Game()
 
 	ActionEventManager::init();
 
-	LegacyOpenGLRenderAPI::setRenderTarget(&mRenderWindow);
+	LegacyOpenGLRenderAPI::setRenderTarget(&mRenderWindow);	
+
+	mRenderer->setUpModernOpenGlTest();
 }
 
 void Game::run()
@@ -119,15 +125,17 @@ void Game::update(sf::Time deltaTime)
 
 void Game::draw()
 {
-	mRenderer->startSceneRendering();
-	mRenderer->draw(*mMap);
-	mRenderer->draw(mSceneManager->getScene().getRoot());
-	mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
+	//mRenderer->startSceneRendering();
+	//mRenderer->draw(*mMap);
+	//mRenderer->draw(mSceneManager->getScene().getRoot());
+	//mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
 
-	mRenderer->startUIRendering();
-	mRenderer->draw(mGui->getGuiDrawer());
-	mRenderer->draw(mEfficiencyRegister->getDisplayer());
-	mRenderer->draw(mTerminal->getImage());
+	//mRenderer->startUIRendering();
+	//mRenderer->draw(mGui->getGuiDrawer());
+	//mRenderer->draw(mEfficiencyRegister->getDisplayer());
+	//mRenderer->draw(mTerminal->getImage());
+
+	mRenderer->drawModernOpenGlTest();
 
 	mRenderWindow.display();
 }
