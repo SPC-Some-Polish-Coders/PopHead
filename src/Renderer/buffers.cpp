@@ -6,41 +6,45 @@ namespace ph {
 
 // VERTEX BUFFER
 
-VertexBuffer::VertexBuffer(float* vertices, size_t arraySize)
+VertexBuffer createVertexBuffer(float* vertices, size_t arraySize)
 {
-	GLCheck( glGenBuffers(1, &mID) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mID) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, GL_STATIC_DRAW) );
+	unsigned id;
+	GLCheck(glGenBuffers(1, &id));
+	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, id));
+	GLCheck(glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, GL_STATIC_DRAW));
+	return {id};
 }
 
-VertexBuffer::~VertexBuffer()
+void deleteVertexBuffer(VertexBuffer vbo)
 {
-	GLCheck( glDeleteBuffers(1, &mID) );
+	GLCheck( glDeleteBuffers(1, &vbo.mID) );
 }
 
-void VertexBuffer::bind()
+void bind(VertexBuffer vbo)
 {
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mID) );
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, vbo.mID) );
 }
 
 
 // INDEX BUFFER
 
-IndexBuffer::IndexBuffer(unsigned* indices, size_t numberOfIndices)
+IndexBuffer createIndexBuffer(unsigned* indices, size_t arraySize)
 {
-	GLCheck( glGenBuffers(1, &mID) );
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mID) );
-	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, numberOfIndices, indices, GL_STATIC_DRAW) );
+	unsigned id;
+	GLCheck(glGenBuffers(1, &id));
+	GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id));
+	GLCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, arraySize, indices, GL_STATIC_DRAW));
+	return {id};
 }
 
-IndexBuffer::~IndexBuffer()
+void deleteIndexBuffer(IndexBuffer ibo)
 {
-	GLCheck( glDeleteBuffers(1, &mID) );
+	glDeleteBuffers(1, &ibo.mID);
 }
 
-void IndexBuffer::bind()
+void bind(IndexBuffer ibo)
 {
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mID) );
+	GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo.mID));
 }
 
 }

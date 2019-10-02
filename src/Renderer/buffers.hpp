@@ -2,33 +2,16 @@
 
 namespace ph {
 
-enum class ShaderDataType
-{
-	None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
-};
+// VERTEX BUFFER
+struct VertexBuffer { unsigned mID; };
+VertexBuffer createVertexBuffer(float* vertices, size_t arraySize);
+void deleteVertexBuffer(VertexBuffer);
+void bind(VertexBuffer);
 
-class VertexBuffer
-{
-public:
-	VertexBuffer(float* vertices, size_t arraySize);
-	~VertexBuffer();
-
-	void bind();
-
-private:
-	unsigned mID;
-};
-
-class IndexBuffer
-{
-public:
-	IndexBuffer(unsigned* indices, size_t numberOfIndices);
-	~IndexBuffer();
-
-	void bind();
-
-private:
-	unsigned mID;
-};
+// INDEX BUFFER
+struct IndexBuffer { unsigned mID; };
+IndexBuffer createIndexBuffer(unsigned* indices, size_t arraySize);
+void deleteIndexBuffer(IndexBuffer);
+void bind(IndexBuffer);
 
 }

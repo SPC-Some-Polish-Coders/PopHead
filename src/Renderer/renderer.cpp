@@ -86,17 +86,12 @@ void Renderer::setUpModernOpenGlTest()
 	GLCheck( glGenVertexArrays(1, &vao) );
 	GLCheck( glBindVertexArray(vao) );
 
-	VertexBuffer vbo(vertices, 3 * 3 * sizeof(float));
-
-	/*unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
+	VertexBuffer vbo = createVertexBuffer(vertices, 3 * 3 * sizeof(float));
 
 	GLCheck( glEnableVertexAttribArray(0) );
 	GLCheck( glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), ( void*)0) );
 
-	IndexBuffer ibo(indices, 3);
+	IndexBuffer ibo = createIndexBuffer(indices, 3 * sizeof(unsigned));
 
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, 0) );
 }

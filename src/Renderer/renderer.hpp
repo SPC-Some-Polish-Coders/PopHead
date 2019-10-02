@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <string>
-#include <map>
+#include "buffers.hpp"
+#include "vertexArray.hpp"
+#include <memory>
 
 namespace ph {
 
