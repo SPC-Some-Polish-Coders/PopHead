@@ -76,30 +76,25 @@ void Renderer::setUpModernOpenGlTest()
 	GLCheck( glDeleteShader(fragmentShader) );
 
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f 
+		-0.5f, -0.5f,
+		 0.5f, -0.5f,
+		 0.0f,  0.5f
 	};
 
 	unsigned int indices[] = {0, 1, 2};
 
-	GLCheck( glGenVertexArrays(1, &vao) );
-	GLCheck( glBindVertexArray(vao) );
-
 	VertexBuffer vbo = createVertexBuffer(vertices, 3 * 3 * sizeof(float));
-
-	GLCheck( glEnableVertexAttribArray(0) );
-	GLCheck( glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), ( void*)0) );
-
 	IndexBuffer ibo = createIndexBuffer(indices, 3 * sizeof(unsigned));
-
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, 0) );
+	vao = std::make_shared<VertexArray>();
+	vao->setVertexBuffer(vbo, VertexBufferLayout::position2);
+	vao->setIndexBuffer(ibo);
+	vao->bind();
 }
 
 void Renderer::drawModernOpenGlTest()
 {
 	GLCheck( glUseProgram(shaderProgram) );
-	GLCheck( glBindVertexArray(vao) );
+	vao->bind();
 	GLCheck( glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0) );
 }
 

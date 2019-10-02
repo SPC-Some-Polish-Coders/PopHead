@@ -1,6 +1,5 @@
 #pragma once
 
-#include "buffers.hpp"
 #include "vertexArray.hpp"
 #include <memory>
 
@@ -21,7 +20,8 @@ public:
 	void drawModernOpenGlTest();
 
 private:
-	unsigned shaderProgram, vao;
+	unsigned shaderProgram;
+	std::shared_ptr<VertexArray> vao;
 };
 
 }
