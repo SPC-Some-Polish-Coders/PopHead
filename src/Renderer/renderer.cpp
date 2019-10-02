@@ -4,6 +4,8 @@
 #include "Logs/logs.hpp"
 #include "Utilities/math.hpp"
 #include "Map/map.hpp"
+#include "buffers.hpp"
+#include "openglErrors.hpp"
 
 namespace
 {
@@ -29,7 +31,6 @@ Renderer::Renderer()
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		PH_LOG_ERROR("GLEW wasn't initialized correctly!");
-
 }
 
 void Renderer::setUpModernOpenGlTest()
@@ -38,41 +39,41 @@ void Renderer::setUpModernOpenGlTest()
 	// ------------------------------------
 	// vertex shader
 	unsigned vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
+	GLCheck( glShaderSource(vertexShader, 1, &vertexShaderSource, NULL) );
+	GLCheck( glCompileShader(vertexShader) );
 	// check for shader compile errors
 	int success;
 	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	GLCheck( glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success) );
 	if(!success)
 	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		GLCheck( glGetShaderInfoLog(vertexShader, 512, NULL, infoLog) );
 		PH_LOG_ERROR(std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + infoLog);
 	}
 	// fragment shader
 	unsigned fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
+	GLCheck( glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL) );
+	GLCheck( glCompileShader(fragmentShader) );
 	// check for shader compile errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	GLCheck( glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success) );
 	if(!success)
 	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		GLCheck( glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog) );
 		PH_LOG_ERROR(std::string("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n") + infoLog);
 	}
 	// link shaders
 	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	GLCheck( glAttachShader(shaderProgram, vertexShader) );
+	GLCheck( glAttachShader(shaderProgram, fragmentShader) );
+	GLCheck( glLinkProgram(shaderProgram) );
 	// check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	GLCheck( glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success) );
 	if(!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		GLCheck( glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog) );
 		PH_LOG_ERROR(std::string("ERROR::SHADER::PROGRAM::LINKING_FAILED\n") + infoLog);
 	}
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	GLCheck( glDeleteShader(vertexShader) );
+	GLCheck( glDeleteShader(fragmentShader) );
 
 	float vertices[] = {
 		-0.5f, -0.5f, 0.0f,
@@ -80,25 +81,31 @@ void Renderer::setUpModernOpenGlTest()
 		 0.0f,  0.5f, 0.0f 
 	};
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	unsigned int indices[] = {0, 1, 2};
 
-	unsigned int vbo;
+	GLCheck( glGenVertexArrays(1, &vao) );
+	GLCheck( glBindVertexArray(vao) );
+
+	VertexBuffer vbo(vertices, 3 * 3 * sizeof(float));
+
+	/*unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), ( void*) 0);
-	glEnableVertexAttribArray(0);
+	GLCheck( glEnableVertexAttribArray(0) );
+	GLCheck( glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), ( void*)0) );
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	IndexBuffer ibo(indices, 3);
+
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, 0) );
 }
 
 void Renderer::drawModernOpenGlTest()
 {
-	glUseProgram(shaderProgram);
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	GLCheck( glUseProgram(shaderProgram) );
+	GLCheck( glBindVertexArray(vao) );
+	GLCheck( glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0) );
 }
 
 }
