@@ -7,23 +7,6 @@
 #include "buffers.hpp"
 #include "openglErrors.hpp"
 
-namespace
-{
-const char* vertexShaderSource = "#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n"
-	"void main()\n"
-	"{\n"
-	"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-	"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"void main()\n"
-	"{\n"
-	"   FragColor = vec4(1.0f, 1.5f, 0.2f, 1.0f);\n"
-	"}\n\0";
-}
-
 namespace ph {
 
 Renderer::Renderer()
@@ -35,45 +18,8 @@ Renderer::Renderer()
 
 void Renderer::setUpModernOpenGlTest()
 {
-	// build and compile our shader program
-	// ------------------------------------
-	// vertex shader
-	unsigned vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLCheck( glShaderSource(vertexShader, 1, &vertexShaderSource, NULL) );
-	GLCheck( glCompileShader(vertexShader) );
-	// check for shader compile errors
-	int success;
-	char infoLog[512];
-	GLCheck( glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success) );
-	if(!success)
-	{
-		GLCheck( glGetShaderInfoLog(vertexShader, 512, NULL, infoLog) );
-		PH_LOG_ERROR(std::string("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") + infoLog);
-	}
-	// fragment shader
-	unsigned fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	GLCheck( glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL) );
-	GLCheck( glCompileShader(fragmentShader) );
-	// check for shader compile errors
-	GLCheck( glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success) );
-	if(!success)
-	{
-		GLCheck( glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog) );
-		PH_LOG_ERROR(std::string("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n") + infoLog);
-	}
-	// link shaders
-	shaderProgram = glCreateProgram();
-	GLCheck( glAttachShader(shaderProgram, vertexShader) );
-	GLCheck( glAttachShader(shaderProgram, fragmentShader) );
-	GLCheck( glLinkProgram(shaderProgram) );
-	// check for linking errors
-	GLCheck( glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success) );
-	if(!success) {
-		GLCheck( glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog) );
-		PH_LOG_ERROR(std::string("ERROR::SHADER::PROGRAM::LINKING_FAILED\n") + infoLog);
-	}
-	GLCheck( glDeleteShader(vertexShader) );
-	GLCheck( glDeleteShader(fragmentShader) );
+	mShader = std::make_shared<Shader>();
+	mShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 
 	float vertices[] = {
 		-0.5f, -0.5f,
@@ -85,16 +31,16 @@ void Renderer::setUpModernOpenGlTest()
 
 	VertexBuffer vbo = createVertexBuffer(vertices, 3 * 3 * sizeof(float));
 	IndexBuffer ibo = createIndexBuffer(indices, 3 * sizeof(unsigned));
-	vao = std::make_shared<VertexArray>();
-	vao->setVertexBuffer(vbo, VertexBufferLayout::position2);
-	vao->setIndexBuffer(ibo);
-	vao->bind();
+	mVao = std::make_shared<VertexArray>();
+	mVao->setVertexBuffer(vbo, VertexBufferLayout::position2);
+	mVao->setIndexBuffer(ibo);
+	mVao->bind();
 }
 
 void Renderer::drawModernOpenGlTest()
 {
-	GLCheck( glUseProgram(shaderProgram) );
-	vao->bind();
+	mShader->bind();
+	mVao->bind();
 	GLCheck( glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0) );
 }
 
