@@ -2,6 +2,7 @@
 
 #include "vertexArray.hpp"
 #include "shader.hpp"
+#include "texture.hpp"
 #include <memory>
 
 namespace ph {
@@ -23,6 +24,7 @@ public:
 private:
 	std::shared_ptr<Shader> mShader;
 	std::shared_ptr<VertexArray> mVao;
+	std::shared_ptr<Texture> mTexture;
 };
 
 }

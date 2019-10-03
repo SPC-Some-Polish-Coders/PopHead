@@ -35,21 +35,21 @@ void VertexArray::setVertexBuffer(VertexBuffer vbo, VertexBufferLayout layout)
 	// TODO: Clean this code or make better layout setting abstraction
 	switch(layout)
 	{
-	case ph::VertexBufferLayout::position2:
+	case VertexBufferLayout::position2:
+		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0) );
 		GLCheck( glEnableVertexAttribArray(0) );
-		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*)0) );
 		break;
-	case ph::VertexBufferLayout::position2_texCoords2:
+	case VertexBufferLayout::position2_texCoords2:
+		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0) );
 		GLCheck( glEnableVertexAttribArray(0));
-		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), ( void*)0) );
+		GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 		GLCheck( glEnableVertexAttribArray(1));
-		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), ( void*)(2 * sizeof(float))) );
 		break;
-	case ph::VertexBufferLayout::position2_color4:
+	case VertexBufferLayout::position2_color4:
+		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0) );
 		GLCheck( glEnableVertexAttribArray(0));
-		GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), ( void*)0) );
+		GLCheck( glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(2 * sizeof(float))) );
 		GLCheck( glEnableVertexAttribArray(1));
-		GLCheck( glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), ( void*)(2 * sizeof(float))) );
 		break;
 	default:
 		break;

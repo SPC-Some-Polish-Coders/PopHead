@@ -29,7 +29,8 @@ project "PopHead"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
-		root_dir .. "vendor/glew-1.5.4/include"
+		root_dir .. "vendor/glew-1.5.4/include",
+		root_dir .. "vendor/stb"
     }
 
     libdirs{

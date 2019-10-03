@@ -6,6 +6,7 @@
 #include "Map/map.hpp"
 #include "buffers.hpp"
 #include "openglErrors.hpp"
+#include <array>
 
 namespace ph {
 
@@ -14,6 +15,8 @@ Renderer::Renderer()
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		PH_LOG_ERROR("GLEW wasn't initialized correctly!");
+
+	Texture::setDefaultTextureSettings();
 }
 
 void Renderer::setUpModernOpenGlTest()
@@ -21,27 +24,46 @@ void Renderer::setUpModernOpenGlTest()
 	mShader = std::make_shared<Shader>();
 	mShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 
-	float vertices[] = {
-		-0.5f, -0.5f,
-		 0.5f, -0.5f,
-		 0.0f,  0.5f
+	mTexture = std::make_shared<Texture>();
+	mTexture->loadFromFile("resources/textures/test/wall.jpg");
+
+	std::array<float, 16> vertices = {
+		//positions   textureCoords
+		-0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  1.0f, 1.0f
+		-0.5f,  0.5f,  0.0f, 1.0f
 	};
 
-	unsigned int indices[] = {0, 1, 2};
+	std::array<float, 24> positionsWithColors = {
+		//positions   
+		-0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f,
+		 0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f,
+		 0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f,
+		-0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f
+	};
 
-	VertexBuffer vbo = createVertexBuffer(vertices, 3 * 3 * sizeof(float));
-	IndexBuffer ibo = createIndexBuffer(indices, 3 * sizeof(unsigned));
+	std::array<unsigned, 6> indices = {
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
+	IndexBuffer ibo = createIndexBuffer(indices.data(), indices.size() * sizeof(unsigned));
 	mVao = std::make_shared<VertexArray>();
-	mVao->setVertexBuffer(vbo, VertexBufferLayout::position2);
+	mVao->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVao->setIndexBuffer(ibo);
-	mVao->bind();
 }
 
 void Renderer::drawModernOpenGlTest()
 {
+	glClearColor(0.2, 0.3, 0.5, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	mTexture->bind();
 	mShader->bind();
 	mVao->bind();
-	GLCheck( glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0) );
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
 
 }
