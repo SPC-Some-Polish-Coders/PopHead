@@ -82,11 +82,11 @@ Player::Player(GameData* gameData)
 
 void Player::handleEventOnCurrent(const ph::Event& phEvent)
 {
+	bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
 	if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
 	{
 		if(sfEvent->type == sf::Event::KeyPressed && sfEvent->key.code == sf::Keyboard::Escape)
 		{
-			bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
 			if(isGamePaused) {
 				mGameData->getGui().hideInterface("pauseScreen");
 				mGameData->getSceneManager().getScene().setPause(false);
@@ -99,7 +99,7 @@ void Player::handleEventOnCurrent(const ph::Event& phEvent)
 	}
 	else if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
 	{
-		if(actionEvent->mType == ActionEvent::Pressed) 
+		if(!isGamePaused && actionEvent->mType == ActionEvent::Pressed)
 		{
 			if(actionEvent->mAction == "gunAttack" && mNumberOfOwnedBullets > 0) {
 				dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
