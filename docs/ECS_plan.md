@@ -18,20 +18,22 @@ In order to create a new game objects architecture we need to make a list of com
 
 ### Components Proposal
 If a component is not clear it's useful to add comment with use cases.
-##### Note: Don't mind of namespaces, our naming rule of variables (hungarian case) and C++ syntax for now. It's just the first version of list.
 ```cpp
 struct Name { // for example for debugging and logging
     std::string name;
-}
+};
 struct Health {
     int healtPoints;
-}
+};
+struct HitBox {
+    ph::Rect hitbox;
+};
 struct Sprite {
     sf::Sprite sprite;
-}
+};
 struct Animation {
     // TODO: add actual variables here
-}
+};
 struct Velocity {
     // !!! there are two possible versions (both with the same size)
     // 1. polar coordinates
@@ -39,8 +41,23 @@ struct Velocity {
     float angle; // [0, 360)
     // 2. cartesian coordinates
     sf::Vector2f velocity;
-}
+};
+struct Player {
+    // do we need an id for multiple players?
+};
+struct PlayerFollower { // is controlled by A* to find a player
+    ph::Path path;
+    // possibly more variables
+};
+struct Spawner { // TODO: we need to add type of object to spawn
+    float distanceToPlayerToWork;
+    sf::Vector2f areaToSpawn; // different type?
+    sf::Time interval; // range for randomness?
+    // std::pair<size_t, size_t> numberOfObjectsToSpawn; // do we need custom amount?
+};
 ```
 
 ### Systems Proposal
 System's description MUST contain list of used components.
+- Animation update (Animation, Sprite)
+- Rendering (Sprite)
