@@ -2,13 +2,11 @@
 #include "renderer.hpp"
 #include "GameObjects/gameObject.hpp"
 #include "Logs/logs.hpp"
-#include "Utilities/math.hpp"
-#include "Map/map.hpp"
 #include "buffers.hpp"
 #include "openglErrors.hpp"
-#include <array>
-#include <iostream> //temp
 #include <stb_image.h>
+#include <array>
+#include <iostream>
 
 namespace ph {
 
@@ -17,6 +15,9 @@ Renderer::Renderer()
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		PH_LOG_ERROR("GLEW wasn't initialized correctly!");
+
+	GLCheck( const GLubyte* openglVersionInfo = glGetString(GL_VERSION) );
+	std::cout << "OpenGL version: " << openglVersionInfo << std::endl;
 
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
