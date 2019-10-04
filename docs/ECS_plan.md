@@ -19,37 +19,36 @@ In order to create a new game objects architecture we need to make a list of com
 ### Components Proposal
 If a component is not clear it's useful to add comment with use cases.
 ```cpp
-struct Name { // for example for debugging and logging
-    std::string name;
+std::string name; // for accessing certain object and debugging
+
+int healtPoints;
+
+ph::Rect hitbox; // Can be used for physics calculations as well as for fight system
+
+struct Transformation {
+    sf::Transform transform; // model transformation matrix
+    sf::Vector2f position;
+    sf::Vector2f scale;
+    float rotation;
 };
-struct Health {
-    int healtPoints;
-};
-struct HitBox {
-    ph::Rect hitbox;
-};
-struct Sprite {
-    sf::Sprite sprite;
-};
+
+ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
+
+ph::Shader shader;
+// later here might be Material instead
+
 struct Animation {
     // TODO: add actual variables here
 };
-struct Velocity {
-    // !!! there are two possible versions (both with the same size)
-    // 1. polar coordinates
-    float speed;
-    float angle; // [0, 360)
-    // 2. cartesian coordinates
-    sf::Vector2f velocity;
-};
-struct Player {
-    // do we need an id for multiple players?
-};
-struct PlayerFollower { // is controlled by A* to find a player
+
+sf::Vector2f velocity;
+
+struct PlayerFollower { // is controlled by A* to find a player, later probably will be done in scripting language
     ph::Path path;
     // possibly more variables
 };
-struct Spawner { // TODO: we need to add type of object to spawn
+
+struct Spawner { // TODO: we need to add type of object to spawn, later it'll be done in scripting language
     float distanceToPlayerToWork;
     sf::Vector2f areaToSpawn; // different type?
     sf::Time interval; // range for randomness?
@@ -59,5 +58,8 @@ struct Spawner { // TODO: we need to add type of object to spawn
 
 ### Systems Proposal
 System's description MUST contain list of used components.
-- Animation update (Animation, Sprite)
-- Rendering (Sprite)
+- Animation (Animation)
+- Renderer (Transorm, VertexArray, Shader, Animation)
+- PhysicsEngine (Transform, Hitbox, velocity)
+- AIManager (Transform, PlayerFollower) 
+- And some game mechanics systems for example shooting. But they ofcourse will be implemented in scripting language later on 
