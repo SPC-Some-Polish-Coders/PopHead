@@ -25,11 +25,18 @@ struct Name { // for example for debugging and logging
 struct Health {
     int healtPoints;
 };
-struct HitBox {
-    ph::Rect hitbox;
+// struct Transformation {
+//     sf::Transform transform; // model transformation matrix
+//     sf::Vector2f position;
+//     sf::Vector2f scale;
+//     float rotation;
+// };
+struct VertexArray {
+    ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
 };
-struct Sprite {
-    sf::Sprite sprite;
+struct Shader {
+    ph::Shader shader;
+    // later here might be Material instead
 };
 struct Animation {
     // TODO: add actual variables here
@@ -56,7 +63,7 @@ struct PlayerFollower { // is controlled by A* to find a player
     ph::Path path;
     // possibly more variables
 };
-struct Spawner { // TODO: we need to add type of object to spawn
+struct Spawner { // TODO: we need to add type of object to spawn, later it'll be done in scripting language
     float distanceToPlayerToWork;
     sf::Vector2f areaToSpawn; // different type?
     sf::Time interval; // range for randomness?
@@ -78,7 +85,9 @@ struct Lifetime {
 
 ### Systems Proposal
 System's description MUST contain list of used components.
-- Spawners (Player, Sprite, Spawner)
+- Spawners (Player, KinematicCollisionBody, Spawner)
 - A-star (PlayerFollower, Velocity)
-- Animations (Animation, Sprite)
-- Rendering (Sprite)
+- Animation (Animation)
+- Renderer (Transform?, VertexArray, Shader, Animation)
+- Kinematic collisions (KinematicCollisionBody, Velocity)
+- Static collisions (KinematicCollisionBody, StaticCollisionBody, Velocity)
