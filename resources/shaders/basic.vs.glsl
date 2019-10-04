@@ -5,8 +5,10 @@ layout (location = 1) in vec2 mTextureCoords;
 
 out vec2 texCoords;
 
+uniform mat4 modelMatrix;
+
 void main()
 {
-	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
+	gl_Position = modelMatrix * vec4(aPos, 0.0, 1.0);
 	texCoords = mTextureCoords;
 };

@@ -3,7 +3,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Transform.hpp>
 #include <string>
 #include <unordered_map>
 #include <optional>
@@ -30,7 +29,7 @@ public:
 	void setUniformVector3(const std::string& name, const float x, const float y, const float z) const;
 	void setUniformVector4Color(const std::string& name, const sf::Color&) const;
 	void setUniformVector4(const std::string& name, const float x, const float y, const float z, const float w) const;
-	void setUniformMatrix3x3(const std::string& name, const sf::Transform& value) const;
+	void setUniformMatrix4x4(const std::string& name, const float* transform) const;
 
 private:
 	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;

@@ -155,9 +155,9 @@ void Shader::setUniformVector4(const std::string& name, const float x, const flo
 	GLCheck(glUniform4f(getUniformLocation(name), x, y, z, w));
 }
 
-void Shader::setUniformMatrix3x3(const std::string& name, const sf::Transform& transform) const
+void Shader::setUniformMatrix4x4(const std::string& name, const float* transform) const
 {
-	GLCheck(glUniform3fv(getUniformLocation(name), 1, transform.getMatrix()));
+	GLCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, transform));
 }
 
 int Shader::getUniformLocation(const std::string& name) const
