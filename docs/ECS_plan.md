@@ -42,6 +42,13 @@ struct Velocity {
     // 2. cartesian coordinates
     sf::Vector2f velocity;
 };
+struct StaticCollisionBody {
+    ph::Rect body;
+};
+struct KinematicCollisionBody { // possibly we could create different component for hitbox
+    ph::Rect body;
+    float mass;
+};
 struct Player {
     // do we need an id for multiple players?
 };
@@ -55,9 +62,23 @@ struct Spawner { // TODO: we need to add type of object to spawn
     sf::Time interval; // range for randomness?
     // std::pair<size_t, size_t> numberOfObjectsToSpawn; // do we need custom amount?
 };
+struct MeleeAttacker {
+    // TODO: add variables
+    float minSecondsInterval;
+};
+struct GunAttacker {
+    // TODO: add variables
+    float minSecondsInterval;
+    unsigned short bullets;
+};
+struct Lifetime {
+    float secondsToDie;
+};
 ```
 
 ### Systems Proposal
 System's description MUST contain list of used components.
-- Animation update (Animation, Sprite)
+- Spawners (Player, Sprite, Spawner)
+- A-star (PlayerFollower, Velocity)
+- Animations (Animation, Sprite)
 - Rendering (Sprite)
