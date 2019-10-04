@@ -1,5 +1,6 @@
 #include "shader.hpp"
 #include "openglErrors.hpp"
+#include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <fstream>
 #include <sstream>
@@ -18,14 +19,19 @@ Shader::Shader(const char* vertexShaderFilename, const char* fragmentShaderFilen
 	loadFromFile(vertexShaderFilename, fragmentShaderFilename);
 }
 
-void Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
+bool Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
 {
-	const std::string vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
-	const std::string fragmentShaderCode = getShaderCodeFromFile(fragmentShaderFilename);
-	loadFromString(vertexShaderCode.c_str(), fragmentShaderCode.c_str());
+	auto vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
+	auto fragmentShaderCode = getShaderCodeFromFile(fragmentShaderFilename);
+	
+	if(vertexShaderCode == std::nullopt || fragmentShaderCode == std::nullopt)
+		return false;
+
+	loadFromString(vertexShaderCode->c_str(), fragmentShaderCode->c_str());
+	return true;
 }
 
-const std::string Shader::getShaderCodeFromFile(const char* filename)
+auto Shader::getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>
 {
 	std::string code;
 	std::ifstream file;
@@ -38,7 +44,8 @@ const std::string Shader::getShaderCodeFromFile(const char* filename)
 		code = stream.str();
 	}
 	catch(std::istream::failure) {
-		throw std::runtime_error("Shader file was not succesfully read.");
+		PH_LOG_ERROR("Shader file \"" + std::string(filename) + "\" was not succesfully read. (probably file doesn't exist)");
+		return std::nullopt;
 	}
 	return code;
 }
@@ -67,7 +74,7 @@ void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shad
 	if(!success) {
 		glGetShaderInfoLog(shaderId, sizeof(infoLog), NULL, infoLog);
 		std::string type = shaderType == GL_VERTEX_SHADER ? "Vertex" : "Fragment";
-		std::cout << type << " shader compilation failed:\n" << infoLog << std::endl;
+		PH_EXIT_GAME(type + " shader compilation failed:\n" + infoLog);
 	}
 }
 
@@ -86,7 +93,7 @@ void Shader::checkLinkingErrors()
 	glGetProgramiv(mID, GL_LINK_STATUS, &success);
 	if(!success) {
 		glGetProgramInfoLog(mID, sizeof(infoLog), NULL, infoLog);
-		std::cout << "Shader linking error:\n" << infoLog << std::endl;
+		PH_EXIT_GAME("Shader linking error:\n" + std::string(infoLog));
 	}
 }
 
@@ -150,7 +157,7 @@ void Shader::setUniformVector4(const std::string& name, const float x, const flo
 
 void Shader::setUniformMatrix3x3(const std::string& name, const sf::Transform& transform) const
 {
-	glUniform3fv(getUniformLocation(name), 1, transform.getMatrix());
+	GLCheck(glUniform3fv(getUniformLocation(name), 1, transform.getMatrix()));
 }
 
 int Shader::getUniformLocation(const std::string& name) const
@@ -158,7 +165,7 @@ int Shader::getUniformLocation(const std::string& name) const
 	if(mUniformsLocationCache.find(name) != mUniformsLocationCache.end())
 		return mUniformsLocationCache[name];
 
-	int location = glGetUniformLocation(mID, name.c_str());
+	GLCheck(int location = glGetUniformLocation(mID, name.c_str()));
 	mUniformsLocationCache[name] = location;
 	return location;
 }

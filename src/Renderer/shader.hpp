@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Transform.hpp>
 #include <string>
 #include <unordered_map>
+#include <optional>
 
 namespace ph {
 
@@ -15,7 +16,7 @@ public:
 	Shader();
 	Shader(const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
-	void loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
+	bool loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
 	void bind() const;
 	void unbind() const;
@@ -32,7 +33,7 @@ public:
 	void setUniformMatrix3x3(const std::string& name, const sf::Transform& value) const;
 
 private:
-	const std::string getShaderCodeFromFile(const char* filename);
+	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;
 
 	void loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
 	int compileShaderAndGetId(const char* sourceCode, const unsigned shaderType);

@@ -15,7 +15,7 @@ bool ph::ResourceHolder<ResourceType>::load(const std::string& filePath)
 	}
 	else
 	{
-		PH_LOG_ERROR("unable to load file " + fullFilePath + "! Probably there is not such a file.");
+		PH_LOG_ERROR("unable to load file \"" + fullFilePath + "\"");
 		return false;
 	}
 }

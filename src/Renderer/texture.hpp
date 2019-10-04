@@ -13,7 +13,7 @@ public:
 
 	~Texture();
 
-	void loadFromFile(const std::string& filepath);
+	bool loadFromFile(const std::string& filepath);
 
 	void bind(unsigned slot = 0) const;
 
