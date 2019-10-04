@@ -84,7 +84,8 @@ struct Lifetime {
 ```
 
 ### Systems Proposal
-System's description MUST contain list of used components.
+System's description MUST contain list of used components.<br>
+Later the systems will be ordered.
 - Spawners (Player, KinematicCollisionBody, Spawner)
 - A-star (PlayerFollower, Velocity)
 - Animation (Animation)
