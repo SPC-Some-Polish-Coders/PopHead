@@ -83,21 +83,7 @@ Player::Player(GameData* gameData)
 void Player::handleEventOnCurrent(const ph::Event& phEvent)
 {
 	bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
-	if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
-	{
-		if(sfEvent->type == sf::Event::KeyPressed && sfEvent->key.code == sf::Keyboard::Escape)
-		{
-			if(isGamePaused) {
-				mGameData->getGui().hideInterface("pauseScreen");
-				mGameData->getSceneManager().getScene().setPause(false);
-			}
-			else {
-				mGameData->getGui().showInterface("pauseScreen");
-				mGameData->getSceneManager().getScene().setPause(true);
-			}
-		}
-	}
-	else if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
+	if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
 	{
 		if(!isGamePaused && actionEvent->mType == ActionEvent::Pressed)
 		{
@@ -111,6 +97,17 @@ void Player::handleEventOnCurrent(const ph::Event& phEvent)
 				auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
 				sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
 				meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+			}
+		}
+		if(actionEvent->mAction == "pauseScreen")
+		{
+			if(isGamePaused) {
+				mGameData->getGui().hideInterface("pauseScreen");
+				mGameData->getSceneManager().getScene().setPause(false);
+			}
+			else {
+				mGameData->getGui().showInterface("pauseScreen");
+				mGameData->getSceneManager().getScene().setPause(true);
 			}
 		}
 	}
