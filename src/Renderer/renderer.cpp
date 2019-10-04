@@ -7,6 +7,7 @@
 #include "buffers.hpp"
 #include "openglErrors.hpp"
 #include <array>
+#include <iostream> //temp
 #include <stb_image.h>
 
 namespace ph {
@@ -17,7 +18,8 @@ Renderer::Renderer()
 	if(glewInit() != GLEW_OK)
 		PH_LOG_ERROR("GLEW wasn't initialized correctly!");
 
-	Texture::setDefaultTextureSettings();
+	GLCheck( glEnable(GL_BLEND) );
+	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 }
 
 void Renderer::setUpModernOpenGlTest()
@@ -43,8 +45,7 @@ void Renderer::setUpModernOpenGlTest()
 	mVao->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVao->setIndexBuffer(ibo);
 
-	mTexture = std::make_shared<Texture>();
-	mTexture->loadFromFile("resources/textures/test/wall.jpg");
+	mTexture = std::make_shared<Texture>("resources/textures/others/gate.png");
 }
 
 void Renderer::drawModernOpenGlTest()

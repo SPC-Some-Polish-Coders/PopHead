@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <SFML/System/Vector2.hpp>
 
 namespace ph {
 
@@ -8,14 +9,20 @@ class Texture
 {
 public:
 	Texture();
+	Texture(const std::string& filepath);
 
-	void loadFromFile(const std::string&) const;
+	~Texture();
 
-	void bind() const;
+	void loadFromFile(const std::string& filepath);
 
-	static void setDefaultTextureSettings();
+	void bind(unsigned slot = 0) const;
+
+	sf::Vector2i getSize() const { return mSize; }
+	int getWidth() const { return mSize.x; }
+	int getHeight() const { return mSize.y; }
 
 private:
+	sf::Vector2i mSize;
 	unsigned mID;
 };
 
