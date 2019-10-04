@@ -17,7 +17,7 @@ void ActionEventManager::init()
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
 	addAction("gunAttack", sf::Keyboard::Enter);
 	addAction("meleeAtack", sf::Keyboard::BackSlash);
-	addAction("pauseScreen", sf::Keyboard::BackSpace);
+	addAction("pauseScreen", sf::Keyboard::Escape);
 }
 
 void ActionEventManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)
