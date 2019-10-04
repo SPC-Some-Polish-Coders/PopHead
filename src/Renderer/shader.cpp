@@ -12,6 +12,12 @@ Shader::Shader()
 	mID = glCreateProgram();
 }
 
+Shader::Shader(const char* vertexShaderFilename, const char* fragmentShaderFilename)
+{
+	mID = glCreateProgram();
+	loadFromFile(vertexShaderFilename, fragmentShaderFilename);
+}
+
 void Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
 {
 	const std::string vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
@@ -131,7 +137,10 @@ void Shader::setUniformVector3(const std::string& name, const float x, const flo
 
 void Shader::setUniformVector4Color(const std::string& name, const sf::Color& color) const
 {
-	GLCheck(glUniform4f(getUniformLocation(name), color.r / 255, color.g / 255, color.b / 255, color.a / 255));
+	GLCheck(glUniform4f(getUniformLocation(name),
+		static_cast<float>(color.r / 255), static_cast<float>(color.g / 255),
+		static_cast<float>(color.b / 255), static_cast<float>(color.a / 255)
+	));
 }
 
 void Shader::setUniformVector4(const std::string& name, const float x, const float y, const float z, const float w) const

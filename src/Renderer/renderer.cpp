@@ -7,6 +7,7 @@
 #include "buffers.hpp"
 #include "openglErrors.hpp"
 #include <array>
+#include <stb_image.h>
 
 namespace ph {
 
@@ -21,31 +22,19 @@ Renderer::Renderer()
 
 void Renderer::setUpModernOpenGlTest()
 {
-	mShader = std::make_shared<Shader>();
-	mShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
-
-	mTexture = std::make_shared<Texture>();
-	mTexture->loadFromFile("resources/textures/test/wall.jpg");
+	mShader = std::make_shared<Shader>("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 
 	std::array<float, 16> vertices = {
-		//positions   textureCoords
-		-0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  1.0f, 1.0f
-		-0.5f,  0.5f,  0.0f, 1.0f
-	};
-
-	std::array<float, 24> positionsWithColors = {
-		//positions   
-		-0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f,
-		 0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f,
-		 0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f
+	  // positions | texture coords
+		 0.5f,  0.5f, 1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, 1.0f  // top left 
 	};
 
 	std::array<unsigned, 6> indices = {
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
 	};
 
 	VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
@@ -53,6 +42,9 @@ void Renderer::setUpModernOpenGlTest()
 	mVao = std::make_shared<VertexArray>();
 	mVao->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVao->setIndexBuffer(ibo);
+
+	mTexture = std::make_shared<Texture>();
+	mTexture->loadFromFile("resources/textures/test/wall.jpg");
 }
 
 void Renderer::drawModernOpenGlTest()

@@ -13,6 +13,7 @@ class Shader
 {
 public:
 	Shader();
+	Shader(const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
 	void loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
