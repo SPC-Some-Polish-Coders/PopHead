@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include "Gui/sliderWidget.hpp"
+
 #include <SFML/System/Vector2.hpp>
 #include "SFML/Graphics/Color.hpp"
 
@@ -15,6 +17,7 @@ class Xml;
 class GUI;
 class Widget;
 class TextWidget;
+class SliderWidget;
 
 class XmlGuiParser
 {
@@ -26,6 +29,8 @@ public:
 	void handleInterfaceHideAttribute(const std::string& interfaceName, const Xml& interfaceTag, GUI& gui);
 	void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
 	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
+	void parseSliderWidgetAttributes(const Xml& textWidgetTag, SliderWidget& widget);
+
 	void parseWidgetChildren(const Xml& widgetTag, Widget& widget);
 		
 	sf::Vector2f getVector(const Xml& widgetTag, const std::string& attributeName);
