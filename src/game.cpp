@@ -58,8 +58,6 @@ Game::Game()
 	mRenderWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
-
-	mRenderer->setUpModernOpenGlTest();
 }
 
 void Game::run()
@@ -78,7 +76,6 @@ void Game::run()
 			handleEvents();
 			update(getProperDeltaTime(deltaTime));
 			deltaTime = sf::Time::Zero;
-			draw();
 		}
 	}
 
@@ -108,7 +105,7 @@ void Game::handleEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	mEfficiencyRegister->update();
+	/*mEfficiencyRegister->update();
 
 	if(mRenderWindow.hasFocus())
 	{
@@ -117,23 +114,56 @@ void Game::update(sf::Time deltaTime)
 		mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);
 		mTerminal->update();
-	}
-}
+	}*/
 
-void Game::draw()
-{
-	//mRenderer->startSceneRendering();
-	//mRenderer->draw(*mMap);
-	//mRenderer->draw(mSceneManager->getScene().getRoot());
-	//mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
+	// initialization
+	static auto shader = std::make_shared<Shader>("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 
-	//mRenderer->startUIRendering();
-	//mRenderer->draw(mGui->getGuiDrawer());
-	//mRenderer->draw(mEfficiencyRegister->getDisplayer());
-	//mRenderer->draw(mTerminal->getImage());
+	static std::array<float, 16> vertices = {
+		// positions | texture coords
+		0.5f,  0.5f, 1.0f, 1.0f, // top right
+		0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, 1.0f  // top left 
+	};
 
-	mRenderer->drawModernOpenGlTest();
+	static std::array<unsigned, 6> indices = {
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
 
+	static VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
+	static IndexBuffer ibo = createIndexBuffer(indices.data(), indices.size() * sizeof(unsigned));
+	static auto vao = std::make_shared<VertexArray>();
+	vao->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
+	vao->setIndexBuffer(ibo);
+
+	static auto texture = std::make_shared<Texture>("resources/textures/others/gate.png");
+
+	static auto camera = std::make_shared<Camera>();
+
+	// Actual game loop
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		camera->move({-0.02f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		camera->move({0.02f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		camera->move({0.f, 0.02f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		camera->move({0.f, -0.02f});
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		camera->zoom(1.01);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		camera->zoom(0.99);
+
+	mRenderer->beginScene(*camera);
+
+	texture->bind();
+	mRenderer->submit(vao, shader);
+
+	mRenderer->endScene();
+	
 	mRenderWindow.display();
 }
 

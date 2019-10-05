@@ -8,9 +8,6 @@
 
 namespace ph {
 
-class GameObject;
-class Map;
-
 class Renderer
 {
 public:
@@ -19,14 +16,12 @@ public:
 	Renderer(Renderer&) = delete;
 	Renderer& operator=(Renderer&) = delete;
 
-	void setUpModernOpenGlTest();
-	void drawModernOpenGlTest();
+	void beginScene(Camera&);
+	void submit(std::shared_ptr<VertexArray>&, std::shared_ptr<Shader>&, const sf::Transform& = sf::Transform::Identity);
+	void endScene();
 
 private:
-	std::shared_ptr<Shader> mShader;
-	std::shared_ptr<VertexArray> mVao;
-	std::shared_ptr<Texture> mTexture;
-	std::shared_ptr<Camera> mCamera;
+	const float* mViewProjectionMatrix;
 };
 
 }

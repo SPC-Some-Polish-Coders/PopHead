@@ -29,7 +29,6 @@ private:
 	sf::Time getProperDeltaTime(sf::Time deltaTime);
 	void handleEvents();
 	void update(sf::Time deltaTime);
-	void draw();
 
 	std::unique_ptr< GameData >           mGameData;
 	sf::RenderWindow                      mRenderWindow;
