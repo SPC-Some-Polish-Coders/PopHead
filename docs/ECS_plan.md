@@ -81,6 +81,12 @@ struct GunAttacker {
 struct Lifetime {
     float secondsToDie;
 };
+struct Medkit {
+    int healtPoints;
+};
+struct Bullets {
+    unsigned short number;
+};
 ```
 
 ### Systems Proposal
@@ -92,3 +98,5 @@ Later the systems will be ordered.
 - Renderer (Transform?, VertexArray, Shader, Animation)
 - Kinematic collisions (KinematicCollisionBody, Velocity)
 - Static collisions (KinematicCollisionBody, StaticCollisionBody, Velocity)
+- Medkits collecting (Medkit, Player, KinematicCollisionBody)
+- Bullets collecting (Bullets, Player, KinematicCollisionBody)
