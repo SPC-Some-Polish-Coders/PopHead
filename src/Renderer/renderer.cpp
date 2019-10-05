@@ -48,4 +48,9 @@ void Renderer::endScene()
 {
 }
 
+void Renderer::onWindowResize(unsigned width, unsigned height) const
+{
+	GLCheck( glViewport(0, 0, width, height) );
+}
+
 }

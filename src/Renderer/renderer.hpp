@@ -20,6 +20,8 @@ public:
 	void submit(std::shared_ptr<VertexArray>&, std::shared_ptr<Shader>&, const sf::Transform& = sf::Transform::Identity);
 	void endScene();
 
+	void onWindowResize(unsigned width, unsigned height) const;
+
 private:
 	const float* mViewProjectionMatrix;
 };

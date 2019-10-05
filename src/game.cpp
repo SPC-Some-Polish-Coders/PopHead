@@ -100,6 +100,10 @@ void Game::handleEvents()
 		
 		if(!mTerminal->getSharedData()->mIsVisible)
 			mSceneManager->handleEvent(phEvent);
+
+		if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
+			if(sfEvent->type == sf::Event::Resized)
+				mRenderer->onWindowResize(sfEvent->size.width, sfEvent->size.height);
 	}
 }
 
