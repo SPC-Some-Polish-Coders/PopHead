@@ -57,10 +57,7 @@ void Renderer::drawModernOpenGlTest()
 	glClearColor(0.2, 0.3, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	static float degrees = 0.f;
-	degrees += 0.2f;
 	sf::Transform modelMatrix = sf::Transform::Identity;
-	modelMatrix.rotate(degrees);
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		mCamera->move({-0.02f, 0.f});

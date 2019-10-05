@@ -95,9 +95,9 @@ void Camera::updateViewMatrix()
 void Camera::updateProjectionMatrix()
 {
 	mProjectionMatrix = sf::Transform(
-		2/(mSize.x/640), 0              , -1,
-		0              , 2/(mSize.y/480), -1,
-		0              , 0              ,  1
+		(mSize.x/640), 0              ,  0,
+		0              , (mSize.y/480),  0,
+		0              , 0            ,  1
 	);
 	
 	mProjectionMatrixNeedsUpdate = false;
