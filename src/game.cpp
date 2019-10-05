@@ -11,7 +11,7 @@ namespace ph {
 
 Game::Game()
 	:mGameData{}
-	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default,
+	,mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core)
 	)
 	,mSoundPlayer{new SoundPlayer()}
@@ -26,10 +26,10 @@ Game::Game()
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
-	,mGui{new GUI()}
+	//,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
-		&mRenderWindow,
+		&mWindow,
 		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
@@ -42,7 +42,7 @@ Game::Game()
 		mPhysicsEngine.get(),
 		mTerminal.get(),
 		mEfficiencyRegister.get(),
-		mGui.get()
+		nullptr//mGui.get()
 	));
 
 	GameData* gameData = mGameData.get();
@@ -51,11 +51,11 @@ Game::Game()
 	mTerminal->init(gameData);
 	mEfficiencyRegister->init(gameData);
 	mMap->setGameData(gameData);
-	mGui->init(gameData);
+	//mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
-	mRenderWindow.setVerticalSyncEnabled(true);
+	mWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
 }
@@ -79,7 +79,7 @@ void Game::run()
 		}
 	}
 
-	mRenderWindow.close();
+	mWindow.close();
 }
 
 sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
@@ -91,12 +91,12 @@ sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
 void Game::handleEvents()
 {
 	ph::Event phEvent;
-	while(EventDispatcher::dispatchEvent(phEvent, mRenderWindow))
+	while(EventDispatcher::dispatchEvent(phEvent, mWindow))
 	{
-		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), phEvent);
+		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
 		mEfficiencyRegister->handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
-		mGui->handleEvent(phEvent);
+		//mGui->handleEvent(phEvent);
 		
 		if(!mTerminal->getSharedData()->mIsVisible)
 			mSceneManager->handleEvent(phEvent);
@@ -111,7 +111,7 @@ void Game::update(sf::Time deltaTime)
 {
 	/*mEfficiencyRegister->update();
 
-	if(mRenderWindow.hasFocus())
+	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(deltaTime);
 		mAIManager->update();
@@ -168,7 +168,7 @@ void Game::update(sf::Time deltaTime)
 
 	mRenderer->endScene();
 	
-	mRenderWindow.display();
+	mWindow.display();
 }
 
 }

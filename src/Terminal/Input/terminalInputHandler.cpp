@@ -121,7 +121,7 @@ void TerminalInputHandler::showOrHideCommandPrompt()
 	bool& isVisible = mTerminalSharedData->mIsVisible;
 	ActionEventManager::setEnabled(isVisible);
 	isVisible = !isVisible;
-	auto& window = mGameData->getRenderWindow();
+	auto& window = mGameData->getWindow();
 	window.setKeyRepeatEnabled(isVisible);
 }
 

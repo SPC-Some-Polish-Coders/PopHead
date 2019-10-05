@@ -36,7 +36,7 @@ public:
 	          nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
-		sf::RenderWindow* const renderWindow,
+		sf::Window* const window,
 		SoundPlayer* const soundPlayer,
 		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
@@ -51,7 +51,7 @@ public:
 		EfficiencyRegister* const efficiencyRegister,
 		GUI* const Gui
 	)
-		:mRenderWindow(renderWindow)
+		:mWindow(window)
 		,mSoundPlayer{soundPlayer}
 		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
@@ -69,7 +69,7 @@ public:
 	{
 	}
 	
-	auto getRenderWindow() const -> sf::RenderWindow& { return *mRenderWindow; }
+	auto getWindow() const -> sf::Window& { return *mWindow; }
 	auto getSoundPlayer() const -> SoundPlayer& { return *mSoundPlayer; }
 	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
@@ -86,7 +86,7 @@ public:
 	auto getGameCloser() -> GameCloser& { return mGameCloser; }
 
 private:
-	sf::RenderWindow* const mRenderWindow;
+	sf::Window* const mWindow;
 	SoundPlayer* const mSoundPlayer;
 	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;

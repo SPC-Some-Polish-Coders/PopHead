@@ -3,7 +3,7 @@
 
 namespace ph {
 
-void handleGlobalKeyboardShortcuts(sf::RenderWindow& renderWindow, GameCloser& gameCloser, const ph::Event& phEvent)
+void handleGlobalKeyboardShortcuts(sf::Window& renderWindow, GameCloser& gameCloser, const ph::Event& phEvent)
 {
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
@@ -12,9 +12,11 @@ void handleGlobalKeyboardShortcuts(sf::RenderWindow& renderWindow, GameCloser& g
 			auto windowSize = renderWindow.getSize();
 
 			if(windowSize == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height))
-				renderWindow.create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default);
+				renderWindow.create(sf::VideoMode(1000, 750), "PopHead", sf::Style::Default,
+					sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core));
 			else
-				renderWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen);
+				renderWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen,
+					sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core));
 		}
 	}
 

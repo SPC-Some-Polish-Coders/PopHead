@@ -7,6 +7,6 @@ namespace ph {
 
 class GameCloser;
 
-void handleGlobalKeyboardShortcuts(sf::RenderWindow&, GameCloser&, const ph::Event&);
+void handleGlobalKeyboardShortcuts(sf::Window&, GameCloser&, const ph::Event&);
 
 }

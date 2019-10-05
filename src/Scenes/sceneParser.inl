@@ -17,7 +17,7 @@ SceneParser<GuiParser, MapParser, GameObjectsParser, ResourcesParser, AudioParse
 
 	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	parse<MapParser>(gameData, sceneLinksNode, "map");
-	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
+	// parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
 	parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 }

@@ -48,7 +48,7 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 	{
 		if(e->type == sf::Event::MouseButtonReleased && e->mouseButton.button == sf::Mouse::Left)
 		{
-			auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
+			auto c = sf::Mouse::getPosition(mGameData->getWindow());
 			auto k = mWindow->mapPixelToCoords(c);
 
 			// TODO: Maybe use Rect::doPositiveRectsIntersect()
@@ -76,7 +76,7 @@ void Widget::update(sf::Time delta)
 
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		auto c = sf::Mouse::getPosition(mGameData->getRenderWindow());
+		auto c = sf::Mouse::getPosition(mGameData->getWindow());
 		auto k = mWindow->mapPixelToCoords(c);
 
 		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
@@ -212,7 +212,7 @@ void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size)
 void Widget::setGameData(GameData* GameData)
 {
 	mGameData = GameData;
-	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getRenderWindow());
+	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getWindow());
 }
 
 bool Widget::isActive()
