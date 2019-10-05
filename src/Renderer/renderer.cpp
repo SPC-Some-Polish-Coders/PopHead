@@ -5,6 +5,7 @@
 #include "buffers.hpp"
 #include "openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <array>
 #include <iostream>
 
@@ -47,6 +48,8 @@ void Renderer::setUpModernOpenGlTest()
 	mVao->setIndexBuffer(ibo);
 
 	mTexture = std::make_shared<Texture>("resources/textures/others/gate.png");
+
+	mCamera = std::make_shared<Camera>();
 }
 
 void Renderer::drawModernOpenGlTest()
@@ -58,14 +61,27 @@ void Renderer::drawModernOpenGlTest()
 	degrees += 0.2f;
 	sf::Transform modelMatrix = sf::Transform::Identity;
 	modelMatrix.rotate(degrees);
-	modelMatrix.translate(degrees / 200, 0);
-	modelMatrix.scale(1 + degrees / 100, 1 + degrees / 100);
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		mCamera->move({-0.02f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		mCamera->move({0.02f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		mCamera->move({0.f, 0.02f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		mCamera->move({0.f, -0.02f});
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		mCamera->zoom(1.01);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		mCamera->zoom(0.99);
 
 	mTexture->bind();
 
 	mShader->bind();
 	mShader->setUniformMatrix4x4("modelMatrix", modelMatrix.getMatrix());
-
+	mShader->setUniformMatrix4x4("viewProjectionMatrix", mCamera->getViewProjectionMatrix4x4());
+	
 	mVao->bind();
 	
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );

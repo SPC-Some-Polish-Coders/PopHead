@@ -3,6 +3,7 @@
 #include "vertexArray.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
+#include "camera.hpp"
 #include <memory>
 
 namespace ph {
@@ -25,6 +26,7 @@ private:
 	std::shared_ptr<Shader> mShader;
 	std::shared_ptr<VertexArray> mVao;
 	std::shared_ptr<Texture> mTexture;
+	std::shared_ptr<Camera> mCamera;
 };
 
 }
