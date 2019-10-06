@@ -16,7 +16,7 @@ public:
 		unsigned int mMovementSpeed = 50, int HP = 100, unsigned int maxHP = 100,
 		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50, bool isAttackable = false);
 
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void drawCurrent(sf::Transform) override;
 
 	void dropItems();
 

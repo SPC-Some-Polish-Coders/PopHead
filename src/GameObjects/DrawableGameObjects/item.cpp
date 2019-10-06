@@ -18,10 +18,10 @@ void Item::updateCurrent(const sf::Time time)
 		updateWhileOnTheGround(time);
 }
 
-void Item::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Item::drawCurrent(sf::Transform)
 {
-	if (!getInInventory())
-		drawWhileOnTheGround(target, states);
+	//if (!getInInventory())
+	//	drawWhileOnTheGround(target, states);
 }
 
 void Item::setPosition(const sf::Vector2f& position)

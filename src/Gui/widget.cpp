@@ -120,8 +120,8 @@ void Widget::show()
 
 bool Widget::setContentPath(const std::string& path)
 {
-	mSprite.setTexture(mGameData->getTextures().get(path));
-	mSize = mGameData->getTextures().get(path).getSize();
+	//mSprite.setTexture(mGameData->getTextures().get(path));
+	//mSize = mGameData->getTextures().get(path).getSize();
 
 	mDefaultSize = mSize;
 	scale(mScale);

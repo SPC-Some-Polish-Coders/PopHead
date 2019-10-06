@@ -17,7 +17,7 @@ public:
 	Particles(Renderer&, const sf::Vector2f);
 
 	void updateCurrent(const sf::Time delta) override;
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates) const override;
+	void drawCurrent(sf::Transform) override;
 
 private:
 	void initializeParticles();

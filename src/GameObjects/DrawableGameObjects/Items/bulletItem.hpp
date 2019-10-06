@@ -15,7 +15,7 @@ public:
 	void onPickUp() override {}
 	void onDrop() override {}
 
-	void drawWhileOnTheGround(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void drawWhileOnTheGround(sf::Transform) const override;
 
 	void updateWhileOnTheGround(const sf::Time time) override {}
 };

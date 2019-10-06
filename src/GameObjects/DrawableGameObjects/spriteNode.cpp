@@ -8,9 +8,9 @@ SpriteNode::SpriteNode(const sf::Texture& texture)
 {
 }
 
-void SpriteNode::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
+void SpriteNode::drawCurrent(sf::Transform)
 {
-	target.draw(mSprite, states);
+	//target.draw(mSprite, states);
 }
 
 }

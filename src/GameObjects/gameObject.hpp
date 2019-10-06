@@ -8,14 +8,14 @@
 
 namespace ph {
 
-class GameObject : public sf::Drawable, public sf::Transformable
+class GameObject : public sf::Transformable
 {
 public:
 	GameObject(const std::string& name);
 
 	void handleEvent(const ph::Event&);
 	void update(sf::Time delta);
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void draw(sf::Transform);
 
 	void addChild(std::unique_ptr<GameObject>);
 	void removeChild(const std::string& name);
@@ -43,8 +43,8 @@ protected:
 	virtual void updateCurrent(sf::Time delta);
 	void updateChildren(sf::Time delta);
 
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void drawCurrent(sf::Transform);
+	void drawChildren(sf::Transform);
 
 protected:
 	std::list<std::unique_ptr<GameObject>> mChildren;

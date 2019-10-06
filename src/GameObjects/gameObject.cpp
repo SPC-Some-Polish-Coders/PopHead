@@ -42,22 +42,22 @@ void GameObject::updateChildren(sf::Time delta)
 		child->update(delta);
 }
 
-void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void GameObject::draw(sf::Transform transform)
 {
-	states.transform *= getTransform();
+	transform *= getTransform();
 
-	drawCurrent(target, states);
-	drawChildren(target, states);
+	drawCurrent(transform);
+	drawChildren(transform);
 }
 
-void GameObject::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void GameObject::drawCurrent(sf::Transform transform)
 {
 }
 
-void GameObject::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
+void GameObject::drawChildren(sf::Transform transform)
 {
 	for(const auto& child : mChildren)
-		child->draw(target, states);
+		child->draw(transform);
 }
 
 std::string GameObject::getUniqueName(std::string& childName) const

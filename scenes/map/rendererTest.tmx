@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="2">
+ <objectgroup id="2" name="gameObjects">
+  <object id="1" type="Car" x="9" y="5">
+   <properties>
+    <property name="acceleration" type="float" value="0"/>
+    <property name="slowingDown" type="float" value="0"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

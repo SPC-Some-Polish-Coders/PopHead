@@ -43,7 +43,7 @@ public:
 	Gun(SoundPlayer&, const sf::Texture&, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
-	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
+	void drawCurrent(sf::Transform) override;
 	void shoot();
 
 	void setCurrentPlayerDirection(const sf::Vector2f cpd) { mCurrentPlayerDirection = cpd; }

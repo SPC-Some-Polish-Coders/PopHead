@@ -18,9 +18,9 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 	}
 }
 
-void DeadCharacter::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
+void DeadCharacter::drawCurrent(sf::Transform)
 {
-	target.draw(mSprite, states);
+	//target.draw(mSprite, states);
 }
 
 }

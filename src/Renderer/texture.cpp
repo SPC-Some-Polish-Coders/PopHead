@@ -56,6 +56,8 @@ bool Texture::loadFromFile(const std::string& filepath)
 	GLCheck( glGenerateMipmap(GL_TEXTURE_2D) );
 
 	stbi_image_free(data);
+
+	return true;
 }
 
 void Texture::bind(unsigned slot) const

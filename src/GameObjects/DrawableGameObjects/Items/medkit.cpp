@@ -8,12 +8,12 @@ Medkit::Medkit(GameData* const gameData)
 	:Item(gameData, "Medkit")
 	,healthAddValue(25)
 {
-	setGroundTexture(gameData->getTextures().get("textures/others/medkit.png"));
+	//setGroundTexture(gameData->getTextures().get("textures/others/medkit.png"));
 }
 
-void Medkit::drawWhileOnTheGround(sf::RenderTarget& rt, sf::RenderStates rs) const
+void Medkit::drawWhileOnTheGround(sf::Transform) const
 {
-	rt.draw(getGroundSprite());
+	//rt.draw(getGroundSprite());
 }
 
 void Medkit::onPickUp()

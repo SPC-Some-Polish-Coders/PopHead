@@ -215,12 +215,12 @@ sf::Vector2f Gun::getRightHandPosition()
 		PH_EXCEPTION("Direction vector like this shouldn't exist.");
 }
 
-void Gun::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
+void Gun::drawCurrent(sf::Transform)
 {
-	if(mShouldDisplayShotGraphics)
-		target.draw(mShotGraphics.data(), 2, sf::Lines);
-	if(mShouldDisplayGunSprite)
-		target.draw(mGunSprite, states);
+	//if(mShouldDisplayShotGraphics)
+	//	target.draw(mShotGraphics.data(), 2, sf::Lines);
+	//if(mShouldDisplayGunSprite)
+	//	target.draw(mGunSprite, states);
 }
 
 }

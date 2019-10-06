@@ -8,7 +8,7 @@ CrawlingNpc::CrawlingNpc(GameData* const gameData)
 	,mIsDead(false)
 {
 	setPosition({5673, 396});
-	mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
+	//mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
 	mAnimation.changeState("crawlingUp");
 	//gameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 }

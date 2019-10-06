@@ -9,7 +9,7 @@ GateGuard::GateGuard(GameData* const gameData)
 	:Npc(gameData, "gateGuard")
 	,mOpened(false)
 {
-	mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
+	//mSprite.setTexture(gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"));
 	mAnimation.changeState("stayingDown");
 }
 

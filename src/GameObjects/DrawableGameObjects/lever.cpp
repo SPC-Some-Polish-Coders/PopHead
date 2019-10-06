@@ -47,11 +47,11 @@ void Lever::updateCurrent(const sf::Time delta)
 	}
 }
 
-void Lever::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Lever::drawCurrent(sf::Transform)
 {
-	target.draw(mLeverSprite, states);
-	if(mIsPlayerInHintArea)
-		target.draw(mHintSprite, states);
+	//target.draw(mLeverSprite, states);
+	//if(mIsPlayerInHintArea)
+	//	target.draw(mHintSprite, states);
 }
 
 }

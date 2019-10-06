@@ -52,7 +52,7 @@ Game::Game()
 	mMap->setGameData(gameData);
 	//mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/mainMenu.xml");
+	mSceneManager->replaceScene("scenes/rendererTest.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 
@@ -121,52 +121,25 @@ void Game::update(sf::Time deltaTime)
 		mTerminal->update();
 	}*/
 
-	// initialization
-	static auto shader = std::make_shared<Shader>("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
-
-	static std::array<float, 16> vertices = {
-		// positions | texture coords
-		0.5f,  0.5f, 1.0f, 1.0f, // top right
-		0.5f, -0.5f, 1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f, 1.0f  // top left 
-	};
-
-	static std::array<unsigned, 6> indices = {
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
-
-	static VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
-	static IndexBuffer ibo = createIndexBuffer(indices.data(), indices.size() * sizeof(unsigned));
-	static auto vao = std::make_shared<VertexArray>();
-	vao->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
-	vao->setIndexBuffer(ibo);
-
-	static auto texture = std::make_shared<Texture>("resources/textures/others/gate.png");
-
-	static auto camera = std::make_shared<Camera>();
+	static Camera camera;
 
 	// Actual game loop
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		camera->move({-0.02f, 0.f});
+		camera.move({-0.02f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		camera->move({0.02f, 0.f});
+		camera.move({0.02f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		camera->move({0.f, 0.02f});
+		camera.move({0.f, 0.02f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		camera->move({0.f, -0.02f});
+		camera.move({0.f, -0.02f});
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		camera->zoom(1.01);
+		camera.zoom(1.01);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		camera->zoom(0.99);
+		camera.zoom(0.99);
 
-	Renderer::beginScene(*camera);
-
-	texture->bind();
-	Renderer::submit(vao, shader);
-
+	Renderer::beginScene(camera);
+	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
 	Renderer::endScene();
 	
 	mWindow.display();

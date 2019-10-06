@@ -16,14 +16,14 @@ public:
 	virtual void onPickUp();
 	virtual void onDrop();
 
-	virtual void drawWhileOnTheGround(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+	virtual void drawWhileOnTheGround(sf::Transform) const = 0;
 
 	virtual void updateWhileOnTheGround(const sf::Time time) = 0;
 
 	void setPosition(const sf::Vector2f& position);
 
 	void updateCurrent(const sf::Time) override;
-	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void drawCurrent(sf::Transform) override;
 
 	void setInteractable(const bool interactable) { mInteractable = interactable; }
 	bool getInteractable() const { return mInteractable; }

@@ -12,7 +12,7 @@ class Gate : public GameObject
 public:
 	Gate(const sf::Texture& gateTexture, const sf::Vector2f position, PhysicsEngine&, const bool isOpen);
 
-	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
+	void drawCurrent(sf::Transform) override;
 
 	void open();
 	void close();

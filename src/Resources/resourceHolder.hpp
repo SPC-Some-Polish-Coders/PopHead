@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Renderer/texture.hpp"
+#include "Renderer/shader.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 #include <string>
 #include <unordered_map>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 
 namespace ph {
 
@@ -21,10 +22,10 @@ private:
 	std::unordered_map< std::string, std::unique_ptr<ResourceType> > mResources;
 };
 
-using SoundBufferHolder = ResourceHolder< sf::SoundBuffer >;
-using TextureHolder = ResourceHolder< sf::Texture >;
-using FontHolder = ResourceHolder< sf::Font >;
-using ShaderHolder = ResourceHolder< sf::Shader>;
+using SoundBufferHolder = ResourceHolder<sf::SoundBuffer>;
+using TextureHolder = ResourceHolder<ph::Texture>;
+using ShaderHolder = ResourceHolder<ph::Shader>;
+using FontHolder = ResourceHolder<sf::Font>;
 
 }
 

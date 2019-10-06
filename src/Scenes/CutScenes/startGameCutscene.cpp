@@ -173,7 +173,7 @@ void StartGameCutScene::createZombie(const sf::Vector2f position)
 {
 	auto zombie = std::make_unique<Npc>(mGameData);
 	zombie->setPosition(position);
-	zombie->getSprite().setTexture(mGameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
+	//zombie->getSprite().setTexture(mGameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mRoot.addChild(std::move(zombie));
 }
 

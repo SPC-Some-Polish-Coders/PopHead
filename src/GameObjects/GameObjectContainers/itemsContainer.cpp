@@ -8,7 +8,7 @@ ItemsContainer::ItemsContainer()
 {
 }
 
-void ItemsContainer::drawCurrent(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
+void ItemsContainer::drawCurrent(sf::Transform)
 {
 
 }

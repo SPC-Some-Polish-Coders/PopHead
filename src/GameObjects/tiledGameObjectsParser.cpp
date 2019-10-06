@@ -148,7 +148,7 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 	npc->setHp(getProperty(npcNode, "hp").toInt());
 	npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
 	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
-	npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
+	//npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(npc));
@@ -248,20 +248,20 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 
 void TiledGameObjectsParser::loadGate(const Xml& gateNode) const
 {
-	auto& texture = mGameData->getTextures().get("textures/others/gate.png");
+	/*auto& texture = mGameData->getTextures().get("textures/others/gate.png");
 	auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);
 	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-	lyingObjects->addChild(std::move(gate));
+	lyingObjects->addChild(std::move(gate));*/
 }
 
 void TiledGameObjectsParser::loadLever(const Xml& leverNode) const
 {
-	auto& leverTexture = mGameData->getTextures().get("textures/others/lever.png");
+	/*auto& leverTexture = mGameData->getTextures().get("textures/others/lever.png");
 	auto& hintTexture = mGameData->getTextures().get("textures/others/pressSpaceHint.png");
 	auto lever = std::make_unique<Lever>(leverTexture, hintTexture);
 	lever->setPosition(getPositionAttribute(leverNode));
 	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-	lyingObjects->addChild(std::move(lever));
+	lyingObjects->addChild(std::move(lever));*/
 }
 
 void TiledGameObjectsParser::loadCar(const Xml& carNode) const
@@ -303,7 +303,7 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	auto& sceneManager = mGameData->getSceneManager();
 
 	auto player = std::make_unique<Player>(mGameData);
-	player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
+	//player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 
 	sf::Vector2f playerPosition;
 	if (sceneManager.hasPlayerPosition())
@@ -389,7 +389,7 @@ void TiledGameObjectsParser::loadMedkit(const Xml& bulletItemNode) const
 
 void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 {
-	auto& textures = mGameData->getTextures();
+	/*auto& textures = mGameData->getTextures();
 	bool isLying = getProperty(bilbordNode, "isLying").toBool();
 	auto bilbord = std::make_unique<Bilbord>(
 		textures.get("textures/others/standingBilbord.png"),
@@ -405,16 +405,16 @@ void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 	else {
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->addChild(std::move(bilbord));
-	}
+	}*/
 }
 
 void TiledGameObjectsParser::loadSpriteNode(const Xml& spriteNodeNode) const
 {
-	const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
+	/*const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
 	auto spriteNode = std::make_unique<SpriteNode>(mGameData->getTextures().get(texturePath));
 	spriteNode->setPosition(getPositionAttribute(spriteNodeNode));
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects->addChild(std::move(spriteNode));
+	standingObjects->addChild(std::move(spriteNode));*/
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

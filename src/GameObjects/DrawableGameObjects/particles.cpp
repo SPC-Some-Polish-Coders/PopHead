@@ -47,9 +47,9 @@ void Particles::updateCurrent(const sf::Time delta)
 	}
 }
 
-void Particles::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Particles::drawCurrent(sf::Transform)
 {
-	target.draw(mVertecies);
+	//target.draw(mVertecies);
 }
 
 }

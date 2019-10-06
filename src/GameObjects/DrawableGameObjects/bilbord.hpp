@@ -9,7 +9,7 @@ class Bilbord : public GameObject
 public:
 	Bilbord(const sf::Texture& stayingBilbordTexture, const sf::Texture& lyingBilbordTexture, const bool isLying);
 
-	void drawCurrent(sf::RenderTarget&, const sf::RenderStates) const override;
+	void drawCurrent(sf::Transform) override;
 
 	void fallOver();
 

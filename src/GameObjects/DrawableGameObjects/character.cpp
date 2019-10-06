@@ -26,9 +26,9 @@ Character::Character(GameData* gameData, std::string name, Animation animation,
 	dynamic_cast<Equipment*>(getChild("Equipment"))->init();
 }
 
-void Character::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Character::drawCurrent(sf::Transform)
 {
-	target.draw(mSprite, states);
+	//target.draw(mSprite, states);
 }
 
 void Character::dropItems()

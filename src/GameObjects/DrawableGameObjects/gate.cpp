@@ -13,10 +13,10 @@ Gate::Gate(const sf::Texture& gateTexture, const sf::Vector2f position, PhysicsE
 	setPosition(position);
 }
 
-void Gate::drawCurrent(sf::RenderTarget& target, const sf::RenderStates states) const
+void Gate::drawCurrent(sf::Transform)
 {
-	if(!mIsOpen)
-		target.draw(mSprite, states);
+	//if(!mIsOpen)
+	//	target.draw(mSprite, states);
 }
 
 void Gate::open()

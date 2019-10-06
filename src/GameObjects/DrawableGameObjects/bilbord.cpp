@@ -11,9 +11,9 @@ Bilbord::Bilbord(const sf::Texture& stayingBilbordTexture, const sf::Texture& ly
 {
 }
 
-void Bilbord::drawCurrent(sf::RenderTarget& renderTarget, const sf::RenderStates states) const
+void Bilbord::drawCurrent(sf::Transform)
 {
-	renderTarget.draw(mSprite, states);
+	//renderTarget.draw(mSprite, states);
 }
 
 void Bilbord::fallOver()

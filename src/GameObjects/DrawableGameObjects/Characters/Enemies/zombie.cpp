@@ -57,7 +57,7 @@ Zombie::Zombie(GameData* gameData)
 	:Enemy(gameData, name, animation, static_cast<unsigned int>(movementSpeed), hp, maxHp, posAndSize, mass, damage)
 	,mIsSlownDown(false)
 {
-	mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
+	//mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
 	mAnimation.animate(mSprite);
 
 	//temporary random generate until we develop this system

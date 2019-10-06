@@ -14,7 +14,7 @@ public:
 	ItemsContainer();
 
 	void updateCurrent(const sf::Time time) override;
-	void drawCurrent(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
+	void drawCurrent(sf::Transform) override;
 
 };
 
