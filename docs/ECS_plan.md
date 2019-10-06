@@ -11,6 +11,7 @@ This document will contain all plans, schemas, assets, etc. that will be used to
 - Entt library
   - [GitHub repository](https://github.com/skypjack/entt)
   - [Official documentation](https://skypjack.github.io/entt/)
+  - [Main tutorial](https://skypjack.github.io/entt/autotoc_md8.html)
 
 ## Components and Systems
 In order to create a new game objects architecture we need to make a list of components and systems.
