@@ -95,7 +95,7 @@ struct ActivationState {
 };
 ```
 
-### Predefined objects types
+### Predefined entities
 Our current game objects classes must be represented as lists of components.
 These lists will be predefined in code for facilitation.
 They can contain only obligatory components for object to work.
