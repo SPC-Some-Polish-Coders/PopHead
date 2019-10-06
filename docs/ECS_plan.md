@@ -31,6 +31,9 @@ struct Health {
 //     sf::Vector2f scale;
 //     float rotation;
 // };
+// struct Position {
+//     sf::Vector2f position;
+// };
 struct VertexArray {
     ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
 };
@@ -86,6 +89,9 @@ struct Medkit {
 };
 struct Bullets {
     unsigned short number;
+};
+struct ActivationState {
+    bool turnedOn;
 };
 ```
 
