@@ -95,6 +95,30 @@ struct ActivationState {
 };
 ```
 
+### Predefined objects types
+Our current game objects classes must be represented as lists of components.
+These lists will be predefined in code for facilitation.
+They can contain only obligatory components for object to work.
+Optional components should be distinguished somehow.
+
+- Player (VertexArray, Shader, KinematicCollisionBody, GunAttacker, MeleeAttacker, Health, Animation, Player, Velocity, ...)
+- Zombie (VertexArray, Shader, KinematicCollisionBody, Health, Animation, PlayerFollower, Velocity, ...)
+- Spawner (Spawner, Player, ...)
+- Dead character (VertexArray, Shader, Lifetime, ...)
+- Npc (VertexArray, Shader, ...)
+- Entrance
+- SlowDownArea?
+- ActivateArea?
+- CutSceneArea?
+- Gate (VertexArray, Shader, ActivationState, StaticCollisionBody?)
+- Lever (VertexArray, Shader, ...)
+- Car (VertexArray, Shader, StaticCollisionBody, ...)
+- CrawlingNpc (VertexArray, Shader, ...)
+- GateGuard (VertexArray, Shader, ...)
+- Bullet item (VertexArray, Shader, Bullets)
+- Medkit (VertexArray, Shader, Medkit)
+- Particles (VertexArray, Shader, ...)
+
 ### Systems Proposal
 System's description MUST contain list of used components.<br>
 Later the systems will be ordered.
