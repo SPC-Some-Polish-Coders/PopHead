@@ -1,6 +1,7 @@
 #include "buffers.hpp"
 #include "openglErrors.hpp"
 #include <GL/glew.h>
+#include <array>
 
 namespace ph {
 
@@ -45,6 +46,34 @@ void deleteIndexBuffer(IndexBuffer ibo)
 void bind(IndexBuffer ibo)
 {
 	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo.mID) );
+}
+
+
+// HELPER BUFFER CREATORS
+
+namespace {
+	std::array<float, 16> vertices = {
+		// positions | texture coords
+		0.5f,  0.5f, 1.0f, 1.0f, // top right
+		0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, 1.0f  // top left 
+	};
+
+	std::array<unsigned, 6> indices = {
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
+}
+
+std::pair<float*, size_t> getRectangleVertexBuffer()
+{
+	return std::pair<float*, size_t>(vertices.data(), vertices.size() * sizeof(float));
+}
+
+std::pair<unsigned*, size_t> getRectangleIndexBuffer()
+{
+	return std::pair<unsigned*, size_t>(indices.data(), indices.size() * sizeof(unsigned));
 }
 
 }
