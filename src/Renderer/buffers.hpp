@@ -17,7 +17,6 @@ void deleteIndexBuffer(IndexBuffer);
 void bind(IndexBuffer);
 
 // HELPER BUFFER CREATORS
-std::pair<float*, size_t> getRectangleVertexBuffer();
 std::pair<unsigned*, size_t> getRectangleIndexBuffer();
 
 }

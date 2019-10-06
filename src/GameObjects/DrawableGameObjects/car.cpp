@@ -1,6 +1,6 @@
 #include "car.hpp"
 #include <array>
-#include "Renderer/buffers.hpp"
+#include "Renderer/bufferHolders.hpp"
 #include "Renderer/renderer.hpp"
 
 namespace ph {
@@ -17,9 +17,9 @@ Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f d
 	,mShouldSpeedUp(false)
 	,mShouldSlowDown(false)
 {
-	auto vertices = getRectangleVertexBuffer();
+	auto vertexBufferHolder = VertexBufferHolder::getGlobalInstance();
+	auto vbo = vertexBufferHolder.getRectangleVertexBuffer("car", texture.getWidth(), texture.getHeight());
 	auto indices = getRectangleIndexBuffer();
-	VertexBuffer vbo = createVertexBuffer(vertices.first, vertices.second);
 	IndexBuffer ibo = createIndexBuffer(indices.first, indices.second);
 	mVertexArray->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray->setIndexBuffer(ibo);
@@ -47,7 +47,7 @@ void Car::updateCurrent(const sf::Time delta)
 void Car::drawCurrent(const sf::Transform transform)
 {
 	mTexture.bind();
-	Renderer::submit(mVertexArray, mShader, transform);
+	Renderer::submit(mVertexArray, mShader, sf::Transform::Identity /*transform*/);
 }
 
 }
