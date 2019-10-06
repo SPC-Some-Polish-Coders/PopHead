@@ -106,3 +106,4 @@ Later the systems will be ordered.
 - Static collisions (KinematicCollisionBody, StaticCollisionBody, Velocity)
 - Medkits collecting (Medkit, Player, KinematicCollisionBody)
 - Bullets collecting (Bullets, Player, KinematicCollisionBody)
+- Moving objects (Velocity, ...)
