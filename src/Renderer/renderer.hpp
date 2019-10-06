@@ -11,19 +11,16 @@ namespace ph {
 class Renderer
 {
 public:
-	Renderer();
+	static void init();
 	
-	Renderer(Renderer&) = delete;
-	Renderer& operator=(Renderer&) = delete;
+	static void beginScene(Camera&);
+	static void submit(std::shared_ptr<VertexArray>&, std::shared_ptr<Shader>&, const sf::Transform& = sf::Transform::Identity);
+	static void endScene();
 
-	void beginScene(Camera&);
-	void submit(std::shared_ptr<VertexArray>&, std::shared_ptr<Shader>&, const sf::Transform& = sf::Transform::Identity);
-	void endScene();
-
-	void onWindowResize(unsigned width, unsigned height) const;
+	static void onWindowResize(unsigned width, unsigned height);
 
 private:
-	const float* mViewProjectionMatrix;
+	inline static const float* mViewProjectionMatrix = nullptr;
 };
 
 }

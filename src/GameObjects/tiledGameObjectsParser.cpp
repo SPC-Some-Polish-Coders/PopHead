@@ -120,7 +120,7 @@ void TiledGameObjectsParser::loadLayerObjects() const
 void TiledGameObjectsParser::loadContainerObjects() const
 {
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects->addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
+	//standingObjects->addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
 	standingObjects->addChild(std::make_unique<ItemsContainer>());
 }
 

@@ -2,7 +2,6 @@
 
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
-#include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
@@ -11,7 +10,7 @@
 #include "Terminal/terminal.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Gui/GUI.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Window.hpp>
 #include <memory>
 
 namespace ph {
@@ -33,7 +32,7 @@ class GameData
 public:
 	GameData()
 	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-	          nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	          nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::Window* const window,
@@ -45,7 +44,6 @@ public:
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
 		Map* const map,
-		Renderer* const renderer,
 		PhysicsEngine* const physicsEngine,
 		Terminal* const Terminal,
 		EfficiencyRegister* const efficiencyRegister,
@@ -60,7 +58,6 @@ public:
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
 		,mMap(map)
-		,mRenderer{renderer}
 		,mPhysicsEngine{physicsEngine}
 		,mTerminal{Terminal}
 		,mEfficiencyRegister{efficiencyRegister}
@@ -78,7 +75,6 @@ public:
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
 	auto getMap() const -> Map& { return *mMap; }
-	auto getRenderer() const -> Renderer& { return *mRenderer; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
 	auto getEfficiencyRegister() const -> EfficiencyRegister& { return *mEfficiencyRegister; }
@@ -95,7 +91,6 @@ private:
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
 	Map* const mMap;
-	Renderer* const mRenderer;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
 	EfficiencyRegister* const mEfficiencyRegister;

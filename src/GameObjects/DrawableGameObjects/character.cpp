@@ -123,7 +123,7 @@ void Character::drawBlood()
 {
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto* particlesSystem = dynamic_cast<ParticlesSystem*>(standingObjects->getChild("particlesSystem"));
-	particlesSystem->addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
+	//particlesSystem->addChild(std::make_unique<Particles>(mGameData->getRenderer(), getSpriteCenter() + getPosition()));
 }
 
 void Character::setAnimationState(const std::string& stateName)

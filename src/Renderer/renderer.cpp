@@ -11,8 +11,7 @@
 
 namespace ph {
 
-Renderer::Renderer()
-	:mViewProjectionMatrix(nullptr)
+void Renderer::init()
 {
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
@@ -48,7 +47,7 @@ void Renderer::endScene()
 {
 }
 
-void Renderer::onWindowResize(unsigned width, unsigned height) const
+void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
 }

@@ -3,7 +3,6 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "gameData.hpp"
-#include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Map/map.hpp"
@@ -40,7 +39,6 @@ private:
 	std::unique_ptr< AIManager >          mAIManager;
 	std::unique_ptr< SceneManager >       mSceneManager;
 	std::unique_ptr< Map >                mMap;
-	std::unique_ptr< Renderer >           mRenderer;
 	std::unique_ptr< PhysicsEngine >      mPhysicsEngine;
 	std::unique_ptr< Terminal >           mTerminal;
 	std::unique_ptr< EfficiencyRegister > mEfficiencyRegister;

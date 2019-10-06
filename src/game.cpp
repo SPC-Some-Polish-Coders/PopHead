@@ -5,6 +5,7 @@
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
+#include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -22,7 +23,6 @@ Game::Game()
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mMap(new Map())
-	,mRenderer{new Renderer()}
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
@@ -38,7 +38,6 @@ Game::Game()
 		mAIManager.get(),
 		mSceneManager.get(),
 		mMap.get(),
-		mRenderer.get(),
 		mPhysicsEngine.get(),
 		mTerminal.get(),
 		mEfficiencyRegister.get(),
@@ -58,6 +57,8 @@ Game::Game()
 	mWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
+
+	Renderer::init();
 }
 
 void Game::run()
@@ -103,7 +104,7 @@ void Game::handleEvents()
 
 		if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
 			if(sfEvent->type == sf::Event::Resized)
-				mRenderer->onWindowResize(sfEvent->size.width, sfEvent->size.height);
+				Renderer::onWindowResize(sfEvent->size.width, sfEvent->size.height);
 	}
 }
 
@@ -161,12 +162,12 @@ void Game::update(sf::Time deltaTime)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		camera->zoom(0.99);
 
-	mRenderer->beginScene(*camera);
+	Renderer::beginScene(*camera);
 
 	texture->bind();
-	mRenderer->submit(vao, shader);
+	Renderer::submit(vao, shader);
 
-	mRenderer->endScene();
+	Renderer::endScene();
 	
 	mWindow.display();
 }
