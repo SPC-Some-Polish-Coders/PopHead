@@ -389,7 +389,7 @@ void TiledGameObjectsParser::loadMedkit(const Xml& bulletItemNode) const
 
 void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 {
-	/*auto& textures = mGameData->getTextures();
+	auto& textures = mGameData->getTextures();
 	bool isLying = getProperty(bilbordNode, "isLying").toBool();
 	auto bilbord = std::make_unique<Bilbord>(
 		textures.get("textures/others/standingBilbord.png"),
@@ -405,7 +405,7 @@ void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 	else {
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->addChild(std::move(bilbord));
-	}*/
+	}
 }
 
 void TiledGameObjectsParser::loadSpriteNode(const Xml& spriteNodeNode) const

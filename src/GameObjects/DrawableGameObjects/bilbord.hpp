@@ -1,22 +1,27 @@
 #pragma once 
 
 #include "GameObjects/gameObject.hpp"
+#include "Renderer/texture.hpp"
+#include "Renderer/vertexArray.hpp"
+#include "Renderer/shader.hpp"
 
 namespace ph { 
  
 class Bilbord : public GameObject
 {
 public:
-	Bilbord(const sf::Texture& stayingBilbordTexture, const sf::Texture& lyingBilbordTexture, const bool isLying);
+	Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& lyingBilbordTexture, const bool isLying);
 
 	void drawCurrent(sf::Transform) override;
 
 	void fallOver();
 
 private:
-	sf::Sprite mSprite;
-	const sf::Texture& mStayingBilbordTexture;
-	const sf::Texture& mLyingBilbordTexture;
+	std::shared_ptr<VertexArray> mVertexArray;
+	std::shared_ptr<Shader> mShader;
+	const ph::Texture& mStayingBilbordTexture;
+	const ph::Texture& mLyingBilbordTexture;
+	bool mIsLying;
 };
 
 } 
