@@ -134,9 +134,9 @@ void Game::update(sf::Time deltaTime)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		camera.move({0.02f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		camera.move({0.f, 0.02f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		camera.move({0.f, -0.02f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		camera.move({0.f, 0.02f});
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		camera.zoom(1.01);

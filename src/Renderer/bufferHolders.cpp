@@ -22,14 +22,6 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 	mNames.emplace_back(name);
 	mReferenceCounters.emplace_back(1);
 
-	//std::array<float, 16> vertices = {
-	//	// positions  texture coords
-	//	width, height , 1.0f, 1.0f, // top right
-	//	width, 0.f    , 1.0f, 0.0f, // bottom right
-	//	0.f  , 0.f    , 0.0f, 0.0f, // bottom left
-	//	0.f  , height , 0.0f, 1.0f  // top left 
-	//};
-
 	std::array<float, 16> vertices = {
 		// positions  texture coords
 		1.f, 0.f, 1.0f, 1.0f, // top right

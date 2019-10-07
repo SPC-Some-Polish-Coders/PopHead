@@ -29,8 +29,7 @@ void Renderer::beginScene(Camera& camera)
 	glClearColor(0.2, 0.3, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
-	mViewSize = camera.getSize();
+	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 }
 
 void Renderer::submit(std::shared_ptr<VertexArray>& vao, std::shared_ptr<Shader>& shader, const sf::Transform& transform)
@@ -39,7 +38,7 @@ void Renderer::submit(std::shared_ptr<VertexArray>& vao, std::shared_ptr<Shader>
 
 	shader->bind();
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
+	shader->setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
