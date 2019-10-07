@@ -16,7 +16,4 @@ IndexBuffer createIndexBuffer(unsigned* indices, size_t arraySize);
 void deleteIndexBuffer(IndexBuffer);
 void bind(IndexBuffer);
 
-// HELPER BUFFER CREATORS
-std::pair<unsigned*, size_t> getRectangleIndexBuffer();
-
 }

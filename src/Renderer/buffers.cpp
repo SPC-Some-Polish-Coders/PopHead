@@ -48,19 +48,4 @@ void bind(IndexBuffer ibo)
 	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo.mID) );
 }
 
-
-// HELPER BUFFER CREATORS
-
-namespace {
-	std::array<unsigned, 6> indices = {
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
-}
-
-std::pair<unsigned*, size_t> getRectangleIndexBuffer()
-{
-	return std::pair<unsigned*, size_t>(indices.data(), indices.size() * sizeof(unsigned));
-}
-
 }

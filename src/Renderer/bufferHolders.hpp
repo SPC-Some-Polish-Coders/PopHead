@@ -27,13 +27,19 @@ private:
 class IndexBufferHolder
 {
 public:
-	VertexBuffer getBuffer(const std::string& name, unsigned numberOfElements, bool thisBufferMightAlreadyExist = true);
-	void deleteBuffer(VertexBuffer);
+	static IndexBufferHolder& getGlobalInstance()
+	{
+		static IndexBufferHolder globalIndexBufferHolder;
+		return globalIndexBufferHolder;
+	}
+
+	IndexBuffer getRectangleIndexBuffer(const std::string& name, bool thisBufferMightAlreadyExist = true);
+	void deleteBuffer(IndexBuffer);
 
 private:
 	std::vector<std::string> mNames;
 	std::vector<int> mReferenceCounters;
-	std::vector<VertexBuffer> mIndexBuffers;
+	std::vector<IndexBuffer > mIndexBuffers;
 };
 
 }
