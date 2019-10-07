@@ -29,7 +29,8 @@ void Renderer::beginScene(Camera& camera)
 	glClearColor(0.2, 0.3, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	mViewProjectionMatrix = camera.getViewProjectionMatrix4x4();
+	mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
+	mViewSize = camera.getSize();
 }
 
 void Renderer::submit(std::shared_ptr<VertexArray>& vao, std::shared_ptr<Shader>& shader, const sf::Transform& transform)

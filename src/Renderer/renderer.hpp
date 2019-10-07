@@ -4,6 +4,7 @@
 #include "shader.hpp"
 #include "texture.hpp"
 #include "camera.hpp"
+#include <SFML/System/Vector2.hpp>
 #include <memory>
 
 namespace ph {
@@ -19,8 +20,11 @@ public:
 
 	static void onWindowResize(unsigned width, unsigned height);
 
+	static sf::Vector2f getViewSize() { return mViewSize; }
+
 private:
 	inline static const float* mViewProjectionMatrix = nullptr;
+	inline static sf::Vector2f mViewSize;
 };
 
 }

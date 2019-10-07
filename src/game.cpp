@@ -122,8 +122,13 @@ void Game::update(sf::Time deltaTime)
 	}*/
 
 	static Camera camera;
-
+	
 	// Actual game loop
+	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)))
+		camera.rotate(-1.f);
+	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)))
+		camera.rotate(1.f);
+
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		camera.move({-0.02f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))

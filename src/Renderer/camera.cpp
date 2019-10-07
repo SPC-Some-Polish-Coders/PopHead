@@ -4,7 +4,7 @@
 namespace ph {
 
 Camera::Camera()
-	:Camera({0, 0}, {640, 480})
+	:Camera({0, 0}, {1, 1})
 {
 }
 
@@ -14,13 +14,10 @@ Camera::Camera(const FloatRect& rect)
 }
 
 Camera::Camera(const sf::Vector2f center, const sf::Vector2f size)
-	:mViewMatrix(sf::Transform::Identity)
-	,mProjectionMatrix(sf::Transform::Identity)
-	,mViewProjectionMatrix(sf::Transform::Identity)
+	:mViewProjectionMatrix(sf::Transform::Identity)
 	,mCenter(center)
 	,mSize(size)
-	,mViewMatrixNeedsUpdate(true)
-	,mProjectionMatrixNeedsUpdate(true)
+	,mRotation(0.f)
 	,mViewProjectionMatrixNeedsUpdate(true)
 {
 }
@@ -28,85 +25,65 @@ Camera::Camera(const sf::Vector2f center, const sf::Vector2f size)
 void Camera::setCenter(const sf::Vector2f center)
 {
 	mCenter = center;
-	mViewMatrixNeedsUpdate = true;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
 void Camera::move(const sf::Vector2f offset)
 {
 	mCenter += offset;
-	mViewMatrixNeedsUpdate = true;
+	mViewProjectionMatrixNeedsUpdate = true;
+}
+
+void Camera::setRotation(const float rotation)
+{
+	mRotation = rotation;
+	mViewProjectionMatrixNeedsUpdate = true;
+}
+
+void Camera::rotate(const float rotation)
+{
+	mRotation += rotation;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
 void Camera::setSize(const sf::Vector2f size)
 {
 	mSize = size;
-	mProjectionMatrixNeedsUpdate = true;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
 void Camera::zoom(const float factor)
 {
 	mSize *= factor;
-	mProjectionMatrixNeedsUpdate = true;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-const float* Camera::getViewMatrix4x4()
+const sf::Transform& Camera::getViewProjectionMatrix4x4()
 {
-	if(mViewMatrixNeedsUpdate)
-		updateViewMatrix();
-
-	return mViewMatrix.getMatrix();
-}
-
-const float* Camera::getProjectionMatrix4x4()
-{
-	if(mProjectionMatrixNeedsUpdate)
-		updateProjectionMatrix();
-
-	return mProjectionMatrix.getMatrix();
-}
-
-const float* Camera::getViewProjectionMatrix4x4()
-{
-	if(mViewMatrixNeedsUpdate)
-		updateViewMatrix();
-	if(mProjectionMatrixNeedsUpdate)
-		updateProjectionMatrix();
 	if(mViewProjectionMatrixNeedsUpdate)
-		updateViewProjectionMatrix();
+	{
+		// Rotation components
+		float angle = mRotation * 3.141592654f / 180.f;
+		float cosine = static_cast<float>(std::cos(angle));
+		float sine = static_cast<float>(std::sin(angle));
+		float tx = -mCenter.x * cosine - mCenter.y * sine + mCenter.x;
+		float ty = mCenter.x * sine - mCenter.y * cosine + mCenter.y;
 
-	return mViewProjectionMatrix.getMatrix();
-}
+		// Projection components
+		float a = 2.f / mSize.x;
+		float b = -2.f / mSize.y;
+		float c = -a * mCenter.x;
+		float d = -b * mCenter.y;
 
-void Camera::updateViewMatrix()
-{
-	mViewMatrix = sf::Transform(
-		1, 0, -mCenter.x,
-		0, 1, -mCenter.y,
-		0, 0, 1
-	);
-
-	mViewMatrixNeedsUpdate = false;
-}
-
-void Camera::updateProjectionMatrix()
-{
-	mProjectionMatrix = sf::Transform(
-		(mSize.x/640), 0              ,  0,
-		0              , (mSize.y/480),  0,
-		0              , 0            ,  1
-	);
-	
-	mProjectionMatrixNeedsUpdate = false;
-}
-
-void Camera::updateViewProjectionMatrix()
-{
-	mViewProjectionMatrix = mProjectionMatrix * mViewMatrix;
-	mViewProjectionMatrixNeedsUpdate = false;
+		// Rebuild the view projection matrix
+		mViewProjectionMatrix = sf::Transform(
+		    a * cosine, a * sine  , a * tx + c,
+		   -b * sine  , b * cosine, b * ty + d,
+		    0.f       , 0.f       , 1.f
+		);
+		mViewProjectionMatrixNeedsUpdate = false;
+	}
+	return mViewProjectionMatrix;
 }
 
 }
