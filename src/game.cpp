@@ -144,7 +144,7 @@ void Game::update(sf::Time deltaTime)
 		camera.zoom(0.96f);
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
-		camera.setSize({640, 480});
+		camera.setSize({640, 360});
 
 	Renderer::beginScene(camera);
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
