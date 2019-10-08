@@ -130,18 +130,21 @@ void Game::update(sf::Time deltaTime)
 		camera.rotate(1.f);
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		camera.move({-0.02f, 0.f});
+		camera.move({-2.f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		camera.move({0.02f, 0.f});
+		camera.move({2.f, 0.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		camera.move({0.f, -0.02f});
+		camera.move({0.f, -2.f});
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		camera.move({0.f, 0.02f});
+		camera.move({0.f, 2.f});
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		camera.zoom(1.01);
+		camera.zoom(1.04f);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		camera.zoom(0.99);
+		camera.zoom(0.96f);
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
+		camera.setSize({640, 480});
 
 	Renderer::beginScene(camera);
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);

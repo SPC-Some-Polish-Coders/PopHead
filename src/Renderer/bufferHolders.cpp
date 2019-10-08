@@ -10,7 +10,7 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 	// look for existing buffer
 	if(thisBufferMightAlreadyExist)
 	{
-		for(int i = 0; i < mNames.size(); ++i) {
+		for(size_t i = 0; i < mNames.size(); ++i) {
 			if(mNames[i] == name) {
 				++mReferenceCounters[i];
 				return mVertexBuffers[i];
@@ -19,13 +19,17 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 	}
 
 	// create new buffer
+	float h = static_cast<float>(height);
+	float w = static_cast<float>(width);
+
 	std::array<float, 16> vertices = {
 		// positions  texture coords
-		1.f, 0.f, 1.0f, 1.0f, // top right
-		1.f, 1.f, 1.0f, 0.0f, // bottom right
-		0.f, 1.f, 0.0f, 0.0f, // bottom left
-		0.f, 0.f, 0.0f, 1.0f  // top left 
+		w  , 0.f , 1.0f, 1.0f, // top right
+		w  , h   , 1.0f, 0.0f, // bottom right
+		0.f, h   , 0.0f, 0.0f, // bottom left
+		0.f, 0.f , 0.0f, 1.0f  // top left 
 	};
+
 	VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
 	mVertexBuffers.emplace_back(vbo);
 	mNames.emplace_back(name);
@@ -35,7 +39,7 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 
 void VertexBufferHolder::deleteBuffer(VertexBuffer vbo)
 {
-	for(int i = 0; i < mVertexBuffers.size(); ++i) 
+	for(size_t i = 0; i < mVertexBuffers.size(); ++i) 
 	{
 		if(mVertexBuffers[i].mID == vbo.mID) {
 			--mReferenceCounters[i];
@@ -53,7 +57,7 @@ IndexBuffer IndexBufferHolder::getRectangleIndexBuffer(const std::string& name, 
 	// look for existing buffer
 	if(thisBufferMightAlreadyExist)
 	{
-		for(int i = 0; i < mNames.size(); ++i) {
+		for(size_t i = 0; i < mNames.size(); ++i) {
 			if(mNames[i] == name) {
 				++mReferenceCounters[i];
 				return mIndexBuffers[i];
@@ -75,7 +79,7 @@ IndexBuffer IndexBufferHolder::getRectangleIndexBuffer(const std::string& name, 
 
 void IndexBufferHolder::deleteBuffer(IndexBuffer ibo)
 {
-	for(int i = 0; i < mIndexBuffers.size(); ++i)
+	for(size_t i = 0; i < mIndexBuffers.size(); ++i)
 	{
 		if(mIndexBuffers[i].mID == ibo.mID) {
 			--mReferenceCounters[i];

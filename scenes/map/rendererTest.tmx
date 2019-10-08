@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
  <objectgroup id="2" name="gameObjects">
-  <object id="1" type="Car" x="8.45458" y="14.5455">
+  <object id="1" type="Car" x="101.121" y="42.5455">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="2" type="Car" x="293.727" y="295.909">
+  <object id="2" type="Car" x="52.394" y="150.576">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="3" type="Bilbord" x="226.515" y="-87.4849">
+  <object id="3" type="Bilbord" x="131.182" y="41.8485">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="isLying" type="bool" value="false"/>

@@ -4,7 +4,7 @@
 namespace ph {
 
 Camera::Camera()
-	:Camera({0, 0}, {1, 1})
+	:Camera({0, 0}, {640, 480})
 {
 }
 
