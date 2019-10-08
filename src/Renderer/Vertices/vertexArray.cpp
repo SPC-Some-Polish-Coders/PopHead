@@ -5,6 +5,8 @@
 namespace ph {
 
 VertexArray::VertexArray()
+	:mVertexBuffer({0})
+	,mIndexBuffer({0})
 {
 	GLCheck( glGenVertexArrays(1, &mID) );
 }
