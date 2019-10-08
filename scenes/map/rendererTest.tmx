@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
  <objectgroup id="2" name="gameObjects">
-  <object id="1" type="Car" x="101.121" y="42.5455">
+  <object id="1" type="Car" x="100.5" y="36.25">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>
@@ -15,7 +15,7 @@
    </properties>
    <point/>
   </object>
-  <object id="3" type="Bilbord" x="131.182" y="41.8485">
+  <object id="3" type="Bilbord" x="130" y="40">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="isLying" type="bool" value="false"/>
