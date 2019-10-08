@@ -13,7 +13,7 @@ class ShaderLibrary
 	ShaderLibrary() {};
 public:
 	ShaderLibrary(ShaderLibrary&) = delete;
-	void operator=(ShaderLibrary& const) = delete;
+	void operator=(ShaderLibrary const&) = delete;
 
 	static ShaderLibrary& getInstance()
 	{
