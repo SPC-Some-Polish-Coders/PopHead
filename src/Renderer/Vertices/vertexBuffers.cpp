@@ -1,9 +1,28 @@
-#include "bufferHolders.hpp"
+#include "vertexBuffers.hpp"
+#include "Renderer/openglErrors.hpp"
 #include "Logs/logs.hpp"
 #include <array>
-#include <algorithm>
 
-namespace ph {
+namespace ph { 
+
+VertexBuffer createVertexBuffer(float* vertices, size_t arraySize)
+{
+	unsigned id;
+	GLCheck(glGenBuffers(1, &id));
+	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, id));
+	GLCheck(glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, GL_STATIC_DRAW));
+	return {id};
+}
+
+void deleteVertexBuffer(VertexBuffer vbo)
+{
+	GLCheck(glDeleteBuffers(1, &vbo.mID));
+}
+
+void bind(VertexBuffer vbo)
+{
+	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, vbo.mID));
+}
 
 VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool thisBufferMightAlreadyExist)
 {
@@ -39,7 +58,7 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 
 void VertexBufferHolder::deleteBuffer(VertexBuffer vbo)
 {
-	for(size_t i = 0; i < mVertexBuffers.size(); ++i) 
+	for(size_t i = 0; i < mVertexBuffers.size(); ++i)
 	{
 		if(mVertexBuffers[i].mID == vbo.mID) {
 			--mReferenceCounters[i];
@@ -52,44 +71,4 @@ void VertexBufferHolder::deleteBuffer(VertexBuffer vbo)
 	PH_LOG_WARNING("You're trying to delete vertex buffer which doesn't exist");
 }
 
-IndexBuffer IndexBufferHolder::getRectangleIndexBuffer(const std::string& name, bool thisBufferMightAlreadyExist)
-{
-	// look for existing buffer
-	if(thisBufferMightAlreadyExist)
-	{
-		for(size_t i = 0; i < mNames.size(); ++i) {
-			if(mNames[i] == name) {
-				++mReferenceCounters[i];
-				return mIndexBuffers[i];
-			}
-		}
-	}
-
-	// create new buffer
-	std::array<unsigned, 6> indices = {
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
-	IndexBuffer ibo = createIndexBuffer(indices.data(), indices.size() * sizeof(unsigned));
-	mIndexBuffers.emplace_back(ibo);
-	mNames.emplace_back(name);
-	mReferenceCounters.emplace_back(1);
-	return ibo;
-}
-
-void IndexBufferHolder::deleteBuffer(IndexBuffer ibo)
-{
-	for(size_t i = 0; i < mIndexBuffers.size(); ++i)
-	{
-		if(mIndexBuffers[i].mID == ibo.mID) {
-			--mReferenceCounters[i];
-			mNames.erase(mNames.begin() + i);
-			mReferenceCounters.erase(mReferenceCounters.begin() + i);
-			mIndexBuffers.erase(mIndexBuffers.begin() + i);
-			return;
-		}
-	}
-	PH_LOG_WARNING("You're trying to delete index buffer which doesn't exist");
-}
-
-}
+}  

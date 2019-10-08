@@ -2,7 +2,6 @@
 #include "renderer.hpp"
 #include "GameObjects/gameObject.hpp"
 #include "Logs/logs.hpp"
-#include "buffers.hpp"
 #include "openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <SFML/Window/Keyboard.hpp>

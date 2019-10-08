@@ -1,5 +1,5 @@
 #include "vertexArray.hpp"
-#include "openglErrors.hpp"
+#include "Renderer/openglErrors.hpp"
 #include "GL/glew.h"
 
 namespace ph {

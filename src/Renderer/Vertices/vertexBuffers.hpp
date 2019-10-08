@@ -1,10 +1,18 @@
-#pragma once
-
-#include "buffers.hpp"
+#pragma once 
+ 
 #include <vector>
 #include <string>
 
-namespace ph {
+namespace ph { 
+ 
+struct VertexBuffer
+{
+	unsigned mID;
+};
+
+VertexBuffer createVertexBuffer(float* vertices, size_t arraySize);
+void deleteVertexBuffer(VertexBuffer);
+void bind(VertexBuffer);
 
 class VertexBufferHolder
 {
@@ -24,22 +32,4 @@ private:
 	std::vector<VertexBuffer> mVertexBuffers;
 };
 
-class IndexBufferHolder
-{
-public:
-	static IndexBufferHolder& getGlobalInstance()
-	{
-		static IndexBufferHolder globalIndexBufferHolder;
-		return globalIndexBufferHolder;
-	}
-
-	IndexBuffer getRectangleIndexBuffer(const std::string& name, bool thisBufferMightAlreadyExist = true);
-	void deleteBuffer(IndexBuffer);
-
-private:
-	std::vector<std::string> mNames;
-	std::vector<int> mReferenceCounters;
-	std::vector<IndexBuffer > mIndexBuffers;
-};
-
-}
+} 

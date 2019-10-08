@@ -1,7 +1,4 @@
 #include "car.hpp"
-#include <array>
-#include "Renderer/bufferHolders.hpp"
-#include "Renderer/renderer.hpp"
 
 namespace ph {
 

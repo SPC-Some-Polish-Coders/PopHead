@@ -1,7 +1,5 @@
 #include "bilbord.hpp"
 #include "Logs/logs.hpp"
-#include "Renderer/bufferHolders.hpp"
-#include "Renderer/renderer.hpp"
 
 namespace ph { 
  

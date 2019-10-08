@@ -1,9 +1,7 @@
 #pragma once 
 
 #include "GameObjects/gameObject.hpp"
-#include "Renderer/texture.hpp"
-#include "Renderer/vertexArray.hpp"
-#include "Renderer/shader.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph { 
  

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vertexArray.hpp"
+#include "Vertices/vertexArray.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 #include "camera.hpp"
