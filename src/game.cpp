@@ -124,6 +124,8 @@ void Game::update(sf::Time deltaTime)
 	static Camera camera;
 	
 	// Actual game loop
+	Renderer::setClearColor({10, 10, 10, 255});
+
 	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)))
 		camera.rotate(-1.f);
 	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)))

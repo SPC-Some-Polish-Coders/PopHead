@@ -25,7 +25,6 @@ void Renderer::init()
 
 void Renderer::beginScene(Camera& camera)
 {
-	glClearColor(0.2, 0.3, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
@@ -49,6 +48,11 @@ void Renderer::endScene()
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
+}
+
+void Renderer::setClearColor(const sf::Color& color)
+{
+	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
 }
 
 }

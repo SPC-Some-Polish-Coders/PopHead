@@ -20,6 +20,8 @@ public:
 
 	static void onWindowResize(unsigned width, unsigned height);
 
+	static void setClearColor(const sf::Color&);
+
 private:
 	struct SceneData
 	{
