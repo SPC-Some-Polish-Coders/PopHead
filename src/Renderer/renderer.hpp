@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vertices/vertexArray.hpp"
-#include "shader.hpp"
+#include "Shaders/shaderLibary.hpp"
 #include "texture.hpp"
 #include "camera.hpp"
 #include "sprite.hpp"
@@ -16,8 +16,12 @@ public:
 	static void init();
 	
 	static void beginScene(Camera&);
+
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform& transform = sf::Transform::Identity);
+	static void submit(VertexArray& vao, const sf::Transform& transform = sf::Transform::Identity);
 	static void submit(Sprite&, Shader&, const sf::Transform& = sf::Transform::Identity);
+	static void submit(Sprite&, const sf::Transform& = sf::Transform::Identity);
+	
 	static void endScene();
 
 	static void onWindowResize(unsigned width, unsigned height);
@@ -30,7 +34,13 @@ private:
 		const float* mViewProjectionMatrix = nullptr;
 	};
 
+	struct RendererData
+	{
+		std::unique_ptr<Shader> mDefaultShader;
+	};
+
 	inline static SceneData mSceneData;
+	inline static RendererData mRendererData;
 };
 
 }

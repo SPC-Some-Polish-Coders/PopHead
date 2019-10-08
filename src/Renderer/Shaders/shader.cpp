@@ -1,5 +1,5 @@
 #include "shader.hpp"
-#include "openglErrors.hpp"
+#include "Renderer/openglErrors.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <fstream>
@@ -12,12 +12,6 @@ namespace ph {
 Shader::Shader()
 {
 	mID = glCreateProgram();
-}
-
-Shader::Shader(const char* vertexShaderFilename, const char* fragmentShaderFilename)
-{
-	mID = glCreateProgram();
-	loadFromFile(vertexShaderFilename, fragmentShaderFilename);
 }
 
 bool Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)

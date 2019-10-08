@@ -6,20 +6,17 @@ namespace ph{
 Gate::Gate(const Texture& texture, const sf::Vector2f position, PhysicsEngine& physicsEngine, const bool isOpen)
 	:GameObject("gate")
 	,mSprite(texture, "gate")
-	,mShader()
 	,mCollisionBody(physicsEngine.createStaticBodyAndGetTheReference(sf::FloatRect(position.x, position.y + 6, 32, 10)))
 	,mPhysicsEngine(physicsEngine)
 	,mIsOpen(isOpen)
 {
 	setPosition(position);
-
-	mShader.loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
 void Gate::drawCurrent(sf::Transform transform)
 {
 	if(!mIsOpen)
-		Renderer::submit(mSprite, mShader, transform);
+		Renderer::submit(mSprite, transform);
 }
 
 void Gate::open()

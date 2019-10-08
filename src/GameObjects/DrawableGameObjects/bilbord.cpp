@@ -6,7 +6,6 @@ namespace ph {
 Bilbord::Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& lyingBilbordTexture, const bool isLying)
 	:GameObject("bilbord")
 	,mVertexArray()
-	,mShader()
 	,mStayingBilbordTexture(stayingBilbordTexture)
 	,mLyingBilbordTexture(lyingBilbordTexture)
 	,mIsLying(isLying)
@@ -15,14 +14,12 @@ Bilbord::Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& ly
 	auto ibo = IndexBufferHolder::getGlobalInstance().getRectangleIndexBuffer("rectangle");
 	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray.setIndexBuffer(ibo);
-
-	mShader.loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
 void Bilbord::drawCurrent(sf::Transform transform)
 {
 	mIsLying ? mLyingBilbordTexture.bind() : mStayingBilbordTexture.bind();
-	Renderer::submit(mVertexArray, mShader, transform);
+	Renderer::submit(mVertexArray, transform);
 }
 
 void Bilbord::fallOver()

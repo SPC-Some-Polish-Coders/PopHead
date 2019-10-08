@@ -19,8 +19,13 @@ void Renderer::init()
 	/*GLCheck( const GLubyte* openglVersionInfo = glGetString(GL_VERSION) );
 	std::cout << "OpenGL version: " << openglVersionInfo << std::endl;*/
 
+	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
+
+	// load default shader
+	mRendererData.mDefaultShader = std::make_unique<Shader>();
+	mRendererData.mDefaultShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -42,10 +47,20 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
 
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform)
+{
+	submit(vao, *mRendererData.mDefaultShader, transform);
+}
+
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform)
 {
 	sprite.mTexture.bind();
 	submit(sprite.mVertexArray, shader, transform);
+}
+
+void Renderer::submit(Sprite& sprite, const sf::Transform& transform)
+{
+	submit(sprite, *mRendererData.mDefaultShader, transform);
 }
 
 void Renderer::endScene()

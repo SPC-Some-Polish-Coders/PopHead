@@ -20,7 +20,6 @@ public:
 
 private:
 	Sprite mSprite;
-	Shader mShader;
 	const CollisionBody& mCollisionBody;
 	PhysicsEngine& mPhysicsEngine;
 	bool mIsOpen;

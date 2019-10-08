@@ -5,7 +5,6 @@ namespace ph {
 Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, ph::Texture& texture)
 	:GameObject("car")
 	,mVertexArray()
-	,mShader()
 	,mTexture(texture)
 	,mDirection(direction)
 	,mAcceleration(acceleration)
@@ -18,8 +17,6 @@ Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f d
 	auto ibo = IndexBufferHolder::getGlobalInstance().getRectangleIndexBuffer("rectangle");
 	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray.setIndexBuffer(ibo);
-
-	mShader.loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
 void Car::updateCurrent(const sf::Time delta)
@@ -42,7 +39,7 @@ void Car::updateCurrent(const sf::Time delta)
 void Car::drawCurrent(sf::Transform transform)
 {
 	mTexture.bind();
-	Renderer::submit(mVertexArray, mShader, transform);
+	Renderer::submit(mVertexArray, transform);
 }
 
 }

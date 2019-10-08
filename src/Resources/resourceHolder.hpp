@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderer/texture.hpp"
-#include "Renderer/shader.hpp"
+#include "Renderer/Shaders/shader.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <memory>
@@ -15,7 +15,7 @@ class ResourceHolder
 {
 public:
     bool load(const std::string& filePath);
-    auto get(const std::string& filePath) ->ResourceType&;
+    auto get(const std::string& filePath) -> ResourceType&;
     bool free(const std::string& filePath);
 
 private:

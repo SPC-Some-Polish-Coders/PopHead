@@ -30,7 +30,6 @@ auto ph::ResourceHolder<ResourceType>::get(const std::string& filePath) -> Resou
 		PH_LOG_ERROR("You try to get a resource that wasn't loaded: " + fullFilePath);
 		throw std::runtime_error("You try to get a resource that wasn't loaded: " + fullFilePath);
 	}
-	//PH_ASSERT_UNEXPECTED_SITUATION(found != mResources.end(), "You try to get a resource that wasn't loaded: " + fullFilePath);
 	return *found->second;
 }
 

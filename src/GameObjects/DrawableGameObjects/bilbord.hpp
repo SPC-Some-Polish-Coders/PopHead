@@ -16,7 +16,6 @@ public:
 
 private:
 	VertexArray mVertexArray;
-	Shader mShader;
 	const ph::Texture& mStayingBilbordTexture;
 	const ph::Texture& mLyingBilbordTexture;
 	bool mIsLying;

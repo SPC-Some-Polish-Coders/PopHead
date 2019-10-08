@@ -13,7 +13,6 @@ public:
 	void drawCurrent(sf::Transform) override;
 private:
 	Sprite mSprite;
-	Shader mShader;
 	inline static int serialNumber = 0;
 };
 

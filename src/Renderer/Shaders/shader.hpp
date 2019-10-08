@@ -13,9 +13,9 @@ class Shader
 {
 public:
 	Shader();
-	Shader(const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
 	bool loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
+	void loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
 
 	void bind() const;
 	void unbind() const;
@@ -33,8 +33,6 @@ public:
 
 private:
 	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;
-
-	void loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
 	int compileShaderAndGetId(const char* sourceCode, const unsigned shaderType);
 	void checkCompilationErrors(const unsigned shaderId, const unsigned shaderType);
 	void linkProgram(const int vertexShaderId, const int fragmentShaderId);
