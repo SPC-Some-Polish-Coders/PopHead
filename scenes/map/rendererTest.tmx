@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="6">
  <objectgroup id="2" name="gameObjects">
   <object id="1" type="Car" x="100.5" y="36.25">
    <properties>
@@ -8,11 +8,7 @@
    </properties>
    <point/>
   </object>
-  <object id="2" type="Car" x="52.394" y="150.576">
-   <properties>
-    <property name="acceleration" type="float" value="0"/>
-    <property name="slowingDown" type="float" value="0"/>
-   </properties>
+  <object id="2" type="Gate" x="86.644" y="39.3257">
    <point/>
   </object>
   <object id="3" type="Bilbord" x="130" y="40">
@@ -21,6 +17,16 @@
     <property name="isLying" type="bool" value="false"/>
     <property name="slowingDown" type="float" value="0"/>
    </properties>
+   <point/>
+  </object>
+  <object id="4" type="Car" x="157.5" y="107">
+   <properties>
+    <property name="acceleration" type="float" value="0"/>
+    <property name="slowingDown" type="float" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" type="Gate" x="59.894" y="127.326">
    <point/>
   </object>
  </objectgroup>

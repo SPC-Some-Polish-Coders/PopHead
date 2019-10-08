@@ -248,10 +248,10 @@ std::optional<std::string> TiledGameObjectsParser::getSceneFileName(const std::s
 
 void TiledGameObjectsParser::loadGate(const Xml& gateNode) const
 {
-	/*auto& texture = mGameData->getTextures().get("textures/others/gate.png");
+	auto& texture = mGameData->getTextures().get("textures/others/gate.png");
 	auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);
 	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-	lyingObjects->addChild(std::move(gate));*/
+	lyingObjects->addChild(std::move(gate));
 }
 
 void TiledGameObjectsParser::loadLever(const Xml& leverNode) const
