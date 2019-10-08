@@ -2,7 +2,6 @@
 
 #include "GameObjects/gameObject.hpp"
 #include "Renderer/renderer.hpp"
-#include <memory>
 
 namespace ph {
 

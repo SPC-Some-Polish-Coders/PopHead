@@ -410,11 +410,11 @@ void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
 
 void TiledGameObjectsParser::loadSpriteNode(const Xml& spriteNodeNode) const
 {
-	/*const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
+	const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
 	auto spriteNode = std::make_unique<SpriteNode>(mGameData->getTextures().get(texturePath));
 	spriteNode->setPosition(getPositionAttribute(spriteNodeNode));
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects->addChild(std::move(spriteNode));*/
+	standingObjects->addChild(std::move(spriteNode));
 }
 
 Xml TiledGameObjectsParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

@@ -1,18 +1,20 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph {
 
 class SpriteNode : public GameObject
 {
 public:
-	SpriteNode(const sf::Texture&);
+	SpriteNode(const Texture&);
 
 	void drawCurrent(sf::Transform) override;
-	sf::Sprite& getSprite() { return mSprite; }
 private:
-	sf::Sprite mSprite;
+	std::shared_ptr<VertexArray> mVertexArray;
+	std::shared_ptr<Shader> mShader;
+	const ph::Texture& mTexture;
 };
 
 }

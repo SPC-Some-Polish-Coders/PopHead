@@ -8,7 +8,10 @@
    </properties>
    <point/>
   </object>
-  <object id="2" type="Gate" x="86.644" y="39.3257">
+  <object id="2" type="SpriteNode" x="86.644" y="39.3257">
+   <properties>
+    <property name="texturePath" value="textures/others/medkit.png"/>
+   </properties>
    <point/>
   </object>
   <object id="3" type="Bilbord" x="130" y="40">
