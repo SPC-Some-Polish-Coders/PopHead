@@ -42,10 +42,10 @@ void Car::updateCurrent(const sf::Time delta)
 	move(mVelocity * mDirection * delta.asSeconds());
 }
 
-void Car::drawCurrent(const sf::Transform transform)
+void Car::drawCurrent(sf::Transform transform)
 {
 	mTexture.bind();
-	Renderer::submit(mVertexArray, mShader, sf::Transform::Identity /*transform*/);
+	Renderer::submit(mVertexArray, mShader, transform);
 }
 
 }

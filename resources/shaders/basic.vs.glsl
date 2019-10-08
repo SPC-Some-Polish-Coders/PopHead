@@ -10,6 +10,9 @@ uniform mat4 viewProjectionMatrix;
 
 void main()
 {
-	gl_Position = viewProjectionMatrix * modelMatrix * vec4(aPos, 0.0, 1.0);
+	mat4 newModelMatrx = modelMatrix;
+	newModelMatrx[3][0] /= 640;
+	newModelMatrx[3][1] /= 480;
+	gl_Position = viewProjectionMatrix * newModelMatrx * vec4(aPos.x, aPos.y, 0.0, 1.0);
 	texCoords = mTextureCoords;
 };

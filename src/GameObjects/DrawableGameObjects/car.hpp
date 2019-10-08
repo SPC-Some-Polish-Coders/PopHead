@@ -14,7 +14,7 @@ public:
 	Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, ph::Texture&);
 
 	void updateCurrent(const sf::Time delta) override;
-	void drawCurrent(const sf::Transform transform) override;
+	void drawCurrent(sf::Transform transform) override;
 
 	void setVelocity(float velocity) { mVelocity = velocity; }
 	float getVelocity() const { return mVelocity; }

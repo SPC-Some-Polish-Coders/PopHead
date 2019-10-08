@@ -21,10 +21,10 @@ Bilbord::Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& ly
 	mShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
-void Bilbord::drawCurrent(sf::Transform)
+void Bilbord::drawCurrent(sf::Transform transform)
 {
 	mIsLying ? mLyingBilbordTexture.bind() : mStayingBilbordTexture.bind();
-	Renderer::submit(mVertexArray, mShader, sf::Transform::Identity);
+	Renderer::submit(mVertexArray, mShader, transform);
 }
 
 void Bilbord::fallOver()

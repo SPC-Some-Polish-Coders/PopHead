@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <iostream>
 
 namespace ph {
 
@@ -74,6 +75,7 @@ void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shad
 	if(!success) {
 		glGetShaderInfoLog(shaderId, sizeof(infoLog), NULL, infoLog);
 		std::string type = shaderType == GL_VERTEX_SHADER ? "Vertex" : "Fragment";
+		std::cout << type + " shader compilation failed:\n" + infoLog << std::endl;
 		PH_EXIT_GAME(type + " shader compilation failed:\n" + infoLog);
 	}
 }
