@@ -15,8 +15,8 @@ public:
 	void fallOver();
 
 private:
-	std::shared_ptr<VertexArray> mVertexArray;
-	std::shared_ptr<Shader> mShader;
+	VertexArray mVertexArray;
+	Shader mShader;
 	const ph::Texture& mStayingBilbordTexture;
 	const ph::Texture& mLyingBilbordTexture;
 	bool mIsLying;

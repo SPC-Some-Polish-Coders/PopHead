@@ -19,9 +19,8 @@ public:
 	void close();
 
 private:
-	std::shared_ptr<VertexArray> mVertexArray;
-	std::shared_ptr<Shader> mShader;
-	const Texture& mTexture;
+	Sprite mSprite;
+	Shader mShader;
 	const CollisionBody& mCollisionBody;
 	PhysicsEngine& mPhysicsEngine;
 	bool mIsOpen;

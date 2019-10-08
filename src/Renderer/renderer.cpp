@@ -30,15 +30,22 @@ void Renderer::beginScene(Camera& camera)
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 }
 
-void Renderer::submit(std::shared_ptr<VertexArray>& vao, std::shared_ptr<Shader>& shader, const sf::Transform& transform)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform)
 {
-	vao->bind();
+	vao.bind();
 
-	shader->bind();
-	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
+	shader.bind();
+	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
 
+	// TODO: Make possible to draw when index buffer count is not 6
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+}
+
+void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform)
+{
+	sprite.mTexture.bind();
+	submit(sprite.mVertexArray, shader, transform);
 }
 
 void Renderer::endScene()

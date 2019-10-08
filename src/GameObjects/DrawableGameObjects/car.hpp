@@ -20,8 +20,8 @@ public:
 	void slowDown() { mShouldSlowDown = true; }
 
 private:
-	std::shared_ptr<VertexArray> mVertexArray;
-	std::shared_ptr<Shader> mShader;
+	VertexArray mVertexArray;
+	Shader mShader;
 	sf::Vector2f mDirection;
 	ph::Texture& mTexture;
 	float mVelocity;

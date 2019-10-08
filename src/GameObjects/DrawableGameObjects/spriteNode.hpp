@@ -12,9 +12,9 @@ public:
 
 	void drawCurrent(sf::Transform) override;
 private:
-	std::shared_ptr<VertexArray> mVertexArray;
-	std::shared_ptr<Shader> mShader;
-	const ph::Texture& mTexture;
+	Sprite mSprite;
+	Shader mShader;
+	inline static int serialNumber = 0;
 };
 
 }

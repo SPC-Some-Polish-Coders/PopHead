@@ -4,8 +4,8 @@ namespace ph {
 
 Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, ph::Texture& texture)
 	:GameObject("car")
-	,mVertexArray(std::make_shared<VertexArray>())
-	,mShader(std::make_shared<Shader>())
+	,mVertexArray()
+	,mShader()
 	,mTexture(texture)
 	,mDirection(direction)
 	,mAcceleration(acceleration)
@@ -16,10 +16,10 @@ Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f d
 {
 	auto vbo = VertexBufferHolder::getGlobalInstance().getRectangleVertexBuffer("car", texture.getWidth(), texture.getHeight());
 	auto ibo = IndexBufferHolder::getGlobalInstance().getRectangleIndexBuffer("rectangle");
-	mVertexArray->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
-	mVertexArray->setIndexBuffer(ibo);
+	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
+	mVertexArray.setIndexBuffer(ibo);
 
-	mShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
+	mShader.loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
 }
 
 void Car::updateCurrent(const sf::Time delta)
