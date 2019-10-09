@@ -6,6 +6,7 @@
 #include "camera.hpp"
 #include "sprite.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <Utilities/rect.hpp>
 #include <memory>
 
 namespace ph {
@@ -17,10 +18,10 @@ public:
 	
 	static void beginScene(Camera&);
 
-	static void submit(VertexArray& vao, Shader& shader, const sf::Transform& transform = sf::Transform::Identity);
-	static void submit(VertexArray& vao, const sf::Transform& transform = sf::Transform::Identity);
-	static void submit(Sprite&, Shader&, const sf::Transform& = sf::Transform::Identity);
-	static void submit(Sprite&, const sf::Transform& = sf::Transform::Identity);
+	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, sf::Vector2f size);
+	static void submit(VertexArray& vao, const sf::Transform&, sf::Vector2f size);
+	static void submit(Sprite&, Shader&, const sf::Transform&);
+	static void submit(Sprite&, const sf::Transform&);
 	
 	static void endScene();
 
@@ -29,8 +30,12 @@ public:
 	static void setClearColor(const sf::Color&);
 
 private:
+	static void isInsideScreen();
+
+private:
 	struct SceneData
 	{
+		const FloatRect mScreenBounds;
 		const float* mViewProjectionMatrix = nullptr;
 	};
 

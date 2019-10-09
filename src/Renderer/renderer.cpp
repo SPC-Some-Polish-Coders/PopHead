@@ -37,7 +37,7 @@ void Renderer::beginScene(Camera& camera)
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 }
 
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, sf::Vector2f size)
 {
 	vao.bind();
 
@@ -49,20 +49,25 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
 
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform)
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform, sf::Vector2f size)
 {
-	submit(vao, *mRendererData.mDefaultShader, transform);
+	submit(vao, *mRendererData.mDefaultShader, transform, size);
 }
 
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform)
 {
 	sprite.mTexture.bind();
-	submit(sprite.mVertexArray, shader, transform);
+	submit(sprite.mVertexArray, shader, transform, sprite.mSize);
 }
 
 void Renderer::submit(Sprite& sprite, const sf::Transform& transform)
 {
 	submit(sprite, *mRendererData.mDefaultShader, transform);
+}
+
+void Renderer::isInsideScreen()
+{
+
 }
 
 void Renderer::endScene()
