@@ -28,7 +28,8 @@ project "PopHead"
     
     includedirs{
         root_dir .. "src",
-        root_dir .. "vendor/SFML_2.5.1/include"
+        root_dir .. "vendor/SFML_2.5.1/include",
+        root_dir .. "vendor/entt-3.1.1/src"
     }
 
     libdirs{root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio"}
@@ -104,6 +105,7 @@ project "Tests"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
+        root_dir .. "vendor/entt-3.1.1/src",
         root_dir .. "vendor/catch2"
     }
 
