@@ -15,17 +15,17 @@ CrawlingNpc::CrawlingNpc(GameData* const gameData)
 
 void CrawlingNpc::updateCurrent(const sf::Time delta)
 {
-	if(!mIsDead) {
+	/*if(!mIsDead) {
 		move(sf::Vector2f(0, -1) * delta.asSeconds());
 		mAnimation.animate(mSprite, delta);
-	}
+	}*/
 }
 
 void CrawlingNpc::die()
 {
 	mIsDead = true;
 	mAnimation.changeState("dead");
-	mAnimation.animate(mSprite);
+	//mAnimation.animate(mSprite);
 }
 
 }

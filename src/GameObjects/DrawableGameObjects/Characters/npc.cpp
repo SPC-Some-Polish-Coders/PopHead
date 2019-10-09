@@ -43,16 +43,17 @@ namespace
 }
 
 Npc::Npc(GameData* gameData, const std::string& name)
-	:Character(gameData, name, animation, movementSpeed, hp, maxHp, posAndSize, mass, false)
+	:Character(gameData, name, gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"), 
+		animation, movementSpeed, hp, maxHp, posAndSize, mass, false)
 {
 	//getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
-	mAnimation.animate(mSprite);
+	//mAnimation.animate(mSprite);
 }
 
 void Npc::updateCurrent(sf::Time delta)
 {
 	setPosition(mCollisionBody.getFixedPosition());
-	mAnimation.animate(mSprite, delta);
+	//mAnimation.animate(mSprite, delta);
 }
 
 }

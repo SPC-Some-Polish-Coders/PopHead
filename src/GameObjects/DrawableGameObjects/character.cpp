@@ -9,26 +9,26 @@
 
 namespace ph {
 
-bool Character::mIsInAttackingMode = false;
-
-Character::Character(GameData* gameData, std::string name, Animation animation,
+Character::Character(GameData* gameData, std::string name, const Texture& texture, Animation animation,
 	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass, bool isAttackable)
 	:GameObject(name)
+	,mSprite(texture, "character" + std::to_string(mSerialNumber))
+	,mAnimation(animation)
 	,mGameData(gameData)
+	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mHp(Hp)
 	,mMaxHp(maxHp)
 	,mMovementSpeed(movementSpeed)
-	,mAnimation(animation)
-	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mIsAttackable(isAttackable)
 {
+	++mSerialNumber;
 	addChild(std::make_unique<Equipment>());
 	dynamic_cast<Equipment*>(getChild("Equipment"))->init();
 }
 
-void Character::drawCurrent(sf::Transform)
+void Character::drawCurrent(sf::Transform transform)
 {
-	//target.draw(mSprite, states);
+	Renderer::submit(mSprite, transform);
 }
 
 void Character::dropItems()
@@ -62,8 +62,7 @@ void Character::move(sf::Vector2f offset)
 
 auto Character::getSpriteCenter() -> sf::Vector2f
 {
-	sf::IntRect spriteRect = getSprite().getTextureRect();
-	return { spriteRect.height / 2.f, spriteRect.width / 2.f };
+	return { mSprite.mTexture.getHeight() / 2.f, mSprite.mTexture.getWidth() / 2.f };
 }
 
 sf::FloatRect Character::getGlobalBounds() const
@@ -74,7 +73,9 @@ sf::FloatRect Character::getGlobalBounds() const
 sf::FloatRect Character::getTextureBounds() const
 {
 	auto transform = getTransform();
-	return transform.transformRect(mSprite.getLocalBounds());
+	return transform.transformRect(sf::FloatRect(
+		0.f, 0.f, static_cast<float>(mSprite.mTexture.getWidth()), static_cast<float>(mSprite.mTexture.getHeight())
+	));
 }
 
 void Character::pushCharacter(const sf::Vector2f& pushVector)
@@ -128,10 +129,11 @@ void Character::drawBlood()
 
 void Character::setAnimationState(const std::string& stateName)
 {
-	if(mAnimation.getCurrentStateName() != stateName) {
+	// TODO: Make animation
+	/*if(mAnimation.getCurrentStateName() != stateName) {
 		mAnimation.changeState(stateName);
 		mAnimation.animate(mSprite);
-	}
+	}*/
 }
 
 }

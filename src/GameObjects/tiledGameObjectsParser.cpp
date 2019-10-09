@@ -148,7 +148,6 @@ void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 	npc->setHp(getProperty(npcNode, "hp").toInt());
 	npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
 	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
-	//npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(npc));
@@ -285,7 +284,7 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 {
-	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
+	/*const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
 	const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
 	const FloatRect cameraBounds(
 		cameraTopLeftCornerPosition.x, cameraTopLeftCornerPosition.y,
@@ -293,7 +292,7 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 	);
 	const sf::Vector2f cameraCenter = cameraBounds.getCenter();
 	
-	/*auto& camera = mGameData->getRenderer().getCamera();
+	auto& camera = mGameData->getRenderer().getCamera();
 	camera.setSize(cameraViewSize);
 	camera.setCenter(cameraCenter);*/
 }
@@ -303,7 +302,6 @@ void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
 	auto& sceneManager = mGameData->getSceneManager();
 
 	auto player = std::make_unique<Player>(mGameData);
-	//player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
 
 	sf::Vector2f playerPosition;
 	if (sceneManager.hasPlayerPosition())

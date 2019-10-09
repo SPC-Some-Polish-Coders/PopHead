@@ -61,14 +61,15 @@ namespace
 const sf::Time Player::meleeAttackInterval = sf::seconds(0.5f);
 
 Player::Player(GameData* gameData)
-	:Character(gameData, name, animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
+	:Character(gameData, name, gameData->getTextures().get("textures/characters/playerFullAnimation.png"), 
+		animation, movementSpeed, HP, maxHP, posAndSize, mass, false)
 	,mMotion()
 	,mLastMotion()
 	,mIsSlownDown(false)
 	,mPickRadius(10.f)
 	,mIsDead(false)
 {
-	mAnimation.animate(mSprite);
+	//mAnimation.animate(mSprite);
 	//addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
 
 	const float meleeWeaponDamage = 35.f;
@@ -271,16 +272,16 @@ void Player::updateAnimation(const sf::Time delta)
 		return;
 	}
 
-	mAnimation.animate(mSprite, delta);
+	//mAnimation.animate(mSprite, delta);
 }
 
 void Player::setAnimationState(const std::string& stateName)
 {
-	const std::string name = mAnimation.getCurrentStateName();
-	if (name != stateName) {
-		mAnimation.changeState(stateName);
-		mAnimation.animate(mSprite);
-	}
+	//const std::string name = mAnimation.getCurrentStateName();
+	//if (name != stateName) {
+	//	mAnimation.changeState(stateName);
+	//	mAnimation.animate(mSprite);
+	//}
 }
 
 void Player::shootingUpdate(const sf::Time delta)

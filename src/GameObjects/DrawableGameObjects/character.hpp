@@ -1,8 +1,10 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
-#include "Utilities/animation.hpp"
 #include "GameObjects/DrawableGameObjects/item.hpp"
+#include "Utilities/animation.hpp"
+#include "Renderer/renderer.hpp"
+#include <memory>
 
 namespace ph {
 
@@ -12,7 +14,7 @@ class GameData;
 class Character : public GameObject
 {
 public:
-	Character(GameData*, std::string name, Animation animation = Animation(),
+	Character(GameData*, std::string name, const Texture&, Animation animation = Animation(),
 		unsigned int mMovementSpeed = 50, int HP = 100, unsigned int maxHP = 100,
 		sf::FloatRect posAndSize = sf::FloatRect(0, 0, 0, 0), float mass = 50, bool isAttackable = false);
 
@@ -32,7 +34,6 @@ public:
 	void takeDamage(const unsigned damage);
 	void drawBlood();
 	void setAnimationState(const std::string& stateName);
-	auto getSprite() -> sf::Sprite& { return mSprite; }
 	auto getSpriteCenter() -> sf::Vector2f;
 	sf::FloatRect getGlobalBounds() const override;
 	sf::FloatRect getTextureBounds() const;
@@ -45,7 +46,7 @@ private:
 	void fixHp();
 
 protected:
-	sf::Sprite mSprite;
+	Sprite mSprite;
 	Animation mAnimation;
 	sf::Clock mTimeSinceLastTakenDamage;
 	GameData* const mGameData;
@@ -55,7 +56,8 @@ protected:
 	unsigned mMovementSpeed;
 	bool mIsAttackable;
 
-	static bool mIsInAttackingMode;
+	inline static bool mIsInAttackingMode = false;
+	inline static int mSerialNumber = 0;
 };
 
 }

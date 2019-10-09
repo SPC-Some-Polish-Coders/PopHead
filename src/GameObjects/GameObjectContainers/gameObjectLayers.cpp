@@ -23,7 +23,7 @@ void StandingGameObjectsLayer::updateCurrent(sf::Time delta)
 
 void StandingGameObjectsLayer::handleDyingCharaters()
 {
-	for(Character* dyingCharacter : mDyingCharacters) {
+	/*for(Character* dyingCharacter : mDyingCharacters) {
 		dyingCharacter->dropItems();
 		auto* lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
 		auto deadCharacter = std::make_unique<DeadCharacter>(dyingCharacter->getSprite());
@@ -31,7 +31,7 @@ void StandingGameObjectsLayer::handleDyingCharaters()
 		lyingObjectsLayer->addChild(std::move(deadCharacter));
 		removeChild(dyingCharacter);
 	}
-	mDyingCharacters.clear();
+	mDyingCharacters.clear();*/
 }
 
 LyingGameObjectsLayer::LyingGameObjectsLayer()
