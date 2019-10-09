@@ -54,6 +54,7 @@ namespace
 		{
 			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1
 		},
+		{SpriteSheetData::HUMAN_TEXTURE_WIDTH, SpriteSheetData::HUMAN_TEXTURE_HEIGHT},
 		sf::seconds(0.12f)
 	);
 }
@@ -69,7 +70,7 @@ Player::Player(GameData* gameData)
 	,mPickRadius(10.f)
 	,mIsDead(false)
 {
-	//mAnimation.animate(mSprite);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 	//addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
 
 	const float meleeWeaponDamage = 35.f;
@@ -167,28 +168,28 @@ void Player::setNumOfBullets(unsigned num)
 
 void Player::die()
 {
-	setAnimationState("dead");
-	auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
-	standingObjects->addCharacterToDie(this);
-	mGameData->getGui().showInterface("gameOverScreen");
-	mGameData->getAIManager().setIsPlayerOnScene(false);
-	mIsDead = true;
+	//setAnimationState("dead");
+	//auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
+	//standingObjects->addCharacterToDie(this);
+	//mGameData->getGui().showInterface("gameOverScreen");
+	//mGameData->getAIManager().setIsPlayerOnScene(false);
+	//mIsDead = true;
 }
 
 void Player::updateCounters() const
 {
-	auto gameplayCounters = mGameData->getGui().getInterface("gameplayCounters");
-	auto canvas = gameplayCounters->getWidget("canvas");
-	try {
-		auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
-		vitalityCounter->setString(std::to_string(mHp));
+	//auto gameplayCounters = mGameData->getGui().getInterface("gameplayCounters");
+	//auto canvas = gameplayCounters->getWidget("canvas");
+	//try {
+	//	auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
+	//	vitalityCounter->setString(std::to_string(mHp));
 
-		auto bulletCounter = dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"));
-		bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
-	}
-	catch(const std::exception& e) {
-		PH_LOG_ERROR("Setting values to gameplay counters failed! (" + std::string(e.what()) + ")");
-	}
+	//	auto bulletCounter = dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"));
+	//	bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
+	//}
+	//catch(const std::exception& e) {
+	//	PH_LOG_ERROR("Setting values to gameplay counters failed! (" + std::string(e.what()) + ")");
+	//}
 }
 
 void Player::updateMovement(const sf::Time delta)
@@ -267,27 +268,27 @@ void Player::updateAnimation(const sf::Time delta)
 			setAnimationState("down");
 	}
 	
-	if(!mMotion.isMoving()) {
+	/*if(!mMotion.isMoving()) {
 		mAnimation.goToFrontFrame();
 		return;
-	}
+	}*/
 
-	//mAnimation.animate(mSprite, delta);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
 }
 
 void Player::setAnimationState(const std::string& stateName)
 {
-	//const std::string name = mAnimation.getCurrentStateName();
-	//if (name != stateName) {
-	//	mAnimation.changeState(stateName);
-	//	mAnimation.animate(mSprite);
-	//}
+	const std::string name = mAnimation.getCurrentStateName();
+	if (name != stateName) {
+		mAnimation.changeState(stateName);
+		mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+	}
 }
 
 void Player::shootingUpdate(const sf::Time delta)
 {
-	auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-	gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
+	//auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+	//gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
 }
 
 PlayerMotion::PlayerMotion()

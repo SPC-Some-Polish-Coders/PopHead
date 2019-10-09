@@ -3,8 +3,10 @@ ph::Animation::Animation(
 	const std::array<std::string, SIZE>& 
 	sNames,
 	const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
+	const sf::Vector2i textureSize,
 	const sf::Time& delay)
-	:mDelay(delay)
+	:mTextureSize(textureSize)
+	,mDelay(delay)
 {
 	for (std::size_t i = 0; i < SIZE; ++i)
 		addState(statesNames[i], statesFrames[i]);
@@ -15,8 +17,10 @@ ph::Animation::Animation(
 	const std::array<std::string, SIZE> statesNames,
 	std::array<sf::IntRect, SIZE> statesFrames,
 	std::array<unsigned, SIZE> framesCounts,
+	const sf::Vector2i textureSize,
 	const sf::Time& delay)
-	:mDelay(delay)
+	:mTextureSize(textureSize)
+	,mDelay(delay)
 {
 	for (std::size_t i = 0; i < SIZE; ++i)
 		addState(statesNames[i], statesFrames[i], framesCounts[i]);

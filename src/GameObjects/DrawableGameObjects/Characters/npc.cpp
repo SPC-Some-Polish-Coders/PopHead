@@ -38,6 +38,7 @@ namespace
 		{
 			2, 2, 2, 2, 2, 2, 2, 1, 1, 1
 		},
+		{SpriteSheetData::NPC_TEXTURE_WIDTH, SpriteSheetData::NPC_TEXTURE_HEIGHT},
 		sf::seconds(0.30f)
 	);
 }

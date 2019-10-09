@@ -110,16 +110,16 @@ void Game::handleEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	/*mEfficiencyRegister->update();
+	//mEfficiencyRegister->update();
 
 	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(deltaTime);
-		mAIManager->update();
+		/*mAIManager->update();
 		mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);
-		mTerminal->update();
-	}*/
+		mTerminal->update();*/
+	}
 
 	static Camera camera;
 	

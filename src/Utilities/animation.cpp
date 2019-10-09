@@ -1,5 +1,8 @@
 #include "animation.hpp"
 #include "Logs/logs.hpp"
+#include "Renderer/Vertices/vertexBuffers.hpp"
+#include "GL/glew.h"
+#include <array>
 
 namespace ph {
 
@@ -38,26 +41,40 @@ void Animation::changeState(const std::string& stateName)
 	mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(sf::Sprite& sprite)
+void Animation::animate(const VertexBuffer& vbo)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-	sprite.setTextureRect(frame);
+	setTextureRect(vbo, frame);
 	if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 		mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(sf::Sprite& sprite, const sf::Time& deltaTime)
+void Animation::animate(const VertexBuffer& vbo, const sf::Time& deltaTime)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	mElapsedTime += deltaTime;
 	while (mElapsedTime >= mDelay) {
 		mElapsedTime -= mDelay;
 		const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-		sprite.setTextureRect(frame);
+		setTextureRect(vbo, frame);
 		if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 			mCurrentFrameIndex = 0;
 	}
+}
+
+void Animation::setTextureRect(const VertexBuffer& vbo, sf::IntRect r)
+{
+	// TODO: Fix error here
+	std::array<float, 16> vertices = {
+		// positions  texture coords
+		r.width , 0.f      , static_cast<float>((r.left + r.width) / (float)mTextureSize.x), static_cast<float>((mTextureSize.y - r.top) / (float)mTextureSize.y), // top right
+		r.width , r.height , static_cast<float>((r.left + r.width) / (float)mTextureSize.x), static_cast<float>((mTextureSize.y - r.top + r.width) / (float)mTextureSize.y), // bottom right
+		0.f     , r.height , static_cast<float>(r.left / (float)mTextureSize.y)            , static_cast<float>((mTextureSize.y - r.top) / (float)mTextureSize.y), // bottom left
+		0.f     , 0.f      , static_cast<float>(r.left / (float)mTextureSize.y)            , static_cast<float>((mTextureSize.y - r.top + r.width) / (float)mTextureSize.y)  // top left
+	};
+
+	setData(vbo, vertices.data(), vertices.size() * 16, GL_DYNAMIC_DRAW);
 }
 
 void Animation::goToFrontFrame()

@@ -7,6 +7,8 @@
 
 namespace ph {
 
+struct VertexBuffer;
+
 class Animation
 {
 public:
@@ -17,12 +19,14 @@ public:
 	template <std::size_t SIZE>
 	Animation(const std::array<std::string, SIZE>& statesNames,
 		const std::array<std::vector<sf::IntRect>, SIZE>& statesFrames,
+		const sf::Vector2i textureSize,
 		const sf::Time& delay = sf::seconds(0.1f));
 
 	template <std::size_t SIZE>
 	Animation(const std::array<std::string, SIZE> statesNames,
 		std::array<sf::IntRect, SIZE> statesFrames,
 		std::array<unsigned, SIZE> framesCounts,
+		const sf::Vector2i textureSize,
 		const sf::Time& delay = sf::seconds(0.1f));
 
 	void setDelay(const sf::Time& delay) { mDelay = delay; }
@@ -33,17 +37,21 @@ public:
 
 	void changeState(const std::string& stateName);
 
-	void animate(sf::Sprite& sprite);
+	void animate(const VertexBuffer&);
 
-	void animate(sf::Sprite& sprite, const sf::Time& deltaTime);
+	void animate(const VertexBuffer&, const sf::Time& deltaTime);
 
 	void goToFrontFrame();
 
 	std::string getCurrentStateName() const;
 
 private:
+	void setTextureRect(const VertexBuffer&, sf::IntRect textureRect);
+
+private:
 	std::map<std::string, std::vector<sf::IntRect>> mStates;
 	std::string mCurrentStateName;
+	sf::Vector2i mTextureSize;
 	sf::Time mDelay = sf::seconds(0.1f);
 	sf::Time mElapsedTime = sf::Time::Zero;
 	std::size_t mCurrentFrameIndex = 0;

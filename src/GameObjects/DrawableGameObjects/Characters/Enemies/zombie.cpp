@@ -49,6 +49,7 @@ namespace
 		{
 			4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1
 		},
+		{SpriteSheetData::HUMAN_TEXTURE_WIDTH, SpriteSheetData::HUMAN_TEXTURE_HEIGHT},
 		sf::seconds(0.10f)
 	};
 }
@@ -116,7 +117,7 @@ void Zombie::handlePlayerHit()
 
 void Zombie::move(sf::Time delta)
 {
-	setPosition(mCollisionBody.getFixedPosition());
+	/*setPosition(mCollisionBody.getFixedPosition());
 
 	if(mMovementPath.mPath.empty()) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mCollisionBody.getPosition());
@@ -134,7 +135,7 @@ void Zombie::move(sf::Time delta)
 		mIsInAttackingMode = true;
 
 	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
-	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);*/
 	//mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
