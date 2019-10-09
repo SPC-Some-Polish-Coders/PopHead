@@ -1,4 +1,5 @@
 #include "openglErrors.hpp"
+#include "GL/glew.h"
 
 namespace ph {
 namespace OpenGLErrors {

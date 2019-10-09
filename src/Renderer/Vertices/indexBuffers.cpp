@@ -1,17 +1,22 @@
 #include "indexBuffers.hpp"
 #include "Renderer/openglErrors.hpp"
 #include "Logs/logs.hpp"
+#include "GL/glew.h"
 #include <array>
 
 namespace ph {
 
-IndexBuffer createIndexBuffer(unsigned* indices, size_t arraySize)
+IndexBuffer createIndexBuffer()
 {
 	unsigned id;
 	GLCheck(glGenBuffers(1, &id));
-	GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id));
-	GLCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, arraySize, indices, GL_STATIC_DRAW));
 	return {id};
+}
+
+void setData(IndexBuffer ibo, unsigned* indices, size_t arraySize)
+{
+	GLCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo.mID));
+	GLCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, arraySize, indices, GL_STATIC_DRAW));
 }
 
 void deleteIndexBuffer(IndexBuffer ibo)
@@ -42,7 +47,8 @@ IndexBuffer IndexBufferHolder::getRectangleIndexBuffer(const std::string& name, 
 		0, 1, 3, // first triangle
 		1, 2, 3  // second triangle
 	};
-	IndexBuffer ibo = createIndexBuffer(indices.data(), indices.size() * sizeof(unsigned));
+	IndexBuffer ibo = createIndexBuffer();
+	setData(ibo, indices.data(), indices.size() * sizeof(unsigned));
 	mIndexBuffers.emplace_back(ibo);
 	mNames.emplace_back(name);
 	mReferenceCounters.emplace_back(1);

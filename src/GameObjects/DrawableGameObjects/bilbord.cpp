@@ -10,7 +10,7 @@ Bilbord::Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& ly
 	,mLyingBilbordTexture(lyingBilbordTexture)
 	,mIsLying(isLying)
 {
-	auto vbo = VertexBufferHolder::getGlobalInstance().getRectangleVertexBuffer("bilbord", stayingBilbordTexture.getWidth(), stayingBilbordTexture.getHeight());
+	auto vbo = VertexBufferHolder::getGlobalInstance().getRectangleVertexBuffer("bilbord", stayingBilbordTexture.getWidth(), stayingBilbordTexture.getHeight(), false);
 	auto ibo = IndexBufferHolder::getGlobalInstance().getRectangleIndexBuffer("rectangle");
 	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray.setIndexBuffer(ibo);

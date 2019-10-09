@@ -10,7 +10,8 @@ struct IndexBuffer
 	unsigned mID;
 };
 
-IndexBuffer createIndexBuffer(unsigned* indices, size_t arraySize);
+IndexBuffer createIndexBuffer();
+void setData(IndexBuffer, unsigned* indices, size_t arraySize);
 void deleteIndexBuffer(IndexBuffer);
 void bind(IndexBuffer);
 

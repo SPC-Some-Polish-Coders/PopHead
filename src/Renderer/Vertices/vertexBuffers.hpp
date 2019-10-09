@@ -4,13 +4,14 @@
 #include <string>
 
 namespace ph { 
- 
+
 struct VertexBuffer
 {
 	unsigned mID;
 };
 
-VertexBuffer createVertexBuffer(float* vertices, size_t arraySize);
+VertexBuffer createVertexBuffer();
+void setData(VertexBuffer, float* vertices, size_t arraySize, unsigned dataUsage);
 void deleteVertexBuffer(VertexBuffer);
 void bind(VertexBuffer);
 
@@ -23,7 +24,7 @@ public:
 		return globalVertexBufferHolder;
 	}
 
-	VertexBuffer getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool thisBufferMightAlreadyExist = true);
+	VertexBuffer getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist = true);
 	void deleteBuffer(VertexBuffer);
 
 private:

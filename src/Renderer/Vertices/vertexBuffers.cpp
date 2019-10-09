@@ -1,17 +1,22 @@
 #include "vertexBuffers.hpp"
 #include "Renderer/openglErrors.hpp"
 #include "Logs/logs.hpp"
+#include "GL/glew.h"
 #include <array>
 
 namespace ph { 
 
-VertexBuffer createVertexBuffer(float* vertices, size_t arraySize)
+VertexBuffer createVertexBuffer()
 {
 	unsigned id;
 	GLCheck(glGenBuffers(1, &id));
-	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, id));
-	GLCheck(glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, GL_STATIC_DRAW));
 	return {id};
+}
+
+void setData(VertexBuffer vbo, float* vertices, size_t arraySize, unsigned dataUsage)
+{
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, vbo.mID) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, dataUsage) );
 }
 
 void deleteVertexBuffer(VertexBuffer vbo)
@@ -24,7 +29,7 @@ void bind(VertexBuffer vbo)
 	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, vbo.mID));
 }
 
-VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool thisBufferMightAlreadyExist)
+VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist)
 {
 	// look for existing buffer
 	if(thisBufferMightAlreadyExist)
@@ -49,7 +54,8 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 		0.f, 0.f , 0.0f, 1.0f  // top left 
 	};
 
-	VertexBuffer vbo = createVertexBuffer(vertices.data(), vertices.size() * sizeof(float));
+	VertexBuffer vbo = createVertexBuffer();
+	setData(vbo, vertices.data(), vertices.size() * sizeof(float), isAnimated ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	mVertexBuffers.emplace_back(vbo);
 	mNames.emplace_back(name);
 	mReferenceCounters.emplace_back(1);
