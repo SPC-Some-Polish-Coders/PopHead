@@ -13,7 +13,7 @@ Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f d
 	,mShouldSpeedUp(false)
 	,mShouldSlowDown(false)
 {
-	auto vbo = VertexBufferHolder::getGlobalInstance().getRectangleVertexBuffer("car", texture.getWidth(), texture.getHeight(), false);
+	auto vbo = VertexBufferHolder::getInstance().getRectangleVertexBuffer("car", texture.getWidth(), texture.getHeight(), false);
 	auto ibo = IndexBufferHolder::getInstance().getRectangleIndexBuffer();
 	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray.setIndexBuffer(ibo);

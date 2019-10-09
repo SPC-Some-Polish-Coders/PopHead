@@ -17,12 +17,18 @@ void bind(VertexBuffer);
 
 class VertexBufferHolder
 {
+private:
+	VertexBufferHolder();
+
 public:
-	static VertexBufferHolder& getGlobalInstance()
+	static VertexBufferHolder& getInstance()
 	{
 		static VertexBufferHolder globalVertexBufferHolder;
 		return globalVertexBufferHolder;
 	}
+
+	VertexBufferHolder(VertexBufferHolder&) = delete;
+	void operator=(VertexBufferHolder const&) = delete;
 
 	VertexBuffer getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist = true);
 	void deleteBuffer(VertexBuffer);

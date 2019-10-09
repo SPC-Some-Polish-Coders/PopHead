@@ -14,7 +14,7 @@ VertexArray::VertexArray()
 VertexArray::~VertexArray()
 {
 	GLCheck( glDeleteVertexArrays(1, &mID) );
-	VertexBufferHolder::getGlobalInstance().deleteBuffer(mVertexBuffer);
+	VertexBufferHolder::getInstance().deleteBuffer(mVertexBuffer);
 	IndexBufferHolder::getInstance().deleteIndexBuffer(mIndexBuffer);
 }
 

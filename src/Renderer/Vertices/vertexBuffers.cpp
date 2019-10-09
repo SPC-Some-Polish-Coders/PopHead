@@ -29,6 +29,11 @@ void bind(VertexBuffer vbo)
 	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, vbo.mID));
 }
 
+VertexBufferHolder::VertexBufferHolder()
+{
+
+}
+
 VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist)
 {
 	// look for existing buffer
