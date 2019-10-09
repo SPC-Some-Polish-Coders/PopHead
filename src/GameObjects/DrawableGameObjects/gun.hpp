@@ -59,6 +59,8 @@ private:
 private:
 	Sprite mGunSprite;
 	std::array<sf::Vertex, 2> mShotGraphics;
+	sf::Vector2f mGunPosition;
+	sf::Vector2f mGunScale;
 	sf::Clock mTimeFromTrigerPull;
 	sf::Vector2f mCurrentPlayerDirection;
 	SoundPlayer& mSoundPlayer;
