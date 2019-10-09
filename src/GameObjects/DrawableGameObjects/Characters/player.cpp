@@ -360,7 +360,7 @@ void Player::cameraMovement(sf::Time delta) const
 {
 	constexpr float cameraMotionSpeed = 4.f;
 	const FloatRect characterBounds = GameObject::getGlobalBounds();
-	/*mGameData->getRenderer().getCamera().move(characterBounds.getCenter(), cameraMotionSpeed * delta.asSeconds());*/
+	mPlayerCamera.setCenter(characterBounds.getCenter()/*, cameraMotionSpeed * delta.asSeconds()*/);
 }
 
 void Player::updateListenerPosition() const

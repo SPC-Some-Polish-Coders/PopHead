@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Events/event.hpp"
+#include "Renderer/camera.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <list>

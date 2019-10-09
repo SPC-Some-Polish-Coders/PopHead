@@ -6,6 +6,7 @@
 #include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -121,32 +122,14 @@ void Game::update(sf::Time deltaTime)
 		mTerminal->update();*/
 	}
 
-	static Camera camera;
-	
 	// Actual game loop
 	Renderer::setClearColor({10, 10, 10, 255});
 
-	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)))
-		camera.rotate(-1.f);
-	if((sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)))
-		camera.rotate(1.f);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		camera.move({-2.f, 0.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		camera.move({2.f, 0.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		camera.move({0.f, -2.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		camera.move({0.f, 2.f});
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		camera.zoom(1.04f);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		camera.zoom(0.96f);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5))
-		camera.setSize({640, 360});
+	auto& camera = Player::getCamera();
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		camera.zoom(1.04);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+		camera.zoom(0.96);
 
 	Renderer::beginScene(camera);
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);

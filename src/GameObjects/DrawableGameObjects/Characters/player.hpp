@@ -33,6 +33,8 @@ public:
 	unsigned getNumOfBullets() const;
 	void setNumOfBullets(unsigned num);
 
+	static Camera& getCamera() { return mPlayerCamera; }
+
 private:
 	void die();
 	void updateCounters() const;
@@ -48,6 +50,7 @@ private:
 
 private:
 	static const sf::Time meleeAttackInterval;
+	inline static Camera mPlayerCamera;
 	sf::Clock mTimeFromLastMeleeAttack;
 	PlayerMotion mMotion;
 	PlayerMotion mLastMotion;
