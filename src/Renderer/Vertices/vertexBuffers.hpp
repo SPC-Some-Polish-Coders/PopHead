@@ -1,9 +1,10 @@
 #pragma once 
  
+#include <Utilities/rect.hpp>
 #include <vector>
 #include <string>
 
-namespace ph { 
+namespace ph {
 
 struct VertexBuffer
 {
@@ -12,6 +13,7 @@ struct VertexBuffer
 
 VertexBuffer createVertexBuffer();
 void setData(VertexBuffer, float* vertices, size_t arraySize, unsigned dataUsage);
+void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2i textureSize);
 void deleteVertexBuffer(VertexBuffer);
 void bind(VertexBuffer);
 

@@ -1,6 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <string>
 #include <vector>
 #include <map>
@@ -44,9 +46,6 @@ public:
 	void goToFrontFrame();
 
 	std::string getCurrentStateName() const;
-
-private:
-	void setTextureRect(const VertexBuffer&, sf::IntRect textureRect);
 
 private:
 	std::map<std::string, std::vector<sf::IntRect>> mStates;

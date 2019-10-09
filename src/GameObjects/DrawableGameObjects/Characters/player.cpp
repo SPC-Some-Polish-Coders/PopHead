@@ -71,7 +71,7 @@ Player::Player(GameData* gameData)
 	,mIsDead(false)
 {
 	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
-	//addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
+	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
 
 	const float meleeWeaponDamage = 35.f;
 	const float range = 27.f;

@@ -76,7 +76,7 @@ void Renderer::submit(Sprite& sprite, const sf::Transform& transform)
 
 bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)
 {
-	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], size.x, size.y);
+	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], static_cast<float>(size.x), static_cast<float>(size.y));
 	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectRect);
 }
 

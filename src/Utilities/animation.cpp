@@ -45,7 +45,7 @@ void Animation::animate(const VertexBuffer& vbo)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-	setTextureRect(vbo, frame);
+	setTextureRect(vbo, frame, mTextureSize);
 	if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 		mCurrentFrameIndex = 0;
 }
@@ -57,24 +57,10 @@ void Animation::animate(const VertexBuffer& vbo, const sf::Time& deltaTime)
 	while (mElapsedTime >= mDelay) {
 		mElapsedTime -= mDelay;
 		const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-		setTextureRect(vbo, frame);
+		setTextureRect(vbo, frame, mTextureSize);
 		if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 			mCurrentFrameIndex = 0;
 	}
-}
-
-void Animation::setTextureRect(const VertexBuffer& vbo, sf::IntRect r)
-{
-	// TODO: Fix error here
-	std::array<float, 16> vertices = {
-		// positions                                       t  e  x  t  u  r  e       c  o  o  r  d  s
-		r.width , 0.f      , (float)(r.left + r.width) / (float)mTextureSize.x, (float)(mTextureSize.y - r.top) / (float)mTextureSize.y, // top right
-		r.width , r.height , (float)(r.left + r.width) / (float)mTextureSize.x, (float)(mTextureSize.y - r.top - r.width) / (float)mTextureSize.y, // bottom right
-		0.f     , r.height , (float) r.left / (float)mTextureSize.x           , (float)(mTextureSize.y - r.top - r.width) / (float)mTextureSize.y, // bottom left
-		0.f     , 0.f      , (float) r.left / (float)mTextureSize.x           , (float)(mTextureSize.y - r.top) / (float)mTextureSize.y  // top left
-	};
-
-	setData(vbo, vertices.data(), vertices.size() * 16, GL_DYNAMIC_DRAW);
 }
 
 void Animation::goToFrontFrame()

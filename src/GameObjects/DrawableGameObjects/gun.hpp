@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
+#include "Renderer/renderer.hpp"
 #include "Utilities/rect.hpp"
 #include <array>
 
@@ -40,7 +41,7 @@ private:
 class Gun : public GameObject
 {
 public:
-	Gun(SoundPlayer&, const sf::Texture&, const float damage);
+	Gun(SoundPlayer&, const Texture&, const float damage);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::Transform) override;
@@ -56,7 +57,7 @@ private:
 	sf::Vector2f getRightHandPosition();
 
 private:
-	sf::Sprite mGunSprite;
+	Sprite mGunSprite;
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Clock mTimeFromTrigerPull;
 	sf::Vector2f mCurrentPlayerDirection;
