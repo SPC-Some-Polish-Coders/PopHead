@@ -17,21 +17,31 @@ void bind(IndexBuffer);
 
 class IndexBufferHolder
 {
+private:
+	IndexBufferHolder();
+
 public:
-	static IndexBufferHolder& getGlobalInstance()
+	static IndexBufferHolder& getInstance()
 	{
 		static IndexBufferHolder globalIndexBufferHolder;
 		return globalIndexBufferHolder;
 	}
 
-	IndexBuffer getRectangleIndexBuffer(const std::string& name, bool thisBufferMightAlreadyExist = true);
-	void deleteBuffer(IndexBuffer);
+	IndexBufferHolder(IndexBufferHolder&) = delete;
+	void operator=(IndexBufferHolder const&) = delete;
+
+	IndexBuffer addAndGetIndexBuffer(const std::string& name, unsigned* data, size_t arraySize);
+	IndexBuffer getIndexBuffer(const std::string& name);
+	void deleteIndexBuffer(IndexBuffer);
+
+	IndexBuffer getRectangleIndexBuffer() const { return mRectangleIndexBuffer; }
 
 private:
 	std::vector<std::string> mNames;
 	std::vector<int> mReferenceCounters;
-	std::vector<IndexBuffer > mIndexBuffers;
+	std::vector<IndexBuffer> mIndexBuffers;
 
+	IndexBuffer mRectangleIndexBuffer;
 };
 
 }

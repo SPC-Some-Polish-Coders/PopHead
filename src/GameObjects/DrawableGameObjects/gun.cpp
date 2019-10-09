@@ -111,13 +111,13 @@ Gun::Gun(SoundPlayer& soundPlayer, const sf::Texture& texture, const float damag
 
 void Gun::shoot()
 {
-	mSoundPlayer.playAmbientSound("sounds/pistolShot.ogg");
-	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
-	const sf::Vector2f rightHandPosition = getRightHandPosition();
-	const sf::Vector2f rightHandGlobalPosition(rightHandPosition + getWorldPosition());
-	const Bullet bullet(*standingObjects, mCurrentPlayerDirection, rightHandGlobalPosition, 50, 250);
-	initializeShotGraphics(bullet, rightHandPosition);
-	mTimeFromTrigerPull.restart();
+	//mSoundPlayer.playAmbientSound("sounds/pistolShot.ogg");
+	//auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
+	//const sf::Vector2f rightHandPosition = getRightHandPosition();
+	//const sf::Vector2f rightHandGlobalPosition(rightHandPosition + getWorldPosition());
+	//const Bullet bullet(*standingObjects, mCurrentPlayerDirection, rightHandGlobalPosition, 50, 250);
+	//initializeShotGraphics(bullet, rightHandPosition);
+	//mTimeFromTrigerPull.restart();
 }
 
 void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightHandPosition)
