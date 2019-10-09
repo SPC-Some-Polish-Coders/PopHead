@@ -41,6 +41,7 @@ private:
 
 	struct RendererData
 	{
+		unsigned mNumberOfDrawCalls = 0;
 		Shader* mDefaultShader;
 	};
 

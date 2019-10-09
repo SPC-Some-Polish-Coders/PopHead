@@ -47,6 +47,8 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 
 	// TODO: Make possible to draw when index buffer count is not 6
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	
+	++mRendererData.mNumberOfDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, sf::Vector2i size)
@@ -72,6 +74,8 @@ void Renderer::isInsideScreen()
 
 void Renderer::endScene()
 {
+	std::cout << "DCPF: " << mRendererData.mNumberOfDrawCalls << std::endl;
+	mRendererData.mNumberOfDrawCalls = 0;
 }
 
 void Renderer::onWindowResize(unsigned width, unsigned height)
