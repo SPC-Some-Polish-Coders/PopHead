@@ -67,11 +67,11 @@ void Animation::setTextureRect(const VertexBuffer& vbo, sf::IntRect r)
 {
 	// TODO: Fix error here
 	std::array<float, 16> vertices = {
-		// positions  texture coords
-		r.width , 0.f      , static_cast<float>((r.left + r.width) / (float)mTextureSize.x), static_cast<float>((mTextureSize.y - r.top) / (float)mTextureSize.y), // top right
-		r.width , r.height , static_cast<float>((r.left + r.width) / (float)mTextureSize.x), static_cast<float>((mTextureSize.y - r.top + r.width) / (float)mTextureSize.y), // bottom right
-		0.f     , r.height , static_cast<float>(r.left / (float)mTextureSize.y)            , static_cast<float>((mTextureSize.y - r.top) / (float)mTextureSize.y), // bottom left
-		0.f     , 0.f      , static_cast<float>(r.left / (float)mTextureSize.y)            , static_cast<float>((mTextureSize.y - r.top + r.width) / (float)mTextureSize.y)  // top left
+		// positions                                       t  e  x  t  u  r  e       c  o  o  r  d  s
+		r.width , 0.f      , (float)(r.left + r.width) / (float)mTextureSize.x, (float)(mTextureSize.y - r.top) / (float)mTextureSize.y, // top right
+		r.width , r.height , (float)(r.left + r.width) / (float)mTextureSize.x, (float)(mTextureSize.y - r.top - r.width) / (float)mTextureSize.y, // bottom right
+		0.f     , r.height , (float) r.left / (float)mTextureSize.x           , (float)(mTextureSize.y - r.top - r.width) / (float)mTextureSize.y, // bottom left
+		0.f     , 0.f      , (float) r.left / (float)mTextureSize.x           , (float)(mTextureSize.y - r.top) / (float)mTextureSize.y  // top left
 	};
 
 	setData(vbo, vertices.data(), vertices.size() * 16, GL_DYNAMIC_DRAW);

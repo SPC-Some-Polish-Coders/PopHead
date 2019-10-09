@@ -268,10 +268,10 @@ void Player::updateAnimation(const sf::Time delta)
 			setAnimationState("down");
 	}
 	
-	/*if(!mMotion.isMoving()) {
+	if(!mMotion.isMoving()) {
 		mAnimation.goToFrontFrame();
 		return;
-	}*/
+	}
 
 	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
 }
