@@ -18,8 +18,8 @@ public:
 	
 	static void beginScene(Camera&);
 
-	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, sf::Vector2i size);
-	static void submit(VertexArray& vao, const sf::Transform&, sf::Vector2i size);
+	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size);
+	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size);
 	static void submit(Sprite&, Shader&, const sf::Transform&);
 	static void submit(Sprite&, const sf::Transform&);
 	
@@ -30,12 +30,12 @@ public:
 	static void setClearColor(const sf::Color&);
 
 private:
-	static void isInsideScreen();
+	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
 
 private:
 	struct SceneData
 	{
-		const FloatRect mScreenBounds;
+		FloatRect mScreenBounds;
 		const float* mViewProjectionMatrix = nullptr;
 	};
 

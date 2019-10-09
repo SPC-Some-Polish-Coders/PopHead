@@ -35,10 +35,17 @@ void Renderer::beginScene(Camera& camera)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
+	
+	const sf::Vector2f center = camera.getCenter();
+	const sf::Vector2f size = camera.getSize();
+	mSceneData.mScreenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, sf::Vector2i size)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size)
 {
+	if(!isInsideScreen(transform, size))
+		return;
+
 	vao.bind();
 
 	shader.bind();
@@ -51,7 +58,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	++mRendererData.mNumberOfDrawCalls;
 }
 
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform, sf::Vector2i size)
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size)
 {
 	submit(vao, *mRendererData.mDefaultShader, transform, size);
 }
@@ -67,9 +74,10 @@ void Renderer::submit(Sprite& sprite, const sf::Transform& transform)
 	submit(sprite, *mRendererData.mDefaultShader, transform);
 }
 
-void Renderer::isInsideScreen()
+bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)
 {
-
+	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], size.x, size.y);
+	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectRect);
 }
 
 void Renderer::endScene()
