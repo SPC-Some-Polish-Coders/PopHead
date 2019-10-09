@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include "Utilities/math.hpp"
 #include <cmath>
 
 namespace ph {
@@ -31,6 +32,12 @@ void Camera::setCenter(const sf::Vector2f center)
 void Camera::move(const sf::Vector2f offset)
 {
 	mCenter += offset;
+	mViewProjectionMatrixNeedsUpdate = true;
+}
+
+void Camera::setCenterSmoothly(sf::Vector2f center, float speed)
+{
+	mCenter = Math::lerp(mCenter, center, speed);
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
