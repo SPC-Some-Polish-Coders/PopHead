@@ -22,7 +22,7 @@ public:
 private:
 	VertexArray mVertexArray;
 	Shader* mShader;
-	const sf::Vector2f mSize;
+	const sf::Vector2i mSize;
 	sf::Vector2f mDirection;
 	ph::Texture& mTexture;
 	float mVelocity;

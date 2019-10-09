@@ -19,7 +19,7 @@ Bilbord::Bilbord(const ph::Texture& stayingBilbordTexture, const ph::Texture& ly
 void Bilbord::drawCurrent(sf::Transform transform)
 {
 	mIsLying ? mLyingBilbordTexture.bind() : mStayingBilbordTexture.bind();
-	Renderer::submit(mVertexArray, transform, static_cast<sf::Vector2f>(mStayingBilbordTexture.getSize()));
+	Renderer::submit(mVertexArray, transform, mStayingBilbordTexture.getSize());
 }
 
 void Bilbord::fallOver()

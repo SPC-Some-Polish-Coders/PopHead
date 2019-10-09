@@ -37,7 +37,7 @@ void Renderer::beginScene(Camera& camera)
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 }
 
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, sf::Vector2f size)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, sf::Vector2i size)
 {
 	vao.bind();
 
@@ -49,7 +49,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
 
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform, sf::Vector2f size)
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform, sf::Vector2i size)
 {
 	submit(vao, *mRendererData.mDefaultShader, transform, size);
 }

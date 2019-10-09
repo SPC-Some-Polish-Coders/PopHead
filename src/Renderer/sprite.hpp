@@ -11,7 +11,7 @@ struct Sprite
 {
 	Sprite(const Texture&, const std::string& name);
 
-	const sf::Vector2f mSize;
+	const sf::Vector2i mSize;
 	VertexArray mVertexArray;
 	const Texture& mTexture;
 };
