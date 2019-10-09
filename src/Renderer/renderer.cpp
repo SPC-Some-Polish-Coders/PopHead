@@ -23,9 +23,11 @@ void Renderer::init()
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 
-	// load default shader
-	mRendererData.mDefaultShader = std::make_unique<Shader>();
-	mRendererData.mDefaultShader->loadFromFile("resources/shaders/basic.vs.glsl", "resources/shaders/basic.fs.glsl");
+	// load default shaders
+	auto& sl = ShaderLibrary::getInstance();
+	sl.loadFromFile("perfectPixel", "resources/shaders/staticPixelPerfect.vs.glsl", "resources/shaders/texture.fs.glsl");
+	sl.loadFromFile("dynamic", "resources/shaders/default.vs.glsl", "resources/shaders/texture.fs.glsl");
+	mRendererData.mDefaultShader = sl.get("perfectPixel");
 }
 
 void Renderer::beginScene(Camera& camera)

@@ -24,11 +24,13 @@ Character::Character(GameData* gameData, std::string name, const Texture& textur
 	++mSerialNumber;
 	addChild(std::make_unique<Equipment>());
 	dynamic_cast<Equipment*>(getChild("Equipment"))->init();
+	
+	mShader = ShaderLibrary::getInstance().get("dynamic");
 }
 
 void Character::drawCurrent(sf::Transform transform)
 {
-	Renderer::submit(mSprite, transform);
+	Renderer::submit(mSprite, *mShader, transform);
 }
 
 void Character::dropItems()

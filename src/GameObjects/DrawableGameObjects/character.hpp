@@ -58,6 +58,7 @@ protected:
 
 	inline static bool mIsInAttackingMode = false;
 	inline static int mSerialNumber = 0;
+	inline static Shader* mShader = nullptr;
 };
 
 }

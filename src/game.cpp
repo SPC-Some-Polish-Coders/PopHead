@@ -127,9 +127,9 @@ void Game::update(sf::Time deltaTime)
 
 	auto& camera = Player::getCamera();
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-		camera.zoom(1.04);
+		camera.zoom(1.04f);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-		camera.zoom(0.96);
+		camera.zoom(0.96f);
 
 	Renderer::beginScene(camera);
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);

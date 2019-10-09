@@ -36,7 +36,7 @@ private:
 
 	struct RendererData
 	{
-		std::unique_ptr<Shader> mDefaultShader;
+		Shader* mDefaultShader;
 	};
 
 	inline static SceneData mSceneData;

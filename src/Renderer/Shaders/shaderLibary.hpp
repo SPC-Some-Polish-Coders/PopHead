@@ -23,7 +23,7 @@ public:
 
 	void loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
 	void loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode);
-	Shader& get(const std::string& name);
+	Shader* get(const std::string& name);
 
 private:
 	std::map<std::string, Shader> mShaders;
