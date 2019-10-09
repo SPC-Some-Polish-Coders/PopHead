@@ -38,6 +38,11 @@ IndexBufferHolder::IndexBufferHolder()
 	};
 	mRectangleIndexBuffer = createIndexBuffer();
 	setData(mRectangleIndexBuffer, rectangleIndices.data(), rectangleIndices.size() * sizeof(unsigned));
+
+	// allocate memory
+	mNames.reserve(5);
+	mReferenceCounters.reserve(5);
+	mIndexBuffers.reserve(5);
 }
 
 IndexBuffer IndexBufferHolder::addAndGetIndexBuffer(const std::string& name, unsigned* data, size_t arraySize)

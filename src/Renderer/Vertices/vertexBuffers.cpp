@@ -31,7 +31,10 @@ void bind(VertexBuffer vbo)
 
 VertexBufferHolder::VertexBufferHolder()
 {
-
+	// allocate memory
+	mNames.reserve(100);
+	mReferenceCounters.reserve(100);
+	mVertexBuffers.reserve(100);
 }
 
 VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist)
