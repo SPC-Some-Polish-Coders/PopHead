@@ -24,6 +24,7 @@ private:
 	void loadLayerObjects() const;
 	void loadContainerObjects() const;
 	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
+	void loadSlowZombie(const Xml& SlowZombieNode) const;
 	void loadZombie(const Xml& zombieNode) const;
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;
