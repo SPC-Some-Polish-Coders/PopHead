@@ -41,7 +41,7 @@ void Renderer::beginScene(Camera& camera)
 	mSceneData.mScreenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawMode drawMode)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
 	if(!isInsideScreen(transform, size))
 		return;
@@ -57,18 +57,18 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	++mRendererData.mNumberOfDrawCalls;
 }
 
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawMode drawMode)
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
 	submit(vao, *mRendererData.mDefaultShader, transform, size, drawMode);
 }
 
-void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawMode drawMode)
+void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
 {
 	sprite.mTexture.bind();
 	submit(sprite.mVertexArray, shader, transform, sprite.mSize, drawMode);
 }
 
-void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawMode drawMode)
+void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
 {
 	submit(sprite, *mRendererData.mDefaultShader, transform, drawMode);
 }

@@ -51,6 +51,7 @@ public:
 
 private:
 	void initializeShotGraphics(const Bullet&, const sf::Vector2f rightHandPosition);
+	void updateShotGraphicsVertexBuffer(const Bullet& bullet);
 	void updateGunTextureRect(const int offsetX = 0);
 	void updateGunSpriteFlipping();
 	void updateGunSpritePosition();
@@ -58,10 +59,11 @@ private:
 
 private:
 	Sprite mGunSprite;
-	std::array<sf::Vertex, 2> mShotGraphics;
+	VertexArray mShotGraphicsVertexArray;
+	Shader mGunShotShader;
 	sf::Vector2f mGunPosition;
 	sf::Vector2f mGunScale;
-	Shader* mShader;
+	Shader* mGunShader;
 	sf::Clock mTimeFromTrigerPull;
 	sf::Vector2f mCurrentPlayerDirection;
 	SoundPlayer& mSoundPlayer;

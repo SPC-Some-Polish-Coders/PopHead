@@ -2,7 +2,7 @@
 
 namespace ph {
 
-enum class DrawMode
+enum class DrawPrimitive
 {
 	Points,
 	LineStrip,
@@ -17,6 +17,6 @@ enum class DrawMode
 	TrianglesAdjacency
 };
 
-unsigned toGLEnum(DrawMode);
+unsigned toGLEnum(DrawPrimitive);
 
 }

@@ -3,7 +3,9 @@
 #include "Logs/logs.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Utilities/rect.hpp"
+#include <GL/glew.h>
 #include <cmath>
+#include <array>
 
 namespace ph {
 
@@ -101,13 +103,15 @@ bool Bullet::wasCharacterShot(Character* character, const sf::Vector2f currentBu
 Gun::Gun(SoundPlayer& soundPlayer, const Texture& texture, const float damage)
 	:GameObject("gun")
 	,mGunSprite(texture, "gun")
+	,mGunShotShader()
 	,mCurrentPlayerDirection({1.f, 0.f})
-	,mShader(ShaderLibrary::getInstance().get("dynamic"))
+	,mGunShader(ShaderLibrary::getInstance().get("dynamic"))
 	,mSoundPlayer(soundPlayer)
 	,mDamage(damage)
 	,mShouldDisplayShotGraphics(false)
 	,mShouldDisplayGunSprite(false)
 {
+	mGunShotShader.loadFromFile("resources/shaders/gunShot.vs.glsl", "resources/shaders/gunShot.fs.glsl");
 }
 
 void Gun::shoot()
@@ -123,15 +127,33 @@ void Gun::shoot()
 
 void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightHandPosition)
 {
-	mShotGraphics[0].position = mCurrentPlayerDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
-	mShotGraphics[1].position = bullet.getCurrentPosition();
-
+	updateShotGraphicsVertexBuffer(bullet);
 	updateGunTextureRect();
 	updateGunSpriteFlipping();
 	updateGunSpritePosition();
 
 	mShouldDisplayShotGraphics = true;
 	mShouldDisplayGunSprite = true;
+}
+
+void Gun::updateShotGraphicsVertexBuffer(const Bullet& bullet)
+{
+	// set index buffer
+	std::array<unsigned, 2> indices{0, 1};
+	IndexBuffer ibo = createIndexBuffer();
+	setData(ibo, indices.data(), 2);
+	mShotGraphicsVertexArray.setIndexBuffer(ibo);
+	
+	// set vertex buffer
+	const sf::Vector2f bulletStartPosition = mCurrentPlayerDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
+	const sf::Vector2f bulletEndPosition = bullet.getCurrentPosition();
+	std::array<float, 4> vertices{
+		bulletStartPosition.x, bulletStartPosition.y,
+		bulletEndPosition.x, bulletEndPosition.y
+	};
+	VertexBuffer vbo = createVertexBuffer();
+	setData(vbo, vertices.data(), vertices.size() * sizeof(float), GL_DYNAMIC_DRAW);
+	mShotGraphicsVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2);
 }
 
 void Gun::updateCurrent(const sf::Time delta)
@@ -219,12 +241,13 @@ sf::Vector2f Gun::getRightHandPosition()
 
 void Gun::drawCurrent(sf::Transform transform)
 {
-	//if(mShouldDisplayShotGraphics)
-	//	target.draw(mShotGraphics.data(), 2, sf::Lines);
+	if(mShouldDisplayShotGraphics)
+		Renderer::submit(mShotGraphicsVertexArray, mGunShotShader, sf::Transform::Identity, {1000, 1000}, DrawPrimitive::Lines);
+
 	transform.translate(mGunPosition);
 	transform.scale(mGunScale);
 	if(mShouldDisplayGunSprite)
-		Renderer::submit(mGunSprite, *mShader, transform);
+		Renderer::submit(mGunSprite, *mGunShader, transform);
 }
 
 }

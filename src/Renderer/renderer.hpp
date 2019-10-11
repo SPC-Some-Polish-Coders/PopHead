@@ -19,10 +19,10 @@ public:
 	
 	static void beginScene(Camera&);
 
-	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawMode = DrawMode::Triangles);
-	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawMode = DrawMode::Triangles);
-	static void submit(Sprite&, Shader&, const sf::Transform&, DrawMode = DrawMode::Triangles);
-	static void submit(Sprite&, const sf::Transform&, DrawMode = DrawMode::Triangles);
+	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
+	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
+	static void submit(Sprite&, Shader&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
+	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	
 	static void endScene();
 
