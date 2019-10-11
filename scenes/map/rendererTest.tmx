@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="17">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="18">
  <objectgroup id="2" name="gameObjects">
   <object id="9" type="Car" x="92.6667" y="29.3333">
    <properties>
@@ -39,6 +39,9 @@
     <property name="isLying" type="bool" value="false"/>
     <property name="slowingDown" type="float" value="0"/>
    </properties>
+   <point/>
+  </object>
+  <object id="17" type="Lever" x="71" y="92.3333">
    <point/>
   </object>
  </objectgroup>

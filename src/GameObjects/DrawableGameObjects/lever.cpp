@@ -5,14 +5,14 @@
 
 namespace ph {
 
-Lever::Lever(sf::Texture& leverTexture, sf::Texture& hintTexture)
+Lever::Lever(const Texture& leverTexture, const Texture& hintTexture)
 	:GameObject("lever")
 	,mLeverSprite(leverTexture, {0, 0, 8, 16})
-	,mHintSprite(hintTexture)
+	,mHintSprite(hintTexture, "leverHint")
 	,mIsLeverDown(false)
 	,mIsPlayerInHintArea(false)
 {
-	mHintSprite.setPosition(-70.f, 15.f);
+	setTextureRect(mLeverSprite.mVertexArray.getVertexBuffer(), {0, 0, 8, 16}, mLeverSprite.mSize);
 }
 
 void Lever::updateCurrent(const sf::Time delta)
@@ -35,7 +35,7 @@ void Lever::updateCurrent(const sf::Time delta)
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 			mIsLeverDown = true;
 			mIsPlayerInHintArea = false;
-			mLeverSprite.setTextureRect({8, 0, 8, 16});
+			setTextureRect(mLeverSprite.mVertexArray.getVertexBuffer(), {8, 0, 8, 16}, mLeverSprite.mSize);
 			auto* lyingObjects = mRoot->getChild("LAYER_lyingObjects");
 			for(auto& child : lyingObjects->getChildren()) {
 				auto* gate = dynamic_cast<Gate*>(child.get());
@@ -47,11 +47,13 @@ void Lever::updateCurrent(const sf::Time delta)
 	}
 }
 
-void Lever::drawCurrent(sf::Transform)
+void Lever::drawCurrent(sf::Transform transform)
 {
-	//target.draw(mLeverSprite, states);
-	//if(mIsPlayerInHintArea)
-	//	target.draw(mHintSprite, states);
+	Renderer::submit(mLeverSprite, transform);
+	if(mIsPlayerInHintArea) {
+		transform.translate(-70.f, 15.f);
+		Renderer::submit(mHintSprite, transform);
+	}
 }
 
 }
