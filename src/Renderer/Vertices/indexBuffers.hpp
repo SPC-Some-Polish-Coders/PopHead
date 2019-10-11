@@ -8,10 +8,11 @@ namespace ph {
 struct IndexBuffer
 {
 	unsigned mID;
+	int mNumberOfIndices;
 };
 
 IndexBuffer createIndexBuffer();
-void setData(IndexBuffer, unsigned* indices, size_t arraySize);
+void setData(IndexBuffer&, unsigned* indices, unsigned numberOfIndices);
 void deleteIndexBuffer(IndexBuffer);
 void bind(IndexBuffer);
 

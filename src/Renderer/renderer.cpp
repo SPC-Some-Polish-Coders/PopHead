@@ -32,7 +32,7 @@ void Renderer::init()
 
 void Renderer::beginScene(Camera& camera)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
 	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 	
@@ -41,7 +41,7 @@ void Renderer::beginScene(Camera& camera)
 	mSceneData.mScreenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size)
+void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawMode drawMode)
 {
 	if(!isInsideScreen(transform, size))
 		return;
@@ -51,27 +51,26 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
-
-	// TODO: Make possible to draw when index buffer count is not 6
-	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	
+	GLCheck( glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0) );
 	
 	++mRendererData.mNumberOfDrawCalls;
 }
 
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size)
+void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawMode drawMode)
 {
-	submit(vao, *mRendererData.mDefaultShader, transform, size);
+	submit(vao, *mRendererData.mDefaultShader, transform, size, drawMode);
 }
 
-void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform)
+void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawMode drawMode)
 {
 	sprite.mTexture.bind();
-	submit(sprite.mVertexArray, shader, transform, sprite.mSize);
+	submit(sprite.mVertexArray, shader, transform, sprite.mSize, drawMode);
 }
 
-void Renderer::submit(Sprite& sprite, const sf::Transform& transform)
+void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawMode drawMode)
 {
-	submit(sprite, *mRendererData.mDefaultShader, transform);
+	submit(sprite, *mRendererData.mDefaultShader, transform, drawMode);
 }
 
 bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)

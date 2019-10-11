@@ -5,6 +5,7 @@
 #include "texture.hpp"
 #include "camera.hpp"
 #include "sprite.hpp"
+#include "glEnums.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <Utilities/rect.hpp>
 #include <memory>
@@ -18,10 +19,10 @@ public:
 	
 	static void beginScene(Camera&);
 
-	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size);
-	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size);
-	static void submit(Sprite&, Shader&, const sf::Transform&);
-	static void submit(Sprite&, const sf::Transform&);
+	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawMode = DrawMode::Triangles);
+	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawMode = DrawMode::Triangles);
+	static void submit(Sprite&, Shader&, const sf::Transform&, DrawMode = DrawMode::Triangles);
+	static void submit(Sprite&, const sf::Transform&, DrawMode = DrawMode::Triangles);
 	
 	static void endScene();
 

@@ -10,13 +10,14 @@ IndexBuffer createIndexBuffer()
 {
 	unsigned id;
 	GLCheck( glGenBuffers(1, &id) );
-	return {id};
+	return {id, 0};
 }
 
-void setData(IndexBuffer ibo, unsigned* indices, size_t arraySize)
+void setData(IndexBuffer& ibo, unsigned* indices, unsigned numberOfIndices)
 {
 	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo.mID) );
-	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, arraySize, indices, GL_STATIC_DRAW) );
+	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, numberOfIndices * sizeof(unsigned), indices, GL_STATIC_DRAW) );
+	ibo.mNumberOfIndices = numberOfIndices;
 }
 
 void deleteIndexBuffer(IndexBuffer ibo)
@@ -37,7 +38,7 @@ IndexBufferHolder::IndexBufferHolder()
 		1, 2, 3 // second rectangle
 	};
 	mRectangleIndexBuffer = createIndexBuffer();
-	setData(mRectangleIndexBuffer, rectangleIndices.data(), rectangleIndices.size() * sizeof(unsigned));
+	setData(mRectangleIndexBuffer, rectangleIndices.data(), rectangleIndices.size());
 
 	// allocate memory
 	mNames.reserve(5);
@@ -45,10 +46,10 @@ IndexBufferHolder::IndexBufferHolder()
 	mIndexBuffers.reserve(5);
 }
 
-IndexBuffer IndexBufferHolder::addAndGetIndexBuffer(const std::string& name, unsigned* data, size_t arraySize)
+IndexBuffer IndexBufferHolder::addAndGetIndexBuffer(const std::string& name, unsigned* data, unsigned numberOfIndices)
 {
 	IndexBuffer ibo = createIndexBuffer();
-	setData(ibo, data, arraySize);
+	setData(ibo, data, numberOfIndices);
 	mIndexBuffers.emplace_back(ibo);
 	mNames.emplace_back(name);
 	mReferenceCounters.emplace_back(1);

@@ -29,9 +29,9 @@ public:
 	auto getIndexBuffer() -> const IndexBuffer& { return mIndexBuffer; }
 
 private:
-	unsigned mID;
-	VertexBuffer mVertexBuffer;
 	IndexBuffer mIndexBuffer;
+	VertexBuffer mVertexBuffer;
+	unsigned mID;
 };
 
 }
