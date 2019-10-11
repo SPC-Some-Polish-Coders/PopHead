@@ -90,9 +90,11 @@ void VertexBufferHolder::deleteBuffer(VertexBuffer vbo)
 	{
 		if(mVertexBuffers[i].mID == vbo.mID) {
 			--mReferenceCounters[i];
-			mNames.erase(mNames.begin() + i);
-			mReferenceCounters.erase(mReferenceCounters.begin() + i);
-			mVertexBuffers.erase(mVertexBuffers.begin() + i);
+			if(mReferenceCounters[i] == 0) {
+				mNames.erase(mNames.begin() + i);
+				mReferenceCounters.erase(mReferenceCounters.begin() + i);
+				mVertexBuffers.erase(mVertexBuffers.begin() + i);
+			}
 			return;
 		}
 	}

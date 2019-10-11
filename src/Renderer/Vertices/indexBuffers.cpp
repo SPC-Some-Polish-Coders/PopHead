@@ -76,9 +76,11 @@ void IndexBufferHolder::deleteIndexBuffer(IndexBuffer ibo)
 	{
 		if(mIndexBuffers[i].mID == ibo.mID) {
 			--mReferenceCounters[i];
-			mNames.erase(mNames.begin() + i);
-			mReferenceCounters.erase(mReferenceCounters.begin() + i);
-			mIndexBuffers.erase(mIndexBuffers.begin() + i);
+			if(mReferenceCounters[i] == 0) {
+				mNames.erase(mNames.begin() + i);
+				mReferenceCounters.erase(mReferenceCounters.begin() + i);
+				mIndexBuffers.erase(mIndexBuffers.begin() + i);
+			}
 			return;
 		}
 	}
