@@ -3,14 +3,13 @@
 namespace ph {
 
 BulletItem::BulletItem(GameData* const gameData)
-	:Item(gameData, "Bullet")
+	:Item(gameData, "Bullet", gameData->getTextures().get("textures/others/bulletGround.png"))
 {
-	//setGroundTexture(gameData->getTextures().get("textures/others/bulletGround.png"));
 }
 
-void BulletItem::drawWhileOnTheGround(sf::Transform) const
+void BulletItem::drawWhileOnTheGround(sf::Transform transform)
 {
-	//target.draw(getGroundSprite());
+	Renderer::submit(getGroundSprite(), transform);
 }
 
 }

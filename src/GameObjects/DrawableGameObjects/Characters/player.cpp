@@ -121,7 +121,7 @@ void Player::updateCurrent(sf::Time delta)
 {
 	updateCounters();
 
-	if(Character::isDead() || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+	if(Character::isDead()) {
 		die();
 		return;
 	}

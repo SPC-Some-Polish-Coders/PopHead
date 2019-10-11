@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="17">
  <objectgroup id="2" name="gameObjects">
   <object id="9" type="Car" x="92.6667" y="29.3333">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="10" type="SpriteNode" x="78.8107" y="32.409">
-   <properties>
-    <property name="texturePath" value="textures/others/medkit.png"/>
    </properties>
    <point/>
   </object>
@@ -29,6 +23,22 @@
    <point/>
   </object>
   <object id="14" type="Zombie" x="156.667" y="135.333">
+   <point/>
+  </object>
+  <object id="15" type="BulletItem" x="213.5" y="42.4167">
+   <properties>
+    <property name="acceleration" type="float" value="0"/>
+    <property name="isLying" type="bool" value="false"/>
+    <property name="slowingDown" type="float" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" type="Medkit" x="226.167" y="101.083">
+   <properties>
+    <property name="acceleration" type="float" value="0"/>
+    <property name="isLying" type="bool" value="false"/>
+    <property name="slowingDown" type="float" value="0"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

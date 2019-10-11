@@ -4,8 +4,9 @@
 
 namespace ph {
 
-Item::Item(GameData* const gameData, const std::string& name)
+Item::Item(GameData* const gameData, const std::string& name, const Texture& groundTexture)
 	:GameObject(name)
+	,mGroundSprite(groundTexture, "ground" + name)
 	,mGameData(gameData)
 	,mInteractable(false)
 	,mInInventory(false)
@@ -18,16 +19,16 @@ void Item::updateCurrent(const sf::Time time)
 		updateWhileOnTheGround(time);
 }
 
-void Item::drawCurrent(sf::Transform)
+void Item::drawCurrent(sf::Transform transform)
 {
-	//if (!getInInventory())
-	//	drawWhileOnTheGround(target, states);
+	if (!getInInventory())
+		drawWhileOnTheGround(transform);
 }
 
 void Item::setPosition(const sf::Vector2f& position)
 {
 	sf::Transformable::setPosition(position);
-	mGroundSprite.setPosition(position);
+	//mGroundSprite.setPosition(position);
 }
 
 void Item::onUse()

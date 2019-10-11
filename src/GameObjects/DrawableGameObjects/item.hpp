@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
+#include "Renderer/renderer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -10,13 +11,13 @@ class GameData;
 class Item : public GameObject
 {
 public:
-	Item(GameData* const gameData, const std::string& name);
+	Item(GameData* const gameData, const std::string& name, const Texture& groundTexture);
 
 	virtual void onUse();
 	virtual void onPickUp();
 	virtual void onDrop();
 
-	virtual void drawWhileOnTheGround(sf::Transform) const = 0;
+	virtual void drawWhileOnTheGround(sf::Transform) = 0;
 
 	virtual void updateWhileOnTheGround(const sf::Time time) = 0;
 
@@ -31,15 +32,11 @@ public:
 	bool getInInventory() const { return mInInventory; }
 
 protected:
-	auto getGroundSprite() const -> const sf::Sprite& { return mGroundSprite; }
-	auto getInventorySprite() const -> const sf::Sprite& { return mInventorySprite; }
-	void setGroundTexture(sf::Texture& groundTexture) { mGroundSprite.setTexture(groundTexture); }
-	void setInventoryTexture(sf::Texture& inventoryTexture) { mInventorySprite.setTexture(inventoryTexture); }
+	auto getGroundSprite() -> Sprite& { return mGroundSprite; }
 
 private:
+	Sprite mGroundSprite;
 	GameData* const mGameData;
-	sf::Sprite mGroundSprite;
-	sf::Sprite mInventorySprite;
 	bool mInteractable;
 	bool mInInventory;
 };

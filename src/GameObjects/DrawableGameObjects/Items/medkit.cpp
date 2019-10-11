@@ -5,15 +5,14 @@
 namespace ph {
 
 Medkit::Medkit(GameData* const gameData)
-	:Item(gameData, "Medkit")
+	:Item(gameData, "Medkit", gameData->getTextures().get("textures/others/medkit.png"))
 	,healthAddValue(25)
 {
-	//setGroundTexture(gameData->getTextures().get("textures/others/medkit.png"));
 }
 
-void Medkit::drawWhileOnTheGround(sf::Transform) const
+void Medkit::drawWhileOnTheGround(sf::Transform transform)
 {
-	//rt.draw(getGroundSprite());
+	Renderer::submit(getGroundSprite(), transform);
 }
 
 void Medkit::onPickUp()
