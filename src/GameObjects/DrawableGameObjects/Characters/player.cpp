@@ -287,8 +287,8 @@ void Player::setAnimationState(const std::string& stateName)
 
 void Player::shootingUpdate(const sf::Time delta)
 {
-	//auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-	//gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
+	auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+	gun->setCurrentPlayerDirection(getCurrentPlayerDirection());
 }
 
 PlayerMotion::PlayerMotion()
