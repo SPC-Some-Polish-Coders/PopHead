@@ -3,10 +3,11 @@
 
 namespace ph {
 
-DeadCharacter::DeadCharacter(const sf::Sprite& sprite)
+DeadCharacter::DeadCharacter(const Texture& texture, const sf::IntRect& textureRect, const std::string name)
 	:GameObject("dyingCharacter")
-	,mSprite(sprite)
+	,mSprite(texture, name)
 {
+	setTextureRect(mSprite.mVertexArray.getVertexBuffer(), textureRect, texture.getSize());
 }
 
 void DeadCharacter::updateCurrent(const sf::Time delta)
@@ -18,9 +19,9 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 	}
 }
 
-void DeadCharacter::drawCurrent(sf::Transform)
+void DeadCharacter::drawCurrent(sf::Transform transform)
 {
-	//target.draw(mSprite, states);
+	Renderer::submit(mSprite, transform);
 }
 
 }

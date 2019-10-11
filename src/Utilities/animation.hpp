@@ -47,6 +47,8 @@ public:
 
 	std::string getCurrentStateName() const;
 
+	sf::IntRect getCurrentTextureRect();
+
 private:
 	std::map<std::string, std::vector<sf::IntRect>> mStates;
 	std::string mCurrentStateName;

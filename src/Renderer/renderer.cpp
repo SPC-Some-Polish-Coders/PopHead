@@ -48,7 +48,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 
 	vao.bind();
 
-	shader.bind();
+ 	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
 	

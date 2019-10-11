@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="15">
  <objectgroup id="2" name="gameObjects">
-  <object id="1" type="Car" x="100.5" y="36.25">
+  <object id="9" type="Car" x="92.6667" y="29.3333">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="2" type="SpriteNode" x="86.644" y="39.3257">
+  <object id="10" type="SpriteNode" x="78.8107" y="32.409">
    <properties>
     <property name="texturePath" value="textures/others/medkit.png"/>
    </properties>
    <point/>
   </object>
-  <object id="3" type="Bilbord" x="130" y="40">
+  <object id="11" type="Bilbord" x="122.167" y="33.0833">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="isLying" type="bool" value="false"/>
@@ -22,19 +22,13 @@
    </properties>
    <point/>
   </object>
-  <object id="4" type="Player" x="20.5" y="143.75">
+  <object id="12" type="Player" x="12.6667" y="136.833">
    <point/>
   </object>
-  <object id="5" type="Gate" x="44.394" y="48.826">
+  <object id="13" type="Gate" x="36.5607" y="41.9093">
    <point/>
   </object>
-  <object id="6" type="Npc" x="337.5" y="143.25">
-   <point/>
-  </object>
-  <object id="7" type="CrawlingNpc" x="446.5" y="141.75">
-   <point/>
-  </object>
-  <object id="8" type="Zombie" x="164.5" y="142.25">
+  <object id="14" type="Zombie" x="156.667" y="135.333">
    <point/>
   </object>
  </objectgroup>

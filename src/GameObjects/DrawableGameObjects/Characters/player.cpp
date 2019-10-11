@@ -121,7 +121,7 @@ void Player::updateCurrent(sf::Time delta)
 {
 	updateCounters();
 
-	if(Character::isDead()) {
+	if(Character::isDead() || sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 		die();
 		return;
 	}
@@ -168,12 +168,12 @@ void Player::setNumOfBullets(unsigned num)
 
 void Player::die()
 {
-	//setAnimationState("dead");
-	//auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
-	//standingObjects->addCharacterToDie(this);
+	setAnimationState("dead");
+	auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
+	standingObjects->addCharacterToDie(this);
 	//mGameData->getGui().showInterface("gameOverScreen");
-	//mGameData->getAIManager().setIsPlayerOnScene(false);
-	//mIsDead = true;
+	mGameData->getAIManager().setIsPlayerOnScene(false);
+	mIsDead = true;
 }
 
 void Player::updateCounters() const

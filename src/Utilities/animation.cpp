@@ -74,4 +74,9 @@ std::string Animation::getCurrentStateName() const
 	return mCurrentStateName;
 }
 
+sf::IntRect Animation::getCurrentTextureRect()
+{
+	return mStates[mCurrentStateName][mCurrentFrameIndex];
+}
+
 }

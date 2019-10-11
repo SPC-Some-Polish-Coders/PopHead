@@ -38,6 +38,7 @@ public:
 	sf::FloatRect getGlobalBounds() const override;
 	sf::FloatRect getTextureBounds() const;
 	auto getAnimation() -> Animation& { return mAnimation; }
+	Sprite& getSprite() { return mSprite; }
 	bool isAttackable() const { return mIsAttackable; }
 
 	void pushCharacter(const sf::Vector2f& pushVector);

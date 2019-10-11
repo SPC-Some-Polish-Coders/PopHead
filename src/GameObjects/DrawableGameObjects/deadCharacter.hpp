@@ -1,19 +1,21 @@
 #pragma once
 
 #include "GameObjects/gameObject.hpp"
+#include "Renderer/renderer.hpp"
+#include <string>
 
 namespace ph {
 
 class DeadCharacter : public GameObject
 {
 public:
-	DeadCharacter(const sf::Sprite&);
+	DeadCharacter(const Texture& texture, const sf::IntRect& textureRect, const std::string name);
 
 	void updateCurrent(const sf::Time delta) override;
 	void drawCurrent(sf::Transform) override;
 
 private:
-	sf::Sprite mSprite;
+	Sprite mSprite;
 	sf::Time mTimeFromDeath;
 };
 
