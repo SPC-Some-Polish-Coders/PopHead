@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObjects/GameObject.hpp"
+#include "Renderer/renderer.hpp"
 #include <array>
 
 namespace ph{
@@ -31,7 +32,7 @@ private:
 	const float mRange;
 	const float mRotationRange;
 	float mRotation;
-	float mAttackAngle;
+	float mAttackAngle;	
 };
 
 class MeleeWeapon : public GameObject
@@ -48,14 +49,15 @@ private:
 	sf::Vector2f getRightHandLocalPosition(const sf::Vector2f attackDirection);
 
 private:
-	sf::Sprite mSprite;
+	Sprite mSprite;
 	GameData* const mGameData;
+	Shader* mShader;
 	const float mDamage;
 	const float mRange;
 	const float mRotationRange;
 	float mRotationFromStart;
 	bool mShouldBeDrawn;
-	CollisionBody* mEndOfMelle = nullptr;
+	CollisionBody* mEndOfMelee = nullptr;
 };
 
 }

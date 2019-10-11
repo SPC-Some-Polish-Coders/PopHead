@@ -135,8 +135,9 @@ float Swing::getFixedAngle(float angle)
 
 MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const float range, const float rotatationRange)
 	:GameObject("sword")
-	,mSprite(/*gameData->getTextures().get("textures/others/baseballStick.png")*/)
+	,mSprite(gameData->getTextures().get("textures/others/baseballStick.png"), "meleeWeapon")
 	,mGameData(gameData)
+	,mShader(ShaderLibrary::getInstance().get("dynamic"))
 	,mDamage(damage)
 	,mRange(range)
 	,mRotationRange(rotatationRange)
@@ -226,10 +227,10 @@ void MeleeWeapon::updateCurrent(const sf::Time delta)
 	}
 }
 
-void MeleeWeapon::drawCurrent(sf::Transform)
+void MeleeWeapon::drawCurrent(sf::Transform transform)
 {
-	/*if(mShouldBeDrawn)
-		target.draw(mSprite, states);*/
+	if(mShouldBeDrawn)
+		Renderer::submit(mSprite, *mShader, transform);
 }
 
 }
