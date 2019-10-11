@@ -102,6 +102,7 @@ Gun::Gun(SoundPlayer& soundPlayer, const Texture& texture, const float damage)
 	:GameObject("gun")
 	,mGunSprite(texture, "gun")
 	,mCurrentPlayerDirection({1.f, 0.f})
+	,mShader(ShaderLibrary::getInstance().get("dynamic"))
 	,mSoundPlayer(soundPlayer)
 	,mDamage(damage)
 	,mShouldDisplayShotGraphics(false)
@@ -223,7 +224,7 @@ void Gun::drawCurrent(sf::Transform transform)
 	transform.translate(mGunPosition);
 	transform.scale(mGunScale);
 	if(mShouldDisplayGunSprite)
-		Renderer::submit(mGunSprite, transform);
+		Renderer::submit(mGunSprite, *mShader, transform);
 }
 
 }

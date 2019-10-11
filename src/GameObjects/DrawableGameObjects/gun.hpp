@@ -61,6 +61,7 @@ private:
 	std::array<sf::Vertex, 2> mShotGraphics;
 	sf::Vector2f mGunPosition;
 	sf::Vector2f mGunScale;
+	Shader* mShader;
 	sf::Clock mTimeFromTrigerPull;
 	sf::Vector2f mCurrentPlayerDirection;
 	SoundPlayer& mSoundPlayer;
