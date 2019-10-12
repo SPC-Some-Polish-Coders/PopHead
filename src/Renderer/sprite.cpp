@@ -6,7 +6,7 @@ Sprite::Sprite(const Texture& texture, const std::string& name)
 	:mSize(texture.getSize())
 	,mTexture(texture)
 {
-	auto vbo = VertexBufferHolder::getInstance().getRectangleVertexBuffer(name, mSize.x, mSize.y, false);
+	auto vbo = VertexBufferHolder::getInstance().getRectangleVertexBuffer(name, mSize.x, mSize.y, DataUsage::dynamicDraw);
 	auto ibo = IndexBufferHolder::getInstance().getRectangleIndexBuffer();
 	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 	mVertexArray.setIndexBuffer(ibo);

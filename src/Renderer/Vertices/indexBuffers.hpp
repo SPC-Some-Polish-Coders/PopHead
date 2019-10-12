@@ -31,7 +31,7 @@ public:
 	IndexBufferHolder(IndexBufferHolder&) = delete;
 	void operator=(IndexBufferHolder const&) = delete;
 
-	IndexBuffer addAndGetIndexBuffer(const std::string& name, unsigned* data, size_t arraySize);
+	IndexBuffer addAndGetIndexBuffer(const std::string& name, unsigned* data, unsigned numberOfIndices);
 	IndexBuffer getIndexBuffer(const std::string& name);
 	void deleteIndexBuffer(IndexBuffer);
 

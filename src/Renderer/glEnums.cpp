@@ -24,4 +24,14 @@ unsigned toGLEnum(DrawPrimitive drawMode)
 	}
 }
 
+unsigned toGLEnum(DataUsage allocationMode)
+{
+	switch(allocationMode)
+	{
+		case ph::DataUsage::streamDraw: return GL_STREAM_DRAW;
+		case ph::DataUsage::staticDraw: return GL_STATIC_DRAW;
+		case ph::DataUsage::dynamicDraw: return GL_DYNAMIC_DRAW;
+	}
+}
+
 }

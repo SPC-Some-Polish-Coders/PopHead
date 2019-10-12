@@ -14,10 +14,10 @@ VertexBuffer createVertexBuffer()
 	return {id};
 }
 
-void setData(VertexBuffer vbo, float* vertices, size_t arraySize, unsigned dataUsage)
+void setData(VertexBuffer vbo, float* vertices, size_t arraySize, DataUsage usage)
 {
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, vbo.mID) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, dataUsage) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, toGLEnum(usage)) );
 }
 
 void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2i textureSize)
@@ -30,7 +30,7 @@ void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2
 		0.f            , 0.f               , (float)(r.left) / (float)textureSize.x          , (float)(textureSize.y - r.top) / (float) textureSize.y  // top left
 	};
 
-	setData(vbo, vertices.data(), vertices.size() * 16, GL_DYNAMIC_DRAW);
+	setData(vbo, vertices.data(), vertices.size() * 16, DataUsage::dynamicDraw);
 }
 
 void deleteVertexBuffer(VertexBuffer vbo)
@@ -51,7 +51,7 @@ VertexBufferHolder::VertexBufferHolder()
 	mVertexBuffers.reserve(100);
 }
 
-VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist)
+VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, DataUsage usage, bool thisBufferMightAlreadyExist)
 {
 	// look for existing buffer
 	if(thisBufferMightAlreadyExist)
@@ -77,7 +77,7 @@ VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& nam
 	};
 
 	VertexBuffer vbo = createVertexBuffer();
-	setData(vbo, vertices.data(), vertices.size() * sizeof(float), isAnimated ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	setData(vbo, vertices.data(), vertices.size() * sizeof(float), usage);
 	mVertexBuffers.emplace_back(vbo);
 	mNames.emplace_back(name);
 	mReferenceCounters.emplace_back(1);

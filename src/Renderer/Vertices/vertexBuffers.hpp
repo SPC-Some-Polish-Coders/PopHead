@@ -1,6 +1,7 @@
 #pragma once 
  
-#include <Utilities/rect.hpp>
+#include "Renderer/glEnums.hpp"
+#include "Utilities/rect.hpp"
 #include <vector>
 #include <string>
 
@@ -12,7 +13,7 @@ struct VertexBuffer
 };
 
 VertexBuffer createVertexBuffer();
-void setData(VertexBuffer, float* vertices, size_t arraySize, unsigned dataUsage);
+void setData(VertexBuffer, float* vertices, size_t arraySize, DataUsage);
 void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2i textureSize);
 void deleteVertexBuffer(VertexBuffer);
 void bind(VertexBuffer);
@@ -32,7 +33,7 @@ public:
 	VertexBufferHolder(VertexBufferHolder&) = delete;
 	void operator=(VertexBufferHolder const&) = delete;
 
-	VertexBuffer getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, bool isAnimated, bool thisBufferMightAlreadyExist = true);
+	VertexBuffer getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, DataUsage, bool thisBufferMightAlreadyExist = true);
 	void deleteBuffer(VertexBuffer);
 
 private:

@@ -152,7 +152,7 @@ void Gun::updateShotGraphicsVertexBuffer(const Bullet& bullet)
 		bulletEndPosition.x, bulletEndPosition.y
 	};
 	VertexBuffer vbo = createVertexBuffer();
-	setData(vbo, vertices.data(), vertices.size() * sizeof(float), GL_DYNAMIC_DRAW);
+	setData(vbo, vertices.data(), vertices.size() * sizeof(float), DataUsage::dynamicDraw);
 	mShotGraphicsVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2);
 }
 

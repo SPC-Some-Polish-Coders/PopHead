@@ -17,6 +17,14 @@ enum class DrawPrimitive
 	TrianglesAdjacency
 };
 
+enum class DataUsage
+{
+	streamDraw,
+	staticDraw,
+	dynamicDraw,
+};
+
 unsigned toGLEnum(DrawPrimitive);
+unsigned toGLEnum(DataUsage);
 
 }
