@@ -132,6 +132,7 @@ void Game::update(sf::Time deltaTime)
 		camera.zoom(0.96f);
 
 	Renderer::beginScene(camera);
+	mMap->draw(camera.getBounds());
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
 	Renderer::endScene();
 	

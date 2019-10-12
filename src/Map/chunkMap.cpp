@@ -101,6 +101,7 @@ void ChunkMap::initializeGraphicsForCurrentLayer()
 
 void ChunkMap::draw(const sf::FloatRect& cameraBounds) const
 {
+	mChunkData->getTileset().bind();
 	for(const auto& layer : mLayers)
 		layer.draw(cameraBounds);
 }

@@ -93,4 +93,9 @@ const sf::Transform& Camera::getViewProjectionMatrix4x4()
 	return mViewProjectionMatrix;
 }
 
+FloatRect Camera::getBounds() const
+{
+	return FloatRect(mCenter.x - mSize.x / 2, mCenter.y - mSize.y / 2, mSize.x, mSize.y);
+}
+
 }

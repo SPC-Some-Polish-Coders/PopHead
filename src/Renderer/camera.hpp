@@ -30,6 +30,8 @@ public:
 
 	const sf::Transform& getViewProjectionMatrix4x4();
 
+	FloatRect getBounds() const;
+
 private:
 	sf::Transform mViewProjectionMatrix;
 	sf::Vector2f mCenter;

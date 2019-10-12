@@ -2,7 +2,8 @@
 
 #include "chunkData.hpp"
 #include "Renderer/renderer.hpp"
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <Utilities/rect.hpp>
 #include <array>
 #include <vector>
 
@@ -25,10 +26,7 @@ struct TileData
 class Chunk
 {
 public:
-	explicit Chunk(
-		const sf::Vector2f topLeftCornerPositionInWorld,
-		std::shared_ptr<ChunkData>
-	);
+	explicit Chunk(const sf::Vector2f topLeftCornerPositionInWorld, std::shared_ptr<ChunkData>);
 
 	void addTileData(const TileData& tile);
 
@@ -39,15 +37,10 @@ public:
 	sf::FloatRect getGlobalBounds() const;
 
 private:
-	/*void initializeTextureCoordinates(const TileData&, sf::Vertex* const tile) const;
-	auto getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>;
-	void initializeVertexPositions(const TileData&, sf::Vertex* const tile) const;*/
-
-private:
-	VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;
 	const sf::Vector2f mTopLeftCornerPositionInWorld;
 	std::shared_ptr<ChunkData> mChunkData;
+	std::shared_ptr<VertexArray> mVertexArray;
 };
 
 }
