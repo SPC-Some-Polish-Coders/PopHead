@@ -70,6 +70,7 @@ private:
 	const float mDamage;
 	bool mShouldDisplayShotGraphics;
 	bool mShouldDisplayGunSprite;
+	bool mHasSetShotGraphicsIndexBuffer;
 };
 
 }

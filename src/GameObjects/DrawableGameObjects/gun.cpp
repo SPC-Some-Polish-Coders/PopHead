@@ -110,6 +110,7 @@ Gun::Gun(SoundPlayer& soundPlayer, const Texture& texture, const float damage)
 	,mDamage(damage)
 	,mShouldDisplayShotGraphics(false)
 	,mShouldDisplayGunSprite(false)
+	,mHasSetShotGraphicsIndexBuffer(false)
 {
 	mGunShotShader.loadFromFile("resources/shaders/gunShot.vs.glsl", "resources/shaders/gunShot.fs.glsl");
 }
@@ -139,11 +140,13 @@ void Gun::initializeShotGraphics(const Bullet& bullet, const sf::Vector2f rightH
 void Gun::updateShotGraphicsVertexBuffer(const Bullet& bullet)
 {
 	// set index buffer
-	std::array<unsigned, 2> indices{0, 1};
-	IndexBuffer ibo = createIndexBuffer();
-	setData(ibo, indices.data(), 2);
-	mShotGraphicsVertexArray.setIndexBuffer(ibo);
-	
+	if(!mHasSetShotGraphicsIndexBuffer) {
+		std::array<unsigned, 2> indices{0, 1};
+		IndexBuffer ibo = createIndexBuffer();
+		setData(ibo, indices.data(), 2);
+		mShotGraphicsVertexArray.setIndexBuffer(ibo);
+		mHasSetShotGraphicsIndexBuffer = true;
+	}
 	// set vertex buffer
 	const sf::Vector2f bulletStartPosition = mCurrentPlayerDirection == sf::Vector2f(1, 0) ? bullet.getStartPosition() + sf::Vector2f(7, 0) : bullet.getStartPosition();
 	const sf::Vector2f bulletEndPosition = bullet.getCurrentPosition();
