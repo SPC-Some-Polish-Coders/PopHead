@@ -1,6 +1,7 @@
 #pragma once
 
 #include "chunkData.hpp"
+#include "Renderer/renderer.hpp"
 #include <SFML/Graphics.hpp>
 #include <array>
 #include <vector>
@@ -21,7 +22,7 @@ struct TileData
 	FlipData mFlipData;
 };
 
-class Chunk : public sf::Drawable
+class Chunk
 {
 public:
 	explicit Chunk(
@@ -33,17 +34,17 @@ public:
 
 	void initializeGraphics();
 
-	void draw(sf::RenderTarget&, sf::RenderStates) const override;
+	void draw() const;
 
 	sf::FloatRect getGlobalBounds() const;
 
 private:
-	void initializeTextureCoordinates(const TileData&, sf::Vertex* const tile) const;
+	/*void initializeTextureCoordinates(const TileData&, sf::Vertex* const tile) const;
 	auto getTextureCoordinateIndices(const TileData& tileData) const -> std::array<int, 4>;
-	void initializeVertexPositions(const TileData&, sf::Vertex* const tile) const;
+	void initializeVertexPositions(const TileData&, sf::Vertex* const tile) const;*/
 
 private:
-	sf::VertexArray mVertexArray;
+	VertexArray mVertexArray;
 	std::vector<TileData> mTilesToCreate;
 	const sf::Vector2f mTopLeftCornerPositionInWorld;
 	std::shared_ptr<ChunkData> mChunkData;

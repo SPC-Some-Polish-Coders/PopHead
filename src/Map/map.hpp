@@ -44,7 +44,7 @@ public:
 
 	void load(const GeneralMapInfo&, const TilesetsData&, const AllLayersGlobalTileIds&);
 
-    void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const;
+    void draw(const sf::FloatRect cameraBounds) const;
 
 	void setGameData(GameData* const gameData) { mGameData = gameData; };
 
@@ -66,9 +66,9 @@ private:
 	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:
-	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 	std::unique_ptr<ChunkMap> mChunkMap;
 	GameData* mGameData;
+	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 };
 
 }

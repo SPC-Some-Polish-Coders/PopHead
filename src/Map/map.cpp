@@ -21,11 +21,11 @@ void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, con
 
 void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
 {
-	/*mChunkMap = std::make_unique<ChunkMap>(
+	mChunkMap = std::make_unique<ChunkMap>(
 		info.mapSize,
 		info.tileSize,
 		mGameData->getTextures().get(pathToTilesetsDirectory + tilesetsData.tilesetFileName)
-	);*/
+	);
 }
 
 void Map::createAllLayers(const AllLayersGlobalTileIds& allLayers, const TilesetsData& tilesets, const GeneralMapInfo& info)
@@ -36,7 +36,7 @@ void Map::createAllLayers(const AllLayersGlobalTileIds& allLayers, const Tileset
 
 void Map::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
-	//const sf::Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
+	const Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
 	mChunkMap->addNewLayerOfChunks();
 
@@ -155,10 +155,10 @@ void Map::createMapBorders(const GeneralMapInfo& mapInfo)
 	}
 }
 
-void Map::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect cameraBounds) const
+void Map::draw(const sf::FloatRect cameraBounds) const
 {
 	if (mChunkMap)
-		mChunkMap->draw(target, states, cameraBounds);
+		mChunkMap->draw(cameraBounds);
 }
 
 }

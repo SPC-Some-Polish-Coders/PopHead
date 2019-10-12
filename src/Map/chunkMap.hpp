@@ -19,7 +19,7 @@ public:
 
 	void initializeGraphics();
 
-	void draw(sf::RenderTarget&, const sf::RenderStates, const sf::FloatRect&) const;
+	void draw(const sf::FloatRect&) const;
 private:
 	bool isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const;
 
@@ -33,7 +33,7 @@ private:
 class ChunkMap
 {
 public:
-	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset);
+	explicit ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const Texture& tileset);
 
 	void addNewLayerOfChunks();
 
@@ -41,7 +41,7 @@ public:
 
 	void initializeGraphicsForCurrentLayer();
 
-	void draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const;
+	void draw(const sf::FloatRect& cameraBounds) const;
 
 private:
 	std::vector<LayerOfChunks> mLayers;

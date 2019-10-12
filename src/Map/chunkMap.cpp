@@ -65,12 +65,12 @@ void LayerOfChunks::initializeGraphics()
 			chunk.initializeGraphics();
 }
 
-void LayerOfChunks::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
+void LayerOfChunks::draw(const sf::FloatRect& cameraBounds) const
 {
 	for(const auto& chunkRow : mAllChunksInLayer)
 		for(const Chunk& chunk : chunkRow)
 			if(isChunkInCamera(chunk, cameraBounds))
-				chunk.draw(target, states);
+				chunk.draw();
 }
 
 bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cameraBounds) const
@@ -79,7 +79,7 @@ bool LayerOfChunks::isChunkInCamera(const Chunk& chunk, const sf::FloatRect& cam
 	return chunkBounds.doPositiveRectsIntersect(cameraBounds);
 }
 
-ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
+ChunkMap::ChunkMap(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const Texture& tileset)
 	:mChunkData(new ChunkData(mapSizeInTiles, tileSizeInPixels, tileset))
 {
 }
@@ -99,10 +99,10 @@ void ChunkMap::initializeGraphicsForCurrentLayer()
 	mLayers.back().initializeGraphics();
 }
 
-void ChunkMap::draw(sf::RenderTarget& target, const sf::RenderStates states, const sf::FloatRect& cameraBounds) const
+void ChunkMap::draw(const sf::FloatRect& cameraBounds) const
 {
 	for(const auto& layer : mLayers)
-		layer.draw(target, states, cameraBounds);
+		layer.draw(cameraBounds);
 }
 
 }

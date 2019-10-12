@@ -2,12 +2,12 @@
 
 namespace ph {
 
-ChunkData::ChunkData(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const sf::Texture& tileset)
+ChunkData::ChunkData(const sf::Vector2u mapSizeInTiles, const sf::Vector2u tileSizeInPixels, const Texture& tileset)
 	:mTileSizeInPixels(tileSizeInPixels)
-	, mChunkSizeInTiles(calculateChunkSizeInTiles())
-	, mChunkSizeInPixels(mTileSizeInPixels.x* mChunkSizeInTiles.x, mTileSizeInPixels.y* mChunkSizeInTiles.y)
-	, mMapSizeInTiles(mapSizeInTiles)
-	, mTileset(tileset)
+	,mChunkSizeInTiles(calculateChunkSizeInTiles())
+	,mChunkSizeInPixels(mTileSizeInPixels.x* mChunkSizeInTiles.x, mTileSizeInPixels.y* mChunkSizeInTiles.y)
+	,mMapSizeInTiles(mapSizeInTiles)
+	,mTileset(tileset)
 {}
 
 auto ChunkData::calculateChunkSizeInTiles() const -> sf::Vector2u const
