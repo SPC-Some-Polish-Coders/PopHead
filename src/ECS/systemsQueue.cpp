@@ -1,12 +1,11 @@
 #include "systemsQueue.hpp"
 
 namespace ph {
-
-
-void SystemsQueue::appendSystem(std::unique_ptr<System>&& system)
-{
-	mSystemsArray.push_back(std::move(system));
-}
+	
+	SystemsQueue::SystemsQueue(entt::registry& registry)
+		: mRegistry(registry)
+	{
+	}
 
 	void SystemsQueue::update(float seconds)
 	{

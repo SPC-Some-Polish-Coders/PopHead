@@ -10,11 +10,17 @@ namespace ph {
 	class SystemsQueue
 	{
 	public:
+		SystemsQueue(entt::registry& registry);
 
-	void appendSystem(std::unique_ptr<System>&& system);
 		void update(float seconds);
+	
+		template <typename SystemType, typename... Args>
+		void appendSystem(Args... arguments);
 
 	private:
+		entt::registry& mRegistry;
 		std::vector<std::unique_ptr<System>> mSystemsArray;
 	};
 }
+
+#include "systemsQueue.inl"
