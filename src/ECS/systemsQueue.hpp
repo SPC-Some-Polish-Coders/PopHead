@@ -7,14 +7,14 @@
 
 namespace ph {
 
-class SystemsQueue
-{
-public:
-	void update(float seconds);
+	class SystemsQueue
+	{
+	public:
 
 	void appendSystem(std::unique_ptr<System>&& system);
+		void update(float seconds);
 
-private:
-	std::vector<std::unique_ptr<System>> mSystemsArray;
-};
+	private:
+		std::vector<std::unique_ptr<System>> mSystemsArray;
+	};
 }

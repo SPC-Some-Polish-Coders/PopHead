@@ -6,11 +6,11 @@
 
 namespace ph {
 
-class Movement : public System 
-{
-public:
-	using System::System;
+	class Movement : public System 
+	{
+	public:
+		using System::System;
 
-	void update(float seconds) override;
-};
+		void update(float seconds) override;
+	};
 }

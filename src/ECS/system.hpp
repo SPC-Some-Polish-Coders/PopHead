@@ -4,15 +4,15 @@
 
 namespace ph {
 
-class System
-{
-public:
-	explicit System(entt::registry& registry);
+	class System
+	{
+	public:
+		explicit System(entt::registry& registry);
 
-	virtual void update(float seconds) = 0;
+		virtual void update(float seconds) = 0;
 
-protected:
-	entt::registry& mRegistry;
-};
+	protected:
+		entt::registry& mRegistry;
+	};
 
 }
