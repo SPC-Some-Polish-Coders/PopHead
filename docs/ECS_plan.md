@@ -32,9 +32,9 @@ struct Health {
 //     sf::Vector2f scale;
 //     float rotation;
 // };
-// struct Position {
-//     sf::Vector2f position;
-// };
+struct Position {
+    sf::Vector2f position;
+};
 struct VertexArray {
     ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
 };
@@ -129,6 +129,6 @@ Later the systems will be ordered.
 - Renderer (Transform?, VertexArray, Shader, Animation)
 - Kinematic collisions (KinematicCollisionBody, Velocity)
 - Static collisions (KinematicCollisionBody, StaticCollisionBody, Velocity)
-- Medkits collecting (Medkit, Player, KinematicCollisionBody)
-- Bullets collecting (Bullets, Player, KinematicCollisionBody)
-- Moving objects (Velocity, ...)
+- Medkits collecting (Medkit, Player, KinematicCollisionBody, ...)
+- Bullets collecting (Bullets, Player, KinematicCollisionBody, ...)
+- Moving objects (Velocity, Position)
