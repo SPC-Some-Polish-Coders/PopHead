@@ -116,13 +116,12 @@ void Game::update(sf::Time deltaTime)
 	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(deltaTime);
-		/*mAIManager->update();
+		mAIManager->update();
 		mPhysicsEngine->update(deltaTime);
-		mGui->update(deltaTime);
-		mTerminal->update();*/
+		//mGui->update(deltaTime);
+		mTerminal->update();
 	}
 
-	// Actual game loop
 	Renderer::setClearColor({10, 10, 10, 255});
 
 	auto& camera = Player::getCamera();

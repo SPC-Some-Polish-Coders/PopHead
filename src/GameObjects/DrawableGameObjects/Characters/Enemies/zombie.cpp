@@ -13,7 +13,7 @@ namespace ph {
 namespace
 {
 	const std::string name = "zombie";
-	constexpr float movementSpeed = 50.f;
+	constexpr float movementSpeed = 30.f;
 	constexpr unsigned damage = 20;
 	constexpr unsigned maxHp = 100;
 	constexpr int hp = 50;
@@ -115,7 +115,7 @@ void Zombie::handlePlayerHit()
 
 void Zombie::move(sf::Time delta)
 {
-	/*setPosition(mCollisionBody.getFixedPosition());
+	setPosition(mCollisionBody.getFixedPosition());
 
 	if(mMovementPath.mPath.empty()) {
 		mMovementPath = mGameData->getAIManager().getZombiePath(mCollisionBody.getPosition());
@@ -133,8 +133,8 @@ void Zombie::move(sf::Time delta)
 		mIsInAttackingMode = true;
 
 	const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
-	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);*/
-	//mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
+	mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 }
 
 sf::Vector2f Zombie::toDirectionVector(Direction direction)

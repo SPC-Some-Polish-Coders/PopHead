@@ -23,7 +23,7 @@ namespace
 		std::array<std::string, 10>{
 			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingLeft"
 		},
-		std::array<sf::IntRect, 10>{
+		std::array<sf::IntRect, 10> {
 			sf::IntRect(0, 0 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
 			sf::IntRect(0, 1 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
 			sf::IntRect(0, 2 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
