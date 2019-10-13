@@ -142,12 +142,13 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 
 void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 {
-	auto npc = std::make_unique<Npc>(mGameData);
+	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
+	
+	auto npc = std::make_unique<Npc>(mGameData, "npc", texturePath);
 
 	npc->setPosition(getPositionAttribute(npcNode));
 	npc->setHp(getProperty(npcNode, "hp").toInt());
 	npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
-	const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(npc));

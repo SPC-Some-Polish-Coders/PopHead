@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="48" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="23">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="48" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="27">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
  </tileset>
@@ -158,6 +158,18 @@
    <point/>
   </object>
   <object id="22" type="Zombie" x="159.333" y="338">
+   <point/>
+  </object>
+  <object id="23" type="Npc" x="76.333" y="250.333">
+   <point/>
+  </object>
+  <object id="25" type="Npc" x="168" y="258.667">
+   <point/>
+  </object>
+  <object id="26" type="Npc" x="131" y="299">
+   <properties>
+    <property name="textureFileName" value="dudeWithCapWalkingAnimation.png"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

@@ -24,16 +24,16 @@ namespace
 			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingLeft"
 		},
 		std::array<sf::IntRect, 10>{
-			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 3 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 4 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 5 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 6 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 7 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
-			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT)
+			sf::IntRect(0, 0 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 3 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 4 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 5 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 6 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 7 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 0 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT)
 		},
 		{
 			2, 2, 2, 2, 2, 2, 2, 1, 1, 1
@@ -43,18 +43,17 @@ namespace
 	);
 }
 
-Npc::Npc(GameData* gameData, const std::string& name)
-	:Character(gameData, name, gameData->getTextures().get("textures/characters/negroDudeWalkingAnimation.png"), 
+Npc::Npc(GameData* gameData, const std::string& name, const std::string& texturePath)
+	:Character(gameData, name, gameData->getTextures().get(texturePath), 
 		animation, movementSpeed, hp, maxHp, posAndSize, mass, false)
 {
-	//getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
-	//mAnimation.animate(mSprite);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 }
 
 void Npc::updateCurrent(sf::Time delta)
 {
 	setPosition(mCollisionBody.getFixedPosition());
-	//mAnimation.animate(mSprite, delta);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
 }
 
 }
