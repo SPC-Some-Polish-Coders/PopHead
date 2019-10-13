@@ -37,6 +37,9 @@ public:
 	sf::FloatRect getGlobalBounds() const;
 
 private:
+	sf::Vector2f getTextureCoordinate(const TileData& tileData, unsigned vertexIndexInTile) const;
+
+private:
 	std::vector<TileData> mTilesToCreate;
 	const sf::Vector2f mTopLeftCornerPositionInWorld;
 	std::shared_ptr<ChunkData> mChunkData;
