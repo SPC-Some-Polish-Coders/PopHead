@@ -5,6 +5,7 @@
 #include "GameObjects/GameObjectContainers/itemsContainer.hpp"
 #include "GameObjects/NonDrawableGameObjects/equipment.hpp"
 #include "Utilities/random.hpp"
+#include "Resources/spriteSheetData.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -76,7 +77,7 @@ sf::FloatRect Character::getTextureBounds() const
 {
 	auto transform = getTransform();
 	return transform.transformRect(sf::FloatRect(
-		0.f, 0.f, static_cast<float>(mSprite.mTexture.getWidth()), static_cast<float>(mSprite.mTexture.getHeight())
+		0.f, 0.f, static_cast<float>(SpriteSheetData::HUMAN_WIDTH), static_cast<float>(SpriteSheetData::HUMAN_HEIGHT)
 	));
 }
 

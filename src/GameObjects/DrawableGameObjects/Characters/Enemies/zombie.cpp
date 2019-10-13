@@ -59,10 +59,8 @@ Zombie::Zombie(GameData* gameData)
 		gameData->getTextures().get("textures/characters/zombieFullAnimation.png"))
 	,mIsSlownDown(false)
 {
-	//mSprite.setTexture(gameData->getTextures().get("textures/characters/zombieFullAnimation.png"));
-	//mAnimation.animate(mSprite);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 
-	//temporary random generate until we develop this system
 	int numberOfBullets = Random::generateNumber(0, 1);
 	for(int i = 0; i < numberOfBullets; ++i)
 		dynamic_cast<Equipment*>(getChild("Equipment"))->putItem(std::make_unique<BulletItem>(mGameData));
@@ -72,7 +70,7 @@ void Zombie::updateCurrent(sf::Time delta)
 {
 	if(isDead()) {
 		mAnimation.changeState("dead");
-		//mAnimation.animate(mSprite);
+		mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 		mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 		auto standingGameObjectsLayer = dynamic_cast<StandingGameObjectsLayer*>(mParent);
 		standingGameObjectsLayer->addCharacterToDie(this);
@@ -195,7 +193,7 @@ void Zombie::updateAnimation(sf::Time delta)
 			setAnimationState("down");
 	}
 
-	//mAnimation.animate(mSprite, delta);
+	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
 }
 
 void Zombie::setAnimationState(const std::string& stateName)

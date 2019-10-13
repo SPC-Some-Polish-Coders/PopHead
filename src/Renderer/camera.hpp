@@ -6,8 +6,6 @@
 
 namespace ph { 
 
-// TODO: Make Camera rotation possible
-
 class Camera
 {
 public:
