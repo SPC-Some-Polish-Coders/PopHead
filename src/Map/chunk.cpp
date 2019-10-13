@@ -94,7 +94,8 @@ void Chunk::initializeGraphics()
 
 	// TODO: Refactor this mess
 	unsigned nrOfTile = 0;
-	for(unsigned nrOfIndexInTile = 0;;)
+	unsigned nrOfIndexInTile = 0;
+	for(;;)
 	{
 		unsigned index = 0;
 		switch(nrOfIndexInTile)
@@ -118,7 +119,7 @@ void Chunk::initializeGraphics()
 		else
 			++nrOfIndexInTile;
 
-		if(nrOfIndexInChunk + 2 == indices.size())
+		if(nrOfIndexInChunk + 1 == indices.size())
 			break;
 	}
 
