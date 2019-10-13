@@ -71,17 +71,15 @@ void Chunk::initializeGraphics()
 			const sf::Vector2f bottomRightPositions = tileBounds.getBottomRight();
 			vertices.emplace_back(bottomRightPositions.x);
 			vertices.emplace_back(bottomRightPositions.y);
-			const sf::Vector2f bottomRightTextureCoordinate = textureRect.getBottomRight();
-			vertices.emplace_back(bottomRightTextureCoordinate.x);
-			vertices.emplace_back(bottomRightTextureCoordinate.y);
+			vertices.emplace_back(textureRect.right());
+			vertices.emplace_back(textureRect.top - textureRect.height);
 
 			// emplace back bottom left corner
 			const sf::Vector2f bottomLeftPositions = tileBounds.getBottomLeft();
 			vertices.emplace_back(bottomLeftPositions.x);
 			vertices.emplace_back(bottomLeftPositions.y);
-			const sf::Vector2f bottomLeftTextureCoordinate = textureRect.getBottomLeft();
-			vertices.emplace_back(bottomLeftTextureCoordinate.x);
-			vertices.emplace_back(bottomLeftTextureCoordinate.y);
+			vertices.emplace_back(textureRect.left);
+			vertices.emplace_back(textureRect.top - textureRect.height);
 		}
 	}
 

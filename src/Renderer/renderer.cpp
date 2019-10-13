@@ -81,8 +81,8 @@ bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i
 
 void Renderer::endScene()
 {
-	/*std::cout << "DCPF: " << mRendererData.mNumberOfDrawCalls << std::endl;
-	mRendererData.mNumberOfDrawCalls = 0;*/
+	std::cout << "DCPF: " << mRendererData.mNumberOfDrawCalls << std::endl;
+	mRendererData.mNumberOfDrawCalls = 0;
 }
 
 void Renderer::onWindowResize(unsigned width, unsigned height)
