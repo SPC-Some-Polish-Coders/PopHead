@@ -57,6 +57,27 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	++mRendererData.mNumberOfDrawCalls;
 }
 
+void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive drawMode)
+{
+	if(!isInsideScreen(bounds))
+		return;
+
+	vao.bind();
+
+	shader.bind();
+	shader.setUniformMatrix4x4("modelMatrix", sf::Transform::Identity.getMatrix());
+	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
+
+	GLCheck(glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0));
+
+	++mRendererData.mNumberOfDrawCalls;
+}
+
+void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
+{
+	submit(vao, *mRendererData.mDefaultShader, bounds, drawMode);
+}
+
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
 	submit(vao, *mRendererData.mDefaultShader, transform, size, drawMode);
@@ -77,6 +98,11 @@ bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i
 {
 	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], static_cast<float>(size.x), static_cast<float>(size.y));
 	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectRect);
+}
+
+bool Renderer::isInsideScreen(const FloatRect objectBounds)
+{
+	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectBounds);
 }
 
 void Renderer::endScene()

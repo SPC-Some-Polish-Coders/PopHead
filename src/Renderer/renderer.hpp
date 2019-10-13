@@ -20,6 +20,8 @@ public:
 	static void beginScene(Camera&);
 
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
+	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
+	static void submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, Shader&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
@@ -32,6 +34,7 @@ public:
 
 private:
 	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
+	static bool isInsideScreen(const FloatRect objectBounds);
 
 private:
 	struct SceneData

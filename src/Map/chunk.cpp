@@ -92,6 +92,7 @@ void Chunk::initializeGraphics()
 	constexpr unsigned numberOfIndicesPerTile = 6;
 	indices.resize(chunkSizeInTiles.x * chunkSizeInTiles.y * numberOfIndicesPerTile);
 
+	// TODO: Refactor this mess
 	unsigned nrOfTile = 0;
 	for(unsigned nrOfIndexInTile = 0;;)
 	{
@@ -135,7 +136,7 @@ void Chunk::initializeGraphics()
 
 void Chunk::draw() const
 {
-	Renderer::submit(*mVertexArray, sf::Transform::Identity, static_cast<sf::Vector2i>(mChunkData->getChunkSizeInPixels()));
+	Renderer::submit(*mVertexArray, getGlobalBounds());
 }
 
 sf::FloatRect Chunk::getGlobalBounds() const
