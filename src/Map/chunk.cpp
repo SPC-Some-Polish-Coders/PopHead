@@ -124,7 +124,8 @@ void Chunk::initializeGraphics()
 
 void Chunk::draw() const
 {
-	Renderer::submit(*mVertexArray, getGlobalBounds());
+	auto* shader = ShaderLibrary::getInstance().get("dynamic");
+	Renderer::submit(*mVertexArray, *shader, getGlobalBounds());
 }
 
 sf::FloatRect Chunk::getGlobalBounds() const
