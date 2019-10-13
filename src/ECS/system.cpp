@@ -1,6 +1,9 @@
 #include "system.hpp"
 
-ph::System::System(entt::registry& registry)
-	: mRegistry(registry)
-{
+namespace ph::system {
+		
+	System::System(entt::registry& registry)
+		: mRegistry(registry)
+	{
+	}
 }

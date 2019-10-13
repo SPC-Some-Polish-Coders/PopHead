@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-namespace ph {
-
+namespace ph::system {
+	
 	class Movement : public System 
 	{
 	public:

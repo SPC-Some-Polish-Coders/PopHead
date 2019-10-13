@@ -2,7 +2,7 @@
 
 #include <entt/entity/registry.hpp>
 
-namespace ph {
+namespace ph::system {
 
 	class System
 	{
@@ -14,5 +14,4 @@ namespace ph {
 	protected:
 		entt::registry& mRegistry;
 	};
-
 }

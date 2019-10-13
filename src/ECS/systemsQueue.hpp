@@ -19,7 +19,7 @@ namespace ph {
 
 	private:
 		entt::registry& mRegistry;
-		std::vector<std::unique_ptr<System>> mSystemsArray;
+		std::vector<std::unique_ptr<system::System>> mSystemsArray;
 	};
 }
 

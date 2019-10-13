@@ -1,11 +1,14 @@
 #pragma once
 
-struct Position
-{
-	float x, y;
-};
+namespace ph::component {
 
-struct Velocity
-{
-	float dx, dy;
-};
+	struct Position
+	{
+		float x, y;
+	};
+
+	struct Velocity
+	{
+		float dx, dy;
+	};
+}

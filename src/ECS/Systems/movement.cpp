@@ -1,13 +1,15 @@
 #include "movement.hpp"
-
 #include "ECS/Components/physicsComponents.hpp"
 
-void ph::Movement::update(float seconds)
-{
-	auto view = mRegistry.view<Position, Velocity>();
+namespace ph::system {
+	
+	void Movement::update(float seconds)
+	{
+		auto view = mRegistry.view<component::Position, component::Velocity>();
 
-	view.each([seconds](Position& pos, const Velocity& vel) {
-		pos.x += vel.dx * seconds;
-		pos.y += vel.dy * seconds;
-		});
+		view.each([seconds](component::Position& pos, const component::Velocity& vel) {
+			pos.x += vel.dx * seconds;
+			pos.y += vel.dy * seconds;
+			});
+	}
 }
