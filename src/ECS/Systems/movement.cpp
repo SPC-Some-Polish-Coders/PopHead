@@ -1,6 +1,6 @@
 #include "movement.hpp"
 
-#include "ECS/components.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 
 void ph::Movement::update(float seconds)
 {
