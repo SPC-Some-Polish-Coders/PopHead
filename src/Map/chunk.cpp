@@ -48,7 +48,7 @@ void Chunk::initializeGraphics()
 			const sf::Vector2f textureSize = static_cast<sf::Vector2f>(mChunkData->getTileset().getSize());
 			const FloatRect textureRect(
 				textureRectTopLeftCorner.x / textureSize.x,
-				textureRectTopLeftCorner.y / textureSize.y,
+				(textureSize.y - textureRectTopLeftCorner.y) / textureSize.y,
 				tileSizeInPixels.x / textureSize.x,
 				tileSizeInPixels.y / textureSize.y
 			);
@@ -56,8 +56,8 @@ void Chunk::initializeGraphics()
 			// emplace back top left corner
 			vertices.emplace_back(vertexTopLeftCornerPosition.x);
 			vertices.emplace_back(vertexTopLeftCornerPosition.y);
-			vertices.emplace_back(textureRectTopLeftCorner.x);
-			vertices.emplace_back(textureRectTopLeftCorner.y);
+			vertices.emplace_back(textureRect.left);
+			vertices.emplace_back(textureRect.top);
 
 			// emplace back top right corner
 			const sf::Vector2f topRightPositions = tileBounds.getTopRight();
@@ -77,8 +77,8 @@ void Chunk::initializeGraphics()
 
 			// emplace back bottom left corner
 			const sf::Vector2f bottomLeftPositions = tileBounds.getBottomLeft();
-			vertices.emplace_back(bottomRightPositions.x);
-			vertices.emplace_back(bottomRightPositions.y);
+			vertices.emplace_back(bottomLeftPositions.x);
+			vertices.emplace_back(bottomLeftPositions.y);
 			const sf::Vector2f bottomLeftTextureCoordinate = textureRect.getBottomLeft();
 			vertices.emplace_back(bottomLeftTextureCoordinate.x);
 			vertices.emplace_back(bottomLeftTextureCoordinate.y);
@@ -105,21 +105,22 @@ void Chunk::initializeGraphics()
 			case 2: index = 0; break;
 			case 3: index = 2; break;
 			case 4: index = 3; break;
-			case 5: {
-				index = 0;
-				++nrOfTile;
-				nrOfIndexInTile = 0;
-			} break;
+			case 5: index = 0; break;
 			default:
 				break;
 		}
 		unsigned nrOfIndexInChunk = nrOfTile * 6 + nrOfIndexInTile;
-		indices[nrOfIndexInChunk] = index + nrOfTile * 6;
+		indices[nrOfIndexInChunk] = index + nrOfTile * 4;
 		
+		if(nrOfIndexInTile == 5) {
+			++nrOfTile;
+			nrOfIndexInTile = 0;
+		}
+		else
+			++nrOfIndexInTile;
+
 		if(nrOfIndexInChunk + 2 == indices.size())
 			break;
-
-		++nrOfIndexInTile;
 	}
 
 	IndexBuffer ibo = createIndexBuffer();
