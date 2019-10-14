@@ -17,7 +17,7 @@ public:
 	void handleEvent(const ph::Event&);
 	void update();
 
-	void registerDrawCall();
+	void setDrawCallsPerFrame(unsigned drawCallsPerFrame);
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
@@ -26,7 +26,6 @@ private:
 	sf::Clock mClock;
 	GameData* mGameData;
 	unsigned mFramesPerSecond;
-	unsigned mDrawCallPerFrame;
 	unsigned mFramesFromLastSecond;
 	bool mIsActive;
 };

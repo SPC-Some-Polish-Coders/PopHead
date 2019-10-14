@@ -8,7 +8,6 @@ EfficiencyRegister::EfficiencyRegister()
 	,mClock()
 	,mGameData(nullptr)
 	,mFramesPerSecond(0)
-	,mDrawCallPerFrame(0)
 	,mFramesFromLastSecond(0)
 	,mIsActive(false)
 {
@@ -33,23 +32,22 @@ void EfficiencyRegister::handleEvent(const ph::Event& phEvent)
 
 void EfficiencyRegister::update()
 {
-	if(mIsActive) {
+	if(mIsActive)
 		mEfficiencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
-		mEfficiencyDisplayer.setDrawCallPerFrameText("DCPF: " + std::to_string(mDrawCallPerFrame));
-		mDrawCallPerFrame = 0;
-	}
 
 	if(mClock.getElapsedTime().asSeconds() >= 1) {
 		mFramesPerSecond = mFramesFromLastSecond;
 		mClock.restart();
 		mFramesFromLastSecond = 0;
 	}
-	++mFramesFromLastSecond;
+	else
+		++mFramesFromLastSecond;
 }
 
-void EfficiencyRegister::registerDrawCall()
+void EfficiencyRegister::setDrawCallsPerFrame(unsigned drawCallsPerFrame)
 {
-	++mDrawCallPerFrame;
+	if(mIsActive)
+		mEfficiencyDisplayer.setDrawCallPerFrameText("DCPF: " + std::to_string(drawCallsPerFrame));
 }
 
 }

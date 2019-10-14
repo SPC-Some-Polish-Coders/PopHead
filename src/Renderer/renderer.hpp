@@ -13,6 +13,8 @@
 
 namespace ph {
 
+class EfficiencyRegister;
+
 class Renderer
 {
 public:
@@ -28,7 +30,7 @@ public:
 	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(const sf::Drawable&);
 
-	static void endScene(sf::RenderWindow& window);
+	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
 	static void onWindowResize(unsigned width, unsigned height);
 

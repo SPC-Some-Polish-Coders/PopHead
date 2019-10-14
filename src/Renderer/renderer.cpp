@@ -1,12 +1,10 @@
 #include <GL/glew.h>
 #include "renderer.hpp"
 #include "GameObjects/gameObject.hpp"
+#include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <array>
-#include <iostream>
 
 namespace ph {
 
@@ -16,6 +14,7 @@ void Renderer::init()
 	if(glewInit() != GLEW_OK)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
+	// TODO: Make proper log
 	/*GLCheck( const GLubyte* openglVersionInfo = glGetString(GL_VERSION) );
 	std::cout << "OpenGL version: " << openglVersionInfo << std::endl;*/
 
@@ -111,11 +110,11 @@ bool Renderer::isInsideScreen(const FloatRect objectBounds)
 	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectBounds);
 }
 
-void Renderer::endScene(sf::RenderWindow& window)
+void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
 {
 	mSFMLRenderer.drawSubmitedObjects(window);
 
-	std::cout << "DCPF: " << mRendererData.mNumberOfDrawCalls << std::endl;
+	efficiencyRegister.setDrawCallsPerFrame(mRendererData.mNumberOfDrawCalls);
 	mRendererData.mNumberOfDrawCalls = 0;
 }
 

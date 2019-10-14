@@ -136,7 +136,7 @@ void Game::update(sf::Time deltaTime)
 	mGui->draw();
 	mEfficiencyRegister->getDisplayer().draw();
 	mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
-	Renderer::endScene(mWindow);
+	Renderer::endScene(mWindow, *mEfficiencyRegister);
 	
 	mWindow.display();
 }
