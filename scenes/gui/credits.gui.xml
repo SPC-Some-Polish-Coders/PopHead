@@ -2,31 +2,41 @@
 <gui>
     <interface name="credits">
         <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		        <textWidget name="Programers"    origin="0.5" position="0.05, 0.25" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="15" text="Programmers:"/>
-            <textWidget name="Czapa"         origin="0.5" position="0.05, 0.3"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
-            <textWidget name="Simon"         origin="0.5" position="0.05, 0.35" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Szymon 'Whittler' Strugala"/>
-            <textWidget name="Peter"         origin="0.5" position="0.05, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Piotr Gardocki"/>
-            <textWidget name="Hubert"        origin="0.5" position="0.05, 0.45" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Hubert Misiewicz"/>
-            <textWidget name="Kamil Lewan"   origin="0.5" position="0.05, 0.5"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil Lewan"/>
-            <textWidget name="Kamil Sajko"   origin="0.5" position="0.05, 0.55" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil 'Sajko'"/>
-            <textWidget name="Thief"         origin="0.5" position="0.05, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="'Thief'"/>
+			<textWidget name="Programers"           origin="0.5" position="0.3, 1" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="15" text="Programmers:" scrollingEffect="true"/>
+            <textWidget name="CzapaProg"            origin="0.5" position="0.35, 1.05"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Grzegorz 'Czapa' Bednorz" scrollingEffect="true"/>
+            <textWidget name="Peter"                origin="0.5" position="0.35, 1.1"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Piotr Gardocki" scrollingEffect="true"/>
+            <textWidget name="Simon"                origin="0.5" position="0.35, 1.15" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Szymon 'Whittler' Strugala" scrollingEffect="true"/>
+			<textWidget name="Hubert"               origin="0.5" position="0.35, 1.2" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Hubert Misiewicz" scrollingEffect="true"/>
+            <textWidget name="Kamil Lewan"          origin="0.5" position="0.35, 1.25"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil Lewan" scrollingEffect="true"/>
+            <textWidget name="Kamil Sajko"          origin="0.5" position="0.35, 1.3" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Kamil 'Sajko'" scrollingEffect="true"/>
+			<textWidget name="Adam"                 origin="0.5" position="0.35, 1.35" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Adam 'Bobem' Zukowski" scrollingEffect="true"/>
+			<textWidget name="Graphffiti"           origin="0.5" position="0.35, 1.4" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Lorwin 'graphffiti'" scrollingEffect="true"/>
+			<textWidget name="Piotek"               origin="0.5" position="0.35, 1.45" fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="Piotek 'Fave'" scrollingEffect="true"/>
+			<textWidget name="Thief"                origin="0.5" position="0.35, 1.5"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="10" text="'Thief'" scrollingEffect="true"/>
 
-            <textWidget name="GameLevelDesigners" origin="0.5" position="0.05, 0.7"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="15" text="Game/Level designer:"/>
-            <textWidget name="Prezes"             origin="0.5" position="0.05, 0.75" fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Piotr 'Prezes' Brzostowski"/>
-		        
-		        <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.5, 0.25" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Music and Sound creator:"/>
-            <textWidget name="'Thief'"              origin="0.5" position="0.5, 0.3"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka"/>
+            <textWidget name="GameLevelDesigners"   origin="0.5" position="0.3, 1.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="15" text="Game/Level designer:" scrollingEffect="true"/>
+            <textWidget name="Prezes"               origin="0.5" position="0.35, 1.65" fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Piotr 'Prezes' Brzostowski" scrollingEffect="true"/>
+			<textWidget name="Stephen"              origin="0.5" position="0.35, 1.7"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Stephen Smith" scrollingEffect="true"/>
+			<textWidget name="Adrian"               origin="0.5" position="0.35, 1.75"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Adrian Paulus" scrollingEffect="true"/>
+			<textWidget name="CzapaGLD"             origin="0.5" position="0.35, 1.8"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Grzegorz 'Czapa' Bednorz" scrollingEffect="true"/>
 
-            <textWidget name="GraphicsCreators" origin="0.5" position="0.5, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="15" text="Graphics creators:"/>
-            <textWidget name="Jumbocube"        origin="0.5" position="0.5, 0.45" fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Andrzej 'Jumbocube' Brol"/>
-            <textWidget name="Czapa"            origin="0.5" position="0.5, 0.5"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Grzegorz 'Czapa' Bednorz"/>
+		    <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.3, 1.90" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Music and Sound creator:" scrollingEffect="true"/>
+            <textWidget name="'Thief'"              origin="0.5" position="0.35, 1.95"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka" scrollingEffect="true"/>
+			<textWidget name="Jerzy Wujczyk"        origin="0.5" position="0.35, 2.00"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Jerzy Wujczyk" scrollingEffect="true"/>
 
-            <textWidget name="SpecialThanks" origin="0.5" position="0.5, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="15" text="Special thanks to:"/>
-            <textWidget name="Darkoss"       origin="0.5" position="0.5, 0.65" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="'Lord Darkoss'"/>
-            <textWidget name="Fureeish"      origin="0.5" position="0.5, 0.7"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Filip Kwiatkowski"/>
-            <textWidget name="Julka"         origin="0.5" position="0.5, 0.75" fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Julka"/>
+            <textWidget name="GraphicsCreators"     origin="0.5" position="0.3, 2.10"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="15" text="Graphics creators:" scrollingEffect="true"/>
+            <textWidget name="Jumbocube"            origin="0.5" position="0.35, 2.15" fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="Andrzej 'Jumbocube' Brol" scrollingEffect="true"/>
+            <textWidget name="SiwyKleszcz"          origin="0.5" position="0.35, 2.20"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="10" text="'SiwyKleszcz'" scrollingEffect="true"/>
 
-            <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.9" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
+			<textWidget name="Quality Assurance"    origin="0.5" position="0.3, 2.3" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Quality Assurance:" scrollingEffect="true"/>
+			<textWidget name="Pavko"                origin="0.5" position="0.35, 2.35"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="'Pavko'" scrollingEffect="true"/>
+			<textWidget name="Piotr Wielgorski"     origin="0.5" position="0.35, 2.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Piotr Wielgorski" scrollingEffect="true"/>
+			<textWidget name="Siwy Kleszcz"         origin="0.5" position="0.35, 2.45"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="'SiwyKleszcz'" scrollingEffect="true"/>
+
+			<textWidget name="Marketing"            origin="0.5" position="0.3, 2.55"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="15" text="Marketing:" scrollingEffect="true"/>
+			<textWidget name="AdrianP"              origin="0.5" position="0.35, 2.6"  fontPath="fonts/joystixMonospace.ttf" color="black" characterSize="10" text="Adrian Paulus" scrollingEffect="true"/>
+
+            <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.87,0.95" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu" scale="0.4"></textWidget>
         </widget>
     </interface>
 </gui>
