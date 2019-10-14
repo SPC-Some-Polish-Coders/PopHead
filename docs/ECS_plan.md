@@ -48,11 +48,6 @@ struct Animation {
     // TODO: add actual variables here
 };
 struct Velocity {
-    // !!! there are two possible versions (both with the same size)
-    // 1. polar coordinates
-    float speed;
-    float angle; // [0, 360)
-    // 2. cartesian coordinates
     sf::Vector2f velocity;
 };
 struct StaticCollisionBody {
