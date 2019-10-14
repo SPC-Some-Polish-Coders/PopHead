@@ -2,4 +2,5 @@
 <scenelinks>
   <map filename="rendererTest.tmx"/>
   <neededResources filename="desert.res.xml"/>
+  <gui filename="gameplay.gui.xml"/>
 </scenelinks>

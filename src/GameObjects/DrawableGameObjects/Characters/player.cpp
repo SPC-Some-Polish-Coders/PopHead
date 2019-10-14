@@ -171,25 +171,25 @@ void Player::die()
 	setAnimationState("dead");
 	auto standingObjects = dynamic_cast<StandingGameObjectsLayer*>(mParent);
 	standingObjects->addCharacterToDie(this);
-	//mGameData->getGui().showInterface("gameOverScreen");
+	mGameData->getGui().showInterface("gameOverScreen");
 	mGameData->getAIManager().setIsPlayerOnScene(false);
 	mIsDead = true;
 }
 
 void Player::updateCounters() const
 {
-	//auto gameplayCounters = mGameData->getGui().getInterface("gameplayCounters");
-	//auto canvas = gameplayCounters->getWidget("canvas");
-	//try {
-	//	auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
-	//	vitalityCounter->setString(std::to_string(mHp));
+	auto gameplayCounters = mGameData->getGui().getInterface("gameplayCounters");
+	auto canvas = gameplayCounters->getWidget("canvas");
+	try {
+		auto vitalityCounter = dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"));
+		vitalityCounter->setString(std::to_string(mHp));
 
-	//	auto bulletCounter = dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"));
-	//	bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
-	//}
-	//catch(const std::exception& e) {
-	//	PH_LOG_ERROR("Setting values to gameplay counters failed! (" + std::string(e.what()) + ")");
-	//}
+		auto bulletCounter = dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"));
+		bulletCounter->setString(std::to_string(mNumberOfOwnedBullets));
+	}
+	catch(const std::exception& e) {
+		PH_LOG_ERROR("Setting values to gameplay counters failed! (" + std::string(e.what()) + ")");
+	}
 }
 
 void Player::updateMovement(const sf::Time delta)

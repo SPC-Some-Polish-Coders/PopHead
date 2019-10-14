@@ -89,7 +89,7 @@ void TextWidget::draw()
 {
 	if(mIsActive) {
 		Widget::draw();
-		mWindow->draw(mText);
+		Renderer::submit(mText);
 	}
 }
 

@@ -30,7 +30,7 @@ private:
 	void update(sf::Time deltaTime);
 
 	std::unique_ptr< GameData >           mGameData;
-	sf::Window                            mWindow;
+	sf::RenderWindow                      mWindow;
 	std::unique_ptr< SoundPlayer >        mSoundPlayer;
 	std::unique_ptr< MusicPlayer >        mMusicPlayer;
 	std::unique_ptr< TextureHolder >      mTextures;
@@ -42,7 +42,7 @@ private:
 	std::unique_ptr< PhysicsEngine >      mPhysicsEngine;
 	std::unique_ptr< Terminal >           mTerminal;
 	std::unique_ptr< EfficiencyRegister > mEfficiencyRegister;
-	//std::unique_ptr< GUI >                mGui;
+	std::unique_ptr< GUI >                mGui;
 };
 
 }

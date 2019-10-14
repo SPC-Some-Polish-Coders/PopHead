@@ -14,7 +14,7 @@ namespace ph {
 Game::Game()
 	:mGameData{}
 	,mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default,
-		sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core)
+		sf::ContextSettings(24, 8, 0, 3, 3/*, sf::ContextSettings::Core*/)
 	)
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
@@ -27,7 +27,7 @@ Game::Game()
 	,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
-	//,mGui{new GUI()}
+	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
 		&mWindow,
@@ -42,7 +42,7 @@ Game::Game()
 		mPhysicsEngine.get(),
 		mTerminal.get(),
 		mEfficiencyRegister.get(),
-		nullptr//mGui.get()
+		mGui.get()
 	));
 
 	GameData* gameData = mGameData.get();
@@ -51,7 +51,7 @@ Game::Game()
 	mTerminal->init(gameData);
 	mEfficiencyRegister->init(gameData);
 	mMap->setGameData(gameData);
-	//mGui->init(gameData);
+	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/rendererTest.xml");
 
@@ -98,7 +98,7 @@ void Game::handleEvents()
 		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
 		mEfficiencyRegister->handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
-		//mGui->handleEvent(phEvent);
+		mGui->handleEvent(phEvent);
 		
 		if(!mTerminal->getSharedData()->mIsVisible)
 			mSceneManager->handleEvent(phEvent);
@@ -118,7 +118,7 @@ void Game::update(sf::Time deltaTime)
 		mSceneManager->update(deltaTime);
 		mAIManager->update();
 		mPhysicsEngine->update(deltaTime);
-		//mGui->update(deltaTime);
+		mGui->update(deltaTime);
 		mTerminal->update();
 	}
 
@@ -133,7 +133,8 @@ void Game::update(sf::Time deltaTime)
 	Renderer::beginScene(camera);
 	mMap->draw(camera.getBounds());
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
-	Renderer::endScene();
+	mGui->draw();
+	Renderer::endScene(mWindow);
 	
 	mWindow.display();
 }

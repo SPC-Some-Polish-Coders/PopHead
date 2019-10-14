@@ -2,6 +2,7 @@
 
 #include "interface.hpp"
 #include "Events/event.hpp"
+#include "Resources/resourceHolder.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -62,9 +63,12 @@ public:
 
 	void clearGUI();
 
+	auto getTextures() -> ResourceHolder<sf::Texture>& { return mTextureHolder; }
+
 private:
 	std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
 	std::unique_ptr<Gui_drawer> mGuiDrawer;
+	ResourceHolder<sf::Texture> mTextureHolder;
 	GameData* mGameData;
 };
 

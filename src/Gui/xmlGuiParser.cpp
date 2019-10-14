@@ -53,7 +53,7 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 	if (widgetTag.hasAttribute("contentPath"))
 	{
 		auto path = widgetTag.getAttribute("contentPath").toString();
-		mGameData->getTextures().load(path);
+		mGameData->getGui().getTextures().load(path);
 		widget.setContentPath(path);
 	}
 	if (widgetTag.hasAttribute("origin"))

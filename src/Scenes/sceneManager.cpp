@@ -56,7 +56,7 @@ void SceneManager::popAction()
 void SceneManager::replaceAction()
 {
 	mGameData->getPhysicsEngine().clear();
-	// mGameData->getGui().clearGUI();
+	mGameData->getGui().clearGUI();
 
 	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{

@@ -6,8 +6,9 @@
 #include "camera.hpp"
 #include "sprite.hpp"
 #include "glEnums.hpp"
+#include "SFMLrenderer.hpp"
+#include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
-#include <Utilities/rect.hpp>
 #include <memory>
 
 namespace ph {
@@ -25,8 +26,9 @@ public:
 	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, Shader&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
-	
-	static void endScene();
+	static void submit(sf::Drawable&);
+
+	static void endScene(sf::RenderWindow& window);
 
 	static void onWindowResize(unsigned width, unsigned height);
 
@@ -51,6 +53,9 @@ private:
 
 	inline static SceneData mSceneData;
 	inline static RendererData mRendererData;
+
+	// TODO: Get rid of SFML Renderer
+	inline static SFMLRenderer mSFMLRenderer;
 };
 
 }

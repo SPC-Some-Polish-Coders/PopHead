@@ -94,6 +94,12 @@ void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimit
 	submit(sprite, *mRendererData.mDefaultShader, transform, drawMode);
 }
 
+void Renderer::submit(sf::Drawable& object)
+{
+	mSFMLRenderer.submit(&object);
+	++mRendererData.mNumberOfDrawCalls;
+}
+
 bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)
 {
 	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], static_cast<float>(size.x), static_cast<float>(size.y));
@@ -105,8 +111,10 @@ bool Renderer::isInsideScreen(const FloatRect objectBounds)
 	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectBounds);
 }
 
-void Renderer::endScene()
+void Renderer::endScene(sf::RenderWindow& window)
 {
+	mSFMLRenderer.drawSubmitedObjects(window);
+
 	std::cout << "DCPF: " << mRendererData.mNumberOfDrawCalls << std::endl;
 	mRendererData.mNumberOfDrawCalls = 0;
 }

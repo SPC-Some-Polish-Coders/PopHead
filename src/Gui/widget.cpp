@@ -1,5 +1,6 @@
 #include "widget.hpp"
 #include "gameData.hpp"
+#include "Renderer/SFMLrenderer.hpp"
 
 namespace ph {
 
@@ -20,7 +21,7 @@ void Widget::draw()
 {
 	if(mIsActive)
 	{
-		mWindow->draw(mSprite);
+		Renderer::submit(mSprite);
 
 		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 			if(k->second->isActive())
@@ -120,8 +121,9 @@ void Widget::show()
 
 bool Widget::setContentPath(const std::string& path)
 {
-	//mSprite.setTexture(mGameData->getTextures().get(path));
-	//mSize = mGameData->getTextures().get(path).getSize();
+	sf::Texture& texture = mGameData->getGui().getTextures().get(path);
+	mSprite.setTexture(texture);
+	mSize = texture.getSize();
 
 	mDefaultSize = mSize;
 	scale(mScale);
