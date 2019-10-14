@@ -15,12 +15,12 @@ ArcadeTimer::ArcadeTimer(GUI& gui)
 void ArcadeTimer::updateCurrent(const sf::Time delta)
 {
 	auto* interface = mGui.getInterface("arcadeCounters");
-	auto* canvas = interface->getWidget("canvas");
+	auto* counters = interface->getWidget("canvas")->getWidget("counters");
 	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
 	int elapsedTimeMiliseconds = static_cast<int>((elapsedTime - elapsedTimeSeconds) * 100);
 	
-	auto* arcadeClock = dynamic_cast<TextWidget*>(canvas->getWidget("arcadeClock"));
+	auto* arcadeClock = dynamic_cast<TextWidget*>(counters->getWidget("arcadeClock"));
 	if (elapsedTimeMiliseconds < 10 || elapsedTimeSeconds < 10)
 		arcadeClock->setString("Time - 0" + std::to_string(elapsedTimeSeconds) + ":0" + std::to_string(elapsedTimeMiliseconds));
 	if(elapsedTimeSeconds < 10)

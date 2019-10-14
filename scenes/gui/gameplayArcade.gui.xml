@@ -20,7 +20,11 @@
     </interface>
     <interface name="arcadeCounters">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <textWidget name="arcadeClock" origin="0.5" position="0.5, 0.1" contentPath="textures/gui/arcadeCountersBackground.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.2" color="white" characterSize="15" text="Time - 0:0"/>
+            <widget name="counters" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.5, 0.1">
+                <textWidget name="arcadeClock" origin="0.5" position="0.05, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Time: 0:0"/>
+                <textWidget name="waveCounter" origin="0.5" position="0.05, 0.35" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Wave: 0   "/>
+                <textWidget name="enemiesCounter" origin="0.5" position="0.05, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Enemies: 00"/>
+            </widget>
         </widget>
     </interface>
 </gui>
