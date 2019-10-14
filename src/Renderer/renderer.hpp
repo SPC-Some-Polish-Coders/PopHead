@@ -26,7 +26,7 @@ public:
 	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, Shader&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(sf::Drawable&);
+	static void submit(const sf::Drawable&);
 
 	static void endScene(sf::RenderWindow& window);
 

@@ -94,7 +94,7 @@ void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimit
 	submit(sprite, *mRendererData.mDefaultShader, transform, drawMode);
 }
 
-void Renderer::submit(sf::Drawable& object)
+void Renderer::submit(const sf::Drawable& object)
 {
 	mSFMLRenderer.submit(&object);
 	++mRendererData.mNumberOfDrawCalls;

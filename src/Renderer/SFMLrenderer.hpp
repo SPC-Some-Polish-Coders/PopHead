@@ -11,12 +11,12 @@ namespace ph {
 class SFMLRenderer
 {
 public:
-	void submit(sf::Drawable*);
+	void submit(const sf::Drawable*);
 
 	void drawSubmitedObjects(sf::RenderWindow& window);
 
 private:
-	std::vector<sf::Drawable*> mSubmitedObjects;
+	std::vector<const sf::Drawable*> mSubmitedObjects;
 };
 
 }

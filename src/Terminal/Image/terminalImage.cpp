@@ -1,7 +1,7 @@
 #include "terminalImage.hpp"
 #include "terminalStyleConstants.hpp"
+#include "Renderer/renderer.hpp"
 #include "gameData.hpp"
-
 
 namespace ph {
 
@@ -21,10 +21,10 @@ TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 void TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if(mTerminalSharedData->mIsVisible) {
-		target.draw(mBackground);
-		target.draw(mTerminalSharedData->mInputLine);
-		target.draw(mSeparatorBetweenInputAndOutputArea);
-		target.draw(mOutputArea);
+		Renderer::submit(mBackground);
+		Renderer::submit(mTerminalSharedData->mInputLine);
+		Renderer::submit(mSeparatorBetweenInputAndOutputArea);
+		Renderer::submit(mOutputArea);
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "outputArea.hpp"
 #include "terminalStyleConstants.hpp"
 #include "gameData.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph {
 
@@ -31,8 +32,8 @@ void OutputArea::pushOutputLine(const OutputLine& line)
 
 void OutputArea::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for(auto& line : mTexts)
-		target.draw(line);
+	for(const sf::Text& line : mTexts)
+		Renderer::submit(line);
 }
 
 void OutputArea::move(sf::Vector2f offset)

@@ -4,7 +4,7 @@
 
 namespace ph {
 
-void SFMLRenderer::submit(sf::Drawable* object)
+void SFMLRenderer::submit(const sf::Drawable* object)
 {
 	mSubmitedObjects.emplace_back(object);
 }
