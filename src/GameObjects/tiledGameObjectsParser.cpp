@@ -16,6 +16,7 @@
 #include "DrawableGameObjects/bilbord.hpp"
 #include "DrawableGameObjects/Items/medkit.hpp"
 #include "DrawableGameObjects/spriteNode.hpp"
+#include "DrawableGameObjects/arcadeTimer.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
@@ -55,9 +56,17 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 		return;
 	
 	loadObjects(gameObjects);
+	if (filePath.find("arcade") != std::string::npos && filePath.find("arcadeMode") == std::string::npos)
+		loadArcadeTimer();
 
 	mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 	ActionEventManager::setEnabled(true);
+}
+
+void TiledGameObjectsParser::loadArcadeTimer() const
+{
+	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleObjects->addChild(std::make_unique<ArcadeTimer>(mGameData->getGui()));
 }
 
 Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode) const
