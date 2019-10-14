@@ -1,4 +1,5 @@
 #include "efficiencyDisplayer.hpp"
+#include "Renderer/renderer.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -25,12 +26,12 @@ void EfficiencyDisplayer::init(GameData* const gameData)
 	mDrawCallPerFrameText.setCharacterSize(10);
 }
 
-void EfficiencyDisplayer::draw(sf::RenderTarget& target, const sf::RenderStates states) const
+void EfficiencyDisplayer::draw() const
 {
 	if(mShouldBeDrawn) {
-		target.draw(mBackground, states);
-		target.draw(mFramesPerSecondText, states);
-		target.draw(mDrawCallPerFrameText, states);
+		Renderer::submit(mBackground);
+		Renderer::submit(mFramesPerSecondText);
+		Renderer::submit(mDrawCallPerFrameText);
 	}
 }
 

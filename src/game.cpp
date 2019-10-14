@@ -111,7 +111,7 @@ void Game::handleEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	//mEfficiencyRegister->update();
+	mEfficiencyRegister->update();
 
 	if(mWindow.hasFocus())
 	{
@@ -134,6 +134,7 @@ void Game::update(sf::Time deltaTime)
 	mMap->draw(camera.getBounds());
 	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
 	mGui->draw();
+	mEfficiencyRegister->getDisplayer().draw();
 	mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 	Renderer::endScene(mWindow);
 	

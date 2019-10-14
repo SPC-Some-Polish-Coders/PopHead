@@ -44,8 +44,7 @@ void EfficiencyRegister::update()
 		mClock.restart();
 		mFramesFromLastSecond = 0;
 	}
-	else
-		++mFramesFromLastSecond;
+	++mFramesFromLastSecond;
 }
 
 void EfficiencyRegister::registerDrawCall()
