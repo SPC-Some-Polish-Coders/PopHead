@@ -2,6 +2,7 @@
 #include "Gui/gui.hpp"
 #include "Gui/interface.hpp"
 #include <math.h>
+#include <iostream>
 
 namespace ph {
 
@@ -17,10 +18,17 @@ void ArcadeTimer::updateCurrent(const sf::Time delta)
 	auto* canvas = interface->getWidget("canvas");
 	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
-	int elapsedTimeMiliseconds = static_cast<int>((elapsedTime - elapsedTimeSeconds) * 10);
+	int elapsedTimeMiliseconds = static_cast<int>((elapsedTime - elapsedTimeSeconds) * 100);
 	
 	auto* arcadeClock = dynamic_cast<TextWidget*>(canvas->getWidget("arcadeClock"));
-	arcadeClock->setString("Time elapsed: " + std::to_string(elapsedTimeSeconds) + ":" + std::to_string(elapsedTimeMiliseconds));
+	if (elapsedTimeMiliseconds < 10 || elapsedTimeSeconds < 10)
+		arcadeClock->setString("Time - 0" + std::to_string(elapsedTimeSeconds) + ":0" + std::to_string(elapsedTimeMiliseconds));
+	if(elapsedTimeSeconds < 10)
+		arcadeClock->setString("Time - 0" + std::to_string(elapsedTimeSeconds) + ":" + std::to_string(elapsedTimeMiliseconds));
+	else if(elapsedTimeMiliseconds < 10)
+		arcadeClock->setString("Time - " + std::to_string(elapsedTimeSeconds) + ":0" + std::to_string(elapsedTimeMiliseconds));
+	else
+		arcadeClock->setString("Time - " + std::to_string(elapsedTimeSeconds) + ":" + std::to_string(elapsedTimeMiliseconds));
 }
 
 }
