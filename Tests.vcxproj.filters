@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\AI">
+      <UniqueIdentifier>{A648661C-92EA-90F2-7BA5-A44667E61743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{EE2696B2-5A91-4A29-A3CF-FBCE0F79287E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio\Music">
+      <UniqueIdentifier>{3E1515F4-AAA0-82B8-B3B1-05AD1FBCDEB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio\Music\MusicData">
+      <UniqueIdentifier>{488C990B-B44E-CD95-FDFE-5B226900A673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio\Sound">
+      <UniqueIdentifier>{26677EF4-92F2-EBB8-9B03-6FAD070E48B9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio\Sound\SoundData">
+      <UniqueIdentifier>{1866B06B-8428-E4F5-CDD8-728239DABCD3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio\Sound\Spatialization">
+      <UniqueIdentifier>{A1C8325C-8DEE-FCC2-7634-828E62F9218F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\EfficiencyRegister">
+      <UniqueIdentifier>{161D1292-0217-3BE4-EB83-D1F4D71CA150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Events">
+      <UniqueIdentifier>{7162C20E-5D1A-045C-C621-DDB7B2F89E4C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects">
+      <UniqueIdentifier>{A0E17904-0C6D-E7C8-157E-6ABD818843C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\DrawableGameObjects">
+      <UniqueIdentifier>{F5748CA1-612E-F74B-EA8D-11265646ADBB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\DrawableGameObjects\Characters">
+      <UniqueIdentifier>{A46B81C4-90E9-D15D-79E1-8FF565FE1386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\DrawableGameObjects\Characters\Enemies">
+      <UniqueIdentifier>{79F6F57F-65A0-2B8F-4E71-33AA3ABACB7D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\DrawableGameObjects\Characters\Npcs">
+      <UniqueIdentifier>{078129D7-7392-D17D-FCE3-63BD68F45AB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\DrawableGameObjects\Items">
+      <UniqueIdentifier>{26639C1C-927D-FFBD-DB9F-0F5247F926C5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\GameObjectContainers">
+      <UniqueIdentifier>{B67B0B11-A262-CD08-4BB3-33263779466F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameObjects\NonDrawableGameObjects">
+      <UniqueIdentifier>{407BA672-2CCD-7D62-15EC-BA7201DD964B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Gui">
+      <UniqueIdentifier>{017D2FA9-6D5C-AE44-7674-391BE2D214A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Logs">
+      <UniqueIdentifier>{B1C121CF-9D8E-7CDA-C6A7-6A82B2D3B168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Logs\ConcreteHandlers">
+      <UniqueIdentifier>{843A9556-F0FC-C8E0-39AD-576DA5AEA1BE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Map">
+      <UniqueIdentifier>{FA932FA9-6673-AE44-6F8B-391BDBE914A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Physics\CollisionBody">
+      <UniqueIdentifier>{0857A22B-7419-D6B5-BDC9-644229CBAE93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Physics\CollisionDebug">
+      <UniqueIdentifier>{A1E40BA0-8DF4-B770-F6AD-1C8FE2DCA609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Physics\CollisionHandlers">
+      <UniqueIdentifier>{2BCF76BD-97E7-5DE7-6094-ED80CC6BF280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Renderer">
+      <UniqueIdentifier>{73D1DFBF-5F34-6F64-08BA-A71AF4FB3AE7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Resources">
+      <UniqueIdentifier>{D76C8757-432D-038E-0C68-4C0B78E7476A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scenes">
+      <UniqueIdentifier>{BDC7122E-A97F-547B-1287-2DD7FE5DEF6B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scenes\CutScenes">
+      <UniqueIdentifier>{594CBAD1-45DB-439B-EEF9-5796DA675441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Terminal">
+      <UniqueIdentifier>{381A5DA2-247D-EC46-CD02-25FDB944B8C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Terminal\Commands">
+      <UniqueIdentifier>{79B4CB2E-E520-8729-AE14-1F871A40A991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Terminal\Image">
+      <UniqueIdentifier>{2AC60EE8-16AA-CF3D-7F0A-CA906B0DBABF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Terminal\Input">
+      <UniqueIdentifier>{37940FE8-2378-D03D-8CD8-CA9078DBBABF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utilities">
+      <UniqueIdentifier>{D86B3A83-442C-B6B9-0D67-FF3679E6FA95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests">
+      <UniqueIdentifier>{78756B10-E489-93C1-AD0B-372119DF8FF2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\AI">
+      <UniqueIdentifier>{11F3F5FC-FDBF-5008-26D9-3EB012058696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Audio">
+      <UniqueIdentifier>{793D385A-E5F2-B04F-6EE7-AA26DA9BA753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Audio\Sound">
+      <UniqueIdentifier>{F1F9B79A-5D10-B630-A687-415212DD86B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Audio\Sound\Spatialization">
+      <UniqueIdentifier>{0C240BAF-F874-F6F0-21D9-E4B20D89895A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\GameObjects">
+      <UniqueIdentifier>{6B74B3AA-D78A-B140-2002-3D628C5782C8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Logs">
+      <UniqueIdentifier>{DCB24512-C86A-875F-3172-60BB1D492250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Physics">
+      <UniqueIdentifier>{EA70152F-5631-9165-1F6C-DAE28BEBD541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Physics\CollisionHandlers">
+      <UniqueIdentifier>{36E9AB89-A2CC-BAC9-ABCF-E8051732811A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Resources">
+      <UniqueIdentifier>{E2D01798-4E5C-855C-576D-0851C377E15C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\TestsUtilities">
+      <UniqueIdentifier>{D62A6B31-C2B9-F4FA-6BD8-08F6574605A1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests\Utilities">
+      <UniqueIdentifier>{E3CFCAC3-4F5B-3888-586C-BB7CC4769488}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\AI\aStarAlgorithm.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\aiManager.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\nodesGrid.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\obstacleGrid.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\pathData.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\randomPathAlgorithm.hpp">
+      <Filter>src\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Music\MusicData\musicData.hpp">
+      <Filter>src\Audio\Music\MusicData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Music\MusicData\musicDataHolder.hpp">
+      <Filter>src\Audio\Music\MusicData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Music\musicPlayer.hpp">
+      <Filter>src\Audio\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Sound\SoundData\soundData.hpp">
+      <Filter>src\Audio\Sound\SoundData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Sound\SoundData\soundDataHolder.hpp">
+      <Filter>src\Audio\Sound\SoundData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Sound\Spatialization\spatializationManager.hpp">
+      <Filter>src\Audio\Sound\Spatialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\Sound\soundPlayer.hpp">
+      <Filter>src\Audio\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\xmlAudioParser.hpp">
+      <Filter>src\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EfficiencyRegister\efficiencyDisplayer.hpp">
+      <Filter>src\EfficiencyRegister</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EfficiencyRegister\efficiencyRegister.hpp">
+      <Filter>src\EfficiencyRegister</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\actionEvent.hpp">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\actionEventManager.hpp">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\event.hpp">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\eventDispatcher.hpp">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\globalKeyboardShortcuts.hpp">
+      <Filter>src\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\Enemies\zombie.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\Npcs\crawlingNpc.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Npcs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\Npcs\gateGuard.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Npcs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\enemy.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\npc.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Characters\player.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Items\bulletItem.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\Items\medkit.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\bilbord.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\car.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\character.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\deadCharacter.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\gate.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\gun.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\item.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\lever.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\melee.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\particles.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\DrawableGameObjects\spriteNode.hpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\GameObjectContainers\gameObjectLayers.hpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\GameObjectContainers\itemsContainer.hpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\GameObjectContainers\particlesSystem.hpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\activateArea.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\cutsceneArea.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\entrance.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\equipment.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\playerEquipment.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\slowDownArea.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\NonDrawableGameObjects\spawner.hpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\gameObject.hpp">
+      <Filter>src\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObjects\tiledGameObjectsParser.hpp">
+      <Filter>src\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\behaviorType.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\gui.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\guiActionsParser.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\guiActionsParserImpl.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\interface.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\messageBox.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\textWidget.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\widget.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gui\xmlGuiParser.hpp">
+      <Filter>src\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\ConcreteHandlers\consoleHandler.hpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\ConcreteHandlers\fileHandler.hpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\ConcreteHandlers\terminalHandler.hpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\criticalError.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\handler.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\logRecord.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\logger.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\logs.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logs\logsInitializing.hpp">
+      <Filter>src\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\chunk.hpp">
+      <Filter>src\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\chunkData.hpp">
+      <Filter>src\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\chunkMap.hpp">
+      <Filter>src\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\map.hpp">
+      <Filter>src\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Map\xmlMapParser.hpp">
+      <Filter>src\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionBody\collisionBody.hpp">
+      <Filter>src\Physics\CollisionBody</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionDebug\collisionDebugManager.hpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionDebug\collisionDebugRect.hpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionDebug\collisionDebugSettings.hpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionHandlers\kinematicCollisionHandler.hpp">
+      <Filter>src\Physics\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\CollisionHandlers\staticCollisionHandler.hpp">
+      <Filter>src\Physics\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\physicsEngine.hpp">
+      <Filter>src\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\camera.hpp">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\renderer.hpp">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\collisionRectData.hpp">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\loadFonts.hpp">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\resourceHolder.hpp">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\resourceHolder.inl">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\spriteSheetData.hpp">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resources\xmlResourceParser.hpp">
+      <Filter>src\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\CutScenes\controlsGuide.hpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\CutScenes\endingCutscene.hpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\CutScenes\gateGuardDialogue.hpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\CutScenes\startGameCutscene.hpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\CutScenes\subtitlesBeforeStartGameCutscene.hpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\cutScene.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\cutSceneManager.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\playerStatus.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\scene.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\sceneManager.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\sceneParser.hpp">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\sceneParser.inl">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\Commands\commandInterpreter.hpp">
+      <Filter>src\Terminal\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\Image\outputArea.hpp">
+      <Filter>src\Terminal\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\Image\terminalImage.hpp">
+      <Filter>src\Terminal\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\Image\terminalStyleConstants.hpp">
+      <Filter>src\Terminal\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\Input\terminalInputHandler.hpp">
+      <Filter>src\Terminal\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\terminal.hpp">
+      <Filter>src\Terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terminal\terminalSharedData.hpp">
+      <Filter>src\Terminal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\animation.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\animation.inl">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\cast.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\csv.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\debug.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\filePath.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\math.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\math.inl">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\random.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\rect.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\rect.inl">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\spawn.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\spawn.inl">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\xml.hpp">
+      <Filter>src\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameData.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\Logs\mockHandler.hpp">
+      <Filter>tests\Logs</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\TestsUtilities\bufferedHandler.hpp">
+      <Filter>tests\TestsUtilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AI\aStarAlgorithm.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\aiManager.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\nodesGrid.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\obstacleGrid.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\randomPathAlgorithm.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Music\MusicData\musicData.cpp">
+      <Filter>src\Audio\Music\MusicData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Music\MusicData\musicDataHolder.cpp">
+      <Filter>src\Audio\Music\MusicData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Music\musicPlayer.cpp">
+      <Filter>src\Audio\Music</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Sound\SoundData\soundData.cpp">
+      <Filter>src\Audio\Sound\SoundData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Sound\SoundData\soundDataHolder.cpp">
+      <Filter>src\Audio\Sound\SoundData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Sound\Spatialization\spatializationManager.cpp">
+      <Filter>src\Audio\Sound\Spatialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\Sound\soundPlayer.cpp">
+      <Filter>src\Audio\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\xmlAudioParser.cpp">
+      <Filter>src\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EfficiencyRegister\efficiencyDisplayer.cpp">
+      <Filter>src\EfficiencyRegister</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EfficiencyRegister\efficiencyRegister.cpp">
+      <Filter>src\EfficiencyRegister</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events\actionEvent.cpp">
+      <Filter>src\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events\actionEventManager.cpp">
+      <Filter>src\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events\eventDispatcher.cpp">
+      <Filter>src\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Events\globalKeyboardShortcuts.cpp">
+      <Filter>src\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\Enemies\zombie.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\Npcs\crawlingNpc.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Npcs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\Npcs\gateGuard.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters\Npcs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\enemy.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\npc.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Characters\player.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Items\bulletItem.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\Items\medkit.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\bilbord.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\car.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\character.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\deadCharacter.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\gate.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\gun.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\item.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\lever.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\melee.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\particles.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\DrawableGameObjects\spriteNode.cpp">
+      <Filter>src\GameObjects\DrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\GameObjectContainers\gameObjectLayers.cpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\GameObjectContainers\itemsContainer.cpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\GameObjectContainers\particlesSystem.cpp">
+      <Filter>src\GameObjects\GameObjectContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\activateArea.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\cutSceneArea.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\entrance.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\equipment.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\playerEquipment.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\slowDownArea.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\NonDrawableGameObjects\spawner.cpp">
+      <Filter>src\GameObjects\NonDrawableGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\gameObject.cpp">
+      <Filter>src\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObjects\tiledGameObjectsParser.cpp">
+      <Filter>src\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\gui.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\guiActionsParserImpl.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\interface.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\messageBox.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\textWidget.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\widget.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui\xmlGuiParser.cpp">
+      <Filter>src\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\ConcreteHandlers\consoleHandler.cpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\ConcreteHandlers\fileHandler.cpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\ConcreteHandlers\terminalHandler.cpp">
+      <Filter>src\Logs\ConcreteHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\criticalError.cpp">
+      <Filter>src\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\handler.cpp">
+      <Filter>src\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\logRecord.cpp">
+      <Filter>src\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\logger.cpp">
+      <Filter>src\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logs\logsInitializing.cpp">
+      <Filter>src\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map\chunk.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map\chunkData.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map\chunkMap.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map\map.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map\xmlMapParser.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionBody\collisionBody.cpp">
+      <Filter>src\Physics\CollisionBody</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionDebug\collisionDebugManager.cpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionDebug\collisionDebugRect.cpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionDebug\collisionDebugSettings.cpp">
+      <Filter>src\Physics\CollisionDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionHandlers\kinematicCollisionHandler.cpp">
+      <Filter>src\Physics\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\CollisionHandlers\staticCollisionHandler.cpp">
+      <Filter>src\Physics\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\physicsEngine.cpp">
+      <Filter>src\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\camera.cpp">
+      <Filter>src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\renderer.cpp">
+      <Filter>src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\xmlResourceParser.cpp">
+      <Filter>src\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\CutScenes\controlsGuide.cpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\CutScenes\endingCutscene.cpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\CutScenes\gateGuardDialogue.cpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\CutScenes\startGameCutscene.cpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\CutScenes\subtitlesBeforeStartGameCutscene.cpp">
+      <Filter>src\Scenes\CutScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\cutScene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\cutSceneManager.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\scene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\sceneManager.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terminal\Commands\commandInterpreter.cpp">
+      <Filter>src\Terminal\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terminal\Image\outputArea.cpp">
+      <Filter>src\Terminal\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terminal\Image\terminalImage.cpp">
+      <Filter>src\Terminal\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terminal\Input\terminalInputHandler.cpp">
+      <Filter>src\Terminal\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Terminal\terminal.cpp">
+      <Filter>src\Terminal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\animation.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\cast.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\csv.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\filePath.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\math.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\random.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\spawn.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\xml.cpp">
+      <Filter>src\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameData.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\AI\testAStarAlgorithm.cpp">
+      <Filter>tests\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\AI\testObstacleGrid.cpp">
+      <Filter>tests\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\AI\testRandomPathAlgorithm.cpp">
+      <Filter>tests\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Audio\Sound\Spatialization\testSpatializationManager.cpp">
+      <Filter>tests\Audio\Sound\Spatialization</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Audio\Sound\testSoundPlayer.cpp">
+      <Filter>tests\Audio\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\GameObjects\testGameObject.cpp">
+      <Filter>tests\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Logs\testHandler.cpp">
+      <Filter>tests\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Logs\testLogger.cpp">
+      <Filter>tests\Logs</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Physics\CollisionHandlers\testKinematicCollisionHandler.cpp">
+      <Filter>tests\Physics\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Physics\CollisionHandlers\testStaticCollisionHandler.cpp">
+      <Filter>tests\Physics\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Physics\testPhysicsEngine.cpp">
+      <Filter>tests\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Resources\testTextureHolder.cpp">
+      <Filter>tests\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\TestsUtilities\bufferedHandler.cpp">
+      <Filter>tests\TestsUtilities</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Utilities\testMath.cpp">
+      <Filter>tests\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Utilities\testPath.cpp">
+      <Filter>tests\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Utilities\testRandom.cpp">
+      <Filter>tests\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\Utilities\testRect.cpp">
+      <Filter>tests\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\main.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
