@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui>
+    <interface name="mainMenu">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="bunkerButton"   origin="0.5" position="0.6, 0.7"      fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/arcadeTheBunker.xml" text="Bunker"></textWidget>
+
+		        <textWidget name="sewageButton"   origin="0.5" position="0.15, 0.7"      fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/arcadeSewage.xml" text="Sewage"></textWidget>
+
+		        <textWidget name="exitToMenuButton"   origin="0.5" position="0.5, 0.85"	 scale="0.5"
+contentPath="textures/gui/exitButton.png"      fontPath="fonts/joystixMonospace.ttf" textPosition="0.2" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main Menu"></textWidget>
+        </widget>
+    </interface>
+</gui>
