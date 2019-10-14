@@ -16,7 +16,7 @@
 #include "DrawableGameObjects/bilbord.hpp"
 #include "DrawableGameObjects/Items/medkit.hpp"
 #include "DrawableGameObjects/spriteNode.hpp"
-#include "DrawableGameObjects/arcadeTimer.hpp"
+#include "DrawableGameObjects/arcadeManager.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
 #include "GameObjectContainers/particlesSystem.hpp"
 #include "GameObjectContainers/itemsContainer.hpp"
@@ -57,16 +57,10 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 	
 	loadObjects(gameObjects);
 	if (filePath.find("arcade") != std::string::npos && filePath.find("arcadeMode") == std::string::npos)
-		loadArcadeTimer();
+		loadArcadeManager();
 
 	mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 	ActionEventManager::setEnabled(true);
-}
-
-void TiledGameObjectsParser::loadArcadeTimer() const
-{
-	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
-	invisibleObjects->addChild(std::make_unique<ArcadeTimer>(mGameData->getGui()));
 }
 
 Xml TiledGameObjectsParser::findGameObjects(const Xml& mapNode) const
@@ -117,6 +111,12 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		auto playerPosition = player.getPosition();
 		mGameData->getRenderer().getCamera().setCenter(playerPosition);
 	}
+}
+
+void TiledGameObjectsParser::loadArcadeManager() const
+{
+	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui()));
 }
 
 void TiledGameObjectsParser::loadLayerObjects() const

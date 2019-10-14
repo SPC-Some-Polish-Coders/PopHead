@@ -23,6 +23,7 @@ private:
 	void loadObjects(const Xml& gameObjects) const;
 	void loadLayerObjects() const;
 	void loadContainerObjects() const;
+	void loadArcadeManager() const;
 	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
 	void loadZombie(const Xml& zombieNode) const;
 	void loadNpc(const Xml& npcNode) const;
@@ -44,7 +45,6 @@ private:
 	void loadMedkit(const Xml& bulletItemNode) const;
 	void loadBilbord(const Xml& bilbordNode) const;
 	void loadSpriteNode(const Xml& spriteNodeNode) const;
-	void loadArcadeTimer() const;
 
 	Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 	bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
