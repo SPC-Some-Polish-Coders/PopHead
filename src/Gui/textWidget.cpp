@@ -2,6 +2,7 @@
 #include "gameData.hpp"
 
 #include <cmath>
+#include <sstream>
 
 namespace ph {
 
@@ -88,10 +89,28 @@ void TextWidget::scale(const sf::Vector2f& scale)
 void TextWidget::draw()
 {
 	if(mIsActive) {
+		if (scrollingEffect)
+		{
+			mText.move(0, sec -= 0.00005f);
+		}
+
 		Widget::draw();
 		mWindow->draw(mText);
 	}
 }
+
+void TextWidget::setScrollingEffect(bool flag)
+{
+	scrollingEffect = flag;
+}
+
+void TextWidget::resetAnimation()
+{
+	sec = 0;
+}
+
+float TextWidget::sec = 0;
+
 
 }
 
