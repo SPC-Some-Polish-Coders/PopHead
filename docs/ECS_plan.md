@@ -1,6 +1,8 @@
 # Overview
 This document will contain all plans, schemas, assets, etc. that will be used to change our current game objects architecture (inheritance based) to ECS (Entity-Component-System). We decided to use existing ECS library - Entt - to not deal with problems of implementing ECS.
 
+The documentation for systems that have been already implemented is [here](forProgrammers/ECS_architecture.md). 
+
 #### Useful Docs:
 - ECS introduction
   - [wikipedia](https://en.wikipedia.org/wiki/Entity_component_system)
