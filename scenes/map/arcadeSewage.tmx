@@ -672,86 +672,11 @@
 </data>
  </layer>
  <objectgroup id="3" name="gameObjects">
-  <object id="5" type="Zombie" x="1232.33" y="593.667">
-   <point/>
-  </object>
-  <object id="10" type="Zombie" x="1340.33" y="578.667">
-   <point/>
-  </object>
-  <object id="12" type="Zombie" x="1342.33" y="462.667">
-   <point/>
-  </object>
-  <object id="30" type="Zombie" x="1187" y="471.667">
-   <point/>
-  </object>
   <object id="34" type="SlowDownArea" x="1216.41" y="6.68182" width="92.6667" height="2388.67"/>
   <object id="127" type="Camera" x="943.03" y="960" width="640" height="360"/>
-  <object id="128" type="Zombie" x="1349.52" y="1925.09">
-   <point/>
-  </object>
-  <object id="129" type="Zombie" x="1351.52" y="1809.09">
-   <point/>
-  </object>
-  <object id="130" type="Zombie" x="1182.85" y="1879.64">
-   <point/>
-  </object>
-  <object id="131" type="Zombie" x="1184.85" y="1763.64">
-   <point/>
-  </object>
-  <object id="132" type="Zombie" x="1266.67" y="1863.64">
-   <point/>
-  </object>
   <object id="134" type="SlowDownArea" x="1311" y="1103.83" width="1070" height="95.17"/>
   <object id="135" type="SlowDownArea" x="136" y="1104.83" width="1078" height="95.17"/>
   <object id="136" type="Player" x="1263.52" y="1158.3">
-   <point/>
-  </object>
-  <object id="137" type="Zombie" x="1263" y="476.167">
-   <point/>
-  </object>
-  <object id="138" type="Zombie" x="1176" y="541.167">
-   <point/>
-  </object>
-  <object id="139" type="Zombie" x="716" y="590.5">
-   <point/>
-  </object>
-  <object id="140" type="Zombie" x="790.667" y="617.834">
-   <point/>
-  </object>
-  <object id="141" type="Zombie" x="724" y="643.834">
-   <point/>
-  </object>
-  <object id="142" type="Zombie" x="545" y="1063.83">
-   <point/>
-  </object>
-  <object id="143" type="Zombie" x="565" y="1243.83">
-   <point/>
-  </object>
-  <object id="144" type="Zombie" x="520" y="1163.83">
-   <point/>
-  </object>
-  <object id="145" type="Zombie" x="575" y="1167.83">
-   <point/>
-  </object>
-  <object id="146" type="Zombie" x="911" y="1474.83">
-   <point/>
-  </object>
-  <object id="153" type="Zombie" x="2011.5" y="1238">
-   <point/>
-  </object>
-  <object id="154" type="Zombie" x="1980" y="1098.5">
-   <point/>
-  </object>
-  <object id="155" type="Zombie" x="2024.5" y="1169.5">
-   <point/>
-  </object>
-  <object id="156" type="Zombie" x="2026.5" y="1053.5">
-   <point/>
-  </object>
-  <object id="157" type="Zombie" x="1931.5" y="1242">
-   <point/>
-  </object>
-  <object id="158" type="Zombie" x="1966.5" y="1185.5">
    <point/>
   </object>
   <object id="159" type="ArcadeSpawner" x="451" y="1158.83">
@@ -784,42 +709,9 @@
    </properties>
    <point/>
   </object>
-  <object id="165" type="Zombie" x="1731" y="1678">
-   <point/>
-  </object>
-  <object id="166" type="Zombie" x="1778" y="1719">
-   <point/>
-  </object>
-  <object id="167" type="Zombie" x="1823" y="1696">
-   <point/>
-  </object>
   <object id="168" type="SlowDownArea" x="1391" y="1280.41" width="303" height="338.17"/>
   <object id="169" type="SlowDownArea" x="1778.5" y="385.915" width="271" height="268.17"/>
   <object id="170" type="SlowDownArea" x="832.5" y="672.915" width="303" height="338.17"/>
-  <object id="171" type="Zombie" x="1777" y="388">
-   <point/>
-  </object>
-  <object id="172" type="Zombie" x="1890" y="477">
-   <point/>
-  </object>
-  <object id="173" type="Zombie" x="1978" y="552">
-   <point/>
-  </object>
-  <object id="174" type="Zombie" x="2026" y="418">
-   <point/>
-  </object>
-  <object id="175" type="Zombie" x="2059" y="660">
-   <point/>
-  </object>
-  <object id="176" type="Zombie" x="495" y="1401">
-   <point/>
-  </object>
-  <object id="178" type="Zombie" x="838" y="1587">
-   <point/>
-  </object>
-  <object id="179" type="Zombie" x="1860" y="573">
-   <point/>
-  </object>
   <object id="180" type="ArcadeSpawner" x="1920" y="528">
    <properties>
     <property name="spawnType" value="zombie"/>
