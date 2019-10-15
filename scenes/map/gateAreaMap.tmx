@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="198">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="left-up" width="121" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="200">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -725,6 +725,16 @@
     <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
    </properties>
    <point/>
+  </object>
+  <object id="198" name="ActivateArea" type="ActivateArea" x="564.75" y="1121.25" width="124.5" height="83.5">
+   <properties>
+    <property name="areaName" value="movementControlPopup"/>
+   </properties>
+  </object>
+  <object id="199" name="ActivateArea" type="ActivateArea" x="706.75" y="454.25" width="50.5" height="165.5">
+   <properties>
+    <property name="areaName" value="attackButtonPopup"/>
+   </properties>
   </object>
  </objectgroup>
 </map>
