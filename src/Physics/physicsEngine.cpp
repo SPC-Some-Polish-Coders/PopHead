@@ -23,7 +23,7 @@ PhysicsEngine::PhysicsEngine()
 const CollisionBody& PhysicsEngine::createStaticBodyAndGetTheReference(const sf::FloatRect rect)
 {
 	auto iter = mStaticBodies.emplace(rect, 0.f);
-	mCollisionDebugManager.addStaticBodyCollisionDebugRect(*iter);
+	//mCollisionDebugManager.addStaticBodyCollisionDebugRect(*iter);
 	return *iter;
 }
 
@@ -34,7 +34,7 @@ CollisionBody& PhysicsEngine::createKinematicBodyAndGetTheReference(sf::FloatRec
 
 	mKinematicBodies.emplace_back(rect, mass);
 	auto& kinematicBody = mKinematicBodies.back();
-	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
+	//mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
 	return kinematicBody;
 }
 
@@ -42,7 +42,7 @@ CollisionBody& PhysicsEngine::createFullKinematicBodyAndGetTheReference(sf::Floa
 {
 	mKinematicBodies.emplace_back(rect, mass);
 	auto& kinematicBody = mKinematicBodies.back();
-	mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
+	//mCollisionDebugManager.addKinematicBodyCollisionDebugRect(kinematicBody);
 	return kinematicBody;
 }
 
@@ -65,7 +65,7 @@ void PhysicsEngine::clear() noexcept
 {
 	mStaticBodies.clear();
 	mKinematicBodies.clear();
-	mCollisionDebugManager.clear();
+	//mCollisionDebugManager.clear();
 }
 
 void PhysicsEngine::update(sf::Time delta)
@@ -123,12 +123,14 @@ bool PhysicsEngine::isThereCollision(const CollisionBody& a, const CollisionBody
 
 void PhysicsEngine::updatePositionsOfDebugRects()
 {
-	int i = 0;
-	for(const auto& kinematicBody : mKinematicBodies) {
-		auto pos = kinematicBody.getPosition();
-		mCollisionDebugManager.mKinematicBodyCollisionDebugRects[i].setPosition(pos);
-		++i;
-	}
+	// TEMPORARILY WE DON'T SUPPORT COLLISION DEBUG
+
+	//int i = 0;
+	//for(const auto& kinematicBody : mKinematicBodies) {
+	//	auto pos = kinematicBody.getPosition();
+	//	mCollisionDebugManager.mKinematicBodyCollisionDebugRects[i].setPosition(pos);
+	//	++i;
+	//}
 }
 
 }

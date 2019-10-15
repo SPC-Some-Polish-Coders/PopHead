@@ -27,7 +27,7 @@ public:
 
 	const size_t howManyStaticBodiesAreThere() const { return mStaticBodies.size(); }
 	const size_t howManyKinematicBodiesAreThere() const { return mKinematicBodies.size(); }
-	auto getCollisionDebugManager() const -> const CollisionDebugManager& { return mCollisionDebugManager; }
+	//auto getCollisionDebugManager() const -> const CollisionDebugManager& { return mCollisionDebugManager; }
 
     void update(sf::Time delta);
 private:
@@ -39,7 +39,7 @@ private:
 private:
 	std::multiset<CollisionBody, std::function<bool(const CollisionBody&, const CollisionBody&)>> mStaticBodies;
     std::list<CollisionBody> mKinematicBodies;
-	CollisionDebugManager mCollisionDebugManager;
+	//CollisionDebugManager mCollisionDebugManager;
     StaticCollisionHandler mStaticCollisionHandler;
     KinematicCollisionHandler mKinematicCollisionHandler;
 };
