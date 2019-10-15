@@ -37,6 +37,7 @@ void ArcadeManager::updateClock()
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
 	int elapsedTimeMiliseconds = static_cast<int>((elapsedTime - elapsedTimeSeconds) * 100);
 	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds/60);
+	if (elapsedTimeSeconds >= 60) elapsedTimeSeconds -= elapsedTimeMinutes*60;
 
 	auto * arcadeClock = dynamic_cast<TextWidget*>(counters->getWidget("arcadeClock"));
 	arcadeClock->setString("Time - " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds) + ":" + addZero(elapsedTimeMiliseconds));
