@@ -2,8 +2,6 @@
 
 #include "ECS/system.hpp"
 
-#include <iostream>
-
 namespace ph::system {
 	
 	class Movement : public System 
