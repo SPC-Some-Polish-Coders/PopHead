@@ -285,7 +285,7 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 {
-	/*const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
+	const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
 	const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
 	const FloatRect cameraBounds(
 		cameraTopLeftCornerPosition.x, cameraTopLeftCornerPosition.y,
@@ -293,9 +293,9 @@ void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
 	);
 	const sf::Vector2f cameraCenter = cameraBounds.getCenter();
 	
-	auto& camera = mGameData->getRenderer().getCamera();
+	auto& camera = Player::getCamera();
 	camera.setSize(cameraViewSize);
-	camera.setCenter(cameraCenter);*/
+	camera.setCenter(cameraCenter);
 }
 
 void TiledGameObjectsParser::loadPlayer(const Xml& playerNode) const
