@@ -755,18 +755,33 @@
    <point/>
   </object>
   <object id="159" type="ArcadeSpawner" x="451" y="1158.83">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="161" type="ArcadeSpawner" x="767.667" y="610">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="162" type="ArcadeSpawner" x="1263" y="519">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
-  <object id="163" type="Spawner" x="1908" y="1162.67">
+  <object id="163" type="ArcadeSpawner" x="1908" y="1162.67">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="164" type="ArcadeSpawner" x="1784" y="1693">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="165" type="Zombie" x="1731" y="1678">
@@ -806,18 +821,33 @@
    <point/>
   </object>
   <object id="180" type="ArcadeSpawner" x="1920" y="528">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="181" type="ArcadeSpawner" x="506" y="1585">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="182" type="ArcadeSpawner" x="1265" y="1914">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="183" type="ArcadeSpawner" x="1635" y="802">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
   <object id="184" type="ArcadeSpawner" x="867" y="1418">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
