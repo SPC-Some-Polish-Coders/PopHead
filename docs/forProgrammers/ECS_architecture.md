@@ -50,6 +50,30 @@ For now it only supports basic features:
 
 ## Systems documentation
 
+This is the most important
+
+System name | Components - read only | Components - modifying
+-|-|-
+Movement | Velocity | Position
+Renderer | Sprite | -
+
+<table>
+    <tr>
+        <th>System name</th>
+        <th>Component name</th>
+        <th>R/W (Read/Write)</th>
+    </tr>
+    <tr>
+        <td rowspan=2>Movement</td>
+        <td>Velocity</td>
+        <td>R</td>
+    </tr>
+    <tr>
+        <td>Position</td>
+        <td>W</td>
+    </tr>
+</table>
+
 #### Useful links:
 - ECS introduction
   - [wikipedia](https://en.wikipedia.org/wiki/Entity_component_system)
