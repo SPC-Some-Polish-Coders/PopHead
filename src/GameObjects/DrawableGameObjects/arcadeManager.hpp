@@ -20,6 +20,7 @@ private:
 	void updateEnemies();
 	bool shouldCreateNewWave();
 	void createNextWave();
+	void invokeSpawners();
 	void updateCounters();
 
 private:

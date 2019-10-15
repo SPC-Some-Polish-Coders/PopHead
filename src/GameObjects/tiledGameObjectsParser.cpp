@@ -1,6 +1,7 @@
 #include "tiledGameObjectsParser.hpp"
 #include "NonDrawableGameObjects/entrance.hpp"
 #include "NonDrawableGameObjects/spawner.hpp"
+#include "NonDrawableGameObjects/arcadeSpawner.hpp"
 #include "NonDrawableGameObjects/slowDownArea.hpp"
 #include "NonDrawableGameObjects/activateArea.hpp"
 #include "NonDrawableGameObjects/cutsceneArea.hpp"
@@ -94,6 +95,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "ActivateArea")) loadActivateArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutSceneArea")) loadCutSceneArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "ArcadeSpawner")) loadArcadeSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
@@ -174,6 +176,16 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
 
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(spawner));
+}
+
+void TiledGameObjectsParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
+{
+	auto arcadeSpawner = std::make_unique<ArcadeSpawner>(
+		mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),
+		getPositionAttribute(arcadeSpawnerNode));
+
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(arcadeSpawner));
 }
 
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const

@@ -28,6 +28,7 @@ private:
 	void loadZombie(const Xml& zombieNode) const;
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;
+	void loadArcadeSpawner(const Xml& arcadeSpawnerNode) const;
 	void loadEntrance(const Xml& entranceNode) const;
 	void loadSlowDownArea(const Xml& slowDownAreaNode) const;
 	void loadActivateArea(const Xml& openGateAreaNode) const;

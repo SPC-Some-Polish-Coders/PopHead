@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
+ <objecttype name="ArcadeSpawner" color="#a40303">
+  <property name="spawnType" type="string" default=""/>
+ </objecttype>
  <objecttype name="Bilbord" color="#550000">
   <property name="isLying" type="bool" default="false"/>
  </objecttype>
