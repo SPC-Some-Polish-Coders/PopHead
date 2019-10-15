@@ -50,16 +50,14 @@ For now it only supports basic features:
 
 ## Systems documentation
 
-This is the most important
-
-System name | Components - read only | Components - modifying
--|-|-
-Movement | Velocity | Position
-Renderer | Sprite | -
+This is the most important part of the document.
+It holds an information about which components system is working on.
+It also tells which components are only read and which are modified.
+This table is very important for multithreading of systems, so it **must be always up to date**.
 
 <table>
     <tr>
-        <th>System name</th>
+        <th>System name (class)</th>
         <th>Component name</th>
         <th>R/W (Read/Write)</th>
     </tr>
