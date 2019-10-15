@@ -9,12 +9,12 @@ namespace ph {
 ArcadeManager::ArcadeManager(GUI& gui)
 	:GameObject("arcadeTimer")
 	,mGui(gui)
-	, mWavesMap{	{0, {0, sf::Time(sf::seconds(0.f))}},
-					{1, {5, sf::Time(sf::seconds(30.f))}},
-					{2, {13, sf::Time(sf::seconds(30.f))}},
+	, mWavesMap{	{0, {0, sf::Time(sf::seconds(10.f))}},
+					{1, {10, sf::Time(sf::seconds(20.f))}},
+					{2, {15, sf::Time(sf::seconds(25.f))}},
 					{3, {25, sf::Time(sf::seconds(40.f))}}, 
-					{4, {34, sf::Time(sf::seconds(40.f))}}, 
-					{5, {46, sf::Time(sf::seconds(40.f))}}, 
+					{4, {30, sf::Time(sf::seconds(60.f))}}, 
+					{5, {45, sf::Time(sf::seconds(80.f))}}, 
 	},
 	mCurrentWave(0),
 	mEnemiesLeft(0)
@@ -36,16 +36,10 @@ void ArcadeManager::updateClock()
 	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
 	int elapsedTimeMiliseconds = static_cast<int>((elapsedTime - elapsedTimeSeconds) * 100);
+	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds/60);
 
 	auto * arcadeClock = dynamic_cast<TextWidget*>(counters->getWidget("arcadeClock"));
-	if (elapsedTimeMiliseconds < 10 || elapsedTimeSeconds < 10)
-		arcadeClock->setString("Time - 0" + std::to_string(elapsedTimeSeconds) + ":0" + std::to_string(elapsedTimeMiliseconds));
-	if (elapsedTimeSeconds < 10)
-		arcadeClock->setString("Time - 0" + std::to_string(elapsedTimeSeconds) + ":" + std::to_string(elapsedTimeMiliseconds));
-	else if (elapsedTimeMiliseconds < 10)
-		arcadeClock->setString("Time - " + std::to_string(elapsedTimeSeconds) + ":0" + std::to_string(elapsedTimeMiliseconds));
-	else
-		arcadeClock->setString("Time - " + std::to_string(elapsedTimeSeconds) + ":" + std::to_string(elapsedTimeMiliseconds));
+	arcadeClock->setString("Time - " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds) + ":" + addZero(elapsedTimeMiliseconds));
 }
 
 void ArcadeManager::updateEnemies()
@@ -53,7 +47,6 @@ void ArcadeManager::updateEnemies()
 	auto& root = getParent().getParent();
 	auto* standingObjects = root.getChild("LAYER_standingObjects");
 	auto& gameObjects = standingObjects->getChildren();
-
 	mEnemiesLeft = 0;
 	for (const auto& gameObject : gameObjects)
 		if (gameObject->getName().find("zombie") != std::string::npos)
@@ -67,13 +60,12 @@ void ArcadeManager::updateWave()
 		++mCurrentWave;
 		mTimeOnCurrentWave.restart();
 		invokeSpawners();
-		//randomDrop();
 	}
 }
 
 bool ArcadeManager::shouldCreateNewWave()
 {
-	if (mTimeOnCurrentWave.getElapsedTime().asSeconds() > mWavesMap.at(mCurrentWave).second.asSeconds() || mEnemiesLeft == 0)
+	if (mTimeOnCurrentWave.getElapsedTime().asSeconds() > mWavesMap.at(mCurrentWave).second.asSeconds())
 		return true;
 	else
 		return false;
@@ -81,7 +73,33 @@ bool ArcadeManager::shouldCreateNewWave()
 
 void ArcadeManager::invokeSpawners()
 {
+	auto& root = getParent().getParent();
+	auto* invisibleObjects = root.getChild("LAYER_invisibleObjects");
+	auto& gameObjects = invisibleObjects->getChildren();
+	std::vector<ArcadeSpawner*> arcadeSpawners;
+	for (const auto& gameObject : gameObjects)
+		if (gameObject->getName().find("arcadeSpawner") != std::string::npos)
+			arcadeSpawners.emplace_back(dynamic_cast<ArcadeSpawner*>(gameObject.get()));
 
+	int numberOfSpawners = arcadeSpawners.size();
+	numberOfSpawners = getNumberOfUsedSpawners(numberOfSpawners);
+	int numberOfSpawnsPerSpawner = mWavesMap.at(mCurrentWave).first / numberOfSpawners;
+	sf::Time timeBetweenSpawns = sf::seconds((mWavesMap.at(mCurrentWave).second.asSeconds()) / numberOfSpawnsPerSpawner);
+	for (int i = 0; i < numberOfSpawners; ++i)
+		arcadeSpawners[i]->invokeSpawner(timeBetweenSpawns, numberOfSpawnsPerSpawner);
+}
+
+int ArcadeManager::getNumberOfUsedSpawners(float numberOfSpawners)
+{
+	if (mWavesMap.at(mCurrentWave).first < numberOfSpawners)
+		numberOfSpawners = mWavesMap.at(mCurrentWave).first;
+	 float numberOfSpawnsPerSpawner = mWavesMap.at(mCurrentWave).first / numberOfSpawners;
+	 while (!isInteger(numberOfSpawnsPerSpawner))
+	 {
+		--numberOfSpawners;
+		numberOfSpawnsPerSpawner = mWavesMap.at(mCurrentWave).first / numberOfSpawners;
+	 }
+	 return static_cast<int>(numberOfSpawners);
 }
 
 void ArcadeManager::updateCounters()
@@ -90,16 +108,22 @@ void ArcadeManager::updateCounters()
 	auto* counters = arcadeInterface->getWidget("canvas")->getWidget("counters");
 
 	auto* waveCounter = dynamic_cast<TextWidget*>(counters->getWidget("waveCounter"));
-	if (mCurrentWave < 10)
-		waveCounter->setString("Wave: 0" + std::to_string(mCurrentWave));
-	else 
-		waveCounter->setString("Wave: " + std::to_string(mCurrentWave));
-
+	waveCounter->setString("Wave: " + addZero(mCurrentWave));
 	auto* enemiesCounter = dynamic_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
-	if(mEnemiesLeft < 10)
-		enemiesCounter->setString("Enemies: 0" + std::to_string(mEnemiesLeft));
+	enemiesCounter->setString("Enemies: " + addZero(mEnemiesLeft));
+}
+
+bool ArcadeManager::isInteger(float number)
+{
+	return std::floor(number) == number;
+}
+
+std::string ArcadeManager::addZero(int number)
+{
+	if (number < 10)
+		return "0" + std::to_string(number);
 	else
-		enemiesCounter->setString("Enemies: " + std::to_string(mEnemiesLeft));
+		return std::to_string(number);
 }
 
 }

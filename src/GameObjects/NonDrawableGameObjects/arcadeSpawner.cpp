@@ -16,10 +16,27 @@ namespace ph {
 	{
 	}
 
+	void ArcadeSpawner::updateCurrent(const sf::Time delta)
+	{
+		if (mShouldSpawn)
+		{
+			if (mTimeFromLastSpawn.getElapsedTime().asSeconds() > mSpawnFrequency.asSeconds())
+			{
+				if (mQuantityOfEnemiesToSpawn != 0)
+				{
+					spawnObject();
+					--mQuantityOfEnemiesToSpawn;
+				}
+				else
+					mShouldSpawn = false;
+			}
+		}
+	}
+
 	void ArcadeSpawner::invokeSpawner(const sf::Time timeBetweenSpawns, const int quantityOfEnemiesToSpawn)
 	{
 		mShouldSpawn = true;
-		mSpawnFrequency = timeBetweenSpawns;
+		mSpawnFrequency = sf::seconds(Random::generateNumber(0.f, timeBetweenSpawns.asSeconds()));
 		mQuantityOfEnemiesToSpawn = quantityOfEnemiesToSpawn;
 	}
 
@@ -39,23 +56,6 @@ namespace ph {
 	{
 		Spawn(mGameData, mObjectType, getSpawnPosition());
 		mTimeFromLastSpawn.restart();
-	}
-
-	void ArcadeSpawner::updateCurrent(const sf::Time delta)
-	{
-		if (mShouldSpawn)
-		{
-			if (mTimeFromLastSpawn.getElapsedTime().asSeconds() > mSpawnFrequency.asSeconds() )
-			{
-				if (mQuantityOfEnemiesToSpawn != 0)
-				{
-					spawnObject();
-					--mQuantityOfEnemiesToSpawn;
-				}
-				else
-					mShouldSpawn = false;
-			}
-		}
 	}
 
 	sf::Vector2f ArcadeSpawner::getSpawnPosition() const

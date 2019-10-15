@@ -22,6 +22,9 @@ private:
 	void createNextWave();
 	void invokeSpawners();
 	void updateCounters();
+	int getNumberOfUsedSpawners(float numberOfSpawners);
+	bool isInteger(float number);
+	std::string addZero(int number);
 
 private:
 	GUI& mGui;
