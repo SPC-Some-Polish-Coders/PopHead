@@ -23,39 +23,9 @@ ArcadeManager::ArcadeManager(GUI& gui)
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
 {
-	updateClocks();
 	updateEnemies();
 	updateWave();
 	updateCounters();
-}
-
-void ArcadeManager::updateClocks()
-{
-	updateArcadeClock();
-	if (mBreakTime)
-		updateWaveClock();	
-}
-
-void ArcadeManager::updateArcadeClock()
-{
-	auto* arcadeInterface = mGui.getInterface("arcadeCounters");
-	auto* counters = arcadeInterface->getWidget("canvas")->getWidget("counters");
-	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
-	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
-	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds / 60);
-	if (elapsedTimeSeconds >= 60) elapsedTimeSeconds -= elapsedTimeMinutes * 60;
-
-	auto * arcadeClock = dynamic_cast<TextWidget*>(counters->getWidget("arcadeClock"));
-	arcadeClock->setString("Time - " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds));
-}
-
-void ArcadeManager::updateWaveClock()
-{
-	auto* arcadeInformations = mGui.getInterface("arcadeInformations");
-	auto* informations = arcadeInformations->getWidget("canvas");
-	auto* waveClock = dynamic_cast<TextWidget*>(informations->getWidget("nextWaveInfo"));
-	int secondsUntilTheEnd = static_cast<int>(mTimeForBreak.asSeconds() - mTimeInCurrentPart.getElapsedTime().asSeconds());
-	waveClock->setString("Next wave in " + addZero(secondsUntilTheEnd) + " seconds!");
 }
 
 void ArcadeManager::updateEnemies()
@@ -136,7 +106,7 @@ void ArcadeManager::endBreakTime()
 {
 	mBreakTime = false;
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
-	arcadeInterface->show();
+	arcadeInterface->hide();
 }
 
 void ArcadeManager::updateCounters()
@@ -144,10 +114,35 @@ void ArcadeManager::updateCounters()
 	auto* arcadeInterface = mGui.getInterface("arcadeCounters");
 	auto* counters = arcadeInterface->getWidget("canvas")->getWidget("counters");
 
+	auto* arcadeClock = dynamic_cast<TextWidget*>(counters->getWidget("arcadeClock"));
+	arcadeClock->setString(getArcadeClockValues());
 	auto* waveCounter = dynamic_cast<TextWidget*>(counters->getWidget("waveCounter"));
 	waveCounter->setString("Wave: " + addZero(mCurrentWave));
 	auto * enemiesCounter = dynamic_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
 	enemiesCounter->setString("Enemies: " + addZero(mEnemiesLeft));
+
+	if (mBreakTime)
+	{
+		auto* arcadeInterface2 = mGui.getInterface("arcadeInformations");
+		auto* information = arcadeInterface2->getWidget("canvas");
+		auto* waveClock = dynamic_cast<TextWidget*>(information->getWidget("nextWaveInfo"));
+		waveClock->setString(getWaveClockValues());
+	}
+}
+
+std::string ArcadeManager::getArcadeClockValues()
+{
+	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
+	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
+	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds / 60);
+	if (elapsedTimeSeconds >= 60) elapsedTimeSeconds -= elapsedTimeMinutes * 60;
+	return std::string("Time - " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds));
+}
+
+std::string ArcadeManager::getWaveClockValues()
+{
+	int secondsUntilTheEnd = static_cast<int>(mTimeForBreak.asSeconds() - mTimeInCurrentPart.getElapsedTime().asSeconds());
+	return std::string("Next wave in " + addZero(secondsUntilTheEnd) + " seconds!");
 }
 
 int ArcadeManager::getNumberOfSpawners()

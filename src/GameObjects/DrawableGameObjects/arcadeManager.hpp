@@ -7,6 +7,7 @@
 namespace ph {
 
 class GUI;
+class Widget;
 class ArcadeSpawner;
 
 class ArcadeManager : public GameObject
@@ -16,12 +17,13 @@ public:
 	void updateCurrent(const sf::Time delta) override;
 
 private:
-	void updateClocks();
-	void updateArcadeClock();
-	void updateWaveClock();
+
 	void updateEnemies();
 	void updateWave();
 	void updateCounters();
+
+	std::string getArcadeClockValues();
+	std::string getWaveClockValues();
 
 	bool shouldCreateNewWave();
 	void createNextWave();
