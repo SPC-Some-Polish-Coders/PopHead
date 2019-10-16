@@ -70,9 +70,23 @@ This table is very important for multithreading of systems, so it **must be alwa
         <td>Position</td>
         <td>W</td>
     </tr>
+    <tr>
+        <td rowspan=2>SpritesSync</td>
+        <td>Position</td>
+        <td>R</td>
+    </tr>
+    <tr>
+        <td>Sprite</td>
+        <td>W</td>
+    </tr>
+    <tr>
+        <td>Renderer</td>
+        <td>Sprite</td>
+        <td>R</td>
+    </tr>
 </table>
 
-#### Useful links:
+### Useful links:
 - ECS introduction
   - [wikipedia](https://en.wikipedia.org/wiki/Entity_component_system)
   - [https://www.richardlord.net/blog/ecs/what-is-an-entity-framework.html](https://www.richardlord.net/blog/ecs/what-is-an-entity-framework.html)
