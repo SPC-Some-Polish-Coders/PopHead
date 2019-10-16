@@ -1,4 +1,4 @@
-#include "GameObjects/DrawableGameObjects/arcadeManager.hpp"
+#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include "GameObjects/NonDrawableGameObjects/arcadeSpawner.hpp"
 #include "Gui/gui.hpp"
 #include "Gui/interface.hpp"
