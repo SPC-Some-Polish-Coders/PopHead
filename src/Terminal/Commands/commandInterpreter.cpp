@@ -136,9 +136,9 @@ void CommandInterpreter::executeMove() const
 {
 	auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f moveOffset = getVector2Argument();
-	if (mCommand.find("x") != std::string::npos)
+	if (commandContains('x'))
 		player.move(sf::Vector2f(moveOffset.x, 0.f));
-	else if (mCommand.find("y") != std::string::npos)
+	else if (commandContains('y'))
 		player.move(sf::Vector2f(0.f, moveOffset.y));
 	else
 		player.move(moveOffset);
