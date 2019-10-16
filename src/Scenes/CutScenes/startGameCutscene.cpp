@@ -90,7 +90,7 @@ void StartGameCutScene::update(const sf::Time delta)
 	if(car.getPosition().x > 4975)
 		car.slowDown();
 	if(mCutsceneTimeInSeconds > 19 && !mHasChangedTheMusicToMenuTheme) {
-		mMusicPlayer.play("music/Menu.ogg");
+		mMusicPlayer.playFromFile("music/Menu.ogg");
 		mHasChangedTheMusicToMenuTheme = true;
 	}
 
@@ -142,7 +142,7 @@ void StartGameCutScene::update(const sf::Time delta)
 	}
 
 	if(mCutsceneTimeInSeconds > 29.5 && !mHasChangedMusicToZombieAttackTheme)
-		mMusicPlayer.play("music/zombieAttack.ogg");
+		mMusicPlayer.playFromFile("music/zombieAttack.ogg");
 
 	// SAY FUCK
 	if(mCutsceneTimeInSeconds > 30 && mCutsceneTimeInSeconds < 33) {

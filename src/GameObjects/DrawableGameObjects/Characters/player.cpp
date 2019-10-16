@@ -143,9 +143,9 @@ void Player::updateCurrent(sf::Time delta)
 	mIsAttacked = isAttacked;
 
 	if (mIsAttacked)
-		mGameData->getMusicPlayer().play("music/zombieAttack.ogg");
+		mGameData->getMusicPlayer().playFromMusicState("fighting");
 	else
-		mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
+		mGameData->getMusicPlayer().playFromMusicState("exploration");
 }
 
 unsigned Player::getNumOfBullets() const

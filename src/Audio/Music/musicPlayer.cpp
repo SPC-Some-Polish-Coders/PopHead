@@ -3,9 +3,10 @@
 namespace ph {
 
 MusicPlayer::MusicPlayer()
-	:mVolume(60.f)
+	:mCurrentThemeFilePath("")
+	,mVolume(60.f)
 	,mIsMuted(false)
-	,mCurrentThemeFilePath()
+	,mIsPlayingFromMusicState(false)
 {
 }
 
@@ -14,7 +15,7 @@ MusicPlayer::~MusicPlayer()
 	mMusic.stop();
 }
 
-void MusicPlayer::play(const std::string& filePath)
+void MusicPlayer::playFromFile(const std::string& filePath)
 {
 	if (filePath == mCurrentThemeFilePath)
 	{
@@ -34,14 +35,30 @@ void MusicPlayer::play(const std::string& filePath)
 	mMusic.play();
 }
 
+void MusicPlayer::playFromMusicState(const std::string& musicStateName)
+{
+	auto[filePath, volumeMultiplier] = mMusicStateMachine.getRandomThemeFromState(musicStateName);
+
+	if(filePath == mCurrentThemeFilePath) {
+		adaptVolume(volumeMultiplier);
+		return;
+	}
+
+	mCurrentThemeFilePath = filePath;
+
+	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
+	const std::string fullFilePath = "resources/" + filePath;
+
+	adaptVolume(volumeMultiplier);
+	mMusic.openFromFile(fullFilePath);
+	mMusic.setLoop(currentThemeData.mLoop);
+	setMuted(mIsMuted);
+	mMusic.play();
+}
+
 void MusicPlayer::stop()
 {
 	mMusic.stop();
-}
-
-void MusicPlayer::setVolumeMultiplierForTheme(const std::string& theme, float multiplier)
-{
-	mThemesVolumeMultipliers[theme] = multiplier;
 }
 
 void MusicPlayer::setPaused(const bool pause)
@@ -58,24 +75,15 @@ void MusicPlayer::setMuted(const bool mute)
 void MusicPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
-	const auto themeData = mMusicDataHolder.getCurrentThemeData();
-	const float volumeMultiplier = themeData.mVolumeMultiplier;
-	mMusic.setVolume(volume * volumeMultiplier * getMultiplier(mCurrentThemeFilePath));
+	const float volumeMultiplier = mMusicDataHolder.getCurrentThemeData().mVolumeMultiplier;
+	// TODO: Fix this volume multipliers here!
+	mMusic.setVolume(volume * volumeMultiplier);
 }
 
-void MusicPlayer::adaptVolume()
+void MusicPlayer::adaptVolume(const float volumeMultiplier)
 {
-	auto multiplier = getMultiplier(mCurrentThemeFilePath);
-	auto volume = mVolume * mMusicDataHolder.getMusicData(mCurrentThemeFilePath).mVolumeMultiplier * multiplier;
+	auto volume = mVolume * mMusicDataHolder.getMusicData(mCurrentThemeFilePath).mVolumeMultiplier * volumeMultiplier;
 	mMusic.setVolume(volume);
-}
-
-float MusicPlayer::getMultiplier(const std::string& theme) const
-{
-	auto iter = mThemesVolumeMultipliers.find(theme);
-	if (iter == mThemesVolumeMultipliers.end())
-		return 1.f;
-	return iter->second;
 }
 
 }

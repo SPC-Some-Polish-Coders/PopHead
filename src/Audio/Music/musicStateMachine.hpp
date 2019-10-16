@@ -8,7 +8,7 @@ namespace ph {
 
 struct MusicState
 {
-	std::vector<std::string> filenames;
+	std::vector<std::string> filepaths;
 	std::vector<float> volumeMultipliers;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "musicData.hpp"
+#include "musicStateMachine.hpp"
 #include <SFML/Audio.hpp>
 #include <string>
 
@@ -12,10 +13,9 @@ public:
 	MusicPlayer();
 	~MusicPlayer();
 
-	void play(const std::string& filePath);
+	void playFromFile(const std::string& filePath);
+	void playFromMusicState(const std::string& musicStateName);
 	void stop();
-
-	void setVolumeMultiplierForTheme(const std::string& theme, float multiplier);
 
 	void setPaused(const bool pause);
 	void setMuted(const bool mute);
@@ -23,17 +23,19 @@ public:
 	void setVolume(const float volume);
 	float getVolume() { return mVolume; }
 
+	auto getMusicStateMachine() -> MusicStateMachine & { return mMusicStateMachine; }
+
 private:
-	void adaptVolume();
-	float getMultiplier(const std::string& theme) const;
+	void adaptVolume(const float volumeMultiplier = 1.f);
 
 private:
 	MusicDataHolder mMusicDataHolder;
-	std::map<std::string, float> mThemesVolumeMultipliers;
+	MusicStateMachine mMusicStateMachine;
 	sf::Music mMusic;
 	std::string mCurrentThemeFilePath;
 	float mVolume;
 	bool mIsMuted;
+	bool mIsPlayingFromMusicState;
 };
 
 }
