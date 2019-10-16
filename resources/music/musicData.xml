@@ -3,4 +3,7 @@
   <theme filename="Menu.ogg" volumemultiplier="1" loop="true"/>
   <theme filename="explorationTheme.ogg" volumemultiplier="1.2" loop="true"/>
   <theme filename="zombieAttack.ogg" volumemultiplier="1" loop="true"/>
+  <theme filename="sewageFight.ogg" volumemultiplier="1.5" loop="true"/>
+  <theme filename="sewageFightV2.ogg" volumemultiplier="1.5" loop="true"/>
+  <theme filename="sewageEntranced.ogg" volumemultiplier="1.1" loop="true"/>
 </musicdata>
