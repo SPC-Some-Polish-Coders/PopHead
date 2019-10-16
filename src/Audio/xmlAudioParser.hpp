@@ -14,7 +14,8 @@ public:
 
 private:
 	void parseSoundMute(const Xml& audioNode);
-	void parseMusicTheme(const Xml& audioNode);
+	void parseStartTheme(const Xml& audioNode);
+	void parseMusicStates(const Xml& audioNode);
 
 private:
 	GameData* mGameData;

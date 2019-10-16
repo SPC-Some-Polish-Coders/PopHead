@@ -8,7 +8,7 @@ void ActionEventManager::init()
 {
 	mEnabled = true;
 
-	///TODO: loading player's favorite controls from file
+	//TODO: loading player's favorite controls from file
 
 	//setting up default moving actions
 	addAction("movingUp", {sf::Keyboard::W, sf::Keyboard::Up});
@@ -17,6 +17,7 @@ void ActionEventManager::init()
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
 	addAction("gunAttack", sf::Keyboard::Enter);
 	addAction("meleeAtack", sf::Keyboard::BackSlash);
+	addAction("pauseScreen", sf::Keyboard::Escape);
 }
 
 void ActionEventManager::addAction(const std::string& action, std::vector<sf::Keyboard::Key> buttons)

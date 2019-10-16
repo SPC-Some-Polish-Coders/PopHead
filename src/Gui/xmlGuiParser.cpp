@@ -61,9 +61,16 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 		widget.setContentPath(path);
 	}
 	if (widgetTag.hasAttribute("origin"))
+	{
+		
 		widget.setOrigin(getVector(widgetTag, "origin"));
+	}
 	if (widgetTag.hasAttribute("position"))
+	{
+		PH_LOG_INFO("POSI_START");
 		widget.setPosition(getVector(widgetTag, "position"));
+		PH_LOG_INFO("POSI_END");
+	}
 	if (widgetTag.hasAttribute("scale"))
 		widget.scale(getVector(widgetTag, "scale"));
 	if (widgetTag.hasAttribute("alpha"))
@@ -111,6 +118,8 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 		widget.setTextAlpha(textWidgetTag.getAttribute("textAlpha").toUnsigned());
 	if (textWidgetTag.hasAttribute("scaleText"))
 		widget.scaleText(getVector(textWidgetTag, "scaleText"));
+	if (textWidgetTag.hasAttribute("scrollingEffect"))
+		widget.setScrollingEffect(textWidgetTag.getAttribute("scrollingEffect").toBool());
 }
 
 void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget& widget)

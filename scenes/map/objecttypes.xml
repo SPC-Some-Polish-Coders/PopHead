@@ -38,6 +38,10 @@
  </objecttype>
  <objecttype name="Player" color="#55ffff"/>
  <objecttype name="SlowDownArea" color="#5eb825"/>
+ <objecttype name="SlowZombie" color="#b8ff45">
+  <property name="hp" type="string" default="150"/>
+  <property name="maxHp" type="string" default="150"/>
+ </objecttype>
  <objecttype name="Spawner" color="#aa0000">
   <property name="spawnFrequency" type="float" default="3"/>
   <property name="spawnType" type="string" default="zombie"/>
