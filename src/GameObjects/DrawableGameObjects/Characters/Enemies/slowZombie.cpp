@@ -13,17 +13,17 @@ namespace ph {
 	namespace
 	{
 		const std::string name = "slowZombie";
-		constexpr float movementSpeed = 15.f;
-		constexpr unsigned damage = 20;
-		constexpr unsigned maxHp = 100;
-		constexpr int hp = 75;
+		constexpr float movementSpeed = 20.f;
+		constexpr unsigned damage = 40;
+		constexpr unsigned maxHp = 150;
+		constexpr int hp = 150;
 		const sf::FloatRect posAndSize(
 			0,
 			0,
 			CollisionRectData::HUMAN_WIDTH,
 			CollisionRectData::HUMAN_HEIGHT
 		);
-		constexpr float mass = 45;
+		constexpr float mass = 55;
 
 		const Animation animation{
 			std::array<std::string, 13>{
@@ -61,7 +61,7 @@ namespace ph {
 		mAnimation.animate(mSprite);
 
 		//temporary random generate until we develop this system
-		int numberOfBullets = Random::generateNumber(0, 1);
+		int numberOfBullets = Random::generateNumber(1, 2);
 		for (int i = 0; i < numberOfBullets; ++i)
 			dynamic_cast<Equipment*>(getChild("Equipment"))->putItem(std::make_unique<BulletItem>(mGameData));
 	}
@@ -134,7 +134,6 @@ namespace ph {
 
 		const float currentMovementSpeed = mIsSlownDown ? mMovementSpeed / 1.6f : mMovementSpeed;
 		Character::move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
-		//mCollisionBody.move(currentMovementSpeed * delta.asSeconds() * mCurrentDirectionVector);
 	}
 
 	sf::Vector2f SlowZombie::toDirectionVector(Direction direction)

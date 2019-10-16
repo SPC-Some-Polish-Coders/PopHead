@@ -28,7 +28,7 @@ namespace ph {
 		sf::Clock mTimeFromStartingThisMove;
 		sf::Vector2f mCurrentDirectionVector;
 		bool mIsSlownDown;
-		static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.2f;
+		static constexpr float mTimeInSecondsToMoveToAnotherTile = 0.15f;
 	};
 
 }

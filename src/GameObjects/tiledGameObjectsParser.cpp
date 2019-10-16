@@ -1,4 +1,3 @@
-
 #include "tiledGameObjectsParser.hpp"
 #include "NonDrawableGameObjects/entrance.hpp"
 #include "NonDrawableGameObjects/spawner.hpp"
@@ -32,7 +31,6 @@
 #include "Logs/logs.hpp"
 #include "Events/actionEventManager.hpp"
 #include "gameData.hpp"
-
 
 namespace ph {
 
