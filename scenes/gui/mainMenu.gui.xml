@@ -2,10 +2,11 @@
 <gui>
     <interface name="mainMenu">
         <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		        <textWidget name="storyButton"   contentPath="textures/gui/storyButton.png"   origin="0.5" position="0.5"      fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/subtitlesBeforeStartGameCutscene.xml" text="Story"></textWidget>
-            <textWidget name="arenaButton"   contentPath="textures/gui/arenaButton.png"   origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="Arena (soon)"></textWidget>
-            <textWidget name="cretitsButton" contentPath="textures/gui/creditsButton.png" origin="0.5" position="0.5, 0.7" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/credits.xml" text="Credits"></textWidget>
-            <textWidget name="exitButton"    contentPath="textures/gui/exitButton.png"    origin="0.5" position="0.5, 0.8" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="closeGame" text="Exit"></textWidget>
+            <textWidget name="storyButton"   contentPath="textures/gui/storyButton.png"   origin="0.5" position="0.5, 0.45"      fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/subtitlesBeforeStartGameCutscene.xml" text="Story"></textWidget>
+            <textWidget name="arenaButton"   contentPath="textures/gui/arenaButton.png"   origin="0.5" position="0.5, 0.55" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" text="Arena (soon)"></textWidget>
+            <textWidget name="cretitsButton" contentPath="textures/gui/creditsButton.png" origin="0.5" position="0.5, 0.65" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/credits.xml" text="Credits"></textWidget>
+            <textWidget name="optionsButton" contentPath="textures/gui/optionsButton.png" origin="0.5" position="0.5, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/options.xml" text="Options"></textWidget>
+            <textWidget name="exitButton"    contentPath="textures/gui/exitButton.png"    origin="0.5" position="0.5, 0.85" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="closeGame" text="Exit"></textWidget>
         </widget>
     </interface>
 </gui>
