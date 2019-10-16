@@ -25,6 +25,7 @@ private:
 	void loadContainerObjects() const;
 	void loadArcadeManager() const;
 	bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
+	void loadSlowZombie(const Xml& SlowZombieNode) const;
 	void loadZombie(const Xml& zombieNode) const;
 	void loadNpc(const Xml& npcNode) const;
 	void loadSpawner(const Xml& spawnerNode) const;

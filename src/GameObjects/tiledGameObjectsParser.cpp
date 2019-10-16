@@ -9,6 +9,7 @@
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "DrawableGameObjects/Characters/Enemies/slowZombie.hpp"
 #include "DrawableGameObjects/Characters/player.hpp"
 #include "DrawableGameObjects/Items/bulletItem.hpp"
 #include "DrawableGameObjects/car.hpp"
@@ -32,7 +33,6 @@
 #include "Logs/logs.hpp"
 #include "Events/actionEventManager.hpp"
 #include "gameData.hpp"
-
 
 namespace ph {
 
@@ -85,6 +85,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 	for (const auto& gameObjectNode : objects) 
 	{
 		if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "SlowZombie")) loadSlowZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
@@ -149,6 +150,17 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(zombie));
+}
+
+void TiledGameObjectsParser::loadSlowZombie(const Xml& SlowZombieNode) const
+{
+	auto slowZombie = std::make_unique<SlowZombie>(mGameData);
+	slowZombie->setPosition(getPositionAttribute(SlowZombieNode));
+	slowZombie->setHp(getProperty(SlowZombieNode, "hp").toInt());
+	slowZombie->setMaxHp(getProperty(SlowZombieNode, "maxHp").toUnsigned());
+
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->addChild(std::move(slowZombie));
 }
 
 void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const

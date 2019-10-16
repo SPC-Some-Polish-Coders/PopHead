@@ -84,6 +84,7 @@ void SceneManager::replaceAction()
 			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
 	}
 
+	TextWidget::resetAnimation();
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
 	mIsReplacing = false;
 	mCurrentSceneFile = std::move(mFileOfSceneToMake);
