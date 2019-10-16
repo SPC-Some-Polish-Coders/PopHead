@@ -4,6 +4,7 @@
   <starttheme filename="sewageEntranced.ogg" volumeMultiplier="1"/>
   <musicstate name="fighting">
     <theme filename="sewageFight.ogg" volumeMultiplier="1"/>
+    <theme filename="sewageFightV2.ogg" volumeMultiplier="1"/>
   </musicstate>
   <musicstate name="exploration">
     <theme filename="sewageEntranced.ogg" volumeMultiplier="1"/>

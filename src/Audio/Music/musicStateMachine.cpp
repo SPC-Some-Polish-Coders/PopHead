@@ -1,5 +1,6 @@
 #include "musicStateMachine.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -13,8 +14,13 @@ auto MusicStateMachine::getRandomThemeFromState(const std::string& stateName) co
 	auto found = mStates.find(stateName);
 	PH_ASSERT_CRITICAL(found != mStates.end(), "Music state \"" + stateName + "\" does not exist!");
 
-	// TODO: Implement randomness
-	return std::pair<std::string, float>(found->second.filepaths[0], found->second.volumeMultipliers[0]);
+	size_t numberOfThemes = found->second.filepaths.size();
+	if(numberOfThemes == 1)
+		return std::pair<std::string, float>(found->second.filepaths[0], found->second.volumeMultipliers[0]);
+	else {
+		const int indexOfThemeToPlay = Random::generateNumber(0, numberOfThemes - 1);
+		return std::pair<std::string, float>(found->second.filepaths[indexOfThemeToPlay], found->second.volumeMultipliers[indexOfThemeToPlay]);
+	}
 }
 
 void MusicStateMachine::clearStates() noexcept

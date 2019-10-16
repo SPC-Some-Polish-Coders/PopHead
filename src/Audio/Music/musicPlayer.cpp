@@ -76,7 +76,6 @@ void MusicPlayer::setVolume(const float volume)
 {
 	mVolume = volume;
 	const float volumeMultiplier = mMusicDataHolder.getCurrentThemeData().mVolumeMultiplier;
-	// TODO: Fix this volume multipliers here!
 	mMusic.setVolume(volume * volumeMultiplier);
 }
 
