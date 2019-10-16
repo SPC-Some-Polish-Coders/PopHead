@@ -130,3 +130,4 @@ Later the systems will be ordered.
 - Bullets collecting (Bullets, Player, KinematicCollisionBody, ...)
 - Moving objects (Velocity, Position)
 - Player input (Player, Velocity, MeleeAttacker?, GunAttacker?, ...)
+- Dying characters (Health, ...)
