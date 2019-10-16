@@ -1,11 +1,12 @@
-#include "controlsGuide.hpp"
+#include "movementControlsGuide.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Gui/gui.hpp"
+#include "Logs/logs.hpp"
 #include <SFML/Window.hpp>
 
 namespace ph {
 
-ContolsGuide::ContolsGuide(GameObject& root, GUI& gui, SceneManager& sceneManager)
+MovementContolsGuide::MovementContolsGuide(GameObject& root, GUI& gui, SceneManager& sceneManager)
 	:CutScene(root)
 	,mGui(gui)
 	,mSceneManager(sceneManager)
@@ -21,7 +22,7 @@ ContolsGuide::ContolsGuide(GameObject& root, GUI& gui, SceneManager& sceneManage
 	greyBackground->getWidget("backslashHint")->hide();
 }
 
-void ContolsGuide::update(const sf::Time delta)
+void MovementContolsGuide::update(const sf::Time delta)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f) {
 		++mTimesPressedSkip;
@@ -36,23 +37,14 @@ void ContolsGuide::update(const sf::Time delta)
 			break;
 		case 2:
  			greyBackground->getWidget("awsdHint")->hide();
-			greyBackground->getWidget("enterHint")->show();
-			break;
-		case 3:
-			greyBackground->getWidget("enterHint")->hide();
-			greyBackground->getWidget("backslashHint")->show();
-			break;
-		case 4:
-			greyBackground->getWidget("backslashHint")->hide();
 			closeCutscene();
 			break;
 		default:
-			closeCutscene();
-			break;
+			PH_UNEXPECTED_SITUATION("mTimesPressedSkip should be either 1 or 2");
 	}
 }
 
-void ContolsGuide::closeCutscene()
+void MovementContolsGuide::closeCutscene()
 {
 	mGui.getInterface("hints")->hide();
 	mSceneManager.getScene().setPause(false);

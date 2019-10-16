@@ -7,10 +7,10 @@ namespace ph {
 class GUI;
 class SceneManager;
 
-class ContolsGuide : public CutScene
+class FightControlsGuide : public CutScene
 {
 public:
-	ContolsGuide(GameObject& root, GUI&, SceneManager&);
+	FightControlsGuide(GameObject& root, GUI&, SceneManager&);
 
 	void update(const sf::Time delta);
 

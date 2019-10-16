@@ -4,6 +4,7 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
+#include "Scenes/CutScenes/fightControlsGuide.hpp"
 #include "Scenes/CutScenes/gateGuardDialogue.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
 
@@ -36,7 +37,13 @@ namespace ph {
 	void CutSceneArea::createCutScene()
 	{
 		auto& cutsceneManager = mGameData->getSceneManager().getScene().getCutSceneManager();
-		if(mCutSceneName == "gateGuardDialogue")
+		if(mCutSceneName == "fightControlsGuide")
+			cutsceneManager.activateCutscene(std::make_unique<FightControlsGuide>(
+				*mRoot,
+				mGameData->getGui(),
+				mGameData->getSceneManager()
+			));
+		else if(mCutSceneName == "gateGuardDialogue")
 			cutsceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mGameData));
 		else if(mCutSceneName == "endingDialogue")
 			cutsceneManager.activateCutscene(std::make_unique<EndingCutScene>(
