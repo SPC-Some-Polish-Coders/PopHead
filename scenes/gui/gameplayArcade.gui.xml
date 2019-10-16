@@ -8,7 +8,7 @@
     </interface>
     <interface name="gameOverScreen" hide="true">
         <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <textWidget name="loadLastSave"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="loadLastSave:" text="Load last save"></textWidget>
+            <textWidget name="restartButton"  contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/arcadeModeChooseMenu.xml:" text="Try Again"></textWidget>
             <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml"         text="Exit to menu"></textWidget>
         </widget>
     </interface>
@@ -27,10 +27,10 @@
             </widget>
         </widget>
     </interface>
-	<interface name="arcadeInformations">
+	<interface name="arcadeInformations" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-			<textWidget name="breakInfo" origin="0.5" position="0.3, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="30" text="Break Time!"/>
-			<textWidget name="nextWaveInfo" origin="0.5" position="0.3, 0.7" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="20" text="Next wave in: 0 seconds!"/>
+			<textWidget name="breakInfo" origin="0.5" position="0.25, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="30" text="Break Time!"/>
+			<textWidget name="nextWaveInfo" origin="0.5" position="0.2, 0.7" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="20" text="Next wave in 0 seconds!"/>
         </widget>
     </interface>
 </gui>

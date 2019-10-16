@@ -16,14 +16,16 @@ public:
 	void updateCurrent(const sf::Time delta) override;
 
 private:
-	void updateClocks(const sf::Time delta);
-	void updateWave();
+	void updateClocks();
+	void updateArcadeClock();
+	void updateWaveClock();
 	void updateEnemies();
+	void updateWave();
+	void updateCounters();
+
 	bool shouldCreateNewWave();
 	void createNextWave();
 	void invokeSpawners();
-	void updateCounters();
-	int getNumberOfSpawners();
 
 	void startBreakTime();
 	void endBreakTime();
@@ -31,14 +33,14 @@ private:
 	void setSpawnNumbers();
 	void setTimeForTheNextWave();
 
-	bool isInteger(float number);
 	std::string addZero(int number);
+	int getNumberOfSpawners();
 	auto getSpawners()->std::vector<ArcadeSpawner*>;
 
 private:
 	GUI& mGui;
 	sf::Clock mArcadeClock;
-	sf::Clock mTimeInTheCurrentWave;
+	sf::Clock mTimeInCurrentPart;
 	sf::Time mTimeForCurrentWave;
 	sf::Time mTimeForBreak;
 	int mNumberOfSpawnersOnTheMap;
