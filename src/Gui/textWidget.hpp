@@ -35,9 +35,15 @@ public:
 
 	void draw() override;
 
+	void setScrollingEffect(bool flag);
+	static void resetAnimation();
+
+
 private:
 	sf::Text mText;
 	sf::Vector2f mTextPosition;
+	bool scrollingEffect = false;
+	static float sec;
 };
 
 }
