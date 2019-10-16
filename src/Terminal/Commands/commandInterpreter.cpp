@@ -1,6 +1,8 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
+#include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "Audio/Sound/SoundData/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
@@ -16,6 +18,7 @@ void CommandInterpreter::init()
 	mCommandsMap["echo"] =		&CommandInterpreter::executeEcho;
 	mCommandsMap["exit"] =		&CommandInterpreter::executeExit;
 	mCommandsMap["teleport"] =	&CommandInterpreter::executeTeleport;
+	mCommandsMap["give"] =	&CommandInterpreter::executeGive;
 	mCommandsMap["currentpos"] =	&CommandInterpreter::executeCurrentPos;
 	mCommandsMap["collisiondebug"] =&CommandInterpreter::executeCollisionDebug;
 	mCommandsMap["mute"] =		&CommandInterpreter::executeMute;
@@ -130,6 +133,20 @@ void CommandInterpreter::executeTeleport() const
 	if(newPosition == mVector2ArgumentError)
 		return;
 	player.setPosition(newPosition);
+}
+
+void CommandInterpreter::executeGive() const
+{
+	auto& player = dynamic_cast<Player&>(getPlayer());
+	auto& equipement = dynamic_cast<PlayerEquipment&>(*player.getChild("Equipment"));
+	if (commandContains("bullet"))
+	{
+		int numberOfItems = getVolumeFromCommand();
+		for (int i = numberOfItems; i > 0; --i)
+			equipement.putItem(std::make_unique<BulletItem>(mGameData));
+	}
+	else
+		executeMessage("Type of item is unknown!", MessageType::ERROR);
 }
 
 void CommandInterpreter::executeMove() const
