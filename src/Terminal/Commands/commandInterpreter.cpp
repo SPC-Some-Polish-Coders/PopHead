@@ -1,7 +1,7 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
-#include "Audio/Sound/SoundData/soundData.hpp"
+#include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"

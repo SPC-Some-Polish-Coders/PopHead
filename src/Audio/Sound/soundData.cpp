@@ -1,8 +1,16 @@
-#include "soundDataHolder.hpp"
 #include "soundData.hpp"
 #include "Utilities/xml.hpp"
 
 namespace ph {
+
+SoundData::SoundData(const float volumeMultiplier, const bool loop,
+					const float maximalFullVolumeDistance, const float maximalHearableDistance)
+	:mVolumeMultiplier(volumeMultiplier)
+	,mLoop(loop)
+	,mMaximalFullVolumeDistance(maximalFullVolumeDistance)
+	,mMaximalHearableDistance(maximalHearableDistance)
+{
+}
 
 SoundDataHolder::SoundDataHolder()
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Audio/Sound/SoundData/SoundData.hpp"
+#include "Audio/Sound/soundData.hpp"
 
 namespace ph {
 
