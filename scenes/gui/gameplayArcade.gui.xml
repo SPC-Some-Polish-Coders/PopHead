@@ -27,4 +27,10 @@
             </widget>
         </widget>
     </interface>
+	<interface name="arcadeInformations">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+			<textWidget name="breakInfo" origin="0.5" position="0.3, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="30" text="Break Time!"/>
+			<textWidget name="nextWaveInfo" origin="0.5" position="0.3, 0.7" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="20" text="Next wave in: 0 seconds!"/>
+        </widget>
+    </interface>
 </gui>
