@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <audio>
   <mute soundmute="false"/>
-	<theme filename="explorationTheme.ogg" volumeMultiplier="1"/>
+  <musicstate name="fighting">
+	  <theme filename="zombieAttack.ogg" volumeMultiplier="1"/>
+  </musicstate>
+  <musicstate name="exploration">
+    <theme filename="explorationTheme.ogg" volumeMultiplier="1"/>
+  </musicstate>
 </audio>

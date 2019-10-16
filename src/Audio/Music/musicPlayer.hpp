@@ -34,7 +34,6 @@ private:
 	std::string mCurrentThemeFilePath;
 	float mVolume;
 	bool mIsMuted;
-
 };
 
 }
