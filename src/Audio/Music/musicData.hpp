@@ -1,10 +1,17 @@
 #pragma once
 
-#include "musicData.hpp"
 #include <string>
 #include <map>
 
 namespace ph {
+
+struct MusicData
+{
+	float mVolumeMultiplier;
+	bool mLoop;
+
+	MusicData(float volumeMultiplier = 1.f, bool loop = false);
+};
 
 class MusicDataHolder
 {

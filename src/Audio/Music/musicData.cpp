@@ -1,9 +1,14 @@
-#include "musicDataHolder.hpp"
-
+#include "musicData.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/xml.hpp"
 
 namespace ph{
+
+MusicData::MusicData(float volumeMultiplier, bool loop)
+	:mVolumeMultiplier(volumeMultiplier)
+	, mLoop(loop)
+{
+}
 
 MusicDataHolder::MusicDataHolder()
 {
