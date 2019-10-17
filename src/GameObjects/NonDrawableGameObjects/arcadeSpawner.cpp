@@ -21,7 +21,6 @@ namespace ph {
 		if(mShouldSpawn)
 		{
 			// TODO_arc: Change sf::Clock to sf::Time in mTimeFromLastSpawn
-			// TODO_arc: Devide it to smaller functions
 
 			if(mTimeFromLastSpawn.getElapsedTime().asSeconds() > 0.3)
 			{
@@ -29,36 +28,32 @@ namespace ph {
 				{
 					int ran = Random::generateNumber(0, 5);
 					if(ran == 0)
-					{
-						// Spawn normal zombie
-						Spawn(mGameData, ObjectType::Zombie, getSpawnPosition());
-						mTimeFromLastSpawn.restart();
-						--mNumberOfNormalZombiesToSpawn;
-					}
-					else {
-						// Spawn slow zombie
-						Spawn(mGameData, ObjectType::SlowZombie, getSpawnPosition());
-						mTimeFromLastSpawn.restart();
-						--mNumberOfSlowZombiesToSpawn;
-					}
+						spawnNormalZombie();
+					else
+						spawnSlowZombie();
 				}
 				else if(mNumberOfSlowZombiesToSpawn > 0)
-				{
-					// Spawn slow zombie
-					Spawn(mGameData, ObjectType::SlowZombie, getSpawnPosition());
-					mTimeFromLastSpawn.restart();
-					--mNumberOfSlowZombiesToSpawn;
-				}
-				else if(mNumberOfNormalZombiesToSpawn > 0) {
-					// Spawn normal zombie
-					Spawn(mGameData, ObjectType::Zombie, getSpawnPosition());
-					mTimeFromLastSpawn.restart();
-					--mNumberOfNormalZombiesToSpawn;
-				}
+					spawnSlowZombie();
+				else if(mNumberOfNormalZombiesToSpawn > 0)
+					spawnNormalZombie();
 				else
 					mShouldSpawn = false;
 			}
 		}
+	}
+
+	void ArcadeSpawner::spawnSlowZombie()
+	{
+		Spawn(mGameData, ObjectType::SlowZombie, getSpawnPosition());
+		mTimeFromLastSpawn.restart();
+		--mNumberOfSlowZombiesToSpawn;
+	}
+
+	void ArcadeSpawner::spawnNormalZombie()
+	{
+		Spawn(mGameData, ObjectType::Zombie, getSpawnPosition());
+		mTimeFromLastSpawn.restart();
+		--mNumberOfNormalZombiesToSpawn;
 	}
 
 	void ArcadeSpawner::invokeSpawner(const int numberOfSlowZombiesToSpawn, const int numberOfNormalZombiesToSpawn)

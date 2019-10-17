@@ -17,6 +17,8 @@ public:
 
 private:
 	void updateCurrent(const sf::Time delta) override;
+	void spawnNormalZombie();
+	void spawnSlowZombie();
 	sf::Vector2f getSpawnPosition() const;
 
 private:

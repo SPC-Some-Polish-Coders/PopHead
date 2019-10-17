@@ -128,11 +128,9 @@ void ArcadeManager::setTimeForTheNextWave()
 
 void ArcadeManager::invokeSpawners()
 {
-	// TODO_arc: Change to range based for loop
-
 	std::vector<ArcadeSpawner*> arcadeSpawners = getSpawners();
-	for (unsigned i = 0; i < arcadeSpawners.size(); ++i)
-		arcadeSpawners[i]->invokeSpawner(mSlowZombiesToSpawnPerSpawner, mNormalZombiesToSpawnPerSpawner);
+	for (auto* spawner : arcadeSpawners)
+		spawner->invokeSpawner(mSlowZombiesToSpawnPerSpawner, mNormalZombiesToSpawnPerSpawner);
 }
 
 auto ArcadeManager::getSpawners() -> std::vector<ArcadeSpawner*>
