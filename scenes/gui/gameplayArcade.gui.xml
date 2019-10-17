@@ -30,6 +30,12 @@
 	<interface name="arcadeInformations" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
       			<textWidget name="nextWaveInfo" origin="0.5" position="0.2, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="20" text="Next wave in 0 seconds!"/>
+      			<textWidget name="startWaveInfo" origin="0.5" position="0.2, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="20" text="Start in 0 seconds!"/>
+        </widget>
+    </interface>
+		<interface name="startTime">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+      			<textWidget name="startWaveInfo" origin="0.5" position="0.27, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="20" text="Start in 0 seconds!"/>
         </widget>
     </interface>
 </gui>

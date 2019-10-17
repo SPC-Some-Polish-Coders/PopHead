@@ -23,6 +23,8 @@ public:
 
 private:
 	void init();
+	void startArcadeMode();
+	void updateStartTimeCounter();
 
 	void updateEnemiesCounter();
 	void updateWave();
@@ -49,6 +51,7 @@ private:
 	MusicPlayer& mMusicPlayer;
 	sf::Clock mBreakClock;
 	sf::Time mTimeFromStart;
+	sf::Time mTimeBeforeStart;
 	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn;
 	int mSlowZombiesToSpawnPerSpawner;
@@ -57,6 +60,7 @@ private:
 	int mCurrentWave;
 	bool mIsBreakTime;
 	bool mMadeInit;
+	bool mHasStarted;
 
 	inline static bool mIsActive = false;
 };

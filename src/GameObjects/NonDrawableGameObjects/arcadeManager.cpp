@@ -14,6 +14,7 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mTimeFromStart(sf::Time::Zero)
+	,mTimeBeforeStart(sf::seconds(10.f))
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
 	,mNormalZombiesToSpawnPerSpawner(0)
@@ -22,9 +23,9 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 	,mIsBreakTime(false)
 	,mMadeInit(false)
+	,mHasStarted(false)
 {
 	mIsActive = true;
-	createNextWave();
 }
 
 ArcadeManager::~ArcadeManager()
@@ -34,6 +35,13 @@ ArcadeManager::~ArcadeManager()
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
 {
+	if (!mHasStarted)
+	{
+		mTimeBeforeStart -= delta;
+		updateStartTimeCounter();
+		return;
+	}
+
 	if(!mMadeInit)
 		init();
 
@@ -42,6 +50,25 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	updateEnemiesCounter();
 	updateWave();
 	updateCounters();
+}
+
+void ArcadeManager::updateStartTimeCounter()
+{
+	auto* startTimeInterface = mGui.getInterface("startTime");
+	auto* canvas = startTimeInterface->getWidget("canvas");
+	auto* startWaveInfo = dynamic_cast<TextWidget*>(canvas->getWidget("startWaveInfo"));
+	std::string timeLeft = std::to_string(static_cast<int>(mTimeBeforeStart.asSeconds()));
+	startWaveInfo->setString("Start in " + timeLeft  + " seconds!");
+	if (mTimeBeforeStart <= sf::Time::Zero)
+		startArcadeMode();
+}
+
+void ArcadeManager::startArcadeMode()
+{
+	auto* startTimeInterface = mGui.getInterface("startTime");
+	startTimeInterface->hide();
+	mHasStarted = true;
+	createNextWave();
 }
 
 void ArcadeManager::init()
@@ -195,7 +222,7 @@ std::string ArcadeManager::getArcadeClockValues()
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
 	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds / 60);
 	if (elapsedTimeSeconds >= 60) elapsedTimeSeconds -= elapsedTimeMinutes * 60;
-	return std::string("Time - " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds));
+	return std::string("Time: " + addZero(elapsedTimeMinutes) + ":" + addZero(elapsedTimeSeconds));
 }
 
 std::string ArcadeManager::getWaveClockValues()
