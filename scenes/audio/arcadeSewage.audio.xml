@@ -7,6 +7,6 @@
     <theme filename="sewageFightV2.flac" volumeMultiplier="1"/>
   </musicstate>
   <musicstate name="break">
-    <theme filename="sewageEntranced.ogg" volumeMultiplier="1"/>
+    <theme filename="sewageEntranced.flac" volumeMultiplier="1"/>
   </musicstate>
 </audio>

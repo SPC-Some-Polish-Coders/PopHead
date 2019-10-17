@@ -5,5 +5,5 @@
   <theme filename="zombieAttack.ogg" volumemultiplier="1" loop="true"/>
   <theme filename="sewageFight.ogg" volumemultiplier="1.5" loop="true"/>
   <theme filename="sewageFightV2.flac" volumemultiplier="1.5" loop="true"/>
-  <theme filename="sewageEntranced.ogg" volumemultiplier="1.1" loop="true"/>
+  <theme filename="sewageEntranced.flac" volumemultiplier="1.1" loop="true"/>
 </musicdata>
