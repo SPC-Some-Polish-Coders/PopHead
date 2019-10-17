@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <audio>
   <mute soundmute="false"/>
-  <starttheme filename="sewageFight.ogg" volumeMultiplier="1"/>
+  <starttheme filename="sewageEntranced.flac" volumeMultiplier="1"/>
   <musicstate name="wave">
     <theme filename="sewageFight.ogg" volumeMultiplier="1"/>
     <theme filename="sewageFightV2.flac" volumeMultiplier="1"/>

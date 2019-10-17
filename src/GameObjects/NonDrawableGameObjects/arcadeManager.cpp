@@ -38,6 +38,7 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	if (!mHasStarted)
 	{
 		mTimeBeforeStart -= delta;
+		mMusicPlayer.playFromMusicState("break");
 		updateStartTimeCounter();
 		return;
 	}
@@ -64,6 +65,7 @@ void ArcadeManager::updateStartTimeCounter()
 
 void ArcadeManager::startArcadeMode()
 {
+	mMusicPlayer.playFromMusicState("wave");
 	mGui.getInterface("nextWaveInfo")->hide();
 	mHasStarted = true;
 	createNextWave();
