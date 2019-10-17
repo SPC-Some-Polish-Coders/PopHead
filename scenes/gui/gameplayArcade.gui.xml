@@ -18,7 +18,7 @@
             <textWidget name="bulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
         </widget>
     </interface>
-    <interface name="arcadeCounters">
+    <interface name="arcadeCounters" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <widget name="counters" scale="0.6, 0.5" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.11, 0.07">
                 <textWidget name="waveCounter" origin="0.5" position="0.05, 0.2" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="14" text="Wave: 0   "/>
@@ -26,7 +26,7 @@
             </widget>
         </widget>
     </interface>
-	  <interface name="nextWaveInfo" hide="true">
+	  <interface name="nextWaveInfo">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <widget name="counters" scale="1.1, 0.4" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.18, 0.07">
                 <textWidget name="timeToNextWave" origin="0.5" position="0.05, 0.3" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="17" text="Next wave in 0 seconds!"/>

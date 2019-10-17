@@ -16,7 +16,7 @@ namespace
 	constexpr float movementSpeed = 50.f;
 	constexpr unsigned damage = 20;
 	constexpr unsigned maxHp = 100;
-	constexpr int hp = 50;
+	constexpr int hp = 100;
 	const sf::FloatRect posAndSize(
 		0,
 		0,
