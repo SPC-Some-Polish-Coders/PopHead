@@ -18,7 +18,7 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
 	,mNormalZombiesToSpawnPerSpawner(0)
-	,mCurrentWave(0)
+	,mCurrentWave(4)
 	,mEnemiesCounter(0)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 	,mIsBreakTime(false)
@@ -65,6 +65,7 @@ void ArcadeManager::updateStartTimeCounter()
 void ArcadeManager::startArcadeMode()
 {
 	mGui.getInterface("nextWaveInfo")->hide();
+	mGui.getInterface("arcadeCounters")->show();
 	mHasStarted = true;
 	createNextWave();
 }
@@ -120,28 +121,28 @@ void ArcadeManager::setNextWaveNumbers()
 	switch(mCurrentWave)
 	{
 		case 1:{
-			mSlowZombiesToSpawnPerSpawner = 4;
+			mSlowZombiesToSpawnPerSpawner = 3;
 			mNormalZombiesToSpawnPerSpawner = 0;
 		}break;
 
 		case 2: {
-			mSlowZombiesToSpawnPerSpawner = 4;
+			mSlowZombiesToSpawnPerSpawner = 3;
 			mNormalZombiesToSpawnPerSpawner = 2;
 		}break;
 		
 		case 3: {
-			mSlowZombiesToSpawnPerSpawner = 7;
-			mNormalZombiesToSpawnPerSpawner = 1;
+			mSlowZombiesToSpawnPerSpawner = 5;
+			mNormalZombiesToSpawnPerSpawner = 0;
 		}break;
 		
 		case 4: {
 			mSlowZombiesToSpawnPerSpawner = 4;
-			mNormalZombiesToSpawnPerSpawner = 6;
+			mNormalZombiesToSpawnPerSpawner = 3;
 		}break;
 
 		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 1;
-			mNormalZombiesToSpawnPerSpawner = 14;
+			mSlowZombiesToSpawnPerSpawner = 2;
+			mNormalZombiesToSpawnPerSpawner = 6;
 		}break;
 
 		default: {
