@@ -6,7 +6,6 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
-#include "GameObjects/DrawableGameObjects/bilbord.hpp"
 #include "gameData.hpp"
 
 namespace ph {

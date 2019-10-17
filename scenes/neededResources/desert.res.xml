@@ -18,8 +18,6 @@
     <resource respath="others/enterHint.png"/>
     <resource respath="others/backslashHint.png"/>
     <resource respath="others/pistol.png"/>
-    <resource respath="others/standingBilbord.png"/>
-    <resource respath="others/lyingBilbord.png"/> 
     <resource respath="others/medkit.png"/>
   </textures>
 </loading>
