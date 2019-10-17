@@ -706,13 +706,7 @@
   <object id="2" type="Player" x="582.288" y="665.348">
    <point/>
   </object>
-  <object id="5" type="ArcadeSpawner" x="720" y="1209">
-   <properties>
-    <property name="spawnType" value="zombie"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="13" type="ArcadeSpawner" x="649.333" y="1205.33">
+  <object id="5" type="ArcadeSpawner" x="689.333" y="1190.33">
    <properties>
     <property name="spawnType" value="zombie"/>
    </properties>
