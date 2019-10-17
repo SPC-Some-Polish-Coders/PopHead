@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="left-up" width="125" height="105" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="262">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="125" height="105" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="265">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -588,7 +588,7 @@
   <object id="136" type="Player" x="397.187" y="363.3">
    <point/>
   </object>
-  <object id="163" type="ArcadeSpawner" x="1508" y="700.67">
+  <object id="163" type="ArcadeSpawner" x="1494.67" y="711.337">
    <properties>
     <property name="spawnType" value="zombie"/>
    </properties>
@@ -596,6 +596,12 @@
   </object>
   <object id="168" type="SlowDownArea" x="1071" y="896.41" width="303" height="188.17"/>
   <object id="170" type="SlowDownArea" x="501.833" y="498.915" width="313.667" height="139.67"/>
+  <object id="181" type="ArcadeSpawner" x="988" y="1285.67">
+   <properties>
+    <property name="spawnType" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
   <object id="182" type="ArcadeSpawner" x="1351" y="1090">
    <properties>
     <property name="spawnType" value="zombie"/>
@@ -608,7 +614,7 @@
    </properties>
    <point/>
   </object>
-  <object id="184" type="ArcadeSpawner" x="677.667" y="1080">
+  <object id="184" type="ArcadeSpawner" x="667" y="1032">
    <properties>
     <property name="spawnType" value="zombie"/>
    </properties>
@@ -660,16 +666,13 @@
    </properties>
    <point/>
   </object>
-  <object id="230" type="ArcadeSpawner" x="892.667" y="1289">
+  <object id="230" type="ArcadeSpawner" x="894" y="1231.67">
    <properties>
     <property name="spawnType" value="zombie"/>
    </properties>
    <point/>
   </object>
-  <object id="231" type="LootSpawner" x="342.52" y="371.3">
-   <point/>
-  </object>
-  <object id="232" type="LootSpawner" x="342.187" y="342.633">
+  <object id="231" type="LootSpawner" x="341.187" y="361.3">
    <point/>
   </object>
   <object id="233" type="LootSpawner" x="435.52" y="331.3">
@@ -710,7 +713,28 @@
   <object id="258" type="SlowDownArea" x="1345.27" y="547.09" width="13.368" height="42.5726"/>
   <object id="259" type="SlowDownArea" x="1360.18" y="561.999" width="13.368" height="26.5726"/>
   <object id="260" type="SlowDownArea" x="1331.18" y="592.999" width="41.368" height="123.073"/>
-  <object id="261" type="LootSpawner" x="369.667" y="341">
+  <object id="261" type="LootSpawner" x="1210.85" y="614.633">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="262" type="LootSpawner" x="1462.85" y="1172.63">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="263" type="LootSpawner" x="854.853" y="1252.63">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="264" type="LootSpawner" x="608.853" y="966.633">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

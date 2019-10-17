@@ -74,7 +74,7 @@ void ArcadeManager::init()
 {
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto* player = dynamic_cast<Player*>(standingObjects->getChild("player"));
-	player->setNumOfBullets(200u);
+	player->setNumOfBullets(300u);
 
 	mMadeInit = true;
 }
@@ -121,13 +121,13 @@ void ArcadeManager::setNextWaveNumbers()
 	switch(mCurrentWave)
 	{
 		case 1:{
-			mSlowZombiesToSpawnPerSpawner = 3;
+			mSlowZombiesToSpawnPerSpawner = 2;
 			mNormalZombiesToSpawnPerSpawner = 0;
 		}break;
 
 		case 2: {
 			mSlowZombiesToSpawnPerSpawner = 3;
-			mNormalZombiesToSpawnPerSpawner = 2;
+			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 3: {
@@ -136,13 +136,13 @@ void ArcadeManager::setNextWaveNumbers()
 		}break;
 		
 		case 4: {
-			mSlowZombiesToSpawnPerSpawner = 4;
+			mSlowZombiesToSpawnPerSpawner = 3;
 			mNormalZombiesToSpawnPerSpawner = 3;
 		}break;
 
 		case 5: {
 			mSlowZombiesToSpawnPerSpawner = 2;
-			mNormalZombiesToSpawnPerSpawner = 5;
+			mNormalZombiesToSpawnPerSpawner = 4;
 		}break;
 
 		case 6: {
@@ -151,18 +151,18 @@ void ArcadeManager::setNextWaveNumbers()
 		}break;
 
 		case 7: {
-			mSlowZombiesToSpawnPerSpawner = 9;
-			mNormalZombiesToSpawnPerSpawner = 2;
+			mSlowZombiesToSpawnPerSpawner = 7;
+			mNormalZombiesToSpawnPerSpawner = 3;
 		}break;
 
 		case 8: {
 			mSlowZombiesToSpawnPerSpawner = 4;
-			mNormalZombiesToSpawnPerSpawner = 7;
+			mNormalZombiesToSpawnPerSpawner = 6;
 		}break;
 
 		case 9: {
-			mSlowZombiesToSpawnPerSpawner = 10;
-			mNormalZombiesToSpawnPerSpawner = 4;
+			mSlowZombiesToSpawnPerSpawner = 8;
+			mNormalZombiesToSpawnPerSpawner = 7;
 		}break;
 		
 		case 10: {
