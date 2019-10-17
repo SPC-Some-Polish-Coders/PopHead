@@ -5,7 +5,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
 #include "gameData.hpp"
 
 namespace ph {
@@ -87,6 +87,7 @@ void StartGameCutScene::update(const sf::Time delta)
 	// AGENT LEAVES CAR
 	if(mCutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
 		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
+		playerNpc->setAnimationState("stayingRight");
 		playerNpc->setPosition({5760, 392});
 		mRoot.addChild(std::move(playerNpc));
 		mWasPlayerCreated = true;

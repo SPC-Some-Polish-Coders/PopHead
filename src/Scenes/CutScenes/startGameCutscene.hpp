@@ -2,7 +2,6 @@
 
 #include "Scenes/cutScene.hpp"
 #include <SFML/System.hpp>
-#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
 
 namespace ph {
 
