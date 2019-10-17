@@ -102,13 +102,13 @@ void ArcadeManager::setNextWaveNumbers()
 		}break;
 		
 		case 4: {
-			mSlowZombiesToSpawnPerSpawner = 5;
-			mNormalZombiesToSpawnPerSpawner = 10;
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 6;
 		}break;
 
 		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 0;
-			mNormalZombiesToSpawnPerSpawner = 20;
+			mSlowZombiesToSpawnPerSpawner = 1;
+			mNormalZombiesToSpawnPerSpawner = 14;
 		}break;
 
 		default: {
