@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="476">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="496">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
+  <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
    <objectgroup draworder="index">
     <object id="5" x="0" y="0" width="16" height="16"/>
@@ -826,12 +826,6 @@
   <object id="9" name="Zombie" type="Zombie" x="614.333" y="941.333">
    <point/>
   </object>
-  <object id="24" name="Zombie" type="Zombie" x="619" y="1092.17">
-   <point/>
-  </object>
-  <object id="25" name="Zombie" type="Zombie" x="630.67" y="868">
-   <point/>
-  </object>
   <object id="26" name="Zombie" type="Zombie" x="914.67" y="946.667">
    <point/>
   </object>
@@ -841,31 +835,16 @@
   <object id="29" name="Zombie" type="Zombie" x="588.33" y="409.667">
    <point/>
   </object>
-  <object id="31" name="Zombie" type="Zombie" x="957" y="585.667">
-   <point/>
-  </object>
   <object id="32" name="Zombie" type="Zombie" x="1006" y="583.667">
    <point/>
   </object>
-  <object id="44" name="Zombie" type="Zombie" x="602" y="564">
-   <point/>
-  </object>
-  <object id="45" name="Zombie" type="Zombie" x="654" y="625">
+  <object id="45" name="Zombie" type="Zombie" x="645" y="585">
    <point/>
   </object>
   <object id="46" name="Zombie" type="Zombie" x="704" y="699">
    <point/>
   </object>
   <object id="47" name="Zombie" type="Zombie" x="707" y="854">
-   <point/>
-  </object>
-  <object id="48" name="Zombie" type="Zombie" x="797" y="871">
-   <point/>
-  </object>
-  <object id="49" name="Zombie" type="Zombie" x="855" y="991">
-   <point/>
-  </object>
-  <object id="50" name="Zombie" type="Zombie" x="972" y="999">
    <point/>
   </object>
   <object id="51" name="Zombie" type="Zombie" x="1069" y="843">
@@ -877,43 +856,28 @@
   <object id="53" name="Zombie" type="Zombie" x="1194" y="720">
    <point/>
   </object>
-  <object id="54" name="Zombie" type="Zombie" x="1197" y="503">
-   <point/>
-  </object>
   <object id="55" name="Zombie" type="Zombie" x="1026" y="711">
-   <point/>
-  </object>
-  <object id="57" name="Zombie" type="Zombie" x="947.5" y="143">
    <point/>
   </object>
   <object id="58" name="Zombie" type="Zombie" x="1067" y="155">
    <point/>
   </object>
-  <object id="60" name="Zombie" type="Zombie" x="768.5" y="110.5">
-   <point/>
-  </object>
-  <object id="61" name="Zombie" type="Zombie" x="668" y="144">
+  <object id="60" name="Zombie" type="Zombie" x="756.5" y="126.5">
    <point/>
   </object>
   <object id="63" name="Zombie" type="Zombie" x="533" y="321">
    <point/>
   </object>
-  <object id="64" name="Zombie" type="Zombie" x="533" y="418">
-   <point/>
-  </object>
   <object id="65" name="Zombie" type="Zombie" x="1194.84" y="303">
-   <point/>
-  </object>
-  <object id="66" name="Zombie" type="Zombie" x="1196" y="389.5">
    <point/>
   </object>
   <object id="69" name="Zombie" type="Zombie" x="851.83" y="158.833">
    <point/>
   </object>
-  <object id="71" name="Zombie" type="Zombie" x="682.66" y="234">
+  <object id="71" name="Zombie" type="Zombie" x="659.66" y="185">
    <point/>
   </object>
-  <object id="72" name="Zombie" type="Zombie" x="649.33" y="286">
+  <object id="72" name="Zombie" type="Zombie" x="643.33" y="276">
    <point/>
   </object>
   <object id="75" name="Zombie" type="Zombie" x="665.33" y="523.667">
@@ -945,28 +909,16 @@
   <object id="439" name="Zombie" type="Zombie" x="562.5" y="1169">
    <point/>
   </object>
-  <object id="440" name="Zombie" type="Zombie" x="431.167" y="797">
-   <point/>
-  </object>
   <object id="441" name="Zombie" type="Zombie" x="472.167" y="1195.83">
-   <point/>
-  </object>
-  <object id="444" name="Zombie" type="Zombie" x="412.5" y="1141.5">
-   <point/>
-  </object>
-  <object id="451" name="Zombie" type="Zombie" x="472" y="1371.5">
    <point/>
   </object>
   <object id="453" name="Zombie" type="Zombie" x="559" y="1314">
    <point/>
   </object>
-  <object id="454" name="Zombie" type="Zombie" x="597" y="1311">
-   <point/>
-  </object>
   <object id="456" name="Zombie" type="Zombie" x="633" y="1367.5">
    <point/>
   </object>
-  <object id="458" name="Zombie" type="Zombie" x="595" y="1356">
+  <object id="458" name="Zombie" type="Zombie" x="547.5" y="1354">
    <point/>
   </object>
   <object id="460" name="Zombie" type="Zombie" x="509" y="1353">
@@ -975,13 +927,10 @@
   <object id="461" name="Zombie" type="Zombie" x="509" y="1353">
    <point/>
   </object>
-  <object id="464" name="Zombie" type="Zombie" x="420.5" y="934.333">
+  <object id="464" name="Zombie" type="Zombie" x="465.5" y="896.333">
    <point/>
   </object>
   <object id="465" name="Zombie" type="Zombie" x="703.5" y="960.833">
-   <point/>
-  </object>
-  <object id="467" name="Zombie" type="Zombie" x="562.5" y="1399.5">
    <point/>
   </object>
   <object id="468" name="Zombie" type="Zombie" x="443.5" y="1018">
@@ -1009,6 +958,63 @@
    </properties>
   </object>
   <object id="474" type="Gate" x="768.545" y="513.636">
+   <point/>
+  </object>
+  <object id="476" type="SlowZombie" x="501" y="1401.5">
+   <point/>
+  </object>
+  <object id="477" type="SlowZombie" x="569.5" y="1388">
+   <point/>
+  </object>
+  <object id="478" type="SlowZombie" x="609" y="1400">
+   <point/>
+  </object>
+  <object id="479" type="SlowZombie" x="455.5" y="1075.5">
+   <point/>
+  </object>
+  <object id="480" type="SlowZombie" x="612" y="1012.5">
+   <point/>
+  </object>
+  <object id="481" type="SlowZombie" x="551" y="746">
+   <point/>
+  </object>
+  <object id="482" type="SlowZombie" x="617.5" y="843">
+   <point/>
+  </object>
+  <object id="483" type="SlowZombie" x="796.5" y="911.5">
+   <point/>
+  </object>
+  <object id="484" type="SlowZombie" x="705" y="613">
+   <point/>
+  </object>
+  <object id="485" type="SlowZombie" x="516" y="473">
+   <point/>
+  </object>
+  <object id="486" type="SlowZombie" x="541" y="246">
+   <point/>
+  </object>
+  <object id="487" type="SlowZombie" x="902" y="160">
+   <point/>
+  </object>
+  <object id="488" type="SlowZombie" x="989" y="140">
+   <point/>
+  </object>
+  <object id="489" type="SlowZombie" x="1200" y="137">
+   <point/>
+  </object>
+  <object id="490" type="SlowZombie" x="1186" y="212">
+   <point/>
+  </object>
+  <object id="491" type="SlowZombie" x="1191" y="433">
+   <point/>
+  </object>
+  <object id="492" type="SlowZombie" x="1190" y="577">
+   <point/>
+  </object>
+  <object id="494" type="SlowZombie" x="952" y="605">
+   <point/>
+  </object>
+  <object id="495" type="SlowZombie" x="980" y="818">
    <point/>
   </object>
  </objectgroup>
