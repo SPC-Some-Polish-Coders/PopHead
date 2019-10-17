@@ -29,7 +29,7 @@ private:
 	void updateCounters();
 
 	std::string getArcadeClockValues();
-	std::string getWaveClockValues();
+	std::string getTimeToNextWaveInfo();
 
 	bool shouldCreateNewWave();
 	void createNextWave();

@@ -20,16 +20,17 @@
     </interface>
     <interface name="arcadeCounters">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <widget name="counters" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.5, 0.1">
-                <textWidget name="arcadeClock" origin="0.5" position="0.05, 0.1" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Time: 0:0"/>
-                <textWidget name="waveCounter" origin="0.5" position="0.05, 0.35" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Wave: 0   "/>
-                <textWidget name="enemiesCounter" origin="0.5" position="0.05, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Enemies: 00"/>
+            <widget name="counters" scale="0.6, 0.5" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.11, 0.07">
+                <textWidget name="waveCounter" origin="0.5" position="0.05, 0.2" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="14" text="Wave: 0   "/>
+                <textWidget name="enemiesCounter" origin="0.5" position="0.05, 0.6" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="14" text="Enemies: 00"/>
             </widget>
         </widget>
     </interface>
-	<interface name="arcadeInformations" hide="true">
+	  <interface name="nextWaveInfo" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-      			<textWidget name="nextWaveInfo" origin="0.5" position="0.2, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="20" text="Next wave in 0 seconds!"/>
+            <widget name="counters" scale="1.1, 0.4" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.18, 0.07">
+                <textWidget name="timeToNextWave" origin="0.5" position="0.05, 0.3" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="17" text="Next wave in 0 seconds!"/>
+            </widget>
         </widget>
     </interface>
 </gui>
