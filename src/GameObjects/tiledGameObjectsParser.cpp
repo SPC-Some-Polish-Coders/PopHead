@@ -290,8 +290,8 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 	sf::FloatRect carRect(position, sf::Vector2f(texture.getSize()));
 	mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(carRect);
 
-	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects->addChild(std::move(car));
+	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
+	lyingObjects->addChild(std::move(car));
 }
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const

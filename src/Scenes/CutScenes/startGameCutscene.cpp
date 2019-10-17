@@ -24,7 +24,7 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mHasStartedToSlowDown(false)
 	,mWasPlayerCreated(false)
 {
-	auto* car = dynamic_cast<Car*>(root.getChild("LAYER_standingObjects")->getChild("car"));
+	auto* car = dynamic_cast<Car*>(root.getChild("LAYER_lyingObjects")->getChild("car"));
 	car->setVelocity(120);
 }
 
@@ -46,7 +46,7 @@ void StartGameCutScene::update(const sf::Time delta)
 		mWasGuiHidden = true;
 	}
 
-	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_standingObjects")->getChild("car"));
+	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_lyingObjects")->getChild("car"));
 	
 	if(mCutsceneTimeInSeconds < 23)
 		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());
