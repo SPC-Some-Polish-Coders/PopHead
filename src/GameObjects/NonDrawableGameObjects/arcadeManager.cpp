@@ -18,7 +18,7 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
 	,mNormalZombiesToSpawnPerSpawner(0)
-	,mCurrentWave(4)
+	,mCurrentWave(0)
 	,mEnemiesCounter(0)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 	,mIsBreakTime(false)
@@ -130,8 +130,8 @@ void ArcadeManager::handleWin()
 	mHasWon = true;
 	auto* winScreen = mGui.getInterface("winScreen");
 	auto* totalTime = dynamic_cast<TextWidget*>(winScreen->getWidget("canvas")->getWidget("totalTimeText"));
-	int seconds = mTimeFromStart.asSeconds();
-	int minutes = seconds/60;
+	int minutes = mTimeFromStart.asSeconds() /60;
+	int seconds = mTimeFromStart.asSeconds() - minutes*60;
 	totalTime->setString("Total time: " + addZero(minutes) + ":" + addZero(seconds));
 	winScreen->show();
 	startBreakTime();
@@ -159,7 +159,7 @@ void ArcadeManager::setNextWaveNumbers()
 		
 		case 3: {
 			mSlowZombiesToSpawnPerSpawner = 5;
-			mNormalZombiesToSpawnPerSpawner = 0;
+			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 4: {
@@ -168,12 +168,37 @@ void ArcadeManager::setNextWaveNumbers()
 		}break;
 
 		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 6;
+			mSlowZombiesToSpawnPerSpawner = 2;
+			mNormalZombiesToSpawnPerSpawner = 5;
+		}break;
+
+		case 6: {
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+
+		case 7: {
+			mSlowZombiesToSpawnPerSpawner = 9;
 			mNormalZombiesToSpawnPerSpawner = 2;
 		}break;
 
+		case 8: {
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 7;
+		}break;
+
+		case 9: {
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+		
+		case 10: {
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 10;
+		}break;
+
 		default: {
-			// TODO_arc: Add more waves
+			PH_EXIT_GAME("It's impossible that someone is that good! \nCritical error!");
 			break;
 		}
 	}
