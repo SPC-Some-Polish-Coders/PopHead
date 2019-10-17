@@ -4,7 +4,7 @@
         <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <widget name="bunkerButton" contentPath="textures/gui/bunker.jpg" scale="0.17" origin="0.5" position="0.27, 0.55" onButtonPressed="replaceScene:scenes/arcadeTheBunker.xml"/>
             <textWidget name="bunkerText" origin="0.5" position="0.15, 0.72" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  text="Bunker"/>
-            <widget name="sewageButton" contentPath="textures/gui/sewage.jpg" scale="0.17" origin="0.5" position="0.7, 0.55" onButtonPressed="replaceScene:scenes/arcadeSewage.xml"/>
+            <widget name="sewageButton" contentPath="textures/gui/sewage.jpg" scale="0.17" origin="0.5" position="0.73, 0.55" onButtonPressed="replaceScene:scenes/arcadeSewage.xml"/>
             <textWidget name="sewageText" origin="0.5" position="0.6, 0.72" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  text="Sewage"/>
 
             <textWidget name="exitToMenuButton" origin="0.5" position="0.5, 0.85" scale="0.5" contentPath="textures/gui/exitButton.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main Menu"></textWidget>
