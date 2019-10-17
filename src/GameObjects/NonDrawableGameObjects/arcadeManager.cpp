@@ -10,7 +10,7 @@
 namespace ph {
 
 ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
-	:GameObject("arcadeTimer")
+	:GameObject("arcadeManager")
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mTimeFromStart(sf::Time::Zero)
@@ -24,6 +24,8 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mIsBreakTime(false)
 	,mMadeInit(false)
 	,mHasStarted(false)
+	,mPGAMode(true)
+	,mHasWon(false)
 {
 	mIsActive = true;
 }
@@ -35,6 +37,9 @@ ArcadeManager::~ArcadeManager()
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
 {
+	if (mHasWon && mBreakClock.getElapsedTime().asSeconds() > 10.f)
+		endWinInscript();
+
 	if (!mHasStarted)
 	{
 		mTimeBeforeStart -= delta;
@@ -53,6 +58,11 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	updateCounters();
 }
 
+void ArcadeManager::switchPGAMode(bool value)
+{
+	mPGAMode = value;
+}
+
 void ArcadeManager::updateStartTimeCounter()
 {
 	auto* canvas = mGui.getInterface("nextWaveInfo")->getWidget("canvas");
@@ -67,6 +77,7 @@ void ArcadeManager::startArcadeMode()
 {
 	mMusicPlayer.playFromMusicState("wave");
 	mGui.getInterface("nextWaveInfo")->hide();
+	mGui.getInterface("arcadeCounters")->show();
 	mHasStarted = true;
 	createNextWave();
 }
@@ -75,7 +86,7 @@ void ArcadeManager::init()
 {
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto* player = dynamic_cast<Player*>(standingObjects->getChild("player"));
-	player->setNumOfBullets(200u);
+	player->setNumOfBullets(350u);
 
 	mMadeInit = true;
 }
@@ -95,9 +106,13 @@ void ArcadeManager::updateEnemiesCounter()
 
 void ArcadeManager::updateWave()
 {
-	if(mTimeFromStart.asSeconds() > 10 && !mIsBreakTime && mEnemiesCounter <= 5) {
-		startBreakTime();
+	if (mTimeFromStart.asSeconds() > 10 && !mIsBreakTime && mEnemiesCounter <= 5) {
+		if (mPGAMode && mCurrentWave == 5)
+			handleWin();
+		else
+			startBreakTime();
 	}
+
 	else if(shouldCreateNewWave()) {
 		endBreakTime();
 		createNextWave();
@@ -117,37 +132,80 @@ void ArcadeManager::createNextWave()
 	mIsBreakTime = false;
 }
 
+void ArcadeManager::handleWin()
+{
+	mHasWon = true;
+	auto* winScreen = mGui.getInterface("winScreen");
+	auto* totalTime = dynamic_cast<TextWidget*>(winScreen->getWidget("canvas")->getWidget("totalTimeText"));
+	int minutes = mTimeFromStart.asSeconds() /60;
+	int seconds = mTimeFromStart.asSeconds() - minutes*60;
+	totalTime->setString("Total time: " + addZero(minutes) + ":" + addZero(seconds));
+	winScreen->show();
+	startBreakTime();
+}
+
+void ArcadeManager::endWinInscript()
+{
+	auto* winScreen = mGui.getInterface("winScreen");
+	winScreen->hide();
+}
+
 void ArcadeManager::setNextWaveNumbers()
 {
 	switch(mCurrentWave)
 	{
 		case 1:{
-			mSlowZombiesToSpawnPerSpawner = 4;
+			mSlowZombiesToSpawnPerSpawner = 2;
 			mNormalZombiesToSpawnPerSpawner = 0;
 		}break;
 
 		case 2: {
-			mSlowZombiesToSpawnPerSpawner = 4;
-			mNormalZombiesToSpawnPerSpawner = 2;
+			mSlowZombiesToSpawnPerSpawner = 3;
+			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 3: {
-			mSlowZombiesToSpawnPerSpawner = 7;
+			mSlowZombiesToSpawnPerSpawner = 5;
 			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 4: {
+			mSlowZombiesToSpawnPerSpawner = 3;
+			mNormalZombiesToSpawnPerSpawner = 3;
+		}break;
+
+		case 5: {
+			mSlowZombiesToSpawnPerSpawner = 2;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+
+		case 6: {
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+
+		case 7: {
+			mSlowZombiesToSpawnPerSpawner = 7;
+			mNormalZombiesToSpawnPerSpawner = 3;
+		}break;
+
+		case 8: {
 			mSlowZombiesToSpawnPerSpawner = 4;
 			mNormalZombiesToSpawnPerSpawner = 6;
 		}break;
 
-		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 1;
-			mNormalZombiesToSpawnPerSpawner = 14;
+		case 9: {
+			mSlowZombiesToSpawnPerSpawner = 8;
+			mNormalZombiesToSpawnPerSpawner = 7;
+		}break;
+		
+		case 10: {
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 10;
 		}break;
 
 		default: {
-			// TODO_arc: Add more waves
+			PH_EXIT_GAME("It's impossible that someone is that good! \nCritical error!");
 			break;
 		}
 	}

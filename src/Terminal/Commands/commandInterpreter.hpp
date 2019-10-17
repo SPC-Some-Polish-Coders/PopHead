@@ -42,6 +42,7 @@ private:
 	void executeHelp() const;
 	void executeClear() const;
 
+	void executeSwitchPGAMode() const;
 	void executeCollisionDebug() const;
 	void changeCollisionDebugColor() const;
 	void changeCollisionDebugDisplayMode() const;

@@ -18,6 +18,7 @@ public:
 	~ArcadeManager();
 
 	void updateCurrent(const sf::Time delta) override;
+	void switchPGAMode(bool value);
 
 	static bool isActive() { return mIsActive; }
 
@@ -34,6 +35,8 @@ private:
 	std::string getTimeToNextWaveInfo();
 
 	bool shouldCreateNewWave();
+	void handleWin();
+	void endWinInscript();
 	void createNextWave();
 	void invokeSpawners();
 
@@ -61,6 +64,8 @@ private:
 	bool mIsBreakTime;
 	bool mMadeInit;
 	bool mHasStarted;
+	bool mPGAMode;
+	bool mHasWon;
 
 	inline static bool mIsActive = false;
 };
