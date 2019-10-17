@@ -46,6 +46,8 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 {
 	PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
 
+	mGameData->getAIManager().setAIMode(AIMode::normal);
+
 	Xml mapFile;
 	mapFile.loadFromFile(filePath);
 
@@ -117,6 +119,7 @@ void TiledGameObjectsParser::loadArcadeManager() const
 {
 	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui()));
+	mGameData->getAIManager().setAIMode(AIMode::zombieAlwaysLookForPlayer);
 }
 
 void TiledGameObjectsParser::loadLayerObjects() const
