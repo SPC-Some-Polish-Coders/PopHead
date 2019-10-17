@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="27">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="31">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -652,7 +652,7 @@
 0,0,0,0,199,200,132,73,106,354,130,0,0,0,0,0,0,44,0,0,0,0,73,0,0,0,161,289,0,0,0,0,0,0,0,0,0,7,0,0,0,11,0,0,0,0,0,39,0,74,0,0,0,42,0,0,0,0,0,0,0,0,161,0,43,0,0,321,130,132,167,168,290,135,136,258,135,136,194,290,
 0,0,0,289,231,232,164,105,353,129,323,324,0,0,0,225,0,0,0,0,0,258,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,39,0,0,0,43,0,0,0,0,0,0,0,106,0,0,0,0,0,0,0,0,0,0,0,0,0,129,0,321,0,0,321,164,199,200,354,167,168,260,167,168,290,0,
 135,136,0,257,135,136,353,289,258,322,355,356,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,194,193,231,232,73,135,136,292,199,200,354,130,
-167,168,162,162,167,168,258,289,0,0,0,0,0,0,0,0,0,0,0,193,0,0,0,0,0,0,0,0,0,0,120,121,0,0,0,0,0,0,0,0,0,0,0,124,125,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,226,0,9,129,225,105,167,168,161,231,232,135,136,
+167,168,162,162,167,168,258,289,0,0,0,0,0,0,0,0,0,0,0,193,0,0,0,0,0,0,0,0,0,0,120,121,121,121,0,0,0,0,0,0,0,0,0,124,125,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,0,0,0,0,0,0,0,226,0,9,129,225,105,167,168,161,231,232,135,136,
 199,200,196,71,72,194,226,0,0,0,0,0,0,0,74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,152,226,354,0,0,290,0,194,354,226,0,258,322,0,157,0,0,0,0,0,0,0,0,0,323,324,0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,225,257,162,194,258,322,225,167,168,
 231,232,228,103,104,194,0,0,0,0,0,0,0,0,106,0,0,0,0,193,0,0,0,0,0,0,260,0,0,0,184,354,0,0,0,0,0,0,0,0,0,0,0,0,189,0,0,12,0,0,353,0,0,0,355,356,0,194,0,0,0,0,353,0,0,0,0,0,0,0,0,0,0,0,0,0,0,257,225,290,
 2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,2,3,1610612804,4,0,0,9,0,0,292,0,0,0,216,322,0,0,0,0,0,0,0,0,0,0,0,258,0,0,0,44,0,0,0,0,0,0,0,0,162,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -749,9 +749,6 @@
    <point/>
   </object>
   <object id="20" type="Camera" x="268" y="418.667" width="640" height="480"/>
-  <object id="21" type="LootSpawner" x="505" y="561">
-   <point/>
-  </object>
   <object id="23" type="LootSpawner" x="689" y="565">
    <properties>
     <property name="lootType" value="medkit"/>
@@ -764,10 +761,37 @@
    </properties>
    <point/>
   </object>
-  <object id="25" type="LootSpawner" x="507" y="598">
+  <object id="25" type="LootSpawner" x="500.167" y="542.667">
    <point/>
   </object>
-  <object id="26" type="LootSpawner" x="463.833" y="549.333">
+  <object id="26" type="LootSpawner" x="666.5" y="183">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="27" type="LootSpawner" x="1028" y="558">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" type="LootSpawner" x="1028" y="558">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" type="LootSpawner" x="640" y="1066">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" type="LootSpawner" x="232" y="1054">
+   <properties>
+    <property name="lootType" value="medkit"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
