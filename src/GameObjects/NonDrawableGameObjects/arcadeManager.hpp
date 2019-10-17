@@ -17,6 +17,8 @@ public:
 	void updateCurrent(const sf::Time delta) override;
 
 private:
+	void init();
+
 	void updateEnemies();
 	void updateWave();
 	void updateCounters();
@@ -50,6 +52,7 @@ private:
 	int mEnemiesLeft;
 	int mCurrentWave;
 	bool mBreakTime;
+	bool mMadeInit;
 };
 
 }

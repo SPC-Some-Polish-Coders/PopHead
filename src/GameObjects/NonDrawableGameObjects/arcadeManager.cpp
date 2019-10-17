@@ -1,5 +1,6 @@
 #include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include "GameObjects/NonDrawableGameObjects/arcadeSpawner.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Gui/gui.hpp"
 #include "Gui/interface.hpp"
 #include <math.h>
@@ -17,6 +18,7 @@ ArcadeManager::ArcadeManager(GUI& gui)
 	,mEnemiesLeft(0)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 	,mBreakTime(false)
+	,mMadeInit(false)
 	,mTimeForBreak(sf::seconds(20.f))
 {
 	createNextWave();
@@ -24,9 +26,21 @@ ArcadeManager::ArcadeManager(GUI& gui)
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
 {
+	if(!mMadeInit)
+		init();
+
 	updateEnemies();
 	updateWave();
 	updateCounters();
+}
+
+void ArcadeManager::init()
+{
+	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
+	auto* player = dynamic_cast<Player*>(standingObjects->getChild("player"));
+	player->setNumOfBullets(200u);
+
+	mMadeInit = true;
 }
 
 void ArcadeManager::updateEnemies()
