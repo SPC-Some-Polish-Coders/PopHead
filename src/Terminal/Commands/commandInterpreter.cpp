@@ -2,6 +2,7 @@
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
+#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
@@ -30,6 +31,7 @@ void CommandInterpreter::init()
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
+	mCommandsMap["pgamode"] =	&CommandInterpreter::executeSwitchPGAMode;
 	mCommandsMap["m"] =			&CommandInterpreter::executeMove;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
@@ -173,6 +175,19 @@ auto CommandInterpreter::getPlayer() const -> GameObject&
 	auto* standingObjects = gameScene.getRoot().getChild("LAYER_standingObjects");
 	GameObject& player = *standingObjects->getChild("player");
 	return player;
+}
+
+void CommandInterpreter::executeSwitchPGAMode() const
+{
+	auto& gameScene = mGameData->getSceneManager().getScene();
+	auto* invisibleObjects = gameScene.getRoot().getChild("LAYER_invisibleObjects");
+	auto* arcadeManager = dynamic_cast<ArcadeManager*>(invisibleObjects->getChild("arcadeManager"));
+	bool value = false;
+	if (commandContains("on"))
+		value = true;
+	else if (commandContains("off"))
+		value = false;
+	arcadeManager->switchPGAMode(value);
 }
 
 void CommandInterpreter::executeCollisionDebug() const

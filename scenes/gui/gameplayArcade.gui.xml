@@ -12,6 +12,12 @@
             <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml"         text="Exit to menu"></textWidget>
         </widget>
     </interface>
+	<interface name="winScreen" hide="true">
+	<widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		<textWidget name="winText" origin="0.5" position="0.2, 0.65" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="25" text="Challange completed!"></textWidget>
+		<textWidget name="totalTimeText" origin="0.5" position="0.3, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Total time: 00:00"></textWidget>
+	</widget>
+    </interface>
     <interface name="gameplayCounters">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
