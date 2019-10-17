@@ -29,6 +29,9 @@
  </objecttype>
  <objecttype name="Gate" color="#a48096"/>
  <objecttype name="Lever" color="#aa00ff"/>
+ <objecttype name="LootSpawner" color="#0cff7d">
+  <property name="lootType" type="string" default="bullets"/>
+ </objecttype>
  <objecttype name="Medkit" color="#aaffff"/>
  <objecttype name="Npc" color="#ffff00">
   <property name="hp" type="file" default="50"/>

@@ -6,6 +6,7 @@
 #include "NonDrawableGameObjects/activateArea.hpp"
 #include "NonDrawableGameObjects/cutsceneArea.hpp"
 #include "NonDrawableGameObjects/arcadeManager.hpp"
+#include "NonDrawableGameObjects/lootSpawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
@@ -96,6 +97,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "ActivateArea")) loadActivateArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutSceneArea")) loadCutSceneArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "LootSpawner")) loadLootSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "ArcadeSpawner")) loadArcadeSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
@@ -188,6 +190,25 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
 
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(spawner));
+}
+
+void TiledGameObjectsParser::loadLootSpawner(const Xml& lootSpawnerNode) const
+{
+	const std::string lootTypeString = getProperty(lootSpawnerNode, "lootType").toString();
+	LootType lootType;
+	if(lootTypeString == "medkit")
+		lootType = LootType::Medkit;
+	else if(lootTypeString == "bullets")
+		lootType = LootType::Bullets;
+	else
+		PH_UNEXPECTED_SITUATION("We don't support this loot type");
+
+	auto lootSpawner = std::make_unique<LootSpawner>(
+		lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
+	);
+	lootSpawner->setPosition(getPositionAttribute(lootSpawnerNode));
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(lootSpawner));
 }
 
 void TiledGameObjectsParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const

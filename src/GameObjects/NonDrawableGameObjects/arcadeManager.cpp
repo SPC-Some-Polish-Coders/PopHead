@@ -1,5 +1,6 @@
 #include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include "GameObjects/NonDrawableGameObjects/arcadeSpawner.hpp"
+#include "GameObjects/NonDrawableGameObjects/lootSpawner.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Gui/gui.hpp"
 #include "Gui/interface.hpp"
@@ -151,6 +152,13 @@ auto ArcadeManager::getSpawners() -> std::vector<ArcadeSpawner*>
 
 void ArcadeManager::startBreakTime()
 {
+	// spawn items
+	auto* invisibleObjects = mRoot->getChild("LAYER_invisibleObjects");
+	auto& gameObjects = invisibleObjects->getChildren();
+	for(const auto& gameObject : gameObjects)
+		if(gameObject->getName().find("lootSpawner") != std::string::npos)
+			dynamic_cast<LootSpawner*>(gameObject.get())->spawnLoot();
+
 	mBreakTime = true;
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
 	arcadeInterface->show();
