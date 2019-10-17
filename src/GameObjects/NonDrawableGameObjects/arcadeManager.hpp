@@ -17,7 +17,6 @@ public:
 	void updateCurrent(const sf::Time delta) override;
 
 private:
-
 	void updateEnemies();
 	void updateWave();
 	void updateCounters();
@@ -47,7 +46,8 @@ private:
 	sf::Time mTimeForBreak;
 	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn;
-	int mEnemiesToSpawnPerSpawner;
+	int mSlowZombiesToSpawnPerSpawner;
+	int mNormalZombiesToSpawnPerSpawner;
 	int mEnemiesLeft;
 	int mCurrentWave;
 	bool mBreakTime;

@@ -15,3 +15,5 @@ void ph::Spawn::spawnEnemy()
 	auto* standingObjects = getRoot().getChild("LAYER_standingObjects");
 	standingObjects->addChild(std::move(enemy));
 }
+
+// TODO_arc: Make them only one function

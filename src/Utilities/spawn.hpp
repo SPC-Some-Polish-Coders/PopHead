@@ -10,7 +10,7 @@ class GameObject;
 
 enum class ObjectType
 {
-	Zombie, Npc
+	Zombie, SlowZombie, Npc
 };
 
 class Spawn

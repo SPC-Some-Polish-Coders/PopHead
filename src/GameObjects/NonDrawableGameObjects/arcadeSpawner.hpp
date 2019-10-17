@@ -11,13 +11,12 @@ class ArcadeSpawner : public GameObject
 {
 public:
 	ArcadeSpawner(GameData* const, const ObjectType objectType, const sf::Vector2f);
-	void invokeSpawner(const sf::Time timeBetweenSpawns, const int quantityOfEnemiesToSpawn);
+	void invokeSpawner(const int numberOfSlowZombiesToSpawn, const int numberOfNormalZombiesToSpawn);
 	void shouldSpawn(bool shouldSpawn);
 	void resetSpawner();
 
 private:
 	void updateCurrent(const sf::Time delta) override;
-	void spawnObject();
 	sf::Vector2f getSpawnPosition() const;
 
 private:
@@ -25,8 +24,8 @@ private:
 	const ObjectType mObjectType;
 	const sf::Vector2f mPosition;
 	sf::Clock mTimeFromLastSpawn;
-	sf::Time mSpawnFrequency;
-	int mQuantityOfEnemiesToSpawn;
+	int mNumberOfSlowZombiesToSpawn;
+	int mNumberOfNormalZombiesToSpawn;
 	bool mShouldSpawn;
 };
 

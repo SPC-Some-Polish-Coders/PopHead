@@ -7,25 +7,53 @@ namespace ph {
 
 	ArcadeSpawner::ArcadeSpawner(GameData* const gameData, const ObjectType objectType, const sf::Vector2f position)
 		:GameObject("arcadeSpawner")
-		,mSpawnFrequency(sf::Time::Zero)
 		,mPosition(position)
 		,mGameData(gameData)
 		,mObjectType(objectType)
-		,mQuantityOfEnemiesToSpawn(0)
+		,mNumberOfSlowZombiesToSpawn(0)
+		,mNumberOfNormalZombiesToSpawn(0)
 		,mShouldSpawn(false)
 	{
 	}
 
 	void ArcadeSpawner::updateCurrent(const sf::Time delta)
 	{
-		if (mShouldSpawn)
+		if(mShouldSpawn)
 		{
-			if (mTimeFromLastSpawn.getElapsedTime().asSeconds() > mSpawnFrequency.asSeconds())
+			// TODO_arc: Change sf::Clock to sf::Time in mTimeFromLastSpawn
+			// TODO_arc: Devide it to smaller functions
+
+			if(mTimeFromLastSpawn.getElapsedTime().asSeconds() > 0.3)
 			{
-				if (mQuantityOfEnemiesToSpawn != 0)
+				if (mNumberOfNormalZombiesToSpawn > 0 && mNumberOfSlowZombiesToSpawn > 0)
 				{
-					spawnObject();
-					--mQuantityOfEnemiesToSpawn;
+					int ran = Random::generateNumber(0, 5);
+					if(ran == 0)
+					{
+						// Spawn normal zombie
+						Spawn(mGameData, ObjectType::Zombie, getSpawnPosition());
+						mTimeFromLastSpawn.restart();
+						--mNumberOfNormalZombiesToSpawn;
+					}
+					else {
+						// Spawn slow zombie
+						Spawn(mGameData, ObjectType::SlowZombie, getSpawnPosition());
+						mTimeFromLastSpawn.restart();
+						--mNumberOfSlowZombiesToSpawn;
+					}
+				}
+				else if(mNumberOfSlowZombiesToSpawn > 0)
+				{
+					// Spawn slow zombie
+					Spawn(mGameData, ObjectType::SlowZombie, getSpawnPosition());
+					mTimeFromLastSpawn.restart();
+					--mNumberOfSlowZombiesToSpawn;
+				}
+				else if(mNumberOfNormalZombiesToSpawn > 0) {
+					// Spawn normal zombie
+					Spawn(mGameData, ObjectType::Zombie, getSpawnPosition());
+					mTimeFromLastSpawn.restart();
+					--mNumberOfNormalZombiesToSpawn;
 				}
 				else
 					mShouldSpawn = false;
@@ -33,11 +61,11 @@ namespace ph {
 		}
 	}
 
-	void ArcadeSpawner::invokeSpawner(const sf::Time timeBetweenSpawns, const int quantityOfEnemiesToSpawn)
+	void ArcadeSpawner::invokeSpawner(const int numberOfSlowZombiesToSpawn, const int numberOfNormalZombiesToSpawn)
 	{
 		mShouldSpawn = true;
-		mSpawnFrequency = sf::seconds(Random::generateNumber(0.f, timeBetweenSpawns.asSeconds()));
-		mQuantityOfEnemiesToSpawn = quantityOfEnemiesToSpawn;
+		mNumberOfSlowZombiesToSpawn = numberOfSlowZombiesToSpawn;
+		mNumberOfNormalZombiesToSpawn = numberOfNormalZombiesToSpawn;
 	}
 
 	void ArcadeSpawner::shouldSpawn(bool shouldSpawn)
@@ -47,15 +75,9 @@ namespace ph {
 
 	void ArcadeSpawner::resetSpawner()
 	{
-		mQuantityOfEnemiesToSpawn = 0;
-		mSpawnFrequency = sf::Time::Zero;
+		mNumberOfSlowZombiesToSpawn = 0;
+		mNumberOfNormalZombiesToSpawn = 0;
 		mShouldSpawn = false;
-	}
-
-	void ArcadeSpawner::spawnObject()
-	{
-		Spawn(mGameData, mObjectType, getSpawnPosition());
-		mTimeFromLastSpawn.restart();
 	}
 
 	sf::Vector2f ArcadeSpawner::getSpawnPosition() const

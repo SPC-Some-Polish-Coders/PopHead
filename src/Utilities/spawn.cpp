@@ -1,6 +1,7 @@
 #include "gameData.hpp"
 #include "Utilities/spawn.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "GameObjects/DrawableGameObjects/Characters/Enemies/slowZombie.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
 
 namespace ph {
@@ -19,6 +20,9 @@ void Spawn::spawnObject()
 	{
 	case ObjectType::Zombie:
 		spawnEnemy<Zombie>();
+		return;
+	case ObjectType::SlowZombie:
+		spawnEnemy<SlowZombie>();
 		return;
 	case ObjectType::Npc:
 		spawn<Npc>();
