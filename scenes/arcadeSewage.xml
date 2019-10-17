@@ -3,5 +3,5 @@
   <neededResources filename="desert.res.xml"/>
   <map filename="arcadeSewage.tmx"/>
   <gui filename="gameplayArcade.gui.xml"/>
-  <audio filename="sewage.audio.xml"/>
+  <audio filename="arcadeSewage.audio.xml"/>
 </scenelinks>

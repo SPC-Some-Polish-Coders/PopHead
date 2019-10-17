@@ -11,6 +11,7 @@
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
+#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include <array>
 #include <exception>
 
@@ -136,16 +137,18 @@ void Player::updateCurrent(sf::Time delta)
 
 	mIsSlownDown = false;
 
-	bool isAttacked = mIsInAttackingMode;
-	mIsInAttackingMode = false;
-	if (isAttacked == mIsAttacked)
-		return;
-	mIsAttacked = isAttacked;
+	if(!ArcadeManager::isActive()){
+		bool isAttacked = mIsInAttackingMode;
+		mIsInAttackingMode = false;
+		if (isAttacked == mIsAttacked)
+			return;
+		mIsAttacked = isAttacked;
 
-	if (mIsAttacked)
-		mGameData->getMusicPlayer().playFromMusicState("fighting");
-	else
-		mGameData->getMusicPlayer().playFromMusicState("exploration");
+		if (mIsAttacked)
+			mGameData->getMusicPlayer().playFromMusicState("fighting");
+		else
+			mGameData->getMusicPlayer().playFromMusicState("exploration");
+	}
 }
 
 unsigned Player::getNumOfBullets() const

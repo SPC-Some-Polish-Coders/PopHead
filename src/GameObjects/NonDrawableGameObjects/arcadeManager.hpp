@@ -8,13 +8,18 @@ namespace ph {
 
 class GUI;
 class Widget;
+class MusicPlayer;
 class ArcadeSpawner;
 
 class ArcadeManager : public GameObject
 {
 public:
-	ArcadeManager(GUI& gui);
+	ArcadeManager(GUI& gui, MusicPlayer&);
+	~ArcadeManager();
+
 	void updateCurrent(const sf::Time delta) override;
+
+	static bool isActive() { return mIsActive; }
 
 private:
 	void init();
@@ -41,6 +46,7 @@ private:
 
 private:
 	GUI& mGui;
+	MusicPlayer& mMusicPlayer;
 	sf::Clock mBreakClock;
 	sf::Time mTimeFromStart;
 	int mNumberOfSpawnersOnTheMap;
@@ -51,6 +57,8 @@ private:
 	int mCurrentWave;
 	bool mIsBreakTime;
 	bool mMadeInit;
+
+	inline static bool mIsActive = false;
 };
 
 }

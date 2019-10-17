@@ -2,15 +2,17 @@
 #include "GameObjects/NonDrawableGameObjects/arcadeSpawner.hpp"
 #include "GameObjects/NonDrawableGameObjects/lootSpawner.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+#include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
 #include "Gui/interface.hpp"
 #include <math.h>
 
 namespace ph {
 
-ArcadeManager::ArcadeManager(GUI& gui)
+ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	:GameObject("arcadeTimer")
 	,mGui(gui)
+	,mMusicPlayer(musicPlayer)
 	,mTimeFromStart(sf::Time::Zero)
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
@@ -21,7 +23,13 @@ ArcadeManager::ArcadeManager(GUI& gui)
 	,mIsBreakTime(false)
 	,mMadeInit(false)
 {
+	mIsActive = true;
 	createNextWave();
+}
+
+ArcadeManager::~ArcadeManager()
+{
+	mIsActive = false;
 }
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
@@ -54,8 +62,8 @@ void ArcadeManager::updateEnemiesCounter()
 	for (const auto& gameObject : gameObjects)
 		if (gameObject->getName().find("ombie") != std::string::npos)
 			++mEnemiesCounter;
-
-	// ombie fits to slowZombie and zombie
+	
+	// NOTE: "ombie" fits to slowZombie and zombie
 }
 
 void ArcadeManager::updateWave()
@@ -149,6 +157,7 @@ void ArcadeManager::startBreakTime()
 	mBreakClock.restart();
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
 	arcadeInterface->show();
+	mMusicPlayer.playFromMusicState("break");
 }
 
 void ArcadeManager::endBreakTime()
@@ -156,6 +165,7 @@ void ArcadeManager::endBreakTime()
 	mIsBreakTime = false;
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
 	arcadeInterface->hide();
+	mMusicPlayer.playFromMusicState("wave");
 }
 
 void ArcadeManager::updateCounters()

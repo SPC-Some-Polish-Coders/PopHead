@@ -120,7 +120,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 void TiledGameObjectsParser::loadArcadeManager() const
 {
 	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
-	invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui()));
+	invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui(), mGameData->getMusicPlayer()));
 	mGameData->getAIManager().setAIMode(AIMode::zombieAlwaysLookForPlayer);
 }
 
