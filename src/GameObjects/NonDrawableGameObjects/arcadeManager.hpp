@@ -31,8 +31,7 @@ private:
 	void startBreakTime();
 	void endBreakTime();
 
-	void setSpawnNumbers();
-	void setTimeForTheNextWave();
+	void setNextWaveNumbers();
 
 	std::string addZero(int number);
 	int getNumberOfSpawners();
