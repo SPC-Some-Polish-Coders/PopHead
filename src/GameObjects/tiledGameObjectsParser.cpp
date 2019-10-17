@@ -25,7 +25,6 @@
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
-#include "Scenes/CutScenes/movementControlsGuide.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
@@ -355,14 +354,6 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 			mGameData
 		);
 		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
-	}
-	else if(name == "movementControlsGuide") {
-		auto controlsGuide = std::make_unique<MovementContolsGuide>(
-			mRoot,
-			mGameData->getGui(),
-			mGameData->getSceneManager()
-		);
-		mCutSceneManager.activateCutscene(std::move(controlsGuide));
 	}
 }
 
