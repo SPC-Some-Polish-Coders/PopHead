@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Resources/resourceHolder.hpp"
-#include "Audio/Sound/SoundData/soundDataHolder.hpp"
-#include "Audio/Sound/SoundData/soundData.hpp"
-#include "Audio/Sound/Spatialization/spatializationManager.hpp"
+#include "Audio/Sound/soundData.hpp"
+#include "Audio/Sound/spatializationManager.hpp"
 #include <SFML/Audio.hpp>
 #include <list>
 

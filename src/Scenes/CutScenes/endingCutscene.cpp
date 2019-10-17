@@ -157,7 +157,7 @@ void EndingCutScene::leaveCutScene()
 	mAIManager.setAIMode(AIMode::normal);
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
-	mSceneManager.replaceScene("scenes/mainMenu.xml");
+	mSceneManager.replaceScene("scenes/credits.xml");
 }
 
 }

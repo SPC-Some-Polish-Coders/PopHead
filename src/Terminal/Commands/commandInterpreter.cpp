@@ -3,7 +3,7 @@
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
-#include "Audio/Sound/SoundData/soundData.hpp"
+#include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"

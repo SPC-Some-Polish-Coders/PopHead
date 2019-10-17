@@ -1,12 +1,10 @@
 #include "soundPlayer.hpp"
-
-#include <cmath>
 #include "Logs/logs.hpp"
 
 namespace ph {
 
 SoundPlayer::SoundPlayer()
-	:mVolume(17.f)
+	:mVolume(14.f)
 {
 	setMuted(false);
 	loadEverySound();

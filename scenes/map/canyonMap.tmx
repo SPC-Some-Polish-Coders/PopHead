@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="190" height="115" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="202">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
+  <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
    <objectgroup draworder="index">
     <object id="5" x="0" y="0" width="16" height="16"/>
@@ -1279,7 +1279,7 @@
   <object id="196" type="Entrance" x="1185.09" y="1599.33" width="416.5" height="32.6667">
    <properties>
     <property name="gotoScene" type="file" value="../gateAreaMap.xml"/>
-    <property name="gotoX" type="float" value="1400"/>
+    <property name="gotoX" type="float" value="1890"/>
     <property name="gotoY" type="float" value="400"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>

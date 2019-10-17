@@ -14,8 +14,10 @@ void XmlAudioParser::parseFile(GameData* const gameData, const std::string& file
 	Xml audioFile;
 	audioFile.loadFromFile(filePath);
 	const Xml audioNode = audioFile.getChild("audio");
+
 	parseSoundMute(audioNode);
-	parseMusicTheme(audioNode);
+	parseStartTheme(audioNode);
+	parseMusicStates(audioNode);
 }
 
 void XmlAudioParser::parseSoundMute(const Xml& audioNode)
@@ -29,20 +31,37 @@ void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 		mGameData->getSoundPlayer().setSceneMute(false);
 }
 
-void XmlAudioParser::parseMusicTheme(const Xml& audioNode)
+void XmlAudioParser::parseStartTheme(const Xml& audioNode)
 {
-	const auto themeNodes = audioNode.getChildren("theme");
-	std::string startTheme;
+	//TODO: What should we do with volumeMultiplier parameter
 
-	for (const auto& theme : themeNodes)
+	const Xml startThemeNode = audioNode.getChild("starttheme");
+	const std::string filepath = "music/" + startThemeNode.getAttribute("filename").toString();
+	mGameData->getMusicPlayer().playFromFile(filepath);
+}
+
+void XmlAudioParser::parseMusicStates(const Xml& audioNode)
+{
+	const auto musicStateNodes = audioNode.getChildren("musicstate");
+	auto& musicStateMachine = mGameData->getMusicPlayer().getMusicStateMachine();
+
+	for(const auto& musicStateNode : musicStateNodes)
 	{
-		const std::string themeFilePath = "music/" + theme.getAttribute("filename").toString();
-		if (startTheme.empty())
-			startTheme = themeFilePath;
-		if (theme.hasAttribute("volumeMultiplier"))
-			mGameData->getMusicPlayer().setVolumeMultiplierForTheme(themeFilePath, theme.getAttribute("volumeMultiplier").toFloat());
+		MusicState musicState;
+		const auto themeNodes = musicStateNode.getChildren("theme");
+
+		for(const auto& theme : themeNodes)
+		{
+			const std::string themeFilePath = "music/" + theme.getAttribute("filename").toString();
+			musicState.filepaths.emplace_back(themeFilePath);
+
+			const float volumeMultiplier = theme.hasAttribute("volumeMultiplier") ? theme.getAttribute("volumeMultiplier").toFloat() : 1.f;
+			musicState.volumeMultipliers.emplace_back(volumeMultiplier);
+		}
+
+		const std::string musicStateName = musicStateNode.getAttribute("name").toString();
+		musicStateMachine.addState(musicStateName, musicState);
 	}
-	mGameData->getMusicPlayer().play(startTheme);
 }
 
 }

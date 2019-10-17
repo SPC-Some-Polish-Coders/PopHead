@@ -20,10 +20,10 @@ namespace
 	constexpr float mass = 25;
 
 	const Animation animation(
-		std::array<std::string, 10>{
-			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingLeft"
+		std::array<std::string, 11>{
+			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingRight", "stayingLeft"
 		},
-		std::array<sf::IntRect, 10>{
+		std::array<sf::IntRect, 11>{
 			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
@@ -33,10 +33,11 @@ namespace
 			sf::IntRect(0, 6 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 			sf::IntRect(0, 7 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
 			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT)
 		},
 		{
-			2, 2, 2, 2, 2, 2, 2, 1, 1, 1
+			2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1
 		},
 		sf::seconds(0.30f)
 	);
