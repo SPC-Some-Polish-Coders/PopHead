@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="250">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="121" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="251">
  <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
   <tile id="6">
@@ -641,7 +641,7 @@
   <object id="153" name="Gate" type="Gate" x="1400" y="639.75">
    <point/>
   </object>
-  <object id="155" name="Medkit" type="Medkit" x="920.167" y="972">
+  <object id="155" name="Medkit" type="Medkit" x="982.167" y="1003.33">
    <point/>
   </object>
   <object id="164" name="GateGuardNpc" type="GateGuardNpc" x="1420.29" y="583.803">
@@ -652,7 +652,7 @@
     <property name="areaName" value="closeGate"/>
    </properties>
   </object>
-  <object id="167" name="BulletItem" type="BulletItem" x="980.5" y="990.17">
+  <object id="167" name="BulletItem" type="BulletItem" x="981.833" y="898.17">
    <point/>
   </object>
   <object id="168" name="BulletItem" type="BulletItem" x="1537.33" y="808.333">
@@ -780,6 +780,9 @@
    <properties>
     <property name="cutSceneName" value="movementControlsGuide"/>
    </properties>
+  </object>
+  <object id="250" name="BulletItem" type="BulletItem" x="981.833" y="920.837">
+   <point/>
   </object>
  </objectgroup>
 </map>

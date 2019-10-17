@@ -40,18 +40,12 @@
                 <textWidget name="guard6b"  origin="0.5" position="0.1,  0.30" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="and you'll find"/>
                 <textWidget name="guard6c"  origin="0.5" position="0.1,  0.45" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="our base"/>
                 <textWidget name="guard7"   origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Now go!"/>
-                <textWidget name="guard8"   origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I'll try and"/>
-                <textWidget name="guard8b"  origin="0.5" position="0.1,  0.30" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="hold them off!"/>
-                <textWidget name="guard9"   origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Thanks!"/>
-                <textWidget name="guard10"  origin="0.5" position="0.1,  0.15" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="I'm sure"/>
-                <textWidget name="guard10b" origin="0.5" position="0.1,  0.30" fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="we'll meet again."/>
             </widget>
 			      <widget name="playerSpeechBubble"  origin="0.5" position="0.34, 0.3" contentPath="textures/gui/mirrorSpeechBubble.png">
 				        <textWidget name="characterName" origin="0.5" position="0.18, 0.7" fontPath="fonts/joystixMonospace.ttf" characterSize="17" color="rgb(10, 228, 119)" text="You"/>
                 <textWidget name="player1"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="What's happened"/>
                 <textWidget name="player1b" origin="0.5" position="0.1,  0.30"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="to this place?"/>
                 <textWidget name="player2"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Yes, but how?!"/> 
-                <textWidget name="player3"  origin="0.5" position="0.1,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="15" color="black" text="Good luck then!"/>
             </widget>
             <widget name="hint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/pressSpaceHint.png"/>
         </widget>
