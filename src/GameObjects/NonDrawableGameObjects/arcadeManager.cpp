@@ -79,32 +79,31 @@ void ArcadeManager::createNextWave()
 
 void ArcadeManager::setSpawnNumbers()
 {
-	int slowZombiesToSpawn = 0;
-	int normalZombiesToSpawn = 0;
-
 	switch(mCurrentWave)
 	{
 		case 1:{
-			slowZombiesToSpawn = 64;
+			mSlowZombiesToSpawnPerSpawner = 8;
+			mNormalZombiesToSpawnPerSpawner = 0;
 		}break;
 
 		case 2: {
-			slowZombiesToSpawn = 80;
-			normalZombiesToSpawn = 16;
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 2;
 		}break;
 		
 		case 3: {
-			slowZombiesToSpawn = 160;
-			normalZombiesToSpawn = 8;
+			mSlowZombiesToSpawnPerSpawner = 20;
+			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 4: {
-			slowZombiesToSpawn = 80;
-			normalZombiesToSpawn = 96;
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 12;
 		}break;
 
 		case 5: {
-			normalZombiesToSpawn = 176;
+			mSlowZombiesToSpawnPerSpawner = 0;
+			mNormalZombiesToSpawnPerSpawner = 22;
 		}break;
 
 		default: {
@@ -112,13 +111,6 @@ void ArcadeManager::setSpawnNumbers()
 			break;
 		}
 	}
-
-	mSlowZombiesToSpawnPerSpawner = slowZombiesToSpawn / mNumberOfSpawnersOnTheMap;
-	mNormalZombiesToSpawnPerSpawner = normalZombiesToSpawn / mNumberOfSpawnersOnTheMap;
-
-	//int rest = numberOfEnemies - enemiesPerSpawner * mNumberOfSpawnersOnTheMap;
-	/*mEnemiesToSpawn = (enemiesPerSpawner - rest > rest / 2 ? numberOfEnemies - rest : numberOfEnemies + (enemiesPerSpawner - rest));
-	mEnemiesToSpawnPerSpawner = mEnemiesToSpawn / mNumberOfSpawnersOnTheMap;*/
 }
 
 void ArcadeManager::setTimeForTheNextWave()
