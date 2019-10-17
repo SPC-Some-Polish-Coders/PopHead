@@ -18,6 +18,7 @@ public:
 	~ArcadeManager();
 
 	void updateCurrent(const sf::Time delta) override;
+	void switchPGAMode(bool value);
 
 	static bool isActive() { return mIsActive; }
 

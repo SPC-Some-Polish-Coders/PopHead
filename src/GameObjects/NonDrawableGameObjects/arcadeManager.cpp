@@ -10,7 +10,7 @@
 namespace ph {
 
 ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
-	:GameObject("arcadeTimer")
+	:GameObject("arcadeManager")
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mTimeFromStart(sf::Time::Zero)
@@ -55,6 +55,11 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	updateEnemiesCounter();
 	updateWave();
 	updateCounters();
+}
+
+void ArcadeManager::switchPGAMode(bool value)
+{
+	mPGAMode = value;
 }
 
 void ArcadeManager::updateStartTimeCounter()
