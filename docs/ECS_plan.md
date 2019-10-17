@@ -73,11 +73,13 @@ struct Spawner { // TODO: we need to add type of object to spawn, later it'll be
 struct MeleeAttacker {
     // TODO: add variables
     float minSecondsInterval;
+    bool isTryingToAttack;
 };
 struct GunAttacker {
     // TODO: add variables
     float minSecondsInterval;
     unsigned short bullets;
+    bool isTryingToAttack;
 };
 struct Lifetime {
     float secondsToDie;
