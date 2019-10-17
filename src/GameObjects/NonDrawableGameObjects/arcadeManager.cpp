@@ -95,33 +95,33 @@ void ArcadeManager::setNextWaveNumbers()
 	switch(mCurrentWave)
 	{
 		case 1:{
-			mSlowZombiesToSpawnPerSpawner = 8;
+			mSlowZombiesToSpawnPerSpawner = 4;
 			mNormalZombiesToSpawnPerSpawner = 0;
-			mTimeForCurrentWave = sf::seconds(30);
+			mTimeForCurrentWave = sf::seconds(90);
 		}break;
 
 		case 2: {
-			mSlowZombiesToSpawnPerSpawner = 10;
+			mSlowZombiesToSpawnPerSpawner = 4;
 			mNormalZombiesToSpawnPerSpawner = 2;
-			mTimeForCurrentWave = sf::seconds(50);
+			mTimeForCurrentWave = sf::seconds(90);
 		}break;
 		
 		case 3: {
-			mSlowZombiesToSpawnPerSpawner = 20;
+			mSlowZombiesToSpawnPerSpawner = 7;
 			mNormalZombiesToSpawnPerSpawner = 1;
-			mTimeForCurrentWave = sf::seconds(70);
+			mTimeForCurrentWave = sf::seconds(140);
 		}break;
 		
 		case 4: {
-			mSlowZombiesToSpawnPerSpawner = 10;
-			mNormalZombiesToSpawnPerSpawner = 12;
-			mTimeForCurrentWave = sf::seconds(90);
+			mSlowZombiesToSpawnPerSpawner = 5;
+			mNormalZombiesToSpawnPerSpawner = 10;
+			mTimeForCurrentWave = sf::seconds(170);
 		}break;
 
 		case 5: {
 			mSlowZombiesToSpawnPerSpawner = 0;
-			mNormalZombiesToSpawnPerSpawner = 22;
-			mTimeForCurrentWave = sf::seconds(120);
+			mNormalZombiesToSpawnPerSpawner = 20;
+			mTimeForCurrentWave = sf::seconds(170);
 		}break;
 
 		default: {
