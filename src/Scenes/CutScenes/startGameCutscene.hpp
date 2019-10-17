@@ -21,7 +21,6 @@ public:
 	void update(const sf::Time delta) override;
 
 private:
-	void createZombie(const sf::Vector2f position);
 	void closeCutScene();
 
 private:
@@ -33,12 +32,7 @@ private:
 	float mCutsceneTimeInSeconds;
 	bool mWasGuiHidden;
 	bool mHasStartedToSlowDown;
-	bool mHasChangedTheMusicToMenuTheme;
 	bool mWasPlayerCreated;
-	bool mHasPlayerTurnedToNpc;
-	bool mHasBilbordFallenOver;
-	bool mWereZombieSpawned;
-	bool mHasChangedMusicToZombieAttackTheme;
 };
 
 }
