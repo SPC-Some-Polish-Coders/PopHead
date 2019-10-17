@@ -132,7 +132,7 @@ void ArcadeManager::setNextWaveNumbers()
 		
 		case 3: {
 			mSlowZombiesToSpawnPerSpawner = 5;
-			mNormalZombiesToSpawnPerSpawner = 0;
+			mNormalZombiesToSpawnPerSpawner = 1;
 		}break;
 		
 		case 4: {
@@ -142,11 +142,36 @@ void ArcadeManager::setNextWaveNumbers()
 
 		case 5: {
 			mSlowZombiesToSpawnPerSpawner = 2;
-			mNormalZombiesToSpawnPerSpawner = 6;
+			mNormalZombiesToSpawnPerSpawner = 5;
+		}break;
+
+		case 6: {
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+
+		case 7: {
+			mSlowZombiesToSpawnPerSpawner = 9;
+			mNormalZombiesToSpawnPerSpawner = 2;
+		}break;
+
+		case 8: {
+			mSlowZombiesToSpawnPerSpawner = 4;
+			mNormalZombiesToSpawnPerSpawner = 7;
+		}break;
+
+		case 9: {
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 4;
+		}break;
+		
+		case 10: {
+			mSlowZombiesToSpawnPerSpawner = 10;
+			mNormalZombiesToSpawnPerSpawner = 10;
 		}break;
 
 		default: {
-			// TODO_arc: Add more waves
+			PH_EXIT_GAME("It's impossible that someone is that good! \nCritical error!");
 			break;
 		}
 	}
