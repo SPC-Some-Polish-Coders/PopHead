@@ -11,16 +11,15 @@ namespace ph {
 ArcadeManager::ArcadeManager(GUI& gui)
 	:GameObject("arcadeTimer")
 	,mGui(gui)
+	,mTimeFromStart(sf::Time::Zero)
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
 	,mNormalZombiesToSpawnPerSpawner(0)
-	,mTimeForCurrentWave(sf::Time::Zero)
 	,mCurrentWave(0)
-	,mEnemiesLeft(0)
+	,mEnemiesCounter(0)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
-	,mBreakTime(false)
+	,mIsBreakTime(false)
 	,mMadeInit(false)
-	,mTimeForBreak(sf::seconds(20.f))
 {
 	createNextWave();
 }
@@ -30,7 +29,9 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	if(!mMadeInit)
 		init();
 
-	updateEnemies();
+	mTimeFromStart += delta;
+
+	updateEnemiesCounter();
 	updateWave();
 	updateCounters();
 }
@@ -44,30 +45,25 @@ void ArcadeManager::init()
 	mMadeInit = true;
 }
 
-void ArcadeManager::updateEnemies()
+void ArcadeManager::updateEnemiesCounter()
 {
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto& gameObjects = standingObjects->getChildren();
 
-	// TODO_arc: Optimize that
-
-	mEnemiesLeft = 0;
+	mEnemiesCounter = 0;
 	for (const auto& gameObject : gameObjects)
-		if (gameObject->getName().find("zombie") != std::string::npos)
-			++mEnemiesLeft;
+		if (gameObject->getName().find("ombie") != std::string::npos)
+			++mEnemiesCounter;
+
+	// ombie fits to slowZombie and zombie
 }
 
 void ArcadeManager::updateWave()
 {
-	if (!mBreakTime && mTimeInCurrentPart.getElapsedTime().asSeconds() > mTimeForCurrentWave.asSeconds())
-	{
-		mTimeInCurrentPart.restart();
+	if(mTimeFromStart.asSeconds() > 10 && !mIsBreakTime && mEnemiesCounter <= 5) {
 		startBreakTime();
 	}
-
-	else if(shouldCreateNewWave())
-	{
-		mTimeInCurrentPart.restart();
+	else if(shouldCreateNewWave()) {
 		endBreakTime();
 		createNextWave();
 	}
@@ -75,13 +71,7 @@ void ArcadeManager::updateWave()
 
 bool ArcadeManager::shouldCreateNewWave()
 {
-	if (mBreakTime)
-		if (mTimeInCurrentPart.getElapsedTime().asSeconds() > mTimeForBreak.asSeconds())
-			return true;
-	else
-		if (mTimeInCurrentPart.getElapsedTime().asSeconds() > mTimeForCurrentWave.asSeconds())
-			return true;
-	return false;
+	return mIsBreakTime && mBreakClock.getElapsedTime().asSeconds() > 20;
 }
 
 void ArcadeManager::createNextWave()
@@ -89,6 +79,7 @@ void ArcadeManager::createNextWave()
 	++mCurrentWave;
 	setNextWaveNumbers();
 	invokeSpawners();
+	mIsBreakTime = false;
 }
 
 void ArcadeManager::setNextWaveNumbers()
@@ -98,31 +89,26 @@ void ArcadeManager::setNextWaveNumbers()
 		case 1:{
 			mSlowZombiesToSpawnPerSpawner = 4;
 			mNormalZombiesToSpawnPerSpawner = 0;
-			mTimeForCurrentWave = sf::seconds(90);
 		}break;
 
 		case 2: {
 			mSlowZombiesToSpawnPerSpawner = 4;
 			mNormalZombiesToSpawnPerSpawner = 2;
-			mTimeForCurrentWave = sf::seconds(90);
 		}break;
 		
 		case 3: {
 			mSlowZombiesToSpawnPerSpawner = 7;
 			mNormalZombiesToSpawnPerSpawner = 1;
-			mTimeForCurrentWave = sf::seconds(140);
 		}break;
 		
 		case 4: {
 			mSlowZombiesToSpawnPerSpawner = 5;
 			mNormalZombiesToSpawnPerSpawner = 10;
-			mTimeForCurrentWave = sf::seconds(170);
 		}break;
 
 		case 5: {
 			mSlowZombiesToSpawnPerSpawner = 0;
 			mNormalZombiesToSpawnPerSpawner = 20;
-			mTimeForCurrentWave = sf::seconds(170);
 		}break;
 
 		default: {
@@ -159,14 +145,15 @@ void ArcadeManager::startBreakTime()
 		if(gameObject->getName().find("lootSpawner") != std::string::npos)
 			dynamic_cast<LootSpawner*>(gameObject.get())->spawnLoot();
 
-	mBreakTime = true;
+	mIsBreakTime = true;
+	mBreakClock.restart();
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
 	arcadeInterface->show();
 }
 
 void ArcadeManager::endBreakTime()
 {
-	mBreakTime = false;
+	mIsBreakTime = false;
 	auto* arcadeInterface = mGui.getInterface("arcadeInformations");
 	arcadeInterface->hide();
 }
@@ -181,9 +168,9 @@ void ArcadeManager::updateCounters()
 	auto* waveCounter = dynamic_cast<TextWidget*>(counters->getWidget("waveCounter"));
 	waveCounter->setString("Wave: " + addZero(mCurrentWave));
 	auto * enemiesCounter = dynamic_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
-	enemiesCounter->setString("Enemies: " + addZero(mEnemiesLeft));
+	enemiesCounter->setString("Enemies: " + addZero(mEnemiesCounter));
 
-	if (mBreakTime)
+	if (mIsBreakTime)
 	{
 		auto* arcadeInterface2 = mGui.getInterface("arcadeInformations");
 		auto* information = arcadeInterface2->getWidget("canvas");
@@ -194,7 +181,7 @@ void ArcadeManager::updateCounters()
 
 std::string ArcadeManager::getArcadeClockValues()
 {
-	float elapsedTime = mArcadeClock.getElapsedTime().asSeconds();
+	float elapsedTime = mTimeFromStart.asSeconds();
 	int elapsedTimeSeconds = static_cast<int>(elapsedTime);
 	int elapsedTimeMinutes = static_cast<int>(elapsedTimeSeconds / 60);
 	if (elapsedTimeSeconds >= 60) elapsedTimeSeconds -= elapsedTimeMinutes * 60;
@@ -203,8 +190,8 @@ std::string ArcadeManager::getArcadeClockValues()
 
 std::string ArcadeManager::getWaveClockValues()
 {
-	int secondsUntilTheEnd = static_cast<int>(mTimeForBreak.asSeconds() - mTimeInCurrentPart.getElapsedTime().asSeconds());
-	return std::string("Next wave in " + addZero(secondsUntilTheEnd) + " seconds!");
+	int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mBreakClock.getElapsedTime().asSeconds());
+	return std::string("Next wave in " + addZero(secondsUntilTheEndOfBreak) + " seconds!");
 }
 
 int ArcadeManager::getNumberOfSpawners()

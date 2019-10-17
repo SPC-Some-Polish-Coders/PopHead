@@ -19,7 +19,7 @@ public:
 private:
 	void init();
 
-	void updateEnemies();
+	void updateEnemiesCounter();
 	void updateWave();
 	void updateCounters();
 
@@ -41,17 +41,15 @@ private:
 
 private:
 	GUI& mGui;
-	sf::Clock mArcadeClock;
-	sf::Clock mTimeInCurrentPart;
-	sf::Time mTimeForCurrentWave;
-	sf::Time mTimeForBreak;
+	sf::Clock mBreakClock;
+	sf::Time mTimeFromStart;
 	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn;
 	int mSlowZombiesToSpawnPerSpawner;
 	int mNormalZombiesToSpawnPerSpawner;
-	int mEnemiesLeft;
+	int mEnemiesCounter;
 	int mCurrentWave;
-	bool mBreakTime;
+	bool mIsBreakTime;
 	bool mMadeInit;
 };
 
