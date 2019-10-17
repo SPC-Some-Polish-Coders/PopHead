@@ -14,7 +14,7 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mTimeFromStart(sf::Time::Zero)
-	,mTimeBeforeStart(sf::seconds(10.f))
+	,mTimeBeforeStart(sf::seconds(1.f))
 	,mEnemiesToSpawn(0)
 	,mSlowZombiesToSpawnPerSpawner(0)
 	,mNormalZombiesToSpawnPerSpawner(0)
@@ -24,6 +24,8 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mIsBreakTime(false)
 	,mMadeInit(false)
 	,mHasStarted(false)
+	,mPGAMode(true)
+	,mHasWon(false)
 {
 	mIsActive = true;
 }
@@ -35,6 +37,9 @@ ArcadeManager::~ArcadeManager()
 
 void ArcadeManager::updateCurrent(const sf::Time delta)
 {
+	if (mHasWon && mBreakClock.getElapsedTime().asSeconds() > 10.f)
+		endWinInscript();
+
 	if (!mHasStarted)
 	{
 		mTimeBeforeStart -= delta;
@@ -94,9 +99,13 @@ void ArcadeManager::updateEnemiesCounter()
 
 void ArcadeManager::updateWave()
 {
-	if(mTimeFromStart.asSeconds() > 10 && !mIsBreakTime && mEnemiesCounter <= 5) {
-		startBreakTime();
+	if (mTimeFromStart.asSeconds() > 10 && !mIsBreakTime && mEnemiesCounter <= 5) {
+		if (mPGAMode && mCurrentWave == 5)
+			handleWin();
+		else
+			startBreakTime();
 	}
+
 	else if(shouldCreateNewWave()) {
 		endBreakTime();
 		createNextWave();
@@ -114,6 +123,24 @@ void ArcadeManager::createNextWave()
 	setNextWaveNumbers();
 	invokeSpawners();
 	mIsBreakTime = false;
+}
+
+void ArcadeManager::handleWin()
+{
+	mHasWon = true;
+	auto* winScreen = mGui.getInterface("winScreen");
+	auto* totalTime = dynamic_cast<TextWidget*>(winScreen->getWidget("canvas")->getWidget("totalTimeText"));
+	int seconds = mTimeFromStart.asSeconds();
+	int minutes = seconds/60;
+	totalTime->setString("Total time: " + addZero(minutes) + ":" + addZero(seconds));
+	winScreen->show();
+	startBreakTime();
+}
+
+void ArcadeManager::endWinInscript()
+{
+	auto* winScreen = mGui.getInterface("winScreen");
+	winScreen->hide();
 }
 
 void ArcadeManager::setNextWaveNumbers()
@@ -141,8 +168,8 @@ void ArcadeManager::setNextWaveNumbers()
 		}break;
 
 		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 2;
-			mNormalZombiesToSpawnPerSpawner = 6;
+			mSlowZombiesToSpawnPerSpawner = 6;
+			mNormalZombiesToSpawnPerSpawner = 2;
 		}break;
 
 		default: {
