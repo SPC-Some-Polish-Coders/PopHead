@@ -74,7 +74,7 @@ void ArcadeManager::init()
 {
 	auto* standingObjects = mRoot->getChild("LAYER_standingObjects");
 	auto* player = dynamic_cast<Player*>(standingObjects->getChild("player"));
-	player->setNumOfBullets(300u);
+	player->setNumOfBullets(350u);
 
 	mMadeInit = true;
 }
