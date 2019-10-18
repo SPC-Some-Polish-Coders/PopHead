@@ -24,7 +24,6 @@ ArcadeManager::ArcadeManager(GUI& gui, MusicPlayer& musicPlayer)
 	,mIsBreakTime(false)
 	,mMadeInit(false)
 	,mHasStarted(false)
-	,mPGAMode(true)
 	,mHasWon(false)
 {
 	mIsActive = true;
@@ -56,11 +55,6 @@ void ArcadeManager::updateCurrent(const sf::Time delta)
 	updateEnemiesCounter();
 	updateWave();
 	updateCounters();
-}
-
-void ArcadeManager::switchPGAMode(bool value)
-{
-	mPGAMode = value;
 }
 
 void ArcadeManager::updateStartTimeCounter()

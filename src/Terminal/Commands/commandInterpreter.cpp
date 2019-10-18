@@ -179,15 +179,10 @@ auto CommandInterpreter::getPlayer() const -> GameObject&
 
 void CommandInterpreter::executeSwitchPGAMode() const
 {
-	auto& gameScene = mGameData->getSceneManager().getScene();
-	auto* invisibleObjects = gameScene.getRoot().getChild("LAYER_invisibleObjects");
-	auto* arcadeManager = dynamic_cast<ArcadeManager*>(invisibleObjects->getChild("arcadeManager"));
-	bool value = false;
 	if (commandContains("on"))
-		value = true;
+		ArcadeManager::mPGAMode = true;
 	else if (commandContains("off"))
-		value = false;
-	arcadeManager->switchPGAMode(value);
+		ArcadeManager::mPGAMode = false;
 }
 
 void CommandInterpreter::executeCollisionDebug() const

@@ -18,9 +18,11 @@ public:
 	~ArcadeManager();
 
 	void updateCurrent(const sf::Time delta) override;
-	void switchPGAMode(bool value);
 
 	static bool isActive() { return mIsActive; }
+	
+	// TODO: Remove this in next release
+	inline static bool mPGAMode = false;
 
 private:
 	void init();
@@ -64,7 +66,6 @@ private:
 	bool mIsBreakTime;
 	bool mMadeInit;
 	bool mHasStarted;
-	bool mPGAMode;
 	bool mHasWon;
 
 	inline static bool mIsActive = false;

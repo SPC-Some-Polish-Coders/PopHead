@@ -14,8 +14,8 @@
     </interface>
 	<interface name="winScreen" hide="true">
 	<widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		<textWidget name="winText" origin="0.5" position="0.2, 0.65" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="yellow" characterSize="25" text="Challange completed!"></textWidget>
-		<textWidget name="totalTimeText" origin="0.5" position="0.3, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="white" characterSize="15" text="Total time: 00:00"></textWidget>
+		<textWidget name="winText" origin="0.5" position="0.2, 0.65" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="red" characterSize="25" text="Challange completed!"></textWidget>
+		<textWidget name="totalTimeText" origin="0.5" position="0.3, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="rgb(255, 127, 0)" characterSize="15" text="Total time: 00:00"></textWidget>
 	</widget>
     </interface>
     <interface name="gameplayCounters">
