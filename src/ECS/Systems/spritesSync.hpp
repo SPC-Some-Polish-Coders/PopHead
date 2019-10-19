@@ -2,8 +2,6 @@
 
 #include "ECS/system.hpp"
 
-#include <SFML/Graphics/RenderTarget.hpp>
-
 namespace ph::system {
 
 	class SpritesSync : public System
