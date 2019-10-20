@@ -50,6 +50,9 @@ struct Animation {
 struct Velocity {
     sf::Vector2f velocity;
 };
+struct CharacterSpeed {
+    float speed;
+}
 struct StaticCollisionBody {
     ph::Rect body;
 };
@@ -133,5 +136,5 @@ Later the systems will be ordered.
 - Medkits collecting (Medkit, Player, KinematicCollisionBody, ...)
 - Bullets collecting (Bullets, Player, KinematicCollisionBody, ...)
 - Moving objects (Velocity, Position)
-- Player input (Player, Velocity, MeleeAttacker?, GunAttacker?, ...)
+- Player input (Player, Velocity, CharacterSpeed, MeleeAttacker?, GunAttacker?, ...)
 - Dying characters (Health, TaggedToDestroy)

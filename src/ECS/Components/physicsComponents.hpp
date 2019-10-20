@@ -11,4 +11,9 @@ namespace ph::component {
 	{
 		float dx, dy;
 	};
+
+	struct CharacterSpeed
+	{
+		float speed;
+	};
 }
