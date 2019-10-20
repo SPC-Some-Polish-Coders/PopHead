@@ -62,6 +62,19 @@ This table is very important for multithreading of systems, so it **must be alwa
         <th>R/W (Read/Write)</th>
     </tr>
     <tr>
+        <td rowspan=3>PlayerInput</td>
+        <td>Velocity</td>
+        <td>W</td>
+    </tr>
+    <tr>
+        <td>CharacterSpeed</td>
+        <td>R</td>
+    </tr>
+    <tr>
+        <td>Player</td>
+        <td>R</td>
+    </tr>
+    <tr>
         <td rowspan=2>Movement</td>
         <td>Velocity</td>
         <td>R</td>
