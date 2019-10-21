@@ -37,6 +37,7 @@ struct Health {
 struct Position {
     sf::Vector2f position;
 };
+// temporarily for drawing we have component Sprite, later it will be replaced by VertexArray and Shader
 struct VertexArray {
     ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
 };
