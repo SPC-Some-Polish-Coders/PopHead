@@ -20,23 +20,24 @@ namespace
 	constexpr float mass = 25;
 
 	const Animation animation(
-		std::array<std::string, 10>{
-			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingLeft"
+		std::array<std::string, 11>{
+			"down", "right", "left", "rightUp", "leftUp", "up", "crawlingUp", "dead", "stayingDown", "stayingRight", "stayingLeft"
 		},
-		std::array<sf::IntRect, 10> {
-			sf::IntRect(0, 0 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 1 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 2 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 3 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 4 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 5 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 6 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 7 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 0 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT),
-			sf::IntRect(0, 2 * SpriteSheetData::NPC_HEIGHT, SpriteSheetData::NPC_WIDTH, SpriteSheetData::NPC_HEIGHT)
+		std::array<sf::IntRect, 11>{
+			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 3 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 4 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 5 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 6 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 7 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 0 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 1 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT),
+			sf::IntRect(0, 2 * SpriteSheetData::HUMAN_HEIGHT, SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT)
 		},
 		{
-			2, 2, 2, 2, 2, 2, 2, 1, 1, 1
+			2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1
 		},
 		{SpriteSheetData::NPC_TEXTURE_WIDTH, SpriteSheetData::NPC_TEXTURE_HEIGHT},
 		sf::seconds(0.30f)

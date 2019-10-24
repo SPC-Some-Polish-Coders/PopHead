@@ -239,3 +239,14 @@ view 1000 750 chunkdebug
 spawn npc 200 250
 spawn zombie 500
 ```
+
+### **`give`** is **many-argumented** command which gives the player specified item
+| **give arguments** | **Describe** |
+| -----------: | ------------ |
+| `<item>` | argument which is one of the items |
+| `<quantity>` | argument is a number which sets the quantity of the item |
+
+#### Examples: 
+```
+give bullet 50
+```

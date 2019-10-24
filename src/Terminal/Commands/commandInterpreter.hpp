@@ -35,12 +35,14 @@ private:
 	void executeTeleport() const;
 	void executeCurrentPos() const;
 	void executeMove() const;
+	void executeGive() const;
 	auto getPlayer() const -> GameObject&;
 
 	void executeHistory() const;
 	void executeHelp() const;
 	void executeClear() const;
 
+	void executeSwitchPGAMode() const;
 	void executeCollisionDebug() const;
 	void changeCollisionDebugColor() const;
 	void changeCollisionDebugDisplayMode() const;

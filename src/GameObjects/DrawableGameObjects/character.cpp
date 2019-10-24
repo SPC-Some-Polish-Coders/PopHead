@@ -90,6 +90,8 @@ void Character::fixHp()
 {
 	if (mHp > static_cast<int>(mMaxHp))
 		mHp = mMaxHp;
+	if (mHp < 0)
+		mHp = 0;
 }
 
 void Character::addHp(int hp)

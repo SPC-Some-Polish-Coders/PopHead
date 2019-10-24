@@ -11,6 +11,7 @@
 #include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
+#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
 #include <array>
 #include <exception>
 
@@ -83,35 +84,35 @@ Player::Player(GameData* gameData)
 
 void Player::handleEventOnCurrent(const ph::Event& phEvent)
 {
-	if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
+	bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
+	if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
 	{
-		if(sfEvent->type == sf::Event::KeyPressed && sfEvent->key.code == sf::Keyboard::Escape)
+		if(actionEvent->mType == ActionEvent::Pressed)
 		{
-			bool isGamePaused = mGameData->getSceneManager().getScene().getPause();
-			if(isGamePaused) {
-				mGameData->getGui().hideInterface("pauseScreen");
-				mGameData->getSceneManager().getScene().setPause(false);
+			if(!isGamePaused){
+				if(actionEvent->mAction == "gunAttack" && mNumberOfOwnedBullets > 0) {
+					dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
+					auto* gun = dynamic_cast<Gun*>(getChild("gun"));
+					gun->shoot();
+				}
+				else if(actionEvent->mAction == "meleeAtack" && mTimeFromLastMeleeAttack.getElapsedTime() >= meleeAttackInterval) {
+					mTimeFromLastMeleeAttack.restart();
+					auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
+					sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
+					meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+				}
 			}
-			else {
-				mGameData->getGui().showInterface("pauseScreen");
-				mGameData->getSceneManager().getScene().setPause(true);
-			}
-		}
-	}
-	else if(auto* actionEvent = std::get_if<ActionEvent>(&phEvent))
-	{
-		if(actionEvent->mType == ActionEvent::Pressed) 
-		{
-			if(actionEvent->mAction == "gunAttack" && mNumberOfOwnedBullets > 0) {
-				dynamic_cast<PlayerEquipment*>(getChild("Equipment"))->destroyItem("Bullet");
-				auto* gun = dynamic_cast<Gun*>(getChild("gun"));
-				gun->shoot();
-			}
-			else if(actionEvent->mAction == "meleeAtack" && mTimeFromLastMeleeAttack.getElapsedTime() >= meleeAttackInterval) {
-				mTimeFromLastMeleeAttack.restart();
-				auto* meleeWeapon = dynamic_cast<MeleeWeapon*>(getChild("sword"));
-				sf::Vector2f meleeAttackDirection = getCurrentPlayerDirection();
-				meleeWeapon->attack(meleeAttackDirection, getPlayerRotation());
+
+			if(actionEvent->mAction == "pauseScreen")
+			{
+				if(isGamePaused) {
+					mGameData->getGui().hideInterface("pauseScreen");
+					mGameData->getSceneManager().getScene().setPause(false);
+				}
+				else {
+					mGameData->getGui().showInterface("pauseScreen");
+					mGameData->getSceneManager().getScene().setPause(true);
+				}
 			}
 		}
 	}
@@ -137,16 +138,18 @@ void Player::updateCurrent(sf::Time delta)
 
 	mIsSlownDown = false;
 
-	bool isAttacked = mIsInAttackingMode;
-	mIsInAttackingMode = false;
-	if (isAttacked == mIsAttacked)
-		return;
-	mIsAttacked = isAttacked;
+	if(!ArcadeManager::isActive()){
+		bool isAttacked = mIsInAttackingMode;
+		mIsInAttackingMode = false;
+		if (isAttacked == mIsAttacked)
+			return;
+		mIsAttacked = isAttacked;
 
-	if (mIsAttacked)
-		mGameData->getMusicPlayer().play("music/zombieAttack.ogg");
-	else
-		mGameData->getMusicPlayer().play("music/explorationTheme.ogg");
+		if (mIsAttacked)
+			mGameData->getMusicPlayer().playFromMusicState("fighting");
+		else
+			mGameData->getMusicPlayer().playFromMusicState("exploration");
+	}
 }
 
 unsigned Player::getNumOfBullets() const

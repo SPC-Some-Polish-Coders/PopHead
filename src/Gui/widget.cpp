@@ -47,7 +47,8 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 {
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
-		if(e->type == sf::Event::MouseButtonReleased && e->mouseButton.button == sf::Mouse::Left)
+		if(e->type == sf::Event::MouseButtonPressed || e->type == sf::Event::MouseButtonReleased
+			&& e->mouseButton.button == sf::Mouse::Left)
 		{
 			auto c = sf::Mouse::getPosition(mGameData->getWindow());
 			auto k = mWindow->mapPixelToCoords(c);
@@ -56,9 +57,16 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 			if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
 				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
 			{
-				for(const auto& k : mBehaviors)
-					if(k.first == BehaviorType::onReleased)
-						k.second(this);
+				if(e->type == sf::Event::MouseButtonPressed){
+					for(const auto& k : mBehaviors)
+						if(k.first == BehaviorType::onPressed)
+							k.second(this);
+				}
+				else if(e->type == sf::Event::MouseButtonReleased) {
+					for(const auto& k : mBehaviors)
+						if(k.first == BehaviorType::onReleased)
+							k.second(this);
+				}
 			}
 		}
 	}
@@ -74,24 +82,6 @@ void Widget::update(sf::Time delta)
 {
 	if(mIsActive == false)
 		return;
-
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		auto c = sf::Mouse::getPosition(mGameData->getWindow());
-		auto k = mWindow->mapPixelToCoords(c);
-
-		if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
-			k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
-		{
-			for(const auto& k : mBehaviors)
-			{
-				if(k.first == BehaviorType::onPressed)
-				{
-					k.second(this);
-				}
-			}
-		}
-	}
 
 	for(const auto& k : mBehaviors)
 		if(k.first == BehaviorType::onUpdate)

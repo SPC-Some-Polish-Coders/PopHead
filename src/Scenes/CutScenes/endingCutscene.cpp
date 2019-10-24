@@ -154,10 +154,10 @@ void EndingCutScene::update(const sf::Time delta)
 
 void EndingCutScene::leaveCutScene()
 {
-	mAIManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
+	mAIManager.setAIMode(AIMode::normal);
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
-	mSceneManager.replaceScene("scenes/mainMenu.xml");
+	mSceneManager.replaceScene("scenes/credits.xml");
 }
 
 }
