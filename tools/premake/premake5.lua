@@ -58,6 +58,8 @@ project "PopHead"
 		"glew32s.lib"
     }
 
+	ignoredefaultlibraries { "libcmt" }
+
     defines{
 		"SFML_STATIC",
 		"GLEW_STATIC"
