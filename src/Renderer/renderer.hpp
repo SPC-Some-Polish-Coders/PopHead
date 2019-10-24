@@ -39,25 +39,6 @@ public:
 private:
 	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
 	static bool isInsideScreen(const FloatRect objectBounds);
-
-private:
-	struct SceneData
-	{
-		FloatRect mScreenBounds;
-		const float* mViewProjectionMatrix = nullptr;
-	};
-
-	struct RendererData
-	{
-		unsigned mNumberOfDrawCalls = 0;
-		Shader* mDefaultShader;
-	};
-
-	inline static SceneData mSceneData;
-	inline static RendererData mRendererData;
-
-	// TODO: Get rid of SFML Renderer
-	inline static SFMLRenderer mSFMLRenderer;
 };
 
 }

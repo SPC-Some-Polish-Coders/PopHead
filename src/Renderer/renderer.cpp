@@ -6,6 +6,26 @@
 #include "openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
 
+struct SceneData
+{
+	ph::FloatRect mScreenBounds;
+	const float* mViewProjectionMatrix = nullptr;
+};
+
+struct RendererData
+{
+	unsigned mNumberOfDrawCalls = 0;
+	ph::Shader* mDefaultShader;
+};
+
+namespace {
+	SceneData mSceneData;
+	RendererData mRendererData;
+
+	// TODO: Get rid of SFML Renderer
+	ph::SFMLRenderer mSFMLRenderer;
+}
+
 namespace ph {
 
 void Renderer::init()
