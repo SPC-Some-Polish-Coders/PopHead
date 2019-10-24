@@ -20,10 +20,8 @@ public:
 	void slowDown() { mShouldSlowDown = true; }
 
 private:
-	VertexArray mVertexArray;
-	Shader* mShader;
-	const sf::Vector2i mSize;
 	sf::Vector2f mDirection;
+	const sf::Vector2i mSize;
 	ph::Texture& mTexture;
 	float mVelocity;
 	const float mAcceleration;

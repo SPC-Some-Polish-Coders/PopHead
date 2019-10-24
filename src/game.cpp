@@ -53,7 +53,7 @@ Game::Game()
 	mMap->setGameData(gameData);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/mainMenu.xml");
+	mSceneManager->replaceScene("scenes/rendererTest.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 

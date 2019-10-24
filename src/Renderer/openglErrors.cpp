@@ -43,7 +43,7 @@ bool logErrors(const char* functionSignature, const char* fileName, unsigned num
 		description = "You do something that would attempt to read from or write/render to a framebuffer that is not complete.";
 	}
 
-	// TODO: Make it log info using our logs module instead of std::cout
+	// TODO_ren: Make it log info using our logs module instead of std::cout
 
 	std::cout << "OpenGL Error nr " << errorCode << ": " << error << "\n" <<
 		"description: " << description << "\n" <<

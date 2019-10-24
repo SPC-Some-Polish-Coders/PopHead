@@ -3,4 +3,5 @@
   <map filename="rendererTest.tmx"/>
   <neededResources filename="desert.res.xml"/>
   <gui filename="gameplay.gui.xml"/>
+  <audio filename="sewage.audio.xml"/>
 </scenelinks>

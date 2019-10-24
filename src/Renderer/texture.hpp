@@ -5,7 +5,7 @@
 
 namespace ph {
 
-// TODO: Make Texture not store the size - size should be separate component
+// TODO_ren: Make Texture not store the size - size should be separate component
 
 class Texture
 {

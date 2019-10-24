@@ -34,7 +34,7 @@ void VertexArray::setVertexBuffer(VertexBuffer vbo, VertexBufferLayout layout)
 	ph::bind(vbo);
 	mVertexBuffer = vbo;
 
-	// TODO: Clean this code or make better layout setting abstraction
+	// TODO_ren: Clean this code or make better layout setting abstraction
 	switch(layout)
 	{
 	case VertexBufferLayout::position2:

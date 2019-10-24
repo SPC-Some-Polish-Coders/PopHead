@@ -35,6 +35,7 @@ public:
 	IndexBuffer getIndexBuffer(const std::string& name);
 	void deleteIndexBuffer(IndexBuffer);
 
+	// TODO_ren: Delete this rectangle index buffer, now it'll be hold by Renderer storage
 	IndexBuffer getRectangleIndexBuffer() const { return mRectangleIndexBuffer; }
 
 private:

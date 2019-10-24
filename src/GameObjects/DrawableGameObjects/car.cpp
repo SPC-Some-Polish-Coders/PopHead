@@ -5,7 +5,6 @@ namespace ph {
 
 Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f direction, ph::Texture& texture)
 	:GameObject("car")
-	,mVertexArray()
 	,mSize(texture.getSize())
 	,mTexture(texture)
 	,mDirection(direction)
@@ -15,10 +14,6 @@ Car::Car(const float acceleration, const float slowingDown, const sf::Vector2f d
 	,mShouldSpeedUp(false)
 	,mShouldSlowDown(false)
 {
-	auto vbo = VertexBufferHolder::getInstance().getRectangleVertexBuffer("car", mSize.x, mSize.y, DataUsage::staticDraw);
-	auto ibo = IndexBufferHolder::getInstance().getRectangleIndexBuffer();
-	mVertexArray.setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
-	mVertexArray.setIndexBuffer(ibo);
 }
 
 void Car::updateCurrent(const sf::Time delta)
@@ -40,8 +35,7 @@ void Car::updateCurrent(const sf::Time delta)
 
 void Car::drawCurrent(sf::Transform transform)
 {
-	mTexture.bind();
-	Renderer::submit(mVertexArray, transform, mSize);
+	Renderer::submitQuad(getPosition(), mSize, mTexture);
 }
 
 }

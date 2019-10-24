@@ -5,25 +5,20 @@
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
-
-struct SceneData
-{
-	ph::FloatRect mScreenBounds;
-	const float* mViewProjectionMatrix = nullptr;
-};
-
-struct RendererData
-{
-	unsigned mNumberOfDrawCalls = 0;
-	ph::Shader* mDefaultShader;
-};
+#include <memory>
 
 namespace {
-	SceneData mSceneData;
-	RendererData mRendererData;
+	// SceneData
+	ph::FloatRect screenBounds;
+	const float* viewProjectionMatrix = nullptr;
 
-	// TODO: Get rid of SFML Renderer
-	ph::SFMLRenderer mSFMLRenderer;
+	// RendererData
+	unsigned numberOfDrawCalls = 0;
+	ph::Shader* defaultShader;
+	std::unique_ptr<ph::VertexArray> quadVertexArray;
+
+	// TODO_ren: Get rid of SFML Renderer
+	ph::SFMLRenderer sfmlRenderer;
 }
 
 namespace ph {
@@ -34,7 +29,7 @@ void Renderer::init()
 	if(glewInit() != GLEW_OK)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
-	// TODO: Make proper log
+	// TODO_ren: Make proper log
 	/*GLCheck( const GLubyte* openglVersionInfo = glGetString(GL_VERSION) );
 	std::cout << "OpenGL version: " << openglVersionInfo << std::endl;*/
 
@@ -46,18 +41,80 @@ void Renderer::init()
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("perfectPixel", "resources/shaders/staticPixelPerfect.vs.glsl", "resources/shaders/texture.fs.glsl");
 	sl.loadFromFile("dynamic", "resources/shaders/default.vs.glsl", "resources/shaders/texture.fs.glsl");
-	mRendererData.mDefaultShader = sl.get("perfectPixel");
+	defaultShader = sl.get("perfectPixel");
+
+	// load quad vertex array
+	float vertices[] = {
+		1.f, 0.f, 1.0f, 1.0f,
+		1.f, 1.f, 1.0f, 0.0f,
+		0.f, 1.f, 0.0f, 0.0f,
+		0.f, 0.f, 0.0f, 1.0f 
+	};
+	VertexBuffer quadVBO = createVertexBuffer();
+	setData(quadVBO, vertices, sizeof(vertices), DataUsage::staticDraw);
+	
+	unsigned rectangleIndices[] = { 0, 1, 3, 1, 2, 3 };
+	IndexBuffer quadIBO = createIndexBuffer();
+	setData(quadIBO, rectangleIndices, sizeof(rectangleIndices));
+	
+	quadVertexArray = std::make_unique<VertexArray>();
+	quadVertexArray->setVertexBuffer(quadVBO, VertexBufferLayout::position2_texCoords2);
+	quadVertexArray->setIndexBuffer(quadIBO);
 }
 
 void Renderer::beginScene(Camera& camera)
 {
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
-	mSceneData.mViewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
+	viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 	
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
-	mSceneData.mScreenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
+	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
+}
+
+void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
+{
+	sfmlRenderer.drawSubmitedObjects(window);
+
+	efficiencyRegister.setDrawCallsPerFrame(numberOfDrawCalls);
+	numberOfDrawCalls = 0;
+}
+
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture)
+{
+	submitQuad(position, size, texture, *defaultShader);
+}
+
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture)
+{
+	submitQuad(position, size, rotation, texture, *defaultShader);
+}
+
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture, const Shader& shader)
+{
+	// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
+	submitQuad(position, size, 0.f, texture, shader);
+}
+
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture, const Shader& shader)
+{
+	if(!isInsideScreen(position, size))
+		return;
+
+	quadVertexArray->bind();
+	texture.bind();
+	shader.bind();
+	
+	sf::Transform transform;
+	transform.translate(position);
+	transform.rotate(rotation);
+	transform.scale(static_cast<sf::Vector2f>(size));
+	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	++numberOfDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
@@ -69,11 +126,11 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 
  	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
+	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 	
 	GLCheck( glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0) );
 	
-	++mRendererData.mNumberOfDrawCalls;
+	++numberOfDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive drawMode)
@@ -85,21 +142,21 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", sf::Transform::Identity.getMatrix());
-	shader.setUniformMatrix4x4("viewProjectionMatrix", mSceneData.mViewProjectionMatrix);
+	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 
 	GLCheck(glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0));
 
-	++mRendererData.mNumberOfDrawCalls;
+	++numberOfDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
 {
-	submit(vao, *mRendererData.mDefaultShader, bounds, drawMode);
+	submit(vao, *defaultShader, bounds, drawMode);
 }
 
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
-	submit(vao, *mRendererData.mDefaultShader, transform, size, drawMode);
+	submit(vao, *defaultShader, transform, size, drawMode);
 }
 
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
@@ -110,32 +167,29 @@ void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& trans
 
 void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
 {
-	submit(sprite, *mRendererData.mDefaultShader, transform, drawMode);
+	submit(sprite, *defaultShader, transform, drawMode);
 }
 
 void Renderer::submit(const sf::Drawable& object)
 {
-	mSFMLRenderer.submit(&object);
-	++mRendererData.mNumberOfDrawCalls;
+	sfmlRenderer.submit(&object);
+	++numberOfDrawCalls;
 }
 
 bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)
 {
 	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], static_cast<float>(size.x), static_cast<float>(size.y));
-	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectRect);
+	return screenBounds.doPositiveRectsIntersect(objectRect);
+}
+
+bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2i size)
+{
+	return isInsideScreen(sf::FloatRect(position.x, position.y, size.x, size.y));
 }
 
 bool Renderer::isInsideScreen(const FloatRect objectBounds)
 {
-	return mSceneData.mScreenBounds.doPositiveRectsIntersect(objectBounds);
-}
-
-void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
-{
-	mSFMLRenderer.drawSubmitedObjects(window);
-
-	efficiencyRegister.setDrawCallsPerFrame(mRendererData.mNumberOfDrawCalls);
-	mRendererData.mNumberOfDrawCalls = 0;
+	return screenBounds.doPositiveRectsIntersect(objectBounds);
 }
 
 void Renderer::onWindowResize(unsigned width, unsigned height)
