@@ -110,3 +110,47 @@ This table is very important for multithreading of systems, so it **must be alwa
   - [GitHub repository](https://github.com/skypjack/entt)
   - [Official documentation](https://skypjack.github.io/entt/)
   - [Main tutorial](https://skypjack.github.io/entt/autotoc_md8.html)
+
+#### Example of ECS in action
+
+```cpp
+ph::ActionEventManager::init();
+
+sf::RenderWindow window(sf::VideoMode(500, 500), "Test");
+sf::Texture texture;
+texture.loadFromFile("resources/textures/vehicles/car.png");
+
+using namespace ph;
+
+entt::registry reg;
+
+ph::SystemsQueue queue(reg);
+queue.appendSystem<system::PlayerInput>();
+queue.appendSystem<system::Movement>();
+queue.appendSystem<system::SpritesSync>();
+queue.appendSystem<system::Renderer>(std::ref(window));
+
+component::Sprite spr;
+spr.sprite.setTexture(texture);
+
+auto entity = reg.create();
+reg.assign<component::Position>(entity, 0.f, 0.f);
+reg.assign<component::Velocity>(entity, 0.f, 0.f);
+reg.assign<component::Sprite>(entity, std::move(spr));
+reg.assign<component::CharacterSpeed>(entity, 55.f);
+reg.assign<component::Player>(entity);
+
+sf::Clock clock;
+while (window.isOpen())
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            window.close();
+    }
+
+    sf::Time delta = clock.restart();
+    queue.update(delta.asSeconds());
+}
+```
