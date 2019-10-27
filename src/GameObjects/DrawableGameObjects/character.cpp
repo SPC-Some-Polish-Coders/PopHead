@@ -29,7 +29,7 @@ Character::Character(GameData* gameData, std::string name, const Texture& textur
 
 void Character::drawCurrent(sf::Transform transform)
 {
-	Renderer::submitQuad(getPosition(), mTexture.getSize(), mTexture);
+	Renderer::submitQuad(mTexture, getPosition(), mTexture.getSize());
 }
 
 void Character::dropItems()

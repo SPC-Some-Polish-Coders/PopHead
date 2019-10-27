@@ -35,7 +35,7 @@ void Car::updateCurrent(const sf::Time delta)
 
 void Car::drawCurrent(sf::Transform transform)
 {
-	Renderer::submitQuad(getPosition(), mSize, mTexture);
+	Renderer::submitQuad(mTexture, getPosition(), mSize);
 }
 
 }

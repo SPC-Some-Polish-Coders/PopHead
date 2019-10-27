@@ -22,10 +22,9 @@ public:
 	static void beginScene(Camera&);
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
-	static void submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture&);
-	static void submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture&);
-	static void submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture&, const Shader*);
-	static void submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture&, const Shader*);
+	static void submitQuad(const Texture&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);

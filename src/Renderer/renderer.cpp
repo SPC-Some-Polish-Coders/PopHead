@@ -82,23 +82,12 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	numberOfDrawCalls = 0;
 }
 
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture)
+void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(position, size, texture, defaultShader);
+	submitQuad(texture, defaultShader, position, size, rotation);
 }
 
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture)
-{
-	submitQuad(position, size, rotation, texture, defaultShader);
-}
-
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture, const Shader* shader)
-{
-	// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
-	submitQuad(position, size, 0.f, texture, shader);
-}
-
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture, const Shader* shader)
+void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	if(!isInsideScreen(position, size))
 		return;
@@ -111,6 +100,7 @@ void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotati
 	quadVertexArray->bind();
 	texture.bind();
 	
+	// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
