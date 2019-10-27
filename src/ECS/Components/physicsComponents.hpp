@@ -1,12 +1,15 @@
 #pragma once
 
-#include "Utilities/rect.hpp"
-
 namespace ph::component {
 
 	struct Position
 	{
 		float x, y;
+	};
+
+	struct Size
+	{
+		float width, height;
 	};
 
 	struct Velocity
@@ -21,12 +24,10 @@ namespace ph::component {
 
 	struct StaticCollisionBody
 	{
-		ph::FloatRect body;
 	};
 	
 	struct KinematicCollisionBody 
 	{
-		ph::FloatRect body;
 		float mass;
 	};
 }
