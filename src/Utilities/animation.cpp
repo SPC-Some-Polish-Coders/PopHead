@@ -1,6 +1,5 @@
 #include "animation.hpp"
 #include "Logs/logs.hpp"
-#include "Renderer/Vertices/vertexBuffers.hpp"
 #include "GL/glew.h"
 #include <array>
 
@@ -41,23 +40,21 @@ void Animation::changeState(const std::string& stateName)
 	mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(const VertexBuffer& vbo)
+void Animation::animate()
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
-	const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-	setTextureRect(vbo, frame, mTextureSize);
+	mCurrentFrameRect = mStates[mCurrentStateName][mCurrentFrameIndex];
 	if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 		mCurrentFrameIndex = 0;
 }
 
-void Animation::animate(const VertexBuffer& vbo, const sf::Time& deltaTime)
+void Animation::animate(const sf::Time& deltaTime)
 {
 	PH_ASSERT(!mStates.empty(), "Add at least one state to animate");
 	mElapsedTime += deltaTime;
 	while (mElapsedTime >= mDelay) {
 		mElapsedTime -= mDelay;
-		const sf::IntRect frame = mStates[mCurrentStateName][mCurrentFrameIndex];
-		setTextureRect(vbo, frame, mTextureSize);
+		mCurrentFrameRect = mStates[mCurrentStateName][mCurrentFrameIndex];
 		if (++mCurrentFrameIndex == mStates[mCurrentStateName].size())
 			mCurrentFrameIndex = 0;
 	}

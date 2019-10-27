@@ -29,7 +29,8 @@ Character::Character(GameData* gameData, std::string name, const Texture& textur
 
 void Character::drawCurrent(sf::Transform transform)
 {
-	Renderer::submitQuad(mTexture, getPosition(), mTexture.getSize());
+	Renderer::submitQuad(mTexture, mAnimation.getCurrentFrameRect(), getPosition(), 
+		{SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT});
 }
 
 void Character::dropItems()

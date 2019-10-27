@@ -17,6 +17,8 @@ namespace {
 	ph::Shader* defaultShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	std::unique_ptr<ph::VertexArray> quadVertexArray;
+	std::unique_ptr<ph::VertexArray> animatedQuadVertexArray;
+	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
@@ -44,23 +46,29 @@ void Renderer::init()
 	sl.loadFromFile("dynamic", "resources/shaders/default.vs.glsl", "resources/shaders/texture.fs.glsl");
 	defaultShader = sl.get("dynamic");
 
-	// load quad vertex array
-	float vertices[] = {
+	// load quad vertex arrays
+	float quadVertices[] = {
 		1.f, 0.f, 1.f, 1.f,
 		1.f, 1.f, 1.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,
 		0.f, 0.f, 0.f, 1.f 
 	};
-	VertexBuffer quadVBO = createVertexBuffer();
-	setData(quadVBO, vertices, sizeof(vertices), DataUsage::staticDraw);
-	
-	unsigned rectangleIndices[] = { 0, 1, 3, 1, 2, 3 };
+
+	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
 	IndexBuffer quadIBO = createIndexBuffer();
-	setData(quadIBO, rectangleIndices, sizeof(rectangleIndices));
-	
+	setData(quadIBO, quadIndices, sizeof(quadIndices));
+
+	VertexBuffer quadVBO = createVertexBuffer();
+	setData(quadVBO, quadVertices, sizeof(quadVertices), DataUsage::staticDraw);
 	quadVertexArray = std::make_unique<VertexArray>();
 	quadVertexArray->setVertexBuffer(quadVBO, VertexBufferLayout::position2_texCoords2);
 	quadVertexArray->setIndexBuffer(quadIBO);
+
+	VertexBuffer animatedQuadVBO = createVertexBuffer();
+	setData(animatedQuadVBO, nullptr, sizeof(quadVertices), DataUsage::dynamicDraw);
+	animatedQuadVertexArray = std::make_unique<VertexArray>();
+	animatedQuadVertexArray->setVertexBuffer(animatedQuadVBO, VertexBufferLayout::position2_texCoords2);
+	animatedQuadVertexArray->setIndexBuffer(quadIBO);
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -112,6 +120,39 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 	++numberOfDrawCalls;
 }
 
+void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
+{
+	submitQuad(texture, textureRect, defaultShader, position, size, rotation);
+}
+
+void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
+                          sf::Vector2f position, sf::Vector2i size, float rotation)
+{
+	if(!isInsideScreen(position, size))
+		return;
+
+	if(shader != currentlyBoundShader) {
+		shader->bind();
+		currentlyBoundShader = shader;
+	}
+
+	setTextureRect(animatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
+
+	animatedQuadVertexArray->bind();
+	texture.bind();
+
+	/// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
+	sf::Transform transform;
+	transform.translate(position);
+	transform.scale(static_cast<sf::Vector2f>(size));
+	transform.rotate(rotation);
+	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+
+	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+
+	++numberOfDrawCalls;
+}
+
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
 	if(!isInsideScreen(transform, size))
@@ -119,6 +160,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 
 	vao.bind();
 
+	// TODO_ren: Make that we don't bind shader if it was already bound
  	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
@@ -135,6 +177,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 	vao.bind();
 
+	// TODO_ren: Make that we don't bind shader if it was already bound
 	shader.bind();
 	shader.setUniformMatrix4x4("modelMatrix", sf::Transform::Identity.getMatrix());
 	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);

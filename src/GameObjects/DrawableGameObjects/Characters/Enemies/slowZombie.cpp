@@ -59,7 +59,7 @@ namespace ph {
 			gameData->getTextures().get("textures/characters/zombieHeavyFullAnimation.png"))
 		, mIsSlownDown(false)
 	{
-		//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+		mAnimation.animate();
 
 		//temporary random generate until we develop this system
 		int numberOfBullets = Random::generateNumber(1, 2);
@@ -71,7 +71,7 @@ namespace ph {
 	{
 		if (isDead()) {
 			mAnimation.changeState("dead");
-			//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+			mAnimation.animate();
 			mGameData->getPhysicsEngine().removeKinematicBody(mCollisionBody);
 			auto standingGameObjectsLayer = dynamic_cast<StandingGameObjectsLayer*>(mParent);
 			standingGameObjectsLayer->addCharacterToDie(this);
@@ -193,7 +193,7 @@ namespace ph {
 				setAnimationState("down");
 		}
 
-		//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
+		mAnimation.animate(delta);
 	}
 
 	void SlowZombie::setAnimationState(const std::string& stateName)

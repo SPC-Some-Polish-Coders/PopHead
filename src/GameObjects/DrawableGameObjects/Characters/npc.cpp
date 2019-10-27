@@ -48,13 +48,13 @@ Npc::Npc(GameData* gameData, const std::string& name, const std::string& texture
 	:Character(gameData, name, gameData->getTextures().get(texturePath), 
 		animation, movementSpeed, hp, maxHp, posAndSize, mass, false)
 {
-	//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+	mAnimation.animate();
 }
 
 void Npc::updateCurrent(sf::Time delta)
 {
 	setPosition(mCollisionBody.getFixedPosition());
-	//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
+	mAnimation.animate(delta);
 }
 
 }
