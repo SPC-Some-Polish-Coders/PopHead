@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<audio>
+  <mute soundmute="false"/>
+  <starttheme filename="explorationTheme.ogg" volumeMultiplier="1"/>
+  <musicstate name="wave">
+    <theme filename="zombieAttack.ogg" volumeMultiplier="1"/>
+  </musicstate>
+  <musicstate name="break">
+    <theme filename="explorationTheme.ogg" volumeMultiplier="1"/>
+  </musicstate>
+</audio>

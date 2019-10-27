@@ -1,19 +1,22 @@
 #include "tiledGameObjectsParser.hpp"
 #include "NonDrawableGameObjects/entrance.hpp"
 #include "NonDrawableGameObjects/spawner.hpp"
+#include "NonDrawableGameObjects/arcadeSpawner.hpp"
 #include "NonDrawableGameObjects/slowDownArea.hpp"
 #include "NonDrawableGameObjects/activateArea.hpp"
 #include "NonDrawableGameObjects/cutsceneArea.hpp"
+#include "NonDrawableGameObjects/arcadeManager.hpp"
+#include "NonDrawableGameObjects/lootSpawner.hpp"
 #include "DrawableGameObjects/Characters/npc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/crawlingNpc.hpp"
 #include "DrawableGameObjects/Characters/Npcs/gateGuard.hpp"
 #include "DrawableGameObjects/Characters/Enemies/zombie.hpp"
+#include "DrawableGameObjects/Characters/Enemies/slowZombie.hpp"
 #include "DrawableGameObjects/Characters/player.hpp"
 #include "DrawableGameObjects/Items/bulletItem.hpp"
 #include "DrawableGameObjects/car.hpp"
 #include "DrawableGameObjects/gate.hpp"
 #include "DrawableGameObjects/lever.hpp"
-#include "DrawableGameObjects/bilbord.hpp"
 #include "DrawableGameObjects/Items/medkit.hpp"
 #include "DrawableGameObjects/spriteNode.hpp"
 #include "GameObjectContainers/gameObjectLayers.hpp"
@@ -24,13 +27,11 @@
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
-#include "Scenes/CutScenes/controlsGuide.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
 #include "Events/actionEventManager.hpp"
 #include "gameData.hpp"
-
 
 namespace ph {
 
@@ -46,6 +47,8 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 {
 	PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
 
+	mGameData->getAIManager().setAIMode(AIMode::normal);
+
 	Xml mapFile;
 	mapFile.loadFromFile(filePath);
 
@@ -55,6 +58,8 @@ void TiledGameObjectsParser::parseFile(const std::string& filePath) const
 		return;
 	
 	loadObjects(gameObjects);
+	if (filePath.find("arcade") != std::string::npos && filePath.find("arcadeMode") == std::string::npos)
+		loadArcadeManager();
 
 	mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 	ActionEventManager::setEnabled(true);
@@ -81,6 +86,7 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 	for (const auto& gameObjectNode : objects) 
 	{
 		if (isObjectOfType(gameObjectNode, "Zombie")) loadZombie(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "SlowZombie")) loadSlowZombie(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Player")) loadPlayer(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Camera")) loadCamera(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Npc")) loadNpc(gameObjectNode);
@@ -91,13 +97,14 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		else if (isObjectOfType(gameObjectNode, "ActivateArea")) loadActivateArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutSceneArea")) loadCutSceneArea(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Spawner")) loadSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "LootSpawner")) loadLootSpawner(gameObjectNode);
+		else if (isObjectOfType(gameObjectNode, "ArcadeSpawner")) loadArcadeSpawner(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Car")) loadCar(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Gate")) loadGate(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "Lever")) loadLever(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CutScene")) loadCutScene(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "CrawlingNpc")) loadCrawlingNpc(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "GateGuardNpc")) loadGateGuardNpc(gameObjectNode);
-		else if (isObjectOfType(gameObjectNode, "Bilbord")) loadBilbord(gameObjectNode);
 		else if (isObjectOfType(gameObjectNode, "SpriteNode")) loadSpriteNode(gameObjectNode);
 		else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 	}
@@ -108,6 +115,13 @@ void TiledGameObjectsParser::loadObjects(const Xml& gameObjectsNode) const
 		auto playerPosition = player.getPosition();
 		mGameData->getRenderer().getCamera().setCenter(playerPosition);
 	}
+}
+
+void TiledGameObjectsParser::loadArcadeManager() const
+{
+	auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui(), mGameData->getMusicPlayer()));
+	mGameData->getAIManager().setAIMode(AIMode::zombieAlwaysLookForPlayer);
 }
 
 void TiledGameObjectsParser::loadLayerObjects() const
@@ -140,6 +154,17 @@ void TiledGameObjectsParser::loadZombie(const Xml& zombieNode) const
 	standingObjects->addChild(std::move(zombie));
 }
 
+void TiledGameObjectsParser::loadSlowZombie(const Xml& SlowZombieNode) const
+{
+	auto slowZombie = std::make_unique<SlowZombie>(mGameData);
+	slowZombie->setPosition(getPositionAttribute(SlowZombieNode));
+	slowZombie->setHp(getProperty(SlowZombieNode, "hp").toInt());
+	slowZombie->setMaxHp(getProperty(SlowZombieNode, "maxHp").toUnsigned());
+
+	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
+	standingObjects->addChild(std::move(slowZombie));
+}
+
 void TiledGameObjectsParser::loadNpc(const Xml& npcNode) const
 {
 	auto npc = std::make_unique<Npc>(mGameData);
@@ -165,6 +190,35 @@ void TiledGameObjectsParser::loadSpawner(const Xml& spawnerNode) const
 
 	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
 	invisibleGameObjects->addChild(std::move(spawner));
+}
+
+void TiledGameObjectsParser::loadLootSpawner(const Xml& lootSpawnerNode) const
+{
+	const std::string lootTypeString = getProperty(lootSpawnerNode, "lootType").toString();
+	LootType lootType;
+	if(lootTypeString == "medkit")
+		lootType = LootType::Medkit;
+	else if(lootTypeString == "bullets")
+		lootType = LootType::Bullets;
+	else
+		PH_UNEXPECTED_SITUATION("We don't support this loot type");
+
+	auto lootSpawner = std::make_unique<LootSpawner>(
+		lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
+	);
+	lootSpawner->setPosition(getPositionAttribute(lootSpawnerNode));
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(lootSpawner));
+}
+
+void TiledGameObjectsParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
+{
+	auto arcadeSpawner = std::make_unique<ArcadeSpawner>(
+		mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),
+		getPositionAttribute(arcadeSpawnerNode));
+
+	auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
+	invisibleGameObjects->addChild(std::move(arcadeSpawner));
 }
 
 void TiledGameObjectsParser::loadEntrance(const Xml& entranceNode) const
@@ -279,8 +333,8 @@ void TiledGameObjectsParser::loadCar(const Xml& carNode) const
 	sf::FloatRect carRect(position, sf::Vector2f(texture.getSize()));
 	mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(carRect);
 
-	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-	standingObjects->addChild(std::move(car));
+	auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
+	lyingObjects->addChild(std::move(car));
 }
 
 void TiledGameObjectsParser::loadCamera(const Xml& cameraNode) const
@@ -344,14 +398,6 @@ void TiledGameObjectsParser::loadCutScene(const Xml& cutSceneNode) const
 		);
 		mCutSceneManager.activateCutscene(std::move(startGameCutScene));
 	}
-	else if(name == "controlsGuide") {
-		auto controlsGuide = std::make_unique<ContolsGuide>(
-			mRoot,
-			mGameData->getGui(),
-			mGameData->getSceneManager()
-		);
-		mCutSceneManager.activateCutscene(std::move(controlsGuide));
-	}
 }
 
 void TiledGameObjectsParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
@@ -385,27 +431,6 @@ void TiledGameObjectsParser::loadMedkit(const Xml& bulletItemNode) const
 	medkitItem->setPosition(getPositionAttribute(bulletItemNode));
 	auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 	standingObjects->getChild("ItemsContainer")->addChild(std::move(medkitItem));
-}
-
-void TiledGameObjectsParser::loadBilbord(const Xml& bilbordNode) const
-{
-	auto& textures = mGameData->getTextures();
-	bool isLying = getProperty(bilbordNode, "isLying").toBool();
-	auto bilbord = std::make_unique<Bilbord>(
-		textures.get("textures/others/standingBilbord.png"),
-		textures.get("textures/others/lyingBilbord.png"),
-		isLying
-	);
-	bilbord->setPosition(getPositionAttribute(bilbordNode));
-	
-	if(isLying) {
-		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-		lyingObjects->addChild(std::move(bilbord));
-	}
-	else {
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(bilbord));
-	}
 }
 
 void TiledGameObjectsParser::loadSpriteNode(const Xml& spriteNodeNode) const

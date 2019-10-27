@@ -21,3 +21,15 @@ doc/latex
 # Generated files
 logs/*.txt
 config/modules.txt
+.vs/PopHead/v15/.suo
+.vs/PopHead/v15/Browse.VC.db
+.vs/PopHead/v15/Browse.VC.opendb
+.vs/PopHead/v15/ipch/AutoPCH/6a404212b60e2864/AIMANAGER.ipch
+.vs/PopHead/v15/Solution.VC.db
+.vs/PopHead/v15/Solution.VC.db-shm
+.vs/PopHead/v15/Solution.VC.db-wal
+PopHead.vcxproj.filters
+PopHead.vcxproj.user
+Tests.vcxproj.filters
+Tests.vcxproj.user
+*.ipch

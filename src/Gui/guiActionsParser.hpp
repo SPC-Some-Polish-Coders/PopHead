@@ -14,7 +14,7 @@ class GameCloser;
 class GuiActionsParser
 {
 public:
-	virtual std::function<void(Widget*)> getGuiAction(GUI&, SceneManager&, GameCloser&, const std::string& actionStr) const = 0;
+	virtual std::function<void(Widget*)> getGuiAction(GameData& mGameData, const std::string& actionStr) const = 0;
 };
 
 }

@@ -5,7 +5,11 @@
 #include "Utilities/xml.hpp"
 
 namespace ph {
-
+namespace {
+	void throwMissingAttributeException(std::string attributeName) {
+		throw std::runtime_error(attributeName + " is mandatory attribute");
+	}
+}
 std::unique_ptr<GuiActionsParser> XmlGuiParser::mActionsParser = nullptr;
 	
 void XmlGuiParser::setActionsParser(std::unique_ptr<GuiActionsParser> actionsParser)
@@ -57,9 +61,16 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 		widget.setContentPath(path);
 	}
 	if (widgetTag.hasAttribute("origin"))
+	{
+		
 		widget.setOrigin(getVector(widgetTag, "origin"));
+	}
 	if (widgetTag.hasAttribute("position"))
+	{
+		PH_LOG_INFO("POSI_START");
 		widget.setPosition(getVector(widgetTag, "position"));
+		PH_LOG_INFO("POSI_END");
+	}
 	if (widgetTag.hasAttribute("scale"))
 		widget.scale(getVector(widgetTag, "scale"));
 	if (widgetTag.hasAttribute("alpha"))
@@ -70,17 +81,17 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 		if (widgetTag.hasAttribute("onButtonPressed"))
 		{
 			auto action = widgetTag.getAttribute("onButtonPressed").toString();
-			widget.addBehavior(BehaviorType::onPressed, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneManager(), mGameData->getGameCloser(), action));
+			widget.addBehavior(BehaviorType::onPressed, mActionsParser->getGuiAction(*mGameData, action));
 		}
 		if (widgetTag.hasAttribute("onButtonReleased"))
 		{
 			auto action = widgetTag.getAttribute("onButtonReleased").toString();
-			widget.addBehavior(BehaviorType::onReleased, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneManager(), mGameData->getGameCloser(), action));
+			widget.addBehavior(BehaviorType::onReleased, mActionsParser->getGuiAction(*mGameData, action));
 		}
 		if (widgetTag.hasAttribute("onButtonUpdate"))
 		{
 			auto action = widgetTag.getAttribute("onButtonUpdate").toString();
-			widget.addBehavior(BehaviorType::onUpdate, mActionsParser->getGuiAction(mGameData->getGui(), mGameData->getSceneManager(), mGameData->getGameCloser(), action));
+			widget.addBehavior(BehaviorType::onUpdate, mActionsParser->getGuiAction(*mGameData, action));
 		}
 	}
 }
@@ -107,12 +118,25 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 		widget.setTextAlpha(textWidgetTag.getAttribute("textAlpha").toUnsigned());
 	if (textWidgetTag.hasAttribute("scaleText"))
 		widget.scaleText(getVector(textWidgetTag, "scaleText"));
+	if (textWidgetTag.hasAttribute("scrollingEffect"))
+		widget.setScrollingEffect(textWidgetTag.getAttribute("scrollingEffect").toBool());
+}
+
+void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget& widget)
+{
+	if (widgetTag.hasAttribute("contentPathSlider"))
+	{
+		auto path = widgetTag.getAttribute("contentPathSlider").toString();
+		mGameData->getTextures().load(path);
+		widget.createSlider(path);
+	}
+	else throwMissingAttributeException("contentPathSlider");
 }
 
 void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
 {
 	auto widgets = widgetTag.getChildren("widget");
-	for (auto& childTag : widgets)
+	for (auto const& childTag : widgets)
 	{
 		auto name = childTag.getAttribute("name").toString();
 		auto childWidget = new Widget;
@@ -121,8 +145,18 @@ void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
 		parseWidgetChildren(childTag, *childWidget);
 	}
 
+	auto sliderWidget = widgetTag.getChildren("sliderWidget");
+	for (auto const& childTag : sliderWidget)
+	{
+		auto name = childTag.getAttribute("name").toString();
+		auto childWidget = new SliderWidget;
+		widget.addWidget(name, childWidget);
+		parseWidgetAttributes(childTag, *childWidget);
+		parseSliderWidgetAttributes(childTag, *childWidget);
+	}
+
 	auto textWidgets = widgetTag.getChildren("textWidget");
-	for (auto& childTag : textWidgets)
+	for (auto const& childTag : textWidgets)
 	{
 		auto name = childTag.getAttribute("name").toString();
 		auto childWidget = new TextWidget;
@@ -232,5 +266,4 @@ sf::Color XmlGuiParser::parseRGBA(std::string colorStr)
 
 	return sf::Color(values[0], values[1], values[2], values[3]);
 }
-
 }

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <audio>
   <mute soundmute="false"/>
-	<theme filename="explorationTheme.ogg" volumeMultiplier="0.83"/>
+  <starttheme filename="sewageEntranced.flac" volumeMultiplier="1"/>
+  <musicstate name="fighting">
+    <theme filename="sewageFight.ogg" volumeMultiplier="1"/>
+    <theme filename="sewageFightV2.flac" volumeMultiplier="1"/>
+  </musicstate>
+  <musicstate name="exploration">
+    <theme filename="sewageEntranced.flac" volumeMultiplier="1"/>
+  </musicstate>
 </audio>

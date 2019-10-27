@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <gui filename="options.gui.xml"/>
+  <map filename="optionsMap.tmx"/>
+  <neededResources filename="menu.res.xml"/>
+  <audio filename="menu.audio.xml"/>
+</scenelinks>

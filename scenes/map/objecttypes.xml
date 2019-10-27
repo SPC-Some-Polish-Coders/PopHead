@@ -29,6 +29,9 @@
  </objecttype>
  <objecttype name="Gate" color="#a48096"/>
  <objecttype name="Lever" color="#aa00ff"/>
+ <objecttype name="LootSpawner" color="#0cff7d">
+  <property name="lootType" type="string" default="bullets"/>
+ </objecttype>
  <objecttype name="Medkit" color="#aaffff"/>
  <objecttype name="Npc" color="#ffff00">
   <property name="hp" type="file" default="50"/>
@@ -38,6 +41,10 @@
  </objecttype>
  <objecttype name="Player" color="#55ffff"/>
  <objecttype name="SlowDownArea" color="#5eb825"/>
+ <objecttype name="SlowZombie" color="#b8ff45">
+  <property name="hp" type="string" default="150"/>
+  <property name="maxHp" type="string" default="150"/>
+ </objecttype>
  <objecttype name="Spawner" color="#aa0000">
   <property name="spawnFrequency" type="float" default="3"/>
   <property name="spawnType" type="string" default="zombie"/>

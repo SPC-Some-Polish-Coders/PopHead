@@ -4,11 +4,19 @@
 #include "Utilities/cast.hpp"
 #include "gameData.hpp"
 #include "Logs/logs.hpp"
+#include "Gui/sliderWidget.hpp"
 
 namespace ph {
 
-std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneManager& sceneManager, GameCloser& gameCloser, const std::string& actionStr) const
+std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GameData& gameData, const std::string& actionStr) const
 {
+	auto& sceneManager = gameData.getSceneManager();
+	auto& gameCloser = gameData.getGameCloser();
+	auto& gui = gameData.getGui();
+	auto& musicPlayer = gameData.getMusicPlayer();
+	auto& soundPlayer = gameData.getSoundPlayer();
+
+
 	auto pair = getSplitAction(actionStr);
 
 	if (pair.first == "replaceScene")
@@ -17,14 +25,31 @@ std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GUI& gui, SceneM
 	else if (pair.first == "loadLastSave")
 		return [&sceneManager, pair](Widget*) { sceneManager.replaceScene(sceneManager.getCurrentMapName()); };
 
+	else if (pair.first == "changeMusicVolume")
+	{
+		return [&musicPlayer](Widget* widget)
+		{
+			musicPlayer.setVolume(
+				static_cast<SliderWidget*>(widget)->getSliderValue());
+		};
+	}
+	else if (pair.first == "changeSoundVolume")
+	{
+		return [&soundPlayer](Widget* widget)
+		{
+			soundPlayer.setVolume(
+				static_cast<SliderWidget*>(widget)->getSliderValue());
+		};
+	}
+
 	else if(pair.first == "closeGame")
 		return [&gameCloser](Widget*) {gameCloser.closeGame(); };
 
 	else if(pair.first == "hideGuiInterface")
-		return [&gui, pair](Widget*) {gui.hideInterface(pair.second); };
+		return [&gui, &pair](Widget*) {gui.hideInterface(pair.second); };
 
 	else if(pair.first == "showGuiInterface")
-		return [&gui, pair](Widget*) {gui.showInterface(pair.second); };
+		return [&gui, &pair](Widget*) {gui.showInterface(pair.second); };
 
 	else if(pair.first == "setGamePause")
 		return [&sceneManager, &gui, pair](Widget*) {

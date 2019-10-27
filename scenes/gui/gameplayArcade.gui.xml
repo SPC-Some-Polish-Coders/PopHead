@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gui>
+    <interface name="pauseScreen" hide="true">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		        <textWidget name="resumeButton"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  onButtonPressed="setGamePause:false" text="Resume"></textWidget>
+            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
+        </widget>
+    </interface>
+    <interface name="gameOverScreen" hide="true">
+        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <textWidget name="restartButton"  contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/arcadeModeChooseMenu.xml" text="Try Again"></textWidget>
+            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml"         text="Exit to menu"></textWidget>
+        </widget>
+    </interface>
+	<interface name="winScreen" hide="true">
+	<widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+		<textWidget name="winText" origin="0.5" position="0.2, 0.65" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="red" characterSize="25" text="Challange completed!"></textWidget>
+		<textWidget name="totalTimeText" origin="0.5" position="0.3, 0.75" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="rgb(255, 127, 0)" characterSize="15" text="Total time: 00:00"></textWidget>
+	</widget>
+    </interface>
+    <interface name="gameplayCounters">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
+            <textWidget name="bulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
+        </widget>
+    </interface>
+    <interface name="arcadeCounters" hide="true">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <widget name="counters" scale="0.6, 0.5" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.11, 0.07">
+                <textWidget name="waveCounter" origin="0.5" position="0.05, 0.2" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="14" text="Wave: 0   "/>
+                <textWidget name="enemiesCounter" origin="0.5" position="0.05, 0.6" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="14" text="Enemies: 00"/>
+            </widget>
+        </widget>
+    </interface>
+	  <interface name="nextWaveInfo">
+        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
+            <widget name="counters" scale="1.1, 0.4" contentPath="textures/gui/arcadeCountersBackground.png" origin="0.5" position="0.18, 0.07">
+                <textWidget name="timeToNextWave" origin="0.5" position="0.05, 0.3" fontPath="fonts/consola.ttf" textPosition="0.1" color="white" characterSize="17" text="Next wave in 0 seconds!"/>
+            </widget>
+        </widget>
+    </interface>
+</gui>
