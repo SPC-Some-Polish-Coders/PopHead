@@ -1,9 +1,9 @@
-#include "dyingCharacters.hpp"
+#include "healthCheck.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 
 namespace ph::system {
 
-	void DyingCharacters::update(float seconds)
+	void HealthCheck::update(float seconds)
 	{
 		auto view = mRegistry.view<component::Health>();
 		for (auto entity : view)

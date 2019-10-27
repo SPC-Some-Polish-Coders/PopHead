@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-	class DyingCharacters : public System
+	class HealthCheck : public System
 	{
 	public:
 		using System::System;
