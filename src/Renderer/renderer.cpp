@@ -15,6 +15,7 @@ namespace {
 	// RendererData
 	unsigned numberOfDrawCalls = 0;
 	ph::Shader* defaultShader;
+	const ph::Shader* currentlyBoundShader = nullptr;
 	std::unique_ptr<ph::VertexArray> quadVertexArray;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -83,34 +84,38 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture)
 {
-	submitQuad(position, size, texture, *defaultShader);
+	submitQuad(position, size, texture, defaultShader);
 }
 
 void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture)
 {
-	submitQuad(position, size, rotation, texture, *defaultShader);
+	submitQuad(position, size, rotation, texture, defaultShader);
 }
 
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture, const Shader& shader)
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, const Texture& texture, const Shader* shader)
 {
 	// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
 	submitQuad(position, size, 0.f, texture, shader);
 }
 
-void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture, const Shader& shader)
+void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotation, const Texture& texture, const Shader* shader)
 {
 	if(!isInsideScreen(position, size))
 		return;
 
+	if(shader != currentlyBoundShader) {
+		shader->bind();
+		currentlyBoundShader = shader;
+	}
+
 	quadVertexArray->bind();
 	texture.bind();
-	shader.bind();
 	
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
 	transform.rotate(rotation);
-	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
