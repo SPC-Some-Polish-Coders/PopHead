@@ -108,7 +108,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="gameObjects">
-  <object id="9" type="Car" x="92.6667" y="29.3333">
+  <object id="9" type="Car" x="395.333" y="388.667">
    <properties>
     <property name="acceleration" type="float" value="0"/>
     <property name="slowingDown" type="float" value="0"/>

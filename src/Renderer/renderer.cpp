@@ -41,14 +41,14 @@ void Renderer::init()
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("perfectPixel", "resources/shaders/staticPixelPerfect.vs.glsl", "resources/shaders/texture.fs.glsl");
 	sl.loadFromFile("dynamic", "resources/shaders/default.vs.glsl", "resources/shaders/texture.fs.glsl");
-	defaultShader = sl.get("perfectPixel");
+	defaultShader = sl.get("dynamic");
 
 	// load quad vertex array
 	float vertices[] = {
-		1.f, 0.f, 1.0f, 1.0f,
-		1.f, 1.f, 1.0f, 0.0f,
-		0.f, 1.f, 0.0f, 0.0f,
-		0.f, 0.f, 0.0f, 1.0f 
+		1.f, 0.f, 1.f, 1.f,
+		1.f, 1.f, 1.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 0.f, 1.f 
 	};
 	VertexBuffer quadVBO = createVertexBuffer();
 	setData(quadVBO, vertices, sizeof(vertices), DataUsage::staticDraw);
@@ -108,8 +108,8 @@ void Renderer::submitQuad(sf::Vector2f position, sf::Vector2i size, float rotati
 	
 	sf::Transform transform;
 	transform.translate(position);
-	transform.rotate(rotation);
 	transform.scale(static_cast<sf::Vector2f>(size));
+	transform.rotate(rotation);
 	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
