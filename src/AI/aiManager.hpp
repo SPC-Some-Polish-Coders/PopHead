@@ -9,7 +9,8 @@ namespace ph {
 
 enum class AIMode {
 	normal,
-	zombieAlwaysWalkRandomly
+	zombieAlwaysWalkRandomly,
+	zombieAlwaysLookForPlayer
 };
 
 struct PathMode

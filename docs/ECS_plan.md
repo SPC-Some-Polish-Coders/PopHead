@@ -37,6 +37,9 @@ struct Health {
 struct Position {
     sf::Vector2f position;
 };
+struct Size {
+    sf::Vector2f size;
+}
 // temporarily for drawing we have component Sprite, later it will be replaced by VertexArray and Shader
 struct VertexArray {
     ph::VertexArray vao; // binds VertexBuffer with its layout and with IndexBuffer
@@ -55,10 +58,8 @@ struct CharacterSpeed {
     float speed;
 }
 struct StaticCollisionBody {
-    ph::Rect body;
 };
 struct KinematicCollisionBody { // possibly we could create different component for hitbox
-    ph::Rect body;
     float mass;
 };
 struct Player {

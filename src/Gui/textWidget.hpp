@@ -35,9 +35,12 @@ public:
 
 	void draw() override;
 
+	void setScrollingEffect(bool flag);
+
 private:
 	sf::Text mText;
 	sf::Vector2f mTextPosition;
+	bool scrollingEffect = false;
 };
 
 }

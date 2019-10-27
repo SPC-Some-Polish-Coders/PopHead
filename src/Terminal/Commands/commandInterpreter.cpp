@@ -1,7 +1,10 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "GameObjects/DrawableGameObjects/Characters/player.hpp"
-#include "Audio/Sound/SoundData/soundData.hpp"
+#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
+#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
+#include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
+#include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
@@ -16,6 +19,7 @@ void CommandInterpreter::init()
 	mCommandsMap["echo"] =		&CommandInterpreter::executeEcho;
 	mCommandsMap["exit"] =		&CommandInterpreter::executeExit;
 	mCommandsMap["teleport"] =	&CommandInterpreter::executeTeleport;
+	mCommandsMap["give"] =	&CommandInterpreter::executeGive;
 	mCommandsMap["currentpos"] =	&CommandInterpreter::executeCurrentPos;
 	mCommandsMap["collisiondebug"] =&CommandInterpreter::executeCollisionDebug;
 	mCommandsMap["mute"] =		&CommandInterpreter::executeMute;
@@ -27,6 +31,7 @@ void CommandInterpreter::init()
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
+	mCommandsMap["pgamode"] =	&CommandInterpreter::executeSwitchPGAMode;
 	mCommandsMap["m"] =			&CommandInterpreter::executeMove;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
@@ -132,13 +137,27 @@ void CommandInterpreter::executeTeleport() const
 	player.setPosition(newPosition);
 }
 
+void CommandInterpreter::executeGive() const
+{
+	auto& player = dynamic_cast<Player&>(getPlayer());
+	auto& equipement = dynamic_cast<PlayerEquipment&>(*player.getChild("Equipment"));
+	if (commandContains("bullet"))
+	{
+		int numberOfItems = static_cast<int>(getVolumeFromCommand());
+		for (int i = numberOfItems; i > 0; --i)
+			equipement.putItem(std::make_unique<BulletItem>(mGameData));
+	}
+	else
+		executeMessage("Type of item is unknown!", MessageType::ERROR);
+}
+
 void CommandInterpreter::executeMove() const
 {
 	auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f moveOffset = getVector2Argument();
-	if (mCommand.find("x") != std::string::npos)
+	if (commandContains('x'))
 		player.move(sf::Vector2f(moveOffset.x, 0.f));
-	else if (mCommand.find("y") != std::string::npos)
+	else if (commandContains('y'))
 		player.move(sf::Vector2f(0.f, moveOffset.y));
 	else
 		player.move(moveOffset);
@@ -156,6 +175,14 @@ auto CommandInterpreter::getPlayer() const -> GameObject&
 	auto* standingObjects = gameScene.getRoot().getChild("LAYER_standingObjects");
 	GameObject& player = *standingObjects->getChild("player");
 	return player;
+}
+
+void CommandInterpreter::executeSwitchPGAMode() const
+{
+	if (commandContains("on"))
+		ArcadeManager::mPGAMode = true;
+	else if (commandContains("off"))
+		ArcadeManager::mPGAMode = false;
 }
 
 void CommandInterpreter::executeCollisionDebug() const

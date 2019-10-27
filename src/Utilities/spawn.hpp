@@ -10,7 +10,7 @@ class GameObject;
 
 enum class ObjectType
 {
-	Zombie, Npc
+	Zombie, SlowZombie, Npc
 };
 
 class Spawn
@@ -23,8 +23,6 @@ private:
 
 	template<typename T>
 	void spawn();
-	template<typename T>
-	void spawnEnemy();
 	
 	auto getRoot() -> GameObject &;
 

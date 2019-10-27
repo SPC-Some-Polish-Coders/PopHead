@@ -32,7 +32,6 @@ void GateGuardDialogue::initGui()
 	guardSpeechBubble->getWidget("characterName")->show();
 	playerSpeechBubble->getWidget("player1")->hide();
 	playerSpeechBubble->getWidget("player2")->hide();
-	playerSpeechBubble->getWidget("player3")->hide();
 
 	guardSpeechBubble->getWidget("characterName")->show();
 	guardSpeechBubble->getWidget("guard1")->hide();
@@ -54,11 +53,6 @@ void GateGuardDialogue::initGui()
 	guardSpeechBubble->getWidget("guard6b")->hide();
 	guardSpeechBubble->getWidget("guard6c")->hide();
 	guardSpeechBubble->getWidget("guard7")->hide();
-	guardSpeechBubble->getWidget("guard8")->hide();
-	guardSpeechBubble->getWidget("guard8b")->hide();
-	guardSpeechBubble->getWidget("guard9")->hide();
-	guardSpeechBubble->getWidget("guard10")->hide();
-	guardSpeechBubble->getWidget("guard10b")->hide();
 }
 	
 void GateGuardDialogue::update(const sf::Time delta)
@@ -170,7 +164,6 @@ void GateGuardDialogue::update(const sf::Time delta)
 			guardSpeechBubble->getWidget("guard6c")->show();
 		} break;
 
-
 		case 9:
 		{
 			guardSpeechBubble->getWidget("guard6")->hide();
@@ -180,52 +173,11 @@ void GateGuardDialogue::update(const sf::Time delta)
 			guardSpeechBubble->getWidget("guard7")->show();
 		} break;
 
-
-		case 10:
-		{
-			guardSpeechBubble->getWidget("guard7")->hide();
-
-			guardSpeechBubble->getWidget("guard8")->show();
-			guardSpeechBubble->getWidget("guard8b")->show();
-		} break;
-
-		case 11:
-		{
-			guardSpeechBubble->hide();
-			guardSpeechBubble->getWidget("guard8")->hide();
-			guardSpeechBubble->getWidget("guard8b")->hide();
-
-			playerSpeechBubble->show();
-			playerSpeechBubble->getWidget("player3")->show();
-		} break;
-
-		case 12:
-		{
-			playerSpeechBubble->hide();
-			playerSpeechBubble->getWidget("player3")->hide();
-			 
-			guardSpeechBubble->show();
-			guardSpeechBubble->getWidget("guard9")->show();
-		} break;
-
-		case 13:
-		{
-			guardSpeechBubble->getWidget("guard9")->hide();
-
-			guardSpeechBubble->getWidget("guard10")->show();
-			guardSpeechBubble->getWidget("guard10b")->show();	
-		} break;
-
-		case 14:
-		{
-			guardSpeechBubble->getWidget("guard10")->hide();
-			guardSpeechBubble->getWidget("guard10b")->hide();
-			guardSpeechBubble->hide();
-			hint->hide();
-			leaveCutScene();
-		} break;
-
 		default:
+			guardSpeechBubble->getWidget("guard7")->hide();
+			guardSpeechBubble->hide();
+			playerSpeechBubble->hide();
+			hint->hide();
 			leaveCutScene();
 			break;
 		}

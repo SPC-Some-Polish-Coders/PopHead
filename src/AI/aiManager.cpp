@@ -10,6 +10,8 @@ PathMode AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 {
 	if (!mIsPlayerOnScene || mAIMode == AIMode::zombieAlwaysWalkRandomly)
 		return { getRandomPath(zombiePosition) };
+	if (mAIMode == AIMode::zombieAlwaysLookForPlayer)
+		return { getPath(zombiePosition, mPlayerPosition), true };
 
 	float distanceToPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	constexpr float maximalDistanceFromWhichZombieSeesPlayer = 285.f;
