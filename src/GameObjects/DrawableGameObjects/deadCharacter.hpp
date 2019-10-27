@@ -15,8 +15,9 @@ public:
 	void drawCurrent(sf::Transform) override;
 
 private:
-	Sprite mSprite;
+	const sf::IntRect mTextureRect;
 	sf::Time mTimeFromDeath;
+	const Texture& mTexture;
 };
 
 }

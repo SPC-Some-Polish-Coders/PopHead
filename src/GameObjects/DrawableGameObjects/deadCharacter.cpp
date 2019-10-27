@@ -1,20 +1,21 @@
 #include "deadCharacter.hpp"
 #include "GameObjects/GameObjectContainers/gameObjectLayers.hpp"
+#include "Resources/spriteSheetData.hpp"
 
 namespace ph {
 
 DeadCharacter::DeadCharacter(const Texture& texture, const sf::IntRect& textureRect, const std::string name)
 	:GameObject("dyingCharacter")
-	,mSprite(texture, name)
+	,mTextureRect(textureRect)
+	,mTexture(texture)
 {
-	setTextureRect(mSprite.mVertexArray.getVertexBuffer(), textureRect, texture.getSize());
 }
 
 void DeadCharacter::updateCurrent(const sf::Time delta)
 {
 	mTimeFromDeath += delta;
 
-	//TODO: Make character fade out using new renderer
+	//TODO_ren: Make character fade out using new renderer
 	/*sf::Color newColor = mSprite.getColor();
 	newColor.a = 255 - (mTimeFromDeath.asSeconds() * 25.5);
 	mSprite.setColor(newColor);*/
@@ -27,7 +28,7 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 
 void DeadCharacter::drawCurrent(sf::Transform transform)
 {
-	Renderer::submit(mSprite, transform);
+	Renderer::submitQuad(mTexture, mTextureRect, getPosition(), {SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT});
 }
 
 }
