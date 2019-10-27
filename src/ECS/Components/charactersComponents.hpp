@@ -23,4 +23,9 @@ namespace ph::component {
 		unsigned bullets;
 		bool isTryingToAttack;
 	};
+
+	struct TaggedToDestroy
+	{
+
+	};
 }
