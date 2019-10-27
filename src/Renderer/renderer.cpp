@@ -108,11 +108,11 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 	quadVertexArray->bind();
 	texture.bind();
 	
-	// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
-	transform.rotate(rotation);
+	if(rotation != 0.f)
+		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
@@ -141,11 +141,11 @@ void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, co
 	animatedQuadVertexArray->bind();
 	texture.bind();
 
-	/// TODO_ren: Make that we don't need to pass rotation and recalculate matrix later
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
-	transform.rotate(rotation);
+	if(rotation != 0.f)
+		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
