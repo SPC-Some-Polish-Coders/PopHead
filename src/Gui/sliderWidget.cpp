@@ -8,17 +8,17 @@ namespace {
 	float getNewIconXPosition(double distanceXFromCenter, double parentXSize, int iconSize) {
 		double x = (parentXSize / 2) + distanceXFromCenter;
 		if (x > parentXSize)
-			return 0.95;
+			return 0.95f;
 		if (x < 0)
-			return 0;
-		return std::min((x - iconSize*0.5) / parentXSize, 0.95);
+			return 0.f;
+		return static_cast<float>(std::min((x - iconSize * 0.5) / parentXSize, 0.95));
 	}
 }
 SliderWidget::SliderWidget()
 {
 }
 int SliderWidget::getSliderValue() {
-	return icon->getPosition().x * 100;
+	return static_cast<int>(icon->getPosition().x * 100);
 }
 
 
@@ -26,7 +26,7 @@ void SliderWidget::createSlider(std::string path) {
 	icon = std::make_unique<Widget>();
 	addWidget("slider", icon.get());
 	icon->setContentPath(path);
-	icon->setPosition({ 0.95, 0 });
+	icon->setPosition({ 0.95f, 0.f });
 }
 
 void SliderWidget::handleEventOnCurrent(const ph::Event& phEvent)

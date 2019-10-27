@@ -131,8 +131,8 @@ void ArcadeManager::handleWin()
 	mHasWon = true;
 	auto* winScreen = mGui.getInterface("winScreen");
 	auto* totalTime = dynamic_cast<TextWidget*>(winScreen->getWidget("canvas")->getWidget("totalTimeText"));
-	int minutes = mTimeFromStart.asSeconds() /60;
-	int seconds = mTimeFromStart.asSeconds() - minutes*60;
+	int minutes = static_cast<int>(mTimeFromStart.asSeconds() / 60);
+	int seconds = static_cast<int>(mTimeFromStart.asSeconds() - minutes * 60);
 	totalTime->setString("Total time: " + addZero(minutes) + ":" + addZero(seconds));
 	winScreen->show();
 	startBreakTime();
