@@ -97,6 +97,16 @@ This table is very important for multithreading of systems, so it **must be alwa
         <td>Sprite</td>
         <td>R</td>
     </tr>
+    <tr>
+      <td>HealthCheck</td>
+      <td>Health</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <td>DyingCharacters</td>
+      <td>TaggedToDestroy</td>
+      <td>R</td>
+    </tr>
 </table>
 
 ### Useful links:
