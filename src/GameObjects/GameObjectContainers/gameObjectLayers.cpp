@@ -27,7 +27,7 @@ void StandingGameObjectsLayer::handleDyingCharaters()
 		dyingCharacter->dropItems();
 		auto* lyingObjectsLayer = mRoot->getChild("LAYER_lyingObjects");
 		auto deadCharacter = std::make_unique<DeadCharacter>(
-			dyingCharacter->getSprite().mTexture,
+			dyingCharacter->getTexture(),
 			dyingCharacter->getAnimation().getCurrentTextureRect(),
 			"dying" + dyingCharacter->getName()
 		);

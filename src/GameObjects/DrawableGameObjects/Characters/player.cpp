@@ -71,7 +71,7 @@ Player::Player(GameData* gameData)
 	,mPickRadius(10.f)
 	,mIsDead(false)
 {
-	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+	//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 	addChild(std::make_unique<Gun>(mGameData->getSoundPlayer(), mGameData->getTextures().get("textures/others/pistol.png"), 5.f));
 
 	const float meleeWeaponDamage = 35.f;
@@ -276,7 +276,7 @@ void Player::updateAnimation(const sf::Time delta)
 		return;
 	}
 
-	mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
+	//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer(), delta);
 }
 
 void Player::setAnimationState(const std::string& stateName)
@@ -284,7 +284,7 @@ void Player::setAnimationState(const std::string& stateName)
 	const std::string name = mAnimation.getCurrentStateName();
 	if (name != stateName) {
 		mAnimation.changeState(stateName);
-		mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
+		//mAnimation.animate(mSprite.mVertexArray.getVertexBuffer());
 	}
 }
 

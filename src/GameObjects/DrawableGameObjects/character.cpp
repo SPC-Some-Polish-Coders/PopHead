@@ -13,8 +13,8 @@ namespace ph {
 Character::Character(GameData* gameData, std::string name, const Texture& texture, Animation animation,
 	unsigned movementSpeed, int Hp, unsigned maxHp, sf::FloatRect posAndSize, float mass, bool isAttackable)
 	:GameObject(name)
-	,mSprite(texture, "character" + std::to_string(mSerialNumber))
 	,mAnimation(animation)
+	,mTexture(texture)
 	,mGameData(gameData)
 	,mCollisionBody(mGameData->getPhysicsEngine().createKinematicBodyAndGetTheReference(posAndSize, mass))
 	,mHp(Hp)
@@ -25,13 +25,11 @@ Character::Character(GameData* gameData, std::string name, const Texture& textur
 	++mSerialNumber;
 	addChild(std::make_unique<Equipment>());
 	dynamic_cast<Equipment*>(getChild("Equipment"))->init();
-	
-	mShader = ShaderLibrary::getInstance().get("dynamic");
 }
 
 void Character::drawCurrent(sf::Transform transform)
 {
-	Renderer::submit(mSprite, *mShader, transform);
+	Renderer::submitQuad(getPosition(), mTexture.getSize(), mTexture);
 }
 
 void Character::dropItems()
@@ -65,7 +63,7 @@ void Character::move(sf::Vector2f offset)
 
 auto Character::getSpriteCenter() -> sf::Vector2f
 {
-	return { mSprite.mTexture.getHeight() / 2.f, mSprite.mTexture.getWidth() / 2.f };
+	return { mTexture.getHeight() / 2.f, mTexture.getWidth() / 2.f };
 }
 
 sf::FloatRect Character::getGlobalBounds() const

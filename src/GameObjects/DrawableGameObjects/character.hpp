@@ -38,7 +38,7 @@ public:
 	sf::FloatRect getGlobalBounds() const override;
 	sf::FloatRect getTextureBounds() const;
 	auto getAnimation() -> Animation& { return mAnimation; }
-	Sprite& getSprite() { return mSprite; }
+	auto getTexture() const -> const Texture& { return mTexture; }
 	bool isAttackable() const { return mIsAttackable; }
 
 	void pushCharacter(const sf::Vector2f& pushVector);
@@ -47,9 +47,9 @@ private:
 	void fixHp();
 
 protected:
-	Sprite mSprite;
 	Animation mAnimation;
 	sf::Clock mTimeSinceLastTakenDamage;
+	const Texture& mTexture;
 	GameData* const mGameData;
 	CollisionBody& mCollisionBody;
 	int mHp;
@@ -59,7 +59,6 @@ protected:
 
 	inline static bool mIsInAttackingMode = false;
 	inline static int mSerialNumber = 0;
-	inline static Shader* mShader = nullptr;
 };
 
 }
