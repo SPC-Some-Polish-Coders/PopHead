@@ -248,7 +248,7 @@ void Gun::drawCurrent(sf::Transform transform)
 		Renderer::submit(mShotGraphicsVertexArray, mGunShotShader, sf::Transform::Identity, {1000, 1000}, DrawPrimitive::Lines);
 
 	transform.translate(mGunPosition);
-	transform.scale(mGunScale);
+	transform.scale(mGunScale * 10.f);
 	if(mShouldDisplayGunSprite)
 		Renderer::submit(mGunSprite, *mGunShader, transform);
 }
