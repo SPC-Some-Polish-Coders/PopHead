@@ -98,12 +98,15 @@ This table is very important for multithreading of systems, so it **must be alwa
         <td>R</td>
     </tr>
     <tr>
-      <td>HealthCheck</td>
+      <td rowspan=2>DyingCharacters</td>
       <td>Health</td>
       <td>R</td>
     </tr>
     <tr>
-      <td>DyingCharacters</td>
+      <td>TaggedToDestroy</td>
+      <td>W</td>
+    <tr>
+      <td>EntityDestroying</td>
       <td>TaggedToDestroy</td>
       <td>R</td>
     </tr>
