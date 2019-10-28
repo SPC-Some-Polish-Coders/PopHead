@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-	class HealthCheck : public System
+	class EntityDestroying : public System
 	{
 	public:
 		using System::System;

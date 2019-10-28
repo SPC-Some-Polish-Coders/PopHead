@@ -4,7 +4,7 @@ namespace ph::component {
 	
 	struct Health
 	{
-		unsigned healthPoints;
+		int healthPoints;
 	};
 
 	struct Player

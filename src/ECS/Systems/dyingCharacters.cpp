@@ -5,8 +5,13 @@ namespace ph::system {
 
 	void DyingCharacters::update(float seconds)
 	{
-		auto view = mRegistry.view<component::TaggedToDestroy>();
-		mRegistry.destroy(view.begin(), view.end());
+		auto view = mRegistry.view<component::Health>();
+		for (auto entity : view)
+		{
+			auto& health = view.get(entity);
+			if(health.healthPoints <= 0)
+				mRegistry.assign<component::TaggedToDestroy>(entity);
+		}
 	}
 
 }
