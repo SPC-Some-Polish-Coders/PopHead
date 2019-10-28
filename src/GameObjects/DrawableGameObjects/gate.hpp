@@ -19,7 +19,7 @@ public:
 	void close();
 
 private:
-	Sprite mSprite;
+	const Texture& mTexture;
 	const CollisionBody& mCollisionBody;
 	PhysicsEngine& mPhysicsEngine;
 	bool mIsOpen;

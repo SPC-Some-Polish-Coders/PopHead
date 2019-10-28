@@ -5,7 +5,7 @@ namespace ph{
 
 Gate::Gate(const Texture& texture, const sf::Vector2f position, PhysicsEngine& physicsEngine, const bool isOpen)
 	:GameObject("gate")
-	,mSprite(texture, "gate")
+	,mTexture(texture)
 	,mCollisionBody(physicsEngine.createStaticBodyAndGetTheReference(sf::FloatRect(position.x, position.y + 6, 32, 10)))
 	,mPhysicsEngine(physicsEngine)
 	,mIsOpen(isOpen)
@@ -16,7 +16,7 @@ Gate::Gate(const Texture& texture, const sf::Vector2f position, PhysicsEngine& p
 void Gate::drawCurrent(sf::Transform transform)
 {
 	if(!mIsOpen)
-		Renderer::submit(mSprite, transform);
+		Renderer::submitQuad(mTexture, getPosition(), mTexture.getSize());
 }
 
 void Gate::open()
