@@ -12,7 +12,7 @@ public:
 
 	void drawCurrent(sf::Transform) override;
 private:
-	Sprite mSprite;
+	const Texture& mTexture;
 	inline static int serialNumber = 0;
 };
 

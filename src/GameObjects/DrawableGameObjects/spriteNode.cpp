@@ -4,14 +4,14 @@ namespace ph {
 
 SpriteNode::SpriteNode(const Texture& texture)
 	:GameObject("sprite")
-	,mSprite(texture, "sprite" + std::to_string(serialNumber))
+	,mTexture(texture)
 {
 	++serialNumber;
 }
 
 void SpriteNode::drawCurrent(sf::Transform transform)
 {
-	Renderer::submit(mSprite, transform);
+	Renderer::submitQuad(mTexture, getPosition(), mTexture.getSize());
 }
 
 }
