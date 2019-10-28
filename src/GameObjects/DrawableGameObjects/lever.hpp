@@ -14,8 +14,9 @@ public:
 	void drawCurrent(sf::Transform) override;
 
 private:
-	Sprite mLeverSprite;
-	Sprite mHintSprite;
+	IntRect mCurrentTextureRect;
+	const Texture& mLeverTexture;
+	const Texture& mHintTexture;
 	bool mIsLeverDown;
 	bool mIsPlayerInHintArea;
 };
