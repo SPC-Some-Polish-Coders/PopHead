@@ -10,11 +10,6 @@ Medkit::Medkit(GameData* const gameData)
 {
 }
 
-void Medkit::drawWhileOnTheGround(sf::Transform transform)
-{
-	Renderer::submit(getGroundSprite(), transform);
-}
-
 void Medkit::onPickUp()
 {
 	auto* playerGameObject = mRoot->getChild("LAYER_standingObjects")->getChild("player");

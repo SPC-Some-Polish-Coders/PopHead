@@ -7,9 +7,4 @@ BulletItem::BulletItem(GameData* const gameData)
 {
 }
 
-void BulletItem::drawWhileOnTheGround(sf::Transform transform)
-{
-	Renderer::submit(getGroundSprite(), transform);
-}
-
 }

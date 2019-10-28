@@ -6,7 +6,7 @@ namespace ph {
 
 Item::Item(GameData* const gameData, const std::string& name, const Texture& groundTexture)
 	:GameObject(name)
-	,mGroundSprite(groundTexture, "ground" + name)
+	,mTexture(groundTexture)
 	,mGameData(gameData)
 	,mInteractable(false)
 	,mInInventory(false)
@@ -21,8 +21,8 @@ void Item::updateCurrent(const sf::Time time)
 
 void Item::drawCurrent(sf::Transform transform)
 {
-	if (!getInInventory())
-		drawWhileOnTheGround(transform);
+	if(!getInInventory())
+		Renderer::submitQuad(mTexture, getPosition(), mTexture.getSize());
 }
 
 void Item::setPosition(const sf::Vector2f& position)

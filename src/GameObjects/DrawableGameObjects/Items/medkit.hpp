@@ -11,7 +11,6 @@ class Medkit : public Item
 public:
 	Medkit(GameData* const gameData);
 
-	void drawWhileOnTheGround(sf::Transform) override;
 	void updateWhileOnTheGround(const sf::Time delta) override {}
 	void onPickUp();
 

@@ -17,8 +17,6 @@ public:
 	virtual void onPickUp();
 	virtual void onDrop();
 
-	virtual void drawWhileOnTheGround(sf::Transform) = 0;
-
 	virtual void updateWhileOnTheGround(const sf::Time time) = 0;
 
 	void setPosition(const sf::Vector2f& position);
@@ -31,11 +29,8 @@ public:
 	void setInInventory(const bool inInv) { mInInventory = inInv; }
 	bool getInInventory() const { return mInInventory; }
 
-protected:
-	auto getGroundSprite() -> Sprite& { return mGroundSprite; }
-
 private:
-	Sprite mGroundSprite;
+	const Texture& mTexture;
 	GameData* const mGameData;
 	bool mInteractable;
 	bool mInInventory;
