@@ -124,7 +124,7 @@ void Chunk::initializeGraphics()
 
 void Chunk::draw() const
 {
-	auto* shader = ShaderLibrary::getInstance().get("dynamic");
+	auto* shader = ShaderLibrary::getInstance().get("sprite");
 	Renderer::submit(*mVertexArray, *shader, getGlobalBounds());
 }
 

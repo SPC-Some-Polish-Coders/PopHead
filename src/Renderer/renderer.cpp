@@ -14,7 +14,7 @@ namespace {
 
 	// RendererData
 	unsigned numberOfDrawCalls = 0;
-	ph::Shader* defaultShader;
+	ph::Shader* spriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	std::unique_ptr<ph::VertexArray> quadVertexArray;
 	std::unique_ptr<ph::VertexArray> animatedQuadVertexArray;
@@ -38,9 +38,8 @@ void Renderer::init()
 
 	// load default shaders
 	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("perfectPixel", "resources/shaders/staticPixelPerfect.vs.glsl", "resources/shaders/texture.fs.glsl");
-	sl.loadFromFile("dynamic", "resources/shaders/default.vs.glsl", "resources/shaders/texture.fs.glsl");
-	defaultShader = sl.get("dynamic");
+	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
+	spriteShader = sl.get("sprite");
 
 	// load quad vertex arrays
 	float quadVertices[] = {
@@ -88,7 +87,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, defaultShader, position, size, rotation);
+	submitQuad(texture, spriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
@@ -118,7 +117,7 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, textureRect, defaultShader, position, size, rotation);
+	submitQuad(texture, textureRect, spriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
@@ -185,12 +184,12 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
 {
-	submit(vao, *defaultShader, bounds, drawMode);
+	submit(vao, *spriteShader, bounds, drawMode);
 }
 
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
-	submit(vao, *defaultShader, transform, size, drawMode);
+	submit(vao, *spriteShader, transform, size, drawMode);
 }
 
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
@@ -201,7 +200,7 @@ void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& trans
 
 void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
 {
-	submit(sprite, *defaultShader, transform, drawMode);
+	submit(sprite, *spriteShader, transform, drawMode);
 }
 
 void Renderer::submit(const sf::Drawable& object)
