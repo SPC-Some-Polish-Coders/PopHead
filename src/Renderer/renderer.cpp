@@ -32,10 +32,6 @@ void Renderer::init()
 	if(glewInit() != GLEW_OK)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
-	// TODO_ren: Make proper log
-	/*GLCheck( const GLubyte* openglVersionInfo = glGetString(GL_VERSION) );
-	std::cout << "OpenGL version: " << openglVersionInfo << std::endl;*/
-
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
