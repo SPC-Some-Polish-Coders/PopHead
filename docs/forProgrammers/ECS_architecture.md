@@ -110,8 +110,33 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>TaggedToDestroy</td>
       <td>R</td>
     </tr>
+  <tr>
+      <td rowspan=8>PickupSystem</td>
+      <td>Health</td>
+      <td>W</td>
+    </tr>
+      <td>TaggedToDestroy</td>
+      <td>W</td>
+      </tr>
+      <td>GunAttacker</td>
+      <td>W</td>
+    </tr>
+    <td>Position</td>
+  <td>R</td>
+      </tr>
+    <td>Size</td>
+    <td>R</td>    
+  </tr>
+      <td>Medkit</td>
+      <td>R</td>
+  </tr>
+      <td>Bullet</td>
+      <td>R</td>
+      </tr>
+      <td>Player</td>
+      <td>R</td>
 </table>
-
+    
 ### Useful links:
 - ECS introduction
   - [wikipedia](https://en.wikipedia.org/wiki/Entity_component_system)
