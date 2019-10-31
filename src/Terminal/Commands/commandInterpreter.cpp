@@ -143,7 +143,7 @@ void CommandInterpreter::executeGive() const
 	auto& equipement = dynamic_cast<PlayerEquipment&>(*player.getChild("Equipment"));
 	if (commandContains("bullet"))
 	{
-		int numberOfItems = getVolumeFromCommand();
+		int numberOfItems = static_cast<int>(getVolumeFromCommand());
 		for (int i = numberOfItems; i > 0; --i)
 			equipement.putItem(std::make_unique<BulletItem>(mGameData));
 	}

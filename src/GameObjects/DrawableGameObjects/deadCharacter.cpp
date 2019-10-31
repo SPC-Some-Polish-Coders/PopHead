@@ -17,7 +17,7 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 
 	//TODO_ren: Make character fade out using new renderer
 	/*sf::Color newColor = mSprite.getColor();
-	newColor.a = 255 - (mTimeFromDeath.asSeconds() * 25.5);
+	newColor.a = static_cast<sf::Uint8>(255 - (mTimeFromDeath.asSeconds() * 25.5));
 	mSprite.setColor(newColor);*/
 
 	if(mTimeFromDeath.asSeconds() > 10) {

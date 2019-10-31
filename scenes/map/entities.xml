@@ -1,0 +1,49 @@
+<gameEntities>
+   <templatedEntities>
+        <templatedEntity name="Zombie">
+            <component name="Velocity">
+                <property name="velocity" value="2.0"/>
+            </component>
+            <component name="Health">
+                <property name="healthPoints" value="100"/>
+            </component>
+            <component name="Animation">
+                <property name="someAnimationPropX" value="x"/>
+                <property name="someAnimationPropY" value="y"/>
+            </component>
+        </templatedEntity>
+
+        <templatedEntity name="Spawner">
+            <component name="Spawner">
+                <property name="distanceToPlayerToWork" value="20"/>
+                <property name="areaToSpawn" value="50, 50"/>
+                <property name="interval" value="2.5"/>
+            </component>
+            <component name="Player">
+                <property name="somePlayerProp" value="x"/>
+            </component>
+        </templatedEntity>
+
+        <templatedEntity name="Medkit">
+            <component name="VertexArray"/>
+            <component name="Shader"/>
+            <component name="Medkit">
+                <property name="healthPoints"/>
+            </component>
+        </templatedEntity>
+    </templatedEntities>
+    
+    //etc...
+    
+    <alteredEntities>
+        <alteredEntity name="hurtZombie" template="Zombie">
+            <component name="Health">
+                <property name="healthPoints" value="25"/>
+            </component>
+        </alteredEntity>
+    </alteredEntities>
+    
+    //etc...
+    
+    
+</gameEntities>

@@ -29,16 +29,16 @@ std::function<void(Widget*)> GuiActionsParserImpl::getGuiAction(GameData& gameDa
 	{
 		return [&musicPlayer](Widget* widget)
 		{
-			musicPlayer.setVolume(
-				static_cast<SliderWidget*>(widget)->getSliderValue());
+			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
+			musicPlayer.setVolume(static_cast<float>(volume));
 		};
 	}
 	else if (pair.first == "changeSoundVolume")
 	{
 		return [&soundPlayer](Widget* widget)
 		{
-			soundPlayer.setVolume(
-				static_cast<SliderWidget*>(widget)->getSliderValue());
+			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
+			soundPlayer.setVolume(static_cast<float>(volume));
 		};
 	}
 
