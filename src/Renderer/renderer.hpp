@@ -22,6 +22,7 @@ public:
 	static void beginScene(Camera&);
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
+	static void submitQuad(const sf::Color&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 	static void submitQuad(const Texture&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 	static void submitQuad(const Texture&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 	static void submitQuad(const Texture&, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);

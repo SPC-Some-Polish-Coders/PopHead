@@ -14,10 +14,12 @@ namespace {
 
 	// RendererData
 	unsigned numberOfDrawCalls = 0;
-	ph::Shader* spriteShader;
+	ph::Shader* singleColorSpriteShader;
+	ph::Shader* textureSpriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
-	std::unique_ptr<ph::VertexArray> quadVertexArray;
-	std::unique_ptr<ph::VertexArray> animatedQuadVertexArray;
+	std::unique_ptr<ph::VertexArray> singleColorQuadVertexArray;
+	std::unique_ptr<ph::VertexArray> textureQuadVertexArray;
+	std::unique_ptr<ph::VertexArray> textureAnimatedQuadVertexArray;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -38,11 +40,20 @@ void Renderer::init()
 
 	// load default shaders
 	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
-	spriteShader = sl.get("sprite");
+	sl.loadFromFile("singleColorSprite", "resources/shaders/singleColorSprite.vs.glsl", "resources/shaders/singleColorSprite.fs.glsl");
+	singleColorSpriteShader = sl.get("singleColorSprite");
+	sl.loadFromFile("textureSprite", "resources/shaders/textureSprite.vs.glsl", "resources/shaders/textureSprite.fs.glsl");
+	textureSpriteShader = sl.get("textureSprite");
 
 	// load quad vertex arrays
-	float quadVertices[] = {
+	float quadPositions[] = {
+		1.f, 0.f,
+		1.f, 1.f,
+		0.f, 1.f,
+		0.f, 0.f
+	};
+
+	float quadPositionsAndTextureCoords[] = {
 		1.f, 0.f, 1.f, 1.f,
 		1.f, 1.f, 1.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,
@@ -52,18 +63,24 @@ void Renderer::init()
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
 	IndexBuffer quadIBO = createIndexBuffer();
 	setData(quadIBO, quadIndices, sizeof(quadIndices));
+	
+	VertexBuffer singleColorQuadVBO = createVertexBuffer();
+	setData(singleColorQuadVBO, quadPositions, sizeof(quadPositions), DataUsage::staticDraw);
+	singleColorQuadVertexArray = std::make_unique<VertexArray>();
+	singleColorQuadVertexArray->setVertexBuffer(singleColorQuadVBO, VertexBufferLayout::position2);
+	singleColorQuadVertexArray->setIndexBuffer(quadIBO);
 
-	VertexBuffer quadVBO = createVertexBuffer();
-	setData(quadVBO, quadVertices, sizeof(quadVertices), DataUsage::staticDraw);
-	quadVertexArray = std::make_unique<VertexArray>();
-	quadVertexArray->setVertexBuffer(quadVBO, VertexBufferLayout::position2_texCoords2);
-	quadVertexArray->setIndexBuffer(quadIBO);
+	VertexBuffer textrueQuadVBO = createVertexBuffer();
+	setData(textrueQuadVBO, quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
+	textureQuadVertexArray = std::make_unique<VertexArray>();
+	textureQuadVertexArray->setVertexBuffer(textrueQuadVBO, VertexBufferLayout::position2_texCoords2);
+	textureQuadVertexArray->setIndexBuffer(quadIBO);
 
-	VertexBuffer animatedQuadVBO = createVertexBuffer();
-	setData(animatedQuadVBO, nullptr, sizeof(quadVertices), DataUsage::dynamicDraw);
-	animatedQuadVertexArray = std::make_unique<VertexArray>();
-	animatedQuadVertexArray->setVertexBuffer(animatedQuadVBO, VertexBufferLayout::position2_texCoords2);
-	animatedQuadVertexArray->setIndexBuffer(quadIBO);
+	VertexBuffer animatedTextureQuadVBO = createVertexBuffer();
+	setData(animatedTextureQuadVBO, nullptr, sizeof(quadPositionsAndTextureCoords), DataUsage::dynamicDraw);
+	textureAnimatedQuadVertexArray = std::make_unique<VertexArray>();
+	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
+	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -85,9 +102,36 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	numberOfDrawCalls = 0;
 }
 
+void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
+{
+	if(!isInsideScreen(position, size))
+		return;
+
+	if(singleColorSpriteShader != currentlyBoundShader) {
+		singleColorSpriteShader->bind();
+		currentlyBoundShader = singleColorSpriteShader;
+	}
+
+	singleColorQuadVertexArray->bind();
+
+	singleColorSpriteShader->setUniformVector4Color("color", color);
+
+	sf::Transform transform;
+	transform.translate(position);
+	transform.scale(static_cast<sf::Vector2f>(size));
+	if(rotation != 0.f)
+		transform.rotate(rotation);
+	singleColorSpriteShader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+	singleColorSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
+
+	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+
+	++numberOfDrawCalls;
+}
+
 void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, spriteShader, position, size, rotation);
+	submitQuad(texture, textureSpriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
@@ -100,7 +144,7 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 		currentlyBoundShader = shader;
 	}
 
-	quadVertexArray->bind();
+	textureQuadVertexArray->bind();
 	texture.bind();
 	
 	sf::Transform transform;
@@ -109,6 +153,8 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 	if(rotation != 0.f)
 		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
+	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
@@ -117,7 +163,7 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, textureRect, spriteShader, position, size, rotation);
+	submitQuad(texture, textureRect, textureSpriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
@@ -131,9 +177,9 @@ void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, co
 		currentlyBoundShader = shader;
 	}
 
-	setTextureRect(animatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
+	setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
 
-	animatedQuadVertexArray->bind();
+	textureAnimatedQuadVertexArray->bind();
 	texture.bind();
 
 	sf::Transform transform;
@@ -142,6 +188,7 @@ void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, co
 	if(rotation != 0.f)
 		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
+	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
@@ -184,12 +231,12 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
 {
-	submit(vao, *spriteShader, bounds, drawMode);
+	submit(vao, *textureSpriteShader, bounds, drawMode);
 }
 
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
-	submit(vao, *spriteShader, transform, size, drawMode);
+	submit(vao, *textureSpriteShader, transform, size, drawMode);
 }
 
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
@@ -200,7 +247,7 @@ void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& trans
 
 void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
 {
-	submit(sprite, *spriteShader, transform, drawMode);
+	submit(sprite, *textureSpriteShader, transform, drawMode);
 }
 
 void Renderer::submit(const sf::Drawable& object)

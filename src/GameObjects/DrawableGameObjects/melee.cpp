@@ -137,7 +137,7 @@ MeleeWeapon::MeleeWeapon(GameData* const gameData, const float damage, const flo
 	:GameObject("sword")
 	,mSprite(gameData->getTextures().get("textures/others/baseballStick.png"), "meleeWeapon")
 	,mGameData(gameData)
-	,mShader(ShaderLibrary::getInstance().get("sprite"))
+	,mShader(ShaderLibrary::getInstance().get("textureSprite"))
 	,mDamage(damage)
 	,mRange(range)
 	,mRotationRange(rotatationRange)
