@@ -5,8 +5,10 @@ namespace ph::component {
 	struct Health
 	{
 		int healthPoints;
+		int maxHealtPoints;
 	};
-
+	
+	
 	struct Player
 	{
 	};
