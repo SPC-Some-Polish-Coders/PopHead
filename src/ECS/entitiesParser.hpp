@@ -11,7 +11,7 @@ class EntitiesParser
 public:
 	EntitiesParser();
 
-	void parseFile(const std::string& str);
+	void parseFile(const std::string& filePath);
 	entt::entity getTemplate(const std::string& templateName);
 	entt::registry& getTemplateRegistry();
 
@@ -22,8 +22,13 @@ private:
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
+	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
+	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
+	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
+	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
 
-	//NOTE: Three above methods are awkward but as long as we don't find a better solution that is the way	
+	//NOTE: above methods are awkward but as long as we don't find a better solution that is the way	
 
 private:
 	entt::registry mTemplatesRegistry;

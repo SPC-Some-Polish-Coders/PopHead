@@ -11,12 +11,11 @@ EntitiesParser::EntitiesParser()
 {
 }
 
-void EntitiesParser::parseFile(const std::string& str)
+void EntitiesParser::parseFile(const std::string& filePath)
 {
 	Xml entitiesFile;
-	entitiesFile.loadFromFile(str);
+	entitiesFile.loadFromFile(filePath);
 	const Xml entityTemplatesNode = entitiesFile.getChild("entityTemplates");
-
 	loadEntityTemplates(entityTemplatesNode);
 }
 
@@ -55,17 +54,21 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	if (entityComponents.empty())
 		return;
 
+	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
+		{"Velocity",	&EntitiesParser::parseVelocity},
+		{"Health",		&EntitiesParser::parseHealth},
+		{"Medkit",		&EntitiesParser::parseMedkit},
+		{"Player",		&EntitiesParser::parsePlayer},
+		{"Animation",	&EntitiesParser::parseAnimation},
+		{"Spawner",		&EntitiesParser::parseSpawner},
+		{"Shader",		&EntitiesParser::parseShader},
+		{"VertexArray",	&EntitiesParser::parseVertexArray}
+	};
+
 	for (auto& entityComponent : entityComponents)
 	{
 		const std::string& componentName = entityComponent.getAttribute("name").toString();
-		if (componentName == "Velocity")
-			parseVelocity(entityComponent, entity);
-		if (componentName == "Health")
-			parseHealth(entityComponent, entity);
-		if (componentName == "Medkit")
-			parseMedkit(entityComponent, entity);
-		if (componentName == "Player")
-			mTemplatesRegistry.assign_or_replace<component::Player>(entity);
+		(this->*mComponentsMap.at(componentName))(entityComponent, entity);
 	}
 }
 
@@ -92,6 +95,29 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 	mTemplatesRegistry.assign_or_replace<component::Medkit>(entity, addHealthPoints);
 }
 
+void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mTemplatesRegistry.assign_or_replace<component::Player>(entity);
+}
 
+void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)
+{
+
+}
+
+void EntitiesParser::parseAnimation(const Xml& entityComponentNode, entt::entity& entity)
+{
+
+}
+
+void EntitiesParser::parseSpawner(const Xml& entityComponentNode, entt::entity& entity)
+{
+
+}
+
+void EntitiesParser::parseVertexArray(const Xml& entityComponentNode, entt::entity& entity)
+{
+
+}
 
 }
