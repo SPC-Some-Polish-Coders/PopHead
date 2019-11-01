@@ -13,7 +13,7 @@ class SceneManager;
 class EndingCutScene : public CutScene
 {
 public:
-	EndingCutScene(GameObject& root, GUI&, MusicPlayer&, Camera&, AIManager&, SceneManager&);
+	EndingCutScene(GUI&, MusicPlayer&, Camera&, AIManager&, SceneManager&);
 
 	void update(const sf::Time delta) override;
 

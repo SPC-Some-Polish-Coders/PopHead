@@ -2,9 +2,8 @@
 
 namespace ph {
 
-CutScene::CutScene(GameObject& root)
-	: mRoot(root)
-	, mIsActive(true)
+CutScene::CutScene()
+	: mIsActive(true)
 {
 }
 

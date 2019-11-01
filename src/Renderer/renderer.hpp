@@ -7,7 +7,6 @@
 
 namespace ph {
 
-class GameObject;
 class Map;
 
 class Renderer

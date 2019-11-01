@@ -10,7 +10,7 @@ class GUI;
 class SubtitlesBeforeStartGameCutscene : public CutScene
 {
 public:
-	SubtitlesBeforeStartGameCutscene(GameObject& root, SceneManager&, GUI& gui);
+	SubtitlesBeforeStartGameCutscene(SceneManager&, GUI& gui);
 
 	void update(sf::Time delta) override;
 

@@ -9,17 +9,17 @@ namespace ph {
 
 Game::Game()
 	:mGameData{}
-	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen)
+	,mRenderWindow(sf::VideoMode::getDesktopMode(), "PopHead")
 	,mSoundPlayer{new SoundPlayer()}
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mAIManager(new AIManager())
+	//,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
-	,mMap(new Map())
+	//,mMap(new Map())
 	,mRenderer{new Renderer(mRenderWindow)}
-	,mPhysicsEngine{new PhysicsEngine()}
+	//,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
@@ -31,11 +31,11 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		mAIManager.get(),
+		nullptr,
 		mSceneManager.get(),
-		mMap.get(),
+		nullptr,
 		mRenderer.get(),
-		mPhysicsEngine.get(),
+		nullptr,
 		mTerminal.get(),
 		mEfficiencyRegister.get(),
 		mGui.get()
@@ -46,7 +46,7 @@ Game::Game()
 	loadFonts(gameData);
 	mTerminal->init(gameData);
 	mEfficiencyRegister->init(gameData);
-	mMap->setGameData(gameData);
+	//mMap->setGameData(gameData);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
@@ -111,8 +111,8 @@ void Game::update(sf::Time deltaTime)
 	if(mRenderWindow.hasFocus())
 	{
 		mSceneManager->update(deltaTime);
-		mAIManager->update();
-		mPhysicsEngine->update(deltaTime);
+		//mAIManager->update();
+		//mPhysicsEngine->update(deltaTime);
 		mRenderer->update(deltaTime);
 		mGui->update(deltaTime);
 		mTerminal->update();
@@ -122,9 +122,9 @@ void Game::update(sf::Time deltaTime)
 void Game::draw()
 {
 	mRenderer->startSceneRendering();
-	mRenderer->draw(*mMap);
-	mRenderer->draw(mSceneManager->getScene().getRoot());
-	mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
+	//mRenderer->draw(*mMap);
+	//mRenderer->draw(mSceneManager->getScene().getRoot());
+	//mRenderer->draw(mPhysicsEngine->getCollisionDebugManager());
 
 	mRenderer->startUIRendering();
 	mRenderer->draw(mGui->getGuiDrawer());

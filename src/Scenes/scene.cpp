@@ -1,53 +1,57 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
 #include "gameData.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+
+#include "ECS/Systems/playerInput.hpp"
+#include "ECS/Systems/movement.hpp"
+#include "ECS/Systems/spritesSync.hpp"
+#include "ECS/Systems/rendererSystem.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
-Scene::Scene()
-	:mCutSceneManager()
-	,mRoot(std::make_unique<GameObject>("root"))
-	,mPause(false)
+Scene::Scene(sf::RenderWindow& window)
+	: mCutSceneManager()
+	, mSystemsQueue(mRegistry)
+	, mPause(false)
 {
-	GameObject::setRoot(mRoot.get());
+	initiateSystemsQueue(window);
 }
 
 void Scene::handleEvent(const ph::Event& e)
 {
-	mRoot->handleEvent(e);
 }
 
 void Scene::update(sf::Time delta)
 {
  	if(mCutSceneManager.isCutSceneActive())
 		mCutSceneManager.updateCutScene(delta);
-
-	if(!mPause)
-		mRoot->update(delta);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)
 {
-	auto& player = getPlayer();
-	player.setHp(status.mHealthPoints);
-	player.setNumOfBullets(status.mNumOfBullets);
+	//auto& player = getPlayer();
+	//player.setHp(status.mHealthPoints);
+	//player.setNumOfBullets(status.mNumOfBullets);
 }
 
 PlayerStatus Scene::getPlayerStatus() const
 {
-	auto& player = getPlayer();
+	/*auto& player = getPlayer();
 	PlayerStatus status;
 	status.mHealthPoints = player.getHp();
 	status.mNumOfBullets = player.getNumOfBullets();
-	return status;
+	return status;*/
+	return PlayerStatus();
 }
 
-Player& Scene::getPlayer() const
+void Scene::initiateSystemsQueue(sf::RenderWindow& window)
 {
-	auto playerPointer = dynamic_cast<Player*>(mRoot->getChild("LAYER_standingObjects")->getChild("player"));
-	return *playerPointer;
+	mSystemsQueue.appendSystem<system::PlayerInput>();
+	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::SpritesSync>();
+	mSystemsQueue.appendSystem<system::Renderer>(std::ref(window));
 }
 
 }

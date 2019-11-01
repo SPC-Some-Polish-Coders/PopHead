@@ -5,7 +5,6 @@
 #include "Map/xmlMapParser.hpp"
 #include "Resources/xmlResourceParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
-#include "GameObjects/tiledGameObjectsParser.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 
@@ -45,7 +44,7 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		mGameData->getPhysicsEngine().clear();
+		//mGameData->getPhysicsEngine().clear();
 		mGameData->getGui().clearGUI();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
@@ -55,33 +54,33 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getPhysicsEngine().clear();
+	//mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 
 	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{
-		mScene.reset(new Scene());
-		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
-			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+		mScene.reset(new Scene(mGameData->getRenderWindow()));
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser>
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
 
-		if (mGameData->getAIManager().isPlayerOnScene())
-			mScene->setPlayerStatus(mLastPlayerStatus);
+		//if (mGameData->getAIManager().isPlayerOnScene())
+			//mScene->setPlayerStatus(mLastPlayerStatus);
 	}
-	else if (mScene && mGameData->getAIManager().isPlayerOnScene())
-	{
-		mLastPlayerStatus = mScene->getPlayerStatus();
-		mScene.reset(new Scene());
-		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
-			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+	//else if (mScene && mGameData->getAIManager().isPlayerOnScene())
+	//{
+	//	//mLastPlayerStatus = mScene->getPlayerStatus();
+	//	mScene.reset(new Scene(mGameData->getRenderWindow()));
+	//	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
+	//		sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
 
-		if (mGameData->getAIManager().isPlayerOnScene())
-			mScene->setPlayerStatus(mLastPlayerStatus);
-	}
+	//	//if (mGameData->getAIManager().isPlayerOnScene())
+	//		//mScene->setPlayerStatus(mLastPlayerStatus);
+	//}
 	else  // there was not a scene before
 	{
-		mScene.reset(new Scene());
-		SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser> 
-			sceneParser(mGameData, mScene->getRoot(), mScene->getCutSceneManager(), mFileOfSceneToMake);
+		mScene.reset(new Scene(mGameData->getRenderWindow()));
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser> 
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
 	}
 
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");

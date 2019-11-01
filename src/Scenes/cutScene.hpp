@@ -4,17 +4,14 @@
 
 namespace ph {
 
-class GameObject;
-
 class CutScene
 {
 public:
-	CutScene(GameObject& root);
+	CutScene();
 	virtual void update(const sf::Time delta) = 0;
 	bool isActive() const;
 
 protected:
-	GameObject& mRoot;
 	bool mIsActive;
 };
 
