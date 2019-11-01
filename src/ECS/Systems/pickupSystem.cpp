@@ -30,14 +30,14 @@ namespace ph::system {
 
 				else
 				{
-					if (playerHealth.healthPoints + medkitMed.addHealtPoints < playerHealth.maxHealtPoints)
+					if (playerHealth.healthPoints + medkitMed.addHealthPoints < playerHealth.maxHealthPoints)
 					{
-						playerHealth.healthPoints += medkitMed.addHealtPoints;
+						playerHealth.healthPoints += medkitMed.addHealthPoints;
 						mRegistry.assign<component::TaggedToDestroy>(item);
 					}
 					else
 					{
-						playerHealth.healthPoints = playerHealth.maxHealtPoints;
+						playerHealth.healthPoints = playerHealth.maxHealthPoints;
 						mRegistry.assign<component::TaggedToDestroy>(item);
 					}
 				}

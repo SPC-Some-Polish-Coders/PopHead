@@ -4,7 +4,7 @@ namespace ph::component {
 
 	struct Medkit
 	{
-		int addHealtPoints;
+		int addHealthPoints;
 	};
 	struct Bullet
 	{
