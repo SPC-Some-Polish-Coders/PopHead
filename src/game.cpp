@@ -90,6 +90,10 @@ void Game::handleEvents()
 	ph::Event phEvent;
 	while(EventDispatcher::dispatchEvent(phEvent, mRenderWindow))
 	{
+		if (auto * event = std::get_if<sf::Event>(&phEvent))
+			if (event->type == sf::Event::Closed)
+				mGameData->getGameCloser().closeGame();
+
 		handleGlobalKeyboardShortcuts(mGameData->getRenderWindow(), mGameData->getGameCloser(), phEvent);
 		mEfficiencyRegister->handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
