@@ -1,24 +1,118 @@
 <entityTemplates>
-   
+
+    <!------Player------->
+
+    <entityTemplate name="Player">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="KinematicCollisionBody" />
+        <component name="GunAttacker" />
+        <component name="MeleeAttacker" />
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
+        <component name="Animation" />
+        <component name="Player" />
+        <component name="Velocity" />
+    </entityTemplate>
+
+    <!------NPCs------->
+
+    <entityTemplate name="Npc">
+        <component name="VertexArray" />
+        <component name="Shader" />
+    </entityTemplate>
+
+    <entityTemplate name="CrawlingNpc">
+        <component name="VertexArray" />
+        <component name="Shader" />
+    </entityTemplate>
+
+    <entityTemplate name="GateGuard">
+        <component name="VertexArray" />
+        <component name="Shader" />
+    </entityTemplate>
+
+    <entityTemplate name="DeadCharacter">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="Lifetime" />
+    </entityTemplate>
+
+    <!------Enemies------->
+
     <entityTemplate name="Zombie">
-        <component name="Velocity" velocityX="2.0" velocityY="2.0"/>
-        <component name="Health" healthPoints="100" maxHealthPoints="100"/>
-        <component name="Animation" someAnimationPropX="x" someAnimationPropY="y"/>
-    </entityTemplate>
-
-    <entityTemplate name="Spawner">
-        <component name="Spawner" distanceToPlayerToWork="20" areaToSpawn="50, 50" interval="2.5"/>
-        <component name="Player" somePlayerProp="x"/>
-    </entityTemplate>
-
-    <entityTemplate name="Medkit">
-        <component name="VertexArray"/>
-        <component name="Shader"/>
-        <component name="Medkit" addHealthPoints="25"/>
+        <component name="Velocity" velocityX="2.0" velocityY="2.0" />
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
+        <component name="Animation" />
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
-        <component name="Health" healthPoints="20" maxHealthPoints="100"/>
+        <component name="Health" healthPoints="20" maxHealthPoints="100" />
     </entityTemplate>
-    
+
+    <!------Areas of effect------->
+
+    <entityTemplate name="Entrance">
+
+    </entityTemplate>
+
+    <entityTemplate name="SlowDownArea">
+
+    </entityTemplate>
+
+    <entityTemplate name="ActivateArea">
+
+    </entityTemplate>
+
+    <entityTemplate name="CutSceneArea">
+
+    </entityTemplate>
+
+    <!------Unusable game entities------->
+
+    <entityTemplate name="Gate">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="ActivationState" />
+        <component name="StaticCollisionBody" />
+    </entityTemplate>
+
+    <entityTemplate name="Car">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="StaticCollisionBody" />
+    </entityTemplate>
+
+    <!------Usable game entities------->
+
+    <entityTemplate name="Lever">
+        <component name="VertexArray" />
+        <component name="Shader" />
+    </entityTemplate>
+
+    <!------Items------->
+
+    <entityTemplate name="BulletItem">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="Bullets" />
+    </entityTemplate>
+
+    <entityTemplate name="Medkit">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="Medkit" addHealthPoints="25" />
+    </entityTemplate>
+
+    <entityTemplate name="Spawner">
+        <component name="Spawner" />
+        <component name="Player" />
+    </entityTemplate>
+
+    <!------Others------->
+
+    <entityTemplate name="Particles">
+        <component name="VertexArray" />
+        <component name="Shader" />
+    </entityTemplate>
+
 </entityTemplates>
