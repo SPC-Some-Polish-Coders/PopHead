@@ -30,15 +30,15 @@ bool Cast::toBool(const std::string& str)
 	else
 		PH_EXCEPTION("Cast to bool failed!");
 }
-
-ObjectType Cast::toObjectType(const std::string& str)
-{
-	for (auto& it : objectTypeMap)
-	{
-		if (str.find(it.first) != std::string::npos)
-			return it.second;
-	}
-	PH_EXCEPTION("There is no such ObjectType!");
-}
+//
+//ObjectType Cast::toObjectType(const std::string& str)
+//{
+//	for (auto& it : objectTypeMap)
+//	{
+//		if (str.find(it.first) != std::string::npos)
+//			return it.second;
+//	}
+//	PH_EXCEPTION("There is no such ObjectType!");
+//}
 
 }

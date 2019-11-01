@@ -6,9 +6,8 @@
 
 namespace ph {
 
-MovementContolsGuide::MovementContolsGuide(GameObject& root, GUI& gui, SceneManager& sceneManager)
-	:CutScene(root)
-	,mGui(gui)
+MovementContolsGuide::MovementContolsGuide(GUI& gui, SceneManager& sceneManager)
+	:mGui(gui)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {

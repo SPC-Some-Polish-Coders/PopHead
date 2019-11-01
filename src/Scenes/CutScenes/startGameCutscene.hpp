@@ -9,13 +9,12 @@ class Camera;
 class SoundPlayer;
 class MusicPlayer;
 class GUI;
-class Car;
 class GameData;
 
 class StartGameCutScene : public CutScene
 {
 public:
-	StartGameCutScene(GameObject& root, Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
+	StartGameCutScene(Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
 
 	void update(const sf::Time delta) override;
 

@@ -5,7 +5,6 @@
 namespace ph {
 
 class GameData;
-class Player;
 
 class GateGuardDialogue : public CutScene
 {
@@ -20,7 +19,6 @@ private:
 
 private:
 	GameData* const mGameData;
-	Player* mPlayer;
 	sf::Clock mTimeSinceLastSkipPress;
 	int mTimesPressedSkip;
 	bool mPlayerOnThePosition;
