@@ -15,11 +15,6 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 {
 	mTimeFromDeath += delta;
 
-	//TODO_ren: Make character fade out using new renderer
-	/*sf::Color newColor = mSprite.getColor();
-	newColor.a = 255 - (mTimeFromDeath.asSeconds() * 25.5);
-	mSprite.setColor(newColor);*/
-
 	if(mTimeFromDeath.asSeconds() > 10) {
 		auto deadCharacters = dynamic_cast<LyingGameObjectsLayer*>(mParent);
 		deadCharacters->removeDeadEnemy(this);
@@ -28,7 +23,9 @@ void DeadCharacter::updateCurrent(const sf::Time delta)
 
 void DeadCharacter::drawCurrent(sf::Transform transform)
 {
-	Renderer::submitQuad(mTexture, mTextureRect, getPosition(), {SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT});
+	int alpha = 255 - (mTimeFromDeath.asSeconds() * 25.5);
+	sf::Color color(255, 255, 255, (unsigned)alpha);
+	Renderer::submitQuad(mTexture, color, mTextureRect, getPosition(), {SpriteSheetData::HUMAN_WIDTH, SpriteSheetData::HUMAN_HEIGHT});
 }
 
 }
