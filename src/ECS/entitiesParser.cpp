@@ -11,7 +11,7 @@ EntitiesParser::EntitiesParser()
 {
 }
 
-void EntitiesParser::parseFile(const std::string& filePath, entt::registry& templatesRegistry, entt::registry& gameRegistry)
+void EntitiesParser::parseFile(const std::string& filePath)//, entt::registry& templatesRegistry, entt::registry& gameRegistry)
 {
 	Xml entitiesFile;
 	entitiesFile.loadFromFile(filePath);
@@ -61,8 +61,13 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Player",		&EntitiesParser::parsePlayer},
 		{"Animation",	&EntitiesParser::parseAnimation},
 		{"Spawner",		&EntitiesParser::parseSpawner},
+		{"GunAttacker",		&EntitiesParser::parseGunAttacker},
+		{"MeleeAttacker",	&EntitiesParser::parseMeleeAttacker},
 		{"Shader",		&EntitiesParser::parseShader},
-		{"VertexArray",	&EntitiesParser::parseVertexArray}
+		{"Bullet",		&EntitiesParser::parseBullet},
+		{"VertexArray",	&EntitiesParser::parseVertexArray},
+		{"StaticCollisionBody",		&EntitiesParser::parseStaticCollisionBody},
+		{"KinematicCollisionBody",		&EntitiesParser::parseKinematicCollisionBody}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -77,9 +82,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float velocityX = entityComponentNode.getAttribute("velocityX").toFloat();
-	float velocityY = entityComponentNode.getAttribute("velocityY").toFloat();
-	mTemplatesRegistry.assign_or_replace<component::Velocity>(entity, velocityX, velocityY);
+	float dx = entityComponentNode.getAttribute("dx").toFloat();
+	float dy = entityComponentNode.getAttribute("dy").toFloat();
+	mTemplatesRegistry.assign_or_replace<component::Velocity>(entity, dx, dy);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
@@ -98,6 +103,38 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mTemplatesRegistry.assign_or_replace<component::Player>(entity);
+}
+
+void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float mass = entityComponentNode.getAttribute("mass").toFloat();
+	mTemplatesRegistry.assign_or_replace<component::KinematicCollisionBody>(entity);
+}
+
+void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mTemplatesRegistry.assign_or_replace<component::StaticCollisionBody>(entity);
+}
+
+void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
+	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
+	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
+	mTemplatesRegistry.assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, bullets, isTryingToAttack);
+}
+
+void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
+	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
+	mTemplatesRegistry.assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
+}
+
+void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
+{
+	int numOfBullets = entityComponentNode.getAttribute("numOfBullets").toInt();
+	mTemplatesRegistry.assign_or_replace<component::Bullet>(entity, numOfBullets);
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)
@@ -119,5 +156,6 @@ void EntitiesParser::parseVertexArray(const Xml& entityComponentNode, entt::enti
 {
 
 }
+
 
 }

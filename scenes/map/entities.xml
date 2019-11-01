@@ -1,55 +1,42 @@
 <entityTemplates>
 
-    <!------Player------->
+    ------Player-------
 
     <entityTemplate name="Player">
-        <component name="VertexArray" />
-        <component name="Shader" />
-        <component name="KinematicCollisionBody" />
-        <component name="GunAttacker" />
-        <component name="MeleeAttacker" />
+        <component name="KinematicCollisionBody" mass="10"/>
+        <component name="GunAttacker" minSecondsInterval="0.2 " bullets="20" isTryingToAttack="false"/>
+        <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false"/>
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
-        <component name="Animation" />
         <component name="Player" />
-        <component name="Velocity" />
+        <component name="Velocity" dx="2.0" dy="2.0"/>
     </entityTemplate>
 
-    <!------NPCs------->
+    ------NPCs-------
 
     <entityTemplate name="Npc">
-        <component name="VertexArray" />
-        <component name="Shader" />
     </entityTemplate>
 
     <entityTemplate name="CrawlingNpc">
-        <component name="VertexArray" />
-        <component name="Shader" />
     </entityTemplate>
 
     <entityTemplate name="GateGuard">
-        <component name="VertexArray" />
-        <component name="Shader" />
     </entityTemplate>
 
     <entityTemplate name="DeadCharacter">
-        <component name="VertexArray" />
-        <component name="Shader" />
-        <component name="Lifetime" />
     </entityTemplate>
 
-    <!------Enemies------->
+    ------Enemies-------
 
     <entityTemplate name="Zombie">
-        <component name="Velocity" velocityX="2.0" velocityY="2.0" />
+        <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
-        <component name="Animation" />
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
         <component name="Health" healthPoints="20" maxHealthPoints="100" />
     </entityTemplate>
 
-    <!------Areas of effect------->
+    ------Areas of effect-------
 
     <entityTemplate name="Entrance">
 
@@ -67,34 +54,26 @@
 
     </entityTemplate>
 
-    <!------Unusable game entities------->
+    ------Unusable game entities-------
 
     <entityTemplate name="Gate">
-        <component name="VertexArray" />
-        <component name="Shader" />
-        <component name="ActivationState" />
         <component name="StaticCollisionBody" />
     </entityTemplate>
 
     <entityTemplate name="Car">
-        <component name="VertexArray" />
-        <component name="Shader" />
         <component name="StaticCollisionBody" />
     </entityTemplate>
 
-    <!------Usable game entities------->
+    ------Usable game entities-------
 
     <entityTemplate name="Lever">
-        <component name="VertexArray" />
-        <component name="Shader" />
+    
     </entityTemplate>
 
-    <!------Items------->
+    ------Items-------
 
     <entityTemplate name="BulletItem">
-        <component name="VertexArray" />
-        <component name="Shader" />
-        <component name="Bullets" />
+        <component name="Bullet" numOfBullets="1"/>
     </entityTemplate>
 
     <entityTemplate name="Medkit">
@@ -108,11 +87,9 @@
         <component name="Player" />
     </entityTemplate>
 
-    <!------Others------->
+    ------Others-------
 
     <entityTemplate name="Particles">
-        <component name="VertexArray" />
-        <component name="Shader" />
     </entityTemplate>
 
 </entityTemplates>
