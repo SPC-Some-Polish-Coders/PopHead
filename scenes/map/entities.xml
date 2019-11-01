@@ -1,49 +1,24 @@
-<gameEntities>
-   <templatedEntities>
-        <templatedEntity name="Zombie">
-            <component name="Velocity">
-                <property name="velocity" value="2.0"/>
-            </component>
-            <component name="Health">
-                <property name="healthPoints" value="100"/>
-            </component>
-            <component name="Animation">
-                <property name="someAnimationPropX" value="x"/>
-                <property name="someAnimationPropY" value="y"/>
-            </component>
-        </templatedEntity>
+<entityTemplates>
+   
+    <entityTemplate name="Zombie">
+        <component name="Velocity" velocity="2.0"/>
+        <component name="Health" healthPoints="100"/>
+        <component name="Animation" someAnimationPropX="x" someAnimationPropY="y"/>
+    </entityTemplate>
 
-        <templatedEntity name="Spawner">
-            <component name="Spawner">
-                <property name="distanceToPlayerToWork" value="20"/>
-                <property name="areaToSpawn" value="50, 50"/>
-                <property name="interval" value="2.5"/>
-            </component>
-            <component name="Player">
-                <property name="somePlayerProp" value="x"/>
-            </component>
-        </templatedEntity>
+    <entityTemplate name="Spawner">
+        <component name="Spawner" distanceToPlayerToWork="20" areaToSpawn="50, 50" interval="2.5"/>
+        <component name="Player" somePlayerProp="x"/>
+    </entityTemplate>
 
-        <templatedEntity name="Medkit">
-            <component name="VertexArray"/>
-            <component name="Shader"/>
-            <component name="Medkit">
-                <property name="healthPoints"/>
-            </component>
-        </templatedEntity>
-    </templatedEntities>
+    <entityTemplate name="Medkit">
+        <component name="VertexArray"/>
+        <component name="Shader"/>
+        <component name="Medkit" healthPoints="25"/>
+    </entityTemplate>
+
+    <entityTemplate sourceTemplate="Zombie" name="hurtZombie">
+        <component name="Health" healthPoints="20"/>
+    </entityTemplate>
     
-    //etc...
-    
-    <alteredEntities>
-        <alteredEntity name="hurtZombie" template="Zombie">
-            <component name="Health">
-                <property name="healthPoints" value="25"/>
-            </component>
-        </alteredEntity>
-    </alteredEntities>
-    
-    //etc...
-    
-    
-</gameEntities>
+</entityTemplates>
