@@ -27,6 +27,10 @@ public:
 	static void submitQuad(const Texture&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 	static void submitQuad(const Texture&, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 	static void submitQuad(const Texture&, const IntRect& textureRect, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture&, const sf::Color&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture&, const sf::Color&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture&, const sf::Color&, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture&, const sf::Color&, const IntRect& textureRect, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
