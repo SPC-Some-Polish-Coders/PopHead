@@ -9,6 +9,7 @@
 #include "SFMLrenderer.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <optional>
 
 namespace ph {
 
@@ -45,6 +46,7 @@ public:
 	static void setClearColor(const sf::Color&);
 
 private:
+	static void setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation);
 	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2i size);
 	static bool isInsideScreen(const FloatRect objectBounds);

@@ -114,21 +114,12 @@ void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vec
 		singleColorSpriteShader->bind();
 		currentlyBoundShader = singleColorSpriteShader;
 	}
+	singleColorSpriteShader->setUniformVector4Color("color", color);
+	setQuadTransformUniforms(singleColorSpriteShader, position, size, rotation);
 
 	singleColorQuadVertexArray->bind();
 
-	singleColorSpriteShader->setUniformVector4Color("color", color);
-
-	sf::Transform transform;
-	transform.translate(position);
-	transform.scale(static_cast<sf::Vector2f>(size));
-	if(rotation != 0.f)
-		transform.rotate(rotation);
-	singleColorSpriteShader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	singleColorSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
 	++numberOfDrawCalls;
 }
 
@@ -146,21 +137,13 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
+	setQuadTransformUniforms(shader, position, size, rotation);
 
 	textureQuadVertexArray->bind();
-	texture.bind();
 	
-	sf::Transform transform;
-	transform.translate(position);
-	transform.scale(static_cast<sf::Vector2f>(size));
-	if(rotation != 0.f)
-		transform.rotate(rotation);
-	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
+	texture.bind();
 
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
-
 	++numberOfDrawCalls;
 }
 
@@ -179,22 +162,14 @@ void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, co
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
+	setQuadTransformUniforms(shader, position, size, rotation);
 
 	setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
-
 	textureAnimatedQuadVertexArray->bind();
+
 	texture.bind();
 
-	sf::Transform transform;
-	transform.translate(position);
-	transform.scale(static_cast<sf::Vector2f>(size));
-	if(rotation != 0.f)
-		transform.rotate(rotation);
-	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
 	++numberOfDrawCalls;
 }
 
@@ -212,22 +187,14 @@ void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const 
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
+	shader->setUniformVector4Color("color", color);
+	setQuadTransformUniforms(shader, position, size, rotation);
 
 	textureQuadVertexArray->bind();
+	
 	texture.bind();
 
-	shader->setUniformVector4Color("color", color);
-
-	sf::Transform transform;
-	transform.translate(position);
-	transform.scale(static_cast<sf::Vector2f>(size));
-	if(rotation != 0.f)
-		transform.rotate(rotation);
-	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
 	++numberOfDrawCalls;
 }
 
@@ -246,14 +213,20 @@ void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const 
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
+	shader->setUniformVector4Color("color", color);
+	setQuadTransformUniforms(shader, position, size, rotation);
 
 	setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
-
 	textureAnimatedQuadVertexArray->bind();
+
 	texture.bind();
 
-	shader->setUniformVector4Color("color", color);
+	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+	++numberOfDrawCalls;
+}
 
+void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation)
+{
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
@@ -261,10 +234,7 @@ void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const 
 		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-
-	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
-	++numberOfDrawCalls;
+	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
