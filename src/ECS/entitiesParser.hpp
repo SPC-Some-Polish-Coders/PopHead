@@ -11,7 +11,7 @@ class EntitiesParser
 public:
 	EntitiesParser();
 
-	void parseFile(const std::string& filePath);//, entt::registry& templatesRegistry, entt::registry& gameRegistry);
+	void parseFile(const std::string& filePath, entt::registry& templatesRegistry, entt::registry& gameRegistry);
 	entt::entity getTemplate(const std::string& templateName);
 	entt::registry& getTemplateRegistry();
 
