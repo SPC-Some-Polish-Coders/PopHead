@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace ph::component {
 
 	struct Position

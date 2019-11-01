@@ -8,7 +8,6 @@ namespace ph::component {
 		int maxHealtPoints;
 	};
 	
-	
 	struct Player
 	{
 	};

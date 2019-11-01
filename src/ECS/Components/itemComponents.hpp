@@ -2,7 +2,6 @@
 
 namespace ph::component {
 
-
 	struct Medkit
 	{
 		int addHealtPoints;
