@@ -1,8 +1,8 @@
 <entityTemplates>
    
     <entityTemplate name="Zombie">
-        <component name="Velocity" velocity="2.0"/>
-        <component name="Health" healthPoints="100"/>
+        <component name="Velocity" velocityX="2.0" velocityY="2.0"/>
+        <component name="Health" healthPoints="100" maxHealthPoints="100"/>
         <component name="Animation" someAnimationPropX="x" someAnimationPropY="y"/>
     </entityTemplate>
 
@@ -14,11 +14,11 @@
     <entityTemplate name="Medkit">
         <component name="VertexArray"/>
         <component name="Shader"/>
-        <component name="Medkit" healthPoints="25"/>
+        <component name="Medkit" addHealthPoints="25"/>
     </entityTemplate>
 
-    <entityTemplate sourceTemplate="Zombie" name="hurtZombie">
-        <component name="Health" healthPoints="20"/>
+    <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
+        <component name="Health" healthPoints="20" maxHealthPoints="100"/>
     </entityTemplate>
     
 </entityTemplates>
