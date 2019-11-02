@@ -31,6 +31,8 @@ public:
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus() const;
 
+	entt::registry& getRegistry();
+
 private:
 	void initiateSystemsQueue(sf::RenderWindow& window);
 

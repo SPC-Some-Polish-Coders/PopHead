@@ -7,6 +7,7 @@
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
+#include "ECS/entitiesParser.hpp"
 
 namespace ph {
 
@@ -60,8 +61,8 @@ void SceneManager::replaceAction()
 	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{
 		mScene.reset(new Scene(mGameData->getRenderWindow()));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser>
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake);
 
 		//if (mGameData->getAIManager().isPlayerOnScene())
 			//mScene->setPlayerStatus(mLastPlayerStatus);
@@ -79,8 +80,8 @@ void SceneManager::replaceAction()
 	else  // there was not a scene before
 	{
 		mScene.reset(new Scene(mGameData->getRenderWindow()));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser> 
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake);
 	}
 
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");

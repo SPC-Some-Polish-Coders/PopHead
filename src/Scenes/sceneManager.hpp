@@ -2,6 +2,8 @@
 
 #include "scene.hpp"
 #include "Events/event.hpp"
+#include "ECS/entitiesTemplateStorage.hpp"
+
 #include <SFML/System.hpp>
 #include <memory>
 
@@ -44,6 +46,8 @@ private:
     GameData* mGameData;
     bool mIsReplacing;
     bool mIsPopping;
+
+	EntitiesTemplateStorage mEntitiesTemplateStorage;
 	
 	bool mHasPlayerPosition;
 	sf::Vector2f mPlayerPosition;

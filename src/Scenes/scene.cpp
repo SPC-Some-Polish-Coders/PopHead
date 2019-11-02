@@ -46,6 +46,11 @@ PlayerStatus Scene::getPlayerStatus() const
 	return PlayerStatus();
 }
 
+entt::registry& Scene::getRegistry()
+{
+	return mRegistry;
+}
+
 void Scene::initiateSystemsQueue(sf::RenderWindow& window)
 {
 	mSystemsQueue.appendSystem<system::PlayerInput>();
