@@ -28,11 +28,11 @@ private:
 	void popAction();
 
 public:
-	void handleEvent(const ph::Event&);
+	void handleEvent(const Event&);
     void update(sf::Time delta);
 
 	Scene& getScene() { return *mScene.get(); }
-    void setGameData( ph::GameData* const gameData ){mGameData = gameData;}
+    void setGameData(GameData* const gameData){mGameData = gameData;}
 
 	std::string getCurrentMapName() const { return mCurrentSceneFile; }
 
