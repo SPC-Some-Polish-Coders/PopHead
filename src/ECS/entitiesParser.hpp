@@ -12,7 +12,7 @@ class EntitiesParser
 public:
 	EntitiesParser();
 
-	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage);
+	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry);
 
 private:
 	void loadEntityTemplates(const Xml& entityTemplatesNode);

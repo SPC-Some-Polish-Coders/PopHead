@@ -13,7 +13,7 @@ EntitiesParser::EntitiesParser()
 {
 }
 
-void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage)
+void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
 {
 	mTemplateStorage = &templateStorage;
 	Xml entitiesFile;

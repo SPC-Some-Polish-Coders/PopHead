@@ -37,7 +37,6 @@ public:
 private:
 	std::unordered_map<std::string, entt::entity> mTemplatesMap;
 	entt::registry mTemplatesRegistry;
-
 };
 
 }

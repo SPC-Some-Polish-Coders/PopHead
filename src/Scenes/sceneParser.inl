@@ -47,7 +47,7 @@ void SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, EnttParser>
 	{
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename").toString();
 		EnttParser parser;
-		parser.parseFile(entitiesFilePath, templateStorage/*, gameRegistry*/);
+		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry);
 	}
 }
 
