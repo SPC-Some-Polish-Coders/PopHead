@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Color.hpp>
-
 namespace ph {
 
 class Framebuffer
