@@ -5,15 +5,14 @@
 namespace ph {
 
 class Xml;
+class EntitiesTemplateStorage;
 
 class EntitiesParser
 {
 public:
 	EntitiesParser();
 
-	void parseFile(const std::string& filePath/*, entt::registry& templatesRegistry*/, entt::registry& gameRegistry);
-	entt::entity getTemplate(const std::string& templateName);
-	entt::registry& getTemplateRegistry();
+	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage);
 
 private:
 	void loadEntityTemplates(const Xml& entityTemplatesNode);
@@ -36,8 +35,8 @@ private:
 	//NOTE: above methods are awkward but as long as we don't find a better solution that is the way	
 
 private:
-	entt::registry mTemplatesRegistry;
-	std::unordered_map<std::string, entt::entity> mTemplatesMap;
+	EntitiesTemplateStorage* mTemplateStorage;
 };
 
 }
+
