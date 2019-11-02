@@ -23,4 +23,9 @@ entt::entity EntitiesTemplateStorage::getTemplate(const std::string& templateNam
 	return mTemplatesMap.at(templateName);
 }
 
+void EntitiesTemplateStorage::stomp(const entt::entity dst, const std::string& templateName)
+{
+	mTemplatesRegistry.stomp(dst, getTemplate(templateName), mTemplatesRegistry);
+}
+
 }

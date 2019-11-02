@@ -28,18 +28,15 @@ void EntitiesParser::loadEntityTemplates(const Xml& entityTemplatesNode)
 	std::vector<Xml> entityTemplates = entityTemplatesNode.getChildren("entityTemplate");
 	for (auto& entityTemplate : entityTemplates)
 	{
-		auto entity = mTemplateStorage->mTemplatesRegistry.create();
+		const std::string& templateName = entityTemplate.getAttribute("name").toString();
+		auto entity = mTemplateStorage->create(templateName);
 		if (entityTemplate.hasAttribute("sourceTemplate"))
 		{
 			const std::string& sourceTemplateName = entityTemplate.getAttribute("sourceTemplate").toString();
-			mTemplateStorage->mTemplatesRegistry.stomp(entity, mTemplateStorage->getTemplate(sourceTemplateName), mTemplateStorage->mTemplatesRegistry);
+			mTemplateStorage->stomp(entity, sourceTemplateName);
 		}
-
 		std::vector<Xml> entityComponents = entityTemplate.getChildren("component");
 		parseComponents(entityComponents, entity);
-
-		const std::string& templateName = entityTemplate.getAttribute("name").toString();
-		mTemplateStorage->mTemplatesMap.insert(std::make_pair(templateName, entity));
 	}
 }
 
@@ -78,36 +75,36 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 {
 	float dx = entityComponentNode.getAttribute("dx").toFloat();
 	float dy = entityComponentNode.getAttribute("dy").toFloat();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::Velocity>(entity, dx, dy);
+	mTemplateStorage->assign_or_replace<component::Velocity>(entity, dx, dy);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
 {
 	int healthPoints = entityComponentNode.getAttribute("healthPoints").toInt();
 	int maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints").toInt();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
+	mTemplateStorage->assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
 }
 
 void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)
 {
 	int addHealthPoints = entityComponentNode.getAttribute("addHealthPoints").toInt();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::Medkit>(entity, addHealthPoints);
+	mTemplateStorage->assign_or_replace<component::Medkit>(entity, addHealthPoints);
 }
 
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::Player>(entity);
+	mTemplateStorage->assign_or_replace<component::Player>(entity);
 }
 
 void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float mass = entityComponentNode.getAttribute("mass").toFloat();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::KinematicCollisionBody>(entity);
+	mTemplateStorage->assign_or_replace<component::KinematicCollisionBody>(entity);
 }
 
 void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::StaticCollisionBody>(entity);
+	mTemplateStorage->assign_or_replace<component::StaticCollisionBody>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
@@ -115,20 +112,20 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, bullets, isTryingToAttack);
+	mTemplateStorage->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, bullets, isTryingToAttack);
 }
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
+	mTemplateStorage->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
 }
 
 void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
 {
 	int numOfBullets = entityComponentNode.getAttribute("numOfBullets").toInt();
-	mTemplateStorage->mTemplatesRegistry.assign_or_replace<component::Bullet>(entity, numOfBullets);
+	mTemplateStorage->assign_or_replace<component::Bullet>(entity, numOfBullets);
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)
