@@ -59,7 +59,7 @@ Game::Game()
 
 	ActionEventManager::init();
 
-	Renderer::init();
+	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 }
 
 void Game::run()

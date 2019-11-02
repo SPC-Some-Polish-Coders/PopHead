@@ -4,6 +4,7 @@
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
+#include "framebuffer.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <memory>
 
@@ -17,10 +18,13 @@ namespace {
 	ph::Shader* singleColorSpriteShader;
 	ph::Shader* textureSpriteShader;
 	ph::Shader* coloredTextureSpriteShader;
+	ph::Shader* defaultFramebufferShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	std::unique_ptr<ph::VertexArray> singleColorQuadVertexArray;
 	std::unique_ptr<ph::VertexArray> textureQuadVertexArray;
 	std::unique_ptr<ph::VertexArray> textureAnimatedQuadVertexArray;
+	std::unique_ptr<ph::VertexArray> framebufferVertexArray;
+	ph::Framebuffer framebuffer;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -29,7 +33,7 @@ namespace {
 
 namespace ph {
 
-void Renderer::init()
+void Renderer::init(unsigned width, unsigned height)
 {
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
@@ -47,6 +51,8 @@ void Renderer::init()
 	textureSpriteShader = sl.get("textureSprite");
 	sl.loadFromFile("coloredTextureSprite", "resources/shaders/coloredTextureSprite.vs.glsl", "resources/shaders/coloredTextureSprite.fs.glsl");
 	coloredTextureSpriteShader = sl.get("coloredTextureSprite");
+	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
+	defaultFramebufferShader = sl.get("defaultFramebuffer");
 
 	// load quad vertex arrays
 	float quadPositions[] = {
@@ -61,6 +67,13 @@ void Renderer::init()
 		1.f, 1.f, 1.f, 0.f,
 		0.f, 1.f, 0.f, 0.f,
 		0.f, 0.f, 0.f, 1.f 
+	};
+
+	float framebufferQuad[] = {
+		1.f,-1.f, 1.f, 0.f,
+		1.f, 1.f, 1.f, 1.f,
+	   -1.f, 1.f, 0.f, 1.f,
+	   -1.f,-1.f, 0.f, 0.f
 	};
 
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
@@ -84,10 +97,21 @@ void Renderer::init()
 	textureAnimatedQuadVertexArray = std::make_unique<VertexArray>();
 	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
 	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
+
+	VertexBuffer framebufferVBO = createVertexBuffer();
+	setData(framebufferVBO, framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
+	framebufferVertexArray = std::make_unique<VertexArray>();
+	framebufferVertexArray->setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
+	framebufferVertexArray->setIndexBuffer(quadIBO);
+
+	// set up framebuffer
+	framebuffer.init(width, height);
 }
 
 void Renderer::beginScene(Camera& camera)
 {
+	framebuffer.bind();
+
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
 	viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
@@ -99,6 +123,13 @@ void Renderer::beginScene(Camera& camera)
 
 void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
 {
+	Framebuffer::bindDefaultFramebuffer();
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	framebufferVertexArray->bind();
+	defaultFramebufferShader->bind();
+	framebuffer.bindTextureColorBuffer();
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
 	sfmlRenderer.drawSubmitedObjects(window);
 
 	efficiencyRegister.setDrawCallsPerFrame(numberOfDrawCalls);
@@ -317,6 +348,7 @@ bool Renderer::isInsideScreen(const FloatRect objectBounds)
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
+	framebuffer.reset(width, height);
 }
 
 void Renderer::setClearColor(const sf::Color& color)
