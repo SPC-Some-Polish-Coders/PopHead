@@ -18,7 +18,9 @@ class EfficiencyRegister;
 class Renderer
 {
 public:
-	static void init(unsigned width, unsigned height);
+	static void init(unsigned screenWidth, unsigned screenHeight);
+	static void reset(unsigned screenWidth, unsigned screenHeight);
+	static void shutDown(unsigned screenWidth, unsigned screenHeight);
 	
 	static void beginScene(Camera&);
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);

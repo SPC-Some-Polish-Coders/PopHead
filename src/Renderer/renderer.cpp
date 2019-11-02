@@ -6,7 +6,6 @@
 #include "openglErrors.hpp"
 #include "framebuffer.hpp"
 #include <SFML/Graphics/Transform.hpp>
-#include <memory>
 
 namespace {
 	// SceneData
@@ -20,11 +19,11 @@ namespace {
 	ph::Shader* coloredTextureSpriteShader;
 	ph::Shader* defaultFramebufferShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
-	std::unique_ptr<ph::VertexArray> singleColorQuadVertexArray;
-	std::unique_ptr<ph::VertexArray> textureQuadVertexArray;
-	std::unique_ptr<ph::VertexArray> textureAnimatedQuadVertexArray;
-	std::unique_ptr<ph::VertexArray> framebufferVertexArray;
-	ph::Framebuffer framebuffer;
+	ph::VertexArray* singleColorQuadVertexArray;
+	ph::VertexArray* textureQuadVertexArray;
+	ph::VertexArray* textureAnimatedQuadVertexArray;
+	ph::VertexArray* framebufferVertexArray;
+	ph::Framebuffer* framebuffer;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -33,7 +32,7 @@ namespace {
 
 namespace ph {
 
-void Renderer::init(unsigned width, unsigned height)
+void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
@@ -82,35 +81,50 @@ void Renderer::init(unsigned width, unsigned height)
 	
 	VertexBuffer singleColorQuadVBO = createVertexBuffer();
 	setData(singleColorQuadVBO, quadPositions, sizeof(quadPositions), DataUsage::staticDraw);
-	singleColorQuadVertexArray = std::make_unique<VertexArray>();
+	singleColorQuadVertexArray = new VertexArray;
 	singleColorQuadVertexArray->setVertexBuffer(singleColorQuadVBO, VertexBufferLayout::position2);
 	singleColorQuadVertexArray->setIndexBuffer(quadIBO);
 
 	VertexBuffer textureQuadVBO = createVertexBuffer();
 	setData(textureQuadVBO, quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
-	textureQuadVertexArray = std::make_unique<VertexArray>();
+	textureQuadVertexArray = new VertexArray;
 	textureQuadVertexArray->setVertexBuffer(textureQuadVBO, VertexBufferLayout::position2_texCoords2);
 	textureQuadVertexArray->setIndexBuffer(quadIBO);
 
 	VertexBuffer animatedTextureQuadVBO = createVertexBuffer();
 	setData(animatedTextureQuadVBO, nullptr, sizeof(quadPositionsAndTextureCoords), DataUsage::dynamicDraw);
-	textureAnimatedQuadVertexArray = std::make_unique<VertexArray>();
+	textureAnimatedQuadVertexArray = new VertexArray;
 	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
 	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
 	setData(framebufferVBO, framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
-	framebufferVertexArray = std::make_unique<VertexArray>();
+	framebufferVertexArray = new VertexArray;
 	framebufferVertexArray->setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray->setIndexBuffer(quadIBO);
 
 	// set up framebuffer
-	framebuffer.init(width, height);
+	framebuffer = new Framebuffer(screenWidth, screenHeight);
+}
+
+void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
+{
+	shutDown(screenWidth, screenHeight);
+	init(screenWidth, screenHeight);
+}
+
+void Renderer::shutDown(unsigned screenWidth, unsigned screenHeight)
+{
+	delete singleColorQuadVertexArray;
+	delete textureQuadVertexArray;
+	delete textureAnimatedQuadVertexArray;
+	delete framebufferVertexArray;
+	delete framebuffer;
 }
 
 void Renderer::beginScene(Camera& camera)
 {
-	framebuffer.bind();
+	framebuffer->bind();
 
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
@@ -127,7 +141,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray->bind();
 	defaultFramebufferShader->bind();
-	framebuffer.bindTextureColorBuffer();
+	framebuffer->bindTextureColorBuffer();
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
 	sfmlRenderer.drawSubmitedObjects(window);
@@ -348,7 +362,7 @@ bool Renderer::isInsideScreen(const FloatRect objectBounds)
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
-	framebuffer.reset(width, height);
+	framebuffer->reset(width, height);
 }
 
 void Renderer::setClearColor(const sf::Color& color)

@@ -5,11 +5,12 @@
 
 namespace ph {
 
-void Framebuffer::init(const unsigned width, const unsigned height)
+Framebuffer::Framebuffer(const unsigned width, const unsigned height)
 {
 	GLCheck( glGenFramebuffers(1, &mFramebufferID) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID) );
 
+	// TODO_ren: Maybe use Texture class here
 	GLCheck( glGenTextures(1, &mColorBufferTextureID) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, mColorBufferTextureID) );
 	GLCheck( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr) );
