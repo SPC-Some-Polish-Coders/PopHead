@@ -8,6 +8,8 @@ class EntitiesTemplateStorage {
 public:
 	EntitiesTemplateStorage();
 
+	entt::registry& getTemplateRegistry();
+
 	entt::entity getTemplate(const std::string& templateName);
 
 	entt::entity create(const std::string& templateName);

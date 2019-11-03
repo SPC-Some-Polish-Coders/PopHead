@@ -37,7 +37,7 @@ private:
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;
-	entt::registry* mGameRegistry;
+	entt::registry* mUsedRegistry;
 };
 
 }

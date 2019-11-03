@@ -6,6 +6,11 @@ EntitiesTemplateStorage::EntitiesTemplateStorage()
 {
 }
 
+entt::registry& EntitiesTemplateStorage::getTemplateRegistry()
+{
+	return mTemplatesRegistry;
+}
+
 entt::entity EntitiesTemplateStorage::create(const std::string& templateName)
 {
 	auto newEntityTemplate = mTemplatesRegistry.create();
