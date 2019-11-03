@@ -7,6 +7,7 @@ namespace ph {
 namespace OpenGLErrors
 {
 #ifndef PH_DISTRIBUTION
+
 #ifdef _MSC_VER
 #define ASSERT(x) if(!(x)) __debugbreak();
 #else

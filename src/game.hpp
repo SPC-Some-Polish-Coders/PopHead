@@ -28,7 +28,6 @@ private:
 	sf::Time getProperDeltaTime(sf::Time deltaTime);
 	void handleEvents();
 	void update(sf::Time deltaTime);
-	void draw();
 
 private:
 	std::unique_ptr< GameData >           mGameData;
@@ -38,10 +37,10 @@ private:
 	std::unique_ptr< TextureHolder >      mTextures;
 	std::unique_ptr< FontHolder >         mFonts;
 	std::unique_ptr< ShaderHolder >       mShaders;
-	//std::unique_ptr< AIManager >          mAIManager;
+	//std::unique_ptr< AIManager >        mAIManager;
 	std::unique_ptr< SceneManager >       mSceneManager;
-	//std::unique_ptr< Map >                mMap;
-	//std::unique_ptr< PhysicsEngine >      mPhysicsEngine;
+	//std::unique_ptr< Map >              mMap;
+	//std::unique_ptr< PhysicsEngine >    mPhysicsEngine;
 	std::unique_ptr< Terminal >           mTerminal;
 	std::unique_ptr< EfficiencyRegister > mEfficiencyRegister;
 	std::unique_ptr< GUI >                mGui;

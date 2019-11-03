@@ -19,7 +19,7 @@ class CutScene;
 class Scene
 {
 public:
-    explicit Scene();
+    explicit Scene(sf::Window& window);
 
 	void handleEvent(const Event&);
     void update(sf::Time delta);
@@ -34,7 +34,7 @@ public:
 	entt::registry& getRegistry();
 
 private:
-	void initiateSystemsQueue(sf::RenderWindow& window);
+	void initiateSystemsQueue(sf::Window& window);
 
 private:
 	CutSceneManager mCutSceneManager;

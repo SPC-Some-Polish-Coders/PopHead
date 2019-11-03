@@ -16,13 +16,10 @@
 
 //#include "ECS/System.hpp"
 #include "ECS/Systems/movement.hpp"
-#include "ECS/Systems/rendererSystem.hpp"
-#include "ECS/Systems/spritesSync.hpp"
 #include "ECS/Systems/playerInput.hpp"
 
 #include "ECS/systemsQueue.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 
 #include <iostream>

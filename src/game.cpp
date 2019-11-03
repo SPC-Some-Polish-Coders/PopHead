@@ -59,9 +59,6 @@ Game::Game()
 	ActionEventManager::init();
 
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
-
-	// TODO_ren: Remove
-	mTextures->load("textures/vehicles/car.png");
 }
 
 void Game::run()
@@ -79,7 +76,6 @@ void Game::run()
 		while(deltaTime >= timePerFrame) {
 			handleEvents();
 			update(getProperDeltaTime(deltaTime));
-			draw();
 			deltaTime = sf::Time::Zero;
 		}
 	}
@@ -126,29 +122,13 @@ void Game::update(sf::Time deltaTime)
 		//mAIManager->update();
 		//mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);
+		mEfficiencyRegister->getDisplayer().draw();
 		mTerminal->update();
+		// TODO_ren: Move it to Terminal::update()
+		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
+		Renderer::endScene(mWindow, *mEfficiencyRegister);
+		mWindow.display();
 	}
-}
-
-void Game::draw()
-{
-	Renderer::setClearColor({10, 10, 10, 255});
-
-	Camera camera;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-		camera.zoom(1.04f);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-		camera.zoom(0.96f);
-
-	Renderer::beginScene(camera);
-	//mMap->draw(camera.getBounds());
-	//mGui->draw();
-	mEfficiencyRegister->getDisplayer().draw();
-	mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
-	Renderer::submitQuad(mTextures->get("textures/vehicles/car.png"), sf::Color(100, 50, 100, 100), sf::Vector2f(100.f, 100.f), sf::Vector2i(100, 100));
-	Renderer::endScene(mWindow, *mEfficiencyRegister);
-	
-	mWindow.display();
 }
 
 }

@@ -2,7 +2,6 @@
 #include "Utilities/xml.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
-#include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 
