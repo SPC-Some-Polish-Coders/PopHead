@@ -2,9 +2,7 @@
 
 #include <iostream>
 
-namespace ph {
-
-namespace OpenGLErrors
+namespace ph::OpenGLErrors
 {
 #ifndef PH_DISTRIBUTION
 
@@ -26,6 +24,4 @@ bool logErrors(const char* functionSignature, const char* fileName, unsigned num
 #define ASSERT(x) x;
 #define GLCheck(x) x;
 #endif
-}
-
 }
