@@ -36,6 +36,7 @@ bool Texture::loadFromFile(const std::string& filepath)
 	stbi_set_flip_vertically_on_load(true);
 	int numberOfChanels;
 	unsigned char* data = stbi_load(filepath.c_str(), &mSize.x, &mSize.y, &numberOfChanels, 0);
+	stbi_set_flip_vertically_on_load(false);
 
 	if(data == nullptr)
 		return false;

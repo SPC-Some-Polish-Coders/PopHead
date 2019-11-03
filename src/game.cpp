@@ -59,7 +59,7 @@ Game::Game()
 
 	ActionEventManager::init();
 
-	Renderer::init();
+	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 }
 
 void Game::run()
@@ -136,6 +136,7 @@ void Game::update(sf::Time deltaTime)
 	mGui->draw();
 	mEfficiencyRegister->getDisplayer().draw();
 	mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
+	Renderer::submitQuad(mTextures->get("textures/vehicles/car.png"), sf::Color(100, 50, 100, 100), sf::Vector2f(100.f, 100.f), sf::Vector2i(100, 100));
 	Renderer::endScene(mWindow, *mEfficiencyRegister);
 	
 	mWindow.display();

@@ -141,8 +141,8 @@ void Shader::setUniformVector3(const std::string& name, const float x, const flo
 void Shader::setUniformVector4Color(const std::string& name, const sf::Color& color) const
 {
 	GLCheck(glUniform4f(getUniformLocation(name),
-		static_cast<float>(color.r / 255), static_cast<float>(color.g / 255),
-		static_cast<float>(color.b / 255), static_cast<float>(color.a / 255)
+		static_cast<float>(color.r) / 255.f, static_cast<float>(color.g) / 255.f,
+		static_cast<float>(color.b) / 255.f, static_cast<float>(color.a) / 255.f
 	));
 }
 

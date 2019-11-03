@@ -12,4 +12,4 @@ void main()
 {
 	gl_Position = viewProjectionMatrix * modelMatrix * vec4(aPos.x, aPos.y, 0.0, 1.0);
 	texCoords = aTextureCoords;
-};
+}
