@@ -10,7 +10,6 @@
     </entityTemplate>
 
 
-
     <entityTemplate name="Npc">
     </entityTemplate>
 
@@ -24,7 +23,6 @@
     </entityTemplate>
 
 
-
     <entityTemplate name="Zombie">
         <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
@@ -33,7 +31,6 @@
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
         <component name="Health" healthPoints="20" maxHealthPoints="100" />
     </entityTemplate>
-
 
 
     <entityTemplate name="Entrance">
@@ -53,7 +50,6 @@
     </entityTemplate>
 
 
-
     <entityTemplate name="Gate">
         <component name="StaticCollisionBody" />
     </entityTemplate>
@@ -63,11 +59,9 @@
     </entityTemplate>
 
 
-
     <entityTemplate name="Lever">
 
     </entityTemplate>
-
 
 
     <entityTemplate name="BulletItem">
@@ -93,5 +87,14 @@
 </entityTemplates>
 
 <entities>
-    <entity sourceTemplate="Player"/>
+    <entity sourceTemplate="Zombie"/>
+    
+    <entity sourceTemplate="GateGuard">
+        <component name="StaticCollisionBody"/>
+    </entity>
+    
+    <entity sourceTemplate="BulletItem">
+        <component name="Medkit" addHealthPoints="20"/>
+    </entity>
+    
 </entities>
