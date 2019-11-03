@@ -77,6 +77,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Player",			&EntitiesParser::parsePlayer},
 		{"Bullet",			&EntitiesParser::parseBullet},
 		{"Spawner",			&EntitiesParser::parseSpawner},
+		{"Position",		&EntitiesParser::parsePosition},
 		{"Velocity",		&EntitiesParser::parseVelocity},
 		{"Animation",		&EntitiesParser::parseAnimation},
 		{"GunAttacker",		&EntitiesParser::parseGunAttacker},
@@ -95,6 +96,13 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 //NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates
 //		so it's probably the best option
+
+void EntitiesParser::parsePosition(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float x = entityComponentNode.getAttribute("x").toFloat();
+	float y = entityComponentNode.getAttribute("y").toFloat();
+	mUsedRegistry->assign_or_replace<component::Position>(entity, x, y);
+}
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
 {

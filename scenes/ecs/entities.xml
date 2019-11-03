@@ -87,6 +87,10 @@
 </entityTemplates>
 
 <entities>
+    <entity sourceTemplate="Player">
+        <component name="Position" x="0" y="0"></component>
+    </entity>
+
     <entity sourceTemplate="Zombie"/>
     
     <entity sourceTemplate="GateGuard">
