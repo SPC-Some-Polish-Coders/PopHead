@@ -28,4 +28,9 @@ void EntitiesTemplateStorage::stomp(const entt::entity dst, const std::string& t
 	mTemplatesRegistry.stomp(dst, getTemplate(templateName), mTemplatesRegistry);
 }
 
+void EntitiesTemplateStorage::stomp(const entt::entity dst, const std::string& templateName, entt::registry& gameRegistry)
+{
+	gameRegistry.stomp(dst, getTemplate(templateName), mTemplatesRegistry);
+}
+
 }

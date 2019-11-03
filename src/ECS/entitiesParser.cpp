@@ -10,20 +10,29 @@ namespace ph {
 
 EntitiesParser::EntitiesParser()
 	:mTemplateStorage(nullptr)
+	,mGameRegistry(nullptr)
 {
 }
 
-void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage)
+void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
 {
 	mTemplateStorage = &templateStorage;
+	mGameRegistry = &gameRegistry;
+
 	Xml entitiesFile;
 	entitiesFile.loadFromFile(filePath);
+
 	const Xml entityTemplatesNode = entitiesFile.getChild("entityTemplates");
-	loadEntityTemplates(entityTemplatesNode);
+	parseTemplates(entityTemplatesNode);
+
+	const Xml entitiesNode = entitiesFile.getChild("entities");
+	parseEntities(entitiesNode);
+
 	mTemplateStorage = nullptr;
+	mGameRegistry = nullptr;
 }
 
-void EntitiesParser::loadEntityTemplates(const Xml& entityTemplatesNode)
+void EntitiesParser::parseTemplates(const Xml& entityTemplatesNode)
 {
 	std::vector<Xml> entityTemplates = entityTemplatesNode.getChildren("entityTemplate");
 	for (auto& entityTemplate : entityTemplates)
@@ -37,6 +46,22 @@ void EntitiesParser::loadEntityTemplates(const Xml& entityTemplatesNode)
 		}
 		std::vector<Xml> entityComponents = entityTemplate.getChildren("component");
 		parseComponents(entityComponents, entity);
+	}
+}
+
+void EntitiesParser::parseEntities(const Xml& entitiesNode)
+{
+	std::vector<Xml> entities = entitiesNode.getChildren("entity");
+	for (auto& entity : entities)
+	{
+		auto newEntity = mGameRegistry->create();
+		if (entity.hasAttribute("sourceTemplate"))
+		{
+			const std::string& sourceTemplateName = entity.getAttribute("sourceTemplate").toString();
+			mTemplateStorage->stomp(newEntity, sourceTemplateName, *mGameRegistry);
+		}
+		auto entityComponents = entity.getChildren("component");
+		parseComponents(entityComponents, newEntity);
 	}
 }
 

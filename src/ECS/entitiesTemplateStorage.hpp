@@ -13,6 +13,7 @@ public:
 	entt::entity create(const std::string& templateName);
 	entt::entity createCopy(const std::string& templateName, entt::registry& gameRegistry);
 	void stomp(const entt::entity dstEntity, const std::string& templateName);
+	void stomp(const entt::entity dstEntity, const std::string& templateName, entt::registry& gameRegistry);
 
 	template<typename T, typename... Args>
 	void assign(const std::string& templateName, Args&&... arguments);
