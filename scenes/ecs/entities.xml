@@ -1,16 +1,16 @@
 <entityTemplates>
 
     <entityTemplate name="Player">
-        <component name="KinematicCollisionBody" mass="10"/>
-        <component name="GunAttacker" minSecondsInterval="0.2 " bullets="20" isTryingToAttack="false"/>
-        <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false"/>
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="GunAttacker" minSecondsInterval="0.2 " bullets="20" isTryingToAttack="false" />
+        <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
-        <component name="Velocity" dx="2.0" dy="2.0"/>
+        <component name="Velocity" dx="2.0" dy="2.0" />
     </entityTemplate>
 
-  
-   
+
+
     <entityTemplate name="Npc">
     </entityTemplate>
 
@@ -65,13 +65,13 @@
 
 
     <entityTemplate name="Lever">
-    
+
     </entityTemplate>
 
 
 
     <entityTemplate name="BulletItem">
-        <component name="Bullet" numOfBullets="1"/>
+        <component name="Bullet" numOfBullets="1" />
     </entityTemplate>
 
     <entityTemplate name="Medkit">
@@ -91,3 +91,7 @@
     </entityTemplate>
 
 </entityTemplates>
+
+<entities>
+    <entity sourceTemplate="Player"/>
+</entities>
