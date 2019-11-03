@@ -7,6 +7,7 @@
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
+#include <iostream>
 
 namespace ph {
 
@@ -80,6 +81,7 @@ void Game::run()
 		}
 	}
 
+	Renderer::shutDown();
 	mWindow.close();
 }
 
@@ -118,7 +120,10 @@ void Game::update(sf::Time deltaTime)
 
 	if(mWindow.hasFocus())
 	{
+		Renderer::setClearColor(sf::Color::Green);
+		Renderer::beginScene(Camera());
 		mSceneManager->update(deltaTime);
+		Renderer::submitQuad(sf::Color::Yellow, {10.f, 10.f}, {100, 100});
 		//mAIManager->update();
 		//mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);

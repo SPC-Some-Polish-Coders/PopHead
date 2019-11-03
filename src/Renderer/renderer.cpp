@@ -108,11 +108,11 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
 {
-	shutDown(screenWidth, screenHeight);
+	shutDown();
 	init(screenWidth, screenHeight);
 }
 
-void Renderer::shutDown(unsigned screenWidth, unsigned screenHeight)
+void Renderer::shutDown()
 {
 	delete singleColorQuadVertexArray;
 	delete textureQuadVertexArray;
@@ -158,6 +158,7 @@ void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vec
 		singleColorSpriteShader->bind();
 		currentlyBoundShader = singleColorSpriteShader;
 	}
+
 	singleColorSpriteShader->setUniformVector4Color("color", color);
 	setQuadTransformUniforms(singleColorSpriteShader, position, size, rotation);
 
