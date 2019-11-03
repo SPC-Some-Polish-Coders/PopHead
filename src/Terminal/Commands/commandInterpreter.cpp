@@ -1,14 +1,9 @@
 #include "commandInterpreter.hpp"
 #include "Physics/CollisionDebug/collisionDebugSettings.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
-#include "GameObjects/NonDrawableGameObjects/playerEquipment.hpp"
-#include "GameObjects/NonDrawableGameObjects/arcadeManager.hpp"
-#include "GameObjects/DrawableGameObjects/Items/bulletItem.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
-#include "Utilities/spawn.hpp"
 #include "gameData.hpp"
 #include "Map/map.hpp"
 
@@ -18,9 +13,9 @@ void CommandInterpreter::init()
 {
 	mCommandsMap["echo"] =		&CommandInterpreter::executeEcho;
 	mCommandsMap["exit"] =		&CommandInterpreter::executeExit;
-	mCommandsMap["teleport"] =	&CommandInterpreter::executeTeleport;
-	mCommandsMap["give"] =	&CommandInterpreter::executeGive;
-	mCommandsMap["currentpos"] =	&CommandInterpreter::executeCurrentPos;
+	//mCommandsMap["teleport"] =	&CommandInterpreter::executeTeleport;
+	//mCommandsMap["give"] =	&CommandInterpreter::executeGive;
+	//mCommandsMap["currentpos"] =	&CommandInterpreter::executeCurrentPos;
 	mCommandsMap["collisiondebug"] =&CommandInterpreter::executeCollisionDebug;
 	mCommandsMap["mute"] =		&CommandInterpreter::executeMute;
 	mCommandsMap["unmute"] =	&CommandInterpreter::executeUnmute;
@@ -29,10 +24,10 @@ void CommandInterpreter::init()
 	mCommandsMap["help"] =		&CommandInterpreter::executeHelp;
 	mCommandsMap["clear"] =		&CommandInterpreter::executeClear;
 	mCommandsMap["view"] =		&CommandInterpreter::executeView;
-	mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
-	mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
+	//mCommandsMap["spawn"] =		&CommandInterpreter::executeSpawn;
+	//mCommandsMap["gotoscene"] =	&CommandInterpreter::executeGotoScene;
 	mCommandsMap["pgamode"] =	&CommandInterpreter::executeSwitchPGAMode;
-	mCommandsMap["m"] =			&CommandInterpreter::executeMove;
+	//mCommandsMap["m"] =			&CommandInterpreter::executeMove;
 	mCommandsMap[""] =			&CommandInterpreter::executeInfoMessage;
 }
 
@@ -113,8 +108,8 @@ void CommandInterpreter::executeGotoScene() const
 
 void CommandInterpreter::executeSpawn() const
 {
-	//TODO: Handle possible improper ObjectType
-	Spawn(mGameData, Cast::toObjectType(mCommand), getVector2Argument());
+	////TODO: Handle possible improper ObjectType
+	//Spawn(mGameData, Cast::toObjectType(mCommand), getVector2Argument());
 }
 
 void CommandInterpreter::executeClear() const
@@ -130,16 +125,16 @@ void CommandInterpreter::executeExit() const
 
 void CommandInterpreter::executeTeleport() const
 {
-	auto& player = dynamic_cast<Player&>(getPlayer());
+	/*auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f newPosition = getVector2Argument();
 	if(newPosition == mVector2ArgumentError)
 		return;
-	player.setPosition(newPosition);
+	player.setPosition(newPosition);*/
 }
 
 void CommandInterpreter::executeGive() const
 {
-	auto& player = dynamic_cast<Player&>(getPlayer());
+	/*auto& player = dynamic_cast<Player&>(getPlayer());
 	auto& equipement = dynamic_cast<PlayerEquipment&>(*player.getChild("Equipment"));
 	if (commandContains("bullet"))
 	{
@@ -148,41 +143,41 @@ void CommandInterpreter::executeGive() const
 			equipement.putItem(std::make_unique<BulletItem>(mGameData));
 	}
 	else
-		executeMessage("Type of item is unknown!", MessageType::ERROR);
+		executeMessage("Type of item is unknown!", MessageType::ERROR);*/
 }
 
 void CommandInterpreter::executeMove() const
 {
-	auto& player = dynamic_cast<Player&>(getPlayer());
+	/*auto& player = dynamic_cast<Player&>(getPlayer());
 	const sf::Vector2f moveOffset = getVector2Argument();
 	if (commandContains('x'))
 		player.move(sf::Vector2f(moveOffset.x, 0.f));
 	else if (commandContains('y'))
 		player.move(sf::Vector2f(0.f, moveOffset.y));
 	else
-		player.move(moveOffset);
+		player.move(moveOffset);*/
 }
 
 void CommandInterpreter::executeCurrentPos() const
 {
-	const sf::Vector2f playerPosition = getPlayer().getPosition();
-	executeMessage("player position: " + Cast::toString(playerPosition), MessageType::INFO);
+	/*const sf::Vector2f playerPosition = getPlayer().getPosition();
+	executeMessage("player position: " + Cast::toString(playerPosition), MessageType::INFO);*/
 }
 
-auto CommandInterpreter::getPlayer() const -> GameObject&
-{
-	auto& gameScene = mGameData->getSceneManager().getScene();
+//auto CommandInterpreter::getPlayer() const -> GameObject&
+//{
+	/*auto& gameScene = mGameData->getSceneManager().getScene();
 	auto* standingObjects = gameScene.getRoot().getChild("LAYER_standingObjects");
 	GameObject& player = *standingObjects->getChild("player");
-	return player;
-}
+	return player;*/
+//}
 
 void CommandInterpreter::executeSwitchPGAMode() const
 {
-	if (commandContains("on"))
+	/*if (commandContains("on"))
 		ArcadeManager::mPGAMode = true;
 	else if (commandContains("off"))
-		ArcadeManager::mPGAMode = false;
+		ArcadeManager::mPGAMode = false;*/
 }
 
 void CommandInterpreter::executeCollisionDebug() const
@@ -282,7 +277,7 @@ float CommandInterpreter::getVolumeFromCommand() const
 
 void CommandInterpreter::executeView() const
 {
-	auto& camera = Player::getCamera();
+	/*auto& camera = Player::getCamera();
 	if(commandContains("normal")) {
 		camera.setSize({640, 360});
 		return;
@@ -290,7 +285,7 @@ void CommandInterpreter::executeView() const
 	const sf::Vector2f newViewSize = getVector2Argument();
 	if(newViewSize == mVector2ArgumentError)
 		return;
-	camera.setSize(newViewSize);
+	camera.setSize(newViewSize);*/
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

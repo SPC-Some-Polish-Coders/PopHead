@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include "renderer.hpp"
-#include "GameObjects/gameObject.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"

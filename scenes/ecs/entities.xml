@@ -1,0 +1,100 @@
+<entityTemplates>
+
+    <entityTemplate name="Player">
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="GunAttacker" minSecondsInterval="0.2 " bullets="20" isTryingToAttack="false" />
+        <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
+        <component name="Player" />
+        <component name="Velocity" dx="2.0" dy="2.0" />
+    </entityTemplate>
+
+
+    <entityTemplate name="Npc">
+    </entityTemplate>
+
+    <entityTemplate name="CrawlingNpc">
+    </entityTemplate>
+
+    <entityTemplate name="GateGuard">
+    </entityTemplate>
+
+    <entityTemplate name="DeadCharacter">
+    </entityTemplate>
+
+
+    <entityTemplate name="Zombie">
+        <component name="Velocity" dx="2.0" dy="2.0" />
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
+    </entityTemplate>
+
+    <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
+        <component name="Health" healthPoints="20" maxHealthPoints="100" />
+    </entityTemplate>
+
+
+    <entityTemplate name="Entrance">
+
+    </entityTemplate>
+
+    <entityTemplate name="SlowDownArea">
+
+    </entityTemplate>
+
+    <entityTemplate name="ActivateArea">
+
+    </entityTemplate>
+
+    <entityTemplate name="CutSceneArea">
+
+    </entityTemplate>
+
+
+    <entityTemplate name="Gate">
+        <component name="StaticCollisionBody" />
+    </entityTemplate>
+
+    <entityTemplate name="Car">
+        <component name="StaticCollisionBody" />
+    </entityTemplate>
+
+
+    <entityTemplate name="Lever">
+
+    </entityTemplate>
+
+
+    <entityTemplate name="BulletItem">
+        <component name="Bullet" numOfBullets="1" />
+    </entityTemplate>
+
+    <entityTemplate name="Medkit">
+        <component name="VertexArray" />
+        <component name="Shader" />
+        <component name="Medkit" addHealthPoints="25" />
+    </entityTemplate>
+
+    <entityTemplate name="Spawner">
+        <component name="Spawner" />
+        <component name="Player" />
+    </entityTemplate>
+
+
+
+    <entityTemplate name="Particles">
+    </entityTemplate>
+
+</entityTemplates>
+
+<entities>
+    <entity sourceTemplate="Zombie"/>
+    
+    <entity sourceTemplate="GateGuard">
+        <component name="StaticCollisionBody"/>
+    </entity>
+    
+    <entity sourceTemplate="BulletItem">
+        <component name="Medkit" addHealthPoints="20"/>
+    </entity>
+    
+</entities>

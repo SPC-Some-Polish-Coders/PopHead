@@ -6,8 +6,6 @@
 
 namespace ph {
 
-class TiledGameObjectParser;
-
 class CutSceneManager
 {
 public:

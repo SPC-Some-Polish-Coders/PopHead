@@ -1,40 +1,47 @@
 #pragma once
 
-#include "GameObjects/GameObject.hpp"
 #include "cutSceneManager.hpp"
 #include "Events/event.hpp"
 #include "playerStatus.hpp"
+
+#include <entt/entity/registry.hpp>
+#include "ECS/systemsQueue.hpp"
+
 #include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+
 #include <memory>
 
 namespace ph{
 
-class GameData; 
 class CutScene;
-class Player;
 
 class Scene
 {
 public:
-    Scene();
+    explicit Scene();
 
-	void handleEvent(const ph::Event&);
+	void handleEvent(const Event&);
     void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }
-	GameObject& getRoot() { return *mRoot.get(); }
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
 
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus() const;
 
+	entt::registry& getRegistry();
+
 private:
-	Player& getPlayer() const;
+	void initiateSystemsQueue(sf::RenderWindow& window);
 
 private:
 	CutSceneManager mCutSceneManager;
-	std::unique_ptr<GameObject> mRoot;
+
+	entt::registry mRegistry;
+	SystemsQueue mSystemsQueue;
+
     bool mPause;
 };
 

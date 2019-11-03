@@ -1,17 +1,15 @@
 #include "gateGuardDialogue.hpp"
 #include "gameData.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include "Events/actionEventManager.hpp"
 
 namespace ph {
 
 GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
-	:CutScene(gameData->getSceneManager().getScene().getRoot())
-	,mGameData(gameData)
+	:mGameData(gameData)
 	,mPlayerOnThePosition(false)
 	,mTimesPressedSkip(1)
 {
-	mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
+	//mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
 	mGameData->getGui().hideInterface("gameplayCounters");
 	/*mGameData->getRenderer().getCamera().setSize({320, 240});*/
@@ -59,10 +57,10 @@ void GateGuardDialogue::update(const sf::Time delta)
 {
 	if (!mPlayerOnThePosition)
 	{
-		if (mPlayer->getPosition().y > 600.f)
+		/*if (mPlayer->getPosition().y > 600.f)
 			mPlayer->move(sf::Vector2f(0.f, -20.f * delta.asSeconds()));
 		else
-			mPlayerOnThePosition = true;
+			mPlayerOnThePosition = true;*/
 	}
 
 	// TODO: Use events here

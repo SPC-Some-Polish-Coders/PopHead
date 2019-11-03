@@ -1,19 +1,15 @@
 #include "startGameCutscene.hpp"
-#include "GameObjects/gameObject.hpp"
-#include "GameObjects/DrawableGameObjects/car.hpp"
 #include "Renderer/camera.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Gui/gui.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/npc.hpp"
 #include "gameData.hpp"
 
 namespace ph {
 
-StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer,
+StartGameCutScene::StartGameCutScene(Camera& camera, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer,
 	GUI& gui, GameData* const gameData)
-	:CutScene(root)
-	,mCamera(camera)
+	:mCamera(camera)
 	,mSoundPlayer(soundPlayer)
 	,mMusicPlayer(musicPlayer)
 	,mGui(gui)
@@ -23,8 +19,8 @@ StartGameCutScene::StartGameCutScene(GameObject& root, Camera& camera, SoundPlay
 	,mHasStartedToSlowDown(false)
 	,mWasPlayerCreated(false)
 {
-	auto* car = dynamic_cast<Car*>(root.getChild("LAYER_lyingObjects")->getChild("car"));
-	car->setVelocity(120);
+	//auto* car = dynamic_cast<Car*>(root.getChild("LAYER_lyingObjects")->getChild("car"));
+	//car->setVelocity(120);
 }
 
 void StartGameCutScene::update(const sf::Time delta)
@@ -45,13 +41,13 @@ void StartGameCutScene::update(const sf::Time delta)
 		mWasGuiHidden = true;
 	}
 
-	auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_lyingObjects")->getChild("car"));
+	//auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_lyingObjects")->getChild("car"));
 	
 	/*if(mCutsceneTimeInSeconds < 23)
 		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());*/
 
-	if(mCutsceneTimeInSeconds < 5)
-		car.speedUp();
+	/*if(mCutsceneTimeInSeconds < 5)
+		car.speedUp();*/
 
 	// NARRATIVE SUBTITLES
 	if(mCutsceneTimeInSeconds > 4 && mCutsceneTimeInSeconds < 8) {
@@ -69,27 +65,27 @@ void StartGameCutScene::update(const sf::Time delta)
 	else if(mCutsceneTimeInSeconds > 17 && mCutsceneTimeInSeconds < 22) {
 		auto velocityWidget = dynamic_cast<TextWidget*>(canvas->getWidget("velocity"));
 		velocityWidget->show();
-		int velocity = static_cast<int>(car.getVelocity() / 4.7);
-		velocityWidget->setString(std::to_string(velocity) + " MPH");
+		//int velocity = static_cast<int>(car.getVelocity() / 4.7);
+		//velocityWidget->setString(std::to_string(velocity) + " MPH");
 	}
 	else if(mCutsceneTimeInSeconds > 22 && mCutsceneTimeInSeconds < 24.5) {
 		canvas->getWidget("velocity")->hide();
 	}
 
 	// CAR STARTS TO SLOW DOWN
-	if(car.getPosition().x > 5100 && !mHasStartedToSlowDown) {
+	/*if(car.getPosition().x > 5100 && !mHasStartedToSlowDown) {
 		mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
 		mHasStartedToSlowDown = true;
 	}
 	if(car.getPosition().x > 5110)
-		car.slowDown();
+		car.slowDown();*/
 
 	// AGENT LEAVES CAR
 	if(mCutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
-		auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
+	/*	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
 		playerNpc->setAnimationState("stayingRight");
 		playerNpc->setPosition({5760, 392});
-		mRoot.addChild(std::move(playerNpc));
+		mRoot.addChild(std::move(playerNpc));*/
 		mWasPlayerCreated = true;
 	}
 

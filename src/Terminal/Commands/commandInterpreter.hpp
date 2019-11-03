@@ -7,7 +7,6 @@
 namespace ph {
 
 class GameData;
-class GameObject;
 
 enum class MessageType 
 { 
@@ -36,7 +35,7 @@ private:
 	void executeCurrentPos() const;
 	void executeMove() const;
 	void executeGive() const;
-	auto getPlayer() const -> GameObject&;
+	//auto getPlayer() const -> GameObject&;
 
 	void executeHistory() const;
 	void executeHelp() const;

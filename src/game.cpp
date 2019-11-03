@@ -6,7 +6,6 @@
 #include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -21,10 +20,10 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	,mAIManager(new AIManager())
+	//,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
-	,mMap(new Map())
-	,mPhysicsEngine{new PhysicsEngine()}
+	//,mMap(new Map())
+	//,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mEfficiencyRegister{new EfficiencyRegister()}
 	,mGui{new GUI()}
@@ -36,10 +35,10 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		mAIManager.get(),
+		nullptr,
 		mSceneManager.get(),
-		mMap.get(),
-		mPhysicsEngine.get(),
+		nullptr,
+		nullptr,
 		mTerminal.get(),
 		mEfficiencyRegister.get(),
 		mGui.get()
@@ -50,16 +49,19 @@ Game::Game()
 	loadFonts(gameData);
 	mTerminal->init(gameData);
 	mEfficiencyRegister->init(gameData);
-	mMap->setGameData(gameData);
+	//mMap->setGameData(gameData);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/rendererTest.xml");
+	mSceneManager->replaceScene("scenes/ecsTest.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
 
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+
+	// TODO_ren: Remove
+	mTextures->load("textures/vehicles/car.png");
 }
 
 void Game::run()
@@ -77,6 +79,7 @@ void Game::run()
 		while(deltaTime >= timePerFrame) {
 			handleEvents();
 			update(getProperDeltaTime(deltaTime));
+			draw();
 			deltaTime = sf::Time::Zero;
 		}
 	}
@@ -95,6 +98,10 @@ void Game::handleEvents()
 	ph::Event phEvent;
 	while(EventDispatcher::dispatchEvent(phEvent, mWindow))
 	{
+		if (auto * event = std::get_if<sf::Event>(&phEvent))
+			if (event->type == sf::Event::Closed)
+				mGameData->getGameCloser().closeGame();
+
 		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
 		mEfficiencyRegister->handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
@@ -116,24 +123,26 @@ void Game::update(sf::Time deltaTime)
 	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(deltaTime);
-		mAIManager->update();
-		mPhysicsEngine->update(deltaTime);
+		//mAIManager->update();
+		//mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);
 		mTerminal->update();
 	}
+}
 
+void Game::draw()
+{
 	Renderer::setClearColor({10, 10, 10, 255});
 
-	auto& camera = Player::getCamera();
+	Camera camera;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
 		camera.zoom(1.04f);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
 		camera.zoom(0.96f);
 
 	Renderer::beginScene(camera);
-	mMap->draw(camera.getBounds());
-	mSceneManager->getScene().getRoot().draw(sf::Transform::Identity);
-	mGui->draw();
+	//mMap->draw(camera.getBounds());
+	//mGui->draw();
 	mEfficiencyRegister->getDisplayer().draw();
 	mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 	Renderer::submitQuad(mTextures->get("textures/vehicles/car.png"), sf::Color(100, 50, 100, 100), sf::Vector2f(100.f, 100.f), sf::Vector2i(100, 100));

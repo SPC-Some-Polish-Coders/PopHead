@@ -1,53 +1,68 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
 #include "gameData.hpp"
-#include "GameObjects/DrawableGameObjects/Characters/player.hpp"
+
+#include "ECS/Systems/dyingCharacters.hpp"
+#include "ECS/Systems/entityDestroying.hpp"
+#include "ECS/Systems/movement.hpp"
+#include "ECS/Systems/pickupSystem.hpp"
+#include "ECS/Systems/playerInput.hpp"
+#include "ECS/Systems/rendererSystem.hpp"
+#include "ECS/Systems/spritesSync.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace ph {
 
 Scene::Scene()
 	:mCutSceneManager()
-	,mRoot(std::make_unique<GameObject>("root"))
+	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	GameObject::setRoot(mRoot.get());
 }
 
 void Scene::handleEvent(const ph::Event& e)
 {
-	mRoot->handleEvent(e);
 }
 
 void Scene::update(sf::Time delta)
 {
  	if(mCutSceneManager.isCutSceneActive())
 		mCutSceneManager.updateCutScene(delta);
-
-	if(!mPause)
-		mRoot->update(delta);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)
 {
-	auto& player = getPlayer();
-	player.setHp(status.mHealthPoints);
-	player.setNumOfBullets(status.mNumOfBullets);
+	//auto& player = getPlayer();
+	//player.setHp(status.mHealthPoints);
+	//player.setNumOfBullets(status.mNumOfBullets);
 }
 
 PlayerStatus Scene::getPlayerStatus() const
 {
-	auto& player = getPlayer();
+	/*auto& player = getPlayer();
 	PlayerStatus status;
 	status.mHealthPoints = player.getHp();
 	status.mNumOfBullets = player.getNumOfBullets();
-	return status;
+	return status;*/
+	return PlayerStatus();
 }
 
-Player& Scene::getPlayer() const
+entt::registry& Scene::getRegistry()
 {
-	auto playerPointer = dynamic_cast<Player*>(mRoot->getChild("LAYER_standingObjects")->getChild("player"));
-	return *playerPointer;
+	return mRegistry;
+}
+
+void Scene::initiateSystemsQueue(sf::RenderWindow& window)
+{
+	mSystemsQueue.appendSystem<system::PlayerInput>();
+	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::PickupBullet>();
+	mSystemsQueue.appendSystem<system::PickupMedkit>();
+	mSystemsQueue.appendSystem<system::SpritesSync>();
+	mSystemsQueue.appendSystem<system::DyingCharacters>();
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	//mSystemsQueue.appendSystem<system::Renderer>(std::ref(window));
 }
 
 }

@@ -10,7 +10,7 @@ class SceneManager;
 class MovementContolsGuide : public CutScene
 {
 public:
-	MovementContolsGuide(GameObject& root, GUI&, SceneManager&);
+	MovementContolsGuide(GUI&, SceneManager&);
 
 	void update(const sf::Time delta);
 
