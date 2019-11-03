@@ -21,7 +21,7 @@ class Scene
 public:
     explicit Scene(sf::RenderWindow& window);
 
-	void handleEvent(const ph::Event&);
+	void handleEvent(const Event&);
     void update(sf::Time delta);
 
 	void setPause(bool pause) { mPause = pause; }
@@ -31,6 +31,8 @@ public:
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus() const;
 
+	entt::registry& getRegistry();
+
 private:
 	void initiateSystemsQueue(sf::RenderWindow& window);
 
@@ -38,7 +40,7 @@ private:
 	CutSceneManager mCutSceneManager;
 
 	entt::registry mRegistry;
-	ph::SystemsQueue mSystemsQueue;
+	SystemsQueue mSystemsQueue;
 
     bool mPause;
 };

@@ -2,10 +2,13 @@
 #include "cutScene.hpp"
 #include "gameData.hpp"
 
-#include "ECS/Systems/playerInput.hpp"
+#include "ECS/Systems/dyingCharacters.hpp"
+#include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/movement.hpp"
-#include "ECS/Systems/spritesSync.hpp"
+#include "ECS/Systems/pickupSystem.hpp"
+#include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/rendererSystem.hpp"
+#include "ECS/Systems/spritesSync.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -46,11 +49,20 @@ PlayerStatus Scene::getPlayerStatus() const
 	return PlayerStatus();
 }
 
+entt::registry& Scene::getRegistry()
+{
+	return mRegistry;
+}
+
 void Scene::initiateSystemsQueue(sf::RenderWindow& window)
 {
 	mSystemsQueue.appendSystem<system::PlayerInput>();
 	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::PickupBullet>();
+	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::SpritesSync>();
+	mSystemsQueue.appendSystem<system::DyingCharacters>();
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::Renderer>(std::ref(window));
 }
 
