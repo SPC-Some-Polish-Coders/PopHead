@@ -20,37 +20,37 @@ T ph::Rect<T>::right() const
 }
 
 template<typename T>
-inline T ph::Rect<T>::bottom() const
+T ph::Rect<T>::bottom() const
 {
 	return top + height;
 }
 
 template<typename T>
-inline sf::Vector2<T> ph::Rect<T>::getCenter() const
+sf::Vector2<T> ph::Rect<T>::getCenter() const
 {
 	return { left + width / 2, top + height / 2};
 }
 
 template<typename T>
-inline sf::Vector2<T> ph::Rect<T>::getTopLeft() const
+sf::Vector2<T> ph::Rect<T>::getTopLeft() const
 {
 	return { left, top };
 }
 
 template<typename T>
-inline sf::Vector2<T> ph::Rect<T>::getTopRight() const
+sf::Vector2<T> ph::Rect<T>::getTopRight() const
 {
 	return { right(), top };
 }
 
 template<typename T>
-inline sf::Vector2<T> ph::Rect<T>::getBottomLeft() const
+sf::Vector2<T> ph::Rect<T>::getBottomLeft() const
 {
 	return { left, bottom() };
 }
 
 template<typename T>
-inline sf::Vector2<T> ph::Rect<T>::getBottomRight() const
+sf::Vector2<T> ph::Rect<T>::getBottomRight() const
 {
 	return { right(), bottom() };
 }
