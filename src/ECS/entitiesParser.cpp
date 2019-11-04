@@ -70,6 +70,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		return;
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
+		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Health",	               &EntitiesParser::parseHealth},
@@ -77,8 +78,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Player",                 &EntitiesParser::parsePlayer},
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Spawner",                &EntitiesParser::parseSpawner},
-		{"Position",               &EntitiesParser::parsePosition},
-		{"Size",                   &EntitiesParser::parseSize},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
@@ -98,18 +97,13 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 //NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates
 //		so it's probably the best option
 
-void EntitiesParser::parsePosition(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float x = entityComponentNode.getAttribute("x").toFloat();
 	float y = entityComponentNode.getAttribute("y").toFloat();
-	mUsedRegistry->assign_or_replace<component::Position>(entity, x, y);
-}
-
-void EntitiesParser::parseSize(const Xml& entityComponentNode, entt::entity& entity)
-{
 	float width = entityComponentNode.getAttribute("width").toFloat();
 	float height = entityComponentNode.getAttribute("height").toFloat();
-	mUsedRegistry->assign_or_replace<component::Size>(entity, width, height);
+	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, ph::FloatRect(x, y, width, height));
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)

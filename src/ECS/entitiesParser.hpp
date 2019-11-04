@@ -19,8 +19,7 @@ private:
 	void parseEntities(const Xml& entitiesNode);
 	void parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity);
 
-	void parsePosition(const Xml& entityComponentNode, entt::entity& entity);
-	void parseSize(const Xml& entityComponentNode, entt::entity& entity);
+	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);

@@ -5,11 +5,11 @@ namespace ph::system {
 	
 	void Movement::update(float seconds)
 	{
-		auto view = mRegistry.view<component::Position, component::Velocity>();
+		auto view = mRegistry.view<component::BodyRect, component::Velocity>();
 
-		view.each([seconds](component::Position& pos, const component::Velocity& vel) {
-			pos.x += vel.dx * seconds;
-			pos.y += vel.dy * seconds;
+		view.each([seconds](component::BodyRect& body, const component::Velocity& vel) {
+			body.rect.left += vel.dx * seconds;
+			body.rect.top  += vel.dy * seconds;
 			});
 	}
 }
