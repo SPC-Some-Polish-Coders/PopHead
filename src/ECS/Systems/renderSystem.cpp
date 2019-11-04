@@ -6,27 +6,38 @@ namespace ph::system {
 
 RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 	:System(registry)
+	,mCamera()
 	,mWindow(window)
 {
 }
 
 void RenderSystem::update(float seconds)
 {
-	//auto view = mRegistry.view<component::Position, component::Size>();
+	auto view = mRegistry.view<component::Position, component::Size>();
 		
 	// TODO_ren: Move camera somewhere. To separate system for example.
-	/*Camera camera;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-		camera.zoom(1.04f);
+		mCamera.zoom(1.04f);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-		camera.zoom(0.96f);
-	*/
-	// NOTE: beginScene() should be probably where endScene() is
-	//Renderer::beginScene(camera);
+		mCamera.zoom(0.96f);
 
-	/*view.each([this](const component::Position sprite, const component::Size size) {
-		Renderer::submitQuad()
-	});*/
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		mCamera.move({-1.f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		mCamera.move({1.f, 0.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		mCamera.move({0.f, -1.f});
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		mCamera.move({0.f, 1.f});
+	
+	// NOTE: beginScene() should be probably where endScene() is
+	Renderer::beginScene(mCamera);
+	Texture texture("resources/textures/vehicles/car.png");
+	Renderer::submitQuad(texture, {10.f, 10.f}, texture.getSize());
+
+	view.each([this](const component::Position position, const component::Size size) {
+		Renderer::submitQuad(sf::Color::Yellow, {position.x, position.y}, {(int)size.width, (int)size.height});
+	});
 }
 
 }

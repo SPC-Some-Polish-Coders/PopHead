@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/system.hpp"
+#include "Renderer/camera.hpp"
 
 namespace sf {
 	class Window;	
@@ -15,6 +16,7 @@ public:
 
 	void update(float seconds) override;
 private:
+	Camera mCamera;
 	sf::Window& mWindow;
 };
 
