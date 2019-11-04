@@ -6,7 +6,8 @@
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
-        <component name="Velocity" dx="2.0" dy="2.0" />
+        <component name="Position" x="0.0" y="0.0" />
+        <component name="Size" width="20.0" height="20.0" />
     </entityTemplate>
 
 
@@ -88,7 +89,7 @@
 
 <entities>
     <entity sourceTemplate="Player">
-        <component name="Position" x="0" y="0"></component>
+      <component name="Position" x="200" y="100" />
     </entity>
 
     <entity sourceTemplate="Zombie"/>

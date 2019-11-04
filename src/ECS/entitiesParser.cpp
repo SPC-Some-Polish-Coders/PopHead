@@ -70,20 +70,21 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		return;
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
-		{"Shader",			&EntitiesParser::parseShader},
-		{"Health",			&EntitiesParser::parseHealth},
-		{"Medkit",			&EntitiesParser::parseMedkit},
-		{"Player",			&EntitiesParser::parsePlayer},
-		{"Bullet",			&EntitiesParser::parseBullet},
-		{"Spawner",			&EntitiesParser::parseSpawner},
-		{"Position",		&EntitiesParser::parsePosition},
-		{"Velocity",		&EntitiesParser::parseVelocity},
-		{"Animation",		&EntitiesParser::parseAnimation},
-		{"GunAttacker",		&EntitiesParser::parseGunAttacker},
-		{"VertexArray",		&EntitiesParser::parseVertexArray},
-		{"MeleeAttacker",	&EntitiesParser::parseMeleeAttacker},
-		{"StaticCollisionBody",			&EntitiesParser::parseStaticCollisionBody},
-		{"KinematicCollisionBody",		&EntitiesParser::parseKinematicCollisionBody}
+		{"Shader",                 &EntitiesParser::parseShader},
+		{"Health",	               &EntitiesParser::parseHealth},
+		{"Medkit",	               &EntitiesParser::parseMedkit},
+		{"Player",                 &EntitiesParser::parsePlayer},
+		{"Bullet",                 &EntitiesParser::parseBullet},
+		{"Spawner",                &EntitiesParser::parseSpawner},
+		{"Position",               &EntitiesParser::parsePosition},
+		{"Size",                   &EntitiesParser::parseSize},
+		{"Velocity",               &EntitiesParser::parseVelocity},
+		{"Animation",              &EntitiesParser::parseAnimation},
+		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
+		{"VertexArray",            &EntitiesParser::parseVertexArray},
+		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
+		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
+		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -101,6 +102,13 @@ void EntitiesParser::parsePosition(const Xml& entityComponentNode, entt::entity&
 	float x = entityComponentNode.getAttribute("x").toFloat();
 	float y = entityComponentNode.getAttribute("y").toFloat();
 	mUsedRegistry->assign_or_replace<component::Position>(entity, x, y);
+}
+
+void EntitiesParser::parseSize(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float width = entityComponentNode.getAttribute("width").toFloat();
+	float height = entityComponentNode.getAttribute("height").toFloat();
+	mUsedRegistry->assign_or_replace<component::Size>(entity, width, height);
 }
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)

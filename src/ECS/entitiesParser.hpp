@@ -20,6 +20,7 @@ private:
 	void parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity);
 
 	void parsePosition(const Xml& entityComponentNode, entt::entity& entity);
+	void parseSize(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);
