@@ -8,6 +8,8 @@
         <component name="Player" />
         <component name="Position" x="0.0" y="0.0" />
         <component name="Size" width="20.0" height="20.0" />
+        <component name="CharacterSpeed" speed="100" />
+        <component name="Velocity" dx="0" dy="0" />
     </entityTemplate>
 
 
