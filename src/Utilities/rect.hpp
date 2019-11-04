@@ -23,6 +23,8 @@ public:
 	sf::Vector2<T> getTopRight() const;
 	sf::Vector2<T> getBottomLeft() const;
 	sf::Vector2<T> getBottomRight() const;
+	
+	sf::Vector2<T> getSize() const;
 
 	bool containsIncludingBounds(const sf::Vector2<T>& point) const;
 

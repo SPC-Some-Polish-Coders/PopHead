@@ -56,7 +56,13 @@ inline sf::Vector2<T> ph::Rect<T>::getBottomRight() const
 }
 
 template<typename T>
-inline bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) const
+sf::Vector2<T> ph::Rect<T>::getSize() const
+{
+	return { width, height };
+}
+
+template<typename T>
+bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) const
 {
 	auto r = right();
 	auto b = bottom();
