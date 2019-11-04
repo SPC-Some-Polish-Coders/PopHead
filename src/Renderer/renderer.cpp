@@ -140,6 +140,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray->bind();
 	defaultFramebufferShader->bind();
+	currentlyBoundShader = defaultFramebufferShader;
 	framebuffer->bindTextureColorBuffer();
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
