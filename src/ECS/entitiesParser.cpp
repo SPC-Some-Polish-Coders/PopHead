@@ -70,6 +70,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		return;
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
+		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Health",	               &EntitiesParser::parseHealth},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
@@ -109,6 +110,12 @@ void EntitiesParser::parseSize(const Xml& entityComponentNode, entt::entity& ent
 	float width = entityComponentNode.getAttribute("width").toFloat();
 	float height = entityComponentNode.getAttribute("height").toFloat();
 	mUsedRegistry->assign_or_replace<component::Size>(entity, width, height);
+}
+
+void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float speed = entityComponentNode.getAttribute("speed").toFloat();
+	mUsedRegistry->assign_or_replace<component::CharacterSpeed>(entity, speed);
 }
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
