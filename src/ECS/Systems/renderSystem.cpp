@@ -39,17 +39,22 @@ void RenderSystem::update(float seconds)
 		Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 
-	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TexturePtr>();
+	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TexturePtr>(entt::exclude<component::BodyRect>);
 	bodyTextureView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef) {
 		Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 
-	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::ShaderPtr>();
+	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::ShaderPtr>(entt::exclude<component::TextureRect>);
 	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::ShaderPtr shaderRef) {
 		Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
+	
+	auto bodyTextureTextureRectView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::TextureRect>(entt::exclude<component::ShaderPtr>);
+	bodyTextureTextureRectView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::TextureRect& textureRect) {
+		Renderer::submitQuad(*textureRef.texture, textureRect.rect, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
 
-	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TexturePtr, component::Color>();
+	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TexturePtr, component::Color>(entt::exclude<component::TextureRect>);
 	bodyTextureColorView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::Color& color) {
 		Renderer::submitQuad(*textureRef.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});

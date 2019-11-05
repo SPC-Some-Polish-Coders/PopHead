@@ -71,7 +71,9 @@
 
 
     <entityTemplate name="Lever">
-
+        <component name="BodyRect" x="0.0" y="0.0" width="7" height="15" />
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="7" height="15" />
     </entityTemplate>
 
 
@@ -109,9 +111,11 @@
         <component name="BodyRect" x="0.0" y="120.0" width="30.0" height="20.0" />
     </entity>
 
-  <entity sourceTemplate="ColorSquare">
-        <component name="Color" r="200" g="200" b="10" a="255"/>
-  </entity>
+    <entity sourceTemplate="ColorSquare">
+          <component name="Color" r="200" g="200" b="10" a="255"/>
+    </entity>
+
+    <entity sourceTemplate="Lever"/>
   
     <entity sourceTemplate="Zombie"/>
     

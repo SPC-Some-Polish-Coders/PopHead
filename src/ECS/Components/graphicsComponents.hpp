@@ -14,6 +14,11 @@ namespace component {
 		Texture* texture;
 	};
 
+	struct TextureRect
+	{
+		IntRect rect;
+	};
+
 	struct ShaderPtr
 	{
 		Shader* shader;

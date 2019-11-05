@@ -85,6 +85,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Spawner",                &EntitiesParser::parseSpawner},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
+		{"TextureRect",            &EntitiesParser::parseTextureRect},
 		{"Color",                  &EntitiesParser::parseColor},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Animation",              &EntitiesParser::parseAnimation},
@@ -187,6 +188,15 @@ void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& 
 	}
 	else
 		PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture!");
+}
+
+void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const int x = entityComponentNode.getAttribute("x").toInt();
+	const int y = entityComponentNode.getAttribute("y").toInt();
+	const int width = entityComponentNode.getAttribute("width").toInt();
+	const int height = entityComponentNode.getAttribute("height").toInt();
+	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, IntRect(x, y, width, height));
 }
 
 void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& entity)

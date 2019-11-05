@@ -32,6 +32,7 @@ private:
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
+	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
