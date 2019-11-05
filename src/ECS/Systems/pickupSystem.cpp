@@ -7,7 +7,7 @@ namespace ph::system {
 
 	void PickupMedkit::update(float seconds)
 	{
-		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
+		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
 		auto itemView = mRegistry.view<component::Medkit, component::BodyRect>();
 
 		for (auto player : playerView)
@@ -35,8 +35,8 @@ namespace ph::system {
 
 	void PickupBullet::update(float seconds)
 	{
-		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
-		auto itemView = mRegistry.view<component::Medkit, component::BodyRect>();
+		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::GunAttacker>();
+		auto itemView = mRegistry.view<component::Bullet, component::BodyRect>();
 
 		for (auto player : playerView)
 		{
