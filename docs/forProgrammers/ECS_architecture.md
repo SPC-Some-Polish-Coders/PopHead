@@ -80,12 +80,12 @@ This table is very important for multithreading of systems, so it **must be alwa
         <td>R</td>
     </tr>
     <tr>
-        <td>Position</td>
+        <td>BodyRect</td>
         <td>W</td>
     </tr>
     <tr>
         <td rowspan=2>SpritesSync</td>
-        <td>Position</td>
+        <td>BodyRect</td>
         <td>R</td>
     </tr>
     <tr>
@@ -111,17 +111,14 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>R</td>
     </tr>
   <tr>
-      <td rowspan=6>PickupMedkit</td>
+      <td rowspan=5>PickupMedkit</td>
       <td>Health</td>
       <td>W</td>
     </tr>
       <td>TaggedToDestroy</td>
       <td>W</td>
       </tr>
-    <td>Position</td>
-  <td>R</td>
-      </tr>
-    <td>Size</td>
+    <td>BodyRect</td>
     <td>R</td>    
   </tr>
       <td>Medkit</td>
@@ -130,12 +127,9 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>Player</td>
       <td>R</td>
         <tr>
-      <td rowspan=5>PickupBullet</td>
-    <td>Position</td>
+      <td rowspan=4>PickupBullet</td>
+    <td>BodyRect</td>
   <td>R</td>
-      </tr>
-    <td>Size</td>
-    <td>R</td>    
   </tr>
       <td>GunAttacker</td>
       <td>W</td>
