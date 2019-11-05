@@ -6,7 +6,7 @@
 
 namespace ph::system {
 
-	class PlayerInput : public System
+	class PlayerMovementInput : public System
 	{
 	public:
 		using System::System;

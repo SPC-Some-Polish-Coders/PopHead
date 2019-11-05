@@ -54,7 +54,7 @@ entt::registry& Scene::getRegistry()
 
 void Scene::initiateSystemsQueue(sf::Window& window)
 {
-	mSystemsQueue.appendSystem<system::PlayerInput>();
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();

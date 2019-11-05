@@ -9,7 +9,7 @@
 
 namespace ph::system {
 
-	void PlayerInput::update(float seconds)
+	void PlayerMovementInput::update(float seconds)
 	{
 		const auto playerDirection = getPlayerDirection();
 
@@ -22,7 +22,7 @@ namespace ph::system {
 			});
 	}
 
-	sf::Vector2f PlayerInput::getPlayerDirection() const
+	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
 	{
 		bool up    = ActionEventManager::isActionPressed("movingUp");
 		bool down  = ActionEventManager::isActionPressed("movingDown");
