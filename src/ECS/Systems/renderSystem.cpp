@@ -15,7 +15,6 @@ RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 
 void RenderSystem::update(float seconds)
 {
-		
 	// TODO_ren: Move camera somewhere. To separate system for example.
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
 		mCamera.zoom(1.04f);
@@ -34,30 +33,81 @@ void RenderSystem::update(float seconds)
 	// NOTE: beginScene() should be probably where endScene() is
 	Renderer::beginScene(mCamera);
 
-	auto bodyColorView = mRegistry.view<component::BodyRect, component::Color>(entt::exclude<component::TexturePtr>);
-	bodyColorView.each([this](const component::BodyRect& body, const component::Color& color) {
-		Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
-	});
+	submitSingleColorSprites();
+	submitTextureSprites();
+	submitTextureSpritesWithCustomShader();
+	submitTextureSpritesWithTextureRect();
+	submitTextureSpritesWithSingleColorMultiplicationRect();
+}
 
-	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TexturePtr>(entt::exclude<component::BodyRect>);
-	bodyTextureView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef) {
-		Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
-	});
+void RenderSystem::submitSingleColorSprites() const
+{
+	auto bodyColorView = mRegistry.view<
+		component::BodyRect, component::Color>
+		(entt::exclude<component::TexturePtr>);
 
-	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::ShaderPtr>(entt::exclude<component::TextureRect>);
-	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::ShaderPtr shaderRef) {
-		Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
-	});
+	bodyColorView.each([this]
+		(const component::BodyRect& body, const component::Color& color)
+		{
+			Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+		}
+	);
+}
+
+void RenderSystem::submitTextureSprites() const
+{
+	auto bodyTextureView = mRegistry.view<
+		component::BodyRect, component::TexturePtr>
+		(entt::exclude<component::BodyRect>);
+
+	bodyTextureView.each([this]
+		(const component::BodyRect& body, const component::TexturePtr textureRef) 
+		{
+			Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+		}
+	);
+}
+
+void RenderSystem::submitTextureSpritesWithCustomShader() const
+{
+	auto bodyTextureShaderView = mRegistry.view<
+		const component::BodyRect, const component::TexturePtr, const component::ShaderPtr>
+		(entt::exclude<component::TextureRect>);
 	
-	auto bodyTextureTextureRectView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::TextureRect>(entt::exclude<component::ShaderPtr>);
-	bodyTextureTextureRectView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::TextureRect& textureRect) {
-		Renderer::submitQuad(*textureRef.texture, textureRect.rect, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
-	});
+	bodyTextureShaderView.each([this]
+		(const component::BodyRect& body, const component::TexturePtr textureRef, const component::ShaderPtr shaderRef) 
+		{
+			Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+		}
+	);
+}
 
-	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TexturePtr, component::Color>(entt::exclude<component::TextureRect>);
-	bodyTextureColorView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::Color& color) {
-		Renderer::submitQuad(*textureRef.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
-	});
+void RenderSystem::submitTextureSpritesWithTextureRect() const
+{
+	auto bodyTextureTextureRectView = mRegistry.view<
+		const component::BodyRect, const component::TexturePtr, const component::TextureRect>
+		(entt::exclude<component::ShaderPtr>);
+
+	bodyTextureTextureRectView.each([this]
+		(const component::BodyRect& body, const component::TexturePtr textureRef, const component::TextureRect& textureRect) 
+		{
+			Renderer::submitQuad(*textureRef.texture, textureRect.rect, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+		}
+	);
+}
+
+void RenderSystem::submitTextureSpritesWithSingleColorMultiplicationRect() const
+{
+	auto bodyTextureColorView = mRegistry.view<
+		component::BodyRect, component::TexturePtr, component::Color>
+		(entt::exclude<component::TextureRect>);
+
+	bodyTextureColorView.each([this]
+		(const component::BodyRect& body, const component::TexturePtr textureRef, const component::Color& color) 
+		{
+			Renderer::submitQuad(*textureRef.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+		}
+	);
 }
 
 }

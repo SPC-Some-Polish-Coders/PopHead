@@ -15,6 +15,14 @@ public:
 	RenderSystem(entt::registry& registry, sf::Window& window);
 
 	void update(float seconds) override;
+
+private:
+	void submitSingleColorSprites() const;
+	void submitTextureSprites() const;
+	void submitTextureSpritesWithCustomShader() const;
+	void submitTextureSpritesWithTextureRect() const;
+	void submitTextureSpritesWithSingleColorMultiplicationRect() const;
+
 private:
 	Camera mCamera;
 	sf::Window& mWindow;
