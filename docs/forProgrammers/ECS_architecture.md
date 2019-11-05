@@ -111,16 +111,13 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>R</td>
     </tr>
   <tr>
-      <td rowspan=8>PickupSystem</td>
+      <td rowspan=6>PickupMedkit</td>
       <td>Health</td>
       <td>W</td>
     </tr>
       <td>TaggedToDestroy</td>
       <td>W</td>
       </tr>
-      <td>GunAttacker</td>
-      <td>W</td>
-    </tr>
     <td>Position</td>
   <td>R</td>
       </tr>
@@ -130,11 +127,25 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>Medkit</td>
       <td>R</td>
   </tr>
-      <td>Bullet</td>
-      <td>R</td>
-      </tr>
       <td>Player</td>
       <td>R</td>
+        <tr>
+      <td rowspan=6>PickupBullet</td>
+    <td>Position</td>
+  <td>R</td>
+      </tr>
+    <td>Size</td>
+    <td>R</td>    
+  </tr>
+      <td>GunAttacker</td>
+      <td>W</td>
+  </tr>
+      <td>Player</td>
+      <td>R</td>
+       </tr>
+      <td>Bullet</td>
+    <td>R</td>    
+  </tr>
 </table>
     
 ### Useful links:
