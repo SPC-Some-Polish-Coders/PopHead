@@ -31,7 +31,7 @@ project "PopHead"
         root_dir .. "vendor/SFML_2.5.1/include",
 		root_dir .. "vendor/glew-1.5.4/include",
 		root_dir .. "vendor/stb",
-        root_dir .. "vendor/entt-3.1.1/src"
+        root_dir .. "vendor/entt-3.2.0/src"
     }
 
     libdirs{
