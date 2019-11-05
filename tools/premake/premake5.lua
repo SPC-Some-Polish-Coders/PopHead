@@ -116,7 +116,7 @@ project "Tests"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
-        root_dir .. "vendor/entt-3.1.1/src",
+        root_dir .. "vendor/entt-3.2.0/src",
         root_dir .. "vendor/catch2"
     }
 
