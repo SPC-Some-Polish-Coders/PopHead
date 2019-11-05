@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entt/entity/registry.hpp"
+#include "Resources/resourceHolder.hpp"
 
 namespace ph {
 
@@ -12,7 +13,7 @@ class EntitiesParser
 public:
 	EntitiesParser();
 
-	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& usedRegistry);
+	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& usedRegistry, TextureHolder&);
 
 private:
 	void parseTemplates(const Xml& entityTemplatesNode);
@@ -30,6 +31,7 @@ private:
 	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
+	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
@@ -40,6 +42,7 @@ private:
 private:
 	EntitiesTemplateStorage* mTemplateStorage;
 	entt::registry* mUsedRegistry;
+	TextureHolder* mTextureHolder;
 };
 
 }

@@ -1,6 +1,7 @@
 #include "ECS/entitiesParser.hpp"
 #include "Utilities/xml.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
@@ -10,11 +11,15 @@ namespace ph {
 EntitiesParser::EntitiesParser()
 	:mTemplateStorage(nullptr)
 	,mUsedRegistry(nullptr)
+	,mTextureHolder(nullptr)
 {
 }
 
-void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
+void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
+                               TextureHolder& textureHolder)
 {
+	mTextureHolder = &textureHolder;
+
 	mTemplateStorage = &templateStorage;
 	Xml entitiesFile;
 	entitiesFile.loadFromFile(filePath);
@@ -79,6 +84,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Position",               &EntitiesParser::parsePosition},
 		{"Size",                   &EntitiesParser::parseSize},
 		{"Velocity",               &EntitiesParser::parseVelocity},
+		{"Texture",                &EntitiesParser::parseTexture},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
@@ -166,6 +172,18 @@ void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& e
 {
 	int numOfBullets = entityComponentNode.getAttribute("numOfBullets").toInt();
 	mUsedRegistry->assign_or_replace<component::Bullet>(entity, numOfBullets);
+}
+
+void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const std::string filepath = entityComponentNode.getAttribute("filepath").toString();
+	if(mTextureHolder->load(filepath))
+	{
+		auto& texture = mTextureHolder->get(filepath);
+		mUsedRegistry->assign_or_replace<component::TextureRef>(entity, &texture);
+	}
+	else
+		PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture!");
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)

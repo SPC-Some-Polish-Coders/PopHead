@@ -5,9 +5,10 @@
 
 namespace ph {
 
-template<typename GuiParser, typename MapParser/*, typename GameObjectsParser*/, typename ResourcesParser, typename AudioParser, typename EnttParser>
-SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, ResourcesParser, AudioParser, typename EnttParser>
-	::SceneParser(GameData* const gameData/*, GameObject& root*/, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry, const std::string& sceneFileName)
+template<typename GuiParser, typename MapParser, typename ResourcesParser, typename AudioParser, typename EnttParser>
+SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttParser>
+	::SceneParser(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
+                  entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
@@ -15,12 +16,12 @@ SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, ResourcesParser, AudioP
 	sceneFile.loadFromFile(sceneFileName);
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
-	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
+	//parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	//parse<MapParser>(gameData, sceneLinksNode, "map");
 	//parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	//parse<AudioParser>(gameData, sceneLinksNode, "audio");
 	//parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
-	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry);
+	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry, textureHolder);
 }
 
 template<typename GuiParser, typename MapParser/*, typename GameObjectsParser*/, typename ResourcesParser, typename AudioParser, typename EnttParser>
@@ -40,14 +41,15 @@ void SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, ResourcesParser, A
 
 template<typename GuiParser, typename MapParser, typename ResourcesParser, typename AudioParser, typename EnttParser>
 void SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, EnttParser>
-::parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
+::parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
+                   TextureHolder& textureHolder)
 {
 	const auto entitiesNode = sceneLinksNode.getChildren("ecsObjects");
 	if (entitiesNode.size() == 1)
 	{
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename").toString();
 		EnttParser parser;
-		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry);
+		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
 	}
 }
 

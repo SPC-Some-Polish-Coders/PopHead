@@ -1,5 +1,6 @@
 #include "renderSystem.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
 
 namespace ph::system {
@@ -13,7 +14,7 @@ RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 
 void RenderSystem::update(float seconds)
 {
-	auto view = mRegistry.view<component::Position, component::Size>();
+	auto view = mRegistry.view<component::Position, component::Size, component::TextureRef>();
 		
 	// TODO_ren: Move camera somewhere. To separate system for example.
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
@@ -35,8 +36,8 @@ void RenderSystem::update(float seconds)
 	Texture texture("resources/textures/vehicles/car.png");
 	Renderer::submitQuad(texture, {10.f, 10.f}, texture.getSize());
 
-	view.each([this](const component::Position position, const component::Size size) {
-		Renderer::submitQuad(sf::Color::Yellow, {position.x, position.y}, {(int)size.width, (int)size.height});
+	view.each([this](const component::Position position, const component::Size size, const component::TextureRef textureRef) {
+		Renderer::submitQuad(*textureRef.texture, {position.x, position.y}, {(int)size.width, (int)size.height});
 	});
 }
 
