@@ -130,7 +130,7 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>Player</td>
       <td>R</td>
         <tr>
-      <td rowspan=6>PickupBullet</td>
+      <td rowspan=5>PickupBullet</td>
     <td>Position</td>
   <td>R</td>
       </tr>
