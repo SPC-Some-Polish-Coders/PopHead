@@ -85,6 +85,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Spawner",                &EntitiesParser::parseSpawner},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
+		{"Color",                  &EntitiesParser::parseColor},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
@@ -186,6 +187,15 @@ void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& 
 	}
 	else
 		PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture!");
+}
+
+void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const auto r = entityComponentNode.getAttribute("r").toUnsignedChar();
+	const auto g = entityComponentNode.getAttribute("g").toUnsignedChar();
+	const auto b = entityComponentNode.getAttribute("b").toUnsignedChar();
+	const auto a = entityComponentNode.getAttribute("a").toUnsignedChar();
+	mUsedRegistry->assign_or_replace<component::Color>(entity, sf::Color(r, g, b, a));
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)

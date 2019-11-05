@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics/Color.hpp>
+
 namespace ph{
 
 class Texture;
@@ -17,4 +19,8 @@ namespace component {
 		Shader* shader;
 	};
 
+	struct Color
+	{
+		sf::Color color;
+	};
 }}

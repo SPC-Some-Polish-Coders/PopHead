@@ -335,6 +335,16 @@ unsigned Xml::toUnsigned() const
 	return Cast::toUnsigned(toString());
 }
 
+char Xml::toChar() const
+{
+	return static_cast<char>(std::stoi(toString()));
+}
+
+unsigned char Xml::toUnsignedChar() const
+{
+	return static_cast<unsigned char>(Cast::toUnsigned(toString()));
+}
+
 float Xml::toFloat() const
 {
 	return std::stof(toString());

@@ -42,6 +42,11 @@ void RenderSystem::update(float seconds)
 	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TextureRef textureRef, const component::ShaderRef shaderRef) {
 		Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
+
+	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TextureRef, component::Color>();
+	bodyTextureColorView.each([this](const component::BodyRect& body, const component::TextureRef textureRef, const component::Color& color) {
+		Renderer::submitQuad(*textureRef.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
 }
 
 }

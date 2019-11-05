@@ -27,6 +27,10 @@ public:
 
 	unsigned toUnsigned() const;
 
+	char toChar() const;
+
+	unsigned char toUnsignedChar() const;
+	
 	float toFloat() const;
 
 private:
