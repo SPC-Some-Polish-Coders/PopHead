@@ -2,6 +2,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
+#include "entt/entity/utility.hpp"
 
 namespace ph::system {
 
@@ -33,18 +34,23 @@ void RenderSystem::update(float seconds)
 	// NOTE: beginScene() should be probably where endScene() is
 	Renderer::beginScene(mCamera);
 
-	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TextureRef>();
-	bodyTextureView.each([this](const component::BodyRect& body, const component::TextureRef textureRef) {
+	auto bodyColorView = mRegistry.view<component::BodyRect, component::Color>(entt::exclude<component::TexturePtr>);
+	bodyColorView.each([this](const component::BodyRect& body, const component::Color& color) {
+		Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
+
+	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TexturePtr>();
+	bodyTextureView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef) {
 		Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 
-	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TextureRef, const component::ShaderRef>();
-	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TextureRef textureRef, const component::ShaderRef shaderRef) {
+	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TexturePtr, const component::ShaderPtr>();
+	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::ShaderPtr shaderRef) {
 		Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 
-	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TextureRef, component::Color>();
-	bodyTextureColorView.each([this](const component::BodyRect& body, const component::TextureRef textureRef, const component::Color& color) {
+	auto bodyTextureColorView = mRegistry.view<component::BodyRect, component::TexturePtr, component::Color>();
+	bodyTextureColorView.each([this](const component::BodyRect& body, const component::TexturePtr textureRef, const component::Color& color) {
 		Renderer::submitQuad(*textureRef.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 }

@@ -9,12 +9,12 @@ class Shader;
 
 namespace component {
 
-	struct TextureRef
+	struct TexturePtr
 	{
 		Texture* texture;
 	};
 
-	struct ShaderRef
+	struct ShaderPtr
 	{
 		Shader* shader;
 	};

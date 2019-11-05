@@ -89,8 +89,11 @@
         <component name="Player" />
     </entityTemplate>
 
-  
-    
+
+    <entityTemplate name="ColorSquare">
+      <component name="BodyRect" x="0.0" y="0.0" width="40.0" height="40.0" />
+      <component name="Color" r="255" g="255" b="255" a="255"/>
+    </entityTemplate>
   
     <entityTemplate name="Particles">
     </entityTemplate>
@@ -100,12 +103,15 @@
 <entities>
     <entity sourceTemplate="Player">
         <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
-        <component name="Color" r="100" g="255" b="100" a="255"/>
     </entity>
 
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="0.0" y="120.0" width="30.0" height="20.0" />
     </entity>
+
+  <entity sourceTemplate="ColorSquare">
+        <component name="Color" r="200" g="200" b="10" a="255"/>
+  </entity>
   
     <entity sourceTemplate="Zombie"/>
     

@@ -183,7 +183,7 @@ void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& 
 	if(mTextureHolder->load(filepath))
 	{
 		auto& texture = mTextureHolder->get(filepath);
-		mUsedRegistry->assign_or_replace<component::TextureRef>(entity, &texture);
+		mUsedRegistry->assign_or_replace<component::TexturePtr>(entity, &texture);
 	}
 	else
 		PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture!");
@@ -207,7 +207,7 @@ void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& e
 	auto& sl = ShaderLibrary::getInstance();
 	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str())) {
 		auto* shader = sl.get(shaderName);
-		mUsedRegistry->assign_or_replace<component::ShaderRef>(entity, shader);
+		mUsedRegistry->assign_or_replace<component::ShaderPtr>(entity, shader);
 	}
 	else
 		PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
