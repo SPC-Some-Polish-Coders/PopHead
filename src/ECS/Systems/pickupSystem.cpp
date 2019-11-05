@@ -12,13 +12,13 @@ namespace ph::system {
 
 		for (auto player : playerView)
 		{
-			auto &playerBody  = mRegistry.get<component::BodyRect>(player);
-			auto &playerHealth = mRegistry.get<component::Health>(player);
+			auto &playerBody  = playerView.get<component::BodyRect>(player);
+			auto &playerHealth = playerView.get<component::Health>(player);
 			
 			for (auto item : itemView)
 			{
-				auto &itemBody = mRegistry.get<component::BodyRect>(item);
-				auto &medkitMed = mRegistry.get<component::Medkit>(item);
+				auto &itemBody = itemView.get<component::BodyRect>(item);
+				auto &medkitMed = itemView.get<component::Medkit>(item);
 
 				if (playerBody.rect.doPositiveRectsIntersect(itemBody.rect))
 				{
@@ -44,13 +44,13 @@ namespace ph::system {
 
 		for (auto player : playerView)
 		{
-			auto& playerBody = mRegistry.get<component::BodyRect>(player);
-			auto& playerBullets = mRegistry.get<component::GunAttacker>(player);
+			auto& playerBody = playerView.get<component::BodyRect>(player);
+			auto& playerBullets = playerView.get<component::GunAttacker>(player);
 
 			for (auto item : itemView)
 			{
-				auto& itemBody = mRegistry.get<component::BodyRect>(item);
-				auto& bulletsToAdd = mRegistry.get<component::Bullet>(item);
+				auto& itemBody = itemView.get<component::BodyRect>(item);
+				auto& bulletsToAdd = itemView.get<component::Bullet>(item);
 
 				if (playerBody.rect.doPositiveRectsIntersect(itemBody.rect))
 				{
