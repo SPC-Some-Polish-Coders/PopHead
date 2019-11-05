@@ -62,7 +62,7 @@ void SceneManager::replaceAction()
 	{
 		mScene.reset(new Scene(mGameData->getWindow()));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake);
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 
 		//if (mGameData->getAIManager().isPlayerOnScene())
 			//mScene->setPlayerStatus(mLastPlayerStatus);
@@ -81,7 +81,7 @@ void SceneManager::replaceAction()
 	{
 		mScene.reset(new Scene(mGameData->getWindow()));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake);
+			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 	}
 
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");

@@ -9,6 +9,7 @@
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
+        <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
     </entityTemplate>
 
 
