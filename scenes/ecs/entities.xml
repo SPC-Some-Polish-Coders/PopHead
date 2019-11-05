@@ -60,6 +60,13 @@
     <entityTemplate name="Car">
         <component name="StaticCollisionBody" />
     </entityTemplate>
+  
+      <entityTemplate name="WeirdCar">
+        <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Texture" filepath="textures/vehicles/car.png" />
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl"/>
+    </entityTemplate>
 
 
     <entityTemplate name="Lever">
@@ -73,7 +80,6 @@
 
     <entityTemplate name="Medkit">
         <component name="VertexArray" />
-        <component name="Shader" />
         <component name="Medkit" addHealthPoints="25" />
     </entityTemplate>
 
@@ -82,8 +88,9 @@
         <component name="Player" />
     </entityTemplate>
 
-
-
+  
+    
+  
     <entityTemplate name="Particles">
     </entityTemplate>
 
@@ -94,6 +101,10 @@
         <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
     </entity>
 
+    <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="0.0" y="120.0" width="30.0" height="20.0" />
+    </entity>
+  
     <entity sourceTemplate="Zombie"/>
     
     <entity sourceTemplate="GateGuard">

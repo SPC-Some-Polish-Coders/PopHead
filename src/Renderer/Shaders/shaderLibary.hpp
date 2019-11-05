@@ -21,7 +21,7 @@ public:
 		return shaderLibary;
 	}
 
-	void loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
+	bool loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
 	void loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode);
 	Shader* get(const std::string& name);
 

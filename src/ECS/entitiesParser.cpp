@@ -5,6 +5,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
+#include "Renderer/Shaders/shaderLibary.hpp"
 
 namespace ph {
 
@@ -77,7 +78,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
-		{"Shader",                 &EntitiesParser::parseShader},
 		{"Health",	               &EntitiesParser::parseHealth},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
 		{"Player",                 &EntitiesParser::parsePlayer},
@@ -85,6 +85,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Spawner",                &EntitiesParser::parseSpawner},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
+		{"Shader",                 &EntitiesParser::parseShader},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
@@ -189,7 +190,17 @@ void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& 
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)
 {
+	const std::string shaderName = entityComponentNode.getAttribute("shaderName").toString();
+	const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath").toString();
+	const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath").toString();
 
+	auto& sl = ShaderLibrary::getInstance();
+	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str())) {
+		auto* shader = sl.get(shaderName);
+		mUsedRegistry->assign_or_replace<component::ShaderRef>(entity, shader);
+	}
+	else
+		PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
 }
 
 void EntitiesParser::parseAnimation(const Xml& entityComponentNode, entt::entity& entity)

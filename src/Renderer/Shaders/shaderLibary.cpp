@@ -3,13 +3,17 @@
 
 namespace ph {
 
-void ShaderLibrary::loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath)
+bool ShaderLibrary::loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath)
 {
 	if(mShaders.find(name) != mShaders.end())
-		return;
+		return true;
 	Shader shader;
-	shader.loadFromFile(vertexShaderFilepath, fragmentShaderFilepath);
-	mShaders[name] = shader;
+	if(shader.loadFromFile(vertexShaderFilepath, fragmentShaderFilepath)) {
+		mShaders[name] = shader;
+		return true;
+	}
+	else
+		return false;
 }
 
 void ShaderLibrary::loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode)

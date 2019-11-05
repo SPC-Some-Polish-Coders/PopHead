@@ -14,7 +14,6 @@ RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 
 void RenderSystem::update(float seconds)
 {
-	auto view = mRegistry.view<component::BodyRect, component::TextureRef>();
 		
 	// TODO_ren: Move camera somewhere. To separate system for example.
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
@@ -33,11 +32,15 @@ void RenderSystem::update(float seconds)
 	
 	// NOTE: beginScene() should be probably where endScene() is
 	Renderer::beginScene(mCamera);
-	Texture texture("resources/textures/vehicles/car.png");
-	Renderer::submitQuad(texture, {10.f, 10.f}, texture.getSize());
 
-	view.each([this](const component::BodyRect& body, const component::TextureRef textureRef) {
-		Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()) );
+	auto bodyTextureView = mRegistry.view<component::BodyRect, component::TextureRef>();
+	bodyTextureView.each([this](const component::BodyRect& body, const component::TextureRef textureRef) {
+		Renderer::submitQuad(*textureRef.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
+
+	auto bodyTextureShaderView = mRegistry.view<const component::BodyRect, const component::TextureRef, const component::ShaderRef>();
+	bodyTextureShaderView.each([this](const component::BodyRect& body, const component::TextureRef textureRef, const component::ShaderRef shaderRef) {
+		Renderer::submitQuad(*textureRef.texture, shaderRef.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 }
 
