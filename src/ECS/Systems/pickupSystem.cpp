@@ -23,15 +23,11 @@ namespace ph::system {
 				if (playerBody.rect.doPositiveRectsIntersect(itemBody.rect))
 				{
 					if (playerHealth.healthPoints + medkitMed.addHealthPoints < playerHealth.maxHealthPoints)
-					{
 						playerHealth.healthPoints += medkitMed.addHealthPoints;
-						mRegistry.assign<component::TaggedToDestroy>(item);
-					}
 					else
-					{
 						playerHealth.healthPoints = playerHealth.maxHealthPoints;
-						mRegistry.assign<component::TaggedToDestroy>(item);
-					}
+
+					mRegistry.assign<component::TaggedToDestroy>(item);
 				}
 			}
 		}
