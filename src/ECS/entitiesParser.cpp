@@ -86,8 +86,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
 		{"TextureRect",            &EntitiesParser::parseTextureRect},
-		{"Color",                  &EntitiesParser::parseColor},
 		{"Shader",                 &EntitiesParser::parseShader},
+		{"Color",                  &EntitiesParser::parseColor},
+		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
@@ -206,6 +207,12 @@ void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& en
 	const auto b = entityComponentNode.getAttribute("b").toUnsignedChar();
 	const auto a = entityComponentNode.getAttribute("a").toUnsignedChar();
 	mUsedRegistry->assign_or_replace<component::Color>(entity, sf::Color(r, g, b, a));
+}
+
+void EntitiesParser::parseRotation(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const float angle = entityComponentNode.getAttribute("angle").toFloat();
+	mUsedRegistry->assign_or_replace<component::Rotation>(entity, angle);
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)

@@ -33,8 +33,9 @@ private:
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
-	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
+	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
+	void parseRotation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
