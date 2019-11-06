@@ -68,6 +68,7 @@
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl"/>
+        <component name="Rotation" angle="0"/>
     </entityTemplate>
   
   <entityTemplate name="VeryWeirdCar">
@@ -142,6 +143,31 @@
 
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="120" width="20" height="20" />
+    </entity>
+      
+    <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="50" y="150" width="20" height="20" />
+        <component name="Rotation" angle="45"/>
+    </entity>
+  
+  <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="50" y="180" width="20" height="20" />
+        <component name="Rotation" angle="90"/>
+    </entity>
+  
+  <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="50" y="210" width="20" height="20" />
+        <component name="Rotation" angle="135"/>
+    </entity>
+      
+    <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="50" y="240" width="20" height="20" />
+        <component name="Rotation" angle="180"/>
+    </entity>
+  
+    <entity sourceTemplate="WeirdCar">
+        <component name="BodyRect" x="50" y="270" width="20" height="20" />
+        <component name="Rotation" angle="215"/>
     </entity>
   
     <entity sourceTemplate="VeryWeirdCar">

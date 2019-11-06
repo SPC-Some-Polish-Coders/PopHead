@@ -28,4 +28,9 @@ namespace component {
 	{
 		sf::Color color;
 	};
+
+	struct Rotation
+	{
+		float angle;
+	};
 }}
