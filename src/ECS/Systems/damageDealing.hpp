@@ -10,5 +10,8 @@ namespace ph::system {
 		using System::System;
 
 		void update(float seconds) override;
+
+	private:
+		void handleEnemiesOnDelay();
 	};
 }
