@@ -22,8 +22,9 @@ private:
 	void submitTextureSpritesWithCustomShader() const;
 	void submitTextureSpritesWithTextureRect() const;
 	void submitTextureSpritesWithTextureRectAndCustomShader() const;
-	void submitTextureSpritesWithSingleColorMultiplicationRect() const;
+	void submitTextureSpritesWithSingleColorMultiplication() const;
 	void submitTextureSpritesWithSingleColorAndCustomShader() const;
+	void submitTextureSpritesWithSingleColorAndTextureRect() const;
 
 private:
 	Camera mCamera;
