@@ -16,4 +16,11 @@ namespace ph::system {
 	private:
 		sf::Vector2f getPlayerDirection() const;
 	};
+	class PlayerAttackType : public System
+	{
+	public:
+		using System::System;
+
+		void update(float seconds) override;
+	};
 }
