@@ -84,17 +84,24 @@ This table is very important for multithreading of systems, so it **must be alwa
         <td>W</td>
     </tr>
     <tr>
-        <td rowspan=2>SpritesSync</td>
+        <td rowspan=5>RenderSystem</td>
         <td>BodyRect</td>
         <td>R</td>
     </tr>
     <tr>
-        <td>Sprite</td>
-        <td>W</td>
+        <td>TexturePtr</td>
+        <td>R</td>
     </tr>
     <tr>
-        <td>Renderer</td>
-        <td>Sprite</td>
+        <td>TextureRect</td>
+        <td>R</td>
+    </tr>
+    <tr>
+        <td>ShaderPtr</td>
+        <td>R</td>
+    </tr>        
+    <tr>
+        <td>Color</td>
         <td>R</td>
     </tr>
     <tr>
@@ -114,7 +121,7 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td rowspan=5>PickupMedkit</td>
       <td>Health</td>
       <td>W</td>
-    </tr>
+  </tr>
       <td>TaggedToDestroy</td>
       <td>W</td>
       </tr>
