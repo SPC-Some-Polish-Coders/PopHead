@@ -90,6 +90,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Color",                  &EntitiesParser::parseColor},
 		{"Rotation",               &EntitiesParser::parseRotation},
+		{"Camera",                 &EntitiesParser::parseCamera},
 		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
@@ -227,6 +228,16 @@ void EntitiesParser::parseRotation(const Xml& entityComponentNode, entt::entity&
 {
 	const float angle = entityComponentNode.getAttribute("angle").toFloat();
 	mUsedRegistry->assign_or_replace<component::Rotation>(entity, angle);
+}
+
+void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const float x = entityComponentNode.getAttribute("x").toFloat();
+	const float y = entityComponentNode.getAttribute("y").toFloat();
+	const float width = entityComponentNode.getAttribute("width").toFloat();
+	const float height = entityComponentNode.getAttribute("height").toFloat();
+	const unsigned priority = entityComponentNode.getAttribute("priority").toUnsigned();
+	mUsedRegistry->assign_or_replace<component::Camera>(entity, Camera({x, y, width, height}), priority);
 }
 
 void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)

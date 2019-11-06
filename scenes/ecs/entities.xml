@@ -11,6 +11,7 @@
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
         <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
+        <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
     </entityTemplate>
 
 

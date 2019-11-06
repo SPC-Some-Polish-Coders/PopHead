@@ -2,36 +2,24 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
+#include "Renderer/camera.hpp"
 #include "entt/entity/utility.hpp"
+
+namespace {
+	ph::Camera defaultCamera;
+}
 
 namespace ph::system {
 
 RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 	:System(registry)
-	,mCamera()
 	,mWindow(window)
 {
 }
 
 void RenderSystem::update(float seconds)
 {
-	// TODO_ren: Move camera somewhere. To separate system for example.
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-		mCamera.zoom(1.04f);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
-		mCamera.zoom(0.96f);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		mCamera.move({-1.f, 0.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		mCamera.move({1.f, 0.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		mCamera.move({0.f, -1.f});
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		mCamera.move({0.f, 1.f});
-	
-	// NOTE: beginScene() should be probably where endScene() is
-	Renderer::beginScene(mCamera);
+	Renderer::beginScene(getCameraWithTheBiggestPriority());
 
 	submitSingleColorSprites();
 	submitTextureSprites();
@@ -53,13 +41,29 @@ void RenderSystem::update(float seconds)
 	submitTextureSpritesWithSingleColorTextureRectCustomShaderAndRotation();
 }
 
+Camera& RenderSystem::getCameraWithTheBiggestPriority()
+{
+	auto view = mRegistry.view<component::Camera>();
+
+	unsigned currentCameraPriority = 0;
+	Camera* currentCamera = &defaultCamera;
+	view.each([&currentCameraPriority, &currentCamera](component::Camera& camera)
+	{
+		if(camera.priority > currentCameraPriority) {
+			currentCameraPriority = camera.priority;
+			currentCamera = &camera.camera;
+		}
+	});
+	return *currentCamera;
+}
+
 void RenderSystem::submitSingleColorSprites() const
 {
-	auto bodyColorView = mRegistry.view
+	auto view = mRegistry.view
 		<component::BodyRect, component::Color>
 		(entt::exclude<component::TexturePtr, component::Rotation>);
 
-	bodyColorView.each([this](const component::BodyRect& body, const component::Color& color)
+	view.each([this](const component::BodyRect& body, const component::Color& color)
 	{
 		Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
@@ -67,11 +71,11 @@ void RenderSystem::submitSingleColorSprites() const
 
 void RenderSystem::submitTextureSprites() const
 {
-	auto bodyTextureView = mRegistry.view
+	auto view = mRegistry.view
 		<component::BodyRect, component::TexturePtr>
 		(entt::exclude<component::BodyRect, component::Rotation>);
 
-	bodyTextureView.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr) 
+	view.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr) 
 	{
 		Renderer::submitQuad(*texturePtr.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
@@ -168,11 +172,11 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndCustomShader
 
 void RenderSystem::submitSingleColorSpritesWithRotation() const
 {
-	auto bodyColorView = mRegistry.view
+	auto view = mRegistry.view
 		<component::BodyRect, component::Color, component::Rotation>
 		(entt::exclude<component::TexturePtr>);
 
-	bodyColorView.each([this](const component::BodyRect& body, const component::Color& color, const component::Rotation rotation)
+	view.each([this](const component::BodyRect& body, const component::Color& color, const component::Rotation rotation)
 	{
 		Renderer::submitQuad(color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()), rotation.angle);
 	});
@@ -180,11 +184,11 @@ void RenderSystem::submitSingleColorSpritesWithRotation() const
 
 void RenderSystem::submitTextureSpritesWithRotation() const
 {
-	auto bodyTextureView = mRegistry.view
+	auto view = mRegistry.view
 		<component::BodyRect, component::TexturePtr, component::Rotation>
 		(entt::exclude<component::BodyRect>);
 
-	bodyTextureView.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr, const component::Rotation rotation)
+	view.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr, const component::Rotation rotation)
 	{
 		Renderer::submitQuad(*texturePtr.texture, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()), rotation.angle);
 	});

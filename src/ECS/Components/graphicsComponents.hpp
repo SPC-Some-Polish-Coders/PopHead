@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
+#include "Renderer/camera.hpp"
 
 namespace ph{
 
@@ -32,5 +33,11 @@ namespace component {
 	struct Rotation
 	{
 		float angle;
+	};
+
+	struct Camera
+	{
+		ph::Camera camera;
+		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
 }}

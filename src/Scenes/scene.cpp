@@ -1,11 +1,12 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
 #include "gameData.hpp"
+#include "ECS/Systems/playerInput.hpp"
+#include "ECS/Systems/movement.hpp"
+#include "ECS/Systems/playerCameraMovement.hpp"
 #include "ECS/Systems/dyingCharacters.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
-#include "ECS/Systems/movement.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
-#include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/renderSystem.hpp"
 #include "ECS/Systems/damageDealing.hpp"
 
@@ -57,6 +58,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 {
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
