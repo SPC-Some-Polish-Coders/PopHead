@@ -75,6 +75,13 @@
         <component name="Texture" filepath="textures/others/lever.png" />
         <component name="TextureRect" x="0" y="0" width="7" height="15" />
     </entityTemplate>
+  
+  <entityTemplate name="WeirdLever">
+        <component name="BodyRect" x="0.0" y="0.0" width="7" height="15" />
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="7" height="15" />
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl"/>
+    </entityTemplate>
 
 
     <entityTemplate name="BulletItem">
@@ -108,9 +115,13 @@
     </entity>
 
     <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="0.0" y="120.0" width="30.0" height="20.0" />
+        <component name="BodyRect" x="50" y="120" width="7" height="15" />
     </entity>
 
+    <entity sourceTemplate="WeirdLever">
+        <component name="BodyRect" x="0.0" y="120.0" width="30.0" height="20.0" />
+    </entity>
+    
     <entity sourceTemplate="ColorSquare">
           <component name="Color" r="200" g="200" b="10" a="255"/>
     </entity>

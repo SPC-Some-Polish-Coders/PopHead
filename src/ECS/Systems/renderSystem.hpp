@@ -21,6 +21,7 @@ private:
 	void submitTextureSprites() const;
 	void submitTextureSpritesWithCustomShader() const;
 	void submitTextureSpritesWithTextureRect() const;
+	void submitTextureSpritesWithTextureRectAndCustomShader() const;
 	void submitTextureSpritesWithSingleColorMultiplicationRect() const;
 
 private:

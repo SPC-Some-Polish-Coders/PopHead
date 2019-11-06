@@ -6,7 +6,7 @@ bool ph::ResourceHolder<ResourceType>::load(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
 	if (mResources.find(fullFilePath) != mResources.end())
-		return false;
+		return true;
 	auto resource = std::make_unique< ResourceType >();
 	if (resource->loadFromFile(fullFilePath))
 	{
