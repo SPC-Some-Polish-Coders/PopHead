@@ -147,6 +147,16 @@ This table is very important for multithreading of systems, so it **must be alwa
       <td>Bullet</td>
     <td>R</td>    
   </tr>
+  <td rowspan=3>PlayerAttackType</td>
+    <td>MelleAtacker</td>
+  <td>W</td>
+  </tr>
+      <td>GunAttacker</td>
+      <td>W</td>
+  </tr>
+      <td>Player</td>
+      <td>R</td>
+       </tr>
 </table>
     
 ### Useful links:
