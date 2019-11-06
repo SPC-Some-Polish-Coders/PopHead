@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/System/Clock.hpp>
+
 namespace ph::component {
 	
 	struct Health
@@ -28,6 +30,16 @@ namespace ph::component {
 		float minSecondsInterval;
 		unsigned bullets;
 		bool isTryingToAttack;
+	};
+
+	struct AttackDelayClock
+	{
+		sf::Clock delayClock;
+	};
+
+	struct TimeBetweenAttacks
+	{
+		float delay;
 	};
 
 	struct TaggedToDestroy
