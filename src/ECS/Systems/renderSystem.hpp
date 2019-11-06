@@ -1,10 +1,12 @@
 #pragma once
 
 #include "ECS/system.hpp"
-#include "Renderer/camera.hpp"
 
 namespace sf {
 	class Window;	
+}
+namespace ph {
+	class Camera;
 }
 
 namespace ph::system {
@@ -17,6 +19,7 @@ public:
 	void update(float seconds) override;
 
 private:
+	Camera& getCameraWithTheBiggestPriority();
 	void submitSingleColorSprites() const;
 	void submitTextureSprites() const;
 	void submitTextureSpritesWithCustomShader() const;
@@ -37,7 +40,6 @@ private:
 	void submitTextureSpritesWithSingleColorTextureRectCustomShaderAndRotation() const;
 
 private:
-	Camera mCamera;
 	sf::Window& mWindow;
 };
 
