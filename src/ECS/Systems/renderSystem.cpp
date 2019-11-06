@@ -41,6 +41,7 @@ void RenderSystem::update(float seconds)
 	submitTextureSpritesWithSingleColorMultiplication();
 	submitTextureSpritesWithSingleColorAndCustomShader();
 	submitTextureSpritesWithSingleColorAndTextureRect();
+	submitTextureSpritesWithSingleColorTextureRectAndCustomShader();
 }
 
 void RenderSystem::submitSingleColorSprites() const
@@ -138,6 +139,20 @@ void RenderSystem::submitTextureSpritesWithSingleColorAndTextureRect() const
 	(const component::BodyRect& body, const component::TexturePtr texturePtr, const component::TextureRect& textureRect, const component::Color& color)
 	{
 		Renderer::submitQuad(*texturePtr.texture, color.color, textureRect.rect, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
+}
+
+void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndCustomShader() const
+{
+	auto view = mRegistry.view
+		<component::BodyRect, component::TexturePtr, component::TextureRect, component::Color, component::ShaderPtr>();
+
+	view.each([this]
+	(const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect, const component::Color& color,
+	 const component::ShaderPtr shaderPtr)
+	{
+		Renderer::submitQuad(*texPtr.texture, color.color, texRect.rect, shaderPtr.shader,
+			body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 }
 

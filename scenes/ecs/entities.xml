@@ -84,6 +84,15 @@
         <component name="TextureRect" x="0" y="0" width="15" height="7" />
         <component name="Color" r="50" g="50" b="255" a="255"/>
     </entityTemplate>
+  
+  <entityTemplate name="VeryWeirdCarWithTextureRectAndCustomShader">
+        <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Texture" filepath="textures/vehicles/car.png" />
+        <component name="TextureRect" x="0" y="0" width="15" height="7" />
+        <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl"/>
+        <component name="Color" r="255" g="200" b="10" a="255"/>
+    </entityTemplate>
 
 
     <entityTemplate name="Lever">
@@ -140,6 +149,10 @@
   
     <entity sourceTemplate="VeryWeirdCarWithTextureRect">
         <component name="BodyRect" x="150" y="120" width="20" height="20" />
+    </entity>
+  
+    <entity sourceTemplate="VeryWeirdCarWithTextureRectAndCustomShader">
+        <component name="BodyRect" x="200" y="120" width="20" height="20" />
     </entity>
 
     <entity sourceTemplate="WeirdLever">
