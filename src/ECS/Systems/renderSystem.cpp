@@ -39,6 +39,7 @@ void RenderSystem::update(float seconds)
 	submitTextureSpritesWithTextureRect();
 	submitTextureSpritesWithTextureRectAndCustomShader();
 	submitTextureSpritesWithSingleColorMultiplicationRect();
+	submitTextureSpritesWithSingleColorAndCustomShader();
 }
 
 void RenderSystem::submitSingleColorSprites() const
@@ -92,7 +93,8 @@ void RenderSystem::submitTextureSpritesWithTextureRect() const
 void RenderSystem::submitTextureSpritesWithTextureRectAndCustomShader() const
 {
 	auto view = mRegistry.view
-		<component::BodyRect, component::TexturePtr, component::TextureRect, component::ShaderPtr>();
+		<component::BodyRect, component::TexturePtr, component::TextureRect, component::ShaderPtr>
+		(entt::exclude<component::Color>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect, const component::ShaderPtr shaderPtr)
@@ -105,11 +107,23 @@ void RenderSystem::submitTextureSpritesWithSingleColorMultiplicationRect() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::TexturePtr, component::Color>
-		(entt::exclude<component::TextureRect>);
+		(entt::exclude<component::TextureRect, component::ShaderPtr>);
 
 	view.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr, const component::Color& color) 
 	{
 		Renderer::submitQuad(*texturePtr.texture, color.color, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
+	});
+}
+
+void RenderSystem::submitTextureSpritesWithSingleColorAndCustomShader() const
+{
+	auto view = mRegistry.view
+		<component::BodyRect, component::TexturePtr, component::Color, component::ShaderPtr>
+		(entt::exclude<component::TextureRect>);
+
+	view.each([this](const component::BodyRect& body, const component::TexturePtr texturePtr, const component::Color& color, const component::ShaderPtr shaderPtr)
+	{
+		Renderer::submitQuad(*texturePtr.texture, color.color, shaderPtr.shader, body.rect.getTopLeft(), static_cast<sf::Vector2i>(body.rect.getSize()));
 	});
 }
 

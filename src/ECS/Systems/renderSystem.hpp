@@ -23,6 +23,7 @@ private:
 	void submitTextureSpritesWithTextureRect() const;
 	void submitTextureSpritesWithTextureRectAndCustomShader() const;
 	void submitTextureSpritesWithSingleColorMultiplicationRect() const;
+	void submitTextureSpritesWithSingleColorAndCustomShader() const;
 
 private:
 	Camera mCamera;
