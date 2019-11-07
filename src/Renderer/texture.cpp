@@ -61,6 +61,14 @@ bool Texture::loadFromFile(const std::string& filepath)
 	return true;
 }
 
+void Texture::setData(void* rgbaData, unsigned arraySize, sf::Vector2i textureSize)
+{
+	// TODO_ren: Make possible setting data for different formats rgb, rgba (now it's only rgba)
+	
+	PH_ASSERT_CRITICAL(arraySize == 4 * textureSize.x * textureSize.y, "Data must be for entire texture!");
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureSize.x, textureSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
+}
+
 void Texture::bind(unsigned slot) const
 {
 	GLCheck( glActiveTexture(GL_TEXTURE0 + slot) );

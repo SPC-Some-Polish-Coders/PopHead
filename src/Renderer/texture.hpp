@@ -16,6 +16,7 @@ public:
 	~Texture();
 
 	bool loadFromFile(const std::string& filepath);
+	void setData(void* rgbaData, unsigned arraySize, sf::Vector2i textureSize);
 
 	void bind(unsigned slot = 0) const;
 
