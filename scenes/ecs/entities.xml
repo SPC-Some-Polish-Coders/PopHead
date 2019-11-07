@@ -189,6 +189,7 @@
     
     <entity sourceTemplate="ColorSquare">
           <component name="Color" r="200" g="200" b="10" a="255"/>
+          <component name="StaticCollisionBody"/>
     </entity>
 
     <entity sourceTemplate="Lever"/>
