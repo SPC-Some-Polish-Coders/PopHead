@@ -9,6 +9,7 @@
 #include "ECS/Systems/pickupSystem.hpp"
 #include "ECS/Systems/renderSystem.hpp"
 #include "ECS/Systems/damageDealing.hpp"
+#include "ECS/Systems/isPlayerAlive.hpp"
 
 namespace ph {
 
@@ -61,6 +62,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::DamageDealing>();
+	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::DyingCharacters>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();

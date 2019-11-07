@@ -2,7 +2,6 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/rect.hpp"
-#include "Logs/logs.hpp"
 
 namespace ph::system {
 
