@@ -32,13 +32,13 @@ namespace ph::system {
 
 	void DamageDealing::handleEnemiesOnDelay()
 	{
-		auto enemiesOnDelay = mRegistry.view<component::AttackDelayClock, component::TimeBetweenAttacks>();
+		auto enemiesOnDelay = mRegistry.view<component::AttackDelayClock>();
+		const float timeBetweenAttacks = 200.f;
 
 		for (auto enemy : enemiesOnDelay)
 		{
-			const auto& timeBetweenAttacks = enemiesOnDelay.get<component::TimeBetweenAttacks>(enemy);
 			const auto& attackDelayClock = enemiesOnDelay.get<component::AttackDelayClock>(enemy);
-			if (attackDelayClock.delayClock.getElapsedTime().asMilliseconds() > timeBetweenAttacks.delay)
+			if (attackDelayClock.delayClock.getElapsedTime().asMilliseconds() > timeBetweenAttacks)
 				mRegistry.remove<component::AttackDelayClock>(enemy);
 		}
 	}

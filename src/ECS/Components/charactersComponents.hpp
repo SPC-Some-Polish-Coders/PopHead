@@ -37,11 +37,6 @@ namespace ph::component {
 		sf::Clock delayClock;
 	};
 
-	struct TimeBetweenAttacks
-	{
-		float delay;
-	};
-
 	struct TaggedToDestroy
 	{
 
