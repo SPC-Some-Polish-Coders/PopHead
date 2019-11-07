@@ -32,13 +32,13 @@ namespace ph::component {
 		bool isTryingToAttack;
 	};
 
-	struct AttackDelayTimer
-	{
-		sf::Time delayTime;
-	};
-
 	struct TaggedToDestroy
 	{
 
+	};
+
+	struct CollisionWithPlayer
+	{
+		bool isCollision;
 	};
 }

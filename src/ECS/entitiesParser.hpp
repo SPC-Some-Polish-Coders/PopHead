@@ -22,6 +22,7 @@ private:
 
 	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
+	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseDamage(const Xml& entityComponentNode, entt::entity& entity);

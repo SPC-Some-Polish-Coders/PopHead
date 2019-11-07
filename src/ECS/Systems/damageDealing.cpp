@@ -7,10 +7,8 @@ namespace ph::system {
 
 	void DamageDealing::update(float seconds)
 	{
-		handleEnemiesOnDelay(seconds);
-
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
-		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage>(entt::exclude<component::AttackDelayTimer>);
+		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();
 
 		for (auto player : playerView)
 		{
@@ -19,30 +17,21 @@ namespace ph::system {
 
 			for (auto damageDealingEntitiy : enemiesView)
 			{
+				auto& playerCollision = enemiesView.get<component::CollisionWithPlayer>(damageDealingEntitiy);
 				const auto& enemyBody = enemiesView.get<component::BodyRect>(damageDealingEntitiy);
+
 				if (playerBody.rect.doPositiveRectsIntersect(enemyBody.rect))
 				{
+					if (playerCollision.isCollision)
+						continue;
+					playerCollision.isCollision = true;
+
 					const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
 					playerHealth.healthPoints -= damage.damageDealt;
-					mRegistry.assign<component::AttackDelayTimer>(damageDealingEntitiy);
 				}
+				else
+					playerCollision.isCollision = false;
 			}
 		}
 	}
-
-	void DamageDealing::handleEnemiesOnDelay(const float seconds)
-	{
-		auto enemiesOnDelay = mRegistry.view<component::AttackDelayTimer>();
-		const float timeBetweenAttacks = 200.f;
-
-		for (auto enemy : enemiesOnDelay)
-		{
-			auto& attackDelayTimer = enemiesOnDelay.get<component::AttackDelayTimer>(enemy);
-			attackDelayTimer.delayTime += sf::seconds(seconds);
-
-			if (attackDelayTimer.delayTime.asMilliseconds() > timeBetweenAttacks)
-				mRegistry.remove<component::AttackDelayTimer>(enemy);
-		}
-	}
-
 }

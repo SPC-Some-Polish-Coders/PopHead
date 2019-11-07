@@ -95,6 +95,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
+		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody}
 	};
@@ -122,6 +123,11 @@ void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::e
 {
 	float speed = entityComponentNode.getAttribute("speed").toFloat();
 	mUsedRegistry->assign_or_replace<component::CharacterSpeed>(entity, speed);
+}
+
+void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, false);
 }
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
