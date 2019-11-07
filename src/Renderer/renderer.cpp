@@ -352,7 +352,7 @@ bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i
 
 bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2i size)
 {
-	return isInsideScreen(sf::FloatRect(position.x, position.y, size.x, size.y));
+	return isInsideScreen(sf::FloatRect(position.x, position.y, static_cast<float>(size.x), static_cast<float>(size.y)));
 }
 
 bool Renderer::isInsideScreen(const FloatRect objectBounds)
