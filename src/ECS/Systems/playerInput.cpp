@@ -44,4 +44,29 @@ namespace ph::system {
 		return sf::Vector2f(0.f, 0.f);
 	}
 
+
+	void PlayerAttackType::update(float seconds)
+	{
+		auto playerMelleView = mRegistry.view<component::Player, component::MeleeAttacker>();
+		auto playerGunView= mRegistry.view<component::Player, component::GunAttacker>();
+
+		if (ActionEventManager::isActionPressed("meleeAtack"))
+		{
+			for (auto player : playerMelleView)
+			{
+				auto &playerMelleAttack = playerMelleView.get<component::MeleeAttacker>(player);
+				playerMelleAttack.isTryingToAttack = true;
+			}
+		}
+
+		if (ActionEventManager::isActionPressed("gunAttack"))
+		{
+			for (auto player : playerGunView)
+			{
+				auto &playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+				playerGunAttack.isTryingToAttack = true;
+			}
+		}
+	}
+
 }

@@ -1,11 +1,18 @@
 #pragma once
 
+#include <SFML/System/Clock.hpp>
+
 namespace ph::component {
 	
 	struct Health
 	{
 		int healthPoints;
 		int maxHealthPoints;
+	};
+
+	struct Damage
+	{
+		int damageDealt;
 	};
 	
 	struct Player
@@ -23,6 +30,16 @@ namespace ph::component {
 		float minSecondsInterval;
 		unsigned bullets;
 		bool isTryingToAttack;
+	};
+
+	struct AttackDelayClock
+	{
+		sf::Clock delayClock;
+	};
+
+	struct TimeBetweenAttacks
+	{
+		float delay;
 	};
 
 	struct TaggedToDestroy

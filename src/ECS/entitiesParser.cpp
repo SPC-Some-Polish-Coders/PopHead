@@ -79,6 +79,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Health",	               &EntitiesParser::parseHealth},
+		{"Damage",	               &EntitiesParser::parseDamage},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
 		{"Player",                 &EntitiesParser::parsePlayer},
 		{"Bullet",                 &EntitiesParser::parseBullet},
@@ -94,6 +95,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
+		{"TimeBetweenAttacks",	   &EntitiesParser::parseTimeBetweenAttacks},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody}
 	};
@@ -135,6 +137,18 @@ void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& e
 	int healthPoints = entityComponentNode.getAttribute("healthPoints").toInt();
 	int maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints").toInt();
 	mUsedRegistry->assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
+}
+
+void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& entity)
+{
+	int damageDealt = entityComponentNode.getAttribute("damageDealt").toInt();
+	mUsedRegistry->assign_or_replace<component::Damage>(entity, damageDealt);
+}
+
+void EntitiesParser::parseTimeBetweenAttacks(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float attackDelay = entityComponentNode.getAttribute("delay").toFloat();
+	mUsedRegistry->assign_or_replace<component::TimeBetweenAttacks>(entity, attackDelay);
 }
 
 void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)
