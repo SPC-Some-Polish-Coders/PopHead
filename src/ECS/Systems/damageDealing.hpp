@@ -12,6 +12,6 @@ namespace ph::system {
 		void update(float seconds) override;
 
 	private:
-		void handleEnemiesOnDelay();
+		void handleEnemiesOnDelay(const float seconds);
 	};
 }

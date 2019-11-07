@@ -32,9 +32,9 @@ namespace ph::component {
 		bool isTryingToAttack;
 	};
 
-	struct AttackDelayClock
+	struct AttackDelayTimer
 	{
-		sf::Clock delayClock;
+		sf::Time delayTime;
 	};
 
 	struct TaggedToDestroy
