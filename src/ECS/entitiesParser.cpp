@@ -95,7 +95,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
-		{"TimeBetweenAttacks",	   &EntitiesParser::parseTimeBetweenAttacks},
+		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody}
 	};
@@ -125,6 +125,11 @@ void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::e
 	mUsedRegistry->assign_or_replace<component::CharacterSpeed>(entity, speed);
 }
 
+void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, false);
+}
+
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float dx = entityComponentNode.getAttribute("dx").toFloat();
@@ -143,12 +148,6 @@ void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& e
 {
 	int damageDealt = entityComponentNode.getAttribute("damageDealt").toInt();
 	mUsedRegistry->assign_or_replace<component::Damage>(entity, damageDealt);
-}
-
-void EntitiesParser::parseTimeBetweenAttacks(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float attackDelay = entityComponentNode.getAttribute("delay").toFloat();
-	mUsedRegistry->assign_or_replace<component::TimeBetweenAttacks>(entity, attackDelay);
 }
 
 void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)

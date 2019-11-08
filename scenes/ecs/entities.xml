@@ -32,7 +32,6 @@
         <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Damage" damageDealt="25" />
-        <component name="TimeBetweenAttacks" delay="250.0" />
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
@@ -190,6 +189,7 @@
     
     <entity sourceTemplate="ColorSquare">
           <component name="Color" r="200" g="200" b="10" a="255"/>
+          <component name="StaticCollisionBody"/>
     </entity>
 
     <entity sourceTemplate="Lever"/>

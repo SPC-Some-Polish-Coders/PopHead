@@ -32,18 +32,13 @@ namespace ph::component {
 		bool isTryingToAttack;
 	};
 
-	struct AttackDelayClock
-	{
-		sf::Clock delayClock;
-	};
-
-	struct TimeBetweenAttacks
-	{
-		float delay;
-	};
-
 	struct TaggedToDestroy
 	{
 
+	};
+
+	struct CollisionWithPlayer
+	{
+		bool isCollision;
 	};
 }

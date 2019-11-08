@@ -4,11 +4,16 @@
 
 namespace ph::system {
 
-	class DamageDealing : public System
+	class IsPlayerAlive : public System
 	{
 	public:
 		using System::System;
 
 		void update(float seconds) override;
+
+		bool isAlive();
+
+	private:
+		bool mIsAlive;
 	};
 }

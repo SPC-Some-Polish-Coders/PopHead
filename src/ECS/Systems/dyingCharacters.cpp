@@ -13,6 +13,4 @@ namespace ph::system {
 				mRegistry.assign<component::TaggedToDestroy>(entity);
 		}
 	}
-
 }
-

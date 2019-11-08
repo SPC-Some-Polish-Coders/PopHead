@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-	class DamageDealing : public System
+	class StaticCollisions : public System
 	{
 	public:
 		using System::System;
