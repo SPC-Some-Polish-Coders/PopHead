@@ -137,139 +137,88 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	if(!isInsideScreen(position, size))
-		return;
-
-	if(defaultSpriteShader != currentlyBoundShader) {
-		defaultSpriteShader->bind();
-		currentlyBoundShader = defaultSpriteShader;
-	}
-
-	defaultSpriteShader->setUniformVector4Color("color", color);
-	setQuadTransformUniforms(defaultSpriteShader, position, size, rotation);
-
-	defaultSpriteShader->bind();
-	
-	whiteTexture->bind();
-
-	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-	++numberOfDrawCalls;
+	internalSubmitQuad(nullptr, nullptr, &color, nullptr, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	if(!isInsideScreen(position, size))
-		return;
-
-	if(defaultSpriteShader != currentlyBoundShader) {
-		defaultSpriteShader->bind();
-		currentlyBoundShader = defaultSpriteShader;
-	}
-	defaultSpriteShader->setUniformVector4Color("color", sf::Color::White);
-	setQuadTransformUniforms(defaultSpriteShader, position, size, rotation);
-
-	textureQuadVertexArray->bind();
-
-	texture.bind();
-
-	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
-	++numberOfDrawCalls;
+	internalSubmitQuad(&texture, nullptr, nullptr, nullptr, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	if(!isInsideScreen(position, size))
-		return;
-
-	if(shader != currentlyBoundShader) {
-		shader->bind();
-		currentlyBoundShader = shader;
-	}
-	setQuadTransformUniforms(shader, position, size, rotation);
-
-	textureQuadVertexArray->bind();
-	
-	texture.bind();
-
-	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
-	++numberOfDrawCalls;
+	internalSubmitQuad(&texture, nullptr, nullptr, shader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	defaultSpriteShader->setUniformVector4Color("color", sf::Color::White);
-	submitQuad(texture, textureRect, defaultSpriteShader, position, size, rotation);
+	internalSubmitQuad(&texture, &textureRect, nullptr, nullptr, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
                           sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	if(!isInsideScreen(position, size))
-		return;
-
-	if(shader != currentlyBoundShader) {
-		shader->bind();
-		currentlyBoundShader = shader;
-	}
-	setQuadTransformUniforms(shader, position, size, rotation);
-
-	setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
-	textureAnimatedQuadVertexArray->bind();
-
-	texture.bind();
-
-	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-	++numberOfDrawCalls;
+	internalSubmitQuad(&texture, &textureRect, nullptr, shader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, color, defaultSpriteShader, position, size, rotation);
+	internalSubmitQuad(&texture, nullptr, &color, nullptr, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	if(!isInsideScreen(position, size))
-		return;
-
-	if(shader != currentlyBoundShader) {
-		shader->bind();
-		currentlyBoundShader = shader;
-	}
-	defaultSpriteShader->setUniformVector4Color("color", color);
-	setQuadTransformUniforms(shader, position, size, rotation);
-
-	textureQuadVertexArray->bind();
-	
-	texture.bind();
-
-	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-	++numberOfDrawCalls;
+	internalSubmitQuad(&texture, nullptr, &color, shader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, color, textureRect, defaultSpriteShader, position, size, rotation);
+	internalSubmitQuad(&texture, &textureRect, &color, nullptr, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, const Shader* shader,
                           sf::Vector2f position, sf::Vector2i size, float rotation)
 {
+	internalSubmitQuad(&texture, &textureRect, &color, shader, position, size, rotation);
+}
+
+void Renderer::internalSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
+                                  sf::Vector2f position, sf::Vector2i size, float rotation)
+{
+	// culling
 	if(!isInsideScreen(position, size))
 		return;
-	
+
+	// shader
+	if(!shader)
+		shader = defaultSpriteShader;
 	if(shader != currentlyBoundShader) {
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
-	shader->setUniformVector4Color("color", color);
+	if(!color)
+		shader->setUniformVector4Color("color", sf::Color::White);
+	else
+		shader->setUniformVector4Color("color", *color);
 	setQuadTransformUniforms(shader, position, size, rotation);
 
-	setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), textureRect, texture.getSize());
-	textureAnimatedQuadVertexArray->bind();
+	// textures
+	if(texture){
+		if(textureRect) {
+			setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), *textureRect, texture->getSize());
+			textureAnimatedQuadVertexArray->bind();
+		}
+		else
+			textureQuadVertexArray->bind();
 
-	texture.bind();
+		texture->bind();
+	}
+	else {
+		textureQuadVertexArray->bind();
+		whiteTexture->bind();
+	}
 
+	// draw call
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 	++numberOfDrawCalls;
 }
