@@ -135,54 +135,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	numberOfDrawCalls = 0;
 }
 
-void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(nullptr, nullptr, &color, nullptr, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, nullptr, nullptr, nullptr, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, nullptr, nullptr, shader, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, &textureRect, nullptr, nullptr, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, &textureRect, nullptr, shader, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, nullptr, &color, nullptr, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, nullptr, &color, shader, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, &textureRect, &color, nullptr, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2i size, float rotation)
-{
-	internalSubmitQuad(&texture, &textureRect, &color, shader, position, size, rotation);
-}
-
-void Renderer::internalSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
+void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
                                   sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	// culling
@@ -202,7 +155,7 @@ void Renderer::internalSubmitQuad(const Texture* texture, const IntRect* texture
 		shader->setUniformVector4Color("color", *color);
 	setQuadTransformUniforms(shader, position, size, rotation);
 
-	// textures
+	// texture
 	if(texture){
 		if(textureRect) {
 			setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), *textureRect, texture->getSize());

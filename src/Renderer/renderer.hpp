@@ -25,15 +25,8 @@ public:
 	static void beginScene(Camera&);
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
-	static void submitQuad(const sf::Color&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const IntRect& textureRect, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const sf::Color&, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const sf::Color&, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const sf::Color&, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
-	static void submitQuad(const Texture&, const sf::Color&, const IntRect& textureRect, const Shader*, sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	static void submitQuad(const Texture*, const IntRect*, const sf::Color*, const Shader*,
+	                               sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
@@ -48,9 +41,6 @@ public:
 	static void setClearColor(const sf::Color&);
 
 private:
-	static void internalSubmitQuad(const Texture*, const IntRect*, const sf::Color*, const Shader*,
-	                               sf::Vector2f position, sf::Vector2i size, float rotation);
-
 	static void setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation);
 	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2i size);
