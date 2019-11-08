@@ -6,6 +6,7 @@ in vec4 multColor;
 out vec4 fragColor;
 
 uniform sampler2D image;
+uniform vec4 color;
 
 void main()
 {

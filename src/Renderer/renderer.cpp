@@ -13,16 +13,14 @@ namespace {
 
 	// RendererData
 	unsigned numberOfDrawCalls = 0;
-	ph::Shader* singleColorSpriteShader;
-	ph::Shader* textureSpriteShader;
-	ph::Shader* coloredTextureSpriteShader;
 	ph::Shader* defaultFramebufferShader;
+	ph::Shader* defaultSpriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
-	ph::VertexArray* singleColorQuadVertexArray;
 	ph::VertexArray* textureQuadVertexArray;
 	ph::VertexArray* textureAnimatedQuadVertexArray;
 	ph::VertexArray* framebufferVertexArray;
 	ph::Framebuffer* framebuffer;
+	ph::Texture* whiteTexture;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -43,23 +41,12 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	// load default shaders
 	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("singleColorSprite", "resources/shaders/singleColorSprite.vs.glsl", "resources/shaders/singleColorSprite.fs.glsl");
-	singleColorSpriteShader = sl.get("singleColorSprite");
-	sl.loadFromFile("textureSprite", "resources/shaders/textureSprite.vs.glsl", "resources/shaders/textureSprite.fs.glsl");
-	textureSpriteShader = sl.get("textureSprite");
-	sl.loadFromFile("coloredTextureSprite", "resources/shaders/coloredTextureSprite.vs.glsl", "resources/shaders/coloredTextureSprite.fs.glsl");
-	coloredTextureSpriteShader = sl.get("coloredTextureSprite");
+	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
+	defaultSpriteShader = sl.get("sprite");
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
 
 	// load quad vertex arrays
-	float quadPositions[] = {
-		1.f, 0.f,
-		1.f, 1.f,
-		0.f, 1.f,
-		0.f, 0.f
-	};
-
 	float quadPositionsAndTextureCoords[] = {
 		1.f, 0.f, 1.f, 1.f,
 		1.f, 1.f, 1.f, 0.f,
@@ -78,12 +65,6 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	IndexBuffer quadIBO = createIndexBuffer();
 	setData(quadIBO, quadIndices, sizeof(quadIndices));
 	
-	VertexBuffer singleColorQuadVBO = createVertexBuffer();
-	setData(singleColorQuadVBO, quadPositions, sizeof(quadPositions), DataUsage::staticDraw);
-	singleColorQuadVertexArray = new VertexArray;
-	singleColorQuadVertexArray->setVertexBuffer(singleColorQuadVBO, VertexBufferLayout::position2);
-	singleColorQuadVertexArray->setIndexBuffer(quadIBO);
-
 	VertexBuffer textureQuadVBO = createVertexBuffer();
 	setData(textureQuadVBO, quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
 	textureQuadVertexArray = new VertexArray;
@@ -104,6 +85,10 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	// set up framebuffer
 	framebuffer = new Framebuffer(screenWidth, screenHeight);
+
+	whiteTexture = new Texture;
+	unsigned whiteData = 0xffffffff;
+	whiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 }
 
 void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
@@ -114,11 +99,11 @@ void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::shutDown()
 {
-	delete singleColorQuadVertexArray;
 	delete textureQuadVertexArray;
 	delete textureAnimatedQuadVertexArray;
 	delete framebufferVertexArray;
 	delete framebuffer;
+	delete whiteTexture;
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -155,15 +140,17 @@ void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vec
 	if(!isInsideScreen(position, size))
 		return;
 
-	if(singleColorSpriteShader != currentlyBoundShader) {
-		singleColorSpriteShader->bind();
-		currentlyBoundShader = singleColorSpriteShader;
+	if(defaultSpriteShader != currentlyBoundShader) {
+		defaultSpriteShader->bind();
+		currentlyBoundShader = defaultSpriteShader;
 	}
 
-	singleColorSpriteShader->setUniformVector4Color("color", color);
-	setQuadTransformUniforms(singleColorSpriteShader, position, size, rotation);
+	defaultSpriteShader->setUniformVector4Color("color", color);
+	setQuadTransformUniforms(defaultSpriteShader, position, size, rotation);
 
-	singleColorQuadVertexArray->bind();
+	defaultSpriteShader->bind();
+	
+	whiteTexture->bind();
 
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 	++numberOfDrawCalls;
@@ -171,7 +158,22 @@ void Renderer::submitQuad(const sf::Color& color, sf::Vector2f position, sf::Vec
 
 void Renderer::submitQuad(const Texture& texture, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, textureSpriteShader, position, size, rotation);
+	if(!isInsideScreen(position, size))
+		return;
+
+	if(defaultSpriteShader != currentlyBoundShader) {
+		defaultSpriteShader->bind();
+		currentlyBoundShader = defaultSpriteShader;
+	}
+	defaultSpriteShader->setUniformVector4Color("color", sf::Color::White);
+	setQuadTransformUniforms(defaultSpriteShader, position, size, rotation);
+
+	textureQuadVertexArray->bind();
+
+	texture.bind();
+
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	++numberOfDrawCalls;
 }
 
 void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
@@ -195,7 +197,8 @@ void Renderer::submitQuad(const Texture& texture, const Shader* shader, sf::Vect
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, textureRect, textureSpriteShader, position, size, rotation);
+	defaultSpriteShader->setUniformVector4Color("color", sf::Color::White);
+	submitQuad(texture, textureRect, defaultSpriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, const Shader* shader,
@@ -221,7 +224,7 @@ void Renderer::submitQuad(const Texture& texture, const IntRect& textureRect, co
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, color, coloredTextureSpriteShader, position, size, rotation);
+	submitQuad(texture, color, defaultSpriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const Shader* shader, sf::Vector2f position, sf::Vector2i size, float rotation)
@@ -233,7 +236,7 @@ void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const 
 		shader->bind();
 		currentlyBoundShader = shader;
 	}
-	shader->setUniformVector4Color("color", color);
+	defaultSpriteShader->setUniformVector4Color("color", color);
 	setQuadTransformUniforms(shader, position, size, rotation);
 
 	textureQuadVertexArray->bind();
@@ -246,7 +249,7 @@ void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const 
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	submitQuad(texture, color, textureRect, coloredTextureSpriteShader, position, size, rotation);
+	submitQuad(texture, color, textureRect, defaultSpriteShader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture& texture, const sf::Color& color, const IntRect& textureRect, const Shader* shader,
@@ -319,12 +322,12 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
 {
-	submit(vao, *textureSpriteShader, bounds, drawMode);
+	submit(vao, *defaultSpriteShader, bounds, drawMode);
 }
 
 void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
-	submit(vao, *textureSpriteShader, transform, size, drawMode);
+	submit(vao, *defaultSpriteShader, transform, size, drawMode);
 }
 
 void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
@@ -335,7 +338,7 @@ void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& trans
 
 void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
 {
-	submit(sprite, *textureSpriteShader, transform, drawMode);
+	submit(sprite, *defaultSpriteShader, transform, drawMode);
 }
 
 void Renderer::submit(const sf::Drawable& object)
