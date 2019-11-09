@@ -24,8 +24,7 @@ def create_system_row(system_data, html_file):
 
 
 def convert_to_html(json_data):
-    html_file = open('systemsDocs.html', 'w')
-    html_file.write('<!DOCTYPE html>\n')
+    html_file = open('systemsDocs.md', 'w')
     html_file.write('<html>\n')
     html_file.write('<head>\n')
     html_file.write('<link rel="stylesheet" href="style.css">\n')
