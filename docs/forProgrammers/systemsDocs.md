@@ -40,6 +40,56 @@ Color<br />
 <td>
 </td>
 </tr>
+<tr>
+<td>DyingCharacters</td>
+<td>
+Health<br />
+</td>
+<td>
+TaggedToDestroy<br />
+</td>
+</tr>
+<tr>
+<td>EntityDestroying</td>
+<td>
+TaggedToDestroy<br />
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>PickupMedkit</td>
+<td>
+BodyRect<br />
+Medkit<br />
+Player<br />
+</td>
+<td>
+Health<br />
+TaggedToDestroy<br />
+</td>
+</tr>
+<tr>
+<td>PickupBullet</td>
+<td>
+BodyRect<br />
+Player<br />
+Bullet<br />
+</td>
+<td>
+GunAttacker<br />
+</td>
+</tr>
+<tr>
+<td>PlayerAttackType</td>
+<td>
+Player<br />
+</td>
+<td>
+MelleAtacker<br />
+GunAtacker<br />
+</td>
+</tr>
 </table>
 </body>
 </html>

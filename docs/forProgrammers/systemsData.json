@@ -28,6 +28,54 @@
                 "ShaderPtr",
                 "Color"
             ]
+        },
+        {
+            "name" : "DyingCharacters",
+            "componentsRead" : [
+                "Health"
+            ],
+            "componentsWrite" : [
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "EntityDestroying",
+            "componentsRead" : [
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PickupMedkit",
+            "componentsRead" : [
+                "BodyRect",
+                "Medkit",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "Health",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PickupBullet",
+            "componentsRead" : [
+                "BodyRect",
+                "Player",
+                "Bullet"
+            ],
+            "componentsWrite" : [
+                "GunAttacker"
+            ]
+        },
+        {
+            "name" : "PlayerAttackType",
+            "componentsRead" : [
+                "Player"
+            ],
+            "componentsWrite" : [
+                "MelleAtacker",
+                "GunAtacker"
+            ]
         }
     ]
 }
