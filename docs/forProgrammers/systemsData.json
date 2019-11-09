@@ -1,0 +1,33 @@
+{
+    "systems": [
+        {
+            "name" : "PlayerInput",
+            "componentsRead" : [
+                "CharacterSpeed",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "Movement",
+            "componentsRead" : [
+                "Velocity"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
+            ]
+        },
+        {
+            "name" : "RenderSystem",
+            "componentsRead" : [
+                "BodyRect",
+                "TexturePtr",
+                "TextureRect",
+                "ShaderPtr",
+                "Color"
+            ]
+        }
+    ]
+}
