@@ -47,15 +47,15 @@ namespace ph::system {
 
 	void PlayerAttackType::update(float seconds)
 	{
-		auto playerMelleView = mRegistry.view<component::Player, component::MeleeAttacker>();
+		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
 		auto playerGunView= mRegistry.view<component::Player, component::GunAttacker>();
 
 		if (ActionEventManager::isActionPressed("meleeAtack"))
 		{
-			for (auto player : playerMelleView)
+			for (auto player : playerMeleeView)
 			{
-				auto& playerMelleAttack = playerMelleView.get<component::MeleeAttacker>(player);
-				playerMelleAttack.isTryingToAttack = true;
+				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
+				playerMeleeAttack.isTryingToAttack = true;
 			}
 		}
 
