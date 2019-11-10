@@ -54,7 +54,7 @@ namespace ph::system {
 		{
 			for (auto player : playerMelleView)
 			{
-				auto &playerMelleAttack = playerMelleView.get<component::MeleeAttacker>(player);
+				auto& playerMelleAttack = playerMelleView.get<component::MeleeAttacker>(player);
 				playerMelleAttack.isTryingToAttack = true;
 			}
 		}
@@ -63,7 +63,7 @@ namespace ph::system {
 		{
 			for (auto player : playerGunView)
 			{
-				auto &playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
 				playerGunAttack.isTryingToAttack = true;
 			}
 		}

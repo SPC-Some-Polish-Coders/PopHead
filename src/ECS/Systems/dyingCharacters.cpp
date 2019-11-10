@@ -8,7 +8,7 @@ namespace ph::system {
 		auto view = mRegistry.view<component::Health>();
 		for (auto entity : view)
 		{
-			auto& health = view.get(entity);
+			const auto& health = view.get(entity);
 			if(health.healthPoints <= 0)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
 		}
