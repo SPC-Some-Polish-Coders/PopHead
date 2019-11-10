@@ -1,32 +1,15 @@
 {
     "systems": [
         {
-            "name" : "PlayerInput",
+            "name" : "DamageDealing",
             "componentsRead" : [
-                "CharacterSpeed",
-                "Player"
-            ],
-            "componentsWrite" : [
-                "Velocity"
-            ]
-        },
-        {
-            "name" : "Movement",
-            "componentsRead" : [
-                "Velocity"
-            ],
-            "componentsWrite" : [
-                "BodyRect"
-            ]
-        },
-        {
-            "name" : "RenderSystem",
-            "componentsRead" : [
+                "Player",
                 "BodyRect",
-                "TexturePtr",
-                "TextureRect",
-                "ShaderPtr",
-                "Color"
+                "Damage"
+            ],
+            "componentsWrite" : [
+                "CollisionWithPlayer",
+                "Health"
             ]
         },
         {
@@ -40,8 +23,24 @@
         },
         {
             "name" : "EntityDestroying",
+            "componentsWrite" : [
+                "ALL"
+            ]
+        },
+        {
+            "name" : "IsPlayerAlive",
             "componentsRead" : [
-                "TaggedToDestroy"
+                "Player",
+                "Health"
+            ]
+        },
+        {
+            "name" : "Movement",
+            "componentsRead" : [
+                "Velocity"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
             ]
         },
         {
@@ -64,7 +63,28 @@
                 "Bullet"
             ],
             "componentsWrite" : [
-                "GunAttacker"
+                "GunAttacker",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PlayerCameraMovement",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Camera"
+            ]
+        },
+        {
+            "name" : "PlayerInput",
+            "componentsRead" : [
+                "CharacterSpeed",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "Velocity"
             ]
         },
         {
@@ -78,22 +98,23 @@
             ]
         },
         {
-            "name" : "DamageDealing",
+            "name" : "RenderSystem",
             "componentsRead" : [
-                "Player",
                 "BodyRect",
-                "Damage"
-            ],
-            "componentsWrite" : [
-                "CollisionWithPlayer",
-                "Health"
+                "TexturePtr",
+                "TextureRect",
+                "ShaderPtr",
+                "Color"
             ]
         },
         {
-            "name" : "IsPlayerAlive",
+            "name" : "StaticCollisions",
             "componentsRead" : [
-                "Player",
-                "Health"
+                "StaticCollisionBody",
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
             ]
         }
     ]

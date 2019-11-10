@@ -10,34 +10,15 @@
 <th>Components Modified</th>
 </tr>
 <tr>
-<td>PlayerInput</td>
+<td>DamageDealing</td>
 <td>
-CharacterSpeed<br />
 Player<br />
-</td>
-<td>
-Velocity<br />
-</td>
-</tr>
-<tr>
-<td>Movement</td>
-<td>
-Velocity<br />
-</td>
-<td>
 BodyRect<br />
-</td>
-</tr>
-<tr>
-<td>RenderSystem</td>
-<td>
-BodyRect<br />
-TexturePtr<br />
-TextureRect<br />
-ShaderPtr<br />
-Color<br />
+Damage<br />
 </td>
 <td>
+CollisionWithPlayer<br />
+Health<br />
 </td>
 </tr>
 <tr>
@@ -52,9 +33,27 @@ TaggedToDestroy<br />
 <tr>
 <td>EntityDestroying</td>
 <td>
-TaggedToDestroy<br />
 </td>
 <td>
+ALL<br />
+</td>
+</tr>
+<tr>
+<td>IsPlayerAlive</td>
+<td>
+Player<br />
+Health<br />
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>Movement</td>
+<td>
+Velocity<br />
+</td>
+<td>
+BodyRect<br />
 </td>
 </tr>
 <tr>
@@ -78,6 +77,27 @@ Bullet<br />
 </td>
 <td>
 GunAttacker<br />
+TaggedToDestroy<br />
+</td>
+</tr>
+<tr>
+<td>PlayerCameraMovement</td>
+<td>
+Player<br />
+BodyRect<br />
+</td>
+<td>
+Camera<br />
+</td>
+</tr>
+<tr>
+<td>PlayerInput</td>
+<td>
+CharacterSpeed<br />
+Player<br />
+</td>
+<td>
+Velocity<br />
 </td>
 </tr>
 <tr>
@@ -91,24 +111,25 @@ GunAtacker<br />
 </td>
 </tr>
 <tr>
-<td>DamageDealing</td>
+<td>RenderSystem</td>
 <td>
-Player<br />
 BodyRect<br />
-Damage<br />
+TexturePtr<br />
+TextureRect<br />
+ShaderPtr<br />
+Color<br />
 </td>
 <td>
-CollisionWithPlayer<br />
-Health<br />
 </td>
 </tr>
 <tr>
-<td>IsPlayerAlive</td>
+<td>StaticCollisions</td>
 <td>
-Player<br />
-Health<br />
+StaticCollisionBody<br />
+KinematicCollisionBody<br />
 </td>
 <td>
+BodyRect<br />
 </td>
 </tr>
 </table>
