@@ -90,6 +90,27 @@ MelleAtacker<br />
 GunAtacker<br />
 </td>
 </tr>
+<tr>
+<td>DamageDealing</td>
+<td>
+Player<br />
+BodyRect<br />
+Damage<br />
+</td>
+<td>
+CollisionWithPlayer<br />
+Health<br />
+</td>
+</tr>
+<tr>
+<td>IsPlayerAlive</td>
+<td>
+Player<br />
+Health<br />
+</td>
+<td>
+</td>
+</tr>
 </table>
 </body>
 </html>

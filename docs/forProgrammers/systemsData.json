@@ -76,6 +76,25 @@
                 "MelleAtacker",
                 "GunAtacker"
             ]
+        },
+        {
+            "name" : "DamageDealing",
+            "componentsRead" : [
+                "Player",
+                "BodyRect",
+                "Damage"
+            ],
+            "componentsWrite" : [
+                "CollisionWithPlayer",
+                "Health"
+            ]
+        },
+        {
+            "name" : "IsPlayerAlive",
+            "componentsRead" : [
+                "Player",
+                "Health"
+            ]
         }
     ]
 }
