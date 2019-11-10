@@ -29,14 +29,14 @@ project "PopHead"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
-		root_dir .. "vendor/glew-1.5.4/include",
+		root_dir .. "vendor/glew-2.1.0/include",
 		root_dir .. "vendor/stb",
         root_dir .. "vendor/entt-3.2.0/src"
     }
 
     libdirs{
 		root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio",
-		root_dir .. "vendor/glew-1.5.4/lib"
+		root_dir .. "vendor/glew-2.1.0/lib"
 	}
 
     files{
