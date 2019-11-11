@@ -1,11 +1,11 @@
-#include "damageDealing.hpp"
+#include "hostileCollisions.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/rect.hpp"
 
 namespace ph::system {
 
-	void DamageDealing::update(float seconds)
+	void HostileCollisions::update(float seconds)
 	{
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
 		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();
