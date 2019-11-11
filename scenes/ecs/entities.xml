@@ -33,7 +33,7 @@
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="KinematicCollisionBody" mass="10" />
         <component name="Damage" damageDealt="25" />
-        <component name="CollisionWithPlayer" isCollision="false"/>
+        <component name="CollisionWithPlayer"/>
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
         <component name="TextureRect" x="0" y="0" width="20" height="20" />
