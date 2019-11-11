@@ -37,6 +37,11 @@ namespace ph::component {
 
 	};
 
+	struct DamageTag
+	{
+		int amountOfDamage;
+	};
+
 	struct CollisionWithPlayer
 	{
 		bool isCollision;
