@@ -11,6 +11,7 @@
 #include "ECS/Systems/damageDealing.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
+#include "ECS/Systems/pendingGunAttacks.hpp"
 
 namespace ph {
 
@@ -59,6 +60,7 @@ entt::registry& Scene::getRegistry()
 void Scene::initiateSystemsQueue(sf::Window& window)
 {
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
+	mSystemsQueue.appendSystem<system::PlayerAttackType>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
@@ -66,6 +68,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::DyingCharacters>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
