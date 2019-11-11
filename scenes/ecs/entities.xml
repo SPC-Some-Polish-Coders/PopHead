@@ -31,7 +31,9 @@
     <entityTemplate name="Zombie">
         <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
+        <component name="KinematicCollisionBody" mass="10" />
         <component name="Damage" damageDealt="25" />
+        <component name="CollisionWithPlayer" isCollision="false"/>
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
         <component name="TextureRect" x="0" y="0" width="20" height="20" />
@@ -198,8 +200,8 @@
     <entity sourceTemplate="Lever" />
 
     <entity sourceTemplate="Zombie">
-             <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
-     </entity>
+        <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
+    </entity>
 
     <entity sourceTemplate="GateGuard">
         <component name="StaticCollisionBody" />

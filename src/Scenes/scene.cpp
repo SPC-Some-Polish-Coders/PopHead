@@ -8,6 +8,7 @@
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
 #include "ECS/Systems/renderSystem.hpp"
+#include "ECS/Systems/damageDealing.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
@@ -66,6 +67,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
+	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();

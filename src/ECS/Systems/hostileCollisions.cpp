@@ -27,7 +27,7 @@ namespace ph::system {
 					playerCollision.isCollision = true;
 
 					const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
-					playerHealth.healthPoints -= damage.damageDealt;
+					mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
 				}
 				else
 					playerCollision.isCollision = false;
