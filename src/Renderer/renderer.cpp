@@ -4,8 +4,9 @@
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "framebuffer.hpp"
-#include <vector>
 #include <SFML/Graphics/Transform.hpp>
+#include <vector>
+#include <algorithm>
 
 namespace {
 	// SceneData
@@ -28,6 +29,9 @@ namespace {
 	std::vector<sf::Vector2f> instancedSpritesPositions;
 	std::vector<sf::Vector2f> instancedSpritesSizes;
 	std::vector<sf::Color> instancedSpritesColors;
+	std::vector<ph::FloatRect> instancedSpritesTextureRects;
+	std::vector<int> instancedSpritesTextureSlotRefs;
+	std::vector<const ph::Texture*> instancedTextures;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -120,9 +124,15 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	whiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 
 	// allocate instanced vectors
-	instancedSpritesPositions.reserve(10000);
-	instancedSpritesSizes.reserve(10000);
-	instancedSpritesColors.reserve(10000);
+	instancedSpritesPositions.reserve(1000);
+	instancedSpritesSizes.reserve(1000);
+	instancedSpritesColors.reserve(1000);
+	instancedSpritesTextureRects.reserve(1000);
+	instancedSpritesTextureSlotRefs.reserve(1000);
+
+	// set up texture slots in default instanced sprite shader
+	/*for(int i = 0; i < 16; ++i)
+		defaultInstanedSpriteShader->setUniformInt("texture" + std::to_string(i), i);*/
 }
 
 void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
@@ -224,16 +234,52 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 }
 
-void Renderer::submitQuadIns(const Texture*, const IntRect*, const sf::Color* color, const Shader* shader,
+void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, const sf::Color* color, const Shader* shader,
                              sf::Vector2f position, sf::Vector2f size, float rotation)
 {
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
+	instancedSpritesColors.emplace_back(color ? *color : sf::Color::White);
 
-	if(color == nullptr)
-		instancedSpritesColors.emplace_back(sf::Color::White);
+	// TODO_ren: Add support for custom tex coords
+	if(texCoords == nullptr)
+		instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
 	else
-		instancedSpritesColors.emplace_back(*color);
+		PH_EXIT_GAME("Custom tex coords are not supported yet");
+
+	if(texture)
+	{
+		int textureSlotOfThisTexture = -1;
+		for(size_t i = 0; i < instancedTextures.size(); ++i)
+		{
+			if(instancedTextures[i] == texture) {
+				textureSlotOfThisTexture = i;
+				break;
+			}
+		}
+
+		if(textureSlotOfThisTexture == -1) 
+		{
+			if(instancedTextures.size() < 16) {
+				const int textureSlotID = instancedTextures.size();
+				instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
+				texture->bind(textureSlotID);
+				instancedTextures.emplace_back(texture);
+			}
+			else
+				PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
+		}
+		else 
+		{
+			instancedSpritesTextureSlotRefs.emplace_back(textureSlotOfThisTexture);
+		}
+
+	}
+	else {
+		// TODO: Assign white texture here
+		instancedSpritesTextureSlotRefs.emplace_back(0);
+	}
+
 }
 
 void Renderer::insFlush()
@@ -244,25 +290,31 @@ void Renderer::insFlush()
 	}
 	defaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 
-	for(int i = 0; i < instancedSpritesPositions.size(); ++i)
+	for(size_t i = 0; i < instancedSpritesPositions.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector2("offsets[" + std::to_string(i) + "]", instancedSpritesPositions[i]);
 
-	for(int i = 0; i < instancedSpritesSizes.size(); ++i)
+	for(size_t i = 0; i < instancedSpritesSizes.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector2("sizes[" + std::to_string(i) + "]", instancedSpritesSizes[i]);
 
-	for(int i = 0; i < instancedSpritesColors.size(); ++i)
+	for(size_t i = 0; i < instancedSpritesColors.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector4Color("colors[" + std::to_string(i) + "]", instancedSpritesColors[i]);
 
-	//GLCheck( glBindBuffer(GL_ARRAY_BUFFER, instancedQuadsPositionsVBO.mID) );
-	//GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesPositions.size() * 2 * sizeof(float), instancedSpritesPositions.data()) );
+	for(size_t i = 0; i < instancedSpritesTextureRects.size(); ++i)
+		defaultInstanedSpriteShader->setUniformVector4Rect("textureRects[" + std::to_string(i) + "]", instancedSpritesTextureRects[i]);
+	
+	for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
+		defaultInstanedSpriteShader->setUniformUnsignedInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
 
-	GLCheck(glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()));
+	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
 
 	++numberOfDrawCalls;
 
 	instancedSpritesPositions.clear();
 	instancedSpritesSizes.clear();
 	instancedSpritesColors.clear();
+	instancedSpritesTextureRects.clear();
+	instancedSpritesTextureSlotRefs.clear();
+	instancedTextures.clear();
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)

@@ -113,6 +113,11 @@ void Shader::setUniformInt(const std::string& name, const int value) const
 	GLCheck(glUniform1i(getUniformLocation(name), value));
 }
 
+void Shader::setUniformUnsignedInt(const std::string& name, const unsigned value) const
+{
+	GLCheck(glUniform1ui(getUniformLocation(name), value));
+}
+
 void Shader::setUniformFloat(const std::string& name, const float value) const
 {
 	GLCheck(glUniform1f(getUniformLocation(name), value));
@@ -149,6 +154,11 @@ void Shader::setUniformVector4Color(const std::string& name, const sf::Color& co
 void Shader::setUniformVector4(const std::string& name, const float x, const float y, const float z, const float w) const
 {
 	GLCheck(glUniform4f(getUniformLocation(name), x, y, z, w));
+}
+
+void Shader::setUniformVector4Rect(const std::string& name, const FloatRect& r) const
+{
+	setUniformVector4(name, r.left, r.top, r.width, r.height);
 }
 
 void Shader::setUniformMatrix4x4(const std::string& name, const float* transform) const
