@@ -142,56 +142,6 @@
         <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
     </entity>
 
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="120" width="20" height="20" />
-    </entity>
-      
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="150" width="20" height="20" />
-        <component name="Rotation" angle="45"/>
-    </entity>
-  
-  <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="180" width="20" height="20" />
-        <component name="Rotation" angle="90"/>
-    </entity>
-  
-  <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="210" width="20" height="20" />
-        <component name="Rotation" angle="135"/>
-    </entity>
-      
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="240" width="20" height="20" />
-        <component name="Rotation" angle="180"/>
-    </entity>
-  
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="270" width="20" height="20" />
-        <component name="Rotation" angle="215"/>
-    </entity>
-  
-    <entity sourceTemplate="VeryWeirdCar">
-        <component name="BodyRect" x="100" y="120" width="20" height="20" />
-    </entity>
-  
-    <entity sourceTemplate="VeryWeirdCarWithTextureRect">
-        <component name="BodyRect" x="150" y="120" width="20" height="20" />
-    </entity>
-  
-    <entity sourceTemplate="VeryWeirdCarWithTextureRectAndCustomShader">
-        <component name="BodyRect" x="200" y="120" width="20" height="20" />
-    </entity>
-
-    <entity sourceTemplate="WeirdLever">
-        <component name="BodyRect" x="0.0" y="120.0" width="7" height="15" />
-    </entity>
-    
-    <entity sourceTemplate="ColorSquare">
-          <component name="Color" r="200" g="200" b="10" a="255"/>
-          <component name="StaticCollisionBody"/>
-    </entity>
-
     <entity sourceTemplate="Lever"/>
   
     <entity sourceTemplate="Zombie"/>

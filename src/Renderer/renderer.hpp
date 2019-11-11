@@ -26,7 +26,12 @@ public:
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
 	static void submitQuad(const Texture*, const IntRect*, const sf::Color*, const Shader*,
-	                               sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	                       sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+
+	static void submitQuadIns(const Texture*, const IntRect*, const sf::Color*, const Shader*,
+	                          sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
+
+	static void insFlush();
 
 	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);

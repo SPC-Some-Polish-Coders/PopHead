@@ -4,6 +4,7 @@
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "framebuffer.hpp"
+#include <vector>
 #include <SFML/Graphics/Transform.hpp>
 
 namespace {
@@ -15,12 +16,18 @@ namespace {
 	unsigned numberOfDrawCalls = 0;
 	ph::Shader* defaultFramebufferShader;
 	ph::Shader* defaultSpriteShader;
+	ph::Shader* defaultInstanedSpriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	ph::VertexArray* textureQuadVertexArray;
 	ph::VertexArray* textureAnimatedQuadVertexArray;
 	ph::VertexArray* framebufferVertexArray;
+	ph::VertexArray* instancedQuadsVertexArray;
+	ph::VertexBuffer instancedQuadsPositionsVBO;
 	ph::Framebuffer* framebuffer;
 	ph::Texture* whiteTexture;
+	std::vector<sf::Vector2f> instancedSpritesPositions;
+	std::vector<sf::Vector2f> instancedSpritesSizes;
+	std::vector<sf::Color> instancedSpritesColors;
 	bool isCustomTextureRectApplied = false;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -43,6 +50,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
 	defaultSpriteShader = sl.get("sprite");
+	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
+	defaultInstanedSpriteShader = sl.get("instancedSprite");
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
 
@@ -61,6 +70,13 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	   -1.f,-1.f, 0.f, 0.f
 	};
 
+	float quadPositions[] = {
+		1.f, 0.f,
+		1.f, 1.f,
+		0.f, 1.f,
+		0.f, 0.f
+	};
+
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
 	IndexBuffer quadIBO = createIndexBuffer();
 	setData(quadIBO, quadIndices, sizeof(quadIndices));
@@ -77,6 +93,19 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
 	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
 
+	VertexBuffer quadVertexPositionsVBO = createVertexBuffer();
+	setData(quadVertexPositionsVBO, quadPositions, sizeof(quadPositions), DataUsage::staticDraw);
+	instancedQuadsVertexArray = new VertexArray;
+	instancedQuadsVertexArray->setVertexBuffer(quadVertexPositionsVBO, VertexBufferLayout::position2);
+	instancedQuadsVertexArray->setIndexBuffer(quadIBO);
+	/*instancedQuadsPositionsVBO = createVertexBuffer();
+	setData(instancedQuadsPositionsVBO, nullptr, 2 * sizeof(float) * 50000, DataUsage::dynamicDraw);
+	GLCheck( glEnableVertexAttribArray(1) );
+	bind(instancedQuadsPositionsVBO);
+	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0) );
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, 0) );
+	GLCheck( glVertexAttribDivisor(1, 1) );*/
+
 	VertexBuffer framebufferVBO = createVertexBuffer();
 	setData(framebufferVBO, framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
 	framebufferVertexArray = new VertexArray;
@@ -89,6 +118,11 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	whiteTexture = new Texture;
 	unsigned whiteData = 0xffffffff;
 	whiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
+
+	// allocate instanced vectors
+	instancedSpritesPositions.reserve(10000);
+	instancedSpritesSizes.reserve(10000);
+	instancedSpritesColors.reserve(10000);
 }
 
 void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
@@ -121,6 +155,8 @@ void Renderer::beginScene(Camera& camera)
 
 void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
 {
+	insFlush();
+
 	Framebuffer::bindDefaultFramebuffer();
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray->bind();
@@ -136,7 +172,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
-                                  sf::Vector2f position, sf::Vector2i size, float rotation)
+                          sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	// culling
 	if(!isInsideScreen(position, size))
@@ -186,6 +222,47 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
+}
+
+void Renderer::submitQuadIns(const Texture*, const IntRect*, const sf::Color* color, const Shader* shader,
+                             sf::Vector2f position, sf::Vector2f size, float rotation)
+{
+	instancedSpritesPositions.emplace_back(position);
+	instancedSpritesSizes.emplace_back(size);
+
+	if(color == nullptr)
+		instancedSpritesColors.emplace_back(sf::Color::White);
+	else
+		instancedSpritesColors.emplace_back(*color);
+}
+
+void Renderer::insFlush()
+{
+	if(defaultInstanedSpriteShader != currentlyBoundShader) {
+		defaultInstanedSpriteShader->bind();
+		currentlyBoundShader = defaultInstanedSpriteShader;
+	}
+	defaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
+
+	for(int i = 0; i < instancedSpritesPositions.size(); ++i)
+		defaultInstanedSpriteShader->setUniformVector2("offsets[" + std::to_string(i) + "]", instancedSpritesPositions[i]);
+
+	for(int i = 0; i < instancedSpritesSizes.size(); ++i)
+		defaultInstanedSpriteShader->setUniformVector2("sizes[" + std::to_string(i) + "]", instancedSpritesSizes[i]);
+
+	for(int i = 0; i < instancedSpritesColors.size(); ++i)
+		defaultInstanedSpriteShader->setUniformVector4Color("colors[" + std::to_string(i) + "]", instancedSpritesColors[i]);
+
+	//GLCheck( glBindBuffer(GL_ARRAY_BUFFER, instancedQuadsPositionsVBO.mID) );
+	//GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesPositions.size() * 2 * sizeof(float), instancedSpritesPositions.data()) );
+
+	GLCheck(glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()));
+
+	++numberOfDrawCalls;
+
+	instancedSpritesPositions.clear();
+	instancedSpritesSizes.clear();
+	instancedSpritesColors.clear();
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)

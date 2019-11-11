@@ -128,6 +128,12 @@ void Game::update(sf::Time deltaTime)
 		mTerminal->update();
 		// TODO_ren: Move it to Terminal::update()
 		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
+
+		// test instancing
+		Renderer::submitQuadIns(nullptr, nullptr, &sf::Color::Yellow, nullptr, sf::Vector2f(40.f, 20.f), sf::Vector2f(200.f, 20.f), 0.f);
+		Renderer::submitQuadIns(nullptr, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(0.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
+		Renderer::submitQuadIns(nullptr, nullptr, &sf::Color::Green, nullptr, sf::Vector2f(-92.f, -45.f), sf::Vector2f(50.f, 50.f), 0.f);
+
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();
 	}
