@@ -89,6 +89,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"TextureRect",            &EntitiesParser::parseTextureRect},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Color",                  &EntitiesParser::parseColor},
+		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
 		{"Animation",              &EntitiesParser::parseAnimation},
@@ -170,6 +171,11 @@ void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode,
 void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::StaticCollisionBody>(entity);
+}
+
+void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::FaceDirection>(entity, sf::Vector2f(0, 0));
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
