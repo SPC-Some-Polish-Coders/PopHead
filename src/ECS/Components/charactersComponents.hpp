@@ -19,6 +19,11 @@ namespace ph::component {
 	{
 	};
 
+	struct FaceDirection
+	{
+		sf::Vector2f direction;
+	};
+
 	struct MeleeAttacker
 	{
 		float minSecondsInterval;
