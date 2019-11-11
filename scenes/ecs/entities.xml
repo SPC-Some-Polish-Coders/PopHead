@@ -6,7 +6,7 @@
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
-        <component name="Color" r="255" g="255" b="255" a="255"/>
+        <component name="Color" r="255" g="255" b="255" a="255" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
@@ -32,6 +32,9 @@
         <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Damage" damageDealt="25" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
+        <component name="TextureRect" x="0" y="0" width="20" height="20" />
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
@@ -63,38 +66,38 @@
     <entityTemplate name="Car">
         <component name="StaticCollisionBody" />
     </entityTemplate>
-  
+
     <entityTemplate name="WeirdCar">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/vehicles/car.png" />
-        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl"/>
-        <component name="Rotation" angle="0"/>
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
+        <component name="Rotation" angle="0" />
     </entityTemplate>
-  
-  <entityTemplate name="VeryWeirdCar">
+
+    <entityTemplate name="VeryWeirdCar">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/vehicles/car.png" />
-        <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl"/>
-        <component name="Color" r="50" g="50" b="255" a="255"/>
+        <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl" />
+        <component name="Color" r="50" g="50" b="255" a="255" />
     </entityTemplate>
-  
-  <entityTemplate name="VeryWeirdCarWithTextureRect">
-        <component name="StaticCollisionBody" />
-        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Texture" filepath="textures/vehicles/car.png" />
-        <component name="TextureRect" x="0" y="0" width="15" height="7" />
-        <component name="Color" r="50" g="50" b="255" a="255"/>
-    </entityTemplate>
-  
-  <entityTemplate name="VeryWeirdCarWithTextureRectAndCustomShader">
+
+    <entityTemplate name="VeryWeirdCarWithTextureRect">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="TextureRect" x="0" y="0" width="15" height="7" />
-        <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl"/>
-        <component name="Color" r="255" g="200" b="10" a="255"/>
+        <component name="Color" r="50" g="50" b="255" a="255" />
+    </entityTemplate>
+
+    <entityTemplate name="VeryWeirdCarWithTextureRectAndCustomShader">
+        <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Texture" filepath="textures/vehicles/car.png" />
+        <component name="TextureRect" x="0" y="0" width="15" height="7" />
+        <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl" />
+        <component name="Color" r="255" g="200" b="10" a="255" />
     </entityTemplate>
 
 
@@ -103,12 +106,12 @@
         <component name="Texture" filepath="textures/others/lever.png" />
         <component name="TextureRect" x="0" y="0" width="7" height="15" />
     </entityTemplate>
-  
-  <entityTemplate name="WeirdLever">
+
+    <entityTemplate name="WeirdLever">
         <component name="BodyRect" x="0.0" y="0.0" width="7" height="15" />
         <component name="Texture" filepath="textures/others/lever.png" />
         <component name="TextureRect" x="0" y="0" width="7" height="15" />
-        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl"/>
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
     </entityTemplate>
 
 
@@ -128,10 +131,10 @@
 
 
     <entityTemplate name="ColorSquare">
-      <component name="BodyRect" x="0.0" y="0.0" width="40.0" height="40.0" />
-      <component name="Color" r="255" g="255" b="255" a="255"/>
+        <component name="BodyRect" x="0.0" y="0.0" width="40.0" height="40.0" />
+        <component name="Color" r="255" g="255" b="255" a="255" />
     </entityTemplate>
-  
+
     <entityTemplate name="Particles">
     </entityTemplate>
 
@@ -145,40 +148,40 @@
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="120" width="20" height="20" />
     </entity>
-      
+
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="150" width="20" height="20" />
-        <component name="Rotation" angle="45"/>
+        <component name="Rotation" angle="45" />
     </entity>
-  
-  <entity sourceTemplate="WeirdCar">
+
+    <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="180" width="20" height="20" />
-        <component name="Rotation" angle="90"/>
+        <component name="Rotation" angle="90" />
     </entity>
-  
-  <entity sourceTemplate="WeirdCar">
+
+    <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="210" width="20" height="20" />
-        <component name="Rotation" angle="135"/>
+        <component name="Rotation" angle="135" />
     </entity>
-      
+
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="240" width="20" height="20" />
-        <component name="Rotation" angle="180"/>
+        <component name="Rotation" angle="180" />
     </entity>
-  
+
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="270" width="20" height="20" />
-        <component name="Rotation" angle="215"/>
+        <component name="Rotation" angle="215" />
     </entity>
-  
+
     <entity sourceTemplate="VeryWeirdCar">
         <component name="BodyRect" x="100" y="120" width="20" height="20" />
     </entity>
-  
+
     <entity sourceTemplate="VeryWeirdCarWithTextureRect">
         <component name="BodyRect" x="150" y="120" width="20" height="20" />
     </entity>
-  
+
     <entity sourceTemplate="VeryWeirdCarWithTextureRectAndCustomShader">
         <component name="BodyRect" x="200" y="120" width="20" height="20" />
     </entity>
@@ -186,22 +189,24 @@
     <entity sourceTemplate="WeirdLever">
         <component name="BodyRect" x="0.0" y="120.0" width="7" height="15" />
     </entity>
-    
+
     <entity sourceTemplate="ColorSquare">
-          <component name="Color" r="200" g="200" b="10" a="255"/>
-          <component name="StaticCollisionBody"/>
+        <component name="Color" r="200" g="200" b="10" a="255" />
+        <component name="StaticCollisionBody" />
     </entity>
 
-    <entity sourceTemplate="Lever"/>
-  
-    <entity sourceTemplate="Zombie"/>
-    
+    <entity sourceTemplate="Lever" />
+
+    <entity sourceTemplate="Zombie">
+             <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
+     </entity>
+
     <entity sourceTemplate="GateGuard">
-        <component name="StaticCollisionBody"/>
+        <component name="StaticCollisionBody" />
     </entity>
-    
+
     <entity sourceTemplate="BulletItem">
-        <component name="Medkit" addHealthPoints="20"/>
+        <component name="Medkit" addHealthPoints="20" />
     </entity>
-    
+
 </entities>
