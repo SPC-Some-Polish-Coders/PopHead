@@ -6,6 +6,7 @@
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
+        <component name="FaceDirection" />
         <component name="Color" r="255" g="255" b="255" a="255" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="CharacterSpeed" speed="100" />
