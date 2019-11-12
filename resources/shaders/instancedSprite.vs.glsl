@@ -22,33 +22,35 @@ void main()
     color = colors[gl_InstanceID];
     textureSlotRef = textureSlotRefs[gl_InstanceID];
 
-    vec4 tetxureRect = textureRects[gl_InstanceID];
-    
-    vec2 vertexPos;
+    vec2 offset = offsets[gl_InstanceID];
     vec2 size = sizes[gl_InstanceID];
+    float rotation = rotations[gl_InstanceID];
+    vec4 tetxureRect = textureRects[gl_InstanceID];
 
-    if(gl_VertexID == 0)
-    {
+    vec2 vertexPos;
+    
+    if(gl_VertexID == 0) {
         texCoords = vec2(tetxureRect.x, tetxureRect.y);
         vertexPos = vec2 (0, 0);
     }
-    else if(gl_VertexID == 1)
-    {
+    else if(gl_VertexID == 1) {
         texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y);
         vertexPos = vec2(size.x, 0);
     }
-    else if(gl_VertexID == 2)
-    {
+    else if(gl_VertexID == 2) {
         texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y + tetxureRect.w);
         vertexPos = size;
     }
-    else if(gl_VertexID == 3)
-    {
+    else if(gl_VertexID == 3) {
         texCoords = vec2(tetxureRect.x, tetxureRect.y + tetxureRect.w);
         vertexPos = vec2(0, size.y);
     }
-    mat2 rotationMatrix = getRotationMatrix(rotations[gl_InstanceID]);
-    gl_Position = viewProjectionMatrix * vec4(vertexPos * rotationMatrix + offsets[gl_InstanceID], 0, 1);
+
+    if(rotation == 0)
+        gl_Position = viewProjectionMatrix * vec4(vertexPos + offsets[gl_InstanceID], 0, 1);
+    else
+        gl_Position = viewProjectionMatrix * vec4(vertexPos * getRotationMatrix(rotation) + offset, 0, 1);
+
 }
 
 mat2 getRotationMatrix(float angle)
