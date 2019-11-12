@@ -19,20 +19,22 @@ void PendingGunAttacks::update(float seconds)
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
 		if (playerGunAttack.isTryingToAttack)
 		{
-			if (!canShoot(playerGunAttack.bullets)) return;
-			--playerGunAttack.bullets;
-			playerGunAttack.isTryingToAttack = false;
+			if (!canShoot(playerGunAttack.bullets)) 
+				return;
 
 			const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
-			performShoot(startingBulletPos);		
+			performShoot(startingBulletPos);	
+
+			--playerGunAttack.bullets;
+			playerGunAttack.isTryingToAttack = false;
 		}
 	}
 }
 
 bool PendingGunAttacks::canShoot(int numOfBullets) const
 {
-	return (numOfBullets <= 0 ? false : true);
+	return numOfBullets > 0;
 }
 
 void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
@@ -53,7 +55,7 @@ void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
 				return;
 			}
 		}
-		++bulletTravelledDist;
+		bulletTravelledDist += 5;
 		currentBulletPos = getCurrentPosition(startingBulletPos, bulletTravelledDist);
 	}
 }
