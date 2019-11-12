@@ -252,39 +252,33 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 
 	// TODO_ren: Refactor this
 
-	if(texture)
+	if(!texture)
+		texture = whiteTexture;
+
+	int textureSlotOfThisTexture = -1;
+	for(size_t i = 0; i < instancedTextures.size(); ++i)
 	{
-		int textureSlotOfThisTexture = -1;
-		for(size_t i = 0; i < instancedTextures.size(); ++i)
-		{
-			if(instancedTextures[i] == texture) {
-				textureSlotOfThisTexture = i;
-				break;
-			}
+		if(instancedTextures[i] == texture) {
+			textureSlotOfThisTexture = i;
+			break;
 		}
-
-		if(textureSlotOfThisTexture == -1) // if texture was not assigned yet
-		{
-			if(instancedTextures.size() < 16) {
-				const int textureSlotID = static_cast<int>(instancedTextures.size());
-				instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
-				texture->bind(textureSlotID);
-				instancedTextures.emplace_back(texture);
-			}
-			else
-				PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
-		}
-		else // if texture was already assigned
-		{
-			instancedSpritesTextureSlotRefs.emplace_back(textureSlotOfThisTexture);
-		}
-
-	}
-	else {
-		// TODO_ren: Assign white texture here
-		instancedSpritesTextureSlotRefs.emplace_back(0);
 	}
 
+	if(textureSlotOfThisTexture == -1) // if texture was not assigned yet
+	{
+		if(instancedTextures.size() < 16) {
+			const int textureSlotID = static_cast<int>(instancedTextures.size());
+			instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
+			texture->bind(textureSlotID);
+			instancedTextures.emplace_back(texture);
+		}
+		else
+			PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
+	}
+	else // if texture was already assigned
+	{
+		instancedSpritesTextureSlotRefs.emplace_back(textureSlotOfThisTexture);
+	}
 }
 
 void Renderer::insFlush()
