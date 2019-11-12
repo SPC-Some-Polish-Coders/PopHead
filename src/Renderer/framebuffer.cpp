@@ -53,8 +53,9 @@ void Framebuffer::bind()
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID) );
 }
 
-void Framebuffer::bindTextureColorBuffer()
+void Framebuffer::bindTextureColorBuffer(unsigned slot)
 {
+	GLCheck( glActiveTexture(GL_TEXTURE0 + slot) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, mColorBufferTextureID) );
 }
 

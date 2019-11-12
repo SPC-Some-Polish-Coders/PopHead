@@ -4,7 +4,7 @@ layout (location = 0) in vec2 aPos;
 
 out vec4 color;
 out vec2 texCoords;
-//out uint textureSlotRef;
+flat out int textureSlotRef;
 
 uniform mat4 viewProjectionMatrix;
 
@@ -12,12 +12,12 @@ uniform vec2[100] offsets;
 uniform vec2[100] sizes;
 uniform vec4[100] colors;
 uniform vec4[100] textureRects;
-uniform uint[100] textureSlotRefs;
+uniform int[100] textureSlotRefs;
 
 void main()
 {
     color = colors[gl_InstanceID];
-    //textureSlotRef = textureSlotRefs[gl_InstanceID];
+    textureSlotRef = textureSlotRefs[gl_InstanceID];
 
     vec2 vertexPos;
     vec2 size = sizes[gl_InstanceID];

@@ -172,7 +172,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	framebufferVertexArray->bind();
 	defaultFramebufferShader->bind();
 	currentlyBoundShader = defaultFramebufferShader;
-	framebuffer->bindTextureColorBuffer();
+	framebuffer->bindTextureColorBuffer(0);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
 	sfmlRenderer.drawSubmitedObjects(window);
@@ -247,6 +247,11 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 	else
 		PH_EXIT_GAME("Custom tex coords are not supported yet");
 
+	if(shader)
+		PH_EXIT_GAME("Custom shaders are not supported yet");
+
+	// TODO_ren: Refactor this
+
 	if(texture)
 	{
 		int textureSlotOfThisTexture = -1;
@@ -258,10 +263,10 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 			}
 		}
 
-		if(textureSlotOfThisTexture == -1) 
+		if(textureSlotOfThisTexture == -1) // if texture was not assigned yet
 		{
 			if(instancedTextures.size() < 16) {
-				const int textureSlotID = instancedTextures.size();
+				const int textureSlotID = static_cast<int>(instancedTextures.size());
 				instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
 				texture->bind(textureSlotID);
 				instancedTextures.emplace_back(texture);
@@ -269,14 +274,14 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 			else
 				PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
 		}
-		else 
+		else // if texture was already assigned
 		{
 			instancedSpritesTextureSlotRefs.emplace_back(textureSlotOfThisTexture);
 		}
 
 	}
 	else {
-		// TODO: Assign white texture here
+		// TODO_ren: Assign white texture here
 		instancedSpritesTextureSlotRefs.emplace_back(0);
 	}
 
@@ -303,7 +308,11 @@ void Renderer::insFlush()
 		defaultInstanedSpriteShader->setUniformVector4Rect("textureRects[" + std::to_string(i) + "]", instancedSpritesTextureRects[i]);
 	
 	for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
-		defaultInstanedSpriteShader->setUniformUnsignedInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
+		defaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
+
+	// TODO_ren: Maybe I can set it once in Renderer::init()
+	for(size_t i = 0; i < instancedTextures.size(); ++i)
+		defaultInstanedSpriteShader->setUniformInt("textures[" + std::to_string(i) + "]", i);
 
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
 

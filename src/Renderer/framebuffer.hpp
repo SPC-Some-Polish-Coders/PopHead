@@ -10,7 +10,7 @@ public:
 	void reset(const unsigned width, const unsigned height);
 
 	void bind();
-	void bindTextureColorBuffer();
+	void bindTextureColorBuffer(unsigned slot);
 	
 	static void bindDefaultFramebuffer();
 
