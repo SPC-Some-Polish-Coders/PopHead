@@ -57,4 +57,9 @@ namespace ph::component {
 	{
 		bool isCollision;
 	};
+
+	struct Lifetime
+	{
+		float lifetime;
+	};
 }

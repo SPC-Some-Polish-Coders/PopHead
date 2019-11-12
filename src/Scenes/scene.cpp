@@ -13,6 +13,7 @@
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
+#include "ECS/Systems/lifetime.hpp"
 
 namespace ph {
 
@@ -72,6 +73,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::DyingCharacters>();
+	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 }

@@ -44,6 +44,8 @@ private:
 	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
+	void parseLifetime(const Xml& entityComponentNode, entt::entity& entity);
+	
 
 	//NOTE: above methods are awkward but as long as we don't find a better solution that is the way	
 
