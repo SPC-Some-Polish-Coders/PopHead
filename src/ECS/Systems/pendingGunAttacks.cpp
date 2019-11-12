@@ -37,7 +37,7 @@ bool PendingGunAttacks::canShoot(int numOfBullets) const
 
 void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
 {
-	auto enemies = mRegistry.view<component::BodyRect>(entt::exclude<component::Player>);
+	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
 	sf::Vector2f currentBulletPos = startingBulletPos;
 	int bulletTravelledDist = 1;
 	const int range = 250;

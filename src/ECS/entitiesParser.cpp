@@ -78,6 +78,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
+		{"Killable",			   &EntitiesParser::parseKillable},
 		{"Health",	               &EntitiesParser::parseHealth},
 		{"Damage",	               &EntitiesParser::parseDamage},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
@@ -192,6 +193,12 @@ void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::en
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
 }
+
+void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::Killable>(entity);
+}
+
 
 void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
 {

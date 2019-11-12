@@ -20,6 +20,11 @@ namespace ph::component {
 	{
 	};
 
+	struct Killable
+	{
+
+	};
+
 	struct FaceDirection
 	{
 		sf::Vector2f direction;
