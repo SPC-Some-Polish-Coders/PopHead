@@ -135,7 +135,7 @@ void Game::update(sf::Time deltaTime)
 
 		Renderer::submitQuadIns(&wallTex, nullptr, nullptr, nullptr, sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 200.f), 0.f);
 		Renderer::submitQuadIns(&gunTex, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(70.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuadIns(nullptr, nullptr, &sf::Color::Green, nullptr, sf::Vector2f(-92.f, -45.f), sf::Vector2f(50.f, 50.f), 0.f);
+		Renderer::submitQuadIns(nullptr, nullptr, &sf::Color::Green, nullptr, sf::Vector2f(-92.f, -45.f), sf::Vector2f(50.f, 50.f), 30.f);
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

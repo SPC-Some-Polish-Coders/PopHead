@@ -28,6 +28,7 @@ namespace {
 	ph::Texture* whiteTexture;
 	std::vector<sf::Vector2f> instancedSpritesPositions;
 	std::vector<sf::Vector2f> instancedSpritesSizes;
+	std::vector<float> instancedSpritesRotation;
 	std::vector<sf::Color> instancedSpritesColors;
 	std::vector<ph::FloatRect> instancedSpritesTextureRects;
 	std::vector<int> instancedSpritesTextureSlotRefs;
@@ -239,6 +240,7 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 {
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
+	instancedSpritesRotation.emplace_back(rotation);
 	instancedSpritesColors.emplace_back(color ? *color : sf::Color::White);
 
 	// TODO_ren: Add support for custom tex coords
@@ -294,6 +296,9 @@ void Renderer::insFlush()
 
 	for(size_t i = 0; i < instancedSpritesSizes.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector2("sizes[" + std::to_string(i) + "]", instancedSpritesSizes[i]);
+	
+	for(size_t i = 0; i < instancedSpritesRotation.size(); ++i)
+		defaultInstanedSpriteShader->setUniformFloat("rotations[" + std::to_string(i) + "]", instancedSpritesRotation[i]);
 
 	for(size_t i = 0; i < instancedSpritesColors.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector4Color("colors[" + std::to_string(i) + "]", instancedSpritesColors[i]);
@@ -314,14 +319,17 @@ void Renderer::insFlush()
 
 	instancedSpritesPositions.clear();
 	instancedSpritesSizes.clear();
+	instancedSpritesRotation.clear();
 	instancedSpritesColors.clear();
 	instancedSpritesTextureRects.clear();
 	instancedSpritesTextureSlotRefs.clear();
 	instancedTextures.clear();
 }
 
+// TODO_ren: Think what to do with these low level kindof calls
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
+	
 	if(!isInsideScreen(transform, size))
 		return;
 

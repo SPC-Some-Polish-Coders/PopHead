@@ -54,6 +54,13 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 			currentCamera = &camera.camera;
 		}
 	});
+
+	// NOTE: Temporary Renderer debug stuff
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		currentCamera->zoom(1.04f);
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+		currentCamera->zoom(0.96f);
+
 	return *currentCamera;
 }
 
