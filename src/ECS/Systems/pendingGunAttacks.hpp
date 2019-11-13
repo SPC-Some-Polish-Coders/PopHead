@@ -16,12 +16,12 @@ namespace ph::system {
 
 	private:
 		void performShoot(const sf::Vector2f& startingBulletPos);
+		void setPlayerFacePosition();
 		bool canShoot(int numOfBullets) const;
-		sf::Vector2f getPlayerDirection() const;
 		sf::Vector2f getGunPosition() const;
 		sf::Vector2f getCurrentPosition(const sf::Vector2f& startingPos, const int bulletDistance) const;
 
 	private:
-		sf::Vector2f direction;
+		sf::Vector2f mPlayerFaceDirection;
 	};
 }

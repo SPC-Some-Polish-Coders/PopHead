@@ -12,6 +12,7 @@ namespace ph::system {
 	void PlayerMovementInput::update(float seconds)
 	{
 		const auto playerDirection = getPlayerDirection();
+		setPlayerFaceDirection(playerDirection);
 
 		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
 		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, component::Player) {
@@ -42,6 +43,19 @@ namespace ph::system {
 		if (right) return sf::Vector2f(1.f, 0.f);
 
 		return sf::Vector2f(0.f, 0.f);
+	}
+
+	void PlayerMovementInput::setPlayerFaceDirection(const sf::Vector2f& faceDirection) const
+	{
+		auto playerView = mRegistry.view<component::Player, component::FaceDirection>();
+		for (auto player : playerView)
+		{
+			if (faceDirection != sf::Vector2f(0.f, 0.f))
+			{
+				auto& prevFaceDirection = playerView.get<component::FaceDirection>(player);
+				prevFaceDirection.direction = faceDirection;
+			}
+		}
 	}
 
 
