@@ -30,6 +30,15 @@ bool Cast::toBool(const std::string& str)
 	else
 		PH_EXCEPTION("Cast to bool failed!");
 }
+
+Vector4f Cast::toNormalizedColorVector4f(const sf::Color& color)
+{
+	return Vector4f({
+		static_cast<float>(color.r) / 255.f, static_cast<float>(color.g) / 255.f,
+		static_cast<float>(color.b) / 255.f, static_cast<float>(color.a) / 255.f
+	});
+}
+
 //
 //ObjectType Cast::toObjectType(const std::string& str)
 //{

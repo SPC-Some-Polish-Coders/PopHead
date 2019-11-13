@@ -4,6 +4,8 @@
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "framebuffer.hpp"
+#include "Utilities/vector4.hpp"
+#include "Utilities/cast.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <vector>
 #include <algorithm>
@@ -29,7 +31,7 @@ namespace {
 	std::vector<sf::Vector2f> instancedSpritesPositions;
 	std::vector<sf::Vector2f> instancedSpritesSizes;
 	std::vector<float> instancedSpritesRotations;
-	std::vector<sf::Color> instancedSpritesColors;
+	std::vector<ph::Vector4f> instancedSpritesColors;
 	std::vector<ph::FloatRect> instancedSpritesTextureRects;
 	std::vector<int> instancedSpritesTextureSlotRefs;
 	std::vector<const ph::Texture*> instancedTextures;
@@ -38,6 +40,7 @@ namespace {
 	unsigned int instancedPositionsVBO;
 	unsigned int instancedSizesVBO;
 	unsigned int instancedRotationsVBO;
+	unsigned int instancedColorsVBO;
 	unsigned int instancedVAO;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -130,6 +133,13 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*) 0);
 		glVertexAttribDivisor(2, 1);
+		
+		glGenBuffers(1, &instancedColorsVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedColorsVBO);
+		glBufferData(GL_ARRAY_BUFFER, 100 * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
+		glVertexAttribDivisor(3, 1);
 	}
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
@@ -148,6 +158,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	// allocate instanced vectors
 	instancedSpritesPositions.reserve(1000);
 	instancedSpritesSizes.reserve(1000);
+	instancedSpritesRotations.reserve(1000);
 	instancedSpritesColors.reserve(1000);
 	instancedSpritesTextureRects.reserve(1000);
 	instancedSpritesTextureSlotRefs.reserve(1000);
@@ -170,6 +181,8 @@ void Renderer::shutDown()
 	delete framebufferVertexArray;
 	delete framebuffer;
 	delete whiteTexture;
+
+	// TODO_ren: It's missing instanced arrays
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -262,7 +275,7 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
 	instancedSpritesRotations.emplace_back(rotation);
-	instancedSpritesColors.emplace_back(color ? *color : sf::Color::White);
+	instancedSpritesColors.emplace_back(color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White));
 
 	// TODO_ren: Add support for custom tex coords
 	if(texCoords == nullptr)
@@ -321,8 +334,8 @@ void Renderer::insFlush()
 	glBindBuffer(GL_ARRAY_BUFFER, instancedRotationsVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesRotations.size() * sizeof(float), instancedSpritesRotations.data());
 	
-	for(size_t i = 0; i < instancedSpritesColors.size(); ++i)
-		defaultInstanedSpriteShader->setUniformVector4Color("colors[" + std::to_string(i) + "]", instancedSpritesColors[i]);
+	glBindBuffer(GL_ARRAY_BUFFER, instancedColorsVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesColors.size() * 4 * sizeof(float), instancedSpritesColors.data());
 
 	for(size_t i = 0; i < instancedSpritesTextureRects.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector4Rect("textureRects[" + std::to_string(i) + "]", instancedSpritesTextureRects[i]);

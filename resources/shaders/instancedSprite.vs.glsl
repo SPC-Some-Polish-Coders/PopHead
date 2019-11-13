@@ -3,6 +3,7 @@
 layout (location = 0) in vec2 aOffset;
 layout (location = 1) in vec2 aSize;
 layout (location = 2) in float aRotation;
+layout (location = 3) in vec4 aColor;
 
 out vec4 color;
 out vec2 texCoords;
@@ -10,7 +11,6 @@ flat out int textureSlotRef;
 
 uniform mat4 viewProjectionMatrix;
 
-uniform vec4[100] colors;
 uniform vec4[100] textureRects;
 uniform int[100] textureSlotRefs;
 
@@ -18,7 +18,7 @@ mat2 getRotationMatrix(float angle);
 
 void main()
 {
-    color = colors[gl_InstanceID];
+    color = aColor;
     textureSlotRef = textureSlotRefs[gl_InstanceID];
 
     vec4 tetxureRect = textureRects[gl_InstanceID];
