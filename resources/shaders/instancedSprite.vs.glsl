@@ -1,6 +1,7 @@
 #version 330 core 
 
 layout (location = 0) in vec2 aOffset;
+layout (location = 1) in vec2 aSize;
 
 out vec4 color;
 out vec2 texCoords;
@@ -8,7 +9,6 @@ flat out int textureSlotRef;
 
 uniform mat4 viewProjectionMatrix;
 
-uniform vec2[100] sizes;
 uniform float[100] rotations;
 uniform vec4[100] colors;
 uniform vec4[100] textureRects;
@@ -21,7 +21,6 @@ void main()
     color = colors[gl_InstanceID];
     textureSlotRef = textureSlotRefs[gl_InstanceID];
 
-    vec2 size = sizes[gl_InstanceID];
     float rotation = rotations[gl_InstanceID];
     vec4 tetxureRect = textureRects[gl_InstanceID];
 
@@ -34,15 +33,15 @@ void main()
     }
     else if(gl_VertexID == 1) {
         texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y);
-        modelVertexPos = vec2(size.x, 0);
+        modelVertexPos = vec2(aSize.x, 0);
     }
     else if(gl_VertexID == 2) {
         texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y + tetxureRect.w);
-        modelVertexPos = vec2(size.x, size.y);
+        modelVertexPos = vec2(aSize.x, aSize.y);
     }
     else if(gl_VertexID == 3) {
         texCoords = vec2(tetxureRect.x, tetxureRect.y + tetxureRect.w);
-        modelVertexPos = vec2(0, size.y);
+        modelVertexPos = vec2(0, aSize.y);
     }
 
     if(rotation == 0)

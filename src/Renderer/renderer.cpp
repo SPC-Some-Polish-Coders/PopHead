@@ -36,6 +36,7 @@ namespace {
 	bool isCustomTextureRectApplied = false;
 	
 	unsigned int instancedPositionsVBO;
+	unsigned int instancedSizesVBO;
 	unsigned int instancedVAO;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -107,20 +108,20 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 		glBindVertexArray(instancedVAO);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIBO.mID);
-		
-		sf::Vector2f positions[] = {
-			sf::Vector2f(0, 0),
-			sf::Vector2f(200, 100),
-			sf::Vector2f(-50, -123)
-		};
 
 		glGenBuffers(1, &instancedPositionsVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 100 * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 		glVertexAttribDivisor(0, 1);
+
+		glGenBuffers(1, &instancedSizesVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedSizesVBO);
+		glBufferData(GL_ARRAY_BUFFER, 100 * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
+		glVertexAttribDivisor(1, 1);
 	}
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
@@ -303,14 +304,11 @@ void Renderer::insFlush()
 	}
 	defaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 
-	/*for(size_t i = 0; i < instancedSpritesPositions.size(); ++i)
-		defaultInstanedSpriteShader->setUniformVector2("offsets[" + std::to_string(i) + "]", instancedSpritesPositions[i]);*/
+	glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesPositions.size() * sizeof(sf::Vector2f), instancedSpritesPositions.data());
 
-	//glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
-	//glBufferData(GL_ARRAY_BUFFER, instancedSpritesPositions.size() * sizeof(sf::Vector2f), instancedSpritesPositions.data(), GL_DYNAMIC_DRAW);
-
-	for(size_t i = 0; i < instancedSpritesSizes.size(); ++i)
-		defaultInstanedSpriteShader->setUniformVector2("sizes[" + std::to_string(i) + "]", instancedSpritesSizes[i]);
+	glBindBuffer(GL_ARRAY_BUFFER, instancedSizesVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesSizes.size() * sizeof(sf::Vector2f), instancedSpritesSizes.data());
 	
 	for(size_t i = 0; i < instancedSpritesRotation.size(); ++i)
 		defaultInstanedSpriteShader->setUniformFloat("rotations[" + std::to_string(i) + "]", instancedSpritesRotation[i]);
