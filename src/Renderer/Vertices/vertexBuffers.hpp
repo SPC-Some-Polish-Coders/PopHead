@@ -7,6 +7,8 @@
 
 namespace ph {
 
+// TODO_ren: Delete useless stuff here
+
 struct VertexBuffer
 {
 	unsigned mID;

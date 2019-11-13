@@ -34,6 +34,9 @@ namespace {
 	std::vector<int> instancedSpritesTextureSlotRefs;
 	std::vector<const ph::Texture*> instancedTextures;
 	bool isCustomTextureRectApplied = false;
+	
+	unsigned int instancedPositionsVBO;
+	unsigned int instancedVAO;
 
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
@@ -98,18 +101,27 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
 	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
 
-	VertexBuffer quadVertexPositionsVBO = createVertexBuffer();
-	setData(quadVertexPositionsVBO, quadPositions, sizeof(quadPositions), DataUsage::staticDraw);
-	instancedQuadsVertexArray = new VertexArray;
-	instancedQuadsVertexArray->setVertexBuffer(quadVertexPositionsVBO, VertexBufferLayout::position2);
-	instancedQuadsVertexArray->setIndexBuffer(quadIBO);
-	/*instancedQuadsPositionsVBO = createVertexBuffer();
-	setData(instancedQuadsPositionsVBO, nullptr, 2 * sizeof(float) * 50000, DataUsage::dynamicDraw);
-	GLCheck( glEnableVertexAttribArray(1) );
-	bind(instancedQuadsPositionsVBO);
-	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, 0) );
-	GLCheck( glVertexAttribDivisor(1, 1) );*/
+	// create instanced arrays on gpu side
+	{
+		glGenVertexArrays(1, &instancedVAO);
+		glBindVertexArray(instancedVAO);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIBO.mID);
+		
+		sf::Vector2f positions[] = {
+			sf::Vector2f(0, 0),
+			sf::Vector2f(200, 100),
+			sf::Vector2f(-50, -123)
+		};
+
+		glGenBuffers(1, &instancedPositionsVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glVertexAttribDivisor(0, 1);
+	}
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
 	setData(framebufferVBO, framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
@@ -291,8 +303,11 @@ void Renderer::insFlush()
 	}
 	defaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
 
-	for(size_t i = 0; i < instancedSpritesPositions.size(); ++i)
-		defaultInstanedSpriteShader->setUniformVector2("offsets[" + std::to_string(i) + "]", instancedSpritesPositions[i]);
+	/*for(size_t i = 0; i < instancedSpritesPositions.size(); ++i)
+		defaultInstanedSpriteShader->setUniformVector2("offsets[" + std::to_string(i) + "]", instancedSpritesPositions[i]);*/
+
+	//glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
+	//glBufferData(GL_ARRAY_BUFFER, instancedSpritesPositions.size() * sizeof(sf::Vector2f), instancedSpritesPositions.data(), GL_DYNAMIC_DRAW);
 
 	for(size_t i = 0; i < instancedSpritesSizes.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector2("sizes[" + std::to_string(i) + "]", instancedSpritesSizes[i]);
@@ -313,7 +328,9 @@ void Renderer::insFlush()
 	for(size_t i = 0; i < instancedTextures.size(); ++i)
 		defaultInstanedSpriteShader->setUniformInt("textures[" + std::to_string(i) + "]", i);
 
+	glBindVertexArray(instancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
+	glBindVertexArray(0);
 
 	++numberOfDrawCalls;
 

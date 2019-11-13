@@ -34,6 +34,8 @@ void VertexArray::setVertexBuffer(VertexBuffer vbo, VertexBufferLayout layout)
 	ph::bind(vbo);
 	mVertexBuffer = vbo;
 
+	// TODO_ren: Support setting multiple VertexBuffers
+
 	// TODO_ren: Clean this code or make better layout setting abstraction
 	switch(layout)
 	{
