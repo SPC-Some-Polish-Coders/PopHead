@@ -6,6 +6,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 
 #include "Events/actionEventManager.hpp"
+#include <iostream>
 
 namespace ph::system {
 
@@ -15,9 +16,13 @@ void PendingGunAttacks::update(float seconds)
 	for (const auto& gunAttacker : gunAttackerView)
 	{
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+
+		if (playerGunAttack.cooldownSinceLastShoot > 0.f)
+			playerGunAttack.cooldownSinceLastShoot -= seconds;
+
 		if (playerGunAttack.isTryingToAttack)
 		{
-			if (!canShoot(playerGunAttack.bullets)) 
+			if (!canShoot(playerGunAttack.bullets) || hasCooldown(playerGunAttack.cooldownSinceLastShoot))
 				return;
 
 			setPlayerFacePosition();
@@ -25,6 +30,7 @@ void PendingGunAttacks::update(float seconds)
 			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
 			performShoot(startingBulletPos);	
 
+			playerGunAttack.cooldownSinceLastShoot = playerGunAttack.minSecondsInterval;
 			--playerGunAttack.bullets;
 			playerGunAttack.isTryingToAttack = false;
 		}
@@ -44,6 +50,11 @@ void PendingGunAttacks::setPlayerFacePosition()
 bool PendingGunAttacks::canShoot(int numOfBullets) const
 {
 	return numOfBullets > 0;
+}
+
+bool PendingGunAttacks::hasCooldown(float cooldownSinceLastShoot) const
+{
+	return cooldownSinceLastShoot > 0.f;
 }
 
 void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
