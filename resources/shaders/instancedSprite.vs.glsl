@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec2 aOffset;
 layout (location = 1) in vec2 aSize;
+layout (location = 2) in float aRotation;
 
 out vec4 color;
 out vec2 texCoords;
@@ -9,7 +10,6 @@ flat out int textureSlotRef;
 
 uniform mat4 viewProjectionMatrix;
 
-uniform float[100] rotations;
 uniform vec4[100] colors;
 uniform vec4[100] textureRects;
 uniform int[100] textureSlotRefs;
@@ -21,7 +21,6 @@ void main()
     color = colors[gl_InstanceID];
     textureSlotRef = textureSlotRefs[gl_InstanceID];
 
-    float rotation = rotations[gl_InstanceID];
     vec4 tetxureRect = textureRects[gl_InstanceID];
 
     vec2 modelVertexPos;
@@ -44,10 +43,10 @@ void main()
         modelVertexPos = vec2(0, aSize.y);
     }
 
-    if(rotation == 0)
+    if(aRotation == 0)
         gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aOffset, 0, 1);
     else
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(rotation) + aOffset, 0, 1);
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aOffset, 0, 1);
 }
 
 mat2 getRotationMatrix(float angle)

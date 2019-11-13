@@ -28,7 +28,7 @@ namespace {
 	ph::Texture* whiteTexture;
 	std::vector<sf::Vector2f> instancedSpritesPositions;
 	std::vector<sf::Vector2f> instancedSpritesSizes;
-	std::vector<float> instancedSpritesRotation;
+	std::vector<float> instancedSpritesRotations;
 	std::vector<sf::Color> instancedSpritesColors;
 	std::vector<ph::FloatRect> instancedSpritesTextureRects;
 	std::vector<int> instancedSpritesTextureSlotRefs;
@@ -37,6 +37,7 @@ namespace {
 	
 	unsigned int instancedPositionsVBO;
 	unsigned int instancedSizesVBO;
+	unsigned int instancedRotationsVBO;
 	unsigned int instancedVAO;
 
 	// TODO_ren: Get rid of SFML Renderer
@@ -122,6 +123,13 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 		glVertexAttribDivisor(1, 1);
+
+		glGenBuffers(1, &instancedRotationsVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedRotationsVBO);
+		glBufferData(GL_ARRAY_BUFFER, 100 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*) 0);
+		glVertexAttribDivisor(2, 1);
 	}
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
@@ -253,7 +261,7 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 {
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
-	instancedSpritesRotation.emplace_back(rotation);
+	instancedSpritesRotations.emplace_back(rotation);
 	instancedSpritesColors.emplace_back(color ? *color : sf::Color::White);
 
 	// TODO_ren: Add support for custom tex coords
@@ -310,9 +318,9 @@ void Renderer::insFlush()
 	glBindBuffer(GL_ARRAY_BUFFER, instancedSizesVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesSizes.size() * sizeof(sf::Vector2f), instancedSpritesSizes.data());
 	
-	for(size_t i = 0; i < instancedSpritesRotation.size(); ++i)
-		defaultInstanedSpriteShader->setUniformFloat("rotations[" + std::to_string(i) + "]", instancedSpritesRotation[i]);
-
+	glBindBuffer(GL_ARRAY_BUFFER, instancedRotationsVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesRotations.size() * sizeof(float), instancedSpritesRotations.data());
+	
 	for(size_t i = 0; i < instancedSpritesColors.size(); ++i)
 		defaultInstanedSpriteShader->setUniformVector4Color("colors[" + std::to_string(i) + "]", instancedSpritesColors[i]);
 
@@ -334,7 +342,7 @@ void Renderer::insFlush()
 
 	instancedSpritesPositions.clear();
 	instancedSpritesSizes.clear();
-	instancedSpritesRotation.clear();
+	instancedSpritesRotations.clear();
 	instancedSpritesColors.clear();
 	instancedSpritesTextureRects.clear();
 	instancedSpritesTextureSlotRefs.clear();
