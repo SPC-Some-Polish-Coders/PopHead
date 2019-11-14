@@ -10,7 +10,7 @@ namespace ph::system {
 		for (const auto& player : playerView)
 		{
 			const auto& playerHealth = playerView.get<component::Health>(player);
-			mIsAlive = (playerHealth.healthPoints <= 0 ? false : true);		
+			mIsAlive = playerHealth.healthPoints > 0;
 		}
 	}
 
