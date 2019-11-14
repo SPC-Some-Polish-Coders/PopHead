@@ -23,24 +23,26 @@ void main()
 
     vec2 modelVertexPos;
     
-    // TODO: Maybe change that to switch
-    if(gl_VertexID == 0) {
-        texCoords = vec2(aTextureRect.x, aTextureRect.y);
-        modelVertexPos = vec2(0, 0);
+    switch(gl_VertexID)
+    {
+        case 0:
+            texCoords = vec2(aTextureRect.x, aTextureRect.y);
+            modelVertexPos = vec2(0, 0);
+            break;
+        case 1:
+            texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
+            modelVertexPos = vec2(aSize.x, 0);
+            break;
+        case 2:
+            texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
+            modelVertexPos = vec2(aSize.x, aSize.y);
+            break;
+        case 3:
+            texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
+            modelVertexPos = vec2(0, aSize.y);
+            break;
     }
-    else if(gl_VertexID == 1) {
-        texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
-        modelVertexPos = vec2(aSize.x, 0);
-    }
-    else if(gl_VertexID == 2) {
-        texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
-        modelVertexPos = vec2(aSize.x, aSize.y);
-    }
-    else if(gl_VertexID == 3) {
-        texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
-        modelVertexPos = vec2(0, aSize.y);
-    }
-
+    
     if(aRotation == 0)
         gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aOffset, 0, 1);
     else
