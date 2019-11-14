@@ -296,22 +296,13 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, cons
 	else
 		PH_EXIT_GAME("Custom tex coords are not supported yet");
 
-	// TODO_ren: Refactor this
-
 	if(!texture)
 		texture = whiteTexture;
 
-	int textureSlotOfThisTexture = -1;
-	for(size_t i = 0; i < instancedTextures.size(); ++i)
-	{
-		if(instancedTextures[i] == texture) {
-			textureSlotOfThisTexture = i;
-			break;
-		}
-	}
-
-	if(textureSlotOfThisTexture == -1) // if texture was not assigned yet
-	{
+	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
+	if(textureSlotOfThisTexture)
+		instancedSpritesTextureSlotRefs.emplace_back(*textureSlotOfThisTexture);
+	else {
 		if(instancedTextures.size() < 32) {
 			const int textureSlotID = static_cast<int>(instancedTextures.size());
 			instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
@@ -321,10 +312,14 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, cons
 		else
 			PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
 	}
-	else // if texture was already assigned
-	{
-		instancedSpritesTextureSlotRefs.emplace_back(textureSlotOfThisTexture);
-	}
+}
+
+auto Renderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
+{
+	for(size_t i = 0; i < instancedTextures.size(); ++i)
+		if(instancedTextures[i] == texture)
+			return i;
+	return std::nullopt;
 }
 
 void Renderer::flushInstancedSprites()
