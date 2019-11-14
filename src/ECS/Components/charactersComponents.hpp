@@ -33,6 +33,7 @@ namespace ph::component {
 	struct MeleeAttacker
 	{
 		float minSecondsInterval;
+		float cooldownSinceLastHit;
 		bool isTryingToAttack;
 	};
 

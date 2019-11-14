@@ -199,7 +199,8 @@ void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::en
 {
 	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
+	const float cooldown = 0.f;
+	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, cooldown, isTryingToAttack);
 }
 
 void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)
