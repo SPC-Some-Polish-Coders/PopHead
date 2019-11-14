@@ -280,8 +280,11 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 // TODO_ren: Support custom shaders for instanced rendering
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, const sf::Color* color, 
-                             sf::Vector2f position, sf::Vector2f size, float rotation)
+                          sf::Vector2f position, sf::Vector2f size, float rotation)
 {
+	if(!isInsideScreen(position, size))
+		return;
+
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
 	instancedSpritesRotations.emplace_back(rotation);
@@ -433,9 +436,15 @@ bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i
 	return screenBounds.doPositiveRectsIntersect(objectRect);
 }
 
+// TODO_ren: Remove this sf::Vector2i version
 bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2i size)
 {
-	return isInsideScreen(sf::FloatRect(position.x, position.y, static_cast<float>(size.x), static_cast<float>(size.y)));
+	return isInsideScreen(position, static_cast<sf::Vector2f>(size));
+}
+
+bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2f size)
+{
+	return isInsideScreen(sf::FloatRect(position.x, position.y, size.x, size.y));
 }
 
 bool Renderer::isInsideScreen(const FloatRect objectBounds)
