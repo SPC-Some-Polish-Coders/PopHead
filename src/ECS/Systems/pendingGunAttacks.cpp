@@ -6,7 +6,6 @@
 #include "ECS/Components/physicsComponents.hpp"
 
 #include "Events/actionEventManager.hpp"
-#include <iostream>
 
 namespace ph::system {
 
@@ -31,7 +30,7 @@ void PendingGunAttacks::update(float seconds)
 			const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
 			performShoot(startingBulletPos);	
-			std::cout << "Bom!" << std::endl;
+
 			playerGunAttack.cooldownSinceLastShoot = playerGunAttack.minSecondsInterval;
 			--playerGunAttack.bullets;
 		}
