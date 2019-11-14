@@ -6,7 +6,7 @@ flat in int textureSlotRef;
 
 out vec4 fragColor;
 
-uniform sampler2D textures[16];
+uniform sampler2D textures[32];
 
 void main()
 {

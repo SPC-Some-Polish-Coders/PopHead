@@ -171,9 +171,9 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	instancedSpritesTextureRects.reserve(1000);
 	instancedSpritesTextureSlotRefs.reserve(1000);
 
-	// set up texture slots in default instanced sprite shader
-	/*for(int i = 0; i < 16; ++i)
-		defaultInstanedSpriteShader->setUniformInt("texture" + std::to_string(i), i);*/
+	defaultInstanedSpriteShader->bind();
+	for(size_t i = 0; i < 32; ++i)
+		defaultInstanedSpriteShader->setUniformInt("textures[" + std::to_string(i) + "]", i);
 }
 
 void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
@@ -310,7 +310,7 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 
 	if(textureSlotOfThisTexture == -1) // if texture was not assigned yet
 	{
-		if(instancedTextures.size() < 16) {
+		if(instancedTextures.size() < 32) {
 			const int textureSlotID = static_cast<int>(instancedTextures.size());
 			instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
 			texture->bind(textureSlotID);
@@ -350,10 +350,6 @@ void Renderer::insFlush()
 	
 	for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
 		defaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
-
-	// TODO_ren: Maybe I can set it once in Renderer::init()
-	for(size_t i = 0; i < instancedTextures.size(); ++i)
-		defaultInstanedSpriteShader->setUniformInt("textures[" + std::to_string(i) + "]", i);
 
 	glBindVertexArray(instancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
