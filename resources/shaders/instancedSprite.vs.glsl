@@ -6,9 +6,12 @@ layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
 layout (location = 4) in vec4 aTextureRect;
 
-out vec4 color;
-out vec2 texCoords;
-flat out int textureSlotRef;
+out VS_OUT
+{
+    vec4 color;
+    vec2 texCoords;
+    flat int textureSlotRef;
+} vs_out;
 
 uniform mat4 viewProjectionMatrix;
 
@@ -18,27 +21,27 @@ mat2 getRotationMatrix(float angle);
 
 void main()
 {
-    color = aColor;
-    textureSlotRef = textureSlotRefs[gl_InstanceID];
+    vs_out.color = aColor;
+    vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
 
     vec2 modelVertexPos;
     
     switch(gl_VertexID)
     {
         case 0:
-            texCoords = vec2(aTextureRect.x, aTextureRect.y);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
             modelVertexPos = vec2(0, 0);
             break;
         case 1:
-            texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
             modelVertexPos = vec2(aSize.x, 0);
             break;
         case 2:
-            texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
             modelVertexPos = vec2(aSize.x, aSize.y);
             break;
         case 3:
-            texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
             modelVertexPos = vec2(0, aSize.y);
             break;
     }
