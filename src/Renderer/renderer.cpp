@@ -44,6 +44,8 @@ namespace {
 	unsigned instancedTextureRectsVBO;
 	unsigned instancedVAO;
 
+	constexpr int nrOfSpritesInOneInstancedDrawCall = 2500;
+
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
 }
@@ -118,35 +120,35 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 		glGenBuffers(1, &instancedPositionsVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedPositionsVBO);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, nrOfSpritesInOneInstancedDrawCall * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 		glVertexAttribDivisor(0, 1);
 
 		glGenBuffers(1, &instancedSizesVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedSizesVBO);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, nrOfSpritesInOneInstancedDrawCall * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
 		glVertexAttribDivisor(1, 1);
 
 		glGenBuffers(1, &instancedRotationsVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedRotationsVBO);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, nrOfSpritesInOneInstancedDrawCall * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*) 0);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), ( void*) 0);
 		glVertexAttribDivisor(2, 1);
-		
+
 		glGenBuffers(1, &instancedColorsVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedColorsVBO);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, nrOfSpritesInOneInstancedDrawCall * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), ( void*) 0);
 		glVertexAttribDivisor(3, 1);
 
 		glGenBuffers(1, &instancedTextureRectsVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedTextureRectsVBO);
-		glBufferData(GL_ARRAY_BUFFER, 10000 * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, nrOfSpritesInOneInstancedDrawCall * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
 		glVertexAttribDivisor(4, 1);
@@ -166,12 +168,12 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	whiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 
 	// allocate instanced vectors
-	instancedSpritesPositions.reserve(10000);
-	instancedSpritesSizes.reserve(10000);
-	instancedSpritesRotations.reserve(10000);
-	instancedSpritesColors.reserve(10000);
-	instancedSpritesTextureRects.reserve(10000);
-	instancedSpritesTextureSlotRefs.reserve(10000);
+	instancedSpritesPositions.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedSpritesSizes.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedSpritesRotations.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedSpritesColors.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedSpritesTextureRects.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedSpritesTextureSlotRefs.reserve(nrOfSpritesInOneInstancedDrawCall);
 
 	defaultInstanedSpriteShader->bind();
 	for(size_t i = 0; i < 32; ++i)
@@ -367,7 +369,6 @@ void Renderer::flushInstancedSprites()
 // TODO_ren: Think what to do with these low level kindof calls
 void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
 {
-	
 	if(!isInsideScreen(transform, size))
 		return;
 

@@ -150,12 +150,18 @@ void Game::update(sf::Time deltaTime)
 		}*/
 		
 		/// test 2 of instancing
-		Renderer::submitQuad(&wallTex, nullptr, nullptr, sf::Vector2f(0.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(&gateTex, nullptr, nullptr, sf::Vector2f(50.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(&bulletTex, nullptr, nullptr, sf::Vector2f(100.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(&medkitTex, nullptr, &sf::Color::Blue, sf::Vector2f(150.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(&zombieHeadTex, nullptr, &sf::Color::Red, sf::Vector2f(200.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Green, sf::Vector2f(250.f, 0.f), sf::Vector2f(50.f, 50.f), 30.f);
+		for(int i = 0; i < 250; ++i) {
+			Renderer::submitQuad(&wallTex, nullptr, nullptr, sf::Vector2f(0.f, (float)i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(&gateTex, nullptr, nullptr, sf::Vector2f(50.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(&bulletTex, nullptr, nullptr, sf::Vector2f(100.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(&medkitTex, nullptr, &sf::Color::Blue, sf::Vector2f(150.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(&zombieHeadTex, nullptr, &sf::Color::Red, sf::Vector2f(200.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color::Blue, sf::Vector2f(250.f, (float) i * 50.f), sf::Vector2f(30.f, 30.f), 30.f);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color::Green, sf::Vector2f(300.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color::Red, sf::Vector2f(350.f, (float) i * 50.f), sf::Vector2f(20.f, 20.f), 45.f);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color::Yellow, sf::Vector2f(400.f, (float) i * 50.f), sf::Vector2f(20.f, 20.f), 0.f);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color::Magenta, sf::Vector2f(450.f, (float) i * 50.f), sf::Vector2f(20.f, 20.f), 0.f);
+		}
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

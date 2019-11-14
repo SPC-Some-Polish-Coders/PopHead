@@ -15,7 +15,7 @@ out VS_OUT
 
 uniform mat4 viewProjectionMatrix;
 
-uniform int[1000] textureSlotRefs;
+uniform int[2500] textureSlotRefs;
 
 mat2 getRotationMatrix(float angle);
 
