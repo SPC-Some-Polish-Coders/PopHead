@@ -15,34 +15,33 @@ out VS_OUT
 
 uniform mat4 viewProjectionMatrix;
 
-//uniform int[1000] textureSlotRefs;
+uniform int[1000] textureSlotRefs;
 
 mat2 getRotationMatrix(float angle);
 
 void main()
 {
     vs_out.color = aColor;
-    //vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
-    vs_out.textureSlotRef = 0;
+    vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
 
     vec2 modelVertexPos;
     
     switch(gl_VertexID)
     {
         case 0:
-            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
             modelVertexPos = vec2(0, 0);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
             break;
         case 1:
-            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
             modelVertexPos = vec2(aSize.x, 0);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
             break;
         case 2:
-            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
             modelVertexPos = vec2(aSize.x, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
             break;
         case 3:
-            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
             modelVertexPos = vec2(0, aSize.y);
             break;
     }

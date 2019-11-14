@@ -109,6 +109,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	// create instanced arrays on gpu side
 	{
+		// TODO_ren: Try to pack it into one struct
+
 		glGenVertexArrays(1, &instancedVAO);
 		glBindVertexArray(instancedVAO);
 
@@ -345,8 +347,8 @@ void Renderer::flushInstancedSprites()
 	glBindBuffer(GL_ARRAY_BUFFER, instancedTextureRectsVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesTextureRects.size() * 4 * sizeof(float), instancedSpritesTextureRects.data());
 	
-	//for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
-	//	defaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
+	for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
+		defaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
 
 	glBindVertexArray(instancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
