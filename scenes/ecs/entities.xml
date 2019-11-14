@@ -2,7 +2,7 @@
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
-        <component name="GunAttacker" minSecondsInterval="0.2 " bullets="20" isTryingToAttack="false" />
+        <component name="GunAttacker" minSecondsInterval="0.3 " bullets="20" isTryingToAttack="false" />
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />

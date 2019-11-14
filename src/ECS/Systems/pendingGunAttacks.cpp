@@ -12,27 +12,28 @@ namespace ph::system {
 
 void PendingGunAttacks::update(float seconds)
 {
-	const auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect>();
+	const auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect, component::Player>();
 	for (const auto& gunAttacker : gunAttackerView)
 	{
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
 
-		if (playerGunAttack.cooldownSinceLastShoot > 0.f)
+		bool cooldown = hasCooldown(playerGunAttack.cooldownSinceLastShoot);
+		if (cooldown)
 			playerGunAttack.cooldownSinceLastShoot -= seconds;
 
 		if (playerGunAttack.isTryingToAttack)
 		{
-			if (!canShoot(playerGunAttack.bullets) || hasCooldown(playerGunAttack.cooldownSinceLastShoot))
+			playerGunAttack.isTryingToAttack = false;
+			if (!canShoot(playerGunAttack.bullets, cooldown))
 				return;
 
 			setPlayerFacePosition();
 			const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
 			performShoot(startingBulletPos);	
-
+			std::cout << "Bom!" << std::endl;
 			playerGunAttack.cooldownSinceLastShoot = playerGunAttack.minSecondsInterval;
 			--playerGunAttack.bullets;
-			playerGunAttack.isTryingToAttack = false;
 		}
 	}
 }
@@ -47,9 +48,9 @@ void PendingGunAttacks::setPlayerFacePosition()
 	}
 }
 
-bool PendingGunAttacks::canShoot(int numOfBullets) const
+bool PendingGunAttacks::canShoot(int numOfBullets, float cooldownTime) const
 {
-	return numOfBullets > 0;
+	return numOfBullets > 0 && cooldownTime <= 0.f;
 }
 
 bool PendingGunAttacks::hasCooldown(float cooldownSinceLastShoot) const
