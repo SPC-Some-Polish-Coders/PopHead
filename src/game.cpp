@@ -129,13 +129,33 @@ void Game::update(sf::Time deltaTime)
 		// TODO_ren: Move it to Terminal::update()
 		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 
-		// test instancing
 		static Texture wallTex("resources/textures/test/wall.jpg");
-		static Texture gunTex("resources/textures/others/pistol.png");
+		static Texture gateTex("resources/textures/others/gate.png");
+		static Texture bulletTex("resources/textures/others/bullet.png");
+		static Texture awsdTex("resources/textures/others/awsd.png");
+		static Texture backslashTex("resources/textures/others/backslashHint.png");
+		static Texture barTex("resources/textures/others/bar.png");
+		static Texture medkitTex("resources/textures/others/medkit.png");
+		static Texture zombieHeadTex("resources/textures/others/zombieHead.png");
 
-		Renderer::submitQuad(&wallTex, nullptr, nullptr, sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 200.f), 0.f);
-		Renderer::submitQuad(&gunTex, nullptr, &sf::Color::Red, sf::Vector2f(70.f, 0.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Green, sf::Vector2f(-92.f, -45.f), sf::Vector2f(50.f, 50.f), 30.f);
+		/// test 1 of instancing
+		/*static Texture* textures[] = {
+			&wallTex, &wallTex, &wallTex, &gateTex, &bulletTex, &awsdTex, &backslashTex, &barTex, &medkitTex, &zombieHeadTex
+		};
+
+		for(int x = 0; x < 100.f; ++x)
+			for(int y = 0; y < 10.f; ++y) {
+				Texture* tex = textures[x / 10];
+				Renderer::submitQuad(tex, nullptr, &sf::Color::Blue, sf::Vector2f(11.f * (float)x, 11.f * (float)y), sf::Vector2f(10.f, 10.f), 0.f);
+		}*/
+		
+		/// test 2 of instancing
+		Renderer::submitQuad(&wallTex, nullptr, nullptr, sf::Vector2f(70.f, 0.f), sf::Vector2f(0.f, 30.f), 0.f);
+		Renderer::submitQuad(&gateTex, nullptr, nullptr, sf::Vector2f(70.f, 0.f), sf::Vector2f(50.f, 30.f), 0.f);
+		Renderer::submitQuad(&bulletTex, nullptr, nullptr, sf::Vector2f(70.f, 0.f), sf::Vector2f(100.f, 30.f), 0.f);
+		Renderer::submitQuad(&medkitTex, nullptr, &sf::Color::Blue, sf::Vector2f(70.f, 0.f), sf::Vector2f(150.f, 30.f), 0.f);
+		Renderer::submitQuad(&zombieHeadTex, nullptr, &sf::Color::Red, sf::Vector2f(70.f, 0.f), sf::Vector2f(200.f, 30.f), 0.f);
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Green, sf::Vector2f(-92.f, -45.f), sf::Vector2f(250.f, 50.f), 30.f);
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

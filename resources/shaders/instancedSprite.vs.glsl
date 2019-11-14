@@ -15,14 +15,15 @@ out VS_OUT
 
 uniform mat4 viewProjectionMatrix;
 
-uniform int[100] textureSlotRefs;
+//uniform int[1000] textureSlotRefs;
 
 mat2 getRotationMatrix(float angle);
 
 void main()
 {
     vs_out.color = aColor;
-    vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
+    //vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
+    vs_out.textureSlotRef = 0;
 
     vec2 modelVertexPos;
     
