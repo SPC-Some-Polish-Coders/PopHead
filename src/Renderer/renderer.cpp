@@ -208,7 +208,7 @@ void Renderer::beginScene(Camera& camera)
 
 void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
 {
-	insFlush();
+	flushInstancedSprites();
 
 	Framebuffer::bindDefaultFramebuffer();
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
@@ -277,7 +277,9 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 }
 
-void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, const sf::Color* color, const Shader* shader,
+// TODO_ren: Support custom shaders for instanced rendering
+
+void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, const sf::Color* color, 
                              sf::Vector2f position, sf::Vector2f size, float rotation)
 {
 	instancedSpritesPositions.emplace_back(position);
@@ -290,9 +292,6 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 		instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
 	else
 		PH_EXIT_GAME("Custom tex coords are not supported yet");
-
-	if(shader)
-		PH_EXIT_GAME("Custom shaders are not supported yet");
 
 	// TODO_ren: Refactor this
 
@@ -325,7 +324,7 @@ void Renderer::submitQuadIns(const Texture* texture, const IntRect* texCoords, c
 	}
 }
 
-void Renderer::insFlush()
+void Renderer::flushInstancedSprites()
 {
 	if(defaultInstanedSpriteShader != currentlyBoundShader) {
 		defaultInstanedSpriteShader->bind();
@@ -353,7 +352,6 @@ void Renderer::insFlush()
 
 	glBindVertexArray(instancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
-	glBindVertexArray(0);
 
 	++numberOfDrawCalls;
 
