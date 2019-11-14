@@ -4,6 +4,7 @@ layout (location = 0) in vec2 aOffset;
 layout (location = 1) in vec2 aSize;
 layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
+layout (location = 4) in vec4 aTextureRect;
 
 out vec4 color;
 out vec2 texCoords;
@@ -11,7 +12,6 @@ flat out int textureSlotRef;
 
 uniform mat4 viewProjectionMatrix;
 
-uniform vec4[100] textureRects;
 uniform int[100] textureSlotRefs;
 
 mat2 getRotationMatrix(float angle);
@@ -21,25 +21,23 @@ void main()
     color = aColor;
     textureSlotRef = textureSlotRefs[gl_InstanceID];
 
-    vec4 tetxureRect = textureRects[gl_InstanceID];
-
     vec2 modelVertexPos;
     
-    // TODO: Mauye change that to switch
+    // TODO: Maybe change that to switch
     if(gl_VertexID == 0) {
-        texCoords = vec2(tetxureRect.x, tetxureRect.y);
+        texCoords = vec2(aTextureRect.x, aTextureRect.y);
         modelVertexPos = vec2(0, 0);
     }
     else if(gl_VertexID == 1) {
-        texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y);
+        texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
         modelVertexPos = vec2(aSize.x, 0);
     }
     else if(gl_VertexID == 2) {
-        texCoords = vec2(tetxureRect.x + tetxureRect.z, tetxureRect.y + tetxureRect.w);
+        texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
         modelVertexPos = vec2(aSize.x, aSize.y);
     }
     else if(gl_VertexID == 3) {
-        texCoords = vec2(tetxureRect.x, tetxureRect.y + tetxureRect.w);
+        texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
         modelVertexPos = vec2(0, aSize.y);
     }
 

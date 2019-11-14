@@ -37,11 +37,12 @@ namespace {
 	std::vector<const ph::Texture*> instancedTextures;
 	bool isCustomTextureRectApplied = false;
 	
-	unsigned int instancedPositionsVBO;
-	unsigned int instancedSizesVBO;
-	unsigned int instancedRotationsVBO;
-	unsigned int instancedColorsVBO;
-	unsigned int instancedVAO;
+	unsigned instancedPositionsVBO;
+	unsigned instancedSizesVBO;
+	unsigned instancedRotationsVBO;
+	unsigned instancedColorsVBO;
+	unsigned instancedTextureRectsVBO;
+	unsigned instancedVAO;
 
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
@@ -140,6 +141,13 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
 		glVertexAttribDivisor(3, 1);
+
+		glGenBuffers(1, &instancedTextureRectsVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedTextureRectsVBO);
+		glBufferData(GL_ARRAY_BUFFER, 100 * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
+		glVertexAttribDivisor(4, 1);
 	}
 
 	VertexBuffer framebufferVBO = createVertexBuffer();
@@ -337,8 +345,8 @@ void Renderer::insFlush()
 	glBindBuffer(GL_ARRAY_BUFFER, instancedColorsVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesColors.size() * 4 * sizeof(float), instancedSpritesColors.data());
 
-	for(size_t i = 0; i < instancedSpritesTextureRects.size(); ++i)
-		defaultInstanedSpriteShader->setUniformVector4Rect("textureRects[" + std::to_string(i) + "]", instancedSpritesTextureRects[i]);
+	glBindBuffer(GL_ARRAY_BUFFER, instancedTextureRectsVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, instancedSpritesTextureRects.size() * 4 * sizeof(float), instancedSpritesTextureRects.data());
 	
 	for(size_t i = 0; i < instancedSpritesTextureSlotRefs.size(); ++i)
 		defaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", instancedSpritesTextureSlotRefs[i]);
