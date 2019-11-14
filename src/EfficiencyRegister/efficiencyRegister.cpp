@@ -9,7 +9,8 @@ EfficiencyRegister::EfficiencyRegister()
 	,mGameData(nullptr)
 	,mFramesPerSecond(0)
 	,mFramesFromLastSecond(0)
-	,mIsActive(false)
+	,mIsFPSCounterActive(false)
+	,mIsRendererDebugActive(false)
 {
 }
 
@@ -24,15 +25,19 @@ void EfficiencyRegister::handleEvent(const ph::Event& phEvent)
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
 		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F2) {
-			mIsActive = !mIsActive;
-			mEfficiencyDisplayer.setShouldBeDrawn(mIsActive);
+			mIsFPSCounterActive = !mIsFPSCounterActive;
+			mEfficiencyDisplayer.setShouldFPSBeDrawn(mIsFPSCounterActive);
+		}
+		else if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F3) {
+			mIsRendererDebugActive = !mIsRendererDebugActive;
+			mEfficiencyDisplayer.setShouldRendererDebugBeDrawn(mIsRendererDebugActive);
 		}
 	}
 }
 
 void EfficiencyRegister::update()
 {
-	if(mIsActive)
+	if(mIsFPSCounterActive)
 		mEfficiencyDisplayer.setFramePerSecondText("FPS:  " + std::to_string(mFramesPerSecond));
 
 	if(mClock.getElapsedTime().asSeconds() >= 1) {
@@ -46,8 +51,14 @@ void EfficiencyRegister::update()
 
 void EfficiencyRegister::setDrawCallsPerFrame(unsigned drawCallsPerFrame)
 {
-	if(mIsActive)
-		mEfficiencyDisplayer.setDrawCallPerFrameText("DCPF: " + std::to_string(drawCallsPerFrame));
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setDrawCallPerFrameText("Draw calls per frame: " + std::to_string(drawCallsPerFrame));
+}
+
+void EfficiencyRegister::setNumberOfDrawnSprites(unsigned nrOfDrawnSprites)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setNumberOfDrawnSpritesText("Drawn sprites: " + std::to_string(nrOfDrawnSprites));
 }
 
 }

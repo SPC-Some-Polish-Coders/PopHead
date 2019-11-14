@@ -17,17 +17,22 @@ namespace {
 
 	// RendererData
 	unsigned numberOfDrawCalls = 0;
+	unsigned numberOfDrawnSprites = 0;
+
 	ph::Shader* defaultFramebufferShader;
 	ph::Shader* defaultSpriteShader;
 	ph::Shader* defaultInstanedSpriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
+	
 	ph::VertexArray* textureQuadVertexArray;
 	ph::VertexArray* textureAnimatedQuadVertexArray;
 	ph::VertexArray* framebufferVertexArray;
 	ph::VertexArray* instancedQuadsVertexArray;
-	ph::VertexBuffer instancedQuadsPositionsVBO;
+	
 	ph::Framebuffer* framebuffer;
+	
 	ph::Texture* whiteTexture;
+	
 	std::vector<sf::Vector2f> instancedSpritesPositions;
 	std::vector<sf::Vector2f> instancedSpritesSizes;
 	std::vector<float> instancedSpritesRotations;
@@ -35,7 +40,6 @@ namespace {
 	std::vector<ph::FloatRect> instancedSpritesTextureRects;
 	std::vector<int> instancedSpritesTextureSlotRefs;
 	std::vector<const ph::Texture*> instancedTextures;
-	bool isCustomTextureRectApplied = false;
 	
 	unsigned instancedPositionsVBO;
 	unsigned instancedSizesVBO;
@@ -222,10 +226,15 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	framebuffer->bindTextureColorBuffer(0);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
-	sfmlRenderer.drawSubmitedObjects(window);
+	int nrOfRenderedSFMLObjects;
+	sfmlRenderer.drawSubmitedObjects(window, nrOfRenderedSFMLObjects);
+	numberOfDrawCalls += nrOfRenderedSFMLObjects;
+	numberOfDrawnSprites += nrOfRenderedSFMLObjects;
 
 	efficiencyRegister.setDrawCallsPerFrame(numberOfDrawCalls);
 	numberOfDrawCalls = 0;
+	efficiencyRegister.setNumberOfDrawnSprites(numberOfDrawnSprites);
+	numberOfDrawnSprites = 0;
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
@@ -266,7 +275,10 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
 
 	// draw call
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+
+	// set debug data
 	++numberOfDrawCalls;
+	numberOfDrawnSprites += instancedSpritesPositions.size();
 }
 
 void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation)
@@ -356,6 +368,7 @@ void Renderer::flushInstancedSprites()
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
 
 	++numberOfDrawCalls;
+	numberOfDrawnSprites += instancedSpritesPositions.size();
 
 	instancedSpritesPositions.clear();
 	instancedSpritesSizes.clear();

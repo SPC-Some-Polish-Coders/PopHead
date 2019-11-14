@@ -16,15 +16,21 @@ public:
 
 	void move(sf::Vector2f offset);
 
-	void setShouldBeDrawn(const bool shouldBeDrawn);
+	void setShouldFPSBeDrawn(const bool shouldFPSBeDrawn);
+	void setShouldRendererDebugBeDrawn(const bool shouldRendererDebugBeDrawn);
+
 	void setFramePerSecondText(const std::string& text);
 	void setDrawCallPerFrameText(const std::string& text);
+	void setNumberOfDrawnSpritesText(const std::string& text);
 
 private:
 	sf::Text mFramesPerSecondText;
 	sf::Text mDrawCallPerFrameText;
-	sf::RectangleShape mBackground;
-	bool mShouldBeDrawn;
+	sf::Text mNumberOfDrawnSprites;
+	sf::RectangleShape mFPSBackground;
+	sf::RectangleShape mRendererDebugBackground;
+	bool mShouldFPSBeDrawn;
+	bool mShouldRendererDebugBeDrawn;
 };
 
 }

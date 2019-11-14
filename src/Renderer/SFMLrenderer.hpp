@@ -13,7 +13,7 @@ class SFMLRenderer
 public:
 	void submit(const sf::Drawable*);
 
-	void drawSubmitedObjects(sf::RenderWindow& window);
+	void drawSubmitedObjects(sf::RenderWindow& window, int& nrOfRenderedSprites);
 
 private:
 	std::vector<const sf::Drawable*> mSubmitedObjects;

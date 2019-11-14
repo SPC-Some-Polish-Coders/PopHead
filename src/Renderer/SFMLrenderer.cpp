@@ -9,10 +9,13 @@ void SFMLRenderer::submit(const sf::Drawable* object)
 	mSubmitedObjects.emplace_back(object);
 }
 
-void SFMLRenderer::drawSubmitedObjects(sf::RenderWindow& window)
+void SFMLRenderer::drawSubmitedObjects(sf::RenderWindow& window, int& nrOfRenderedSprites)
 {
-	if(mSubmitedObjects.empty())
+	nrOfRenderedSprites = mSubmitedObjects.size();
+	
+	if(mSubmitedObjects.empty()) {
 		return;
+	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

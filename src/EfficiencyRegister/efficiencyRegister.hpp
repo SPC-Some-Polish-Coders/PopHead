@@ -18,6 +18,7 @@ public:
 	void update();
 
 	void setDrawCallsPerFrame(unsigned drawCallsPerFrame);
+	void setNumberOfDrawnSprites(unsigned nrOfDrawnSprites);
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
@@ -27,7 +28,8 @@ private:
 	GameData* mGameData;
 	unsigned mFramesPerSecond;
 	unsigned mFramesFromLastSecond;
-	bool mIsActive;
+	bool mIsFPSCounterActive;
+	bool mIsRendererDebugActive;
 };
 
 }
