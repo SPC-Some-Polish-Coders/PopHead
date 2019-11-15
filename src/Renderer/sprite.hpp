@@ -5,6 +5,8 @@
 
 namespace ph {
 
+// TODO_ren: Delete Sprite class
+
 // Sprite is probably a temporary helper struct, it won't be a part of ECS
 
 struct Sprite
