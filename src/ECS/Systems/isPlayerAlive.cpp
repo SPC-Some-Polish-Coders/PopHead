@@ -9,8 +9,8 @@ namespace ph::system {
 		auto playerView = mRegistry.view<component::Player, component::Health>();
 		for (const auto& player : playerView)
 		{
-			auto playerHealth = playerView.get<component::Health>(player);
-			mIsAlive = (playerHealth.healthPoints <= 0 ? false : true);		
+			const auto& playerHealth = playerView.get<component::Health>(player);
+			mIsAlive = playerHealth.healthPoints > 0;
 		}
 	}
 

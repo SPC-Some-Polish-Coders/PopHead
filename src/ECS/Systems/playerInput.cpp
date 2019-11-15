@@ -12,6 +12,7 @@ namespace ph::system {
 	void PlayerMovementInput::update(float seconds)
 	{
 		const auto playerDirection = getPlayerDirection();
+		setPlayerFaceDirection(playerDirection);
 
 		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
 		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, component::Player) {
@@ -44,18 +45,31 @@ namespace ph::system {
 		return sf::Vector2f(0.f, 0.f);
 	}
 
+	void PlayerMovementInput::setPlayerFaceDirection(const sf::Vector2f& faceDirection) const
+	{
+		auto playerView = mRegistry.view<component::Player, component::FaceDirection>();
+		for (auto player : playerView)
+		{
+			if (faceDirection != sf::Vector2f(0.f, 0.f))
+			{
+				auto& prevFaceDirection = playerView.get<component::FaceDirection>(player);
+				prevFaceDirection.direction = faceDirection;
+			}
+		}
+	}
+
 
 	void PlayerAttackType::update(float seconds)
 	{
-		auto playerMelleView = mRegistry.view<component::Player, component::MeleeAttacker>();
+		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
 		auto playerGunView= mRegistry.view<component::Player, component::GunAttacker>();
 
 		if (ActionEventManager::isActionPressed("meleeAtack"))
 		{
-			for (auto player : playerMelleView)
+			for (auto player : playerMeleeView)
 			{
-				auto &playerMelleAttack = playerMelleView.get<component::MeleeAttacker>(player);
-				playerMelleAttack.isTryingToAttack = true;
+				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
+				playerMeleeAttack.isTryingToAttack = true;
 			}
 		}
 
@@ -63,7 +77,7 @@ namespace ph::system {
 		{
 			for (auto player : playerGunView)
 			{
-				auto &playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
 				playerGunAttack.isTryingToAttack = true;
 			}
 		}

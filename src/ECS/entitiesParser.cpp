@@ -78,6 +78,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
+		{"Killable",			   &EntitiesParser::parseKillable},
 		{"Health",	               &EntitiesParser::parseHealth},
 		{"Damage",	               &EntitiesParser::parseDamage},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
@@ -89,6 +90,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"TextureRect",            &EntitiesParser::parseTextureRect},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Color",                  &EntitiesParser::parseColor},
+		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
+		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
 		{"Animation",              &EntitiesParser::parseAnimation},
@@ -172,20 +175,39 @@ void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, en
 	mUsedRegistry->assign_or_replace<component::StaticCollisionBody>(entity);
 }
 
+void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::FaceDirection>(entity, sf::Vector2f(0, 0));
+}
+
+void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const float entityLifetime = entityComponentNode.getAttribute("lifetime").toFloat();
+	mUsedRegistry->assign_or_replace<component::Lifetime>(entity, entityLifetime);
+}
+
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, bullets, isTryingToAttack);
+	const float cooldown = 0.f;
+	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack);
 }
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, isTryingToAttack);
+	const float cooldown = 0.f;
+	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, cooldown, isTryingToAttack);
 }
+
+void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::Killable>(entity);
+}
+
 
 void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
 {
@@ -268,6 +290,8 @@ void EntitiesParser::parseVertexArray(const Xml& entityComponentNode, entt::enti
 {
 
 }
+
+
 
 }
 

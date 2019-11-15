@@ -1,0 +1,121 @@
+{
+    "systems": [
+        {
+            "name" : "DamageDealing",
+            "componentsRead" : [
+                "Player",
+                "BodyRect",
+                "Damage"
+            ],
+            "componentsWrite" : [
+                "CollisionWithPlayer",
+                "Health"
+            ]
+        },
+        {
+            "name" : "DyingCharacters",
+            "componentsRead" : [
+                "Health"
+            ],
+            "componentsWrite" : [
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "EntityDestroying",
+            "componentsWrite" : [
+                "ALL"
+            ]
+        },
+        {
+            "name" : "IsPlayerAlive",
+            "componentsRead" : [
+                "Player",
+                "Health"
+            ]
+        },
+        {
+            "name" : "Movement",
+            "componentsRead" : [
+                "Velocity"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
+            ]
+        },
+        {
+            "name" : "PickupMedkit",
+            "componentsRead" : [
+                "BodyRect",
+                "Medkit",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "Health",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PickupBullet",
+            "componentsRead" : [
+                "BodyRect",
+                "Player",
+                "Bullet"
+            ],
+            "componentsWrite" : [
+                "GunAttacker",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PlayerCameraMovement",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Camera"
+            ]
+        },
+        {
+            "name" : "PlayerInput",
+            "componentsRead" : [
+                "CharacterSpeed",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "PlayerAttackType",
+            "componentsRead" : [
+                "Player"
+            ],
+            "componentsWrite" : [
+                "MelleAtacker",
+                "GunAtacker"
+            ]
+        },
+        {
+            "name" : "RenderSystem",
+            "componentsRead" : [
+                "BodyRect",
+                "TexturePtr",
+                "TextureRect",
+                "ShaderPtr",
+                "Color"
+            ]
+        },
+        {
+            "name" : "StaticCollisions",
+            "componentsRead" : [
+                "StaticCollisionBody",
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
+            ]
+        }
+    ]
+}

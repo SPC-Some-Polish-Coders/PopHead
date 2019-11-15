@@ -30,11 +30,13 @@ private:
 	void parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity);
+	void parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
+	void parseKillable(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
 	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRotation(const Xml& entityComponentNode, entt::entity& entity);
@@ -42,6 +44,8 @@ private:
 	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
+	void parseLifetime(const Xml& entityComponentNode, entt::entity& entity);
+	
 
 	//NOTE: above methods are awkward but as long as we don't find a better solution that is the way	
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/System/Clock.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace ph::component {
 	
@@ -19,15 +20,27 @@ namespace ph::component {
 	{
 	};
 
+	struct Killable
+	{
+
+	};
+
+	struct FaceDirection
+	{
+		sf::Vector2f direction;
+	};
+
 	struct MeleeAttacker
 	{
 		float minSecondsInterval;
+		float cooldownSinceLastHit;
 		bool isTryingToAttack;
 	};
 
 	struct GunAttacker
 	{
 		float minSecondsInterval;
+		float cooldownSinceLastShoot;
 		unsigned bullets;
 		bool isTryingToAttack;
 	};
@@ -37,8 +50,18 @@ namespace ph::component {
 
 	};
 
+	struct DamageTag
+	{
+		int amountOfDamage;
+	};
+
 	struct CollisionWithPlayer
 	{
 		bool isCollision;
+	};
+
+	struct Lifetime
+	{
+		float lifetime;
 	};
 }
