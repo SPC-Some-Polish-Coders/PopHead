@@ -298,39 +298,40 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, const sf::Color* color, 
                           sf::Vector2f position, sf::Vector2f size, float rotation)
 {
+	// culling
 	if(!isInsideScreen(position, size))
 		return;
 
+	// flush if there is too much submited sprites
 	if(instancedSpritesPositions.size() == nrOfSpritesInOneInstancedDrawCall)
 		flushInstancedSprites();
-
-	instancedSpritesPositions.emplace_back(position);
-	instancedSpritesSizes.emplace_back(size);
-	instancedSpritesRotations.emplace_back(rotation);
-	instancedSpritesColors.emplace_back(color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White));
-
+	
+	// submit textures data
+	if(!texture)
+		texture = whiteTexture;
+	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
+	if(textureSlotOfThisTexture)
+		instancedSpritesTextureSlotRefs.emplace_back(*textureSlotOfThisTexture);
+	else {
+		if(instancedTextures.size() == 32)
+			flushInstancedSprites();
+		
+		const int textureSlotID = static_cast<int>(instancedTextures.size());
+		instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
+		texture->bind(textureSlotID);
+		instancedTextures.emplace_back(texture);
+	}
 	// TODO_ren: Add support for custom tex coords
 	if(texCoords == nullptr)
 		instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
 	else
 		PH_EXIT_GAME("Custom tex coords are not supported yet");
 
-	if(!texture)
-		texture = whiteTexture;
-
-	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
-	if(textureSlotOfThisTexture)
-		instancedSpritesTextureSlotRefs.emplace_back(*textureSlotOfThisTexture);
-	else {
-		if(instancedTextures.size() < 32) {
-			const int textureSlotID = static_cast<int>(instancedTextures.size());
-			instancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
-			texture->bind(textureSlotID);
-			instancedTextures.emplace_back(texture);
-		}
-		else
-			PH_EXIT_GAME("Add stuff here!"); // TODO_ren (flush)
-	}
+	// submit rest of data
+	instancedSpritesPositions.emplace_back(position);
+	instancedSpritesSizes.emplace_back(size);
+	instancedSpritesRotations.emplace_back(rotation);
+	instancedSpritesColors.emplace_back(color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White));
 }
 
 auto Renderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
