@@ -181,6 +181,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	instancedSpritesColors.reserve(nrOfSpritesInOneInstancedDrawCall);
 	instancedSpritesTextureRects.reserve(nrOfSpritesInOneInstancedDrawCall);
 	instancedSpritesTextureSlotRefs.reserve(nrOfSpritesInOneInstancedDrawCall);
+	instancedTextures.reserve(32);
 
 	defaultInstanedSpriteShader->bind();
 	for(size_t i = 0; i < 32; ++i)
