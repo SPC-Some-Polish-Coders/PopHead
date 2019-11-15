@@ -49,16 +49,34 @@ void EfficiencyRegister::update()
 		++mFramesFromLastSecond;
 }
 
-void EfficiencyRegister::setDrawCallsPerFrame(unsigned drawCallsPerFrame)
+void EfficiencyRegister::setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame)
 {
 	if(mIsRendererDebugActive)
-		mEfficiencyDisplayer.setDrawCallPerFrameText("Draw calls per frame: " + std::to_string(drawCallsPerFrame));
+		mEfficiencyDisplayer.setDrawCallPerFrameText("All Draw calls per frame: " + std::to_string(alldrawCallsPerFrame));
 }
 
-void EfficiencyRegister::setNumberOfDrawnSprites(unsigned nrOfDrawnSprites)
+void EfficiencyRegister::setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites)
 {
 	if(mIsRendererDebugActive)
-		mEfficiencyDisplayer.setNumberOfDrawnSpritesText("Drawn sprites: " + std::to_string(nrOfDrawnSprites));
+		mEfficiencyDisplayer.setSFMLDrawCalls("SFML draw calls: " + std::to_string(nrOfDrawnSprites));
+}
+
+void EfficiencyRegister::setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setInstancedDrawCalls("Instanced draw calls: " + std::to_string(nrOfInstancedDrawCalls));
+}
+
+void EfficiencyRegister::setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setDrawnInstancedSprites("Drawn instanced sprites: " + std::to_string(nrOfDrawnInstancedSprites));
+}
+
+void EfficiencyRegister::setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setTexturesDrawnByInstancing("Drawn textures by instancing: " + std::to_string(nrOfTexturesDrawnByInstancedRendering));
 }
 
 }

@@ -14,19 +14,23 @@ public:
 
 	void draw() const;
 
-	void move(sf::Vector2f offset);
-
 	void setShouldFPSBeDrawn(const bool shouldFPSBeDrawn);
 	void setShouldRendererDebugBeDrawn(const bool shouldRendererDebugBeDrawn);
 
 	void setFramePerSecondText(const std::string& text);
 	void setDrawCallPerFrameText(const std::string& text);
-	void setNumberOfDrawnSpritesText(const std::string& text);
+	void setSFMLDrawCalls(const std::string& text);
+	void setInstancedDrawCalls(const std::string& text);
+	void setDrawnInstancedSprites(const std::string& text);
+	void setTexturesDrawnByInstancing(const std::string& text);
 
 private:
 	sf::Text mFramesPerSecondText;
 	sf::Text mDrawCallPerFrameText;
-	sf::Text mNumberOfDrawnSprites;
+	sf::Text mSFMLDrawCalls;
+	sf::Text mInstancedDrawCalls;
+	sf::Text mDrawnInstancedSprites;
+	sf::Text mTexturesDrawnByInstancing;
 	sf::RectangleShape mFPSBackground;
 	sf::RectangleShape mRendererDebugBackground;
 	bool mShouldFPSBeDrawn;

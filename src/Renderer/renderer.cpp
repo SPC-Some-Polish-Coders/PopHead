@@ -16,9 +16,6 @@ namespace {
 	const float* viewProjectionMatrix = nullptr;
 
 	// RendererData
-	unsigned numberOfDrawCalls = 0;
-	unsigned numberOfDrawnSprites = 0;
-
 	ph::Shader* defaultFramebufferShader;
 	ph::Shader* defaultSpriteShader;
 	ph::Shader* defaultInstanedSpriteShader;
@@ -52,6 +49,12 @@ namespace {
 
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
+	
+	// Renderer debug data
+	unsigned numberOfAllDrawCalls = 0;
+	unsigned numberOfInstancedDrawCalls = 0;
+	unsigned numberOfDrawnInstancedSprites = 0;
+	unsigned numberOfTexturesDrawnByInstancedRendering = 0;
 }
 
 namespace ph {
@@ -228,13 +231,18 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 	int nrOfRenderedSFMLObjects;
 	sfmlRenderer.drawSubmitedObjects(window, nrOfRenderedSFMLObjects);
-	numberOfDrawCalls += nrOfRenderedSFMLObjects;
-	numberOfDrawnSprites += nrOfRenderedSFMLObjects;
+	numberOfAllDrawCalls += nrOfRenderedSFMLObjects;
 
-	efficiencyRegister.setDrawCallsPerFrame(numberOfDrawCalls);
-	numberOfDrawCalls = 0;
-	efficiencyRegister.setNumberOfDrawnSprites(numberOfDrawnSprites);
-	numberOfDrawnSprites = 0;
+	efficiencyRegister.setAllDrawCallsPerFrame(numberOfAllDrawCalls);
+	efficiencyRegister.setNumberOfSFMLDrawCalls(nrOfRenderedSFMLObjects);
+	efficiencyRegister.setNumberOfInstancedDrawCalls(numberOfInstancedDrawCalls);
+	efficiencyRegister.setNumberOfDrawnInstancedSprites(numberOfDrawnInstancedSprites);
+	efficiencyRegister.setNumberOfTexturesDrawnByInstancedRendering(numberOfTexturesDrawnByInstancedRendering);
+	
+	numberOfAllDrawCalls = 0;
+	numberOfInstancedDrawCalls = 0;
+	numberOfDrawnInstancedSprites = 0;
+	numberOfTexturesDrawnByInstancedRendering = 0;
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
@@ -277,8 +285,7 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
 	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
 	// set debug data
-	++numberOfDrawCalls;
-	numberOfDrawnSprites += instancedSpritesPositions.size();
+	++numberOfAllDrawCalls;
 }
 
 void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation)
@@ -371,8 +378,10 @@ void Renderer::flushInstancedSprites()
 	glBindVertexArray(instancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instancedSpritesPositions.size()) );
 
-	++numberOfDrawCalls;
-	numberOfDrawnSprites += instancedSpritesPositions.size();
+	++numberOfAllDrawCalls;
+	++numberOfInstancedDrawCalls;
+	numberOfDrawnInstancedSprites += instancedSpritesPositions.size();
+	numberOfTexturesDrawnByInstancedRendering += instancedTextures.size();
 
 	instancedSpritesPositions.clear();
 	instancedSpritesSizes.clear();
@@ -398,7 +407,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& tra
 	
 	GLCheck( glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0) );
 	
-	++numberOfDrawCalls;
+	++numberOfAllDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive drawMode)
@@ -415,7 +424,7 @@ void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, 
 
 	GLCheck(glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0));
 
-	++numberOfDrawCalls;
+	++numberOfAllDrawCalls;
 }
 
 void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
@@ -442,7 +451,6 @@ void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimit
 void Renderer::submit(const sf::Drawable& object)
 {
 	sfmlRenderer.submit(&object);
-	++numberOfDrawCalls;
 }
 
 bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)

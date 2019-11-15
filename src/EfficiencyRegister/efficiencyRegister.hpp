@@ -17,8 +17,11 @@ public:
 	void handleEvent(const ph::Event&);
 	void update();
 
-	void setDrawCallsPerFrame(unsigned drawCallsPerFrame);
-	void setNumberOfDrawnSprites(unsigned nrOfDrawnSprites);
+	void setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame);
+	void setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites);
+	void setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls);
+	void setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites);
+	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
