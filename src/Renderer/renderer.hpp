@@ -25,7 +25,7 @@ public:
 	static void beginScene(Camera&);
 	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
-	static void submitQuad(const Texture*, const IntRect*, const sf::Color*, const Shader*,
+	static void slowSubmitQuad(const Texture*, const IntRect*, const sf::Color*, const Shader*,
 	                       sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 
 	static void submitQuad(const Texture*, const IntRect*, const sf::Color*,

@@ -130,7 +130,7 @@ void Game::update(sf::Time deltaTime)
 		// TODO_ren: Move it to Terminal::update()
 		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 
-		rendererTest();
+		//rendererTest();
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

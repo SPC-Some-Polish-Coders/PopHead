@@ -246,7 +246,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	numberOfTexturesDrawnByInstancedRendering = 0;
 }
 
-void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
+void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
                           sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	// culling
@@ -329,11 +329,9 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, cons
 		texture->bind(textureSlotID);
 		instancedTextures.emplace_back(texture);
 	}
+
 	// TODO_ren: Add support for custom tex coords
-	if(texCoords == nullptr)
-		instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
-	else
-		PH_EXIT_GAME("Custom tex coords are not supported yet");
+	instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
 
 	// submit rest of data
 	instancedSpritesPositions.emplace_back(position);

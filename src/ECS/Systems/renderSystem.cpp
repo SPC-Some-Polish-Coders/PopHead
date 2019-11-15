@@ -70,11 +70,9 @@ void RenderSystem::submitSingleColorSprites() const
 		<component::BodyRect, component::Color>
 		(entt::exclude<component::TexturePtr, component::Rotation>);
 
-	view.each([this](const component::BodyRect& body, const component::Color& color)
+	view.each([this](const component::BodyRect& body, const component::Color& color) 
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(nullptr, nullptr, &color.color, nullptr, pos, size);
+		Renderer::submitQuad(nullptr, nullptr, &color.color, body.rect.getTopLeft(), body.rect.getSize());
 	});
 }
 
@@ -86,9 +84,7 @@ void RenderSystem::submitTextureSprites() const
 
 	view.each([this](const component::BodyRect& body, const component::TexturePtr texPtr) 
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, nullptr, pos, size);
+		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, body.rect.getTopLeft(), body.rect.getSize());
 	});
 }
 
@@ -102,7 +98,7 @@ void RenderSystem::submitTextureSpritesWithCustomShader() const
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, shaderPtr.shader, pos, size);
+		Renderer::slowSubmitQuad(texPtr.texture, nullptr, nullptr, shaderPtr.shader, pos, size);
 	});
 }
 
@@ -114,9 +110,7 @@ void RenderSystem::submitTextureSpritesWithTextureRect() const
 
 	view.each([this](const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect) 
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, nullptr, pos, size);
+		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, body.rect.getTopLeft(), body.rect.getSize());
 	});
 }
 
@@ -131,7 +125,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectAndCustomShader() const
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, shaderPtr.shader, pos, size);
+		Renderer::slowSubmitQuad(texPtr.texture, &texRect.rect, nullptr, shaderPtr.shader, pos, size);
 	});
 }
 
@@ -145,7 +139,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorMultiplication() const
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, nullptr, pos, size);
+		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, body.rect.getTopLeft(), body.rect.getSize());
 	});
 }
 
@@ -160,7 +154,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorAndCustomShader() const
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, shaderPtr.shader, pos, size);
+		Renderer::slowSubmitQuad(texPtr.texture, nullptr, &color.color, shaderPtr.shader, pos, size);
 	});
 }
 
@@ -173,9 +167,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorAndTextureRect() const
 	view.each([this]
 	(const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect, const component::Color& color)
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, nullptr, pos, size);
+		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, body.rect.getTopLeft(), body.rect.getSize());
 	});
 }
 
@@ -191,7 +183,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndCustomShader
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, shaderPtr.shader, pos, size);
+		Renderer::slowSubmitQuad(texPtr.texture, &texRect.rect, &color.color, shaderPtr.shader, pos, size);
 	});
 }
 
@@ -203,9 +195,7 @@ void RenderSystem::submitSingleColorSpritesWithRotation() const
 
 	view.each([this](const component::BodyRect& body, const component::Color& color, const component::Rotation rotation)
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(nullptr, nullptr, &color.color, nullptr, pos, size, rotation.angle);
+		Renderer::submitQuad(nullptr, nullptr, &color.color, body.rect.getTopLeft(), body.rect.getSize(), rotation.angle);
 	});
 }
 
@@ -217,9 +207,7 @@ void RenderSystem::submitTextureSpritesWithRotation() const
 
 	view.each([this](const component::BodyRect& body, const component::TexturePtr texPtr, const component::Rotation rotation)
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, nullptr, pos, size, rotation.angle);
+		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, body.rect.getTopLeft(), body.rect.getSize(), rotation.angle);
 	});
 }
 
@@ -234,7 +222,7 @@ void RenderSystem::submitTextureSpritesWithCustomShaderAndRotation() const
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, nullptr, shaderPtr.shader, pos, size, rotation.angle);
+		Renderer::slowSubmitQuad(texPtr.texture, nullptr, nullptr, shaderPtr.shader, pos, size, rotation.angle);
 	});
 }
 
@@ -248,9 +236,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectAndRotation() const
 	(const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect,
 	 const component::Rotation rotation)
 	{
-		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, nullptr, pos, size, rotation.angle);
+		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, body.rect.getTopLeft(), body.rect.getSize(), rotation.angle);
 	});
 }
 
@@ -266,7 +252,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectCustomShaderAndRotation() 
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, nullptr, shaderPtr.shader, pos, size, rotation.angle);
+		Renderer::slowSubmitQuad(texPtr.texture, &texRect.rect, nullptr, shaderPtr.shader, pos, size, rotation.angle);
 	});
 }
 
@@ -281,7 +267,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorMultiplicationAndRotation(
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, nullptr, pos, size, rotation.angle);
+		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, body.rect.getTopLeft(), body.rect.getSize(), rotation.angle);
 	});
 }
 
@@ -297,7 +283,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorCustomShaderAndRotation() 
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, nullptr, &color.color, shaderPtr.shader, pos, size, rotation.angle);
+		Renderer::slowSubmitQuad(texPtr.texture, nullptr, &color.color, shaderPtr.shader, pos, size, rotation.angle);
 	});
 }
 
@@ -312,8 +298,8 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndRotation() c
 	 const component::Color& color, const component::Rotation rotation)
 	{
 		auto pos = body.rect.getTopLeft();
-		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, nullptr, pos, size, rotation.angle);
+		auto size = body.rect.getSize();
+		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, pos, size, rotation.angle);
 	});
 }
 
@@ -328,7 +314,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectCustomShaderAnd
 	{
 		auto pos = body.rect.getTopLeft();
 		auto size = static_cast<sf::Vector2i>(body.rect.getSize());
-		Renderer::submitQuad(texPtr.texture, &texRect.rect, &color.color, shaderPtr.shader, pos, size, rotation.angle);
+		Renderer::slowSubmitQuad(texPtr.texture, &texRect.rect, &color.color, shaderPtr.shader, pos, size, rotation.angle);
 	});
 }
 
