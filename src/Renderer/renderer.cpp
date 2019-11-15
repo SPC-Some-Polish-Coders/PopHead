@@ -301,6 +301,9 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, cons
 	if(!isInsideScreen(position, size))
 		return;
 
+	if(instancedSpritesPositions.size() == nrOfSpritesInOneInstancedDrawCall)
+		flushInstancedSprites();
+
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
 	instancedSpritesRotations.emplace_back(rotation);

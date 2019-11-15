@@ -150,7 +150,7 @@ void Game::update(sf::Time deltaTime)
 		}*/
 		
 		/// test 2 of instancing
-		for(int i = 0; i < 250; ++i) {
+		for(int i = 0; i < 2500; ++i) {
 			Renderer::submitQuad(&wallTex, nullptr, nullptr, sf::Vector2f(0.f, (float)i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
 			Renderer::submitQuad(&gateTex, nullptr, nullptr, sf::Vector2f(50.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
 			Renderer::submitQuad(&bulletTex, nullptr, nullptr, sf::Vector2f(100.f, (float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
