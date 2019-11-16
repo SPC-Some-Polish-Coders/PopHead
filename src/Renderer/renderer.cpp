@@ -391,71 +391,9 @@ void Renderer::flushInstancedSprites()
 	instancedTextures.clear();
 }
 
-// TODO_ren: Think what to do with these low level kindof calls
-void Renderer::submit(VertexArray& vao, Shader& shader, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
-{
-	if(!isInsideScreen(transform, size))
-		return;
-
-	vao.bind();
-
-	// TODO_ren: Make that we don't bind shader if it was already bound
- 	shader.bind();
-	shader.setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-	
-	GLCheck( glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0) );
-	
-	++numberOfAllDrawCalls;
-}
-
-void Renderer::submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive drawMode)
-{
-	if(!isInsideScreen(bounds))
-		return;
-
-	vao.bind();
-
-	// TODO_ren: Make that we don't bind shader if it was already bound
-	shader.bind();
-	shader.setUniformMatrix4x4("modelMatrix", sf::Transform::Identity.getMatrix());
-	shader.setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-
-	GLCheck(glDrawElements(toGLEnum(drawMode), vao.getIndexBuffer().mNumberOfIndices, GL_UNSIGNED_INT, 0));
-
-	++numberOfAllDrawCalls;
-}
-
-void Renderer::submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive drawMode)
-{
-	submit(vao, *defaultSpriteShader, bounds, drawMode);
-}
-
-void Renderer::submit(VertexArray& vao, const sf::Transform& transform, const sf::Vector2i size, DrawPrimitive drawMode)
-{
-	submit(vao, *defaultSpriteShader, transform, size, drawMode);
-}
-
-void Renderer::submit(Sprite& sprite, Shader& shader, const sf::Transform& transform, DrawPrimitive drawMode)
-{
-	sprite.mTexture.bind();
-	submit(sprite.mVertexArray, shader, transform, sprite.mSize, drawMode);
-}
-
-void Renderer::submit(Sprite& sprite, const sf::Transform& transform, DrawPrimitive drawMode)
-{
-	submit(sprite, *defaultSpriteShader, transform, drawMode);
-}
-
 void Renderer::submit(const sf::Drawable& object)
 {
 	sfmlRenderer.submit(&object);
-}
-
-bool Renderer::isInsideScreen(const sf::Transform& transform, const sf::Vector2i size)
-{
-	const FloatRect objectRect(transform.getMatrix()[12], transform.getMatrix()[13], static_cast<float>(size.x), static_cast<float>(size.y));
-	return screenBounds.doPositiveRectsIntersect(objectRect);
 }
 
 // TODO_ren: Remove this sf::Vector2i version

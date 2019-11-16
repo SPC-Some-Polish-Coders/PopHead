@@ -124,8 +124,8 @@ void Chunk::initializeGraphics()
 
 void Chunk::draw() const
 {
-	auto* shader = ShaderLibrary::getInstance().get("textureSprite");
-	Renderer::submit(*mVertexArray, *shader, getGlobalBounds());
+	/*auto* shader = ShaderLibrary::getInstance().get("textureSprite");
+	Renderer::submit(*mVertexArray, *shader, getGlobalBounds());*/
 }
 
 sf::FloatRect Chunk::getGlobalBounds() const

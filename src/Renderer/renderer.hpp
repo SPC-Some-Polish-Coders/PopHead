@@ -31,12 +31,6 @@ public:
 	static void submitQuad(const Texture*, const IntRect*, const sf::Color*,
 	                          sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
 
-	static void submit(VertexArray& vao, Shader& shader, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(VertexArray& vao, Shader& shader, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(VertexArray& vao, const FloatRect bounds, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(VertexArray& vao, const sf::Transform&, const sf::Vector2i size, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(Sprite&, Shader&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
-	static void submit(Sprite&, const sf::Transform&, DrawPrimitive = DrawPrimitive::Triangles);
 	static void submit(const sf::Drawable&);
 
 	static void onWindowResize(unsigned width, unsigned height);
@@ -47,7 +41,6 @@ private:
 	static void flushInstancedSprites();
 	static auto getTextureSlotToWhichThisTextureIsBound(const Texture*) -> std::optional<int>;
 	static void setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation);
-	static bool isInsideScreen(const sf::Transform&, const sf::Vector2i size);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2i size);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2f size);
 	static bool isInsideScreen(const FloatRect objectBounds);
