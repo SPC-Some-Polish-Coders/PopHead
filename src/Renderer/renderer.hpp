@@ -4,7 +4,6 @@
 #include "Shaders/shaderLibary.hpp"
 #include "texture.hpp"
 #include "camera.hpp"
-#include "sprite.hpp"
 #include "glEnums.hpp"
 #include "SFMLrenderer.hpp"
 #include "Utilities/rect.hpp"
