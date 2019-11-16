@@ -1,6 +1,6 @@
 #version 330 core 
 
-in VS_OUT
+in DATA
 {
     in vec4 color;
     in vec2 texCoords;

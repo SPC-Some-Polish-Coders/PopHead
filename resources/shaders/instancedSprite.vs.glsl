@@ -6,7 +6,7 @@ layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
 layout (location = 4) in vec4 aTextureRect;
 
-out VS_OUT
+out DATA
 {
     vec4 color;
     vec2 texCoords;

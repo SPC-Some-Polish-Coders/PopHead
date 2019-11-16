@@ -303,7 +303,7 @@ void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f posit
 
 // TODO_ren: Support custom shaders for instanced rendering
 
-void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, const sf::Color* color, 
+void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, 
                           sf::Vector2f position, sf::Vector2f size, float rotation)
 {
 	// culling
@@ -330,14 +330,12 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* texCoords, cons
 		instancedTextures.emplace_back(texture);
 	}
 
-	// TODO_ren: Add support for custom tex coords
-	instancedSpritesTextureRects.emplace_back(FloatRect(0, 0, 1, 1));
-
 	// submit rest of data
 	instancedSpritesPositions.emplace_back(position);
 	instancedSpritesSizes.emplace_back(size);
 	instancedSpritesRotations.emplace_back(rotation);
 	instancedSpritesColors.emplace_back(color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White));
+	instancedSpritesTextureRects.emplace_back(textureRect ? getNormalizedTextureRect(textureRect, size) : FloatRect(0.f, 0.f, 1.f, 1.f));
 }
 
 auto Renderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
@@ -346,6 +344,14 @@ auto Renderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -
 		if(instancedTextures[i] == texture)
 			return i;
 	return std::nullopt;
+}
+
+auto Renderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect
+{
+	return FloatRect(
+		pixelTextureRect->left / size.x, pixelTextureRect->top / size.y,
+		pixelTextureRect->width / size.x, pixelTextureRect->height / size.y
+	);
 }
 
 void Renderer::flushInstancedSprites()

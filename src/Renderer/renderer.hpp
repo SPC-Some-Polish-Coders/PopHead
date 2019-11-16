@@ -39,6 +39,7 @@ public:
 private:
 	static void flushInstancedSprites();
 	static auto getTextureSlotToWhichThisTextureIsBound(const Texture*) -> std::optional<int>;
+	static auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect;
 	static void setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2i size);
 	static bool isInsideScreen(sf::Vector2f position, sf::Vector2f size);
