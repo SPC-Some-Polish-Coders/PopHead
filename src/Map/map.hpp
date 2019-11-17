@@ -1,6 +1,5 @@
 #pragma once
 
-#include "chunkMap.hpp"
 #include "Utilities/xml.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -66,7 +65,7 @@ private:
 	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:
-	std::unique_ptr<ChunkMap> mChunkMap;
+	//std::unique_ptr<ChunkMap> mChunkMap;
 	GameData* mGameData;
 	inline static const std::string pathToTilesetsDirectory = "textures/map/";
 };

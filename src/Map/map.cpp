@@ -1,5 +1,5 @@
 #include "map.hpp"
-#include "chunkMap.hpp"
+//#include "chunkMap.hpp"
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
@@ -7,8 +7,8 @@
 namespace ph {
 
 Map::Map()
-	:mChunkMap(nullptr)
-	,mGameData(nullptr)
+	:mGameData(nullptr)
+	//,mChunkMap(nullptr)
 {
 }
 
@@ -21,11 +21,11 @@ void Map::load(const GeneralMapInfo& info, const TilesetsData& tilesetsData, con
 
 void Map::createChunkMap(const TilesetsData& tilesetsData, const GeneralMapInfo& info)
 {
-	mChunkMap = std::make_unique<ChunkMap>(
+	/*mChunkMap = std::make_unique<ChunkMap>(
 		info.mapSize,
 		info.tileSize,
 		mGameData->getTextures().get(pathToTilesetsDirectory + tilesetsData.tilesetFileName)
-	);
+	);*/
 }
 
 void Map::createAllLayers(const AllLayersGlobalTileIds& allLayers, const TilesetsData& tilesets, const GeneralMapInfo& info)
@@ -38,7 +38,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 {
 	const Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
-	mChunkMap->addNewLayerOfChunks();
+	//mChunkMap->addNewLayerOfChunks();
 
 	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
 		const unsigned bitsInByte = 8;
@@ -68,7 +68,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 			position.x *= info.tileSize.x;
 			position.y *= info.tileSize.y;
 
-			TileData tileData;
+			/*TileData tileData;
 			tileData.mTextureRectTopLeftCorner = tileRectPosition;
 			tileData.mTopLeftCornerPositionInWorld = position;
 
@@ -77,7 +77,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 			tileData.mFlipData.mIsDiagonallyFlipped = isDiagonallyFlipped;
 
 			mChunkMap->addTileData(tileData);
-
+			*/
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
@@ -85,7 +85,7 @@ void Map::createLayer(const std::vector<unsigned>& globalTileIds, const Tilesets
 		}
 	}
 
-	mChunkMap->initializeGraphicsForCurrentLayer();
+	//mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
 bool Map::hasTile(unsigned globalTileId) const
@@ -157,8 +157,8 @@ void Map::createMapBorders(const GeneralMapInfo& mapInfo)
 
 void Map::draw(const sf::FloatRect cameraBounds) const
 {
-	if (mChunkMap)
-		mChunkMap->draw(cameraBounds);
+	//if (mChunkMap)
+	//	mChunkMap->draw(cameraBounds);
 }
 
 }
