@@ -17,7 +17,7 @@ namespace ph::system {
 	private:
 		void performShoot(const sf::Vector2f& startingBulletPos);
 		void setPlayerFacePosition();
-		bool canShoot(int numOfBullets, float cooldownTime) const;
+		bool canShoot(int numOfBullets, float cooldown) const;
 		bool hasCooldown(float cooldownSinceLastShoot) const;
 		sf::Vector2f getGunPosition() const;
 		sf::Vector2f getCurrentPosition(const sf::Vector2f& startingPos, const int bulletDistance) const;

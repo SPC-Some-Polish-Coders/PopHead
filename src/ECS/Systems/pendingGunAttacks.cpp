@@ -5,8 +5,6 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
-#include "Events/actionEventManager.hpp"
-
 namespace ph::system {
 
 void PendingGunAttacks::update(float seconds)
@@ -47,9 +45,9 @@ void PendingGunAttacks::setPlayerFacePosition()
 	}
 }
 
-bool PendingGunAttacks::canShoot(int numOfBullets, float cooldownTime) const
+bool PendingGunAttacks::canShoot(int numOfBullets, float cooldown) const
 {
-	return numOfBullets > 0 && cooldownTime <= 0.f;
+	return numOfBullets > 0 && !cooldown;
 }
 
 bool PendingGunAttacks::hasCooldown(float cooldownSinceLastShoot) const
