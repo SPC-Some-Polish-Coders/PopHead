@@ -75,7 +75,7 @@ void QuadRenderer::init()
 	// TODO_ren: Optimize that
 	mDefaultInstanedSpriteShader->bind();
 	for(size_t i = 0; i < 32; ++i)
-		mDefaultInstanedSpriteShader->setUniformInt("textures[" + std::to_string(i) + "]", i);
+		mDefaultInstanedSpriteShader->setUniformInt(std::string("textures[" + std::to_string(i) + "]").c_str(), i);
 }
 
 void QuadRenderer::shutDown()
@@ -190,8 +190,9 @@ void QuadRenderer::flush()
 	glBindBuffer(GL_ARRAY_BUFFER, mInstancedTextureRectsVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesTextureRects.size() * 4 * sizeof(float), mInstancedSpritesTextureRects.data());
 
+	// TODO_ren: Optimize that
 	for(size_t i = 0; i < mInstancedSpritesTextureSlotRefs.size(); ++i)
-		mDefaultInstanedSpriteShader->setUniformInt("textureSlotRefs[" + std::to_string(i) + "]", mInstancedSpritesTextureSlotRefs[i]);
+		mDefaultInstanedSpriteShader->setUniformInt(std::string("textureSlotRefs[" + std::to_string(i) + "]").c_str(), mInstancedSpritesTextureSlotRefs[i]);
 
 	glBindVertexArray(mInstancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, mInstancedSpritesPositions.size()) );

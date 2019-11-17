@@ -55,8 +55,8 @@ void Shader::loadFromString(const char* vertexShaderSource, const char* fragment
 int Shader::compileShaderAndGetId(const char* sourceCode, const unsigned shaderType)
 {
 	unsigned shaderId = glCreateShader(shaderType);
-	GLCheck(glShaderSource(shaderId, 1, &sourceCode, nullptr));
-	GLCheck(glCompileShader(shaderId));
+	GLCheck( glShaderSource(shaderId, 1, &sourceCode, nullptr) );
+	GLCheck( glCompileShader(shaderId) );
 	checkCompilationErrors(shaderId, shaderType);
 	return shaderId;
 }
@@ -76,9 +76,9 @@ void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shad
 
 void Shader::linkProgram(const int vertexShaderId, const int fragmentShaderId)
 {
-	GLCheck(glAttachShader(mID, vertexShaderId));
-	GLCheck(glAttachShader(mID, fragmentShaderId));
-	GLCheck(glLinkProgram(mID));
+	GLCheck( glAttachShader(mID, vertexShaderId) );
+	GLCheck( glAttachShader(mID, fragmentShaderId) );
+	GLCheck( glLinkProgram(mID) );
 	checkLinkingErrors();
 }
 
@@ -95,83 +95,83 @@ void Shader::checkLinkingErrors()
 
 void Shader::bind() const
 {
-	GLCheck(glUseProgram(mID));
+	GLCheck( glUseProgram(mID) );
 }
 
 void Shader::unbind() const
 {
-	GLCheck(glUseProgram(0));
+	GLCheck( glUseProgram(0) );
 }
 
-void Shader::setUniformBool(const std::string& name, const bool value) const
+void Shader::setUniformBool(const char* name, const bool value) const
 {
-	GLCheck(glUniform1i(getUniformLocation(name), static_cast<int>(value)));
+	GLCheck( glUniform1i(getUniformLocation(name), static_cast<int>(value)) );
 }
 
-void Shader::setUniformInt(const std::string& name, const int value) const
+void Shader::setUniformInt(const char* name, const int value) const
 {
-	GLCheck(glUniform1i(getUniformLocation(name), value));
+	GLCheck( glUniform1i(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformUnsignedInt(const std::string& name, const unsigned value) const
+void Shader::setUniformUnsignedInt(const char* name, const unsigned value) const
 {
-	GLCheck(glUniform1ui(getUniformLocation(name), value));
+	GLCheck( glUniform1ui(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformFloat(const std::string& name, const float value) const
+void Shader::setUniformFloat(const char* name, const float value) const
 {
-	GLCheck(glUniform1f(getUniformLocation(name), value));
+	GLCheck( glUniform1f(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformVector2(const std::string& name, const sf::Vector2f value) const
+void Shader::setUniformVector2(const char* name, const sf::Vector2f value) const
 {
-	GLCheck(glUniform2f(getUniformLocation(name), value.x, value.y));
+	GLCheck( glUniform2f(getUniformLocation(name), value.x, value.y) );
 }
 
-void Shader::setUniformVector2(const std::string& name, const float x, const float y) const
+void Shader::setUniformVector2(const char* name, const float x, const float y) const
 {
-	GLCheck(glUniform2f(getUniformLocation(name), x, y));
+	GLCheck( glUniform2f(getUniformLocation(name), x, y) );
 }
 
-void Shader::setUniformVector3(const std::string& name, const sf::Vector3f value) const
+void Shader::setUniformVector3(const char* name, const sf::Vector3f value) const
 {
-	GLCheck(glUniform3f(getUniformLocation(name), value.x, value.y, value.z));
+	GLCheck( glUniform3f(getUniformLocation(name), value.x, value.y, value.z) );
 }
 
-void Shader::setUniformVector3(const std::string& name, const float x, const float y, const float z) const
+void Shader::setUniformVector3(const char* name, const float x, const float y, const float z) const
 {
-	GLCheck(glUniform3f(getUniformLocation(name), x, y, z));
+	GLCheck( glUniform3f(getUniformLocation(name), x, y, z) );
 }
 
-void Shader::setUniformVector4Color(const std::string& name, const sf::Color& color) const
+void Shader::setUniformVector4Color(const char* name, const sf::Color& color) const
 {
-	GLCheck(glUniform4f(getUniformLocation(name),
+	GLCheck( glUniform4f(getUniformLocation(name),
 		static_cast<float>(color.r) / 255.f, static_cast<float>(color.g) / 255.f,
 		static_cast<float>(color.b) / 255.f, static_cast<float>(color.a) / 255.f
-	));
+	) );
 }
 
-void Shader::setUniformVector4(const std::string& name, const float x, const float y, const float z, const float w) const
+void Shader::setUniformVector4(const char* name, const float x, const float y, const float z, const float w) const
 {
-	GLCheck(glUniform4f(getUniformLocation(name), x, y, z, w));
+	GLCheck( glUniform4f(getUniformLocation(name), x, y, z, w) );
 }
 
-void Shader::setUniformVector4Rect(const std::string& name, const FloatRect& r) const
+void Shader::setUniformVector4Rect(const char* name, const FloatRect& r) const
 {
 	setUniformVector4(name, r.left, r.top, r.width, r.height);
 }
 
-void Shader::setUniformMatrix4x4(const std::string& name, const float* transform) const
+void Shader::setUniformMatrix4x4(const char* name, const float* transform) const
 {
-	GLCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, transform));
+	GLCheck( glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, transform) );
 }
 
-int Shader::getUniformLocation(const std::string& name) const
+int Shader::getUniformLocation(const char* name) const
 {
 	if(mUniformsLocationCache.find(name) != mUniformsLocationCache.end())
 		return mUniformsLocationCache[name];
 
-	GLCheck(int location = glGetUniformLocation(mID, name.c_str()));
+	GLCheck( int location = glGetUniformLocation(mID, name) );
 	mUniformsLocationCache[name] = location;
 	return location;
 }
