@@ -1,7 +1,6 @@
 #include "quadRenderer.hpp"
 #include "Renderer/texture.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
-#include "Renderer/Vertices/indexBuffers.hpp"
 #include "Renderer/openglErrors.hpp"
 #include "Utilities/cast.hpp"
 #include <GL/glew.h>
@@ -15,15 +14,15 @@ void QuadRenderer::init()
 	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
-	IndexBuffer quadIBO = createIndexBuffer();
-	setData(quadIBO, quadIndices, sizeof(quadIndices));
+	mQuadIBO.init();
+	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
 
 	// TODO_ren: Try to pack it into one struct
 
 	glGenVertexArrays(1, &mInstancedVAO);
 	glBindVertexArray(mInstancedVAO);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIBO.mID);
+	mQuadIBO.bind();
 
 	glGenBuffers(1, &mInstancedPositionsVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, mInstancedPositionsVBO);
@@ -82,6 +81,7 @@ void QuadRenderer::init()
 void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
+	mQuadIBO.remove();
 	glDeleteBuffers(1, &mInstancedPositionsVBO);
 	glDeleteBuffers(1, &mInstancedSizesVBO);
 	glDeleteBuffers(1, &mInstancedRotationsVBO);
@@ -153,7 +153,6 @@ bool QuadRenderer::isInsideScreen(const FloatRect objectBounds)
 {
 	return mScreenBounds->doPositiveRectsIntersect(objectBounds);
 }
-
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
 {

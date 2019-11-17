@@ -22,7 +22,7 @@ namespace {
 	ph::Shader* defaultFramebufferShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	
-	ph::VertexArray* framebufferVertexArray;
+	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer* framebuffer;
 
 	ph::SlowQuadRenderer slowQuadRenderer;
@@ -38,22 +38,21 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	if(glewInit() != GLEW_OK)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
-	// set up blending
-	GLCheck( glEnable(GL_BLEND) );
-	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
-
 	slowQuadRenderer.init();
 	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
 
 	quadRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 
-	// load default shaders
+	// set up blending
+	GLCheck( glEnable(GL_BLEND) );
+	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
+
+	// set up framebuffer
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
 
-	// load quad vertex arrays
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
 		1.f, 1.f, 1.f, 1.f,
@@ -62,14 +61,16 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	};
 
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
-	IndexBuffer quadIBO = createIndexBuffer();
-	setData(quadIBO, quadIndices, sizeof(quadIndices));
+	IndexBuffer quadIBO;
+	quadIBO.init();
+	quadIBO.setData(quadIndices, sizeof(quadIndices));
 
-	VertexBuffer framebufferVBO = createVertexBuffer();
-	setData(framebufferVBO, framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
-	framebufferVertexArray = new VertexArray;
-	framebufferVertexArray->setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
-	framebufferVertexArray->setIndexBuffer(quadIBO);
+	VertexBuffer framebufferVBO;
+	framebufferVBO.init();
+	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
+	framebufferVertexArray.init();
+	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
+	framebufferVertexArray.setIndexBuffer(quadIBO);
 
 	// set up framebuffer
 	framebuffer = new Framebuffer(screenWidth, screenHeight);
@@ -85,7 +86,7 @@ void Renderer::shutDown()
 {
 	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
-	delete framebufferVertexArray;
+	framebufferVertexArray.remove();
 	delete framebuffer;
 }
 
@@ -119,7 +120,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 	Framebuffer::bindDefaultFramebuffer();
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
-	framebufferVertexArray->bind();
+	framebufferVertexArray.bind();
 	defaultFramebufferShader->bind();
 	currentlyBoundShader = defaultFramebufferShader;
 	framebuffer->bindTextureColorBuffer(0);

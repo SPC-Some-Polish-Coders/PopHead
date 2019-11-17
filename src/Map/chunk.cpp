@@ -74,8 +74,9 @@ void Chunk::initializeGraphics()
 		}
 	}
 
-	VertexBuffer vbo = createVertexBuffer();
-	setData(vbo, vertices.data(), vertices.size() * sizeof(float), DataUsage::staticDraw);
+	VertexBuffer vbo;
+	vbo.init();
+	vbo.setData(vertices.data(), vertices.size() * sizeof(float), DataUsage::staticDraw);
 	mVertexArray->setVertexBuffer(vbo, VertexBufferLayout::position2_texCoords2);
 
 	// create index buffer data 
@@ -114,10 +115,10 @@ void Chunk::initializeGraphics()
 			break;
 	}
 
-	IndexBuffer ibo = createIndexBuffer();
-	setData(ibo, indices.data(), indices.size());
+	IndexBuffer ibo;
+	ibo.init();
+	ibo.setData(indices.data(), indices.size());
 	mVertexArray->setIndexBuffer(ibo);
-
 
 	mTilesToCreate.clear();
 }

@@ -7,20 +7,29 @@
 
 namespace ph { 
 
-VertexBuffer createVertexBuffer()
+void VertexBuffer::init()
 {
-	unsigned id;
-	GLCheck(glGenBuffers(1, &id));
-	return {id};
+	GLCheck( glGenBuffers(1, &mID) );
 }
 
-void setData(VertexBuffer vbo, float* vertices, size_t arraySize, DataUsage usage)
+void VertexBuffer::remove()
 {
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, vbo.mID) );
+	GLCheck( glDeleteBuffers(1, &mID) );
+}
+
+void VertexBuffer::bind()
+{
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mID) );
+}
+
+void VertexBuffer::setData(float* vertices, size_t arraySize, DataUsage usage)
+{
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mID) );
 	GLCheck( glBufferData(GL_ARRAY_BUFFER, arraySize, vertices, toGLEnum(usage)) );
 }
 
-void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2i textureSize)
+// TODO_ren: Delete this method when it's no longer usefull
+void VertexBuffer::setTextureRect(const IntRect& r, const sf::Vector2i textureSize)
 {
 	std::array<float, 16> vertices = {
 		// positions                                       t  e  x  t  u  r  e       c  o  o  r  d  s
@@ -30,75 +39,7 @@ void setTextureRect(const VertexBuffer& vbo, const IntRect& r, const sf::Vector2
 		0.f, 0.f, (float)(r.left) / (float)textureSize.x          , (float)(textureSize.y - r.top) / (float) textureSize.y  // top left
 	};
 
-	setData(vbo, vertices.data(), vertices.size() * sizeof(float), DataUsage::dynamicDraw);
+	setData(vertices.data(), vertices.size() * sizeof(float), DataUsage::dynamicDraw);
 }
 
-void deleteVertexBuffer(VertexBuffer vbo)
-{
-	GLCheck(glDeleteBuffers(1, &vbo.mID));
 }
-
-void bind(VertexBuffer vbo)
-{
-	GLCheck(glBindBuffer(GL_ARRAY_BUFFER, vbo.mID));
-}
-
-VertexBufferHolder::VertexBufferHolder()
-{
-	// allocate memory
-	mNames.reserve(100);
-	mReferenceCounters.reserve(100);
-	mVertexBuffers.reserve(100);
-}
-
-VertexBuffer VertexBufferHolder::getRectangleVertexBuffer(const std::string& name, unsigned width, unsigned height, DataUsage usage, bool thisBufferMightAlreadyExist)
-{
-	// look for existing buffer
-	if(thisBufferMightAlreadyExist)
-	{
-		for(size_t i = 0; i < mNames.size(); ++i) {
-			if(mNames[i] == name) {
-				++mReferenceCounters[i];
-				return mVertexBuffers[i];
-			}
-		}
-	}
-
-	// create new buffer
-	float h = static_cast<float>(height);
-	float w = static_cast<float>(width);
-
-	std::array<float, 16> vertices = {
-		// positions  texture coords
-		w  , 0.f , 1.0f, 1.0f, // top right
-		w  , h   , 1.0f, 0.0f, // bottom right
-		0.f, h   , 0.0f, 0.0f, // bottom left
-		0.f, 0.f , 0.0f, 1.0f  // top left 
-	};
-
-	VertexBuffer vbo = createVertexBuffer();
-	setData(vbo, vertices.data(), vertices.size() * sizeof(float), usage);
-	mVertexBuffers.emplace_back(vbo);
-	mNames.emplace_back(name);
-	mReferenceCounters.emplace_back(1);
-	return vbo;
-}
-
-void VertexBufferHolder::deleteBuffer(VertexBuffer vbo)
-{
-	for(size_t i = 0; i < mVertexBuffers.size(); ++i)
-	{
-		if(mVertexBuffers[i].mID == vbo.mID) {
-			--mReferenceCounters[i];
-			if(mReferenceCounters[i] == 0) {
-				mNames.erase(mNames.begin() + i);
-				mReferenceCounters.erase(mReferenceCounters.begin() + i);
-				mVertexBuffers.erase(mVertexBuffers.begin() + i);
-			}
-			return;
-		}
-	}
-	PH_LOG_WARNING("You're trying to delete vertex buffer which doesn't exist");
-}
-
-}  

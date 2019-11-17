@@ -2,20 +2,18 @@
 #include "Renderer/openglErrors.hpp"
 #include "GL/glew.h"
 
+// TODO_ren: Maybe make VertexArray not hold VertexBuffer and IndexBuffer
+
 namespace ph {
 
-VertexArray::VertexArray()
-	:mVertexBuffer({0})
-	,mIndexBuffer({0})
+void VertexArray::init()
 {
 	GLCheck( glGenVertexArrays(1, &mID) );
 }
 
-VertexArray::~VertexArray()
+void VertexArray::remove()
 {
 	GLCheck( glDeleteVertexArrays(1, &mID) );
-	VertexBufferHolder::getInstance().deleteBuffer(mVertexBuffer);
-	IndexBufferHolder::getInstance().deleteIndexBuffer(mIndexBuffer);
 }
 
 void VertexArray::bind()
@@ -23,15 +21,10 @@ void VertexArray::bind()
 	GLCheck( glBindVertexArray(mID) );
 }
 
-void VertexArray::unbind()
-{
-	GLCheck( glBindVertexArray(0) );
-}
-
 void VertexArray::setVertexBuffer(VertexBuffer vbo, VertexBufferLayout layout)
 {
 	this->bind();
-	ph::bind(vbo);
+	vbo.bind();
 	mVertexBuffer = vbo;
 
 	// TODO_ren: Support setting multiple VertexBuffers
@@ -63,7 +56,7 @@ void VertexArray::setVertexBuffer(VertexBuffer vbo, VertexBufferLayout layout)
 void VertexArray::setIndexBuffer(IndexBuffer ibo)
 {
 	this->bind();
-	ph::bind(ibo);
+	ibo.bind();
 	mIndexBuffer = ibo;
 }
 

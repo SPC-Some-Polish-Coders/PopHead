@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Renderer/Vertices/indexBuffers.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>
@@ -51,6 +52,8 @@ private:
 	const FloatRect* mScreenBounds;
 	const float* mViewProjectionMatrix;
 	
+	IndexBuffer mQuadIBO;
+
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 

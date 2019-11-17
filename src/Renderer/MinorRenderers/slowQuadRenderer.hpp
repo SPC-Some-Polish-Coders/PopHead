@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Renderer/Vertices/vertexArray.hpp"
 #include "Utilities/rect.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/Color.hpp"
@@ -29,8 +30,11 @@ private:
 	bool isInsideScreen(const FloatRect objectBounds);
 
 private:
-	VertexArray* mTextureQuadVertexArray;
-	VertexArray* mTextureAnimatedQuadVertexArray;
+	VertexArray mTextureQuadVertexArray;
+	VertexArray mTextureAnimatedQuadVertexArray;
+	IndexBuffer mQuadIBO;
+	VertexBuffer mTextureQuadVBO;
+	VertexBuffer mAnimatedTextureQuadVBO;
 	Shader* mDefaultSpriteShader;
 	Texture* mWhiteTexture;
 	const FloatRect* mScreenBounds;

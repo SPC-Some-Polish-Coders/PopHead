@@ -24,20 +24,20 @@ void SlowQuadRenderer::init()
 	};
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
-	IndexBuffer quadIBO = createIndexBuffer();
-	setData(quadIBO, quadIndices, sizeof(quadIndices));
+	mQuadIBO.init();
+	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
 
-	VertexBuffer textureQuadVBO = createVertexBuffer();
-	setData(textureQuadVBO, quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
-	mTextureQuadVertexArray = new VertexArray;
-	mTextureQuadVertexArray->setVertexBuffer(textureQuadVBO, VertexBufferLayout::position2_texCoords2);
-	mTextureQuadVertexArray->setIndexBuffer(quadIBO);
+	mTextureQuadVBO.init();
+	mTextureQuadVBO.setData(quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
+	mTextureQuadVertexArray.init();
+	mTextureQuadVertexArray.setVertexBuffer(mTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
+	mTextureQuadVertexArray.setIndexBuffer(mQuadIBO);
 
-	VertexBuffer animatedTextureQuadVBO = createVertexBuffer();
-	setData(animatedTextureQuadVBO, nullptr, sizeof(quadPositionsAndTextureCoords), DataUsage::dynamicDraw);
-	mTextureAnimatedQuadVertexArray = new VertexArray;
-	mTextureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
-	mTextureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
+	mAnimatedTextureQuadVBO.init();
+	mAnimatedTextureQuadVBO.setData(nullptr, sizeof(quadPositionsAndTextureCoords), DataUsage::dynamicDraw);
+	mTextureAnimatedQuadVertexArray.init();
+	mTextureAnimatedQuadVertexArray.setVertexBuffer(mAnimatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
+	mTextureAnimatedQuadVertexArray.setIndexBuffer(mQuadIBO);
 
 	mWhiteTexture = new Texture;
 	unsigned whiteData = 0xffffffff;
@@ -46,8 +46,9 @@ void SlowQuadRenderer::init()
 
 void SlowQuadRenderer::shutDown()
 {
-	delete mTextureQuadVertexArray;
-	delete mTextureAnimatedQuadVertexArray;
+	mTextureQuadVertexArray.remove();
+	mTextureAnimatedQuadVertexArray.remove();
+	mAnimatedTextureQuadVBO.remove();
 	delete mWhiteTexture;
 }
 
@@ -62,7 +63,7 @@ void SlowQuadRenderer::setViewProjectionMatrix(const float* viewProjectionMatrix
 }
 
 void SlowQuadRenderer::drawQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-sf::Vector2f position, sf::Vector2i size, float rotation)
+                                sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	// culling
 	if(!isInsideScreen(position, size))
@@ -82,16 +83,16 @@ sf::Vector2f position, sf::Vector2i size, float rotation)
 	// texture
 	if(texture) {
 		if(textureRect) {
-			setTextureRect(mTextureAnimatedQuadVertexArray->getVertexBuffer(), *textureRect, texture->getSize());
-			mTextureAnimatedQuadVertexArray->bind();
+			mTextureAnimatedQuadVertexArray.getVertexBuffer().setTextureRect(*textureRect, texture->getSize());
+			mTextureAnimatedQuadVertexArray.bind();
 		}
 		else
-			mTextureQuadVertexArray->bind();
+			mTextureQuadVertexArray.bind();
 
 		texture->bind();
 	}
 	else {
-		mTextureQuadVertexArray->bind();
+		mTextureQuadVertexArray.bind();
 		mWhiteTexture->bind();
 	}
 

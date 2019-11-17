@@ -16,21 +16,20 @@ enum class VertexBufferLayout
 class VertexArray
 {
 public:
-	VertexArray();
-	~VertexArray();
+	void init();
+	void remove();
 
 	void bind();
-	void unbind();
 
 	void setVertexBuffer(VertexBuffer, VertexBufferLayout);
 	void setIndexBuffer(IndexBuffer);
 
-	auto getVertexBuffer() -> const VertexBuffer& { return mVertexBuffer; }
-	auto getIndexBuffer() -> const IndexBuffer& { return mIndexBuffer; }
+	auto getVertexBuffer() -> VertexBuffer& { return mVertexBuffer; }
+	auto getIndexBuffer() -> IndexBuffer& { return mIndexBuffer; }
 
 private:
-	IndexBuffer mIndexBuffer;
 	VertexBuffer mVertexBuffer;
+	IndexBuffer mIndexBuffer;
 	unsigned mID;
 };
 
