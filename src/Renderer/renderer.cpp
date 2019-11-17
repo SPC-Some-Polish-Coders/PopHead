@@ -4,7 +4,7 @@
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/SFMLrenderer.hpp"
 #include "Shaders/shaderLibary.hpp"
-#include "Vertices/vertexArray.hpp"
+#include "Buffers/vertexArray.hpp"
 #include "camera.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"

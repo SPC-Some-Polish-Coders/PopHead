@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer/Vertices/indexBuffers.hpp"
+#include "Renderer/Buffers/indexBuffer.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>

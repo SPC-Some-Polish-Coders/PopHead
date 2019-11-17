@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vertexBuffers.hpp"
-#include "indexBuffers.hpp"
+#include "vertexBuffer.hpp"
+#include "indexBuffer.hpp"
 #include <memory>
 
 namespace ph {

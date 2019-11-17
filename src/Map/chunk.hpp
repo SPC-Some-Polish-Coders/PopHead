@@ -1,7 +1,7 @@
 #pragma once
 
 #include "chunkData.hpp"
-#include "Renderer/Vertices/vertexArray.hpp"
+#include "Renderer/Buffers/vertexArray.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <Utilities/rect.hpp>
 #include <array>

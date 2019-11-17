@@ -1,7 +1,8 @@
 #include "slowQuadRenderer.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
-#include "Renderer/Vertices/vertexArray.hpp"
+#include "Renderer/Buffers/vertexArray.hpp"
 #include "Renderer/texture.hpp"
+#include "Renderer/glEnums.hpp"
 #include "Renderer/openglErrors.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <GL/glew.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer/Vertices/vertexArray.hpp"
+#include "Renderer/Buffers/vertexArray.hpp"
 #include "Utilities/rect.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/Color.hpp"
