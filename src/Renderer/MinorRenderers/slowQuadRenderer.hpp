@@ -14,7 +14,6 @@ class SlowQuadRenderer
 {
 public:
 	void init();
-	void reset();
 	void shutDown();
 
 	void setScreenBoundsPtr(const FloatRect*);

@@ -14,11 +14,11 @@ void handleGlobalKeyboardShortcuts(sf::Window& renderWindow, GameCloser& gameClo
 
 			if(windowSize == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) {
 				renderWindow.create(sf::VideoMode(640, 360), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3));
-				Renderer::reset(640, 360);
+				Renderer::restart(640, 360);
 			}
 			else {
 				renderWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3));
-				Renderer::reset(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				Renderer::restart(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 			}
 		}
 	}

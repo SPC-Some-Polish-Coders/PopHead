@@ -44,12 +44,6 @@ void SlowQuadRenderer::init()
 	mWhiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 }
 
-void SlowQuadRenderer::reset()
-{
-	init();
-	shutDown();
-}
-
 void SlowQuadRenderer::shutDown()
 {
 	delete mTextureQuadVertexArray;

@@ -1,5 +1,4 @@
 #include "SFMLrenderer.hpp"
-#include "openglErrors.hpp"
 #include <GL/glew.h>
 
 namespace ph {
@@ -9,10 +8,13 @@ void SFMLRenderer::submit(const sf::Drawable* object)
 	mSubmitedObjects.emplace_back(object);
 }
 
-void SFMLRenderer::drawSubmitedObjects(sf::RenderWindow& window, int& nrOfRenderedSprites)
+unsigned SFMLRenderer::getNumberOfSubmitedObjects() const
 {
-	nrOfRenderedSprites = mSubmitedObjects.size();
-	
+	return mSubmitedObjects.size();
+}
+
+void SFMLRenderer::flush(sf::RenderWindow& window)
+{
 	if(mSubmitedObjects.empty()) {
 		return;
 	}
