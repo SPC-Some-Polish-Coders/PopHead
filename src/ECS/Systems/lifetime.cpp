@@ -11,7 +11,7 @@ namespace ph::system {
 			auto& entityLifetime = entitiesView.get<component::Lifetime>(entity);
 			entityLifetime.lifetime -= seconds;
 			if (entityLifetime.lifetime < 0.f)
-				mRegistry.destroy(entity);
+				mRegistry.assign<component::TaggedToDestroy>(entity);
 		}
 	}
 
