@@ -166,6 +166,16 @@ void Shader::setUniformMatrix4x4(const char* name, const float* transform) const
 	GLCheck( glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, transform) );
 }
 
+void Shader::setUniformFloatArray(const char* name, int count, const float* data)
+{
+	GLCheck( glUniform1fv(getUniformLocation(name), count, data) );
+}
+
+void Shader::setUniformIntArray(const char* name, int count, const int* data)
+{
+	GLCheck( glUniform1iv(getUniformLocation(name), count, data) );
+}
+
 int Shader::getUniformLocation(const char* name) const
 {
 	if(mUniformsLocationCache.find(name) != mUniformsLocationCache.end())
