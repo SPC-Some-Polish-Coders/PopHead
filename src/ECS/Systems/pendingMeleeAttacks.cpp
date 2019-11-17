@@ -99,6 +99,8 @@ namespace ph::system {
 			return sf::Vector2f(rect.left, bottom);
 		if (onRight && under)
 			return sf::Vector2f(rect.left, rect.top);
+
+		return {};
 	}
 
 	float PendingMeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const
