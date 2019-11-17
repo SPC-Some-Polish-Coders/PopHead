@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include "renderer.hpp"
+#include "MinorRenderers/slowQuadRenderer.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
@@ -17,12 +18,9 @@ namespace {
 
 	// RendererData
 	ph::Shader* defaultFramebufferShader;
-	ph::Shader* defaultSpriteShader;
 	ph::Shader* defaultInstanedSpriteShader;
 	const ph::Shader* currentlyBoundShader = nullptr;
 	
-	ph::VertexArray* textureQuadVertexArray;
-	ph::VertexArray* textureAnimatedQuadVertexArray;
 	ph::VertexArray* framebufferVertexArray;
 	ph::VertexArray* instancedQuadsVertexArray;
 	
@@ -47,6 +45,8 @@ namespace {
 
 	constexpr int nrOfSpritesInOneInstancedDrawCall = 2500;
 
+	ph::SlowQuadRenderer slowQuadRenderer;
+
 	// TODO_ren: Get rid of SFML Renderer
 	ph::SFMLRenderer sfmlRenderer;
 	
@@ -69,23 +69,17 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 
+	slowQuadRenderer.init();
+	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
+
 	// load default shaders
 	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
-	defaultSpriteShader = sl.get("sprite");
 	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
 	defaultInstanedSpriteShader = sl.get("instancedSprite");
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
 
 	// load quad vertex arrays
-	float quadPositionsAndTextureCoords[] = {
-		1.f, 0.f, 1.f, 1.f,
-		1.f, 1.f, 1.f, 0.f,
-		0.f, 1.f, 0.f, 0.f,
-		0.f, 0.f, 0.f, 1.f 
-	};
-
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
 		1.f, 1.f, 1.f, 1.f,
@@ -103,18 +97,6 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
 	IndexBuffer quadIBO = createIndexBuffer();
 	setData(quadIBO, quadIndices, sizeof(quadIndices));
-	
-	VertexBuffer textureQuadVBO = createVertexBuffer();
-	setData(textureQuadVBO, quadPositionsAndTextureCoords, sizeof(quadPositionsAndTextureCoords), DataUsage::staticDraw);
-	textureQuadVertexArray = new VertexArray;
-	textureQuadVertexArray->setVertexBuffer(textureQuadVBO, VertexBufferLayout::position2_texCoords2);
-	textureQuadVertexArray->setIndexBuffer(quadIBO);
-
-	VertexBuffer animatedTextureQuadVBO = createVertexBuffer();
-	setData(animatedTextureQuadVBO, nullptr, sizeof(quadPositionsAndTextureCoords), DataUsage::dynamicDraw);
-	textureAnimatedQuadVertexArray = new VertexArray;
-	textureAnimatedQuadVertexArray->setVertexBuffer(animatedTextureQuadVBO, VertexBufferLayout::position2_texCoords2);
-	textureAnimatedQuadVertexArray->setIndexBuffer(quadIBO);
 
 	// create instanced arrays on gpu side
 	{
@@ -196,8 +178,7 @@ void Renderer::reset(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::shutDown()
 {
-	delete textureQuadVertexArray;
-	delete textureAnimatedQuadVertexArray;
+	slowQuadRenderer.shutDown();
 	delete framebufferVertexArray;
 	delete framebuffer;
 	delete whiteTexture;
@@ -212,6 +193,7 @@ void Renderer::beginScene(Camera& camera)
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
 	viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
+	slowQuadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
 	
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
@@ -246,59 +228,10 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	numberOfTexturesDrawnByInstancedRendering = 0;
 }
 
-void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color , const Shader* shader,
-                          sf::Vector2f position, sf::Vector2i size, float rotation)
+void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
+                              sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	// culling
-	if(!isInsideScreen(position, size))
-		return;
-
-	// shader
-	if(!shader)
-		shader = defaultSpriteShader;
-	if(shader != currentlyBoundShader) {
-		shader->bind();
-		currentlyBoundShader = shader;
-	}
-	if(!color)
-		shader->setUniformVector4Color("color", sf::Color::White);
-	else
-		shader->setUniformVector4Color("color", *color);
-	setQuadTransformUniforms(shader, position, size, rotation);
-
-	// texture
-	if(texture){
-		if(textureRect) {
-			setTextureRect(textureAnimatedQuadVertexArray->getVertexBuffer(), *textureRect, texture->getSize());
-			textureAnimatedQuadVertexArray->bind();
-		}
-		else
-			textureQuadVertexArray->bind();
-
-		texture->bind();
-	}
-	else {
-		textureQuadVertexArray->bind();
-		whiteTexture->bind();
-	}
-
-	// draw call
-	GLCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
-	// set debug data
-	++numberOfAllDrawCalls;
-}
-
-void Renderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation)
-{
-	sf::Transform transform;
-	transform.translate(position);
-	transform.scale(static_cast<sf::Vector2f>(size));
-	if(rotation != 0.f)
-		transform.rotate(rotation);
-	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
-	shader->setUniformMatrix4x4("viewProjectionMatrix", viewProjectionMatrix);
-	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
+	slowQuadRenderer.drawQuad(texture, textureRect, color, shader, position, size, rotation);
 }
 
 // TODO_ren: Support custom shaders for instanced rendering
@@ -400,12 +333,6 @@ void Renderer::flushInstancedSprites()
 void Renderer::submit(const sf::Drawable& object)
 {
 	sfmlRenderer.submit(&object);
-}
-
-// TODO_ren: Remove this sf::Vector2i version
-bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2i size)
-{
-	return isInsideScreen(position, static_cast<sf::Vector2f>(size));
 }
 
 bool Renderer::isInsideScreen(sf::Vector2f position, sf::Vector2f size)

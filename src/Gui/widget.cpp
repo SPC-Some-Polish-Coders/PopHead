@@ -1,6 +1,5 @@
 #include "widget.hpp"
 #include "gameData.hpp"
-#include "Renderer/SFMLrenderer.hpp"
 
 namespace ph {
 
