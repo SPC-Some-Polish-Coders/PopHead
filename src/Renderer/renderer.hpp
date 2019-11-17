@@ -1,39 +1,41 @@
 #pragma once
 
-#include "Vertices/vertexArray.hpp"
-#include "Shaders/shaderLibary.hpp"
-#include "texture.hpp"
-#include "camera.hpp"
-#include "glEnums.hpp"
-#include "MinorRenderers/SFMLrenderer.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Color.hpp>
+
+namespace sf {
+	class Drawable;
+	class RenderWindow;
+}
 
 namespace ph {
 
 class EfficiencyRegister;
+class Camera;
+class Texture;
+class Shader;
 
-class Renderer
+namespace Renderer
 {
-public:
-	static void init(unsigned screenWidth, unsigned screenHeight);
-	static void restart(unsigned screenWidth, unsigned screenHeight);
-	static void shutDown();
+	void init(unsigned screenWidth, unsigned screenHeight);
+	void restart(unsigned screenWidth, unsigned screenHeight);
+	void shutDown();
 	
-	static void beginScene(Camera&);
-	static void endScene(sf::RenderWindow& window, EfficiencyRegister&);
+	void beginScene(Camera&);
+	void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
-	static void slowSubmitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-	                       sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	void slowSubmitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
+	                sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
 
-	static void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
-	                       sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
+	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
+	                sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
 
-	static void submit(const sf::Drawable&);
+	void submitSFMLObject(const sf::Drawable&);
 
-	static void onWindowResize(unsigned width, unsigned height);
+	void onWindowResize(unsigned width, unsigned height);
 
-	static void setClearColor(const sf::Color&);
+	void setClearColor(const sf::Color&);
 };
 
 }

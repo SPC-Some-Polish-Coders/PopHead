@@ -1,7 +1,6 @@
 #include "textWidget.hpp"
 #include "gameData.hpp"
-
-#include <cmath>
+#include "Renderer/renderer.hpp"
 #include <sstream>
 
 namespace ph {
@@ -93,7 +92,7 @@ void TextWidget::draw()
 			mText.move(0, -0.35f);
 
 		Widget::draw();
-		Renderer::submit(mText);
+		Renderer::submitSFMLObject(mText);
 	}
 }
 

@@ -2,6 +2,10 @@
 #include "renderer.hpp"
 #include "MinorRenderers/slowQuadRenderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
+#include "MinorRenderers/SFMLrenderer.hpp"
+#include "Shaders/shaderLibary.hpp"
+#include "Vertices/vertexArray.hpp"
+#include "camera.hpp"
 #include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
@@ -134,7 +138,7 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
 	quadRenderer.submitQuad(texture, textureRect, color, position, size, rotation);
 }
 
-void Renderer::submit(const sf::Drawable& object)
+void Renderer::submitSFMLObject(const sf::Drawable& object)
 {
 	sfmlRenderer.submit(&object);
 }

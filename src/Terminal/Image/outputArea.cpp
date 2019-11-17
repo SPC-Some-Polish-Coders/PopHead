@@ -33,7 +33,7 @@ void OutputArea::pushOutputLine(const OutputLine& line)
 void OutputArea::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for(const sf::Text& line : mTexts)
-		Renderer::submit(line);
+		Renderer::submitSFMLObject(line);
 }
 
 void OutputArea::move(sf::Vector2f offset)

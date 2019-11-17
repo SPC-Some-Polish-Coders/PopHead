@@ -21,10 +21,10 @@ TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 void TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if(mTerminalSharedData->mIsVisible) {
-		Renderer::submit(mBackground);
-		Renderer::submit(mTerminalSharedData->mInputLine);
-		Renderer::submit(mSeparatorBetweenInputAndOutputArea);
-		Renderer::submit(mOutputArea);
+		Renderer::submitSFMLObject(mBackground);
+		Renderer::submitSFMLObject(mTerminalSharedData->mInputLine);
+		Renderer::submitSFMLObject(mSeparatorBetweenInputAndOutputArea);
+		Renderer::submitSFMLObject(mOutputArea);
 	}
 }
 

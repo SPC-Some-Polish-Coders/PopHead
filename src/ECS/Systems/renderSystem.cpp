@@ -4,6 +4,7 @@
 #include "Renderer/renderer.hpp"
 #include "Renderer/camera.hpp"
 #include "entt/entity/utility.hpp"
+#include <SFML/Window/Keyboard.hpp>
 
 namespace {
 	ph::Camera defaultCamera;

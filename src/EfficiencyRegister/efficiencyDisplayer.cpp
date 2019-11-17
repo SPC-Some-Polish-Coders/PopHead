@@ -50,17 +50,17 @@ void EfficiencyDisplayer::init(GameData* const gameData)
 void EfficiencyDisplayer::draw() const
 {
 	if(mShouldFPSBeDrawn) {
-		Renderer::submit(mFPSBackground);
-		Renderer::submit(mFramesPerSecondText);
+		Renderer::submitSFMLObject(mFPSBackground);
+		Renderer::submitSFMLObject(mFramesPerSecondText);
 	}
 		
 	if(mShouldRendererDebugBeDrawn) {
-		Renderer::submit(mRendererDebugBackground);
-		Renderer::submit(mDrawCallPerFrameText);
-		Renderer::submit(mSFMLDrawCalls);
-		Renderer::submit(mInstancedDrawCalls);
-		Renderer::submit(mDrawnInstancedSprites);
-		Renderer::submit(mTexturesDrawnByInstancing);
+		Renderer::submitSFMLObject(mRendererDebugBackground);
+		Renderer::submitSFMLObject(mDrawCallPerFrameText);
+		Renderer::submitSFMLObject(mSFMLDrawCalls);
+		Renderer::submitSFMLObject(mInstancedDrawCalls);
+		Renderer::submitSFMLObject(mDrawnInstancedSprites);
+		Renderer::submitSFMLObject(mTexturesDrawnByInstancing);
 	}
 }
 

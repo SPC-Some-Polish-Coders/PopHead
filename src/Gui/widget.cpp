@@ -1,5 +1,6 @@
 #include "widget.hpp"
 #include "gameData.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph {
 
@@ -20,7 +21,7 @@ void Widget::draw()
 {
 	if(mIsActive)
 	{
-		Renderer::submit(mSprite);
+		Renderer::submitSFMLObject(mSprite);
 
 		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
 			if(k->second->isActive())
