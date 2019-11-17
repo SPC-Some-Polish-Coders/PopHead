@@ -21,6 +21,7 @@ struct QuadData
 	float rotation;
 	Vector4f color;
 	FloatRect textureRect;
+	float textureSlotRef;
 };
 
 class QuadRenderer
@@ -52,19 +53,17 @@ private:
 private:
 	std::vector<QuadData> mInstancedQuadsData;
 
-	std::vector<int> mInstancedSpritesTextureSlotRefs;
 	std::vector<const Texture*> mInstancedTextures;
 
 	const FloatRect* mScreenBounds;
 	const float* mViewProjectionMatrix;
-	
-	IndexBuffer mQuadIBO;
 
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 
-	unsigned mInstancedQuadsDataVBO;
+	IndexBuffer mQuadIBO;
 
+	unsigned mInstancedQuadsDataVBO;
 	unsigned mInstancedVAO;
 
 	const int mNrOfSpritesInOneInstancedDrawCall = 2500;

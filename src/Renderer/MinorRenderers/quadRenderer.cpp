@@ -17,8 +17,6 @@ void QuadRenderer::init()
 	mQuadIBO.init();
 	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
 
-	// TODO_ren: Try to pack it into one struct
-
 	glGenVertexArrays(1, &mInstancedVAO);
 	glBindVertexArray(mInstancedVAO);
 
@@ -33,11 +31,12 @@ void QuadRenderer::init()
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotation));
 	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color));
 	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect));
+	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef));
 
-	for(int i = 0; i < 5; ++i)
+	for(int i = 0; i < 6; ++i)
 		glEnableVertexAttribArray(i);
 
-	for(int i = 0; i < 5; ++i)
+	for(int i = 0; i < 6; ++i)
 		glVertexAttribDivisor(i, 1);
 
 	mWhiteTexture = new Texture;
@@ -46,7 +45,6 @@ void QuadRenderer::init()
 
 	// allocate instanced vectors
 	mInstancedQuadsData.reserve(mNrOfSpritesInOneInstancedDrawCall);
-	mInstancedSpritesTextureSlotRefs.reserve(mNrOfSpritesInOneInstancedDrawCall);
 	mInstancedTextures.reserve(32);
 
 	mDefaultInstanedSpriteShader->bind();
@@ -94,29 +92,30 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	if(mInstancedQuadsData.size() == mNrOfSpritesInOneInstancedDrawCall)
 		flush();
 
-	// submit textures data
-	if(!texture)
-		texture = mWhiteTexture;
-	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
-	if(textureSlotOfThisTexture)
-		mInstancedSpritesTextureSlotRefs.emplace_back(*textureSlotOfThisTexture);
-	else {
-		if(mInstancedTextures.size() == 32)
-			flush();
-
-		const int textureSlotID = static_cast<int>(mInstancedTextures.size());
-		mInstancedSpritesTextureSlotRefs.emplace_back(textureSlotID);
-		texture->bind(textureSlotID);
-		mInstancedTextures.emplace_back(texture);
-	}
-
-	// submit rest of data
+	// submit data
 	QuadData quadData;
+
 	quadData.position = position;
 	quadData.size = size;
 	quadData.rotation = rotation;
 	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
 	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, size) : FloatRect(0.f, 0.f, 1.f, 1.f);
+	
+	if(!texture)
+		texture = mWhiteTexture;
+	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
+	if(textureSlotOfThisTexture)
+		quadData.textureSlotRef = *textureSlotOfThisTexture;
+	else {
+		if(mInstancedTextures.size() == 32)
+			flush();
+
+		const float textureSlotID = static_cast<float>(mInstancedTextures.size());
+		quadData.textureSlotRef = textureSlotID;
+		texture->bind(textureSlotID);
+		mInstancedTextures.emplace_back(texture);
+	}
+
 	mInstancedQuadsData.emplace_back(quadData);
 }
 
@@ -154,8 +153,6 @@ void QuadRenderer::flush()
 	glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedQuadsData.size() * sizeof(QuadData), mInstancedQuadsData.data());
 
-	mDefaultInstanedSpriteShader->setUniformIntArray("textureSlotRefs", mInstancedSpritesTextureSlotRefs.size(), mInstancedSpritesTextureSlotRefs.data());
-
 	glBindVertexArray(mInstancedVAO);
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, mInstancedQuadsData.size()) );
 
@@ -164,7 +161,6 @@ void QuadRenderer::flush()
 	mNumberOfDrawnTextures += mInstancedTextures.size();
 
 	mInstancedQuadsData.clear();
-	mInstancedSpritesTextureSlotRefs.clear();
 	mInstancedTextures.clear();
 }
 

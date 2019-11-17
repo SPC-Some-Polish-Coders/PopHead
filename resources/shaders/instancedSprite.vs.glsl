@@ -5,6 +5,7 @@ layout (location = 1) in vec2 aSize;
 layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
 layout (location = 4) in vec4 aTextureRect;
+layout (location = 5) in float aTextureSlotRef;
 
 out DATA
 {
@@ -15,14 +16,12 @@ out DATA
 
 uniform mat4 viewProjectionMatrix;
 
-uniform int[2500] textureSlotRefs;
-
 mat2 getRotationMatrix(float angle);
 
 void main()
 {
     vs_out.color = aColor;
-    vs_out.textureSlotRef = textureSlotRefs[gl_InstanceID];
+    vs_out.textureSlotRef = int(aTextureSlotRef);
 
     vec2 modelVertexPos;
     

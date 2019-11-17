@@ -2,9 +2,9 @@
 
 in DATA
 {
-    in vec4 color;
-    in vec2 texCoords;
-    flat in int textureSlotRef; 
+    vec4 color;
+    vec2 texCoords;
+    flat int textureSlotRef; 
 } fs_in;
 
 out vec4 fragColor;
