@@ -24,51 +24,28 @@ void QuadRenderer::init()
 
 	mQuadIBO.bind();
 
-	glGenBuffers(1, &mInstancedPositionsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedPositionsVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
-	glVertexAttribDivisor(0, 1);
+	glGenBuffers(1, &mInstancedQuadsDataVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO);
+	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * sizeof(QuadData), nullptr, GL_DYNAMIC_DRAW);
 
-	glGenBuffers(1, &mInstancedSizesVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedSizesVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * sizeof(sf::Vector2f), nullptr, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
-	glVertexAttribDivisor(1, 1);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, position));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, size));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotation));
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color));
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect));
 
-	glGenBuffers(1, &mInstancedRotationsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedRotationsVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), ( void*) 0);
-	glVertexAttribDivisor(2, 1);
+	for(int i = 0; i < 5; ++i)
+		glEnableVertexAttribArray(i);
 
-	glGenBuffers(1, &mInstancedColorsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedColorsVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), ( void*) 0);
-	glVertexAttribDivisor(3, 1);
-
-	glGenBuffers(1, &mInstancedTextureRectsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedTextureRectsVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * 4 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), ( void*) 0);
-	glVertexAttribDivisor(4, 1);
+	for(int i = 0; i < 5; ++i)
+		glVertexAttribDivisor(i, 1);
 
 	mWhiteTexture = new Texture;
 	unsigned whiteData = 0xffffffff;
 	mWhiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 
 	// allocate instanced vectors
-	mInstancedSpritesPositions.reserve(mNrOfSpritesInOneInstancedDrawCall);
-	mInstancedSpritesSizes.reserve(mNrOfSpritesInOneInstancedDrawCall);
-	mInstancedSpritesRotations.reserve(mNrOfSpritesInOneInstancedDrawCall);
-	mInstancedSpritesColors.reserve(mNrOfSpritesInOneInstancedDrawCall);
-	mInstancedSpritesTextureRects.reserve(mNrOfSpritesInOneInstancedDrawCall);
+	mInstancedQuadsData.reserve(mNrOfSpritesInOneInstancedDrawCall);
 	mInstancedSpritesTextureSlotRefs.reserve(mNrOfSpritesInOneInstancedDrawCall);
 	mInstancedTextures.reserve(32);
 
@@ -83,11 +60,7 @@ void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
 	mQuadIBO.remove();
-	glDeleteBuffers(1, &mInstancedPositionsVBO);
-	glDeleteBuffers(1, &mInstancedSizesVBO);
-	glDeleteBuffers(1, &mInstancedRotationsVBO);
-	glDeleteBuffers(1, &mInstancedColorsVBO);
-	glDeleteBuffers(1, &mInstancedTextureRectsVBO);
+	glDeleteBuffers(1, &mInstancedQuadsDataVBO);
 	glDeleteVertexArrays(1, &mInstancedVAO);
 }
 
@@ -118,7 +91,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 		return;
 
 	// flush if there is too much submited sprites
-	if(mInstancedSpritesPositions.size() == mNrOfSpritesInOneInstancedDrawCall)
+	if(mInstancedQuadsData.size() == mNrOfSpritesInOneInstancedDrawCall)
 		flush();
 
 	// submit textures data
@@ -138,11 +111,13 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	}
 
 	// submit rest of data
-	mInstancedSpritesPositions.emplace_back(position);
-	mInstancedSpritesSizes.emplace_back(size);
-	mInstancedSpritesRotations.emplace_back(rotation);
-	mInstancedSpritesColors.emplace_back(color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White));
-	mInstancedSpritesTextureRects.emplace_back(textureRect ? getNormalizedTextureRect(textureRect, size) : FloatRect(0.f, 0.f, 1.f, 1.f));
+	QuadData quadData;
+	quadData.position = position;
+	quadData.size = size;
+	quadData.rotation = rotation;
+	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
+	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, size) : FloatRect(0.f, 0.f, 1.f, 1.f);
+	mInstancedQuadsData.emplace_back(quadData);
 }
 
 bool QuadRenderer::isInsideScreen(sf::Vector2f position, sf::Vector2f size)
@@ -176,35 +151,19 @@ void QuadRenderer::flush()
 	mDefaultInstanedSpriteShader->bind();
 	mDefaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
 
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedPositionsVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesPositions.size() * sizeof(sf::Vector2f), mInstancedSpritesPositions.data());
-
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedSizesVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesSizes.size() * sizeof(sf::Vector2f), mInstancedSpritesSizes.data());
-
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedRotationsVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesRotations.size() * sizeof(float), mInstancedSpritesRotations.data());
-
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedColorsVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesColors.size() * 4 * sizeof(float), mInstancedSpritesColors.data());
-
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedTextureRectsVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedSpritesTextureRects.size() * 4 * sizeof(float), mInstancedSpritesTextureRects.data());
+	glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedQuadsData.size() * sizeof(QuadData), mInstancedQuadsData.data());
 
 	mDefaultInstanedSpriteShader->setUniformIntArray("textureSlotRefs", mInstancedSpritesTextureSlotRefs.size(), mInstancedSpritesTextureSlotRefs.data());
 
 	glBindVertexArray(mInstancedVAO);
-	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, mInstancedSpritesPositions.size()) );
+	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, mInstancedQuadsData.size()) );
 
 	++mNumberOfDrawCalls;
-	mNumberOfDrawnSprites += mInstancedSpritesPositions.size();
+	mNumberOfDrawnSprites += mInstancedQuadsData.size();
 	mNumberOfDrawnTextures += mInstancedTextures.size();
 
-	mInstancedSpritesPositions.clear();
-	mInstancedSpritesSizes.clear();
-	mInstancedSpritesRotations.clear();
-	mInstancedSpritesColors.clear();
-	mInstancedSpritesTextureRects.clear();
+	mInstancedQuadsData.clear();
 	mInstancedSpritesTextureSlotRefs.clear();
 	mInstancedTextures.clear();
 }

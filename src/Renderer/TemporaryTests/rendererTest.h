@@ -46,8 +46,8 @@ void rendererTest()
 	Renderer::submitQuad(&sb5Tex, nullptr, nullptr, sf::Vector2f(-1500.f, 0.f), sf::Vector2f(3000.f, 3000.f), 0.f);
 
 	for(int i = 0; i < 2500; ++i) {
-		Renderer::submitQuad(&faceTex, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
-		Renderer::submitQuad(&containerTex, nullptr, nullptr, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
+		Renderer::submitQuad(&faceTex, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 45.f);
+		Renderer::submitQuad(&containerTex, nullptr, &sf::Color::Red, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 123.f);
 		Renderer::submitQuad(&container2Tex, nullptr, nullptr, sf::Vector2f(-450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
 		Renderer::submitQuad(&container2SpecTex, nullptr, nullptr, sf::Vector2f(-400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);
 		Renderer::submitQuad(&floorTex, nullptr, nullptr, sf::Vector2f(-350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 0.f);

@@ -14,6 +14,15 @@ class Shader;
 class Texture;
 class VertexArray;
 
+struct QuadData
+{
+	sf::Vector2f position;
+	sf::Vector2f size;
+	float rotation;
+	Vector4f color;
+	FloatRect textureRect;
+};
+
 class QuadRenderer
 {
 public:
@@ -41,13 +50,10 @@ private:
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect;
 
 private:
-	std::vector<sf::Vector2f> mInstancedSpritesPositions;
-	std::vector<sf::Vector2f> mInstancedSpritesSizes;
-	std::vector<float> mInstancedSpritesRotations;
-	std::vector<ph::Vector4f> mInstancedSpritesColors;
-	std::vector<ph::FloatRect> mInstancedSpritesTextureRects;
+	std::vector<QuadData> mInstancedQuadsData;
+
 	std::vector<int> mInstancedSpritesTextureSlotRefs;
-	std::vector<const ph::Texture*> mInstancedTextures;
+	std::vector<const Texture*> mInstancedTextures;
 
 	const FloatRect* mScreenBounds;
 	const float* mViewProjectionMatrix;
@@ -57,11 +63,8 @@ private:
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 
-	unsigned mInstancedPositionsVBO;
-	unsigned mInstancedSizesVBO;
-	unsigned mInstancedRotationsVBO;
-	unsigned mInstancedColorsVBO;
-	unsigned mInstancedTextureRectsVBO;
+	unsigned mInstancedQuadsDataVBO;
+
 	unsigned mInstancedVAO;
 
 	const int mNrOfSpritesInOneInstancedDrawCall = 2500;

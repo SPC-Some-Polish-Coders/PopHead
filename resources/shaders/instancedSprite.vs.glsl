@@ -1,6 +1,6 @@
 #version 330 core 
 
-layout (location = 0) in vec2 aOffset;
+layout (location = 0) in vec2 aPosition;
 layout (location = 1) in vec2 aSize;
 layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
@@ -47,9 +47,9 @@ void main()
     }
     
     if(aRotation == 0)
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aOffset, 0, 1);
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, 0, 1);
     else
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aOffset, 0, 1);
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aPosition, 0, 1);
 }
 
 mat2 getRotationMatrix(float angle)
