@@ -5,7 +5,7 @@
 
 namespace ph {
 
-Framebuffer::Framebuffer(const unsigned width, const unsigned height)
+void Framebuffer::init(const unsigned width, const unsigned height)
 {
 	GLCheck( glGenFramebuffers(1, &mFramebufferID) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID) );
@@ -27,10 +27,17 @@ Framebuffer::Framebuffer(const unsigned width, const unsigned height)
 
 	PH_ASSERT_UNEXPECTED_SITUATION(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is not complete!");
 	
-	bindDefaultFramebuffer();
+	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 }
 
-void Framebuffer::reset(const unsigned width, const unsigned height)
+void Framebuffer::remove()
+{
+	GLCheck( glDeleteFramebuffers(1, &mFramebufferID) );
+	GLCheck( glDeleteTextures(1, &mColorBufferTextureID) );
+	GLCheck( glDeleteRenderbuffers(1, &mRenderBufferID) );
+}
+
+void Framebuffer::onWindowResize(const unsigned width, const unsigned height)
 {
 	GLCheck( glBindTexture(GL_TEXTURE_2D, mColorBufferTextureID) );
 	GLCheck( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr) );
@@ -39,13 +46,6 @@ void Framebuffer::reset(const unsigned width, const unsigned height)
 	GLCheck( glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height) );
 	
 	PH_ASSERT_UNEXPECTED_SITUATION(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is not complete!");
-}
-
-Framebuffer::~Framebuffer()
-{
-	GLCheck( glDeleteFramebuffers(1, &mFramebufferID) );
-	GLCheck( glDeleteTextures(1, &mColorBufferTextureID) );
-	GLCheck( glDeleteRenderbuffers(1, &mRenderBufferID) );
 }
 
 void Framebuffer::bind()
@@ -57,11 +57,6 @@ void Framebuffer::bindTextureColorBuffer(unsigned slot)
 {
 	GLCheck( glActiveTexture(GL_TEXTURE0 + slot) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, mColorBufferTextureID) );
-}
-
-void Framebuffer::bindDefaultFramebuffer()
-{
-	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 }
 
 }

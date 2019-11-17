@@ -23,7 +23,7 @@ namespace {
 	const ph::Shader* currentlyBoundShader = nullptr;
 	
 	ph::VertexArray framebufferVertexArray;
-	ph::Framebuffer* framebuffer;
+	ph::Framebuffer framebuffer;
 
 	ph::SlowQuadRenderer slowQuadRenderer;
 	ph::QuadRenderer quadRenderer;
@@ -34,13 +34,14 @@ namespace ph {
 
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
+	// initialize glew
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
+	// initialize minor renderers
 	slowQuadRenderer.init();
 	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
-
 	quadRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 
@@ -72,8 +73,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray.setIndexBuffer(quadIBO);
 
-	// set up framebuffer
-	framebuffer = new Framebuffer(screenWidth, screenHeight);
+	framebuffer.init(screenWidth, screenHeight);
 }
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
@@ -87,12 +87,12 @@ void Renderer::shutDown()
 	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
 	framebufferVertexArray.remove();
-	delete framebuffer;
+	framebuffer.remove();
 }
 
 void Renderer::beginScene(Camera& camera)
 {
-	framebuffer->bind();
+	framebuffer.bind();
 
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
@@ -118,12 +118,12 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 
 	sfmlRenderer.flush(window);
 
-	Framebuffer::bindDefaultFramebuffer();
+	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray.bind();
 	defaultFramebufferShader->bind();
 	currentlyBoundShader = defaultFramebufferShader;
-	framebuffer->bindTextureColorBuffer(0);
+	framebuffer.bindTextureColorBuffer(0);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 }
 
@@ -147,7 +147,7 @@ void Renderer::submitSFMLObject(const sf::Drawable& object)
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
-	framebuffer->reset(width, height);
+	framebuffer.onWindowResize(width, height);
 }
 
 void Renderer::setClearColor(const sf::Color& color)
