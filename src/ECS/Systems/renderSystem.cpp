@@ -107,7 +107,7 @@ void RenderSystem::submitTextureSpritesWithTextureRect() const
 {
 	auto view = mRegistry.view
 		<const component::BodyRect, const component::TexturePtr, const component::TextureRect>
-		(entt::exclude<component::ShaderPtr, component::Rotation>);
+		(entt::exclude<component::ShaderPtr, component::Rotation, component::Color>);
 
 	view.each([this](const component::BodyRect& body, const component::TexturePtr texPtr, const component::TextureRect& texRect) 
 	{

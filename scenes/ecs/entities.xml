@@ -107,15 +107,15 @@
 
 
     <entityTemplate name="Lever">
-        <component name="BodyRect" x="0.0" y="0.0" width="7" height="15" />
+        <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
         <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="7" height="15" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
     </entityTemplate>
 
     <entityTemplate name="WeirdLever">
-        <component name="BodyRect" x="0.0" y="0.0" width="7" height="15" />
+        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
         <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="7" height="15" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
         <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
     </entityTemplate>
 

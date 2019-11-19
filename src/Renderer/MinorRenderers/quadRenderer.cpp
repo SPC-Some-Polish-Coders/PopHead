@@ -85,7 +85,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	quadData.size = size;
 	quadData.rotation = rotation;
 	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
-	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, size) : FloatRect(0.f, 0.f, 1.f, 1.f);
+	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, texture->getSize()) : FloatRect(0.f, 0.f, 1.f, 1.f);
 	
 	if(!texture)
 		texture = mWhiteTexture;
@@ -114,11 +114,12 @@ auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* textur
 	return std::nullopt;
 }
 
-auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect
+auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect
 {
+	auto ts = static_cast<sf::Vector2f>(textureSize);
 	return FloatRect(
-		pixelTextureRect->left / size.x, pixelTextureRect->top / size.y,
-		pixelTextureRect->width / size.x, pixelTextureRect->height / size.y
+		pixelTextureRect->left / ts.x, pixelTextureRect->top / ts.y,
+		pixelTextureRect->width / ts.x, pixelTextureRect->height / ts.y
 	);
 }
 
