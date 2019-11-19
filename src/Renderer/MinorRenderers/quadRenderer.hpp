@@ -49,6 +49,7 @@ private:
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect;
 	bool areThereTextureSlotRefsGreaterThen31();
 	void subtract32FromAllTextureSlotRefsGreaterThen31();
+	void bindTexturesForNextDrawCall();
 	void drawCall(unsigned nrOfInstances);
 
 private:

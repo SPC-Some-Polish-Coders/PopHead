@@ -137,8 +137,7 @@ void QuadRenderer::flush()
 	while(areThereTextureSlotRefsGreaterThen31())
 		subtract32FromAllTextureSlotRefsGreaterThen31();
 
-	for(int i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
-		mInstancedTextures[i]->bind(i);
+	bindTexturesForNextDrawCall();
 
 	for(size_t i = 0; i < mInstancedQuadsData.size(); ++i)
 	{
@@ -160,6 +159,7 @@ void QuadRenderer::flush()
 				mInstancedTextures.begin(),
 				mInstancedTextures.size() > 32 ? mInstancedTextures.begin() + 32 : mInstancedTextures.end()
 			);
+			bindTexturesForNextDrawCall();
 
 			i = 0;
 		}
@@ -179,6 +179,12 @@ void QuadRenderer::subtract32FromAllTextureSlotRefsGreaterThen31()
 	for(QuadData& quadData : mInstancedQuadsData)
 		if(quadData.textureSlotRef > 31)
 			quadData.textureSlotRef -= 32;
+}
+
+void QuadRenderer::bindTexturesForNextDrawCall()
+{
+	for(size_t i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
+		mInstancedTextures[i]->bind(i);
 }
 
 void QuadRenderer::drawCall(unsigned nrOfInstances)
