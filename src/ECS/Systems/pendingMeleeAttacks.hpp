@@ -15,11 +15,15 @@ namespace ph::system {
 		void update(float seconds) override;
 
 	private:
-		void setPlayerFacePosition();
-		void performHit(const sf::Vector2f& startingWeaponPosition);
 		bool hasCooldown(float cooldownSinceLastHit) const;
+		void performHit(const sf::Vector2f playerCenterPosition, float weaponInitialRotation);
 
-	private:
-		sf::Vector2f mPlayerFaceDirection;
+		sf::Vector2f nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const;
+		float angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const;
+		bool isAngleInAttackRange(float angle, float mAttackAngle) const;
+		float getFixedAngle(float angle) const;
+
+		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
+
 	};
 }
