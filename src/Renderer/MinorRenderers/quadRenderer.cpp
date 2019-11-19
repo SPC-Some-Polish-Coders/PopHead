@@ -113,12 +113,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 
 bool QuadRenderer::isInsideScreen(sf::Vector2f position, sf::Vector2f size)
 {
-	return isInsideScreen(sf::FloatRect(position.x, position.y, size.x, size.y));
-}
-
-bool QuadRenderer::isInsideScreen(const FloatRect objectBounds)
-{
-	return mScreenBounds->doPositiveRectsIntersect(objectBounds);
+	return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(position.x, position.y, size.x, size.y));
 }
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
