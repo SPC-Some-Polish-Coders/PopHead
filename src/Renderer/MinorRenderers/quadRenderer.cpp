@@ -4,6 +4,7 @@
 #include "Renderer/openglErrors.hpp"
 #include "Utilities/cast.hpp"
 #include <GL/glew.h>
+#include <algorithm>
 
 namespace ph {
 
@@ -17,21 +18,20 @@ void QuadRenderer::init()
 	mQuadIBO.init();
 	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
 
-	glGenVertexArrays(1, &mInstancedVAO);
-	glBindVertexArray(mInstancedVAO);
+	GLCheck( glGenVertexArrays(1, &mInstancedVAO) );
+	GLCheck( glBindVertexArray(mInstancedVAO) );
 
 	mQuadIBO.bind();
 
-	glGenBuffers(1, &mInstancedQuadsDataVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO);
-	glBufferData(GL_ARRAY_BUFFER, mNrOfSpritesInOneInstancedDrawCall * sizeof(QuadData), nullptr, GL_DYNAMIC_DRAW);
+	GLCheck( glGenBuffers(1, &mInstancedQuadsDataVBO) );
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO) );
 
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, position));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, size));
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotation));
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color));
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect));
-	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef));
+	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, position)) );
+	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, size)) );
+	GLCheck( glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotation)) );
+	GLCheck( glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color)) );
+	GLCheck( glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect)) );
+	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
 
 	for(int i = 0; i < 6; ++i)
 		glEnableVertexAttribArray(i);
@@ -44,7 +44,7 @@ void QuadRenderer::init()
 	mWhiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 
 	// allocate instanced vectors
-	mInstancedQuadsData.reserve(mNrOfSpritesInOneInstancedDrawCall);
+	mInstancedQuadsData.reserve(3000);
 	mInstancedTextures.reserve(32);
 
 	mDefaultInstanedSpriteShader->bind();
@@ -58,8 +58,8 @@ void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
 	mQuadIBO.remove();
-	glDeleteBuffers(1, &mInstancedQuadsDataVBO);
-	glDeleteVertexArrays(1, &mInstancedVAO);
+	GLCheck( glDeleteBuffers(1, &mInstancedQuadsDataVBO) );
+	GLCheck( glDeleteVertexArrays(1, &mInstancedVAO) );
 }
 
 void QuadRenderer::setScreenBoundsPtr(const FloatRect* screenBounds)
@@ -88,10 +88,6 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	if(!isInsideScreen(position, size))
 		return;
 
-	// flush if there is too much submited sprites
-	if(mInstancedQuadsData.size() == mNrOfSpritesInOneInstancedDrawCall)
-		flush();
-
 	// submit data
 	QuadData quadData;
 
@@ -107,12 +103,8 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	if(textureSlotOfThisTexture)
 		quadData.textureSlotRef = *textureSlotOfThisTexture;
 	else {
-		if(mInstancedTextures.size() == 32)
-			flush();
-
 		const float textureSlotID = static_cast<float>(mInstancedTextures.size());
 		quadData.textureSlotRef = textureSlotID;
-		texture->bind(textureSlotID);
 		mInstancedTextures.emplace_back(texture);
 	}
 
@@ -147,21 +139,72 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 
 void QuadRenderer::flush()
 {
-	mDefaultInstanedSpriteShader->bind();
-	mDefaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
-
-	glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, mInstancedQuadsData.size() * sizeof(QuadData), mInstancedQuadsData.data());
-
-	glBindVertexArray(mInstancedVAO);
-	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, mInstancedQuadsData.size()) );
-
-	++mNumberOfDrawCalls;
 	mNumberOfDrawnSprites += mInstancedQuadsData.size();
 	mNumberOfDrawnTextures += mInstancedTextures.size();
 
-	mInstancedQuadsData.clear();
-	mInstancedTextures.clear();
+	mDefaultInstanedSpriteShader->bind();
+	mDefaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
+
+	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {
+		return a.textureSlotRef < b.textureSlotRef;
+	});
+
+	while(areThereTextureSlotRefsGreaterThen31())
+		subtract32FromAllTextureSlotRefsGreaterThen31();
+
+	for(int i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
+		mInstancedTextures[i]->bind(i);
+
+	for(size_t i = 0; i < mInstancedQuadsData.size(); ++i)
+	{
+		if(i == mInstancedQuadsData.size() - 1)
+		{
+			drawCall(i);
+
+			mInstancedQuadsData.clear();
+			mInstancedTextures.clear();
+			break;
+		}
+		else if (mInstancedQuadsData[i].textureSlotRef == 0 && mInstancedQuadsData[i == 0 ? i : i - 1].textureSlotRef == 31) 
+		{
+			drawCall(i);
+
+			mInstancedQuadsData.erase(mInstancedQuadsData.begin(), mInstancedQuadsData.begin() + i);
+			
+			mInstancedTextures.erase(
+				mInstancedTextures.begin(),
+				mInstancedTextures.size() > 32 ? mInstancedTextures.begin() + 32 : mInstancedTextures.end()
+			);
+
+			i = 0;
+		}
+	}
+}
+
+bool QuadRenderer::areThereTextureSlotRefsGreaterThen31()
+{
+	for(QuadData& quadData : mInstancedQuadsData)
+		if(quadData.textureSlotRef > 31)
+			return true;
+	return false;
+}
+
+void QuadRenderer::subtract32FromAllTextureSlotRefsGreaterThen31()
+{
+	for(QuadData& quadData : mInstancedQuadsData)
+		if(quadData.textureSlotRef > 31)
+			quadData.textureSlotRef -= 32;
+}
+
+void QuadRenderer::drawCall(unsigned nrOfInstances)
+{
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), mInstancedQuadsData.data(), GL_STATIC_DRAW) );
+
+	GLCheck( glBindVertexArray(mInstancedVAO) );
+	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
+
+	++mNumberOfDrawCalls;
 }
 
 }

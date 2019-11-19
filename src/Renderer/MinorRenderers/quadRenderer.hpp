@@ -46,13 +46,14 @@ public:
 private:
 	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size);
 	bool isInsideScreen(const FloatRect objectBounds);
-
 	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2f size) -> FloatRect;
+	bool areThereTextureSlotRefsGreaterThen31();
+	void subtract32FromAllTextureSlotRefsGreaterThen31();
+	void drawCall(unsigned nrOfInstances);
 
 private:
 	std::vector<QuadData> mInstancedQuadsData;
-
 	std::vector<const Texture*> mInstancedTextures;
 
 	const FloatRect* mScreenBounds;
@@ -62,7 +63,6 @@ private:
 	Texture* mWhiteTexture;
 
 	IndexBuffer mQuadIBO;
-
 	unsigned mInstancedQuadsDataVBO;
 	unsigned mInstancedVAO;
 

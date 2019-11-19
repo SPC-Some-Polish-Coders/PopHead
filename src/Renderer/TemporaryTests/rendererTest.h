@@ -2,7 +2,7 @@
 
 #include "Renderer/renderer.hpp"
 
-#define MORE_THEN_32_TEXTURES 0
+#define MORE_THEN_32_TEXTURES 1
 
 namespace ph {
 
