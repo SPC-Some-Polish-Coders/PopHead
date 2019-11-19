@@ -30,8 +30,8 @@ public:
 	void init();
 	void shutDown();
 
-	void setScreenBoundsPtr(const FloatRect*);
-	void setViewProjectionMatrix(const float*);
+	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+	void setViewProjectionMatrix(const float* vpm) { mViewProjectionMatrix = vpm; }
 
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }

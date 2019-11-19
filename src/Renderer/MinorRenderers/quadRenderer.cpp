@@ -62,16 +62,6 @@ void QuadRenderer::shutDown()
 	GLCheck( glDeleteVertexArrays(1, &mInstancedVAO) );
 }
 
-void QuadRenderer::setScreenBoundsPtr(const FloatRect* screenBounds)
-{
-	mScreenBounds = screenBounds;
-}
-
-void QuadRenderer::setViewProjectionMatrix(const float* viewProjectionMatrix)
-{
-	mViewProjectionMatrix = viewProjectionMatrix;
-}
-
 void QuadRenderer::setDebugNumbersToZero()
 {
 	mNumberOfDrawCalls = 0;
@@ -154,7 +144,7 @@ void QuadRenderer::flush()
 	{
 		if(i == mInstancedQuadsData.size() - 1)
 		{
-			drawCall(i);
+			drawCall(i + 1);
 
 			mInstancedQuadsData.clear();
 			mInstancedTextures.clear();
@@ -162,7 +152,7 @@ void QuadRenderer::flush()
 		}
 		else if (mInstancedQuadsData[i].textureSlotRef == 0 && mInstancedQuadsData[i == 0 ? i : i - 1].textureSlotRef == 31) 
 		{
-			drawCall(i);
+			drawCall(i + 1);
 
 			mInstancedQuadsData.erase(mInstancedQuadsData.begin(), mInstancedQuadsData.begin() + i);
 			
