@@ -45,10 +45,12 @@ bool Texture::loadFromFile(const std::string& filepath)
 	if(numberOfChanels == 3) {
 		internalDataFormat = GL_RGB8;
 		dataFormat = GL_RGB;
+		GLCheck( glPixelStorei(GL_UNPACK_ALIGNMENT, 1) );
 	}
 	else if(numberOfChanels == 4) {
 		internalDataFormat = GL_RGBA8;
 		dataFormat = GL_RGBA;
+		GLCheck( glPixelStorei(GL_UNPACK_ALIGNMENT, 4) );
 	}
 	else
 		PH_EXIT_GAME("Texture format of \"" + filepath + "\" is unsupported!");
