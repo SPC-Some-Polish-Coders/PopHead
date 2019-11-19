@@ -67,7 +67,7 @@ void SlowQuadRenderer::drawQuad(const Texture* texture, const IntRect* textureRe
                                 sf::Vector2f position, sf::Vector2i size, float rotation)
 {
 	// culling
-	if(!isInsideScreen(position, size))
+	if(!isInsideScreen(position, size, rotation))
 		return;
 
 	// shader
@@ -116,9 +116,12 @@ void SlowQuadRenderer::setQuadTransformUniforms(const Shader* shader, sf::Vector
 	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 }
 
-bool SlowQuadRenderer::isInsideScreen(sf::Vector2f position, sf::Vector2i size)
+bool SlowQuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2i size, float rotation)
 {
-	return isInsideScreen(sf::FloatRect(position.x, position.y, static_cast<float>(size.x), static_cast<float>(size.y)));
+	if(rotation == 0.f)
+		return isInsideScreen(sf::FloatRect(pos.x, pos.y, static_cast<float>(size.x), static_cast<float>(size.y)));
+	else
+		return isInsideScreen(sf::FloatRect(pos.x - size.x * 2, pos.y - size.x * 2, static_cast<float>(size.x * 4), static_cast<float>(size.y * 4)));
 }
 
 bool SlowQuadRenderer::isInsideScreen(const FloatRect objectBounds)

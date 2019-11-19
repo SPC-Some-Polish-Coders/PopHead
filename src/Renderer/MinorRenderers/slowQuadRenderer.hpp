@@ -26,7 +26,7 @@ public:
 
 private:
 	void setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation);
-	bool isInsideScreen(sf::Vector2f position, sf::Vector2i size);
+	bool isInsideScreen(sf::Vector2f position, sf::Vector2i size, float rotation);
 	bool isInsideScreen(const FloatRect objectBounds);
 
 private:

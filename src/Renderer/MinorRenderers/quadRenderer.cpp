@@ -75,7 +75,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
                               sf::Vector2f position, sf::Vector2f size, float rotation)
 {
 	// culling
-	if(!isInsideScreen(position, size))
+	if(!isInsideScreen(position, size, rotation))
 		return;
 
 	// submit data
@@ -101,16 +101,20 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	mInstancedQuadsData.emplace_back(quadData);
 }
 
-bool QuadRenderer::isInsideScreen(sf::Vector2f position, sf::Vector2f size)
+bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
 {
-	return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(position.x, position.y, size.x, size.y));
+	if(rotation == 0.f)
+		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x, pos.y, size.x, size.y));
+	else
+		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
+
 }
 
-auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<int>
+auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>
 {
 	for(size_t i = 0; i < mInstancedTextures.size(); ++i)
 		if(mInstancedTextures[i] == texture)
-			return i;
+			return static_cast<float>(i);
 	return std::nullopt;
 }
 
