@@ -116,8 +116,6 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	efficiencyRegister.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
 	quadRenderer.setDebugNumbersToZero();
 
-	sfmlRenderer.flush(window);
-
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray.bind();
@@ -125,6 +123,8 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	currentlyBoundShader = defaultFramebufferShader;
 	framebuffer.bindTextureColorBuffer(0);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	sfmlRenderer.flush(window);
 }
 
 void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
