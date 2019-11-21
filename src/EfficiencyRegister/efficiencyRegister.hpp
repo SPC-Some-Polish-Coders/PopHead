@@ -22,6 +22,8 @@ public:
 	void setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls);
 	void setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites);
 	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
+	void setNumberOfLineDrawCalls(unsigned nrOfTexturesDrawnByInstancedRendering);
+	void setNumberOfDrawnLines(unsigned nrOfTexturesDrawnByInstancedRendering);
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 

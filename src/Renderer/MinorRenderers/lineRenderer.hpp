@@ -17,6 +17,7 @@ public:
 	void setViewProjectionMatrix(const float* vpm) { mViewProjectionMatrix = vpm; }
 
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
+	unsigned getNumberOfDrawnLines() const { return mNumberOfDrawCalls; }
 
 	void setDebugNumbersToZero();
 

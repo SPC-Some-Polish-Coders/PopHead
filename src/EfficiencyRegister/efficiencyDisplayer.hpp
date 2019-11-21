@@ -23,6 +23,8 @@ public:
 	void setInstancedDrawCalls(const std::string& text);
 	void setDrawnInstancedSprites(const std::string& text);
 	void setTexturesDrawnByInstancing(const std::string& text);
+	void setLineDrawCalls(const std::string& text);
+	void setDrawnLines(const std::string& text);
 
 private:
 	sf::Text mFramesPerSecondText;
@@ -31,6 +33,8 @@ private:
 	sf::Text mInstancedDrawCalls;
 	sf::Text mDrawnInstancedSprites;
 	sf::Text mTexturesDrawnByInstancing;
+	sf::Text mLineDrawCalls;
+	sf::Text mDrawnLines;
 	sf::RectangleShape mFPSBackground;
 	sf::RectangleShape mRendererDebugBackground;
 	bool mShouldFPSBeDrawn;

@@ -79,4 +79,16 @@ void EfficiencyRegister::setNumberOfTexturesDrawnByInstancedRendering(unsigned n
 		mEfficiencyDisplayer.setTexturesDrawnByInstancing("Drawn textures by instancing: " + std::to_string(nrOfTexturesDrawnByInstancedRendering));
 }
 
+void EfficiencyRegister::setNumberOfLineDrawCalls(unsigned nrOfLineDrawCalls)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setLineDrawCalls("Line draw calls: " + std::to_string(nrOfLineDrawCalls));
+}
+
+void EfficiencyRegister::setNumberOfDrawnLines(unsigned nrOfDrawnLines)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setDrawnLines("Drawn lines: " + std::to_string(nrOfDrawnLines));
+}
+
 }

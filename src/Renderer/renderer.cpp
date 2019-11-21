@@ -114,12 +114,17 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 {
 	quadRenderer.flush();
 
-	efficiencyRegister.setAllDrawCallsPerFrame(sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls());
+	efficiencyRegister.setAllDrawCallsPerFrame(
+		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls()
+	);
 	efficiencyRegister.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
 	efficiencyRegister.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
 	efficiencyRegister.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
 	efficiencyRegister.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
+	efficiencyRegister.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
+	efficiencyRegister.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
 	quadRenderer.setDebugNumbersToZero();
+	lineRenderer.setDebugNumbersToZero();
 
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
