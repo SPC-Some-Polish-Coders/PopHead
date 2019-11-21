@@ -1,20 +1,25 @@
 #include "SFMLrenderer.hpp"
+#include "Utilities/profiling.hpp"
 #include <GL/glew.h>
 
 namespace ph {
 
 void SFMLRenderer::submit(const sf::Drawable* object)
 {
+	PH_PROFILE_FUNCTION();
 	mSubmitedObjects.emplace_back(object);
 }
 
 unsigned SFMLRenderer::getNumberOfSubmitedObjects() const
 {
+	PH_PROFILE_FUNCTION();
 	return mSubmitedObjects.size();
 }
 
 void SFMLRenderer::flush(sf::RenderWindow& window)
 {
+	PH_PROFILE_FUNCTION();
+
 	if(mSubmitedObjects.empty()) {
 		return;
 	}

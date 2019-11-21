@@ -13,6 +13,7 @@
 #include "framebuffer.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
+#include "Utilities/profiling.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <vector>
 #include <algorithm>
@@ -36,6 +37,8 @@ namespace ph {
 
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
+	PH_PROFILE_FUNCTION();
+
 	// initialize glew
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
@@ -81,12 +84,16 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
 {
+	PH_PROFILE_FUNCTION();
+
 	shutDown();
 	init(screenWidth, screenHeight);
 }
 
 void Renderer::shutDown()
 {
+	PH_PROFILE_FUNCTION();
+
 	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
@@ -96,6 +103,8 @@ void Renderer::shutDown()
 
 void Renderer::beginScene(Camera& camera)
 {
+	PH_PROFILE_FUNCTION();
+
 	framebuffer.bind();
 
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
@@ -112,6 +121,8 @@ void Renderer::beginScene(Camera& camera)
 
 void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
 {
+	PH_PROFILE_FUNCTION();
+
 	quadRenderer.flush();
 
 	efficiencyRegister.setAllDrawCallsPerFrame(

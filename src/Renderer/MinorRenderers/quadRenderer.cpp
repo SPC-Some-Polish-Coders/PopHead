@@ -3,6 +3,7 @@
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Renderer/openglErrors.hpp"
 #include "Utilities/cast.hpp"
+#include "Utilities/profiling.hpp"
 #include <GL/glew.h>
 #include <algorithm>
 
@@ -10,6 +11,8 @@ namespace ph {
 
 void QuadRenderer::init()
 {
+	PH_PROFILE_FUNCTION();
+
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
 	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
@@ -56,6 +59,8 @@ void QuadRenderer::init()
 
 void QuadRenderer::shutDown()
 {
+	PH_PROFILE_FUNCTION();
+
 	delete mWhiteTexture;
 	mQuadIBO.remove();
 	GLCheck( glDeleteBuffers(1, &mInstancedQuadsDataVBO) );
@@ -64,6 +69,8 @@ void QuadRenderer::shutDown()
 
 void QuadRenderer::setDebugNumbersToZero()
 {
+	PH_PROFILE_FUNCTION();
+
 	mNumberOfDrawCalls = 0;
 	mNumberOfDrawnSprites = 0;
 	mNumberOfDrawnTextures = 0;
@@ -74,6 +81,8 @@ void QuadRenderer::setDebugNumbersToZero()
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color,
                               sf::Vector2f position, sf::Vector2f size, float rotation)
 {
+	PH_PROFILE_FUNCTION();
+
 	// culling
 	if(!isInsideScreen(position, size, rotation))
 		return;
@@ -103,6 +112,8 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 
 bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
 {
+	PH_PROFILE_FUNCTION();
+
 	if(rotation == 0.f)
 		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x, pos.y, size.x, size.y));
 	else
@@ -112,6 +123,8 @@ bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rot
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>
 {
+	PH_PROFILE_FUNCTION();
+
 	for(size_t i = 0; i < mInstancedTextures.size(); ++i)
 		if(mInstancedTextures[i] == texture)
 			return static_cast<float>(i);
@@ -120,6 +133,8 @@ auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* textur
 
 auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect
 {
+	PH_PROFILE_FUNCTION();
+
 	auto ts = static_cast<sf::Vector2f>(textureSize);
 	return FloatRect(
 		pixelTextureRect->left / ts.x, pixelTextureRect->top / ts.y,
@@ -129,6 +144,8 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 
 void QuadRenderer::flush()
 {
+	PH_PROFILE_FUNCTION();
+
 	mNumberOfDrawnSprites += mInstancedQuadsData.size();
 	mNumberOfDrawnTextures += mInstancedTextures.size();
 
@@ -173,6 +190,8 @@ void QuadRenderer::flush()
 
 bool QuadRenderer::areThereTextureSlotRefsGreaterThen31()
 {
+	PH_PROFILE_FUNCTION();
+
 	for(QuadData& quadData : mInstancedQuadsData)
 		if(quadData.textureSlotRef > 31)
 			return true;
@@ -181,6 +200,8 @@ bool QuadRenderer::areThereTextureSlotRefsGreaterThen31()
 
 void QuadRenderer::subtract32FromAllTextureSlotRefsGreaterThen31()
 {
+	PH_PROFILE_FUNCTION();
+
 	for(QuadData& quadData : mInstancedQuadsData)
 		if(quadData.textureSlotRef > 31)
 			quadData.textureSlotRef -= 32;
@@ -188,12 +209,16 @@ void QuadRenderer::subtract32FromAllTextureSlotRefsGreaterThen31()
 
 void QuadRenderer::bindTexturesForNextDrawCall()
 {
+	PH_PROFILE_FUNCTION();
+
 	for(size_t i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
 		mInstancedTextures[i]->bind(i);
 }
 
 void QuadRenderer::drawCall(unsigned nrOfInstances)
 {
+	PH_PROFILE_FUNCTION();
+
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO) );
 	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), mInstancedQuadsData.data(), GL_STATIC_DRAW) );
 

@@ -14,6 +14,8 @@
 
 #include "Events/actionEventManager.hpp"
 
+#include "Utilities/profiling.hpp"
+
 //#include "ECS/System.hpp"
 #include "ECS/Systems/movement.hpp"
 #include "ECS/Systems/playerInput.hpp"
@@ -29,6 +31,8 @@
 int main()
 {
 	try {
+		PH_BEGIN_PROFILING_SESSION("PopHead initializing", "initProfilingResults.json");
+
 		PH_LOG_INFO("start initializing PopHead");
 		ph::Game game;
 
@@ -36,9 +40,15 @@ int main()
 
 		// TODO: change place of initializing logs to start of main(), because now it needs Terminal from Game
 		ph::initializeLogsModule("config/logsConfig.ini", game.getTerminal());
+
+		PH_END_PROFILING_SESSION();
 		
+		PH_BEGIN_PROFILING_SESSION("PopHead runtime", "runtimeProfilingResults.json");
+
 		PH_LOG_INFO("start executing PopHead");
 		game.run();
+
+		PH_END_PROFILING_SESSION();
 	}
 	catch (const ph::CriticalError& criticalError) {
 		ph::showErrorMessageBox("Critical Error: ", criticalError.what());

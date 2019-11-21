@@ -1,6 +1,7 @@
 #include "lineRenderer.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Renderer/openglErrors.hpp"
+#include "Utilities/profiling.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
 #include <GL/glew.h>
@@ -9,6 +10,8 @@ namespace ph {
 
 void LineRenderer::init()
 {
+	PH_PROFILE_FUNCTION();
+
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("line", "resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
 	mLineShader = sl.get("line");
@@ -31,18 +34,24 @@ void LineRenderer::init()
 
 void LineRenderer::shutDown()
 {
+	PH_PROFILE_FUNCTION();
+
 	GLCheck( glDeleteVertexArrays(1, &mLineVAO) );
 	GLCheck( glDeleteBuffers(1, &mLineVBO) );
 }
 
 void LineRenderer::setDebugNumbersToZero()
 {
+	PH_PROFILE_FUNCTION();
+
 	mNumberOfDrawCalls = 0;
 }
 
 void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
                             const sf::Vector2f posA, const sf::Vector2f posB, float thickness)
 {
+	PH_PROFILE_FUNCTION();
+
 	mLineShader->bind();
 	mLineShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
 
