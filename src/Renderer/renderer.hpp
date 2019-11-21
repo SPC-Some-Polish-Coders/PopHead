@@ -31,6 +31,11 @@ namespace Renderer
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
 	                sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
 
+	void submitLine(const sf::Color&, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+
+	void submitLine(const sf::Color& colorA, const sf::Color& colorB,
+	                const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+
 	void submitSFMLObject(const sf::Drawable&);
 
 	void onWindowResize(unsigned width, unsigned height);

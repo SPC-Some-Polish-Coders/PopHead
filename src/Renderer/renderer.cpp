@@ -2,6 +2,7 @@
 #include "renderer.hpp"
 #include "MinorRenderers/slowQuadRenderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
+#include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/SFMLrenderer.hpp"
 #include "Shaders/shaderLibary.hpp"
 #include "Buffers/vertexArray.hpp"
@@ -27,6 +28,7 @@ namespace {
 
 	ph::SlowQuadRenderer slowQuadRenderer;
 	ph::QuadRenderer quadRenderer;
+	ph::LineRenderer lineRenderer;
 	ph::SFMLRenderer sfmlRenderer;
 }
 
@@ -44,6 +46,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	lineRenderer.init();
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -86,6 +89,7 @@ void Renderer::shutDown()
 {
 	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
+	lineRenderer.shutDown();
 	framebufferVertexArray.remove();
 	framebuffer.remove();
 }
@@ -99,6 +103,7 @@ void Renderer::beginScene(Camera& camera)
 	const float* viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 	slowQuadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
 	quadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
+	lineRenderer.setViewProjectionMatrix(viewProjectionMatrix);
 	
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
@@ -137,6 +142,17 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
                           sf::Vector2f position, sf::Vector2f size, float rotation)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, position, size, rotation);
+}
+
+void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+{
+	submitLine(color, color, positionA, positionB, thickness);
+}
+
+void Renderer::submitLine(const sf::Color& colorA, const sf::Color& colorB,
+                          const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+{
+	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)
