@@ -41,14 +41,11 @@ private:
 	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRotation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCamera(const Xml& entityComponentNode, entt::entity& entity);
-	void parseAnimation(const Xml& entityComponentNode, entt::entity& entity);
+	void parseAnimationData(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLifetime(const Xml& entityComponentNode, entt::entity& entity);
 	
-
-	//NOTE: above methods are awkward but as long as we don't find a better solution that is the way	
-
 private:
 	EntitiesTemplateStorage* mTemplateStorage;
 	entt::registry* mUsedRegistry;

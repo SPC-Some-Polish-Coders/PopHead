@@ -4,8 +4,10 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/animationComponents.h"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
+#include "Resources/animationStatesResources.hpp"
 
 namespace ph {
 
@@ -94,13 +96,13 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
-		{"Animation",              &EntitiesParser::parseAnimation},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"VertexArray",            &EntitiesParser::parseVertexArray},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
 		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
-		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody}
+		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
+		{"AnimationData",          &EntitiesParser::parseAnimationData}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -208,7 +210,6 @@ void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity&
 	mUsedRegistry->assign_or_replace<component::Killable>(entity);
 }
 
-
 void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
 {
 	int numOfBullets = entityComponentNode.getAttribute("numOfBullets").toInt();
@@ -276,9 +277,19 @@ void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& e
 		PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
 }
 
-void EntitiesParser::parseAnimation(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)
 {
+	component::AnimationData animationData;
 
+	const std::string animationStateFilepath = entityComponentNode.getAttribute("animationStatesFile").toString();
+	loadAnimationStatesFromFile(animationStateFilepath);
+	animationData.states = getAnimationStates(animationStateFilepath);
+	
+	animationData.currentStateName = entityComponentNode.getAttribute("firstStateName").toString();
+	
+	animationData.delay = entityComponentNode.getAttribute("delay").toFloat();
+	
+	mUsedRegistry->assign_or_replace<component::AnimationData>(entity, animationData);
 }
 
 void EntitiesParser::parseSpawner(const Xml& entityComponentNode, entt::entity& entity)

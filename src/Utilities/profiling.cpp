@@ -25,7 +25,7 @@ void ProfilingManager::endSession()
 	mProfileCount = 0;
 }
 
-void ProfilingManager::writeProfile(const ProfileResult& result)
+void ProfilingManager::writeProfile(const ProfilingResult& result)
 {
 	if(!mIsThereActiveSession)
 		return;
