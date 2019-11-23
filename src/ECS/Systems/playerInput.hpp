@@ -15,7 +15,15 @@ namespace ph::system {
 
 	private:
 		sf::Vector2f getPlayerDirection() const;
+		void updateInputFrags();
+		void setAnimationState();
 		void setPlayerFaceDirection(const sf::Vector2f& faceDirection) const;
+
+	private:
+		bool mUp;
+		bool mDown;
+		bool mLeft;
+		bool mRight;
 	};
 
 	class PlayerAttackType : public System

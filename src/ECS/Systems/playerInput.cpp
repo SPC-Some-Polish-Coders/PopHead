@@ -1,46 +1,64 @@
 #include "playerInput.hpp"
-
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
+#include "ECS/Components/animationComponents.h"
 #include "Events/actionEventManager.hpp"
-
 #include <cmath>
 
 namespace ph::system {
 
 	void PlayerMovementInput::update(float seconds)
 	{
+		updateInputFrags();
+		setAnimationState();
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
 
 		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
-		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, component::Player) {
-			
+		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, const component::Player) {
 			const auto vel = playerDirection * speed.speed;
 			velocity.dx = vel.x;
 			velocity.dy = vel.y;
-			});
+		});
+	}
+
+	void PlayerMovementInput::updateInputFrags()
+	{
+		mUp    = ActionEventManager::isActionPressed("movingUp");
+		mDown  = ActionEventManager::isActionPressed("movingDown");
+		mLeft  = ActionEventManager::isActionPressed("movingLeft");
+		mRight = ActionEventManager::isActionPressed("movingRight");
+	}
+
+	void PlayerMovementInput::setAnimationState()
+	{
+		auto view = mRegistry.view<component::Player, component::AnimationData>();
+		for(auto& entity : view)
+		{
+			auto& currentStateName = view.get<component::AnimationData>(entity).currentStateName;
+
+			if(mUp && mLeft)       currentStateName = "leftUp";
+			else if(mUp && mRight) currentStateName = "rightUp";
+			else if(mLeft)         currentStateName = "left";
+			else if(mRight)        currentStateName = "right";
+			else if(mUp)           currentStateName = "up";
+			else if(mDown)         currentStateName = "down";
+		}
 	}
 
 	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
 	{
-		bool up    = ActionEventManager::isActionPressed("movingUp");
-		bool down  = ActionEventManager::isActionPressed("movingDown");
-		bool left  = ActionEventManager::isActionPressed("movingLeft");
-		bool right = ActionEventManager::isActionPressed("movingRight");
+		constexpr float diagonal = 0.70710f;
 
-		const float diagonal = std::sqrt(2.f) / 2.f;
+		if (mUp   && mLeft)  return sf::Vector2f(-diagonal, -diagonal);
+		if (mUp   && mRight) return sf::Vector2f(+diagonal, -diagonal);
+		if (mDown && mLeft)  return sf::Vector2f(-diagonal, +diagonal);
+		if (mDown && mRight) return sf::Vector2f(+diagonal, +diagonal);
 
-		if (up   && left)  return sf::Vector2f(-diagonal, -diagonal);
-		if (up   && right) return sf::Vector2f(+diagonal, -diagonal);
-		if (down && left)  return sf::Vector2f(-diagonal, +diagonal);
-		if (down && right) return sf::Vector2f(+diagonal, +diagonal);
-
-		if (up)    return sf::Vector2f(0.f, -1.f);
-		if (down)  return sf::Vector2f(0.f, 1.f);
-		if (left)  return sf::Vector2f(-1.f, 0.f);
-		if (right) return sf::Vector2f(1.f, 0.f);
+		if (mUp)    return sf::Vector2f(0.f, -1.f);
+		if (mDown)  return sf::Vector2f(0.f, 1.f);
+		if (mLeft)  return sf::Vector2f(-1.f, 0.f);
+		if (mRight) return sf::Vector2f(1.f, 0.f);
 
 		return sf::Vector2f(0.f, 0.f);
 	}
@@ -57,7 +75,6 @@ namespace ph::system {
 			}
 		}
 	}
-
 
 	void PlayerAttackType::update(float seconds)
 	{

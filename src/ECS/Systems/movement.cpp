@@ -10,6 +10,6 @@ namespace ph::system {
 		view.each([seconds](component::BodyRect& body, const component::Velocity& vel) {
 			body.rect.left += vel.dx * seconds;
 			body.rect.top  += vel.dy * seconds;
-			});
+		});
 	}
 }
