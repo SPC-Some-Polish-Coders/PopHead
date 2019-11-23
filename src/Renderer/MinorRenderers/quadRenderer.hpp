@@ -22,6 +22,7 @@ struct QuadData
 	Vector4f color;
 	FloatRect textureRect;
 	float textureSlotRef;
+	float z;
 };
 
 class QuadRenderer
@@ -40,7 +41,7 @@ public:
 	void setDebugNumbersToZero();
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
-	                sf::Vector2f position, sf::Vector2f size, float rotation);
+	                sf::Vector2f position, sf::Vector2f size, float z, float rotation);
 	void flush();
 
 private:

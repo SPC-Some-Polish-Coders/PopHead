@@ -6,6 +6,7 @@ layout (location = 2) in float aRotation;
 layout (location = 3) in vec4 aColor;
 layout (location = 4) in vec4 aTextureRect;
 layout (location = 5) in float aTextureSlotRef;
+layout (location = 6) in float aZ;
 
 out DATA
 {
@@ -46,9 +47,9 @@ void main()
     }
     
     if(aRotation == 0)
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, 0, 1);
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, aZ, 1);
     else
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aPosition, 0, 1);
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aPosition, aZ, 1);
 }
 
 mat2 getRotationMatrix(float angle)

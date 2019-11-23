@@ -86,18 +86,17 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Medkit",	               &EntitiesParser::parseMedkit},
 		{"Player",                 &EntitiesParser::parsePlayer},
 		{"Bullet",                 &EntitiesParser::parseBullet},
-		{"Spawner",                &EntitiesParser::parseSpawner},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
 		{"TextureRect",            &EntitiesParser::parseTextureRect},
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Color",                  &EntitiesParser::parseColor},
+		{"Z",                      &EntitiesParser::parseZ},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
-		{"VertexArray",            &EntitiesParser::parseVertexArray},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
 		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
@@ -246,6 +245,12 @@ void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& en
 	mUsedRegistry->assign_or_replace<component::Color>(entity, sf::Color(r, g, b, a));
 }
 
+void EntitiesParser::parseZ(const Xml& entityComponentNode, entt::entity& entity)
+{
+	const auto z = entityComponentNode.getAttribute("z").toChar();
+	mUsedRegistry->assign_or_replace<component::Z>(entity, z);
+}
+
 void EntitiesParser::parseRotation(const Xml& entityComponentNode, entt::entity& entity)
 {
 	const float angle = entityComponentNode.getAttribute("angle").toFloat();
@@ -292,17 +297,4 @@ void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::en
 	mUsedRegistry->assign_or_replace<component::AnimationData>(entity, animationData);
 }
 
-void EntitiesParser::parseSpawner(const Xml& entityComponentNode, entt::entity& entity)
-{
-
 }
-
-void EntitiesParser::parseVertexArray(const Xml& entityComponentNode, entt::entity& entity)
-{
-
-}
-
-
-
-}
-

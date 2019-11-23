@@ -35,11 +35,12 @@ void QuadRenderer::init()
 	GLCheck( glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color)) );
 	GLCheck( glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect)) );
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
+	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, z)) );
 
-	for(int i = 0; i < 6; ++i)
+	for(int i = 0; i < 7; ++i)
 		glEnableVertexAttribArray(i);
 
-	for(int i = 0; i < 6; ++i)
+	for(int i = 0; i < 7; ++i)
 		glVertexAttribDivisor(i, 1);
 
 	mWhiteTexture = new Texture;
@@ -79,7 +80,7 @@ void QuadRenderer::setDebugNumbersToZero()
 // TODO_ren: Support custom shaders for instanced rendering
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color,
-                              sf::Vector2f position, sf::Vector2f size, float rotation)
+                              sf::Vector2f position, sf::Vector2f size, float z, float rotation)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -95,6 +96,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	quadData.rotation = rotation;
 	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
 	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, texture->getSize()) : FloatRect(0.f, 0.f, 1.f, 1.f);
+	quadData.z = z;
 	
 	if(!texture)
 		texture = mWhiteTexture;
@@ -152,9 +154,19 @@ void QuadRenderer::flush()
 	mDefaultInstanedSpriteShader->bind();
 	mDefaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
 
-	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {
-		return a.textureSlotRef < b.textureSlotRef;
-	});
+	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {return a.z > b.z;});
+	std::vector<size_t> textureSortBeginIndices;
+	textureSortBeginIndices.emplace_back(0);
+	for(size_t i = 1; i < mInstancedQuadsData.size(); ++i)
+		if(mInstancedQuadsData[i].z < mInstancedQuadsData[i - 1].z)
+			textureSortBeginIndices.emplace_back(i);
+
+	for(size_t i = 0; i < textureSortBeginIndices.size(); ++i)
+	{
+		auto begin = mInstancedQuadsData.begin() + textureSortBeginIndices[i];
+		auto end = i + 1 < textureSortBeginIndices.size() ? mInstancedQuadsData.begin() + textureSortBeginIndices[i + 1] : mInstancedQuadsData.end();
+		std::sort(begin, end, [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
+	}
 
 	while(areThereTextureSlotRefsGreaterThen31())
 		subtract32FromAllTextureSlotRefsGreaterThen31();

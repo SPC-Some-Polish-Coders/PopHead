@@ -39,11 +39,10 @@ private:
 	void parseKillable(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
 	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
+	void parseZ(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRotation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCamera(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimationData(const Xml& entityComponentNode, entt::entity& entity);
-	void parseSpawner(const Xml& entityComponentNode, entt::entity& entity);
-	void parseVertexArray(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLifetime(const Xml& entityComponentNode, entt::entity& entity);
 	
 private:

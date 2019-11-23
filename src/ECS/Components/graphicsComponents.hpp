@@ -35,6 +35,11 @@ namespace component {
 		float angle;
 	};
 
+	struct Z
+	{
+		char z;
+	};
+
 	struct Camera
 	{
 		ph::Camera camera;

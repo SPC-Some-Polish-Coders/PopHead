@@ -26,10 +26,10 @@ namespace Renderer
 	void endScene(sf::RenderWindow& window, EfficiencyRegister&);
 
 	void slowSubmitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-	                sf::Vector2f position, sf::Vector2i size, float rotation = 0.f);
+	                sf::Vector2f position, sf::Vector2i size, unsigned char z, float rotation = 0.f);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
-	                sf::Vector2f position, sf::Vector2f size, float rotation = 0.f);
+	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation = 0.f);
 
 	void submitLine(const sf::Color&, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 

@@ -35,6 +35,8 @@ namespace {
 
 namespace ph {
 
+static float getNormalizedZ(const unsigned char z);
+
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
 	PH_PROFILE_FUNCTION();
@@ -106,8 +108,8 @@ void Renderer::beginScene(Camera& camera)
 	PH_PROFILE_FUNCTION();
 
 	framebuffer.bind();
-
-	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	GLCheck( glEnable(GL_DEPTH_TEST) );
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
 	const float* viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 	slowQuadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
@@ -137,6 +139,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	quadRenderer.setDebugNumbersToZero();
 	lineRenderer.setDebugNumbersToZero();
 
+	GLCheck( glDisable(GL_DEPTH_TEST) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray.bind();
@@ -149,15 +152,15 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 }
 
 void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                              sf::Vector2f position, sf::Vector2i size, float rotation)
+                              sf::Vector2f position, sf::Vector2i size, unsigned char z, float rotation)
 {
 	slowQuadRenderer.drawQuad(texture, textureRect, color, shader, position, size, rotation);
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, 
-                          sf::Vector2f position, sf::Vector2f size, float rotation)
+                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, position, size, rotation);
+	quadRenderer.submitQuad(texture, textureRect, color, position, size, getNormalizedZ(z), rotation);
 }
 
 void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
@@ -185,6 +188,11 @@ void Renderer::onWindowResize(unsigned width, unsigned height)
 void Renderer::setClearColor(const sf::Color& color)
 {
 	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
+}
+
+float getNormalizedZ(const unsigned char z)
+{
+	return z / 255.f;
 }
 
 }
