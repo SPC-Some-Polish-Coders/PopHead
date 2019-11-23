@@ -10,7 +10,7 @@ namespace ph::system {
 	void PlayerMovementInput::update(float seconds)
 	{
 		updateInputFrags();
-		setAnimationState();
+		updateAnimationData();
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
 
@@ -30,19 +30,40 @@ namespace ph::system {
 		mRight = ActionEventManager::isActionPressed("movingRight");
 	}
 
-	void PlayerMovementInput::setAnimationState()
+	void PlayerMovementInput::updateAnimationData()
 	{
 		auto view = mRegistry.view<component::Player, component::AnimationData>();
 		for(auto& entity : view)
 		{
-			auto& currentStateName = view.get<component::AnimationData>(entity).currentStateName;
+			auto& animationData = view.get<component::AnimationData>(entity);
 
-			if(mUp && mLeft)       currentStateName = "leftUp";
-			else if(mUp && mRight) currentStateName = "rightUp";
-			else if(mLeft)         currentStateName = "left";
-			else if(mRight)        currentStateName = "right";
-			else if(mUp)           currentStateName = "up";
-			else if(mDown)         currentStateName = "down";
+			if(mUp && mLeft) {
+				animationData.currentStateName = "leftUp";
+				animationData.isPlaying = true;
+			}
+			else if(mUp && mRight) {
+				animationData.currentStateName = "rightUp";
+				animationData.isPlaying = true;
+			}
+			else if(mLeft) {
+				animationData.currentStateName = "left";
+				animationData.isPlaying = true;
+			}
+			else if(mRight) {
+				animationData.currentStateName = "right";
+				animationData.isPlaying = true;
+			}
+			else if(mUp) {
+				animationData.currentStateName = "up";
+				animationData.isPlaying = true;
+			}
+			else if(mDown) {
+				animationData.currentStateName = "down";
+				animationData.isPlaying = true;
+			}
+			else {
+				animationData.isPlaying = false;
+			}
 		}
 	}
 

@@ -137,7 +137,7 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 
 	auto ts = static_cast<sf::Vector2f>(textureSize);
 	return FloatRect(
-		(ts.x - pixelTextureRect->left - pixelTextureRect->width) / ts.x, (ts.y - pixelTextureRect->top - pixelTextureRect->height) / ts.y,
+		pixelTextureRect->left / ts.x, (ts.y - pixelTextureRect->top - pixelTextureRect->height) / ts.y,
 		pixelTextureRect->width / ts.x, pixelTextureRect->height / ts.y
 	);
 }

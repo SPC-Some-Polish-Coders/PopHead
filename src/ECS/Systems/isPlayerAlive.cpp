@@ -1,7 +1,6 @@
 #include "isPlayerAlive.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 
-
 namespace ph::system {
 
 	void IsPlayerAlive::update(float seconds)

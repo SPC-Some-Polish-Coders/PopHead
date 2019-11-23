@@ -16,6 +16,7 @@ struct AnimationData
 	float delay = 0.1f;
 	float elapsedTime = 0.f;
 	std::size_t currentFrameIndex = 0;
+	bool isPlaying = true;
 };
 
 }

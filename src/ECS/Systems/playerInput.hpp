@@ -16,7 +16,7 @@ namespace ph::system {
 	private:
 		sf::Vector2f getPlayerDirection() const;
 		void updateInputFrags();
-		void setAnimationState();
+		void updateAnimationData();
 		void setPlayerFaceDirection(const sf::Vector2f& faceDirection) const;
 
 	private:
