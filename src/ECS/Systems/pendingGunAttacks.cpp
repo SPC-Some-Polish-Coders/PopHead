@@ -27,12 +27,20 @@ void PendingGunAttacks::update(float seconds)
 			setPlayerFacePosition();
 			const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
-			performShoot(startingBulletPos);	
+			sf::Vector2f endingBulletPos = performShoot(startingBulletPos);
+			createShotImage(startingBulletPos, endingBulletPos);
 
 			playerGunAttack.cooldownSinceLastShoot = playerGunAttack.minSecondsInterval;
 			--playerGunAttack.bullets;
 		}
 	}
+}
+
+void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, const sf::Vector2f& endingPosition)
+{
+	auto entity = mRegistry.create();
+	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
+	mRegistry.assign<component::Lifetime>(entity, .05f);
 }
 
 void PendingGunAttacks::setPlayerFacePosition()
@@ -55,7 +63,7 @@ bool PendingGunAttacks::hasCooldown(float cooldownSinceLastShoot) const
 	return cooldownSinceLastShoot > 0.f;
 }
 
-void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
+sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
 {
 	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
 	sf::Vector2f currentBulletPos = startingBulletPos;
@@ -70,12 +78,14 @@ void PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)
 			if (bodyRect.rect.contains(currentBulletPos))
 			{
 				mRegistry.assign<component::DamageTag>(enemy, 50);
-				return;
+				return currentBulletPos;
 			}
 		}
 		bulletTravelledDist += 5;
 		currentBulletPos = getCurrentPosition(startingBulletPos, bulletTravelledDist);
 	}
+
+	return currentBulletPos;
 }
 
 sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& startingPos, const int bulletDistance) const

@@ -64,4 +64,10 @@ namespace ph::component {
 	{
 		float lifetime;
 	};
+
+	struct LastingShot
+	{
+		sf::Vector2f startingShotPos;
+		sf::Vector2f endingShotPos;
+	};
 }

@@ -16,6 +16,7 @@
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
+#include "ECS/Systems/lastingShots.hpp"
 
 namespace ph {
 
@@ -63,6 +64,7 @@ entt::registry& Scene::getRegistry()
 
 void Scene::initiateSystemsQueue(sf::Window& window)
 {
+	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::PlayerAttackType>();
 	mSystemsQueue.appendSystem<system::Movement>();
@@ -71,6 +73,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::DamageDealing>();
+	mSystemsQueue.appendSystem<system::LastingShots>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
@@ -79,7 +82,6 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
-	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 }
 
 }
