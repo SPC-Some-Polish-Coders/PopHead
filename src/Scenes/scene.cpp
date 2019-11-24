@@ -18,6 +18,8 @@
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/lastingShots.hpp"
+#include "ECS/Systems/kinematicCollisions.hpp"
+#include "ECS/Systems/velocityClear.hpp"
 
 namespace ph {
 
@@ -68,6 +70,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::PlayerAttackType>();
+	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
@@ -84,6 +87,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
+	mSystemsQueue.appendSystem<system::VelocityClear>();
 }
 
 }
