@@ -45,4 +45,9 @@ namespace component {
 		ph::Camera camera;
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
+
+	struct HiddenForRenderer
+	{
+
+	};
 }}

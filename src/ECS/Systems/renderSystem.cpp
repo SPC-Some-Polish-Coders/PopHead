@@ -69,7 +69,7 @@ void RenderSystem::submitSingleColorSprites() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::Color>
-		(entt::exclude<component::TexturePtr, component::Rotation>);
+		(entt::exclude<component::TexturePtr, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this](const component::BodyRect& body, const component::Z z, const component::Color& color) 
 	{
@@ -81,7 +81,7 @@ void RenderSystem::submitTextureSprites() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr>
-		(entt::exclude<component::BodyRect, component::Rotation>);
+		(entt::exclude<component::BodyRect, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this](const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr)
 	{
@@ -93,7 +93,7 @@ void RenderSystem::submitTextureSpritesWithCustomShader() const
 {
 	auto view = mRegistry.view
 		<const component::BodyRect, component::Z, const component::TexturePtr, const component::ShaderPtr>
-		(entt::exclude<component::TextureRect, component::Rotation>);
+		(entt::exclude<component::TextureRect, component::Rotation, component::HiddenForRenderer>);
 	
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::ShaderPtr shaderPtr)
@@ -108,7 +108,7 @@ void RenderSystem::submitTextureSpritesWithTextureRect() const
 {
 	auto view = mRegistry.view
 		<const component::BodyRect, component::Z, const component::TexturePtr, const component::TextureRect>
-		(entt::exclude<component::ShaderPtr, component::Rotation, component::Color>);
+		(entt::exclude<component::ShaderPtr, component::Rotation, component::Color, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr,const component::TextureRect& texRect)
@@ -121,7 +121,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectAndCustomShader() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::ShaderPtr>
-		(entt::exclude<component::Color, component::Rotation>);
+		(entt::exclude<component::Color, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -137,7 +137,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorMultiplication() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::Color>
-		(entt::exclude<component::TextureRect, component::ShaderPtr, component::Rotation>);
+		(entt::exclude<component::TextureRect, component::ShaderPtr, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::Color& color)
@@ -152,7 +152,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorAndCustomShader() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::Color, component::ShaderPtr>
-		(entt::exclude<component::TextureRect, component::Rotation>);
+		(entt::exclude<component::TextureRect, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::Color& color,
@@ -168,7 +168,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorAndTextureRect() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::Color>
-		(entt::exclude<component::ShaderPtr, component::Rotation>);
+		(entt::exclude<component::ShaderPtr, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -182,7 +182,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndCustomShader
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::Color, component::ShaderPtr>
-		(entt::exclude<component::Rotation>);
+		(entt::exclude<component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -198,7 +198,7 @@ void RenderSystem::submitSingleColorSpritesWithRotation() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::Color, component::Rotation>
-		(entt::exclude<component::TexturePtr>);
+		(entt::exclude<component::TexturePtr, component::HiddenForRenderer>);
 
 	view.each([this](const component::BodyRect& body, const component::Z z, const component::Color& color, const component::Rotation rotation)
 	{
@@ -210,7 +210,7 @@ void RenderSystem::submitTextureSpritesWithRotation() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::Rotation>
-		(entt::exclude<component::BodyRect>);
+		(entt::exclude<component::BodyRect, component::HiddenForRenderer>);
 
 	view.each([this](const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::Rotation rotation)
 	{
@@ -222,7 +222,7 @@ void RenderSystem::submitTextureSpritesWithCustomShaderAndRotation() const
 {
 	auto view = mRegistry.view
 		<const component::BodyRect, component::Z, const component::TexturePtr, const component::ShaderPtr, component::Rotation>
-		(entt::exclude<component::TextureRect>);
+		(entt::exclude<component::TextureRect, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::ShaderPtr shaderPtr, const component::Rotation rotation)
@@ -237,7 +237,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectAndRotation() const
 {
 	auto view = mRegistry.view
 		<const component::BodyRect, component::Z, const component::TexturePtr, const component::TextureRect, component::Rotation>
-		(entt::exclude<component::ShaderPtr>);
+		(entt::exclude<component::ShaderPtr, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -251,7 +251,7 @@ void RenderSystem::submitTextureSpritesWithTextureRectCustomShaderAndRotation() 
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::ShaderPtr, component::Rotation>
-		(entt::exclude<component::Color>);
+		(entt::exclude<component::Color, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -267,7 +267,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorMultiplicationAndRotation(
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::Color, component::Rotation>
-		(entt::exclude<component::TextureRect, component::ShaderPtr>);
+		(entt::exclude<component::TextureRect, component::ShaderPtr, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, 
@@ -283,7 +283,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorCustomShaderAndRotation() 
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::Color, component::ShaderPtr, component::Rotation>
-		(entt::exclude<component::TextureRect>);
+		(entt::exclude<component::TextureRect, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::Color& color,
@@ -299,7 +299,7 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndRotation() c
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::Color, component::Rotation>
-		(entt::exclude<component::ShaderPtr>);
+		(entt::exclude<component::ShaderPtr, component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
@@ -314,7 +314,8 @@ void RenderSystem::submitTextureSpritesWithSingleColorTextureRectAndRotation() c
 void RenderSystem::submitTextureSpritesWithSingleColorTextureRectCustomShaderAndRotation() const
 {
 	auto view = mRegistry.view
-		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::Color, component::ShaderPtr, component::Rotation>();
+		<component::BodyRect, component::Z, component::TexturePtr, component::TextureRect, component::Color, component::ShaderPtr, component::Rotation>
+		(entt::exclude<component::HiddenForRenderer>);
 
 	view.each([this]
 	(const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr, const component::TextureRect& texRect,
