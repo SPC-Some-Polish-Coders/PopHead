@@ -96,6 +96,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
+		{"HiddenForRenderer",	   &EntitiesParser::parseHiddenForRenderer},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
 		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
@@ -234,6 +235,11 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 	const int width = entityComponentNode.getAttribute("width").toInt();
 	const int height = entityComponentNode.getAttribute("height").toInt();
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, IntRect(x, y, width, height));
+}
+
+void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::HiddenForRenderer>(entity);
 }
 
 void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& entity)
