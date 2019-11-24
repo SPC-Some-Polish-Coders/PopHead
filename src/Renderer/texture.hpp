@@ -5,8 +5,6 @@
 
 namespace ph {
 
-// TODO_ren: Make Texture not store the size - size should be separate component
-
 class Texture
 {
 public:

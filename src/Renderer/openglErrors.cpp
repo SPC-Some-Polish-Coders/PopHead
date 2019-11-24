@@ -49,8 +49,6 @@ bool logErrors(const char* functionSignature, const char* fileName, unsigned num
 		break;
 	}
 
-	// TODO_ren: Make it log info using our logs module instead of std::cout
-
 	std::cout << "OpenGL Error nr " << errorCode << ": " << error << "\n" <<
 		"description: " << description << "\n" <<
 		"function signature: " << functionSignature << "\n" <<

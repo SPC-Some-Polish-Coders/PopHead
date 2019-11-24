@@ -124,7 +124,6 @@ void SlowQuadRenderer::setQuadTransformUniforms(const Shader* shader, sf::Vector
 		transform.rotate(rotation);
 	shader->setUniformMatrix4x4("modelMatrix", transform.getMatrix());
 	shader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
-	// TODO_ren: Does viewProjectionMatrix have to be set for each object even if we don't change shader
 }
 
 bool SlowQuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2i size, float rotation)
