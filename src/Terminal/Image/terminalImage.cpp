@@ -18,7 +18,7 @@ TerminalImage::TerminalImage(TerminalSharedData terminalSharedData)
 	mSeparatorBetweenInputAndOutputArea.setPosition(separatorBetweenInputAndOutputAreaPosition);
 }
 
-void TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void TerminalImage::draw() const
 {
 	if(mTerminalSharedData->mIsVisible) {
 		Renderer::submitSFMLObject(mBackground);
@@ -26,14 +26,6 @@ void TerminalImage::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 		Renderer::submitSFMLObject(mSeparatorBetweenInputAndOutputArea);
 		Renderer::submitSFMLObject(mOutputArea);
 	}
-}
-
-void TerminalImage::move(sf::Vector2f offset)
-{
-	mBackground.move(offset);
-	mTerminalSharedData->mInputLine.move(offset);
-	mSeparatorBetweenInputAndOutputArea.move(offset);
-	mOutputArea.move(offset);
 }
 
 void TerminalImage::init(GameData* gameData)

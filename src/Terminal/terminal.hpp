@@ -23,7 +23,6 @@ public:
 	void update();
 	void pushOutputLine(const OutputLine&);
 
-	auto getImage() -> TerminalImage& { return mTerminalImage; }
 	auto getSharedData() -> TerminalSharedData & { return mTerminalSharedData; }
 
 private:

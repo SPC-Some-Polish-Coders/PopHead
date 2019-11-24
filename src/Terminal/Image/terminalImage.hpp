@@ -9,14 +9,13 @@ namespace ph {
 
 class GameData;
 
-class TerminalImage : public sf::Drawable
+class TerminalImage
 {
 public:
 	TerminalImage(TerminalSharedData);
 	void init(GameData*);
 
-	void draw(sf::RenderTarget& target, const sf::RenderStates states) const override;
-	void move(sf::Vector2f offset);
+	void draw() const;
 
 	auto getOutputArea() -> OutputArea& { return mOutputArea; }
 
