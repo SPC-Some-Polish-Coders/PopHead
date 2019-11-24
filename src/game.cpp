@@ -131,6 +131,8 @@ void Game::update(sf::Time deltaTime)
 		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 
 		//rendererTest();
+		Renderer::submitLine(sf::Color::Red, sf::Color::Blue, {0.f, 0.f}, {100.f, 100.f}, 5.f);
+		Renderer::submitLine(sf::Color::White, {100.f, 20.f}, {-700.f, 500.f});
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

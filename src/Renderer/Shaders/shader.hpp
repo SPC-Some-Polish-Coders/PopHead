@@ -35,6 +35,8 @@ public:
 	void setUniformMatrix4x4(const char* name, const float* transform) const;
 	void setUniformFloatArray(const char* name, int count, const float* data);
 	void setUniformIntArray(const char* name, int count, const int* data);
+	
+	unsigned getID() const { return mID; }
 
 private:
 	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;

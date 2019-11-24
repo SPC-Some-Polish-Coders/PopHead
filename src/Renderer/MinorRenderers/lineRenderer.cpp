@@ -16,6 +16,9 @@ void LineRenderer::init()
 	sl.loadFromFile("line", "resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
 	mLineShader = sl.get("line");
 
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader->getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mLineShader->getID(), uniformBlockIndex, 0) );
+
 	GLCheck( glEnable(GL_LINE_SMOOTH) );
 	GLCheck( glHint(GL_LINE_SMOOTH_HINT, GL_NICEST) );
 
@@ -34,44 +37,33 @@ void LineRenderer::init()
 
 void LineRenderer::shutDown()
 {
-	PH_PROFILE_FUNCTION();
-
 	GLCheck( glDeleteVertexArrays(1, &mLineVAO) );
 	GLCheck( glDeleteBuffers(1, &mLineVBO) );
 }
 
 void LineRenderer::setDebugNumbersToZero()
 {
-	PH_PROFILE_FUNCTION();
-
 	mNumberOfDrawCalls = 0;
 }
 
 void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
                             const sf::Vector2f posA, const sf::Vector2f posB, float thickness)
 {
-	PH_PROFILE_FUNCTION();
-
-	mLineShader->bind();
-	mLineShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
-
 	auto colA = Cast::toNormalizedColorVector4f(colorA);
 	auto colB = Cast::toNormalizedColorVector4f(colorB);
-
 	float vertexData[] = {
 		posA.x, posA.y, colA.x, colA.y, colA.z, colA.w,
 		posB.x, posB.y, colB.x, colB.y, colB.z, colB.w
 	};
-
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mLineVBO) );
 	GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * 6 * sizeof(float), vertexData) );
 
 	GLCheck( glBindVertexArray(mLineVAO) );
+	mLineShader->bind();
 	
 	GLCheck( glLineWidth(thickness) );
 
 	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
-
 	++mNumberOfDrawCalls;
 }
 

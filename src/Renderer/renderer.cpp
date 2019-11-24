@@ -27,6 +27,8 @@ namespace {
 	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer framebuffer;
 
+	unsigned sharedDataUBO;
+
 	ph::SlowQuadRenderer slowQuadRenderer;
 	ph::QuadRenderer quadRenderer;
 	ph::LineRenderer lineRenderer;
@@ -57,6 +59,12 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	GLCheck( glEnable(GL_BLEND) );
 	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 
+	// set up uniform buffer object
+	glGenBuffers(1, &sharedDataUBO);
+	glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO);
+	glBufferData(GL_UNIFORM_BUFFER, 16 * sizeof(float), nullptr, GL_STATIC_DRAW);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 16 * sizeof(float));
+
 	// set up framebuffer
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
@@ -86,16 +94,12 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
 {
-	PH_PROFILE_FUNCTION();
-
 	shutDown();
 	init(screenWidth, screenHeight);
 }
 
 void Renderer::shutDown()
 {
-	PH_PROFILE_FUNCTION();
-
 	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
@@ -113,8 +117,9 @@ void Renderer::beginScene(Camera& camera)
 
 	const float* viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
 	slowQuadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
-	quadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
-	lineRenderer.setViewProjectionMatrix(viewProjectionMatrix);
+
+	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
+	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
 	
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
