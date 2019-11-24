@@ -36,6 +36,8 @@ namespace Renderer
 	void submitLine(const sf::Color& colorA, const sf::Color& colorB,
 	                const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
+	void submitPoint(sf::Vector2f position, const sf::Color&, float size = 1.f);
+
 	void submitSFMLObject(const sf::Drawable&);
 
 	void onWindowResize(unsigned width, unsigned height);

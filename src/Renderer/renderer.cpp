@@ -4,6 +4,7 @@
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/SFMLrenderer.hpp"
+#include "MinorRenderers/pointRenderer.hpp"
 #include "Shaders/shaderLibary.hpp"
 #include "Buffers/vertexArray.hpp"
 #include "camera.hpp"
@@ -31,6 +32,7 @@ namespace {
 
 	ph::SlowQuadRenderer slowQuadRenderer;
 	ph::QuadRenderer quadRenderer;
+	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
 	ph::SFMLRenderer sfmlRenderer;
 }
@@ -50,10 +52,11 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	// initialize minor renderers
 	slowQuadRenderer.init();
-	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.init();
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.init();
+	pointRenderer.init();
+	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
+	quadRenderer.setScreenBoundsPtr(&screenBounds);
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -131,6 +134,7 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	PH_PROFILE_FUNCTION();
 
 	quadRenderer.flush();
+	pointRenderer.flush();
 
 	efficiencyRegister.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls()
@@ -177,6 +181,11 @@ void Renderer::submitLine(const sf::Color& colorA, const sf::Color& colorB,
                           const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
+}
+
+void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, float size)
+{
+	pointRenderer.submitPoint(position, color, size);
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)
