@@ -35,6 +35,8 @@ void Terminal::update()
 		content.clear();
 	}
 
+	mTerminalImage.draw();
+
 	// TODO: Refactor this mess
 	mKeyboardInputHandler.update();
 }

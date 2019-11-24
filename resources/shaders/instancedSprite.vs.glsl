@@ -15,7 +15,10 @@ out DATA
     flat int textureSlotRef;
 } vs_out;
 
-uniform mat4 viewProjectionMatrix;
+layout (std140) uniform SharedData
+{
+    mat4 viewProjectionMatrix;
+};
 
 mat2 getRotationMatrix(float angle);
 

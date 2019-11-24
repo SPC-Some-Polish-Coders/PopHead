@@ -32,7 +32,6 @@ public:
 	void shutDown();
 
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
-	void setViewProjectionMatrix(const float* vpm) { mViewProjectionMatrix = vpm; }
 
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }
@@ -58,7 +57,6 @@ private:
 	std::vector<const Texture*> mInstancedTextures;
 
 	const FloatRect* mScreenBounds;
-	const float* mViewProjectionMatrix;
 
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;

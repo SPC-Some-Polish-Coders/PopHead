@@ -5,7 +5,10 @@ layout (location = 1) in vec4 aColor;
 
 out vec4 color;
 
-uniform mat4 viewProjectionMatrix;
+layout (std140) uniform SharedData
+{   
+    uniform mat4 viewProjectionMatrix;
+};
 
 void main()
 {

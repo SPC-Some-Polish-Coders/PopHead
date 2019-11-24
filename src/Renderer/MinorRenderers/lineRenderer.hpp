@@ -14,8 +14,6 @@ public:
 	void init();
 	void shutDown();
 
-	void setViewProjectionMatrix(const float* vpm) { mViewProjectionMatrix = vpm; }
-
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnLines() const { return mNumberOfDrawCalls; }
 
@@ -25,7 +23,6 @@ public:
 	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 private:
 	Shader* mLineShader;
-	const float* mViewProjectionMatrix;
 	unsigned mLineVAO;
 	unsigned mLineVBO;
 	unsigned mNumberOfDrawCalls;

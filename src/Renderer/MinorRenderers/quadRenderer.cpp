@@ -17,6 +17,9 @@ void QuadRenderer::init()
 	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
 	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
 
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader->getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader->getID(), uniformBlockIndex, 0) );
+
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
 	mQuadIBO.init();
 	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
@@ -37,11 +40,15 @@ void QuadRenderer::init()
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
 	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, z)) );
 
-	for(int i = 0; i < 7; ++i)
-		glEnableVertexAttribArray(i);
+	for (int i = 0; i < 7; ++i)
+	{
+		GLCheck(glEnableVertexAttribArray(i));
+	}
 
-	for(int i = 0; i < 7; ++i)
-		glVertexAttribDivisor(i, 1);
+	for (int i = 0; i < 7; ++i)
+	{
+		GLCheck(glVertexAttribDivisor(i, 1));
+	}
 
 	mWhiteTexture = new Texture;
 	unsigned whiteData = 0xffffffff;
@@ -60,8 +67,6 @@ void QuadRenderer::init()
 
 void QuadRenderer::shutDown()
 {
-	PH_PROFILE_FUNCTION();
-
 	delete mWhiteTexture;
 	mQuadIBO.remove();
 	GLCheck( glDeleteBuffers(1, &mInstancedQuadsDataVBO) );
@@ -70,8 +75,6 @@ void QuadRenderer::shutDown()
 
 void QuadRenderer::setDebugNumbersToZero()
 {
-	PH_PROFILE_FUNCTION();
-
 	mNumberOfDrawCalls = 0;
 	mNumberOfDrawnSprites = 0;
 	mNumberOfDrawnTextures = 0;
@@ -152,7 +155,6 @@ void QuadRenderer::flush()
 	mNumberOfDrawnTextures += mInstancedTextures.size();
 
 	mDefaultInstanedSpriteShader->bind();
-	mDefaultInstanedSpriteShader->setUniformMatrix4x4("viewProjectionMatrix", mViewProjectionMatrix);
 
 	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {return a.z > b.z;});
 	std::vector<size_t> textureSortBeginIndices;

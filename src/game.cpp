@@ -127,8 +127,6 @@ void Game::update(sf::Time deltaTime)
 		mGui->update(deltaTime);
 		mEfficiencyRegister->getDisplayer().draw();
 		mTerminal->update();
-		// TODO_ren: Move it to Terminal::update()
-		mTerminal->getImage().draw(mWindow, sf::RenderStates::Default);
 
 		//rendererTest();
 
