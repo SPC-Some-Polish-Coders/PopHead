@@ -70,4 +70,10 @@ namespace ph::component {
 		sf::Vector2f startingShotPos;
 		sf::Vector2f endingShotPos;
 	};
+
+	struct PlayerGun
+	{
+		float timeBeforeHiding;
+		float cooldownSinceLastShot;
+	};
 }

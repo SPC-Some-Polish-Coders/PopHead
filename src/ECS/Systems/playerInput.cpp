@@ -69,7 +69,8 @@ namespace ph::system {
 
 	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
 	{
-		constexpr float diagonal = 0.70710f;
+		//constexpr float diagonal = 0.70710f;
+		constexpr float diagonal = 0.7f;
 
 		if (mUp   && mLeft)  return sf::Vector2f(-diagonal, -diagonal);
 		if (mUp   && mRight) return sf::Vector2f(+diagonal, -diagonal);

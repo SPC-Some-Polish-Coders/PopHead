@@ -26,7 +26,9 @@ void PendingGunAttacks::update(float seconds)
 
 			setPlayerFacePosition();
 			const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
-			const sf::Vector2f startingBulletPos = playerBody.rect.getCenter() + getGunPosition();
+			sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition();
+			if (mPlayerFaceDirection == sf::Vector2f(1, 0))
+				startingBulletPos += sf::Vector2f(7, 0); 
 			sf::Vector2f endingBulletPos = performShoot(startingBulletPos);
 			createShotImage(startingBulletPos, endingBulletPos);
 

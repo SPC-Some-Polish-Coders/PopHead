@@ -92,6 +92,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Shader",                 &EntitiesParser::parseShader},
 		{"Color",                  &EntitiesParser::parseColor},
 		{"Z",                      &EntitiesParser::parseZ},
+		{"PlayerGun",              &EntitiesParser::parsePlayerGun},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Rotation",               &EntitiesParser::parseRotation},
@@ -195,6 +196,11 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	const float cooldown = 0.f;
 	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack);
+}
+
+void EntitiesParser::parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PlayerGun>(entity, 2.f, 0.f);
 }
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
