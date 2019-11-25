@@ -188,9 +188,9 @@ void Renderer::submitLine(const sf::Color& colorA, const sf::Color& colorB,
 	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
 }
 
-void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, float size)
+void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsigned char z, float size)
 {
-	pointRenderer.submitPoint(position, color, size);
+	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)

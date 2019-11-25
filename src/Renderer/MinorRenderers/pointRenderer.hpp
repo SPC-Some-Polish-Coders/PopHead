@@ -13,6 +13,7 @@ struct PointVertexData
 	Vector4f color;	
 	sf::Vector2f position;
 	float size;
+	float z;
 };
 
 class PointRenderer
@@ -27,7 +28,7 @@ public:
 	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
 	void setDebugNumbersToZero();
 
-	void submitPoint(sf::Vector2f position, const sf::Color&, float size);
+	void submitPoint(sf::Vector2f position, const sf::Color&, float z, float size);
 
 	void flush();
 
