@@ -20,6 +20,10 @@ public:
 	void init();
 	void shutDown();
 
+	unsigned getNrOfDrawnPoints() const { return mNrOfDrawnPoints; }
+	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
+	void setDebugNumbersToZero();
+
 	void submitPoint(sf::Vector2f position, const sf::Color&, float size);
 
 	void flush();
@@ -29,7 +33,8 @@ private:
 	Shader* mPointsShader;
 	unsigned mVAO;
 	unsigned mVBO;
+	unsigned mNrOfDrawnPoints;
+	unsigned mNrOfDrawCalls;
 };
 
 }
-

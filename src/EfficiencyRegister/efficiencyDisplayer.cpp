@@ -18,7 +18,7 @@ void EfficiencyDisplayer::init(GameData* const gameData)
 	
 	mRendererDebugBackground.setFillColor(sf::Color(0, 0, 0, 230));
 	mRendererDebugBackground.setPosition(0, -185);
-	mRendererDebugBackground.setSize({260, 71});
+	mRendererDebugBackground.setSize({260, 91});
 
 	const sf::Font& font(gameData->getFonts().get("fonts/joystixMonospace.ttf"));
 
@@ -53,6 +53,14 @@ void EfficiencyDisplayer::init(GameData* const gameData)
 	mDrawnLines.setFont(font);
 	mDrawnLines.setPosition(0, -125);
 	mDrawnLines.setCharacterSize(10);
+	
+	mPointDrawCalls.setFont(font);
+	mPointDrawCalls.setPosition(0, -115);
+	mPointDrawCalls.setCharacterSize(10);
+	
+	mDrawnPoints.setFont(font);
+	mDrawnPoints.setPosition(0, -105);
+	mDrawnPoints.setCharacterSize(10);
 }
 
 void EfficiencyDisplayer::draw() const
@@ -71,6 +79,8 @@ void EfficiencyDisplayer::draw() const
 		Renderer::submitSFMLObject(mTexturesDrawnByInstancing);
 		Renderer::submitSFMLObject(mLineDrawCalls);
 		Renderer::submitSFMLObject(mDrawnLines);
+		Renderer::submitSFMLObject(mPointDrawCalls);
+		Renderer::submitSFMLObject(mDrawnPoints);
 	}
 }
 
@@ -122,6 +132,16 @@ void EfficiencyDisplayer::setLineDrawCalls(const std::string& text)
 void EfficiencyDisplayer::setDrawnLines(const std::string& text)
 {
 	mDrawnLines.setString(text);
+}
+
+void EfficiencyDisplayer::setPointDrawCalls(const std::string& text)
+{
+	mPointDrawCalls.setString(text);
+}
+
+void EfficiencyDisplayer::setDrawnPoints(const std::string& text)
+{
+	mDrawnPoints.setString(text);
 }
 
 }

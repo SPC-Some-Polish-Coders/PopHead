@@ -91,4 +91,16 @@ void EfficiencyRegister::setNumberOfDrawnLines(unsigned nrOfDrawnLines)
 		mEfficiencyDisplayer.setDrawnLines("Drawn lines: " + std::to_string(nrOfDrawnLines));
 }
 
+void EfficiencyRegister::setNumberOfDrawnPoints(unsigned nrOfDrawnPoints)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setDrawnPoints("Drawn points: " + std::to_string(nrOfDrawnPoints));
+}
+
+void EfficiencyRegister::setNumberOfPointDrawCalls(unsigned nrOfDrawCalls)
+{
+	if(mIsRendererDebugActive)
+		mEfficiencyDisplayer.setPointDrawCalls("Point draw calls: " + std::to_string(nrOfDrawCalls));
+}
+
 }

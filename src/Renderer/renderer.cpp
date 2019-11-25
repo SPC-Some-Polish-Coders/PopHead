@@ -137,7 +137,8 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	pointRenderer.flush();
 
 	efficiencyRegister.setAllDrawCallsPerFrame(
-		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls()
+		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
+		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
 	);
 	efficiencyRegister.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
 	efficiencyRegister.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
@@ -145,8 +146,11 @@ void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiency
 	efficiencyRegister.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
 	efficiencyRegister.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
 	efficiencyRegister.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
+	efficiencyRegister.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
+	efficiencyRegister.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
 	quadRenderer.setDebugNumbersToZero();
 	lineRenderer.setDebugNumbersToZero();
+	pointRenderer.setDebugNumbersToZero();
 
 	GLCheck( glDisable(GL_DEPTH_TEST) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );

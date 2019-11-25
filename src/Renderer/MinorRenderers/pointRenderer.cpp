@@ -39,6 +39,12 @@ void PointRenderer::shutDown()
 	glDeleteVertexArrays(1, &mVAO);
 }
 
+void PointRenderer::setDebugNumbersToZero()
+{
+	mNrOfDrawnPoints = 0;
+	mNrOfDrawCalls = 0;
+}
+
 void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, float size)
 {
 	PointVertexData point;
@@ -46,6 +52,7 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 	point.position = position;
 	point.size = size;
 	mSubmitedPointsVertexData.emplace_back(point);
+	++mNrOfDrawnPoints;
 }
 
 void PointRenderer::flush()
@@ -59,6 +66,7 @@ void PointRenderer::flush()
 	glDrawArrays(GL_POINTS, 0, mSubmitedPointsVertexData.size());
 
 	mSubmitedPointsVertexData.clear();
+	++mNrOfDrawCalls;
 }
 
 }

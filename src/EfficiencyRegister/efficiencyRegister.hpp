@@ -24,6 +24,8 @@ public:
 	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
 	void setNumberOfLineDrawCalls(unsigned nrOfTexturesDrawnByInstancedRendering);
 	void setNumberOfDrawnLines(unsigned nrOfTexturesDrawnByInstancedRendering);
+	void setNumberOfDrawnPoints(unsigned nrOfDrawnPoints);
+	void setNumberOfPointDrawCalls(unsigned nrOfDrawCalls);
 
 	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
 
