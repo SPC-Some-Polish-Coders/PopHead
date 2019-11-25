@@ -44,6 +44,7 @@ private:
 	void parseCamera(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimationData(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLifetime(const Xml& entityComponentNode, entt::entity& entity);
+	void parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

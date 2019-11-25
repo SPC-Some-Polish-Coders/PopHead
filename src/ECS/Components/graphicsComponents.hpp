@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include "Renderer/camera.hpp"
+#include <vector>
 
 namespace ph{
 
@@ -45,4 +46,5 @@ namespace component {
 		ph::Camera camera;
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
+
 }}

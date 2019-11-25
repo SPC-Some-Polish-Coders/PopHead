@@ -5,6 +5,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Components/animationComponents.h"
+#include "ECS/Components/particleComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Resources/animationStatesResources.hpp"
@@ -101,7 +102,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
-		{"AnimationData",          &EntitiesParser::parseAnimationData}
+		{"AnimationData",          &EntitiesParser::parseAnimationData},
+		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -185,6 +187,53 @@ void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity&
 {
 	const float entityLifetime = entityComponentNode.getAttribute("lifetime").toFloat();
 	mUsedRegistry->assign_or_replace<component::Lifetime>(entity, entityLifetime);
+}
+
+void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
+{
+	// TODO: Texture parsing
+
+	component::ParticleEmitter emitter;
+	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
+	for(const auto& attrib : particleAttribs)
+	{
+		const std::string name = attrib.getAttribute("name").toString();
+		if(name == "color") {
+			const auto r = attrib.getAttribute("r").toUnsignedChar();
+			const auto g = attrib.getAttribute("g").toUnsignedChar();
+			const auto b = attrib.getAttribute("b").toUnsignedChar();
+			const auto a = attrib.getAttribute("a").toUnsignedChar();
+			emitter.parColor = sf::Color(r, g, b, a);
+		}
+		else if(name == "offset") {
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
+			emitter.offset = sf::Vector2f(x, y);
+		}
+		else if(name == "initialVelocity") {
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
+			emitter.parInitialVelocity = sf::Vector2f(x, y);
+		}
+		else if(name == "size") {
+			const int x = attrib.getAttribute("x").toFloat();
+			const int y = attrib.getAttribute("y").toFloat();
+			emitter.parSize = sf::Vector2i(x, y);
+		}
+		else if(name == "amount") {
+			emitter.amountOfParticles = attrib.getAttribute("v").toUnsigned();
+		}
+		else if(name == "lifetime") {
+			emitter.parWholeLifetime = attrib.getAttribute("v").toFloat();
+		}
+		else if(name == "speedScale") {
+			emitter.parSpeedScale = attrib.getAttribute("v").toFloat();
+		}
+		else if(name == "isEmitting") {
+			emitter.isEmitting = attrib.getAttribute("v").toBool();
+		}
+	}
+	mUsedRegistry->assign_or_replace<component::ParticleEmitter>(entity, emitter);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

@@ -16,6 +16,7 @@
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
+#include "ECS/Systems/particleSystem.hpp"
 
 namespace ph {
 
@@ -79,6 +80,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
+	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 }
 
