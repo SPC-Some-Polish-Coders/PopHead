@@ -25,14 +25,14 @@ namespace ph::system {
 				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
 				{
 					component::Velocity newVel = { currentVel.dx + anotherVel.dx, currentVel.dy + anotherVel.dy };
-					currentVel = newVel;
-					anotherVel = newVel;
 
 					sf::FloatRect intersection;
 					currentBody.rect.intersects(anotherBody.rect, intersection);
 
 					if (intersection.width < intersection.height)
 					{
+						currentVel.dx = newVel.dx;
+						anotherVel.dx = newVel.dx;
 						auto halfWidth = intersection.width / 2.f;
 						if (currentBody.rect.left < anotherBody.rect.left)
 						{
@@ -47,6 +47,8 @@ namespace ph::system {
 					}
 					else
 					{
+						currentVel.dy = newVel.dy;
+						anotherVel.dy = newVel.dy;
 						auto halfHeight = intersection.height / 2.f;
 						if (currentBody.rect.top < anotherBody.rect.top)
 						{
