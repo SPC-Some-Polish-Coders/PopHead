@@ -88,7 +88,7 @@ void rendererTest()
 void pointTest()
 {
 	for(float i = 0; i < 10; ++i)
-		Renderer::submitPoint({10.f * i - 200.f, 10.f * i}, sf::Color(i * 20, i * 10, i * 5), 100.f);
+		Renderer::submitPoint({10.f * i - 200.f, 10.f * i}, sf::Color(char(i * 20), char(i * 10), char(i * 5)), 10.f);
 }
 
 }

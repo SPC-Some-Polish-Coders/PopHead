@@ -47,6 +47,9 @@ void PointRenderer::setDebugNumbersToZero()
 
 void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, float size)
 {
+	if(!isInsideScreen(position, size))
+		return;
+
 	PointVertexData point;
 	point.color = Cast::toNormalizedColorVector4f(color);
 	point.position = position;
@@ -57,6 +60,9 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 
 void PointRenderer::flush()
 {
+	if(mSubmitedPointsVertexData.empty())
+		return;
+
 	mPointsShader->bind();
 	glBindVertexArray(mVAO);
 
@@ -67,6 +73,17 @@ void PointRenderer::flush()
 
 	mSubmitedPointsVertexData.clear();
 	++mNrOfDrawCalls;
+}
+
+bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
+{
+	if(size == 1.f)
+		return mScreenBounds->contains(position);
+	else {
+		const float halfSize = size / 2;
+		FloatRect pointRect(position.x - halfSize, position.y - halfSize, size, size);
+		return mScreenBounds->doPositiveRectsIntersect(pointRect);
+	}
 }
 
 }

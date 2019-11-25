@@ -57,6 +57,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	pointRenderer.init();
 	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	pointRenderer.setScreenBoundsPtr(&screenBounds);
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
