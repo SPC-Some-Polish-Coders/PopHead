@@ -32,7 +32,7 @@ namespace ph::system {
 					if(mRegistry.has<component::HiddenForRenderer>(gun))
 						mRegistry.remove<component::HiddenForRenderer>(gun);
 
-					if(gunAttacker.bullets > 0 && gunAttacker.cooldownSinceLastShoot <= 0.f)
+					if(gunAttacker.canAttack)
 						updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect);
 					else 
 						updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);

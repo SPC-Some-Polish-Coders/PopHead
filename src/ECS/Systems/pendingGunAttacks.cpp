@@ -14,14 +14,10 @@ void PendingGunAttacks::update(float seconds)
 	{
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
 
-		bool cooldown = hasCooldown(playerGunAttack.cooldownSinceLastShoot);
-		if (cooldown)
-			playerGunAttack.cooldownSinceLastShoot -= seconds;
-
 		if (playerGunAttack.isTryingToAttack)
 		{
 			playerGunAttack.isTryingToAttack = false;
-			if (!canShoot(playerGunAttack.bullets, cooldown))
+			if (!playerGunAttack.canAttack)
 				return;
 
 			setPlayerFacePosition();
@@ -32,7 +28,6 @@ void PendingGunAttacks::update(float seconds)
 			sf::Vector2f endingBulletPos = performShoot(startingBulletPos);
 			createShotImage(startingBulletPos, endingBulletPos);
 
-			playerGunAttack.cooldownSinceLastShoot = playerGunAttack.minSecondsInterval;
 			--playerGunAttack.bullets;
 		}
 	}
@@ -53,16 +48,6 @@ void PendingGunAttacks::setPlayerFacePosition()
 		const auto& playerFaceDirection = playerView.get<component::FaceDirection>(player);
 		mPlayerFaceDirection = playerFaceDirection.direction;
 	}
-}
-
-bool PendingGunAttacks::canShoot(int numOfBullets, float cooldown) const
-{
-	return numOfBullets > 0 && !cooldown;
-}
-
-bool PendingGunAttacks::hasCooldown(float cooldownSinceLastShoot) const
-{
-	return cooldownSinceLastShoot > 0.f;
 }
 
 sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& startingBulletPos)

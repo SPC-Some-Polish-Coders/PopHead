@@ -43,6 +43,7 @@ namespace ph::component {
 		float cooldownSinceLastShoot;
 		unsigned bullets;
 		bool isTryingToAttack;
+		bool canAttack;
 	};
 
 	struct TaggedToDestroy

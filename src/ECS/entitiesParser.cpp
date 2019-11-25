@@ -195,7 +195,8 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	const float cooldown = 0.f;
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack);
+	bool canAttack = true;
+	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack, canAttack);
 }
 
 void EntitiesParser::parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity)
