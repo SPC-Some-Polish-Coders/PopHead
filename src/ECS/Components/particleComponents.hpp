@@ -11,7 +11,7 @@ namespace ph {
 struct Particle
 {
 	sf::Vector2f position;
-	float lifetime;
+	float lifetime = 0.f;
 };
 
 namespace component {
@@ -21,7 +21,8 @@ struct ParticleEmitter
 	std::vector<Particle> particles;
 
 	Texture* parTexture = nullptr;
-	sf::Vector2f offset = {0.f, 0.f};
+	sf::Vector2f spawnPositionOffset = {0.f, 0.f};
+	sf::Vector2f randomSpawnAreaSize = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};
 	sf::Vector2i parSize = {1, 1};
 	sf::Color parStartColor = sf::Color::White;

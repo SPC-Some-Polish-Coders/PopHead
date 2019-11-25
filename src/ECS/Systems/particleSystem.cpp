@@ -1,6 +1,7 @@
 #include "particleSystem.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/random.hpp"
 #include "Renderer/renderer.hpp"
 
 namespace ph::system {
@@ -29,8 +30,14 @@ void PatricleSystem::update(float seconds)
 		   (emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
 		{
 			Particle particle;
-			particle.position = body.rect.getTopLeft() + emi.offset;
-			particle.lifetime = 0.f;
+			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+			if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+				const sf::Vector2f randomOffset(
+					Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
+					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
+				);
+				particle.position += randomOffset;
+			}
 			emi.particles.emplace_back(particle);
 		}
 

@@ -206,31 +206,36 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			const auto b = attrib.getAttribute("b").toUnsignedChar();
 			const auto a = attrib.getAttribute("a").toUnsignedChar();
 			if(!wasEndColorAssigned)
-				emitter.parEndColor = sf::Color(r, g, b, a);
-			emitter.parStartColor = sf::Color(r, g, b, a);
+				emitter.parEndColor = {r, g, b, a};
+			emitter.parStartColor = {r, g, b, a};
 		}
 		else if(name == "endColor") {
 			const auto r = attrib.getAttribute("r").toUnsignedChar();
 			const auto g = attrib.getAttribute("g").toUnsignedChar();
 			const auto b = attrib.getAttribute("b").toUnsignedChar();
 			const auto a = attrib.getAttribute("a").toUnsignedChar();
-			emitter.parEndColor = sf::Color(r, g, b, a);
+			emitter.parEndColor = {r, g, b, a};
 			wasEndColorAssigned = true;
 		}
-		else if(name == "offset") {
+		else if(name == "spawnPositionOffset") {
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
-			emitter.offset = sf::Vector2f(x, y);
+			emitter.spawnPositionOffset = {x, y};
+		}
+		else if(name == "randomSpawnAreaSize") {
+			const float width = attrib.getAttribute("width").toFloat();
+			const float height = attrib.getAttribute("height").toFloat();
+			emitter.randomSpawnAreaSize = {width, height};
 		}
 		else if(name == "initialVelocity") {
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
-			emitter.parInitialVelocity = sf::Vector2f(x, y);
+			emitter.parInitialVelocity = {x, y};
 		}
 		else if(name == "size") {
 			const int x = attrib.getAttribute("x").toFloat();
 			const int y = attrib.getAttribute("y").toFloat();
-			emitter.parSize = sf::Vector2i(x, y);
+			emitter.parSize = {x, y};
 		}
 		else if(name == "amount") {
 			emitter.amountOfParticles = attrib.getAttribute("v").toUnsigned();

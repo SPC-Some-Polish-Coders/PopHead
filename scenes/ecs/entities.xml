@@ -68,16 +68,17 @@
     </entityTemplate>
 
     <entityTemplate name="DrippingWater">
-        <component name="BodyRect" x="300" y="-50" width="20.0" height="20.0" />
+        <component name="BodyRect" x="300" y="-250" width="300" height="50" />
         <component name="Z" z="0"/>
-        <component name="Color" r="5" g="15" b="255" a="255" />
+        <component name="Color" r="5" g="5" b="50" a="255" />
         <component name="ParticleEmitter">
-          <particleAttrib name="startColor" r="0" g="0" b="255" a="255"/>
-          <particleAttrib name="endColor" r="0" g="255" b="0" a="255"/>
-          <particleAttrib name="offset" x="10" y="20"/>
-          <particleAttrib name="initialVelocity" x="0" y="10"/>
+          <particleAttrib name="startColor" r="0" g="0" b="50" a="255"/>
+          <particleAttrib name="endColor" r="3" g="255" b="255" a="255"/>
+          <particleAttrib name="spawnPositionOffset" x="0" y="20"/>
+          <particleAttrib name="randomSpawnAreaSize" width="300" height="20"/>
+          <particleAttrib name="initialVelocity" x="0" y="100"/>
           <particleAttrib name="size" x="10" y="10"/>
-          <particleAttrib name="amount" v="10"/>
+          <particleAttrib name="amount" v="1000"/>
           <particleAttrib name="lifetime" v="5"/>
           <particleAttrib name="speedScale" v="1"/>
           <particleAttrib name="isEmitting" v="true"/>
