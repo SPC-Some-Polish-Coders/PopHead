@@ -33,8 +33,10 @@ void PendingGunAttacks::update(float seconds)
 				shift -= startingBulletPos;
 				startingBulletPos += shift;
 				if (playerFaceDirection.direction == sf::Vector2f(1, 0))
-					startingBulletPos += sf::Vector2f(7, 0);
-				if (playerFaceDirection.direction == sf::Vector2f(0, 1) || playerFaceDirection.direction == sf::Vector2f(0, -1))
+					startingBulletPos += sf::Vector2f(5, -1);
+				else if (playerFaceDirection.direction == sf::Vector2f(-1, 0))
+					startingBulletPos += sf::Vector2f(-5, -1);
+				else if (playerFaceDirection.direction == sf::Vector2f(0, 1) || playerFaceDirection.direction == sf::Vector2f(0, -1))
 					startingBulletPos += sf::Vector2f(-4.5, 0);
 				///////////////////////////////////////////////////////
 
@@ -80,6 +82,13 @@ sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& playerFac
 	return newPosition;
 }
 
+void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, const sf::Vector2f& endingPosition)
+{
+	auto entity = mRegistry.create();
+	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
+	mRegistry.assign<component::Lifetime>(entity, .05f);
+}
+
 sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDirection) const
 {
 	if (playerFaceDirection == sf::Vector2f(1, 0))
@@ -100,13 +109,6 @@ sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDir
 		return { -3, 17 };
 	else
 		return { 0, 0 };
-}
-
-void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, const sf::Vector2f& endingPosition)
-{
-	auto entity = mRegistry.create();
-	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
-	mRegistry.assign<component::Lifetime>(entity, .05f);
 }
 
 }

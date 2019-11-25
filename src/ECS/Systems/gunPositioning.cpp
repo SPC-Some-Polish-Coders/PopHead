@@ -21,22 +21,6 @@ namespace ph::system {
 				auto& playerGun = gunView.get<component::PlayerGun>(gun);
 				auto& gunBody = gunView.get<component::BodyRect>(gun);
 
-
-
-				//if (gunAttacker.isTryingToAttack)
-				//{
-				//	playerGun.cooldownSinceLastShot = playerGun.timeBeforeHiding;
-				//	if(mRegistry.has<component::HiddenForRenderer>(gun))
-				//		mRegistry.remove<component::HiddenForRenderer>(gun);
-
-				//	if(gunAttacker.canAttack)
-				//		updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect);
-				//	else 
-				//		updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
-				//}
-				//else
-				//	updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
-
 				updateGunSpriteFlipping(playerFaceDirection.direction, gunBody.rect);
 				updateGunSpritePosition(playerFaceDirection.direction, playerBody.rect.getTopLeft(), gunBody.rect);
 			}
@@ -57,10 +41,24 @@ namespace ph::system {
 
 	void GunPositioning::updateGunSpriteFlipping(const sf::Vector2f& playerFaceDirection, FloatRect& gunBody)
 	{
-		// if (playerFaceDirection.x < 0)
-		//	gunBody.width = -gunBody.width;
-		//else if (playerFaceDirection == sf::Vector2f(0, 1))
-		//	gunBody.height = -gunBody.height;
+		static int i = 0;
+		static sf::Vector2f originalSize;
+		if (i == 0)
+		{
+			originalSize = gunBody.getSize();
+			++i;
+		}
+		//temporary as we need to predict that the weapons (and their sizes) will change during the gameplay
+
+		 if (playerFaceDirection.x < 0)
+			gunBody.width = -originalSize.x;
+		else if (playerFaceDirection == sf::Vector2f(0, 1))
+			gunBody.height = -originalSize.y;
+		else
+		 {
+			 gunBody.width = originalSize.x;
+			 gunBody.height = originalSize.y;
+		 }
 	}
 
 	void GunPositioning::updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody)
