@@ -192,18 +192,30 @@ void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity&
 void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
 {
 	// TODO: Texture parsing
+	// TODO: Make them be attributes of ParticleNode and not separate nodes
 
 	component::ParticleEmitter emitter;
 	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
+	bool wasEndColorAssigned = false;
 	for(const auto& attrib : particleAttribs)
 	{
 		const std::string name = attrib.getAttribute("name").toString();
-		if(name == "color") {
+		if(name == "startColor") {
 			const auto r = attrib.getAttribute("r").toUnsignedChar();
 			const auto g = attrib.getAttribute("g").toUnsignedChar();
 			const auto b = attrib.getAttribute("b").toUnsignedChar();
 			const auto a = attrib.getAttribute("a").toUnsignedChar();
-			emitter.parColor = sf::Color(r, g, b, a);
+			if(!wasEndColorAssigned)
+				emitter.parEndColor = sf::Color(r, g, b, a);
+			emitter.parStartColor = sf::Color(r, g, b, a);
+		}
+		else if(name == "endColor") {
+			const auto r = attrib.getAttribute("r").toUnsignedChar();
+			const auto g = attrib.getAttribute("g").toUnsignedChar();
+			const auto b = attrib.getAttribute("b").toUnsignedChar();
+			const auto a = attrib.getAttribute("a").toUnsignedChar();
+			emitter.parEndColor = sf::Color(r, g, b, a);
+			wasEndColorAssigned = true;
 		}
 		else if(name == "offset") {
 			const float x = attrib.getAttribute("x").toFloat();

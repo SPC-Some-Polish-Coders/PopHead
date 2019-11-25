@@ -36,13 +36,24 @@ void PatricleSystem::update(float seconds)
 
 		for(auto& particle : emi.particles)
 		{
-			// update particles
+			// update particle
 			particle.lifetime += seconds;
 			particle.position += emi.parInitialVelocity * seconds; // TODO: Add acceleration
 
-			// draw particles
+			// compute current particle color
+			sf::Color color = emi.parStartColor;
+			if(emi.parStartColor != emi.parEndColor) {
+				const float startColorMultiplier = (emi.parWholeLifetime - particle.lifetime) / emi.parWholeLifetime;
+				const float endColorMultiplier = particle.lifetime / emi.parWholeLifetime;
+				color.r = unsigned char(float(emi.parStartColor.r) * startColorMultiplier + float(emi.parEndColor.r) * endColorMultiplier);
+				color.g = unsigned char(float(emi.parStartColor.g) * startColorMultiplier + float(emi.parEndColor.g) * endColorMultiplier);
+				color.b = unsigned char(float(emi.parStartColor.b) * startColorMultiplier + float(emi.parEndColor.b) * endColorMultiplier);
+				color.a = unsigned char(float(emi.parStartColor.a) * startColorMultiplier + float(emi.parEndColor.a) * endColorMultiplier);
+			}
+
+			// submit particle to renderer
 			if(!emi.parTexture && emi.parSize.x == emi.parSize.y)
-				Renderer::submitPoint(particle.position, emi.parColor, 0.f, emi.parSize.x);
+				Renderer::submitPoint(particle.position, color, 0.f, emi.parSize.x);
 		}
 	});
 }

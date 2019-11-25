@@ -72,12 +72,13 @@
         <component name="Z" z="0"/>
         <component name="Color" r="5" g="15" b="255" a="255" />
         <component name="ParticleEmitter">
-          <particleAttrib name="color" r="100" g="200" b="255" a="255"/>
-          <particleAttrib name="offset" x="10" y="15"/>
-          <particleAttrib name="initialVelocity" x="0" y="140"/>
+          <particleAttrib name="startColor" r="0" g="0" b="255" a="255"/>
+          <particleAttrib name="endColor" r="0" g="255" b="0" a="255"/>
+          <particleAttrib name="offset" x="10" y="20"/>
+          <particleAttrib name="initialVelocity" x="0" y="10"/>
           <particleAttrib name="size" x="10" y="10"/>
-          <particleAttrib name="amount" v="3"/>
-          <particleAttrib name="lifetime" v="1"/>
+          <particleAttrib name="amount" v="10"/>
+          <particleAttrib name="lifetime" v="5"/>
           <particleAttrib name="speedScale" v="1"/>
           <particleAttrib name="isEmitting" v="true"/>
         </component>

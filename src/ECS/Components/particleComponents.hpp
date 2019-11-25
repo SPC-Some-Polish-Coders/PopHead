@@ -21,10 +21,11 @@ struct ParticleEmitter
 	std::vector<Particle> particles;
 
 	Texture* parTexture = nullptr;
-	sf::Color parColor = sf::Color::White;
 	sf::Vector2f offset = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};
 	sf::Vector2i parSize = {1, 1};
+	sf::Color parStartColor = sf::Color::White;
+	sf::Color parEndColor = sf::Color::White;
 	unsigned amountOfParticles = 1;
 	float parWholeLifetime = 1.f;
 	float parSpeedScale = 1.f;
@@ -33,8 +34,8 @@ struct ParticleEmitter
 	bool wasInitialized = false;
 };
 
-// TODO: Color addition per frame
 // TODO: Particle spawn area size
 // TODO: Randomness
+// TODO: Collisions with kinematic and static collision bodies
 
 }}
