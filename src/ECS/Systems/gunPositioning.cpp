@@ -21,24 +21,21 @@ namespace ph::system {
 				auto& playerGun = gunView.get<component::PlayerGun>(gun);
 				auto& gunBody = gunView.get<component::BodyRect>(gun);
 
-				if (playerGun.cooldownSinceLastShot <= 0.f)
-					mRegistry.assign_or_replace<component::HiddenForRenderer>(gun);
-				else
-					playerGun.cooldownSinceLastShot -= seconds;
 
-				if (gunAttacker.isTryingToAttack)
-				{
-					playerGun.cooldownSinceLastShot = playerGun.timeBeforeHiding;
-					if(mRegistry.has<component::HiddenForRenderer>(gun))
-						mRegistry.remove<component::HiddenForRenderer>(gun);
 
-					if(gunAttacker.canAttack)
-						updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect);
-					else 
-						updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
-				}
-				else
-					updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
+				//if (gunAttacker.isTryingToAttack)
+				//{
+				//	playerGun.cooldownSinceLastShot = playerGun.timeBeforeHiding;
+				//	if(mRegistry.has<component::HiddenForRenderer>(gun))
+				//		mRegistry.remove<component::HiddenForRenderer>(gun);
+
+				//	if(gunAttacker.canAttack)
+				//		updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect);
+				//	else 
+				//		updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
+				//}
+				//else
+				//	updateGunTextureRect(playerFaceDirection.direction, gunTextureBody.rect, 16);
 
 				updateGunSpriteFlipping(playerFaceDirection.direction, gunBody.rect);
 				updateGunSpritePosition(playerFaceDirection.direction, playerBody.rect.getTopLeft(), gunBody.rect);
