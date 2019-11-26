@@ -2,7 +2,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
+#include <iostream>
 namespace ph::system {
 
 	void GunPositioning::update(float seconds)
@@ -27,31 +27,19 @@ namespace ph::system {
 		}
 	}
 
-	void GunPositioning::updateGunTextureRect(const sf::Vector2f& playerFaceDirection, IntRect& textureBody, const int offsetX)
-	{
-		if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-			textureBody = IntRect( offsetX, 0, 13, 8 );
-		else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
-			textureBody = IntRect(offsetX, 10, 13, 11 );
-		else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-			textureBody = IntRect(offsetX, 21, 13, 11 );
-		else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-			textureBody = IntRect(offsetX, 34, 13, 11 );
-	}
-
 	void GunPositioning::updateGunSpriteFlipping(const sf::Vector2f& playerFaceDirection, FloatRect& gunBody)
 	{
-		static int i = 0;
-		static sf::Vector2f originalSize;
-		if (i == 0)
-		{
-			originalSize = gunBody.getSize();
-			++i;
-		}
-		//temporary as we need to predict that the weapons (and their sizes) will change during the gameplay
+		auto originalSize = gunBody.getSize();
+		if (originalSize.x < 0.f)
+			originalSize.x = -originalSize.x;
+		if (originalSize.y < 0.f)
+			originalSize.y = -originalSize.y;
 
-		 if (playerFaceDirection.x < 0)
+		if (playerFaceDirection.x < 0)
+		{
 			gunBody.width = -originalSize.x;
+			gunBody.height = originalSize.y;
+		}
 		else if (playerFaceDirection == sf::Vector2f(0, 1))
 			gunBody.height = -originalSize.y;
 		else

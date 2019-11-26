@@ -15,7 +15,6 @@ public:
 	void update(float seconds) override;
 
 private:
-	void updateGunTextureRect(const sf::Vector2f& playerFaceDirection, IntRect& textureBody, const int offsetX = 0);
 	void updateGunSpriteFlipping(const sf::Vector2f& playerFaceDirection, FloatRect& gunBody);
 	void updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody);
 	sf::Vector2f getRightHandPosition(const sf::Vector2f& playerFaceDirection);
