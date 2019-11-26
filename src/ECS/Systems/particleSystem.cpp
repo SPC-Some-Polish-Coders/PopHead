@@ -28,7 +28,7 @@ void PatricleSystem::update(float dt)
 		// add particles
 		if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
 		{
-			float nrOfParticlesPerFrame = emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f);
+			float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
 			unsigned nrOfParticlesAddedInThisFrame = 0;
 			while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
 			{
@@ -81,7 +81,7 @@ void PatricleSystem::update(float dt)
 
 			// submit particle to renderer
 			if(!emi.parTexture && emi.parSize.x == emi.parSize.y)
-				Renderer::submitPoint(particle.position, color, 0.f, emi.parSize.x);
+				Renderer::submitPoint(particle.position, color, 0, (float)emi.parSize.x);
 		}
 	});
 }

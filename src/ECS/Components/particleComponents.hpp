@@ -35,8 +35,4 @@ struct ParticleEmitter
 	bool wasInitialized = false;
 };
 
-// TODO: Particle spawn area size
-// TODO: Randomness
-// TODO: Collisions with kinematic and static collision bodies
-
 }}

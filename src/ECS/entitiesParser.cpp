@@ -233,8 +233,8 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			emitter.parInitialVelocity = {x, y};
 		}
 		else if(name == "size") {
-			const int x = attrib.getAttribute("x").toFloat();
-			const int y = attrib.getAttribute("y").toFloat();
+			const int x = attrib.getAttribute("x").toInt();
+			const int y = attrib.getAttribute("y").toInt();
 			emitter.parSize = {x, y};
 		}
 		else if(name == "amount") {
