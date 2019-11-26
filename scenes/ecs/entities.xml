@@ -76,10 +76,10 @@
           <particleAttrib name="endColor" r="3" g="255" b="255" a="255"/>
           <particleAttrib name="spawnPositionOffset" x="0" y="20"/>
           <particleAttrib name="randomSpawnAreaSize" width="300" height="20"/>
-          <particleAttrib name="initialVelocity" x="0" y="100"/>
+          <particleAttrib name="initialVelocity" x="0" y="200"/>
           <particleAttrib name="size" x="10" y="10"/>
           <particleAttrib name="amount" v="1000"/>
-          <particleAttrib name="lifetime" v="5"/>
+          <particleAttrib name="lifetime" v="2.5"/>
           <particleAttrib name="speedScale" v="1"/>
           <particleAttrib name="isEmitting" v="true"/>
         </component>

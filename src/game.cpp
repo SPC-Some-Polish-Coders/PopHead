@@ -129,7 +129,7 @@ void Game::update(sf::Time deltaTime)
 		mTerminal->update();
 
 		//rendererTest();
-		pointTest();
+		//pointTest();
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();

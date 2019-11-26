@@ -6,10 +6,10 @@
 
 namespace ph::system {
 
-void PatricleSystem::update(float seconds)
+void PatricleSystem::update(float dt)
 {
 	auto view = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
-	view.each([seconds](component::ParticleEmitter& emi, const component::BodyRect& body)
+	view.each([dt](component::ParticleEmitter& emi, const component::BodyRect& body)
 	{
 		// exit if is not emitting
 		if(!emi.isEmitting)
@@ -22,30 +22,51 @@ void PatricleSystem::update(float seconds)
 		}
 
 		// erase particles
-		if(!emi.particles.empty() && emi.particles.front().lifetime >= emi.parWholeLifetime)
+		while(!emi.particles.empty() && emi.particles.front().lifetime >= emi.parWholeLifetime)
 			emi.particles.erase(emi.particles.begin());
 
 		// add particles
-		if((emi.particles.size() < emi.amountOfParticles) &&
-		   (emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+		if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
 		{
-			Particle particle;
-			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
-			if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
-				const sf::Vector2f randomOffset(
-					Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
-					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
-				);
-				particle.position += randomOffset;
+			float nrOfParticlesPerFrame = emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f);
+			unsigned nrOfParticlesAddedInThisFrame = 0;
+			while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+			{
+				++nrOfParticlesAddedInThisFrame;
+				Particle particle;
+				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+					const sf::Vector2f randomOffset(
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
+					);
+					particle.position += randomOffset;
+				}
+				emi.particles.emplace_back(particle);
 			}
-			emi.particles.emplace_back(particle);
+		}
+		else {
+			if((emi.particles.size() < emi.amountOfParticles) &&
+				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+			{
+				Particle particle;
+				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+					const sf::Vector2f randomOffset(
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
+					);
+					particle.position += randomOffset;
+				}
+				emi.particles.emplace_back(particle);
+			}
 		}
 
 		for(auto& particle : emi.particles)
 		{
 			// update particle
-			particle.lifetime += seconds;
-			particle.position += emi.parInitialVelocity * seconds; // TODO: Add acceleration
+			particle.lifetime += dt;
+			particle.position += emi.parInitialVelocity * dt; // TODO: Add acceleration
 
 			// compute current particle color
 			sf::Color color = emi.parStartColor;
