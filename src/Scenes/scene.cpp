@@ -11,6 +11,7 @@
 #include "ECS/Systems/damageDealing.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
+#include "ECS/Systems/isObjectInArea.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
 #include "ECS/Systems/gunPositioning.hpp"
@@ -83,6 +84,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::LastingShots>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
 	mSystemsQueue.appendSystem<system::GunPositioning>();
 	mSystemsQueue.appendSystem<system::GunTexture>();

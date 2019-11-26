@@ -62,6 +62,10 @@
     </entityTemplate>
 
 
+   <entityTemplate name="Area">
+       <component name="Area" x="200.0" y="50.0" width="100.0" height="30.0"/>
+    </entityTemplate>
+   
     <entityTemplate name="Entrance">
 
     </entityTemplate>
@@ -211,6 +215,11 @@
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
+    
+    <entity sourceTemplate="Area"/>
+    <entity name="Area">
+       <component name="Area" x="200.0" y="50.0" width="100.0" height="30.0"/>
+    </entity>
 
     <entity sourceTemplate="Highway"/>
 

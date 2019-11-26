@@ -77,4 +77,9 @@ namespace ph::component {
 		float timeBeforeHiding;
 		float cooldownSinceLastShot;
 	};
+
+	struct IsInArea
+	{
+
+	};
 }

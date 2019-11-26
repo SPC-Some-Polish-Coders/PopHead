@@ -4,6 +4,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/animationComponents.h"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
@@ -80,6 +81,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
+		{"Area",				   &EntitiesParser::parseArea},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			   &EntitiesParser::parseKillable},
 		{"Health",	               &EntitiesParser::parseHealth},
@@ -125,6 +127,15 @@ void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity&
 	float width = entityComponentNode.getAttribute("width").toFloat();
 	float height = entityComponentNode.getAttribute("height").toFloat();
 	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, ph::FloatRect(x, y, width, height));
+}
+
+void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float x = entityComponentNode.getAttribute("x").toFloat();
+	float y = entityComponentNode.getAttribute("y").toFloat();
+	float width = entityComponentNode.getAttribute("width").toFloat();
+	float height = entityComponentNode.getAttribute("height").toFloat();
+	mUsedRegistry->assign_or_replace<component::Area>(entity, ph::FloatRect(x, y, width, height));
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
