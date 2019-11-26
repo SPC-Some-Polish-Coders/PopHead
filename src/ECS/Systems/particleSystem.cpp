@@ -37,8 +37,8 @@ void PatricleSystem::update(float dt)
 					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
 				);
 				particle.position += randomOffset;
-				particle.velocity = emi.parInitialVelocity;
 			}
+			particle.velocity = emi.parInitialVelocity;
 			emi.particles.emplace_back(particle);
 		};
 

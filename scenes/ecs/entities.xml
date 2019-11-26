@@ -23,7 +23,7 @@
             <particleAttrib name="randomSpawnAreaSize" width="1000" height="20"/>
             <particleAttrib name="initialVelocity" x="0" y="4"/>
             <particleAttrib name="acceleration" x="0.2" y="0.5"/>
-            <particleAttrib name="size" x="4" y="4"/>
+            <particleAttrib name="size" x="6" y="6"/>
             <particleAttrib name="amount" v="450"/>
             <particleAttrib name="lifetime" v="3"/>
             <particleAttrib name="isEmitting" v="true"/>
@@ -103,8 +103,8 @@
         <component name="ParticleEmitter">
           <particleAttrib name="texture" filepath="textures/vehicles/car.png" />
           <particleAttrib name="spawnPositionOffset" x="0" y="0"/>
-          <particleAttrib name="initialVelocity" x="300" y="0"/>
-          <particleAttrib name="acceleration" x="1.5" y="0"/>
+          <particleAttrib name="initialVelocity" x="8" y="0"/>
+          <particleAttrib name="acceleration" x="0.3" y="0"/>
           <particleAttrib name="size" x="30" y="22"/>
           <particleAttrib name="amount" v="10"/>
           <particleAttrib name="lifetime" v="10.5"/>
