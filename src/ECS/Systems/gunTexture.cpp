@@ -18,23 +18,26 @@ namespace ph::system {
 				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);
 				auto& playerGun = gunView.get<component::PlayerGun>(gun);
 
-				if (playerGun.cooldownSinceLastShot <= 0.f)
-					mRegistry.assign_or_replace<component::HiddenForRenderer>(gun);
-				else
-					playerGun.cooldownSinceLastShot -= seconds;
-
-				int offsetX = 0;
+				int offsetX = 16;
 				if (gunAttacker.isTryingToAttack)
 				{
 					playerGun.cooldownSinceLastShot = playerGun.timeBeforeHiding;
+					if (gunAttacker.canAttack)
+						offsetX = 0;
+				}
+
+				bool shouldHide = true;
+				if (playerGun.cooldownSinceLastShot > 0.f)
+				{
+					shouldHide = false;
+					playerGun.cooldownSinceLastShot -= seconds;
+				}
+
+				if (shouldHide)
+					mRegistry.assign_or_replace<component::HiddenForRenderer>(gun);
+				else
 					if (mRegistry.has<component::HiddenForRenderer>(gun))
 						mRegistry.remove<component::HiddenForRenderer>(gun);
-
-					if (!gunAttacker.canAttack)
-						offsetX = 16;
-				}
-				else
-					offsetX = 16;
 
 				if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
 					gunTextureBody.rect = IntRect(offsetX, 0, 13, 8);
