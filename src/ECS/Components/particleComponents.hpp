@@ -2,9 +2,8 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <Renderer/texture.hpp>
 #include <vector>
-
-class Texture;
 
 namespace ph {
 
@@ -20,11 +19,11 @@ struct ParticleEmitter
 {
 	std::vector<Particle> particles;
 
-	Texture* parTexture = nullptr;
+	const Texture* parTexture = nullptr;
 	sf::Vector2f spawnPositionOffset = {0.f, 0.f};
 	sf::Vector2f randomSpawnAreaSize = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};
-	sf::Vector2i parSize = {1, 1};
+	sf::Vector2f parSize = {1.f, 1.f};
 	sf::Color parStartColor = sf::Color::White;
 	sf::Color parEndColor = sf::Color::White;
 	unsigned amountOfParticles = 1;

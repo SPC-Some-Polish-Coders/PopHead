@@ -217,6 +217,13 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			emitter.parEndColor = {r, g, b, a};
 			wasEndColorAssigned = true;
 		}
+		else if(name == "texture") {
+			const std::string filepath = attrib.getAttribute("filepath").toString();
+			if(mTextureHolder->load(filepath))
+				emitter.parTexture = &mTextureHolder->get(filepath);
+			else
+				PH_EXIT_GAME("EntitiesParser::parseParticleEmitter() wasn't able to load texture!");
+		}
 		else if(name == "spawnPositionOffset") {
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
@@ -233,8 +240,8 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			emitter.parInitialVelocity = {x, y};
 		}
 		else if(name == "size") {
-			const int x = attrib.getAttribute("x").toInt();
-			const int y = attrib.getAttribute("y").toInt();
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
 			emitter.parSize = {x, y};
 		}
 		else if(name == "amount") {
