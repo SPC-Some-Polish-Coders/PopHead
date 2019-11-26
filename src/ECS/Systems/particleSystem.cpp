@@ -9,7 +9,7 @@ namespace ph::system {
 void PatricleSystem::update(float dt)
 {
 	auto view = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
-	view.each([dt](component::ParticleEmitter& emi, const component::BodyRect& body)
+	view.each([dt, this](component::ParticleEmitter& emi, const component::BodyRect& body)
 	{
 		// exit if is not emitting
 		if(!emi.isEmitting)
@@ -26,6 +26,20 @@ void PatricleSystem::update(float dt)
 			emi.particles.erase(emi.particles.begin());
 
 		// add particles
+		auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body)
+		{
+			Particle particle;
+			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+			if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+				const sf::Vector2f randomOffset(
+					Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
+					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
+				);
+				particle.position += randomOffset;
+			}
+			emi.particles.emplace_back(particle);
+		};
+
 		if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
 		{
 			float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
@@ -33,32 +47,14 @@ void PatricleSystem::update(float dt)
 			while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
 			{
 				++nrOfParticlesAddedInThisFrame;
-				Particle particle;
-				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
-				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
-					const sf::Vector2f randomOffset(
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
-					);
-					particle.position += randomOffset;
-				}
-				emi.particles.emplace_back(particle);
+				addParticle(emi, body);
 			}
 		}
 		else {
 			if((emi.particles.size() < emi.amountOfParticles) &&
 				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
 			{
-				Particle particle;
-				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
-				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
-					const sf::Vector2f randomOffset(
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
-					);
-					particle.position += randomOffset;
-				}
-				emi.particles.emplace_back(particle);
+				addParticle(emi, body);
 			}
 		}
 
@@ -82,6 +78,8 @@ void PatricleSystem::update(float dt)
 			// submit particle to renderer
 			if(!emi.parTexture && emi.parSize.x == emi.parSize.y)
 				Renderer::submitPoint(particle.position, color, 0, (float)emi.parSize.x);
+
+			// TODO: Add rendering not squares and textured stuff as quad
 		}
 	});
 }
