@@ -2,7 +2,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include <iostream>
+
 namespace ph::system {
 
 	void GunPositioning::update(float seconds)
@@ -14,10 +14,9 @@ namespace ph::system {
 			const auto& gunAttacker = playerView.get<component::GunAttacker>(player);
 			const auto& playerBody = playerView.get<component::BodyRect>(player);
 
-			auto gunView = mRegistry.view<component::PlayerGun, component::TextureRect, component::BodyRect>();
+			auto gunView = mRegistry.view<component::PlayerGun, component::BodyRect>();
 			for (auto gun : gunView)
 			{
-				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);
 				auto& playerGun = gunView.get<component::PlayerGun>(gun);
 				auto& gunBody = gunView.get<component::BodyRect>(gun);
 
