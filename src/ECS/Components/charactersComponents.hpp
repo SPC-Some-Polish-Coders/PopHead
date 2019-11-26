@@ -43,6 +43,7 @@ namespace ph::component {
 		float cooldownSinceLastShoot;
 		unsigned bullets;
 		bool isTryingToAttack;
+		bool canAttack;
 	};
 
 	struct TaggedToDestroy
@@ -63,5 +64,17 @@ namespace ph::component {
 	struct Lifetime
 	{
 		float lifetime;
+	};
+
+	struct LastingShot
+	{
+		sf::Vector2f startingShotPos;
+		sf::Vector2f endingShotPos;
+	};
+
+	struct PlayerGun
+	{
+		float timeBeforeHiding;
+		float cooldownSinceLastShot;
 	};
 }

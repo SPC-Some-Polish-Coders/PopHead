@@ -17,17 +17,6 @@
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/player.animstates.xml"/>
-        <component name="ParticleEmitter">
-            <particleAttrib name="startColor" r="0" g="10" b="100" a="255"/>
-            <particleAttrib name="spawnPositionOffset" x="-500" y="-300"/>
-            <particleAttrib name="randomSpawnAreaSize" width="1000" height="20"/>
-            <particleAttrib name="initialVelocity" x="0" y="4"/>
-            <particleAttrib name="acceleration" x="0.2" y="0.5"/>
-            <particleAttrib name="size" x="6" y="6"/>
-            <particleAttrib name="amount" v="450"/>
-            <particleAttrib name="lifetime" v="3"/>
-            <particleAttrib name="isEmitting" v="true"/>
-        </component>
     </entityTemplate>
 
 
@@ -78,37 +67,6 @@
 
     </entityTemplate>
 
-    <entityTemplate name="UFOCars">
-        <component name="BodyRect" x="300" y="-250" width="0" height="0" />
-        <component name="ParticleEmitter">
-          <particleAttrib name="startColor" r="0" g="0" b="0" a="255"/>
-          <particleAttrib name="endColor" r="255" g="215" b="100" a="255"/>
-          <particleAttrib name="texture" filepath="textures/vehicles/car.png" />
-          <particleAttrib name="spawnPositionOffset" x="0" y="20"/>
-          <particleAttrib name="randomSpawnAreaSize" width="300" height="20"/>
-          <particleAttrib name="initialVelocity" x="0" y="3"/>
-          <particleAttrib name="acceleration" x="0.0" y="-2"/>
-          <particleAttrib name="size" x="30" y="22"/>
-          <particleAttrib name="amount" v="30"/>
-          <particleAttrib name="lifetime" v="7"/>
-          <particleAttrib name="isEmitting" v="true"/>
-        </component>
-    </entityTemplate>
-  
-    <entityTemplate name="Highway">
-        <component name="BodyRect" x="-600" y="300" width="0" height="0" />
-        <component name="Z" z="0"/>
-        <component name="ParticleEmitter">
-          <particleAttrib name="texture" filepath="textures/vehicles/car.png" />
-          <particleAttrib name="spawnPositionOffset" x="0" y="0"/>
-          <particleAttrib name="initialVelocity" x="8" y="0"/>
-          <particleAttrib name="acceleration" x="0.3" y="0"/>
-          <particleAttrib name="size" x="30" y="22"/>
-          <particleAttrib name="amount" v="10"/>
-          <particleAttrib name="lifetime" v="10.5"/>
-          <particleAttrib name="isEmitting" v="true"/>
-        </component>
-    </entityTemplate>
 
     <entityTemplate name="Gate">
         <component name="StaticCollisionBody" />
@@ -189,110 +147,37 @@
 
     <entityTemplate name="Particles">
     </entityTemplate>
-    
-    <entityTemplate name="Pistol">
-
-    </entityTemplate>
 
 </entityTemplates>
 
 <entities>
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    </entity>
+
+    <entity>
+        <component name="BodyRect" x="50.0" y="50.0" width="20.0" height="20.0" />
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="Velocity" dx="0.0" dy="0.0" />
+        <component name="Texture" filepath="textures/characters/playerFullAnimation.png" />
+        <component name="TextureRect" x="0" y="0" width="20" height="20" />
+        <component name="Z" z="0"/>
+    </entity>
+
+    <entity>
+        <component name="BodyRect" x="0.0" y="-40.0" width="20.0" height="20.0" />
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="Velocity" dx="0.0" dy="0.0" />
+        <component name="Texture" filepath="textures/characters/playerFullAnimation.png" />
+        <component name="TextureRect" x="0" y="0" width="20" height="20" />
+        <component name="Z" z="0"/>
     </entity>
     
-    <entity sourceTemplate="Pistol">
-            <component name="BodyRect" x="200.0" y="60.0" width="15" height="9" />
-        <component name="Z" z="1"/>
-        <component name="Texture" filepath="textures/others/pistol.png" />
-        <component name="TextureRect" x="0" y="0" width="11" height="7" />
-        <component name="PlayerGun" />
-        <component name="HiddenForRenderer"/>
-    </entity>
-
-    <entity sourceTemplate="UFOCars"/>
-
-    <entity sourceTemplate="Highway"/>
-
-    <entity sourceTemplate="Lever"/>
-  
-    <entity sourceTemplate="Zombie"/>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="120" width="20" height="20" />
-    </entity>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="150" width="20" height="20" />
-        <component name="Rotation" angle="45" />
-    </entity>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="180" width="20" height="20" />
-        <component name="Rotation" angle="90" />
-    </entity>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="210" width="20" height="20" />
-        <component name="Rotation" angle="135" />
-    </entity>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="240" width="20" height="20" />
-        <component name="Rotation" angle="180" />
-    </entity>
-
-    <entity sourceTemplate="WeirdCar">
-        <component name="BodyRect" x="50" y="270" width="20" height="20" />
-        <component name="Rotation" angle="215" />
-    </entity>
-
-    <entity sourceTemplate="VeryWeirdCar">
-        <component name="BodyRect" x="100" y="120" width="20" height="20" />
-    </entity>
-
-    <entity sourceTemplate="VeryWeirdCarWithTextureRect">
-        <component name="BodyRect" x="150" y="120" width="20" height="20" />
-    </entity>
-
-    <entity sourceTemplate="VeryWeirdCarWithTextureRectAndCustomShader">
-        <component name="BodyRect" x="200" y="120" width="20" height="20" />
-    </entity>
-
-    <entity sourceTemplate="WeirdLever">
-        <component name="BodyRect" x="0.0" y="120.0" width="7" height="15" />
-    </entity>
-
-    <entity sourceTemplate="ColorSquare">
-        <component name="Color" r="200" g="200" b="10" a="255" />
-        <component name="Z" z="1"/>
+    <entity>
+        <component name="BodyRect" x="80.0" y="80.0" width="40.0" height="70.0" />
         <component name="StaticCollisionBody" />
+        <component name="Velocity" dx="0.0" dy="0.0" />
+        <component name="Color" r="255" g="255" b="255" a="255" />
+        <component name="Z" z="0"/>
     </entity>
-
-    <entity sourceTemplate="Lever" />
-
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-        
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="260.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-    
-        <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="150.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-    
-        <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
-    </entity>
-
-    <entity sourceTemplate="GateGuard">
-        <component name="StaticCollisionBody" />
-    </entity>
-
-    <entity sourceTemplate="BulletItem">
-        <component name="Medkit" addHealthPoints="20" />
-    </entity>
-
 </entities>

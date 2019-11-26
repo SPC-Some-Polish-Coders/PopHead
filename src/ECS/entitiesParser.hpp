@@ -35,7 +35,9 @@ private:
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
+	void parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseKillable(const Xml& entityComponentNode, entt::entity& entity);
 	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
 	void parseColor(const Xml& entityComponentNode, entt::entity& entity);

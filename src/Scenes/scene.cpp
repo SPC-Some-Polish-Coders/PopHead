@@ -13,10 +13,16 @@
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
+#include "ECS/Systems/gunPositioning.hpp"
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
+#include "ECS/Systems/gunTexture.hpp"
+#include "ECS/Systems/gunAttackerSystem.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/particleSystem.hpp"
+#include "ECS/Systems/lastingShots.hpp"
+#include "ECS/Systems/kinematicCollisions.hpp"
+#include "ECS/Systems/velocityClear.hpp"
 
 namespace ph {
 
@@ -64,24 +70,30 @@ entt::registry& Scene::getRegistry()
 
 void Scene::initiateSystemsQueue(sf::Window& window)
 {
+	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
+	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::PlayerAttackType>();
+	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
-	mSystemsQueue.appendSystem<system::DamageDealing>();
+	mSystemsQueue.appendSystem<system::LastingShots>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
+	mSystemsQueue.appendSystem<system::GunPositioning>();
+	mSystemsQueue.appendSystem<system::GunTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
 	mSystemsQueue.appendSystem<system::DyingCharacters>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
-	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
+	mSystemsQueue.appendSystem<system::VelocityClear>();
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
 }
 
 }

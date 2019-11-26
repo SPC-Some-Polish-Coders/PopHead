@@ -40,13 +40,10 @@ void QuadRenderer::init()
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
 	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, z)) );
 
-	for(int i = 0; i < 7; ++i) 
-	{
+	for(int i = 0; i < 7; ++i) {
 		GLCheck( glEnableVertexAttribArray(i) );
 	}
-
-	for(int i = 0; i < 7; ++i)
-	{
+	for(int i = 0; i < 7; ++i) {
 		GLCheck( glVertexAttribDivisor(i, 1) );
 	}
 
