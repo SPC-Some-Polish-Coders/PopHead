@@ -14,6 +14,8 @@ public:
 	void init();
 	void shutDown();
 
+	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnLines() const { return mNumberOfDrawCalls; }
 
@@ -23,6 +25,7 @@ public:
 	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 private:
 	Shader* mLineShader;
+	const FloatRect* mScreenBounds;
 	unsigned mLineVAO;
 	unsigned mLineVBO;
 	unsigned mNumberOfDrawCalls;

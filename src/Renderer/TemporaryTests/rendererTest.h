@@ -91,4 +91,10 @@ void pointTest()
 		Renderer::submitPoint({10.f * i - 200.f, 10.f * i}, sf::Color(char(i * 20), char(i * 10), char(i * 5)), 0, 10.f);
 }
 
+void lineTest()
+{
+	Renderer::submitLine(sf::Color::Red, {0.f, 0.f}, {50.f, 50.f}, 5.f);
+	Renderer::submitLine(sf::Color::Red, {15.f, 0.f}, {15.f, 50.f});
+}
+
 }

@@ -55,7 +55,7 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 	PointVertexData point;
 	point.color = Cast::toNormalizedColorVector4f(color);
 	point.position = position;
-	point.size = size;
+	point.size = size * (360.f / mScreenBounds->height);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
 	++mNrOfDrawnPoints;

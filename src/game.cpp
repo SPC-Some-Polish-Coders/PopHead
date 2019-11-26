@@ -130,6 +130,7 @@ void Game::update(sf::Time deltaTime)
 
 		//rendererTest();
 		//pointTest();
+		//lineTest();
 
 		Renderer::endScene(mWindow, *mEfficiencyRegister);
 		mWindow.display();
