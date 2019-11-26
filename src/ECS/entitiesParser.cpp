@@ -191,7 +191,6 @@ void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity&
 
 void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
 {
-	// TODO: Texture parsing
 	// TODO: Make them be attributes of ParticleNode and not separate nodes
 
 	component::ParticleEmitter emitter;
@@ -239,6 +238,11 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			const float y = attrib.getAttribute("y").toFloat();
 			emitter.parInitialVelocity = {x, y};
 		}
+		else if(name == "acceleration") {
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
+			emitter.parAcceleration = {x, y};
+		}
 		else if(name == "size") {
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
@@ -249,9 +253,6 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 		else if(name == "lifetime") {
 			emitter.parWholeLifetime = attrib.getAttribute("v").toFloat();
-		}
-		else if(name == "speedScale") {
-			emitter.parSpeedScale = attrib.getAttribute("v").toFloat();
 		}
 		else if(name == "isEmitting") {
 			emitter.isEmitting = attrib.getAttribute("v").toBool();

@@ -17,6 +17,17 @@
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/player.animstates.xml"/>
+        <component name="ParticleEmitter">
+            <particleAttrib name="startColor" r="0" g="10" b="100" a="255"/>
+            <particleAttrib name="spawnPositionOffset" x="-500" y="-300"/>
+            <particleAttrib name="randomSpawnAreaSize" width="1000" height="20"/>
+            <particleAttrib name="initialVelocity" x="0" y="4"/>
+            <particleAttrib name="acceleration" x="0.2" y="0.5"/>
+            <particleAttrib name="size" x="4" y="4"/>
+            <particleAttrib name="amount" v="450"/>
+            <particleAttrib name="lifetime" v="3"/>
+            <particleAttrib name="isEmitting" v="true"/>
+        </component>
     </entityTemplate>
 
 
@@ -67,21 +78,36 @@
 
     </entityTemplate>
 
-    <entityTemplate name="DrippingWater">
+    <entityTemplate name="UFOCars">
         <component name="BodyRect" x="300" y="-250" width="300" height="50" />
         <component name="Z" z="0"/>
-        <component name="Color" r="5" g="5" b="50" a="255" />
+        <component name="Color" r="2" g="2" b="2" a="255" />
         <component name="ParticleEmitter">
           <particleAttrib name="startColor" r="0" g="0" b="50" a="255"/>
-          <particleAttrib name="endColor" r="3" g="255" b="255" a="255"/>
+          <particleAttrib name="endColor" r="255" g="215" b="20" a="255"/>
           <particleAttrib name="texture" filepath="textures/vehicles/car.png" />
           <particleAttrib name="spawnPositionOffset" x="0" y="20"/>
           <particleAttrib name="randomSpawnAreaSize" width="300" height="20"/>
-          <particleAttrib name="initialVelocity" x="0" y="200"/>
-          <particleAttrib name="size" x="15" y="10"/>
-          <particleAttrib name="amount" v="100"/>
-          <particleAttrib name="lifetime" v="2.5"/>
-          <particleAttrib name="speedScale" v="1"/>
+          <particleAttrib name="initialVelocity" x="0" y="3"/>
+          <particleAttrib name="acceleration" x="0.0" y="-2"/>
+          <particleAttrib name="size" x="30" y="22"/>
+          <particleAttrib name="amount" v="30"/>
+          <particleAttrib name="lifetime" v="4"/>
+          <particleAttrib name="isEmitting" v="true"/>
+        </component>
+    </entityTemplate>
+  
+    <entityTemplate name="Highway">
+        <component name="BodyRect" x="-600" y="300" width="0" height="0" />
+        <component name="Z" z="0"/>
+        <component name="ParticleEmitter">
+          <particleAttrib name="texture" filepath="textures/vehicles/car.png" />
+          <particleAttrib name="spawnPositionOffset" x="0" y="0"/>
+          <particleAttrib name="initialVelocity" x="300" y="0"/>
+          <particleAttrib name="acceleration" x="1.5" y="0"/>
+          <particleAttrib name="size" x="30" y="22"/>
+          <particleAttrib name="amount" v="10"/>
+          <particleAttrib name="lifetime" v="10.5"/>
           <particleAttrib name="isEmitting" v="true"/>
         </component>
     </entityTemplate>
@@ -173,8 +199,9 @@
         <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
     </entity>
 
-    <entity sourceTemplate="DrippingWater">
-    </entity>
+    <entity sourceTemplate="UFOCars"/>
+
+    <entity sourceTemplate="Highway"/>
 
     <entity sourceTemplate="Lever"/>
   

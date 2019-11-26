@@ -3,6 +3,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/random.hpp"
 #include "Renderer/renderer.hpp"
+#include <cmath>
 
 namespace ph::system {
 
@@ -36,6 +37,7 @@ void PatricleSystem::update(float dt)
 					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
 				);
 				particle.position += randomOffset;
+				particle.velocity = emi.parInitialVelocity;
 			}
 			emi.particles.emplace_back(particle);
 		};
@@ -60,7 +62,8 @@ void PatricleSystem::update(float dt)
 		{
 			// update particle
 			particle.lifetime += dt;
-			particle.position += emi.parInitialVelocity * dt; // TODO: Add acceleration
+			particle.velocity += emi.parAcceleration * dt;
+			particle.position += particle.velocity;
 
 			// compute current particle color
 			sf::Color color = emi.parStartColor;

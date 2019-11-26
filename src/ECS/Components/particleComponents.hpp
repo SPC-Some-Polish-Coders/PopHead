@@ -10,6 +10,7 @@ namespace ph {
 struct Particle
 {
 	sf::Vector2f position;
+	sf::Vector2f velocity;
 	float lifetime = 0.f;
 };
 
@@ -23,12 +24,12 @@ struct ParticleEmitter
 	sf::Vector2f spawnPositionOffset = {0.f, 0.f};
 	sf::Vector2f randomSpawnAreaSize = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};
+	sf::Vector2f parAcceleration = {0.f, 0.f};
 	sf::Vector2f parSize = {1.f, 1.f};
 	sf::Color parStartColor = sf::Color::White;
 	sf::Color parEndColor = sf::Color::White;
 	unsigned amountOfParticles = 1;
 	float parWholeLifetime = 1.f;
-	float parSpeedScale = 1.f;
 	bool isEmitting = true;
 
 	bool wasInitialized = false;
