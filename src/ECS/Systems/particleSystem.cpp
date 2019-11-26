@@ -26,7 +26,7 @@ void PatricleSystem::update(float dt)
 			emi.particles.erase(emi.particles.begin());
 
 		// add particles
-		auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body)
+		auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
 		{
 			Particle particle;
 			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
@@ -50,12 +50,10 @@ void PatricleSystem::update(float dt)
 				addParticle(emi, body);
 			}
 		}
-		else {
-			if((emi.particles.size() < emi.amountOfParticles) &&
-				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
-			{
-				addParticle(emi, body);
-			}
+		else if((emi.particles.size() < emi.amountOfParticles) && 
+		        (emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+		{
+			addParticle(emi, body);
 		}
 
 		for(auto& particle : emi.particles)
