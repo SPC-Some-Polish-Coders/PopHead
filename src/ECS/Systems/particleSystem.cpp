@@ -10,7 +10,7 @@ namespace ph::system {
 void PatricleSystem::update(float dt)
 {
 	auto view = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
-	view.each([dt, this](component::ParticleEmitter& emi, const component::BodyRect& body)
+	view.each([dt](component::ParticleEmitter& emi, const component::BodyRect& body)
 	{
 		// exit if is not emitting
 		if(!emi.isEmitting)
