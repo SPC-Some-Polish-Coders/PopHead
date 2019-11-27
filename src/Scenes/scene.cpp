@@ -15,6 +15,7 @@
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
 #include "ECS/Systems/gunPositioning.hpp"
+#include "ECS/Systems/velocityChangingAreas.hpp"
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
 #include "ECS/Systems/gunTexture.hpp"
 #include "ECS/Systems/gunAttackerSystem.hpp"
@@ -85,6 +86,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
+	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
 	mSystemsQueue.appendSystem<system::GunPositioning>();
 	mSystemsQueue.appendSystem<system::GunTexture>();
