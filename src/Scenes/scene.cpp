@@ -86,7 +86,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
-	//mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
+	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
 	mSystemsQueue.appendSystem<system::GunPositioning>();
 	mSystemsQueue.appendSystem<system::GunTexture>();

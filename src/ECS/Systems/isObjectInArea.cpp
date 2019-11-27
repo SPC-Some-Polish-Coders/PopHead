@@ -48,18 +48,18 @@ namespace ph::system {
 			for (const auto area : areasView)
 			{
 				const auto& areaBody = areasView.get<component::Area>(area);
-				if (areaBody.areaBody.contains(objectBody.rect.getBottomLeft()) && !isSizeInVector(isInArea.areaSizes, areaBody.areaBody))
-					isInArea.areaSizes.push_back(areaBody.areaBody);
+				if (areaBody.areaBody.contains(objectBody.rect.getBottomLeft()) && !isSizeInVector(isInArea.areas, areaBody.areaBody))
+					isInArea.areas.push_back(areaBody.areaBody);
 			}
 
-			for (auto it = isInArea.areaSizes.begin(); it != isInArea.areaSizes.end(); ++it)
+			for (auto it = isInArea.areas.begin(); it != isInArea.areas.end(); ++it)
 				if (!it->contains(objectBody.rect.getBottomLeft()))
 				{
-					isInArea.areaSizes.erase(it);
+					isInArea.areas.erase(it);
 					break;
 				}
 
-			if (isInArea.areaSizes.empty())
+			if (isInArea.areas.empty())
 				mRegistry.remove<component::IsInArea>(kinematicObject);
 		}
 	}

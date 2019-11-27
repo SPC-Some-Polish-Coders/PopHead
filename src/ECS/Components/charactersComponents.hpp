@@ -82,6 +82,11 @@ namespace ph::component {
 
 	struct IsInArea
 	{
-		std::vector<FloatRect> areaSizes;
+		std::vector<FloatRect> areas;
+	};
+
+	struct VelocityEffects
+	{
+		std::vector<float> velocityMultipliers;
 	};
 }
