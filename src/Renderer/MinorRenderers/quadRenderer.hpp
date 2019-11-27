@@ -23,7 +23,6 @@ struct QuadData
 	Vector4f color;
 	FloatRect textureRect;
 	float textureSlotRef;
-	float z; // TODO_ren: Send z as an uniform for the whole QuadRenderGroup
 };
 
 struct QuadDrawCallGroup

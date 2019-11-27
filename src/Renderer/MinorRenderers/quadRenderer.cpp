@@ -36,12 +36,11 @@ void QuadRenderer::init()
 	GLCheck( glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, color)) );
 	GLCheck( glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect)) );
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
-	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, z)) );
 
-	for(int i = 0; i < 7; ++i) {
+	for(int i = 0; i < 6; ++i) {
 		GLCheck( glEnableVertexAttribArray(i) );
 	}
-	for(int i = 0; i < 7; ++i) {
+	for(int i = 0; i < 6; ++i) {
 		GLCheck( glVertexAttribDivisor(i, 1) );
 	}
 
@@ -94,7 +93,6 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	quadData.rotation = rotation;
 	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
 	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, texture->getSize()) : FloatRect(0.f, 0.f, 1.f, 1.f);
-	quadData.z = z;
 	
 	if(!texture)
 		texture = mWhiteTexture;
@@ -147,6 +145,9 @@ void QuadRenderer::flush()
 		// update debug info
 		mNumberOfDrawnSprites += dcg.instancedQuadsData.size();
 		mNumberOfDrawnTextures += dcg.instancedTextures.size();
+
+		// send z to shader
+		mDefaultInstanedSpriteShader->setUniformFloat("z", z);
 
 		// subtract 32 from all texture slot refs greater then 31
 		for(QuadData& quadData : dcg.instancedQuadsData)
