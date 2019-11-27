@@ -154,34 +154,32 @@ void QuadRenderer::flush()
 			return a.textureSlotRef < b.textureSlotRef;
 		});
 
-		// subtract 32 from all texture slot refs greater then 31
-		for(QuadData& quadData : rg.quadsData)
-			if(quadData.textureSlotRef > 31)
-				quadData.textureSlotRef -= 32;
-
-		// draw the draw call group
-		bindTexturesForNextDrawCall(rg.textures);
+		// draw render group
 		for(size_t i = 0; i < rg.quadsData.size(); ++i)
 		{
 			if(i == rg.quadsData.size() - 1)
 			{
+				bindTexturesForNextDrawCall(rg.textures);
 				drawCall(i + 1, rg.quadsData);
 
 				rg.quadsData.clear();
 				rg.textures.clear();
 				break;
 			}
-			else if(rg.quadsData[i].textureSlotRef == 0 && rg.quadsData[i == 0 ? i : i - 1].textureSlotRef == 31)
+			else if(rg.quadsData[i + 1].textureSlotRef == 32)
 			{
+				bindTexturesForNextDrawCall(rg.textures);
 				drawCall(i + 1, rg.quadsData);
 
 				rg.quadsData.erase(rg.quadsData.begin(), rg.quadsData.begin() + i);
+				
+				for(QuadData& qd : rg.quadsData)
+					qd.textureSlotRef -= 32;
 			
 				rg.textures.erase(
 					rg.textures.begin(),
 					rg.textures.size() > 32 ? rg.textures.begin() + 31 : rg.textures.end()
 				);
-				bindTexturesForNextDrawCall(rg.textures);
 
 				i = 0;
 			}
