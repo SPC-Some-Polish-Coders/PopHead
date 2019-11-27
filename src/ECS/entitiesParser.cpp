@@ -106,6 +106,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
+		{"VelocityChangingEffect", &EntitiesParser::parseVelocityChangingEffect},
 		{"AnimationData",          &EntitiesParser::parseAnimationData},
 		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter}
 	};
@@ -178,6 +179,12 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Player>(entity);
+}
+
+void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier").toFloat();
+	mUsedRegistry->assign_or_replace<component::VelocityChangingEffect>(entity, velocityMultiplier);
 }
 
 void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
