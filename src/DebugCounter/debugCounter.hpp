@@ -1,21 +1,23 @@
 #pragma once
 
-#include "efficiencyDisplayer.hpp"
 #include "Events/event.hpp"
-#include <SFML/Graphics.hpp>
+#include "Resources/resourceHolder.hpp"
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace ph {
 
-class GameData;
-
-class EfficiencyRegister
+class DebugCounter
 {
 public:
-	EfficiencyRegister();
-	void init(GameData* const gameData);
+	DebugCounter();
+	void init(FontHolder& fonts);
 
 	void handleEvent(const ph::Event&);
 	void update();
+	void draw() const;
 
 	void setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame);
 	void setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites);
@@ -27,13 +29,21 @@ public:
 	void setNumberOfDrawnPoints(unsigned nrOfDrawnPoints);
 	void setNumberOfPointDrawCalls(unsigned nrOfDrawCalls);
 
-	auto getDisplayer() -> EfficiencyDisplayer& { return mEfficiencyDisplayer; }
-
 private:
-	EfficiencyDisplayer mEfficiencyDisplayer;
+	sf::Text mFPSText;
+	sf::Text mAllDrawCallsText;
+	sf::Text mSFMLDrawCallsText;
+	sf::Text mInstancedDrawCallsText;
+	sf::Text mDrawnInstancedSpritesText;
+	sf::Text mTexturesDrawnByInstancingText;
+	sf::Text mLineDrawCallsText;
+	sf::Text mDrawnLinesText;
+	sf::Text mPointDrawCallsText;
+	sf::Text mDrawnPointsText;
+	sf::RectangleShape mFPSBackground;
+	sf::RectangleShape mRendererDebugBackground;
 	sf::Clock mClock;
-	GameData* mGameData;
-	unsigned mFramesPerSecond;
+	unsigned mFPS;
 	unsigned mFramesFromLastSecond;
 	bool mIsFPSCounterActive;
 	bool mIsRendererDebugActive;

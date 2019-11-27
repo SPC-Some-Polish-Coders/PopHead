@@ -8,7 +8,6 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
-#include "EfficiencyRegister/efficiencyRegister.hpp"
 #include "Gui/GUI.hpp"
 #include <SFML/Window/Window.hpp>
 #include <memory>
@@ -31,7 +30,7 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 	          nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
@@ -46,7 +45,6 @@ public:
 		Map* const map,
 		PhysicsEngine* const physicsEngine,
 		Terminal* const Terminal,
-		EfficiencyRegister* const efficiencyRegister,
 		GUI* const Gui
 	)
 		:mWindow(window)
@@ -60,7 +58,6 @@ public:
 		,mMap(map)
 		,mPhysicsEngine{physicsEngine}
 		,mTerminal{Terminal}
-		,mEfficiencyRegister{efficiencyRegister}
 		,mGui(Gui)
 		,mGameCloser()
 	{
@@ -77,7 +74,6 @@ public:
 	auto getMap() const -> Map& { return *mMap; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
-	auto getEfficiencyRegister() const -> EfficiencyRegister& { return *mEfficiencyRegister; }
 	auto getGui() const -> GUI& { return *mGui; }
 	auto getGameCloser() -> GameCloser& { return mGameCloser; }
 
@@ -93,7 +89,6 @@ private:
 	Map* const mMap;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
-	EfficiencyRegister* const mEfficiencyRegister;
 	GUI* const mGui;
 	GameCloser mGameCloser;
 };

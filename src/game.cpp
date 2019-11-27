@@ -27,7 +27,7 @@ Game::Game()
 	//,mMap(new Map())
 	//,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
-	,mEfficiencyRegister{new EfficiencyRegister()}
+	,mDebugCounter{new DebugCounter()}
 	,mGui{new GUI()}
 {
 	mGameData.reset(new GameData(
@@ -42,7 +42,6 @@ Game::Game()
 		nullptr,
 		nullptr,
 		mTerminal.get(),
-		mEfficiencyRegister.get(),
 		mGui.get()
 	));
 
@@ -50,7 +49,7 @@ Game::Game()
 
 	loadFonts(gameData);
 	mTerminal->init(gameData);
-	mEfficiencyRegister->init(gameData);
+	mDebugCounter->init(*mFonts);
 	//mMap->setGameData(gameData);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
@@ -102,7 +101,7 @@ void Game::handleEvents()
 				mGameData->getGameCloser().closeGame();
 
 		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
-		mEfficiencyRegister->handleEvent(phEvent);
+		mDebugCounter->handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
 		mGui->handleEvent(phEvent);
 		
@@ -117,7 +116,7 @@ void Game::handleEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	mEfficiencyRegister->update();
+	mDebugCounter->update();
 
 	if(mWindow.hasFocus())
 	{
@@ -125,14 +124,14 @@ void Game::update(sf::Time deltaTime)
 		//mAIManager->update();
 		//mPhysicsEngine->update(deltaTime);
 		mGui->update(deltaTime);
-		mEfficiencyRegister->getDisplayer().draw();
+		mDebugCounter->draw();
 		mTerminal->update();
 
-		rendererTest();
+		//rendererTest();
 		//pointTest();
 		//lineTest();
 
-		Renderer::endScene(mWindow, *mEfficiencyRegister);
+		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
 	}
 }
