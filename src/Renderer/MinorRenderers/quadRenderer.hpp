@@ -47,8 +47,6 @@ private:
 	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation);
 	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
-	bool areThereTextureSlotRefsGreaterThen31();
-	void subtract32FromAllTextureSlotRefsGreaterThen31();
 	void bindTexturesForNextDrawCall();
 	void drawCall(unsigned nrOfInstances);
 

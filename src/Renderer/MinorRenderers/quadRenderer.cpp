@@ -167,8 +167,10 @@ void QuadRenderer::flush()
 		std::sort(begin, end, [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
 	}
 
-	while(areThereTextureSlotRefsGreaterThen31())
-		subtract32FromAllTextureSlotRefsGreaterThen31();
+	// subtract 32 from all texture slot refs greater then 31
+	for(QuadData& quadData : mInstancedQuadsData)
+		if(quadData.textureSlotRef > 31)
+			quadData.textureSlotRef -= 32;
 
 	bindTexturesForNextDrawCall();
 
@@ -197,25 +199,6 @@ void QuadRenderer::flush()
 			i = 0;
 		}
 	}
-}
-
-bool QuadRenderer::areThereTextureSlotRefsGreaterThen31()
-{
-	PH_PROFILE_FUNCTION();
-
-	for(QuadData& quadData : mInstancedQuadsData)
-		if(quadData.textureSlotRef > 31)
-			return true;
-	return false;
-}
-
-void QuadRenderer::subtract32FromAllTextureSlotRefsGreaterThen31()
-{
-	PH_PROFILE_FUNCTION();
-
-	for(QuadData& quadData : mInstancedQuadsData)
-		if(quadData.textureSlotRef > 31)
-			quadData.textureSlotRef -= 32;
 }
 
 void QuadRenderer::bindTexturesForNextDrawCall()
