@@ -25,10 +25,10 @@ struct QuadData
 	float textureSlotRef;
 };
 
-struct QuadDrawCallGroup
+struct QuadRenderGroup
 {
-	std::vector<QuadData> instancedQuadsData;
-	std::vector<const Texture*> instancedTextures;
+	std::vector<QuadData> quadsData;
+	std::vector<const Texture*> textures;
 };
 
 class QuadRenderer
@@ -51,24 +51,19 @@ public:
 
 private:
 	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation);
-	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadDrawCallGroup&) -> std::optional<float>;
+	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup&) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
-	void bindTexturesForNextDrawCall(std::vector<const Texture*>& instancedTextures);
-	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& instancedQuadsData);
+	void bindTexturesForNextDrawCall(std::vector<const Texture*>& textures);
+	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData);
 
 private:
-	std::map<float, QuadDrawCallGroup, std::greater<>> mDrawCallGroups;
+	std::map<float, QuadRenderGroup, std::greater<>> mRenderGroups;
 	const FloatRect* mScreenBounds;
-
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
-
 	IndexBuffer mQuadIBO;
-	unsigned mInstancedQuadsDataVBO;
-	unsigned mInstancedVAO;
-
-	const int mNrOfSpritesInOneInstancedDrawCall = 2500;
-
+	unsigned mQuadsDataVBO;
+	unsigned mVAO;
 	unsigned mNumberOfDrawCalls = 0;
 	unsigned mNumberOfDrawnSprites = 0;
 	unsigned mNumberOfDrawnTextures = 0;
