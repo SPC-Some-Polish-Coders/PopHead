@@ -11,8 +11,6 @@ namespace ph {
 
 void QuadRenderer::init()
 {
-	PH_PROFILE_FUNCTION();
-
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
 	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
@@ -82,8 +80,6 @@ void QuadRenderer::setDebugNumbersToZero()
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation)
 {
-	PH_PROFILE_FUNCTION();
-
 	// culling
 	if(!isInsideScreen(position, size, rotation))
 		return;
@@ -114,8 +110,6 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 
 bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
 {
-	PH_PROFILE_FUNCTION();
-
 	if(rotation == 0.f)
 		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x, pos.y, size.x, size.y));
 	else
@@ -125,8 +119,6 @@ bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rot
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>
 {
-	PH_PROFILE_FUNCTION();
-
 	for(size_t i = 0; i < mInstancedTextures.size(); ++i)
 		if(mInstancedTextures[i] == texture)
 			return static_cast<float>(i);
@@ -135,8 +127,6 @@ auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* textur
 
 auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect
 {
-	PH_PROFILE_FUNCTION();
-
 	auto ts = static_cast<sf::Vector2f>(textureSize);
 	return FloatRect(
 		pixelTextureRect->left / ts.x, (ts.y - pixelTextureRect->top - pixelTextureRect->height) / ts.y,
@@ -153,13 +143,15 @@ void QuadRenderer::flush()
 
 	mDefaultInstanedSpriteShader->bind();
 
+	// sort quads by z coord
 	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {return a.z > b.z;});
+
+	// sort quads by texture slot ref
 	std::vector<size_t> textureSortBeginIndices;
 	textureSortBeginIndices.emplace_back(0);
 	for(size_t i = 1; i < mInstancedQuadsData.size(); ++i)
 		if(mInstancedQuadsData[i].z < mInstancedQuadsData[i - 1].z)
 			textureSortBeginIndices.emplace_back(i);
-
 	for(size_t i = 0; i < textureSortBeginIndices.size(); ++i)
 	{
 		auto begin = mInstancedQuadsData.begin() + textureSortBeginIndices[i];
@@ -203,16 +195,12 @@ void QuadRenderer::flush()
 
 void QuadRenderer::bindTexturesForNextDrawCall()
 {
-	PH_PROFILE_FUNCTION();
-
 	for(size_t i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
 		mInstancedTextures[i]->bind(i);
 }
 
 void QuadRenderer::drawCall(unsigned nrOfInstances)
 {
-	PH_PROFILE_FUNCTION();
-
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO) );
 	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), mInstancedQuadsData.data(), GL_STATIC_DRAW) );
 

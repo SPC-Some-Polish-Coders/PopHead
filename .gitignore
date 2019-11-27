@@ -20,6 +20,8 @@ doc/latex
 
 # Generated files
 logs/*.txt
+initProfilingResults.json
+runtimeProfilingResults.json
 config/modules.txt
 .vs/PopHead/v15/.suo
 .vs/PopHead/v15/Browse.VC.db

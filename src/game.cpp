@@ -128,7 +128,7 @@ void Game::update(sf::Time deltaTime)
 		mEfficiencyRegister->getDisplayer().draw();
 		mTerminal->update();
 
-		//rendererTest();
+		rendererTest();
 		//pointTest();
 		//lineTest();
 

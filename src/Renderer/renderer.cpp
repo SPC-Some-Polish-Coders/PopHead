@@ -43,8 +43,6 @@ static float getNormalizedZ(const unsigned char z);
 
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
-	PH_PROFILE_FUNCTION();
-
 	// initialize glew
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
