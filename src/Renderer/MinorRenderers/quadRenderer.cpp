@@ -49,10 +49,6 @@ void QuadRenderer::init()
 	unsigned whiteData = 0xffffffff;
 	mWhiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
 
-	// allocate instanced vectors
-	mInstancedQuadsData.reserve(3000);
-	mInstancedTextures.reserve(32);
-
 	mDefaultInstanedSpriteShader->bind();
 	int textures[32];
 	for(int i = 0; i < 32; ++i)
@@ -84,6 +80,12 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	if(!isInsideScreen(position, size, rotation))
 		return;
 
+	// find or add draw call group
+	std::map<float, QuadDrawCallGroup>::iterator found;
+	while((found = mDrawCallGroups.find(z)) == mDrawCallGroups.end())
+		mDrawCallGroups.insert({z, QuadDrawCallGroup()});
+	auto& drawCallGroup = found->second;
+
 	// submit data
 	QuadData quadData;
 
@@ -96,16 +98,16 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	
 	if(!texture)
 		texture = mWhiteTexture;
-	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture);
+	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture, drawCallGroup);
 	if(textureSlotOfThisTexture)
 		quadData.textureSlotRef = *textureSlotOfThisTexture;
 	else {
-		const float textureSlotID = static_cast<float>(mInstancedTextures.size());
+		const float textureSlotID = static_cast<float>(drawCallGroup.instancedTextures.size());
 		quadData.textureSlotRef = textureSlotID;
-		mInstancedTextures.emplace_back(texture);
+		drawCallGroup.instancedTextures.emplace_back(texture);
 	}
 
-	mInstancedQuadsData.emplace_back(quadData);
+	drawCallGroup.instancedQuadsData.emplace_back(quadData);
 }
 
 bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
@@ -117,10 +119,10 @@ bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rot
 }
 
 
-auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>
+auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadDrawCallGroup& dcg) -> std::optional<float>
 {
-	for(size_t i = 0; i < mInstancedTextures.size(); ++i)
-		if(mInstancedTextures[i] == texture)
+	for(size_t i = 0; i < dcg.instancedTextures.size(); ++i)
+		if(dcg.instancedTextures[i] == texture)
 			return static_cast<float>(i);
 	return std::nullopt;
 }
@@ -138,71 +140,59 @@ void QuadRenderer::flush()
 {
 	PH_PROFILE_FUNCTION();
 
-	mNumberOfDrawnSprites += mInstancedQuadsData.size();
-	mNumberOfDrawnTextures += mInstancedTextures.size();
-
 	mDefaultInstanedSpriteShader->bind();
 
-	// sort quads by z coord
-	std::sort(mInstancedQuadsData.begin(), mInstancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {return a.z > b.z;});
-
-	// sort quads by texture slot ref
-	std::vector<size_t> textureSortBeginIndices;
-	textureSortBeginIndices.emplace_back(0);
-	for(size_t i = 1; i < mInstancedQuadsData.size(); ++i)
-		if(mInstancedQuadsData[i].z < mInstancedQuadsData[i - 1].z)
-			textureSortBeginIndices.emplace_back(i);
-	for(size_t i = 0; i < textureSortBeginIndices.size(); ++i)
+	for(auto& [z, dcg] : mDrawCallGroups)
 	{
-		auto begin = mInstancedQuadsData.begin() + textureSortBeginIndices[i];
-		auto end = i + 1 < textureSortBeginIndices.size() ? mInstancedQuadsData.begin() + textureSortBeginIndices[i + 1] : mInstancedQuadsData.end();
-		std::sort(begin, end, [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
-	}
+		// update debug info
+		mNumberOfDrawnSprites += dcg.instancedQuadsData.size();
+		mNumberOfDrawnTextures += dcg.instancedTextures.size();
 
-	// subtract 32 from all texture slot refs greater then 31
-	for(QuadData& quadData : mInstancedQuadsData)
-		if(quadData.textureSlotRef > 31)
-			quadData.textureSlotRef -= 32;
+		// subtract 32 from all texture slot refs greater then 31
+		for(QuadData& quadData : dcg.instancedQuadsData)
+			if(quadData.textureSlotRef > 31)
+				quadData.textureSlotRef -= 32;
 
-	bindTexturesForNextDrawCall();
-
-	for(size_t i = 0; i < mInstancedQuadsData.size(); ++i)
-	{
-		if(i == mInstancedQuadsData.size() - 1)
+		// draw the draw call group
+		bindTexturesForNextDrawCall(dcg.instancedTextures);
+		for(size_t i = 0; i < dcg.instancedQuadsData.size(); ++i)
 		{
-			drawCall(i + 1);
+			if(i == dcg.instancedQuadsData.size() - 1)
+			{
+				drawCall(i + 1, dcg.instancedQuadsData);
 
-			mInstancedQuadsData.clear();
-			mInstancedTextures.clear();
-			break;
-		}
-		else if (mInstancedQuadsData[i].textureSlotRef == 0 && mInstancedQuadsData[i == 0 ? i : i - 1].textureSlotRef == 31) 
-		{
-			drawCall(i + 1);
+				dcg.instancedQuadsData.clear();
+				dcg.instancedTextures.clear();
+				break;
+			}
+			else if(dcg.instancedQuadsData[i].textureSlotRef == 0 && dcg.instancedQuadsData[i == 0 ? i : i - 1].textureSlotRef == 31)
+			{
+				drawCall(i + 1, dcg.instancedQuadsData);
 
-			mInstancedQuadsData.erase(mInstancedQuadsData.begin(), mInstancedQuadsData.begin() + i);
+				dcg.instancedQuadsData.erase(dcg.instancedQuadsData.begin(), dcg.instancedQuadsData.begin() + i);
 			
-			mInstancedTextures.erase(
-				mInstancedTextures.begin(),
-				mInstancedTextures.size() > 32 ? mInstancedTextures.begin() + 32 : mInstancedTextures.end()
-			);
-			bindTexturesForNextDrawCall();
+				dcg.instancedTextures.erase(
+					dcg.instancedTextures.begin(),
+					dcg.instancedTextures.size() > 32 ? dcg.instancedTextures.begin() + 32 : dcg.instancedTextures.end()
+				);
+				bindTexturesForNextDrawCall(dcg.instancedTextures);
 
-			i = 0;
+				i = 0;
+			}
 		}
 	}
 }
 
-void QuadRenderer::bindTexturesForNextDrawCall()
+void QuadRenderer::bindTexturesForNextDrawCall(std::vector<const Texture*>& instancedTextures)
 {
-	for(size_t i = 0; i < (mInstancedTextures.size() > 32 ? 32 : mInstancedTextures.size()); ++i)
-		mInstancedTextures[i]->bind(i);
+	for(size_t i = 0; i < (instancedTextures.size() > 32 ? 32 : instancedTextures.size()); ++i)
+		instancedTextures[i]->bind(i);
 }
 
-void QuadRenderer::drawCall(unsigned nrOfInstances)
+void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& instancedQuadsData)
 {
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mInstancedQuadsDataVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), mInstancedQuadsData.data(), GL_STATIC_DRAW) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), instancedQuadsData.data(), GL_STATIC_DRAW) );
 
 	GLCheck( glBindVertexArray(mInstancedVAO) );
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );

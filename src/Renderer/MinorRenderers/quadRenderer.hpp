@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
 #include <optional>
+#include <map>
 
 namespace ph {
 
@@ -22,7 +23,13 @@ struct QuadData
 	Vector4f color;
 	FloatRect textureRect;
 	float textureSlotRef;
-	float z;
+	float z; // TODO_ren: Send z as an uniform for the whole QuadRenderGroup
+};
+
+struct QuadDrawCallGroup
+{
+	std::vector<QuadData> instancedQuadsData;
+	std::vector<const Texture*> instancedTextures;
 };
 
 class QuadRenderer
@@ -45,15 +52,13 @@ public:
 
 private:
 	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation);
-	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>;
+	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadDrawCallGroup&) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
-	void bindTexturesForNextDrawCall();
-	void drawCall(unsigned nrOfInstances);
+	void bindTexturesForNextDrawCall(std::vector<const Texture*>& instancedTextures);
+	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& instancedQuadsData);
 
 private:
-	std::vector<QuadData> mInstancedQuadsData;
-	std::vector<const Texture*> mInstancedTextures;
-
+	std::map<float, QuadDrawCallGroup, std::greater<>> mDrawCallGroups;
 	const FloatRect* mScreenBounds;
 
 	Shader* mDefaultInstanedSpriteShader;
