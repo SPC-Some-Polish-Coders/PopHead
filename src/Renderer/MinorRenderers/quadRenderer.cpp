@@ -161,9 +161,6 @@ void QuadRenderer::flush()
 			{
 				bindTexturesForNextDrawCall(rg.textures);
 				drawCall(i + 1, rg.quadsData);
-
-				rg.quadsData.clear();
-				rg.textures.clear();
 				break;
 			}
 			else if(rg.quadsData[i + 1].textureSlotRef == 32)
@@ -173,30 +170,32 @@ void QuadRenderer::flush()
 
 				rg.quadsData.erase(rg.quadsData.begin(), rg.quadsData.begin() + i);
 				
-				for(QuadData& qd : rg.quadsData)
-					qd.textureSlotRef -= 32;
+				for(QuadData& quadData : rg.quadsData)
+					quadData.textureSlotRef -= 32;
 			
 				rg.textures.erase(
 					rg.textures.begin(),
-					rg.textures.size() > 32 ? rg.textures.begin() + 31 : rg.textures.end()
+					rg.textures.size() > 32 ? rg.textures.begin() + 32 : rg.textures.end()
 				);
 
 				i = 0;
 			}
 		}
+		rg.quadsData.clear();
+		rg.textures.clear();
 	}
 }
 
-void QuadRenderer::bindTexturesForNextDrawCall(std::vector<const Texture*>& instancedTextures)
+void QuadRenderer::bindTexturesForNextDrawCall(std::vector<const Texture*>& textures)
 {
-	for(size_t i = 0; i < (instancedTextures.size() > 32 ? 32 : instancedTextures.size()); ++i)
-		instancedTextures[i]->bind(i);
+	for(size_t i = 0; i < (textures.size() > 32 ? 32 : textures.size()); ++i)
+		textures[i]->bind(i);
 }
 
-void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& instancedQuadsData)
+void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData)
 {
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), instancedQuadsData.data(), GL_STATIC_DRAW) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), quadsData.data(), GL_STATIC_DRAW) );
 
 	GLCheck( glBindVertexArray(mVAO) );
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
