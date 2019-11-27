@@ -153,6 +153,11 @@ void QuadRenderer::flush()
 			if(quadData.textureSlotRef > 31)
 				quadData.textureSlotRef -= 32;
 
+		// sort by texture slot ref
+		std::sort(dcg.instancedQuadsData.begin(), dcg.instancedQuadsData.end(), [](const QuadData& a, const QuadData& b) {
+			return a.textureSlotRef < b.textureSlotRef;
+		});
+
 		// draw the draw call group
 		bindTexturesForNextDrawCall(dcg.instancedTextures);
 		for(size_t i = 0; i < dcg.instancedQuadsData.size(); ++i)
