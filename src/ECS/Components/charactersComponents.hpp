@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Utilities/rect.hpp"
+
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -76,5 +78,15 @@ namespace ph::component {
 	{
 		float timeBeforeHiding;
 		float cooldownSinceLastShot;
+	};
+
+	struct IsInArea
+	{
+		std::vector<FloatRect> areas;
+	};
+
+	struct VelocityEffects
+	{
+		std::vector<float> velocityMultipliers;
 	};
 }

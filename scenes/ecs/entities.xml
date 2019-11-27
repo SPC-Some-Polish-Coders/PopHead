@@ -62,6 +62,10 @@
     </entityTemplate>
 
 
+   <entityTemplate name="Area">
+       <component name="Area" x="200.0" y="50.0" width="100.0" height="30.0"/>
+    </entityTemplate>
+   
     <entityTemplate name="Entrance">
 
     </entityTemplate>
@@ -197,8 +201,9 @@
 </entityTemplates>
 
 <entities>
+   
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
     </entity>
     
     <entity sourceTemplate="Pistol">
@@ -211,6 +216,41 @@
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
+    
+    <entity name="Area">
+       <component name="Area" x="300.0" y="100.0" width="100.0" height="200.0"/>
+       <component name="VelocityChangingEffect" velocityMultiplier="2.0"/>
+    </entity>
+    
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="300.0" y="100.0" width="100.0" height="200.0" />
+        <component name="Color" r="11" g="126" b="38" a="100" />
+        <component name="Z" z="1"/>
+    </entity>
+    
+    <entity name="Area">
+       <component name="Area" x="450.0" y="100.0" width="100.0" height="200.0"/>
+       <component name="VelocityChangingEffect" velocityMultiplier="0.6"/>
+    </entity>
+    
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="450.0" y="100.0" width="100.0" height="200.0" />
+        <component name="Color" r="112" g="4" b="6" a="100" />
+        <component name="Z" z="1"/>
+    </entity>
+    
+    <entity name="Area">
+       <component name="Area" x="300.0" y="200.0" width="250.0" height="100.0"/>
+       <component name="VelocityChangingEffect" velocityMultiplier="2.1"/>
+    </entity>
+    
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="300.0" y="200.0" width="250.0" height="100.0" />
+        <component name="Color" r="112" g="45" b="6" a="100" />
+        <component name="Z" z="1"/>
+    </entity>
+    
+        
 
     <entity sourceTemplate="Highway"/>
 

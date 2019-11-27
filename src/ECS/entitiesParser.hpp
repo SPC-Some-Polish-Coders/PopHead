@@ -21,6 +21,7 @@ private:
 	void parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity);
 
 	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
+	void parseArea(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
@@ -33,6 +34,7 @@ private:
 	void parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
+	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity);
