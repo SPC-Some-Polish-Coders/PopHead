@@ -195,7 +195,11 @@
     </entityTemplate>
     
     <entityTemplate name="Pistol">
-
+        <component name="BodyRect" x="200.0" y="60.0" width="15" height="9" />
+        <component name="Z" z="1"/>
+        <component name="Texture" filepath="textures/others/pistol.png" />
+        <component name="TextureRect" x="0" y="0" width="11" height="7" />
+        <component name="HiddenForRenderer"/>
     </entityTemplate>
 
 </entityTemplates>
@@ -203,22 +207,17 @@
 <entities>
    
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
     </entity>
     
     <entity sourceTemplate="Pistol">
-            <component name="BodyRect" x="200.0" y="60.0" width="15" height="9" />
-        <component name="Z" z="1"/>
-        <component name="Texture" filepath="textures/others/pistol.png" />
-        <component name="TextureRect" x="0" y="0" width="11" height="7" />
         <component name="PlayerGun" />
-        <component name="HiddenForRenderer"/>
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
     
     <entity name="Area">
-       <component name="Area" x="300.0" y="100.0" width="100.0" height="200.0"/>
+       <component name="Area" x="300.0" y="50.0" width="100.0" height="200.0"/>
        <component name="VelocityChangingEffect" velocityMultiplier="2.0"/>
     </entity>
     

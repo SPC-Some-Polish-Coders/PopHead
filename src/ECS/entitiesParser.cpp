@@ -184,7 +184,7 @@ void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier").toFloat();
-	mUsedRegistry->assign_or_replace<component::VelocityChangingEffect>(entity, velocityMultiplier);
+	mUsedRegistry->assign_or_replace<component::AreaVelocityChangingEffect>(entity, velocityMultiplier);
 }
 
 void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
