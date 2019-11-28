@@ -4,6 +4,8 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 
+#include <algorithm>
+
 namespace ph::system {
 
 	void VelocityChangingAreas::update(float seconds)
@@ -11,55 +13,63 @@ namespace ph::system {
 		auto objectsInArea = mRegistry.view<component::IsInArea, component::CharacterSpeed>();
 		for (const auto objectInArea : objectsInArea)
 		{
-			const auto& isInArea = objectsInArea.get<component::IsInArea>(objectInArea);
-			std::vector<float> newVelocityEffects = getNewMultipliers(isInArea.areas);
-
 			if (!mRegistry.has<component::VelocityEffects>(objectInArea))
 				mRegistry.assign<component::VelocityEffects>(objectInArea);
 
-			const auto& currentVelocityEffects = mRegistry.get<component::VelocityEffects>(objectInArea);
+			const auto& isInArea = objectsInArea.get<component::IsInArea>(objectInArea);
+			std::multiset<float> newVelocityEffects = getAllNewMultipliers(isInArea.areas);
+
+			auto& currentVelocityEffects = mRegistry.get<component::VelocityEffects>(objectInArea);
 			auto& objectVelocity = objectsInArea.get<component::CharacterSpeed>(objectInArea);
 
-			for (auto currentMultiplier : currentVelocityEffects.velocityMultipliers)
-				if (std::find(newVelocityEffects.begin(), newVelocityEffects.end(), currentMultiplier) == newVelocityEffects.end())
-					objectVelocity.speed /= currentMultiplier;
+			for (auto divisor : getActualNewMultipliers(currentVelocityEffects.velocityMultipliers, newVelocityEffects))
+					objectVelocity.speed /= divisor;
 
-			for (auto tempEffect : newVelocityEffects)
-				if (std::find(currentVelocityEffects.velocityMultipliers.begin(), currentVelocityEffects.velocityMultipliers.end(), tempEffect) == currentVelocityEffects.velocityMultipliers.end())
-					objectVelocity.speed *= tempEffect;
+			for (auto factor : getActualNewMultipliers(newVelocityEffects, currentVelocityEffects.velocityMultipliers))
+				objectVelocity.speed *= factor;
 
-			mRegistry.assign_or_replace<component::VelocityEffects>(objectInArea, newVelocityEffects);
+			mRegistry.replace<component::VelocityEffects>(objectInArea, newVelocityEffects);
 		}
-		removeVelocityChangingEffects();
+
+		removeVelocityEffectsFromObjectsBeyond();
 	}
 
-	std::vector<float> VelocityChangingAreas::getNewMultipliers(const std::vector<FloatRect>& currentAreas) const
+	std::multiset<float> VelocityChangingAreas::getAllNewMultipliers(const std::vector<FloatRect>& currentAreas) const
 	{
-		std::vector<float> newVelocityEffects;
+		std::multiset<float> newVelocityEffects;
+
 		auto velocityChangingAreas = mRegistry.view<component::Area, component::VelocityChangingEffect>();
-		for (const auto velocityChangingArea : velocityChangingAreas)
-		{
-			const auto& velocityChangingAreaBody = velocityChangingAreas.get<component::Area>(velocityChangingArea);
-			for (const auto currentArea : currentAreas)
-				if (velocityChangingAreaBody.areaBody == currentArea)
+		for (const auto currentArea : currentAreas)
+			for (const auto velocityChangingArea : velocityChangingAreas)
+			{
+				const auto& velocityChangingAreaBody = velocityChangingAreas.get<component::Area>(velocityChangingArea);
+				if (currentArea == velocityChangingAreaBody.areaBody)
 				{
 					const auto& multiplier = velocityChangingAreas.get<component::VelocityChangingEffect>(velocityChangingArea);
-					newVelocityEffects.push_back(multiplier.speedMultiplier);
+					newVelocityEffects.insert(multiplier.speedMultiplier);
 				}
-		}
+			}
+
 		return newVelocityEffects;
 	}
 
-	void VelocityChangingAreas::removeVelocityChangingEffects() const
+	std::multiset<float> VelocityChangingAreas::getActualNewMultipliers(const std::multiset<float>& minuend, const std::multiset<float>& subtrahend) const
 	{
-		auto objectsOutside = mRegistry.view<component::CharacterSpeed, component::VelocityEffects>(entt::exclude<component::IsInArea>);
-		for (const auto objectOutside : objectsOutside)
-		{
-			auto& objectVelocity = objectsOutside.get<component::CharacterSpeed>(objectOutside);
-			const auto& velAffectionEffects = objectsOutside.get<component::VelocityEffects>(objectOutside);
+		std::multiset<float> result;
+		std::set_difference(minuend.begin(), minuend.end(), subtrahend.begin(), subtrahend.end(), std::inserter(result, result.begin()));
+		return result;
+	}
 
-			for (const auto& var : velAffectionEffects.velocityMultipliers)
-				objectVelocity.speed /= var;
+	void VelocityChangingAreas::removeVelocityEffectsFromObjectsBeyond() const
+	{
+		auto objectsOutsideAreas = mRegistry.view<component::CharacterSpeed, component::VelocityEffects>(entt::exclude<component::IsInArea>);
+		for (const auto objectOutside : objectsOutsideAreas)
+		{
+			auto& objectVelocity = objectsOutsideAreas.get<component::CharacterSpeed>(objectOutside);
+			const auto& currentVelocityEffects = objectsOutsideAreas.get<component::VelocityEffects>(objectOutside);
+
+			for (const auto& multiplier : currentVelocityEffects.velocityMultipliers)
+				objectVelocity.speed /= multiplier;
 
 			mRegistry.remove<component::VelocityEffects>(objectOutside);
 		}

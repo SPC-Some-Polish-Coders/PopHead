@@ -5,6 +5,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 
+#include <set>
+
 namespace ph::component {
 	
 	struct Health
@@ -87,6 +89,6 @@ namespace ph::component {
 
 	struct VelocityEffects
 	{
-		std::vector<float> velocityMultipliers;
+		std::multiset<float> velocityMultipliers;
 	};
 }
