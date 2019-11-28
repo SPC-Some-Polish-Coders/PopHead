@@ -33,8 +33,8 @@ public:
 	void setUniformVector4(const char* name, const float x, const float y, const float z, const float w) const;
 	void setUniformVector4Rect(const char* name, const FloatRect&) const;
 	void setUniformMatrix4x4(const char* name, const float* transform) const;
-	void setUniformFloatArray(const char* name, int count, const float* data);
-	void setUniformIntArray(const char* name, int count, const int* data);
+	void setUniformFloatArray(const char* name, int count, const float* data) const;
+	void setUniformIntArray(const char* name, int count, const int* data) const;
 	
 	unsigned getID() const { return mID; }
 

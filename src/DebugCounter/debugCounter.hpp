@@ -22,6 +22,7 @@ public:
 	void setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame);
 	void setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites);
 	void setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls);
+	void setNumberOfRenderGroups(unsigned nrOfRenderGroups);
 	void setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites);
 	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
 	void setNumberOfLineDrawCalls(unsigned nrOfTexturesDrawnByInstancedRendering);
@@ -30,18 +31,35 @@ public:
 	void setNumberOfPointDrawCalls(unsigned nrOfDrawCalls);
 
 private:
-	sf::Text mFPSText;
-	sf::Text mAllDrawCallsText;
-	sf::Text mSFMLDrawCallsText;
-	sf::Text mInstancedDrawCallsText;
-	sf::Text mDrawnInstancedSpritesText;
-	sf::Text mTexturesDrawnByInstancingText;
-	sf::Text mLineDrawCallsText;
-	sf::Text mDrawnLinesText;
-	sf::Text mPointDrawCallsText;
-	sf::Text mDrawnPointsText;
-	sf::RectangleShape mFPSBackground;
-	sf::RectangleShape mRendererDebugBackground;
+	void initFPSCounter();
+	void initRendererDebug();
+
+private:
+	struct FPSCounter
+	{
+		sf::Text fpsText;
+		sf::RectangleShape fpsBackground;
+	};	
+	FPSCounter* mFPSCounter;
+
+	struct RendererDebug
+	{
+		sf::Text allDrawCallsText;
+		sf::Text sfmlDrawCallsText;
+		sf::Text instancedDrawCallsText;
+		sf::Text renderGroupsInQuadRendererText;
+		sf::Text drawnInstancedSpritesText;
+		sf::Text texturesDrawnByInstancingText;
+		sf::Text lineDrawCallsText;
+		sf::Text drawnLinesText;
+		sf::Text pointDrawCallsText;
+		sf::Text drawnPointsText;
+		sf::RectangleShape rendererDebugBackground;
+	};
+	RendererDebug* mRendererDebug;	
+
+	sf::Font* mFont;
+
 	sf::Clock mClock;
 	unsigned mFPS;
 	unsigned mFramesFromLastSecond;

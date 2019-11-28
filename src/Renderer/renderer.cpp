@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include "renderer.hpp"
-#include "MinorRenderers/slowQuadRenderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/SFMLrenderer.hpp"
@@ -30,7 +29,6 @@ namespace {
 
 	unsigned sharedDataUBO;
 
-	ph::SlowQuadRenderer slowQuadRenderer;
 	ph::QuadRenderer quadRenderer;
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
@@ -49,11 +47,9 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
-	slowQuadRenderer.init();
 	quadRenderer.init();
 	lineRenderer.init();
 	pointRenderer.init();
-	slowQuadRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
@@ -103,7 +99,6 @@ void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
 
 void Renderer::shutDown()
 {
-	slowQuadRenderer.shutDown();
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
 	framebufferVertexArray.remove();
@@ -119,8 +114,6 @@ void Renderer::beginScene(Camera& camera)
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
 	const float* viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
-	slowQuadRenderer.setViewProjectionMatrix(viewProjectionMatrix);
-
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
 	
@@ -129,25 +122,26 @@ void Renderer::beginScene(Camera& camera)
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::endScene(sf::RenderWindow& window, DebugCounter& efficiencyRegister)
+void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
 	quadRenderer.flush();
 	pointRenderer.flush();
 
-	efficiencyRegister.setAllDrawCallsPerFrame(
+	debugCounter.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
 		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
 	);
-	efficiencyRegister.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
-	efficiencyRegister.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
-	efficiencyRegister.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
-	efficiencyRegister.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
-	efficiencyRegister.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
+	debugCounter.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
+	debugCounter.setNumberOfRenderGroups(quadRenderer.getNumberOfRenderGroups());
+	debugCounter.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
+	debugCounter.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
+	debugCounter.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
+	debugCounter.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
+	debugCounter.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
+	debugCounter.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
+	debugCounter.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
 	quadRenderer.setDebugNumbersToZero();
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
@@ -164,16 +158,10 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& efficiencyRegist
 	sfmlRenderer.flush(window);
 }
 
-void Renderer::slowSubmitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                              sf::Vector2f position, sf::Vector2i size, unsigned char z, float rotation)
-{
-	slowQuadRenderer.drawQuad(texture, textureRect, color, shader, position, size, rotation);
-}
-
-void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, 
+void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, position, size, getNormalizedZ(z), rotation);
+	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation);
 }
 
 void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
