@@ -9,9 +9,9 @@ namespace ph::component {
 		FloatRect areaBody;
 	};
 
-	struct VelocityChangingEffect
+	struct AreaVelocityChangingEffect
 	{
-		float speedMultiplier;
+		float areaSpeedMultiplier;
 	};
 
 }

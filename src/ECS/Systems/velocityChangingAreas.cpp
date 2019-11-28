@@ -38,15 +38,15 @@ namespace ph::system {
 	{
 		std::multiset<float> newVelocityEffects;
 
-		auto velocityChangingAreas = mRegistry.view<component::Area, component::VelocityChangingEffect>();
+		auto velocityChangingAreas = mRegistry.view<component::Area, component::AreaVelocityChangingEffect>();
 		for (const auto currentArea : currentAreas)
 			for (const auto velocityChangingArea : velocityChangingAreas)
 			{
 				const auto& velocityChangingAreaBody = velocityChangingAreas.get<component::Area>(velocityChangingArea);
 				if (currentArea == velocityChangingAreaBody.areaBody)
 				{
-					const auto& multiplier = velocityChangingAreas.get<component::VelocityChangingEffect>(velocityChangingArea);
-					newVelocityEffects.insert(multiplier.speedMultiplier);
+					const auto& multiplier = velocityChangingAreas.get<component::AreaVelocityChangingEffect>(velocityChangingArea);
+					newVelocityEffects.insert(multiplier.areaSpeedMultiplier);
 				}
 			}
 
