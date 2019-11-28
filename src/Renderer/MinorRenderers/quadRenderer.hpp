@@ -42,6 +42,7 @@ public:
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }
 	unsigned getNumberOfDrawnTextures() const { return mNumberOfDrawnTextures; }
+	unsigned getNumberOfRenderGroups() const { return mNumberOfRenderGroups; }
 
 	void setDebugNumbersToZero();
 
@@ -67,6 +68,7 @@ private:
 	unsigned mNumberOfDrawCalls = 0;
 	unsigned mNumberOfDrawnSprites = 0;
 	unsigned mNumberOfDrawnTextures = 0;
+	unsigned mNumberOfRenderGroups = 0;
 };
 
 }

@@ -68,6 +68,7 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfDrawCalls = 0;
 	mNumberOfDrawnSprites = 0;
 	mNumberOfDrawnTextures = 0;
+	mNumberOfRenderGroups = 0;
 }
 
 // TODO_ren: Support custom shaders for instanced rendering
@@ -137,6 +138,7 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 void QuadRenderer::flush()
 {
 	PH_PROFILE_FUNCTION();
+	mNumberOfRenderGroups = mRenderGroups.size();
 
 	mDefaultInstanedSpriteShader->bind();
 

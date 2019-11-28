@@ -22,6 +22,7 @@ public:
 	void setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame);
 	void setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites);
 	void setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls);
+	void setNumberOfRenderGroups(unsigned nrOfRenderGroups);
 	void setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites);
 	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
 	void setNumberOfLineDrawCalls(unsigned nrOfTexturesDrawnByInstancedRendering);
@@ -34,6 +35,7 @@ private:
 	sf::Text mAllDrawCallsText;
 	sf::Text mSFMLDrawCallsText;
 	sf::Text mInstancedDrawCallsText;
+	sf::Text mRenderGroupsInQuadRendererText;
 	sf::Text mDrawnInstancedSpritesText;
 	sf::Text mTexturesDrawnByInstancingText;
 	sf::Text mLineDrawCallsText;

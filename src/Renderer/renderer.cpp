@@ -129,25 +129,26 @@ void Renderer::beginScene(Camera& camera)
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::endScene(sf::RenderWindow& window, DebugCounter& efficiencyRegister)
+void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
 	quadRenderer.flush();
 	pointRenderer.flush();
 
-	efficiencyRegister.setAllDrawCallsPerFrame(
+	debugCounter.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
 		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
 	);
-	efficiencyRegister.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
-	efficiencyRegister.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
-	efficiencyRegister.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
-	efficiencyRegister.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
-	efficiencyRegister.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
-	efficiencyRegister.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
+	debugCounter.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
+	debugCounter.setNumberOfRenderGroups(quadRenderer.getNumberOfRenderGroups());
+	debugCounter.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
+	debugCounter.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
+	debugCounter.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
+	debugCounter.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
+	debugCounter.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
+	debugCounter.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
+	debugCounter.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
 	quadRenderer.setDebugNumbersToZero();
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
