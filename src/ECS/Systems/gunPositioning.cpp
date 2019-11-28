@@ -40,7 +40,10 @@ namespace ph::system {
 			gunBody.height = originalSize.y;
 		}
 		else if (playerFaceDirection == sf::Vector2f(0, 1))
+		{
+			gunBody.width = originalSize.x;
 			gunBody.height = -originalSize.y;
+		}
 		else
 		 {
 			 gunBody.width = originalSize.x;
