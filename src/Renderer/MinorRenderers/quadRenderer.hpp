@@ -25,6 +25,13 @@ struct QuadData
 	float textureSlotRef;
 };
 
+struct RenderGroupKey
+{
+	const Shader* shader;
+	float z;
+};
+bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
+
 struct QuadRenderGroup
 {
 	std::vector<QuadData> quadsData;
@@ -46,7 +53,7 @@ public:
 
 	void setDebugNumbersToZero();
 
-	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*,
+	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
 	                sf::Vector2f position, sf::Vector2f size, float z, float rotation);
 	void flush();
 
@@ -58,8 +65,9 @@ private:
 	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData);
 
 private:
-	std::map<float, QuadRenderGroup, std::greater<>> mRenderGroups;
+	std::map<RenderGroupKey, QuadRenderGroup> mRenderGroups;
 	const FloatRect* mScreenBounds;
+	const Shader* mCurrentlyBoundShader;
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 	IndexBuffer mQuadIBO;

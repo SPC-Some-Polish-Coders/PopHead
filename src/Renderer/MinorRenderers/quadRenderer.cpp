@@ -47,12 +47,6 @@ void QuadRenderer::init()
 	mWhiteTexture = new Texture;
 	unsigned whiteData = 0xffffffff;
 	mWhiteTexture->setData(&whiteData, sizeof(unsigned), sf::Vector2i(1, 1));
-
-	mDefaultInstanedSpriteShader->bind();
-	int textures[32];
-	for(int i = 0; i < 32; ++i)
-		textures[i] = i;
-	mDefaultInstanedSpriteShader->setUniformIntArray("textures", 32, textures);
 }
 
 void QuadRenderer::shutDown()
@@ -71,19 +65,29 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfRenderGroups = 0;
 }
 
-// TODO_ren: Support custom shaders for instanced rendering
+bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs) {
+	if(lhs.shader->getID() < rhs.shader->getID())
+		return true;
+	if(lhs.z > rhs.z)
+		return true;
+	return false;
+}
 
-void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color,
+void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation)
 {
 	// culling
 	if(!isInsideScreen(position, size, rotation))
 		return;
 
+	// if shader is not specified use default shader 
+	if(!shader)
+		shader = mDefaultInstanedSpriteShader;
+
 	// find or add draw call group
-	std::map<float, QuadRenderGroup>::iterator found;
-	while((found = mRenderGroups.find(z)) == mRenderGroups.end())
-		mRenderGroups.insert({z, QuadRenderGroup()});
+	std::map<RenderGroupKey, QuadRenderGroup>::iterator found;
+	while((found = mRenderGroups.find(RenderGroupKey{shader, z})) == mRenderGroups.end())
+		mRenderGroups.insert({RenderGroupKey{shader, z}, QuadRenderGroup()});
 	auto& renderGroup = found->second;
 
 	// submit data
@@ -140,18 +144,26 @@ void QuadRenderer::flush()
 	PH_PROFILE_FUNCTION();
 	mNumberOfRenderGroups = mRenderGroups.size();
 
-	mDefaultInstanedSpriteShader->bind();
-
-	for(auto& [z, rg] : mRenderGroups)
+	for(auto& [key, rg] : mRenderGroups)
 	{
 		// update debug info
 		mNumberOfDrawnSprites += rg.quadsData.size();
 		mNumberOfDrawnTextures += rg.textures.size();
 
-		// send z to shader
-		mDefaultInstanedSpriteShader->setUniformFloat("z", z);
+		// set up shader
+		if(key.shader != mCurrentlyBoundShader) 
+		{
+			key.shader->bind();
+			mCurrentlyBoundShader = key.shader;
 
-		// sort by texture slot ref
+			int textures[32];
+			for(int i = 0; i < 32; ++i)
+				textures[i] = i;
+			key.shader->setUniformIntArray("textures", 32, textures);
+		}
+		key.shader->setUniformFloat("z", key.z);
+
+		// sort quads by texture slot ref
 		std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) {
 			return a.textureSlotRef < b.textureSlotRef;
 		});

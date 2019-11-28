@@ -78,9 +78,9 @@ void PatricleSystem::update(float dt)
 
 			// submit particle to renderer
 			if(emi.parTexture)
-				Renderer::submitQuad(emi.parTexture, nullptr, &color, particle.position, emi.parSize, 0);
+				Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, 0);
 			else if(emi.parSize.x != emi.parSize.y)
-				Renderer::submitQuad(nullptr, nullptr, &color, particle.position, emi.parSize, 0);
+				Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, 0);
 			else
 				Renderer::submitPoint(particle.position, color, 0, emi.parSize.x);
 		}
