@@ -8,7 +8,7 @@
 #include "Shaders/shaderLibary.hpp"
 #include "Buffers/vertexArray.hpp"
 #include "camera.hpp"
-#include "EfficiencyRegister/efficiencyRegister.hpp"
+#include "DebugCounter/debugCounter.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "framebuffer.hpp"
@@ -43,8 +43,6 @@ static float getNormalizedZ(const unsigned char z);
 
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 {
-	PH_PROFILE_FUNCTION();
-
 	// initialize glew
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
@@ -131,7 +129,7 @@ void Renderer::beginScene(Camera& camera)
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
-void Renderer::endScene(sf::RenderWindow& window, EfficiencyRegister& efficiencyRegister)
+void Renderer::endScene(sf::RenderWindow& window, DebugCounter& efficiencyRegister)
 {
 	PH_PROFILE_FUNCTION();
 

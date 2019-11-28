@@ -11,7 +11,7 @@ namespace sf {
 
 namespace ph {
 
-class EfficiencyRegister;
+class DebugCounter;
 class Camera;
 class Texture;
 class Shader;
@@ -23,7 +23,7 @@ namespace Renderer
 	void shutDown();
 	
 	void beginScene(Camera&);
-	void endScene(sf::RenderWindow& window, EfficiencyRegister&);
+	void endScene(sf::RenderWindow& window, DebugCounter&);
 
 	void slowSubmitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
 	                sf::Vector2f position, sf::Vector2i size, unsigned char z, float rotation = 0.f);

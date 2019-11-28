@@ -12,8 +12,6 @@ namespace ph {
 
 void SlowQuadRenderer::init()
 {
-	PH_PROFILE_FUNCTION();
-
 	// load default shader
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("sprite", "resources/shaders/sprite.vs.glsl", "resources/shaders/sprite.fs.glsl");
@@ -50,8 +48,6 @@ void SlowQuadRenderer::init()
 
 void SlowQuadRenderer::shutDown()
 {
-	PH_PROFILE_FUNCTION();
-
 	mTextureQuadVertexArray.remove();
 	mTextureAnimatedQuadVertexArray.remove();
 	mAnimatedTextureQuadVBO.remove();
@@ -60,21 +56,17 @@ void SlowQuadRenderer::shutDown()
 
 void SlowQuadRenderer::setScreenBoundsPtr(const FloatRect* screenBounds)
 {
-	PH_PROFILE_FUNCTION();
 	mScreenBounds = screenBounds;
 }
 
 void SlowQuadRenderer::setViewProjectionMatrix(const float* viewProjectionMatrix)
 {
-	PH_PROFILE_FUNCTION();
 	mViewProjectionMatrix = viewProjectionMatrix;
 }
 
 void SlowQuadRenderer::drawQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                                 sf::Vector2f position, sf::Vector2i size, float rotation)
 {
-	PH_PROFILE_FUNCTION();
-
 	// culling
 	if(!isInsideScreen(position, size, rotation))
 		return;
@@ -115,8 +107,6 @@ void SlowQuadRenderer::drawQuad(const Texture* texture, const IntRect* textureRe
 
 void SlowQuadRenderer::setQuadTransformUniforms(const Shader* shader, sf::Vector2f position, const sf::Vector2i size, float rotation)
 {
-	PH_PROFILE_FUNCTION();
-
 	sf::Transform transform;
 	transform.translate(position);
 	transform.scale(static_cast<sf::Vector2f>(size));
@@ -128,8 +118,6 @@ void SlowQuadRenderer::setQuadTransformUniforms(const Shader* shader, sf::Vector
 
 bool SlowQuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2i size, float rotation)
 {
-	PH_PROFILE_FUNCTION();
-
 	if(rotation == 0.f)
 		return isInsideScreen(sf::FloatRect(pos.x, pos.y, static_cast<float>(size.x), static_cast<float>(size.y)));
 	else
@@ -138,7 +126,6 @@ bool SlowQuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2i size, float
 
 bool SlowQuadRenderer::isInsideScreen(const FloatRect objectBounds)
 {
-	PH_PROFILE_FUNCTION();
 	return mScreenBounds->doPositiveRectsIntersect(objectBounds);
 }
 

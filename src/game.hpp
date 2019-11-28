@@ -9,7 +9,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
-#include "EfficiencyRegister/efficiencyRegister.hpp"
+#include "DebugCounter/debugCounter.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 
@@ -42,7 +42,7 @@ private:
 	//std::unique_ptr< Map >              mMap;
 	//std::unique_ptr< PhysicsEngine >    mPhysicsEngine;
 	std::unique_ptr< Terminal >           mTerminal;
-	std::unique_ptr< EfficiencyRegister > mEfficiencyRegister;
+	std::unique_ptr< DebugCounter >       mDebugCounter;
 	std::unique_ptr< GUI >                mGui;
 };
 

@@ -78,9 +78,9 @@ void rendererTest()
 		Renderer::submitQuad(&bunkerTex, nullptr, nullptr, sf::Vector2f(850.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
 		Renderer::submitQuad(&creditsButtonTex, nullptr, nullptr, sf::Vector2f(900.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
 		Renderer::submitQuad(&exitButtonTex, nullptr, nullptr, sf::Vector2f(950.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
+		Renderer::submitQuad(&sewageTex, nullptr, nullptr, sf::Vector2f(1000.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
 		Renderer::submitQuad(&mirrorSpTex, nullptr, nullptr, sf::Vector2f(1050.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
 		Renderer::submitQuad(&optionsButtonTex, nullptr, nullptr, sf::Vector2f(1100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&sewageTex, nullptr, nullptr, sf::Vector2f(1000.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
 #endif
 	}
 }

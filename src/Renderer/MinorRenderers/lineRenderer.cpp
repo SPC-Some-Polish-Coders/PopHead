@@ -10,8 +10,6 @@ namespace ph {
 
 void LineRenderer::init()
 {
-	PH_PROFILE_FUNCTION();
-
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("line", "resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
 	mLineShader = sl.get("line");

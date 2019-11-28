@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
 #include <optional>
+#include <map>
 
 namespace ph {
 
@@ -22,7 +23,12 @@ struct QuadData
 	Vector4f color;
 	FloatRect textureRect;
 	float textureSlotRef;
-	float z;
+};
+
+struct QuadRenderGroup
+{
+	std::vector<QuadData> quadsData;
+	std::vector<const Texture*> textures;
 };
 
 class QuadRenderer
@@ -45,28 +51,19 @@ public:
 
 private:
 	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation);
-	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture) -> std::optional<float>;
+	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup&) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
-	bool areThereTextureSlotRefsGreaterThen31();
-	void subtract32FromAllTextureSlotRefsGreaterThen31();
-	void bindTexturesForNextDrawCall();
-	void drawCall(unsigned nrOfInstances);
+	void bindTexturesForNextDrawCall(std::vector<const Texture*>& textures);
+	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData);
 
 private:
-	std::vector<QuadData> mInstancedQuadsData;
-	std::vector<const Texture*> mInstancedTextures;
-
+	std::map<float, QuadRenderGroup, std::greater<>> mRenderGroups;
 	const FloatRect* mScreenBounds;
-
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
-
 	IndexBuffer mQuadIBO;
-	unsigned mInstancedQuadsDataVBO;
-	unsigned mInstancedVAO;
-
-	const int mNrOfSpritesInOneInstancedDrawCall = 2500;
-
+	unsigned mQuadsDataVBO;
+	unsigned mVAO;
 	unsigned mNumberOfDrawCalls = 0;
 	unsigned mNumberOfDrawnSprites = 0;
 	unsigned mNumberOfDrawnTextures = 0;
