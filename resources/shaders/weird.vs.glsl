@@ -1,17 +1,64 @@
 #version 330 core 
 
-layout (location = 0) in vec2 aPos;
-layout (location = 1) in vec2 aTexCoords; 
+layout (location = 0) in vec2 aPosition;
+layout (location = 1) in vec2 aSize;
+layout (location = 2) in float aRotation;
+layout (location = 3) in vec4 aColor;
+layout (location = 4) in vec4 aTextureRect;
+layout (location = 5) in float aTextureSlotRef;
 
-out vec2 texCoords;
-out vec4 multColor;
+out DATA
+{
+    vec4 color;
+    vec2 texCoords;
+    flat int textureSlotRef;
+} vs_out;
 
-uniform mat4 modelMatrix;
-uniform mat4 viewProjectionMatrix;
+layout (std140) uniform SharedData
+{
+    mat4 viewProjectionMatrix;
+};
+uniform float z;
+
+mat2 getRotationMatrix(float angle);
 
 void main()
 {
-    gl_Position = viewProjectionMatrix * modelMatrix * vec4(aPos.x, aPos.y, 0.0, 1.0);
-    texCoords = aTexCoords;
-    multColor = vec4(aPos.x, aPos.y, 1, 1);
+    vs_out.color = vec4(aPosition.x, aPosition.y, 1, 1);
+    vs_out.textureSlotRef = int(aTextureSlotRef);
+
+    vec2 modelVertexPos;
+    
+    switch(gl_VertexID)
+    {
+        case 0:
+            modelVertexPos = vec2(0, 0);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
+            break;
+        case 1:
+            modelVertexPos = vec2(aSize.x, 0);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
+            break;
+        case 2:
+            modelVertexPos = vec2(aSize.x, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
+            break;
+        case 3:
+            modelVertexPos = vec2(0, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
+            break;
+    }
+    
+    if(aRotation == 0)
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, z, 1);
+    else
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos * getRotationMatrix(aRotation) + aPosition, z, 1);
+}
+
+mat2 getRotationMatrix(float angle)
+{
+    return mat2(
+        cos(angle), -sin(angle),
+        sin(angle),  cos(angle)
+    );
 }

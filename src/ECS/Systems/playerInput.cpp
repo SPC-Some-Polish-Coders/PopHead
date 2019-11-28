@@ -1,7 +1,7 @@
 #include "playerInput.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "ECS/Components/animationComponents.h"
+#include "ECS/Components/animationComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include <cmath>
 

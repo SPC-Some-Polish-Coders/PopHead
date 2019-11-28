@@ -5,7 +5,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
-#include "ECS/Components/animationComponents.h"
+#include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
