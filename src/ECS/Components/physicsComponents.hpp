@@ -26,5 +26,7 @@ namespace ph::component {
 	struct KinematicCollisionBody 
 	{
 		float mass;
+		bool staticallyMovedByX;
+		bool staticallyMovedByY;
 	};
 }
