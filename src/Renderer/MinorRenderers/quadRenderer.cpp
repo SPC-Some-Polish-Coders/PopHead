@@ -66,7 +66,7 @@ void QuadRenderer::setDebugNumbersToZero()
 }
 
 bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs) {
-	if(lhs.shader->getID() < rhs.shader->getID())
+	if(lhs.shader > rhs.shader)
 		return true;
 	if(lhs.z > rhs.z)
 		return true;
