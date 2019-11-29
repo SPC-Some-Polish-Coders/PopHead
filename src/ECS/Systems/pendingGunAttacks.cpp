@@ -27,11 +27,13 @@ void PendingGunAttacks::update(float seconds)
 				auto gunBody = gunView.get<component::BodyRect>(gun);
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
-				//temporary until I find better bullet positioning
+
 				sf::Vector2f shift = gunBody.rect.getCenter();
 				sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
 				shift -= startingBulletPos;
 				startingBulletPos += shift;
+				///////////////////////////////////////////////////////
+				//temporary until I find better bullet positioning
 				if (playerFaceDirection.direction == sf::Vector2f(1, 0))
 					startingBulletPos += sf::Vector2f(5, -1);
 				else if (playerFaceDirection.direction == sf::Vector2f(-1, 0))

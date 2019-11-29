@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/system.hpp"
+
 #include "Utilities/rect.hpp"
 
 namespace ph::system {
@@ -13,7 +14,9 @@ public:
 	void update(float seconds) override;
 
 private:
-	bool isSizeInVector(const std::vector<FloatRect>& sizes, const FloatRect& sizeValue) const;
+	void handleObjectsOutsideAreas() const;
+	void handleObjectsInsideAreas() const;
+	auto positionInVector(const std::vector<FloatRect>& sizes, const FloatRect& sizeValue) const -> std::vector<FloatRect>::const_iterator;
 
 };
 
