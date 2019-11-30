@@ -8,6 +8,7 @@
 #include <vector>
 #include <optional>
 #include <map>
+#include <utility>
 
 namespace ph {
 
@@ -30,12 +31,27 @@ struct RenderGroupKey
 	const Shader* shader;
 	float z;
 };
+bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
 bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
 
 struct QuadRenderGroup
 {
 	std::vector<QuadData> quadsData;
 	std::vector<const Texture*> textures;
+};
+
+class RenderGroupsHashMap
+{
+public:
+	RenderGroupsHashMap();
+	QuadRenderGroup& insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey);
+	auto getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>& { return mRenderGroups; }
+	size_t size() const { return mRenderGroups.size(); }
+private:
+	QuadRenderGroup* getRenderGroup(RenderGroupKey);
+
+private:
+	std::vector<std::pair<RenderGroupKey, QuadRenderGroup>> mRenderGroups;
 };
 
 class QuadRenderer
@@ -65,7 +81,7 @@ private:
 	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData);
 
 private:
-	std::map<RenderGroupKey, QuadRenderGroup> mRenderGroups;
+	RenderGroupsHashMap mRenderGroupsHashMap;
 	const FloatRect* mScreenBounds;
 	const Shader* mCurrentlyBoundShader;
 	Shader* mDefaultInstanedSpriteShader;

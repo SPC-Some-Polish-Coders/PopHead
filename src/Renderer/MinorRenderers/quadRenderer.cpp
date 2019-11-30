@@ -9,6 +9,27 @@
 
 namespace ph {
 
+RenderGroupsHashMap::RenderGroupsHashMap()
+{
+	mRenderGroups.reserve(10);
+}
+
+QuadRenderGroup& RenderGroupsHashMap::insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey key) 
+{
+	if(auto renderGroup = getRenderGroup(key))
+		return *renderGroup;
+	mRenderGroups.emplace_back(std::pair(key, QuadRenderGroup()));
+	return *getRenderGroup(key);
+}
+
+QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
+{
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].first == key)
+			return &mRenderGroups[i].second;
+	return nullptr;
+}
+
 void QuadRenderer::init()
 {
 	auto& sl = ShaderLibrary::getInstance();
@@ -65,6 +86,11 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfRenderGroups = 0;
 }
 
+bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
+{
+	return lhs.shader == rhs.shader && lhs.z == rhs.z;
+}
+
 bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs) {
 	if(lhs.shader > rhs.shader)
 		return true;
@@ -85,10 +111,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 		shader = mDefaultInstanedSpriteShader;
 
 	// find or add draw call group
-	std::map<RenderGroupKey, QuadRenderGroup>::iterator found;
-	while((found = mRenderGroups.find(RenderGroupKey{shader, z})) == mRenderGroups.end())
-		mRenderGroups.insert({RenderGroupKey{shader, z}, QuadRenderGroup()});
-	auto& renderGroup = found->second;
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z});
 
 	// submit data
 	QuadData quadData;
@@ -142,9 +165,9 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 void QuadRenderer::flush()
 {
 	PH_PROFILE_FUNCTION();
-	mNumberOfRenderGroups = mRenderGroups.size();
+	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
-	for(auto& [key, rg] : mRenderGroups)
+	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
 		mNumberOfDrawnSprites += rg.quadsData.size();
