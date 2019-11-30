@@ -32,7 +32,6 @@ struct RenderGroupKey
 	float z;
 };
 bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
-bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
 
 struct QuadRenderGroup
 {
@@ -45,13 +44,16 @@ class RenderGroupsHashMap
 public:
 	RenderGroupsHashMap();
 	QuadRenderGroup& insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey);
-	auto getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>& { return mRenderGroups; }
+	auto getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&;
 	size_t size() const { return mRenderGroups.size(); }
 private:
 	QuadRenderGroup* getRenderGroup(RenderGroupKey);
+	void sort();
+	void eraseUselessGroups();
 
 private:
 	std::vector<std::pair<RenderGroupKey, QuadRenderGroup>> mRenderGroups;
+	bool mShouldSort;
 };
 
 class QuadRenderer

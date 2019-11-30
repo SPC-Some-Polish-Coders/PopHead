@@ -10,6 +10,7 @@
 namespace ph {
 
 RenderGroupsHashMap::RenderGroupsHashMap()
+	:mShouldSort(false)
 {
 	mRenderGroups.reserve(10);
 }
@@ -19,7 +20,31 @@ QuadRenderGroup& RenderGroupsHashMap::insertIfDoesNotExistAndGetRenderGroup(Rend
 	if(auto renderGroup = getRenderGroup(key))
 		return *renderGroup;
 	mRenderGroups.emplace_back(std::pair(key, QuadRenderGroup()));
+	mShouldSort = true;
 	return *getRenderGroup(key);
+}
+
+auto RenderGroupsHashMap::getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&
+{
+	eraseUselessGroups();
+	sort();
+	return mRenderGroups;
+}
+
+void RenderGroupsHashMap::sort()
+{
+	if(!mShouldSort)
+		return;
+
+	std::sort(mRenderGroups.begin(), mRenderGroups.end(),
+		[](const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
+			return a.first.z > b.first.z || (a.first.z == b.first.z && a.first.shader > b.first.shader);
+		});
+}
+
+void RenderGroupsHashMap::eraseUselessGroups()
+{
+	// TODO_ren: Implement that
 }
 
 QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
@@ -89,14 +114,6 @@ void QuadRenderer::setDebugNumbersToZero()
 bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 {
 	return lhs.shader == rhs.shader && lhs.z == rhs.z;
-}
-
-bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs) {
-	if(lhs.shader > rhs.shader)
-		return true;
-	if(lhs.z > rhs.z)
-		return true;
-	return false;
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
