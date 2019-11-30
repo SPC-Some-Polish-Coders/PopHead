@@ -85,7 +85,7 @@ private:
 private:
 	RenderGroupsHashMap mRenderGroupsHashMap;
 	const FloatRect* mScreenBounds;
-	const Shader* mCurrentlyBoundShader;
+	const Shader* mCurrentlyBoundQuadShader;
 	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 	IndexBuffer mQuadIBO;

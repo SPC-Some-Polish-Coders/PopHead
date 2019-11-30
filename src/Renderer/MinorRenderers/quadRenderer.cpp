@@ -9,6 +9,8 @@
 
 namespace ph {
 
+// TODO_ren: Use custom allocators in RenderGroupsHashMap
+
 RenderGroupsHashMap::RenderGroupsHashMap()
 	:mShouldSort(false)
 {
@@ -36,9 +38,12 @@ void RenderGroupsHashMap::sort()
 	if(!mShouldSort)
 		return;
 
+	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
+	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
+
 	std::sort(mRenderGroups.begin(), mRenderGroups.end(),
 		[](const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
-			return a.first.z > b.first.z || (a.first.z == b.first.z && a.first.shader > b.first.shader);
+			return a.first.z > b.first.z;
 		});
 }
 
@@ -184,6 +189,8 @@ void QuadRenderer::flush()
 	PH_PROFILE_FUNCTION();
 	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
+	mCurrentlyBoundQuadShader = nullptr;
+
 	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
@@ -191,10 +198,10 @@ void QuadRenderer::flush()
 		mNumberOfDrawnTextures += rg.textures.size();
 
 		// set up shader
-		if(key.shader != mCurrentlyBoundShader) 
+		if(key.shader != mCurrentlyBoundQuadShader) 
 		{
 			key.shader->bind();
-			mCurrentlyBoundShader = key.shader;
+			mCurrentlyBoundQuadShader = key.shader;
 
 			int textures[32];
 			for(int i = 0; i < 32; ++i)
