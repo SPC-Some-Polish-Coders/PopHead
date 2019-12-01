@@ -9,6 +9,9 @@ namespace ph::system {
 
 	void PlayerMovementInput::update(float seconds)
 	{
+		if(isPlayerWithoutControl())
+			return;
+
 		updateInputFrags();
 		updateAnimationData();
 		const auto playerDirection = getPlayerDirection();
@@ -20,6 +23,13 @@ namespace ph::system {
 			velocity.dx = vel.x;
 			velocity.dy = vel.y;
 		});
+	}
+
+	bool PlayerMovementInput::isPlayerWithoutControl()
+	{
+		auto view = mRegistry.view<component::Player>();
+		for(auto entity : view)
+			return mRegistry.has<component::FadingOut>(entity);
 	}
 
 	void PlayerMovementInput::updateInputFrags()
@@ -69,7 +79,6 @@ namespace ph::system {
 
 	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
 	{
-		//constexpr float diagonal = 0.70710f;
 		constexpr float diagonal = 0.7f;
 
 		if (mUp   && mLeft)  return sf::Vector2f(-diagonal, -diagonal);

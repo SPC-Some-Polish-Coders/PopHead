@@ -1,10 +1,8 @@
 #pragma once
 
 #include "Utilities/rect.hpp"
-
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
-
 #include <set>
 
 namespace ph::component {
@@ -26,7 +24,6 @@ namespace ph::component {
 
 	struct Killable
 	{
-
 	};
 
 	struct FaceDirection
@@ -50,9 +47,13 @@ namespace ph::component {
 		bool canAttack;
 	};
 
+	struct FadingOut
+	{
+		float timeFromDeath = 0.f;
+	};
+
 	struct TaggedToDestroy
 	{
-
 	};
 
 	struct DamageTag

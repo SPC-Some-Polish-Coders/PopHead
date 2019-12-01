@@ -14,6 +14,7 @@ namespace ph::system {
 		void update(float seconds) override;
 
 	private:
+		bool isPlayerWithoutControl();
 		sf::Vector2f getPlayerDirection() const;
 		void updateInputFrags();
 		void updateAnimationData();
