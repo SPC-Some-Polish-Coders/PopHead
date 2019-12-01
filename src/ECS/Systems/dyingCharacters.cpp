@@ -8,6 +8,12 @@ namespace ph::system {
 
 	void DyingCharacters::update(float seconds)
 	{
+		makeCharactersDie();
+		playDyingAnimation(seconds);
+	}
+
+	void DyingCharacters::makeCharactersDie() const
+	{
 		auto view = mRegistry.view<component::Health>();
 		for(auto entity : view)
 		{
@@ -44,6 +50,21 @@ namespace ph::system {
 				else
 					mRegistry.assign<component::TaggedToDestroy>(entity);
 			}
+		}
+	}
+
+	void DyingCharacters::playDyingAnimation(float seconds) const
+	{
+		auto view = mRegistry.view<component::FadingOut, component::Color>();
+		for(auto entity : view)
+		{
+			float& timeFromDeath = view.get<component::FadingOut>(entity).timeFromDeath;
+			if(timeFromDeath > 10.f)
+				mRegistry.assign<component::TaggedToDestroy>(entity);
+
+			timeFromDeath += seconds;
+			sf::Color& color = view.get<component::Color>(entity).color;
+			color.a = static_cast<unsigned char>(255.f - (timeFromDeath * 25.5f));
 		}
 	}
 }
