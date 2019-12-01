@@ -20,7 +20,7 @@ void AnimationSystem::update(float seconds)
 			{
 				animationData.elapsedTime -= animationData.delay;
 				StateData& state = animationData.states->at(animationData.currentStateName);
-				if(++animationData.currentFrameIndex == state.framesCount)
+				if(++animationData.currentFrameIndex >= state.frameCount)
 					animationData.currentFrameIndex = 0;
 				textureRect.rect = IntRect(
 					state.startFrame.left + state.startFrame.width * animationData.currentFrameIndex,

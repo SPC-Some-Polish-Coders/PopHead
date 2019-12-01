@@ -26,7 +26,7 @@ void loadAnimationStatesFromFile(const std::string& filepath)
 			data.getAttribute("startFrameWidth").toInt(),
 			data.getAttribute("startFrameHeight").toInt()
 		);
-		state.framesCount = data.getAttribute("frameCount").toUnsigned();
+		state.frameCount = data.getAttribute("frameCount").toUnsigned();
 		const std::string stateName = data.getAttribute("name").toString();
 		animation[stateName] = state;
 	}
