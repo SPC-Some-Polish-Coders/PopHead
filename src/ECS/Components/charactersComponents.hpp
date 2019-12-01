@@ -92,4 +92,9 @@ namespace ph::component {
 	{
 		std::multiset<float> velocityMultipliers;
 	};
+
+	struct DamageAnimation
+	{
+		float timeToEnd;
+	};
 }

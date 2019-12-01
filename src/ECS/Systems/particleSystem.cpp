@@ -27,35 +27,40 @@ void PatricleSystem::update(float dt)
 			emi.particles.erase(emi.particles.begin());
 
 		// add particles
-		auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
+		if(!emi.oneShot || emi.amountOfAlreadySpawnParticles < emi.amountOfParticles)
 		{
-			Particle particle;
-			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
-			if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
-				const sf::Vector2f randomOffset(
-					Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
-					Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
-				);
-				particle.position += randomOffset;
-			}
-			particle.velocity = emi.parInitialVelocity;
-			emi.particles.emplace_back(particle);
-		};
-
-		if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
-		{
-			float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
-			unsigned nrOfParticlesAddedInThisFrame = 0;
-			while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+			auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
 			{
-				++nrOfParticlesAddedInThisFrame;
-				addParticle(emi, body);
+				Particle particle;
+				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+					const sf::Vector2f randomOffset(
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
+						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
+					);
+					particle.position += randomOffset;
+				}
+				particle.velocity = emi.parInitialVelocity;
+				emi.particles.emplace_back(particle);
+			};
+
+			if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
+			{
+				float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
+				unsigned nrOfParticlesAddedInThisFrame = 0;
+				while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+				{
+					++nrOfParticlesAddedInThisFrame;
+					addParticle(emi, body);
+				}
+				emi.amountOfAlreadySpawnParticles += nrOfParticlesAddedInThisFrame;
 			}
-		}
-		else if((emi.particles.size() < emi.amountOfParticles) && 
-		        (emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
-		{
-			addParticle(emi, body);
+			else if((emi.particles.size() < emi.amountOfParticles) && 
+				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+			{
+				addParticle(emi, body);
+				++emi.amountOfAlreadySpawnParticles;
+			}
 		}
 
 		for(auto& particle : emi.particles)

@@ -26,6 +26,7 @@
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/fadingOut.hpp"
+#include "ECS/systems/damageAnimation.hpp"
 
 namespace ph {
 
@@ -98,6 +99,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
 	mSystemsQueue.appendSystem<system::VelocityClear>();
+	mSystemsQueue.appendSystem<system::DamageAnimation>();
 	mSystemsQueue.appendSystem<system::FadingOut>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 }

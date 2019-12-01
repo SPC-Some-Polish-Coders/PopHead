@@ -29,9 +29,10 @@ struct ParticleEmitter
 	sf::Color parStartColor = sf::Color::White;
 	sf::Color parEndColor = sf::Color::White;
 	unsigned amountOfParticles = 1;
+	unsigned amountOfAlreadySpawnParticles = 0;
 	float parWholeLifetime = 1.f;
+	bool oneShot = false;
 	bool isEmitting = true;
-
 	bool wasInitialized = false;
 };
 
