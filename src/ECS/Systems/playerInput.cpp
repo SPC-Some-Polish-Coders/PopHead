@@ -12,10 +12,12 @@ namespace ph::system {
 		if(isPlayerWithoutControl())
 			return;
 
-		updateInputFrags();
+		updateInputFlags();
 		updateAnimationData();
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
+		updateGunAttackInput();
+		updateMeleeAttackInput();
 
 		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
 		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, const component::Player) {
@@ -32,7 +34,7 @@ namespace ph::system {
 			return mRegistry.has<component::FadingOut>(entity);
 	}
 
-	void PlayerMovementInput::updateInputFrags()
+	void PlayerMovementInput::updateInputFlags()
 	{
 		mUp    = ActionEventManager::isActionPressed("movingUp");
 		mDown  = ActionEventManager::isActionPressed("movingDown");
@@ -107,20 +109,9 @@ namespace ph::system {
 		}
 	}
 
-	void PlayerAttackType::update(float seconds)
+	void PlayerMovementInput::updateGunAttackInput()
 	{
-		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
-		auto playerGunView= mRegistry.view<component::Player, component::GunAttacker>();
-
-		if (ActionEventManager::isActionPressed("meleeAtack"))
-		{
-			for (auto player : playerMeleeView)
-			{
-				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
-				playerMeleeAttack.isTryingToAttack = true;
-			}
-		}
-
+		auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
 		if (ActionEventManager::isActionPressed("gunAttack"))
 		{
 			for (auto player : playerGunView)
@@ -131,4 +122,16 @@ namespace ph::system {
 		}
 	}
 
+	void PlayerMovementInput::updateMeleeAttackInput()
+	{
+		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
+		if(ActionEventManager::isActionPressed("meleeAtack"))
+		{
+			for(auto player : playerMeleeView)
+			{
+				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
+				playerMeleeAttack.isTryingToAttack = true;
+			}
+		}
+	}
 }

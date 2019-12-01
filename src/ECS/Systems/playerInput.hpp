@@ -16,22 +16,16 @@ namespace ph::system {
 	private:
 		bool isPlayerWithoutControl();
 		sf::Vector2f getPlayerDirection() const;
-		void updateInputFrags();
+		void updateInputFlags();
 		void updateAnimationData();
 		void setPlayerFaceDirection(const sf::Vector2f& faceDirection) const;
+		void updateGunAttackInput();
+		void updateMeleeAttackInput();
 
 	private:
 		bool mUp;
 		bool mDown;
 		bool mLeft;
 		bool mRight;
-	};
-
-	class PlayerAttackType : public System
-	{
-	public:
-		using System::System;
-
-		void update(float seconds) override;
 	};
 }
