@@ -47,9 +47,9 @@ namespace ph::component {
 		bool canAttack;
 	};
 
-	struct FadingOut
+	struct TimeToFadeOut
 	{
-		float timeFromDeath = 0.f;
+		float seconds = 0.f;
 	};
 
 	struct TaggedToDestroy

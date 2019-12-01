@@ -24,14 +24,13 @@ namespace ph::system {
 				{
 					bool isPlayer = mRegistry.has<component::Player>(entity);
 
-					mRegistry.assign<component::FadingOut>(entity);
+					mRegistry.assign<component::TimeToFadeOut>(entity);
 
 					mRegistry.remove<component::Health>(entity);
 					mRegistry.remove<component::Killable>(entity);
 					mRegistry.remove<component::KinematicCollisionBody>(entity);
 					if(!isPlayer)
 						mRegistry.remove<component::Damage>(entity);
-
 
 					auto& z = mRegistry.get<component::Z>(entity);
 					z.z = isPlayer ? 96 : 97;
@@ -55,16 +54,14 @@ namespace ph::system {
 
 	void DyingCharacters::playDyingAnimation(float seconds) const
 	{
-		auto view = mRegistry.view<component::FadingOut, component::Color>();
+		auto view = mRegistry.view<component::TimeToFadeOut, component::Color>();
 		for(auto entity : view)
 		{
-			float& timeFromDeath = view.get<component::FadingOut>(entity).timeFromDeath;
-			if(timeFromDeath > 10.f)
+			auto& [timeToFadeOut, color] = view.get<component::TimeToFadeOut, component::Color>(entity);
+			timeToFadeOut.seconds += seconds;
+			if(timeToFadeOut.seconds > 10.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
-
-			timeFromDeath += seconds;
-			sf::Color& color = view.get<component::Color>(entity).color;
-			color.a = static_cast<unsigned char>(255.f - (timeFromDeath * 25.5f));
+			color.color.a = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace ph::system {
 	{
 		auto view = mRegistry.view<component::Player>();
 		for(auto entity : view)
-			return mRegistry.has<component::FadingOut>(entity);
+			return mRegistry.has<component::TimeToFadeOut>(entity);
 	}
 
 	void PlayerMovementInput::updateInputFlags()
