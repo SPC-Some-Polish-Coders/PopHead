@@ -22,15 +22,11 @@ namespace ph::system {
 					mRegistry.remove<component::Killable>(entity);
 					mRegistry.remove<component::KinematicCollisionBody>(entity);
 
-					bool isPlayer = mRegistry.has<component::Player>(entity);
-					
 					auto& z = mRegistry.get<component::Z>(entity);
-					z.z = isPlayer ? 96 : 97;
+					z.z = mRegistry.has<component::Player>(entity) ? 96 : 97;
 					
-					if(isPlayer) {
-						auto& animation = mRegistry.get<component::AnimationData>(entity);
-						animation.currentStateName = "dead";
-					}
+					auto& animation = mRegistry.get<component::AnimationData>(entity);
+					animation.currentStateName = "dead";
 				}
 				else
 					mRegistry.assign<component::TaggedToDestroy>(entity);

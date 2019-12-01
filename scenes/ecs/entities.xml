@@ -16,7 +16,7 @@
         <component name="TextureRect" x="0" y="0" width="0" height="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
         <component name="Killable" />
-        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/player.animstates.xml"/>
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="ParticleEmitter">
             <particleAttrib name="startColor" r="0" g="10" b="100" a="255"/>
             <particleAttrib name="spawnPositionOffset" x="-500" y="-300"/>
@@ -53,8 +53,9 @@
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="Z" z="95"/>
         <component name="Color" r="255" g="255" b="255" a="255" />
-        <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
+        <component name="Texture" filepath="textures/characters/zombieFullAnimation.png" />
         <component name="TextureRect" x="0" y="0" width="20" height="20" />
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="Killable"/>
     </entityTemplate>
 
