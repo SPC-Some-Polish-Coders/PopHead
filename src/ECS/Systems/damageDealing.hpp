@@ -10,5 +10,9 @@ namespace ph::system {
 		using System::System;
 
 		void update(float seconds) override;
+
+	private:
+		void dealDamage() const;
+		void playDamageAnimation(float seconds) const;
 	};
 }
