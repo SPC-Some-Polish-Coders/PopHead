@@ -49,7 +49,9 @@ void RenderGroupsHashMap::sort()
 
 void RenderGroupsHashMap::eraseUselessGroups()
 {
-	// TODO_ren: Implement that
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].second.quadsData.empty())
+			mRenderGroups.erase(mRenderGroups.begin() + i);
 }
 
 QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
@@ -58,6 +60,11 @@ QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
 		if(mRenderGroups[i].first == key)
 			return &mRenderGroups[i].second;
 	return nullptr;
+}
+
+bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
+{
+	return lhs.shader == rhs.shader && lhs.z == rhs.z;
 }
 
 void QuadRenderer::init()
@@ -114,11 +121,6 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfDrawnSprites = 0;
 	mNumberOfDrawnTextures = 0;
 	mNumberOfRenderGroups = 0;
-}
-
-bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
-{
-	return lhs.shader == rhs.shader && lhs.z == rhs.z;
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
