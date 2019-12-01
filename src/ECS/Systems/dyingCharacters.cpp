@@ -22,8 +22,18 @@ namespace ph::system {
 					mRegistry.remove<component::Killable>(entity);
 					mRegistry.remove<component::KinematicCollisionBody>(entity);
 
+					bool isPlayer = mRegistry.has<component::Player>(entity);
+
 					auto& z = mRegistry.get<component::Z>(entity);
-					z.z = mRegistry.has<component::Player>(entity) ? 96 : 97;
+					z.z = isPlayer ? 96 : 97;
+
+					if(isPlayer) {
+						auto deathCameraEntity = mRegistry.create();
+						component::Camera camera;
+						camera.camera = mRegistry.get<component::Camera>(entity).camera;
+						camera.priority = 2;
+						mRegistry.assign<component::Camera>(deathCameraEntity, camera);
+					}
 					
 					auto& animation = mRegistry.get<component::AnimationData>(entity);
 					animation.currentStateName = "dead";
