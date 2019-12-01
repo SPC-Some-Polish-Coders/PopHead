@@ -16,13 +16,16 @@ namespace ph::system {
 			{
 				if(mRegistry.has<component::Color>(entity))
 				{
+					bool isPlayer = mRegistry.has<component::Player>(entity);
+
 					mRegistry.assign<component::FadingOut>(entity);
 
 					mRegistry.remove<component::Health>(entity);
 					mRegistry.remove<component::Killable>(entity);
 					mRegistry.remove<component::KinematicCollisionBody>(entity);
+					if(!isPlayer)
+						mRegistry.remove<component::Damage>(entity);
 
-					bool isPlayer = mRegistry.has<component::Player>(entity);
 
 					auto& z = mRegistry.get<component::Z>(entity);
 					z.z = isPlayer ? 96 : 97;
