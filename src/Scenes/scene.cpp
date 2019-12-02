@@ -4,11 +4,10 @@
 #include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/movement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
-#include "ECS/Systems/dyingCharacters.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
 #include "ECS/Systems/renderSystem.hpp"
-#include "ECS/Systems/damageDealing.hpp"
+#include "ECS/Systems/damageAndDeath.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/isObjectInArea.hpp"
@@ -91,8 +90,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::GunTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DamageDealing>();
-	mSystemsQueue.appendSystem<system::DyingCharacters>();
+	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
 	mSystemsQueue.appendSystem<system::VelocityClear>();

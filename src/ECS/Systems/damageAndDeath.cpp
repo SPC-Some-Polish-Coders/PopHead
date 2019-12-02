@@ -1,22 +1,22 @@
-#include "damageDealing.hpp"
+#include "damageAndDeath.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Utilities/debug.hpp"
-
-namespace {
-	constexpr float colorChangeTime = 0.14f;
-}
+#include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/animationComponents.hpp"
+#include "Logs/logs.hpp"
 
 namespace ph::system {
 
-	void DamageDealing::update(float seconds)
+	void DamageAndDeath::update(float dt)
 	{
 		dealDamage();
-		makeDamageJuice(seconds);
+		makeDamageJuice(dt);
+		makeCharactersDie();
+		playDyingAnimation(dt);
 	}
 
-	void DamageDealing::dealDamage() const
+	void DamageAndDeath::dealDamage() const
 	{
 		auto view = mRegistry.view<component::DamageTag, component::Health>();
 		for (auto entity : view)
@@ -24,25 +24,22 @@ namespace ph::system {
 			auto& [damageTag, health] = view.get<component::DamageTag, component::Health>(entity);
 			health.healthPoints -= damageTag.amountOfDamage;
 			mRegistry.remove<component::DamageTag>(entity);
-			mRegistry.assign_or_replace<component::DamageAnimation>(entity, colorChangeTime);
+			mRegistry.assign_or_replace<component::DamageAnimation>(entity, 0.14f);
 		}
 	}
 
-	void DamageDealing::makeDamageJuice(float seconds) const
+	void DamageAndDeath::makeDamageJuice(float dt) const
 	{
-		// NOTE: Juice is game design term
-
-		// TODO: Make this assert work
-		/*PH_ASSERT(mRegistry.has<component::MultiParticleEmitter>(entity),
-			"This Entity should have MultiParticleEmitter in order to emit damage particles!");*/
-
 		auto view = mRegistry.view<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>();
 		for(auto entity : view)
 		{
+			PH_ASSERT(mRegistry.has<component::MultiParticleEmitter>(entity),
+				"This Entity should have MultiParticleEmitter in order to emit damage particles!");
+
 			auto& [damageAnimation, color, health, multiParticleEmitter] =
 				view.get<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>(entity);
 			
-			damageAnimation.timeToEndColorChange -= seconds;
+			damageAnimation.timeToEndColorChange -= dt;
 			
 			if(damageAnimation.timeToEndColorChange <= 0.f) {
 				color.color = sf::Color::White;
@@ -94,17 +91,54 @@ namespace ph::system {
 			}
 		}
 	}
+
+	void DamageAndDeath::makeCharactersDie() const
+	{
+		auto view = mRegistry.view<component::Health>();
+		for(auto entity : view)
+		{
+			const auto& health = view.get(entity);
+			if(health.healthPoints <= 0)
+			{
+				bool isPlayer = mRegistry.has<component::Player>(entity);
+
+				mRegistry.assign<component::TimeToFadeOut>(entity);
+
+				mRegistry.remove<component::Health>(entity);
+				mRegistry.remove<component::Killable>(entity);
+				mRegistry.remove<component::KinematicCollisionBody>(entity);
+				if(!isPlayer)
+					mRegistry.remove<component::Damage>(entity);
+
+				auto& z = mRegistry.get<component::Z>(entity);
+				z.z = isPlayer ? 96 : 97;
+
+				if(isPlayer) {
+					auto deathCameraEntity = mRegistry.create();
+					component::Camera camera;
+					camera.camera = mRegistry.get<component::Camera>(entity).camera;
+					camera.priority = 2;
+					mRegistry.assign<component::Camera>(deathCameraEntity, camera);
+				}
+
+				auto& animation = mRegistry.get<component::AnimationData>(entity);
+				animation.currentStateName = "dead";
+			}
+		}
+	}
+
+	void DamageAndDeath::playDyingAnimation(float dt) const
+	{
+		auto view = mRegistry.view<component::TimeToFadeOut, component::Color>();
+		for(auto entity : view)
+		{
+			PH_ASSERT(mRegistry.has<component::Color>(entity), "This entity must have Color component!");
+			auto& [timeToFadeOut, color] = view.get<component::TimeToFadeOut, component::Color>(entity);
+			timeToFadeOut.seconds += dt;
+			if(timeToFadeOut.seconds > 10.f)
+				mRegistry.assign<component::TaggedToDestroy>(entity);
+			color.color.a = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
+		}
+	}
+
 }
-
-
-//component::ParticleEmitter spiritParEmitter;
-//spiritParEmitter.oneShot = true;
-//spiritParEmitter.amountOfParticles = 50;
-//spiritParEmitter.parInitialVelocity = {0.f, -1.8f};
-//spiritParEmitter.parSize = {3.f, 3.f};
-//spiritParEmitter.parStartColor = sf::Color::White;
-//spiritParEmitter.parEndColor = sf::Color::Black;
-//spiritParEmitter.parWholeLifetime = 0.5f;
-//spiritParEmitter.spawnPositionOffset = {0.f, 0.f};
-//spiritParEmitter.randomSpawnAreaSize = {13.f, 5.f};
-//mRegistry.assign<component::ParticleEmitter>(entity, spiritParEmitter);
