@@ -15,6 +15,6 @@ namespace ph::system {
 		void dealDamage() const;
 		void makeDamageJuice(float dt) const; // NOTE: Juice is game design term
 		void makeCharactersDie() const;
-		void playDyingAnimation(float dt) const;
+		void makeCorpsesFadeOut(float dt) const;
 	};
 }

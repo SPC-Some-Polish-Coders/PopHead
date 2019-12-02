@@ -13,7 +13,7 @@ namespace ph::system {
 		dealDamage();
 		makeDamageJuice(dt);
 		makeCharactersDie();
-		playDyingAnimation(dt);
+		makeCorpsesFadeOut(dt);
 	}
 
 	void DamageAndDeath::dealDamage() const
@@ -100,6 +100,8 @@ namespace ph::system {
 			const auto& health = view.get(entity);
 			if(health.healthPoints <= 0)
 			{
+				PH_ASSERT(mRegistry.has<component::Color>(entity), "This entity must have Color component in order to fade out!");
+
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 
 				mRegistry.assign<component::TimeToFadeOut>(entity);
@@ -127,17 +129,17 @@ namespace ph::system {
 		}
 	}
 
-	void DamageAndDeath::playDyingAnimation(float dt) const
+	void DamageAndDeath::makeCorpsesFadeOut(float dt) const
 	{
 		auto view = mRegistry.view<component::TimeToFadeOut, component::Color>();
 		for(auto entity : view)
 		{
-			PH_ASSERT(mRegistry.has<component::Color>(entity), "This entity must have Color component!");
 			auto& [timeToFadeOut, color] = view.get<component::TimeToFadeOut, component::Color>(entity);
 			timeToFadeOut.seconds += dt;
 			if(timeToFadeOut.seconds > 10.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
-			color.color.a = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
+			auto alpha = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
+			color.color = sf::Color(255, 255, 255, alpha);
 		}
 	}
 
