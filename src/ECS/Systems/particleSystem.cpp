@@ -35,14 +35,8 @@ void PatricleSystem::update(float dt)
 
 				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
 
-				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
-					// TODO: Refactor this
-					const sf::Vector2f randomOffset(
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
-						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
-					);
-					particle.position += randomOffset;
-				}
+				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f))
+					particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);
 
 				if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
 					particle.velocity = emi.parInitialVelocity;
