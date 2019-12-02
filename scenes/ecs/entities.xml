@@ -2,7 +2,7 @@
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
-        <component name="GunAttacker" minSecondsInterval="0.3 " bullets="20" isTryingToAttack="false" />
+        <component name="GunAttacker" minSecondsInterval="0.3 " bullets="120" isTryingToAttack="false" />
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
@@ -28,6 +28,7 @@
             <particleAttrib name="lifetime" v="3"/>
             <particleAttrib name="isEmitting" v="true"/>
         </component>
+        <component name="MultiParticleEmitter"/>
     </entityTemplate>
 
 
@@ -46,7 +47,7 @@
 
     <entityTemplate name="Zombie">
         <component name="Velocity" dx="2.0" dy="2.0" />
-        <component name="Health" healthPoints="400" maxHealthPoints="400" />
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="KinematicCollisionBody" mass="10" />
         <component name="Damage" damageDealt="25" />
         <component name="CollisionWithPlayer"/>
@@ -57,6 +58,7 @@
         <component name="TextureRect" x="0" y="0" width="20" height="20" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="Killable"/>
+        <component name="MultiParticleEmitter"/>
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
@@ -334,6 +336,28 @@
     
     <entity sourceTemplate="Zombie">
         <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
+    </entity>
+  
+  
+  
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="50" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="150" maxHealthPoints="150" />
+    </entity>
+        
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="80" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="200" maxHealthPoints="200" />
+    </entity>
+    
+        <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="110" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="250" maxHealthPoints="250" />
+    </entity>
+    
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="140" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="300" maxHealthPoints="300" />
     </entity>
 
     <entity sourceTemplate="GateGuard">

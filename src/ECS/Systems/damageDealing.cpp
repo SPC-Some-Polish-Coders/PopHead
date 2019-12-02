@@ -2,10 +2,10 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "Utilities/debug.hpp"
 
 namespace {
 	constexpr float colorChangeTime = 0.14f;
-	constexpr float particlesTime = 0.4f;
 }
 
 namespace ph::system {
@@ -13,7 +13,7 @@ namespace ph::system {
 	void DamageDealing::update(float seconds)
 	{
 		dealDamage();
-		playDamageAnimation(seconds);
+		makeDamageJuice(seconds);
 	}
 
 	void DamageDealing::dealDamage() const
@@ -24,43 +24,33 @@ namespace ph::system {
 			auto& [damageTag, health] = view.get<component::DamageTag, component::Health>(entity);
 			health.healthPoints -= damageTag.amountOfDamage;
 			mRegistry.remove<component::DamageTag>(entity);
-			mRegistry.assign_or_replace<component::DamageAnimation>(entity, colorChangeTime, particlesTime);
+			mRegistry.assign_or_replace<component::DamageAnimation>(entity, colorChangeTime);
 		}
 	}
 
-	void DamageDealing::playDamageAnimation(float seconds) const
+	void DamageDealing::makeDamageJuice(float seconds) const
 	{
-		// TODO: Make character blast just after it was hit
+		// NOTE: Juice is game design term
 
-		auto view = mRegistry.view<component::DamageAnimation, component::Color, component::Health>();
+		// TODO: Make this assert work
+		/*PH_ASSERT(mRegistry.has<component::MultiParticleEmitter>(entity),
+			"This Entity should have MultiParticleEmitter in order to emit damage particles!");*/
+
+		auto view = mRegistry.view<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>();
 		for(auto entity : view)
 		{
-			auto& [damageAnimation, color, health] = view.get<component::DamageAnimation, component::Color, component::Health>(entity);
+			auto& [damageAnimation, color, health, multiParticleEmitter] =
+				view.get<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>(entity);
 			
 			damageAnimation.timeToEndColorChange -= seconds;
-			damageAnimation.particlesTime -= seconds;
 			
-			if(damageAnimation.timeToEndColorChange <= 0.f)
+			if(damageAnimation.timeToEndColorChange <= 0.f) {
 				color.color = sf::Color::White;
-			else
-				color.color = sf::Color(255, 0, 0);
-
-			if(damageAnimation.particlesTime <= 0.f) {
-				mRegistry.remove<component::ParticleEmitter>(entity);
 				mRegistry.remove<component::DamageAnimation>(entity);
 			}
-			else if(!mRegistry.has<component::ParticleEmitter>(entity)) {
-				//component::ParticleEmitter spiritParEmitter;
-				//spiritParEmitter.oneShot = true;
-				//spiritParEmitter.amountOfParticles = 50;
-				//spiritParEmitter.parInitialVelocity = {0.f, -1.8f};
-				//spiritParEmitter.parSize = {3.f, 3.f};
-				//spiritParEmitter.parStartColor = sf::Color::White;
-				//spiritParEmitter.parEndColor = sf::Color::Black;
-				//spiritParEmitter.parWholeLifetime = 0.5f;
-				//spiritParEmitter.spawnPositionOffset = {0.f, 0.f};
-				//spiritParEmitter.randomSpawnAreaSize = {13.f, 5.f};
-				//mRegistry.assign<component::ParticleEmitter>(entity, spiritParEmitter);
+			else if(!damageAnimation.wasAnimationStarted) {
+				damageAnimation.wasAnimationStarted = true;
+				color.color = sf::Color(255, 0, 0);
 
 				component::ParticleEmitter bloodParEmitter;
 
@@ -73,8 +63,8 @@ namespace ph::system {
 				bloodParEmitter.spawnPositionOffset = {8.f, 8.f};
 
 				if(health.healthPoints <= 0.f) {
-					bloodParEmitter.parWholeLifetime = 0.6f;
-					bloodParEmitter.parSize = {11.f, 11.f};
+					bloodParEmitter.parWholeLifetime = 0.55f;
+					bloodParEmitter.parSize = {10.f, 10.f};
 					bloodParEmitter.amountOfParticles = 100;
 				}
 				else if(health.healthPoints < health.maxHealthPoints * 0.2) {
@@ -99,9 +89,22 @@ namespace ph::system {
 					bloodParEmitter.parWholeLifetime = 0.24f;
 					bloodParEmitter.amountOfParticles = 15;
 				}
-
-				mRegistry.assign<component::ParticleEmitter>(entity, bloodParEmitter);
+				
+				multiParticleEmitter.particleEmitters.emplace_back(bloodParEmitter);
 			}
 		}
 	}
 }
+
+
+//component::ParticleEmitter spiritParEmitter;
+//spiritParEmitter.oneShot = true;
+//spiritParEmitter.amountOfParticles = 50;
+//spiritParEmitter.parInitialVelocity = {0.f, -1.8f};
+//spiritParEmitter.parSize = {3.f, 3.f};
+//spiritParEmitter.parStartColor = sf::Color::White;
+//spiritParEmitter.parEndColor = sf::Color::Black;
+//spiritParEmitter.parWholeLifetime = 0.5f;
+//spiritParEmitter.spawnPositionOffset = {0.f, 0.f};
+//spiritParEmitter.randomSpawnAreaSize = {13.f, 5.f};
+//mRegistry.assign<component::ParticleEmitter>(entity, spiritParEmitter);

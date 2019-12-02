@@ -17,7 +17,9 @@ public:
 	void update(float dt) override;
 
 private:
-	void updateParticleEmitter(float dt, ph::component::ParticleEmitter&, const ph::component::BodyRect&) const;
+	void updateSingleParticleEmitters(const float dt) const;
+	void updateMultiParticleEmitters(const float dt) const;
+	void updateParticleEmitter(const float dt, ph::component::ParticleEmitter&, const ph::component::BodyRect&) const;
 };
 
 }

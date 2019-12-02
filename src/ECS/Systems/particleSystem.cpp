@@ -9,23 +9,39 @@ namespace ph::system {
 
 void PatricleSystem::update(float dt)
 {
-	// update single particle emitters
-	auto singleParticleEmittersView = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
-	singleParticleEmittersView.each([dt, this](component::ParticleEmitter& emi, const component::BodyRect& body)
+	updateSingleParticleEmitters(dt);
+	updateMultiParticleEmitters(dt);
+}
+
+void PatricleSystem::updateSingleParticleEmitters(const float dt) const
+{
+	auto view = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
+	view.each([dt, this](component::ParticleEmitter& emi, const component::BodyRect& body)
 	{
 		updateParticleEmitter(dt, emi, body);
 	});
-	
-	// update multi particle emitters
-	auto multiParticleEmittersView = mRegistry.view<component::MultiParticleEmitter, component::BodyRect>();
-	multiParticleEmittersView.each([dt, this](component::MultiParticleEmitter& multiEmi, const component::BodyRect& body)
+}
+
+void PatricleSystem::updateMultiParticleEmitters(const float dt) const
+{
+	auto view = mRegistry.view<component::MultiParticleEmitter, component::BodyRect>();
+	view.each([dt, this](component::MultiParticleEmitter& multiEmi, const component::BodyRect& body)
 	{
-		for(auto& emi : multiEmi.particleEmitters)
-			updateParticleEmitter(dt, emi, body);
+		// update particle emitters 
+		for(auto& particleEmitter : multiEmi.particleEmitters)
+			updateParticleEmitter(dt, particleEmitter, body);
+
+		// erase dead particle emitters from multi particle emitter
+		for(auto it = multiEmi.particleEmitters.begin(); it != multiEmi.particleEmitters.end();) {
+			if(it->oneShot && it->particles.empty())
+				it = multiEmi.particleEmitters.erase(it);
+			else
+				++it;
+		}
 	});
 }
 
-void PatricleSystem::updateParticleEmitter(float dt, component::ParticleEmitter& emi, const component::BodyRect& body) const
+void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEmitter& emi, const component::BodyRect& body) const
 {
 	// exit if is not emitting
 	if(!emi.isEmitting)

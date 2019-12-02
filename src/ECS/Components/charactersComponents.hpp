@@ -96,6 +96,6 @@ namespace ph::component {
 	struct DamageAnimation
 	{
 		float timeToEndColorChange;
-		float particlesTime;
+		bool wasAnimationStarted = false;
 	};
 }

@@ -108,7 +108,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
 		{"VelocityChangingEffect", &EntitiesParser::parseVelocityChangingEffect},
 		{"AnimationData",          &EntitiesParser::parseAnimationData},
-		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter}
+		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter},
+		{"MultiParticleEmitter",   &EntitiesParser::parseMultiParticleEmitter}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -287,6 +288,11 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 	}
 	mUsedRegistry->assign_or_replace<component::ParticleEmitter>(entity, emitter);
+}
+
+void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::MultiParticleEmitter>(entity, component::MultiParticleEmitter());
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

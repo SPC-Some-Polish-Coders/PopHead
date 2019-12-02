@@ -13,6 +13,6 @@ namespace ph::system {
 
 	private:
 		void dealDamage() const;
-		void playDamageAnimation(float seconds) const;
+		void makeDamageJuice(float seconds) const;
 	};
 }

@@ -4,8 +4,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <Renderer/texture.hpp>
 #include <vector>
-#include <map>
-#include <string>
 
 namespace ph {
 
@@ -41,7 +39,7 @@ struct ParticleEmitter
 
 struct MultiParticleEmitter
 {
-	std::multimap<std::string, ParticleEmitter> particleEmitters;
+	std::vector<ParticleEmitter> particleEmitters;
 };
 
 }}
