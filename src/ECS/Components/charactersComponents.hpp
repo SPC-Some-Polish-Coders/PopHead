@@ -95,6 +95,7 @@ namespace ph::component {
 
 	struct DamageAnimation
 	{
-		float timeToEnd;
+		float timeToEndColorChange;
+		float wholeDamageAnimationTime;
 	};
 }

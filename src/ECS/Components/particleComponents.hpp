@@ -24,6 +24,7 @@ struct ParticleEmitter
 	sf::Vector2f spawnPositionOffset = {0.f, 0.f};
 	sf::Vector2f randomSpawnAreaSize = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};
+	sf::Vector2f parInitialVelocityRandom = {0.f, 1.f};
 	sf::Vector2f parAcceleration = {0.f, 0.f};
 	sf::Vector2f parSize = {1.f, 1.f};
 	sf::Color parStartColor = sf::Color::White;

@@ -32,23 +32,32 @@ void PatricleSystem::update(float dt)
 			auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
 			{
 				Particle particle;
+
 				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+
 				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f)) {
+					// TODO: Refactor this
 					const sf::Vector2f randomOffset(
 						Random::generateNumber(0.f, emi.randomSpawnAreaSize.x),
 						Random::generateNumber(0.f, emi.randomSpawnAreaSize.y)
 					);
 					particle.position += randomOffset;
 				}
-				particle.velocity = emi.parInitialVelocity;
+
+				if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
+					particle.velocity = emi.parInitialVelocity;
+				else
+					particle.velocity = Random::generateVector(emi.parInitialVelocity, emi.parInitialVelocityRandom);
+				
 				emi.particles.emplace_back(particle);
 			};
 
-			if(static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
+			if(emi.oneShot || static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
 			{
 				float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
 				unsigned nrOfParticlesAddedInThisFrame = 0;
-				while((emi.particles.size() < emi.amountOfParticles) && (nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+				while((emi.particles.size() < emi.amountOfParticles) && 
+				      (emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
 				{
 					++nrOfParticlesAddedInThisFrame;
 					addParticle(emi, body);

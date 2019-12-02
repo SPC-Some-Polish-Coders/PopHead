@@ -216,6 +216,7 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 	component::ParticleEmitter emitter;
 	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
 	bool wasEndColorAssigned = false;
+	bool wasInitialVelocityRandomAssigned = false;
 	for(const auto& attrib : particleAttribs)
 	{
 		const std::string name = attrib.getAttribute("name").toString();
@@ -257,6 +258,13 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
 			emitter.parInitialVelocity = {x, y};
+			if(!wasInitialVelocityRandomAssigned)
+				emitter.parInitialVelocityRandom = emitter.parInitialVelocity;
+		}
+		else if(name == "initialVelocityRandom") {
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
+			emitter.parInitialVelocityRandom = {x, y};
 		}
 		else if(name == "acceleration") {
 			const float x = attrib.getAttribute("x").toFloat();

@@ -17,4 +17,12 @@ int Random::generateNumber(const int min, const int max)
 	return dist(mEngine);
 }
 
+sf::Vector2f Random::generateVector(const sf::Vector2f min, const sf::Vector2f max)
+{
+	PH_ASSERT(min.x <= max.x && min.y <= max.y, "Min can't be greater than max");
+	std::uniform_real_distribution<float> distX(min.x, max.x);
+	std::uniform_real_distribution<float> distY(min.y, max.y);
+	return sf::Vector2f(distX(mEngine), distY(mEngine));
+}
+
 }
