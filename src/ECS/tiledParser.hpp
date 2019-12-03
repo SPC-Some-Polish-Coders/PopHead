@@ -1,5 +1,9 @@
 #pragma once
 
+#include "entitiesTemplateStorage.hpp"
+
+#include <entt/entity/registry.hpp>
+
 #include <SFML/Graphics.hpp>
 #include <optional>
 #include <string>
@@ -14,7 +18,7 @@ namespace ph {
 	class TiledParser
 	{
 	public:
-		TiledParser(CutSceneManager& cutSceneManager);
+		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry);
 
 		void parseFile(const std::string& filePath) const;
 
@@ -61,6 +65,8 @@ namespace ph {
 
 	private:
 		CutSceneManager& mCutSceneManager;
+		EntitiesTemplateStorage& mTemplatesStorage;
+		entt::registry& mGameRegistry;
 		mutable bool mHasLoadedPlayer;
 	};
 
