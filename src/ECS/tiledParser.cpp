@@ -274,6 +274,7 @@ namespace ph {
 		if (beginOfFileName == std::string::npos)
 			return std::nullopt;
 		return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());*/
+		return std::nullopt; //TEMPORARY LINE
 	}
 
 	void TiledParser::loadGate(const Xml& gateNode) const

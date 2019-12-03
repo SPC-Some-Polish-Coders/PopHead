@@ -2,7 +2,7 @@
 <audio>
   <mute soundmute="false"/>
   <starttheme filename="explorationTheme.ogg" volumeMultiplier="1"/>
-  <musicstate name="fighting">
+  <musicstate name="fight">
 	  <theme filename="zombieAttack.ogg" volumeMultiplier="1"/>
   </musicstate>
   <musicstate name="exploration">

@@ -3,23 +3,22 @@
 #include "cutSceneManager.hpp"
 #include "Events/event.hpp"
 #include "playerStatus.hpp"
-
 #include <entt/entity/registry.hpp>
 #include "ECS/systemsQueue.hpp"
-
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-
 #include <memory>
 
 namespace ph{
 
 class CutScene;
+class MusicPlayer;
+class SoundPlayer;
 
 class Scene
 {
 public:
-    explicit Scene(sf::Window& window);
+    explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&);
 
 	void handleEvent(const Event&);
     void update(sf::Time delta);
@@ -34,7 +33,7 @@ public:
 	entt::registry& getRegistry();
 
 private:
-	void initiateSystemsQueue(sf::Window& window);
+	void initiateSystemsQueue(sf::Window& window, MusicPlayer&, SoundPlayer&);
 
 private:
 	CutSceneManager mCutSceneManager;

@@ -24,15 +24,16 @@
 #include "ECS/Systems/lastingShots.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
+#include "ECS/Systems/audioSystem.hpp"
 
 namespace ph {
 
-Scene::Scene(sf::Window& window)
+Scene::Scene(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	initiateSystemsQueue(window);
+	initiateSystemsQueue(window, musicPlayer, soundPlayer);
 }
 
 void Scene::handleEvent(const ph::Event& e)
@@ -69,7 +70,7 @@ entt::registry& Scene::getRegistry()
 	return mRegistry;
 }
 
-void Scene::initiateSystemsQueue(sf::Window& window)
+void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
 {
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
@@ -95,6 +96,7 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
 	mSystemsQueue.appendSystem<system::VelocityClear>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
 }
