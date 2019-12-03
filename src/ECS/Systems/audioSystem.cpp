@@ -17,6 +17,10 @@ namespace ph::system {
 
 	void AudioSystem::update(float dt)
 	{
+		// define constants
+		constexpr float distanceToEnemyToSwitchToAtackTheme = 270.f;
+		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
+
 		// get player position
 		sf::Vector2f playerPos;
 		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
@@ -37,8 +41,15 @@ namespace ph::system {
 
 		// TODO: Some delay on changing theme
 
-		// change theme
-		Theme themeTypeWhichShouldBePlayed = theClosestEnemyDistanceFromPlayer < 230 ? Theme::Fight : Theme::Exploration;
+		// switch themes if they should be switched
+		Theme themeTypeWhichShouldBePlayed;
+		if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAtackTheme)
+			themeTypeWhichShouldBePlayed = Theme::Fight;
+		else if(theClosestEnemyDistanceFromPlayer > distanceToEnemyToSwitchToExplorationTheme)
+			themeTypeWhichShouldBePlayed = Theme::Exploration;
+		else
+			themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
+
 		if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
 			mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
 			if(mCurrentlyPlayerTheme == Theme::Fight)
