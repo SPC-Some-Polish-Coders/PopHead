@@ -1,6 +1,7 @@
 #include "audioSystem.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/audioComponents.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Utilities/math.hpp"
@@ -39,8 +40,6 @@ namespace ph::system {
 				theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
 		});
 
-		// TODO: Some delay on changing theme
-
 		// switch themes if they should be switched
 		Theme themeTypeWhichShouldBePlayed;
 		if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAtackTheme)
@@ -56,6 +55,15 @@ namespace ph::system {
 				mMusicPlayer.playFromMusicState("fight");
 			else
 				mMusicPlayer.playFromMusicState("exploration");
+		}
+
+		// play and destroy ambient sounds
+		auto ambientSoundsView = mRegistry.view<component::AmbientSound>();
+		for(auto& entity : ambientSoundsView)
+		{
+			const auto& as = ambientSoundsView.get<component::AmbientSound>(entity);
+			mSoundPlayer.playAmbientSound(as.filepath);
+			mRegistry.remove<component::AmbientSound>(entity);
 		}
 	}
 }
