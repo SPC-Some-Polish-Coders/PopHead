@@ -1,5 +1,7 @@
 #include "tiledParser.hpp"
 
+#include "Components/physicsComponents.hpp"
+
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
@@ -11,8 +13,10 @@
 
 namespace ph {
 
-	TiledParser::TiledParser(CutSceneManager& cutSceneManager)
+	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry)
 		: mCutSceneManager(cutSceneManager)
+		, mTemplatesStorage(templatesStorage)
+		, mGameRegistry(gameRegistry)
 		, mHasLoadedPlayer(false)
 	{
 	}
@@ -330,23 +334,20 @@ namespace ph {
 	}
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
-	{/*
-		auto& sceneManager = mGameData->getSceneManager();
+	{
+		//auto& sceneManager = mGameData->getSceneManager();
 
-		auto player = std::make_unique<Player>(mGameData);
-		player->getSprite().setTexture(mGameData->getTextures().get("textures/characters/playerFullAnimation.png"));
+		//sf::Vector2f playerPosition;
+		//if (sceneManager.hasPlayerPosition())
+			//playerPosition = sceneManager.getPlayerPosition();
+		//else
+			//playerPosition = getPositionAttribute(playerNode);
+		//player->setPosition(playerPosition);
 
-		sf::Vector2f playerPosition;
-		if (sceneManager.hasPlayerPosition())
-			playerPosition = sceneManager.getPlayerPosition();
-		else
-			playerPosition = getPositionAttribute(playerNode);
-		player->setPosition(playerPosition);
-
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(player));
-
-		mHasLoadedPlayer = true;*/
+		auto player = mTemplatesStorage.createCopy("Player", mGameRegistry);
+		//auto& position = mGameRegistry.get<component::BodyRect>(player);
+		
+		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
