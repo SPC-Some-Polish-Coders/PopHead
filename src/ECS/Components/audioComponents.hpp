@@ -7,4 +7,9 @@ namespace ph::component {
 		const char* filepath;
 	};
 
+	struct SpatialSound
+	{
+		const char* filepath;
+	};
+
 }

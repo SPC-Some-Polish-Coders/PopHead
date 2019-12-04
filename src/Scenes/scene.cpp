@@ -25,6 +25,7 @@
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/audioSystem.hpp"
+#include "ECS/Systems/zombieSystem.hpp"
 
 namespace ph {
 
@@ -75,6 +76,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
+	mSystemsQueue.appendSystem<system::ZombieSystem>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();

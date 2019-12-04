@@ -98,4 +98,9 @@ namespace ph::component {
 		float timeToEndColorChange;
 		bool wasAnimationStarted = false;
 	};
+
+	struct Zombie
+	{
+		float timeFromLastGrowl;
+	};
 }

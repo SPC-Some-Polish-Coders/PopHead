@@ -52,6 +52,7 @@
         <component name="Damage" damageDealt="25" />
         <component name="CollisionWithPlayer"/>
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Zombie"/>
         <component name="Z" z="95"/>
         <component name="Color" r="255" g="255" b="255" a="255" />
         <component name="Texture" filepath="textures/characters/zombieFullAnimation.png" />

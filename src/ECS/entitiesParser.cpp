@@ -1,5 +1,4 @@
 #include "ECS/entitiesParser.hpp"
-#include "Utilities/xml.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -10,6 +9,8 @@
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Resources/animationStatesResources.hpp"
+#include "Utilities/xml.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -88,6 +89,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Damage",	               &EntitiesParser::parseDamage},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
 		{"Player",                 &EntitiesParser::parsePlayer},
+		{"Zombie",                 &EntitiesParser::parseZombie},
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
@@ -292,7 +294,13 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 
 void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::MultiParticleEmitter>(entity, component::MultiParticleEmitter());
+	mUsedRegistry->assign_or_replace<component::MultiParticleEmitter>(entity);
+}
+
+void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float initialTimeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+	mUsedRegistry->assign_or_replace<component::Zombie>(entity, initialTimeFromLastGrowl);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

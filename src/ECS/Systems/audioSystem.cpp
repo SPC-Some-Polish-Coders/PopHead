@@ -14,6 +14,7 @@ namespace ph::system {
 		,mMusicPlayer(musicPlayer)
 		,mSoundPlayer(soundPlayer)
 	{
+		mSoundDistancesFromPlayer.reserve(10);
 	}
 
 	void AudioSystem::update(float dt)
@@ -61,9 +62,19 @@ namespace ph::system {
 		auto ambientSoundsView = mRegistry.view<component::AmbientSound>();
 		for(auto& entity : ambientSoundsView)
 		{
-			const auto& as = ambientSoundsView.get<component::AmbientSound>(entity);
-			mSoundPlayer.playAmbientSound(as.filepath);
+			const auto& ambientSound = ambientSoundsView.get<component::AmbientSound>(entity);
+			mSoundPlayer.playAmbientSound(ambientSound.filepath);
 			mRegistry.remove<component::AmbientSound>(entity);
+		}
+
+		// play and destroy spatial sounds
+		mSoundPlayer.setListenerPosition(playerPos);
+		auto spatialSoundsView = mRegistry.view<component::SpatialSound, component::BodyRect>();
+		for(auto& entity : spatialSoundsView)
+		{
+			const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
+			mSoundPlayer.playSpatialSound(spatialSound.filepath, body.rect.getCenter());
+			mRegistry.remove<component::SpatialSound>(entity);
 		}
 	}
 }

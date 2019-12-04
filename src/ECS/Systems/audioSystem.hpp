@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/system.hpp"
+#include <vector>
 
 namespace ph {
 	class MusicPlayer;
@@ -17,10 +18,12 @@ namespace ph::system {
 		void update(float dt) override;
 
 	private:
+		MusicPlayer& mMusicPlayer;
+		SoundPlayer& mSoundPlayer;
+
 		enum class Theme { Exploration, Fight };
 		Theme mCurrentlyPlayerTheme = Theme::Exploration;
 
-		MusicPlayer& mMusicPlayer;
-		SoundPlayer& mSoundPlayer;
+		std::vector<float> mSoundDistancesFromPlayer;
 	};
 }
