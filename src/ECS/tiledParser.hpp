@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entitiesTemplateStorage.hpp"
+#include "Scenes/sceneManager.hpp"
 
 #include <entt/entity/registry.hpp>
 
@@ -18,7 +19,7 @@ namespace ph {
 	class TiledParser
 	{
 	public:
-		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry);
+		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager);
 
 		void parseFile(const std::string& filePath) const;
 
@@ -67,6 +68,7 @@ namespace ph {
 		CutSceneManager& mCutSceneManager;
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
+		SceneManager& mSceneManager;
 		mutable bool mHasLoadedPlayer;
 	};
 

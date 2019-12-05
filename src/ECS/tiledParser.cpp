@@ -13,11 +13,12 @@
 
 namespace ph {
 
-	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry)
+	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager)
 		: mCutSceneManager(cutSceneManager)
 		, mTemplatesStorage(templatesStorage)
 		, mGameRegistry(gameRegistry)
 		, mHasLoadedPlayer(false)
+		, mSceneManager(sceneManager)
 	{
 	}
 
@@ -335,18 +336,19 @@ namespace ph {
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
 	{
-		//auto& sceneManager = mGameData->getSceneManager();
-
-		//sf::Vector2f playerPosition;
-		//if (sceneManager.hasPlayerPosition())
-			//playerPosition = sceneManager.getPlayerPosition();
-		//else
-			//playerPosition = getPositionAttribute(playerNode);
-		//player->setPosition(playerPosition);
-
 		auto player = mTemplatesStorage.createCopy("Player", mGameRegistry);
-		//auto& position = mGameRegistry.get<component::BodyRect>(player);
+		auto& playerPosition = mGameRegistry.get<component::BodyRect>(player);
 		
+		sf::Vector2f position;
+
+		if (mSceneManager.hasPlayerPosition())
+			position = mSceneManager.getPlayerPosition();
+		else
+			position = getPositionAttribute(playerNode);
+
+		playerPosition.rect.left = position.x;
+		playerPosition.rect.top = position.y;
+
 		mHasLoadedPlayer = true;
 	}
 
