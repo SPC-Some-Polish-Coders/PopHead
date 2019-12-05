@@ -1,6 +1,8 @@
 #include "tiledParser.hpp"
 
 #include "Components/physicsComponents.hpp"
+#include "Components/charactersComponents.hpp"
+#include "Components/graphicsComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -67,7 +69,7 @@ namespace ph {
 			auto objectType = gameObjectNode.getAttribute("type").toString();
 
 			if (objectType == "Zombie") loadZombie(gameObjectNode);
-			else if (objectType == "SlowZombie") loadSlowZombie(gameObjectNode);
+			else if (objectType == "SlowZombie") loadZombie(gameObjectNode, "SlowZombie");
 			else if (objectType == "Player") loadPlayer(gameObjectNode);
 			else if (objectType == "Camera") loadCamera(gameObjectNode);
 			else if (objectType == "Npc") loadNpc(gameObjectNode);
@@ -124,26 +126,18 @@ namespace ph {
 		return gameObjectNode.getAttribute("type").toString() == typeName;
 	}*/
 
-	void TiledParser::loadZombie(const Xml& zombieNode) const
-	{/*
-		auto zombie = std::make_unique<Zombie>(mGameData);
-		zombie->setPosition(getPositionAttribute(zombieNode));
-		zombie->setHp(getProperty(zombieNode, "hp").toInt());
-		zombie->setMaxHp(getProperty(zombieNode, "maxHp").toUnsigned());
+	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
+	{
+		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
+		auto& zombiePosition = mGameRegistry.get<component::BodyRect>(zombie);
 
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(zombie));*/
-	}
+		sf::Vector2f position = getPositionAttribute(zombieNode);
+		zombiePosition.rect.left = position.x;
+		zombiePosition.rect.top = position.y;
 
-	void TiledParser::loadSlowZombie(const Xml& SlowZombieNode) const
-	{/*
-		auto slowZombie = std::make_unique<SlowZombie>(mGameData);
-		slowZombie->setPosition(getPositionAttribute(SlowZombieNode));
-		slowZombie->setHp(getProperty(SlowZombieNode, "hp").toInt());
-		slowZombie->setMaxHp(getProperty(SlowZombieNode, "maxHp").toUnsigned());
+		loadHealthComponent(zombieNode, zombie);
 
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(slowZombie));*/
+		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
@@ -420,6 +414,13 @@ namespace ph {
 		spriteNode->setPosition(getPositionAttribute(spriteNodeNode));
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->addChild(std::move(spriteNode));*/
+	}
+
+	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const
+	{
+		auto& healthComponent = mGameRegistry.get<component::Health>(entity);
+		healthComponent.healthPoints = getProperty(entityNode, "hp").toInt();
+		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toInt();
 	}
 
 	Xml TiledParser::getProperty(const Xml& objectNode, const std::string& propertyName) const
