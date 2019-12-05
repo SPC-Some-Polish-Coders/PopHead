@@ -29,12 +29,13 @@
 
 namespace ph {
 
-Scene::Scene(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+Scene::Scene(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, Terminal& terminal)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
 	initiateSystemsQueue(window, musicPlayer, soundPlayer);
+	terminal.setSceneRegistry(&mRegistry);
 }
 
 void Scene::handleEvent(const ph::Event& e)

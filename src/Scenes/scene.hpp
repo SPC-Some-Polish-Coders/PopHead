@@ -14,11 +14,12 @@ namespace ph{
 class CutScene;
 class MusicPlayer;
 class SoundPlayer;
+class Terminal;
 
 class Scene
 {
 public:
-    explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&);
+    explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&, Terminal&);
 
 	void handleEvent(const Event&);
     void update(sf::Time delta);
@@ -37,10 +38,8 @@ private:
 
 private:
 	CutSceneManager mCutSceneManager;
-
 	entt::registry mRegistry;
 	SystemsQueue mSystemsQueue;
-
     bool mPause;
 };
 
