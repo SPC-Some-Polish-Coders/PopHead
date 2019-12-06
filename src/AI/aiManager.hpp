@@ -15,8 +15,8 @@ enum class AIMode {
 
 struct PathMode
 {
-	Path mPath;
-	bool mIsAttackingPath = false;
+	Path path;
+	bool isAttackingPath = false;
 };
 
 class AIManager
@@ -51,3 +51,4 @@ private:
 };
 
 } 
+

@@ -6,6 +6,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
+#include "ECS/Components/aiComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Resources/animationStatesResources.hpp"
@@ -299,8 +300,9 @@ void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, e
 
 void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float initialTimeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
-	mUsedRegistry->assign_or_replace<component::Zombie>(entity, initialTimeFromLastGrowl);
+	component::Zombie zombie;
+	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

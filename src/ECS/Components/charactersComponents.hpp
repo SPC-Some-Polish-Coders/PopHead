@@ -99,8 +99,4 @@ namespace ph::component {
 		bool wasAnimationStarted = false;
 	};
 
-	struct Zombie
-	{
-		float timeFromLastGrowl;
-	};
 }
