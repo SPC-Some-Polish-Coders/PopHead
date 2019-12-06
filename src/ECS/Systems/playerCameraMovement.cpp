@@ -10,13 +10,13 @@ PlayerCameraMovement::PlayerCameraMovement(entt::registry& registry)
 {
 }
 
-void PlayerCameraMovement::update(float seconds)
+void PlayerCameraMovement::update(float dt)
 {
 	auto view = mRegistry.view<component::Player, component::Camera, component::BodyRect>();
 		
-	view.each([seconds](const component::Player, component::Camera& camera, const component::BodyRect& bodyRect) 
+	view.each([dt](const component::Player, component::Camera& camera, const component::BodyRect& bodyRect) 
 	{
-		camera.camera.setCenterSmoothly(bodyRect.rect.getTopLeft(), 4 * seconds);
+		camera.camera.setCenterSmoothly(bodyRect.rect.getCenter(), 4 * dt);
 	});
 }
 
