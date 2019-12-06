@@ -121,11 +121,6 @@ namespace ph {
 		standingObjects->addChild(std::make_unique<ItemsContainer>());*/
 	}
 
-	/*bool TiledParser::isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const
-	{
-		return gameObjectNode.getAttribute("type").toString() == typeName;
-	}*/
-
 	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
 	{
 		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
@@ -142,16 +137,20 @@ namespace ph {
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
 	{/*
-		auto npc = std::make_unique<Npc>(mGameData);
-
-		npc->setPosition(getPositionAttribute(npcNode));
-		npc->setHp(getProperty(npcNode, "hp").toInt());
-		npc->setMaxHp(getProperty(npcNode, "maxHp").toUnsigned());
 		const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
 		npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
+;*/
 
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(npc));*/
+		auto npc = mTemplatesStorage.createCopy("Npc", mGameRegistry);
+		auto& npcPosition = mGameRegistry.get<component::BodyRect>(npc);
+
+		sf::Vector2f position = getPositionAttribute(npcNode);
+		npcPosition.rect.left = position.x;
+		npcPosition.rect.top = position.y;
+
+		loadHealthComponent(npcNode, npc);
+
+		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadSpawner(const Xml& spawnerNode) const
@@ -159,12 +158,10 @@ namespace ph {
 		auto spawner = std::make_unique<Spawner>(
 			mGameData, "spawner",
 			Cast::toObjectType(getProperty(spawnerNode, "spawnType").toString()),
-			sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),
-			getPositionAttribute(spawnerNode)
-			);
+			sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),*/
 
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(spawner));*/
+		auto spawner = mTemplatesStorage.createCopy("Spawner", mGameRegistry);
+		loadPosition(spawnerNode, spawner);
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
@@ -180,20 +177,19 @@ namespace ph {
 
 		auto lootSpawner = std::make_unique<LootSpawner>(
 			lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
-			);
-		lootSpawner->setPosition(getPositionAttribute(lootSpawnerNode));
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(lootSpawner));*/
+			);*/
+
+		auto lootSpawner = mTemplatesStorage.createCopy("lootSpawner", mGameRegistry);
+		loadPosition(lootSpawnerNode, lootSpawner);
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
 	{/*
 		auto arcadeSpawner = std::make_unique<ArcadeSpawner>(
-			mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),
-			getPositionAttribute(arcadeSpawnerNode));
+			mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),*/
 
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(arcadeSpawner));*/
+		auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
+		loadPosition(arcadeSpawnerNode, arcadeSpawner);
 	}
 
 	void TiledParser::loadEntrance(const Xml& entranceNode) const
@@ -229,69 +225,62 @@ namespace ph {
 				getSizeAttribute(entranceNode),
 				getPositionAttribute(entranceNode)
 				);
-		}
+		};*/
 
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(entrance));*/
+		auto entrance = mTemplatesStorage.createCopy("Entrance", mGameRegistry);
 	}
 
 	void TiledParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
-	{/*
-		const sf::Vector2f position = getPositionAttribute(slowDownAreaNode);
-		const sf::Vector2f size = getSizeAttribute(slowDownAreaNode);
-		const sf::FloatRect area(position.x, position.y, size.x, size.y);
-		auto slowDownArea = std::make_unique<SlowDownArea>(area);
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(slowDownArea));*/
+	{
+		auto slowDownArea = mTemplatesStorage.createCopy("SlowDownArea", mGameRegistry);
+		loadPosition(slowDownAreaNode, slowDownArea);
+		loadSize(slowDownAreaNode, slowDownArea);
 	}
 
 	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const
 	{/*
-		const sf::Vector2f position = getPositionAttribute(activateAreaNode);
-		const sf::Vector2f size = getSizeAttribute(activateAreaNode);
-		const sf::FloatRect area(position.x, position.y, size.x, size.y);
-		const std::string areaName = getProperty(activateAreaNode, "areaName").toString();
-		auto activateArea = std::make_unique<ActivateArea>(areaName, area);
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(activateArea));*/
+		const std::string areaName = getProperty(activateAreaNode, "areaName").toString();*/
+
+		auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
+		loadPosition(activateAreaNode, activateArea);
+		loadSize(activateAreaNode, activateArea);
 	}
 
 	void TiledParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
 	{/*
-		const sf::Vector2f position = getPositionAttribute(cutSceneAreaNode);
-		const sf::Vector2f size = getSizeAttribute(cutSceneAreaNode);
-		const sf::FloatRect area(position.x, position.y, size.x, size.y);
-		const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();
-		auto cutSceneArea = std::make_unique<CutSceneArea>(mGameData, cutSceneName, area);
-		auto* invisibleGameObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleGameObjects->addChild(std::move(cutSceneArea));*/
+		const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();*/
+
+		auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
+		loadPosition(cutSceneAreaNode, cutSceneArea);
+		loadSize(cutSceneAreaNode, cutSceneArea);
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
-	{/*
+	{
 		std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
 		if (beginOfFileName == std::string::npos)
 			return std::nullopt;
-		return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());*/
-		return std::nullopt; //TEMPORARY LINE
+		return scenePathRelativeToMapFile.substr(beginOfFileName, scenePathRelativeToMapFile.size());
 	}
 
 	void TiledParser::loadGate(const Xml& gateNode) const
 	{/*
 		auto& texture = mGameData->getTextures().get("textures/others/gate.png");
-		auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);
-		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-		lyingObjects->addChild(std::move(gate));*/
+		auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);*/
+
+		auto gate = mTemplatesStorage.createCopy("Gate", mGameRegistry);
+		loadPosition(gateNode, gate);
+		loadSize(gateNode, gate);
 	}
 
 	void TiledParser::loadLever(const Xml& leverNode) const
 	{/*
 		auto& leverTexture = mGameData->getTextures().get("textures/others/lever.png");
 		auto& hintTexture = mGameData->getTextures().get("textures/others/pressSpaceHint.png");
-		auto lever = std::make_unique<Lever>(leverTexture, hintTexture);
-		lever->setPosition(getPositionAttribute(leverNode));
-		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-		lyingObjects->addChild(std::move(lever));*/
+		auto lever = std::make_unique<Lever>(leverTexture, hintTexture);*/
+
+		auto lever = mTemplatesStorage.createCopy("Lever", mGameRegistry);
+		loadPosition(leverNode, lever);
 	}
 
 	void TiledParser::loadCar(const Xml& carNode) const
@@ -302,15 +291,11 @@ namespace ph {
 			getProperty(carNode, "slowingDown").toFloat(),
 			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),
 			texture
-			);
-		auto position = getPositionAttribute(carNode);
-		car->setPosition(position);
+			);*/
 
-		sf::FloatRect carRect(position, sf::Vector2f(texture.getSize()));
-		mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(carRect);
-
-		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-		lyingObjects->addChild(std::move(car));*/
+		auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
+		loadPosition(carNode, car);
+		loadSize(carNode, car);
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
@@ -326,6 +311,8 @@ namespace ph {
 		auto& camera = mGameData->getRenderer().getCamera();
 		camera.setSize(cameraViewSize);
 		camera.setCenter(cameraCenter);*/
+
+		auto camera = mTemplatesStorage.createCopy("Camera", mGameRegistry);
 	}
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
@@ -382,6 +369,8 @@ namespace ph {
 			crawlingNpc->die();
 		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
 		lyingObjects->addChild(std::move(crawlingNpc));*/
+
+		auto crawlingNpc = mTemplatesStorage.createCopy("CrawlingNpc", mGameRegistry);
 	}
 
 	void TiledParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
@@ -389,6 +378,8 @@ namespace ph {
 		auto gateGuardNpc = std::make_unique<GateGuard>(mGameData);
 		gateGuardNpc->setPosition(getPositionAttribute(gateGuardNpcNode));
 		mRoot.addChild(std::move(gateGuardNpc));*/
+
+		auto gateGuard = mTemplatesStorage.createCopy("GateGuardNpc", mGameRegistry);
 	}
 
 	void TiledParser::loadBulletItem(const Xml& bulletItemNode) const
@@ -397,6 +388,8 @@ namespace ph {
 		bulletItem->setPosition(getPositionAttribute(bulletItemNode));
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));*/
+
+		auto bulletItem = mTemplatesStorage.createCopy("BulletItem", mGameRegistry);
 	}
 
 	void TiledParser::loadMedkit(const Xml& bulletItemNode) const
@@ -405,6 +398,8 @@ namespace ph {
 		medkitItem->setPosition(getPositionAttribute(bulletItemNode));
 		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
 		standingObjects->getChild("ItemsContainer")->addChild(std::move(medkitItem));*/
+
+		auto medkit = mTemplatesStorage.createCopy("Medkit", mGameRegistry);
 	}
 
 	void TiledParser::loadSpriteNode(const Xml& spriteNodeNode) const
@@ -421,6 +416,22 @@ namespace ph {
 		auto& healthComponent = mGameRegistry.get<component::Health>(entity);
 		healthComponent.healthPoints = getProperty(entityNode, "hp").toInt();
 		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toInt();
+	}
+
+	void TiledParser::loadPosition(const Xml& entityNode, entt::entity entity) const
+	{
+		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
+		auto position = getPositionAttribute(entityNode);
+		bodyRect.rect.left = position.x;
+		bodyRect.rect.top = position.y;
+	}
+
+	void TiledParser::loadSize(const Xml& entityNode, entt::entity entity) const
+	{
+		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
+		auto size = getSizeAttribute(entityNode);
+		bodyRect.rect.width = size.x;
+		bodyRect.rect.height = size.y;
 	}
 
 	Xml TiledParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

@@ -30,7 +30,6 @@ namespace ph {
 		void loadLayerObjects() const;
 		void loadContainerObjects() const;
 		void loadArcadeManager() const;
-		//bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadNpc(const Xml& npcNode) const;
@@ -55,6 +54,8 @@ namespace ph {
 		void loadSpriteNode(const Xml& spriteNodeNode) const;
 
 		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
+		void loadPosition(const Xml& entityNode, entt::entity entity) const;
+		void loadSize(const Xml& entityNode, entt::entity entity) const;
 
 		Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 		bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
