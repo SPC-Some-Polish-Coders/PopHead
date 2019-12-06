@@ -123,8 +123,26 @@
         <component name="StaticCollisionBody" />
     </entityTemplate>
 
+    <entityTemplate name="Lever">
+        <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
+        <component name="Z" z="99"/>
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
+    </entityTemplate>
+
+    <entityTemplate name="WeirdLever">
+        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
+        <component name="Z" z="100"/>
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
+    </entityTemplate>
+
     <entityTemplate name="Car">
         <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="60.0" y="130.0" width="20.0" height="20.0" />
+        <component name="Z" z="99"/>
+        <component name="Texture" filepath="textures/vehicles/car.png" />
     </entityTemplate>
 
     <entityTemplate name="WeirdCar">
@@ -165,20 +183,6 @@
     </entityTemplate>
 
 
-    <entityTemplate name="Lever">
-        <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
-        <component name="Z" z="100"/>
-        <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="8" height="16" />
-    </entityTemplate>
-
-    <entityTemplate name="WeirdLever">
-        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
-        <component name="Z" z="100"/>
-        <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="8" height="16" />
-        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
-    </entityTemplate>
 
 
     <entityTemplate name="BulletItem">
@@ -220,6 +224,8 @@
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
+  
+    <entity sourceTemplate="Car"/>
     
     <entity name="Area">
        <component name="Area" x="300.0" y="50.0" width="100.0" height="200.0"/>
@@ -251,6 +257,7 @@
         <component name="Color" r="112" g="45" b="6" a="100" />
     </entity>
   
+
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="-200.0" y="-100.0" width="250.0" height="100.0" />
         <component name="Color" r="1" g="200" b="6" a="100" />
