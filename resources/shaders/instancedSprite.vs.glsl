@@ -52,10 +52,8 @@ void main()
             break;
     }
 
-	// TODO: Refactor this
-	vec2 texture_size = vec2(textureSize(textures[int(aTextureSlotRef)], 0));
-	vs_out.texCoords *= texture_size;
-	vs_out.texSize = texture_size;
+	vs_out.texSize = vec2(textureSize(textures[int(aTextureSlotRef)], 0));
+	vs_out.texCoords *= vs_out.texSize;
     
     if(aRotation == 0)
         gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, z, 1);
