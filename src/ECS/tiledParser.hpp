@@ -32,8 +32,7 @@ namespace ph {
 		void loadArcadeManager() const;
 		//bool isObjectOfType(const Xml& gameObjectNode, const std::string& typeName) const;
 		
-		void loadSlowZombie(const Xml& SlowZombieNode) const;
-		void loadZombie(const Xml& zombieNode) const;
+		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadNpc(const Xml& npcNode) const;
 		void loadSpawner(const Xml& spawnerNode) const;
 		void loadLootSpawner(const Xml& lootSpawnerNode) const;
@@ -54,6 +53,8 @@ namespace ph {
 		void loadBulletItem(const Xml& bulletItemNode) const;
 		void loadMedkit(const Xml& bulletItemNode) const;
 		void loadSpriteNode(const Xml& spriteNodeNode) const;
+
+		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
 
 		Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 		bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
