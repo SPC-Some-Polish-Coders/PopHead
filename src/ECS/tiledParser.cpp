@@ -299,20 +299,12 @@ namespace ph {
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
-	{/*
-		const sf::Vector2f cameraTopLeftCornerPosition = getPositionAttribute(cameraNode);
-		const sf::Vector2f cameraViewSize = getSizeAttribute(cameraNode);
-		const FloatRect cameraBounds(
-			cameraTopLeftCornerPosition.x, cameraTopLeftCornerPosition.y,
-			cameraViewSize.x, cameraViewSize.y
-		);
-		const sf::Vector2f cameraCenter = cameraBounds.getCenter();
-
-		auto& camera = mGameData->getRenderer().getCamera();
-		camera.setSize(cameraViewSize);
-		camera.setCenter(cameraCenter);*/
-
+	{
 		auto camera = mTemplatesStorage.createCopy("Camera", mGameRegistry);
+		const FloatRect cameraBounds(getPositionAttribute(cameraNode), getSizeAttribute(cameraNode));
+
+		auto& cameraComponent = mGameRegistry.get<component::Camera>(camera);
+		cameraComponent.camera = Camera(cameraBounds);
 	}
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
