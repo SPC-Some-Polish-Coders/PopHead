@@ -4,6 +4,7 @@
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/SFMLrenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
+#include "MinorRenderers/lightRenderer.hpp"
 #include "Shaders/shaderLibary.hpp"
 #include "Buffers/vertexArray.hpp"
 #include "camera.hpp"
@@ -33,6 +34,7 @@ namespace {
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
 	ph::SFMLRenderer sfmlRenderer;
+	ph::LightRenderer lightRenderer;
 }
 
 namespace ph {
@@ -126,6 +128,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
+	lightRenderer.flush(pointRenderer);
 	quadRenderer.flush();
 	pointRenderer.flush();
 
@@ -162,6 +165,7 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation);
+	lightRenderer.submitWallQuad(position, size);
 }
 
 void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)

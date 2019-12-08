@@ -142,5 +142,4 @@ namespace ph::system {
 			color.color = sf::Color(255, 255, 255, alpha);
 		}
 	}
-
 }
