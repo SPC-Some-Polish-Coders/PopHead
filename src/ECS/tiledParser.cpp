@@ -355,43 +355,29 @@ namespace ph {
 
 	void TiledParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
 	{/*
-		auto crawlingNpc = std::make_unique<CrawlingNpc>(mGameData);
-		crawlingNpc->setPosition(getPositionAttribute(crawlingNpcNode));
 		if (getProperty(crawlingNpcNode, "isAlreadyDead").toBool())
-			crawlingNpc->die();
-		auto* lyingObjects = mRoot.getChild("LAYER_lyingObjects");
-		lyingObjects->addChild(std::move(crawlingNpc));*/
+			crawlingNpc->die();*/
 
 		auto crawlingNpc = mTemplatesStorage.createCopy("CrawlingNpc", mGameRegistry);
+		loadPosition(crawlingNpcNode, crawlingNpc);
 	}
 
 	void TiledParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
-	{/*
-		auto gateGuardNpc = std::make_unique<GateGuard>(mGameData);
-		gateGuardNpc->setPosition(getPositionAttribute(gateGuardNpcNode));
-		mRoot.addChild(std::move(gateGuardNpc));*/
-
+	{
 		auto gateGuard = mTemplatesStorage.createCopy("GateGuardNpc", mGameRegistry);
+		loadPosition(gateGuardNpcNode, gateGuard);
 	}
 
 	void TiledParser::loadBulletItem(const Xml& bulletItemNode) const
-	{/*
-		auto bulletItem = std::make_unique<BulletItem>(mGameData);
-		bulletItem->setPosition(getPositionAttribute(bulletItemNode));
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->getChild("ItemsContainer")->addChild(std::move(bulletItem));*/
-
+	{
 		auto bulletItem = mTemplatesStorage.createCopy("BulletItem", mGameRegistry);
+		loadPosition(bulletItemNode, bulletItem);
 	}
 
-	void TiledParser::loadMedkit(const Xml& bulletItemNode) const
-	{/*
-		auto medkitItem = std::make_unique<Medkit>(mGameData);
-		medkitItem->setPosition(getPositionAttribute(bulletItemNode));
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->getChild("ItemsContainer")->addChild(std::move(medkitItem));*/
-
+	void TiledParser::loadMedkit(const Xml& medkitItemNode) const
+	{
 		auto medkit = mTemplatesStorage.createCopy("Medkit", mGameRegistry);
+		loadPosition(medkitItemNode, medkit);
 	}
 
 	void TiledParser::loadSpriteNode(const Xml& spriteNodeNode) const

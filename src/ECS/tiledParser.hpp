@@ -50,7 +50,7 @@ namespace ph {
 		void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
 		void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 		void loadBulletItem(const Xml& bulletItemNode) const;
-		void loadMedkit(const Xml& bulletItemNode) const;
+		void loadMedkit(const Xml& medkitItemNode) const;
 		void loadSpriteNode(const Xml& spriteNodeNode) const;
 
 		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
