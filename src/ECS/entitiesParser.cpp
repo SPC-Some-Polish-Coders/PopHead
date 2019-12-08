@@ -93,6 +93,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Zombie",                 &EntitiesParser::parseZombie},
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
+		{"Entrance",               &EntitiesParser::parseEntrance},
 		{"Texture",                &EntitiesParser::parseTexture},
 		{"TextureRect",            &EntitiesParser::parseTextureRect},
 		{"Shader",                 &EntitiesParser::parseShader},
@@ -183,6 +184,12 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Player>(entity);
+}
+
+void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity& entity)
+{
+	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination").toString();
+	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)

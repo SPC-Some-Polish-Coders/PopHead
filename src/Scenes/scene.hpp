@@ -16,11 +16,12 @@ class MusicPlayer;
 class SoundPlayer;
 class AIManager;
 class Terminal;
+class SceneManager;
 
 class Scene
 {
 public:
-    explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&, AIManager&, Terminal&);
+    explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&);
 
 	void handleEvent(const Event&);
     void update(sf::Time delta);
@@ -35,7 +36,7 @@ public:
 	entt::registry& getRegistry();
 
 private:
-	void initiateSystemsQueue(sf::Window& window, MusicPlayer&, SoundPlayer&, AIManager& aiManager);
+	void initiateSystemsQueue(sf::Window& window, MusicPlayer&, SoundPlayer&, AIManager& aiManager, SceneManager& sceneManager);
 
 private:
 	CutSceneManager mCutSceneManager;

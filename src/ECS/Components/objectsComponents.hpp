@@ -14,4 +14,9 @@ namespace ph::component {
 		float areaSpeedMultiplier;
 	};
 
+	struct Entrance
+	{
+		std::string entranceDestination;
+	};
+
 }

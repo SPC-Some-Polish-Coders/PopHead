@@ -34,6 +34,7 @@ private:
 	void parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
+	void parseEntrance(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
