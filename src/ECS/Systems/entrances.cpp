@@ -29,6 +29,7 @@ void Entrances::update(float seconds)
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
 				mSceneManager.replaceScene(entranceDetails.entranceDestination);
+				return;
 			}
 		}
 	}
