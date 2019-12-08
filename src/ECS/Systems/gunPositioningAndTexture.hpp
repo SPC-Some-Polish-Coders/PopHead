@@ -7,7 +7,7 @@
 
 namespace ph::system {
 
-class GunPositioning : public System
+class GunPositioningAndTexture : public System
 {
 public:
 	using System::System;
@@ -15,9 +15,13 @@ public:
 	void update(float seconds) override;
 
 private:
+	void updateGunPosition(const sf::Vector2f& playerFaceDirection, const FloatRect& playerBody);
 	void updateGunSpriteFlipping(const sf::Vector2f& playerFaceDirection, FloatRect& gunBody);
 	void updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody);
 	sf::Vector2f getRightHandPosition(const sf::Vector2f& playerFaceDirection);
+
+	void updateTexture(float dt, const sf::Vector2f& playerFaceDirection, bool wantToAttack, bool canAttack);
+
 };
 
 }

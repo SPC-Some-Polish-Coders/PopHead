@@ -13,10 +13,9 @@
 #include "ECS/Systems/isObjectInArea.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
-#include "ECS/Systems/gunPositioning.hpp"
+#include "ECS/Systems/gunPositioningAndTexture.hpp"
 #include "ECS/Systems/velocityChangingAreas.hpp"
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
-#include "ECS/Systems/gunTexture.hpp"
 #include "ECS/Systems/gunAttackerSystem.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
@@ -91,8 +90,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
-	mSystemsQueue.appendSystem<system::GunPositioning>();
-	mSystemsQueue.appendSystem<system::GunTexture>();
+	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
