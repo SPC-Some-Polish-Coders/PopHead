@@ -47,6 +47,13 @@ namespace component {
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
 
+	struct PointLight
+	{
+		sf::Vector2f offset;
+		sf::Color color;
+		float range;
+	};
+
 	struct HiddenForRenderer
 	{
 	};

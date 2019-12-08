@@ -184,6 +184,11 @@ void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsign
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
+void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle, float range)
+{
+	lightRenderer.submitLight({color, position, startAngle, endAngle, range});
+}
+
 void Renderer::submitSFMLObject(const sf::Drawable& object)
 {
 	sfmlRenderer.submit(&object);

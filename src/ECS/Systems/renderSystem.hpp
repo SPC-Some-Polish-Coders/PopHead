@@ -20,6 +20,7 @@ public:
 
 private:
 	Camera& getCameraWithTheBiggestPriority();
+	void submitLights() const;
 	void submitSingleColorSprites() const;
 	void submitTextureSprites() const;
 	void submitTextureSpritesWithCustomShader() const;

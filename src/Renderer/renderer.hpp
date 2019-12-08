@@ -35,6 +35,8 @@ namespace Renderer
 
 	void submitPoint(sf::Vector2f position, const sf::Color&, unsigned char z, float size = 1.f);
 
+	void submitLight(const sf::Color&, sf::Vector2f position, float startAngle, float endAngle, float range);
+
 	void submitSFMLObject(const sf::Drawable&);
 
 	void onWindowResize(unsigned width, unsigned height);

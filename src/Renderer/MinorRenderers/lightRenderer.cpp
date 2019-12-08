@@ -21,6 +21,9 @@ void LightRenderer::flush(PointRenderer& pointRenderer)
 	for(auto wallPoint : mWallPoints)
 		pointRenderer.submitPoint(wallPoint.position, sf::Color::Red, 0.f, 5.f);
 
+	for(const auto& light : mLights)
+		pointRenderer.submitPoint(light.position, light.color, 0.f, 15.f);
+
 	mWallPoints.clear();
 	mLights.clear();
 }

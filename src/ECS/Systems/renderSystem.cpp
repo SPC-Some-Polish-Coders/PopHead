@@ -23,6 +23,7 @@ void RenderSystem::update(float seconds)
 	Renderer::beginScene(getCameraWithTheBiggestPriority());
 
 	submitSingleColorSprites();
+	submitLights();
 	submitTextureSprites();
 	submitTextureSpritesWithCustomShader();
 	submitTextureSpritesWithTextureRect();
@@ -63,6 +64,15 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 		currentCamera->zoom(0.96f);
 
 	return *currentCamera;
+}
+
+void RenderSystem::submitLights() const
+{
+	auto view = mRegistry.view<component::PointLight, component::BodyRect>();
+	view.each([](const component::PointLight& pointLight, const component::BodyRect& body) 
+	{
+		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, 0.f, 360.f, pointLight.range);
+	});
 }
 
 void RenderSystem::submitSingleColorSprites() const

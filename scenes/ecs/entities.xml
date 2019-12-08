@@ -15,6 +15,7 @@
         <component name="Texture" filepath="textures/characters/playerFullAnimation.png" />
         <component name="TextureRect" x="0" y="0" width="0" height="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
+        <component name="PointLight" offsetX="10" offsetY="10" r="255" g="255" b="255" range="50"/>
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="ParticleEmitter">
