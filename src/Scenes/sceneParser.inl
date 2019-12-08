@@ -19,7 +19,7 @@ SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttPar
 	//parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	//parse<MapParser>(gameData, sceneLinksNode, "map");
 	//parse<GuiParser>(gameData, sceneLinksNode, "gui");	
-	//parse<AudioParser>(gameData, sceneLinksNode, "audio");
+	parse<AudioParser>(gameData, sceneLinksNode, "audio");
 	//parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry, textureHolder);
 }

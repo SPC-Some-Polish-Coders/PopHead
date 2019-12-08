@@ -8,6 +8,7 @@
 #include "Commands/commandInterpreter.hpp"
 #include "Image/terminalImage.hpp"
 #include "Events/event.hpp"
+#include <entt/entt.hpp>
 
 namespace ph {
 
@@ -19,6 +20,7 @@ public:
 	Terminal();
 	void init(GameData*);
 
+	void setSceneRegistry(entt::registry*);
 	void handleEvent(const ph::Event&);
 	void update();
 	void pushOutputLine(const OutputLine&);

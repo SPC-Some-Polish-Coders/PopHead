@@ -81,7 +81,7 @@ void RenderSystem::submitTextureSprites() const
 {
 	auto view = mRegistry.view
 		<component::BodyRect, component::Z, component::TexturePtr>
-		(entt::exclude<component::BodyRect, component::Rotation, component::HiddenForRenderer>);
+		(entt::exclude<component::TextureRect, component::Rotation, component::HiddenForRenderer>);
 
 	view.each([this](const component::BodyRect& body, const component::Z z, const component::TexturePtr texPtr)
 	{

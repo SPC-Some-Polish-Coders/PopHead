@@ -22,7 +22,7 @@ Game::Game()
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
 	,mShaders{new ShaderHolder()}
-	//,mAIManager(new AIManager())
+	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	//,mMap(new Map())
 	//,mPhysicsEngine{new PhysicsEngine()}
@@ -37,7 +37,7 @@ Game::Game()
 		mTextures.get(),
 		mFonts.get(),
 		mShaders.get(),
-		nullptr,
+		mAIManager.get(),
 		mSceneManager.get(),
 		nullptr,
 		nullptr,

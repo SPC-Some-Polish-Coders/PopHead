@@ -1,5 +1,4 @@
 #include "ECS/entitiesParser.hpp"
-#include "Utilities/xml.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -7,9 +6,12 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
+#include "ECS/Components/aiComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Resources/animationStatesResources.hpp"
+#include "Utilities/xml.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -88,6 +90,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Damage",	               &EntitiesParser::parseDamage},
 		{"Medkit",	               &EntitiesParser::parseMedkit},
 		{"Player",                 &EntitiesParser::parsePlayer},
+		{"Zombie",                 &EntitiesParser::parseZombie},
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Texture",                &EntitiesParser::parseTexture},
@@ -108,7 +111,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
 		{"VelocityChangingEffect", &EntitiesParser::parseVelocityChangingEffect},
 		{"AnimationData",          &EntitiesParser::parseAnimationData},
-		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter}
+		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter},
+		{"MultiParticleEmitter",   &EntitiesParser::parseMultiParticleEmitter}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -216,6 +220,7 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 	component::ParticleEmitter emitter;
 	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
 	bool wasEndColorAssigned = false;
+	bool wasInitialVelocityRandomAssigned = false;
 	for(const auto& attrib : particleAttribs)
 	{
 		const std::string name = attrib.getAttribute("name").toString();
@@ -257,6 +262,13 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			const float x = attrib.getAttribute("x").toFloat();
 			const float y = attrib.getAttribute("y").toFloat();
 			emitter.parInitialVelocity = {x, y};
+			if(!wasInitialVelocityRandomAssigned)
+				emitter.parInitialVelocityRandom = emitter.parInitialVelocity;
+		}
+		else if(name == "initialVelocityRandom") {
+			const float x = attrib.getAttribute("x").toFloat();
+			const float y = attrib.getAttribute("y").toFloat();
+			emitter.parInitialVelocityRandom = {x, y};
 		}
 		else if(name == "acceleration") {
 			const float x = attrib.getAttribute("x").toFloat();
@@ -279,6 +291,18 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 	}
 	mUsedRegistry->assign_or_replace<component::ParticleEmitter>(entity, emitter);
+}
+
+void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::MultiParticleEmitter>(entity);
+}
+
+void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& entity)
+{
+	component::Zombie zombie;
+	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

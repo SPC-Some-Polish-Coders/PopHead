@@ -3,6 +3,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
+#include <entt/entt.hpp>
 
 namespace ph {
 
@@ -17,6 +18,7 @@ class CommandInterpreter
 {
 public:
 	void setGameData(GameData* const gameData) { mGameData = gameData; }
+	void setSceneRegistry(entt::registry* registry) { mSceneRegistry = registry; }
 	void init();
 
 	void handleCommand(const std::string&);
@@ -35,13 +37,11 @@ private:
 	void executeCurrentPos() const;
 	void executeMove() const;
 	void executeGive() const;
-	//auto getPlayer() const -> GameObject&;
 
 	void executeHistory() const;
 	void executeHelp() const;
 	void executeClear() const;
 
-	void executeSwitchPGAMode() const;
 	void executeCollisionDebug() const;
 	void changeCollisionDebugColor() const;
 	void changeCollisionDebugDisplayMode() const;
@@ -68,6 +68,7 @@ private:
 	std::string mCommand;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
 	GameData* mGameData;
+	entt::registry* mSceneRegistry;
 };
 
 }

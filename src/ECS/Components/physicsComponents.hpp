@@ -22,9 +22,16 @@ namespace ph::component {
 	struct StaticCollisionBody
 	{
 	};
+
+	struct GateState
+	{
+		bool open;
+	};
 	
 	struct KinematicCollisionBody 
 	{
 		float mass;
+		bool staticallyMovedByX;
+		bool staticallyMovedByY;
 	};
 }

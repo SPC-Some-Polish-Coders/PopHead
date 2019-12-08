@@ -11,7 +11,7 @@ namespace ph {
 struct StateData
 {
 	IntRect startFrame;
-	unsigned framesCount;
+	unsigned frameCount;
 };
 
 using AnimationStatesData = std::map<std::string, StateData>;

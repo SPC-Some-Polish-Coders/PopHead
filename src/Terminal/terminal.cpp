@@ -21,6 +21,11 @@ void Terminal::init(GameData* gameData)
 	mTerminalImage.init(gameData);
 }
 
+void Terminal::setSceneRegistry(entt::registry* reg)
+{
+	mCommandInterpreter.setSceneRegistry(reg);
+}
+
 void Terminal::handleEvent(const ph::Event& phEvent)
 {
 	if(auto* e = std::get_if<sf::Event>(&phEvent))

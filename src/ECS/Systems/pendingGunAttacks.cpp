@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pendingGunAttacks.hpp"
-
+#include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
@@ -88,6 +88,7 @@ void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, co
 {
 	auto entity = mRegistry.create();
 	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
+	mRegistry.assign<component::AmbientSound>(entity, "sounds/pistolShot.ogg");
 	mRegistry.assign<component::Lifetime>(entity, .05f);
 }
 

@@ -37,7 +37,7 @@ private:
 	std::unique_ptr< TextureHolder >      mTextures;
 	std::unique_ptr< FontHolder >         mFonts;
 	std::unique_ptr< ShaderHolder >       mShaders;
-	//std::unique_ptr< AIManager >        mAIManager;
+	std::unique_ptr< AIManager >        mAIManager;
 	std::unique_ptr< SceneManager >       mSceneManager;
 	//std::unique_ptr< Map >              mMap;
 	//std::unique_ptr< PhysicsEngine >    mPhysicsEngine;

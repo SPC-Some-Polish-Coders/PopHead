@@ -11,6 +11,7 @@ out DATA
 {
     vec4 color;
     vec2 texCoords;
+	vec2 texSize;
     flat int textureSlotRef;
 } vs_out;
 
@@ -18,7 +19,9 @@ layout (std140) uniform SharedData
 {
     mat4 viewProjectionMatrix;
 };
+
 uniform float z;
+uniform sampler2D textures[32];
 
 mat2 getRotationMatrix(float angle);
 
@@ -48,6 +51,9 @@ void main()
             vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
             break;
     }
+
+	vs_out.texSize = vec2(textureSize(textures[int(aTextureSlotRef)], 0));
+	vs_out.texCoords *= vs_out.texSize;
     
     if(aRotation == 0)
         gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, z, 1);

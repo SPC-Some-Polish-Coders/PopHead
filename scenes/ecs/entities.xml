@@ -2,21 +2,21 @@
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
-        <component name="GunAttacker" minSecondsInterval="0.3 " bullets="20" isTryingToAttack="false" />
+        <component name="GunAttacker" minSecondsInterval="0.3 " bullets="120" isTryingToAttack="false" />
         <component name="MeleeAttacker" minSecondsInterval="0.8" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
         <component name="FaceDirection" />
         <component name="Color" r="255" g="255" b="255" a="255" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="95"/>
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
         <component name="Texture" filepath="textures/characters/playerFullAnimation.png" />
         <component name="TextureRect" x="0" y="0" width="0" height="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
         <component name="Killable" />
-        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/player.animstates.xml"/>
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="ParticleEmitter">
             <particleAttrib name="startColor" r="0" g="10" b="100" a="255"/>
             <particleAttrib name="spawnPositionOffset" x="-500" y="-300"/>
@@ -28,6 +28,7 @@
             <particleAttrib name="lifetime" v="3"/>
             <particleAttrib name="isEmitting" v="true"/>
         </component>
+        <component name="MultiParticleEmitter"/>
     </entityTemplate>
 
 
@@ -51,10 +52,15 @@
         <component name="Damage" damageDealt="25" />
         <component name="CollisionWithPlayer"/>
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
-        <component name="Texture" filepath="textures/characters/phoneCallPlayer.png" />
+        <component name="Velocity" dx="0" dy="0" />
+        <component name="Zombie"/>
+        <component name="Z" z="95"/>
+        <component name="Color" r="255" g="255" b="255" a="255" />
+        <component name="Texture" filepath="textures/characters/zombieFullAnimation.png" />
         <component name="TextureRect" x="0" y="0" width="20" height="20" />
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="Killable"/>
+        <component name="MultiParticleEmitter"/>
     </entityTemplate>
 
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
@@ -118,14 +124,32 @@
         <component name="StaticCollisionBody" />
     </entityTemplate>
 
+    <entityTemplate name="Lever">
+        <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
+        <component name="Z" z="99"/>
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
+    </entityTemplate>
+
+    <entityTemplate name="WeirdLever">
+        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
+        <component name="Z" z="100"/>
+        <component name="Texture" filepath="textures/others/lever.png" />
+        <component name="TextureRect" x="0" y="0" width="8" height="16" />
+        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
+    </entityTemplate>
+
     <entityTemplate name="Car">
         <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="60.0" y="130.0" width="20.0" height="20.0" />
+        <component name="Z" z="99"/>
+        <component name="Texture" filepath="textures/vehicles/car.png" />
     </entityTemplate>
 
     <entityTemplate name="WeirdCar">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="100"/>
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
         <component name="Rotation" angle="0" />
@@ -134,7 +158,7 @@
     <entityTemplate name="VeryWeirdCar">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="100"/>
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl" />
         <component name="Color" r="50" g="50" b="255" a="255" />
@@ -143,7 +167,7 @@
     <entityTemplate name="VeryWeirdCarWithTextureRect">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="100"/>
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="TextureRect" x="0" y="0" width="15" height="7" />
         <component name="Color" r="50" g="50" b="255" a="255" />
@@ -152,7 +176,7 @@
     <entityTemplate name="VeryWeirdCarWithTextureRectAndCustomShader">
         <component name="StaticCollisionBody" />
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="100"/>
         <component name="Texture" filepath="textures/vehicles/car.png" />
         <component name="TextureRect" x="0" y="0" width="15" height="7" />
         <component name="Shader" shaderName="weird2" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl" />
@@ -160,20 +184,6 @@
     </entityTemplate>
 
 
-    <entityTemplate name="Lever">
-        <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
-        <component name="Z" z="0"/>
-        <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="8" height="16" />
-    </entityTemplate>
-
-    <entityTemplate name="WeirdLever">
-        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
-        <component name="Z" z="0"/>
-        <component name="Texture" filepath="textures/others/lever.png" />
-        <component name="TextureRect" x="0" y="0" width="8" height="16" />
-        <component name="Shader" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" />
-    </entityTemplate>
 
 
     <entityTemplate name="BulletItem">
@@ -187,7 +197,7 @@
 
     <entityTemplate name="ColorSquare">
         <component name="BodyRect" x="0.0" y="0.0" width="40.0" height="40.0" />
-        <component name="Z" z="0"/>
+        <component name="Z" z="100"/>
         <component name="Color" r="255" g="255" b="255" a="255" />
     </entityTemplate>
 
@@ -196,7 +206,7 @@
     
     <entityTemplate name="Pistol">
         <component name="BodyRect" x="200.0" y="60.0" width="15" height="9" />
-        <component name="Z" z="1"/>
+        <component name="Z" z="95"/>
         <component name="Texture" filepath="textures/others/pistol.png" />
         <component name="TextureRect" x="0" y="0" width="11" height="7" />
         <component name="HiddenForRenderer"/>
@@ -215,6 +225,8 @@
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
+  
+    <entity sourceTemplate="Car"/>
     
     <entity name="Area">
        <component name="Area" x="300.0" y="50.0" width="100.0" height="200.0"/>
@@ -224,7 +236,6 @@
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="300.0" y="100.0" width="100.0" height="200.0" />
         <component name="Color" r="11" g="126" b="38" a="100" />
-        <component name="Z" z="1"/>
     </entity>
     
     <entity name="Area">
@@ -235,7 +246,6 @@
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="450.0" y="100.0" width="100.0" height="200.0" />
         <component name="Color" r="112" g="4" b="6" a="100" />
-        <component name="Z" z="1"/>
     </entity>
     
     <entity name="Area">
@@ -246,7 +256,19 @@
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="300.0" y="200.0" width="250.0" height="100.0" />
         <component name="Color" r="112" g="45" b="6" a="100" />
-        <component name="Z" z="1"/>
+    </entity>
+  
+
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="-200.0" y="-100.0" width="250.0" height="100.0" />
+        <component name="Color" r="1" g="200" b="6" a="100" />
+        <component name="Z" z="91" />
+    </entity>
+  
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="-200.0" y="-150.0" width="250.0" height="100.0" />
+        <component name="Color" r="255" g="127" b="6" a="100" />
+        <component name="Z" z="92" />
     </entity>
     
         
@@ -257,6 +279,46 @@
   
     <entity sourceTemplate="Zombie"/>
 
+
+    <entity sourceTemplate="ColorSquare">
+        <component name="Color" r="200" g="200" b="10" a="255" />
+        <component name="StaticCollisionBody" />
+    </entity>
+
+    <entity sourceTemplate="Lever" />
+
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
+    </entity>
+        
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="260.0" y="100.0" width="20.0" height="20.0" />
+    </entity>
+    
+        <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="150.0" y="100.0" width="20.0" height="20.0" />
+    </entity>
+    
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
+    </entity>
+
+    <entity sourceTemplate="GateGuard">
+        <component name="StaticCollisionBody" />
+    </entity>
+
+    <entity sourceTemplate="BulletItem">
+        <component name="Medkit" addHealthPoints="20" />
+    </entity>
+
+</entities>
+
+  
+
+
+
+  
+<!--TEMPORARILY TURNED OFF-->
     <entity sourceTemplate="WeirdCar">
         <component name="BodyRect" x="50" y="120" width="20" height="20" />
     </entity>
@@ -304,7 +366,6 @@
 
     <entity sourceTemplate="ColorSquare">
         <component name="Color" r="200" g="200" b="10" a="255" />
-        <component name="Z" z="1"/>
         <component name="StaticCollisionBody" />
     </entity>
 
@@ -322,8 +383,28 @@
         <component name="BodyRect" x="150.0" y="100.0" width="20.0" height="20.0" />
     </entity>
     
-        <entity sourceTemplate="Zombie">
+    <entity sourceTemplate="Zombie">
         <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
+    </entity>  
+  
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="50" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="150" maxHealthPoints="150" />
+    </entity>
+        
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="80" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="200" maxHealthPoints="200" />
+    </entity>
+    
+        <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="110" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="250" maxHealthPoints="250" />
+    </entity>
+    
+    <entity sourceTemplate="Zombie">
+        <component name="BodyRect" x="140" y="0" width="20.0" height="20.0" />
+        <component name="Health" healthPoints="300" maxHealthPoints="300" />
     </entity>
 
     <entity sourceTemplate="GateGuard">

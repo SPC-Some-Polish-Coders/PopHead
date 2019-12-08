@@ -4,11 +4,10 @@
 #include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/movement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
-#include "ECS/Systems/dyingCharacters.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
 #include "ECS/Systems/renderSystem.hpp"
-#include "ECS/Systems/damageDealing.hpp"
+#include "ECS/Systems/damageAndDeath.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/isObjectInArea.hpp"
@@ -25,15 +24,18 @@
 #include "ECS/Systems/lastingShots.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
+#include "ECS/Systems/audioSystem.hpp"
+#include "ECS/Systems/zombieSystem.hpp"
 
 namespace ph {
 
-Scene::Scene(sf::Window& window)
+Scene::Scene(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	initiateSystemsQueue(window);
+	initiateSystemsQueue(window, musicPlayer, soundPlayer, aiManager);
+	terminal.setSceneRegistry(&mRegistry);
 }
 
 void Scene::handleEvent(const ph::Event& e)
@@ -70,12 +72,12 @@ entt::registry& Scene::getRegistry()
 	return mRegistry;
 }
 
-void Scene::initiateSystemsQueue(sf::Window& window)
+void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager)
 {
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
-	mSystemsQueue.appendSystem<system::PlayerAttackType>();
+	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
@@ -92,12 +94,12 @@ void Scene::initiateSystemsQueue(sf::Window& window)
 	mSystemsQueue.appendSystem<system::GunTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DyingCharacters>();
+	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
-	mSystemsQueue.appendSystem<system::DamageDealing>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
 	mSystemsQueue.appendSystem<system::VelocityClear>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
 }

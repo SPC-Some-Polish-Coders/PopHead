@@ -9,10 +9,15 @@ namespace ph::system {
 
 	void PlayerMovementInput::update(float seconds)
 	{
-		updateInputFrags();
+		if(isPlayerWithoutControl())
+			return;
+
+		updateInputFlags();
 		updateAnimationData();
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
+		updateGunAttackInput();
+		updateMeleeAttackInput();
 
 		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
 		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, const component::Player) {
@@ -22,7 +27,14 @@ namespace ph::system {
 		});
 	}
 
-	void PlayerMovementInput::updateInputFrags()
+	bool PlayerMovementInput::isPlayerWithoutControl()
+	{
+		auto view = mRegistry.view<component::Player>();
+		for(auto entity : view)
+			return mRegistry.has<component::TimeToFadeOut>(entity);
+	}
+
+	void PlayerMovementInput::updateInputFlags()
 	{
 		mUp    = ActionEventManager::isActionPressed("movingUp");
 		mDown  = ActionEventManager::isActionPressed("movingDown");
@@ -69,7 +81,6 @@ namespace ph::system {
 
 	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
 	{
-		//constexpr float diagonal = 0.70710f;
 		constexpr float diagonal = 0.7f;
 
 		if (mUp   && mLeft)  return sf::Vector2f(-diagonal, -diagonal);
@@ -98,20 +109,9 @@ namespace ph::system {
 		}
 	}
 
-	void PlayerAttackType::update(float seconds)
+	void PlayerMovementInput::updateGunAttackInput()
 	{
-		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
-		auto playerGunView= mRegistry.view<component::Player, component::GunAttacker>();
-
-		if (ActionEventManager::isActionPressed("meleeAtack"))
-		{
-			for (auto player : playerMeleeView)
-			{
-				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
-				playerMeleeAttack.isTryingToAttack = true;
-			}
-		}
-
+		auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
 		if (ActionEventManager::isActionPressed("gunAttack"))
 		{
 			for (auto player : playerGunView)
@@ -122,4 +122,16 @@ namespace ph::system {
 		}
 	}
 
+	void PlayerMovementInput::updateMeleeAttackInput()
+	{
+		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
+		if(ActionEventManager::isActionPressed("meleeAtack"))
+		{
+			for(auto player : playerMeleeView)
+			{
+				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
+				playerMeleeAttack.isTryingToAttack = true;
+			}
+		}
+	}
 }

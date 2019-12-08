@@ -9,6 +9,64 @@
 
 namespace ph {
 
+// TODO_ren: Use custom allocators in RenderGroupsHashMap
+
+RenderGroupsHashMap::RenderGroupsHashMap()
+	:mShouldSort(false)
+{
+	mRenderGroups.reserve(10);
+}
+
+QuadRenderGroup& RenderGroupsHashMap::insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey key) 
+{
+	if(auto renderGroup = getRenderGroup(key))
+		return *renderGroup;
+	mRenderGroups.emplace_back(std::pair(key, QuadRenderGroup()));
+	mShouldSort = true;
+	return *getRenderGroup(key);
+}
+
+auto RenderGroupsHashMap::getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&
+{
+	eraseUselessGroups();
+	sort();
+	return mRenderGroups;
+}
+
+void RenderGroupsHashMap::sort()
+{
+	if(!mShouldSort)
+		return;
+
+	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
+	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
+
+	std::sort(mRenderGroups.begin(), mRenderGroups.end(),
+		[](const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
+			return a.first.z > b.first.z;
+		});
+}
+
+void RenderGroupsHashMap::eraseUselessGroups()
+{
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].second.quadsData.empty())
+			mRenderGroups.erase(mRenderGroups.begin() + i);
+}
+
+QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
+{
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].first == key)
+			return &mRenderGroups[i].second;
+	return nullptr;
+}
+
+bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
+{
+	return lhs.shader == rhs.shader && lhs.z == rhs.z;
+}
+
 void QuadRenderer::init()
 {
 	auto& sl = ShaderLibrary::getInstance();
@@ -65,14 +123,6 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfRenderGroups = 0;
 }
 
-bool operator< (const RenderGroupKey& lhs, const RenderGroupKey& rhs) {
-	if(lhs.shader->getID() < rhs.shader->getID())
-		return true;
-	if(lhs.z > rhs.z)
-		return true;
-	return false;
-}
-
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation)
 {
@@ -85,10 +135,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 		shader = mDefaultInstanedSpriteShader;
 
 	// find or add draw call group
-	std::map<RenderGroupKey, QuadRenderGroup>::iterator found;
-	while((found = mRenderGroups.find(RenderGroupKey{shader, z})) == mRenderGroups.end())
-		mRenderGroups.insert({RenderGroupKey{shader, z}, QuadRenderGroup()});
-	auto& renderGroup = found->second;
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z});
 
 	// submit data
 	QuadData quadData;
@@ -142,19 +189,21 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 void QuadRenderer::flush()
 {
 	PH_PROFILE_FUNCTION();
-	mNumberOfRenderGroups = mRenderGroups.size();
+	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
-	for(auto& [key, rg] : mRenderGroups)
+	mCurrentlyBoundQuadShader = nullptr;
+
+	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
 		mNumberOfDrawnSprites += rg.quadsData.size();
 		mNumberOfDrawnTextures += rg.textures.size();
 
 		// set up shader
-		if(key.shader != mCurrentlyBoundShader) 
+		if(key.shader != mCurrentlyBoundQuadShader) 
 		{
 			key.shader->bind();
-			mCurrentlyBoundShader = key.shader;
+			mCurrentlyBoundQuadShader = key.shader;
 
 			int textures[32];
 			for(int i = 0; i < 32; ++i)

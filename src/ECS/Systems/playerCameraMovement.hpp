@@ -9,7 +9,7 @@ class PlayerCameraMovement : public System
 public:
 	PlayerCameraMovement(entt::registry& registry);
 
-	void update(float seconds) override;
+	void update(float dt) override;
 };
 
 }
