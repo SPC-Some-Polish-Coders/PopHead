@@ -20,7 +20,6 @@
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/particleSystem.hpp"
-#include "ECS/Systems/lastingShots.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/audioSystem.hpp"
@@ -84,7 +83,6 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
-	mSystemsQueue.appendSystem<system::LastingShots>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
