@@ -10,12 +10,10 @@ namespace ph::system {
 
 	void VelocityChangingAreas::update(float seconds)
 	{
+		handleNewObjectsInsideArea();
 		auto objectsInArea = mRegistry.view<component::IsInArea, component::CharacterSpeed>();
 		for (const auto objectInArea : objectsInArea)
 		{
-			if (!mRegistry.has<component::VelocityEffects>(objectInArea))
-				mRegistry.assign<component::VelocityEffects>(objectInArea);
-
 			const auto& isInArea = objectsInArea.get<component::IsInArea>(objectInArea);
 			std::multiset<float> newVelocityEffects = getAllNewMultipliers(isInArea.areas);
 
@@ -32,6 +30,27 @@ namespace ph::system {
 		}
 
 		removeVelocityEffectsFromObjectsBeyond();
+	}
+
+	void VelocityChangingAreas::handleNewObjectsInsideArea() const
+	{
+		auto newObjectsInsideAreasView = mRegistry.view<component::IsInArea, component::BodyRect>(entt::exclude <component::VelocityEffects>);
+		auto velocityChangingAreasView = mRegistry.view<component::Area, component::AreaVelocityChangingEffect>();
+
+		for (auto newObject : newObjectsInsideAreasView)
+		{
+			const auto& objectBody = newObjectsInsideAreasView.get<component::BodyRect>(newObject);
+			const auto objectBottomCenter = sf::Vector2f(objectBody.rect.getCenter().x - objectBody.rect.width / 2, objectBody.rect.getBottomLeft().y);
+			for (auto velocityChangingArea : velocityChangingAreasView)
+			{
+				const auto& velocityChangingAreaBody = velocityChangingAreasView.get<component::Area>(velocityChangingArea);
+				if (velocityChangingAreaBody.areaBody.contains(objectBottomCenter))
+				{
+					mRegistry.assign<component::VelocityEffects>(newObject);
+					return;
+				}
+			}
+		}
 	}
 
 	std::multiset<float> VelocityChangingAreas::getAllNewMultipliers(const std::vector<FloatRect>& currentAreas) const

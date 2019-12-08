@@ -15,6 +15,7 @@ public:
 	void update(float seconds) override;
 
 private:
+	void handleNewObjectsInsideArea() const;
 	std::multiset<float> getAllNewMultipliers(const std::vector<FloatRect>& currentAreas) const;
 	std::multiset<float> getActualNewMultipliers(const std::multiset<float>& minuend, const std::multiset<float>& subtrahend) const;
 	void removeVelocityEffectsFromObjectsBeyond() const;
