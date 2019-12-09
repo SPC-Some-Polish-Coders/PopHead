@@ -3,10 +3,9 @@
 #include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
 #include <vector>
+#include <optional>
 
 namespace ph { 
- 
-class PointRenderer;
 
 struct Light
 {
@@ -20,8 +19,20 @@ struct Light
 struct RayDestinationPoint
 {
 	sf::Vector2f position;
-	int wallID1;
-	int wallID2;
+	unsigned leftWallID;
+	unsigned rightWallID;
+};
+
+struct Ray
+{
+	sf::Vector2f position;
+	sf::Vector2f direction;
+};
+
+struct Wall
+{
+	sf::Vector2f leftPointPosition;
+	sf::Vector2f rightPointPosition;
 };
 
 class LightRenderer
@@ -29,11 +40,18 @@ class LightRenderer
 public:
 	void submitWallQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
-	void flush(PointRenderer& pointRenderer);
+	void flush();
+
+private:
+	auto getPointOfIntersection(const Ray&, const Wall&) -> std::optional<sf::Vector2f>;
 
 private:
 	std::vector<RayDestinationPoint> mWallPoints;
+	std::vector<Wall> mWalls;
 	std::vector<Light> mLights;
+	std::vector<Ray> mRays;
 };
+
+// TODO_ren: Add submitLine()
 
 } 

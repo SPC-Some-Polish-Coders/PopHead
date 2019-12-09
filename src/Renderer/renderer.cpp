@@ -128,7 +128,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
-	lightRenderer.flush(pointRenderer);
+	lightRenderer.flush();
 	quadRenderer.flush();
 	pointRenderer.flush();
 

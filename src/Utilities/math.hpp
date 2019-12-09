@@ -1,14 +1,16 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 
-namespace ph {
+namespace ph::Math {
 
-namespace Math 
-{
+	template <typename T>
+	sf::Vector2<T> getUnitVector(const sf::Vector2<T>);
+
 	sf::Vector2f getUnitVector(float angle);
+	
 	float degreesToRadians(float angle);
 	float radiansToDegrees(float angle);
 
@@ -20,7 +22,9 @@ namespace Math
 
 	template <typename T>
 	float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2);
-}
+
+	template <typename T>
+	sf::Vector2<T> abs(const sf::Vector2<T>);
 }
 
 #include "math.inl"

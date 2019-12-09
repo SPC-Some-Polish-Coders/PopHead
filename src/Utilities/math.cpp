@@ -1,10 +1,8 @@
 #include "math.hpp"
 #include "Logs/logs.hpp"
 
-namespace ph {
+namespace ph::Math {
 
-namespace Math 
-{
 	float getRightBound(const sf::FloatRect& bounds)
 	{
 		return bounds.left + bounds.width;
@@ -47,6 +45,4 @@ namespace Math
 		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
 	}
-}
-
 }
