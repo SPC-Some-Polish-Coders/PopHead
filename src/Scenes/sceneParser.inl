@@ -16,7 +16,7 @@ SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttPar
 	sceneFile.loadFromFile(sceneFileName);
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
-	//parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
+	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	//parse<MapParser>(gameData, sceneLinksNode, "map");
 	//parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
