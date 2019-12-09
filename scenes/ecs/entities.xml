@@ -158,7 +158,7 @@
 
     <entityTemplate name="ColorSquare">
         <component name="BodyRect" x="0.0" y="0.0" width="40.0" height="40.0" />
-        <component name="RenderQuad" z="100" blocksLight="false"/>
+        <component name="RenderQuad" z="100" blocksLight="false" color="rgba(0, 255, 0, 100)"/>
     </entityTemplate>
 
     <entityTemplate name="Pistol">
@@ -188,6 +188,7 @@
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="200.0" y="200.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
     </entity>
     
     <entity name="Area">
@@ -197,6 +198,7 @@
     
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="300.0" y="100.0" width="100.0" height="200.0" />
+        <component name="RenderQuad" color="rgb(200, 128, 50)" z="100" blocksLight="false"/>
     </entity>
     
     <entity name="Area">
@@ -206,6 +208,7 @@
     
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="450.0" y="100.0" width="100.0" height="200.0" />
+        <component name="RenderQuad" color="rgb(250, 128, 50)" z="100" blocksLight="false"/>
     </entity>
     
     <entity name="Area">
@@ -215,6 +218,7 @@
     
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="300.0" y="200.0" width="250.0" height="100.0" />
+        <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false"/>
     </entity>
   
     <entity sourceTemplate="Highway"/>

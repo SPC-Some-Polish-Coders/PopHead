@@ -167,8 +167,11 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	else
 		quad.shader = nullptr;
 
-	// TODO: Color parsing
-	quad.color = sf::Color::White;
+	// Color parsing
+	if(entityComponentNode.hasAttribute("color"))
+		quad.color = entityComponentNode.getAttribute("color").toColor();
+	else
+		quad.color = sf::Color::White;
 
 	// parse rotation
 	if(entityComponentNode.hasAttribute("rotation"))
@@ -184,7 +187,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("blocksLight"), "Every RenderQuad has to have blockLight atribute!");
 	quad.blocksLight = entityComponentNode.getAttribute("blocksLight").toBool();
 
-	// assign RenderQuad component
+	// assign component
 	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
 }
 

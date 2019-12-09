@@ -350,6 +350,56 @@ float Xml::toFloat() const
 	return std::stof(toString());
 }
 
+sf::Color Xml::toColor() const
+{
+	// TODO: Optimize and refactor this function:
+	// - get rid of std::vector
+	// - get rid of 2 if blocks which do almost the same
+	// - can't we assume bracket pos?
+
+	auto intoUint8 = [](const std::string& str) -> sf::Uint8
+	{
+		return static_cast<sf::Uint8>(std::stoi(str));
+	};
+
+	if(mContent.find("rgba") != std::string::npos)
+	{
+		auto bracketPos = mContent.find('(');
+
+		std::vector<size_t> commas;
+		commas.push_back(mContent.find(','));
+		commas.push_back(mContent.find(',', commas[0] + 1));
+		commas.push_back(mContent.find(',', commas[1] + 1));
+
+		std::vector<sf::Uint8> values = { 
+			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
+			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
+			intoUint8(mContent.substr(commas[1] + 1, commas[2] - commas[1])),
+			intoUint8(mContent.substr(commas[2] + 1))
+		};
+
+		return sf::Color(values[0], values[1], values[2], values[3]);
+	}
+	else if(mContent.find("rgb") != std::string::npos)
+	{
+		auto bracketPos = mContent.find('(');
+			
+		std::vector<size_t> commas;
+		commas.push_back(mContent.find(','));
+		commas.push_back(mContent.find(',', commas[0] + 1));
+
+		std::vector<sf::Uint8> values = { 
+			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)), 
+			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
+			intoUint8(mContent.substr(commas[1] + 1))
+		};
+
+		return sf::Color(values[0], values[1], values[2]);
+	}
+
+	PH_EXIT_GAME("Could not cast to color!");
+}
+
 bool Xml::isSelfClosingTag(std::size_t openingTagEndPosition) const
 {
 	return mContent[openingTagEndPosition - 1] == '/';

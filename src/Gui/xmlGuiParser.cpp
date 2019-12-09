@@ -194,6 +194,8 @@ std::pair<std::string, std::string> XmlGuiParser::splitString(const std::string&
 	
 sf::Color XmlGuiParser::getColor(const Xml& widgetTag)
 {
+	// TODO: Use Xml::toColor()
+
 	auto colorStr = widgetTag.getAttribute("color").toString();
 
 	if (colorStr.substr(0, 4) == "rgba")
@@ -266,4 +268,5 @@ sf::Color XmlGuiParser::parseRGBA(std::string colorStr)
 
 	return sf::Color(values[0], values[1], values[2], values[3]);
 }
+
 }
