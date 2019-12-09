@@ -188,7 +188,7 @@
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="200.0" y="200.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
+      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
     </entity>
     
     <entity name="Area">
@@ -229,6 +229,7 @@
 
     <entity sourceTemplate="ColorSquare">
         <component name="StaticCollisionBody" />
+        <component name="RenderQuad" color="rgba(0, 208, 50, 100)" z="100" blocksLight="true"/>
     </entity>
 
     <entity sourceTemplate="Lever" />

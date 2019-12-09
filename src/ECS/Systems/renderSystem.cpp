@@ -72,7 +72,7 @@ void RenderSystem::submitRenderQuads() const
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
 	});
 }
 
@@ -84,7 +84,7 @@ void RenderSystem::submitRenderQuadsWithTextureRect() const
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
 	});
 }
 

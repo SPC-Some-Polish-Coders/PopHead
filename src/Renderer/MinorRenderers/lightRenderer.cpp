@@ -6,7 +6,7 @@
 
 namespace ph { 
 
-void LightRenderer::submitWallQuad(sf::Vector2f position, sf::Vector2f size)
+void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
 	sf::Vector2f upLeftPoint = position;
 	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
@@ -33,7 +33,7 @@ void LightRenderer::submitLight(Light light)
 
 void LightRenderer::flush()
 {
-#if 0 
+#if 1 
 	// DEBUG STUFF
 	for(auto wallPoint : mWallPoints)
 		Renderer::submitPoint(wallPoint.position, sf::Color::Red, 0.f, 5.f);
@@ -66,7 +66,7 @@ void LightRenderer::flush()
 				else
 					continue;
 			}
-			//Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 1.f);
+			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 1.f);
 		}
 	}
 

@@ -26,7 +26,7 @@ namespace Renderer
 	void endScene(sf::RenderWindow& window, DebugCounter&);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader,
-	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation = 0.f);
+	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight);
 
 	void submitLine(const sf::Color&, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 

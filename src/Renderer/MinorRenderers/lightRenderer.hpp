@@ -38,7 +38,7 @@ struct Wall
 class LightRenderer
 {
 public:
-	void submitWallQuad(sf::Vector2f position, sf::Vector2f size);
+	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
 	void flush();
 
