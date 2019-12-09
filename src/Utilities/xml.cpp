@@ -352,11 +352,6 @@ float Xml::toFloat() const
 
 sf::Color Xml::toColor() const
 {
-	// TODO: Optimize and refactor this function:
-	// - get rid of std::vector
-	// - get rid of 2 if blocks which do almost the same
-	// - can't we assume bracket pos?
-
 	auto intoUint8 = [](const std::string& str) -> sf::Uint8
 	{
 		return static_cast<sf::Uint8>(std::stoi(str));
@@ -364,14 +359,14 @@ sf::Color Xml::toColor() const
 
 	if(mContent.find("rgba") != std::string::npos)
 	{
-		auto bracketPos = mContent.find('(');
+		size_t bracketPos = 4;
 
-		std::vector<size_t> commas;
-		commas.push_back(mContent.find(','));
-		commas.push_back(mContent.find(',', commas[0] + 1));
-		commas.push_back(mContent.find(',', commas[1] + 1));
+		size_t commas[3];
+		commas[0] = mContent.find(',');
+		commas[1] = mContent.find(',', commas[0] + 1);
+		commas[2] = mContent.find(',', commas[1] + 1);
 
-		std::vector<sf::Uint8> values = { 
+		sf::Uint8 values[] = { 
 			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
 			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
 			intoUint8(mContent.substr(commas[1] + 1, commas[2] - commas[1])),
@@ -382,13 +377,13 @@ sf::Color Xml::toColor() const
 	}
 	else if(mContent.find("rgb") != std::string::npos)
 	{
-		auto bracketPos = mContent.find('(');
-			
-		std::vector<size_t> commas;
-		commas.push_back(mContent.find(','));
-		commas.push_back(mContent.find(',', commas[0] + 1));
+		size_t bracketPos = 3;
 
-		std::vector<sf::Uint8> values = { 
+		size_t commas[2];
+		commas[0] = mContent.find(',');
+		commas[1] = mContent.find(',', commas[0] + 1);
+
+		sf::Uint8 values[] = { 
 			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)), 
 			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
 			intoUint8(mContent.substr(commas[1] + 1))
