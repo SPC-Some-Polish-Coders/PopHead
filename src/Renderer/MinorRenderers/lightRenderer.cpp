@@ -33,7 +33,7 @@ void LightRenderer::submitLight(Light light)
 
 void LightRenderer::flush()
 {
-#if 1
+#if 0 
 	// DEBUG STUFF
 	for(auto wallPoint : mWallPoints)
 		Renderer::submitPoint(wallPoint.position, sf::Color::Red, 0.f, 5.f);
@@ -66,7 +66,7 @@ void LightRenderer::flush()
 				else
 					continue;
 			}
-			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 1.f);
+			//Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 1.f);
 		}
 	}
 
