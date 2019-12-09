@@ -4,10 +4,17 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph::system {
 
 void PendingGunAttacks::update(float seconds)
+{
+	handleLastingBullets();
+	handlePendingGunAttacks();
+}
+
+void PendingGunAttacks::handlePendingGunAttacks()
 {
 	const auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect, component::Player, component::FaceDirection>();
 	for (const auto& gunAttacker : gunAttackerView)
@@ -27,11 +34,11 @@ void PendingGunAttacks::update(float seconds)
 				auto gunBody = gunView.get<component::BodyRect>(gun);
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
-
 				sf::Vector2f shift = gunBody.rect.getCenter();
 				sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
 				shift -= startingBulletPos;
 				startingBulletPos += shift;
+
 				///////////////////////////////////////////////////////
 				//temporary until I find better bullet positioning
 				if (playerFaceDirection.direction == sf::Vector2f(1, 0))
@@ -112,6 +119,15 @@ sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDir
 		return { -3, 17 };
 	else
 		return { 0, 0 };
+}
+
+void PendingGunAttacks::handleLastingBullets()
+{
+	const auto lastingShotsView = mRegistry.view<component::LastingShot>();
+
+	lastingShotsView.each([](const component::LastingShot& lastingShotDetails) {
+		Renderer::submitLine(sf::Color(230, 160, 0), sf::Color(250, 250, 200), lastingShotDetails.startingShotPos, lastingShotDetails.endingShotPos, 1.f);
+		});
 }
 
 }

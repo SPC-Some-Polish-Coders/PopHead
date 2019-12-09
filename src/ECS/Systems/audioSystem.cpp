@@ -20,7 +20,7 @@ namespace ph::system {
 	void AudioSystem::update(float dt)
 	{
 		// define constants
-		constexpr float distanceToEnemyToSwitchToAtackTheme = 270.f;
+		constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
 		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
 
 		// get player position
@@ -43,7 +43,7 @@ namespace ph::system {
 
 		// switch themes if they should be switched
 		Theme themeTypeWhichShouldBePlayed;
-		if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAtackTheme)
+		if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAttackTheme)
 			themeTypeWhichShouldBePlayed = Theme::Fight;
 		else if(theClosestEnemyDistanceFromPlayer > distanceToEnemyToSwitchToExplorationTheme)
 			themeTypeWhichShouldBePlayed = Theme::Exploration;
