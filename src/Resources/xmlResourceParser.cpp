@@ -6,7 +6,7 @@ namespace ph {
 
 void XmlResourceParser::parseFile(GameData* const gameData, const std::string& filePath)
 {
-	PH_LOG_INFO("NeededResources file (" + filePath + ") is beign parsed.");
+	PH_LOG_INFO("NeededResources file (" + filePath + ") is being parsed.");
 
 	Xml neededResourcesFile;
 	neededResourcesFile.loadFromFile(filePath);
