@@ -10,8 +10,7 @@ void AnimationSystem::update(float seconds)
 
 	for(auto entity : view)
 	{
-		auto& animationData = view.get<component::AnimationData>(entity);
-		auto& textureRect = view.get<component::TextureRect>(entity);
+		auto& [animationData, textureRect] = view.get<component::AnimationData, component::TextureRect>(entity);
 		
 		if(animationData.isPlaying)
 		{

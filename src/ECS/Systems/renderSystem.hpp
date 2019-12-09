@@ -21,24 +21,8 @@ public:
 private:
 	Camera& getCameraWithTheBiggestPriority();
 	void submitLights() const;
-	void submitSingleColorSprites() const;
-	void submitTextureSprites() const;
-	void submitTextureSpritesWithCustomShader() const;
-	void submitTextureSpritesWithTextureRect() const;
-	void submitTextureSpritesWithTextureRectAndCustomShader() const;
-	void submitTextureSpritesWithSingleColorMultiplication() const;
-	void submitTextureSpritesWithSingleColorAndCustomShader() const;
-	void submitTextureSpritesWithSingleColorAndTextureRect() const;
-	void submitTextureSpritesWithSingleColorTextureRectAndCustomShader() const;
-	void submitSingleColorSpritesWithRotation() const;
-	void submitTextureSpritesWithRotation() const;
-	void submitTextureSpritesWithCustomShaderAndRotation() const;
-	void submitTextureSpritesWithTextureRectAndRotation() const;
-	void submitTextureSpritesWithTextureRectCustomShaderAndRotation() const;
-	void submitTextureSpritesWithSingleColorMultiplicationAndRotation() const;
-	void submitTextureSpritesWithSingleColorCustomShaderAndRotation() const;
-	void submitTextureSpritesWithSingleColorTextureRectAndRotation() const;
-	void submitTextureSpritesWithSingleColorTextureRectCustomShaderAndRotation() const;
+	void submitRenderQuads() const;
+	void submitRenderQuadsWithTextureRect() const;
 
 private:
 	sf::Window& mWindow;

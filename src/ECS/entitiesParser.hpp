@@ -21,6 +21,8 @@ private:
 	void parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity);
 
 	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
+	void parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity);
+	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseArea(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
@@ -37,15 +39,9 @@ private:
 	void parseEntrance(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
-	void parseTexture(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity);
-	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseKillable(const Xml& entityComponentNode, entt::entity& entity);
-	void parseShader(const Xml& entityComponentNode, entt::entity& entity);
-	void parseColor(const Xml& entityComponentNode, entt::entity& entity);
-	void parseZ(const Xml& entityComponentNode, entt::entity& entity);
-	void parseRotation(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCamera(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePointLight(const Xml& entityComponentNode, entt::entity& entity);
 	void parseAnimationData(const Xml& entityComponentNode, entt::entity& entity);
@@ -61,4 +57,3 @@ private:
 };
 
 }
-

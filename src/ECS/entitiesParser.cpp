@@ -83,6 +83,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
+		{"RenderQuad",			   &EntitiesParser::parseRenderQuad},
+		{"TextureRect",			   &EntitiesParser::parseTextureRect},
 		{"Area",				   &EntitiesParser::parseArea},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			   &EntitiesParser::parseKillable},
@@ -94,15 +96,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Entrance",               &EntitiesParser::parseEntrance},
-		{"Texture",                &EntitiesParser::parseTexture},
-		{"TextureRect",            &EntitiesParser::parseTextureRect},
-		{"Shader",                 &EntitiesParser::parseShader},
-		{"Color",                  &EntitiesParser::parseColor},
-		{"Z",                      &EntitiesParser::parseZ},
 		{"PlayerGun",              &EntitiesParser::parsePlayerGun},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
-		{"Rotation",               &EntitiesParser::parseRotation},
 		{"Camera",                 &EntitiesParser::parseCamera},
 		{"PointLight",             &EntitiesParser::parsePointLight},
 		{"HiddenForRenderer",	   &EntitiesParser::parseHiddenForRenderer},
@@ -134,6 +130,72 @@ void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity&
 	float width = entityComponentNode.getAttribute("width").toFloat();
 	float height = entityComponentNode.getAttribute("height").toFloat();
 	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, ph::FloatRect(x, y, width, height));
+}
+
+void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity)
+{
+	component::RenderQuad quad;
+
+	// parse texture
+	if(entityComponentNode.hasAttribute("textureFilepath")) {
+		const std::string filepath = entityComponentNode.getAttribute("textureFilepath").toString();
+		if(mTextureHolder->load(filepath))
+			quad.texture = &mTextureHolder->get(filepath);
+		else
+			PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture \"" + filepath + "\"");
+	}
+	else
+		quad.texture = nullptr;
+
+	// parse shader
+	if(entityComponentNode.hasAttribute("shaderName")) {
+		// TODO: Optimize that
+		const std::string shaderName = entityComponentNode.getAttribute("shaderName").toString();
+
+		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("vertexShaderFilepath"), "Not specifiled vertexShaderFilepath attribute!");
+		const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath").toString();
+
+		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("fragmentShaderFilepath"), "Not specified fragmentShaderFilepath attribute!");
+		const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath").toString();
+
+		auto& sl = ShaderLibrary::getInstance();
+		if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
+			quad.shader = sl.get(shaderName);
+		else
+			PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
+	}
+	else
+		quad.shader = nullptr;
+
+	// TODO: Color parsing
+	quad.color = sf::Color::White;
+
+	// parse rotation
+	if(entityComponentNode.hasAttribute("rotation"))
+		quad.rotation = entityComponentNode.getAttribute("rotation").toFloat();
+	else
+		quad.rotation = 0.f;
+
+	// parse z
+	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
+	quad.z = entityComponentNode.getAttribute("z").toChar();
+
+	// parse blocks light
+	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("blocksLight"), "Every RenderQuad has to have blockLight atribute!");
+	quad.blocksLight = entityComponentNode.getAttribute("blocksLight").toBool();
+
+	// assign RenderQuad component
+	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
+}
+
+void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
+{
+	int left = entityComponentNode.getAttribute("x").toInt();
+	int top = entityComponentNode.getAttribute("y").toInt();
+	int width = entityComponentNode.getAttribute("width").toInt();
+	int height = entityComponentNode.getAttribute("height").toInt();
+	IntRect rect(left, top, width, height);
+	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
 }
 
 void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& entity)
@@ -347,51 +409,9 @@ void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& e
 	mUsedRegistry->assign_or_replace<component::Bullet>(entity, numOfBullets);
 }
 
-void EntitiesParser::parseTexture(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const std::string filepath = entityComponentNode.getAttribute("filepath").toString();
-	if(mTextureHolder->load(filepath))
-	{
-		auto& texture = mTextureHolder->get(filepath);
-		mUsedRegistry->assign_or_replace<component::TexturePtr>(entity, &texture);
-	}
-	else
-		PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture!");
-}
-
-void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const int x = entityComponentNode.getAttribute("x").toInt();
-	const int y = entityComponentNode.getAttribute("y").toInt();
-	const int width = entityComponentNode.getAttribute("width").toInt();
-	const int height = entityComponentNode.getAttribute("height").toInt();
-	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, IntRect(x, y, width, height));
-}
-
 void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::HiddenForRenderer>(entity);
-}
-
-void EntitiesParser::parseColor(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const auto r = entityComponentNode.getAttribute("r").toUnsignedChar();
-	const auto g = entityComponentNode.getAttribute("g").toUnsignedChar();
-	const auto b = entityComponentNode.getAttribute("b").toUnsignedChar();
-	const auto a = entityComponentNode.getAttribute("a").toUnsignedChar();
-	mUsedRegistry->assign_or_replace<component::Color>(entity, sf::Color(r, g, b, a));
-}
-
-void EntitiesParser::parseZ(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const auto z = entityComponentNode.getAttribute("z").toChar();
-	mUsedRegistry->assign_or_replace<component::Z>(entity, z);
-}
-
-void EntitiesParser::parseRotation(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const float angle = entityComponentNode.getAttribute("angle").toFloat();
-	mUsedRegistry->assign_or_replace<component::Rotation>(entity, angle);
 }
 
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
@@ -418,21 +438,6 @@ void EntitiesParser::parsePointLight(const Xml& entityComponentNode, entt::entit
 	};
 	pointLight.range = entityComponentNode.getAttribute("range").toFloat();
 	mUsedRegistry->assign_or_replace<component::PointLight>(entity, pointLight);
-}
-
-void EntitiesParser::parseShader(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const std::string shaderName = entityComponentNode.getAttribute("shaderName").toString();
-	const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath").toString();
-	const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath").toString();
-
-	auto& sl = ShaderLibrary::getInstance();
-	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str())) {
-		auto* shader = sl.get(shaderName);
-		mUsedRegistry->assign_or_replace<component::ShaderPtr>(entity, shader);
-	}
-	else
-		PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
 }
 
 void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)

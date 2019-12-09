@@ -30,24 +30,24 @@ namespace ph::system {
 
 	void DamageAndDeath::makeDamageJuice(float dt) const
 	{
-		auto view = mRegistry.view<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>();
+		auto view = mRegistry.view<component::DamageAnimation, component::RenderQuad, component::Health, component::MultiParticleEmitter>();
 		for(auto entity : view)
 		{
 			PH_ASSERT(mRegistry.has<component::MultiParticleEmitter>(entity),
 				"This Entity should have MultiParticleEmitter in order to emit damage particles!");
 
-			auto& [damageAnimation, color, health, multiParticleEmitter] =
-				view.get<component::DamageAnimation, component::Color, component::Health, component::MultiParticleEmitter>(entity);
+			auto& [damageAnimation, renderQuad, health, multiParticleEmitter] =
+				view.get<component::DamageAnimation, component::RenderQuad, component::Health, component::MultiParticleEmitter>(entity);
 			
 			damageAnimation.timeToEndColorChange -= dt;
 			
 			if(damageAnimation.timeToEndColorChange <= 0.f) {
-				color.color = sf::Color::White;
+				renderQuad.color = sf::Color::White;
 				mRegistry.remove<component::DamageAnimation>(entity);
 			}
 			else if(!damageAnimation.wasAnimationStarted) {
 				damageAnimation.wasAnimationStarted = true;
-				color.color = sf::Color(255, 0, 0);
+				renderQuad.color = sf::Color(255, 0, 0);
 
 				component::ParticleEmitter bloodParEmitter;
 
@@ -100,7 +100,8 @@ namespace ph::system {
 			const auto& health = view.get(entity);
 			if(health.healthPoints <= 0)
 			{
-				PH_ASSERT(mRegistry.has<component::Color>(entity), "This entity must have Color component in order to fade out!");
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurn enemy must have AnimationData!");
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 
@@ -112,8 +113,8 @@ namespace ph::system {
 				if(!isPlayer)
 					mRegistry.remove<component::Damage>(entity);
 
-				auto& z = mRegistry.get<component::Z>(entity);
-				z.z = isPlayer ? 96 : 97;
+				auto& z = mRegistry.get<component::RenderQuad>(entity).z;
+				z = isPlayer ? 96 : 97;
 
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
@@ -131,15 +132,15 @@ namespace ph::system {
 
 	void DamageAndDeath::makeCorpsesFadeOut(float dt) const
 	{
-		auto view = mRegistry.view<component::TimeToFadeOut, component::Color>();
+		auto view = mRegistry.view<component::TimeToFadeOut, component::RenderQuad>();
 		for(auto entity : view)
 		{
-			auto& [timeToFadeOut, color] = view.get<component::TimeToFadeOut, component::Color>(entity);
+			auto& [timeToFadeOut, renderQuad] = view.get<component::TimeToFadeOut, component::RenderQuad>(entity);
 			timeToFadeOut.seconds += dt;
 			if(timeToFadeOut.seconds > 10.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
 			auto alpha = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
-			color.color = sf::Color(255, 255, 255, alpha);
+			renderQuad.color = sf::Color(255, 255, 255, alpha);
 		}
 	}
 }

@@ -11,34 +11,19 @@ class Shader;
 
 namespace component {
 
-	struct TexturePtr
+	struct RenderQuad
 	{
 		Texture* texture;
+		Shader* shader;
+		sf::Color color;
+		float rotation;
+		char z;
+		bool blocksLight;
 	};
 
 	struct TextureRect
 	{
 		IntRect rect;
-	};
-
-	struct ShaderPtr
-	{
-		Shader* shader;
-	};
-
-	struct Color
-	{
-		sf::Color color;
-	};
-
-	struct Rotation
-	{
-		float angle;
-	};
-
-	struct Z
-	{
-		char z;
 	};
 
 	struct Camera
@@ -57,4 +42,5 @@ namespace component {
 	struct HiddenForRenderer
 	{
 	};
+
 }}

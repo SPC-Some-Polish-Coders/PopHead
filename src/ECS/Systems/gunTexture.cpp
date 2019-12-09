@@ -15,7 +15,7 @@ namespace ph::system {
 			auto gunView = mRegistry.view<component::PlayerGun, component::TextureRect>();
 			for (auto gun : gunView)
 			{
-				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);
+				auto& gunTextureBody = gunView.get<component::TextureRect>(gun).rect;
 				auto& playerGun = gunView.get<component::PlayerGun>(gun);
 
 				int offsetX = 16;
@@ -40,13 +40,13 @@ namespace ph::system {
 						mRegistry.remove<component::HiddenForRenderer>(gun);
 
 				if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-					gunTextureBody.rect = IntRect(offsetX, 0, 13, 8);
+					gunTextureBody = IntRect(offsetX, 0, 13, 8);
 				else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
-					gunTextureBody.rect = IntRect(offsetX, 10, 13, 11);
+					gunTextureBody = IntRect(offsetX, 10, 13, 11);
 				else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-					gunTextureBody.rect = IntRect(offsetX, 21, 13, 11);
+					gunTextureBody = IntRect(offsetX, 21, 13, 11);
 				else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-					gunTextureBody.rect = IntRect(offsetX, 34, 13, 11);
+					gunTextureBody = IntRect(offsetX, 34, 13, 11);
 			}
 		}
 	}
