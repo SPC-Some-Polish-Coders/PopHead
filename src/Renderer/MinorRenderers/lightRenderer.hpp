@@ -41,6 +41,8 @@ public:
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
 	void flush();
+	
+	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 private:
 	auto getPointOfIntersection(const Ray&, const Wall&) -> std::optional<sf::Vector2f>;
@@ -50,6 +52,7 @@ private:
 	std::vector<Wall> mWalls;
 	std::vector<Light> mLights;
 	std::vector<Ray> mRays;
+	const FloatRect* mScreenBounds;
 };
 
 // TODO_ren: Add submitLine()

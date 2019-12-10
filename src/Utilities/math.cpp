@@ -45,4 +45,15 @@ namespace ph::Math {
 		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
 	}
+
+	bool areApproximatelyEqual(float a, float b, float maxApproximation)
+	{
+		PH_ASSERT_UNEXPECTED_SITUATION(maxApproximation >= 0.f, "max approximation has to be positive value");
+		return (std::abs(a - b) < maxApproximation);
+	}
+
+	bool areApproximatelyEqual(sf::Vector2f a, sf::Vector2f b, float maxApproximation)
+	{
+		return areApproximatelyEqual(a.x, b.x, maxApproximation) && areApproximatelyEqual(a.y, b.y, maxApproximation);
+	}
 }

@@ -8,6 +8,9 @@ namespace ph {
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
+	/*if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+		return;
+*/
 	sf::Vector2f upLeftPoint = position;
 	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
 	sf::Vector2f downRightPoint = position + size;
@@ -28,11 +31,16 @@ void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f 
 
 void LightRenderer::submitLight(Light light)
 {
+	// TODO: Culling
+
 	mLights.emplace_back(light);
 }
 
 void LightRenderer::flush()
 {
+	// submit screen bounds as light blocking quad
+	submitLightBlockingQuad({mScreenBounds->left + 1.f, mScreenBounds->top + 1.f}, {mScreenBounds->width - 2.f, mScreenBounds->height - 2.f});
+
 #if 1 
 	// DEBUG STUFF
 	for(auto wallPoint : mWallPoints)
@@ -51,22 +59,30 @@ void LightRenderer::flush()
 		{
 			const sf::Vector2f rayDirection = Math::getUnitVector(wallPoint.position - light.position);
 			const Ray ray = {light.position, rayDirection};
-			float distanceToTheClosestPointOfIntersection = 10000.f;
-			sf::Vector2f theClosestPointOfIntersection;
+
+			float distanceToTheClosestPointOfIntersection = -1.f;
+			sf::Vector2f theClosestPointOfIntersection = wallPoint.position;
+
 			for(Wall& wall : mWalls)
 			{
-				auto pointOfIntersection = getPointOfIntersection(ray, wall);
-				if(pointOfIntersection) {
+				bool bug2 = std::abs(wall.leftPointPosition.x - wall.rightPointPosition.x) > 600.f || std::abs(wall.leftPointPosition.y - wall.rightPointPosition.y) > 300.f;
+
+				std::optional<sf::Vector2f> pointOfIntersection = getPointOfIntersection(ray, wall);
+				if(pointOfIntersection) 
+				{
 					const float distanceToPointOfIntersection = Math::distanceBetweenPoints(ray.position, *pointOfIntersection);
-					if(distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection) {
+					
+					if((distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection ||
+						distanceToTheClosestPointOfIntersection == -1.f) &&
+						!Math::areApproximatelyEqual(*pointOfIntersection, wallPoint.position, 1.f)) 
+					{
 						distanceToTheClosestPointOfIntersection = distanceToPointOfIntersection;
 						theClosestPointOfIntersection = *pointOfIntersection;
 					}
 				}
-				else
-					continue;
 			}
-			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 1.f);
+			bool bug = wallPoint.position == theClosestPointOfIntersection;
+			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 5.f);
 		}
 	}
 
