@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<loading>
-  <textures>
-    <resource respath="map/FULL_DESERT_TILESET_WIP.png"/>
-    <resource respath="characters/zombieFullAnimation.png"/>
-    <resource respath="others/bulletGround.png"/>
-  </textures>
-</loading>

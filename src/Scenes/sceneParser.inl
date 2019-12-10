@@ -5,8 +5,8 @@
 
 namespace ph {
 
-template<typename GuiParser, typename MapParser, typename ResourcesParser, typename AudioParser, typename EnttParser>
-SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttParser>
+template<typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
+SceneParser<GuiParser, MapParser, AudioParser, typename EnttParser>
 	::SceneParser(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
                   entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder)
 {
@@ -16,7 +16,6 @@ SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttPar
 	sceneFile.loadFromFile(sceneFileName);
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
-	parse<ResourcesParser>(gameData, sceneLinksNode, "neededResources");
 	//parse<MapParser>(gameData, sceneLinksNode, "map");
 	//parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
@@ -24,9 +23,9 @@ SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, typename EnttPar
 	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry, textureHolder);
 }
 
-template<typename GuiParser, typename MapParser/*, typename GameObjectsParser*/, typename ResourcesParser, typename AudioParser, typename EnttParser>
+template<typename GuiParser, typename MapParser/*, typename GameObjectsParser*/, typename AudioParser, typename EnttParser>
 template<typename Parser>
-void SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, ResourcesParser, AudioParser, typename EnttParser>
+void SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, AudioParser, typename EnttParser>
 	::parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName)
 {
 	const auto categoryNode = sceneLinksNode.getChildren(categoryName);
@@ -39,8 +38,8 @@ void SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, ResourcesParser, A
 }
 
 
-template<typename GuiParser, typename MapParser, typename ResourcesParser, typename AudioParser, typename EnttParser>
-void SceneParser<GuiParser, MapParser, ResourcesParser, AudioParser, EnttParser>
+template<typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
+void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>
 ::parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
                    TextureHolder& textureHolder)
 {

@@ -3,7 +3,6 @@
 #include "scene.hpp"
 #include "Gui/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
-#include "Resources/xmlResourceParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
@@ -62,7 +61,7 @@ void SceneManager::replaceAction()
 	{
 		mScene.reset(new Scene(mGameData->getWindow(), mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
 			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager()));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 
 		//if (mGameData->getAIManager().isPlayerOnScene())
@@ -82,7 +81,7 @@ void SceneManager::replaceAction()
 	{
 		mScene.reset(new Scene(mGameData->getWindow(), mGameData->getMusicPlayer(),
 			mGameData->getSoundPlayer(), mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager()));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlResourceParser, XmlAudioParser, EntitiesParser>
+		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 	}
 
