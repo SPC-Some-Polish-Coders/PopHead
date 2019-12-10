@@ -11,13 +11,13 @@ namespace ph::system {
 	void VelocityChangingAreas::update(float seconds)
 	{
 		handleNewObjectsInsideArea();
-		auto objectsInArea = mRegistry.view<component::IsInArea, component::CharacterSpeed>();
+		auto objectsInArea = mRegistry.view<component::IsInArea, component::CharacterSpeed, component::VelocityEffects>();
 		for (const auto objectInArea : objectsInArea)
 		{
 			const auto& isInArea = objectsInArea.get<component::IsInArea>(objectInArea);
 			std::multiset<float> newVelocityEffects = getAllNewMultipliers(isInArea.areas);
 
-			auto& currentVelocityEffects = mRegistry.get<component::VelocityEffects>(objectInArea);
+			auto& currentVelocityEffects = objectsInArea.get<component::VelocityEffects>(objectInArea);
 			auto& objectVelocity = objectsInArea.get<component::CharacterSpeed>(objectInArea);
 
 			for (auto divisor : getActualNewMultipliers(currentVelocityEffects.velocityMultipliers, newVelocityEffects))
