@@ -3,6 +3,7 @@
 #include "Components/physicsComponents.hpp"
 #include "Components/charactersComponents.hpp"
 #include "Components/graphicsComponents.hpp"
+#include "Components/objectsComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -88,13 +89,6 @@ namespace ph {
 			else if (objectType == "SpriteNode") loadSpriteNode(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 		}
-
-		/*if (mHasLoadedPlayer)
-		{
-			const auto& player = *mRoot.getChild("LAYER_standingObjects")->getChild("player");
-			auto playerPosition = player.getPosition();
-			mGameData->getRenderer().getCamera().setCenter(playerPosition);
-		}*/
 	}
 
 	void TiledParser::loadArcadeManager() const
@@ -172,12 +166,18 @@ namespace ph {
 	}
 
 	void TiledParser::loadEntrance(const Xml& entranceNode) const
-	{/*
+	{
 		const std::string scenePathRelativeToMapFile = getProperty(entranceNode, "gotoScene").toString();
 		const std::string sceneFileName = *getSceneFileName(scenePathRelativeToMapFile);
 		const std::string scenePathFromResources = "scenes/" + sceneFileName;
 
-		std::unique_ptr<Entrance> entrance;
+		auto entrance = mTemplatesStorage.createCopy("Entrance", mGameRegistry);
+		auto& entranceComponent = mGameRegistry.get<component::Entrance>(entrance);
+
+		entranceComponent.entranceDestination = scenePathRelativeToMapFile;
+
+		loadPosition(entranceNode, entrance);
+		loadSize(entranceNode, entrance);
 
 		if (getProperty(entranceNode, "isEntranceWithCustomPosition").toBool())
 		{
@@ -186,27 +186,8 @@ namespace ph {
 				getProperty(entranceNode, "gotoY").toFloat()
 			);
 
-			entrance = std::make_unique<Entrance>(
-				mGameData->getSceneManager(),
-				scenePathFromResources,
-				"entrance",
-				getSizeAttribute(entranceNode),
-				getPositionAttribute(entranceNode),
-				positionToGo
-				);
+			// TODO: add optional position to component
 		}
-		else
-		{
-			entrance = std::make_unique<Entrance>(
-				mGameData->getSceneManager(),
-				scenePathFromResources,
-				"entrance",
-				getSizeAttribute(entranceNode),
-				getPositionAttribute(entranceNode)
-				);
-		};*/
-
-		auto entrance = mTemplatesStorage.createCopy("Entrance", mGameRegistry);
 	}
 
 	void TiledParser::loadSlowDownArea(const Xml& slowDownAreaNode) const

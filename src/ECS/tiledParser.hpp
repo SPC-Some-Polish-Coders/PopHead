@@ -11,8 +11,6 @@
 
 namespace ph {
 
-	class GameData;
-	class GameObject;
 	class CutSceneManager;
 	class Xml;
 
