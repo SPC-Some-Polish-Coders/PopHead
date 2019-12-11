@@ -39,7 +39,8 @@ private:
 	void parseEntrance(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
-	void parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity);
+	void parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity);
+	void parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseKillable(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCamera(const Xml& entityComponentNode, entt::entity& entity);

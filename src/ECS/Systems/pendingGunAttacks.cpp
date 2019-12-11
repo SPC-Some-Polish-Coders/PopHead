@@ -28,7 +28,7 @@ void PendingGunAttacks::handlePendingGunAttacks()
 			if (!playerGunAttack.canAttack)
 				return;
 
-			auto& gunView = mRegistry.view<component::PlayerGun, component::BodyRect>();
+			auto& gunView = mRegistry.view<component::CurrentGun, component::BodyRect>();
 			for (const auto& gun : gunView)
 			{
 				auto gunBody = gunView.get<component::BodyRect>(gun);

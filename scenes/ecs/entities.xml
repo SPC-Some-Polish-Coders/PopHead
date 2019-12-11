@@ -166,6 +166,13 @@
         <component name="TextureRect" x="0" y="0" width="7" height="14" />
         <component name="HiddenForRenderer"/>
     </entityTemplate>
+    
+    <entityTemplate name="BaseballBat">
+        <component name="BodyRect" x="200.0" y="60.0" width="11" height="11" />
+        <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="95" blocksLight="false"/>
+        <component name="TextureRect" x="0" y="0" width="11" height="11" />
+        <component name="HiddenForRenderer"/>
+    </entityTemplate>
 
 </entityTemplates>
 
@@ -176,7 +183,11 @@
     </entity>
     
     <entity sourceTemplate="Pistol">
-        <component name="PlayerGun" />
+        <component name="CurrentGun"/>
+    </entity>
+    
+    <entity sourceTemplate="BaseballBat">
+        <component name="CurrentMeleeWeapon"/>
     </entity>
 
     <entity sourceTemplate="UFOCars"/>

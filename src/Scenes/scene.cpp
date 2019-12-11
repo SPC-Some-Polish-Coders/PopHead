@@ -16,7 +16,8 @@
 #include "ECS/Systems/gunPositioningAndTexture.hpp"
 #include "ECS/Systems/velocityChangingAreas.hpp"
 #include "ECS/Systems/pendingMeleeAttacks.hpp"
-#include "ECS/Systems/gunAttackerSystem.hpp"
+#include "ECS/Systems/meleePositioning.hpp"
+#include "ECS/Systems/canUseWeapon.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/particleSystem.hpp"
@@ -87,10 +88,12 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
-	mSystemsQueue.appendSystem<system::GunAttackerSystem>();
+	mSystemsQueue.appendSystem<system::CanUseGun>();
+	mSystemsQueue.appendSystem<system::CanUseMelee>();
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
+	mSystemsQueue.appendSystem<system::MeleePositioning>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();

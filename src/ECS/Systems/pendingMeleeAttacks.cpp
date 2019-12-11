@@ -14,30 +14,22 @@ namespace ph::system {
 		for (const auto& meleeAttacker : meleeAttackerView)
 		{
 			const auto& playerFaceDirection = meleeAttackerView.get<component::FaceDirection>(meleeAttacker);
-			auto& playerMeleeAttack = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
+			auto& meleeAttackerDetails = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
 
-			bool cooldown = hasCooldown(playerMeleeAttack.cooldownSinceLastHit);
-			if (cooldown)
-				playerMeleeAttack.cooldownSinceLastHit -= seconds;
-
-			if (playerMeleeAttack.isTryingToAttack)
+			if (meleeAttackerDetails.isTryingToAttack)
 			{
-				playerMeleeAttack.isTryingToAttack = false;
+				meleeAttackerDetails.isTryingToAttack = false;
 
-				if (cooldown)
+				if (!meleeAttackerDetails.canAttack)
 					return;	
 
 				const auto& playerBody = meleeAttackerView.get<component::BodyRect>(meleeAttacker);
 				performHit(playerBody.rect.getCenter(), getStartAttackRotation(playerFaceDirection.direction));
 
-				playerMeleeAttack.cooldownSinceLastHit = playerMeleeAttack.minSecondsInterval;
+				meleeAttackerDetails.isAttacking = true;
+				meleeAttackerDetails.cooldownSinceLastHit = meleeAttackerDetails.minSecondsInterval;
 			}
 		}
-	}
-
-	bool PendingMeleeAttacks::hasCooldown(float cooldownSinceLastHit) const
-	{
-		return cooldownSinceLastHit > 0.f;
 	}
 
 	void PendingMeleeAttacks::performHit(const sf::Vector2f playerPosition, float weaponInitialRotation)

@@ -96,7 +96,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Entrance",               &EntitiesParser::parseEntrance},
-		{"PlayerGun",              &EntitiesParser::parsePlayerGun},
+		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
+		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Camera",                 &EntitiesParser::parseCamera},
@@ -388,9 +389,14 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack, canAttack);
 }
 
-void EntitiesParser::parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PlayerGun>(entity, 2.f, 0.f);
+	mUsedRegistry->assign_or_replace<component::CurrentGun>(entity, 2.f, 0.f);
+}
+
+void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::CurrentMeleeWeapon>(entity);
 }
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
