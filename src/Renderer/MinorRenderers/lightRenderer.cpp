@@ -57,6 +57,11 @@ void LightRenderer::flush()
 	{
 		for(RayDestinationPoint wallPoint : mWallPoints) 
 		{
+			/*if(isInnerPoint(wallPoint, light.position)) {
+				Renderer::submitLine(light.color, light.position, wallPoint.position, 5.f);
+				continue;
+			}*/
+
 			const sf::Vector2f rayDirection = Math::getUnitVector(wallPoint.position - light.position);
 			const Ray ray = {light.position, rayDirection};
 
@@ -65,8 +70,6 @@ void LightRenderer::flush()
 
 			for(Wall& wall : mWalls)
 			{
-				bool bug2 = std::abs(wall.leftPointPosition.x - wall.rightPointPosition.x) > 600.f || std::abs(wall.leftPointPosition.y - wall.rightPointPosition.y) > 300.f;
-
 				std::optional<sf::Vector2f> pointOfIntersection = getPointOfIntersection(ray, wall);
 				if(pointOfIntersection) 
 				{
@@ -74,14 +77,13 @@ void LightRenderer::flush()
 					
 					if((distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection ||
 						distanceToTheClosestPointOfIntersection == -1.f) &&
-						!Math::areApproximatelyEqual(*pointOfIntersection, wallPoint.position, 1.f)) 
+						!Math::areApproximatelyEqual(*pointOfIntersection, wallPoint.position, 1.f))
 					{
 						distanceToTheClosestPointOfIntersection = distanceToPointOfIntersection;
 						theClosestPointOfIntersection = *pointOfIntersection;
 					}
 				}
 			}
-			bool bug = wallPoint.position == theClosestPointOfIntersection;
 			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 5.f);
 		}
 	}
@@ -89,6 +91,26 @@ void LightRenderer::flush()
 	mWallPoints.clear();
 	mWalls.clear();
 	mLights.clear();
+}
+
+bool LightRenderer::isInnerPoint(const RayDestinationPoint& point, sf::Vector2f lightPos)
+{
+	Wall& leftWall = mWalls[point.leftWallID];
+	Wall& rightWall = mWalls[point.rightWallID];
+
+	if(lightPos.x > leftWall.rightPointPosition.x && lightPos.y < leftWall.rightPointPosition.y)
+		return true;
+	
+	if(lightPos.x > leftWall.rightPointPosition.x && lightPos.y > leftWall.rightPointPosition.y)
+		return true;
+
+	else if(lightPos.x < leftWall.rightPointPosition.x && lightPos.y > leftWall.rightPointPosition.y)
+		return true;
+
+	else if(lightPos.x < leftWall.rightPointPosition.x && lightPos.y < leftWall.rightPointPosition.y)
+		return true;
+	
+	return false;
 }
 
 auto LightRenderer::getPointOfIntersection(const Ray& ray, const Wall& wall) -> std::optional<sf::Vector2f>

@@ -45,6 +45,7 @@ public:
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 private:
+	bool isInnerPoint(const RayDestinationPoint&, const sf::Vector2f rayDirection);
 	auto getPointOfIntersection(const Ray&, const Wall&) -> std::optional<sf::Vector2f>;
 
 private:
