@@ -1,13 +1,15 @@
 #include "xmlMapParser.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
+
+#include "AI/aiManager.hpp"
+#include "map.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
 
 namespace ph {
 
-void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileName)
+void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry)
 {
 	PH_LOG_INFO("Map file (" + fileName + ") is being parsed.");
 		
@@ -15,15 +17,15 @@ void XmlMapParser::parseFile(GameData* const gameData, const std::string& fileNa
 	mapFile.loadFromFile(fileName);
 	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
+
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
-	gameData->getAIManager().registerMapSize(generalMapInfo.mapSize);
+	aiManager.registerMapSize(generalMapInfo.mapSize);
+
 	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
-	AllLayersGlobalTileIds allLayersGlobalTileIds = getAllLayersGlobalTileIds(layerNodes);
-
-	auto& map = gameData->getMap();
-	map.load(generalMapInfo, tilesetsData, allLayersGlobalTileIds);
+	
+	parserMapLayers(layerNodes, gameRegistry);
 }
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
@@ -38,7 +40,7 @@ void XmlMapParser::checkMapSupport(const Xml& mapNode) const
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
 {
-	return {getMapSize(mapNode), getTileSize(mapNode)};
+	return { getMapSize(mapNode), getTileSize(mapNode) };
 }
 
 sf::Vector2u XmlMapParser::getMapSize(const Xml& mapNode) const
@@ -71,6 +73,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
+	
 	for(Xml tilesetNode : tilesetNodes) {
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
@@ -82,6 +85,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 			tilesetDocument.loadFromFile(tilesetNodeSource);
 			tilesetNode = tilesetDocument.getChild("tileset");
 		}
+
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
 		const Xml imageNode = tilesetNode.getChild("image");
@@ -91,6 +95,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 		tilesData.firstGlobalTileId = firstGlobalTileId;
 		tilesets.tilesData.push_back(tilesData);
 	}
+
 	return tilesets;
 }
 
@@ -109,8 +114,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			objectNode.hasAttribute("width") ? objectNode.getAttribute("width").toFloat() : 0.f,
 			objectNode.hasAttribute("height") ? objectNode.getAttribute("height").toFloat() : 0.f
 		);
-		if(!(bounds.width == 0.f && bounds.height == 0.f))
-			tilesData.bounds.push_back(bounds);
+		
+		tilesData.bounds.push_back(bounds);
 	}
 	return tilesData;
 }
@@ -123,14 +128,14 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-auto XmlMapParser::getAllLayersGlobalTileIds(const std::vector<Xml>& layerNodes) const -> AllLayersGlobalTileIds
+void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, entt::registry& gameRegistry)
 {
-	AllLayersGlobalTileIds allLayersGlobalTileIds;
-	for(const Xml& layerNode : layerNodes) {
+	for (const Xml& layerNode : layerNodes)
+	{
 		const Xml dataNode = layerNode.getChild("data");
-		allLayersGlobalTileIds.emplace_back(toGlobalTileIds(dataNode));
+		const auto globalIds = toGlobalTileIds(dataNode);
+		// TODO: add parsing
 	}
-	return allLayersGlobalTileIds;
 }
 
 std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
