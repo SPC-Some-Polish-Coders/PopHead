@@ -57,34 +57,36 @@ void LightRenderer::flush()
 	{
 		for(RayDestinationPoint wallPoint : mWallPoints) 
 		{
-			/*if(isInnerPoint(wallPoint, light.position)) {
-				Renderer::submitLine(light.color, light.position, wallPoint.position, 5.f);
-				continue;
-			}*/
-
 			const sf::Vector2f rayDirection = Math::getUnitVector(wallPoint.position - light.position);
-			const Ray ray = {light.position, rayDirection};
 
-			float distanceToTheClosestPointOfIntersection = -1.f;
-			sf::Vector2f theClosestPointOfIntersection = wallPoint.position;
-
-			for(Wall& wall : mWalls)
+			for(int i = 0; i < 5; ++i)
 			{
-				std::optional<sf::Vector2f> pointOfIntersection = getPointOfIntersection(ray, wall);
-				if(pointOfIntersection) 
+				Ray ray;
+				if(i == 0) ray = {light.position, rayDirection};
+				if(i == 1) ray = {light.position, rayDirection + sf::Vector2(0.0001f, 0.f)};
+				if(i == 2) ray = {light.position, rayDirection + sf::Vector2f(-0.0001f, 0.f)};
+				if(i == 3) ray = {light.position, rayDirection + sf::Vector2f(0.f, 0.0001f)};
+				if(i == 4) ray = {light.position, rayDirection + sf::Vector2f(0.f, -0.0001f)};
+
+				float distanceToTheClosestPointOfIntersection = INFINITY;
+				sf::Vector2f theClosestPointOfIntersection = wallPoint.position;
+
+				for(Wall& wall : mWalls)
 				{
-					const float distanceToPointOfIntersection = Math::distanceBetweenPoints(ray.position, *pointOfIntersection);
-					
-					if((distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection ||
-						distanceToTheClosestPointOfIntersection == -1.f) &&
-						!Math::areApproximatelyEqual(*pointOfIntersection, wallPoint.position, 1.f))
+					std::optional<sf::Vector2f> pointOfIntersection = getPointOfIntersection(ray, wall);
+					if(pointOfIntersection) 
 					{
-						distanceToTheClosestPointOfIntersection = distanceToPointOfIntersection;
-						theClosestPointOfIntersection = *pointOfIntersection;
+						const float distanceToPointOfIntersection = Math::distanceBetweenPoints(ray.position, *pointOfIntersection);
+						
+						if(distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection) 
+						{
+							distanceToTheClosestPointOfIntersection = distanceToPointOfIntersection;
+							theClosestPointOfIntersection = *pointOfIntersection;
+						}
 					}
 				}
+				Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 5.f);
 			}
-			Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 5.f);
 		}
 	}
 
