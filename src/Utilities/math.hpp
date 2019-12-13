@@ -27,7 +27,7 @@ namespace ph::Math {
 	sf::Vector2<T> abs(const sf::Vector2<T>);
 
 	bool areApproximatelyEqual(float a, float b, float maxApproximation);
-	bool areApproximatelyEqual(sf::Vector2f a, sf::Vector2f b, float maxApproximation);
+	bool areApproximatelyEqual(const sf::Vector2f a, const sf::Vector2f b, float maxApproximation);
 }
 
 #include "math.inl"

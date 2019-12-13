@@ -52,6 +52,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	quadRenderer.init();
 	lineRenderer.init();
 	pointRenderer.init();
+	lightRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
@@ -104,6 +105,7 @@ void Renderer::shutDown()
 {
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
+	lightRenderer.shutDown();
 	framebufferVertexArray.remove();
 	framebuffer.remove();
 }
@@ -129,9 +131,9 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
-	lightRenderer.flush();
 	quadRenderer.flush();
 	pointRenderer.flush();
+	lightRenderer.flush();
 
 	debugCounter.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
@@ -188,7 +190,7 @@ void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsign
 
 void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle, float range)
 {
-	lightRenderer.submitLight({color, position, startAngle, endAngle, range});
+	lightRenderer.submitLight({color, position, range});
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)

@@ -55,6 +55,8 @@ private:
 
 	void executeView() const;
 
+	void executeLight() const;
+
 	auto getVector2Argument() const -> sf::Vector2f;
 	sf::Vector2f handleGetVector2ArgumentError() const;
 

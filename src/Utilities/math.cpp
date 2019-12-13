@@ -49,10 +49,10 @@ namespace ph::Math {
 	bool areApproximatelyEqual(float a, float b, float maxApproximation)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(maxApproximation >= 0.f, "max approximation has to be positive value");
-		return (std::abs(a - b) < maxApproximation);
+		return (std::fabs(a - b) < maxApproximation);
 	}
 
-	bool areApproximatelyEqual(sf::Vector2f a, sf::Vector2f b, float maxApproximation)
+	bool areApproximatelyEqual(const sf::Vector2f a, const sf::Vector2f b, float maxApproximation)
 	{
 		return areApproximatelyEqual(a.x, b.x, maxApproximation) && areApproximatelyEqual(a.y, b.y, maxApproximation);
 	}

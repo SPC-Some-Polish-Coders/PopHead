@@ -1,32 +1,57 @@
 #include "lightRenderer.hpp"
 #include "Renderer/renderer.hpp"
+#include "Renderer/Shaders/shaderLibary.hpp"
 #include "Utilities/math.hpp"
+#include "Logs/logs.hpp"
 #include <optional>
 #include <cmath>
+#include <algorithm>
+#include <GL/glew.h>
 
-namespace ph { 
+namespace ph {
+
+void LightRenderer::init()
+{
+	auto& sl = ShaderLibrary::getInstance();
+	sl.loadFromFile("light", "resources/shaders/light.vs.glsl", "resources/shaders/light.fs.glsl");
+	mLightShader = sl.get("light");
+
+	unsigned uniformBlockIndex = glGetUniformBlockIndex(mLightShader->getID(), "SharedData");
+	glUniformBlockBinding(mLightShader->getID(), uniformBlockIndex, 0);
+	
+	glGenVertexArrays(1, &mVAO);
+	glBindVertexArray(mVAO);
+
+	glGenBuffers(1, &mVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
+
+	mLightPolygonVertexData.reserve(361);
+}
+
+void LightRenderer::shutDown()
+{
+	glDeleteBuffers(1, &mVBO);
+	glDeleteVertexArrays(1, &mVAO);
+}
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
+	// TODO: Enable culling
 	/*if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
 		return;
-*/
+	*/
 	sf::Vector2f upLeftPoint = position;
 	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
 	sf::Vector2f downRightPoint = position + size;
 	sf::Vector2f downLeftPoint = sf::Vector2f(position.x, position.y + size.y);
 
-	size_t firstWallID = mWallPoints.size();
-
 	mWalls.emplace_back(Wall{upLeftPoint, upRightPoint});
 	mWalls.emplace_back(Wall{upRightPoint, downRightPoint});
 	mWalls.emplace_back(Wall{downRightPoint, downLeftPoint});
 	mWalls.emplace_back(Wall{downLeftPoint, upLeftPoint});
-
-	mWallPoints.emplace_back(RayDestinationPoint{upLeftPoint, firstWallID + 3, firstWallID});
-	mWallPoints.emplace_back(RayDestinationPoint{upRightPoint, firstWallID, firstWallID + 1});
-	mWallPoints.emplace_back(RayDestinationPoint{downRightPoint, firstWallID + 1, firstWallID + 2});
-	mWallPoints.emplace_back(RayDestinationPoint{downLeftPoint, firstWallID + 2, firstWallID + 3});
 }
 
 void LightRenderer::submitLight(Light light)
@@ -41,91 +66,75 @@ void LightRenderer::flush()
 	// submit screen bounds as light blocking quad
 	submitLightBlockingQuad({mScreenBounds->left + 1.f, mScreenBounds->top + 1.f}, {mScreenBounds->width - 2.f, mScreenBounds->height - 2.f});
 
-#if 1 
-	// DEBUG STUFF
-	for(auto wallPoint : mWallPoints)
-		Renderer::submitPoint(wallPoint.position, sf::Color::Red, 0.f, 5.f);
-
-	for(const auto& light : mLights)
-		Renderer::submitPoint(light.position, light.color, 0.f, 15.f);
-
-	for(Wall& wall : mWalls)
-		Renderer::submitLine(sf::Color::Red, wall.leftPointPosition, wall.rightPointPosition, 2);
-#endif
-
-	for(Light& light : mLights) 
+	for(auto& light : mLights)
 	{
-		for(RayDestinationPoint wallPoint : mWallPoints) 
+		// make light position be first vertex of triangle fan
+		mLightPolygonVertexData.emplace_back(light.pos);
+
+		// create vertex data
+		for(float angle = 0; angle <= 360; angle += 0.5)
 		{
-			const sf::Vector2f rayDirection = Math::getUnitVector(wallPoint.position - light.position);
-
-			for(int i = 0; i < 5; ++i)
+			float rad = Math::degreesToRadians(angle);
+			sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
+			sf::Vector2f nearestIntersectionPoint;
+			float nearestIntersectionDistance = INFINITY;
+			for(Wall& wall : mWalls)
 			{
-				Ray ray;
-				if(i == 0) ray = {light.position, rayDirection};
-				if(i == 1) ray = {light.position, rayDirection + sf::Vector2(0.0001f, 0.f)};
-				if(i == 2) ray = {light.position, rayDirection + sf::Vector2f(-0.0001f, 0.f)};
-				if(i == 3) ray = {light.position, rayDirection + sf::Vector2f(0.f, 0.0001f)};
-				if(i == 4) ray = {light.position, rayDirection + sf::Vector2f(0.f, -0.0001f)};
-
-				float distanceToTheClosestPointOfIntersection = INFINITY;
-				sf::Vector2f theClosestPointOfIntersection = wallPoint.position;
-
-				for(Wall& wall : mWalls)
+				auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
+				float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
+				if(intersectionPoint && intersectionDistance < nearestIntersectionDistance)
 				{
-					std::optional<sf::Vector2f> pointOfIntersection = getPointOfIntersection(ray, wall);
-					if(pointOfIntersection) 
-					{
-						const float distanceToPointOfIntersection = Math::distanceBetweenPoints(ray.position, *pointOfIntersection);
-						
-						if(distanceToPointOfIntersection < distanceToTheClosestPointOfIntersection) 
-						{
-							distanceToTheClosestPointOfIntersection = distanceToPointOfIntersection;
-							theClosestPointOfIntersection = *pointOfIntersection;
-						}
-					}
+					nearestIntersectionPoint = *intersectionPoint;
+					nearestIntersectionDistance = intersectionDistance;
 				}
-				Renderer::submitLine(light.color, light.position, theClosestPointOfIntersection, 5.f);
 			}
+			mLightPolygonVertexData.emplace_back(nearestIntersectionPoint);
 		}
+
+		// draw light using triangle fan
+		if(sDebug.drawLight)
+		{
+			mLightShader->bind();
+			mLightShader->setUniformVector4Color("color", light.color);
+			glBindVertexArray(mVAO);
+			glBindBuffer(GL_ARRAY_BUFFER ,mVBO); // TODO: Do I have to bind it?
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightPolygonVertexData.size(), mLightPolygonVertexData.data(), GL_STATIC_DRAW);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightPolygonVertexData.size());
+		}
+
+		// draw debug 
+		if(sDebug.drawWalls)
+			for(Wall& wall : mWalls)
+				Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 2);
+
+		if(sDebug.drawRays)
+		{
+			for(auto& point : mLightPolygonVertexData) {
+				Renderer::submitPoint(point, sf::Color::Yellow, 0, 12.f);
+				Renderer::submitLine(sf::Color(230, 255, 0), light.pos, point, 3.f);
+			}
+			for(const auto& light : mLights)
+				Renderer::submitPoint(light.pos, light.color, 0.f, 15.f);
+		}
+
+		mLightPolygonVertexData.clear();
 	}
 
-	mWallPoints.clear();
 	mWalls.clear();
 	mLights.clear();
 }
 
-bool LightRenderer::isInnerPoint(const RayDestinationPoint& point, sf::Vector2f lightPos)
+auto LightRenderer::getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f lightPos, const Wall& wall) -> std::optional<sf::Vector2f>
 {
-	Wall& leftWall = mWalls[point.leftWallID];
-	Wall& rightWall = mWalls[point.rightWallID];
+	const float x1 = wall.point1.x;
+	const float y1 = wall.point1.y;
+	const float x2 = wall.point2.x;
+	const float y2 = wall.point2.y;
 
-	if(lightPos.x > leftWall.rightPointPosition.x && lightPos.y < leftWall.rightPointPosition.y)
-		return true;
-	
-	if(lightPos.x > leftWall.rightPointPosition.x && lightPos.y > leftWall.rightPointPosition.y)
-		return true;
-
-	else if(lightPos.x < leftWall.rightPointPosition.x && lightPos.y > leftWall.rightPointPosition.y)
-		return true;
-
-	else if(lightPos.x < leftWall.rightPointPosition.x && lightPos.y < leftWall.rightPointPosition.y)
-		return true;
-	
-	return false;
-}
-
-auto LightRenderer::getPointOfIntersection(const Ray& ray, const Wall& wall) -> std::optional<sf::Vector2f>
-{
-	const float x1 = wall.leftPointPosition.x;
-	const float y1 = wall.leftPointPosition.y;
-	const float x2 = wall.rightPointPosition.x;
-	const float y2 = wall.rightPointPosition.y;
-
-	const float x3 = ray.position.x;
-	const float y3 = ray.position.y;
-	const float x4 = ray.position.x + ray.direction.x;
-	const float y4 = ray.position.y + ray.direction.y;
+	const float x3 = lightPos.x;
+	const float y3 = lightPos.y;
+	const float x4 = lightPos.x + rayDir.x;
+	const float y4 = lightPos.y + rayDir.y;
 
 	const float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	if(den == 0.f)
