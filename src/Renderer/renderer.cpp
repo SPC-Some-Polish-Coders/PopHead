@@ -26,7 +26,8 @@ namespace {
 	const ph::Shader* currentlyBoundShader = nullptr;
 	
 	ph::VertexArray framebufferVertexArray;
-	ph::Framebuffer framebuffer;
+	ph::Framebuffer gameObjectsFramebuffer;
+	ph::Framebuffer lightingFramebuffer;
 
 	unsigned sharedDataUBO;
 
@@ -92,7 +93,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray.setIndexBuffer(quadIBO);
 
-	framebuffer.init(screenWidth, screenHeight);
+	gameObjectsFramebuffer.init(screenWidth, screenHeight);
+	lightingFramebuffer.init(screenWidth, screenHeight);
 }
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
@@ -107,14 +109,15 @@ void Renderer::shutDown()
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
 	framebufferVertexArray.remove();
-	framebuffer.remove();
+	gameObjectsFramebuffer.remove();
+	lightingFramebuffer.remove();
 }
 
 void Renderer::beginScene(Camera& camera)
 {
 	PH_PROFILE_FUNCTION();
 
-	framebuffer.bind();
+	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
@@ -133,6 +136,11 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 
 	quadRenderer.flush();
 	pointRenderer.flush();
+
+	GLCheck( glDisable(GL_DEPTH_TEST) );
+	lightingFramebuffer.bind();
+	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.f) ); // TODO: Make possible specifing ambient color
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 	lightRenderer.flush();
 
 	debugCounter.setAllDrawCallsPerFrame(
@@ -152,13 +160,15 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
 
-	GLCheck( glDisable(GL_DEPTH_TEST) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray.bind();
 	defaultFramebufferShader->bind();
 	currentlyBoundShader = defaultFramebufferShader;
-	framebuffer.bindTextureColorBuffer(0);
+	defaultFramebufferShader->setUniformInt("gameObjectsTexture", 0);
+	gameObjectsFramebuffer.bindTextureColorBuffer(0);
+	defaultFramebufferShader->setUniformInt("lightingTexture", 1);
+	lightingFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
 	sfmlRenderer.flush(window);
@@ -201,7 +211,8 @@ void Renderer::submitSFMLObject(const sf::Drawable& object)
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
-	framebuffer.onWindowResize(width, height);
+	gameObjectsFramebuffer.onWindowResize(width, height);
+	lightingFramebuffer.onWindowResize(width, height);
 }
 
 void Renderer::setClearColor(const sf::Color& color)
