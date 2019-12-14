@@ -5,7 +5,6 @@
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
 #include "gameData.hpp"
-#include "Map/map.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"

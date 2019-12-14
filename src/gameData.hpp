@@ -4,7 +4,6 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
-#include "Map/map.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
@@ -30,7 +29,7 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 	          nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
@@ -42,7 +41,6 @@ public:
 		ShaderHolder* const shaders,
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
-		Map* const map,
 		PhysicsEngine* const physicsEngine,
 		Terminal* const Terminal,
 		GUI* const Gui
@@ -55,7 +53,6 @@ public:
 		,mShaders{shaders}
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
-		,mMap(map)
 		,mPhysicsEngine{physicsEngine}
 		,mTerminal{Terminal}
 		,mGui(Gui)
@@ -71,7 +68,6 @@ public:
 	auto getShaders() const -> ShaderHolder& { return *mShaders; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
-	auto getMap() const -> Map& { return *mMap; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
 	auto getGui() const -> GUI& { return *mGui; }
@@ -86,7 +82,6 @@ private:
 	ShaderHolder* const mShaders;
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
-	Map* const mMap;
 	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
 	GUI* const mGui;
