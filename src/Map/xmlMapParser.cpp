@@ -2,10 +2,10 @@
 #include "Logs/logs.hpp"
 
 #include "AI/aiManager.hpp"
-#include "map.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph {
 
@@ -25,7 +25,8 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	parserMapLayers(layerNodes, gameRegistry);
+	parserMapLayers(layerNodes, tilesetsData, generalMapInfo, gameRegistry);
+	createMapBorders(generalMapInfo);
 }
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
@@ -128,13 +129,13 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, entt::registry& gameRegistry)
+void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry)
 {
 	for (const Xml& layerNode : layerNodes)
 	{
 		const Xml dataNode = layerNode.getChild("data");
 		const auto globalIds = toGlobalTileIds(dataNode);
-		// TODO: add parsing
+		createLayer(globalIds, tilesets, info, gameRegistry);
 	}
 }
 
@@ -144,6 +145,131 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 	if(encoding == "csv")
 		return Csv::toUnsigneds(dataNode.toString());
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+}
+
+void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry)
+{
+	//const Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
+
+	//mChunkMap->addNewLayerOfChunks();
+
+	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
+		// WARNING: this code assumes int has 4 bytes
+
+		const unsigned bitsInByte = 8;
+		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
+		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
+		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
+
+		const bool isHorizontallyFlipped = globalTileIds[tileIndexInMap] & flippedHorizontally;
+		const bool isVerticallyFlipped = globalTileIds[tileIndexInMap] & flippedVertically;
+		const bool isDiagonallyFlipped = globalTileIds[tileIndexInMap] & flippedDiagonally;
+
+		const unsigned globalTileId = globalTileIds[tileIndexInMap] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+
+		if (hasTile(globalTileId)) {
+			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
+			if (tilesetIndex == std::string::npos) {
+				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
+				continue;
+			}
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			sf::Vector2u tileRectPosition =
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
+			tileRectPosition.x *= info.tileSize.x;
+			tileRectPosition.y *= info.tileSize.y;
+
+			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
+			position.x *= info.tileSize.x;
+			position.y *= info.tileSize.y;
+
+			/*TileData tileData;
+			tileData.mTextureRectTopLeftCorner = tileRectPosition;
+			tileData.mTopLeftCornerPositionInWorld = position;
+
+			tileData.mFlipData.mIsHorizontallyFlipped = isHorizontallyFlipped;
+			tileData.mFlipData.mIsVerticallyFlipped = isVerticallyFlipped;
+			tileData.mFlipData.mIsDiagonallyFlipped = isDiagonallyFlipped;
+
+			mChunkMap->addTileData(tileData);
+			*/
+			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
+			if (tilesDataIndex == std::string::npos)
+				continue;
+			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
+		}
+	}
+
+	//mChunkMap->initializeGraphicsForCurrentLayer();
+}
+
+bool XmlMapParser::hasTile(unsigned globalTileId) const
+{
+	return globalTileId != 0;
+}
+
+std::size_t XmlMapParser::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
+{
+	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
+		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
+		const unsigned lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
+		if (globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
+			return i;
+	}
+	return std::string::npos;
+}
+
+std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const
+{
+	for (std::size_t i = 0; i < tilesData.size(); ++i)
+		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
+			return i;
+	return std::string::npos;
+}
+
+void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position)
+{
+	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
+		if (tileId == tilesData.ids[i]) {
+			sf::FloatRect bounds = tilesData.bounds[i];
+			bounds.left += position.x;
+			bounds.top += position.y;
+			//mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);   // TUTAJ
+			//mGameData->getAIManager().registerObstacle({ bounds.left, bounds.top });   // TUTAJ
+		}
+	}
+}
+
+void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
+{
+	// TUTAJ
+
+	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
+	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
+
+	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
+
+	//auto& physics = mGameData->getPhysicsEngine();
+
+	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
+	{
+		// top border
+		sf::Vector2f positionTop(x * size.x, -size.y);
+		//physics.createStaticBodyAndGetTheReference({ positionTop, size });
+		// bottom border
+		sf::Vector2f positionBottom(x * size.x, mapHeight);
+		//physics.createStaticBodyAndGetTheReference({ positionBottom, size });
+	}
+
+	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
+	{
+		// left border
+		sf::Vector2f positionLeft(-size.x, y * size.y);
+		//physics.createStaticBodyAndGetTheReference({ positionLeft, size });
+		// right border
+		sf::Vector2f positionRight(mapWidth, y * size.y);
+		//physics.createStaticBodyAndGetTheReference({ positionRight, size });
+	}
 }
 
 }

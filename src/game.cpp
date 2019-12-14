@@ -24,8 +24,6 @@ Game::Game()
 	,mShaders{new ShaderHolder()}
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
-	//,mMap(new Map())
-	//,mPhysicsEngine{new PhysicsEngine()}
 	,mTerminal{new Terminal()}
 	,mDebugCounter{new DebugCounter()}
 	,mGui{new GUI()}
@@ -40,7 +38,6 @@ Game::Game()
 		mAIManager.get(),
 		mSceneManager.get(),
 		nullptr,
-		nullptr,
 		mTerminal.get(),
 		mGui.get()
 	));
@@ -50,7 +47,6 @@ Game::Game()
 	loadFonts(gameData);
 	mTerminal->init(gameData);
 	mDebugCounter->init(*mFonts);
-	//mMap->setGameData(gameData);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/ecsTest.xml");
