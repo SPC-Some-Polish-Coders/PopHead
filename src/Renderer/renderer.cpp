@@ -59,9 +59,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
 
-	// set up blending
+	// enable blending
 	GLCheck( glEnable(GL_BLEND) );
-	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 
 	// set up uniform buffer object
 	glGenBuffers(1, &sharedDataUBO);
@@ -137,6 +136,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	quadRenderer.flush();
 	pointRenderer.flush();
 
+	GLCheck( glBlendFunc(GL_ONE, GL_ONE) );
 	GLCheck( glDisable(GL_DEPTH_TEST) );
 	lightingFramebuffer.bind();
 	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.f) ); // TODO: Make possible specifing ambient color
@@ -160,6 +160,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
 
+	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	framebufferVertexArray.bind();

@@ -217,6 +217,27 @@
       <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="-60.0" y="150.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
+      <component name="PointLight" offsetX="5" offsetY="5" r="0" g="255" b="0" range="50"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="150.0" y="200.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(255, 0, 0)" z="100" blocksLight="false"/>
+      <component name="PointLight" offsetX="5" offsetY="5" r="255" g="0" b="0" range="50"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="300.0" y="10.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(0, 0, 255)" z="100" blocksLight="false"/>
+      <component name="PointLight" offsetX="5" offsetY="5" r="0" g="0" b="255" range="50"/>
+      <component name="StaticCollisionBody" />
+    </entity>
     
    
     <entity name="Area">
