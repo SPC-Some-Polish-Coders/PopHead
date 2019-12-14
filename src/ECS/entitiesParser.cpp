@@ -100,7 +100,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Camera",                 &EntitiesParser::parseCamera},
-		{"PointLight",             &EntitiesParser::parsePointLight},
+		{"LightSource",            &EntitiesParser::parseLightSource},
 		{"HiddenForRenderer",	   &EntitiesParser::parseHiddenForRenderer},
 		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
 		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
@@ -427,9 +427,9 @@ void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& e
 	mUsedRegistry->assign_or_replace<component::Camera>(entity, Camera({x, y, width, height}), priority);
 }
 
-void EntitiesParser::parsePointLight(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::PointLight pointLight;
+	component::LightSource pointLight;
 	pointLight.offset = {
 		entityComponentNode.getAttribute("offsetX").toFloat(),
 		entityComponentNode.getAttribute("offsetY").toFloat()
@@ -439,8 +439,10 @@ void EntitiesParser::parsePointLight(const Xml& entityComponentNode, entt::entit
 		entityComponentNode.getAttribute("g").toUnsignedChar(),
 		entityComponentNode.getAttribute("b").toUnsignedChar()
 	};
-	pointLight.range = entityComponentNode.getAttribute("range").toFloat();
-	mUsedRegistry->assign_or_replace<component::PointLight>(entity, pointLight);
+	pointLight.attenuationAddition = entityComponentNode.getAttribute("attenuationAddition").toFloat();
+	pointLight.attenuationFactor = entityComponentNode.getAttribute("attenuationFactor").toFloat();
+	pointLight.attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor").toFloat();
+	mUsedRegistry->assign_or_replace<component::LightSource>(entity, pointLight);
 }
 
 void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)

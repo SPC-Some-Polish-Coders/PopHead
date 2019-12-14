@@ -22,7 +22,9 @@ struct Light
 {
 	sf::Color color;
 	sf::Vector2f pos;
-	float range;
+	float attenuationAddition;
+	float attenuationFactor;
+	float attenuationSquareFactor;
 };
 
 struct Ray

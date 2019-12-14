@@ -11,7 +11,7 @@
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
-        <component name="PointLight" offsetX="10" offsetY="10" r="255" g="255" b="255" range="50"/>
+        <component name="LightSource" offsetX="10" offsetY="10" r="255" g="255" b="255" attenuationAddition="0.1" attenuationFactor="0.0" attenuationSquareFactor="1.5"/>
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml"/>
         <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" blocksLight="false"/>
@@ -188,54 +188,54 @@
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="200.0" y="200.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
  
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="100.0" y="220.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="150.0" y="-20.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
     
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="-60.0" y="100.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
     
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="-30.0" y="150.0" width="50.0" height ="50.0"/>
-      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="true"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
       <component name="StaticCollisionBody" />
     </entity>
  
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="-60.0" y="150.0" width="10.0" height ="10.0"/>
       <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
-      <component name="PointLight" offsetX="5" offsetY="5" r="0" g="255" b="0" range="50"/>
+      <component name="LightSource" offsetX="5" offsetY="5" r="0" g="255" b="0" attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
       <component name="StaticCollisionBody" />
     </entity>
  
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="150.0" y="200.0" width="10.0" height ="10.0"/>
       <component name="RenderQuad" color="rgb(255, 0, 0)" z="100" blocksLight="false"/>
-      <component name="PointLight" offsetX="5" offsetY="5" r="255" g="0" b="0" range="50"/>
+      <component name="LightSource" offsetX="5" offsetY="5" r="255" g="0" b="0"  attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
       <component name="StaticCollisionBody" />
     </entity>
  
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="300.0" y="10.0" width="10.0" height ="10.0"/>
       <component name="RenderQuad" color="rgb(0, 0, 255)" z="100" blocksLight="false"/>
-      <component name="PointLight" offsetX="5" offsetY="5" r="0" g="0" b="255" range="50"/>
+      <component name="LightSource" offsetX="5" offsetY="5" r="0" g="0" b="255" attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
       <component name="StaticCollisionBody" />
     </entity>
     

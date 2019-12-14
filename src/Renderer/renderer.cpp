@@ -136,10 +136,10 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	quadRenderer.flush();
 	pointRenderer.flush();
 
-	GLCheck( glBlendFunc(GL_ONE, GL_ONE) );
+	//GLCheck( glBlendFunc(GL_ONE, GL_ONE) );
 	GLCheck( glDisable(GL_DEPTH_TEST) );
 	lightingFramebuffer.bind();
-	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.f) ); // TODO: Make possible specifing ambient color
+	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.5f) ); // TODO: Make possible specifing ambient color
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 	lightRenderer.flush();
 
@@ -199,9 +199,10 @@ void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsign
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
-void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle, float range)
+void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle,
+                           float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
-	lightRenderer.submitLight({color, position, range});
+	lightRenderer.submitLight({color, position, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)

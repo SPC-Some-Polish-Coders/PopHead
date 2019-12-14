@@ -57,10 +57,11 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 
 void RenderSystem::submitLights() const
 {
-	auto view = mRegistry.view<component::PointLight, component::BodyRect>();
-	view.each([](const component::PointLight& pointLight, const component::BodyRect& body)
+	auto view = mRegistry.view<component::LightSource, component::BodyRect>();
+	view.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
-		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, 0.f, 360.f, pointLight.range);
+		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, 0.f, 360.f,
+			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
 }
 

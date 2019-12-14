@@ -94,8 +94,13 @@ void LightRenderer::flush()
 		// draw light using triangle fan
 		if(sDebug.drawLight)
 		{
+			light.color.a = 127;
 			mLightShader->bind();
 			mLightShader->setUniformVector4Color("color", light.color);
+			mLightShader->setUniformVector2("lightPos", light.pos);
+			mLightShader->setUniformFloat("a", light.attenuationAddition);
+			mLightShader->setUniformFloat("b", light.attenuationFactor);
+			mLightShader->setUniformFloat("c", light.attenuationSquareFactor);
 			glBindVertexArray(mVAO);
 			glBindBuffer(GL_ARRAY_BUFFER ,mVBO); // TODO: Do I have to bind it?
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightPolygonVertexData.size(), mLightPolygonVertexData.data(), GL_STATIC_DRAW);
@@ -110,8 +115,8 @@ void LightRenderer::flush()
 		if(sDebug.drawRays)
 		{
 			for(auto& point : mLightPolygonVertexData) {
-				Renderer::submitPoint(point, sf::Color::Yellow, 0, 12.f);
-				Renderer::submitLine(sf::Color(230, 255, 0), light.pos, point, 3.f);
+				Renderer::submitPoint(point, light.color, 0, 12.f);
+				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
 			for(const auto& light : mLights)
 				Renderer::submitPoint(light.pos, light.color, 0.f, 15.f);
