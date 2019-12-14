@@ -17,6 +17,7 @@ namespace ph::component {
 	struct Entrance
 	{
 		std::string entranceDestination;
+		sf::Vector2f playerSpawnPosition;
 	};
 
 }

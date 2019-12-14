@@ -256,6 +256,8 @@ void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination").toString();
+	float posX = entityComponentNode.getAttribute("playerSpawnPositionX").toFloat();
+	float posY = entityComponentNode.getAttribute("playerSpawnPositionY").toFloat();
 	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination);
 }
 

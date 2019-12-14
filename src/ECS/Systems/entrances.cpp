@@ -28,7 +28,7 @@ void Entrances::update(float seconds)
 			if (entranceBody.areaBody.contains(playerBody.rect.getCenter()))
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
-				mSceneManager.replaceScene(entranceDetails.entranceDestination);
+				mSceneManager.replaceScene(entranceDetails.entranceDestination, entranceDetails.playerSpawnPosition);
 				return;
 			}
 		}
