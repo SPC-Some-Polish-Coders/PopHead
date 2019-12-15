@@ -21,13 +21,26 @@ void Entrances::update(float seconds)
 
 	for (auto player : playerView)
 	{
-		const auto& playerBody = playerView.get<component::BodyRect>(player);
+		auto& playerBody = playerView.get<component::BodyRect>(player);
+
+		static sf::Vector2f playerSpawnPosition;
+		static bool hasReplaced;
+
+		if (hasReplaced)
+		{
+			playerBody.rect.left = playerSpawnPosition.x;
+			playerBody.rect.top = playerSpawnPosition.y;
+			hasReplaced = false;
+		}
+
 		for (auto entrance : entrancesView)
 		{
 			const auto& entranceBody = entrancesView.get<component::Area>(entrance);
 			if (entranceBody.areaBody.contains(playerBody.rect.getCenter()))
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
+				hasReplaced = true;
+				playerSpawnPosition = entranceDetails.playerSpawnPosition;
 				mSceneManager.replaceScene(entranceDetails.entranceDestination);
 				return;
 			}

@@ -11,7 +11,7 @@ class GameData;
 class Xml;
 class CutSceneManager;
 
-template <typename GuiParser, typename MapParser, typename ResourcesParser, typename AudioParser, typename EnttParser>
+template <typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
 class SceneParser
 {
 public:

@@ -17,7 +17,7 @@ namespace component {
 		Shader* shader;
 		sf::Color color;
 		float rotation;
-		char z;
+		unsigned char z;
 		bool blocksLight;
 	};
 

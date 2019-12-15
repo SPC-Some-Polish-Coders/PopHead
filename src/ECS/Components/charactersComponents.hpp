@@ -37,6 +37,8 @@ namespace ph::component {
 		float minSecondsInterval;
 		float cooldownSinceLastHit;
 		bool isTryingToAttack;
+		bool canAttack;
+		bool isAttacking;
 	};
 
 	struct GunAttacker
@@ -78,10 +80,15 @@ namespace ph::component {
 		sf::Vector2f endingShotPos;
 	};
 
-	struct PlayerGun
+	struct CurrentGun
 	{
 		float timeBeforeHiding;
 		float cooldownSinceLastShot;
+	};
+
+	struct CurrentMeleeWeapon
+	{
+		float rotation = 0.f;
 	};
 
 	struct IsInArea

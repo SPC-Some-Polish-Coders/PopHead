@@ -1,4 +1,10 @@
 <entityTemplates>
+    
+    <entityTemplate name="Tile">
+        <component name="BodyRect" x="0.0" y="0.0" width="16.0" height="16.0" />
+        <component name="RenderQuad" z="1" blocksLight="false"/>
+        <component name="TextureRect" x="0" y="0" width="16" height="16" />
+    </entityTemplate>
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
@@ -68,8 +74,15 @@
     </entityTemplate>
    
     <entityTemplate name="Entrance">
-	<component name="Area" x="200.0" y="200.0" width="200.0" height ="50.0"/>
-	<component name="Entrance" entranceDestination="scenes/entranceTest.xml"/>
+	<component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0"/>
+    </entityTemplate>
+    
+    <entityTemplate name="Gate">
+        <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
+        <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" blocksLight="false"/>
+        <component name="TextureRect" x="0" y="4" width="31" height="10" />
+        <component name="Gate" isOpened="false"/>
+        <component name="StaticCollisionBody"/>
     </entityTemplate>
 
     <entityTemplate name="SlowDownArea">
@@ -115,14 +128,11 @@
         </component>
     </entityTemplate>
 
-    <entityTemplate name="Gate">
-        <component name="StaticCollisionBody" />
-    </entityTemplate>
-
     <entityTemplate name="Lever">
         <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
         <component name="RenderQuad" textureFilepath="textures/others/lever.png" z="99" blocksLight="false"/>
         <component name="TextureRect" x="0" y="0" width="7" height="15" />
+        <component name="Lever" isActivated="false" minActivationInterval="0.25"/>
     </entityTemplate>
 
     <entityTemplate name="WeirdLever">
@@ -167,24 +177,37 @@
         <component name="TextureRect" x="0" y="0" width="7" height="14" />
         <component name="HiddenForRenderer"/>
     </entityTemplate>
+    
+    <entityTemplate name="BaseballBat">
+        <component name="BodyRect" x="200.0" y="60.0" width="11" height="11" />
+        <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="95" blocksLight="false" shaderName="melee" vertexShaderFilepath="resources/shaders/melee.vs.glsl" fragmentShaderFilepath="resources/shaders/melee.fs.glsl" />
+        <component name="TextureRect" x="0" y="0" width="12" height="12" />
+        <component name="HiddenForRenderer"/>
+    </entityTemplate>
 
 </entityTemplates>
 
 <entities>
    
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
     </entity>
     
     <entity sourceTemplate="Pistol">
-        <component name="PlayerGun" />
+        <component name="CurrentGun"/>
+    </entity>
+    
+    <entity sourceTemplate="BaseballBat">
+        <component name="CurrentMeleeWeapon"/>
     </entity>
 
     <entity sourceTemplate="UFOCars"/>
   
     <entity sourceTemplate="Car"/>
 
-    <entity sourceTemplate="Entrance"/>
+    <entity sourceTemplate="Entrance">
+    	<component name="Area" x="200.0" y="200.0" width="200.0" height ="50.0"/>
+    </entity>
 
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="200.0" y="200.0" width="50.0" height ="50.0"/>
@@ -241,12 +264,16 @@
     
    
     <entity name="Area">
+        <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
+    </entity>
+    
+    <entity name="SpeedUpArea">
        <component name="Area" x="300.0" y="50.0" width="100.0" height="200.0"/>
        <component name="VelocityChangingEffect" velocityMultiplier="2.0"/>
     </entity>
     
     <entity sourceTemplate="ColorSquare">
-        <component name="BodyRect" x="300.0" y="100.0" width="100.0" height="200.0" />
+        <component name="BodyRect" x="300.0" y="50.0" width="100.0" height="200.0" />
         <component name="RenderQuad" color="rgb(200, 128, 50)" z="100" blocksLight="false"/>
     </entity>
     
@@ -273,6 +300,35 @@
     <entity sourceTemplate="Highway"/>
 
     <entity sourceTemplate="Lever"/>
+    
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="60.0" y="2.0" width="50.0" height="50.0" />
+        <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false"/>
+        <component name="StaticCollisionBody"/>
+    </entity>
+    <entity sourceTemplate="Gate">
+        <component name="BodyRect" x="110.0" y="5.0" width="40.0" height="13.0"/>
+        <component name="LeverListener" leverPositionX="100.0" leverPositionY="55.0"/>
+    </entity>
+       
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="150.0" y="2.0" width="50.0" height="50.0" />
+        <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false"/>
+        <component name="StaticCollisionBody"/>
+    </entity>
+    
+    <entity sourceTemplate="Lever">
+      <component name="BodyRect" x="100.0" y="55.0" width="8" height="16" />
+    </entity>
+    
+    <entity sourceTemplate="Gate">
+        <component name="BodyRect" x="210.0" y="5.0" width="40.0" height="13.0"/>
+        <component name="LeverListener" leverPositionX="200.0" leverPositionY="55.0"/>
+    </entity>
+    
+        <entity sourceTemplate="Lever">
+      <component name="BodyRect" x="200.0" y="55.0" width="8" height="16" />
+    </entity>
   
     <entity sourceTemplate="Zombie"/>
 

@@ -5,7 +5,6 @@
 #include "gameData.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
-#include "Map/map.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"

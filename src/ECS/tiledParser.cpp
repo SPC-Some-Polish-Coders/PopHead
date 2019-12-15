@@ -3,6 +3,7 @@
 #include "Components/physicsComponents.hpp"
 #include "Components/charactersComponents.hpp"
 #include "Components/graphicsComponents.hpp"
+#include "Components/objectsComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -61,9 +62,6 @@ namespace ph {
 	{
 		const std::vector<Xml> objects = gameObjectsNode.getChildren("object");
 
-		loadLayerObjects();
-		loadContainerObjects();
-
 		for (const auto& gameObjectNode : objects)
 		{
 			auto objectType = gameObjectNode.getAttribute("type").toString();
@@ -91,13 +89,6 @@ namespace ph {
 			else if (objectType == "SpriteNode") loadSpriteNode(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 		}
-
-		/*if (mHasLoadedPlayer)
-		{
-			const auto& player = *mRoot.getChild("LAYER_standingObjects")->getChild("player");
-			auto playerPosition = player.getPosition();
-			mGameData->getRenderer().getCamera().setCenter(playerPosition);
-		}*/
 	}
 
 	void TiledParser::loadArcadeManager() const
@@ -105,20 +96,6 @@ namespace ph {
 		auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
 		invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui(), mGameData->getMusicPlayer()));
 		mGameData->getAIManager().setAIMode(AIMode::zombieAlwaysLookForPlayer);*/
-	}
-
-	void TiledParser::loadLayerObjects() const
-	{/*
-		mRoot.addChild(std::make_unique<GameObject>("LAYER_invisibleObjects"));
-		mRoot.addChild(std::make_unique<LyingGameObjectsLayer>());
-		mRoot.addChild(std::make_unique<StandingGameObjectsLayer>(mGameData->getPhysicsEngine()));*/
-	}
-
-	void TiledParser::loadContainerObjects() const
-	{/*
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::make_unique<ParticlesSystem>(mGameData->getRenderer()));
-		standingObjects->addChild(std::make_unique<ItemsContainer>());*/
 	}
 
 	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
@@ -136,11 +113,7 @@ namespace ph {
 	}
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
-	{/*
-		const std::string texturePath = "textures/characters/" + getProperty(npcNode, "textureFileName").toString();
-		npc->getSprite().setTexture(mGameData->getTextures().get(texturePath));
-;*/
-
+	{
 		auto npc = mTemplatesStorage.createCopy("Npc", mGameRegistry);
 		auto& npcPosition = mGameRegistry.get<component::BodyRect>(npc);
 
@@ -193,12 +166,18 @@ namespace ph {
 	}
 
 	void TiledParser::loadEntrance(const Xml& entranceNode) const
-	{/*
+	{
 		const std::string scenePathRelativeToMapFile = getProperty(entranceNode, "gotoScene").toString();
 		const std::string sceneFileName = *getSceneFileName(scenePathRelativeToMapFile);
 		const std::string scenePathFromResources = "scenes/" + sceneFileName;
 
-		std::unique_ptr<Entrance> entrance;
+		auto entrance = mTemplatesStorage.createCopy("Entrance", mGameRegistry);
+		auto& entranceComponent = mGameRegistry.get<component::Entrance>(entrance);
+
+		entranceComponent.entranceDestination = scenePathRelativeToMapFile;
+
+		loadPosition(entranceNode, entrance);
+		loadSize(entranceNode, entrance);
 
 		if (getProperty(entranceNode, "isEntranceWithCustomPosition").toBool())
 		{
@@ -207,27 +186,8 @@ namespace ph {
 				getProperty(entranceNode, "gotoY").toFloat()
 			);
 
-			entrance = std::make_unique<Entrance>(
-				mGameData->getSceneManager(),
-				scenePathFromResources,
-				"entrance",
-				getSizeAttribute(entranceNode),
-				getPositionAttribute(entranceNode),
-				positionToGo
-				);
+			// TODO: add optional position to component
 		}
-		else
-		{
-			entrance = std::make_unique<Entrance>(
-				mGameData->getSceneManager(),
-				scenePathFromResources,
-				"entrance",
-				getSizeAttribute(entranceNode),
-				getPositionAttribute(entranceNode)
-				);
-		};*/
-
-		auto entrance = mTemplatesStorage.createCopy("Entrance", mGameRegistry);
 	}
 
 	void TiledParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
@@ -264,33 +224,24 @@ namespace ph {
 	}
 
 	void TiledParser::loadGate(const Xml& gateNode) const
-	{/*
-		auto& texture = mGameData->getTextures().get("textures/others/gate.png");
-		auto gate = std::make_unique<Gate>(texture, getPositionAttribute(gateNode), mGameData->getPhysicsEngine(), false);*/
-
+	{
 		auto gate = mTemplatesStorage.createCopy("Gate", mGameRegistry);
 		loadPosition(gateNode, gate);
-		loadSize(gateNode, gate);
+		//loadSize(gateNode, gate);
 	}
 
 	void TiledParser::loadLever(const Xml& leverNode) const
-	{/*
-		auto& leverTexture = mGameData->getTextures().get("textures/others/lever.png");
-		auto& hintTexture = mGameData->getTextures().get("textures/others/pressSpaceHint.png");
-		auto lever = std::make_unique<Lever>(leverTexture, hintTexture);*/
-
+	{
 		auto lever = mTemplatesStorage.createCopy("Lever", mGameRegistry);
 		loadPosition(leverNode, lever);
 	}
 
 	void TiledParser::loadCar(const Xml& carNode) const
 	{/*
-		auto& texture = mGameData->getTextures().get("textures/vehicles/car.png");
 		auto car = std::make_unique<Car>(
 			getProperty(carNode, "acceleration").toFloat(),
 			getProperty(carNode, "slowingDown").toFloat(),
-			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat()),
-			texture
+			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat())
 			);*/
 
 		auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);

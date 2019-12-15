@@ -11,8 +11,6 @@
 
 namespace ph {
 
-	class GameData;
-	class GameObject;
 	class CutSceneManager;
 	class Xml;
 
@@ -27,8 +25,6 @@ namespace ph {
 		Xml findGameObjects(const Xml& mapFile) const;
 		
 		void loadObjects(const Xml& gameObjects) const;
-		void loadLayerObjects() const;
-		void loadContainerObjects() const;
 		void loadArcadeManager() const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;

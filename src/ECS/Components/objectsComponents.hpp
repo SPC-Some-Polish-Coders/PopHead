@@ -17,6 +17,25 @@ namespace ph::component {
 	struct Entrance
 	{
 		std::string entranceDestination;
+		sf::Vector2f playerSpawnPosition;
+	};
+
+	struct Lever
+	{
+		bool isActivated;
+		float minActivationInterval;
+		float activationCooldown;
+	};
+
+	struct Gate
+	{
+		bool isOpened;
+	};
+
+	struct LeverListener
+	{
+		bool isActivated;
+		sf::Vector2f leverPosition;
 	};
 
 }

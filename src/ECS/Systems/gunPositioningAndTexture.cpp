@@ -19,10 +19,10 @@ namespace ph::system {
 
 	void GunPositioningAndTexture::updateGunPosition(const sf::Vector2f& playerFaceDirection, const FloatRect& playerBody)
 	{
-		auto gunView = mRegistry.view<component::PlayerGun, component::BodyRect>();
+		auto gunView = mRegistry.view<component::CurrentGun, component::BodyRect>();
 		for (auto gun : gunView)
 		{
-			auto& playerGun = gunView.get<component::PlayerGun>(gun);
+			auto& playerGun = gunView.get<component::CurrentGun>(gun);
 			auto& gunBody = gunView.get<component::BodyRect>(gun);
 
 			updateGunSpriteFlipping(playerFaceDirection, gunBody.rect);
@@ -103,10 +103,10 @@ namespace ph::system {
 
 	void GunPositioningAndTexture::updateTexture(float dt, const sf::Vector2f& playerFaceDirection, bool wantToAttack, bool canAttack)
 	{
-		auto gunView = mRegistry.view<component::PlayerGun, component::TextureRect>();
+		auto gunView = mRegistry.view<component::CurrentGun, component::TextureRect>();
 		for (auto gun : gunView)
 		{
-			auto& [gunTextureBody, playerGun] = gunView.get<component::TextureRect, component::PlayerGun>(gun);
+			auto& [gunTextureBody, playerGun] = gunView.get<component::TextureRect, component::CurrentGun>(gun);
 
 			int offsetX = 16;
 			if (wantToAttack)

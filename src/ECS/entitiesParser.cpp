@@ -96,7 +96,11 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Entrance",               &EntitiesParser::parseEntrance},
-		{"PlayerGun",              &EntitiesParser::parsePlayerGun},
+		{"Gate",				   &EntitiesParser::parseGate},
+		{"Lever",				   &EntitiesParser::parseLever},
+		{"LeverListener",		   &EntitiesParser::parseLeverListener},
+		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
+		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Camera",                 &EntitiesParser::parseCamera},
@@ -181,7 +185,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 	// parse z
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
-	quad.z = entityComponentNode.getAttribute("z").toChar();
+	quad.z = entityComponentNode.getAttribute("z").toUnsignedChar();
 
 	// parse blocks light
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("blocksLight"), "Every RenderQuad has to have blockLight atribute!");
@@ -255,7 +259,30 @@ void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination").toString();
-	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination);
+	float posX = entityComponentNode.getAttribute("playerSpawnPositionX").toFloat();
+	float posY = entityComponentNode.getAttribute("playerSpawnPositionY").toFloat();
+	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination, sf::Vector2f(posX, posY));
+}
+
+void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isOpened = entityComponentNode.getAttribute("isOpened").toBool();
+	mUsedRegistry->assign_or_replace<component::Gate>(entity, isOpened);
+}
+
+void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isActivated = entityComponentNode.getAttribute("isActivated").toBool();
+	float activationCooldown = entityComponentNode.getAttribute("minActivationInterval").toFloat();
+	mUsedRegistry->assign_or_replace<component::Lever>(entity, isActivated, activationCooldown);
+}
+
+void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isActivated = false;
+	float leverPositionX = entityComponentNode.getAttribute("leverPositionX").toFloat();
+	float leverPositionY = entityComponentNode.getAttribute("leverPositionY").toFloat();
+	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, isActivated, sf::Vector2f(leverPositionX, leverPositionY));
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
@@ -388,9 +415,14 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack, canAttack);
 }
 
-void EntitiesParser::parsePlayerGun(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PlayerGun>(entity, 2.f, 0.f);
+	mUsedRegistry->assign_or_replace<component::CurrentGun>(entity, 2.f, 0.f);
+}
+
+void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::CurrentMeleeWeapon>(entity);
 }
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)

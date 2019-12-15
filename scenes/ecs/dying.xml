@@ -63,7 +63,7 @@
   </entity>
 
   <entity sourceTemplate="Pistol">
-    <component name="PlayerGun" />
+    <component name="CurrentGun" />
   </entity>
 
   <entity sourceTemplate="Zombie"/>

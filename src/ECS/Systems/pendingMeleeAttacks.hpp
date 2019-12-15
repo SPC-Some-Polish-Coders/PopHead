@@ -15,7 +15,6 @@ namespace ph::system {
 		void update(float seconds) override;
 
 	private:
-		bool hasCooldown(float cooldownSinceLastHit) const;
 		void performHit(const sf::Vector2f playerCenterPosition, float weaponInitialRotation);
 
 		sf::Vector2f nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const;
