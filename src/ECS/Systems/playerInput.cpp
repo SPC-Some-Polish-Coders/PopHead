@@ -2,6 +2,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include <cmath>
 
@@ -16,6 +17,7 @@ namespace ph::system {
 		updateAnimationData();
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
+		setFlashLightDirection(playerDirection);
 		updateGunAttackInput();
 		updateMeleeAttackInput();
 
@@ -97,7 +99,7 @@ namespace ph::system {
 		return sf::Vector2f(0.f, 0.f);
 	}
 
-	void PlayerMovementInput::setPlayerFaceDirection(const sf::Vector2f& faceDirection) const
+	void PlayerMovementInput::setPlayerFaceDirection(const sf::Vector2f faceDirection) const
 	{
 		auto playerView = mRegistry.view<component::Player, component::FaceDirection>();
 		for (auto player : playerView)
@@ -108,6 +110,29 @@ namespace ph::system {
 				prevFaceDirection.direction = faceDirection;
 			}
 		}
+	}
+
+	void PlayerMovementInput::setFlashLightDirection(const sf::Vector2f faceDirection) const
+	{
+		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
+		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
+		{
+			constexpr float diagonal = 0.7f;
+
+			float middleAngle;
+			if(face.direction == sf::Vector2f(1.f, 0.f))                  middleAngle = 0.f;
+			else if(face.direction == sf::Vector2f(-1.f, 0.f))            middleAngle = 180.f;
+			else if(face.direction == sf::Vector2f(0.f, 1.f))             middleAngle = 90.f;
+			else if(face.direction == sf::Vector2f(0.f, -1.f))            middleAngle = -90.f;
+			else if(face.direction == sf::Vector2f(diagonal, diagonal))   middleAngle = 45.f;
+			else if(face.direction == sf::Vector2f(diagonal, -diagonal))  middleAngle = -45.f;
+			else if(face.direction == sf::Vector2f(-diagonal, diagonal))  middleAngle = 135.f;
+			else if(face.direction == sf::Vector2f(-diagonal, -diagonal)) middleAngle = -135.f;
+			else middleAngle = 0.f;
+
+			lightSource.startAngle = middleAngle - 45.f;
+			lightSource.endAngle = middleAngle + 45.f;
+		});
 	}
 
 	void PlayerMovementInput::updateGunAttackInput()
