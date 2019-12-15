@@ -95,8 +95,9 @@ void LightRenderer::flush()
 		if(sDebug.drawLight)
 		{
 			mLightShader->bind();
-			mLightShader->setUniformVector4Color("color", light.color);
 			mLightShader->setUniformVector2("lightPos", light.pos);
+			mLightShader->setUniformVector4Color("color", light.color);
+			mLightShader->setUniformFloat("cameraZoom", mScreenBounds->height / 480);
 			mLightShader->setUniformFloat("a", light.attenuationAddition);
 			mLightShader->setUniformFloat("b", light.attenuationFactor);
 			mLightShader->setUniformFloat("c", light.attenuationSquareFactor);
