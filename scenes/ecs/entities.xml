@@ -70,6 +70,13 @@
     <entityTemplate name="Entrance">
 	<component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0"/>
     </entityTemplate>
+    
+    <entityTemplate name="Gate">
+        <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
+        <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" blocksLight="false"/>
+        <component name="TextureRect" x="0" y="4" width="31" height="10" />
+        <component name="StaticCollisionBody"/>
+    </entityTemplate>
 
     <entityTemplate name="SlowDownArea">
 
@@ -112,10 +119,6 @@
           <particleAttrib name="lifetime" v="10.5"/>
           <particleAttrib name="isEmitting" v="true"/>
         </component>
-    </entityTemplate>
-
-    <entityTemplate name="Gate">
-        <component name="StaticCollisionBody" />
     </entityTemplate>
 
     <entityTemplate name="Lever">
@@ -237,6 +240,8 @@
     <entity sourceTemplate="Highway"/>
 
     <entity sourceTemplate="Lever"/>
+    
+    <entity sourceTemplate="Gate"/>
     
     <entity sourceTemplate="Lever">
       <component name="BodyRect" x="50.0" y="2.0" width="8" height="16" />

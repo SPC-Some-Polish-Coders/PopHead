@@ -27,4 +27,9 @@ namespace ph::component {
 		float activationCooldown;
 	};
 
+	struct Gate
+	{
+		bool isOpened;
+	};
+
 }

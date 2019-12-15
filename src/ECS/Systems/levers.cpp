@@ -13,6 +13,7 @@ void Levers::update(float seconds)
 {
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
+
 	for (auto player : playerView)
 	{
 		const auto& [playerInteractionInput, playerBody] = playerView.get<component::Player, component::BodyRect>(player);
