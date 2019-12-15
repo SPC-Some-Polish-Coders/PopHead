@@ -61,8 +61,6 @@ void RenderSystem::submitLights() const
 	auto view = mRegistry.view<component::LightSource, component::BodyRect>();
 	view.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
-		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle > 0.f && pointLight.startAngle < 360.f, "light start angle must be between 0 and 360");
-		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.endAngle > 0.f && pointLight.endAngle < 360.f, "light end angle must be between 0 and 360");
 		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
 
 		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, pointLight.startAngle, pointLight.endAngle,

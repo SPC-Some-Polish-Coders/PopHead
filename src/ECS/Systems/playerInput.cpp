@@ -119,6 +119,8 @@ namespace ph::system {
 		{
 			constexpr float diagonal = 0.7f;
 
+			// TODO: Try to do that with std::atan2f() function instead of if statements
+
 			float middleAngle;
 			if(face.direction == sf::Vector2f(1.f, 0.f))                  middleAngle = 0.f;
 			else if(face.direction == sf::Vector2f(-1.f, 0.f))            middleAngle = 180.f;
