@@ -4,28 +4,13 @@
 
 namespace ph::system {
 
-void CanUseGun::update(float seconds)
+void CanUseWeapon::update(float seconds)
 {
-	auto gunAttackerView = mRegistry.view<component::GunAttacker>();
-
-	for (const auto& gunAttacker : gunAttackerView)
-	{
-		auto& gunAttackerComp = gunAttackerView.get<component::GunAttacker>(gunAttacker);
-
-		if (gunAttackerComp.cooldownSinceLastShoot > 0.f)
-			gunAttackerComp.cooldownSinceLastShoot -= seconds;
-
-		if (gunAttackerComp.isTryingToAttack)
-		{
-			gunAttackerComp.canAttack = gunAttackerComp.cooldownSinceLastShoot <= 0.f && gunAttackerComp.bullets > 0;
-
-			if(gunAttackerComp.canAttack)
-				gunAttackerComp.cooldownSinceLastShoot = gunAttackerComp.minSecondsInterval;
-		}
-	}
+	updateMeleeWeapon(seconds);
+	updateGun(seconds);
 }
 
-void CanUseMelee::update(float seconds)
+void CanUseWeapon::updateMeleeWeapon(float dt)
 {
 	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker>();
 
@@ -34,7 +19,7 @@ void CanUseMelee::update(float seconds)
 		auto& gunAttackerComp = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
 
 		if (gunAttackerComp.cooldownSinceLastHit > 0.f)
-			gunAttackerComp.cooldownSinceLastHit -= seconds;
+			gunAttackerComp.cooldownSinceLastHit -= dt;
 
 		if (gunAttackerComp.isTryingToAttack)
 		{
@@ -42,6 +27,27 @@ void CanUseMelee::update(float seconds)
 
 			if (gunAttackerComp.canAttack)
 				gunAttackerComp.cooldownSinceLastHit = gunAttackerComp.minSecondsInterval;
+		}
+	}
+}
+
+void CanUseWeapon::updateGun(float dt)
+{
+	auto gunAttackerView = mRegistry.view<component::GunAttacker>();
+
+	for (const auto& gunAttacker : gunAttackerView)
+	{
+		auto& gunAttackerComp = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+
+		if (gunAttackerComp.cooldownSinceLastShoot > 0.f)
+			gunAttackerComp.cooldownSinceLastShoot -= dt;
+
+		if (gunAttackerComp.isTryingToAttack)
+		{
+			gunAttackerComp.canAttack = gunAttackerComp.cooldownSinceLastShoot <= 0.f && gunAttackerComp.bullets > 0;
+
+			if (gunAttackerComp.canAttack)
+				gunAttackerComp.cooldownSinceLastShoot = gunAttackerComp.minSecondsInterval;
 		}
 	}
 }

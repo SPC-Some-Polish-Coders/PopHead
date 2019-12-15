@@ -89,8 +89,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
-	mSystemsQueue.appendSystem<system::CanUseGun>();
-	mSystemsQueue.appendSystem<system::CanUseMelee>();
+	mSystemsQueue.appendSystem<system::CanUseWeapon>();
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();

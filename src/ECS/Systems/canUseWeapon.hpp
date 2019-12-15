@@ -4,20 +4,16 @@
 
 namespace ph::system {
 
-	class CanUseGun : public System
+	class CanUseWeapon : public System
 	{
 	public:
 		using System::System;
 
 		void update(float seconds) override;
-	};
 
-	class CanUseMelee : public System
-	{
-	public:
-		using System::System;
-
-		void update(float seconds) override;
+	private:
+		void updateMeleeWeapon(float dt);
+		void updateGun(float dt);
 	};
 
 }
