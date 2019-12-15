@@ -96,6 +96,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Entrance",               &EntitiesParser::parseEntrance},
+		{"Lever",				   &EntitiesParser::parseLever},
 		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
 		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
@@ -259,6 +260,13 @@ void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity&
 	float posX = entityComponentNode.getAttribute("playerSpawnPositionX").toFloat();
 	float posY = entityComponentNode.getAttribute("playerSpawnPositionY").toFloat();
 	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination);
+}
+
+void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isActivated = entityComponentNode.getAttribute("isActivated").toBool();
+	float activationCooldown = entityComponentNode.getAttribute("minActivationInterval").toFloat();
+	mUsedRegistry->assign_or_replace<component::Lever>(entity, isActivated, activationCooldown);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)

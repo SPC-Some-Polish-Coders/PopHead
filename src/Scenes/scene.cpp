@@ -12,6 +12,7 @@
 #include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/isObjectInArea.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
+#include "ECS/Systems/levers.hpp"
 #include "ECS/Systems/pendingGunAttacks.hpp"
 #include "ECS/Systems/gunPositioningAndTexture.hpp"
 #include "ECS/Systems/velocityChangingAreas.hpp"
@@ -95,6 +96,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::PendingMeleeAttacks>();
 	mSystemsQueue.appendSystem<system::MeleePositioning>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
+	mSystemsQueue.appendSystem<system::Levers>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
 	mSystemsQueue.appendSystem<system::VelocityClear>();

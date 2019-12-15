@@ -20,4 +20,11 @@ namespace ph::component {
 		sf::Vector2f playerSpawnPosition;
 	};
 
+	struct Lever
+	{
+		bool isActivated;
+		float minActivationInterval;
+		float activationCooldown;
+	};
+
 }
