@@ -75,6 +75,7 @@
         <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
         <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" blocksLight="false"/>
         <component name="TextureRect" x="0" y="4" width="31" height="10" />
+        <component name="Gate" isOpened="false"/>
         <component name="StaticCollisionBody"/>
     </entityTemplate>
 
@@ -183,7 +184,7 @@
 <entities>
    
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="100.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
     </entity>
     
     <entity sourceTemplate="Pistol">
@@ -241,10 +242,33 @@
 
     <entity sourceTemplate="Lever"/>
     
-    <entity sourceTemplate="Gate"/>
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="60.0" y="2.0" width="50.0" height="50.0" />
+        <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false"/>
+        <component name="StaticCollisionBody"/>
+    </entity>
+    <entity sourceTemplate="Gate">
+        <component name="BodyRect" x="110.0" y="5.0" width="40.0" height="13.0"/>
+        <component name="LeverListener" leverPositionX="100.0" leverPositionY="55.0"/>
+    </entity>
+       
+    <entity sourceTemplate="ColorSquare">
+        <component name="BodyRect" x="150.0" y="2.0" width="50.0" height="50.0" />
+        <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false"/>
+        <component name="StaticCollisionBody"/>
+    </entity>
     
     <entity sourceTemplate="Lever">
-      <component name="BodyRect" x="50.0" y="2.0" width="8" height="16" />
+      <component name="BodyRect" x="100.0" y="55.0" width="8" height="16" />
+    </entity>
+    
+    <entity sourceTemplate="Gate">
+        <component name="BodyRect" x="210.0" y="5.0" width="40.0" height="13.0"/>
+        <component name="LeverListener" leverPositionX="200.0" leverPositionY="55.0"/>
+    </entity>
+    
+        <entity sourceTemplate="Lever">
+      <component name="BodyRect" x="200.0" y="55.0" width="8" height="16" />
     </entity>
   
     <entity sourceTemplate="Zombie"/>

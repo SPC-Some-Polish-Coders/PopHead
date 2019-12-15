@@ -96,7 +96,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Bullet",                 &EntitiesParser::parseBullet},
 		{"Velocity",               &EntitiesParser::parseVelocity},
 		{"Entrance",               &EntitiesParser::parseEntrance},
+		{"Gate",				   &EntitiesParser::parseGate},
 		{"Lever",				   &EntitiesParser::parseLever},
+		{"LeverListener",		   &EntitiesParser::parseLeverListener},
 		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
 		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
@@ -259,7 +261,13 @@ void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity&
 	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination").toString();
 	float posX = entityComponentNode.getAttribute("playerSpawnPositionX").toFloat();
 	float posY = entityComponentNode.getAttribute("playerSpawnPositionY").toFloat();
-	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination);
+	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination, sf::Vector2f(posX, posY));
+}
+
+void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isOpened = entityComponentNode.getAttribute("isOpened").toBool();
+	mUsedRegistry->assign_or_replace<component::Gate>(entity, isOpened);
 }
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
@@ -267,6 +275,14 @@ void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& en
 	bool isActivated = entityComponentNode.getAttribute("isActivated").toBool();
 	float activationCooldown = entityComponentNode.getAttribute("minActivationInterval").toFloat();
 	mUsedRegistry->assign_or_replace<component::Lever>(entity, isActivated, activationCooldown);
+}
+
+void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
+{
+	bool isActivated = false;
+	float leverPositionX = entityComponentNode.getAttribute("leverPositionX").toFloat();
+	float leverPositionY = entityComponentNode.getAttribute("leverPositionY").toFloat();
+	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, isActivated, sf::Vector2f(leverPositionX, leverPositionY));
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)

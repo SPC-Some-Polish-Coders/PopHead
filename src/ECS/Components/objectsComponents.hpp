@@ -32,4 +32,10 @@ namespace ph::component {
 		bool isOpened;
 	};
 
+	struct LeverListener
+	{
+		bool isActivated;
+		sf::Vector2f leverPosition;
+	};
+
 }

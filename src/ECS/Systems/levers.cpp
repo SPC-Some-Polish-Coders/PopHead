@@ -16,7 +16,7 @@ void Levers::update(float seconds)
 
 	for (auto player : playerView)
 	{
-		const auto& [playerInteractionInput, playerBody] = playerView.get<component::Player, component::BodyRect>(player);
+		const auto& playerBody = playerView.get<component::BodyRect>(player);
 		for (auto lever : leverView)
 		{
 			const auto& [leverBody, leverTexture] = leverView.get<component::BodyRect, component::TextureRect>(lever);
@@ -35,9 +35,21 @@ void Levers::update(float seconds)
 					leverDetails.isActivated = !leverDetails.isActivated;
 					leverDetails.activationCooldown = leverDetails.minActivationInterval;
 					leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
+					handleListeners(leverDetails.isActivated, leverBody.rect.getTopLeft());
 				}
 			}
 		}
+	}
+}
+
+void Levers::handleListeners(bool isActivated, const sf::Vector2f& leverPosition) const
+{
+	auto listenersView = mRegistry.view<component::LeverListener>();
+	for (auto leverListener : listenersView)
+	{
+		auto& listenerDetails = listenersView.get<component::LeverListener>(leverListener);
+		if (listenerDetails.leverPosition == leverPosition)
+			listenerDetails.isActivated = true;
 	}
 }
 
