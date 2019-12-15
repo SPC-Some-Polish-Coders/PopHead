@@ -1,16 +1,16 @@
 #include "meleePositioning.hpp"
 #include "meleePositioning.hpp"
-
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-
+#include "Logs/logs.hpp"
+#include "Renderer/Shaders/shader.hpp"
+#include <SFML/Graphics/Transformable.hpp>
 
 namespace ph::system {
 
-void MeleePositioning::update(float seconds)
+void MeleePositioning::update(float dt)
 {
-
 	auto playerView = mRegistry.view<component::MeleeAttacker, component::Player, component::BodyRect, component::FaceDirection>();
 	for (auto player : playerView)
 	{
@@ -24,7 +24,7 @@ void MeleePositioning::update(float seconds)
 			auto& renderQuadMelee = meleeView.get<component::RenderQuad>(melee);
 
 			updateMeleeSpritePosition(playerFaceDirection.direction, playerBody.rect.getTopLeft(), meleeBody.rect);
-			updateTexture(meleeAttacker.isAttacking);
+			updateTexture(meleeAttacker.isAttacking, dt, playerBody.rect.getCenter());
 		}
 	}
 }
@@ -53,12 +53,25 @@ void MeleePositioning::updateMeleeSpritePosition(const sf::Vector2f& playerFaceD
 		gunBody = FloatRect(rightHandPosition, meleeBodySize);
 }
 
-void MeleePositioning::updateTexture(bool isAttacking)
+void MeleePositioning::updateTexture(bool isAttacking, float dt, const sf::Vector2f playerPosition)
 {
-	auto meleeView = mRegistry.view<component::CurrentMeleeWeapon>();
+	auto meleeView = mRegistry.view<component::CurrentMeleeWeapon, component::RenderQuad, component::BodyRect>();
 	for (auto melee : meleeView)
 	{
-		auto& currentMelee = meleeView.get<component::CurrentMeleeWeapon>(melee);
+		constexpr float anglesPerSecond = 240.f;
+
+		auto& [currentMeleeWeapon, renderQuad, body]
+			= meleeView.get<component::CurrentMeleeWeapon, component::RenderQuad, component::BodyRect>(melee);
+
+		currentMeleeWeapon.rotation += dt * anglesPerSecond;
+
+		sf::Transformable modelMatrix;
+		modelMatrix.setPosition(body.rect.getCenter());
+		//modelMatrix.setOrigin(playerPosition);
+		modelMatrix.rotate(-currentMeleeWeapon.rotation);
+		PH_ASSERT_UNEXPECTED_SITUATION(renderQuad.shader != nullptr, "Melee weapon has to have custom shader!");
+		renderQuad.shader->bind();
+		renderQuad.shader->setUniformMatrix4x4("modelMatrix", modelMatrix.getTransform().getMatrix());
 
 		if (!isAttacking)
 			mRegistry.assign_or_replace<component::HiddenForRenderer>(melee);

@@ -17,7 +17,7 @@ namespace ph::system {
 	private:
 		sf::Vector2f getRightHandPosition(const sf::Vector2f& playerFaceDirection);
 		void updateMeleeSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& meleeBody);
-		void updateTexture(bool isAttacking);
+		void updateTexture(bool isAttacking, float dt, const sf::Vector2f playerPosition);
 
 	};
 }

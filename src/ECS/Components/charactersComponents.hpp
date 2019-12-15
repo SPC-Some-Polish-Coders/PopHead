@@ -88,6 +88,7 @@ namespace ph::component {
 
 	struct CurrentMeleeWeapon
 	{
+		float rotation = 0.f;
 	};
 
 	struct IsInArea
