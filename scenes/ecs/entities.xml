@@ -221,7 +221,7 @@
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="-60.0" y="150.0" width="10.0" height ="10.0"/>
       <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
-      <component name="LightSource" offsetX="5" offsetY="5" color="rgba(0, 255, 0, 255)" attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
+      <component name="LightSource" offsetX="5" offsetY="5" color="rgba(0, 255, 0, 255)" attenuationAddition="0.1" attenuationFactor="4.0" attenuationSquareFactor="4.5"/>
       <component name="StaticCollisionBody" />
     </entity>
  

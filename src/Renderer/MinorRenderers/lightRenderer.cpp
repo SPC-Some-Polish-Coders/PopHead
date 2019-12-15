@@ -39,10 +39,9 @@ void LightRenderer::shutDown()
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
-	// TODO: Enable culling
-	/*if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
 		return;
-	*/
+	
 	sf::Vector2f upLeftPoint = position;
 	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
 	sf::Vector2f downRightPoint = position + size;
@@ -57,14 +56,17 @@ void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f 
 void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
+	FloatRect lightRangeRect;
 
 	mLights.emplace_back(light);
 }
 
 void LightRenderer::flush()
 {
-	// submit screen bounds as light blocking quad
-	submitLightBlockingQuad({mScreenBounds->left + 1.f, mScreenBounds->top + 1.f}, {mScreenBounds->width - 2.f, mScreenBounds->height - 2.f});
+	// submit quad which rays will hit if they won't hit anything in the scene
+	submitLightBlockingQuad(
+		{mScreenBounds->left -2000.f, mScreenBounds->top -2000.f},
+		{mScreenBounds->width + 4000.f, mScreenBounds->height + 4000.f});
 
 	for(auto& light : mLights)
 	{
@@ -110,12 +112,12 @@ void LightRenderer::flush()
 		// draw debug 
 		if(sDebug.drawWalls)
 			for(Wall& wall : mWalls)
-				Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 2);
+				Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 5);
 
 		if(sDebug.drawRays)
 		{
 			for(auto& point : mLightPolygonVertexData) {
-				Renderer::submitPoint(point, light.color, 0, 12.f);
+				Renderer::submitPoint(point, light.color, 0, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
 			for(const auto& light : mLights)
