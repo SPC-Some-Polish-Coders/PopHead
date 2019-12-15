@@ -14,6 +14,12 @@ namespace ph::component {
 		float areaSpeedMultiplier;
 	};
 
+	struct PushingArea
+	{
+		sf::Vector2f pushDirection;
+		float velocityMultiplier;
+	};
+
 	struct Entrance
 	{
 		std::string entranceDestination;

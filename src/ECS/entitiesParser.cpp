@@ -86,6 +86,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"RenderQuad",			   &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			   &EntitiesParser::parseTextureRect},
 		{"Area",				   &EntitiesParser::parseArea},
+		{"PushingArea",			   &EntitiesParser::parsePushingArea},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			   &EntitiesParser::parseKillable},
 		{"Health",	               &EntitiesParser::parseHealth},
@@ -214,6 +215,14 @@ void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& ent
 	float width = entityComponentNode.getAttribute("width").toFloat();
 	float height = entityComponentNode.getAttribute("height").toFloat();
 	mUsedRegistry->assign_or_replace<component::Area>(entity, ph::FloatRect(x, y, width, height));
+}
+
+void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float directionX = entityComponentNode.getAttribute("pushDirectionX").toFloat();
+	float directionY = entityComponentNode.getAttribute("pushDirectionY").toFloat();
+	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier").toFloat();
+	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY), velocityMultiplier);
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)

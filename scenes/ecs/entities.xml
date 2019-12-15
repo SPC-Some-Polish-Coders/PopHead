@@ -17,9 +17,6 @@
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
-<<<<<<< HEAD
-        <component name="PointLight" offsetX="10" offsetY="-10" r="255" g="255" b="255" range="50" />
-=======
         <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 255, 255, 90)" startAngle="-50" endAngle="50" attenuationAddition="0.1" attenuationFactor="0.0" attenuationSquareFactor="1.5"/>
 >>>>>>> 47c960127e3a84560f4e78254bac360a5e8c8d79
         <component name="Killable" />
@@ -101,6 +98,10 @@
 
     </entityTemplate>
 
+   <entityTemplate name="PushingArea">
+       <component name="PushingArea" pushDirectionX="1.0" pushDirectionY="0.0" velocityMultiplier="2.0"/>
+   </entityTemplate>
+   
     <entityTemplate name="UFOCars">
         <component name="BodyRect" x="300" y="-250" width="0" height="0" />
         <component name="ParticleEmitter">
@@ -206,13 +207,22 @@
     <entity sourceTemplate="BaseballBat">
         <component name="CurrentMeleeWeapon" />
     </entity>
+    
+    <entity sourceTemplate="PushingArea">
+        <component name="Area" x="500.0" y="50.0" width="400.0" height="50.0" />
+    </entity>
+    
+    <entity sourceTemplate="ColorSquare">
+	   <component name="BodyRect" x="500.0" y="50.0" width="400.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
+    </entity>
 
     <entity sourceTemplate="UFOCars" />
 
     <entity sourceTemplate="Car" />
 
     <entity sourceTemplate="Entrance">
-        <component name="Area" x="200.0" y="200.0" width="200.0" height="50.0" />
+        <component name="Area" x="200.0" y="200.0" width="50.0" height="50.0" />
     </entity>
 
     <entity sourceTemplate="ColorSquare">

@@ -23,6 +23,7 @@
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/particleSystem.hpp"
+#include "ECS/Systems/pushingAreas.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/audioSystem.hpp"
@@ -81,7 +82,6 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
-	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupBullet>();
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
@@ -90,6 +90,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
+	mSystemsQueue.appendSystem<system::PushingAreas>();
 	mSystemsQueue.appendSystem<system::CanUseWeapon>();
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::PendingGunAttacks>();
@@ -97,6 +98,7 @@ void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, S
 	mSystemsQueue.appendSystem<system::MeleePositioning>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Levers>();
+	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::Gates>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();
