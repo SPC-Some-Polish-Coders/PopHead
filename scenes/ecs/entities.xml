@@ -1,4 +1,10 @@
 <entityTemplates>
+    
+    <entityTemplate name="Tile">
+        <component name="BodyRect" x="0.0" y="0.0" width="16.0" height="16.0" />
+        <component name="RenderQuad" z="1" blocksLight="false"/>
+        <component name="TextureRect" x="0" y="0" width="16" height="16" />
+    </entityTemplate>
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
