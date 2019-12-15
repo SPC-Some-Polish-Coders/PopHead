@@ -34,7 +34,6 @@ namespace ph::component {
 
 	struct MeleeAttacker
 	{
-		float minSecondsInterval;
 		float cooldownSinceLastHit;
 		bool isTryingToAttack;
 		bool canAttack;
@@ -43,7 +42,6 @@ namespace ph::component {
 
 	struct GunAttacker
 	{
-		float minSecondsInterval;
 		float cooldownSinceLastShoot;
 		unsigned bullets;
 		bool isTryingToAttack;

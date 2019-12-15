@@ -33,6 +33,8 @@ private:
 	void parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity);
+	void parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity);
+	void parseGunProperties(const Xml& entityComponentNode, entt::entity& entity);
 	void parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);

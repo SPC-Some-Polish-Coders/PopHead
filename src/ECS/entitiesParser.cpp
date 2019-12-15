@@ -101,6 +101,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"LeverListener",		   &EntitiesParser::parseLeverListener},
 		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
 		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
+		{"GunProperties",		   &EntitiesParser::parseGunProperties},
+		{"MeleeProperties",		   &EntitiesParser::parseMeleeProperties},
 		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
 		{"Lifetime",			   &EntitiesParser::parseLifetime},
 		{"Camera",                 &EntitiesParser::parseCamera},
@@ -407,12 +409,30 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	const float cooldown = 0.f;
 	bool canAttack = true;
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, minSecondsInterval, cooldown, bullets, isTryingToAttack, canAttack);
+	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, cooldown, bullets, isTryingToAttack, canAttack);
+}
+
+void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float minHitInterval = entityComponentNode.getAttribute("minHitInterval").toFloat();
+	float rotationSpeed = entityComponentNode.getAttribute("rotationSpeed").toFloat();
+	float rotationRange = entityComponentNode.getAttribute("rotationRange").toFloat();
+	float range = entityComponentNode.getAttribute("range").toFloat();
+	int damage = entityComponentNode.getAttribute("damage").toInt();
+	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, minHitInterval, rotationSpeed, rotationRange, range, damage);
+}
+
+void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float minShotsInterval = entityComponentNode.getAttribute("minShotsInterval").toFloat();
+	float range = entityComponentNode.getAttribute("range").toFloat();
+	int damage = entityComponentNode.getAttribute("damage").toInt();
+	int numberOfBulletsShot = entityComponentNode.getAttribute("numberOfBullets").toInt();
+	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, minShotsInterval, range, damage, numberOfBulletsShot);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
@@ -427,10 +447,9 @@ void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, ent
 
 void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float minSecondsInterval = entityComponentNode.getAttribute("minSecondsInterval").toFloat();
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	const float cooldown = 0.f;
-	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, minSecondsInterval, cooldown, isTryingToAttack);
+	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, cooldown, isTryingToAttack);
 }
 
 void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)

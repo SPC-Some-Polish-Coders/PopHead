@@ -38,4 +38,21 @@ namespace ph::component {
 		sf::Vector2f leverPosition;
 	};
 
+	struct GunProperties
+	{
+		float minShotsInterval;
+		float range;
+		int damage;
+		int numberOfBullets;
+	};
+
+	struct MeleeProperties
+	{
+		float minHitInterval;
+		float rotationRange;
+		float rotationSpeed;
+		float range;
+		int damage;
+	};
+
 }
