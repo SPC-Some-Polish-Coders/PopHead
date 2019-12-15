@@ -14,7 +14,7 @@ public:
 	void update(float seconds) override;
 
 private:
-	void handleListeners(bool isActivated, const sf::Vector2f& leverPosition) const;
+	void handleListeners(bool isActivated, unsigned leverId) const;
 
 };
 

@@ -274,17 +274,18 @@ void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& ent
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
-	bool isActivated = entityComponentNode.getAttribute("isActivated").toBool();
-	float activationCooldown = entityComponentNode.getAttribute("minActivationInterval").toFloat();
-	mUsedRegistry->assign_or_replace<component::Lever>(entity, isActivated, activationCooldown);
+	unsigned leverId = entityComponentNode.getAttribute("id").toUnsigned();
+	float minActivationInterval = entityComponentNode.getAttribute("minActivationInterval").toFloat();
+	bool isActivated = false;
+	bool turnOffAfterSwitch = entityComponentNode.getAttribute("turnOffAfterSwitch").toBool();
+	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, minActivationInterval, 0.f, isActivated, turnOffAfterSwitch);
 }
 
 void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
 {
+	unsigned observedLeverId = entityComponentNode.getAttribute("observedLeverId").toUnsigned();
 	bool isActivated = false;
-	float leverPositionX = entityComponentNode.getAttribute("leverPositionX").toFloat();
-	float leverPositionY = entityComponentNode.getAttribute("leverPositionY").toFloat();
-	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, isActivated, sf::Vector2f(leverPositionX, leverPositionY));
+	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, observedLeverId, isActivated);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
