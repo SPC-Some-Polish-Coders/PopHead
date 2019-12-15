@@ -429,16 +429,18 @@ void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& e
 
 void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::LightSource pointLight;
-	pointLight.offset = {
+	component::LightSource lightSource;
+	lightSource.offset = {
 		entityComponentNode.getAttribute("offsetX").toFloat(),
 		entityComponentNode.getAttribute("offsetY").toFloat()
 	};
-	pointLight.color = entityComponentNode.getAttribute("color").toColor();
-	pointLight.attenuationAddition = entityComponentNode.getAttribute("attenuationAddition").toFloat();
-	pointLight.attenuationFactor = entityComponentNode.getAttribute("attenuationFactor").toFloat();
-	pointLight.attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor").toFloat();
-	mUsedRegistry->assign_or_replace<component::LightSource>(entity, pointLight);
+	lightSource.color = entityComponentNode.getAttribute("color").toColor();
+	lightSource.startAngle = entityComponentNode.hasAttribute("startAngle") ? entityComponentNode.getAttribute("startAngle").toFloat() : 0.f;
+	lightSource.endAngle = entityComponentNode.hasAttribute("endAngle") ? entityComponentNode.getAttribute("endAngle").toFloat() : 360.f;
+	lightSource.attenuationAddition = entityComponentNode.getAttribute("attenuationAddition").toFloat();
+	lightSource.attenuationFactor = entityComponentNode.getAttribute("attenuationFactor").toFloat();
+	lightSource.attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor").toFloat();
+	mUsedRegistry->assign_or_replace<component::LightSource>(entity, lightSource);
 }
 
 void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)

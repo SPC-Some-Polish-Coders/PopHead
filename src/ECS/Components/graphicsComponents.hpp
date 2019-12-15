@@ -39,6 +39,8 @@ namespace component {
 		float attenuationAddition;
 		float attenuationFactor;
 		float attenuationSquareFactor;
+		float startAngle;
+		float endAngle;
 	};
 
 	struct HiddenForRenderer

@@ -22,6 +22,8 @@ struct Light
 {
 	sf::Color color;
 	sf::Vector2f pos;
+	float startAngle;
+	float endAngle;
 	float attenuationAddition;
 	float attenuationFactor;
 	float attenuationSquareFactor;
@@ -67,6 +69,6 @@ private:
 	inline static LightingDebug sDebug;
 };
 
-// TODO_ren: Add submitLine()
+// TODO_ren: Add submit light blocking line
 
 } 

@@ -221,7 +221,7 @@ void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsign
 void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle,
                            float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
-	lightRenderer.submitLight({color, position, attenuationAddition, attenuationFactor, attenuationSquareFactor});
+	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)

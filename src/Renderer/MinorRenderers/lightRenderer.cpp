@@ -80,7 +80,7 @@ void LightRenderer::flush()
 		{
 			PH_PROFILE_SCOPE("create vertex data");
 
-			for(float angle = 0; angle <= 360; angle += 0.5)
+			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
 				float rad = Math::degreesToRadians(angle);
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
