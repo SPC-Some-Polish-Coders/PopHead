@@ -43,44 +43,44 @@ void rendererTest()
 	/* 33 */ static Texture optionsButtonTex("resources/textures/gui/optionsButton.png");
 	/* 34 */ static Texture sewageTex("resources/textures/gui/sewage.jpg");
 
-	Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-1500.f, 0.f), sf::Vector2f(3000.f, 3000.f), 100, 0.f);
+	Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-1500.f, 0.f), sf::Vector2f(3000.f, 3000.f), 100, 0.f, false);
 
 	for(int i = 0; i < 2500; ++i) {
-		Renderer::submitQuad(&faceTex, nullptr, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 45.f);
-		Renderer::submitQuad(&containerTex, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 123.f);
-		Renderer::submitQuad(&container2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&container2SpecTex, nullptr, nullptr, nullptr, sf::Vector2f(-400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&floorTex, nullptr, nullptr, nullptr, sf::Vector2f(-350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&grassTex, nullptr, nullptr, nullptr, sf::Vector2f(-300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&sb1Tex, &IntRect(5, 5, 10, 10), nullptr, nullptr, sf::Vector2f(-250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&sb2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f);
-		Renderer::submitQuad(&sb3Tex, nullptr, nullptr, nullptr, sf::Vector2f(-150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f);
-		Renderer::submitQuad(&sb4Tex, nullptr, nullptr, nullptr, sf::Vector2f(-100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f);
-		Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&wallTex, nullptr, nullptr, nullptr, sf::Vector2f(0.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&awsdTex, nullptr, nullptr, nullptr, sf::Vector2f(50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&backslashTex, nullptr, nullptr, nullptr, sf::Vector2f(100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&barTex, nullptr, &sf::Color::Yellow, nullptr, sf::Vector2f(150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&baseballTex, nullptr, nullptr, nullptr, sf::Vector2f(200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&bulletTex, nullptr, nullptr, nullptr, sf::Vector2f(250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&bulletGroundTex, nullptr, nullptr, nullptr, sf::Vector2f(300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&enterTex, nullptr, nullptr, nullptr, sf::Vector2f(350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
+		Renderer::submitQuad(&faceTex, nullptr, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 45.f, false);
+		Renderer::submitQuad(&containerTex, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 123.f, false);
+		Renderer::submitQuad(&container2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&container2SpecTex, nullptr, nullptr, nullptr, sf::Vector2f(-400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&floorTex, nullptr, nullptr, nullptr, sf::Vector2f(-350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&grassTex, nullptr, nullptr, nullptr, sf::Vector2f(-300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&sb1Tex, &IntRect(5, 5, 10, 10), nullptr, nullptr, sf::Vector2f(-250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&sb2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&sb3Tex, nullptr, nullptr, nullptr, sf::Vector2f(-150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&sb4Tex, nullptr, nullptr, nullptr, sf::Vector2f(-100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&wallTex, nullptr, nullptr, nullptr, sf::Vector2f(0.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&awsdTex, nullptr, nullptr, nullptr, sf::Vector2f(50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&backslashTex, nullptr, nullptr, nullptr, sf::Vector2f(100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&barTex, nullptr, &sf::Color::Yellow, nullptr, sf::Vector2f(150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&baseballTex, nullptr, nullptr, nullptr, sf::Vector2f(200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&bulletTex, nullptr, nullptr, nullptr, sf::Vector2f(250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&bulletGroundTex, nullptr, nullptr, nullptr, sf::Vector2f(300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&enterTex, nullptr, nullptr, nullptr, sf::Vector2f(350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
 #if MORE_THEN_32_TEXTURES
-		Renderer::submitQuad(&gateTex, nullptr, nullptr, nullptr, sf::Vector2f(400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&heartTex, nullptr, nullptr, nullptr, sf::Vector2f(450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&leverTex, nullptr, nullptr, nullptr, sf::Vector2f(500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&medkitTex, nullptr, nullptr, nullptr, sf::Vector2f(550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&pistolTex, nullptr, nullptr, nullptr, sf::Vector2f(600.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&spaceTex, nullptr, nullptr, nullptr, sf::Vector2f(650.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&zombieHeadTex, nullptr, nullptr, nullptr, sf::Vector2f(700.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&arcadeCounBackTex, nullptr, nullptr, nullptr, sf::Vector2f(750.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&arenaButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(800.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&bunkerTex, nullptr, nullptr, nullptr, sf::Vector2f(850.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&creditsButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(900.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&exitButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(950.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&sewageTex, nullptr, nullptr, nullptr, sf::Vector2f(1000.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&mirrorSpTex, nullptr, nullptr, nullptr, sf::Vector2f(1050.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
-		Renderer::submitQuad(&optionsButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(1100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f);
+		Renderer::submitQuad(&gateTex, nullptr, nullptr, nullptr, sf::Vector2f(400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&heartTex, nullptr, nullptr, nullptr, sf::Vector2f(450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&leverTex, nullptr, nullptr, nullptr, sf::Vector2f(500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&medkitTex, nullptr, nullptr, nullptr, sf::Vector2f(550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&pistolTex, nullptr, nullptr, nullptr, sf::Vector2f(600.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&spaceTex, nullptr, nullptr, nullptr, sf::Vector2f(650.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&zombieHeadTex, nullptr, nullptr, nullptr, sf::Vector2f(700.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&arcadeCounBackTex, nullptr, nullptr, nullptr, sf::Vector2f(750.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&arenaButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(800.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&bunkerTex, nullptr, nullptr, nullptr, sf::Vector2f(850.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&creditsButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(900.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&exitButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(950.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&sewageTex, nullptr, nullptr, nullptr, sf::Vector2f(1000.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&mirrorSpTex, nullptr, nullptr, nullptr, sf::Vector2f(1050.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&optionsButtonTex, nullptr, nullptr, nullptr, sf::Vector2f(1100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
 #endif
 	}
 }

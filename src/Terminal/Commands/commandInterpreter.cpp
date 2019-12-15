@@ -8,6 +8,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include <entt/entt.hpp>
 
 namespace ph {
@@ -29,6 +30,7 @@ void CommandInterpreter::init()
 	mCommandsMap["view"] =				&CommandInterpreter::executeView;
 	mCommandsMap["spawn"] =				&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =			&CommandInterpreter::executeGotoScene;
+	mCommandsMap["light"] =				&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =					&CommandInterpreter::executeMove;
 	mCommandsMap[""] =					&CommandInterpreter::executeInfoMessage;
 }
@@ -284,6 +286,26 @@ void CommandInterpreter::executeView() const
 		}
 	});
 
+}
+
+void CommandInterpreter::executeLight() const
+{
+	bool on;
+	if(commandContains("on"))
+		on = true;
+	else if(commandContains("off"))
+		on = false;
+	else
+		return; // TODO: Display error message
+
+	auto& lightDebug = LightRenderer::getDebug();
+
+	if(commandContains("walls"))
+		lightDebug.drawWalls = on;
+	else if(commandContains("rays"))
+		lightDebug.drawRays = on;
+	else
+		lightDebug.drawLight = on;
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

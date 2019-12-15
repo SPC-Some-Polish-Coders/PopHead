@@ -32,11 +32,15 @@ namespace component {
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
 
-	struct PointLight
+	struct LightSource
 	{
 		sf::Vector2f offset;
 		sf::Color color;
-		float range;
+		float attenuationAddition;
+		float attenuationFactor;
+		float attenuationSquareFactor;
+		float startAngle;
+		float endAngle;
 	};
 
 	struct HiddenForRenderer

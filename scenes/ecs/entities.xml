@@ -17,7 +17,11 @@
         <component name="CharacterSpeed" speed="100" />
         <component name="Velocity" dx="0" dy="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
+<<<<<<< HEAD
         <component name="PointLight" offsetX="10" offsetY="-10" r="255" g="255" b="255" range="50" />
+=======
+        <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 255, 255, 90)" startAngle="-50" endAngle="50" attenuationAddition="0.1" attenuationFactor="0.0" attenuationSquareFactor="1.5"/>
+>>>>>>> 47c960127e3a84560f4e78254bac360a5e8c8d79
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
         <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" blocksLight="false" />
@@ -212,8 +216,61 @@
     </entity>
 
     <entity sourceTemplate="ColorSquare">
-        <component name="BodyRect" x="200.0" y="200.0" width="50.0" height="50.0" />
-        <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false" />
+	    <component name="BodyRect" x="200.0" y="200.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="100.0" y="220.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="150.0" y="-20.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+    
+
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="-60.0" y="100.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+    
+
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="-30.0" y="150.0" width="50.0" height ="50.0"/>
+      <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="-60.0" y="150.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
+      <component name="LightSource" offsetX="5" offsetY="5" color="rgba(0, 255, 0, 255)" attenuationAddition="0.1" attenuationFactor="4.0" attenuationSquareFactor="4.5"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="150.0" y="200.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(255, 0, 0)" z="100" blocksLight="false"/>
+      <component name="LightSource" offsetX="5" offsetY="5" color="rgba(255, 0, 0, 255)"  attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+ 
+    <entity sourceTemplate="ColorSquare">
+	    <component name="BodyRect" x="300.0" y="10.0" width="10.0" height ="10.0"/>
+      <component name="RenderQuad" color="rgb(0, 0, 255)" z="100" blocksLight="false"/>
+      <component name="LightSource" offsetX="5" offsetY="5"  color="rgba(0, 0, 255, 150)" attenuationAddition="1" attenuationFactor="1.0" attenuationSquareFactor="0.5"/>
+      <component name="StaticCollisionBody" />
+    </entity>
+    
+   
+    <entity name="Area">
+        <component name="RenderQuad" color="rgb(0, 255, 0)" z="100" blocksLight="false"/>
     </entity>
 
     <entity name="SpeedUpArea">
@@ -288,6 +345,7 @@
 
     <entity sourceTemplate="ColorSquare">
         <component name="StaticCollisionBody" />
+        <component name="RenderQuad" color="rgba(0, 208, 50, 100)" z="100" blocksLight="true"/>
     </entity>
 
     <entity sourceTemplate="Lever" />

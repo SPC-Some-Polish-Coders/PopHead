@@ -18,7 +18,8 @@ namespace ph::system {
 		sf::Vector2f getPlayerDirection() const;
 		void updateInputFlags();
 		void updateAnimationData();
-		void setPlayerFaceDirection(const sf::Vector2f& faceDirection) const;
+		void setPlayerFaceDirection(const sf::Vector2f faceDirection) const;
+		void setFlashLightDirection(const sf::Vector2f faceDirection) const;
 		void updateGunAttackInput();
 		void updateMeleeAttackInput();
 

@@ -7,51 +7,68 @@
 
 namespace ph { 
 
+class Shader;
+
+// TODO: Add Z to Light
+
+struct LightingDebug
+{
+	bool drawLight = true;
+	bool drawWalls = false;
+	bool drawRays = false;
+};
+
 struct Light
 {
 	sf::Color color;
-	sf::Vector2f position;
+	sf::Vector2f pos;
 	float startAngle;
 	float endAngle;
-	float range;
-};
-
-struct RayDestinationPoint
-{
-	sf::Vector2f position;
-	unsigned leftWallID;
-	unsigned rightWallID;
+	float attenuationAddition;
+	float attenuationFactor;
+	float attenuationSquareFactor;
 };
 
 struct Ray
 {
-	sf::Vector2f position;
 	sf::Vector2f direction;
+	float angle;
 };
 
 struct Wall
 {
-	sf::Vector2f leftPointPosition;
-	sf::Vector2f rightPointPosition;
+	sf::Vector2f point1;
+	sf::Vector2f point2;
 };
 
 class LightRenderer
 {
 public:
-	void submitWallQuad(sf::Vector2f position, sf::Vector2f size);
+	void init();
+	void shutDown();
+
+	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
 	void flush();
+	
+	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+
+	static LightingDebug& getDebug() { return sDebug; }
 
 private:
-	auto getPointOfIntersection(const Ray&, const Wall&) -> std::optional<sf::Vector2f>;
+	auto getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f lightPos, const Wall& wall) -> std::optional<sf::Vector2f>;
 
 private:
-	std::vector<RayDestinationPoint> mWallPoints;
 	std::vector<Wall> mWalls;
 	std::vector<Light> mLights;
-	std::vector<Ray> mRays;
+	std::vector<sf::Vector2f> mLightPolygonVertexData;
+	const FloatRect* mScreenBounds;
+	Shader* mLightShader;
+	unsigned mVAO, mVBO;
+
+	inline static LightingDebug sDebug;
 };
 
-// TODO_ren: Add submitLine()
+// TODO_ren: Add submit light blocking line
 
 } 

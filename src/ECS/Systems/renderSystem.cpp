@@ -3,6 +3,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/camera.hpp"
+#include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include <entt/entity/utility.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -57,10 +58,13 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 
 void RenderSystem::submitLights() const
 {
-	auto view = mRegistry.view<component::PointLight, component::BodyRect>();
-	view.each([](const component::PointLight& pointLight, const component::BodyRect& body)
+	auto view = mRegistry.view<component::LightSource, component::BodyRect>();
+	view.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
-		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, 0.f, 360.f, pointLight.range);
+		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
+
+		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
+			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
 }
 
@@ -72,7 +76,7 @@ void RenderSystem::submitRenderQuads() const
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
 	});
 }
 
@@ -84,7 +88,7 @@ void RenderSystem::submitRenderQuadsWithTextureRect() const
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
 	});
 }
 

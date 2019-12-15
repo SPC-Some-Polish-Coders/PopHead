@@ -22,7 +22,11 @@ void SFMLRenderer::flush(sf::RenderWindow& window)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	for(int i = 0; i < 32; ++i)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 	glUseProgram(0);
 
 	sf::View view;

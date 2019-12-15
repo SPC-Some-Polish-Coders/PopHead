@@ -23,10 +23,12 @@ namespace {
 	ph::FloatRect screenBounds;
 
 	ph::Shader* defaultFramebufferShader;
-	const ph::Shader* currentlyBoundShader = nullptr;
+	ph::Shader* gaussianBlurFramebufferShader;
 	
 	ph::VertexArray framebufferVertexArray;
-	ph::Framebuffer framebuffer;
+	ph::Framebuffer gameObjectsFramebuffer;
+	ph::Framebuffer lightingFramebuffer;
+	ph::Framebuffer lightingGaussianBlurFramebuffer;
 
 	unsigned sharedDataUBO;
 
@@ -52,9 +54,11 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	quadRenderer.init();
 	lineRenderer.init();
 	pointRenderer.init();
+	lightRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
+	lightRenderer.setScreenBoundsPtr(&screenBounds);
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -70,6 +74,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
+	sl.loadFromFile("gaussianBlurFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/gaussianBlur.fs.glsl");
+	gaussianBlurFramebufferShader = sl.get("gaussianBlurFramebuffer");
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
@@ -90,7 +96,9 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray.setIndexBuffer(quadIBO);
 
-	framebuffer.init(screenWidth, screenHeight);
+	gameObjectsFramebuffer.init(screenWidth, screenHeight);
+	lightingFramebuffer.init(screenWidth, screenHeight);
+	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
 }
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
@@ -103,15 +111,18 @@ void Renderer::shutDown()
 {
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
+	lightRenderer.shutDown();
 	framebufferVertexArray.remove();
-	framebuffer.remove();
+	gameObjectsFramebuffer.remove();
+	lightingFramebuffer.remove();
+	lightingGaussianBlurFramebuffer.remove();
 }
 
 void Renderer::beginScene(Camera& camera)
 {
 	PH_PROFILE_FUNCTION();
 
-	framebuffer.bind();
+	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
@@ -128,10 +139,40 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
-	lightRenderer.flush();
+	// render scene
 	quadRenderer.flush();
 	pointRenderer.flush();
 
+	// disable depth test for performance purposes
+	GLCheck( glDisable(GL_DEPTH_TEST) );
+
+	// render lights to lighting framebuffer
+	lightingFramebuffer.bind();
+	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.5f) ); // TODO: Make possible specifing ambient color
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
+	lightRenderer.flush();
+
+	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
+	framebufferVertexArray.bind();
+
+	// apply gaussian blur for lighting
+	lightingGaussianBlurFramebuffer.bind();
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	lightingFramebuffer.bindTextureColorBuffer(0);
+	gaussianBlurFramebufferShader->bind();
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	// render everything onto quad in default framebuffer
+	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	defaultFramebufferShader->bind();
+	defaultFramebufferShader->setUniformInt("gameObjectsTexture", 0);
+	gameObjectsFramebuffer.bindTextureColorBuffer(0);
+	defaultFramebufferShader->setUniformInt("lightingTexture", 1);
+	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	// pass debug data to debug counter
 	debugCounter.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
 		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
@@ -149,23 +190,16 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
 
-	GLCheck( glDisable(GL_DEPTH_TEST) );
-	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
-	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
-	framebufferVertexArray.bind();
-	defaultFramebufferShader->bind();
-	currentlyBoundShader = defaultFramebufferShader;
-	framebuffer.bindTextureColorBuffer(0);
-	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
-
+	// draw gui using sfml
 	sfmlRenderer.flush(window);
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation)
+                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation);
-	lightRenderer.submitWallQuad(position, size);
+	if(blocksLight)
+		lightRenderer.submitLightBlockingQuad(position, size);
 }
 
 void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
@@ -184,9 +218,10 @@ void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsign
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
-void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle, float range)
+void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle,
+                           float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
-	lightRenderer.submitLight({color, position, startAngle, endAngle, range});
+	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)
@@ -197,7 +232,8 @@ void Renderer::submitSFMLObject(const sf::Drawable& object)
 void Renderer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glViewport(0, 0, width, height) );
-	framebuffer.onWindowResize(width, height);
+	gameObjectsFramebuffer.onWindowResize(width, height);
+	lightingFramebuffer.onWindowResize(width, height);
 }
 
 void Renderer::setClearColor(const sf::Color& color)

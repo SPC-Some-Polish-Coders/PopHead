@@ -26,7 +26,7 @@ namespace Renderer
 	void endScene(sf::RenderWindow& window, DebugCounter&);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader,
-	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation = 0.f);
+	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight);
 
 	void submitLine(const sf::Color&, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
@@ -35,7 +35,8 @@ namespace Renderer
 
 	void submitPoint(sf::Vector2f position, const sf::Color&, unsigned char z, float size = 1.f);
 
-	void submitLight(const sf::Color&, sf::Vector2f position, float startAngle, float endAngle, float range);
+	void submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle,
+	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
 	void submitSFMLObject(const sf::Drawable&);
 
