@@ -60,9 +60,11 @@ private:
 #if PH_PROFILING
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
 	#define PH_END_PROFILING_SESSION() ph::ProfilingManager::getInstance().endSession()
-	#define PH_PROFILE_FUNCTION() ph::ProfilingTimer profTimer##(__FUNCTION__);
+	#define PH_PROFILE_SCOPE(name) ph::ProfilingTimer profTimer##__LINE__(name);
+	#define PH_PROFILE_FUNCTION() PH_PROFILE_SCOPE(__FUNCTION__);
 #else
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath)
 	#define PH_END_PROFILING_SESSION()
+	#define PH_PROFILE_SCOPE(name)
 	#define PH_PROFILE_FUNCTION()
 #endif

@@ -2,6 +2,7 @@
 #include "Renderer/renderer.hpp"
 #include "Renderer/Shaders/shaderLibary.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/profiling.hpp"
 #include "Logs/logs.hpp"
 #include <optional>
 #include <cmath>
@@ -63,6 +64,8 @@ void LightRenderer::submitLight(Light light)
 
 void LightRenderer::flush()
 {
+	PH_PROFILE_FUNCTION();
+
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightBlockingQuad(
 		{mScreenBounds->left -2000.f, mScreenBounds->top -2000.f},
@@ -74,28 +77,34 @@ void LightRenderer::flush()
 		mLightPolygonVertexData.emplace_back(light.pos);
 
 		// create vertex data
-		for(float angle = 0; angle <= 360; angle += 0.5)
 		{
-			float rad = Math::degreesToRadians(angle);
-			sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
-			sf::Vector2f nearestIntersectionPoint;
-			float nearestIntersectionDistance = INFINITY;
-			for(Wall& wall : mWalls)
+			PH_PROFILE_SCOPE("create vertex data");
+
+			for(float angle = 0; angle <= 360; angle += 0.5)
 			{
-				auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
-				float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
-				if(intersectionPoint && intersectionDistance < nearestIntersectionDistance)
+				float rad = Math::degreesToRadians(angle);
+				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
+				sf::Vector2f nearestIntersectionPoint;
+				float nearestIntersectionDistance = INFINITY;
+				for(Wall& wall : mWalls)
 				{
-					nearestIntersectionPoint = *intersectionPoint;
-					nearestIntersectionDistance = intersectionDistance;
+					auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
+					float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
+					if(intersectionPoint && intersectionDistance < nearestIntersectionDistance)
+					{
+						nearestIntersectionPoint = *intersectionPoint;
+						nearestIntersectionDistance = intersectionDistance;
+					}
 				}
+				mLightPolygonVertexData.emplace_back(nearestIntersectionPoint);
 			}
-			mLightPolygonVertexData.emplace_back(nearestIntersectionPoint);
 		}
 
 		// draw light using triangle fan
 		if(sDebug.drawLight)
 		{
+			PH_PROFILE_SCOPE("draw light triangle fan");
+
 			mLightShader->bind();
 			mLightShader->setUniformVector2("lightPos", light.pos);
 			mLightShader->setUniformVector4Color("color", light.color);
