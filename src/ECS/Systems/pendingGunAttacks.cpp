@@ -4,6 +4,7 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
 #include "Renderer/renderer.hpp"
 
 namespace ph::system {
@@ -16,7 +17,7 @@ void PendingGunAttacks::update(float seconds)
 
 void PendingGunAttacks::handlePendingGunAttacks()
 {
-	const auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect, component::Player, component::FaceDirection>();
+	auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect, component::Player, component::FaceDirection>();
 	for (const auto& gunAttacker : gunAttackerView)
 	{
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
@@ -28,42 +29,43 @@ void PendingGunAttacks::handlePendingGunAttacks()
 			if (!playerGunAttack.canAttack)
 				return;
 
-			auto& gunView = mRegistry.view<component::CurrentGun, component::BodyRect>();
+			auto gunView = mRegistry.view<component::CurrentGun, component::BodyRect, component::GunProperties>();
 			for (const auto& gun : gunView)
 			{
-				auto gunBody = gunView.get<component::BodyRect>(gun);
+				const auto& [gunBody, gunProperties] = gunView.get<component::BodyRect, component::GunProperties>(gun);
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
 				sf::Vector2f shift = gunBody.rect.getCenter();
 				sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
 				shift -= startingBulletPos;
-				startingBulletPos += shift;
+				startingBulletPos += getCorrectedBulletStartingPosition(playerFaceDirection.direction) + shift;
 
-				///////////////////////////////////////////////////////
-				//temporary until I find better bullet positioning
-				if (playerFaceDirection.direction == sf::Vector2f(1, 0))
-					startingBulletPos += sf::Vector2f(5, -1);
-				else if (playerFaceDirection.direction == sf::Vector2f(-1, 0))
-					startingBulletPos += sf::Vector2f(-5, -1);
-				else if (playerFaceDirection.direction == sf::Vector2f(0, 1) || playerFaceDirection.direction == sf::Vector2f(0, -1))
-					startingBulletPos += sf::Vector2f(-4.5, 0);
-				///////////////////////////////////////////////////////
-
-				sf::Vector2f endingBulletPos = performShoot(playerFaceDirection.direction, startingBulletPos);
+				sf::Vector2f endingBulletPos = performShoot(playerFaceDirection.direction, startingBulletPos, gunProperties.range, gunProperties.damage);
 				createShotImage(startingBulletPos, endingBulletPos);
 
-				--playerGunAttack.bullets;
+				playerGunAttack.bullets -= gunProperties.numberOfBullets;
 			}
 		}
 	}
 }
 
-sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos)
+sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
+{
+	if (playerFaceDirection == sf::Vector2f(1, 0))
+		return sf::Vector2f(5, -1);
+	else if (playerFaceDirection == sf::Vector2f(-1, 0))
+		return sf::Vector2f(-5, -1);
+	else if (playerFaceDirection == sf::Vector2f(0, 1) || playerFaceDirection == sf::Vector2f(0, -1))
+		return sf::Vector2f(-4.5, 0);
+	else
+		return sf::Vector2f(0.f, 0.f);
+}
+
+sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, int damage)
 {
 	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
 	sf::Vector2f currentBulletPos = startingBulletPos;
 	int bulletTravelledDist = 1;
-	const int range = 250;
 
 	while (bulletTravelledDist < range)
 	{
@@ -72,7 +74,7 @@ sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirec
 			const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
 			if (bodyRect.rect.contains(currentBulletPos))
 			{
-				mRegistry.assign<component::DamageTag>(enemy, 50);
+				mRegistry.assign<component::DamageTag>(enemy, damage);
 				return currentBulletPos;
 			}
 		}

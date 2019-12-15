@@ -1,6 +1,7 @@
 #include "canUseWeapon.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
 
 namespace ph::system {
 
@@ -13,20 +14,25 @@ void CanUseWeapon::update(float seconds)
 void CanUseWeapon::updateMeleeWeapon(float dt)
 {
 	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker>();
+	auto currentMeleeView = mRegistry.view<component::CurrentMeleeWeapon, component::MeleeProperties>();
 
-	for (const auto& meleeAttacker : meleeAttackerView)
+	for (auto meleeAttacker : meleeAttackerView)
 	{
-		auto& gunAttackerComp = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
-
-		if (gunAttackerComp.cooldownSinceLastHit > 0.f)
-			gunAttackerComp.cooldownSinceLastHit -= dt;
-
-		if (gunAttackerComp.isTryingToAttack)
+		for (auto melee : currentMeleeView)
 		{
-			gunAttackerComp.canAttack = gunAttackerComp.cooldownSinceLastHit <= 0.f;
+			auto& meleeAttackerDetails = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
+			const auto& currentMeleeProperties = currentMeleeView.get<component::MeleeProperties>(melee);
 
-			if (gunAttackerComp.canAttack)
-				gunAttackerComp.cooldownSinceLastHit = gunAttackerComp.minSecondsInterval;
+			if (meleeAttackerDetails.cooldownSinceLastHit > 0.f)
+				meleeAttackerDetails.cooldownSinceLastHit -= dt;
+
+			if (meleeAttackerDetails.isTryingToAttack)
+			{
+				meleeAttackerDetails.canAttack = meleeAttackerDetails.cooldownSinceLastHit <= 0.f;
+
+				if (meleeAttackerDetails.canAttack)
+					meleeAttackerDetails.cooldownSinceLastHit = currentMeleeProperties.minHitInterval;
+			}
 		}
 	}
 }
@@ -34,20 +40,25 @@ void CanUseWeapon::updateMeleeWeapon(float dt)
 void CanUseWeapon::updateGun(float dt)
 {
 	auto gunAttackerView = mRegistry.view<component::GunAttacker>();
+	auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
 
 	for (const auto& gunAttacker : gunAttackerView)
 	{
-		auto& gunAttackerComp = gunAttackerView.get<component::GunAttacker>(gunAttacker);
-
-		if (gunAttackerComp.cooldownSinceLastShoot > 0.f)
-			gunAttackerComp.cooldownSinceLastShoot -= dt;
-
-		if (gunAttackerComp.isTryingToAttack)
+		for (auto currentGun : currentGunView)
 		{
-			gunAttackerComp.canAttack = gunAttackerComp.cooldownSinceLastShoot <= 0.f && gunAttackerComp.bullets > 0;
+			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+			const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
 
-			if (gunAttackerComp.canAttack)
-				gunAttackerComp.cooldownSinceLastShoot = gunAttackerComp.minSecondsInterval;
+			if (gunAttackerDetails.cooldownSinceLastShoot > 0.f)
+				gunAttackerDetails.cooldownSinceLastShoot -= dt;
+
+			if (gunAttackerDetails.isTryingToAttack)
+			{
+				gunAttackerDetails.canAttack = gunAttackerDetails.cooldownSinceLastShoot <= 0.f && gunAttackerDetails.bullets > 0;
+
+				if (gunAttackerDetails.canAttack)
+					gunAttackerDetails.cooldownSinceLastShoot = currentGunProperties.minShotsInterval;
+			}
 		}
 	}
 }
