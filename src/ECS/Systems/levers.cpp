@@ -29,15 +29,11 @@ void Levers::update(float seconds)
 
 			if (leverBody.rect.doPositiveRectsIntersect(playerBody.rect))
 			{
-				//show hint???
 				if (ActionEventManager::isActionPressed("use"))
 				{
 					leverDetails.isActivated = !leverDetails.isActivated;
 					leverDetails.activationCooldown = leverDetails.minActivationInterval;
-					if(!leverDetails.isActivated)
-						leverTexture.rect = IntRect(0, 0, 7, 15);
-					else
-						leverTexture.rect = IntRect(9, 0, 7, 15);
+					leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
 				}
 			}
 		}

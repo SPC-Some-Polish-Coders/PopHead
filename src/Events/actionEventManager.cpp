@@ -15,6 +15,7 @@ void ActionEventManager::init()
 	addAction("movingDown", {sf::Keyboard::S, sf::Keyboard::Down});
 	addAction("movingRight", {sf::Keyboard::D, sf::Keyboard::Right});
 	addAction("movingLeft", {sf::Keyboard::A, sf::Keyboard::Left});
+	addAction("use", sf::Keyboard::E);
 	addAction("gunAttack", sf::Keyboard::Enter);
 	addAction("meleeAtack", sf::Keyboard::BackSlash);
 	addAction("pauseScreen", sf::Keyboard::Escape);
