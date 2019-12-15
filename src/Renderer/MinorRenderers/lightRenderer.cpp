@@ -94,7 +94,6 @@ void LightRenderer::flush()
 		// draw light using triangle fan
 		if(sDebug.drawLight)
 		{
-			light.color.a = 127;
 			mLightShader->bind();
 			mLightShader->setUniformVector4Color("color", light.color);
 			mLightShader->setUniformVector2("lightPos", light.pos);

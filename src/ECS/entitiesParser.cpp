@@ -434,11 +434,7 @@ void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::enti
 		entityComponentNode.getAttribute("offsetX").toFloat(),
 		entityComponentNode.getAttribute("offsetY").toFloat()
 	};
-	pointLight.color = {
-		entityComponentNode.getAttribute("r").toUnsignedChar(),
-		entityComponentNode.getAttribute("g").toUnsignedChar(),
-		entityComponentNode.getAttribute("b").toUnsignedChar()
-	};
+	pointLight.color = entityComponentNode.getAttribute("color").toColor();
 	pointLight.attenuationAddition = entityComponentNode.getAttribute("attenuationAddition").toFloat();
 	pointLight.attenuationFactor = entityComponentNode.getAttribute("attenuationFactor").toFloat();
 	pointLight.attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor").toFloat();
