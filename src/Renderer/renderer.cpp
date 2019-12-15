@@ -23,11 +23,12 @@ namespace {
 	ph::FloatRect screenBounds;
 
 	ph::Shader* defaultFramebufferShader;
-	const ph::Shader* currentlyBoundShader = nullptr;
+	ph::Shader* gaussianBlurFramebufferShader;
 	
 	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer gameObjectsFramebuffer;
 	ph::Framebuffer lightingFramebuffer;
+	ph::Framebuffer lightingGaussianBlurFramebuffer;
 
 	unsigned sharedDataUBO;
 
@@ -59,8 +60,9 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
 
-	// enable blending
+	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
+	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 
 	// set up uniform buffer object
 	glGenBuffers(1, &sharedDataUBO);
@@ -72,6 +74,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	auto& sl = ShaderLibrary::getInstance();
 	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
 	defaultFramebufferShader = sl.get("defaultFramebuffer");
+	sl.loadFromFile("gaussianBlurFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/gaussianBlur.fs.glsl");
+	gaussianBlurFramebufferShader = sl.get("gaussianBlurFramebuffer");
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
@@ -94,6 +98,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	gameObjectsFramebuffer.init(screenWidth, screenHeight);
 	lightingFramebuffer.init(screenWidth, screenHeight);
+	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
 }
 
 void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
@@ -110,6 +115,7 @@ void Renderer::shutDown()
 	framebufferVertexArray.remove();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
+	lightingGaussianBlurFramebuffer.remove();
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -133,16 +139,40 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
 	PH_PROFILE_FUNCTION();
 
+	// render scene
 	quadRenderer.flush();
 	pointRenderer.flush();
 
-	//GLCheck( glBlendFunc(GL_ONE, GL_ONE) );
+	// disable depth test for performance purposes
 	GLCheck( glDisable(GL_DEPTH_TEST) );
+
+	// render lights to lighting framebuffer
 	lightingFramebuffer.bind();
 	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.5f) ); // TODO: Make possible specifing ambient color
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 	lightRenderer.flush();
 
+	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
+	framebufferVertexArray.bind();
+
+	// apply gaussian blur for lighting
+	lightingGaussianBlurFramebuffer.bind();
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	lightingFramebuffer.bindTextureColorBuffer(0);
+	gaussianBlurFramebufferShader->bind();
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	// render everything onto quad in default framebuffer
+	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	defaultFramebufferShader->bind();
+	defaultFramebufferShader->setUniformInt("gameObjectsTexture", 0);
+	gameObjectsFramebuffer.bindTextureColorBuffer(0);
+	defaultFramebufferShader->setUniformInt("lightingTexture", 1);
+	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
+	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+
+	// pass debug data to debug counter
 	debugCounter.setAllDrawCallsPerFrame(
 		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
 		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
@@ -160,18 +190,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lineRenderer.setDebugNumbersToZero();
 	pointRenderer.setDebugNumbersToZero();
 
-	GLCheck( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
-	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
-	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
-	framebufferVertexArray.bind();
-	defaultFramebufferShader->bind();
-	currentlyBoundShader = defaultFramebufferShader;
-	defaultFramebufferShader->setUniformInt("gameObjectsTexture", 0);
-	gameObjectsFramebuffer.bindTextureColorBuffer(0);
-	defaultFramebufferShader->setUniformInt("lightingTexture", 1);
-	lightingFramebuffer.bindTextureColorBuffer(1);
-	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
-
+	// draw gui using sfml
 	sfmlRenderer.flush(window);
 }
 

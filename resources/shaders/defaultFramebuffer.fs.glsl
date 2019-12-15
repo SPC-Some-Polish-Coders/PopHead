@@ -9,5 +9,5 @@ uniform sampler2D lightingTexture;
 
 void main()
 {
-    fragColor = texture(gameObjectsTexture, texCoords) * texture(lightingTexture, vec2(texCoords.x, texCoords.y));
+    fragColor = texture(gameObjectsTexture, texCoords) * texture(lightingTexture, texCoords);
 }
