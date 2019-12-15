@@ -29,7 +29,7 @@ void Levers::update(float seconds)
 			}
 
 			if (leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
-				return;
+				continue;
 
 			if (leverBody.rect.doPositiveRectsIntersect(playerBody.rect))
 				if (ActionEventManager::isActionPressed("use"))
