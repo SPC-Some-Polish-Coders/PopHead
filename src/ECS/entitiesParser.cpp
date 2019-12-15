@@ -183,7 +183,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 	// parse z
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
-	quad.z = entityComponentNode.getAttribute("z").toChar();
+	quad.z = entityComponentNode.getAttribute("z").toUnsignedChar();
 
 	// parse blocks light
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("blocksLight"), "Every RenderQuad has to have blockLight atribute!");
