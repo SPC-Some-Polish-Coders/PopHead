@@ -13,10 +13,10 @@ public:
 
 	void update(float seconds) override;
 
-private:
-	void handleObjectsOutsideAreas() const;
-	void handleObjectsInsideAreas() const;
-	auto positionInVector(const std::vector<FloatRect>& sizes, const FloatRect& sizeValue) const -> std::vector<FloatRect>::const_iterator;
+//private:
+//	void handleObjectsOutsideAreas() const;
+//	void handleObjectsInsideAreas() const;
+//	auto positionInVector(const std::vector<FloatRect>& sizes, const FloatRect& sizeValue) const -> std::vector<FloatRect>::const_iterator;
 
 };
 

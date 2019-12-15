@@ -99,7 +99,7 @@
     </entityTemplate>
 
    <entityTemplate name="PushingArea">
-       <component name="PushingArea" pushDirectionX="1.0" pushDirectionY="0.0" velocityMultiplier="2.0"/>
+      <component name="PushingArea" pushDirectionX="1.0" pushDirectionY="0.0" velocityMultiplier="0.9"/>
    </entityTemplate>
    
     <entityTemplate name="UFOCars">
@@ -250,7 +250,6 @@
       <component name="StaticCollisionBody" />
     </entity>
     
-
     <entity sourceTemplate="ColorSquare">
 	    <component name="BodyRect" x="-30.0" y="150.0" width="50.0" height ="50.0"/>
       <component name="RenderQuad" color="rgb(0, 30, 0)" z="100" blocksLight="true"/>

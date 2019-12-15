@@ -4,68 +4,47 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 
-#include <algorithm>
+#include <iostream>
 
 namespace ph::system {
 
 void IsObjectInArea::update(float seconds)
 {
-	handleObjectsOutsideAreas();
-	handleObjectsInsideAreas();
-}
-
-void IsObjectInArea::handleObjectsOutsideAreas() const
-{
-	auto kinematicObjectsBeyondAreaView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::IsInArea>);
-	for (const auto kinematicObject : kinematicObjectsBeyondAreaView)
+	auto areasView = mRegistry.view<component::Area>();
+	auto kinematicObjectsOutsideAreasView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::IsInArea>);
+	auto kinematicObjectsInsideAreasView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::IsInArea>();
+	for (auto area : areasView)
 	{
-		const auto& objectBody = kinematicObjectsBeyondAreaView.get<component::BodyRect>(kinematicObject);
-		auto objectBottomCenter = sf::Vector2f(objectBody.rect.getCenter().x - objectBody.rect.width / 2, objectBody.rect.getBottomLeft().y);
-
-		auto areasView = mRegistry.view<component::Area>();
-		for (const auto area : areasView)
+		const auto& areaBody = areasView.get<component::Area>(area);
+		for (auto kinematicObject : kinematicObjectsOutsideAreasView)
 		{
-			const auto& areaRect = areasView.get<component::Area>(area);
-			if (areaRect.areaBody.contains(objectBottomCenter))
+			const auto& objectBody = kinematicObjectsOutsideAreasView.get<component::BodyRect>(kinematicObject);
+			if (areaBody.areaBody.contains(objectBody.rect.getCenter()))
 			{
-				mRegistry.assign_or_replace<component::IsInArea>(kinematicObject);
-				break;
+				mRegistry.assign<component::IsInArea>(kinematicObject);
+				continue;
 			}
 		}
 	}
-}
 
-void IsObjectInArea::handleObjectsInsideAreas() const
-{
-	auto kinematicObjectsWithinAreaView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::IsInArea>();
-	for (const auto kinematicObject : kinematicObjectsWithinAreaView)
+	for (auto kinematicObject : kinematicObjectsInsideAreasView)
 	{
-		auto& isInAreaComponent = kinematicObjectsWithinAreaView.get<component::IsInArea>(kinematicObject);
-		const auto& objectBody = kinematicObjectsWithinAreaView.get<component::BodyRect>(kinematicObject);
-		const auto objectBottomCenter = sf::Vector2f(objectBody.rect.getCenter().x - objectBody.rect.width / 2, objectBody.rect.getBottomLeft().y);
+		const auto& objectBody = kinematicObjectsInsideAreasView.get<component::BodyRect>(kinematicObject);
+		bool isInArea = false;
 
-		auto areasView = mRegistry.view<component::Area>();
-		for (const auto area : areasView)
+		for (auto area : areasView)
 		{
 			const auto& areaBody = areasView.get<component::Area>(area);
-			auto position = positionInVector(isInAreaComponent.areas, areaBody.areaBody);
-			bool isAlreadyInVector = position != isInAreaComponent.areas.end();
-			bool isContainedInArea = areaBody.areaBody.contains(objectBottomCenter);
-
-			if (isContainedInArea && !isAlreadyInVector)
-				isInAreaComponent.areas.emplace_back(areaBody.areaBody);
-			else if (!isContainedInArea && isAlreadyInVector)
-				isInAreaComponent.areas.erase(position);
+			if (areaBody.areaBody.contains(objectBody.rect.getCenter()))
+			{
+				isInArea = true;
+				break;
+			}
 		}
 
-		if (isInAreaComponent.areas.empty())
+		if(!isInArea)
 			mRegistry.remove<component::IsInArea>(kinematicObject);
 	}
-}
-
-auto IsObjectInArea::positionInVector(const std::vector<FloatRect>& sizes, const FloatRect& sizeValue) const -> std::vector<FloatRect>::const_iterator
-{
-	return std::find(sizes.begin(), sizes.end(), sizeValue);
 }
 
 }
