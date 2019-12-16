@@ -44,6 +44,7 @@ namespace ph::component {
 	{
 		float minShotsInterval;
 		float range;
+		float deflectionAngle;
 		int damage;
 		int numberOfBullets;
 	};

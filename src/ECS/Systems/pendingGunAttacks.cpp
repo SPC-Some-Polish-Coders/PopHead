@@ -6,6 +6,9 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "Renderer/renderer.hpp"
+#include "Utilities/random.hpp"
+
+#include <iostream>
 
 namespace ph::system {
 
@@ -36,69 +39,17 @@ void PendingGunAttacks::handlePendingGunAttacks()
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
 				sf::Vector2f shift = gunBody.rect.getCenter();
-				sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
-				shift -= startingBulletPos;
-				startingBulletPos += getCorrectedBulletStartingPosition(playerFaceDirection.direction) + shift;
+				sf::Vector2f startingBulletPosition = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
+				shift -= startingBulletPosition;
+				startingBulletPosition += getCorrectedBulletStartingPosition(playerFaceDirection.direction) + shift;
 
-				sf::Vector2f endingBulletPos = performShoot(playerFaceDirection.direction, startingBulletPos, gunProperties.range, gunProperties.damage);
-				createShotImage(startingBulletPos, endingBulletPos);
+				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
+				createShotImage(startingBulletPosition, shotsEndingPositions);
 
 				playerGunAttack.bullets -= gunProperties.numberOfBullets;
 			}
 		}
 	}
-}
-
-sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
-{
-	if (playerFaceDirection == sf::Vector2f(1, 0))
-		return sf::Vector2f(5, -1);
-	else if (playerFaceDirection == sf::Vector2f(-1, 0))
-		return sf::Vector2f(-5, -1);
-	else if (playerFaceDirection == sf::Vector2f(0, 1) || playerFaceDirection == sf::Vector2f(0, -1))
-		return sf::Vector2f(-4.5, 0);
-	else
-		return sf::Vector2f(0.f, 0.f);
-}
-
-sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, int damage)
-{
-	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
-	sf::Vector2f currentBulletPos = startingBulletPos;
-	int bulletTravelledDist = 1;
-
-	while (bulletTravelledDist < range)
-	{
-		for (const auto enemy : enemies)
-		{
-			const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
-			if (bodyRect.rect.contains(currentBulletPos))
-			{
-				mRegistry.assign<component::DamageTag>(enemy, damage);
-				return currentBulletPos;
-			}
-		}
-		bulletTravelledDist += 5;
-		currentBulletPos = getCurrentPosition(playerFaceDirection, startingBulletPos, bulletTravelledDist);
-	}
-
-	return currentBulletPos;
-}
-
-sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingPos, const int bulletDistance) const
-{
-	sf::Vector2f newPosition;
-	newPosition.x = startingPos.x + playerFaceDirection.x * bulletDistance;
-	newPosition.y = startingPos.y + playerFaceDirection.y * bulletDistance;
-	return newPosition;
-}
-
-void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, const sf::Vector2f& endingPosition)
-{
-	auto entity = mRegistry.create();
-	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
-	mRegistry.assign<component::AmbientSound>(entity, "sounds/pistolShot.ogg");
-	mRegistry.assign<component::Lifetime>(entity, .05f);
 }
 
 sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDirection) const
@@ -122,6 +73,160 @@ sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDir
 	else
 		return { 0, 0 };
 }
+
+sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
+{
+	if (playerFaceDirection == sf::Vector2f(1, 0))
+		return sf::Vector2f(5, -1);
+	else if (playerFaceDirection == sf::Vector2f(-1, 0))
+		return sf::Vector2f(-5, -1);
+	else if (playerFaceDirection == sf::Vector2f(0, 1) || playerFaceDirection == sf::Vector2f(0, -1))
+		return sf::Vector2f(-4.5, 0);
+	else
+		return sf::Vector2f(0.f, 0.f);
+}
+
+std::vector<sf::Vector2f> PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets)
+{
+	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
+	std::vector<sf::Vector2f> shotsEndingPositions;
+
+	for (int i = 0; i < numberOfBullets; ++i)
+	{
+		sf::Vector2f direction = getBulletDirection(playerFaceDirection, deflectionAngle);
+		sf::Vector2f currentBulletPos = startingBulletPos;
+		int bulletTravelledDist = 1;
+		while (bulletTravelledDist < range)
+		{
+			bool didBulletHitEnemy = false;
+
+			for (const auto enemy : enemies)
+			{
+				const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
+				if (bodyRect.rect.contains(currentBulletPos))
+				{
+					mRegistry.assign_or_replace<component::DamageTag>(enemy, damage);
+					didBulletHitEnemy = true;
+				}
+			}
+
+			if (didBulletHitEnemy)
+				break;
+			bulletTravelledDist += 5;
+			currentBulletPos = getCurrentPosition(direction, startingBulletPos, bulletTravelledDist);
+		}
+		shotsEndingPositions.emplace_back(currentBulletPos);
+	}
+	return shotsEndingPositions;
+}
+
+sf::Vector2f PendingGunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
+{
+	deflection = Random::generateNumber(-deflection, deflection);
+	const float deflectionFactor = deflection / -90.f;
+	sf::Vector2f deflectedBulletDirection = playerFaceDirection;
+
+	if (playerFaceDirection == sf::Vector2f(0.f, -1.f)) //up 
+	{
+		if (deflectionFactor < 0.f)
+		{
+			deflectedBulletDirection.x += deflectionFactor;
+			deflectedBulletDirection.y += -deflectionFactor;
+		}
+		else
+		{
+			deflectedBulletDirection.x += deflectionFactor;
+			deflectedBulletDirection.y += deflectionFactor;
+		}
+	}
+	else if (playerFaceDirection == sf::Vector2f(1.f, 0.f)) // right
+	{
+		if (deflectionFactor < 0.f)
+		{
+			deflectedBulletDirection.x += deflectionFactor;
+			deflectedBulletDirection.y += deflectionFactor;
+		}
+		else
+		{
+			deflectedBulletDirection.x += -deflectionFactor;
+			deflectedBulletDirection.y += deflectionFactor;
+		}
+	}
+	else if (playerFaceDirection == sf::Vector2f(0.f, 1.f)) //down
+		if (deflectionFactor < 0.f)
+		{
+			deflectedBulletDirection.x += -deflectionFactor;
+			deflectedBulletDirection.y += deflectionFactor;
+		}
+		else
+		{
+			deflectedBulletDirection.x += -deflectionFactor;
+			deflectedBulletDirection.y += -deflectionFactor;
+		}
+	else if (playerFaceDirection == sf::Vector2f(-1.f, 0.f)) //left
+		if (deflectionFactor < 0.f)
+		{
+			deflectedBulletDirection.x += -deflectionFactor;
+			deflectedBulletDirection.y += -deflectionFactor;
+		}
+		else
+		{
+			deflectedBulletDirection.x += deflectionFactor;
+			deflectedBulletDirection.y += -deflectionFactor;
+		}
+
+	else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f)) // up-left
+	{
+		if (deflectionFactor < 0.f)
+			deflectedBulletDirection.y += -deflectionFactor;
+		else
+			deflectedBulletDirection.x += deflectionFactor;
+	}
+	else if (playerFaceDirection == sf::Vector2f(0.7f, -0.7f)) // up-right
+	{
+		if (deflectionFactor < 0.f)
+			deflectedBulletDirection.x += deflectionFactor;
+		else
+			deflectedBulletDirection.y += deflectionFactor;
+	}
+	else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f)) //down-left
+	{
+		if (deflectionFactor < 0.f)
+			deflectedBulletDirection.x += -deflectionFactor;
+		else
+			deflectedBulletDirection.y += -deflectionFactor;
+	}
+	else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f)) // down-right
+	{
+		if (deflectionFactor < 0.f)
+			deflectedBulletDirection.x += deflectionFactor;
+		else
+			deflectedBulletDirection.y += -deflectionFactor;
+	}
+
+	return deflectedBulletDirection;
+}
+
+sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const
+{
+	sf::Vector2f newPosition;
+	newPosition.x = startingPos.x + bulletDirection.x * bulletDistance;
+	newPosition.y = startingPos.y + bulletDirection.y * bulletDistance;
+	return newPosition;
+}
+
+void PendingGunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition)
+{
+	for (auto shot : shotsEngingPosition)
+	{
+		auto entity = mRegistry.create();
+		mRegistry.assign<component::LastingShot>(entity, shotsStartingPosition, shot);
+		mRegistry.assign<component::AmbientSound>(entity, "sounds/pistolShot.ogg");
+		mRegistry.assign<component::Lifetime>(entity, .05f);
+	}
+}
+
+
 
 void PendingGunAttacks::handleLastingBullets()
 {
