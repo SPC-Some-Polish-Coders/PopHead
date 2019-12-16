@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ECS/entitiesTemplateStorage.hpp"
+#include "Resources/resourceHolder.hpp"
+
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -34,7 +37,7 @@ struct TilesetsData
 class XmlMapParser
 {
 public:
-	void parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry);
+	void parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures);
 
 private:
 	void checkMapSupport(const Xml& mapNode) const;
@@ -46,15 +49,20 @@ private:
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry);
+	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info);
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 	
-	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry);
+	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, unsigned char z);
 	bool hasTile(unsigned globalTileId) const;
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 	void loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, sf::Vector2f position);
 	void createMapBorders(const GeneralMapInfo& mapInfo);
+
+private:
+	entt::registry* mGameRegistry;
+	EntitiesTemplateStorage* mTemplates;
+	TextureHolder* mTextures;
 };
 
 }

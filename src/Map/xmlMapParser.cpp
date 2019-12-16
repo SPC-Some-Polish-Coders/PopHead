@@ -1,6 +1,9 @@
 #include "xmlMapParser.hpp"
 #include "Logs/logs.hpp"
 
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
+
 #include "AI/aiManager.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
@@ -9,9 +12,13 @@
 
 namespace ph {
 
-void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry)
+void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
 {
 	PH_LOG_INFO("Map file (" + fileName + ") is being parsed.");
+
+	mGameRegistry = &gameRegistry;
+	mTemplates = &templates;
+	mTextures = &textures;
 		
 	Xml mapFile;
 	mapFile.loadFromFile(fileName);
@@ -25,7 +32,7 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	parserMapLayers(layerNodes, tilesetsData, generalMapInfo, gameRegistry);
+	parserMapLayers(layerNodes, tilesetsData, generalMapInfo);
 	createMapBorders(generalMapInfo);
 }
 
@@ -129,13 +136,15 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry)
+void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info)
 {
+	unsigned char z = 200;
 	for (const Xml& layerNode : layerNodes)
 	{
 		const Xml dataNode = layerNode.getChild("data");
 		const auto globalIds = toGlobalTileIds(dataNode);
-		createLayer(globalIds, tilesets, info, gameRegistry);
+		createLayer(globalIds, tilesets, info, z);
+		--z;
 	}
 }
 
@@ -147,11 +156,10 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, entt::registry& gameRegistry)
+void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, unsigned char z)
 {
-	//const Texture& texture = mGameData->getTextures().get(pathToTilesetsDirectory + tilesets.tilesetFileName);
-
-	//mChunkMap->addNewLayerOfChunks();
+	const static std::string pathToTilesetsDirectory = "textures/map/";
+	Texture& texture = mTextures->get(pathToTilesetsDirectory + tilesets.tilesetFileName);
 
 	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
 		// WARNING: this code assumes int has 4 bytes
@@ -183,24 +191,30 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 			position.x *= info.tileSize.x;
 			position.y *= info.tileSize.y;
 
-			/*TileData tileData;
-			tileData.mTextureRectTopLeftCorner = tileRectPosition;
-			tileData.mTopLeftCornerPositionInWorld = position;
+			auto tileEntity = mTemplates->createCopy("Tile", *mGameRegistry);
+			auto& bodyRect = mGameRegistry->get<component::BodyRect>(tileEntity);
+			auto& textureRect = mGameRegistry->get<component::TextureRect>(tileEntity);
+			auto& renderQuad = mGameRegistry->get<component::RenderQuad>(tileEntity);
 
-			tileData.mFlipData.mIsHorizontallyFlipped = isHorizontallyFlipped;
-			tileData.mFlipData.mIsVerticallyFlipped = isVerticallyFlipped;
-			tileData.mFlipData.mIsDiagonallyFlipped = isDiagonallyFlipped;
+			bodyRect.rect.left = position.x;
+			bodyRect.rect.top = position.y;
+			bodyRect.rect.width = static_cast<float>(info.tileSize.x);
+			bodyRect.rect.height = static_cast<float>(info.tileSize.y);
 
-			mChunkMap->addTileData(tileData);
-			*/
+			textureRect.rect.left = tileRectPosition.x;
+			textureRect.rect.top = tileRectPosition.y;
+			textureRect.rect.width = info.tileSize.x;
+			textureRect.rect.height = info.tileSize.y;
+
+			renderQuad.texture = &texture;
+			renderQuad.z = z;
+
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
-			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
+			//loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
 	}
-
-	//mChunkMap->initializeGraphicsForCurrentLayer();
 }
 
 bool XmlMapParser::hasTile(unsigned globalTileId) const
