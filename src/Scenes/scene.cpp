@@ -10,7 +10,6 @@
 #include "ECS/Systems/damageAndDeath.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/Systems/isPlayerAlive.hpp"
-#include "ECS/Systems/isObjectInArea.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/levers.hpp"
 #include "ECS/Systems/gates.hpp"
@@ -88,7 +87,6 @@ void Scene::initiateSystemsQueue(MusicPlayer& musicPlayer, SoundPlayer& soundPla
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
-	mSystemsQueue.appendSystem<system::IsObjectInArea>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
 	mSystemsQueue.appendSystem<system::CanUseWeapon>();

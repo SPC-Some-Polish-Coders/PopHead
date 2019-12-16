@@ -89,10 +89,6 @@ namespace ph::component {
 		float rotation = 0.f;
 	};
 
-	struct IsInArea
-	{
-	};
-
 	struct DamageAnimation
 	{
 		float timeToEndColorChange;

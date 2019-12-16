@@ -1,15 +1,14 @@
 #include "pushingAreas.hpp"
 
-#include "ECS/Components/charactersComponents.hpp"
-#include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 
 namespace ph::system {
 
 void PushingAreas::update(float dt)
 {
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::Area>();
-	auto kinematicObjects = mRegistry.view<component::IsInArea, component::KinematicCollisionBody, component::BodyRect, component::Velocity, component::CharacterSpeed>();
+	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity, component::CharacterSpeed>();
 
 	for (auto pushingArea : pushingAreasView)
 	{
