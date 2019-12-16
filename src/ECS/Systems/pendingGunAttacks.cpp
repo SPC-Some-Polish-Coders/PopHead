@@ -39,12 +39,12 @@ void PendingGunAttacks::handlePendingGunAttacks()
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
 				sf::Vector2f shift = gunBody.rect.getCenter();
-				sf::Vector2f startingBulletPos = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
-				shift -= startingBulletPos;
-				startingBulletPos += getCorrectedBulletStartingPosition(playerFaceDirection.direction) + shift;
+				sf::Vector2f startingBulletPosition = playerBody.rect.getTopLeft() + getGunPosition(playerFaceDirection.direction);
+				shift -= startingBulletPosition;
+				startingBulletPosition += getCorrectedBulletStartingPosition(playerFaceDirection.direction) + shift;
 
-				sf::Vector2f endingBulletPos = performShoot(playerFaceDirection.direction, startingBulletPos, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage);
-				createShotImage(startingBulletPos, endingBulletPos);
+				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
+				createShotImage(startingBulletPosition, shotsEndingPositions);
 
 				playerGunAttack.bullets -= gunProperties.numberOfBullets;
 			}
@@ -86,28 +86,38 @@ sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vec
 		return sf::Vector2f(0.f, 0.f);
 }
 
-sf::Vector2f PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage)
+std::vector<sf::Vector2f> PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets)
 {
 	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
-	sf::Vector2f currentBulletPos = startingBulletPos;
-	sf::Vector2f direction = getBulletDirection(playerFaceDirection, deflectionAngle);
-	int bulletTravelledDist = 1;
+	std::vector<sf::Vector2f> shotsEndingPositions;
 
-	while (bulletTravelledDist < range)
+	for (int i = 0; i < numberOfBullets; ++i)
 	{
-		for (const auto enemy : enemies)
+		sf::Vector2f direction = getBulletDirection(playerFaceDirection, deflectionAngle);
+		sf::Vector2f currentBulletPos = startingBulletPos;
+		int bulletTravelledDist = 1;
+		while (bulletTravelledDist < range)
 		{
-			const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
-			if (bodyRect.rect.contains(currentBulletPos))
+			bool didBulletHitEnemy = false;
+
+			for (const auto enemy : enemies)
 			{
-				mRegistry.assign<component::DamageTag>(enemy, damage);
-				return currentBulletPos;
+				const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
+				if (bodyRect.rect.contains(currentBulletPos))
+				{
+					mRegistry.assign_or_replace<component::DamageTag>(enemy, damage);
+					didBulletHitEnemy = true;
+				}
 			}
+
+			if (didBulletHitEnemy)
+				break;
+			bulletTravelledDist += 5;
+			currentBulletPos = getCurrentPosition(direction, startingBulletPos, bulletTravelledDist);
 		}
-		bulletTravelledDist += 5;
-		currentBulletPos = getCurrentPosition(direction, startingBulletPos, bulletTravelledDist);
+		shotsEndingPositions.emplace_back(currentBulletPos);
 	}
-	return currentBulletPos;
+	return shotsEndingPositions;
 }
 
 sf::Vector2f PendingGunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
@@ -205,12 +215,15 @@ sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& bulletDir
 	return newPosition;
 }
 
-void PendingGunAttacks::createShotImage(const sf::Vector2f& startingPosition, const sf::Vector2f& endingPosition)
+void PendingGunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition)
 {
-	auto entity = mRegistry.create();
-	mRegistry.assign<component::LastingShot>(entity, startingPosition, endingPosition);
-	mRegistry.assign<component::AmbientSound>(entity, "sounds/pistolShot.ogg");
-	mRegistry.assign<component::Lifetime>(entity, .05f);
+	for (auto shot : shotsEngingPosition)
+	{
+		auto entity = mRegistry.create();
+		mRegistry.assign<component::LastingShot>(entity, shotsStartingPosition, shot);
+		mRegistry.assign<component::AmbientSound>(entity, "sounds/pistolShot.ogg");
+		mRegistry.assign<component::Lifetime>(entity, .05f);
+	}
 }
 
 
