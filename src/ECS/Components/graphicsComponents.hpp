@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
-#include "Renderer/camera.hpp"
+#include "Renderer/API/camera.hpp"
 #include <vector>
 
 namespace ph{

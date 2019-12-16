@@ -1,6 +1,6 @@
 #include "lineRenderer.hpp"
-#include "Renderer/Shaders/shaderLibary.hpp"
-#include "Renderer/openglErrors.hpp"
+#include "Renderer/API/shader.hpp"
+#include "Renderer/API/openglErrors.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"

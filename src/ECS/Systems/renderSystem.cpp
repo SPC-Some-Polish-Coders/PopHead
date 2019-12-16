@@ -2,7 +2,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/camera.hpp"
+#include "Renderer/API/camera.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include <entt/entity/utility.hpp>

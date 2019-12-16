@@ -1,7 +1,7 @@
 #include "pointRenderer.hpp"
 #include "Utilities/cast.hpp"
-#include "Renderer/Shaders/shaderLibary.hpp"
-#include "Renderer/openglErrors.hpp"
+#include "Renderer/API/shader.hpp"
+#include "Renderer/API/openglErrors.hpp"
 #include <GL/glew.h>
 
 namespace ph {

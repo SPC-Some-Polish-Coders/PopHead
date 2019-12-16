@@ -5,13 +5,13 @@
 #include "MinorRenderers/SFMLrenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
 #include "MinorRenderers/lightRenderer.hpp"
-#include "Shaders/shaderLibary.hpp"
-#include "Buffers/vertexArray.hpp"
-#include "camera.hpp"
+#include "API/shader.hpp"
+#include "API/vertexArray.hpp"
+#include "API/camera.hpp"
 #include "DebugCounter/debugCounter.hpp"
 #include "Logs/logs.hpp"
-#include "openglErrors.hpp"
-#include "framebuffer.hpp"
+#include "API/openglErrors.hpp"
+#include "API/framebuffer.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
@@ -94,7 +94,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	VertexBuffer framebufferVBO;
 	framebufferVBO.init();
-	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
+	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), GL_STATIC_DRAW);
 	framebufferVertexArray.init();
 	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray.setIndexBuffer(quadIBO);

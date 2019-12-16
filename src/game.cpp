@@ -6,7 +6,6 @@
 #include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/TemporaryTests/rendererTest.h"
 #include <SFML/System.hpp>
 #include <iostream>
 
@@ -21,7 +20,6 @@ Game::Game()
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
-	,mShaders{new ShaderHolder()}
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mTerminal{new Terminal()}
@@ -34,7 +32,6 @@ Game::Game()
 		mMusicPlayer.get(),
 		mTextures.get(),
 		mFonts.get(),
-		mShaders.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
 		nullptr,
