@@ -219,10 +219,9 @@ void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& ent
 
 void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float directionX = entityComponentNode.getAttribute("pushDirectionX").toFloat();
-	float directionY = entityComponentNode.getAttribute("pushDirectionY").toFloat();
-	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier").toFloat();
-	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY), velocityMultiplier);
+	float directionX = entityComponentNode.getAttribute("pushForceX").toFloat();
+	float directionY = entityComponentNode.getAttribute("pushForceY").toFloat();
+	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY));
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)

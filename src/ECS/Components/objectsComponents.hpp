@@ -16,8 +16,7 @@ namespace ph::component {
 
 	struct PushingArea
 	{
-		sf::Vector2f pushDirection;
-		float velocityMultiplier;
+		sf::Vector2f pushForce;
 	};
 
 	struct Entrance
