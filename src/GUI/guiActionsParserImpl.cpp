@@ -4,7 +4,7 @@
 #include "Utilities/cast.hpp"
 #include "gameData.hpp"
 #include "Logs/logs.hpp"
-#include "Gui/sliderWidget.hpp"
+#include "sliderWidget.hpp"
 
 namespace ph {
 

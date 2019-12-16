@@ -2,10 +2,10 @@
 #include "Logs/logs.hpp"
 #include "Logs/logger.hpp"
 #include "Logs/logsInitializing.hpp"
-#include "Gui/xmlGuiParser.hpp"
-#include "Gui/guiActionsParserImpl.hpp"
+#include "GUI/xmlGuiParser.hpp"
+#include "GUI/guiActionsParserImpl.hpp"
 #include "Utilities/profiling.hpp"
-#include "Gui/messageBox.hpp"
+#include "GUI/messageBox.hpp"
 #include <stdexcept>
 #include <string>
 

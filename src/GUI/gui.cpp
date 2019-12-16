@@ -3,38 +3,8 @@
 
 namespace ph {
 
-GUI::Gui_drawer::Gui_drawer(GameData* gameData, std::string name)
-	:mGui(nullptr)
-{
-
-}
-
-void GUI::Gui_drawer::init(GUI* gui) {
-	mGui = gui;
-}
-
-void GUI::Gui_drawer::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	mGui->draw();
-}
-
-void GUI::Gui_drawer::update(sf::Time delta)
-{
-	mGui->update(delta);
-}
-
-void GUI::Gui_drawer::move(sf::Vector2f delta, bool recursive)
-{
-	mGui->move(delta);
-}
-
 GUI::GUI()
-	:mGuiDrawer(nullptr)
-	,mGameData(nullptr)
-{
-}
-
-GUI::~GUI()
+	:mGameData(nullptr)
 {
 }
 
@@ -109,21 +79,13 @@ void GUI::handleEvent(const ph::Event& e)
 
 void GUI::update(sf::Time dt)
 {
-	for(const auto& k : mInterfaceList) {
+	for(const auto& k : mInterfaceList)
 		if(k.second->isActive())
 			k.second->update(dt);
-	}
-}
 
-void GUI::draw()
-{
 	for(const auto& k : mInterfaceList)
 		if(k.second->isActive())
 			k.second->draw();
-}
-
-void GUI::transform()
-{
 }
 
 void GUI::init(GameData* gamedata)
@@ -133,8 +95,6 @@ void GUI::init(GameData* gamedata)
 
 void GUI::clearGUI()
 {
-	mGuiDrawer.reset(new Gui_drawer(mGameData, "GUI_DRAWER"));
-	mGuiDrawer->init(this);
 	mInterfaceList.clear();
 }
 

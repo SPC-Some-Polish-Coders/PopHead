@@ -6,6 +6,7 @@ namespace ph::component {
 	{
 		int addHealthPoints;
 	};
+
 	struct Bullet
 	{
 		int numOfBullets;

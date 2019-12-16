@@ -7,7 +7,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
-#include "Gui/GUI.hpp"
+#include "GUI/gui.hpp"
 #include <SFML/Window/Window.hpp>
 #include <memory>
 

@@ -1,5 +1,5 @@
 #include "endingCutscene.hpp"
-#include "Gui/gui.hpp"
+#include "GUI/gui.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 //#include "Renderer/camera.hpp"
 #include "Events/actionEventManager.hpp"

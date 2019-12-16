@@ -1,6 +1,6 @@
 #include "subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/sceneManager.hpp"
-#include "Gui/gui.hpp"
+#include "GUI/gui.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ph {

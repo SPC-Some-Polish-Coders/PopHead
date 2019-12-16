@@ -28,15 +28,16 @@
 #include "ECS/Systems/audioSystem.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
+#include "ECS/Systems/gameplayUI.hpp"
 
 namespace ph {
 
-Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal, SceneManager& sceneManager)
+Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal, SceneManager& sceneManager, GUI& gui)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	initiateSystemsQueue(musicPlayer, soundPlayer, aiManager, sceneManager);
+	initiateSystemsQueue(musicPlayer, soundPlayer, aiManager, sceneManager, gui);
 	terminal.setSceneRegistry(&mRegistry);
 }
 
@@ -74,10 +75,12 @@ entt::registry& Scene::getRegistry()
 	return mRegistry;
 }
 
-void Scene::initiateSystemsQueue(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, SceneManager& sceneManager)
+void Scene::initiateSystemsQueue(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager,
+                                 SceneManager& sceneManager, GUI& gui)
 {
 	mSystemsQueue.appendSystem<system::RenderSystem>();
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
+	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
