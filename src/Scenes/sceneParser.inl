@@ -2,6 +2,7 @@
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
+#include "Renderer/renderer.hpp"
 
 namespace ph {
 
@@ -19,6 +20,7 @@ SceneParser<GuiParser, MapParser, AudioParser, typename EnttParser>
 	//parse<MapParser>(gameData, sceneLinksNode, "map");
 	//parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
+	parseAmbientLight(sceneLinksNode);
 	//parseGameObjects(gameData, root, cutSceneManager, sceneLinksNode);
 	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry, textureHolder);
 }
@@ -50,6 +52,14 @@ void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>
 		EnttParser parser;
 		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
 	}
+}
+
+template<typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
+void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>::parseAmbientLight(const Xml& sceneLinksNode)
+{
+	const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
+	sf::Color color = ambientLightNode.getAttribute("color").toColor();
+	Renderer::setAmbientLightColor(color);
 }
 
 //template<typename GuiParser, typename MapParser/*, typename GameObjectsParser*/, typename ResourcesParser, typename AudioParser, typename EnttParser>

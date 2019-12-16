@@ -2,4 +2,6 @@
 <scenelinks>
   <ecsObjects filename="entities.xml"/>
   <audio filename="sewage.audio.xml"/>
+  <map filename="citySouth.tmx"/>
+  <ambientLight color="rgba(70, 70, 70, 255)"/>
 </scenelinks>

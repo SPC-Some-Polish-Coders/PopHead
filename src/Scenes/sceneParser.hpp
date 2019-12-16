@@ -24,6 +24,8 @@ private:
 
 	void parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
                           TextureHolder& textureHolder);
+
+	void parseAmbientLight(const Xml& sceneLinksNode);
 	//void parseGameObjects(GameData* const gameData, CutSceneManager& cutSceneManager, const Xml& sceneLinksNode);
 };
 

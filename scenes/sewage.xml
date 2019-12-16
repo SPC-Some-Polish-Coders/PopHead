@@ -4,4 +4,5 @@
   <map filename="sewageSection.tmx"/>
   <gui filename="gameplay.gui.xml"/>
   <audio filename="sewage.audio.xml"/>
+  <ambientLight color="rgb(0, 0, 0)"/>
 </scenelinks>

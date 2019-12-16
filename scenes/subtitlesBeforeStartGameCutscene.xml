@@ -4,4 +4,5 @@
   <map filename="subtitlesBeforeStartGameCutscene.tmx"/>
   <neededResources filename="subtitlesBeforeStartGameCutscene.res.xml"/>
   <audio filename="startGameCutScene.audio.xml"/>
+  <ambientLight color="rgb(255, 255, 255)"/>
 </scenelinks>

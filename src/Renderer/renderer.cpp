@@ -29,6 +29,8 @@ namespace {
 	ph::Framebuffer gameObjectsFramebuffer;
 	ph::Framebuffer lightingFramebuffer;
 	ph::Framebuffer lightingGaussianBlurFramebuffer;
+	 
+	sf::Color ambientLightColor;
 
 	unsigned sharedDataUBO;
 
@@ -41,6 +43,7 @@ namespace {
 
 namespace ph {
 
+static void setClearColor(sf::Color);
 static float getNormalizedZ(const unsigned char z);
 
 void Renderer::init(unsigned screenWidth, unsigned screenHeight)
@@ -148,7 +151,7 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 
 	// render lights to lighting framebuffer
 	lightingFramebuffer.bind();
-	GLCheck( glClearColor(0.1f, 0.1f, 0.1f, 0.5f) ); // TODO: Make possible specifing ambient color
+	setClearColor(ambientLightColor);
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 	lightRenderer.flush();
 
@@ -202,23 +205,23 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
 		lightRenderer.submitLightBlockingQuad(position, size);
 }
 
-void Renderer::submitLine(const sf::Color& color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+void Renderer::submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);
 }
 
-void Renderer::submitLine(const sf::Color& colorA, const sf::Color& colorB,
+void Renderer::submitLine(sf::Color colorA, sf::Color colorB,
                           const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
 }
 
-void Renderer::submitPoint(sf::Vector2f position, const sf::Color& color, unsigned char z, float size)
+void Renderer::submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float size)
 {
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
-void Renderer::submitLight(const sf::Color& color, sf::Vector2f position, float startAngle, float endAngle,
+void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
                            float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
@@ -236,7 +239,12 @@ void Renderer::onWindowResize(unsigned width, unsigned height)
 	lightingFramebuffer.onWindowResize(width, height);
 }
 
-void Renderer::setClearColor(const sf::Color& color)
+void Renderer::setAmbientLightColor(sf::Color color)
+{
+	ambientLightColor = color;
+}
+
+void setClearColor(sf::Color color)
 {
 	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
 }

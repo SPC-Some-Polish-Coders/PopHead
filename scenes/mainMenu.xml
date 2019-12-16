@@ -4,4 +4,5 @@
   <map filename="mainMenuMap.tmx"/>
   <neededResources filename="menu.res.xml"/>
   <audio filename="menu.audio.xml"/>
+  <ambientLight color="rgba(255, 255, 255, 255)"/>
 </scenelinks>

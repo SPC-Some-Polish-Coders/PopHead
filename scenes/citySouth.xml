@@ -4,4 +4,5 @@
   <map filename="citySouth.tmx"/>
   <gui filename="citySouth.gui.xml"/>
   <audio filename="desert.audio.xml"/>
+  <ambientLight color="rgba(255, 255, 255, 255)"/>
 </scenelinks>
