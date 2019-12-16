@@ -16,7 +16,7 @@ Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
 
 void Entrances::update(float dt)
 {
-	auto entrancesView = mRegistry.view<component::Area, component::Entrance>();
+	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 
 	for (auto player : playerView)
@@ -35,8 +35,8 @@ void Entrances::update(float dt)
 
 		for (auto entrance : entrancesView)
 		{
-			const auto& entranceBody = entrancesView.get<component::Area>(entrance);
-			if (entranceBody.areaBody.contains(playerBody.rect.getCenter()))
+			const auto& entranceBody = entrancesView.get<component::BodyRect>(entrance);
+			if (entranceBody.rect.contains(playerBody.rect.getCenter()))
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
 				hasReplaced = true;

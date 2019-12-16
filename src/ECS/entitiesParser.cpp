@@ -85,7 +85,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"BodyRect",			   &EntitiesParser::parseBodyRect},
 		{"RenderQuad",			   &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			   &EntitiesParser::parseTextureRect},
-		{"Area",				   &EntitiesParser::parseArea},
 		{"PushingArea",			   &EntitiesParser::parsePushingArea},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			   &EntitiesParser::parseKillable},
@@ -206,15 +205,6 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 	int height = entityComponentNode.getAttribute("height").toInt();
 	IntRect rect(left, top, width, height);
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
-}
-
-void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float x = entityComponentNode.getAttribute("x").toFloat();
-	float y = entityComponentNode.getAttribute("y").toFloat();
-	float width = entityComponentNode.getAttribute("width").toFloat();
-	float height = entityComponentNode.getAttribute("height").toFloat();
-	mUsedRegistry->assign_or_replace<component::Area>(entity, ph::FloatRect(x, y, width, height));
 }
 
 void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)

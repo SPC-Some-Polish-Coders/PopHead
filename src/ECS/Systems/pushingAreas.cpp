@@ -7,17 +7,17 @@ namespace ph::system {
 
 void PushingAreas::update(float dt)
 {
-	auto pushingAreasView = mRegistry.view<component::PushingArea, component::Area>();
+	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
 	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
 
 	for (auto pushingArea : pushingAreasView)
 	{
-		const auto& [pushingAreaDetails, areaBody] = pushingAreasView.get<component::PushingArea, component::Area>(pushingArea);
+		const auto& [pushingAreaDetails, areaBody] = pushingAreasView.get<component::PushingArea, component::BodyRect>(pushingArea);
 
 		for (auto kinematicObject : kinematicObjects)
 		{
 			auto& [kinematicObjectBody, objectVelocity] = kinematicObjects.get<component::BodyRect, component::Velocity>(kinematicObject);
-			if (areaBody.areaBody.contains(kinematicObjectBody.rect.getCenter()))
+			if (areaBody.rect.contains(kinematicObjectBody.rect.getCenter()))
 			{
 				objectVelocity.dx += pushingAreaDetails.pushForce.x;
 				objectVelocity.dy += pushingAreaDetails.pushForce.y;

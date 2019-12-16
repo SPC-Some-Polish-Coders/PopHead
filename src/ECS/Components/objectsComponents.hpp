@@ -4,11 +4,6 @@
 
 namespace ph::component {
 
-	struct Area
-	{
-		FloatRect areaBody;
-	};
-
 	struct AreaVelocityChangingEffect
 	{
 		float areaSpeedMultiplier;

@@ -69,11 +69,8 @@
         <component name="Health" healthPoints="20" maxHealthPoints="100" />
     </entityTemplate>
 
-    <entityTemplate name="Area">
-        <component name="Area" x="200.0" y="50.0" width="100.0" height="30.0" />
-    </entityTemplate>
-
     <entityTemplate name="Entrance">
+        <component name="BodyRect" x="0" y="0" width="0" height="0" />
         <component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0" />
     </entityTemplate>
 
@@ -98,7 +95,13 @@
     </entityTemplate>
 
    <entityTemplate name="PushingArea">
-      <component name="PushingArea" pushForceX="40.0" pushForceY="0.0" />
+        <component name="BodyRect" x="0" y="0" width="0" height="0" />
+      <component name="PushingArea" pushForceX="0.0" pushForceY="0.0" />
+   </entityTemplate>
+   
+   <entityTemplate name="VelocityChangingArea">
+        <component name="BodyRect" x="0" y="0" width="0" height="0" />
+        <component name="VelocityChangingEffect" velocityMultiplier="1.0" />
    </entityTemplate>
    
     <entityTemplate name="UFOCars">
@@ -197,7 +200,8 @@
     </entity>
     
     <entity sourceTemplate="PushingArea">
-        <component name="Area" x="500.0" y="50.0" width="400.0" height="50.0" />
+        <component name="BodyRect" x="500.0" y="50.0" width="400.0" height="50.0" />
+      <component name="PushingArea" pushForceX="40.0" pushForceY="0.0" />
     </entity>
     
     <entity sourceTemplate="ColorSquare">
@@ -210,7 +214,7 @@
     <entity sourceTemplate="Car" />
 
     <entity sourceTemplate="Entrance">
-        <component name="Area" x="200.0" y="200.0" width="50.0" height="50.0" />
+        <component name="BodyRect" x="200.0" y="200.0" width="50.0" height="50.0" />
     </entity>
 
     <entity sourceTemplate="ColorSquare">
@@ -249,7 +253,7 @@
     </entity>
 
     <entity name="SpeedUpArea">
-        <component name="Area" x="300.0" y="50.0" width="100.0" height="200.0" />
+        <component name="BodyRect" x="300.0" y="50.0" width="100.0" height="200.0" />
         <component name="VelocityChangingEffect" velocityMultiplier="2.0" />
     </entity>
 
@@ -259,7 +263,7 @@
     </entity>
 
     <entity name="Area">
-        <component name="Area" x="450.0" y="100.0" width="100.0" height="200.0" />
+        <component name="BodyRect" x="450.0" y="100.0" width="100.0" height="200.0" />
         <component name="VelocityChangingEffect" velocityMultiplier="0.6" />
     </entity>
 
@@ -269,7 +273,7 @@
     </entity>
 
     <entity name="Area">
-        <component name="Area" x="300.0" y="200.0" width="250.0" height="100.0" />
+        <component name="BodyRect" x="300.0" y="200.0" width="250.0" height="100.0" />
         <component name="VelocityChangingEffect" velocityMultiplier="2.1" />
     </entity>
 
