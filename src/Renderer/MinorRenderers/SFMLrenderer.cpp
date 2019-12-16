@@ -35,7 +35,6 @@ void SFMLRenderer::flush(sf::RenderWindow& window)
 	window.setView(view);
 
 	window.pushGLStates();
-	window.resetGLStates();
 
 	for(const auto* object : mSubmitedObjects)
 		window.draw(*object);
