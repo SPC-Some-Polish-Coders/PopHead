@@ -6,7 +6,6 @@
 #include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/TemporaryTests/rendererTest.h"
 #include <SFML/System.hpp>
 #include <iostream>
 
