@@ -26,7 +26,7 @@ private:
                           TextureHolder& textureHolder);
 
 	void parseAmbientLight(const Xml& sceneLinksNode);
-	//void parseGameObjects(GameData* const gameData, CutSceneManager& cutSceneManager, const Xml& sceneLinksNode);
+	void parseMap(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures);
 };
 
 }
