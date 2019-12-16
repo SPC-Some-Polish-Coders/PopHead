@@ -101,7 +101,7 @@ namespace ph::system {
 			if(health.healthPoints <= 0)
 			{
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
-				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurn enemy must have AnimationData!");
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurt enemy must have AnimationData!");
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 
