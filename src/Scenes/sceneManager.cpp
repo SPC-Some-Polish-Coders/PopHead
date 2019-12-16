@@ -77,7 +77,7 @@ void SceneManager::replaceAction()
 	//	//if (mGameData->getAIManager().isPlayerOnScene())
 	//		//mScene->setPlayerStatus(mLastPlayerStatus);
 	//}
-	else  // there was not a scene before
+	else  // there wasn't a scene before
 	{
 		mScene.reset(new Scene(mGameData->getMusicPlayer(),
 			mGameData->getSoundPlayer(), mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager()));

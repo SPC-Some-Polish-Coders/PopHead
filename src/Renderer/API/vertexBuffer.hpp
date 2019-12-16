@@ -22,5 +22,4 @@ private:
 	unsigned mID;
 };
 
-
 } 
