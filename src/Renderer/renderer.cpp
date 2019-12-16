@@ -94,7 +94,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 
 	VertexBuffer framebufferVBO;
 	framebufferVBO.init();
-	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), DataUsage::staticDraw);
+	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), GL_STATIC_DRAW);
 	framebufferVertexArray.init();
 	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
 	framebufferVertexArray.setIndexBuffer(quadIBO);

@@ -1,6 +1,5 @@
 #pragma once 
  
-#include "glEnums.hpp"
 #include "Utilities/rect.hpp"
 #include <vector>
 #include <string>
@@ -13,8 +12,7 @@ public:
 	void init();
 	void remove();
 
-	void setData(float* vertices, size_t arraySize, DataUsage);
-	void setTextureRect(const IntRect& textureRect, const sf::Vector2i textureSize);
+	void setData(float* vertices, size_t arraySize, unsigned dataUsage);
 
 	void bind();
 	
