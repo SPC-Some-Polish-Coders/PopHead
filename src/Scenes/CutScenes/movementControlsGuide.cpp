@@ -1,6 +1,6 @@
 #include "movementControlsGuide.hpp"
 #include "Scenes/sceneManager.hpp"
-#include "Gui/gui.hpp"
+#include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
 #include <SFML/Window.hpp>
 

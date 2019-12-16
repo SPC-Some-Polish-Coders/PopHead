@@ -2,7 +2,7 @@
 
 #include "game.hpp"
 
-#include "Gui/messageBox.hpp"
+#include "GUI/messageBox.hpp"
 #include "Logs/logs.hpp"
 #include "Logs/logsInitializing.hpp"
 

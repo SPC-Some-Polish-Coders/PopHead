@@ -1,14 +1,11 @@
 #pragma once
 
 #include "guiActionsParser.hpp"
-
+#include "sliderWidget.hpp"
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <memory>
 #include <string>
-
-#include "Gui/sliderWidget.hpp"
-
-#include <SFML/System/Vector2.hpp>
-#include "SFML/Graphics/Color.hpp"
 
 namespace ph {
 

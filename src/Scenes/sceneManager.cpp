@@ -1,7 +1,7 @@
 #include "sceneManager.hpp"
 #include "sceneParser.hpp"
 #include "scene.hpp"
-#include "Gui/xmlGuiParser.hpp"
+#include "GUI/xmlGuiParser.hpp"
 #include "Map/xmlMapParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"

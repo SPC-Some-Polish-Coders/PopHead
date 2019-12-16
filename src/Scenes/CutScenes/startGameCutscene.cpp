@@ -1,8 +1,8 @@
 #include "startGameCutscene.hpp"
-#include "Renderer/camera.hpp"
+#include "Renderer/API/camera.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
-#include "Gui/gui.hpp"
+#include "GUI/gui.hpp"
 #include "gameData.hpp"
 
 namespace ph {
