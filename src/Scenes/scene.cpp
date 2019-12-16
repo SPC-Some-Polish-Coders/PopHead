@@ -32,12 +32,12 @@
 
 namespace ph {
 
-Scene::Scene(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal, SceneManager& sceneManager)
+Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal, SceneManager& sceneManager)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	initiateSystemsQueue(window, musicPlayer, soundPlayer, aiManager, sceneManager);
+	initiateSystemsQueue(musicPlayer, soundPlayer, aiManager, sceneManager);
 	terminal.setSceneRegistry(&mRegistry);
 }
 
@@ -75,9 +75,9 @@ entt::registry& Scene::getRegistry()
 	return mRegistry;
 }
 
-void Scene::initiateSystemsQueue(sf::Window& window, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, SceneManager& sceneManager)
+void Scene::initiateSystemsQueue(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, SceneManager& sceneManager)
 {
-	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(window));
+	mSystemsQueue.appendSystem<system::RenderSystem>();
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);

@@ -14,11 +14,8 @@ namespace {
 
 namespace ph::system {
 
-// TODO: For what do we need window???
-
-RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
+RenderSystem::RenderSystem(entt::registry& registry)
 	:System(registry)
-	,mWindow(window)
 {
 }
 

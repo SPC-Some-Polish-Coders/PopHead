@@ -59,7 +59,7 @@ void SceneManager::replaceAction()
 
 	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{
-		mScene.reset(new Scene(mGameData->getWindow(), mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
+		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
 			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager()));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
@@ -79,7 +79,7 @@ void SceneManager::replaceAction()
 	//}
 	else  // there was not a scene before
 	{
-		mScene.reset(new Scene(mGameData->getWindow(), mGameData->getMusicPlayer(),
+		mScene.reset(new Scene(mGameData->getMusicPlayer(),
 			mGameData->getSoundPlayer(), mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager()));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
