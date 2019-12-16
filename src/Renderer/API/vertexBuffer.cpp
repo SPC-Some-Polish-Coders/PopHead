@@ -1,5 +1,5 @@
 #include "vertexBuffer.hpp"
-#include "Renderer/openglErrors.hpp"
+#include "openglErrors.hpp"
 #include "Logs/logs.hpp"
 #include "GL/glew.h"
 #include <array>

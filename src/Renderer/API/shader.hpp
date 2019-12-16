@@ -7,6 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include <optional>
+#include <map>
 
 namespace ph {
 
@@ -50,6 +51,27 @@ private:
 private:
 	mutable std::unordered_map<std::string, int> mUniformsLocationCache;
 	unsigned mID;
+};
+
+class ShaderLibrary
+{
+	ShaderLibrary() {};
+public:
+	ShaderLibrary(ShaderLibrary&) = delete;
+	void operator=(ShaderLibrary const&) = delete;
+
+	static ShaderLibrary& getInstance()
+	{
+		static ShaderLibrary shaderLibary;
+		return shaderLibary;
+	}
+
+	bool loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
+	void loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode);
+	Shader* get(const std::string& name);
+
+private:
+	std::map<std::string, Shader> mShaders;
 };
 
 }

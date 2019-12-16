@@ -20,7 +20,6 @@ Game::Game()
 	,mMusicPlayer{new MusicPlayer()}
 	,mTextures{new TextureHolder()}
 	,mFonts{new FontHolder()}
-	,mShaders{new ShaderHolder()}
 	,mAIManager(new AIManager())
 	,mSceneManager{new SceneManager()}
 	,mTerminal{new Terminal()}
@@ -33,7 +32,6 @@ Game::Game()
 		mMusicPlayer.get(),
 		mTextures.get(),
 		mFonts.get(),
-		mShaders.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
 		nullptr,

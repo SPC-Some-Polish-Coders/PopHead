@@ -8,7 +8,7 @@
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
-#include "Renderer/Shaders/shaderLibary.hpp"
+#include "Renderer/API/shader.hpp"
 #include "Resources/animationStatesResources.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/random.hpp"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "quadData.hpp"
-#include "Renderer/Buffers/indexBuffer.hpp"
+#include "Renderer/API/indexBuffer.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>

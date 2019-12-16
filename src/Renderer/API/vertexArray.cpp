@@ -1,5 +1,5 @@
 #include "vertexArray.hpp"
-#include "Renderer/openglErrors.hpp"
+#include "openglErrors.hpp"
 #include "GL/glew.h"
 
 // TODO_ren: Maybe make VertexArray not hold VertexBuffer and IndexBuffer

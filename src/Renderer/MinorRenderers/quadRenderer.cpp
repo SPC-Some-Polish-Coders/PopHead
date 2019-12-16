@@ -1,7 +1,7 @@
 #include "quadRenderer.hpp"
-#include "Renderer/texture.hpp"
-#include "Renderer/Shaders/shaderLibary.hpp"
-#include "Renderer/openglErrors.hpp"
+#include "Renderer/API/texture.hpp"
+#include "Renderer/API/shader.hpp"
+#include "Renderer/API/openglErrors.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include <GL/glew.h>

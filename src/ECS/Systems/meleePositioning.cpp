@@ -4,7 +4,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Logs/logs.hpp"
-#include "Renderer/Shaders/shader.hpp"
+#include "Renderer/API/shader.hpp"
 #include <SFML/Graphics/Transformable.hpp>
 
 namespace ph::system {

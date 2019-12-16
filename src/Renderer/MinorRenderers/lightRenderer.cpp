@@ -1,6 +1,6 @@
 #include "lightRenderer.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/Shaders/shaderLibary.hpp"
+#include "Renderer/API/shader.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/profiling.hpp"
 #include "Logs/logs.hpp"

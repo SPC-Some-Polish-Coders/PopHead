@@ -1,6 +1,6 @@
 #pragma once 
  
-#include "Renderer/glEnums.hpp"
+#include "glEnums.hpp"
 #include "Utilities/rect.hpp"
 #include <vector>
 #include <string>

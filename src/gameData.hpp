@@ -29,7 +29,7 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr,
 	          nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
@@ -38,7 +38,6 @@ public:
 		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
 		FontHolder* const fonts,
-		ShaderHolder* const shaders,
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
 		PhysicsEngine* const physicsEngine,
@@ -50,7 +49,6 @@ public:
 		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
 		,mFonts{fonts}
-		,mShaders{shaders}
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
 		,mPhysicsEngine{physicsEngine}
@@ -65,7 +63,6 @@ public:
 	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
-	auto getShaders() const -> ShaderHolder& { return *mShaders; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
 	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
@@ -79,7 +76,6 @@ private:
 	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;
 	FontHolder* const mFonts;
-	ShaderHolder* const mShaders;
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
 	PhysicsEngine* const mPhysicsEngine;
