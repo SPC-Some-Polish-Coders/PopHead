@@ -123,6 +123,44 @@ void QuadRenderer::setDebugNumbersToZero()
 	mNumberOfRenderGroups = 0;
 }
 
+void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
+                                                        const Shader* shader, float z)
+{
+	// NOTE: this function doesn't do any culling
+	// TODO_ren: Use it in ParticleSystem
+
+	if(!shader)
+		shader = mDefaultInstanedSpriteShader;
+
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
+	
+	if(!texture)
+		texture = mWhiteTexture;
+	auto textureSlotOfThisTexture = getTextureSlotToWhichThisTextureIsBound(texture, renderGroup);
+	if(textureSlotOfThisTexture) {
+		for(auto& quad : quadsData)
+			quad.textureSlotRef = *textureSlotOfThisTexture;
+	}
+	else {
+		const float textureSlotID = static_cast<float>(renderGroup.textures.size());
+		for(auto& quad : quadsData)
+			quad.textureSlotRef = textureSlotID;
+		renderGroup.textures.emplace_back(texture);
+	}
+
+	renderGroup.quadsData.insert(renderGroup.quadsData.end(), quadsData.begin(), quadsData.end());
+}
+
+void QuadRenderer::submitBunchOfQuads(std::vector<QuadData>& quadsData, const std::vector<const Texture*>& textures,
+                                      const Shader* shader, float z)
+{
+	// TODO_ren: Implement this function, Use it in ParticleSystem
+
+	// NOTE: this function doesn't do any culling
+
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
+}
+
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation)
 {

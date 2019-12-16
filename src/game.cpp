@@ -123,10 +123,6 @@ void Game::update(sf::Time deltaTime)
 		mDebugCounter->draw();
 		mTerminal->update();
 
-		//rendererTest();
-		//pointTest();
-		//lineTest();
-
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
 	}

@@ -205,6 +205,11 @@ void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, co
 		lightRenderer.submitLightBlockingQuad(position, size);
 }
 
+void Renderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s, unsigned char z)
+{
+	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z));
+}
+
 void Renderer::submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);

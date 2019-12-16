@@ -49,10 +49,10 @@ namespace ph::system {
 			gunBody.height = -originalSize.y;
 		}
 		else
-		 {
-			 gunBody.width = originalSize.x;
-			 gunBody.height = originalSize.y;
-		 }
+		{
+			gunBody.width = originalSize.x;
+			gunBody.height = originalSize.y;
+		}
 	}
 
 	void GunPositioningAndTexture::updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody)

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "MinorRenderers/quadData.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <vector>
 
 namespace sf {
 	class Drawable;
@@ -27,6 +29,8 @@ namespace Renderer
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader,
 	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight);
+
+	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, unsigned char z);
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 

@@ -80,6 +80,7 @@ void LightRenderer::flush()
 		{
 			PH_PROFILE_SCOPE("create vertex data");
 
+			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
 				float rad = Math::degreesToRadians(angle);

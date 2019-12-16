@@ -1,5 +1,6 @@
 #pragma once
 
+#include "quadData.hpp"
 #include "Renderer/Buffers/indexBuffer.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
@@ -14,30 +15,8 @@ namespace ph {
 
 class Shader;
 class Texture;
-class VertexArray;
 
-struct QuadData
-{
-	sf::Vector2f position;
-	sf::Vector2f size;
-	float rotation;
-	Vector4f color;
-	FloatRect textureRect;
-	float textureSlotRef;
-};
-
-struct RenderGroupKey
-{
-	const Shader* shader;
-	float z;
-};
 bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
-
-struct QuadRenderGroup
-{
-	std::vector<QuadData> quadsData;
-	std::vector<const Texture*> textures;
-};
 
 class RenderGroupsHashMap
 {
@@ -70,6 +49,10 @@ public:
 	unsigned getNumberOfRenderGroups() const { return mNumberOfRenderGroups; }
 
 	void setDebugNumbersToZero();
+
+	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, float z);
+
+	void submitBunchOfQuads(std::vector<QuadData>&, const std::vector<const Texture*>&, const Shader* shader, float z);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
 	                sf::Vector2f position, sf::Vector2f size, float z, float rotation);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Renderer/renderer.hpp"
+#include "Renderer/MinorRenderers/quadData.hpp"
+#include <vector>
 
 #define MORE_THEN_32_TEXTURES 1
 
@@ -95,6 +97,30 @@ void lineTest()
 {
 	Renderer::submitLine(sf::Color::Red, {0.f, 0.f}, {50.f, 50.f}, 5.f);
 	Renderer::submitLine(sf::Color::Red, {15.f, 0.f}, {15.f, 50.f});
+}
+
+void submitBunchOfQuadsWithTheSameTextureTest()
+{
+	static Texture texture("resources/textures/others/gate.png");
+
+	static std::vector<QuadData> quads;
+	for(int x = 0; x < 100; ++x)
+		for(int y = 0; y < 100; ++y)
+		{
+			QuadData qd;
+			qd.position = {x * 20.f, y * 20.f};
+			qd.rotation = 0.f;
+			qd.size = {20.f, 20.f};
+			qd.textureRect = FloatRect(0.f, 0.f, 1.f, 1.f);
+			qd.textureSlotRef = 0.f;
+			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
+
+			quads.emplace_back(qd);
+		}
+
+	Renderer::submitBunchOfQuadsWithTheSameTexture(quads, &texture, nullptr, 200);
+
+	quads.clear();
 }
 
 }
