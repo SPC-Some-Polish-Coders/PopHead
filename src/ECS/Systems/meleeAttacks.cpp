@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pendingMeleeAttacks.hpp"
+#include "meleeAttacks.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -9,7 +9,7 @@
 
 namespace ph::system {
 
-void PendingMeleeAttacks::update(float dt)
+void MeleeAttacks::update(float dt)
 {
 	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker, component::BodyRect, component::FaceDirection, component::Player>();
 	for (auto meleeAttacker : meleeAttackerView)
@@ -37,7 +37,7 @@ void PendingMeleeAttacks::update(float dt)
 	}
 }
 
-void PendingMeleeAttacks::performHit(const sf::Vector2f playerPosition, float weaponInitialRotation, int damage, float range, float rotationRange)
+void MeleeAttacks::performHit(const sf::Vector2f playerPosition, float weaponInitialRotation, int damage, float range, float rotationRange)
 {
 	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
 	for(auto enemy : enemies)
@@ -55,7 +55,7 @@ void PendingMeleeAttacks::performHit(const sf::Vector2f playerPosition, float we
 	}	
 }
 
-sf::Vector2f PendingMeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const
+sf::Vector2f MeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const
 {
 	auto right = rect.left + rect.width;
 	auto bottom = rect.top + rect.height;
@@ -99,7 +99,7 @@ sf::Vector2f PendingMeleeAttacks::nearestPointOfCharacter(const FloatRect& rect,
 	return {};
 }
 
-float PendingMeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const
+float MeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const
 {
 	point -= playerPosition;
 
@@ -111,7 +111,7 @@ float PendingMeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vec
 	return angle;
 }
 
-bool PendingMeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float rotationRange) const
+bool MeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float rotationRange) const
 {
 	float halfOfRotationRange = rotationRange / 2.f;
 	auto attackRange = std::make_pair(getFixedAngle(attackRotation - halfOfRotationRange), getFixedAngle(attackRotation + halfOfRotationRange));
@@ -121,7 +121,7 @@ bool PendingMeleeAttacks::isAngleInAttackRange(float angle, float attackRotation
 	return angle >= attackRange.second || angle <= attackRange.first;
 }
 
-float PendingMeleeAttacks::getFixedAngle(float angle) const
+float MeleeAttacks::getFixedAngle(float angle) const
 {
 	angle -= (static_cast<unsigned>(angle) / 360) * 360.f;
 	if (angle < 0.f)
@@ -129,7 +129,7 @@ float PendingMeleeAttacks::getFixedAngle(float angle) const
 	return angle;
 }
 
-float PendingMeleeAttacks::getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const
+float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const
 {
 	if (playerFaceDirection == sf::Vector2f(1, 0))
 		return 0.f;

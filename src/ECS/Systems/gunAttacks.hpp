@@ -7,7 +7,7 @@
 
 namespace ph::system {
 
-	class PendingGunAttacks : public System
+	class GunAttacks : public System
 	{
 	public:
 		using System::System;
@@ -21,8 +21,8 @@ namespace ph::system {
 		sf::Vector2f getGunPosition(const sf::Vector2f& playerFaceDirection) const;
 		sf::Vector2f getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const;
 		sf::Vector2f getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const;
-		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots);
 
+		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots);
 		void handleLastingBullets();
 
 	};
