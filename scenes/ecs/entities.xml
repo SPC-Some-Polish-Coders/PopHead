@@ -18,7 +18,6 @@
         <component name="Velocity" dx="0" dy="0" />
         <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
         <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 255, 255, 90)" startAngle="-50" endAngle="50" attenuationAddition="0.1" attenuationFactor="0.0" attenuationSquareFactor="1.5"/>
->>>>>>> 47c960127e3a84560f4e78254bac360a5e8c8d79
         <component name="Killable" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
         <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" blocksLight="false" />
@@ -140,29 +139,11 @@
         <component name="Lever" id="0" minActivationInterval="0.25" turnOffAfterSwitch="false" />
     </entityTemplate>
 
-    <entityTemplate name="WeirdLever">
-        <component name="BodyRect" x="0.0" y="0.0" width="8" height="16" />
-        <component name="RenderQuad" textureFilepath="textures/others/lever.png" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" z="99" blocksLight="false" />
-        <component name="TextureRect" x="0" y="0" width="7" height="14" />
-    </entityTemplate>
-
     <entityTemplate name="Car">
         <component name="StaticCollisionBody" />
         <component name="RenderQuad" textureFilepath="textures/vehicles/car.png" z="99" blocksLight="false" />
     </entityTemplate>
-
-    <entityTemplate name="WeirdCar">
-        <component name="StaticCollisionBody" />
-        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="RenderQuad" textureFilepath="textures/vehicles/car.png" shaderName="weird" vertexShaderFilepath="resources/shaders/weird.vs.glsl" fragmentShaderFilepath="resources/shaders/weird.fs.glsl" z="100" blocksLight="false" />
-    </entityTemplate>
-
-    <entityTemplate name="VeryWeirdCar">
-        <component name="StaticCollisionBody" />
-        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="RenderQuad" textureFilepath="textures/vehicles/car.png" shaderName="weird" vertexShaderFilepath="resources/shaders/weird2.vs.glsl" fragmentShaderFilepath="resources/shaders/weird2.fs.glsl" z="100" blocksLight="false" />
-    </entityTemplate>
-
+    
     <entityTemplate name="BulletItem">
         <component name="Bullet" numOfBullets="1" />
     </entityTemplate>
