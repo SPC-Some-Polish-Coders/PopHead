@@ -8,7 +8,7 @@
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
-        <component name="GunAttacker" bullets="120" isTryingToAttack="false" />
+        <component name="GunAttacker" bullets="300" isTryingToAttack="false" />
         <component name="MeleeAttacker" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
@@ -165,7 +165,7 @@
         <component name="RenderQuad" textureFilepath="textures/others/pistol.png" z="95" blocksLight="false" />
         <component name="TextureRect" x="0" y="0" width="7" height="14" />
         <component name="HiddenForRenderer" />
-        <component name="GunProperties" minShotsInterval="0.3" range="250.0" deflectionAngle="2.0" damage="50" numberOfBullets="1" />
+        <component name="GunProperties" minShotsInterval="0.1" range="250.0" deflectionAngle="45.0" damage="50" numberOfBullets="1" />
     </entityTemplate>
 
     <entityTemplate name="BaseballBat">
