@@ -131,7 +131,7 @@ void LightRenderer::flush()
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
 			for(const auto& light : mLights)
-				Renderer::submitPoint(light.pos, light.color, 0.f, 15.f);
+				Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 		}
 
 		mLightPolygonVertexData.clear();
