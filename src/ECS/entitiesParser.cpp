@@ -86,6 +86,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"RenderQuad",			   &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			   &EntitiesParser::parseTextureRect},
 		{"Area",				   &EntitiesParser::parseArea},
+		{"PushingArea",			   &EntitiesParser::parsePushingArea},
 		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			   &EntitiesParser::parseKillable},
 		{"Health",	               &EntitiesParser::parseHealth},
@@ -216,6 +217,14 @@ void EntitiesParser::parseArea(const Xml& entityComponentNode, entt::entity& ent
 	mUsedRegistry->assign_or_replace<component::Area>(entity, ph::FloatRect(x, y, width, height));
 }
 
+void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float directionX = entityComponentNode.getAttribute("pushDirectionX").toFloat();
+	float directionY = entityComponentNode.getAttribute("pushDirectionY").toFloat();
+	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier").toFloat();
+	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY), velocityMultiplier);
+}
+
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float speed = entityComponentNode.getAttribute("speed").toFloat();
@@ -274,17 +283,18 @@ void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& ent
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
-	bool isActivated = entityComponentNode.getAttribute("isActivated").toBool();
-	float activationCooldown = entityComponentNode.getAttribute("minActivationInterval").toFloat();
-	mUsedRegistry->assign_or_replace<component::Lever>(entity, isActivated, activationCooldown);
+	unsigned leverId = entityComponentNode.getAttribute("id").toUnsigned();
+	float minActivationInterval = entityComponentNode.getAttribute("minActivationInterval").toFloat();
+	bool isActivated = false;
+	bool turnOffAfterSwitch = entityComponentNode.getAttribute("turnOffAfterSwitch").toBool();
+	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, minActivationInterval, 0.f, isActivated, turnOffAfterSwitch);
 }
 
 void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
 {
+	unsigned observedLeverId = entityComponentNode.getAttribute("observedLeverId").toUnsigned();
 	bool isActivated = false;
-	float leverPositionX = entityComponentNode.getAttribute("leverPositionX").toFloat();
-	float leverPositionY = entityComponentNode.getAttribute("leverPositionY").toFloat();
-	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, isActivated, sf::Vector2f(leverPositionX, leverPositionY));
+	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, observedLeverId, isActivated);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)

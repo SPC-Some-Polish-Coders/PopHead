@@ -14,6 +14,12 @@ namespace ph::component {
 		float areaSpeedMultiplier;
 	};
 
+	struct PushingArea
+	{
+		sf::Vector2f pushDirection;
+		float velocityMultiplier;
+	};
+
 	struct Entrance
 	{
 		std::string entranceDestination;
@@ -22,20 +28,22 @@ namespace ph::component {
 
 	struct Lever
 	{
-		bool isActivated;
+		unsigned id;
 		float minActivationInterval;
 		float activationCooldown;
+		bool isActivated;
+		bool turnOffAfterSwitch;
+	};
+
+	struct LeverListener
+	{
+		unsigned observedLeverId;
+		bool isActivated;
 	};
 
 	struct Gate
 	{
 		bool isOpened;
-	};
-
-	struct LeverListener
-	{
-		bool isActivated;
-		sf::Vector2f leverPosition;
 	};
 
 	struct GunProperties

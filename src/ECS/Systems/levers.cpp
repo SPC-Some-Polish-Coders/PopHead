@@ -28,27 +28,28 @@ void Levers::update(float seconds)
 				return;
 			}
 
+			if (leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
+				continue;
+
 			if (leverBody.rect.doPositiveRectsIntersect(playerBody.rect))
-			{
 				if (ActionEventManager::isActionPressed("use"))
 				{
 					leverDetails.isActivated = !leverDetails.isActivated;
 					leverDetails.activationCooldown = leverDetails.minActivationInterval;
 					leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
-					handleListeners(leverDetails.isActivated, leverBody.rect.getTopLeft());
+					handleListeners(leverDetails.isActivated, leverDetails.id);
 				}
-			}
 		}
 	}
 }
 
-void Levers::handleListeners(bool isActivated, const sf::Vector2f& leverPosition) const
+void Levers::handleListeners(bool isActivated, unsigned leverId) const
 {
 	auto listenersView = mRegistry.view<component::LeverListener>();
 	for (auto leverListener : listenersView)
 	{
 		auto& listenerDetails = listenersView.get<component::LeverListener>(leverListener);
-		if (listenerDetails.leverPosition == leverPosition)
+		if (listenerDetails.observedLeverId == leverId)
 			listenerDetails.isActivated = true;
 	}
 }
