@@ -45,12 +45,12 @@ void Scene::handleEvent(const ph::Event& e)
 {
 }
 
-void Scene::update(sf::Time delta)
+void Scene::update(sf::Time dt)
 {
  	if(mCutSceneManager.isCutSceneActive())
-		mCutSceneManager.updateCutScene(delta);
+		mCutSceneManager.updateCutScene(dt);
 
-	mSystemsQueue.update(delta.asSeconds());
+	mSystemsQueue.update(dt.asSeconds());
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

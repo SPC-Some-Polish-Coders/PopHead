@@ -6,7 +6,7 @@
 
 namespace ph::system {
 
-void PushingAreas::update(float seconds)
+void PushingAreas::update(float dt)
 {
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::Area>();
 	auto kinematicObjects = mRegistry.view<component::IsInArea, component::KinematicCollisionBody, component::BodyRect, component::Velocity, component::CharacterSpeed>();

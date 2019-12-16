@@ -127,7 +127,6 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
                                                         const Shader* shader, float z)
 {
 	// NOTE: this function doesn't do any culling
-	// TODO_ren: Use it in ParticleSystem
 
 	if(!shader)
 		shader = mDefaultInstanedSpriteShader;
@@ -149,16 +148,6 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 	}
 
 	renderGroup.quadsData.insert(renderGroup.quadsData.end(), quadsData.begin(), quadsData.end());
-}
-
-void QuadRenderer::submitBunchOfQuads(std::vector<QuadData>& quadsData, const std::vector<const Texture*>& textures,
-                                      const Shader* shader, float z)
-{
-	// TODO_ren: Implement this function, Use it in ParticleSystem
-
-	// NOTE: this function doesn't do any culling
-
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,

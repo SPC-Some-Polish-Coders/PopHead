@@ -9,7 +9,7 @@ class AnimationSystem : public System
 public:
 	using System::System;
 
-	void update(float seconds) override;
+	void update(float dt) override;
 };
 
 }

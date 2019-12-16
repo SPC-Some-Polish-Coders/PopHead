@@ -16,7 +16,7 @@ class RenderSystem : public System
 public:
 	RenderSystem(entt::registry& registry, sf::Window& window);
 
-	void update(float seconds) override;
+	void update(float dt) override;
 
 private:
 	Camera& getCameraWithTheBiggestPriority();

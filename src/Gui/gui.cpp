@@ -107,11 +107,11 @@ void GUI::handleEvent(const ph::Event& e)
 		i.second->handleEvent(e);
 }
 
-void GUI::update(sf::Time deltaTime)
+void GUI::update(sf::Time dt)
 {
 	for(const auto& k : mInterfaceList) {
 		if(k.second->isActive())
-			k.second->update(deltaTime);
+			k.second->update(dt);
 	}
 }
 

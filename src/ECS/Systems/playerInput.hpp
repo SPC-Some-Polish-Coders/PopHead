@@ -11,7 +11,7 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void update(float seconds) override;
+		void update(float dt) override;
 
 	private:
 		bool isPlayerWithoutControl();

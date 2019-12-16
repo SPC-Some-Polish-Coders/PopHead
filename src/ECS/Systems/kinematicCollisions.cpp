@@ -3,7 +3,7 @@
 
 namespace ph::system {
 
-	void KinematicCollisions::update(float seconds)
+	void KinematicCollisions::update(float dt)
 	{
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity, component::KinematicCollisionBody>();
 

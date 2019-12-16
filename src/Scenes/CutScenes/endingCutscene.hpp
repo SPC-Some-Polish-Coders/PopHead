@@ -15,7 +15,7 @@ class EndingCutScene : public CutScene
 public:
 	EndingCutScene(GUI&, MusicPlayer&, Camera&, AIManager&, SceneManager&);
 
-	void update(const sf::Time delta) override;
+	void update(const sf::Time dt) override;
 
 private:
 	void initGui();

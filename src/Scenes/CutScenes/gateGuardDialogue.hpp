@@ -11,7 +11,7 @@ class GateGuardDialogue : public CutScene
 public:
 	GateGuardDialogue(GameData* const gameData);
 
-	void update(const sf::Time delta) override;
+	void update(const sf::Time dt) override;
 
 private:
 	void initGui();

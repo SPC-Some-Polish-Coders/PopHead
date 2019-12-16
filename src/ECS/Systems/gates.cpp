@@ -7,7 +7,7 @@
 
 namespace ph::system {
 
-void Gates::update(float seconds)
+void Gates::update(float dt)
 {
 	auto gatesView = mRegistry.view<component::Gate, component::LeverListener>();
 	for (auto gate : gatesView)

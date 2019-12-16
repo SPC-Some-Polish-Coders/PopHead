@@ -8,7 +8,7 @@
 
 namespace ph::system {
 
-	void PlayerMovementInput::update(float seconds)
+	void PlayerMovementInput::update(float dt)
 	{
 		if(isPlayerWithoutControl())
 			return;

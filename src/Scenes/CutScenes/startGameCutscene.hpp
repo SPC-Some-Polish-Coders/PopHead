@@ -16,7 +16,7 @@ class StartGameCutScene : public CutScene
 public:
 	StartGameCutScene(Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
 
-	void update(const sf::Time delta) override;
+	void update(const sf::Time dt) override;
 
 private:
 	void closeCutScene();

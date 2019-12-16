@@ -3,7 +3,7 @@
 
 namespace ph::system {
 
-	void StaticCollisions::update(float seconds)
+	void StaticCollisions::update(float dt)
 	{
 		auto staticObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>(entt::exclude<component::KinematicCollisionBody>);
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();

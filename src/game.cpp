@@ -62,18 +62,18 @@ void Game::run()
 {
 	sf::Clock clock;
 	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-	sf::Time deltaTime = sf::Time::Zero;
+	sf::Time dt = sf::Time::Zero;
 
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mSceneManager->changingScenesProcess();
 
-		deltaTime += clock.restart();
+		dt += clock.restart();
 
-		while(deltaTime >= timePerFrame) {
+		while(dt >= timePerFrame) {
 			handleEvents();
-			update(getProperDeltaTime(deltaTime));
-			deltaTime = sf::Time::Zero;
+			update(corectDeltaTime(dt));
+			dt = sf::Time::Zero;
 		}
 	}
 
@@ -81,10 +81,10 @@ void Game::run()
 	mWindow.close();
 }
 
-sf::Time Game::getProperDeltaTime(sf::Time deltaTime)
+sf::Time Game::corectDeltaTime(sf::Time dt)
 {
-	const sf::Time minimalDeltaTimeConstrain = sf::seconds(1.f/20.f);
-	return deltaTime > minimalDeltaTimeConstrain ? minimalDeltaTimeConstrain : deltaTime;
+	const sf::Time dtMinimalConstrain = sf::seconds(1.f/20.f);
+	return dt > dtMinimalConstrain ? dtMinimalConstrain : dt;
 }
 
 void Game::handleEvents()
@@ -110,16 +110,16 @@ void Game::handleEvents()
 	}
 }
 
-void Game::update(sf::Time deltaTime)
+void Game::update(sf::Time dt)
 {
 	mDebugCounter->update();
 
 	if(mWindow.hasFocus())
 	{
-		mSceneManager->update(deltaTime);
+		mSceneManager->update(dt);
 		//mAIManager->update();
 		//mPhysicsEngine->update(deltaTime);
-		mGui->update(deltaTime);
+		mGui->update(dt);
 		mDebugCounter->draw();
 		mTerminal->update();
 

@@ -29,7 +29,8 @@ void MeleePositioning::update(float dt)
 	}
 }
 
-void MeleePositioning::updateMeleeSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody)
+void MeleePositioning::updateMeleeSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition,
+                                                 FloatRect& gunBody)
 {
 	const sf::Vector2f rightHandPosition = getRightHandPosition(playerFaceDirection) + playerPosition;
 	const sf::Vector2f meleeBodySize = gunBody.getSize();

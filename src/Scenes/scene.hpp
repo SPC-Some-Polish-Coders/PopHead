@@ -24,7 +24,7 @@ public:
     explicit Scene(sf::Window& window, MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&);
 
 	void handleEvent(const Event&);
-    void update(sf::Time delta);
+    void update(sf::Time dt);
 
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }

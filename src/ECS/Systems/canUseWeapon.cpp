@@ -5,10 +5,10 @@
 
 namespace ph::system {
 
-void CanUseWeapon::update(float seconds)
+void CanUseWeapon::update(float dt)
 {
-	updateMeleeWeapon(seconds);
-	updateGun(seconds);
+	updateMeleeWeapon(dt);
+	updateGun(dt);
 }
 
 void CanUseWeapon::updateMeleeWeapon(float dt)

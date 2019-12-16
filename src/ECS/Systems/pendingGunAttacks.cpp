@@ -9,7 +9,7 @@
 
 namespace ph::system {
 
-void PendingGunAttacks::update(float seconds)
+void PendingGunAttacks::update(float dt)
 {
 	handleLastingBullets();
 	handlePendingGunAttacks();

@@ -12,7 +12,7 @@ class SubtitlesBeforeStartGameCutscene : public CutScene
 public:
 	SubtitlesBeforeStartGameCutscene(SceneManager&, GUI& gui);
 
-	void update(sf::Time delta) override;
+	void update(sf::Time dt) override;
 
 private:
 	void endCutscene();

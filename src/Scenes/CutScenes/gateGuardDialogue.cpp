@@ -53,7 +53,7 @@ void GateGuardDialogue::initGui()
 	guardSpeechBubble->getWidget("guard7")->hide();
 }
 	
-void GateGuardDialogue::update(const sf::Time delta)
+void GateGuardDialogue::update(const sf::Time dt)
 {
 	if (!mPlayerOnThePosition)
 	{

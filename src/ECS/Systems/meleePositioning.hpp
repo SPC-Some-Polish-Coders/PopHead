@@ -12,7 +12,7 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void update(float seconds) override;
+		void update(float dt) override;
 
 	private:
 		sf::Vector2f getRightHandPosition(const sf::Vector2f& playerFaceDirection);

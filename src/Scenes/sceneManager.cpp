@@ -95,10 +95,10 @@ void SceneManager::handleEvent(const ph::Event& e)
 	mScene->handleEvent(e);
 }
 
-void SceneManager::update(sf::Time delta)
+void SceneManager::update(sf::Time dt)
 {
 	if(mScene != nullptr)
-		mScene->update(delta);
+		mScene->update(dt);
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)

@@ -8,7 +8,7 @@
 
 namespace ph::system {
 
-void IsObjectInArea::update(float seconds)
+void IsObjectInArea::update(float dt)
 {
 	auto areasView = mRegistry.view<component::Area>();
 	auto kinematicObjectsOutsideAreasView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::IsInArea>);

@@ -22,7 +22,7 @@ RenderSystem::RenderSystem(entt::registry& registry, sf::Window& window)
 {
 }
 
-void RenderSystem::update(float seconds)
+void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 

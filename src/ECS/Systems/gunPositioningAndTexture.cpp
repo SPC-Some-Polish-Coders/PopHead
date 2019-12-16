@@ -5,7 +5,7 @@
 
 namespace ph::system {
 
-	void GunPositioningAndTexture::update(float seconds)
+	void GunPositioningAndTexture::update(float dt)
 	{
 		auto playerView = mRegistry.view<component::GunAttacker, component::Player, component::BodyRect, component::FaceDirection>();
 		for (auto player : playerView)
@@ -13,7 +13,7 @@ namespace ph::system {
 			const auto& [playerFaceDirection, gunAttacker, playerBody] = playerView.get<component::FaceDirection, component::GunAttacker, component::BodyRect>(player);
 
 			updateGunPosition(playerFaceDirection.direction, playerBody.rect);
-			updateTexture(seconds, playerFaceDirection.direction, gunAttacker.isTryingToAttack, gunAttacker.canAttack);
+			updateTexture(dt, playerFaceDirection.direction, gunAttacker.isTryingToAttack, gunAttacker.canAttack);
 		}
 	}
 
@@ -55,7 +55,8 @@ namespace ph::system {
 		}
 	}
 
-	void GunPositioningAndTexture::updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition, FloatRect& gunBody)
+	void GunPositioningAndTexture::updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition,
+	                                                       FloatRect& gunBody)
 	{
 		const sf::Vector2f rightHandPosition = getRightHandPosition(playerFaceDirection) + playerPosition;
 		const sf::Vector2f gunBodySize = gunBody.getSize();

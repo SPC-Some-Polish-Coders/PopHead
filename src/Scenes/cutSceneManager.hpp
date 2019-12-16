@@ -13,7 +13,7 @@ public:
 
 	void activateCutscene(std::unique_ptr<CutScene> startingCutScene);
 
-	void updateCutScene(const sf::Time delta);
+	void updateCutScene(const sf::Time dt);
 
 	bool isCutSceneActive();
 

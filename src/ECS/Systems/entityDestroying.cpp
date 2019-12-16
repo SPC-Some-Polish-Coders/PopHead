@@ -3,7 +3,7 @@
 
 namespace ph::system {
 
-	void EntityDestroying::update(float seconds)
+	void EntityDestroying::update(float dt)
 	{
 		auto view = mRegistry.view<component::TaggedToDestroy>();
 		mRegistry.destroy(view.begin(), view.end());

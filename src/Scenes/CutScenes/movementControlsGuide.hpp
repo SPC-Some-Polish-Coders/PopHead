@@ -12,7 +12,7 @@ class MovementContolsGuide : public CutScene
 public:
 	MovementContolsGuide(GUI&, SceneManager&);
 
-	void update(const sf::Time delta);
+	void update(const sf::Time dt);
 
 private:
 	void closeCutscene();

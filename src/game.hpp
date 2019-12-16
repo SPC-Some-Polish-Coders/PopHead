@@ -24,9 +24,9 @@ public:
 	Terminal* getTerminal() { return mTerminal.get(); }
 
 private:
-	sf::Time getProperDeltaTime(sf::Time deltaTime);
+	sf::Time corectDeltaTime(sf::Time dt);
 	void handleEvents();
-	void update(sf::Time deltaTime);
+	void update(sf::Time dt);
 
 private:
 	std::unique_ptr< GameData >           mGameData;

@@ -21,7 +21,7 @@ MovementContolsGuide::MovementContolsGuide(GUI& gui, SceneManager& sceneManager)
 	greyBackground->getWidget("backslashHint")->hide();
 }
 
-void MovementContolsGuide::update(const sf::Time delta)
+void MovementContolsGuide::update(const sf::Time dt)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f) {
 		++mTimesPressedSkip;

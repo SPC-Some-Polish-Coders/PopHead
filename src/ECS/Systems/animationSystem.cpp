@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-void AnimationSystem::update(float seconds)
+void AnimationSystem::update(float dt)
 {
 	auto view = mRegistry.view<component::AnimationData, component::TextureRect>();
 
@@ -14,7 +14,7 @@ void AnimationSystem::update(float seconds)
 		
 		if(animationData.isPlaying)
 		{
-			animationData.elapsedTime += seconds;
+			animationData.elapsedTime += dt;
 			while(animationData.elapsedTime >= animationData.delay)
 			{
 				animationData.elapsedTime -= animationData.delay;

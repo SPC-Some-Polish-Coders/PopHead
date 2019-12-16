@@ -9,7 +9,7 @@
 
 namespace ph::system {
 
-void PendingMeleeAttacks::update(float seconds)
+void PendingMeleeAttacks::update(float dt)
 {
 	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker, component::BodyRect, component::FaceDirection, component::Player>();
 	for (auto meleeAttacker : meleeAttackerView)

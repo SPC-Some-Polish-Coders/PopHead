@@ -24,11 +24,11 @@ Interface::Interface(GameData* data)
 
 }
 
-void Interface::update(sf::Time delta)
+void Interface::update(sf::Time dt)
 {
 	for(const auto& k : mWidgetList)
 		if(k.second->isActive())
-			k.second->update(delta);
+			k.second->update(dt);
 }
 
 void Interface::draw()

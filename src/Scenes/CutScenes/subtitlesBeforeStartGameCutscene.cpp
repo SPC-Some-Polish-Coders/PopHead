@@ -35,7 +35,7 @@ SubtitlesBeforeStartGameCutscene::SubtitlesBeforeStartGameCutscene(SceneManager&
 	phoneSpeechBubble->getWidget("phone4b")->hide();
 }
 
-void SubtitlesBeforeStartGameCutscene::update(sf::Time delta)
+void SubtitlesBeforeStartGameCutscene::update(sf::Time dt)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mClock.getElapsedTime().asSeconds() > 0.3f)
 	{

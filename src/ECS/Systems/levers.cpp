@@ -9,7 +9,7 @@
 
 namespace ph::system {
 
-void Levers::update(float seconds)
+void Levers::update(float dt)
 {
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
@@ -24,7 +24,7 @@ void Levers::update(float seconds)
 
 			if (leverDetails.activationCooldown > 0.f)
 			{
-				leverDetails.activationCooldown -= seconds;
+				leverDetails.activationCooldown -= dt;
 				return;
 			}
 

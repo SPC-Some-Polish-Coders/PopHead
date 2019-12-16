@@ -55,7 +55,7 @@ void EndingCutScene::initGui()
 	guySpeechBubble->getWidget("guy6b")->hide();
 }
 
-void EndingCutScene::update(const sf::Time delta)
+void EndingCutScene::update(const sf::Time dt)
 {
 	// TODO: Use events here
 

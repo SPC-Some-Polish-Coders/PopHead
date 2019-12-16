@@ -12,7 +12,7 @@ class GunPositioningAndTexture : public System
 public:
 	using System::System;
 
-	void update(float seconds) override;
+	void update(float dt) override;
 
 private:
 	void updateGunPosition(const sf::Vector2f& playerFaceDirection, const FloatRect& playerBody);

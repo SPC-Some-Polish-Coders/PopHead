@@ -15,7 +15,7 @@ public:
 	
 	Entrances(entt::registry& registry, SceneManager& sceneManager);
 
-	void update(float seconds) override;
+	void update(float dt) override;
 
 private:
 	SceneManager& mSceneManager;

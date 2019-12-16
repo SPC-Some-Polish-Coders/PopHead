@@ -78,7 +78,7 @@ void Widget::handleEventOnChildren(const ph::Event& phEvent)
 		widget.second->handleEvent(phEvent);
 }
 
-void Widget::update(sf::Time delta)
+void Widget::update(sf::Time dt)
 {
 	if(mIsActive == false)
 		return;
@@ -88,7 +88,7 @@ void Widget::update(sf::Time delta)
 			k.second(this);
 
 	for(const auto& k : mWidgetList)
-		k.second->update(delta);
+		k.second->update(dt);
 }
 
 void Widget::addWidget(const std::string& name, Widget* ptr)

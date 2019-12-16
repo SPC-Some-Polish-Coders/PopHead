@@ -12,7 +12,7 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void update(float seconds) override;
+		void update(float dt) override;
 
 	private:
 		void performHit(const sf::Vector2f playerCenterPosition, float weaponInitialRotation, int damage, float range, float rotationRange);

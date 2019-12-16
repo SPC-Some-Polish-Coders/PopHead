@@ -23,12 +23,12 @@ StartGameCutScene::StartGameCutScene(Camera& camera, SoundPlayer& soundPlayer, M
 	//car->setVelocity(120);
 }
 
-void StartGameCutScene::update(const sf::Time delta)
+void StartGameCutScene::update(const sf::Time dt)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		closeCutScene();
 
-	mCutsceneTimeInSeconds += delta.asSeconds();
+	mCutsceneTimeInSeconds += dt.asSeconds();
 	
 	auto canvas = mGui.getInterface("labels")->getWidget("canvas");
 	
@@ -40,14 +40,6 @@ void StartGameCutScene::update(const sf::Time delta)
 		canvas->getWidget("speechBubble")->hide();
 		mWasGuiHidden = true;
 	}
-
-	//auto& car = dynamic_cast<Car&>(*mRoot.getChild("LAYER_lyingObjects")->getChild("car"));
-	
-	/*if(mCutsceneTimeInSeconds < 23)
-		mCamera.move(car.getPosition() + sf::Vector2f(15, 10), 10.f * delta.asSeconds());*/
-
-	/*if(mCutsceneTimeInSeconds < 5)
-		car.speedUp();*/
 
 	// NARRATIVE SUBTITLES
 	if(mCutsceneTimeInSeconds > 4 && mCutsceneTimeInSeconds < 8) {

@@ -31,7 +31,7 @@ private:
 
 public:
 	void handleEvent(const Event&);
-    void update(sf::Time delta);
+    void update(sf::Time dt);
 
 	Scene& getScene() { return *mScene.get(); }
     void setGameData(GameData* const gameData){mGameData = gameData;}

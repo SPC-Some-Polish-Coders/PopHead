@@ -3,13 +3,13 @@
 
 namespace ph::system {
 
-	void Lifetime::update(float seconds)
+	void Lifetime::update(float dt)
 	{
 		auto entitiesView = mRegistry.view<component::Lifetime>();
 		for (auto entity : entitiesView)
 		{
 			auto& entityLifetime = entitiesView.get<component::Lifetime>(entity);
-			entityLifetime.lifetime -= seconds;
+			entityLifetime.lifetime -= dt;
 			if (entityLifetime.lifetime < 0.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
 		}

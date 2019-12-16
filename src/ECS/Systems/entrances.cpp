@@ -14,7 +14,7 @@ Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
 {
 }
 
-void Entrances::update(float seconds)
+void Entrances::update(float dt)
 {
 	auto entrancesView = mRegistry.view<component::Area, component::Entrance>();
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();

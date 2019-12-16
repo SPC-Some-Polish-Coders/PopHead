@@ -5,7 +5,7 @@
 
 namespace ph::system {
 
-	void HostileCollisions::update(float seconds)
+	void HostileCollisions::update(float dt)
 	{
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
 		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();

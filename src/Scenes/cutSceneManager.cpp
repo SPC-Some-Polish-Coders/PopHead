@@ -12,9 +12,9 @@ void CutSceneManager::activateCutscene(std::unique_ptr<CutScene> startingCutScen
 	mActiveCutscene = std::move(startingCutScene);
 }
 
-void CutSceneManager::updateCutScene(const sf::Time delta)
+void CutSceneManager::updateCutScene(const sf::Time dt)
 {
-	mActiveCutscene->update(delta);
+	mActiveCutscene->update(dt);
 }
 
 bool CutSceneManager::isCutSceneActive()
