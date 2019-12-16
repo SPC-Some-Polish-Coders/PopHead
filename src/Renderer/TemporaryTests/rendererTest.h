@@ -10,18 +10,18 @@ namespace ph {
 
 void rendererTest()
 {
-	/* 1  */ static Texture faceTex("resources/textures/test/awesomeface.png");
-	/* 2  */ static Texture containerTex("resources/textures/test/container.jpg");
-	/* 3  */ static Texture container2Tex("resources/textures/test/container2.png");
-	/* 4  */ static Texture container2SpecTex("resources/textures/test/container2_specular.png");
-	/* 5  */ static Texture floorTex("resources/textures/test/floor.jpg");
-	/* 6  */ static Texture grassTex("resources/textures/test/grass.png");
-	/* 7  */ static Texture sb1Tex("resources/textures/test/sb1.jpg");
-	/* 8  */ static Texture sb2Tex("resources/textures/test/sb2.jpg");
-	/* 9  */ static Texture sb3Tex("resources/textures/test/sb3.jpg");
-	/* 10 */ static Texture sb4Tex("resources/textures/test/sb4.jpg");
-	/* 11 */ static Texture sb5Tex("resources/textures/test/sb5.jpg");
-	/* 12 */ static Texture wallTex("resources/textures/test/wall.jpg");
+	/* 1  */ static Texture awsdTex2("resources/textures/others/awsdHint.png");
+	/* 2  */ static Texture backslashTex2("resources/textures/others/backslashHint.png");
+	/* 3  */ static Texture barTex2("resources/textures/others/bar.png");
+	/* 4  */ static Texture baseballTex2("resources/textures/others/baseballStick.png");
+	/* 5  */ static Texture bulletTex2("resources/textures/others/bullet.png");
+	/* 6  */ static Texture bulletGroundTex2("resources/textures/others/bulletGround.png");
+	/* 7  */ static Texture enterTex2("resources/textures/others/enterHint.png");
+	/* 8  */ static Texture gateTex2("resources/textures/others/gate.png");
+	/* 9  */ static Texture heartTex2("resources/textures/others/heart.png");
+	/* 10 */ static Texture leverTex2("resources/textures/others/lever.png");
+	/* 11 */ static Texture medkitTex2("resources/textures/others/medkit.png");
+	/* 12 */ static Texture pistolTex2("resources/textures/others/pistol.png");
 	/* 13 */ static Texture awsdTex("resources/textures/others/awsdHint.png");
 	/* 14 */ static Texture backslashTex("resources/textures/others/backslashHint.png");
 	/* 15 */ static Texture barTex("resources/textures/others/bar.png");
@@ -45,21 +45,21 @@ void rendererTest()
 	/* 33 */ static Texture optionsButtonTex("resources/textures/gui/optionsButton.png");
 	/* 34 */ static Texture sewageTex("resources/textures/gui/sewage.jpg");
 
-	Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-1500.f, 0.f), sf::Vector2f(3000.f, 3000.f), 100, 0.f, false);
+	Renderer::submitQuad(&medkitTex2, nullptr, nullptr, nullptr, sf::Vector2f(-1500.f, 0.f), sf::Vector2f(3000.f, 3000.f), 100, 0.f, false);
 
 	for(int i = 0; i < 2500; ++i) {
-		Renderer::submitQuad(&faceTex, nullptr, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 45.f, false);
-		Renderer::submitQuad(&containerTex, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 123.f, false);
-		Renderer::submitQuad(&container2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&container2SpecTex, nullptr, nullptr, nullptr, sf::Vector2f(-400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&floorTex, nullptr, nullptr, nullptr, sf::Vector2f(-350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&grassTex, nullptr, nullptr, nullptr, sf::Vector2f(-300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&sb1Tex, &IntRect(5, 5, 10, 10), nullptr, nullptr, sf::Vector2f(-250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&sb2Tex, nullptr, nullptr, nullptr, sf::Vector2f(-200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
-		Renderer::submitQuad(&sb3Tex, nullptr, nullptr, nullptr, sf::Vector2f(-150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
-		Renderer::submitQuad(&sb4Tex, nullptr, nullptr, nullptr, sf::Vector2f(-100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
-		Renderer::submitQuad(&sb5Tex, nullptr, nullptr, nullptr, sf::Vector2f(-50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
-		Renderer::submitQuad(&wallTex, nullptr, nullptr, nullptr, sf::Vector2f(0.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&awsdTex2, nullptr, nullptr, nullptr, sf::Vector2f(-550.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 45.f, false);
+		Renderer::submitQuad(&backslashTex2, nullptr, &sf::Color::Red, nullptr, sf::Vector2f(-500.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 123.f, false);
+		Renderer::submitQuad(&barTex2, nullptr, nullptr, nullptr, sf::Vector2f(-450.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&baseballTex2, nullptr, nullptr, nullptr, sf::Vector2f(-400.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&bulletTex2, nullptr, nullptr, nullptr, sf::Vector2f(-350.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&bulletGroundTex2, nullptr, nullptr, nullptr, sf::Vector2f(-300.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&enterTex2, &IntRect(5, 5, 10, 10), nullptr, nullptr, sf::Vector2f(-250.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&gateTex2, nullptr, nullptr, nullptr, sf::Vector2f(-200.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&heartTex2, nullptr, nullptr, nullptr, sf::Vector2f(-150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&leverTex2, nullptr, nullptr, nullptr, sf::Vector2f(-100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10,0.f, false);
+		Renderer::submitQuad(&medkitTex2, nullptr, nullptr, nullptr, sf::Vector2f(-50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
+		Renderer::submitQuad(&pistolTex2, nullptr, nullptr, nullptr, sf::Vector2f(0.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
 		Renderer::submitQuad(&awsdTex, nullptr, nullptr, nullptr, sf::Vector2f(50.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
 		Renderer::submitQuad(&backslashTex, nullptr, nullptr, nullptr, sf::Vector2f(100.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
 		Renderer::submitQuad(&barTex, nullptr, &sf::Color::Yellow, nullptr, sf::Vector2f(150.f, ( float) i * 50.f), sf::Vector2f(20.f, 30.f), 10, 0.f, false);
