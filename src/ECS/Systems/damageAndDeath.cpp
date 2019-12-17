@@ -43,8 +43,8 @@ namespace ph::system {
 				renderQuad.color = sf::Color::White;
 				mRegistry.remove<component::DamageAnimation>(entity);
 			}
-			else if(!damageAnimation.wasAnimationStarted) {
-				damageAnimation.wasAnimationStarted = true;
+			else if(!damageAnimation.animationStarted) {
+				damageAnimation.animationStarted = true;
 				renderQuad.color = sf::Color(255, 0, 0);
 
 				component::ParticleEmitter bloodParEmitter;
