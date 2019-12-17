@@ -12,19 +12,17 @@
 namespace ph {
 
 Game::Game()
-	:mGameData{}
-	,mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default,
-		sf::ContextSettings(24, 8, 0, 3, 3/*, sf::ContextSettings::Core*/)
-	)
-	,mSoundPlayer{new SoundPlayer()}
-	,mMusicPlayer{new MusicPlayer()}
-	,mTextures{new TextureHolder()}
-	,mFonts{new FontHolder()}
-	,mAIManager(new AIManager())
-	,mSceneManager{new SceneManager()}
-	,mTerminal{new Terminal()}
-	,mDebugCounter{new DebugCounter()}
-	,mGui{new GUI()}
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
+	,mGameData{}
+	,mSoundPlayer{std::make_unique<SoundPlayer>()}
+	,mMusicPlayer{std::make_unique<MusicPlayer>()}
+	,mTextures{std::make_unique<TextureHolder>()}
+	,mFonts{std::make_unique<FontHolder>()}
+	,mAIManager(std::make_unique<AIManager>())
+	,mSceneManager{std::make_unique<SceneManager>()}
+	,mTerminal{std::make_unique<Terminal>()}
+	,mDebugCounter{std::make_unique<DebugCounter>()}
+	,mGui{std::make_unique<GUI>()}
 {
 	mGameData.reset(new GameData(
 		&mWindow,
@@ -115,7 +113,6 @@ void Game::update(sf::Time dt)
 	{
 		mSceneManager->update(dt);
 		//mAIManager->update();
-		//mPhysicsEngine->update(deltaTime);
 		mGui->update(dt);
 		mDebugCounter->draw();
 		mTerminal->update();
