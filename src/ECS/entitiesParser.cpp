@@ -427,12 +427,13 @@ void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::
 
 void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
+	std::string shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath").toString();
 	float minShotsInterval = entityComponentNode.getAttribute("minShotsInterval").toFloat();
 	float range = entityComponentNode.getAttribute("range").toFloat();
 	float deflectionAngle = entityComponentNode.getAttribute("deflectionAngle").toFloat();
 	int damage = entityComponentNode.getAttribute("damage").toInt();
 	int numberOfBulletsShot = entityComponentNode.getAttribute("numberOfBullets").toInt();
-	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, minShotsInterval, range, deflectionAngle, damage, numberOfBulletsShot);
+	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, minShotsInterval, range, deflectionAngle, damage, numberOfBulletsShot);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)

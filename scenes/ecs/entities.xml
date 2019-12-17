@@ -165,7 +165,7 @@
         <component name="RenderQuad" textureFilepath="textures/others/pistol.png" z="95" blocksLight="false" />
         <component name="TextureRect" x="0" y="0" width="7" height="14" />
         <component name="HiddenForRenderer" />
-        <component name="GunProperties" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" />
+        <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" />
     </entityTemplate>
 
   <entityTemplate name="Shotgun">
@@ -173,7 +173,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="95" blocksLight="false" />
     <component name="TextureRect" x="0" y="0" width="14" height="14" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" minShotsInterval="0.5" range="175.0" deflectionAngle="8.0" damage="30" numberOfBullets="2" />
+    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" />
   </entityTemplate>
 
     <entityTemplate name="BaseballBat">
@@ -203,9 +203,9 @@
 
     </entity>
 
-  <entity sourceTemplate="Shotgun">
-    <component name="CurrentGun" />
-  </entity>
+    <entity sourceTemplate="Shotgun">
+      <component name="CurrentGun" />
+    </entity>
 
     <entity sourceTemplate="BaseballBat">
         <component name="CurrentMeleeWeapon" />
