@@ -18,9 +18,10 @@ void CanUseWeapon::updateMeleeWeapon(float dt)
 
 	for (auto meleeAttacker : meleeAttackerView)
 	{
+		auto& meleeAttackerDetails = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
+
 		for (auto melee : currentMeleeView)
 		{
-			auto& meleeAttackerDetails = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
 			const auto& currentMeleeProperties = currentMeleeView.get<component::MeleeProperties>(melee);
 
 			if (meleeAttackerDetails.cooldownSinceLastHit > 0.f)
@@ -44,9 +45,10 @@ void CanUseWeapon::updateGun(float dt)
 
 	for (const auto& gunAttacker : gunAttackerView)
 	{
+		auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+
 		for (auto currentGun : currentGunView)
 		{
-			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
 			const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
 
 			if (gunAttackerDetails.cooldownSinceLastShoot > 0.f)

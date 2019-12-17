@@ -33,11 +33,9 @@ namespace ph::system {
 		auto view = mRegistry.view<component::DamageAnimation, component::RenderQuad, component::Health, component::MultiParticleEmitter>();
 		for(auto entity : view)
 		{
-			PH_ASSERT(mRegistry.has<component::MultiParticleEmitter>(entity),
-				"This Entity should have MultiParticleEmitter in order to emit damage particles!");
-
-			auto& [damageAnimation, renderQuad, health, multiParticleEmitter] =
-				view.get<component::DamageAnimation, component::RenderQuad, component::Health, component::MultiParticleEmitter>(entity);
+			auto& [damageAnimation, renderQuad, multiParticleEmitter] =
+				view.get<component::DamageAnimation, component::RenderQuad, component::MultiParticleEmitter>(entity);
+			const auto& health = view.get<component::Health>(entity);
 			
 			damageAnimation.timeToEndColorChange -= dt;
 			
