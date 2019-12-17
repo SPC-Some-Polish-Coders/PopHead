@@ -7,7 +7,7 @@
 
 namespace ph::system {
 
-	class PendingMeleeAttacks : public System
+	class MeleeAttacks : public System
 	{
 	public:
 		using System::System;

@@ -131,7 +131,7 @@ namespace ph::system {
 					mRegistry.remove<component::HiddenForRenderer>(gun);
 
 			if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-				gunTextureBody.rect = IntRect(offsetX, 0, 13, 8);
+				gunTextureBody.rect = IntRect(offsetX, 0, 15, 8);
 			else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
 				gunTextureBody.rect = IntRect(offsetX, 10, 13, 11);
 			else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pendingGunAttacks.hpp"
+#include "gunAttacks.hpp"
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -8,17 +8,15 @@
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
 
-#include <iostream>
-
 namespace ph::system {
 
-void PendingGunAttacks::update(float dt)
+void GunAttacks::update(float dt)
 {
-	handleLastingBullets();
 	handlePendingGunAttacks();
+	handleLastingBullets();
 }
 
-void PendingGunAttacks::handlePendingGunAttacks()
+void GunAttacks::handlePendingGunAttacks()
 {
 	auto gunAttackerView = mRegistry.view<component::GunAttacker, component::BodyRect, component::Player, component::FaceDirection>();
 	for (const auto& gunAttacker : gunAttackerView)
@@ -52,7 +50,7 @@ void PendingGunAttacks::handlePendingGunAttacks()
 	}
 }
 
-sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDirection) const
+sf::Vector2f GunAttacks::getGunPosition(const sf::Vector2f& playerFaceDirection) const
 {
 	if (playerFaceDirection == sf::Vector2f(1, 0))
 		return { 16, 7 };
@@ -74,7 +72,7 @@ sf::Vector2f PendingGunAttacks::getGunPosition(const sf::Vector2f& playerFaceDir
 		return { 0, 0 };
 }
 
-sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
+sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
 {
 	if (playerFaceDirection == sf::Vector2f(1, 0))
 		return sf::Vector2f(5, -1);
@@ -86,7 +84,7 @@ sf::Vector2f PendingGunAttacks::getCorrectedBulletStartingPosition(const sf::Vec
 		return sf::Vector2f(0.f, 0.f);
 }
 
-std::vector<sf::Vector2f> PendingGunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets)
+std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets)
 {
 	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
 	std::vector<sf::Vector2f> shotsEndingPositions;
@@ -112,6 +110,7 @@ std::vector<sf::Vector2f> PendingGunAttacks::performShoot(const sf::Vector2f& pl
 
 			if (didBulletHitEnemy)
 				break;
+
 			bulletTravelledDist += 5;
 			currentBulletPos = getCurrentPosition(direction, startingBulletPos, bulletTravelledDist);
 		}
@@ -120,7 +119,7 @@ std::vector<sf::Vector2f> PendingGunAttacks::performShoot(const sf::Vector2f& pl
 	return shotsEndingPositions;
 }
 
-sf::Vector2f PendingGunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
+sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
 {
 	deflection = Random::generateNumber(-deflection, deflection);
 	const float deflectionFactor = deflection / -90.f;
@@ -207,7 +206,7 @@ sf::Vector2f PendingGunAttacks::getBulletDirection(const sf::Vector2f& playerFac
 	return deflectedBulletDirection;
 }
 
-sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const
+sf::Vector2f GunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const
 {
 	sf::Vector2f newPosition;
 	newPosition.x = startingPos.x + bulletDirection.x * bulletDistance;
@@ -215,7 +214,7 @@ sf::Vector2f PendingGunAttacks::getCurrentPosition(const sf::Vector2f& bulletDir
 	return newPosition;
 }
 
-void PendingGunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition)
+void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition)
 {
 	for (auto shot : shotsEngingPosition)
 	{
@@ -226,9 +225,7 @@ void PendingGunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition
 	}
 }
 
-
-
-void PendingGunAttacks::handleLastingBullets()
+void GunAttacks::handleLastingBullets()
 {
 	const auto lastingShotsView = mRegistry.view<component::LastingShot>();
 
