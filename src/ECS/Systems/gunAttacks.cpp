@@ -104,19 +104,17 @@ std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFac
 			{
 				const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
 				if (bodyRect.rect.contains(currentBulletPos))
+				{
 					if (enemiesWithDamageTag.contains(enemy))
 					{
 						auto& damageTagValue = enemiesWithDamageTag.get<component::DamageTag>(enemy);
 						damageTagValue.amountOfDamage += damage;
-						didBulletHitEnemy = true;
-						break;
 					}
 					else
-					{
-						auto& damageTag = mRegistry.assign<component::DamageTag>(enemy, damage);
-						didBulletHitEnemy = true;
-						break;
-					}
+						mRegistry.assign<component::DamageTag>(enemy, damage);
+					didBulletHitEnemy = true;
+					break;
+				}
 			}
 
 			if (didBulletHitEnemy)
