@@ -92,7 +92,7 @@ namespace ph::component {
 	struct DamageAnimation
 	{
 		float timeToEndColorChange;
-		bool wasAnimationStarted = false;
+		bool animationStarted = false;
 	};
 
 }

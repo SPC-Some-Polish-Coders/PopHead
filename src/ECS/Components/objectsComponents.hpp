@@ -44,6 +44,7 @@ namespace ph::component {
 
 	struct GunProperties
 	{
+		std::string shotSoundFilepath;
 		float minShotsInterval;
 		float range;
 		float deflectionAngle;

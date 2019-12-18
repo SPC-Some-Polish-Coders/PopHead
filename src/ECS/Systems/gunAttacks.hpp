@@ -22,7 +22,7 @@ namespace ph::system {
 		sf::Vector2f getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const;
 		sf::Vector2f getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const;
 
-		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots);
+		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename);
 		void handleLastingBullets();
 
 	};
