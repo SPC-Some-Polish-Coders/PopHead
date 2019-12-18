@@ -36,6 +36,8 @@ namespace ph {
 
 		const Xml mapNode = mapFile.getChild("map");
 		const Xml gameObjects = findGameObjects(mapNode);
+
+		// TODO: refactor this statement
 		if (gameObjects.toString() == "")
 			return;
 
