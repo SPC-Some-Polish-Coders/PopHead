@@ -74,10 +74,10 @@ void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>::parseMap(const 
 		const std::string filePath = "scenes/map/" + categoryNode[0].getAttribute("filename").toString();
 		MapParser mapParser;
 		mapParser.parseFile(filePath, aiManager, gameRegistry, templates, textures);
-		if (mapParser.loadedPlayer())
-			aiManager.setIsPlayerOnScene(true);
-		else
-			aiManager.setIsPlayerOnScene(false);
+		//if (mapParser.loadedPlayer())
+		//	aiManager.setIsPlayerOnScene(true);
+		//else
+		//	aiManager.setIsPlayerOnScene(false);
 	}
 }
 
