@@ -32,13 +32,43 @@
 
 namespace ph {
 
-Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal, SceneManager& sceneManager, GUI& gui)
+Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal,
+             SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	initiateSystemsQueue(musicPlayer, soundPlayer, aiManager, sceneManager, gui);
 	terminal.setSceneRegistry(&mRegistry);
+
+	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
+	mSystemsQueue.appendSystem<system::PatricleSystem>();
+	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
+	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
+	mSystemsQueue.appendSystem<system::KinematicCollisions>();
+	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
+	mSystemsQueue.appendSystem<system::PickupBullet>();
+	mSystemsQueue.appendSystem<system::PickupMedkit>();
+	mSystemsQueue.appendSystem<system::HostileCollisions>();
+	mSystemsQueue.appendSystem<system::StaticCollisions>();
+	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
+	mSystemsQueue.appendSystem<system::PushingAreas>();
+	mSystemsQueue.appendSystem<system::CanUseWeapon>();
+	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
+	mSystemsQueue.appendSystem<system::GunAttacks>();
+	mSystemsQueue.appendSystem<system::MeleeAttacks>();
+	mSystemsQueue.appendSystem<system::MeleePositioning>();
+	mSystemsQueue.appendSystem<system::DamageAndDeath>();
+	mSystemsQueue.appendSystem<system::Levers>();
+	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::Gates>();
+	mSystemsQueue.appendSystem<system::Lifetime>();
+	mSystemsQueue.appendSystem<system::AnimationSystem>();
+	mSystemsQueue.appendSystem<system::VelocityClear>();
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
 void Scene::handleEvent(const ph::Event& e)
@@ -73,40 +103,6 @@ PlayerStatus Scene::getPlayerStatus() const
 entt::registry& Scene::getRegistry()
 {
 	return mRegistry;
-}
-
-void Scene::initiateSystemsQueue(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager,
-                                 SceneManager& sceneManager, GUI& gui)
-{
-	mSystemsQueue.appendSystem<system::RenderSystem>();
-	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
-	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
-	mSystemsQueue.appendSystem<system::KinematicCollisions>();
-	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::PickupBullet>();
-	mSystemsQueue.appendSystem<system::PickupMedkit>();
-	mSystemsQueue.appendSystem<system::HostileCollisions>();
-	mSystemsQueue.appendSystem<system::StaticCollisions>();
-	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
-	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
-	mSystemsQueue.appendSystem<system::PushingAreas>();
-	mSystemsQueue.appendSystem<system::CanUseWeapon>();
-	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
-	mSystemsQueue.appendSystem<system::GunAttacks>();
-	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::MeleePositioning>();
-	mSystemsQueue.appendSystem<system::DamageAndDeath>();
-	mSystemsQueue.appendSystem<system::Levers>();
-	mSystemsQueue.appendSystem<system::Movement>();
-	mSystemsQueue.appendSystem<system::Gates>();
-	mSystemsQueue.appendSystem<system::Lifetime>();
-	mSystemsQueue.appendSystem<system::AnimationSystem>();
-	mSystemsQueue.appendSystem<system::VelocityClear>();
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
-	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
 }

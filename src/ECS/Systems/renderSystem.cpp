@@ -14,8 +14,9 @@ namespace {
 
 namespace ph::system {
 
-RenderSystem::RenderSystem(entt::registry& registry)
+RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 	:System(registry)
+	,mTilesetTexture(tileset)
 {
 }
 
@@ -26,6 +27,7 @@ void RenderSystem::update(float dt)
 	Renderer::beginScene(getCameraWithTheBiggestPriority());
 
 	submitLights();
+	submitMapChunks();
 	submitRenderQuads();
 	submitRenderQuadsWithTextureRect();
 }
@@ -59,6 +61,14 @@ void RenderSystem::submitLights() const
 	});
 }
 
+void RenderSystem::submitMapChunks() const
+{
+	auto view = mRegistry.view<component::RenderChunk>();
+	view.each([this](component::RenderChunk& chunk)
+	{
+		Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
+	});
+}
 void RenderSystem::submitRenderQuads() const
 {
 	auto view = mRegistry.view<component::RenderQuad, component::BodyRect>

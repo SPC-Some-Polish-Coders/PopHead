@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="400" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="86">
- <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../resources/textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  </tileset>
  <layer id="20" name="sandAndRoad" width="400" height="50">
   <data encoding="csv">

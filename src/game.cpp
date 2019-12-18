@@ -13,16 +13,16 @@ namespace ph {
 
 Game::Game()
 	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
-	,mGameData{}
-	,mSoundPlayer{std::make_unique<SoundPlayer>()}
-	,mMusicPlayer{std::make_unique<MusicPlayer>()}
-	,mTextures{std::make_unique<TextureHolder>()}
-	,mFonts{std::make_unique<FontHolder>()}
+	,mGameData()
+	,mSoundPlayer(std::make_unique<SoundPlayer>())
+	,mMusicPlayer(std::make_unique<MusicPlayer>())
+	,mTextures(std::make_unique<TextureHolder>())
+	,mFonts(std::make_unique<FontHolder>())
 	,mAIManager(std::make_unique<AIManager>())
-	,mSceneManager{std::make_unique<SceneManager>()}
-	,mTerminal{std::make_unique<Terminal>()}
-	,mDebugCounter{std::make_unique<DebugCounter>()}
-	,mGui{std::make_unique<GUI>()}
+	,mSceneManager(std::make_unique<SceneManager>())
+	,mTerminal(std::make_unique<Terminal>())
+	,mDebugCounter(std::make_unique<DebugCounter>())
+	,mGui(std::make_unique<GUI>())
 {
 	mGameData.reset(new GameData(
 		&mWindow,
@@ -37,6 +37,8 @@ Game::Game()
 		mGui.get()
 	));
 
+	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+	
 	GameData* gameData = mGameData.get();
 
 	loadFonts(gameData);
@@ -49,8 +51,6 @@ Game::Game()
 	mWindow.setVerticalSyncEnabled(true);
 
 	ActionEventManager::init();
-
-	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 }
 
 void Game::run()

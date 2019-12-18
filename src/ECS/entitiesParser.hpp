@@ -55,6 +55,7 @@ private:
 	void parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseZombie(const Xml& entityComponentNode, entt::entity& entity);
+	void parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

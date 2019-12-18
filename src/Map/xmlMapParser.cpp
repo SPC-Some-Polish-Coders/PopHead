@@ -156,15 +156,33 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
 }
 
-void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, unsigned char z)
+void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
+                               const GeneralMapInfo& info, unsigned char z)
 {
-	const static std::string pathToTilesetsDirectory = "textures/map/";
-	Texture& texture = mTextures->get(pathToTilesetsDirectory + tilesets.tilesetFileName);
+	constexpr float chunkSize = 12.f;
+	float nrOfChunksInOneRow = std::ceil(info.mapSize.x / chunkSize);
+	if(nrOfChunksInOneRow == 0.f)
+		return;
+	float nrOfChunksInOneColumn = std::ceil(info.mapSize.y / chunkSize);
+	float nrOfChunks = nrOfChunksInOneRow * nrOfChunksInOneColumn;
 
-	for (std::size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) {
-		// WARNING: this code assumes int has 4 bytes
+	// create chunks
+	std::vector<component::RenderChunk> chunks;
+	chunks.resize(static_cast<size_t>(nrOfChunks));
 
-		const unsigned bitsInByte = 8;
+	// fill chunks with z and bounds
+	float rowSize = nrOfChunksInOneRow * chunkSize;
+	for(size_t i = 0; i < chunks.size(); ++i)
+	{
+		chunks[i].z = z;
+
+		float row = std::floor(i / nrOfChunksInOneRow);
+		chunks[i].bounds = sf::FloatRect((chunkSize * i) - (row * chunkSize * nrOfChunksInOneRow), row * chunkSize, chunkSize, chunkSize);
+	}
+
+	for (size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) 
+	{
+		constexpr unsigned bitsInByte = 8;
 		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
 		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
 		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
@@ -187,33 +205,41 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 			tileRectPosition.x *= info.tileSize.x;
 			tileRectPosition.y *= info.tileSize.y;
 
-			sf::Vector2f position(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
-			position.x *= info.tileSize.x;
-			position.y *= info.tileSize.y;
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
 
-			auto tileEntity = mTemplates->createCopy("Tile", *mGameRegistry);
-			auto& bodyRect = mGameRegistry->get<component::BodyRect>(tileEntity);
-			auto& textureRect = mGameRegistry->get<component::TextureRect>(tileEntity);
-			auto& renderQuad = mGameRegistry->get<component::RenderQuad>(tileEntity);
+			// create quad data
+			QuadData qd;
+			qd.position = sf::Vector2f(
+				positionInTiles.x * static_cast<float>(info.tileSize.x),
+				positionInTiles.y * static_cast<float>(info.tileSize.y));
+			qd.size = static_cast<sf::Vector2f>(info.tileSize);
+			qd.rotation = 0.f;
+			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
+			qd.textureSlotRef = 0.f;
+			const sf::Vector2f textureSize(512.f, 512.f); // TODO: Make it not hardcoded like that
+			qd.textureRect.left = static_cast<float>(tileRectPosition.x) / textureSize.x;
+			qd.textureRect.top = (textureSize.y - static_cast<float>(tileRectPosition.y) - info.tileSize.y) / textureSize.y;
+			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
+			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
-			bodyRect.rect.left = position.x;
-			bodyRect.rect.top = position.y;
-			bodyRect.rect.width = static_cast<float>(info.tileSize.x);
-			bodyRect.rect.height = static_cast<float>(info.tileSize.y);
-
-			textureRect.rect.left = tileRectPosition.x;
-			textureRect.rect.top = tileRectPosition.y;
-			textureRect.rect.width = info.tileSize.x;
-			textureRect.rect.height = info.tileSize.y;
-
-			renderQuad.texture = &texture;
-			renderQuad.z = z;
+			// TODO: Optimize that
+			// emplace quad data to chunk
+			for(auto& chunk : chunks)
+				if(chunk.bounds.contains(positionInTiles))
+					chunk.quads.emplace_back(qd);
 
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
 			//loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
 		}
+	}
+
+	for(auto& chunk : chunks)
+	{
+		auto chunkEntity = mTemplates->createCopy("RenderChunk", *mGameRegistry);
+		auto& renderChunk = mGameRegistry->get<component::RenderChunk>(chunkEntity);
+		renderChunk = chunk;
 	}
 }
 
