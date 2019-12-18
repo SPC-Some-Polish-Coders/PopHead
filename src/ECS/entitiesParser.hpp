@@ -14,6 +14,7 @@ public:
 	EntitiesParser();
 
 	void parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& usedRegistry, TextureHolder&);
+	bool loadedPlayer() const;
 
 private:
 	void parseTemplates(const Xml& entityTemplatesNode);
@@ -61,6 +62,7 @@ private:
 	EntitiesTemplateStorage* mTemplateStorage;
 	entt::registry* mUsedRegistry;
 	TextureHolder* mTextureHolder;
+	bool mHasLoadedPlayer = false;
 };
 
 }

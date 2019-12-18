@@ -20,7 +20,7 @@ SceneParser<GuiParser, MapParser, AudioParser, typename EnttParser>
 	sceneFile.loadFromFile(sceneFileName);
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
-	parseEcsEntities(sceneLinksNode, templateStorage, gameRegistry, textureHolder);
+	parseEcsEntities(sceneLinksNode, gameData->getAIManager(), templateStorage, gameRegistry, textureHolder);
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
@@ -45,7 +45,7 @@ void SceneParser<GuiParser, MapParser/*, GameObjectsParser*/, AudioParser, typen
 
 template<typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
 void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>
-::parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
+::parseEcsEntities(const Xml& sceneLinksNode, AIManager& aiManager, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
                    TextureHolder& textureHolder)
 {
 	const auto entitiesNode = sceneLinksNode.getChildren("ecsObjects");
@@ -54,6 +54,10 @@ void SceneParser<GuiParser, MapParser, AudioParser, EnttParser>
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename").toString();
 		EnttParser parser;
 		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
+		if (parser.loadedPlayer())
+			aiManager.setIsPlayerOnScene(true);
+		else
+			aiManager.setIsPlayerOnScene(false);
 	}
 }
 

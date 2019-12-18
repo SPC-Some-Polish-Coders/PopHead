@@ -22,7 +22,7 @@ private:
 	template<typename Parser>
 	void parse(GameData* const gameData, const Xml& sceneLinksNode, const std::string& categoryName);
 
-	void parseEcsEntities(const Xml& sceneLinksNode, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
+	void parseEcsEntities(const Xml& sceneLinksNode, AIManager& aiManager, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
                           TextureHolder& textureHolder);
 
 	void parseAmbientLight(const Xml& sceneLinksNode);

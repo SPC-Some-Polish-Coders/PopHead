@@ -20,7 +20,6 @@ namespace ph {
 		:mCutSceneManager(cutSceneManager)
 		,mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
-		,mHasLoadedPlayer(false)
 		,mSceneManager(sceneManager)
 	{
 	}
