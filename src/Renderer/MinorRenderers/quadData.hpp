@@ -12,12 +12,12 @@ class Texture;
 
 struct QuadData
 {
-	sf::Vector2f position;
-	sf::Vector2f size;
-	float rotation;
 	Vector4f color;
 	FloatRect textureRect;
+	sf::Vector2f position;
+	sf::Vector2f size;
 	float textureSlotRef;
+	float rotation;
 };
 
 struct RenderGroupKey
