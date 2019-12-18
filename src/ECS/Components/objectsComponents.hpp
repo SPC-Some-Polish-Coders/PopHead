@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Utilities/rect.hpp"
+#include "Renderer/MinorRenderers/quadData.hpp"
+#include <vector>
 
 namespace ph::component {
 
@@ -58,5 +60,4 @@ namespace ph::component {
 		float range;
 		int damage;
 	};
-
 }

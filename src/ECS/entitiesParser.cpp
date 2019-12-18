@@ -116,7 +116,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"VelocityChangingEffect", &EntitiesParser::parseVelocityChangingEffect},
 		{"AnimationData",          &EntitiesParser::parseAnimationData},
 		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter},
-		{"MultiParticleEmitter",   &EntitiesParser::parseMultiParticleEmitter}
+		{"MultiParticleEmitter",   &EntitiesParser::parseMultiParticleEmitter},
+		{"RenderChunk",            &EntitiesParser::parseRenderChunk}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -404,6 +405,11 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 	component::Zombie zombie;
 	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
 	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
+}
+
+void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

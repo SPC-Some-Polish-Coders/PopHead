@@ -17,11 +17,11 @@
 namespace ph {
 
 	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager)
-		: mCutSceneManager(cutSceneManager)
-		, mTemplatesStorage(templatesStorage)
-		, mGameRegistry(gameRegistry)
-		, mHasLoadedPlayer(false)
-		, mSceneManager(sceneManager)
+		:mCutSceneManager(cutSceneManager)
+		,mTemplatesStorage(templatesStorage)
+		,mGameRegistry(gameRegistry)
+		,mHasLoadedPlayer(false)
+		,mSceneManager(sceneManager)
 	{
 	}
 

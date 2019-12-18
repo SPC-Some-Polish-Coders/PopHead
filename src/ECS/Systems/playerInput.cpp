@@ -132,8 +132,8 @@ namespace ph::system {
 			else if(face.direction == sf::Vector2f(-diagonal, -diagonal)) middleAngle = -135.f;
 			else middleAngle = 0.f;
 
-			lightSource.startAngle = middleAngle - 45.f;
-			lightSource.endAngle = middleAngle + 45.f;
+			lightSource.startAngle = middleAngle - 35.f;
+			lightSource.endAngle = middleAngle + 35.f;
 		});
 	}
 

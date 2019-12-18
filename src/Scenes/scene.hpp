@@ -18,11 +18,12 @@ class AIManager;
 class Terminal;
 class SceneManager;
 class GUI;
+class Texture;
 
 class Scene
 {
 public:
-    explicit Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&);
+    explicit Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
 
 	void handleEvent(const Event&);
     void update(sf::Time dt);
@@ -35,9 +36,6 @@ public:
 	PlayerStatus getPlayerStatus() const;
 
 	entt::registry& getRegistry();
-
-private:
-	void initiateSystemsQueue(MusicPlayer&, SoundPlayer&, AIManager&, SceneManager&, GUI&);
 
 private:
 	CutSceneManager mCutSceneManager;

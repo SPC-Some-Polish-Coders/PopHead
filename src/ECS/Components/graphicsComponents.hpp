@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include "Renderer/API/camera.hpp"
+#include "Renderer/MinorRenderers/quadData.hpp"
 #include <vector>
 
 namespace ph{
@@ -24,6 +25,13 @@ namespace component {
 	struct TextureRect
 	{
 		IntRect rect;
+	};
+
+	struct RenderChunk
+	{
+		std::vector<QuadData> quads;
+		FloatRect bounds;
+		unsigned char z;
 	};
 
 	struct Camera

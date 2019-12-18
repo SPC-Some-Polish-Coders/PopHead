@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="50" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="3">
- <tileset firstgid="1" name="FULL_DESERT_TILESET_WIP" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../textures/map/FULL_DESERT_TILESET_WIP.png" width="512" height="512"/>
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  </tileset>
  <layer id="6" name="sand" width="50" height="35">
   <data encoding="csv">
@@ -79,7 +79,6 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-
 </data>
  </layer>
  <objectgroup id="2" name="gameObjects">

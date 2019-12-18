@@ -14,8 +14,9 @@ namespace {
 
 namespace ph::system {
 
-RenderSystem::RenderSystem(entt::registry& registry)
+RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 	:System(registry)
+	,mTilesetTexture(tileset)
 {
 }
 
@@ -23,9 +24,10 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	Renderer::beginScene(getCameraWithTheBiggestPriority());
-
+	auto& currentCamera = getCameraWithTheBiggestPriority();	
+	Renderer::beginScene(currentCamera);
 	submitLights();
+	submitMapChunks(currentCamera.getBounds());
 	submitRenderQuads();
 	submitRenderQuadsWithTextureRect();
 }
@@ -49,6 +51,8 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 
 void RenderSystem::submitLights() const
 {
+	PH_PROFILE_FUNCTION();
+
 	auto view = mRegistry.view<component::LightSource, component::BodyRect>();
 	view.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
@@ -59,8 +63,21 @@ void RenderSystem::submitLights() const
 	});
 }
 
+void RenderSystem::submitMapChunks(const FloatRect& cameraBounds) const
+{
+	PH_PROFILE_FUNCTION();
+
+	auto view = mRegistry.view<component::RenderChunk>();
+	view.each([this, &cameraBounds](component::RenderChunk& chunk)
+	{
+		if(cameraBounds.doPositiveRectsIntersect(chunk.bounds))
+			Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
+	});
+}
 void RenderSystem::submitRenderQuads() const
 {
+	PH_PROFILE_FUNCTION();
+
 	auto view = mRegistry.view<component::RenderQuad, component::BodyRect>
 		(entt::exclude<component::HiddenForRenderer, component::TextureRect>);
 	view.each([](const component::RenderQuad& quad, const component::BodyRect& body)
@@ -73,6 +90,8 @@ void RenderSystem::submitRenderQuads() const
 
 void RenderSystem::submitRenderQuadsWithTextureRect() const
 {
+	PH_PROFILE_FUNCTION();
+
 	auto view = mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>
 		(entt::exclude<component::HiddenForRenderer>);
 	view.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)

@@ -3,13 +3,13 @@
 #include "scene.hpp"
 #include "Events/event.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
-
 #include <SFML/System.hpp>
 #include <memory>
 
 namespace ph {
 
 class GameData;
+class Texture;
 
 class SceneManager
 {
@@ -34,7 +34,7 @@ public:
     void update(sf::Time dt);
 
 	Scene& getScene() { return *mScene.get(); }
-    void setGameData(GameData* const gameData){mGameData = gameData;}
+	void setGameData(GameData* const);
 
 	std::string getCurrentMapName() const { return mCurrentSceneFile; }
 
@@ -51,6 +51,8 @@ private:
 	
 	bool mHasPlayerPosition;
 	sf::Vector2f mPlayerPosition;
+
+	Texture* mTilesetTexture;
 };
 
 }

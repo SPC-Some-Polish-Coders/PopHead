@@ -60,7 +60,7 @@ void SceneManager::replaceAction()
 	if (mCurrentSceneFile == mFileOfSceneToMake)
 	{
 		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
-			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui()));
+			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui(), *mTilesetTexture));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 
@@ -79,8 +79,8 @@ void SceneManager::replaceAction()
 	//}
 	else  // there wasn't a scene before
 	{
-		mScene.reset(new Scene(mGameData->getMusicPlayer(),
-			mGameData->getSoundPlayer(), mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui()));
+		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
+			mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui(), *mTilesetTexture));
 		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 	}
@@ -99,6 +99,13 @@ void SceneManager::update(sf::Time dt)
 {
 	if(mScene != nullptr)
 		mScene->update(dt);
+}
+
+void SceneManager::setGameData(GameData* const gameData)
+{
+	mGameData = gameData;
+	gameData->getTextures().load("textures/map/tileset.png");
+	mTilesetTexture = &gameData->getTextures().get("textures/map/tileset.png");
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)

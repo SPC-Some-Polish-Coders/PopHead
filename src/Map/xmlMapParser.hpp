@@ -37,7 +37,8 @@ struct TilesetsData
 class XmlMapParser
 {
 public:
-	void parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures);
+	void parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry,
+	               EntitiesTemplateStorage& templates, TextureHolder& textures);
 
 private:
 	void checkMapSupport(const Xml& mapNode) const;
@@ -52,7 +53,7 @@ private:
 	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info);
 	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 	
-	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets, const GeneralMapInfo& info, unsigned char z);
+	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&, unsigned char z);
 	bool hasTile(unsigned globalTileId) const;
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
