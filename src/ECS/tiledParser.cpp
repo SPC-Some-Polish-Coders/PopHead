@@ -47,6 +47,11 @@ namespace ph {
 		ActionEventManager::setEnabled(true);
 	}
 
+	bool TiledParser::loadedPlayer() const
+	{
+		return mHasLoadedPlayer;
+	}
+
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const
 	{
 		const std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
@@ -108,8 +113,6 @@ namespace ph {
 		zombiePosition.rect.top = position.y;
 
 		loadHealthComponent(zombieNode, zombie);
-
-		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
@@ -122,8 +125,6 @@ namespace ph {
 		npcPosition.rect.top = position.y;
 
 		loadHealthComponent(npcNode, npc);
-
-		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadSpawner(const Xml& spawnerNode) const
