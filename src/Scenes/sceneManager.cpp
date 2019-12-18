@@ -17,6 +17,7 @@ SceneManager::SceneManager()
 	,mIsPopping(false)
 	,mHasPlayerPosition(false)
 	,mLastPlayerStatus()
+	,mTilesetTexture(nullptr)
 {
 }
 
