@@ -296,10 +296,6 @@
 
     <entity sourceTemplate="Highway" />
 
-    <entity sourceTemplate="Lever">
-        <component name="Lever" id="1" minActivationInterval="0.25" turnOffAfterSwitch="false" />
-    </entity>
-
     <entity sourceTemplate="ColorSquare">
         <component name="BodyRect" x="60.0" y="2.0" width="50.0" height="50.0" />
         <component name="RenderQuad" color="rgb(250, 158, 50)" z="100" blocksLight="false" />
@@ -321,26 +317,7 @@
         <component name="BodyRect" x="100.0" y="55.0" width="8" height="16" />
         <component name="Lever" id="2" minActivationInterval="0.25" turnOffAfterSwitch="false" />
     </entity>
-
-    <entity sourceTemplate="Gate">
-        <component name="BodyRect" x="210.0" y="5.0" width="40.0" height="13.0" />
-        <component name="LeverListener" observedLeverId="3" />
-    </entity>
-
-    <entity sourceTemplate="Lever">
-        <component name="BodyRect" x="200.0" y="55.0" width="8" height="16" />
-        <component name="Lever" id="3" minActivationInterval="0.25" turnOffAfterSwitch="true" />
-    </entity>
-
-    <entity sourceTemplate="Zombie" />
-
-    <entity sourceTemplate="ColorSquare">
-        <component name="StaticCollisionBody" />
-        <component name="RenderQuad" color="rgba(0, 208, 50, 100)" z="100" blocksLight="true"/>
-    </entity>
-
-    <entity sourceTemplate="Lever" />
-
+  
     <entity sourceTemplate="Zombie">
         <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
     </entity>
@@ -414,16 +391,10 @@
     <component name="BodyRect" x="200" y="120" width="20" height="20" />
 </entity>
 
-<entity sourceTemplate="WeirdLever">
-    <component name="BodyRect" x="0.0" y="120.0" width="7" height="15" />
-</entity>
-
 <entity sourceTemplate="ColorSquare">
     <component name="Color" r="200" g="200" b="10" a="255" />
     <component name="StaticCollisionBody" />
 </entity>
-
-<entity sourceTemplate="Lever" />
 
 <entity sourceTemplate="Zombie">
     <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
