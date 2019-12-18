@@ -237,6 +237,13 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 
 	for(auto& chunk : chunks)
 	{
+		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
+		chunk.bounds.left *= static_cast<float>(info.tileSize.x);
+		chunk.bounds.top *= static_cast<float>(info.tileSize.y);
+		chunk.bounds.width *= static_cast<float>(info.tileSize.x);
+		chunk.bounds.height *=  static_cast<float>(info.tileSize.y);
+		
+		// add chunk entity which contains only RenderChunk component to registry
 		auto chunkEntity = mTemplates->createCopy("RenderChunk", *mGameRegistry);
 		auto& renderChunk = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 		renderChunk = chunk;

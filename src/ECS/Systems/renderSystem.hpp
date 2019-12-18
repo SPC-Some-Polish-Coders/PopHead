@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/system.hpp"
+#include "Utilities/rect.hpp"
 
 namespace ph {
 	class Camera;
@@ -19,7 +20,7 @@ public:
 private:
 	Camera& getCameraWithTheBiggestPriority();
 	void submitLights() const;
-	void submitMapChunks() const;
+	void submitMapChunks(const FloatRect& cameraBounds) const;
 	void submitRenderQuads() const;
 	void submitRenderQuadsWithTextureRect() const;
 
