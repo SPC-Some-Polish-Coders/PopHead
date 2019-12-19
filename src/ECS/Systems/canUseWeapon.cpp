@@ -51,15 +51,15 @@ void CanUseWeapon::updateGun(float dt)
 		{
 			const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
 
-			if (gunAttackerDetails.cooldownSinceLastShoot > 0.f)
-				gunAttackerDetails.cooldownSinceLastShoot -= dt;
+			if (gunAttackerDetails.cooldownSinceLastShot > 0.f)
+				gunAttackerDetails.cooldownSinceLastShot -= dt;
 
 			if (gunAttackerDetails.isTryingToAttack)
 			{
-				gunAttackerDetails.canAttack = gunAttackerDetails.cooldownSinceLastShoot <= 0.f && gunAttackerDetails.bullets > 0;
+				gunAttackerDetails.canAttack = gunAttackerDetails.cooldownSinceLastShot <= 0.f && gunAttackerDetails.bullets > 0;
 
 				if (gunAttackerDetails.canAttack)
-					gunAttackerDetails.cooldownSinceLastShoot = currentGunProperties.minShotsInterval;
+					gunAttackerDetails.cooldownSinceLastShot = currentGunProperties.minShotsInterval;
 			}
 		}
 	}

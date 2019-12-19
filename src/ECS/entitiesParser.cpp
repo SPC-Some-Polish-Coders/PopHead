@@ -418,7 +418,9 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	const float cooldown = 0.f;
 	bool canAttack = true;
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, cooldown, bullets, isTryingToAttack, canAttack);
+	float timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding").toFloat();
+	float timeToHide = 0.f;
+	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, cooldown, bullets, isTryingToAttack, canAttack, timeBeforeHiding, timeToHide);
 }
 
 void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
@@ -444,7 +446,7 @@ void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::en
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::CurrentGun>(entity, 2.f, 0.f);
+	mUsedRegistry->assign_or_replace<component::CurrentGun>(entity);
 }
 
 void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)

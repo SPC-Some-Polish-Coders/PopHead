@@ -5,6 +5,8 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
+#include "Events/actionEventManager.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
 
@@ -14,9 +16,42 @@ void GunAttacks::update(float dt)
 {
 	handlePendingGunAttacks();
 	handleLastingBullets();
+	handleChangingOfWeapon();
 }
 
-void GunAttacks::handlePendingGunAttacks()
+void GunAttacks::handleChangingOfWeapon() const
+{
+	auto currentGunView = mRegistry.view<component::CurrentGun>();
+	auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
+	static int choiceNumber = 0;
+
+	if (ActionEventManager::isActionPressed("changeWeapon"))
+	{
+		++choiceNumber;
+		if (choiceNumber > otherGunsView.size() - 1)
+			choiceNumber = 0;
+
+		for (auto currentGun : currentGunView)
+		{
+			mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
+			mRegistry.remove<component::CurrentGun>(currentGun);
+		}
+
+		int counter = 0;
+		for (auto otherGun : otherGunsView)
+		{
+			if (counter == choiceNumber)
+			{
+				mRegistry.assign<component::CurrentGun>(otherGun);
+				return;
+			}
+			++counter;
+		}
+	}
+
+}
+
+void GunAttacks::handlePendingGunAttacks() const
 {
 	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker, component::FaceDirection, component::BodyRect>();
 	for (const auto& gunAttacker : gunAttackerView)
@@ -37,6 +72,7 @@ void GunAttacks::handlePendingGunAttacks()
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 
 				sf::Vector2f startingBulletPosition = gunBody.rect.getCenter() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
+
 				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
 				createShotImage(startingBulletPosition, shotsEndingPositions, gunProperties.shotSoundFilepath);
 
@@ -58,7 +94,7 @@ sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& 
 		return sf::Vector2f(gunSize.x/2, -gunSize.y/2);
 }
 
-std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets)
+std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const
 {
 	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::Killable, component::BodyRect>(entt::exclude < component::Player>);
 	auto enemies = mRegistry.view< component::Killable, component::BodyRect>(entt::exclude<component::Player>);
@@ -199,7 +235,7 @@ sf::Vector2f GunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection,
 	return newPosition;
 }
 
-void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition, const std::string& soundFilename)
+void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition, const std::string& soundFilename) const
 {
 	for (auto shot : shotsEngingPosition)
 	{
@@ -213,7 +249,7 @@ void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const
 	mRegistry.assign<component::Lifetime>(soundEntity, .05f);
 }
 
-void GunAttacks::handleLastingBullets()
+void GunAttacks::handleLastingBullets() const
 {
 	const auto lastingShotsView = mRegistry.view<component::LastingShot>();
 

@@ -6,7 +6,7 @@
 
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
-        <component name="GunAttacker" bullets="300" isTryingToAttack="false" />
+        <component name="GunAttacker" bullets="300" isTryingToAttack="false" timeBeforeHiding="3" />
         <component name="MeleeAttacker" isTryingToAttack="false" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="Player" />
@@ -169,7 +169,7 @@
   <entityTemplate name="Shotgun">
     <component name="BodyRect" x="200.0" y="60.0" width="14" height="9" />
     <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="95" blocksLight="false" />
-    <component name="TextureRect" x="0" y="0" width="14" height="14" />
+    <component name="TextureRect" x="0" y="0" width="16" height="16" />
     <component name="HiddenForRenderer" />
     <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" />
   </entityTemplate>

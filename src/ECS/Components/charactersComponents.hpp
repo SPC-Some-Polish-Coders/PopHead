@@ -42,10 +42,12 @@ namespace ph::component {
 
 	struct GunAttacker
 	{
-		float cooldownSinceLastShoot;
+		float cooldownSinceLastShot;
 		unsigned bullets;
 		bool isTryingToAttack;
 		bool canAttack;
+		float timeBeforeHiding;
+		float timeToHide;
 	};
 
 	struct TimeToFadeOut
@@ -80,8 +82,7 @@ namespace ph::component {
 
 	struct CurrentGun
 	{
-		float timeBeforeHiding;
-		float cooldownSinceLastShot;
+
 	};
 
 	struct CurrentMeleeWeapon
