@@ -13,10 +13,9 @@ namespace ph::system {
 		using System::System;
 
 		void update(float dt) override;
+		void onEvent(const ActionEvent& event) override;
 
 	private:
-		void handleChangingOfWeapon() const;
-
 		void handlePendingGunAttacks() const;
 		sf::Vector2f getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const;
 		std::vector<sf::Vector2f> performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const;
@@ -25,6 +24,8 @@ namespace ph::system {
 
 		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
 		void handleLastingBullets() const;
+
+		void changeWeapon();
 
 	};
 }

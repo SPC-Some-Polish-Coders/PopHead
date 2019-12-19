@@ -83,9 +83,10 @@ void SceneManager::replaceAction()
 	mCurrentSceneFile = std::move(mFileOfSceneToMake);
 }
 
-void SceneManager::handleEvent(const ph::Event& e)
+void SceneManager::handleEvent(const Event& e)
 {
-	mScene->handleEvent(e);
+	if (auto* event = std::get_if<ActionEvent>(&e))
+		mScene->handleEvent(*event);
 }
 
 void SceneManager::update(sf::Time dt)

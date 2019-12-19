@@ -25,7 +25,7 @@ class Scene
 public:
     Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
 
-	void handleEvent(const Event&);
+	void handleEvent(const ActionEvent& event);
     void update(sf::Time dt);
 
 	void setPause(bool pause) { mPause = pause; }

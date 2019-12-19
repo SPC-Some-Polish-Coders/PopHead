@@ -74,8 +74,9 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
-void Scene::handleEvent(const ph::Event& e)
+void Scene::handleEvent(const ActionEvent& event)
 {
+	mSystemsQueue.handleEvents(event);
 }
 
 void Scene::update(sf::Time dt)

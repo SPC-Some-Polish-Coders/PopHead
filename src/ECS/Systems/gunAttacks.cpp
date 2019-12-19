@@ -16,39 +16,37 @@ void GunAttacks::update(float dt)
 {
 	handlePendingGunAttacks();
 	handleLastingBullets();
-	handleChangingOfWeapon();
 }
 
-void GunAttacks::handleChangingOfWeapon() const
+void GunAttacks::onEvent(const ActionEvent& event)
+{
+	if (event.mType == ActionEvent::Type::Pressed)
+	{
+		if (event.mAction == "changeWeapon")
+			changeWeapon();
+	}
+}
+
+void GunAttacks::changeWeapon()
 {
 	auto currentGunView = mRegistry.view<component::CurrentGun>();
 	auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
-	static int choiceNumber = 0;
 
-	if (ActionEventManager::isActionPressed("changeWeapon"))
+	for (auto currentGun : currentGunView)
 	{
-		++choiceNumber;
-		if (choiceNumber > otherGunsView.size() - 1)
-			choiceNumber = 0;
+		mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
+		mRegistry.remove<component::CurrentGun>(currentGun);
 
-		for (auto currentGun : currentGunView)
-		{
-			mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
-			mRegistry.remove<component::CurrentGun>(currentGun);
-		}
-
-		int counter = 0;
 		for (auto otherGun : otherGunsView)
-		{
-			if (counter == choiceNumber)
-			{
+			if (otherGun != currentGun)
 				mRegistry.assign<component::CurrentGun>(otherGun);
-				return;
-			}
-			++counter;
-		}
 	}
 
+	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
+	gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker)
+		{
+			gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
+		});
 }
 
 void GunAttacks::handlePendingGunAttacks() const
