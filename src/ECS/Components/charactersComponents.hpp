@@ -27,6 +27,10 @@ namespace ph::component {
 	{
 	};
 
+	struct InPlayerAttackArea
+	{
+	};
+
 	struct FaceDirection
 	{
 		sf::Vector2f direction;
