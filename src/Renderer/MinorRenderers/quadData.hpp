@@ -16,8 +16,9 @@ struct QuadData
 	FloatRect textureRect;
 	sf::Vector2f position;
 	sf::Vector2f size;
-	float textureSlotRef;
+	sf::Vector2f rotationOrigin;
 	float rotation;
+	float textureSlotRef;
 };
 
 struct RenderGroupKey

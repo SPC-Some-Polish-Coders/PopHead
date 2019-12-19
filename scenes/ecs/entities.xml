@@ -194,7 +194,7 @@
 <entities>
 
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="200.0" y="350.0" width="20.0" height="20.0" />
     </entity>
 
     <entity sourceTemplate="Pistol">
@@ -334,7 +334,12 @@
 
     <entity sourceTemplate="ColorSquare">
         <component name="StaticCollisionBody" />
-        <component name="RenderQuad" color="rgba(0, 208, 50, 100)" z="100" blocksLight="true"/>
+        <component name="BodyRect" x="200" y="-100" width="30" height="30"/>
+        <component name="RenderQuad" z="100" rotation="-40" rotationOrigin="15, 15" blocksLight="true" textureFilepath="textures/others/zombieHead.png"/>
+    </entity>
+    
+    <entity sourceTemplate="ColorSquare">
+        <component name="RenderQuad" color="rgb(0, 50, 100)" z="100" blocksLight="true"/>
     </entity>
 
     <entity sourceTemplate="Lever" />

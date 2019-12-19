@@ -117,9 +117,9 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 
 		// submit particle to renderer
 		if(emi.parTexture)
-			Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, false);
+			Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, {}, false);
 		else if(emi.parSize.x != emi.parSize.y)
-			Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, false);
+			Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, {}, false);
 		else
 			Renderer::submitPoint(particle.position, color, 0, emi.parSize.x);
 	}

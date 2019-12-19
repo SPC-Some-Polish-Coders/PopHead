@@ -53,7 +53,7 @@ public:
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, float z);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-	                sf::Vector2f position, sf::Vector2f size, float z, float rotation);
+	                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin);
 	void flush();
 
 private:

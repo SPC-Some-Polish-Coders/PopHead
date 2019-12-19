@@ -9,14 +9,14 @@ namespace ph {
 
 class Shader;
 
-// TODO: Add Z to Light
-
 struct LightingDebug
 {
 	bool drawLight = true;
 	bool drawWalls = false;
 	bool drawRays = false;
 };
+
+// TODO: Add Z to Light
 
 struct Light
 {
@@ -40,6 +40,8 @@ struct Wall
 	sf::Vector2f point1;
 	sf::Vector2f point2;
 };
+
+// TODO_ren: Add submit light blocking line
 
 class LightRenderer
 {
@@ -68,7 +70,5 @@ private:
 
 	inline static LightingDebug sDebug;
 };
-
-// TODO_ren: Add submit light blocking line
 
 } 

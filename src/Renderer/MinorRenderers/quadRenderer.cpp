@@ -4,6 +4,7 @@
 #include "Renderer/API/openglErrors.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/math.hpp"
 #include <GL/glew.h>
 #include <algorithm>
 
@@ -92,13 +93,14 @@ void QuadRenderer::init()
 	GLCheck( glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureRect)) );
 	GLCheck( glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, position)) );
 	GLCheck( glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, size)) );
-	GLCheck( glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
+	GLCheck( glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotationOrigin)) );
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, rotation)) );
+	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*) offsetof(QuadData, textureSlotRef)) );
 
-	for(int i = 0; i < 6; ++i) {
+	for(int i = 0; i < 7; ++i) {
 		GLCheck( glEnableVertexAttribArray(i) );
 	}
-	for(int i = 0; i < 6; ++i) {
+	for(int i = 0; i < 7; ++i) {
 		GLCheck( glVertexAttribDivisor(i, 1) );
 	}
 
@@ -151,7 +153,7 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                              sf::Vector2f position, sf::Vector2f size, float z, float rotation)
+                              sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin)
 {
 	// culling
 	if(!isInsideScreen(position, size, rotation))
@@ -171,7 +173,8 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	quadData.textureRect = textureRect ? getNormalizedTextureRect(textureRect, texture->getSize()) : FloatRect(0.f, 0.f, 1.f, 1.f);
 	quadData.position = position;
 	quadData.size = size;
-	quadData.rotation = rotation;
+	quadData.rotationOrigin = rotationOrigin;
+	quadData.rotation = Math::degreesToRadians(rotation);
 	
 	if(!texture)
 		texture = mWhiteTexture;

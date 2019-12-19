@@ -26,6 +26,7 @@ public:
 	unsigned char toUnsignedChar() const;
 	float toFloat() const;
 	sf::Color toColor() const;
+	sf::Vector2f toVector2f() const;
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const;

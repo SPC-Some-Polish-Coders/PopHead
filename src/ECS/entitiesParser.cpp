@@ -186,6 +186,13 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	else
 		quad.rotation = 0.f;
 
+	// parse rotation origin
+	if(entityComponentNode.hasAttribute("rotationOrigin"))
+		quad.rotationOrigin = entityComponentNode.getAttribute("rotationOrigin").toVector2f();
+	else
+		quad.rotationOrigin = {};
+
+
 	// parse z
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
 	quad.z = entityComponentNode.getAttribute("z").toUnsignedChar();

@@ -198,9 +198,10 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight)
+                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
+                          bool blocksLight)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation);
+	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin);
 	if(blocksLight)
 		lightRenderer.submitLightBlockingQuad(position, size);
 }

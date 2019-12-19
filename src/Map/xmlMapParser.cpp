@@ -209,13 +209,55 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 
 			// create quad data
 			QuadData qd;
+
 			qd.position = sf::Vector2f(
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
 				positionInTiles.y * static_cast<float>(info.tileSize.y));
-			qd.size = static_cast<sf::Vector2f>(info.tileSize);
-			qd.rotation = 0.f;
+
+			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
+			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
+			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
+				qd.size = tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped) {
+				qd.size = -tileSize;
+				qd.position += tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 90.f;
+			}
+			else if(isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 0.f;
+			}
+			else if(isVerticallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.y += tileSize.y;
+				qd.rotation = 0.f;
+			}
+			else if(isDiagonallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.y -= tileSize.x;
+				qd.rotation = 270.f;
+			}
+			qd.rotation = Math::degreesToRadians(qd.rotation);
+
 			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
 			qd.textureSlotRef = 0.f;
+
 			const sf::Vector2f textureSize(512.f, 512.f); // TODO: Make it not hardcoded like that
 			qd.textureRect.left = static_cast<float>(tileRectPosition.x) / textureSize.x;
 			qd.textureRect.top = (textureSize.y - static_cast<float>(tileRectPosition.y) - info.tileSize.y) / textureSize.y;

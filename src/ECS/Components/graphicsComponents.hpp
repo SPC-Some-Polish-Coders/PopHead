@@ -16,6 +16,7 @@ namespace component {
 	{
 		Texture* texture;
 		Shader* shader;
+		sf::Vector2f rotationOrigin;
 		sf::Color color;
 		float rotation;
 		unsigned char z;

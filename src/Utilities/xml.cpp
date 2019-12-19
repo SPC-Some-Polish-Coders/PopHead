@@ -395,6 +395,14 @@ sf::Color Xml::toColor() const
 	PH_EXIT_GAME("Could not cast to color!");
 }
 
+sf::Vector2f Xml::toVector2f() const
+{
+	size_t comma = mContent.find(',');
+	const std::string x = mContent.substr(0, comma);
+	const std::string y = mContent.substr(comma + 1, std::string::npos);
+	return sf::Vector2f(std::stof(x), std::stof(y));
+}
+
 bool Xml::isSelfClosingTag(std::size_t openingTagEndPosition) const
 {
 	return mContent[openingTagEndPosition - 1] == '/';

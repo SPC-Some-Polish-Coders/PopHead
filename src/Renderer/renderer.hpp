@@ -27,8 +27,8 @@ namespace Renderer
 	void beginScene(Camera&);
 	void endScene(sf::RenderWindow& window, DebugCounter&);
 
-	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader,
-	                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, bool blocksLight);
+	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
+	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, bool blocksLight);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, unsigned char z);
 

@@ -1,6 +1,7 @@
 #include "renderSystem.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/API/camera.hpp"
 #include "Logs/logs.hpp"
@@ -84,7 +85,7 @@ void RenderSystem::submitRenderQuads() const
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin, quad.blocksLight);
 	});
 }
 
@@ -98,7 +99,7 @@ void RenderSystem::submitRenderQuadsWithTextureRect() const
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.blocksLight);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin, quad.blocksLight);
 	});
 }
 
