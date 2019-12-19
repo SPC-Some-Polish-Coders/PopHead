@@ -104,8 +104,8 @@ void SceneManager::update(sf::Time dt)
 void SceneManager::setGameData(GameData* const gameData)
 {
 	mGameData = gameData;
-	gameData->getTextures().load("textures/map/tileset.png");
-	mTilesetTexture = &gameData->getTextures().get("textures/map/tileset.png");
+	gameData->getTextures().load("textures/map/extrudedTileset.png");
+	mTilesetTexture = &gameData->getTextures().get("textures/map/extrudedTileset.png");
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)

@@ -199,11 +199,6 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
-			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			sf::Vector2u tileRectPosition =
-				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]);
-			tileRectPosition.x *= info.tileSize.x;
-			tileRectPosition.y *= info.tileSize.y;
 
 			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
 
@@ -258,9 +253,16 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
 			qd.textureSlotRef = 0.f;
 
-			const sf::Vector2f textureSize(512.f, 512.f); // TODO: Make it not hardcoded like that
-			qd.textureRect.left = static_cast<float>(tileRectPosition.x) / textureSize.x;
-			qd.textureRect.top = (textureSize.y - static_cast<float>(tileRectPosition.y) - info.tileSize.y) / textureSize.y;
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			auto tileRectPosition = static_cast<sf::Vector2f>(
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
+			tileRectPosition.x *= (info.tileSize.x + 2);
+			tileRectPosition.y *= (info.tileSize.y + 2);
+			tileRectPosition.x += 1;
+			tileRectPosition.y += 1;
+			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
+			qd.textureRect.left = tileRectPosition.x / textureSize.x;
+			qd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
 			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
 			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
