@@ -23,9 +23,9 @@ class Texture;
 class Scene
 {
 public:
-    explicit Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
+    Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
 
-	void handleEvent(const Event&);
+	void handleEvent(const ActionEvent& event);
     void update(sf::Time dt);
 
 	void setPause(bool pause) { mPause = pause; }
@@ -34,6 +34,7 @@ public:
 
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus() const;
+	void setPlayerPosition(sf::Vector2f newPosition);
 
 	entt::registry& getRegistry();
 

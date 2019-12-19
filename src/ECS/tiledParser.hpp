@@ -20,6 +20,7 @@ namespace ph {
 		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager);
 
 		void parseFile(const std::string& filePath) const;
+		bool loadedPlayer() const;
 
 	private:
 		Xml findGameObjects(const Xml& mapFile) const;
@@ -67,7 +68,7 @@ namespace ph {
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;
-		mutable bool mHasLoadedPlayer;
+		mutable bool mHasLoadedPlayer = false;
 	};
 
 }

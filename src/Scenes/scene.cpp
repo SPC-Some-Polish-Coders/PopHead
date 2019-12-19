@@ -30,6 +30,9 @@
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 
+#include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
+
 namespace ph {
 
 Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal,
@@ -71,8 +74,9 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 }
 
-void Scene::handleEvent(const ph::Event& e)
+void Scene::handleEvent(const ActionEvent& event)
 {
+	mSystemsQueue.handleEvents(event);
 }
 
 void Scene::update(sf::Time dt)
@@ -98,6 +102,14 @@ PlayerStatus Scene::getPlayerStatus() const
 	status.mNumOfBullets = player.getNumOfBullets();
 	return status;*/
 	return PlayerStatus();
+}
+
+void Scene::setPlayerPosition(sf::Vector2f newPosition)
+{
+	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
+	auto& bodyRect = playerView.get<component::BodyRect>(*playerView.begin());
+	bodyRect.rect.left = newPosition.x;
+	bodyRect.rect.top = newPosition.y;
 }
 
 entt::registry& Scene::getRegistry()

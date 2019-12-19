@@ -17,6 +17,7 @@ SceneManager::SceneManager()
 	,mIsPopping(false)
 	,mHasPlayerPosition(false)
 	,mLastPlayerStatus()
+	,mTilesetTexture(nullptr)
 {
 }
 
@@ -44,7 +45,6 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		//mGameData->getPhysicsEngine().clear();
 		mGameData->getGui().clearGUI();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
@@ -54,35 +54,28 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	//mGameData->getPhysicsEngine().clear();
 	mGameData->getGui().clearGUI();
 
-	if (mCurrentSceneFile == mFileOfSceneToMake)
+	if (mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPosition)
+		mScene->setPlayerPosition(mPlayerPosition);
+	else
 	{
+		bool thereIsPlayerStatus = mScene && mGameData->getAIManager().isPlayerOnScene();
+		if (thereIsPlayerStatus)
+			mLastPlayerStatus = mScene->getPlayerStatus();
+		
 		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
 			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui(), *mTilesetTexture));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
+		SceneParser<XmlGuiParser, XmlMapParser, XmlAudioParser, EntitiesParser>
+			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 
-		//if (mGameData->getAIManager().isPlayerOnScene())
-			//mScene->setPlayerStatus(mLastPlayerStatus);
-	}
-	//else if (mScene && mGameData->getAIManager().isPlayerOnScene())
-	//{
-	//	//mLastPlayerStatus = mScene->getPlayerStatus();
-	//	mScene.reset(new Scene(mGameData->getRenderWindow()));
-	//	SceneParser<XmlGuiParser, XmlMapParser, TiledGameObjectsParser, XmlResourceParser, XmlAudioParser>
-	//		sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mFileOfSceneToMake);
+		if (mGameData->getAIManager().isPlayerOnScene())
+		{
+			mScene->setPlayerStatus(mLastPlayerStatus);
 
-	//	//if (mGameData->getAIManager().isPlayerOnScene())
-	//		//mScene->setPlayerStatus(mLastPlayerStatus);
-	//}
-	else  // there wasn't a scene before
-	{
-		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
-			mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui(), *mTilesetTexture));
-		SceneParser<XmlGuiParser, XmlMapParser/*, TiledGameObjectsParser*/, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData/*, mScene->getRoot()*/, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
+			if (mHasPlayerPosition)
+				mScene->setPlayerPosition(mPlayerPosition);
+		}
 	}
 
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
@@ -90,9 +83,10 @@ void SceneManager::replaceAction()
 	mCurrentSceneFile = std::move(mFileOfSceneToMake);
 }
 
-void SceneManager::handleEvent(const ph::Event& e)
+void SceneManager::handleEvent(const Event& e)
 {
-	mScene->handleEvent(e);
+	if (auto* event = std::get_if<ActionEvent>(&e))
+		mScene->handleEvent(*event);
 }
 
 void SceneManager::update(sf::Time dt)
@@ -112,9 +106,7 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
 	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
-
-	if (mCurrentSceneFile != mFileOfSceneToMake)
-		mHasPlayerPosition = false;
+	mHasPlayerPosition = false;
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)

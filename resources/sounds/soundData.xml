@@ -8,6 +8,6 @@
   <sound fileName="reloadPistol.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
   <sound fileName="pistolShot.ogg" volumeMultiplier="7" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
   <sound fileName="reloadShotgun.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
-  <sound fileName="shotgunShot.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
+  <sound fileName="shotgunShot.ogg" volumeMultiplier="7" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
   <sound fileName="carTireScreech.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
 </soundData>

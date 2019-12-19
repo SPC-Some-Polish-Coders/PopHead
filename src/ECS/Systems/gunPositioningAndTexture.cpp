@@ -2,6 +2,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include <iostream>
 
 namespace ph::system {
 
@@ -12,27 +13,84 @@ namespace ph::system {
 		{
 			const auto& [playerFaceDirection, gunAttacker, playerBody] = playerView.get<component::FaceDirection, component::GunAttacker, component::BodyRect>(player);
 
-			updateGunPosition(playerFaceDirection.direction, playerBody.rect);
 			updateTexture(dt, playerFaceDirection.direction, gunAttacker.isTryingToAttack, gunAttacker.canAttack);
+			updateGunPosition(playerFaceDirection.direction, playerBody.rect);
 		}
 	}
 
-	void GunPositioningAndTexture::updateGunPosition(const sf::Vector2f& playerFaceDirection, const FloatRect& playerBody)
+	void GunPositioningAndTexture::updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack, bool canAttack) const
 	{
-		auto gunView = mRegistry.view<component::CurrentGun, component::BodyRect>();
+		auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
+		auto gunView = mRegistry.view<component::CurrentGun, component::TextureRect>();
+		for (auto gunAttacker : gunAttackerView)
+		{
+			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+			for (auto gun : gunView)
+			{
+				auto& [gunTextureBody, playerGun] = gunView.get<component::TextureRect, component::CurrentGun>(gun);
+
+				int offsetX = 16;
+				if (wantToAttack)
+				{
+					gunAttackerDetails.timeToHide = gunAttackerDetails.timeBeforeHiding;
+					if (canAttack)
+						offsetX = 0;
+				}
+
+				bool shouldHide = true;
+				if (gunAttackerDetails.timeToHide > 0.f)
+				{
+					shouldHide = false;
+					gunAttackerDetails.timeToHide -= dt;
+				}
+
+				if (shouldHide)
+					mRegistry.assign_or_replace<component::HiddenForRenderer>(gun);
+				else
+					if (mRegistry.has<component::HiddenForRenderer>(gun))
+						mRegistry.remove<component::HiddenForRenderer>(gun);
+
+				if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
+					gunTextureBody.rect = IntRect(offsetX, 0, 16, 8);
+				else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
+					gunTextureBody.rect = IntRect(offsetX, 16, 14, 10);
+				else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
+					gunTextureBody.rect = IntRect(offsetX, 32, 11, 13);
+				else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
+					gunTextureBody.rect = IntRect(offsetX, 48, 13, 11);
+
+				//if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
+				//	gunTextureBody.rect = IntRect(offsetX, 0, 15, 8);
+				//else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
+				//	gunTextureBody.rect = IntRect(offsetX, 10, 13, 11);
+				//else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
+				//	gunTextureBody.rect = IntRect(offsetX, 21, 13, 11);
+				//else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
+				//	gunTextureBody.rect = IntRect(offsetX, 34, 13, 11);
+			}
+		}
+	}
+
+	void GunPositioningAndTexture::updateGunPosition(sf::Vector2f playerFaceDirection, const FloatRect& playerBody) const
+	{
+		auto gunView = mRegistry.view<component::CurrentGun, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
 		for (auto gun : gunView)
 		{
-			auto& playerGun = gunView.get<component::CurrentGun>(gun);
 			auto& gunBody = gunView.get<component::BodyRect>(gun);
 
-			updateGunSpriteFlipping(playerFaceDirection, gunBody.rect);
-			updateGunSpritePosition(playerFaceDirection, playerBody.getTopLeft(), gunBody.rect);
+			sf::Vector2f newGunSize = getGunSpriteFlipping(playerFaceDirection, gunBody.rect.getSize());
+			sf::Vector2f newGunPosition = getGunNewSpritePosition(playerFaceDirection, playerBody, gunBody.rect);
+
+			gunBody.rect.width = newGunSize.x;
+			gunBody.rect.height = newGunSize.y;
+			gunBody.rect.left = newGunPosition.x;
+			gunBody.rect.top = newGunPosition.y;
 		}
 	}
 
-	void GunPositioningAndTexture::updateGunSpriteFlipping(const sf::Vector2f& playerFaceDirection, FloatRect& gunBody)
+	sf::Vector2f GunPositioningAndTexture::getGunSpriteFlipping(sf::Vector2f playerFaceDirection, sf::Vector2f gunSize) const
 	{
-		auto originalSize = gunBody.getSize();
+		auto originalSize = gunSize;
 		if (originalSize.x < 0.f)
 			originalSize.x = -originalSize.x;
 		if (originalSize.y < 0.f)
@@ -40,113 +98,60 @@ namespace ph::system {
 
 		if (playerFaceDirection.x < 0)
 		{
-			gunBody.width = -originalSize.x;
-			gunBody.height = originalSize.y;
+			gunSize.x = -originalSize.x;
+			gunSize.y = originalSize.y;
 		}
 		else if (playerFaceDirection == sf::Vector2f(0, 1))
 		{
-			gunBody.width = originalSize.x;
-			gunBody.height = -originalSize.y;
+			gunSize.x = originalSize.x;
+			gunSize.y = -originalSize.y;
 		}
 		else
 		{
-			gunBody.width = originalSize.x;
-			gunBody.height = originalSize.y;
+			gunSize.x = originalSize.x;
+			gunSize.y = originalSize.y;
 		}
+
+		return gunSize;
 	}
 
-	void GunPositioningAndTexture::updateGunSpritePosition(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& playerPosition,
-	                                                       FloatRect& gunBody)
+	sf::Vector2f GunPositioningAndTexture::getGunNewSpritePosition(sf::Vector2f playerFaceDirection, const FloatRect& playerBody,
+	                                                       const FloatRect& gunBody) const
 	{
-		const sf::Vector2f rightHandPosition = getRightHandPosition(playerFaceDirection) + playerPosition;
-		const sf::Vector2f gunBodySize = gunBody.getSize();
-		if (playerFaceDirection == sf::Vector2f(1.f, 0.f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(0.f, -3.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(3.f, -3.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(0.f, -1.f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(-3.f, 1.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(0.f, 1.f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(-3.f, 9.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(0.f, -8.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(0.f, -8.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(3.f, -3.f), gunBodySize);
-		else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-			gunBody = FloatRect(rightHandPosition + sf::Vector2f(-3.f, -1.f), gunBodySize);
-		else
-			gunBody = FloatRect(rightHandPosition, gunBodySize);
+		const sf::Vector2f gunOffset = getGunOffset(playerFaceDirection, gunBody.getSize(), playerBody.getSize());
+		const sf::Vector2f gunNewPosition = playerBody.getCenter() + gunOffset;
+		return gunNewPosition;
 	}
 
-	sf::Vector2f GunPositioningAndTexture::getRightHandPosition(const sf::Vector2f& playerFaceDirection)
+	sf::Vector2f GunPositioningAndTexture::getGunOffset(sf::Vector2f playerFaceDirection, sf::Vector2f gunBodySize, sf::Vector2f playerBodySize) const
 	{
+		gunBodySize.x = std::abs(gunBodySize.y);
+		gunBodySize.y = std::abs(gunBodySize.x);
+
+		float halfOfGunWidth = gunBodySize.x / 2;
+		float halfOfGunHeight = gunBodySize.y / 2;
+		float halfOfPlayerWidth = playerBodySize.x / 2;
+		float halfOfPlayerHeight = playerBodySize.y / 2;
+
 		if (playerFaceDirection == sf::Vector2f(1, 0))
-			return { 16, 7 };
+			return { gunBodySize.x, -halfOfGunHeight };
 		else if (playerFaceDirection == sf::Vector2f(-1, 0))
-			return { -2, 7 };
+			return { -halfOfPlayerWidth, -halfOfGunHeight };
 		else if (playerFaceDirection == sf::Vector2f(0, 1))
-			return { 10, 18 };
+			return { -2.7f, gunBodySize.y + halfOfPlayerHeight };
 		else if (playerFaceDirection == sf::Vector2f(0, -1))
-			return { 9, -12 };
+			return { -2.7f, -playerBodySize.y };
 		else if (playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-			return { 15, -5 };
-		else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f))
-			return { -1, -1 };
-		else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-			return { 17, 17 };
+			return { gunBodySize.x, -halfOfPlayerHeight - halfOfGunHeight };
 		else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f))
-			return { -3, 17 };
+			return { -gunBodySize.x, halfOfGunHeight};
+		else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f))
+			return { -gunBodySize.x, -halfOfPlayerHeight - halfOfGunHeight};
+		else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
+			return { gunBodySize.x, halfOfGunHeight };
 		else
-			return { 16, 7 };
+			return { 0.f, 0.f };	
 	}
 
-	void GunPositioningAndTexture::updateTexture(float dt, const sf::Vector2f& playerFaceDirection, bool wantToAttack, bool canAttack)
-	{
-		auto gunView = mRegistry.view<component::CurrentGun, component::TextureRect>();
-		for (auto gun : gunView)
-		{
-			auto& [gunTextureBody, playerGun] = gunView.get<component::TextureRect, component::CurrentGun>(gun);
 
-			int offsetX = 16;
-			if (wantToAttack)
-			{
-				playerGun.cooldownSinceLastShot = playerGun.timeBeforeHiding;
-				if (canAttack)
-					offsetX = 0;
-			}
-
-			bool shouldHide = true;
-			if (playerGun.cooldownSinceLastShot > 0.f)
-			{
-				shouldHide = false;
-				playerGun.cooldownSinceLastShot -= dt;
-			}
-
-			if (shouldHide)
-				mRegistry.assign_or_replace<component::HiddenForRenderer>(gun);
-			else
-				if (mRegistry.has<component::HiddenForRenderer>(gun))
-					mRegistry.remove<component::HiddenForRenderer>(gun);
-
-			if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-				gunTextureBody.rect = IntRect(offsetX, 0, 16, 8);
-			else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
-				gunTextureBody.rect = IntRect(offsetX, 16, 14, 11);
-			else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-				gunTextureBody.rect = IntRect(offsetX, 32, 11, 13);
-			else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-				gunTextureBody.rect = IntRect(offsetX, 48, 13, 11);
-
-			//if (playerFaceDirection == sf::Vector2f(1.f, 0.f) || playerFaceDirection == sf::Vector2f(-1.f, 0.f))
-			//	gunTextureBody.rect = IntRect(offsetX, 0, 15, 8);
-			//else if (playerFaceDirection == sf::Vector2f(0.f, 1.f) || playerFaceDirection == sf::Vector2f(0.f, -1.f))
-			//	gunTextureBody.rect = IntRect(offsetX, 10, 13, 11);
-			//else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f) || playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
-			//	gunTextureBody.rect = IntRect(offsetX, 21, 13, 11);
-			//else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f) || playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
-			//	gunTextureBody.rect = IntRect(offsetX, 34, 13, 11);
-		}
-	}
 }

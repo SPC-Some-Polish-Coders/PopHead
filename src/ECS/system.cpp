@@ -6,4 +6,9 @@ namespace ph::system {
 		: mRegistry(registry)
 	{
 	}
+
+	void System::onEvent(const ActionEvent& event)
+	{
+	}
+
 }

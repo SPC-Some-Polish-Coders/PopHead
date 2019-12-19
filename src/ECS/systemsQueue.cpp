@@ -12,4 +12,11 @@ namespace ph {
 		for (auto& system : mSystemsArray)
 			system->update(seconds);
 	}
+
+	void SystemsQueue::handleEvents(const ActionEvent& event)
+	{
+		for (auto& system : mSystemsArray)
+			system->onEvent(event);
+	}
+
 }

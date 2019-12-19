@@ -30,7 +30,7 @@ private:
 	void popAction();
 
 public:
-	void handleEvent(const Event&);
+	void handleEvent(const Event& event);
     void update(sf::Time dt);
 
 	Scene& getScene() { return *mScene.get(); }

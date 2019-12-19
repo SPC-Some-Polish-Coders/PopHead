@@ -20,7 +20,6 @@ namespace ph {
 		:mCutSceneManager(cutSceneManager)
 		,mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
-		,mHasLoadedPlayer(false)
 		,mSceneManager(sceneManager)
 	{
 	}
@@ -36,6 +35,8 @@ namespace ph {
 
 		const Xml mapNode = mapFile.getChild("map");
 		const Xml gameObjects = findGameObjects(mapNode);
+
+		// TODO: refactor this statement
 		if (gameObjects.toString() == "")
 			return;
 
@@ -45,6 +46,11 @@ namespace ph {
 
 		//mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 		ActionEventManager::setEnabled(true);
+	}
+
+	bool TiledParser::loadedPlayer() const
+	{
+		return mHasLoadedPlayer;
 	}
 
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const
@@ -108,8 +114,6 @@ namespace ph {
 		zombiePosition.rect.top = position.y;
 
 		loadHealthComponent(zombieNode, zombie);
-
-		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
@@ -122,8 +126,6 @@ namespace ph {
 		npcPosition.rect.top = position.y;
 
 		loadHealthComponent(npcNode, npc);
-
-		mHasLoadedPlayer = true;
 	}
 
 	void TiledParser::loadSpawner(const Xml& spawnerNode) const
