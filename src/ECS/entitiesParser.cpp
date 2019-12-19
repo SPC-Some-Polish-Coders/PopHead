@@ -43,6 +43,11 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 	mUsedRegistry = nullptr;
 }
 
+bool EntitiesParser::loadedPlayer() const
+{
+	return mHasLoadedPlayer;
+}
+
 void EntitiesParser::parseTemplates(const Xml& entityTemplatesNode)
 {
 	std::vector<Xml> entityTemplates = entityTemplatesNode.getChildren("entityTemplate");
@@ -255,6 +260,7 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Player>(entity);
+	mHasLoadedPlayer = true;
 }
 
 void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity& entity)
