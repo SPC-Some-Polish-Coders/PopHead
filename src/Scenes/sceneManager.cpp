@@ -7,6 +7,7 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 #include "ECS/entitiesParser.hpp"
+#include "ECS/tiledParser.hpp"
 
 namespace ph {
 
@@ -66,7 +67,7 @@ void SceneManager::replaceAction()
 		
 		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
 			mGameData->getAIManager(), mGameData->getTerminal(), mGameData->getSceneManager(), mGameData->getGui(), *mTilesetTexture));
-		SceneParser<XmlGuiParser, XmlMapParser, XmlAudioParser, EntitiesParser>
+		SceneParser<XmlGuiParser, XmlMapParser, TiledParser, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
 
 		if (mGameData->getAIManager().isPlayerOnScene())
