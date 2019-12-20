@@ -1,30 +1,97 @@
 {
     "systems": [
         {
-            "name" : "DamageDealing",
-            "componentsRead" : [
-                "Player",
-                "BodyRect",
-                "Damage"
-            ],
+            "name" : "AnimationSystem",
             "componentsWrite" : [
-                "CollisionWithPlayer",
-                "Health"
+                "AnimationData",
+                "TextureRect"
             ]
         },
         {
-            "name" : "DyingCharacters",
+            "name" : "AudioSystem",
             "componentsRead" : [
-                "Health"
+                "Player",
+                "BodyRect",
+                "Damage",
+                "AmbientSound",
+                "SpatialSound"
+            ]
+        },
+        {
+            "name" : "CanUseWeapon",
+            "componentsRead" : [
+                "CurrentMeleeWeapon",
+                "MeleeProperties",
+                "CurrentGun",
+                "GunProperties"
             ],
             "componentsWrite" : [
-                "TaggedToDestroy"
+                "MeleeAttacker",
+                "GunAttacker"
+            ]
+        },
+        {
+            "name" : "DamageAndDeath",
+            "componentsRead" : [
+            ],
+            "componentsWrite" : [
+                "DamageTag",
+                "Health",
+                "DamageAnimation",
+                "RenderQuad",
+                "MultiParticleEmitter"
             ]
         },
         {
             "name" : "EntityDestroying",
             "componentsWrite" : [
                 "ALL"
+            ]
+        },
+        {
+            "name" : "Entrances",
+            "componentsRead" : [
+                "Player",
+                "Entrance"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
+            ]
+        },
+        {
+            "name" : "Gates",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "GunPositioningAndTexture",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "HostileCollisions",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "IsObjectInArea",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
             ]
         },
         {
@@ -35,12 +102,66 @@
             ]
         },
         {
+            "name" : "KinematicCollisions",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "Levers",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "Lifetime",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "MeleePositioning",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
             "name" : "Movement",
             "componentsRead" : [
                 "Velocity"
             ],
             "componentsWrite" : [
                 "BodyRect"
+            ]
+        },
+        {
+            "name" : "ParticleSystem",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "PendingMeleeAttacks",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
             ]
         },
         {
@@ -78,23 +199,13 @@
             ]
         },
         {
-            "name" : "PlayerInput",
+            "name" : "PlayerMovementInput",
             "componentsRead" : [
                 "CharacterSpeed",
                 "Player"
             ],
             "componentsWrite" : [
                 "Velocity"
-            ]
-        },
-        {
-            "name" : "PlayerAttackType",
-            "componentsRead" : [
-                "Player"
-            ],
-            "componentsWrite" : [
-                "MelleAtacker",
-                "GunAtacker"
             ]
         },
         {
@@ -115,6 +226,33 @@
             ],
             "componentsWrite" : [
                 "BodyRect"
+            ]
+        },
+        {
+            "name" : "VelocityChangingAreas",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "VelocityClear",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
+            ]
+        },
+        {
+            "name" : "ZombieSystem",
+            "componentsRead" : [
+                ""
+            ],
+            "componentsWrite" : [
+                ""
             ]
         }
     ]
