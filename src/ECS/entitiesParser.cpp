@@ -87,42 +87,43 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		return;
 
 	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
-		{"BodyRect",			   &EntitiesParser::parseBodyRect},
-		{"RenderQuad",			   &EntitiesParser::parseRenderQuad},
-		{"TextureRect",			   &EntitiesParser::parseTextureRect},
-		{"PushingArea",			   &EntitiesParser::parsePushingArea},
-		{"CharacterSpeed",		   &EntitiesParser::parseCharacterSpeed},
-		{"Killable",			   &EntitiesParser::parseKillable},
-		{"Health",	               &EntitiesParser::parseHealth},
-		{"Damage",	               &EntitiesParser::parseDamage},
-		{"Medkit",	               &EntitiesParser::parseMedkit},
-		{"Player",                 &EntitiesParser::parsePlayer},
-		{"Zombie",                 &EntitiesParser::parseZombie},
-		{"Bullet",                 &EntitiesParser::parseBullet},
-		{"Velocity",               &EntitiesParser::parseVelocity},
-		{"Entrance",               &EntitiesParser::parseEntrance},
-		{"Gate",				   &EntitiesParser::parseGate},
-		{"Lever",				   &EntitiesParser::parseLever},
-		{"LeverListener",		   &EntitiesParser::parseLeverListener},
-		{"CurrentGun",             &EntitiesParser::parseCurrentGun},
-		{"CurrentMeleeWeapon",     &EntitiesParser::parseCurrentMeleeWeapon},
-		{"GunProperties",		   &EntitiesParser::parseGunProperties},
-		{"MeleeProperties",		   &EntitiesParser::parseMeleeProperties},
-		{"FaceDirection",          &EntitiesParser::parseFaceDirection},
-		{"Lifetime",			   &EntitiesParser::parseLifetime},
-		{"Camera",                 &EntitiesParser::parseCamera},
-		{"LightSource",            &EntitiesParser::parseLightSource},
-		{"HiddenForRenderer",	   &EntitiesParser::parseHiddenForRenderer},
-		{"GunAttacker",            &EntitiesParser::parseGunAttacker},
-		{"MeleeAttacker",          &EntitiesParser::parseMeleeAttacker},
-		{"CollisionWithPlayer",    &EntitiesParser::parseCollisionWithPlayer},
-		{"StaticCollisionBody",    &EntitiesParser::parseStaticCollisionBody},
-		{"KinematicCollisionBody", &EntitiesParser::parseKinematicCollisionBody},
-		{"VelocityChangingEffect", &EntitiesParser::parseVelocityChangingEffect},
-		{"AnimationData",          &EntitiesParser::parseAnimationData},
-		{"ParticleEmitter",        &EntitiesParser::parseParticleEmitter},
-		{"MultiParticleEmitter",   &EntitiesParser::parseMultiParticleEmitter},
-		{"RenderChunk",            &EntitiesParser::parseRenderChunk}
+		{"BodyRect",			        &EntitiesParser::parseBodyRect},
+		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
+		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
+		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
+		{"CharacterSpeed",		  	    &EntitiesParser::parseCharacterSpeed},
+		{"Killable",			  	    &EntitiesParser::parseKillable},
+		{"Health",	              	    &EntitiesParser::parseHealth},
+		{"Damage",	              	    &EntitiesParser::parseDamage},
+		{"Medkit",	              	    &EntitiesParser::parseMedkit},
+		{"Player",                	    &EntitiesParser::parsePlayer},
+		{"Zombie",                	    &EntitiesParser::parseZombie},
+		{"Bullet",                	    &EntitiesParser::parseBullet},
+		{"Velocity",              	    &EntitiesParser::parseVelocity},
+		{"Entrance",              	    &EntitiesParser::parseEntrance},
+		{"Gate",				  	    &EntitiesParser::parseGate},
+		{"Lever",				  	    &EntitiesParser::parseLever},
+		{"LeverListener",		  	    &EntitiesParser::parseLeverListener},
+		{"CurrentGun",            	    &EntitiesParser::parseCurrentGun},
+		{"CurrentMeleeWeapon",    	    &EntitiesParser::parseCurrentMeleeWeapon},
+		{"GunProperties",		  	    &EntitiesParser::parseGunProperties},
+		{"MeleeProperties",		  	    &EntitiesParser::parseMeleeProperties},
+		{"FaceDirection",         	    &EntitiesParser::parseFaceDirection},
+		{"Lifetime",			  	    &EntitiesParser::parseLifetime},
+		{"Camera",                	    &EntitiesParser::parseCamera},
+		{"LightSource",           	    &EntitiesParser::parseLightSource},
+		{"HiddenForRenderer",	  	    &EntitiesParser::parseHiddenForRenderer},
+		{"GunAttacker",           	    &EntitiesParser::parseGunAttacker},
+		{"MeleeAttacker",         	    &EntitiesParser::parseMeleeAttacker},
+		{"CollisionWithPlayer",   	    &EntitiesParser::parseCollisionWithPlayer},
+		{"StaticCollisionBody",   	    &EntitiesParser::parseStaticCollisionBody},
+		{"MultiStaticCollisionBody",    &EntitiesParser::parseMultiStaticCollisionBody},
+		{"KinematicCollisionBody", 	    &EntitiesParser::parseKinematicCollisionBody},
+		{"VelocityChangingEffect", 	    &EntitiesParser::parseVelocityChangingEffect},
+		{"AnimationData",          	    &EntitiesParser::parseAnimationData},
+		{"ParticleEmitter",             &EntitiesParser::parseParticleEmitter},
+		{"MultiParticleEmitter",        &EntitiesParser::parseMultiParticleEmitter},
+		{"RenderChunk",                 &EntitiesParser::parseRenderChunk}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -315,6 +316,11 @@ void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode,
 void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::StaticCollisionBody>(entity);
+}
+
+void EntitiesParser::parseMultiStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::MultiStaticCollisionBody>(entity);
 }
 
 void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)

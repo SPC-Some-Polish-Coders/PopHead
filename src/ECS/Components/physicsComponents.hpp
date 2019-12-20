@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utilities/rect.hpp"
+#include <vector>
 
 namespace ph::component {
 
@@ -21,6 +22,11 @@ namespace ph::component {
 
 	struct StaticCollisionBody
 	{
+	};
+
+	struct MultiStaticCollisionBody
+	{
+		std::vector<ph::FloatRect> rects;
 	};
 	
 	struct KinematicCollisionBody 

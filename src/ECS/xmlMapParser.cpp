@@ -1,5 +1,6 @@
 #include "xmlMapParser.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/profiling.hpp"
 
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -160,6 +161,8 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
                                const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
+	PH_PROFILE_FUNCTION();
+
 	constexpr float chunkSize = 12.f;
 	float nrOfChunksInOneRow = std::ceil(info.mapSize.x / chunkSize);
 	if(nrOfChunksInOneRow == 0.f)
@@ -167,18 +170,23 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 	float nrOfChunksInOneColumn = std::ceil(info.mapSize.y / chunkSize);
 	float nrOfChunks = nrOfChunksInOneRow * nrOfChunksInOneColumn;
 
+	// TODO: Allocate these vectors only once, store them in class
+
 	// create chunks
-	std::vector<component::RenderChunk> chunks;
-	chunks.resize(static_cast<size_t>(nrOfChunks));
+	std::vector<component::RenderChunk> renderChunks;
+	renderChunks.resize(static_cast<size_t>(nrOfChunks));
+
+	std::vector<component::MultiStaticCollisionBody> chunkCollisions;
+	chunkCollisions.resize(static_cast<size_t>(nrOfChunks));
 
 	// fill chunks with z and bounds
 	float rowSize = nrOfChunksInOneRow * chunkSize;
-	for(size_t i = 0; i < chunks.size(); ++i)
+	for(size_t i = 0; i < renderChunks.size(); ++i)
 	{
-		chunks[i].z = z;
+		renderChunks[i].z = z;
 
 		float row = std::floor(i / nrOfChunksInOneRow);
-		chunks[i].bounds = sf::FloatRect((chunkSize * i) - (row * chunkSize * nrOfChunksInOneRow), row * chunkSize, chunkSize, chunkSize);
+		renderChunks[i].bounds = sf::FloatRect((chunkSize * i) - (row * chunkSize * nrOfChunksInOneRow), row * chunkSize, chunkSize, chunkSize);
 	}
 
 	for (size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) 
@@ -268,30 +276,47 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
 			// TODO: Optimize that
-			// emplace quad data to chunk
-			for(auto& chunk : chunks)
-				if(chunk.bounds.contains(positionInTiles))
-					chunk.quads.emplace_back(qd);
+			// find chunk index
+			size_t chunkIndex = 0;
+			for(size_t i = 0; i < renderChunks.size(); ++i)
+				if(renderChunks[i].bounds.containsIncludingBounds(positionInTiles))
+					chunkIndex = i;
 
+			// emplace quad data to chunk
+			renderChunks[chunkIndex].quads.emplace_back(qd);
+
+			// load collision bodies
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
-			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], qd.position, aiManager);
+
+			auto& tilesData = tilesets.tilesData[tilesDataIndex];
+			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
+				if (tileId == tilesData.ids[i]) {
+					sf::FloatRect bounds = tilesData.bounds[i];
+					bounds.left += qd.position.x;
+					bounds.top += qd.position.y;
+					aiManager.registerObstacle({bounds.left, bounds.top});
+					chunkCollisions[chunkIndex].rects.emplace_back(bounds);
+				}
+			}
 		}
 	}
 
-	for(auto& chunk : chunks)
+	for(size_t i = 0; i < renderChunks.size(); ++i)
 	{
 		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		chunk.bounds.left *= static_cast<float>(info.tileSize.x);
-		chunk.bounds.top *= static_cast<float>(info.tileSize.y);
-		chunk.bounds.width *= static_cast<float>(info.tileSize.x);
-		chunk.bounds.height *=  static_cast<float>(info.tileSize.y);
-		
-		// add chunk entity which contains only RenderChunk component to registry
-		auto chunkEntity = mTemplates->createCopy("RenderChunk", *mGameRegistry);
+		renderChunks[i].bounds.left *= static_cast<float>(info.tileSize.x);
+		renderChunks[i].bounds.top *= static_cast<float>(info.tileSize.y);
+		renderChunks[i].bounds.width *= static_cast<float>(info.tileSize.x);
+		renderChunks[i].bounds.height *= static_cast<float>(info.tileSize.y);
+
+		// put data into registry
+		auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
 		auto& renderChunk = mGameRegistry->get<component::RenderChunk>(chunkEntity);
-		renderChunk = chunk;
+		renderChunk = renderChunks[i];
+		auto& multiCollisionBody = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
+		multiCollisionBody = chunkCollisions[i];
 	}
 }
 
@@ -319,22 +344,6 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 	return std::string::npos;
 }
 
-void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position,
-                                       AIManager& aiManager)
-{
-	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
-		if (tileId == tilesData.ids[i]) {
-			sf::FloatRect bounds = tilesData.bounds[i];
-			bounds.left += position.x;
-			bounds.top += position.y;
-			aiManager.registerObstacle({ bounds.left, bounds.top });
-			auto mapCollisionEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
-			auto& body = mGameRegistry->get<component::BodyRect>(mapCollisionEntity);
-			body.rect = bounds;
-		}
-	}
-}
-
 void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
 {
 	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
@@ -345,12 +354,12 @@ void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
 	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
 	{
 		// create top border
-		auto topBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto topBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
 		auto& topBody = mGameRegistry->get<component::BodyRect>(topBorderEntity);
 		topBody.rect = FloatRect(x * size.x, -size.y, size.x, size.y);
 
 		// create bottom border
-		auto bottomBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto bottomBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
 		auto& bottomBody = mGameRegistry->get<component::BodyRect>(bottomBorderEntity);
 		bottomBody.rect = FloatRect(x * size.x, mapHeight, size.x, size.y);
 	}
@@ -358,12 +367,12 @@ void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
 	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
 	{
 		// left border
-		auto leftborderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto leftborderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
 		auto& leftBody = mGameRegistry->get<component::BodyRect>(leftborderEntity);
 		leftBody.rect = FloatRect(-size.x, y * size.y, size.x, size.y);
 
 		// right border
-		auto rightBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto rightBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
 		auto& rightBody = mGameRegistry->get<component::BodyRect>(rightBorderEntity);
 		rightBody.rect = FloatRect(mapWidth, y * size.y, size.x, size.y);
 	}

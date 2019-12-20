@@ -57,7 +57,6 @@ private:
 	bool hasTile(unsigned globalTileId) const;
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
-	void loadCollisionBodies(const unsigned tileId, const TilesData&, sf::Vector2f position, AIManager&);
 	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:

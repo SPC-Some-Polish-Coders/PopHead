@@ -33,6 +33,7 @@ private:
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);
 	void parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
+	void parseMultiStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGunProperties(const Xml& entityComponentNode, entt::entity& entity);
