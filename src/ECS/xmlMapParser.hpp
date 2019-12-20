@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ECS/entitiesTemplateStorage.hpp"
+#include "entitiesTemplateStorage.hpp"
 #include "Resources/resourceHolder.hpp"
 
 #include <entt/entity/registry.hpp>

@@ -2,7 +2,7 @@
 #include "sceneParser.hpp"
 #include "scene.hpp"
 #include "GUI/xmlGuiParser.hpp"
-#include "Map/xmlMapParser.hpp"
+#include "ECS/xmlMapParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
