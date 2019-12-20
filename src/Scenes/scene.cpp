@@ -1,6 +1,7 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
 #include "gameData.hpp"
+
 #include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/movement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
@@ -29,6 +30,7 @@
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
+#include "ECS/Systems/collisionDebug.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -54,6 +56,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::PickupMedkit>();
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
+	mSystemsQueue.appendSystem<system::CollisionDebug>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();

@@ -8,6 +8,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Systems/collisionDebug.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include <entt/entt.hpp>
 
@@ -178,46 +179,12 @@ void CommandInterpreter::executeCurrentPos() const
 
 void CommandInterpreter::executeCollisionDebug() const
 {
-	//if(commandContains("turn"))          turnOnOrTurnOffCollisionDebug();
-	//else if(commandContains("color"))    changeCollisionDebugColor();
-	//else if(commandContains("display"))  changeCollisionDebugDisplayMode();
-	//else
-	//	executeMessage("Incorrect argument! First argument has to be 'turn', 'color' or 'display'.", MessageType::ERROR);
-}
-
-void CommandInterpreter::turnOnOrTurnOffCollisionDebug() const
-{
-	//auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-	//const size_t endOfCommand = getCommandWithoutArguments().size();
-	//if (mCommand.rfind("on") > endOfCommand)
-	//	collisionDebugSettings.turnOn();
-	//else if (commandContains("off"))
-	//	collisionDebugSettings.turnOff();
-	//else
-	//	executeMessage("Incorrect second argument! Enter 'on' or 'off' to turn on/off collision debug.", MessageType::ERROR);
-}
-
-void CommandInterpreter::changeCollisionDebugColor() const
-{
-	//auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-	//if(commandContains('1'))       collisionDebugSettings.setColors(1);
-	//else if(commandContains('2'))  collisionDebugSettings.setColors(2);
-	//else if(commandContains('3'))  collisionDebugSettings.setColors(3);
-	//else
-	//	executeMessage("Incorrect second argument! You can set collision debug color only from 1 to 3.", MessageType::ERROR);
-}
-
-void CommandInterpreter::changeCollisionDebugDisplayMode() const
-{
-	//auto& collisionDebugSettings = CollisionDebugSettings::getInstance();
-
-	//if(commandContains("kinematic"))    collisionDebugSettings.displayOnlyKinematicBodies();
-	//else if(commandContains("static"))  collisionDebugSettings.displayOnlyStaticBodies();
-	//else if(commandContains("all"))     collisionDebugSettings.displayAllBodies();
-	//else
-	//	executeMessage("Incorrect second argument! You have to enter 'kinematic', 'static' or 'all'.", MessageType::ERROR);
+	if(commandContains("on"))
+		system::CollisionDebug::setIsCollisionDebugActive(true);
+	if(commandContains("off"))
+		system::CollisionDebug::setIsCollisionDebugActive(false);
+	else
+		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
 }
 
 void CommandInterpreter::executeMute() const
