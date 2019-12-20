@@ -199,7 +199,11 @@
 <entities>
 
     <entity sourceTemplate="Player">
-        <component name="BodyRect" x="200.0" y="350.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="500.0" y="1350.0" width="20.0" height="20.0" />
+    </entity>
+  
+    <entity sourceTemplate="Zombie">
+      <component name="BodyRect" x="520.0" y="1150.0" width="20.0" height="20.0" />
     </entity>
 
     <entity sourceTemplate="Pistol">
@@ -331,35 +335,11 @@
         <component name="Lever" id="3" minActivationInterval="0.25" turnOffAfterSwitch="true" />
     </entity>
 
-    <entity sourceTemplate="Zombie" />
-
-    <entity sourceTemplate="ColorSquare">
-        <component name="StaticCollisionBody" />
-        <component name="BodyRect" x="200" y="-100" width="30" height="30"/>
-        <component name="RenderQuad" z="100" rotation="-40" rotationOrigin="15, 15" blocksLight="true" textureFilepath="textures/others/zombieHead.png"/>
-    </entity>
-    
     <entity sourceTemplate="ColorSquare">
         <component name="RenderQuad" color="rgb(0, 50, 100)" z="100" blocksLight="true"/>
     </entity>
 
     <entity sourceTemplate="Lever" />
-
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="230.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="260.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="150.0" y="100.0" width="20.0" height="20.0" />
-    </entity>
-
-    <entity sourceTemplate="Zombie">
-        <component name="BodyRect" x="200.0" y="150.0" width="20.0" height="20.0" />
-    </entity>
 
     <entity sourceTemplate="GateGuard">
         <component name="StaticCollisionBody" />

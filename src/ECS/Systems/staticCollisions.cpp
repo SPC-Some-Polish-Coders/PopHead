@@ -1,10 +1,13 @@
 #include "staticCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void StaticCollisions::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto staticObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>(entt::exclude<component::KinematicCollisionBody>);
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
 		

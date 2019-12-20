@@ -112,7 +112,7 @@ void Game::update(sf::Time dt)
 	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(dt);
-		//mAIManager->update();
+		mAIManager->update();
 		mGui->update(dt);
 		mDebugCounter->draw();
 		mTerminal->update();

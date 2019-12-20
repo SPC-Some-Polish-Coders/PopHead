@@ -1,15 +1,18 @@
 #pragma once
 
 #include "ECS/system.hpp"
-
 #include <SFML/System/Vector2.hpp>
 
-namespace ph::system {
+namespace ph {
+
+class AIManager;
+
+namespace system {
 
 	class PlayerMovementInput : public System
 	{
 	public:
-		using System::System;
+		PlayerMovementInput(entt::registry&, AIManager&);
 
 		void update(float dt) override;
 
@@ -24,9 +27,12 @@ namespace ph::system {
 		void updateMeleeAttackInput();
 
 	private:
+		AIManager& mAIManager;
 		bool mUp;
 		bool mDown;
 		bool mLeft;
 		bool mRight;
 	};
+}
+
 }

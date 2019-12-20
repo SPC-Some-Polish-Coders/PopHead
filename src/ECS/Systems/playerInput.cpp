@@ -4,9 +4,16 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Events/actionEventManager.hpp"
+#include "AI/aiManager.hpp"
 #include <cmath>
 
 namespace ph::system {
+
+	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager)
+		:System(registry)
+		,mAIManager(aiManager)
+	{
+	}
 
 	void PlayerMovementInput::update(float dt)
 	{
@@ -21,8 +28,12 @@ namespace ph::system {
 		updateGunAttackInput();
 		updateMeleeAttackInput();
 
-		auto movementView = mRegistry.view<component::Velocity, component::CharacterSpeed, component::Player>();
-		movementView.each([playerDirection](component::Velocity& velocity, const component::CharacterSpeed& speed, const component::Player) {
+		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
+		movementView.each([this, playerDirection]
+		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
+		{
+			mAIManager.setPlayerPosition(body.rect.getTopLeft());
+
 			const auto vel = playerDirection * speed.speed;
 			velocity.dx = vel.x;
 			velocity.dy = vel.y;

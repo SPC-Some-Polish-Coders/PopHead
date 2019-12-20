@@ -73,24 +73,24 @@ void ZombieSystem::update(float dt)
 		}
 
 		// move zombie
-		//zombie.timeFromStartingThisMove += dt;
-		//if(zombie.pathMode.path.empty())
-		//{
-		//	zombie.pathMode = mAIManager->getZombiePath(body.rect.getTopLeft());
-		//	zombie.timeFromStartingThisMove = 0.f;
-		//}
+		zombie.timeFromStartingThisMove += dt;
+		if(zombie.pathMode.path.empty())
+		{
+			zombie.pathMode = mAIManager->getZombiePath(body.rect.getTopLeft());
+			zombie.timeFromStartingThisMove = 0.f;
+		}
 
-		//constexpr float timeToMoveToAnotherTile = 0.2f;
-		//if(zombie.timeFromStartingThisMove > timeToMoveToAnotherTile)
-		//{
-		//	zombie.timeFromStartingThisMove = 0.f;
-		//	Direction currentDirection = zombie.pathMode.path.front();
-		//	zombie.pathMode.path.pop_front();
-		//	zombie.currentDirectionVector = toDirectionVector(currentDirection);
-		//}
+		constexpr float timeToMoveToAnotherTile = 0.2f;
+		if(zombie.timeFromStartingThisMove > timeToMoveToAnotherTile)
+		{
+			zombie.timeFromStartingThisMove = 0.f;
+			Direction currentDirection = zombie.pathMode.path.front();
+			zombie.pathMode.path.pop_front();
+			zombie.currentDirectionVector = toDirectionVector(currentDirection);
+		}
 
-		//velocity.dx = 50.f * zombie.currentDirectionVector.x;
-		//velocity.dy = 50.f * zombie.currentDirectionVector.y;
+		velocity.dx = 50.f * zombie.currentDirectionVector.x;
+		velocity.dy = 50.f * zombie.currentDirectionVector.y;
 	}
 }
 

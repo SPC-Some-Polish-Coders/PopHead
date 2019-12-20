@@ -48,7 +48,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>();
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager));
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
