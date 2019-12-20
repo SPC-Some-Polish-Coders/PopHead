@@ -328,8 +328,8 @@ void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& t
 			bounds.left += position.x;
 			bounds.top += position.y;
 			aiManager.registerObstacle({ bounds.left, bounds.top });
-			auto chunkEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
-			auto& body = mGameRegistry->get<component::BodyRect>(chunkEntity);
+			auto mapCollisionEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+			auto& body = mGameRegistry->get<component::BodyRect>(mapCollisionEntity);
 			body.rect = bounds;
 		}
 	}
@@ -337,33 +337,35 @@ void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& t
 
 void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
 {
-	// TUTAJ
-
 	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
 	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
 
 	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
-
-	//auto& physics = mGameData->getPhysicsEngine();
-
+	
 	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
 	{
-		// top border
-		sf::Vector2f positionTop(x * size.x, -size.y);
-		//physics.createStaticBodyAndGetTheReference({ positionTop, size });
-		// bottom border
-		sf::Vector2f positionBottom(x * size.x, mapHeight);
-		//physics.createStaticBodyAndGetTheReference({ positionBottom, size });
+		// create top border
+		auto topBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto& topBody = mGameRegistry->get<component::BodyRect>(topBorderEntity);
+		topBody.rect = FloatRect(x * size.x, -size.y, size.x, size.y);
+
+		// create bottom border
+		auto bottomBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto& bottomBody = mGameRegistry->get<component::BodyRect>(bottomBorderEntity);
+		bottomBody.rect = FloatRect(x * size.x, mapHeight, size.x, size.y);
 	}
 
 	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
 	{
 		// left border
-		sf::Vector2f positionLeft(-size.x, y * size.y);
-		//physics.createStaticBodyAndGetTheReference({ positionLeft, size });
+		auto leftborderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto& leftBody = mGameRegistry->get<component::BodyRect>(leftborderEntity);
+		leftBody.rect = FloatRect(-size.x, y * size.y, size.x, size.y);
+
 		// right border
-		sf::Vector2f positionRight(mapWidth, y * size.y);
-		//physics.createStaticBodyAndGetTheReference({ positionRight, size });
+		auto rightBorderEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+		auto& rightBody = mGameRegistry->get<component::BodyRect>(rightBorderEntity);
+		rightBody.rect = FloatRect(mapWidth, y * size.y, size.x, size.y);
 	}
 }
 
