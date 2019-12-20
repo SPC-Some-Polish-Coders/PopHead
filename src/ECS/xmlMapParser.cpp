@@ -32,7 +32,7 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	parserMapLayers(layerNodes, tilesetsData, generalMapInfo);
+	parserMapLayers(layerNodes, tilesetsData, generalMapInfo, aiManager);
 	createMapBorders(generalMapInfo);
 }
 
@@ -136,14 +136,15 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info)
+void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info,
+                                   AIManager& aiManager)
 {
 	unsigned char z = 200;
 	for (const Xml& layerNode : layerNodes)
 	{
 		const Xml dataNode = layerNode.getChild("data");
 		const auto globalIds = toGlobalTileIds(dataNode);
-		createLayer(globalIds, tilesets, info, z);
+		createLayer(globalIds, tilesets, info, z, aiManager);
 		--z;
 	}
 }
@@ -157,7 +158,7 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 }
 
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, unsigned char z)
+                               const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
 	constexpr float chunkSize = 12.f;
 	float nrOfChunksInOneRow = std::ceil(info.mapSize.x / chunkSize);
@@ -275,7 +276,7 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
-			//loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], position);
+			loadCollisionBodies(tileId, tilesets.tilesData[tilesDataIndex], qd.position, aiManager);
 		}
 	}
 
@@ -318,15 +319,18 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 	return std::string::npos;
 }
 
-void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position)
+void XmlMapParser::loadCollisionBodies(const unsigned tileId, const TilesData& tilesData, const sf::Vector2f position,
+                                       AIManager& aiManager)
 {
 	for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
 		if (tileId == tilesData.ids[i]) {
 			sf::FloatRect bounds = tilesData.bounds[i];
 			bounds.left += position.x;
 			bounds.top += position.y;
-			//mGameData->getPhysicsEngine().createStaticBodyAndGetTheReference(bounds);   // TUTAJ
-			//mGameData->getAIManager().registerObstacle({ bounds.left, bounds.top });   // TUTAJ
+			aiManager.registerObstacle({ bounds.left, bounds.top });
+			auto chunkEntity = mTemplates->createCopy("MapCollision", *mGameRegistry);
+			auto& body = mGameRegistry->get<component::BodyRect>(chunkEntity);
+			body.rect = bounds;
 		}
 	}
 }

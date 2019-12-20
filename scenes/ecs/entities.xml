@@ -4,6 +4,11 @@
         <component name="RenderChunk" />
     </entityTemplate>
 
+    <entityTemplate name="MapCollision">
+        <component name="StaticCollisionBody" />
+        <component name="BodyRect" x="0" y="0" width="0" height="0"/>
+    </entityTemplate>
+
     <entityTemplate name="Player">
         <component name="KinematicCollisionBody" mass="10" />
         <component name="GunAttacker" bullets="300" isTryingToAttack="false" timeBeforeHiding="3" />
