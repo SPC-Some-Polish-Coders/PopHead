@@ -25,22 +25,11 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto& currentCamera = getCameraWithTheBiggestPriority();	
-	Renderer::beginScene(currentCamera);
-	submitLights();
-	submitLightWalls();
-	submitMapChunks(currentCamera.getBounds());
-	submitRenderQuads();
-	submitRenderQuadsWithTextureRect();
-}
-
-Camera& RenderSystem::getCameraWithTheBiggestPriority()
-{
-	auto view = mRegistry.view<component::Camera>();
-
+	// choose camera with the biggest priority
+	auto cameras = mRegistry.view<component::Camera>();
 	unsigned currentCameraPriority = 0;
 	Camera* currentCamera = &defaultCamera;
-	view.each([&currentCameraPriority, &currentCamera](component::Camera& camera)
+	cameras.each([&currentCameraPriority, &currentCamera](component::Camera& camera)
 	{
 		if(camera.priority > currentCameraPriority) {
 			currentCameraPriority = camera.priority;
@@ -48,64 +37,55 @@ Camera& RenderSystem::getCameraWithTheBiggestPriority()
 		}
 	});
 
-	return *currentCamera;
-}
+	// begin scene
+	Renderer::beginScene(*currentCamera);
 
-void RenderSystem::submitLights() const
-{
-	auto view = mRegistry.view<component::LightSource, component::BodyRect>();
-	view.each([](const component::LightSource& pointLight, const component::BodyRect& body)
+	// submit light sources
+	bool isLightSourceOnScene = false;
+	auto lightSources = mRegistry.view<component::LightSource, component::BodyRect>();
+	lightSources.each([&isLightSourceOnScene](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
-
+		isLightSourceOnScene = true;
 		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
 			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
-}
 
-void RenderSystem::submitLightWalls() const
-{
-	auto view = mRegistry.view<component::BlocksLight, component::BodyRect>();
-	view.each([](const component::BlocksLight, const component::BodyRect& body) 
+	//submit light walls
+	auto lightWalls = mRegistry.view<component::BlocksLight, component::BodyRect>();
+	lightWalls.each([](const component::BlocksLight, const component::BodyRect& body) 
 	{
 		Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
 	});
+	if(isLightSourceOnScene) {
+		auto multiStaticCollisionBodies = mRegistry.view<component::MultiStaticCollisionBody>();
+		multiStaticCollisionBodies.each([](const component::MultiStaticCollisionBody& mscb)
+		{
+			for(auto& rect : mscb.rects)
+				Renderer::submitLightBlockingQuad(rect.getTopLeft(), rect.getSize());
+		});
+	}
 
-	auto multiStaticCollisionBodies = mRegistry.view<component::MultiStaticCollisionBody>();
-	multiStaticCollisionBodies.each([](const component::MultiStaticCollisionBody& mscb)
+	// submit map chunks
+	auto renderChunks = mRegistry.view<component::RenderChunk>();
+	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
 	{
-		for(auto& rect : mscb.rects)
-			Renderer::submitLightBlockingQuad(rect.getTopLeft(), rect.getSize());
-	});
-}
-
-void RenderSystem::submitMapChunks(const FloatRect& cameraBounds) const
-{
-	auto view = mRegistry.view<component::RenderChunk>();
-	view.each([this, &cameraBounds](component::RenderChunk& chunk)
-	{
-		if(cameraBounds.doPositiveRectsIntersect(chunk.bounds))
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
 			Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
 	});
-}
 
-void RenderSystem::submitRenderQuads() const
-{
-	auto view = mRegistry.view<component::RenderQuad, component::BodyRect>
-		(entt::exclude<component::HiddenForRenderer, component::TextureRect>);
-	view.each([](const component::RenderQuad& quad, const component::BodyRect& body)
+	// submit render quads
+	auto renderQuads = mRegistry.view<component::RenderQuad, component::BodyRect>(entt::exclude<component::HiddenForRenderer, component::TextureRect>);
+	renderQuads.each([](const component::RenderQuad& quad, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
 			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
 	});
-}
-
-void RenderSystem::submitRenderQuadsWithTextureRect() const
-{
-	auto view = mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>
-		(entt::exclude<component::HiddenForRenderer>);
-	view.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
+	
+	// submit render quads with texture rect
+	auto renderQuadsWithTextureRect = mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
+	renderQuadsWithTextureRect.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
