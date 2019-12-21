@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Clock.hpp>
+#include <memory>
 
 namespace ph {
 
@@ -40,7 +41,7 @@ private:
 		sf::Text fpsText;
 		sf::RectangleShape fpsBackground;
 	};	
-	FPSCounter* mFPSCounter;
+	std::unique_ptr<FPSCounter> mFPSCounter;
 
 	struct RendererDebug
 	{
@@ -56,7 +57,7 @@ private:
 		sf::Text drawnPointsText;
 		sf::RectangleShape rendererDebugBackground;
 	};
-	RendererDebug* mRendererDebug;	
+	std::unique_ptr<RendererDebug> mRendererDebug;	
 
 	sf::Font* mFont;
 

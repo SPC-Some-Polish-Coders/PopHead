@@ -4,7 +4,10 @@
 namespace ph {
 
 DebugCounter::DebugCounter()
-	:mClock()
+	:mFPSCounter()
+	,mRendererDebug()
+	,mFont()
+	,mClock()
 	,mFPS(0)
 	,mFramesFromLastSecond(0)
 	,mIsFPSCounterActive(false)
@@ -26,22 +29,22 @@ void DebugCounter::handleEvent(const ph::Event& phEvent)
 			mIsFPSCounterActive = !mIsFPSCounterActive;
 			if(mIsFPSCounterActive) 
 			{
-				mFPSCounter = new FPSCounter();	
+				mFPSCounter.reset(new FPSCounter);
 				initFPSCounter();
 			}
 			else
-				delete mFPSCounter;
+				mFPSCounter.reset();
 		}
 		else if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F3)
 		{
 			mIsRendererDebugActive = !mIsRendererDebugActive;
 			if(mIsRendererDebugActive)
 			{ 
-				mRendererDebug = new RendererDebug();		
+				mRendererDebug.reset(new RendererDebug);		
 				initRendererDebug();
 			}
 			else
-				delete mRendererDebug;
+				mRendererDebug.reset();
 		}
 	}
 }
