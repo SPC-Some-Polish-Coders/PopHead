@@ -67,7 +67,7 @@ void Game::run()
 
 		while(dt >= timePerFrame) {
 			handleEvents();
-			update(corectDeltaTime(dt));
+			update(correctDeltaTime(dt));
 			dt = sf::Time::Zero;
 		}
 	}
@@ -76,7 +76,7 @@ void Game::run()
 	mWindow.close();
 }
 
-sf::Time Game::corectDeltaTime(sf::Time dt)
+sf::Time Game::correctDeltaTime(sf::Time dt)
 {
 	const sf::Time dtMinimalConstrain = sf::seconds(1.f/20.f);
 	return dt > dtMinimalConstrain ? dtMinimalConstrain : dt;
