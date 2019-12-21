@@ -9,11 +9,14 @@
 #include "Events/actionEventManager.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void GunAttacks::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	handlePendingGunAttacks();
 	handleLastingBullets();
 }

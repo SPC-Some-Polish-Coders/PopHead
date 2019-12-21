@@ -1,16 +1,17 @@
 #include "levers.hpp"
-
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-
 #include "Events/actionEventManager.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void Levers::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
 

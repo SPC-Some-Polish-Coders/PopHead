@@ -1,10 +1,13 @@
 #include "kinematicCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void KinematicCollisions::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity, component::KinematicCollisionBody>();
 
 		for (auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)

@@ -5,11 +5,14 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void DamageAndDeath::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		dealDamage();
 		makeDamageJuice(dt);
 		makeCharactersDie();

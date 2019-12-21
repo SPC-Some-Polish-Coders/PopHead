@@ -1,11 +1,14 @@
 #include "collisionDebug.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Renderer/renderer.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void CollisionDebug::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	if(!sIsCollisionDebugActive)
 		return;
 

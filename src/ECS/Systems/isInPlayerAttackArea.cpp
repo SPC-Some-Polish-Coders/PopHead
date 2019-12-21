@@ -6,11 +6,14 @@
 #include "ECS/Components/graphicsComponents.hpp"
 
 #include "Utilities/math.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void IsInPlayerAttackArea::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	handleGun();
 	handleMelee();
 }

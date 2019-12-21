@@ -2,6 +2,7 @@
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/random.hpp"
+#include "Utilities/profiling.hpp"
 #include "Renderer/renderer.hpp"
 #include <cmath>
 
@@ -9,6 +10,8 @@ namespace ph::system {
 
 void PatricleSystem::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	updateSingleParticleEmitters(dt);
 	updateMultiParticleEmitters(dt);
 }

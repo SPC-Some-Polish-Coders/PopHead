@@ -1,12 +1,14 @@
 #include "canUseWeapon.hpp"
-
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void CanUseWeapon::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	updateMeleeWeapon(dt);
 	updateGun(dt);
 }

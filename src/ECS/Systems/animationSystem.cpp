@@ -1,11 +1,14 @@
 #include "animationSystem.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void AnimationSystem::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto view = mRegistry.view<component::AnimationData, component::TextureRect>();
 
 	for(auto entity : view)

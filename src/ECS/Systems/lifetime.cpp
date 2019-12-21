@@ -1,10 +1,13 @@
 #include "lifetime.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void Lifetime::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto entitiesView = mRegistry.view<component::Lifetime>();
 		for (auto entity : entitiesView)
 		{

@@ -6,11 +6,14 @@
 #include "Logs/logs.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "Utilities/direction.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void MeleePositioning::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto playerView = mRegistry.view<component::MeleeAttacker, component::Player, component::BodyRect, component::FaceDirection>();
 	for (auto player : playerView)
 	{

@@ -5,6 +5,7 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/profiling.hpp"
 #include <SFML/System/Vector2.hpp>
 
 namespace ph::system {
@@ -19,6 +20,8 @@ namespace ph::system {
 
 	void AudioSystem::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		// define constants
 		constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
 		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;

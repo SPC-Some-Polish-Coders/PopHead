@@ -45,14 +45,11 @@ void ProfilingManager::writeProfile(const ProfilingResult& result)
 	mOutputStream << "\"tid\":" << result.threadID << ",";
 	mOutputStream << "\"ts\":" << result.start;
 	mOutputStream << "}";
-
-	mOutputStream.flush();
 }
 
 void ProfilingManager::writeHeader()
 {
 	mOutputStream << "{\"otherData\": {},\"traceEvents\":[";
-	mOutputStream.flush();
 }
 
 void ProfilingManager::writeFooter()

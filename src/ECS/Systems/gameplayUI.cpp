@@ -2,6 +2,7 @@
 #include "GUI/gui.hpp"
 #include "GUI/textWidget.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
@@ -13,6 +14,8 @@ GameplayUI::GameplayUI(entt::registry& registry, GUI& gui)
 
 void GameplayUI::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto view = mRegistry.view<component::Player, component::GunAttacker>();
 	for(auto player : view)
 	{

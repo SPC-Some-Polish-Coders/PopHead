@@ -6,6 +6,8 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
+#include "Utilities/profiling.hpp"
+
 namespace ph::system {
 
 Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
@@ -16,6 +18,8 @@ Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
 
 void Entrances::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 
