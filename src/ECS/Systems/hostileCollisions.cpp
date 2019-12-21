@@ -2,11 +2,14 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/rect.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void HostileCollisions::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
 		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();
 

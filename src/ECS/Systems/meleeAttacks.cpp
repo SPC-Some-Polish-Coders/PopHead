@@ -6,11 +6,14 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/direction.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void MeleeAttacks::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker, component::BodyRect, component::FaceDirection, component::Player>();
 	for (auto meleeAttacker : meleeAttackerView)
 	{

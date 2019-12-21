@@ -5,10 +5,14 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
+#include "Utilities/profiling.hpp"
+
 namespace ph::system {
 
 void Gates::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto gatesView = mRegistry.view<component::Gate, component::LeverListener>();
 	for (auto gate : gatesView)
 	{

@@ -1,12 +1,14 @@
 #include "velocityChangingAreas.hpp"
-
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void VelocityChangingAreas::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto velocityChaningAreasView = mRegistry.view<component::BodyRect, component::AreaVelocityChangingEffect>();
 		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
 

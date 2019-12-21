@@ -6,6 +6,7 @@
 #include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/direction.hpp"
+#include "Utilities/profiling.hpp"
 #include <cmath>
 
 namespace ph::system {
@@ -18,6 +19,8 @@ namespace ph::system {
 
 	void PlayerMovementInput::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		if(isPlayerWithoutControl())
 			return;
 

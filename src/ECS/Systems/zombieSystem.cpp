@@ -5,6 +5,7 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/random.hpp"
+#include "Utilities/profiling.hpp"
 #include "Logs/logs.hpp"
 
 namespace {
@@ -50,6 +51,8 @@ ZombieSystem::ZombieSystem(entt::registry& registry, const AIManager* aiManager)
 
 void ZombieSystem::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	const auto view = mRegistry.view<component::Zombie, component::BodyRect, component::Velocity>(entt::exclude<component::TimeToFadeOut>);
 	for(auto zombieEntity : view)
 	{

@@ -2,11 +2,14 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 	void PickupMedkit::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
 		auto itemView = mRegistry.view<component::Medkit, component::BodyRect>();
 
@@ -35,6 +38,8 @@ namespace ph::system {
 
 	void PickupBullet::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::GunAttacker>();
 		auto itemView = mRegistry.view<component::Bullet, component::BodyRect>();
 

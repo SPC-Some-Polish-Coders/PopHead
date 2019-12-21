@@ -56,7 +56,7 @@ private:
 
 }
 
-#define PH_PROFILING 0 
+#define PH_PROFILING 1
 #if PH_PROFILING
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
 	#define PH_END_PROFILING_SESSION() ph::ProfilingManager::getInstance().endSession()

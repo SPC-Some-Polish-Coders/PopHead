@@ -3,10 +3,14 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
+#include "Utilities/profiling.hpp"
+
 namespace ph::system {
 
 void PushingAreas::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
 	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
 

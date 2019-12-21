@@ -2,12 +2,15 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 #include <iostream>
 
 namespace ph::system {
 
 	void GunPositioningAndTexture::update(float dt)
 	{
+		PH_PROFILE_FUNCTION();
+
 		auto playerView = mRegistry.view<component::GunAttacker, component::Player, component::BodyRect, component::FaceDirection>();
 		for (auto player : playerView)
 		{
