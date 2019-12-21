@@ -61,7 +61,7 @@ namespace ph::system {
 					{
 						sf::FloatRect intersection;
 						kinematicBody.rect.intersects(staticCollisionBodyRect, intersection);
-						mRegistry.assign_or_replace<component::StaticCollisionBody>(kinematicObject);
+						//mRegistry.assign_or_replace<component::StaticCollisionBody>(kinematicObject);
 
 						if(intersection.width < intersection.height)
 						{
