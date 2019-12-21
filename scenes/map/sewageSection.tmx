@@ -731,32 +731,32 @@
   <object id="21" type="Lever" x="967" y="884">
    <point/>
   </object>
-  <object id="34" type="SlowDownArea" x="230.667" y="2" width="76.6667" height="1480.67"/>
-  <object id="35" type="SlowDownArea" x="403.333" y="1600.67" width="155.333" height="116.667"/>
-  <object id="36" type="SlowDownArea" x="257.417" y="1551.33" width="140.25" height="16.3333"/>
-  <object id="37" type="SlowDownArea" x="242.75" y="1535.67" width="124.75" height="16.3333"/>
-  <object id="38" type="SlowDownArea" x="273.5" y="1567.67" width="140.833" height="16.3333"/>
-  <object id="39" type="SlowDownArea" x="290.417" y="1583.33" width="140.25" height="16.3333"/>
-  <object id="40" type="SlowDownArea" x="306.667" y="1600.33" width="94.6667" height="16.3333"/>
-  <object id="41" type="SlowDownArea" x="322.583" y="1617" width="79.4167" height="14.697"/>
-  <object id="42" type="SlowDownArea" x="340.833" y="1633.33" width="61.5" height="16.3333"/>
-  <object id="43" type="SlowDownArea" x="355.333" y="1649" width="47.3333" height="16.3333"/>
-  <object id="44" type="SlowDownArea" x="371.417" y="1663.67" width="30.5833" height="16.3333"/>
-  <object id="45" type="SlowDownArea" x="387.583" y="1679.67" width="15.0833" height="16.3333"/>
-  <object id="47" type="SlowDownArea" x="623.333" y="1761.17" width="95.8333" height="794"/>
-  <object id="48" type="SlowDownArea" x="722" y="2103.83" width="468.833" height="46.6667"/>
-  <object id="49" type="SlowDownArea" x="232.5" y="1520.67" width="118.5" height="16.3333"/>
-  <object id="50" type="SlowDownArea" x="232.667" y="1505" width="102.333" height="16.3333"/>
-  <object id="51" type="SlowDownArea" x="232.333" y="1489" width="86.3333" height="16.3333"/>
-  <object id="53" type="SlowDownArea" x="562" y="1617.33" width="12.6667" height="119.606"/>
-  <object id="54" type="SlowDownArea" x="577.333" y="1632.67" width="12.6667" height="103.485"/>
-  <object id="55" type="SlowDownArea" x="597.75" y="1648.67" width="8.91667" height="157.667"/>
-  <object id="56" type="SlowDownArea" x="610.667" y="1664.67" width="12.6667" height="139.333"/>
-  <object id="57" type="SlowDownArea" x="626.333" y="1680.67" width="12.6667" height="77.3333"/>
-  <object id="58" type="SlowDownArea" x="642" y="1694" width="12.6667" height="64.8333"/>
-  <object id="59" type="SlowDownArea" x="658" y="1712" width="12.6667" height="47.5833"/>
-  <object id="60" type="SlowDownArea" x="673.333" y="1728.67" width="12.6667" height="29.8333"/>
-  <object id="61" type="SlowDownArea" x="689.083" y="1744.67" width="12.6667" height="14.0833"/>
+  <object id="34" type="VelocityChangingArea" x="230.667" y="2" width="76.6667" height="1480.67"/>
+  <object id="35" type="VelocityChangingArea" x="403.333" y="1600.67" width="155.333" height="116.667"/>
+  <object id="36" type="VelocityChangingArea" x="257.417" y="1551.33" width="140.25" height="16.3333"/>
+  <object id="37" type="VelocityChangingArea" x="242.75" y="1535.67" width="124.75" height="16.3333"/>
+  <object id="38" type="VelocityChangingArea" x="273.5" y="1567.67" width="140.833" height="16.3333"/>
+  <object id="39" type="VelocityChangingArea" x="290.417" y="1583.33" width="140.25" height="16.3333"/>
+  <object id="40" type="VelocityChangingArea" x="306.667" y="1600.33" width="94.6667" height="16.3333"/>
+  <object id="41" type="VelocityChangingArea" x="322.583" y="1617" width="79.4167" height="14.697"/>
+  <object id="42" type="VelocityChangingArea" x="340.833" y="1633.33" width="61.5" height="16.3333"/>
+  <object id="43" type="VelocityChangingArea" x="355.333" y="1649" width="47.3333" height="16.3333"/>
+  <object id="44" type="VelocityChangingArea" x="371.417" y="1663.67" width="30.5833" height="16.3333"/>
+  <object id="45" type="VelocityChangingArea" x="387.583" y="1679.67" width="15.0833" height="16.3333"/>
+  <object id="47" type="VelocityChangingArea" x="623.333" y="1761.17" width="95.8333" height="794"/>
+  <object id="48" type="VelocityChangingArea" x="722" y="2103.83" width="468.833" height="46.6667"/>
+  <object id="49" type="VelocityChangingArea" x="232.5" y="1520.67" width="118.5" height="16.3333"/>
+  <object id="50" type="VelocityChangingArea" x="232.667" y="1505" width="102.333" height="16.3333"/>
+  <object id="51" type="VelocityChangingArea" x="232.333" y="1489" width="86.3333" height="16.3333"/>
+  <object id="53" type="VelocityChangingArea" x="562" y="1617.33" width="12.6667" height="119.606"/>
+  <object id="54" type="VelocityChangingArea" x="577.333" y="1632.67" width="12.6667" height="103.485"/>
+  <object id="55" type="VelocityChangingArea" x="597.75" y="1648.67" width="8.91667" height="157.667"/>
+  <object id="56" type="VelocityChangingArea" x="610.667" y="1664.67" width="12.6667" height="139.333"/>
+  <object id="57" type="VelocityChangingArea" x="626.333" y="1680.67" width="12.6667" height="77.3333"/>
+  <object id="58" type="VelocityChangingArea" x="642" y="1694" width="12.6667" height="64.8333"/>
+  <object id="59" type="VelocityChangingArea" x="658" y="1712" width="12.6667" height="47.5833"/>
+  <object id="60" type="VelocityChangingArea" x="673.333" y="1728.67" width="12.6667" height="29.8333"/>
+  <object id="61" type="VelocityChangingArea" x="689.083" y="1744.67" width="12.6667" height="14.0833"/>
   <object id="63" type="BulletItem" x="942.75" y="2088.58">
    <point/>
   </object>
@@ -1058,39 +1058,6 @@
   <object id="198" type="BulletItem" x="1030.91" y="2038.66">
    <point/>
   </object>
-  <object id="199" type="BulletItem" x="365" y="1510.34">
-   <point/>
-  </object>
-  <object id="200" type="BulletItem" x="389.5" y="1501.84">
-   <point/>
-  </object>
-  <object id="201" type="BulletItem" x="354.5" y="1498.34">
-   <point/>
-  </object>
-  <object id="202" type="BulletItem" x="338.75" y="1496.84">
-   <point/>
-  </object>
-  <object id="203" type="BulletItem" x="336.167" y="1479.75">
-   <point/>
-  </object>
-  <object id="204" type="BulletItem" x="380.417" y="1444.5">
-   <point/>
-  </object>
-  <object id="205" type="BulletItem" x="360.834" y="1486.34">
-   <point/>
-  </object>
-  <object id="206" type="BulletItem" x="386.834" y="1471.84">
-   <point/>
-  </object>
-  <object id="207" type="BulletItem" x="374.667" y="1471.25">
-   <point/>
-  </object>
-  <object id="208" type="BulletItem" x="372.667" y="1500.25">
-   <point/>
-  </object>
-  <object id="209" type="BulletItem" x="353.167" y="1460.5">
-   <point/>
-  </object>
   <object id="211" type="BulletItem" x="452.833" y="1819.26">
    <point/>
   </object>
@@ -1101,9 +1068,6 @@
    <point/>
   </object>
   <object id="214" type="Medkit" x="1025" y="2134.17">
-   <point/>
-  </object>
-  <object id="215" type="Medkit" x="356" y="1399.5">
    <point/>
   </object>
   <object id="216" type="Medkit" x="1024" y="2102.17">

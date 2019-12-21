@@ -20,8 +20,8 @@ void Entrances::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
+	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 
 	for (auto player : playerView)
 	{
@@ -33,7 +33,8 @@ void Entrances::update(float dt)
 			if (entranceBody.rect.contains(playerBody.rect.getCenter()))
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
-				mSceneManager.replaceScene(entranceDetails.entranceDestination, entranceDetails.playerSpawnPosition);
+				std::string sceneFilepath = "scenes/" + entranceDetails.entranceDestination.substr(2);
+				mSceneManager.replaceScene(sceneFilepath, entranceDetails.playerSpawnPosition);
 				return;
 			}
 		}

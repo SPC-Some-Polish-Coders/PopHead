@@ -79,7 +79,7 @@ namespace ph {
 			else if (objectType == "BulletItem") loadBulletItem(gameObjectNode);
 			else if (objectType == "Medkit") loadMedkit(gameObjectNode);
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
-			else if (objectType == "SlowDownArea") loadSlowDownArea(gameObjectNode);
+			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
 			else if (objectType == "CutSceneArea") loadCutSceneArea(gameObjectNode);
 			else if (objectType == "Spawner") loadSpawner(gameObjectNode);
@@ -191,11 +191,13 @@ namespace ph {
 		}
 	}
 
-	void TiledParser::loadSlowDownArea(const Xml& slowDownAreaNode) const
+	void TiledParser::loadVelocityChangingArea(const Xml& velocityChanginAreaNode) const
 	{
-		auto slowDownArea = mTemplatesStorage.createCopy("SlowDownArea", mGameRegistry);
-		loadPosition(slowDownAreaNode, slowDownArea);
-		loadSize(slowDownAreaNode, slowDownArea);
+		auto entity = mTemplatesStorage.createCopy("VelocityChangingArea", mGameRegistry);
+		loadPosition(velocityChanginAreaNode, entity);
+		loadSize(velocityChanginAreaNode, entity);
+		float& areaSpeedMultiplier = mGameRegistry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
+		areaSpeedMultiplier = getProperty(velocityChanginAreaNode, "velocityMultiplier").toFloat();
 	}
 
 	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const

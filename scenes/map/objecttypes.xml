@@ -40,7 +40,6 @@
   <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
  </objecttype>
  <objecttype name="Player" color="#55ffff"/>
- <objecttype name="SlowDownArea" color="#5eb825"/>
  <objecttype name="SlowZombie" color="#b8ff45">
   <property name="hp" type="string" default="150"/>
   <property name="maxHp" type="string" default="150"/>
@@ -51,6 +50,9 @@
  </objecttype>
  <objecttype name="SpriteNode" color="#454fa4">
   <property name="texturePath" type="string"/>
+ </objecttype>
+ <objecttype name="VelocityChangingArea" color="#5eb825">
+  <property name="velocityMultiplier" type="float" default="0.4"/>
  </objecttype>
  <objecttype name="Zombie" color="#00aa00">
   <property name="hp" type="float" default="100"/>

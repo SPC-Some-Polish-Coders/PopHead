@@ -33,7 +33,7 @@ namespace ph {
 		void loadLootSpawner(const Xml& lootSpawnerNode) const;
 		void loadArcadeSpawner(const Xml& arcadeSpawnerNode) const;
 		void loadEntrance(const Xml& entranceNode) const;
-		void loadSlowDownArea(const Xml& slowDownAreaNode) const;
+		void loadVelocityChangingArea(const Xml& velocityChangingAreaNode) const;
 		void loadActivateArea(const Xml& openGateAreaNode) const;
 		void loadCutSceneArea(const Xml& cutSceneAreaNode) const;
 		std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
