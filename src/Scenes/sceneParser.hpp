@@ -11,7 +11,7 @@ class GameData;
 class Xml;
 class CutSceneManager;
 
-template <typename GuiParser, typename MapParser, typename AudioParser, typename EnttParser>
+template <typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
 class SceneParser
 {
 public:
@@ -27,6 +27,7 @@ private:
 
 	void parseAmbientLight(const Xml& sceneLinksNode);
 	void parseMap(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures);
+	void parseMapObjects(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, CutSceneManager& cutSceneManager, SceneManager& sceneManager);
 };
 
 }

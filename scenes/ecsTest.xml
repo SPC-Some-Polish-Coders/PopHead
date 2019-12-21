@@ -2,7 +2,7 @@
 <scenelinks>
   <gui filename="gameplay.gui.xml"/>
   <map filename="canyonMap.tmx"/>
-  <ecsObjects filename="entities.xml"/>
+  <ecsObjects filename="ecsTemplates.xml"/>
   <audio filename="sewage.audio.xml"/>
   <ambientLight color="rgba(70, 70, 70, 255)"/>
 </scenelinks>
