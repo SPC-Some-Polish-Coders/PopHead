@@ -349,33 +349,27 @@ void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
 	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
 	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
 
-	const sf::Vector2f size(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
+	const sf::Vector2f tileSize(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
 	
-	for (int x = -1; x < static_cast<int>(mapInfo.mapSize.x + 1); ++x)
-	{
-		// create top border
-		auto topBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-		auto& topBody = mGameRegistry->get<component::BodyRect>(topBorderEntity);
-		topBody.rect = FloatRect(x * size.x, -size.y, size.x, size.y);
+	// create top border
+	auto topBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+	auto& topBody = mGameRegistry->get<component::BodyRect>(topBorderEntity);
+	topBody.rect = FloatRect(-tileSize.x, -tileSize.y, mapWidth + 2 * tileSize.x, tileSize.y);
 
-		// create bottom border
-		auto bottomBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-		auto& bottomBody = mGameRegistry->get<component::BodyRect>(bottomBorderEntity);
-		bottomBody.rect = FloatRect(x * size.x, mapHeight, size.x, size.y);
-	}
+	// create bottom border
+	auto bottomBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+	auto& bottomBody = mGameRegistry->get<component::BodyRect>(bottomBorderEntity);
+	bottomBody.rect = FloatRect(-tileSize.x, mapHeight, mapWidth + 2 * tileSize.x, tileSize.y);
+		
+	// left border
+	auto leftborderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+	auto& leftBody = mGameRegistry->get<component::BodyRect>(leftborderEntity);
+	leftBody.rect = FloatRect(-tileSize.x, -tileSize.y, tileSize.x, mapHeight + 2 * tileSize.y);
 
-	for (int y = 0; y < static_cast<int>(mapInfo.mapSize.y); ++y)
-	{
-		// left border
-		auto leftborderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-		auto& leftBody = mGameRegistry->get<component::BodyRect>(leftborderEntity);
-		leftBody.rect = FloatRect(-size.x, y * size.y, size.x, size.y);
-
-		// right border
-		auto rightBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-		auto& rightBody = mGameRegistry->get<component::BodyRect>(rightBorderEntity);
-		rightBody.rect = FloatRect(mapWidth, y * size.y, size.x, size.y);
-	}
+	// right border
+	auto rightBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+	auto& rightBody = mGameRegistry->get<component::BodyRect>(rightBorderEntity);
+	rightBody.rect = FloatRect(mapWidth, -tileSize.y, tileSize.x, mapHeight + 2 * tileSize.y);
 }
 
 }
