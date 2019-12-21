@@ -1,11 +1,10 @@
 #include "cast.hpp"
 #include "Logs/logs.hpp"
-
 #include <unordered_map>
 
-namespace ph {
+namespace ph::Cast {
 
-unsigned Cast::toUnsigned(const std::string& str)
+unsigned toUnsigned(const std::string& str)
 {
 	const unsigned long ulResult = std::stoul(str);
 	const unsigned result = ulResult;
@@ -14,14 +13,14 @@ unsigned Cast::toUnsigned(const std::string& str)
 	return result;
 }
 
-std::string Cast::toString(const sf::Vector2f& vec)
+std::string toString(const sf::Vector2f& vec)
 {
 	std::string xVal = std::to_string(vec.x);
 	std::string yVal = std::to_string(vec.y);
 	return "x:" + xVal + " y:" + yVal;
 }
 
-bool Cast::toBool(const std::string& str)
+bool toBool(const std::string& str)
 {
 	if (str == "true" || str == "1")
 		return true;
@@ -31,23 +30,12 @@ bool Cast::toBool(const std::string& str)
 		PH_EXCEPTION("Cast to bool failed!");
 }
 
-Vector4f Cast::toNormalizedColorVector4f(const sf::Color& color)
+Vector4f toNormalizedColorVector4f(const sf::Color& color)
 {
 	return Vector4f({
 		static_cast<float>(color.r) / 255.f, static_cast<float>(color.g) / 255.f,
 		static_cast<float>(color.b) / 255.f, static_cast<float>(color.a) / 255.f
 	});
 }
-
-//
-//ObjectType Cast::toObjectType(const std::string& str)
-//{
-//	for (auto& it : objectTypeMap)
-//	{
-//		if (str.find(it.first) != std::string::npos)
-//			return it.second;
-//	}
-//	PH_EXCEPTION("There is no such ObjectType!");
-//}
 
 }

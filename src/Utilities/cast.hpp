@@ -1,25 +1,19 @@
 #pragma once
 
 #include "vector4.hpp"
+#include "forceInline.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <string>
 #include <unordered_map>
 
-namespace ph {
+namespace ph::Cast {
 
-namespace Cast {
-
-	/*const std::unordered_map<std::string, ObjectType> objectTypeMap({
-		{ "zombie", ObjectType::Zombie },
-		{ "npc", ObjectType::Npc }
-	});
-
-	ObjectType toObjectType(const std::string& str);*/
-	unsigned toUnsigned(const std::string& str);
-	bool toBool(const std::string& str);
-	std::string toString(const sf::Vector2f&);
-	Vector4f toNormalizedColorVector4f(const sf::Color&);
-}
+	FORCE_INLINE unsigned toUnsigned(const std::string& str);
+	FORCE_INLINE bool toBool(const std::string& str);
+	FORCE_INLINE std::string toString(const sf::Vector2f&);
+	FORCE_INLINE Vector4f toNormalizedColorVector4f(const sf::Color&);
 
 }
+
+#include "cast.inl"

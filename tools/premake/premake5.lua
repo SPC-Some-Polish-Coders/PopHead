@@ -66,6 +66,10 @@ project "PopHead"
 		"GLEW_STATIC"
 	}
 
+	filter "action:vs*"
+		inlining "Explicit"
+	filter {}
+	
     filter "configurations:Debug"
         symbols "On"
 
