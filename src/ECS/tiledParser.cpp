@@ -10,7 +10,6 @@
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
-#include "Utilities/rect.hpp"
 #include "Logs/logs.hpp"
 #include "Events/actionEventManager.hpp"
 
@@ -253,17 +252,20 @@ namespace ph {
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
 	{
-		auto camera = mTemplatesStorage.createCopy("Camera", mGameRegistry);
-		const FloatRect cameraBounds(getPositionAttribute(cameraNode), getSizeAttribute(cameraNode));
-
-		auto& cameraComponent = mGameRegistry.get<component::Camera>(camera);
-		cameraComponent.camera = Camera(cameraBounds);
+		mCameraRect = FloatRect(getPositionAttribute(cameraNode), getSizeAttribute(cameraNode));
+		if(mHasLoadedPlayer) {
+			auto view = mGameRegistry.view<component::Player, component::Camera>();
+			view.each([this](const component::Player, component::Camera& camera) {
+				camera.camera = Camera(mCameraRect);
+			});
+		}
 	}
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
 	{
 		auto player = mTemplatesStorage.createCopy("Player", mGameRegistry);
 		auto& playerPosition = mGameRegistry.get<component::BodyRect>(player);
+		auto& playerCamera = mGameRegistry.get<component::Camera>(player);
 		
 		sf::Vector2f position;
 
@@ -274,6 +276,8 @@ namespace ph {
 
 		playerPosition.rect.left = position.x;
 		playerPosition.rect.top = position.y;
+
+		playerCamera.camera = Camera(mCameraRect);
 
 		mHasLoadedPlayer = true;
 	}

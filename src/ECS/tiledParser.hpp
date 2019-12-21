@@ -2,9 +2,8 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Scenes/sceneManager.hpp"
-
+#include "Utilities/rect.hpp"
 #include <entt/entity/registry.hpp>
-
 #include <SFML/Graphics.hpp>
 #include <optional>
 #include <string>
@@ -68,6 +67,7 @@ namespace ph {
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;
+		mutable FloatRect mCameraRect;
 		mutable bool mHasLoadedPlayer = false;
 	};
 

@@ -69,6 +69,23 @@
         <component name="MultiParticleEmitter" />
     </entityTemplate>
 
+    <entityTemplate name="GateGuardNpc">
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
+        <component name="TextureRect" x="0" y="0" width="0" height="0" />
+        <component name="RenderQuad" textureFilepath="textures/characters/negroDudeWalkingAnimation.png" z="95" blocksLight="false" />
+    </entityTemplate>
+
+    <entityTemplate name="CrawlingNpc">
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
+        <component name="TextureRect" x="0" y="0" width="0" height="0" />
+        <component name="RenderQuad" textureFilepath="textures/characters/negroDudeWalkingAnimation.png" z="95" blocksLight="false" />
+    </entityTemplate>
+
+
     <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
         <component name="Health" healthPoints="20" maxHealthPoints="100" />
     </entityTemplate>
@@ -153,10 +170,12 @@
     
     <entityTemplate name="BulletItem">
         <component name="Bullet" numOfBullets="1" />
+        <component name="BodyRect" x="0" y="0" width="10" height="10" />
     </entityTemplate>
 
     <entityTemplate name="Medkit">
         <component name="Medkit" addHealthPoints="25" />
+        <component name="BodyRect" x="0" y="0" width="10" height="10" />
     </entityTemplate>
 
     <entityTemplate name="ColorSquare">
