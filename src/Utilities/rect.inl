@@ -14,6 +14,13 @@ ph::Rect<T>& ph::Rect<T>::operator=(const sf::Rect<T>& rect)
 }
 
 template<typename T>
+void ph::Rect<T>::setPosition(sf::Vector2<T> pos)
+{
+	left = pos.x;
+	top = pos.y;
+}
+
+template<typename T>
 T ph::Rect<T>::right() const
 {
 	return left + width;

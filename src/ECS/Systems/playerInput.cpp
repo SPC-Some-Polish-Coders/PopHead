@@ -5,6 +5,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
+#include "Utilities/direction.hpp"
 #include <cmath>
 
 namespace ph::system {
@@ -97,15 +98,15 @@ namespace ph::system {
 	{
 		constexpr float diagonal = 0.7f;
 
-		if (mUp   && mLeft)  return sf::Vector2f(-diagonal, -diagonal);
-		if (mUp   && mRight) return sf::Vector2f(+diagonal, -diagonal);
-		if (mDown && mLeft)  return sf::Vector2f(-diagonal, +diagonal);
-		if (mDown && mRight) return sf::Vector2f(+diagonal, +diagonal);
+		if (mUp   && mLeft)  return PH_NORTH_WEST;
+		if (mUp   && mRight) return PH_NORTH_EAST;
+		if (mDown && mLeft)  return PH_SOUTH_WEST;
+		if (mDown && mRight) return PH_SOUTH_EAST;
 
-		if (mUp)    return sf::Vector2f(0.f, -1.f);
-		if (mDown)  return sf::Vector2f(0.f, 1.f);
-		if (mLeft)  return sf::Vector2f(-1.f, 0.f);
-		if (mRight) return sf::Vector2f(1.f, 0.f);
+		if (mUp)    return PH_NORTH;
+		if (mDown)  return PH_SOUTH;
+		if (mLeft)  return PH_WEST;
+		if (mRight) return PH_EAST;
 
 		return sf::Vector2f(0.f, 0.f);
 	}
@@ -128,19 +129,17 @@ namespace ph::system {
 		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
 		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
 		{
-			constexpr float diagonal = 0.7f;
-
 			// TODO: Try to do that with std::atan2f() function instead of if statements
 
 			float middleAngle;
-			if(face.direction == sf::Vector2f(1.f, 0.f))                  middleAngle = 0.f;
-			else if(face.direction == sf::Vector2f(-1.f, 0.f))            middleAngle = 180.f;
-			else if(face.direction == sf::Vector2f(0.f, 1.f))             middleAngle = 90.f;
-			else if(face.direction == sf::Vector2f(0.f, -1.f))            middleAngle = -90.f;
-			else if(face.direction == sf::Vector2f(diagonal, diagonal))   middleAngle = 45.f;
-			else if(face.direction == sf::Vector2f(diagonal, -diagonal))  middleAngle = -45.f;
-			else if(face.direction == sf::Vector2f(-diagonal, diagonal))  middleAngle = 135.f;
-			else if(face.direction == sf::Vector2f(-diagonal, -diagonal)) middleAngle = -135.f;
+			if(face.direction == PH_EAST)            middleAngle = 0.f;
+			else if(face.direction == PH_WEST)       middleAngle = 180.f;
+			else if(face.direction == PH_SOUTH)      middleAngle = 90.f;
+			else if(face.direction == PH_NORTH)      middleAngle = -90.f;
+			else if(face.direction == PH_SOUTH_EAST) middleAngle = 45.f;
+			else if(face.direction == PH_NORTH_EAST) middleAngle = -45.f;
+			else if(face.direction == PH_SOUTH_WEST) middleAngle = 135.f;
+			else if(face.direction == PH_NORTH_WEST) middleAngle = -135.f;
 			else middleAngle = 0.f;
 
 			lightSource.startAngle = middleAngle - 35.f;

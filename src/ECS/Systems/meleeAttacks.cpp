@@ -1,11 +1,11 @@
 #pragma once
 
 #include "meleeAttacks.hpp"
-
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/direction.hpp"
 
 namespace ph::system {
 
@@ -131,21 +131,21 @@ float MeleeAttacks::getFixedAngle(float angle) const
 
 float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const
 {
-	if (playerFaceDirection == sf::Vector2f(1, 0))
+	if (playerFaceDirection == PH_EAST)
 		return 0.f;
-	else if (playerFaceDirection == sf::Vector2f(-1, 0))
+	else if (playerFaceDirection == PH_WEST) 
 		return 180.f;
-	else if (playerFaceDirection == sf::Vector2f(0, 1))
+	else if (playerFaceDirection == PH_SOUTH)
 		return 90.f;
-	else if (playerFaceDirection == sf::Vector2f(0, -1))
+	else if (playerFaceDirection == PH_NORTH)
 		return -90.f;
-	else if (playerFaceDirection == sf::Vector2f(0.7f, -0.7f))
+	else if (playerFaceDirection == PH_NORTH_EAST)
 		return -45.f;
-	else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f))
+	else if (playerFaceDirection == PH_NORTH_WEST)
 		return -135.f;
-	else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f))
+	else if (playerFaceDirection == PH_SOUTH_EAST)
 		return 45.f;
-	else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f))
+	else if (playerFaceDirection == PH_SOUTH_WEST)
 		return 135.f;
 
 	return 0.f;

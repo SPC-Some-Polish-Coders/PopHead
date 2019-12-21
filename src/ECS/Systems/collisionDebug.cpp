@@ -9,6 +9,7 @@ void CollisionDebug::update(float dt)
 	if(!sIsCollisionDebugActive)
 		return;
 
+	// render static collision bodies as dark red rectangle
 	auto staticBodies = mRegistry.view<component::StaticCollisionBody, component::BodyRect>();
 	staticBodies.each([](const component::StaticCollisionBody, const component::BodyRect body) 
 	{
@@ -16,6 +17,7 @@ void CollisionDebug::update(float dt)
 			body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, false);
 	});
 
+	// render multi static collision bodies as bright red rectangle
 	auto multiStaticBodies = mRegistry.view<component::MultiStaticCollisionBody>();
 	multiStaticBodies.each([](const component::MultiStaticCollisionBody& multiCollisionBody) 
 	{
@@ -26,6 +28,7 @@ void CollisionDebug::update(float dt)
 		}
 	});
 
+	// render kinematic bodies as blue rectangle
 	auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>();
 	kinematicBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body)
 	{
