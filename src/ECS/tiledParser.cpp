@@ -280,6 +280,12 @@ namespace ph {
 		playerCamera.camera = Camera(mCameraRect);
 
 		mHasLoadedPlayer = true;
+
+		mTemplatesStorage.createCopy("Pistol", mGameRegistry);
+		auto shotgun = mTemplatesStorage.createCopy("Shotgun", mGameRegistry);
+		mGameRegistry.assign<component::CurrentGun>(shotgun);
+		auto melee = mTemplatesStorage.createCopy("BaseballBat", mGameRegistry);
+		mGameRegistry.assign<component::CurrentMeleeWeapon>(shotgun);
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
