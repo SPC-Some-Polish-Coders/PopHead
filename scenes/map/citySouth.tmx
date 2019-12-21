@@ -886,7 +886,7 @@
   <object id="433" type="Player" x="536.269" y="1919.18">
    <point/>
   </object>
-  <object id="434" type="Camera" x="224.939" y="1649.18" width="640" height="480"/>
+  <object id="434" type="Camera" x="216.939" y="1607.18" width="640" height="360"/>
   <object id="435" type="Entrance" x="426.833" y="1963.5" width="235.667" height="73">
    <properties>
     <property name="gotoScene" type="file" value="canyonMap.tmx"/>

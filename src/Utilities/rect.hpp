@@ -16,6 +16,7 @@ public:
 	Rect& operator=(const sf::Rect<T>& rect);
 
 	void setPosition(sf::Vector2<T>);
+	void setSize(sf::Vector2<T>);
 
 	T right() const;
 	T bottom() const;

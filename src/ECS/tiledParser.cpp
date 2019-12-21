@@ -356,17 +356,13 @@ namespace ph {
 	void TiledParser::loadPosition(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
-		auto position = getPositionAttribute(entityNode);
-		bodyRect.rect.left = position.x;
-		bodyRect.rect.top = position.y;
+		bodyRect.rect.setPosition(getPositionAttribute(entityNode));
 	}
 
 	void TiledParser::loadSize(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
-		auto size = getSizeAttribute(entityNode);
-		bodyRect.rect.width = size.x;
-		bodyRect.rect.height = size.y;
+		bodyRect.rect.setSize(getSizeAttribute(entityNode));
 	}
 
 	Xml TiledParser::getProperty(const Xml& objectNode, const std::string& propertyName) const

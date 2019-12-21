@@ -40,21 +40,7 @@
         <component name="MultiParticleEmitter" />
     </entityTemplate>
 
-
-    <entityTemplate name="Npc">
-    </entityTemplate>
-
-    <entityTemplate name="CrawlingNpc">
-    </entityTemplate>
-
-    <entityTemplate name="GateGuard">
-    </entityTemplate>
-
-    <entityTemplate name="DeadCharacter">
-    </entityTemplate>
-
     <entityTemplate name="Zombie">
-        <component name="Velocity" dx="2.0" dy="2.0" />
         <component name="Health" healthPoints="100" maxHealthPoints="100" />
         <component name="KinematicCollisionBody" mass="10" />
         <component name="Damage" damageDealt="25" />
@@ -69,6 +55,21 @@
         <component name="MultiParticleEmitter" />
     </entityTemplate>
 
+    <entityTemplate name="SlowZombie">
+        <component name="Health" healthPoints="100" maxHealthPoints="100" />
+        <component name="KinematicCollisionBody" mass="10" />
+        <component name="Damage" damageDealt="25" />
+        <component name="CollisionWithPlayer" />
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="Velocity" dx="0" dy="0" />
+        <component name="Zombie" />
+        <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
+        <component name="Killable" />
+        <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" blocksLight="false" />
+        <component name="TextureRect" x="0" y="0" width="0" height="0" />
+        <component name="MultiParticleEmitter" />
+    </entityTemplate>
+
     <entityTemplate name="GateGuardNpc">
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="KinematicCollisionBody" mass="10" />
@@ -79,7 +80,6 @@
 
     <entityTemplate name="CrawlingNpc">
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-        <component name="KinematicCollisionBody" mass="10" />
         <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
         <component name="TextureRect" x="0" y="0" width="0" height="0" />
         <component name="RenderQuad" textureFilepath="textures/characters/negroDudeWalkingAnimation.png" z="95" blocksLight="false" />

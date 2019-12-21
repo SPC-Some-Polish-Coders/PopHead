@@ -748,7 +748,7 @@
    </properties>
    <point/>
   </object>
-  <object id="20" type="Camera" x="268" y="418.667" width="640" height="480"/>
+  <object id="20" type="Camera" x="268" y="418.667" width="640" height="360"/>
   <object id="23" type="LootSpawner" x="689" y="565">
    <properties>
     <property name="lootType" value="medkit"/>

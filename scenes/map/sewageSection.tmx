@@ -695,7 +695,7 @@
   <object id="1" type="Player" x="544" y="2108">
    <point/>
   </object>
-  <object id="2" type="Camera" x="209" y="1746.17" width="640" height="480"/>
+  <object id="2" type="Camera" x="195" y="1872.17" width="640" height="360"/>
   <object id="5" type="Zombie" x="864.667" y="521">
    <point/>
   </object>

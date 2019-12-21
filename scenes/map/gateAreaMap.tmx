@@ -626,7 +626,7 @@
 </data>
  </layer>
  <objectgroup id="49" name="gameObjects">
-  <object id="1" type="Camera" x="730" y="928" width="640" height="480"/>
+  <object id="1" type="Camera" x="730" y="928" width="640" height="360"/>
   <object id="3" name="Player" type="Player" x="1136.88" y="1179.91">
    <point/>
   </object>

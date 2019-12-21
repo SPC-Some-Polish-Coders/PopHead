@@ -85,7 +85,7 @@
    </properties>
    <point/>
   </object>
-  <object id="3" type="Camera" x="84.3333" y="82.3333" width="320" height="240"/>
+  <object id="3" type="Camera" x="84.3333" y="82.3333" width="320" height="180"/>
   <object id="4" type="Car" x="125.333" y="213.333">
    <properties>
     <property name="acceleration" type="float" value="0"/>

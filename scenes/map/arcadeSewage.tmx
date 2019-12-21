@@ -583,7 +583,7 @@
  </layer>
  <objectgroup id="20" name="gameObjects">
   <object id="34" type="SlowDownArea" x="896.41" y="6.68182" width="92.6667" height="1666.67"/>
-  <object id="127" type="Camera" x="90.0603" y="99.3939" width="640" height="480"/>
+  <object id="127" type="Camera" x="90.0603" y="99.3939" width="640" height="360"/>
   <object id="135" type="SlowDownArea" x="12" y="720.83" width="1968.79" height="95.17"/>
   <object id="136" type="Player" x="397.187" y="363.3">
    <point/>

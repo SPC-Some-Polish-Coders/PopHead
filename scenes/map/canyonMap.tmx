@@ -776,7 +776,7 @@
   <object id="1" type="Player" x="1402" y="1307.33">
    <point/>
   </object>
-  <object id="2" type="Camera" x="1087" y="1326" width="640" height="480"/>
+  <object id="2" type="Camera" x="1087" y="1326" width="640" height="360"/>
   <object id="3" type="Entrance" x="1760" y="240.667" width="16" height="16">
    <properties>
     <property name="gotoScene" type="file" value="../sewage.xml"/>

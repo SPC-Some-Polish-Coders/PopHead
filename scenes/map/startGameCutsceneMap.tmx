@@ -112,7 +112,7 @@
 </data>
  </layer>
  <objectgroup id="19" name="gameObjects">
-  <object id="1" type="Camera" x="12.1212" y="155.636" width="640" height="480"/>
+  <object id="1" type="Camera" x="2.1212" y="199.636" width="640" height="360"/>
   <object id="2" name="Player's car" type="Car" x="320.5" y="384.894">
    <properties>
     <property name="acceleration" type="float" value="16"/>

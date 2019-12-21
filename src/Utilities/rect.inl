@@ -21,6 +21,13 @@ void ph::Rect<T>::setPosition(sf::Vector2<T> pos)
 }
 
 template<typename T>
+inline void ph::Rect<T>::setSize(sf::Vector2<T> size)
+{
+	width = size.x;
+	height = size.y;
+}
+
+template<typename T>
 T ph::Rect<T>::right() const
 {
 	return left + width;

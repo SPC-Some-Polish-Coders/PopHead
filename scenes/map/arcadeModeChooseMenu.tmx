@@ -332,7 +332,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="gameObjects">
-  <object id="20" type="Camera" x="159.667" y="72.3333" width="800" height="600"/>
+  <object id="20" type="Camera" x="154.334" y="95" width="800" height="450"/>
   <object id="36" type="Zombie" x="98" y="316.333">
    <point/>
   </object>
