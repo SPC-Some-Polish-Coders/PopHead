@@ -65,10 +65,6 @@ project "PopHead"
 		"SFML_STATIC",
 		"GLEW_STATIC"
 	}
-
-	filter "action:vs*"
-		inlining "Explicit"
-	filter {}
 	
     filter "configurations:Debug"
         symbols "On"
@@ -80,6 +76,9 @@ project "PopHead"
             "sfml-window-s-d",
             "sfml-system-s-d"
         }
+
+	filter {"configurations:Debug", "action:vs*"}
+		inlining "Explicit"
 
     filter{"configurations:Release or Distribution"}
         optimize "On"
