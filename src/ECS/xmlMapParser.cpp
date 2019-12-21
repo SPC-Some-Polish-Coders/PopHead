@@ -311,6 +311,9 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 		renderChunks[i].bounds.width *= static_cast<float>(info.tileSize.x);
 		renderChunks[i].bounds.height *= static_cast<float>(info.tileSize.y);
 
+		// put data for static collisions optimalization
+		chunkCollisions[i].sharedBounds = renderChunks[i].bounds;
+
 		// put data into registry
 		auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
 		auto& renderChunk = mGameRegistry->get<component::RenderChunk>(chunkEntity);

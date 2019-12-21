@@ -19,49 +19,43 @@ namespace ph::system {
 			kinematicCollision.staticallyMovedByX = false;
 			kinematicCollision.staticallyMovedByY = false;
 
+			// compute single static collisions
+			for (const auto& staticObject : staticObjects)
 			{
-				PH_PROFILE_SCOPE("compute single static collisions");
-
-				// compute single static collisions
-				for (const auto& staticObject : staticObjects)
+				const auto& staticBody = staticObjects.get<component::BodyRect>(staticObject);
+				
+				if (kinematicBody.rect.doPositiveRectsIntersect(staticBody.rect))
 				{
-					const auto& staticBody = staticObjects.get<component::BodyRect>(staticObject);
-					
-					if (kinematicBody.rect.doPositiveRectsIntersect(staticBody.rect))
+					sf::FloatRect intersection;
+					kinematicBody.rect.intersects(staticBody.rect, intersection);
+
+					if (intersection.width < intersection.height)
 					{
-						sf::FloatRect intersection;
-						//mRegistry.assign_or_replace<component::StaticCollisionBody>(kinematicObject);
-						kinematicBody.rect.intersects(staticBody.rect, intersection);
-
-						if (intersection.width < intersection.height)
-						{
-							if (kinematicBody.rect.left < staticBody.rect.left)
-								kinematicBody.rect.left -= intersection.width;
-							else
-								kinematicBody.rect.left += intersection.width;
-
-							kinematicCollision.staticallyMovedByX = true;
-						}
+						if (kinematicBody.rect.left < staticBody.rect.left)
+							kinematicBody.rect.left -= intersection.width;
 						else
-						{
-							if (kinematicBody.rect.top < staticBody.rect.top)
-								kinematicBody.rect.top -= intersection.height;
-							else
-								kinematicBody.rect.top += intersection.height;
+							kinematicBody.rect.left += intersection.width;
 
-							kinematicCollision.staticallyMovedByY = true;
-						}
+						kinematicCollision.staticallyMovedByX = true;
+					}
+					else
+					{
+						if (kinematicBody.rect.top < staticBody.rect.top)
+							kinematicBody.rect.top -= intersection.height;
+						else
+							kinematicBody.rect.top += intersection.height;
+
+						kinematicCollision.staticallyMovedByY = true;
 					}
 				}
 			}
-
+		
+			// compute multi static collisions
+			for(const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
-				PH_PROFILE_SCOPE("compute multi static collision");
-
-				// compute multi static collisions
-				for(const auto& multiStaticObject : multiStaticCollisionObjects)
+				auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
+				if(multiStaticCollisionBody.sharedBounds.doPositiveRectsIntersect(kinematicBody.rect))
 				{
-					auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
 					for(const FloatRect& staticCollisionBodyRect : multiStaticCollisionBody.rects)
 					{
 						if(kinematicBody.rect.doPositiveRectsIntersect(staticCollisionBodyRect))
