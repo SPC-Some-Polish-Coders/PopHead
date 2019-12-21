@@ -28,6 +28,7 @@ void RenderSystem::update(float dt)
 	auto& currentCamera = getCameraWithTheBiggestPriority();	
 	Renderer::beginScene(currentCamera);
 	submitLights();
+	submitLightWalls();
 	submitMapChunks(currentCamera.getBounds());
 	submitRenderQuads();
 	submitRenderQuadsWithTextureRect();
@@ -62,6 +63,22 @@ void RenderSystem::submitLights() const
 	});
 }
 
+void RenderSystem::submitLightWalls() const
+{
+	auto view = mRegistry.view<component::BlocksLight, component::BodyRect>();
+	view.each([](const component::BlocksLight, const component::BodyRect& body) 
+	{
+		Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
+	});
+
+	auto multiStaticCollisionBodies = mRegistry.view<component::MultiStaticCollisionBody>();
+	multiStaticCollisionBodies.each([](const component::MultiStaticCollisionBody& mscb)
+	{
+		for(auto& rect : mscb.rects)
+			Renderer::submitLightBlockingQuad(rect.getTopLeft(), rect.getSize());
+	});
+}
+
 void RenderSystem::submitMapChunks(const FloatRect& cameraBounds) const
 {
 	auto view = mRegistry.view<component::RenderChunk>();
@@ -71,6 +88,7 @@ void RenderSystem::submitMapChunks(const FloatRect& cameraBounds) const
 			Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
 	});
 }
+
 void RenderSystem::submitRenderQuads() const
 {
 	auto view = mRegistry.view<component::RenderQuad, component::BodyRect>
@@ -79,7 +97,7 @@ void RenderSystem::submitRenderQuads() const
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin, quad.blocksLight);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
 	});
 }
 
@@ -91,7 +109,7 @@ void RenderSystem::submitRenderQuadsWithTextureRect() const
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin, quad.blocksLight);
+			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
 	});
 }
 

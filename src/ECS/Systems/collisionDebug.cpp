@@ -17,7 +17,7 @@ void CollisionDebug::update(float dt)
 	staticBodies.each([](const component::StaticCollisionBody, const component::BodyRect body) 
 	{
 		Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 0, 140), nullptr,
-			body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, false);
+			body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {});
 	});
 
 	// render multi static collision bodies as bright red rectangle
@@ -27,7 +27,7 @@ void CollisionDebug::update(float dt)
 		for(auto& bodyRect : multiCollisionBody.rects)
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
-				bodyRect.getTopLeft(), bodyRect.getSize(), 50, 0.f, {}, false);
+				bodyRect.getTopLeft(), bodyRect.getSize(), 50, 0.f, {});
 		}
 	});
 
@@ -36,7 +36,7 @@ void CollisionDebug::update(float dt)
 	kinematicBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 140), nullptr,
-			body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, false);
+			body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {});
 	});
 }
 

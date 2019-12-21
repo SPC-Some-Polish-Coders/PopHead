@@ -91,6 +91,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"BodyRect",			        &EntitiesParser::parseBodyRect},
 		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
+		{"BlocksLight",			  	    &EntitiesParser::parseBlocksLight},
 		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
 		{"CharacterSpeed",		  	    &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			  	    &EntitiesParser::parseKillable},
@@ -204,10 +205,6 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
 	quad.z = entityComponentNode.getAttribute("z").toUnsignedChar();
 
-	// parse blocks light
-	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("blocksLight"), "Every RenderQuad has to have blockLight atribute!");
-	quad.blocksLight = entityComponentNode.getAttribute("blocksLight").toBool();
-
 	// assign component
 	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
 }
@@ -220,6 +217,11 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 	int height = entityComponentNode.getAttribute("height").toInt();
 	IntRect rect(left, top, width, height);
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
+}
+
+void EntitiesParser::parseBlocksLight(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::BlocksLight>(entity);
 }
 
 void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)

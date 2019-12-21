@@ -28,7 +28,7 @@ namespace Renderer
 	void endScene(sf::RenderWindow& window, DebugCounter&);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
-	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, bool blocksLight);
+	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, unsigned char z);
 
@@ -41,6 +41,8 @@ namespace Renderer
 
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
+
+	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
 	void submitSFMLObject(const sf::Drawable&);
 

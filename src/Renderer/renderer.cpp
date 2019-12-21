@@ -198,12 +198,9 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
-                          bool blocksLight)
+                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin);
-	if(blocksLight)
-		lightRenderer.submitLightBlockingQuad(position, size);
 }
 
 void Renderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s, unsigned char z)
@@ -231,6 +228,11 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
                            float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
+}
+
+void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
+{
+	lightRenderer.submitLightBlockingQuad(position, size);
 }
 
 void Renderer::submitSFMLObject(const sf::Drawable& object)

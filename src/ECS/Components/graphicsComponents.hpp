@@ -20,7 +20,6 @@ namespace component {
 		sf::Color color;
 		float rotation;
 		unsigned char z;
-		bool blocksLight;
 	};
 
 	struct TextureRect
@@ -39,6 +38,10 @@ namespace component {
 	{
 		ph::Camera camera;
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
+	};
+
+	struct BlocksLight
+	{
 	};
 
 	struct LightSource
