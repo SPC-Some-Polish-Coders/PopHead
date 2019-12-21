@@ -44,9 +44,9 @@ void GunAttacks::changeWeapon()
 
 	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
 	gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker)
-		{
-			gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
-		});
+	{
+		gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
+	});
 }
 
 void GunAttacks::handlePendingGunAttacks() const
@@ -55,7 +55,6 @@ void GunAttacks::handlePendingGunAttacks() const
 	for (const auto& gunAttacker : gunAttackerView)
 	{
 		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
-		auto& playerFaceDirection = gunAttackerView.get<component::FaceDirection>(gunAttacker);
 
 		if (playerGunAttack.isTryingToAttack)
 		{
@@ -68,6 +67,7 @@ void GunAttacks::handlePendingGunAttacks() const
 			{
 				const auto& [gunBody, gunProperties] = gunView.get<component::BodyRect, component::GunProperties>(gun);
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
+				auto& playerFaceDirection = gunAttackerView.get<component::FaceDirection>(gunAttacker);
 
 				sf::Vector2f startingBulletPosition = gunBody.rect.getCenter() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
 
@@ -136,7 +136,6 @@ std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFac
 
 	return shotsEndingPositions;
 }
-
 
 sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
 {
@@ -251,9 +250,11 @@ void GunAttacks::handleLastingBullets() const
 {
 	const auto lastingShotsView = mRegistry.view<component::LastingShot>();
 
-	lastingShotsView.each([](const component::LastingShot& lastingShotDetails) {
-		Renderer::submitLine(sf::Color(230, 160, 0), sf::Color(250, 250, 200), lastingShotDetails.startingShotPos, lastingShotDetails.endingShotPos, 1.f);
-		});
+	lastingShotsView.each([](const component::LastingShot& lastingShotDetails) 
+	{
+		Renderer::submitLine(sf::Color(230, 160, 0), sf::Color(250, 250, 200),
+			lastingShotDetails.startingShotPos, lastingShotDetails.endingShotPos, 1.f);
+	});
 }
 
 }
