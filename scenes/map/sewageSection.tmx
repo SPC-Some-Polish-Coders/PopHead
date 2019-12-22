@@ -1067,10 +1067,10 @@
   <object id="216" type="Medkit" x="1024" y="2102.17">
    <point/>
   </object>
-  <object id="219" type="Torch" x="971.333" y="951.333">
+  <object id="219" type="Torch" x="953.666" y="666">
    <point/>
   </object>
-  <object id="220" type="Torch" x="580.667" y="1988.67">
+  <object id="220" type="Torch" x="607.25" y="2086.67">
    <point/>
   </object>
   <object id="222" type="LightWall" x="126.333" y="0" width="20" height="1615.25"/>
