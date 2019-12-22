@@ -1,5 +1,4 @@
 #include "commandInterpreter.hpp"
-#include "Physics/CollisionDebug/collisionDebugSettings.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"

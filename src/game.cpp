@@ -32,7 +32,6 @@ Game::Game()
 		mFonts.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
-		nullptr,
 		mTerminal.get(),
 		mGui.get()
 	));
