@@ -40,7 +40,9 @@
   <property name="shouldAnimate" type="bool" default="true"/>
   <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
  </objecttype>
- <objecttype name="Player" color="#55ffff"/>
+ <objecttype name="Player" color="#55ffff">
+  <property name="hasFlashlight" type="bool" default="false"/>
+ </objecttype>
  <objecttype name="SlowZombie" color="#b8ff45">
   <property name="hp" type="string" default="150"/>
   <property name="maxHp" type="string" default="150"/>

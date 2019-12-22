@@ -21,7 +21,6 @@
     <component name="CharacterSpeed" speed="100" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
-    <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 255, 255, 90)" startAngle="-40" endAngle="40" attenuationAddition="0.1" attenuationFactor="1.0" attenuationSquareFactor="1.5"/>
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" />

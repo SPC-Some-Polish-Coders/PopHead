@@ -290,6 +290,18 @@ namespace ph {
 		mGameRegistry.assign<component::CurrentGun>(shotgun);
 		auto melee = mTemplatesStorage.createCopy("BaseballBat", mGameRegistry);
 		mGameRegistry.assign<component::CurrentMeleeWeapon>(shotgun);
+
+		if(getProperty(playerNode, "hasFlashlight").toBool()) {
+			component::LightSource flashlight;
+			flashlight.offset = {10.f, 10.f};
+			flashlight.color = sf::Color(255, 255, 255, 90);
+			flashlight.startAngle = 40.f;
+			flashlight.endAngle = 40.f;
+			flashlight.attenuationAddition = 0.1f;
+			flashlight.attenuationFactor = 1.f;
+			flashlight.attenuationSquareFactor = 1.5f;
+			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
+		}	
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const

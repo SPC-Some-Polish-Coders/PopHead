@@ -693,6 +693,9 @@
  </layer>
  <objectgroup id="14" name="gameObjects">
   <object id="1" type="Player" x="544" y="2108">
+   <properties>
+    <property name="hasFlashlight" type="bool" value="true"/>
+   </properties>
    <point/>
   </object>
   <object id="2" type="Camera" x="195" y="1872.17" width="640" height="360" visible="0"/>
