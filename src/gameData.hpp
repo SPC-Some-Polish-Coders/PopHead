@@ -5,7 +5,6 @@
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Resources/resourceHolder.hpp"
-#include "Physics/physicsEngine.hpp"
 #include "Terminal/terminal.hpp"
 #include "GUI/gui.hpp"
 #include <SFML/Window/Window.hpp>
@@ -30,7 +29,7 @@ class GameData
 public:
 	GameData()
 	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr,
-	          nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	          nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::Window* const window,
@@ -40,7 +39,6 @@ public:
 		FontHolder* const fonts,
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
-		PhysicsEngine* const physicsEngine,
 		Terminal* const Terminal,
 		GUI* const Gui
 	)
@@ -51,7 +49,6 @@ public:
 		,mFonts{fonts}
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
-		,mPhysicsEngine{physicsEngine}
 		,mTerminal{Terminal}
 		,mGui(Gui)
 		,mGameCloser()
@@ -65,7 +62,6 @@ public:
 	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
-	auto getPhysicsEngine()	const -> PhysicsEngine& { return *mPhysicsEngine; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
 	auto getGui() const -> GUI& { return *mGui; }
 	auto getGameCloser() -> GameCloser& { return mGameCloser; }
@@ -78,7 +74,6 @@ private:
 	FontHolder* const mFonts;
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
-	PhysicsEngine* const mPhysicsEngine;
 	Terminal* const mTerminal;
 	GUI* const mGui;
 	GameCloser mGameCloser;
