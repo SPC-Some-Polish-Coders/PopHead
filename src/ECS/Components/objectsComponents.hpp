@@ -25,8 +25,6 @@ namespace ph::component {
 	struct Lever
 	{
 		unsigned id;
-		float minActivationInterval;
-		float activationCooldown;
 		bool isActivated;
 		bool turnOffAfterSwitch;
 	};

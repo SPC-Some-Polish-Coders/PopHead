@@ -291,10 +291,9 @@ void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& ent
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
 	unsigned leverId = entityComponentNode.getAttribute("id").toUnsigned();
-	float minActivationInterval = entityComponentNode.getAttribute("minActivationInterval").toFloat();
 	bool isActivated = false;
 	bool turnOffAfterSwitch = entityComponentNode.getAttribute("turnOffAfterSwitch").toBool();
-	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, minActivationInterval, 0.f, isActivated, turnOffAfterSwitch);
+	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, isActivated, turnOffAfterSwitch);
 }
 
 void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)

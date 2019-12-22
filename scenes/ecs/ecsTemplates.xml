@@ -87,9 +87,9 @@
     <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />
     <component name="TextureRect" x="0" y="4" width="32" height="12" />
     <component name="BlocksLight"/>
-    <component name="LeverListener" observedLeverId="0"/>
     <component name="Gate" isOpened="false" />
     <component name="StaticCollisionBody" />
+    <component name="LeverListener" observedLeverId="0"/>
   </entityTemplate>
 
   <entityTemplate name="ActivateArea">
@@ -164,7 +164,7 @@
   </entityTemplate>
 
   <entityTemplate name="Shotgun">
-    <component name="BodyRect" x="200.0" y="60.0" width="14" height="9" />
+    <component name="BodyRect" x="0.0" y="0.0" width="14" height="9" />
     <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="16" height="16" />
     <component name="HiddenForRenderer" />

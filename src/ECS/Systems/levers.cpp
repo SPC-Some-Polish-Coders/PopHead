@@ -10,8 +10,20 @@ namespace ph::system {
 
 void Levers::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
 
+}
+
+void Levers::onEvent(const ActionEvent& event)
+{
+	if (event.mType == ActionEvent::Pressed)
+	{
+		if (event.mAction == "use")
+			handleUsedLevers();
+	}
+}
+
+void Levers::handleUsedLevers() const
+{
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
 
@@ -23,23 +35,15 @@ void Levers::update(float dt)
 			const auto& [leverBody, leverTexture] = leverView.get<component::BodyRect, component::TextureRect>(lever);
 			auto& leverDetails = leverView.get<component::Lever>(lever);
 
-			if (leverDetails.activationCooldown > 0.f)
-			{
-				leverDetails.activationCooldown -= dt;
-				return;
-			}
-
 			if (leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
 				continue;
 
 			if (leverBody.rect.doPositiveRectsIntersect(playerBody.rect))
-				if (ActionEventManager::isActionPressed("use"))
-				{
-					leverDetails.isActivated = !leverDetails.isActivated;
-					leverDetails.activationCooldown = leverDetails.minActivationInterval;
-					leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
-					handleListeners(leverDetails.isActivated, leverDetails.id);
-				}
+			{
+				leverDetails.isActivated = !leverDetails.isActivated;
+				leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
+				handleListeners(leverDetails.isActivated, leverDetails.id);
+			}
 		}
 	}
 }
