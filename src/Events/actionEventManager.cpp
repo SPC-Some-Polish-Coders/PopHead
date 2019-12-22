@@ -18,7 +18,7 @@ void ActionEventManager::init()
 	addAction("use", sf::Keyboard::E);
 	addAction("changeWeapon", sf::Keyboard::R);
 	addAction("gunAttack", sf::Keyboard::Enter);
-	addAction("meleeAtack", sf::Keyboard::BackSlash);
+	addAction("meleeAttack", sf::Keyboard::BackSlash);
 	addAction("pauseScreen", sf::Keyboard::Escape);
 }
 
