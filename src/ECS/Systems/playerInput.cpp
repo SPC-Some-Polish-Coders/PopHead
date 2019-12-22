@@ -29,8 +29,6 @@ namespace ph::system {
 		const auto playerDirection = getPlayerDirection();
 		setPlayerFaceDirection(playerDirection);
 		setFlashLightDirection(playerDirection);
-		updateGunAttackInput();
-		updateMeleeAttackInput();
 
 		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
 		movementView.each([this, playerDirection]
@@ -42,6 +40,17 @@ namespace ph::system {
 			velocity.dx = vel.x;
 			velocity.dy = vel.y;
 		});
+	}
+
+	void PlayerMovementInput::onEvent(const ActionEvent& event)
+	{
+		if (event.mType == ActionEvent::Type::Pressed)
+		{
+			if (event.mAction == "gunAttack")
+				updateGunAttackInput();
+			else if (event.mAction == "meleeAttack")
+				updateMeleeAttackInput();
+		}
 	}
 
 	bool PlayerMovementInput::isPlayerWithoutControl()
@@ -153,26 +162,20 @@ namespace ph::system {
 	void PlayerMovementInput::updateGunAttackInput()
 	{
 		auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-		if (ActionEventManager::isActionPressed("gunAttack"))
+		for (auto player : playerGunView)
 		{
-			for (auto player : playerGunView)
-			{
-				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-				playerGunAttack.isTryingToAttack = true;
-			}
+			auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+			playerGunAttack.isTryingToAttack = true;
 		}
 	}
 
 	void PlayerMovementInput::updateMeleeAttackInput()
 	{
 		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
-		if(ActionEventManager::isActionPressed("meleeAtack"))
+		for(auto player : playerMeleeView)
 		{
-			for(auto player : playerMeleeView)
-			{
-				auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
-				playerMeleeAttack.isTryingToAttack = true;
-			}
+			auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
+			playerMeleeAttack.isTryingToAttack = true;
 		}
 	}
 }
