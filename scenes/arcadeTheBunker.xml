@@ -4,5 +4,5 @@
   <map filename="arcadeTheBunker.tmx"/>
   <gui filename="gameplayArcade.gui.xml"/>
   <audio filename="arcadeTheBunker.audio.xml"/>
-  <ambientLight color="rgba(255, 255, 255, 255)"/>
+  <ambientLight color="rgb(255, 245, 225)"/>
 </scenelinks>

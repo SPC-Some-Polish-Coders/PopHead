@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scenelinks>
-  <ecsObjects filename="dying.xml"/>
-  <audio filename="sewage.audio.xml"/>
-  <ambientLight color="rgba(100, 100, 150, 255)"/>
-</scenelinks>

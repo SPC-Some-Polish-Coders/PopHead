@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<scenelinks>
-  <map filename="rendererTest.tmx"/>
-  <neededResources filename="desert.res.xml"/>
-  <gui filename="gameplay.gui.xml"/>
-  <audio filename="sewage.audio.xml"/>
-  <ambientLight color="rgba(255, 255, 255, 255)"/>
-</scenelinks>

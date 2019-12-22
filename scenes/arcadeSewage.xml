@@ -4,5 +4,5 @@
   <map filename="arcadeSewage.tmx"/>
   <gui filename="gameplayArcade.gui.xml"/>
   <audio filename="arcadeSewage.audio.xml"/>
-  <ambientLight color="rgba(255, 255, 255, 255)"/>
+  <ambientLight color="rgb(10, 30, 10)"/>
 </scenelinks>

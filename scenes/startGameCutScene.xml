@@ -4,5 +4,5 @@
   <map filename="startGameCutsceneMap.tmx"/>
   <gui filename="startGameCutscene.gui.xml"/>
   <audio filename="startGameCutScene.audio.xml"/>
-  <ambientLight color="rgb(100, 100, 100)"/>
+  <ambientLight color="rgb(255, 255, 255)"/>
 </scenelinks>

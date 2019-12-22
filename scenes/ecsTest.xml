@@ -4,5 +4,5 @@
   <map filename="canyonMap.tmx"/>
   <ecsObjects filename="ecsTemplates.xml"/>
   <audio filename="sewage.audio.xml"/>
-  <ambientLight color="rgba(70, 70, 70, 255)"/>
+  <ambientLight color="rgb(255, 245, 225)"/>
 </scenelinks>
