@@ -92,6 +92,8 @@ namespace ph {
 			else if (objectType == "CrawlingNpc") loadCrawlingNpc(gameObjectNode);
 			else if (objectType == "GateGuardNpc") loadGateGuardNpc(gameObjectNode);
 			else if (objectType == "SpriteNode") loadSpriteNode(gameObjectNode);
+			else if (objectType == "Torch") loadTorch(gameObjectNode);
+			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 		}
 	}
@@ -354,6 +356,18 @@ namespace ph {
 		standingObjects->addChild(std::move(spriteNode));*/
 	}
 
+	void TiledParser::loadTorch(const Xml& torchNode) const
+	{
+		auto entity = mTemplatesStorage.createCopy("Torch", mGameRegistry);
+		loadPosition(torchNode, entity);
+	}
+
+	void TiledParser::loadLightWall(const Xml& wallNode) const
+	{
+		auto entity = mTemplatesStorage.createCopy("LightWall", mGameRegistry);
+		loadPositionAndSize(wallNode, entity);
+	}
+
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& healthComponent = mGameRegistry.get<component::Health>(entity);
@@ -370,6 +384,13 @@ namespace ph {
 	void TiledParser::loadSize(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
+		bodyRect.rect.setSize(getSizeAttribute(entityNode));
+	}
+
+	void TiledParser::loadPositionAndSize(const Xml& entityNode, entt::entity entity) const
+	{
+		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
+		bodyRect.rect.setPosition(getPositionAttribute(entityNode));
 		bodyRect.rect.setSize(getSizeAttribute(entityNode));
 	}
 

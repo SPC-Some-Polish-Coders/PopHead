@@ -41,12 +41,10 @@ void RenderSystem::update(float dt)
 	Renderer::beginScene(*currentCamera);
 
 	// submit light sources
-	bool isLightSourceOnScene = false;
 	auto lightSources = mRegistry.view<component::LightSource, component::BodyRect>();
-	lightSources.each([&isLightSourceOnScene](const component::LightSource& pointLight, const component::BodyRect& body)
+	lightSources.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
-		isLightSourceOnScene = true;
 		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
 			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
@@ -57,14 +55,6 @@ void RenderSystem::update(float dt)
 	{
 		Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
 	});
-	if(isLightSourceOnScene) {
-		auto multiStaticCollisionBodies = mRegistry.view<component::MultiStaticCollisionBody>();
-		multiStaticCollisionBodies.each([](const component::MultiStaticCollisionBody& mscb)
-		{
-			for(auto& rect : mscb.rects)
-				Renderer::submitLightBlockingQuad(rect.getTopLeft(), rect.getSize());
-		});
-	}
 
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();

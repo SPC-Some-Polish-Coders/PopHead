@@ -29,6 +29,7 @@
  </objecttype>
  <objecttype name="Gate" color="#a48096"/>
  <objecttype name="Lever" color="#aa00ff"/>
+ <objecttype name="LightWall" color="#616167"/>
  <objecttype name="LootSpawner" color="#0cff7d">
   <property name="lootType" type="string" default="bullets"/>
  </objecttype>
@@ -51,6 +52,7 @@
  <objecttype name="SpriteNode" color="#454fa4">
   <property name="texturePath" type="string"/>
  </objecttype>
+ <objecttype name="Torch" color="#ffff00"/>
  <objecttype name="VelocityChangingArea" color="#5eb825">
   <property name="velocityMultiplier" type="float" default="0.4"/>
  </objecttype>

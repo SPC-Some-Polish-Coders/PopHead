@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="17" nextobjectid="218">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="75" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="17" nextobjectid="302">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -695,7 +695,7 @@
   <object id="1" type="Player" x="544" y="2108">
    <point/>
   </object>
-  <object id="2" type="Camera" x="195" y="1872.17" width="640" height="360"/>
+  <object id="2" type="Camera" x="195" y="1872.17" width="640" height="360" visible="0"/>
   <object id="5" type="Zombie" x="864.667" y="521">
    <point/>
   </object>
@@ -1010,15 +1010,6 @@
   <object id="177" type="Zombie" x="372" y="337.333">
    <point/>
   </object>
-  <object id="179" type="SlowZombie" x="236" y="672.667">
-   <point/>
-  </object>
-  <object id="180" type="SlowZombie" x="283.333" y="668.667">
-   <point/>
-  </object>
-  <object id="181" type="SlowZombie" x="338" y="664">
-   <point/>
-  </object>
   <object id="186" type="BulletItem" x="1029.33" y="2213.4">
    <point/>
   </object>
@@ -1073,5 +1064,85 @@
   <object id="216" type="Medkit" x="1024" y="2102.17">
    <point/>
   </object>
+  <object id="219" type="Torch" x="971.333" y="951.333">
+   <point/>
+  </object>
+  <object id="220" type="Torch" x="580.667" y="1988.67">
+   <point/>
+  </object>
+  <object id="222" type="LightWall" x="126.333" y="0" width="20" height="1615.25"/>
+  <object id="223" type="LightWall" x="402.333" y="407.5" width="20" height="1149.75"/>
+  <object id="224" type="LightWall" x="402.083" y="6" width="20" height="352.25"/>
+  <object id="225" type="LightWall" x="422.083" y="328" width="167.75" height="29.75"/>
+  <object id="226" type="LightWall" x="422.833" y="407" width="163.5" height="26.25"/>
+  <object id="227" type="LightWall" x="573.333" y="268.682" width="16.5" height="59.0682"/>
+  <object id="228" type="LightWall" x="589.583" y="96.25" width="16.5" height="181.5"/>
+  <object id="229" type="LightWall" x="604.917" y="78.25" width="37.1667" height="17.5"/>
+  <object id="230" type="LightWall" x="641.25" y="94.5833" width="28.8333" height="102.5"/>
+  <object id="231" type="LightWall" x="670.917" y="110.25" width="238.167" height="39.8333"/>
+  <object id="232" type="LightWall" x="705.917" y="198.75" width="238.167" height="78.5833"/>
+  <object id="233" type="LightWall" x="641.917" y="247.25" width="63.1667" height="30.5"/>
+  <object id="234" type="LightWall" x="945.417" y="111.833" width="14.4167" height="95.75"/>
+  <object id="235" type="LightWall" x="909.167" y="96.0833" width="38.1667" height="15"/>
+  <object id="236" type="LightWall" x="738.417" y="277.25" width="224.667" height="64.0833"/>
+  <object id="237" type="LightWall" x="738.917" y="339.75" width="74.1667" height="81.0833"/>
+  <object id="238" type="LightWall" x="589.417" y="486.25" width="224.167" height="79.5833"/>
+  <object id="239" type="LightWall" x="569.371" y="406.886" width="20.6667" height="93.5833"/>
+  <object id="240" type="LightWall" x="963.917" y="340.25" width="175.667" height="143.583"/>
+  <object id="241" type="LightWall" x="1138.92" y="483.25" width="25.6667" height="269.083"/>
+  <object id="242" type="LightWall" x="1055.42" y="743.25" width="25.6667" height="230.583"/>
+  <object id="243" type="LightWall" x="1081.92" y="743.75" width="56.6667" height="28.5833"/>
+  <object id="244" type="LightWall" x="865.417" y="965.75" width="212.167" height="28.5833"/>
+  <object id="245" type="LightWall" x="839.417" y="660.25" width="25.6667" height="306.583"/>
+  <object id="246" type="LightWall" x="814.417" y="549.25" width="243.167" height="111.583"/>
+  <object id="247" type="LightWall" x="434.75" y="1508.25" width="127.5" height="79.5833"/>
+  <object id="248" type="LightWall" x="417" y="1495.5" width="17.25" height="79.5833"/>
+  <object id="249" type="LightWall" x="563" y="1525.5" width="14.75" height="79.5833"/>
+  <object id="250" type="LightWall" x="579" y="1541" width="14.75" height="79.5833"/>
+  <object id="251" type="LightWall" x="594.5" y="1558" width="14.75" height="79.5833"/>
+  <object id="252" type="LightWall" x="611.5" y="1573" width="14.75" height="79.5833"/>
+  <object id="253" type="LightWall" x="626" y="1588" width="14.75" height="79.5833"/>
+  <object id="254" type="LightWall" x="643" y="1606" width="14.75" height="79.5833"/>
+  <object id="255" type="LightWall" x="659" y="1620.5" width="14.75" height="79.5833"/>
+  <object id="256" type="LightWall" x="674.5" y="1637" width="14.75" height="79.5833"/>
+  <object id="257" type="LightWall" x="691" y="1654" width="14.75" height="79.5833"/>
+  <object id="258" type="LightWall" x="706.5" y="1668.5" width="14.75" height="79.5833"/>
+  <object id="259" type="LightWall" x="594.833" y="1800.33" width="26.75" height="283.75"/>
+  <object id="260" type="LightWall" x="143.458" y="1605.21" width="18.4167" height="79.5833"/>
+  <object id="261" type="LightWall" x="160.792" y="1621.21" width="18.0833" height="79.5833"/>
+  <object id="262" type="LightWall" x="177.458" y="1636.71" width="17.4167" height="79.5833"/>
+  <object id="263" type="LightWall" x="193.292" y="1653.21" width="17.0833" height="79.5833"/>
+  <object id="264" type="LightWall" x="207.458" y="1669.21" width="19.4167" height="79.5833"/>
+  <object id="270" type="LightWall" x="225.125" y="1685.21" width="16.75" height="79.5833"/>
+  <object id="271" type="LightWall" x="242.458" y="1701.21" width="16.4167" height="79.5833"/>
+  <object id="272" type="LightWall" x="259.125" y="1716.71" width="14.75" height="79.5833"/>
+  <object id="273" type="LightWall" x="273.292" y="1733.21" width="17.0833" height="79.5833"/>
+  <object id="274" type="LightWall" x="289.125" y="1749.21" width="16.75" height="79.5833"/>
+  <object id="275" type="LightWall" x="305.125" y="1765.21" width="16.75" height="79.5833"/>
+  <object id="276" type="LightWall" x="320.458" y="1781.21" width="17.4167" height="79.5833"/>
+  <object id="277" type="LightWall" x="339.125" y="1797.71" width="15.0833" height="79.5833"/>
+  <object id="278" type="LightWall" x="448.625" y="1844.88" width="33.4167" height="240.583"/>
+  <object id="279" type="LightWall" x="371.125" y="1831.21" width="14.75" height="51.5833"/>
+  <object id="280" type="LightWall" x="386.625" y="1844.54" width="92.75" height="23.5833"/>
+  <object id="282" type="LightWall" x="414.625" y="2053.71" width="33.4167" height="10.583"/>
+  <object id="283" type="LightWall" x="397.292" y="2065.71" width="17.9167" height="76.583"/>
+  <object id="284" type="LightWall" x="415.125" y="2133.21" width="64.4167" height="10.583"/>
+  <object id="285" type="LightWall" x="447.292" y="2133.21" width="33.4167" height="106.083"/>
+  <object id="286" type="LightWall" x="482.292" y="2229.21" width="112.417" height="11.583"/>
+  <object id="287" type="LightWall" x="593.958" y="2149.13" width="26.75" height="408.417"/>
+  <object id="288" type="LightWall" x="723.292" y="2151.79" width="26.75" height="408.417"/>
+  <object id="289" type="LightWall" x="722.958" y="1746.79" width="26.75" height="337.75"/>
+  <object id="290" type="LightWall" x="751.958" y="2059.12" width="174.083" height="27.417"/>
+  <object id="291" type="LightWall" x="750.958" y="2152.12" width="172.75" height="25.7503"/>
+  <object id="292" type="LightWall" x="897.292" y="2152.12" width="28.4167" height="86.7503"/>
+  <object id="293" type="LightWall" x="925.792" y="2229.62" width="118.417" height="17.7503"/>
+  <object id="294" type="LightWall" x="1041.46" y="2159.46" width="28.0837" height="78.0836"/>
+  <object id="295" type="LightWall" x="1040.96" y="1983.96" width="29.7504" height="111.417"/>
+  <object id="296" type="LightWall" x="897.958" y="1999.79" width="28.0837" height="58.7502"/>
+  <object id="297" type="LightWall" x="927.291" y="1980.96" width="80.0837" height="24.0835"/>
+  <object id="298" type="LightWall" x="989.625" y="1964.96" width="94.0837" height="18.7502"/>
+  <object id="299" type="LightWall" x="1071.46" y="2077.46" width="221.084" height="17.7503"/>
+  <object id="300" type="LightWall" x="1070.29" y="2159.79" width="223.084" height="17.7503"/>
+  <object id="301" type="LightWall" x="353.958" y="1813.54" width="16.4167" height="51.5833"/>
  </objectgroup>
 </map>

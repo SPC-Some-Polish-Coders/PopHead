@@ -40,7 +40,7 @@ void LightRenderer::shutDown()
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
-	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x - 200.f, position.y - 200.f, size.x + 400.f, size.y + 400.f)))
 		return;
 	
 	sf::Vector2f upLeftPoint = position;

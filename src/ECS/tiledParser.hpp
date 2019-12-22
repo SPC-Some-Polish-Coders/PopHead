@@ -48,10 +48,13 @@ namespace ph {
 		void loadBulletItem(const Xml& bulletItemNode) const;
 		void loadMedkit(const Xml& medkitItemNode) const;
 		void loadSpriteNode(const Xml& spriteNodeNode) const;
+		void loadTorch(const Xml& torchNode) const;
+		void loadLightWall(const Xml& wallNode) const;
 
 		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
 		void loadPosition(const Xml& entityNode, entt::entity entity) const;
 		void loadSize(const Xml& entityNode, entt::entity entity) const;
+		void loadPositionAndSize(const Xml& entityNode, entt::entity entity) const;
 
 		Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 		bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
