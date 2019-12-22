@@ -137,7 +137,7 @@ void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, con
 			attackArea.top -= range + playerBody.height / 2.f;
 	}
 
-	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>();
+	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
 	for (auto enemy : enemiesView)
 	{
 		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);

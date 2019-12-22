@@ -31,12 +31,31 @@ void MeleeAttacks::update(float dt)
 			{
 				const auto& meleeProperties = meleeView.get<component::MeleeProperties>(melee);
 				const auto& playerBody = meleeAttackerView.get<component::BodyRect>(meleeAttacker);
+				tagEnemiesInMeleeAttackArea(playerFaceDirection.direction, playerBody.rect, meleeProperties.range);
 				performHit(playerBody.rect.getCenter(), getStartAttackRotation(playerFaceDirection.direction), meleeProperties.damage, meleeProperties.range, meleeProperties.rotationRange);
+				clearInMeleeAttackAreaTags();
 
 				meleeAttackerDetails.isAttacking = true;
 				meleeAttackerDetails.cooldownSinceLastHit = meleeProperties.minHitInterval;
 			}
 		}
+	}
+}
+
+void MeleeAttacks::tagEnemiesInMeleeAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, float range) const
+{
+	FloatRect attackArea(playerBody.getCenter(), sf::Vector2f(0.f, 0.f));
+
+	attackArea.width, attackArea.height = range * 2.f;
+	attackArea.left -= attackArea.width / 2.f;
+	attackArea.top -= attackArea.height / 2.f;
+
+	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
+	for (auto enemy : enemiesView)
+	{
+		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);
+		if (attackArea.doPositiveRectsIntersect(enemyBody.rect))
+			mRegistry.assign_or_replace<component::InPlayerAttackArea>(enemy);
 	}
 }
 
@@ -152,6 +171,13 @@ float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& playerFaceDirecti
 		return 135.f;
 
 	return 0.f;
+}
+
+void MeleeAttacks::clearInMeleeAttackAreaTags() const
+{
+	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerAttackArea>();
+	for (auto enemy : enemiesInAreaAttackView)
+		mRegistry.remove<component::InPlayerAttackArea>(enemy);
 }
 
 }
