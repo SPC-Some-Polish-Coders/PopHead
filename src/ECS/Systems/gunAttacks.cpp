@@ -8,8 +8,11 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include "Renderer/renderer.hpp"
+
 #include "Utilities/random.hpp"
+#include "Utilities/direction.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph::system {
 
@@ -74,8 +77,10 @@ void GunAttacks::handlePendingGunAttacks() const
 
 				sf::Vector2f startingBulletPosition = gunBody.rect.getCenter() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
 
+				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(), gunProperties.range, gunProperties.deflectionAngle);
 				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
 				createShotImage(startingBulletPosition, shotsEndingPositions, gunProperties.shotSoundFilepath);
+				clearInGunAttackAreaTags();
 
 				playerGunAttack.bullets -= gunProperties.numberOfBullets;
 			}
@@ -95,10 +100,56 @@ sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& 
 		return sf::Vector2f(gunSize.x/2, -gunSize.y/2);
 }
 
+void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const
+{
+	FloatRect attackArea(playerBody.getCenter(), sf::Vector2f(0.f, 0.f));
+	if (playerFaceDirection == PH_WEST)
+		attackArea.left += range * playerFaceDirection.x;
+	else if (playerFaceDirection == PH_NORTH)
+		attackArea.top += range * playerFaceDirection.y;
+
+	if (playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
+	{
+		attackArea.width = range;
+		attackArea.height = range * std::tan(Math::degreesToRadians(deflectionAngle)) * 2.f;
+
+		attackArea.left += (playerBody.width / 2.f + gunSize.x / 2.f) * playerFaceDirection.x;;
+		attackArea.top -= attackArea.height / 2.f;
+	}
+	else if (playerFaceDirection == PH_SOUTH || playerFaceDirection == PH_NORTH)
+	{
+		attackArea.width = range * std::tan(Math::degreesToRadians(deflectionAngle)) * 2.f;
+		attackArea.height = range;
+
+		attackArea.left -= attackArea.width / 2.f;
+		attackArea.top += (playerBody.height / 2.f + gunSize.y / 2.f) * playerFaceDirection.y;
+	}
+	else if (PH_IS_DIAGONAL(playerFaceDirection))
+	{
+		attackArea.setSize(sf::Vector2f(range, range));
+		if (PH_IS_X_AXIS_POSITIVE(playerFaceDirection))
+			attackArea.left += playerBody.width / 2.f;
+		else if (PH_IS_X_AXIS_NEGATIVE(playerFaceDirection))
+			attackArea.left -= range + playerBody.width / 2.f;
+		if (PH_IS_Y_AXIS_POSITIVE(playerFaceDirection))
+			attackArea.top += playerBody.height / 2.f;
+		else if (PH_IS_Y_AXIS_NEGATIVE(playerFaceDirection))
+			attackArea.top -= range + playerBody.height / 2.f;
+	}
+
+	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>();
+	for (auto enemy : enemiesView)
+	{
+		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);
+		if (attackArea.doPositiveRectsIntersect(enemyBody.rect))
+			mRegistry.assign<component::InPlayerAttackArea>(enemy);
+	}
+}
+
 std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const
 {
-	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::Killable, component::BodyRect>(entt::exclude < component::Player>);
-	auto enemies = mRegistry.view< component::Killable, component::BodyRect>(entt::exclude<component::Player>);
+	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::InPlayerAttackArea, component::Killable, component::BodyRect>();
+	auto enemies = mRegistry.view<component::InPlayerAttackArea, component::Killable, component::BodyRect>();
 	std::vector<sf::Vector2f> shotsEndingPositions;
 	const int bulletShiftValue = 5;
 
@@ -146,7 +197,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 	const float deflectionFactor = deflection / -90.f;
 	sf::Vector2f deflectedBulletDirection = playerFaceDirection;
 
-	if (playerFaceDirection == sf::Vector2f(0.f, -1.f)) //up 
+	if (playerFaceDirection == PH_NORTH)
 	{
 		if (deflectionFactor < 0.f)
 		{
@@ -159,7 +210,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += deflectionFactor;
 		}
 	}
-	else if (playerFaceDirection == sf::Vector2f(1.f, 0.f)) // right
+	else if (playerFaceDirection == PH_EAST) // right
 	{
 		if (deflectionFactor < 0.f)
 		{
@@ -172,7 +223,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += deflectionFactor;
 		}
 	}
-	else if (playerFaceDirection == sf::Vector2f(0.f, 1.f)) //down
+	else if (playerFaceDirection == PH_SOUTH) //down
 		if (deflectionFactor < 0.f)
 		{
 			deflectedBulletDirection.x += -deflectionFactor;
@@ -183,7 +234,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.x += -deflectionFactor;
 			deflectedBulletDirection.y += -deflectionFactor;
 		}
-	else if (playerFaceDirection == sf::Vector2f(-1.f, 0.f)) //left
+	else if (playerFaceDirection == PH_WEST) //left
 		if (deflectionFactor < 0.f)
 		{
 			deflectedBulletDirection.x += -deflectionFactor;
@@ -195,28 +246,28 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += -deflectionFactor;
 		}
 
-	else if (playerFaceDirection == sf::Vector2f(-0.7f, -0.7f)) // up-left
+	else if (playerFaceDirection == PH_NORTH_WEST) // up-left
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.y += -deflectionFactor;
 		else
 			deflectedBulletDirection.x += deflectionFactor;
 	}
-	else if (playerFaceDirection == sf::Vector2f(0.7f, -0.7f)) // up-right
+	else if (playerFaceDirection == PH_NORTH_EAST) // up-right
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.x += deflectionFactor;
 		else
 			deflectedBulletDirection.y += deflectionFactor;
 	}
-	else if (playerFaceDirection == sf::Vector2f(-0.7f, 0.7f)) //down-left
+	else if (playerFaceDirection == PH_SOUTH_WEST) //down-left
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.x += -deflectionFactor;
 		else
 			deflectedBulletDirection.y += -deflectionFactor;
 	}
-	else if (playerFaceDirection == sf::Vector2f(0.7f, 0.7f)) // down-right
+	else if (playerFaceDirection == PH_SOUTH_EAST) // down-right
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.y += deflectionFactor;
@@ -233,6 +284,13 @@ sf::Vector2f GunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection,
 	newPosition.x = startingPos.x + bulletDirection.x * bulletDistance;
 	newPosition.y = startingPos.y + bulletDirection.y * bulletDistance;
 	return newPosition;
+}
+
+void GunAttacks::clearInGunAttackAreaTags() const
+{
+	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerAttackArea>();
+	for (auto enemy : enemiesInAreaAttackView)
+		mRegistry.remove<component::InPlayerAttackArea>(enemy);
 }
 
 void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition, const std::string& soundFilename) const

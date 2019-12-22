@@ -18,14 +18,15 @@ namespace ph::system {
 	private:
 		void handlePendingGunAttacks() const;
 		sf::Vector2f getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const;
+		void tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const;
 		std::vector<sf::Vector2f> performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const;
 		sf::Vector2f getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const;
 		sf::Vector2f getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const;
+		void clearInGunAttackAreaTags() const;
 
 		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
 		void handleLastingBullets() const;
 
 		void changeWeapon();
-
 	};
 }
