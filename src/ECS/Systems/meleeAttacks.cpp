@@ -14,7 +14,7 @@ void MeleeAttacks::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto meleeAttackerView = mRegistry.view<component::MeleeAttacker, component::BodyRect, component::FaceDirection, component::Player>();
+	auto meleeAttackerView = mRegistry.view<component::Player, component::MeleeAttacker, component::FaceDirection, component::BodyRect>();
 	for (auto meleeAttacker : meleeAttackerView)
 	{
 		const auto& playerFaceDirection = meleeAttackerView.get<component::FaceDirection>(meleeAttacker);
