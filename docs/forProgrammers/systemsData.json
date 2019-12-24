@@ -30,6 +30,15 @@
                 "GunAttacker"
             ]
         },
+		{
+            "name" : "CollisionDebug",
+            "componentsRead" : [
+                "StaticCollisionBody",
+                "BodyRect",
+                "MultiStaticCollisionBody",
+                "KinematicCollisionBody"
+            ]
+        },
         {
             "name" : "DamageAndDeath",
             "componentsRead" : [
@@ -67,31 +76,57 @@
                 ""
             ]
         },
+		{
+            "name" : "GameplayUI",
+            "componentsRead" : [
+                "Player",
+                "GunAttacker",
+                "Health"
+            ]
+        },
+		{
+            "name" : "GunAttacks",
+            "componentsRead" : [
+                "Player",
+                "FaceDirection",
+                "BodyRect",
+                "Killable"
+            ],
+			"componentsWrite" : [
+				"CurrentGun",
+				"GunAttacker",
+				"HiddenForRenderer",
+				"InPlayerAttackArea",
+				"DamageTag",
+				"AmbientSound",
+				"Lifetime",
+				"LastingShot"
+			]
+        },
         {
             "name" : "GunPositioningAndTexture",
             "componentsRead" : [
-                ""
+                "Player",
+                "FaceDirection",
+                "GunAttacker"
             ],
             "componentsWrite" : [
-                ""
+                "TextureRect",
+                "CurrentGun",
+                "HiddenForRenderer",
+                "BodyRect"
             ]
         },
         {
             "name" : "HostileCollisions",
             "componentsRead" : [
-                ""
+                "Player",
+                "BodyRect",
+                "Damage"
             ],
             "componentsWrite" : [
-                ""
-            ]
-        },
-        {
-            "name" : "IsObjectInArea",
-            "componentsRead" : [
-                ""
-            ],
-            "componentsWrite" : [
-                ""
+                "CollisionWithPlayer",
+                "DamageTag"
             ]
         },
         {
@@ -113,10 +148,12 @@
         {
             "name" : "Levers",
             "componentsRead" : [
-                ""
+                "Player",
+                "BodyRect"
             ],
             "componentsWrite" : [
-                ""
+                "Lever",
+                "TextureRect"
             ]
         },
         {
@@ -125,16 +162,39 @@
                 ""
             ],
             "componentsWrite" : [
-                ""
+                "TaggedToDestroy",
+                "Lifetime"
+            ]
+        },
+		{
+            "name" : "MeleeAttacks",
+            "componentsRead" : [
+                "Player",
+                "BodyRect",
+                "FaceDirection",
+                "MeleeProperties",
+                "CurrentMeleeWeapon",
+                "Killable"
+            ],
+            "componentsWrite" : [
+                "MeleeAttacker",
+                "InPlayerAttackArea",
+                "DamageTag"
             ]
         },
         {
             "name" : "MeleePositioning",
             "componentsRead" : [
-                ""
+                "Player",
+                "FaceDirection",
+                "MeleeAttacker"
             ],
             "componentsWrite" : [
-                ""
+                "BodyRect",
+                "HiddenForRenderer",
+                "CurrentMeleeWeapon",
+                "BodyRect",
+                "RenderQuad"
             ]
         },
         {
@@ -148,15 +208,6 @@
         },
         {
             "name" : "ParticleSystem",
-            "componentsRead" : [
-                ""
-            ],
-            "componentsWrite" : [
-                ""
-            ]
-        },
-        {
-            "name" : "PendingMeleeAttacks",
             "componentsRead" : [
                 ""
             ],

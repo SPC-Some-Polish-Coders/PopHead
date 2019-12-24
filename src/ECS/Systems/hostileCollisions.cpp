@@ -16,7 +16,6 @@ namespace ph::system {
 		for (auto player : playerView)
 		{
 			const auto& playerBody = playerView.get<component::BodyRect>(player);
-			auto& playerHealth = playerView.get<component::Health>(player);
 
 			for (auto damageDealingEntitiy : enemiesView)
 			{
