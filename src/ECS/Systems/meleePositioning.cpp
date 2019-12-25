@@ -14,12 +14,13 @@ void MeleePositioning::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	auto playerView = mRegistry.view<component::MeleeAttacker, component::Player, component::BodyRect, component::FaceDirection>();
+	auto meleeView = mRegistry.view<component::CurrentMeleeWeapon, component::BodyRect, component::RenderQuad>();
+
 	for (auto player : playerView)
 	{
 		const auto& [playerFaceDirection, meleeAttacker, playerBody] 
 			= playerView.get<component::FaceDirection, component::MeleeAttacker, component::BodyRect>(player);
 
-		auto meleeView = mRegistry.view<component::CurrentMeleeWeapon, component::BodyRect, component::RenderQuad>();
 		for (auto melee : meleeView)
 		{
 			auto& [currentMelee, body, renderQuad] 

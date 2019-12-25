@@ -30,7 +30,7 @@ namespace ph::system {
 			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
 			for (auto gun : gunView)
 			{
-				auto& [gunTextureBody, playerGun] = gunView.get<component::TextureRect, component::CurrentGun>(gun);
+				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);
 
 				int offsetX = 16;
 				if (wantToAttack)

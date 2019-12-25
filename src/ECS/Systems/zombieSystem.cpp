@@ -56,7 +56,8 @@ void ZombieSystem::update(float dt)
 	const auto view = mRegistry.view<component::Zombie, component::BodyRect, component::Velocity>(entt::exclude<component::TimeToFadeOut>);
 	for(auto zombieEntity : view)
 	{
-		auto& [zombie, body, velocity] = view.get<component::Zombie, component::BodyRect, component::Velocity>(zombieEntity);
+		auto& [zombie, velocity] = view.get<component::Zombie, component::Velocity>(zombieEntity);
+		const auto& body = view.get<component::BodyRect>(zombieEntity);
 
 		// make sounds
 		zombie.timeFromLastGrowl += dt;

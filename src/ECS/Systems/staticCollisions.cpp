@@ -53,7 +53,7 @@ namespace ph::system {
 			// compute multi static collisions
 			for(const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
-				auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
+				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
 				if(multiStaticCollisionBody.sharedBounds.doPositiveRectsIntersect(kinematicBody.rect))
 				{
 					for(const FloatRect& staticCollisionBodyRect : multiStaticCollisionBody.rects)
