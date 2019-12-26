@@ -91,7 +91,7 @@
                 "BodyRect",
                 "Killable"
             ],
-			"componentsWrite" : [
+            "componentsWrite" : [
 				"CurrentGun",
 				"GunAttacker",
 				"HiddenForRenderer",
