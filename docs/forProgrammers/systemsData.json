@@ -96,21 +96,22 @@
 		{
             "name" : "GunAttacks",
             "componentsRead" : [
+                "GunProperties",
                 "Player",
                 "FaceDirection",
                 "BodyRect",
                 "Killable"
             ],
 			"componentsWrite" : [
-				"CurrentGun",
-				"GunAttacker",
-				"HiddenForRenderer",
-				"InPlayerAttackArea",
-				"DamageTag",
-				"AmbientSound",
-				"Lifetime",
-				"LastingShot"
-			]
+                "CurrentGun",
+                "HiddenForRenderer",
+                "GunAttacker",
+                "InPlayerGunAttackArea",
+                "DamageTag",
+                "LastingShot",
+                "Lifetime",
+                "AmbientSound"
+            ]
         },
         {
             "name" : "GunPositioningAndTexture",

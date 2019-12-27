@@ -117,6 +117,7 @@ HiddenForRenderer<br />
 <tr>
 <td>GunAttacks</td>
 <td>
+GunProperties<br />
 Player<br />
 FaceDirection<br />
 BodyRect<br />
@@ -124,13 +125,13 @@ Killable<br />
 </td>
 <td>
 CurrentGun<br />
-GunAttacker<br />
 HiddenForRenderer<br />
-InPlayerAttackArea<br />
+GunAttacker<br />
+InPlayerGunAttackArea<br />
 DamageTag<br />
-AmbientSound<br />
-Lifetime<br />
 LastingShot<br />
+Lifetime<br />
+AmbientSound<br />
 </td>
 </tr>
 <tr>
