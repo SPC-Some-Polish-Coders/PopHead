@@ -17,13 +17,13 @@ namespace ph::system {
 
 	private:
 		sf::Vector2f nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const;
-		float angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const;
+		float angleOfPointToStart(sf::Vector2f point, sf::Vector2f playerPosition) const;
 		bool isAngleInAttackRange(float angle, float mAttackAngle, float rotationRange) const;
 		float getFixedAngle(float angle) const;
 		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
 
 	private:
-		float mWeaponRotation = 0.f;
+		float mStartWeaponRotation;
 		bool mIsAttackButtonPressed = false;
 		bool mShouldWeaponBeRendered = false;
 	};

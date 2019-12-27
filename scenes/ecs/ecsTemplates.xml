@@ -156,7 +156,7 @@
 
   <entityTemplate name="Pistol">
     <component name="BodyRect" x="0.0" y="0.0" width="15" height="9" />
-    <component name="RenderQuad" textureFilepath="textures/others/pistol.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/others/pistol.png" z="94" />
     <component name="TextureRect" x="0" y="0" width="7" height="14" />
     <component name="HiddenForRenderer" />
     <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" />
@@ -164,16 +164,15 @@
 
   <entityTemplate name="Shotgun">
     <component name="BodyRect" x="0.0" y="0.0" width="14" height="9" />
-    <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="94" />
     <component name="TextureRect" x="0" y="0" width="16" height="16" />
     <component name="HiddenForRenderer" />
     <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" />
   </entityTemplate>
 
   <entityTemplate name="BaseballBat">
-    <component name="BodyRect" x="200.0" y="60.0" width="11" height="11" />
-    <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="95" />
-    <component name="TextureRect" x="0" y="0" width="12" height="12" />
+    <component name="BodyRect" x="200.0" y="60.0" width="24" height="24" />
+    <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="93" rotationOrigin="12, 12"/>
     <component name="HiddenForRenderer" />
     <component name="MeleeProperties" minHitInterval="0.8" rotationRange="100.0" rotationSpeed="270.0" range="27.0" damage="50" />
   </entityTemplate>

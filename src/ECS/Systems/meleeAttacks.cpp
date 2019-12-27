@@ -13,7 +13,7 @@ namespace ph::system {
 
 void MeleeAttacks::onEvent(const ActionEvent& e)
 {
-	if(e.mType == ActionEvent::Type::Pressed && e.mAction == "meleeAttack")
+	if(e.mType == ActionEvent::Type::Pressed && e.mAction == "meleeAttack" && !mShouldWeaponBeRendered)
 		mIsAttackButtonPressed = true;
 }
 
@@ -33,9 +33,10 @@ void MeleeAttacks::update(float dt)
 			const auto& meleeProperties = currentMeleeWeaponView.get<component::MeleeProperties>(meleeWeapon);
 			auto& [renderQuad, weaponBody] = currentMeleeWeaponView.get<component::RenderQuad, component::BodyRect>(meleeWeapon);
 
-			if(mIsAttackButtonPressed && !mShouldWeaponBeRendered)
+			if(mIsAttackButtonPressed)
 			{
 				mIsAttackButtonPressed = false;
+				mStartWeaponRotation = getStartAttackRotation(faceDirection.direction);
 
 				// deal damage
 				FloatRect attackArea(
@@ -53,7 +54,7 @@ void MeleeAttacks::update(float dt)
 						if(distance < meleeProperties.range)
 						{
 							float characterAngle = angleOfPointToStart(nearestPoint, playerBody.rect.getCenter());
-							if(isAngleInAttackRange(characterAngle, getStartAttackRotation(faceDirection.direction), meleeProperties.rotationRange))
+							if(isAngleInAttackRange(characterAngle, mStartWeaponRotation, meleeProperties.rotationRange))
 								mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
 						}
 					}
@@ -61,7 +62,7 @@ void MeleeAttacks::update(float dt)
 
 				// initialize weapon rendering
 				mShouldWeaponBeRendered = true;
-				mWeaponRotation = 0.f;
+				renderQuad.rotation = mStartWeaponRotation;
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::HiddenForRenderer>(meleeWeapon), "Melee weapon doesn't have HiddenForRenderer component!");
 				mRegistry.remove<component::HiddenForRenderer>(meleeWeapon);
 			}
@@ -69,34 +70,14 @@ void MeleeAttacks::update(float dt)
 			if(mShouldWeaponBeRendered)
 			{
 				// set weapon position
-				const sf::Vector2f playerCenter = playerBody.rect.getCenter();
-				if(faceDirection.direction == PH_EAST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -3.f));
-				else if(faceDirection.direction == PH_WEST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(3.f, -3.f));
-				else if(faceDirection.direction == PH_NORTH)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, 1.f));
-				else if(faceDirection.direction == PH_SOUTH)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, 9.f));
-				else if(faceDirection.direction == PH_NORTH_WEST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -8.f));
-				else if(faceDirection.direction == PH_NORTH_EAST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -8.f));
-				else if(faceDirection.direction == PH_SOUTH_WEST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(3.f, -3.f));
-				else if(faceDirection.direction == PH_SOUTH_EAST)
-					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, -1.f));
-				else
-					weaponBody.rect.setPosition(playerCenter);
+				weaponBody.rect.setPosition(playerBody.rect.getCenter() - sf::Vector2f(12, 12));
 
 				// rotate weapon
 				constexpr float anglesPerSecond = 240.f;
-				float thisFrameRotation = dt * anglesPerSecond;
-				renderQuad.rotation -= thisFrameRotation;
-				mWeaponRotation += thisFrameRotation;
+				renderQuad.rotation -= dt * anglesPerSecond;
 
-				if(mWeaponRotation > meleeProperties.rotationRange) {
-					// stop rendering weapon 
+				if(renderQuad.rotation <= mStartWeaponRotation - meleeProperties.rotationRange) {
+					// stop rendering weapon
 					mShouldWeaponBeRendered = false;
 					mRegistry.assign_or_replace<component::HiddenForRenderer>(meleeWeapon);
 				}
@@ -149,13 +130,11 @@ sf::Vector2f MeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const 
 	return {};
 }
 
-float MeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const
+float MeleeAttacks::angleOfPointToStart(sf::Vector2f point, sf::Vector2f playerPosition) const
 {
 	point -= playerPosition;
-
 	float angle = std::atan2f(point.y, point.x);
 	angle = Math::radiansToDegrees(angle);
-
 	if(angle < 0.f)
 		angle += 360.f;
 	return angle;
@@ -165,10 +144,10 @@ bool MeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float
 {
 	float halfOfRotationRange = rotationRange / 2.f;
 	auto attackRange = std::make_pair(getFixedAngle(attackRotation - halfOfRotationRange), getFixedAngle(attackRotation + halfOfRotationRange));
-
 	if(attackRange.first < attackRange.second)
 		return angle >= attackRange.first && angle <= attackRange.second;
-	return angle >= attackRange.second || angle <= attackRange.first;
+	else
+		return angle >= attackRange.second || angle <= attackRange.first;
 }
 
 float MeleeAttacks::getFixedAngle(float angle) const
@@ -182,22 +161,21 @@ float MeleeAttacks::getFixedAngle(float angle) const
 float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& faceDirection) const
 {
 	if(faceDirection == PH_EAST)
-		return 0.f;
-	else if(faceDirection == PH_WEST)
-		return 180.f;
-	else if(faceDirection == PH_SOUTH)
 		return 90.f;
+	else if(faceDirection == PH_WEST)
+		return 270.f;
+	else if(faceDirection == PH_SOUTH)
+		return 180.f;
 	else if(faceDirection == PH_NORTH)
-		return -90.f;
+		return 0.f;
 	else if(faceDirection == PH_NORTH_EAST)
-		return -45.f;
-	else if(faceDirection == PH_NORTH_WEST)
-		return -135.f;
-	else if(faceDirection == PH_SOUTH_EAST)
 		return 45.f;
-	else if(faceDirection == PH_SOUTH_WEST)
+	else if(faceDirection == PH_NORTH_WEST)
+		return 315.f;
+	else if(faceDirection == PH_SOUTH_EAST)
 		return 135.f;
-
+	else if(faceDirection == PH_SOUTH_WEST)
+		return 215.f;
 	return 0.f;
 }
 

@@ -445,12 +445,13 @@ void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::enti
 
 void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float minHitInterval = entityComponentNode.getAttribute("minHitInterval").toFloat();
-	float rotationSpeed = entityComponentNode.getAttribute("rotationSpeed").toFloat();
-	float rotationRange = entityComponentNode.getAttribute("rotationRange").toFloat();
-	float range = entityComponentNode.getAttribute("range").toFloat();
-	int damage = entityComponentNode.getAttribute("damage").toInt();
-	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, minHitInterval, rotationSpeed, rotationRange, range, damage);
+	component::MeleeProperties mp;
+	mp.minHitInterval = entityComponentNode.getAttribute("minHitInterval").toFloat();
+	mp.rotationSpeed = entityComponentNode.getAttribute("rotationSpeed").toFloat();
+	mp.rotationRange = entityComponentNode.getAttribute("rotationRange").toFloat();
+	mp.range = entityComponentNode.getAttribute("range").toFloat();
+	mp.damage = entityComponentNode.getAttribute("damage").toInt();
+	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, mp);
 }
 
 void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
