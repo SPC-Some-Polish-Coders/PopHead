@@ -27,21 +27,13 @@ namespace ph::component {
 	{
 	};
 
-	struct InPlayerAttackArea
+	struct InPlayerGunAttackArea
 	{
 	};
 
 	struct FaceDirection
 	{
 		sf::Vector2f direction;
-	};
-
-	struct MeleeAttacker
-	{
-		float cooldownSinceLastHit;
-		bool isTryingToAttack;
-		bool canAttack;
-		bool isAttacking;
 	};
 
 	struct GunAttacker
@@ -86,12 +78,10 @@ namespace ph::component {
 
 	struct CurrentGun
 	{
-
 	};
 
 	struct CurrentMeleeWeapon
 	{
-		float rotation = 0.f;
 	};
 
 	struct DamageAnimation

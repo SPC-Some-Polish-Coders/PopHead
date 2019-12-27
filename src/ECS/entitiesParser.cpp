@@ -116,7 +116,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"LightSource",           	    &EntitiesParser::parseLightSource},
 		{"HiddenForRenderer",	  	    &EntitiesParser::parseHiddenForRenderer},
 		{"GunAttacker",           	    &EntitiesParser::parseGunAttacker},
-		{"MeleeAttacker",         	    &EntitiesParser::parseMeleeAttacker},
 		{"CollisionWithPlayer",   	    &EntitiesParser::parseCollisionWithPlayer},
 		{"StaticCollisionBody",   	    &EntitiesParser::parseStaticCollisionBody},
 		{"MultiStaticCollisionBody",    &EntitiesParser::parseMultiStaticCollisionBody},
@@ -473,13 +472,6 @@ void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entit
 void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::CurrentMeleeWeapon>(entity);
-}
-
-void EntitiesParser::parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity)
-{
-	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	const float cooldown = 0.f;
-	mUsedRegistry->assign_or_replace<component::MeleeAttacker>(entity, cooldown, isTryingToAttack);
 }
 
 void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)

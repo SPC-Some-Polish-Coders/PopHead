@@ -13,7 +13,6 @@
   <entityTemplate name="Player">
     <component name="KinematicCollisionBody" mass="10" />
     <component name="GunAttacker" bullets="300" isTryingToAttack="false" timeBeforeHiding="3" />
-    <component name="MeleeAttacker" isTryingToAttack="false" />
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="Player" />
     <component name="FaceDirection" />

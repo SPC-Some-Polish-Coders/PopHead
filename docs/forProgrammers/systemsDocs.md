@@ -57,6 +57,7 @@ KinematicCollisionBody<br />
 <tr>
 <td>DamageAndDeath</td>
 <td>
+Player<br />
 </td>
 <td>
 DamageTag<br />
@@ -64,6 +65,13 @@ Health<br />
 DamageAnimation<br />
 RenderQuad<br />
 MultiParticleEmitter<br />
+TimeToFadeOut<br />
+Killable<br />
+KinematicCollisionBody<br />
+Damage<br />
+Camera<br />
+AnimationData<br />
+TaggedToDestroy<br />
 </td>
 </tr>
 <tr>
@@ -109,6 +117,7 @@ HiddenForRenderer<br />
 <tr>
 <td>GunAttacks</td>
 <td>
+GunProperties<br />
 Player<br />
 FaceDirection<br />
 BodyRect<br />
@@ -116,13 +125,13 @@ Killable<br />
 </td>
 <td>
 CurrentGun<br />
-GunAttacker<br />
 HiddenForRenderer<br />
-InPlayerAttackArea<br />
+GunAttacker<br />
+InPlayerGunAttackArea<br />
 DamageTag<br />
-AmbientSound<br />
-Lifetime<br />
 LastingShot<br />
+Lifetime<br />
+AmbientSound<br />
 </td>
 </tr>
 <tr>

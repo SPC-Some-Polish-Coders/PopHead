@@ -44,12 +44,14 @@ namespace ph::system {
 
 	void PlayerMovementInput::onEvent(const ActionEvent& event)
 	{
-		if (event.mType == ActionEvent::Type::Pressed)
+		if(event.mType == ActionEvent::Type::Pressed && event.mAction == "gunAttack")
 		{
-			if (event.mAction == "gunAttack")
-				updateGunAttackInput();
-			else if (event.mAction == "meleeAttack")
-				updateMeleeAttackInput();
+			auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
+			for (auto player : playerGunView)
+			{
+				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+				playerGunAttack.isTryingToAttack = true;
+			}
 		}
 	}
 
@@ -158,24 +160,5 @@ namespace ph::system {
 			lightSource.endAngle = middleAngle + 35.f;
 		});
 	}
-
-	void PlayerMovementInput::updateGunAttackInput()
-	{
-		auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-		for (auto player : playerGunView)
-		{
-			auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-			playerGunAttack.isTryingToAttack = true;
-		}
-	}
-
-	void PlayerMovementInput::updateMeleeAttackInput()
-	{
-		auto playerMeleeView = mRegistry.view<component::Player, component::MeleeAttacker>();
-		for(auto player : playerMeleeView)
-		{
-			auto& playerMeleeAttack = playerMeleeView.get<component::MeleeAttacker>(player);
-			playerMeleeAttack.isTryingToAttack = true;
-		}
-	}
 }
+

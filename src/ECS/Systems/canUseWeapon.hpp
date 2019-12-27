@@ -10,10 +10,6 @@ namespace ph::system {
 		using System::System;
 
 		void update(float dt) override;
-
-	private:
-		void updateMeleeWeapon(float dt);
-		void updateGun(float dt);
 	};
 
 }

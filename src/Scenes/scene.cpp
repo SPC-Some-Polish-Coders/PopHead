@@ -18,7 +18,6 @@
 #include "ECS/Systems/gunPositioningAndTexture.hpp"
 #include "ECS/Systems/velocityChangingAreas.hpp"
 #include "ECS/Systems/meleeAttacks.hpp"
-#include "ECS/Systems/meleePositioning.hpp"
 #include "ECS/Systems/canUseWeapon.hpp"
 #include "ECS/Systems/lifetime.hpp"
 #include "ECS/Systems/animationSystem.hpp"
@@ -64,7 +63,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::GunAttacks>();
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::MeleePositioning>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Levers>();
 	mSystemsQueue.appendSystem<system::Movement>();
