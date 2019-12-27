@@ -142,14 +142,14 @@ void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, con
 	{
 		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);
 		if (attackArea.doPositiveRectsIntersect(enemyBody.rect))
-			mRegistry.assign<component::InPlayerAttackArea>(enemy);
+			mRegistry.assign<component::InPlayerGunAttackArea>(enemy);
 	}
 }
 
 std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const
 {
-	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::InPlayerAttackArea, component::Killable, component::BodyRect>();
-	auto enemies = mRegistry.view<component::InPlayerAttackArea, component::Killable, component::BodyRect>();
+	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
+	auto enemies = mRegistry.view<component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
 	std::vector<sf::Vector2f> shotsEndingPositions;
 	const int bulletShiftValue = 5;
 
@@ -288,9 +288,9 @@ sf::Vector2f GunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection,
 
 void GunAttacks::clearInGunAttackAreaTags() const
 {
-	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerAttackArea>();
+	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerGunAttackArea>();
 	for (auto enemy : enemiesInAreaAttackView)
-		mRegistry.remove<component::InPlayerAttackArea>(enemy);
+		mRegistry.remove<component::InPlayerGunAttackArea>(enemy);
 }
 
 void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition, const std::string& soundFilename) const

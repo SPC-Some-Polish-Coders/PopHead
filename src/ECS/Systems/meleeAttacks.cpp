@@ -4,77 +4,105 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
+void MeleeAttacks::onEvent(const ActionEvent& e)
+{
+	if(e.mType == ActionEvent::Type::Pressed && e.mAction == "meleeAttack")
+		mIsAttackButtonPressed = true;
+}
+
 void MeleeAttacks::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto meleeAttackerView = mRegistry.view<component::Player, component::MeleeAttacker, component::FaceDirection, component::BodyRect>();
-	for (auto meleeAttacker : meleeAttackerView)
+	auto players = mRegistry.view<component::FaceDirection, component::BodyRect, component::Player>();
+	for(auto player : players)
 	{
-		const auto& playerFaceDirection = meleeAttackerView.get<component::FaceDirection>(meleeAttacker);
-		auto& meleeAttackerDetails = meleeAttackerView.get<component::MeleeAttacker>(meleeAttacker);
+		const auto& [faceDirection, playerBody] = players.get<component::FaceDirection, component::BodyRect>(player);
 
-		if (meleeAttackerDetails.isTryingToAttack)
+		auto currentMeleeWeaponView = mRegistry.view<component::CurrentMeleeWeapon, component::MeleeProperties, component::RenderQuad, component::BodyRect>();
+
+		for(auto& meleeWeapon : currentMeleeWeaponView)
 		{
-			meleeAttackerDetails.isTryingToAttack = false;
-			if (!meleeAttackerDetails.canAttack)
-				return;	
+			const auto& meleeProperties = currentMeleeWeaponView.get<component::MeleeProperties>(meleeWeapon);
+			auto& [renderQuad, weaponBody] = currentMeleeWeaponView.get<component::RenderQuad, component::BodyRect>(meleeWeapon);
 
-			auto meleeView = mRegistry.view<component::CurrentMeleeWeapon, component::MeleeProperties>();
-			for (auto melee : meleeView)
+			if(mIsAttackButtonPressed && !mShouldWeaponBeRendered)
 			{
-				const auto& meleeProperties = meleeView.get<component::MeleeProperties>(melee);
-				const auto& playerBody = meleeAttackerView.get<component::BodyRect>(meleeAttacker);
-				tagEnemiesInMeleeAttackArea(playerFaceDirection.direction, playerBody.rect, meleeProperties.range);
-				performHit(playerBody.rect.getCenter(), getStartAttackRotation(playerFaceDirection.direction), meleeProperties.damage, meleeProperties.range, meleeProperties.rotationRange);
-				clearInMeleeAttackAreaTags();
+				mIsAttackButtonPressed = false;
 
-				meleeAttackerDetails.isAttacking = true;
-				meleeAttackerDetails.cooldownSinceLastHit = meleeProperties.minHitInterval;
+				// deal damage
+				FloatRect attackArea(
+					playerBody.rect.getCenter() - sf::Vector2(meleeProperties.range, meleeProperties.range),
+					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
+				);
+				auto enemies = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
+				for(auto enemy : enemies)
+				{
+					const auto& enemyBody = enemies.get<component::BodyRect>(enemy);
+					if(attackArea.doPositiveRectsIntersect(enemyBody.rect))
+					{
+						auto nearestPoint = nearestPointOfCharacter(enemyBody.rect, playerBody.rect.getTopLeft());
+						auto distance = Math::distanceBetweenPoints(playerBody.rect.getCenter(), nearestPoint);
+						if(distance < meleeProperties.range)
+						{
+							float characterAngle = angleOfPointToStart(nearestPoint, playerBody.rect.getCenter());
+							if(isAngleInAttackRange(characterAngle, getStartAttackRotation(faceDirection.direction), meleeProperties.rotationRange))
+								mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
+						}
+					}
+				};
+
+				// initialize weapon rendering
+				mShouldWeaponBeRendered = true;
+				mWeaponRotation = 0.f;
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::HiddenForRenderer>(meleeWeapon), "Melee weapon doesn't have HiddenForRenderer component!");
+				mRegistry.remove<component::HiddenForRenderer>(meleeWeapon);
 			}
-		}
+
+			if(mShouldWeaponBeRendered)
+			{
+				// set weapon position
+				const sf::Vector2f playerCenter = playerBody.rect.getCenter();
+				if(faceDirection.direction == PH_EAST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -3.f));
+				else if(faceDirection.direction == PH_WEST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(3.f, -3.f));
+				else if(faceDirection.direction == PH_NORTH)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, 1.f));
+				else if(faceDirection.direction == PH_SOUTH)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, 9.f));
+				else if(faceDirection.direction == PH_NORTH_WEST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -8.f));
+				else if(faceDirection.direction == PH_NORTH_EAST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(0.f, -8.f));
+				else if(faceDirection.direction == PH_SOUTH_WEST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(3.f, -3.f));
+				else if(faceDirection.direction == PH_SOUTH_EAST)
+					weaponBody.rect.setPosition(playerCenter + sf::Vector2f(-3.f, -1.f));
+				else
+					weaponBody.rect.setPosition(playerCenter);
+
+				// rotate weapon
+				constexpr float anglesPerSecond = 240.f;
+				float thisFrameRotation = dt * anglesPerSecond;
+				renderQuad.rotation -= thisFrameRotation;
+				mWeaponRotation += thisFrameRotation;
+
+				if(mWeaponRotation > meleeProperties.rotationRange) {
+					// stop rendering weapon 
+					mShouldWeaponBeRendered = false;
+					mRegistry.assign_or_replace<component::HiddenForRenderer>(meleeWeapon);
+				}
+			}
+		};
 	}
-}
-
-void MeleeAttacks::tagEnemiesInMeleeAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, float range) const
-{
-	FloatRect attackArea(playerBody.getCenter(), sf::Vector2f(0.f, 0.f));
-
-	attackArea.width, attackArea.height = range * 2.f;
-	attackArea.left -= attackArea.width / 2.f;
-	attackArea.top -= attackArea.height / 2.f;
-
-	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
-	for (auto enemy : enemiesView)
-	{
-		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);
-		if (attackArea.doPositiveRectsIntersect(enemyBody.rect))
-			mRegistry.assign_or_replace<component::InPlayerAttackArea>(enemy);
-	}
-}
-
-void MeleeAttacks::performHit(const sf::Vector2f playerPosition, float weaponInitialRotation, int damage, float range, float rotationRange)
-{
-	auto enemies = mRegistry.view<component::BodyRect, component::Killable>(entt::exclude<component::Player>);
-	for(auto enemy : enemies)
-	{
-		const auto& enemyBody = enemies.get<component::BodyRect>(enemy);
-		auto nearestPoint = nearestPointOfCharacter(enemyBody.rect, playerPosition);
-		auto distance = Math::distanceBetweenPoints(playerPosition, nearestPoint);
-
-		if (distance > range)
-			continue;
-
-		float characterAngle = angleOfPointToStart(nearestPoint, playerPosition);
-		if (isAngleInAttackRange(characterAngle, weaponInitialRotation, rotationRange))
-			mRegistry.assign_or_replace<component::DamageTag>(enemy, damage);
-	}	
 }
 
 sf::Vector2f MeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const
@@ -90,32 +118,32 @@ sf::Vector2f MeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const 
 	bool sameXAxis = !onLeft && !onRight;
 	bool sameYAxis = !above && !under;
 
-	if (sameXAxis && !sameYAxis)
+	if(sameXAxis && !sameYAxis)
 	{
-		if (under)
+		if(under)
 			return sf::Vector2f(playerPosition.x, rect.top);
 		else
 			return sf::Vector2f(playerPosition.x, bottom);
 	}
-	if (!sameXAxis && sameYAxis)
+	if(!sameXAxis && sameYAxis)
 	{
-		if (onRight)
+		if(onRight)
 			return sf::Vector2f(rect.left, playerPosition.y);
 		else
 			return sf::Vector2f(right, playerPosition.y);
 	}
-	if (sameXAxis && sameYAxis)
+	if(sameXAxis && sameYAxis)
 	{
 		return playerPosition;
 	}
 
-	if (onLeft && above)
+	if(onLeft && above)
 		return sf::Vector2f(right, bottom);
-	if (onLeft && under)
+	if(onLeft && under)
 		return sf::Vector2f(right, rect.top);
-	if (onRight && above)
+	if(onRight && above)
 		return sf::Vector2f(rect.left, bottom);
-	if (onRight && under)
+	if(onRight && under)
 		return sf::Vector2f(rect.left, rect.top);
 
 	return {};
@@ -128,7 +156,7 @@ float MeleeAttacks::angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& 
 	float angle = std::atan2f(point.y, point.x);
 	angle = Math::radiansToDegrees(angle);
 
-	if (angle < 0.f)
+	if(angle < 0.f)
 		angle += 360.f;
 	return angle;
 }
@@ -138,7 +166,7 @@ bool MeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float
 	float halfOfRotationRange = rotationRange / 2.f;
 	auto attackRange = std::make_pair(getFixedAngle(attackRotation - halfOfRotationRange), getFixedAngle(attackRotation + halfOfRotationRange));
 
-	if (attackRange.first < attackRange.second)
+	if(attackRange.first < attackRange.second)
 		return angle >= attackRange.first && angle <= attackRange.second;
 	return angle >= attackRange.second || angle <= attackRange.first;
 }
@@ -146,38 +174,31 @@ bool MeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float
 float MeleeAttacks::getFixedAngle(float angle) const
 {
 	angle -= (static_cast<unsigned>(angle) / 360) * 360.f;
-	if (angle < 0.f)
+	if(angle < 0.f)
 		angle += 360.f;
 	return angle;
 }
 
-float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const
+float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& faceDirection) const
 {
-	if (playerFaceDirection == PH_EAST)
+	if(faceDirection == PH_EAST)
 		return 0.f;
-	else if (playerFaceDirection == PH_WEST) 
+	else if(faceDirection == PH_WEST)
 		return 180.f;
-	else if (playerFaceDirection == PH_SOUTH)
+	else if(faceDirection == PH_SOUTH)
 		return 90.f;
-	else if (playerFaceDirection == PH_NORTH)
+	else if(faceDirection == PH_NORTH)
 		return -90.f;
-	else if (playerFaceDirection == PH_NORTH_EAST)
+	else if(faceDirection == PH_NORTH_EAST)
 		return -45.f;
-	else if (playerFaceDirection == PH_NORTH_WEST)
+	else if(faceDirection == PH_NORTH_WEST)
 		return -135.f;
-	else if (playerFaceDirection == PH_SOUTH_EAST)
+	else if(faceDirection == PH_SOUTH_EAST)
 		return 45.f;
-	else if (playerFaceDirection == PH_SOUTH_WEST)
+	else if(faceDirection == PH_SOUTH_WEST)
 		return 135.f;
 
 	return 0.f;
-}
-
-void MeleeAttacks::clearInMeleeAttackAreaTags() const
-{
-	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerAttackArea>();
-	for (auto enemy : enemiesInAreaAttackView)
-		mRegistry.remove<component::InPlayerAttackArea>(enemy);
 }
 
 }

@@ -24,8 +24,6 @@ namespace system {
 		void updateAnimationData();
 		void setPlayerFaceDirection(const sf::Vector2f faceDirection) const;
 		void setFlashLightDirection(const sf::Vector2f faceDirection) const;
-		void updateGunAttackInput();
-		void updateMeleeAttackInput();
 
 	private:
 		AIManager& mAIManager;

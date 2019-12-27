@@ -12,19 +12,20 @@ namespace ph::system {
 	public:
 		using System::System;
 
+		void onEvent(const ActionEvent&)override;
 		void update(float dt) override;
 
 	private:
-		void tagEnemiesInMeleeAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, float range) const;
-		void performHit(const sf::Vector2f playerCenterPosition, float weaponInitialRotation, int damage, float range, float rotationRange);
-
 		sf::Vector2f nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const;
 		float angleOfPointToStart(sf::Vector2f point, const sf::Vector2f& playerPosition) const;
 		bool isAngleInAttackRange(float angle, float mAttackAngle, float rotationRange) const;
 		float getFixedAngle(float angle) const;
-
 		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
-		void clearInMeleeAttackAreaTags() const;
 
+	private:
+		float mWeaponRotation = 0.f;
+		bool mIsAttackButtonPressed = false;
+		bool mShouldWeaponBeRendered = false;
 	};
 }
+
