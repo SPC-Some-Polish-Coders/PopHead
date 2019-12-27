@@ -24,10 +24,10 @@ TextureRect<br />
 Player<br />
 BodyRect<br />
 Damage<br />
-AmbientSound<br />
-SpatialSound<br />
 </td>
 <td>
+AmbientSound<br />
+SpatialSound<br />
 </td>
 </tr>
 <tr>
@@ -79,18 +79,9 @@ ALL<br />
 <td>
 Player<br />
 Entrance<br />
-</td>
-<td>
 BodyRect<br />
 </td>
-</tr>
-<tr>
-<td>Gates</td>
 <td>
-<br />
-</td>
-<td>
-<br />
 </td>
 </tr>
 <tr>
@@ -101,6 +92,18 @@ GunAttacker<br />
 Health<br />
 </td>
 <td>
+</td>
+</tr>
+<tr>
+<td>Gates</td>
+<td>
+</td>
+<td>
+Gate<br />
+LeverListener<br />
+StaticCollisionBody<br />
+BlocksLight<br />
+HiddenForRenderer<br />
 </td>
 </tr>
 <tr>
@@ -126,14 +129,14 @@ LastingShot<br />
 <td>GunPositioningAndTexture</td>
 <td>
 Player<br />
+CurrentGun<br />
 FaceDirection<br />
-GunAttacker<br />
 </td>
 <td>
 TextureRect<br />
-CurrentGun<br />
 HiddenForRenderer<br />
 BodyRect<br />
+GunAttacker<br />
 </td>
 </tr>
 <tr>
@@ -142,6 +145,7 @@ BodyRect<br />
 Player<br />
 BodyRect<br />
 Damage<br />
+Health<br />
 </td>
 <td>
 CollisionWithPlayer<br />
@@ -160,10 +164,11 @@ Health<br />
 <tr>
 <td>KinematicCollisions</td>
 <td>
-<br />
+KinematicCollisionBody<br />
 </td>
 <td>
-<br />
+BodyRect<br />
+Velocity<br />
 </td>
 </tr>
 <tr>
@@ -175,12 +180,12 @@ BodyRect<br />
 <td>
 Lever<br />
 TextureRect<br />
+LeverListener<br />
 </td>
 </tr>
 <tr>
 <td>Lifetime</td>
 <td>
-<br />
 </td>
 <td>
 TaggedToDestroy<br />
@@ -214,7 +219,6 @@ MeleeAttacker<br />
 BodyRect<br />
 HiddenForRenderer<br />
 CurrentMeleeWeapon<br />
-BodyRect<br />
 RenderQuad<br />
 </td>
 </tr>
@@ -273,8 +277,26 @@ Camera<br />
 <tr>
 <td>PlayerMovementInput</td>
 <td>
-CharacterSpeed<br />
 Player<br />
+TimeToFadeOut<br />
+CharacterSpeed<br />
+BodyRect<br />
+</td>
+<td>
+AnimationData<br />
+FaceDirection<br />
+LightSource<br />
+GunAttacker<br />
+MeleeAttacker<br />
+Velocity<br />
+</td>
+</tr>
+<tr>
+<td>PushingAreas</td>
+<td>
+PushingArea<br />
+BodyRect<br />
+KinematicCollisionBody<br />
 </td>
 <td>
 Velocity<br />
@@ -296,37 +318,42 @@ Color<br />
 <td>StaticCollisions</td>
 <td>
 StaticCollisionBody<br />
-KinematicCollisionBody<br />
+MultiStaticCollisionBody<br />
 </td>
 <td>
 BodyRect<br />
+KinematicCollisionBody<br />
 </td>
 </tr>
 <tr>
 <td>VelocityChangingAreas</td>
 <td>
-<br />
+BodyRect<br />
+AreaVelocityChangingEffect<br />
+KinematicCollisionBody<br />
 </td>
 <td>
-<br />
+Velocity<br />
 </td>
 </tr>
 <tr>
 <td>VelocityClear</td>
 <td>
-<br />
 </td>
 <td>
-<br />
+Velocity<br />
 </td>
 </tr>
 <tr>
 <td>ZombieSystem</td>
 <td>
-<br />
+BodyRect<br />
+TimeToFadeOut<br />
 </td>
 <td>
-<br />
+Zombie<br />
+Velocity<br />
+SpatialSound<br />
 </td>
 </tr>
 </table>

@@ -25,7 +25,7 @@ void Entrances::update(float dt)
 
 	for (auto player : playerView)
 	{
-		auto& playerBody = playerView.get<component::BodyRect>(player);
+		const auto& playerBody = playerView.get<component::BodyRect>(player);
 
 		for (auto entrance : entrancesView)
 		{

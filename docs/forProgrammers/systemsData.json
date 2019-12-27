@@ -12,7 +12,9 @@
             "componentsRead" : [
                 "Player",
                 "BodyRect",
-                "Damage",
+                "Damage"
+            ],
+            "componentsWrite" : [
                 "AmbientSound",
                 "SpatialSound"
             ]
@@ -41,8 +43,6 @@
         },
         {
             "name" : "DamageAndDeath",
-            "componentsRead" : [
-            ],
             "componentsWrite" : [
                 "DamageTag",
                 "Health",
@@ -61,19 +61,8 @@
             "name" : "Entrances",
             "componentsRead" : [
                 "Player",
-                "Entrance"
-            ],
-            "componentsWrite" : [
+                "Entrance",
                 "BodyRect"
-            ]
-        },
-        {
-            "name" : "Gates",
-            "componentsRead" : [
-                ""
-            ],
-            "componentsWrite" : [
-                ""
             ]
         },
 		{
@@ -82,6 +71,16 @@
                 "Player",
                 "GunAttacker",
                 "Health"
+            ]
+        },
+        {
+            "name" : "Gates",
+            "componentsWrite" : [
+                "Gate",
+                "LeverListener",
+                "StaticCollisionBody",
+                "BlocksLight",
+                "HiddenForRenderer"
             ]
         },
 		{
@@ -107,14 +106,14 @@
             "name" : "GunPositioningAndTexture",
             "componentsRead" : [
                 "Player",
-                "FaceDirection",
-                "GunAttacker"
+                "CurrentGun",
+                "FaceDirection"
             ],
             "componentsWrite" : [
                 "TextureRect",
-                "CurrentGun",
                 "HiddenForRenderer",
-                "BodyRect"
+                "BodyRect",
+                "GunAttacker"
             ]
         },
         {
@@ -122,7 +121,8 @@
             "componentsRead" : [
                 "Player",
                 "BodyRect",
-                "Damage"
+                "Damage",
+                "Health"
             ],
             "componentsWrite" : [
                 "CollisionWithPlayer",
@@ -139,10 +139,11 @@
         {
             "name" : "KinematicCollisions",
             "componentsRead" : [
-                ""
+                "KinematicCollisionBody"
             ],
             "componentsWrite" : [
-                ""
+                "BodyRect",
+                "Velocity"
             ]
         },
         {
@@ -153,14 +154,12 @@
             ],
             "componentsWrite" : [
                 "Lever",
-                "TextureRect"
+                "TextureRect",
+                "LeverListener"
             ]
         },
         {
             "name" : "Lifetime",
-            "componentsRead" : [
-                ""
-            ],
             "componentsWrite" : [
                 "TaggedToDestroy",
                 "Lifetime"
@@ -193,7 +192,6 @@
                 "BodyRect",
                 "HiddenForRenderer",
                 "CurrentMeleeWeapon",
-                "BodyRect",
                 "RenderQuad"
             ]
         },
@@ -252,8 +250,26 @@
         {
             "name" : "PlayerMovementInput",
             "componentsRead" : [
+                "Player",
+                "TimeToFadeOut",
                 "CharacterSpeed",
-                "Player"
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "AnimationData",
+                "FaceDirection",
+                "LightSource",
+                "GunAttacker",
+                "MeleeAttacker",
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "PushingAreas",
+            "componentsRead" : [
+                "PushingArea",
+                "BodyRect",
+                "KinematicCollisionBody"
             ],
             "componentsWrite" : [
                 "Velocity"
@@ -273,37 +289,40 @@
             "name" : "StaticCollisions",
             "componentsRead" : [
                 "StaticCollisionBody",
-                "KinematicCollisionBody"
+                "MultiStaticCollisionBody"
             ],
             "componentsWrite" : [
-                "BodyRect"
+                "BodyRect",
+                "KinematicCollisionBody"
             ]
         },
         {
             "name" : "VelocityChangingAreas",
             "componentsRead" : [
-                ""
+                "BodyRect",
+                "AreaVelocityChangingEffect",
+                "KinematicCollisionBody"
             ],
             "componentsWrite" : [
-                ""
+                "Velocity"
             ]
         },
         {
             "name" : "VelocityClear",
-            "componentsRead" : [
-                ""
-            ],
             "componentsWrite" : [
-                ""
+                "Velocity"
             ]
         },
         {
             "name" : "ZombieSystem",
             "componentsRead" : [
-                ""
+                "BodyRect",
+                "TimeToFadeOut"
             ],
             "componentsWrite" : [
-                ""
+                "Zombie",
+                "Velocity",
+                "SpatialSound"
             ]
         }
     ]

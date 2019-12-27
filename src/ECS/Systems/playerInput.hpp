@@ -27,10 +27,10 @@ namespace system {
 
 	private:
 		AIManager& mAIManager;
-		bool mUp;
-		bool mDown;
-		bool mLeft;
-		bool mRight;
+		bool mUp    = false;
+		bool mDown  = false;
+		bool mLeft  = false;
+		bool mRight = false;
 	};
 }
 

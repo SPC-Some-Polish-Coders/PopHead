@@ -32,7 +32,8 @@ void Levers::handleUsedLevers() const
 		const auto& playerBody = playerView.get<component::BodyRect>(player);
 		for (auto lever : leverView)
 		{
-			const auto& [leverBody, leverTexture] = leverView.get<component::BodyRect, component::TextureRect>(lever);
+			const auto& leverBody = leverView.get<component::BodyRect>(lever);
+			auto& leverTexture = leverView.get<component::TextureRect>(lever);
 			auto& leverDetails = leverView.get<component::Lever>(lever);
 
 			if (leverDetails.turnOffAfterSwitch && leverDetails.isActivated)

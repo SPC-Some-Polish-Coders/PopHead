@@ -18,7 +18,9 @@ namespace ph::system {
 			
 			for (auto kinematicObject : kinematicObjectsView)
 			{
-				auto& [objectBody, objectVelocity] = kinematicObjectsView.get<component::BodyRect, component::Velocity>(kinematicObject);
+				auto& objectVelocity = kinematicObjectsView.get<component::Velocity>(kinematicObject);
+				const auto& objectBody = kinematicObjectsView.get<component::BodyRect>(kinematicObject);
+
 				if (areaBody.rect.contains(objectBody.rect.getCenter()))
 				{
 					objectVelocity.dx *= velocityChangeEffect.areaSpeedMultiplier;

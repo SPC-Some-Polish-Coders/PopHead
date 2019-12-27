@@ -22,12 +22,12 @@ void GameplayUI::update(float dt)
 		auto* canvas = mGui.getInterface("gameplayCounters")->getWidget("canvas");
 
 		// set bullets counter
-		unsigned bullets = view.get<component::GunAttacker>(player).bullets;
+		const unsigned bullets = view.get<component::GunAttacker>(player).bullets;
 		dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"))->setString(std::to_string(bullets));
 
 		// set health counter
 		if(mRegistry.has<component::Health>(player)) {
-			auto playerHP = mRegistry.get<component::Health>(player).healthPoints;
+			const auto playerHP = mRegistry.get<component::Health>(player).healthPoints;
 			dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"))->setString(std::to_string(playerHP));
 		}
 		else
