@@ -57,6 +57,7 @@ KinematicCollisionBody<br />
 <tr>
 <td>DamageAndDeath</td>
 <td>
+Player<br />
 </td>
 <td>
 DamageTag<br />
@@ -64,6 +65,13 @@ Health<br />
 DamageAnimation<br />
 RenderQuad<br />
 MultiParticleEmitter<br />
+TimeToFadeOut<br />
+Killable<br />
+KinematicCollisionBody<br />
+Damage<br />
+Camera<br />
+AnimationData<br />
+TaggedToDestroy<br />
 </td>
 </tr>
 <tr>
