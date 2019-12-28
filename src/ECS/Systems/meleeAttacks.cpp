@@ -51,17 +51,10 @@ void MeleeAttacks::update(float dt)
 					const sf::Vector2f enemyBodyCenter = enemyBody.rect.getCenter();
 					if(attackArea.doPositiveRectsIntersect(enemyBody.rect))
 					{
-						const float distanceBetweenPlayerAndEnemy = Math::distanceBetweenPoints(playerBodyCenter, enemyBodyCenter);
-						const float enemyRadius = enemyBody.rect.width * 0.7;
-						if(distanceBetweenPlayerAndEnemy - enemyRadius < meleeProperties.range)
-						{
-							float enemyAngle = std::atan2f(enemyBodyCenter.y - playerBodyCenter.y, enemyBodyCenter.x - playerBodyCenter.x);
-							enemyAngle = Math::radiansToDegrees(enemyAngle);
-							if(enemyAngle < 0.f)
-								enemyAngle += 360.f;
-							if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange && enemyAngle <= mStartWeaponRotation)
-								mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
-						}
+						float enemyAngle = std::atan2f(enemyBodyCenter.y - playerBodyCenter.y, enemyBodyCenter.x - playerBodyCenter.x);
+						enemyAngle = Math::radiansToDegrees(enemyAngle);
+						if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10 && enemyAngle <= mStartWeaponRotation + 10)
+							mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
 					}
 				};
 
