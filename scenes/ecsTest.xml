@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenelinks>
+  <ecsObjects filename="ecsTemplates.xml"/>
   <gui filename="gameplay.gui.xml"/>
   <map filename="canyonMap.tmx"/>
-  <ecsObjects filename="ecsTemplates.xml"/>
   <audio filename="sewage.audio.xml"/>
   <ambientLight color="rgb(255, 245, 225)"/>
 </scenelinks>

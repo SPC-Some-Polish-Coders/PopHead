@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenelinks>
+  <ecsObjects filename="ecsTemplates.xml"/>
   <neededResources filename="desert.res.xml"/>
   <map filename="citySouth.tmx"/>
   <gui filename="citySouth.gui.xml"/>

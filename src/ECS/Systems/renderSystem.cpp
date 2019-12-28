@@ -31,7 +31,7 @@ void RenderSystem::update(float dt)
 	Camera* currentCamera = &defaultCamera;
 	cameras.each([&currentCameraPriority, &currentCamera](component::Camera& camera)
 	{
-		if(camera.priority > currentCameraPriority) {
+		if(camera.priority >= currentCameraPriority) {
 			currentCameraPriority = camera.priority;
 			currentCamera = &camera.camera;
 		}

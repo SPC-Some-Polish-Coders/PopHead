@@ -27,7 +27,7 @@ namespace ph::system {
 		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
 
 		// get player position
-		sf::Vector2f playerPos;
+		sf::Vector2f playerPos(-10000, -10000);
 		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 		playerView.each([&playerPos](const component::Player, const component::BodyRect& body) {
 			playerPos = body.rect.getCenter();

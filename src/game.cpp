@@ -45,7 +45,7 @@ Game::Game()
 	mDebugCounter->init(*mFonts);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/ecsTest.xml");
+	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 

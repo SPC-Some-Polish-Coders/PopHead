@@ -47,11 +47,6 @@ namespace ph {
 		ActionEventManager::setEnabled(true);
 	}
 
-	bool TiledParser::loadedPlayer() const
-	{
-		return mHasLoadedPlayer;
-	}
-
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const
 	{
 		const std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
@@ -256,34 +251,32 @@ namespace ph {
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
 	{
-		mCameraRect = FloatRect(getPositionAttribute(cameraNode), getSizeAttribute(cameraNode));
-		if(mHasLoadedPlayer) {
-			auto view = mGameRegistry.view<component::Player, component::Camera>();
-			view.each([this](const component::Player, component::Camera& camera) {
-				camera.camera = Camera(mCameraRect);
-			});
+		if(getProperty(cameraNode, "isValid").toBool()) {
+			auto cameraEntity = mTemplatesStorage.createCopy("Camera", mGameRegistry);
+			auto& camera = mGameRegistry.get<component::Camera>(cameraEntity);
+			sf::Vector2f size = getSizeAttribute(cameraNode);
+			camera.camera.setSize(size);
+			camera.camera.setCenter(getPositionAttribute(cameraNode) + (size / 2.f));
+			camera.priority = getProperty(cameraNode, "priority").toUnsigned();
 		}
 	}
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
 	{
 		auto player = mTemplatesStorage.createCopy("Player", mGameRegistry);
-		auto& playerPosition = mGameRegistry.get<component::BodyRect>(player);
+		auto& playerBody = mGameRegistry.get<component::BodyRect>(player);
 		auto& playerCamera = mGameRegistry.get<component::Camera>(player);
 		
 		sf::Vector2f position;
-
 		if (mSceneManager.hasPlayerPosition())
 			position = mSceneManager.getPlayerPosition();
 		else
 			position = getPositionAttribute(playerNode);
 
-		playerPosition.rect.left = position.x;
-		playerPosition.rect.top = position.y;
+		playerBody.rect.left = position.x;
+		playerBody.rect.top = position.y;
 
-		playerCamera.camera = Camera(mCameraRect);
-
-		mHasLoadedPlayer = true;
+		playerCamera.camera = Camera(playerBody.rect.getCenter(), sf::Vector2f(640, 360));
 
 		mTemplatesStorage.createCopy("Pistol", mGameRegistry);
 		auto shotgun = mTemplatesStorage.createCopy("Shotgun", mGameRegistry);

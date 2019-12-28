@@ -332,7 +332,12 @@
 </data>
  </layer>
  <objectgroup id="4" name="gameObjects">
-  <object id="20" type="Camera" x="154.334" y="95" width="800" height="450"/>
+  <object id="20" type="Camera" x="154.334" y="95" width="800" height="450">
+   <properties>
+    <property name="isValid" type="bool" value="true"/>
+    <property name="priority" type="int" value="1"/>
+   </properties>
+  </object>
   <object id="36" type="Zombie" x="98" y="316.333">
    <point/>
   </object>

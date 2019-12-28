@@ -4,7 +4,10 @@
   <property name="isLying" type="bool" default="false"/>
  </objecttype>
  <objecttype name="BulletItem" color="#00aaff"/>
- <objecttype name="Camera" color="#55ffff"/>
+ <objecttype name="Camera" color="#55ffff">
+  <property name="isValid" type="bool" default="false"/>
+  <property name="priority" type="int" default="0"/>
+ </objecttype>
  <objecttype name="Car" color="#aa0000">
   <property name="acceleration" type="float" default="1"/>
   <property name="directionX" type="float" default="0"/>

@@ -1,5 +1,9 @@
 <entityTemplates>
 
+  <entityTemplate name="Camera">
+    <component name="Camera" priority="0" x="0" y="0" width="640" height="360" />
+  </entityTemplate>
+
   <entityTemplate name="MapChunk">
     <component name="RenderChunk" />
     <component name="MultiStaticCollisionBody" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenelinks>
+  <ecsObjects filename="ecsTemplates.xml"/>
   <gui filename="mainMenu.gui.xml"/>
   <map filename="mainMenuMap.tmx"/>
   <neededResources filename="menu.res.xml"/>
