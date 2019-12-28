@@ -29,6 +29,7 @@ private:
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseDamage(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);
@@ -39,7 +40,6 @@ private:
 	void parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGunProperties(const Xml& entityComponentNode, entt::entity& entity);
 	void parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity);
-	void parseMeleeAttacker(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseEntrance(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGate(const Xml& entityComponentNode, entt::entity& entity);

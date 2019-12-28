@@ -4,6 +4,7 @@
 
 #include "ECS/Systems/playerInput.hpp"
 #include "ECS/Systems/movement.hpp"
+#include "ECS/Systems/pushingMovement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
@@ -66,6 +67,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::DamageAndDeath>();
 	mSystemsQueue.appendSystem<system::Levers>();
 	mSystemsQueue.appendSystem<system::Movement>();
+	mSystemsQueue.appendSystem<system::PushingMovement>();
 	mSystemsQueue.appendSystem<system::Gates>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
 	mSystemsQueue.appendSystem<system::AnimationSystem>();

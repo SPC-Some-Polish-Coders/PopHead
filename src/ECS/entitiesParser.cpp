@@ -102,6 +102,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Zombie",                	    &EntitiesParser::parseZombie},
 		{"Bullet",                	    &EntitiesParser::parseBullet},
 		{"Velocity",              	    &EntitiesParser::parseVelocity},
+		{"PushingVelocity",             &EntitiesParser::parsePushingVelocity},
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
@@ -246,6 +247,12 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 	float dx = entityComponentNode.getAttribute("dx").toFloat();
 	float dy = entityComponentNode.getAttribute("dy").toFloat();
 	mUsedRegistry->assign_or_replace<component::Velocity>(entity, dx, dy);
+}
+
+void EntitiesParser::parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity)
+{
+	sf::Vector2f vel = entityComponentNode.getAttribute("vel").toVector2f();
+	mUsedRegistry->assign_or_replace<component::PushingVelocity>(entity, vel);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)

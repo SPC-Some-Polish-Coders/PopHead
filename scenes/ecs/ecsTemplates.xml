@@ -19,6 +19,7 @@
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="CharacterSpeed" speed="100" />
     <component name="Velocity" dx="0" dy="0" />
+    <component name="PushingVelocity" vel="0, 0" />
     <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
@@ -34,6 +35,7 @@
     <component name="CollisionWithPlayer" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="Velocity" dx="0" dy="0" />
+    <component name="PushingVelocity" vel="0, 0" />
     <component name="Zombie" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
@@ -49,6 +51,7 @@
     <component name="CollisionWithPlayer" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="Velocity" dx="0" dy="0" />
+    <component name="PushingVelocity" vel="0, 0" />
     <component name="Zombie" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />

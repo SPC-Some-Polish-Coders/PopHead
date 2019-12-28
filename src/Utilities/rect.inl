@@ -21,7 +21,14 @@ void ph::Rect<T>::setPosition(sf::Vector2<T> pos)
 }
 
 template<typename T>
-inline void ph::Rect<T>::setSize(sf::Vector2<T> size)
+void ph::Rect<T>::move(sf::Vector2<T> offset)
+{
+	left += offset.x;
+	top += offset.y;
+}
+
+template<typename T>
+void ph::Rect<T>::setSize(sf::Vector2<T> size)
 {
 	width = size.x;
 	height = size.y;
