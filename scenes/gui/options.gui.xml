@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
     <interface name="credits">
-        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <textWidget name="Music"   origin="0.5" position="0.4, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="20" text="Music"/>
+        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5"> <textWidget name="Music"   origin="0.5" position="0.4, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="20" text="Music"/>
             <sliderWidget name="musicSlider" origin="0.5" position="0.5, 0.5" contentPath="textures/others/bar.png" startValue="50" minValue="0" maxValue="100" contentPathSlider="textures/others/zombieHead.png" onButtonPressed="changeMusicVolume:"/>
             <textWidget name="Sound"   origin="0.5" position="0.4, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="20" text="Sound"/>
             <sliderWidget name="SoundSlider" origin="0.5" position="0.5, 0.7" contentPath="textures/others/bar.png" startValue="50" minValue="0" maxValue="100" contentPathSlider="textures/others/zombieHead.png" onButtonPressed="changeSoundVolume:"/>

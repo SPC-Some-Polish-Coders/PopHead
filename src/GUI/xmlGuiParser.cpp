@@ -54,23 +54,15 @@ void XmlGuiParser::handleInterfaceHideAttribute(const std::string& interfaceName
 
 void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 {
-	if (widgetTag.hasAttribute("contentPath"))
-	{
+	if (widgetTag.hasAttribute("contentPath")) {
 		auto path = widgetTag.getAttribute("contentPath").toString();
 		mGameData->getGui().getTextures().load(path);
 		widget.setContentPath(path);
 	}
 	if (widgetTag.hasAttribute("origin"))
-	{
-		
 		widget.setOrigin(getVector(widgetTag, "origin"));
-	}
 	if (widgetTag.hasAttribute("position"))
-	{
-		PH_LOG_INFO("POSI_START");
 		widget.setPosition(getVector(widgetTag, "position"));
-		PH_LOG_INFO("POSI_END");
-	}
 	if (widgetTag.hasAttribute("scale"))
 		widget.scale(getVector(widgetTag, "scale"));
 	if (widgetTag.hasAttribute("alpha"))
@@ -127,7 +119,7 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 	if (widgetTag.hasAttribute("contentPathSlider"))
 	{
 		auto path = widgetTag.getAttribute("contentPathSlider").toString();
-		mGameData->getTextures().load(path);
+		mGameData->getGui().getTextures().load(path);
 		widget.createSlider(path);
 	}
 	else throwMissingAttributeException("contentPathSlider");
