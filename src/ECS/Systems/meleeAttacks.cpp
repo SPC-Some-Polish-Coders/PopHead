@@ -25,6 +25,7 @@ void MeleeAttacks::update(float dt)
 	for(auto player : players)
 	{
 		const auto& [faceDirection, playerBody] = players.get<component::FaceDirection, component::BodyRect>(player);
+		const sf::Vector2f playerBodyCenter = playerBody.rect.getCenter();
 
 		auto currentMeleeWeaponView = mRegistry.view<component::CurrentMeleeWeapon, component::MeleeProperties, component::RenderQuad, component::BodyRect>();
 
@@ -40,21 +41,25 @@ void MeleeAttacks::update(float dt)
 
 				// deal damage
 				FloatRect attackArea(
-					playerBody.rect.getCenter() - sf::Vector2(meleeProperties.range, meleeProperties.range),
+					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
 					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
 				);
 				auto enemies = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
 				for(auto enemy : enemies)
 				{
 					const auto& enemyBody = enemies.get<component::BodyRect>(enemy);
+					const sf::Vector2f enemyBodyCenter = enemyBody.rect.getCenter();
 					if(attackArea.doPositiveRectsIntersect(enemyBody.rect))
 					{
-						auto nearestPoint = nearestPointOfCharacter(enemyBody.rect, playerBody.rect.getTopLeft());
-						auto distance = Math::distanceBetweenPoints(playerBody.rect.getCenter(), nearestPoint);
-						if(distance < meleeProperties.range)
+						const float distanceBetweenPlayerAndEnemy = Math::distanceBetweenPoints(playerBodyCenter, enemyBodyCenter);
+						const float enemyRadius = enemyBody.rect.width * 0.7;
+						if(distanceBetweenPlayerAndEnemy - enemyRadius < meleeProperties.range)
 						{
-							float characterAngle = angleOfPointToStart(nearestPoint, playerBody.rect.getCenter());
-							if(isAngleInAttackRange(characterAngle, mStartWeaponRotation, meleeProperties.rotationRange))
+							float enemyAngle = std::atan2f(enemyBodyCenter.y - playerBodyCenter.y, enemyBodyCenter.x - playerBodyCenter.x);
+							enemyAngle = Math::radiansToDegrees(enemyAngle);
+							if(enemyAngle < 0.f)
+								enemyAngle += 360.f;
+							if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange && enemyAngle <= mStartWeaponRotation)
 								mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
 						}
 					}
@@ -86,78 +91,6 @@ void MeleeAttacks::update(float dt)
 	}
 }
 
-sf::Vector2f MeleeAttacks::nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const
-{
-	auto right = rect.left + rect.width;
-	auto bottom = rect.top + rect.height;
-
-	bool onLeft = right < playerPosition.x;
-	bool onRight = rect.left > playerPosition.x;
-	bool above = bottom < playerPosition.y;
-	bool under = rect.top > playerPosition.y;
-
-	bool sameXAxis = !onLeft && !onRight;
-	bool sameYAxis = !above && !under;
-
-	if(sameXAxis && !sameYAxis)
-	{
-		if(under)
-			return sf::Vector2f(playerPosition.x, rect.top);
-		else
-			return sf::Vector2f(playerPosition.x, bottom);
-	}
-	if(!sameXAxis && sameYAxis)
-	{
-		if(onRight)
-			return sf::Vector2f(rect.left, playerPosition.y);
-		else
-			return sf::Vector2f(right, playerPosition.y);
-	}
-	if(sameXAxis && sameYAxis)
-	{
-		return playerPosition;
-	}
-
-	if(onLeft && above)
-		return sf::Vector2f(right, bottom);
-	if(onLeft && under)
-		return sf::Vector2f(right, rect.top);
-	if(onRight && above)
-		return sf::Vector2f(rect.left, bottom);
-	if(onRight && under)
-		return sf::Vector2f(rect.left, rect.top);
-
-	return {};
-}
-
-float MeleeAttacks::angleOfPointToStart(sf::Vector2f point, sf::Vector2f playerPosition) const
-{
-	point -= playerPosition;
-	float angle = std::atan2f(point.y, point.x);
-	angle = Math::radiansToDegrees(angle);
-	if(angle < 0.f)
-		angle += 360.f;
-	return angle;
-}
-
-bool MeleeAttacks::isAngleInAttackRange(float angle, float attackRotation, float rotationRange) const
-{
-	float halfOfRotationRange = rotationRange / 2.f;
-	auto attackRange = std::make_pair(getFixedAngle(attackRotation - halfOfRotationRange), getFixedAngle(attackRotation + halfOfRotationRange));
-	if(attackRange.first < attackRange.second)
-		return angle >= attackRange.first && angle <= attackRange.second;
-	else
-		return angle >= attackRange.second || angle <= attackRange.first;
-}
-
-float MeleeAttacks::getFixedAngle(float angle) const
-{
-	angle -= (static_cast<unsigned>(angle) / 360) * 360.f;
-	if(angle < 0.f)
-		angle += 360.f;
-	return angle;
-}
-
 float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& faceDirection) const
 {
 	if(faceDirection == PH_EAST)
@@ -180,3 +113,4 @@ float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& faceDirection) co
 }
 
 }
+

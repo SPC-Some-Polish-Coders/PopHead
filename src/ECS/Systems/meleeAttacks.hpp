@@ -16,10 +16,6 @@ namespace ph::system {
 		void update(float dt) override;
 
 	private:
-		sf::Vector2f nearestPointOfCharacter(const FloatRect& rect, const sf::Vector2f playerPosition) const;
-		float angleOfPointToStart(sf::Vector2f point, sf::Vector2f playerPosition) const;
-		bool isAngleInAttackRange(float angle, float mAttackAngle, float rotationRange) const;
-		float getFixedAngle(float angle) const;
 		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
 
 	private:
