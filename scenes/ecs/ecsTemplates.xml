@@ -23,7 +23,7 @@
     <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
-    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="10" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />
     <component name="MultiParticleEmitter" />
   </entityTemplate>
@@ -160,7 +160,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" />
+    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" gunId="0"/>
   </entityTemplate>
 
   <entityTemplate name="Shotgun">
@@ -168,12 +168,12 @@
     <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" />
+    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" gunId="1"/>
   </entityTemplate>
 
   <entityTemplate name="BaseballBat">
     <component name="BodyRect" x="200.0" y="60.0" width="11" height="11" />
-    <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="100" />
     <component name="TextureRect" x="0" y="0" width="12" height="12" />
     <component name="HiddenForRenderer" />
     <component name="MeleeProperties" minHitInterval="0.8" rotationRange="100.0" rotationSpeed="270.0" range="27.0" damage="50" />

@@ -35,17 +35,21 @@ void GunAttacks::onEvent(const ActionEvent& event)
 
 void GunAttacks::changeWeapon()
 {
-	auto currentGunView = mRegistry.view<component::CurrentGun>();
+	auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
 	auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
 
 	for (auto currentGun : currentGunView)
 	{
+		const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
 		mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
 		mRegistry.remove<component::CurrentGun>(currentGun);
 
 		for (auto otherGun : otherGunsView)
-			if (otherGun != currentGun)
+		{
+			const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
+			if (gunProperties.gunId != currentGunProperties.gunId)
 				mRegistry.assign<component::CurrentGun>(otherGun);
+		}
 	}
 
 	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
@@ -75,7 +79,7 @@ void GunAttacks::handlePendingGunAttacks() const
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 				auto& playerFaceDirection = gunAttackerView.get<component::FaceDirection>(gunAttacker);
 
-				sf::Vector2f startingBulletPosition = gunBody.rect.getCenter() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
+				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
 
 				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(), gunProperties.range, gunProperties.deflectionAngle);
 				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
@@ -90,14 +94,22 @@ void GunAttacks::handlePendingGunAttacks() const
 
 sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const
 {
-	if (playerFaceDirection == sf::Vector2f(1, 0) || playerFaceDirection == sf::Vector2f(-1, 0))
-		return sf::Vector2f(gunSize.x/2, -2.f);
-	else if (playerFaceDirection == sf::Vector2f(0, 1) || playerFaceDirection == sf::Vector2f(0, -1))
-		return sf::Vector2f(-4.7f, -gunSize.y/2);
-	else if(playerFaceDirection.y > 0.f)
-		return sf::Vector2f(gunSize.x/2, gunSize.y/2);
+	if (playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
+		return sf::Vector2f(25.f * playerFaceDirection.x, 25.f);
+	else if (playerFaceDirection == PH_NORTH)
+		return sf::Vector2f(25.f, 25.f);
+	else if (playerFaceDirection == PH_SOUTH)
+		return sf::Vector2f(25.f, -25.f);
+	else if (playerFaceDirection == PH_NORTH_EAST)
+		return sf::Vector2f(25.f, 25.f);
+	else if (playerFaceDirection == PH_NORTH_WEST)
+		return sf::Vector2f(-25.f, 25.f);
+	else if (playerFaceDirection == PH_SOUTH_EAST)
+		return sf::Vector2f(25.f, 25.f);
+	else if (playerFaceDirection == PH_SOUTH_WEST)
+		return sf::Vector2f(-25.f, 25.f);
 	else
-		return sf::Vector2f(gunSize.x/2, -gunSize.y/2);
+		return sf::Vector2f(0.f, 0.f);
 }
 
 void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const
