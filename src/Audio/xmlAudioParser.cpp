@@ -1,15 +1,17 @@
 #include "xmlAudioParser.hpp"
+#include "Audio/Music/musicPlayer.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
 
 namespace ph {
 
-void XmlAudioParser::parseFile(GameData* const gameData, const std::string& filePath)
+void XmlAudioParser::parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, const std::string& filePath)
 {
 	PH_LOG_INFO("Music file (" + filePath + ") is being parsed.");
 
-	mGameData = gameData;
+	mSoundPlayer = &soundPlayer;
+	mMusicPlayer = &musicPlayer;
 
 	Xml audioFile;
 	audioFile.loadFromFile(filePath);
@@ -25,10 +27,10 @@ void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 	const Xml volumeNode = audioNode.getChild("mute");
 	bool soundMute = volumeNode.getAttribute("soundmute").toBool();
 
-	if(soundMute)
-		mGameData->getSoundPlayer().setSceneMute(true);
+	if (soundMute)
+		mSoundPlayer->setSceneMute(true);
 	else
-		mGameData->getSoundPlayer().setSceneMute(false);
+		mSoundPlayer->setSceneMute(false);
 }
 
 void XmlAudioParser::parseStartTheme(const Xml& audioNode)
@@ -37,13 +39,13 @@ void XmlAudioParser::parseStartTheme(const Xml& audioNode)
 
 	const Xml startThemeNode = audioNode.getChild("starttheme");
 	const std::string filepath = "music/" + startThemeNode.getAttribute("filename").toString();
-	mGameData->getMusicPlayer().playFromFile(filepath);
+	mMusicPlayer->playFromFile(filepath);
 }
 
 void XmlAudioParser::parseMusicStates(const Xml& audioNode)
 {
 	const auto musicStateNodes = audioNode.getChildren("musicstate");
-	auto& musicStateMachine = mGameData->getMusicPlayer().getMusicStateMachine();
+	auto& musicStateMachine = mMusicPlayer->getMusicStateMachine();
 
 	for(const auto& musicStateNode : musicStateNodes)
 	{

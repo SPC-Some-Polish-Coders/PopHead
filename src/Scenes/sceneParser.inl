@@ -26,7 +26,7 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);
 	parseMapObjects(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, cutSceneManager, gameData->getSceneManager());
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
-	parse<AudioParser>(gameData, sceneLinksNode, "audio");
+	parseAudio(sceneLinksNode, gameData->getSoundPlayer(), gameData->getMusicPlayer());
 	parseAmbientLight(sceneLinksNode);
 	parseArcadeMode(sceneLinksNode, systemsQueue, gui, musicPlayer);
 }
@@ -106,6 +106,18 @@ void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 			aiManager.setIsPlayerOnScene(true);
 		else
 			aiManager.setIsPlayerOnScene(false);
+	}
+}
+
+template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
+void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>::parseAudio(const Xml& sceneLinksNode, SoundPlayer& sound, MusicPlayer& music)
+{
+	const auto audioNode = sceneLinksNode.getChildren("audio");
+	if (audioNode.size() == 1)
+	{
+		const std::string audioFilePath = "scenes/audio/" + audioNode[0].getAttribute("filename").toString();
+		AudioParser audioParser;
+		audioParser.parseFile(sound, music, audioFilePath);
 	}
 }
 

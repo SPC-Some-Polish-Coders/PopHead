@@ -4,13 +4,14 @@
 
 namespace ph {
 
-class GameData;
 class Xml;
+class SoundPlayer;
+class MusicPlayer;
 
 class XmlAudioParser
 {
 public:
-	void parseFile(GameData* const gameData, const std::string& filePath);
+	void parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, const std::string& filePath);
 
 private:
 	void parseSoundMute(const Xml& audioNode);
@@ -18,7 +19,8 @@ private:
 	void parseMusicStates(const Xml& audioNode);
 
 private:
-	GameData* mGameData;
+	SoundPlayer* mSoundPlayer;
+	MusicPlayer* mMusicPlayer;
 };
 
 }
