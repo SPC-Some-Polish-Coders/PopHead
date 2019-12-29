@@ -263,6 +263,8 @@ namespace ph {
 
 	void TiledParser::loadPlayer(const Xml& playerNode) const
 	{
+		mHasLoadedPlayer = true;
+
 		auto player = mTemplatesStorage.createCopy("Player", mGameRegistry);
 		auto& playerBody = mGameRegistry.get<component::BodyRect>(player);
 		auto& playerCamera = mGameRegistry.get<component::Camera>(player);

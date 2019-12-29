@@ -70,7 +70,7 @@ namespace ph {
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;
-		bool mHasLoadedPlayer = false;
+		mutable bool mHasLoadedPlayer = false;
 	};
 
 }

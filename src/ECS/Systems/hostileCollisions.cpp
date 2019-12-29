@@ -3,6 +3,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph::system {
 
@@ -10,12 +11,13 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION();
 
-		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
+		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health, component::PushingVelocity>();
 		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();
 
 		for (auto player : playerView)
 		{
 			const auto& playerBody = playerView.get<component::BodyRect>(player);
+			auto& playerPushingVel = playerView.get<component::PushingVelocity>(player);
 
 			for (auto damageDealingEntitiy : enemiesView)
 			{
@@ -30,6 +32,8 @@ namespace ph::system {
 
 					const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
 					mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
+
+					playerPushingVel.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());
 				}
 				else
 					playerCollision.isCollision = false;

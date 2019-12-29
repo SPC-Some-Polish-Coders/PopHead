@@ -239,7 +239,8 @@ void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::e
 
 void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, false);
+	float pushForce = entityComponentNode.getAttribute("pushForce").toFloat();
+	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, pushForce, false);
 }
 
 void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
@@ -318,7 +319,7 @@ void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode,
 void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float mass = entityComponentNode.getAttribute("mass").toFloat();
-	mUsedRegistry->assign_or_replace<component::KinematicCollisionBody>(entity);
+	mUsedRegistry->assign_or_replace<component::KinematicCollisionBody>(entity, mass);
 }
 
 void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)

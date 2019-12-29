@@ -62,6 +62,7 @@ namespace ph::component {
 
 	struct CollisionWithPlayer
 	{
+		float pushForce;
 		bool isCollision;
 	};
 

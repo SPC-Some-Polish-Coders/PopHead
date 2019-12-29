@@ -15,7 +15,7 @@
   </entityTemplate>
 
   <entityTemplate name="Player">
-    <component name="KinematicCollisionBody" mass="10" />
+    <component name="KinematicCollisionBody" mass="3" />
     <component name="GunAttacker" bullets="300" isTryingToAttack="false" timeBeforeHiding="3" />
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="Player" />
@@ -34,9 +34,9 @@
 
   <entityTemplate name="Zombie">
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
-    <component name="KinematicCollisionBody" mass="10" />
+    <component name="KinematicCollisionBody" mass="5" />
     <component name="Damage" damageDealt="25" />
-    <component name="CollisionWithPlayer" />
+    <component name="CollisionWithPlayer" pushForce="3"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingVelocity" vel="0, 0" />
@@ -52,7 +52,7 @@
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="KinematicCollisionBody" mass="10" />
     <component name="Damage" damageDealt="25" />
-    <component name="CollisionWithPlayer" />
+    <component name="CollisionWithPlayer" pushForce="5.5"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingVelocity" vel="0, 0" />
