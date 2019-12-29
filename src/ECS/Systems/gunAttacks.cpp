@@ -69,7 +69,7 @@ void GunAttacks::handlePendingGunAttacks() const
 		if (playerGunAttack.isTryingToAttack)
 		{
 			playerGunAttack.isTryingToAttack = false;
-			if (!playerGunAttack.canAttack)
+			if (playerGunAttack.bullets <= 0)
 				return;
 
 			auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::BodyRect>();

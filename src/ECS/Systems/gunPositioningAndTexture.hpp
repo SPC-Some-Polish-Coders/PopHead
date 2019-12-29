@@ -15,7 +15,7 @@ public:
 	void update(float dt) override;
 
 private:
-	void updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack, bool canAttack) const;
+	void updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack) const;
 
 	void updateGunPosition(sf::Vector2f playerFaceDirection, const FloatRect& playerBody) const;
 	sf::Vector2f getGunSpriteFlipping(sf::Vector2f playerFaceDirection, sf::Vector2f gunSize) const;

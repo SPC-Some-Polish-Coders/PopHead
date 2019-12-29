@@ -166,7 +166,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" gunId="0"/>
+    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" gunId="0"/>
   </entityTemplate>
 
   <entityTemplate name="Shotgun">
@@ -174,7 +174,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" gunId="1"/>
+    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" gunId="1"/>
   </entityTemplate>
 
   <entityTemplate name="BaseballBat">

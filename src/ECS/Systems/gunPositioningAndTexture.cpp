@@ -17,12 +17,12 @@ namespace ph::system {
 		{
 			const auto& [playerFaceDirection, gunAttacker, playerBody] = playerView.get<component::FaceDirection, component::GunAttacker, component::BodyRect>(player);
 
-			updateTexture(dt, playerFaceDirection.direction, gunAttacker.isTryingToAttack, gunAttacker.canAttack);
+			updateTexture(dt, playerFaceDirection.direction, gunAttacker.isTryingToAttack);
 			updateGunPosition(playerFaceDirection.direction, playerBody.rect);
 		}
 	}
 
-	void GunPositioningAndTexture::updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack, bool canAttack) const
+	void GunPositioningAndTexture::updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack) const
 	{
 		auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
 		auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::TextureRect>();
@@ -38,7 +38,7 @@ namespace ph::system {
 				if (wantToAttack)
 				{
 					gunAttackerDetails.timeToHide = gunAttackerDetails.timeBeforeHiding;
-					if (canAttack)
+					if (gunAttackerDetails.bullets > 0)
 						offsetX -= 50;
 				}
 

@@ -38,10 +38,8 @@ namespace ph::component {
 
 	struct GunAttacker
 	{
-		float cooldownSinceLastShot;
 		unsigned bullets;
 		bool isTryingToAttack;
-		bool canAttack;
 		float timeBeforeHiding;
 		float timeToHide;
 	};
