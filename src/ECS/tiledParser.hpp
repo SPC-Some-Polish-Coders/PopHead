@@ -29,7 +29,6 @@ namespace ph {
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadNpc(const Xml& npcNode) const;
-		void loadSpawner(const Xml& spawnerNode) const;
 		void loadLootSpawner(const Xml& lootSpawnerNode) const;
 		void loadArcadeSpawner(const Xml& arcadeSpawnerNode) const;
 		void loadEntrance(const Xml& entranceNode) const;

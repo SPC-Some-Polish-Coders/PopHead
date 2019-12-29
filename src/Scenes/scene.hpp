@@ -31,6 +31,7 @@ public:
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
+	SystemsQueue& getSystemsQueue() { return mSystemsQueue; }
 
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus() const;

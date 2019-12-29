@@ -3,13 +3,15 @@
 #include "Logs/logs.hpp"
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
+#include "ECS/Systems/arcadeMode.hpp"
 
 namespace ph {
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
 SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	::SceneParser(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
-                  entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder)
+                  entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
+	              GUI& gui, MusicPlayer& musicPlayer)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
@@ -26,6 +28,7 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parse<AudioParser>(gameData, sceneLinksNode, "audio");
 	parseAmbientLight(sceneLinksNode);
+	parseArcadeMode(sceneLinksNode, systemsQueue, gui, musicPlayer);
 }
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
@@ -67,6 +70,14 @@ void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>::
 	const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
 	sf::Color color = ambientLightNode.getAttribute("color").toColor();
 	Renderer::setAmbientLightColor(color);
+}
+
+template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
+inline void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
+	::parseArcadeMode(const Xml& sceneLinksNode, SystemsQueue& systemsQueue, GUI& gui, MusicPlayer& musicPlayer)
+{
+	if(!sceneLinksNode.getChildren("arcadeMode").empty())
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(musicPlayer));
 }
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>

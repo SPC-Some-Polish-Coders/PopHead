@@ -6,6 +6,10 @@
 
 namespace ph::component {
 
+	struct ArcadeModeSpawner
+	{
+	};
+
 	struct AreaVelocityChangingEffect
 	{
 		float areaSpeedMultiplier;

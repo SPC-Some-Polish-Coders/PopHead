@@ -77,7 +77,6 @@ namespace ph {
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
 			else if (objectType == "CutSceneArea") loadCutSceneArea(gameObjectNode);
-			else if (objectType == "Spawner") loadSpawner(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Car") loadCar(gameObjectNode);
@@ -124,17 +123,6 @@ namespace ph {
 		loadHealthComponent(npcNode, npc);
 	}
 
-	void TiledParser::loadSpawner(const Xml& spawnerNode) const
-	{/*
-		auto spawner = std::make_unique<Spawner>(
-			mGameData, "spawner",
-			Cast::toObjectType(getProperty(spawnerNode, "spawnType").toString()),
-			sf::seconds(getProperty(spawnerNode, "spawnFrequency").toFloat()),*/
-
-		auto spawner = mTemplatesStorage.createCopy("Spawner", mGameRegistry);
-		loadPosition(spawnerNode, spawner);
-	}
-
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
 	{/*
 		const std::string lootTypeString = getProperty(lootSpawnerNode, "lootType").toString();
@@ -150,8 +138,8 @@ namespace ph {
 			lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
 			);*/
 
-		auto lootSpawner = mTemplatesStorage.createCopy("lootSpawner", mGameRegistry);
-		loadPosition(lootSpawnerNode, lootSpawner);
+		//auto lootSpawner = mTemplatesStorage.createCopy("lootSpawner", mGameRegistry);
+		//loadPosition(lootSpawnerNode, lootSpawner);
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
@@ -159,8 +147,8 @@ namespace ph {
 		auto arcadeSpawner = std::make_unique<ArcadeSpawner>(
 			mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),*/
 
-		auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
-		loadPosition(arcadeSpawnerNode, arcadeSpawner);
+		//auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
+		//loadPosition(arcadeSpawnerNode, arcadeSpawner);
 	}
 
 	void TiledParser::loadEntrance(const Xml& entranceNode) const

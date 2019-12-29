@@ -68,7 +68,8 @@ void SceneManager::replaceAction()
 		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
 			mGameData->getAIManager(), mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
 		SceneParser<XmlGuiParser, XmlMapParser, TiledParser, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake, mGameData->getTextures());
+			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(),
+				mFileOfSceneToMake, mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getMusicPlayer());
 
 		if (mGameData->getAIManager().isPlayerOnScene())
 		{
