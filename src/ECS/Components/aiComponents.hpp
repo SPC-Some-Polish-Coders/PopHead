@@ -12,5 +12,5 @@ namespace ph::component {
 		float timeFromStartingThisMove = 0.f;
 		float timeFromLastGrowl;
 	};
-
 }
+

@@ -3,7 +3,9 @@
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/audioComponents.hpp"
+#include "ECS/Components/animationComponents.hpp"
 #include "AI/aiManager.hpp"
+#include "Utilities/direction.hpp"
 #include "Utilities/random.hpp"
 #include "Utilities/profiling.hpp"
 #include "Logs/logs.hpp"
@@ -12,28 +14,17 @@ namespace {
 
 sf::Vector2f toDirectionVector(ph::Direction direction)
 {
-	constexpr float diagonal = 0.7f;
-
 	switch(direction)
 	{
-	case ph::Direction::east:
-		return sf::Vector2f(1.f, 0.f);
-	case ph::Direction::west:
-		return sf::Vector2f(-1.f, 0.f);
-	case ph::Direction::north:
-		return sf::Vector2f(0.f, -1.f);
-	case ph::Direction::south:
-		return sf::Vector2f(0.f, 1.f);
-	case ph::Direction::north_east:
-		return sf::Vector2f(diagonal, -diagonal);
-	case ph::Direction::north_west:
-		return sf::Vector2f(-diagonal, -diagonal);
-	case ph::Direction::south_east:
-		return sf::Vector2f(diagonal, diagonal);
-	case ph::Direction::south_west:
-		return sf::Vector2f(-diagonal, diagonal);
-	case ph::Direction::none:
-		return sf::Vector2f();
+	case ph::Direction::east: return PH_EAST;
+	case ph::Direction::west: return PH_WEST;
+	case ph::Direction::north: return PH_NORTH;
+	case ph::Direction::south: return PH_SOUTH;
+	case ph::Direction::north_east: return PH_NORTH_EAST;
+	case ph::Direction::north_west: return PH_NORTH_WEST;
+	case ph::Direction::south_east: return PH_SOUTH_EAST;
+	case ph::Direction::south_west: return PH_SOUTH_WEST;
+	case ph::Direction::none: return PH_NULL_DIRECTION;
 	default:
 		PH_UNEXPECTED_SITUATION("Not all directions were handled in switch");
 	}
@@ -53,11 +44,13 @@ void ZombieSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	const auto view = mRegistry.view<component::Zombie, component::BodyRect, component::Velocity>(entt::exclude<component::TimeToFadeOut>);
-	for(auto zombieEntity : view)
+	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::Velocity, component::AnimationData>
+		(entt::exclude<component::TimeToFadeOut>);
+	
+	for(auto zombieEntity : zombies)
 	{
-		auto& [zombie, velocity] = view.get<component::Zombie, component::Velocity>(zombieEntity);
-		const auto& body = view.get<component::BodyRect>(zombieEntity);
+		auto& [zombie, velocity, animationData] = zombies.get<component::Zombie, component::Velocity, component::AnimationData>(zombieEntity);
+		const auto& body = zombies.get<component::BodyRect>(zombieEntity);
 
 		// make sounds
 		zombie.timeFromLastGrowl += dt;
@@ -76,7 +69,7 @@ void ZombieSystem::update(float dt)
 			}
 		}
 
-		// move zombie
+		// move body 
 		zombie.timeFromStartingThisMove += dt;
 		if(zombie.pathMode.path.empty())
 		{
@@ -95,6 +88,35 @@ void ZombieSystem::update(float dt)
 
 		velocity.dx = 50.f * zombie.currentDirectionVector.x;
 		velocity.dy = 50.f * zombie.currentDirectionVector.y;
+
+		// update animation
+		if(zombie.currentDirectionVector == PH_NORTH_WEST) {
+			animationData.currentStateName = "leftUp";
+			animationData.isPlaying = true;
+		}
+		else if(zombie.currentDirectionVector == PH_NORTH_EAST) {
+			animationData.currentStateName = "rightUp";
+			animationData.isPlaying = true;
+		}
+		else if(zombie.currentDirectionVector == PH_WEST || zombie.currentDirectionVector == PH_SOUTH_WEST) {
+			animationData.currentStateName = "left";
+			animationData.isPlaying = true;
+		}
+		else if(zombie.currentDirectionVector == PH_EAST || zombie.currentDirectionVector == PH_SOUTH_EAST) {
+			animationData.currentStateName = "right";
+			animationData.isPlaying = true;
+		}
+		else if(zombie.currentDirectionVector == PH_NORTH) {
+			animationData.currentStateName = "up";
+			animationData.isPlaying = true;
+		}
+		else if(zombie.currentDirectionVector == PH_SOUTH) {
+			animationData.currentStateName = "down";
+			animationData.isPlaying = true;
+		}
+		else {
+			animationData.isPlaying = false;
+		}
 	}
 }
 
