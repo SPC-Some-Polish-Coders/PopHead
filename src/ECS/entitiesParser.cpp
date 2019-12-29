@@ -470,7 +470,8 @@ void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::en
 	float deflectionAngle = entityComponentNode.getAttribute("deflectionAngle").toFloat();
 	int damage = entityComponentNode.getAttribute("damage").toInt();
 	int numberOfBulletsShot = entityComponentNode.getAttribute("numberOfBullets").toInt();
-	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, minShotsInterval, range, deflectionAngle, damage, numberOfBulletsShot);
+	unsigned gunId = entityComponentNode.getAttribute("gunId").toUnsigned();
+	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, minShotsInterval, range, deflectionAngle, damage, numberOfBulletsShot, gunId);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)

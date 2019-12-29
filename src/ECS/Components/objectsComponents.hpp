@@ -52,6 +52,7 @@ namespace ph::component {
 		float deflectionAngle;
 		int damage;
 		int numberOfBullets;
+		unsigned gunId;
 	};
 
 	struct MeleeProperties
