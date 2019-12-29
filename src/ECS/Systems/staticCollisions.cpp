@@ -8,7 +8,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION();
 
-		auto staticObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>(entt::exclude<component::KinematicCollisionBody>);
+		auto staticObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>();
 		auto multiStaticCollisionObjects = mRegistry.view<component::MultiStaticCollisionBody>();
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
 		
