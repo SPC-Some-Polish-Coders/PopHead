@@ -96,17 +96,11 @@ sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& 
 {
 	if (playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
 		return sf::Vector2f(25.f * playerFaceDirection.x, 25.f);
-	else if (playerFaceDirection == PH_NORTH)
+	else if (playerFaceDirection == PH_NORTH || playerFaceDirection == PH_SOUTH)
+		return sf::Vector2f(25.f, 25.f * -playerFaceDirection.y);
+	else if (playerFaceDirection == PH_NORTH_EAST || playerFaceDirection == PH_SOUTH_EAST)
 		return sf::Vector2f(25.f, 25.f);
-	else if (playerFaceDirection == PH_SOUTH)
-		return sf::Vector2f(25.f, -25.f);
-	else if (playerFaceDirection == PH_NORTH_EAST)
-		return sf::Vector2f(25.f, 25.f);
-	else if (playerFaceDirection == PH_NORTH_WEST)
-		return sf::Vector2f(-25.f, 25.f);
-	else if (playerFaceDirection == PH_SOUTH_EAST)
-		return sf::Vector2f(25.f, 25.f);
-	else if (playerFaceDirection == PH_SOUTH_WEST)
+	else if (playerFaceDirection == PH_NORTH_WEST || playerFaceDirection == PH_SOUTH_WEST)
 		return sf::Vector2f(-25.f, 25.f);
 	else
 		return sf::Vector2f(0.f, 0.f);
