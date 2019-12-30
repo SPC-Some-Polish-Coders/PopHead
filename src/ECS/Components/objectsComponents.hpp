@@ -3,11 +3,19 @@
 #include "Utilities/rect.hpp"
 #include "Renderer/MinorRenderers/quadData.hpp"
 #include <vector>
+#include <array>
 
 namespace ph::component {
 
-	struct ArcadeModeSpawner
+	struct ArcadeSpawner
 	{
+		struct Wave
+		{
+			unsigned normalZombiesToSpawn;
+			unsigned slowZombiesToSpawn;
+		};
+		std::array<Wave, 10> waves;
+		float timeFromLastSpawn = 0.3f;
 	};
 
 	struct AreaVelocityChangingEffect

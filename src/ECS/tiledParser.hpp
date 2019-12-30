@@ -23,9 +23,7 @@ namespace ph {
 
 	private:
 		Xml findGameObjects(const Xml& mapFile) const;
-		
 		void loadObjects(const Xml& gameObjects) const;
-		void loadArcadeManager() const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadNpc(const Xml& npcNode) const;

@@ -1,19 +1,35 @@
 #include "arcadeMode.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "GUI/gui.hpp"
+#include "AI/aiManager.hpp"
+#include "ECS/entitiesTemplateStorage.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/animationComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/particleComponents.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph::system {
 
-ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, MusicPlayer& musicPlayer)
+ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, AIManager& aiManager, MusicPlayer& musicPlayer, EntitiesTemplateStorage& templateStorage)
 	:System(registry)
 	,mGui(gui)
+	,mAIManager(aiManager)
+	,mTemplateStorage(templateStorage)
 	,mMusicPlayer(musicPlayer)
 	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 {
+	sIsActive = true;
+	mAIManager.setAIMode(AIMode::zombieAlwaysLookForPlayer);
+}
+
+ArcadeMode::~ArcadeMode()
+{
+	sIsActive = false;
+	mAIManager.setAIMode(AIMode::normal);
 }
 
 void ArcadeMode::update(float dt)
@@ -54,7 +70,37 @@ void ArcadeMode::update(float dt)
 
 	// spawn enemies after new wave
 	if(mShouldSpawnEnemies) {
-		
+		auto spawners = mRegistry.view<component::ArcadeSpawner, component::BodyRect>();
+		spawners.each([dt, this](component::ArcadeSpawner& arcadeModeSpawner, const component::BodyRect& spawnerBody) 
+		{
+			arcadeModeSpawner.timeFromLastSpawn += dt;
+			if(arcadeModeSpawner.timeFromLastSpawn > 0.3f) 
+			{
+				const sf::Vector2f spawnerPos = spawnerBody.rect.getTopLeft();
+				auto& wave = arcadeModeSpawner.waves[mCurrentWave - 1];
+				if(wave.normalZombiesToSpawn > 0 && wave.slowZombiesToSpawn > 0) {
+					int ran = Random::generateNumber(0, 5);
+					if(ran == 0) {
+						createNormalZombie(spawnerPos);
+						--wave.normalZombiesToSpawn;
+					}
+					else {
+						createSlowZombie(spawnerPos);
+						--wave.slowZombiesToSpawn;
+					}
+				}
+				else if(wave.normalZombiesToSpawn > 0) {
+					createNormalZombie(spawnerPos);
+					--wave.normalZombiesToSpawn;
+				}
+				else if(wave.slowZombiesToSpawn > 0) {
+					createSlowZombie(spawnerPos);
+					--wave.slowZombiesToSpawn;
+				}
+				else
+					mShouldSpawnEnemies = false;
+			}
+		});
 	}
 
 	// update enemies counter
@@ -73,69 +119,8 @@ void ArcadeMode::update(float dt)
 void ArcadeMode::createNextWave()
 {
 	++mCurrentWave;
-	setNextWaveNumbers();
+	mShouldSpawnEnemies = true;
 	mIsBreakTime = false;
-}
-
-void ArcadeMode::setNextWaveNumbers()
-{
-	switch(mCurrentWave)
-	{
-		case 1: {
-			mSlowZombiesToSpawnPerSpawner = 2;
-			mNormalZombiesToSpawnPerSpawner = 0;
-		} break;
-
-		case 2: {
-			mSlowZombiesToSpawnPerSpawner = 3;
-			mNormalZombiesToSpawnPerSpawner = 1;
-		} break;
-
-		case 3: {
-			mSlowZombiesToSpawnPerSpawner = 5;
-			mNormalZombiesToSpawnPerSpawner = 1;
-		} break;
-
-		case 4: {
-			mSlowZombiesToSpawnPerSpawner = 3;
-			mNormalZombiesToSpawnPerSpawner = 3;
-		} break;
-
-		case 5: {
-			mSlowZombiesToSpawnPerSpawner = 2;
-			mNormalZombiesToSpawnPerSpawner = 4;
-		} break;
-
-		case 6: {
-			mSlowZombiesToSpawnPerSpawner = 4;
-			mNormalZombiesToSpawnPerSpawner = 4;
-		} break;
-
-		case 7: {
-			mSlowZombiesToSpawnPerSpawner = 7;
-			mNormalZombiesToSpawnPerSpawner = 3;
-		} break;
-
-		case 8: {
-			mSlowZombiesToSpawnPerSpawner = 4;
-			mNormalZombiesToSpawnPerSpawner = 6;
-		} break;
-
-		case 9: {
-			mSlowZombiesToSpawnPerSpawner = 8;
-			mNormalZombiesToSpawnPerSpawner = 7;
-		} break;
-
-		case 10: {
-			mSlowZombiesToSpawnPerSpawner = 10;
-			mNormalZombiesToSpawnPerSpawner = 10;
-		} break;
-
-		default: {
-			PH_EXIT_GAME("It's impossible that someone is that good! \nCritical error!");
-			break;
-		}
-	}
 }
 
 void ArcadeMode::startBreakTime()
@@ -199,6 +184,20 @@ int ArcadeMode::getNumberOfSpawners()
 		//if(gameObject->getName().find("arcadeSpawner") != std::string::npos)
 			//++counter;
 	return counter;
+}
+
+void ArcadeMode::createNormalZombie(sf::Vector2f position)
+{
+	auto zombie = mTemplateStorage.createCopy("Zombie", mRegistry);
+	auto& body = mRegistry.get<component::BodyRect>(zombie);
+	body.rect.setPosition(position);
+}
+
+void ArcadeMode::createSlowZombie(sf::Vector2f position)
+{
+	auto slowZombie = mTemplateStorage.createCopy("SlowZombie", mRegistry);
+	auto& body = mRegistry.get<component::BodyRect>(slowZombie);
+	body.rect.setPosition(position);
 }
 
 std::string ArcadeMode::addZero(int number)

@@ -125,7 +125,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"AnimationData",          	    &EntitiesParser::parseAnimationData},
 		{"ParticleEmitter",             &EntitiesParser::parseParticleEmitter},
 		{"MultiParticleEmitter",        &EntitiesParser::parseMultiParticleEmitter},
-		{"RenderChunk",                 &EntitiesParser::parseRenderChunk}
+		{"RenderChunk",                 &EntitiesParser::parseRenderChunk},
+		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -438,6 +439,11 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
+}
+
+void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

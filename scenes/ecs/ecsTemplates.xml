@@ -4,6 +4,11 @@
     <component name="Camera" priority="0" x="0" y="0" width="640" height="360" />
   </entityTemplate>
 
+  <entityTemplate name="ArcadeSpawner">
+    <component name="BodyRect" x="0" y="0" width="0" height="0"/>
+    <component name="ArcadeSpawner"/>
+  </entityTemplate>
+
   <entityTemplate name="MapChunk">
     <component name="RenderChunk" />
     <component name="MultiStaticCollisionBody" />

@@ -4,7 +4,9 @@
 
 namespace ph {
 	class GUI;
+	class AIManager;
 	class MusicPlayer;
+	class EntitiesTemplateStorage;
 }
 
 namespace ph::system {
@@ -12,26 +14,28 @@ namespace ph::system {
 class ArcadeMode : public System
 {
 public:
-	ArcadeMode(entt::registry&, GUI&, MusicPlayer&);
+	ArcadeMode(entt::registry&, GUI&, AIManager&, MusicPlayer&, EntitiesTemplateStorage&);
+	~ArcadeMode();
 
 	void update(float dt) override;
 
+	static bool isActive() { return sIsActive; }
+
 private:
 	void updateGuiCounters();
-
 	void createNextWave();
-
 	void startBreakTime();
 	void endBreakTime();
-
-	void setNextWaveNumbers();
-
 	std::string addZero(int number);
 	int getNumberOfSpawners();
+	void createNormalZombie(sf::Vector2f position);
+	void createSlowZombie(sf::Vector2f position);
 
 private:
 	GUI& mGui;
+	AIManager& mAIManager;
 	MusicPlayer& mMusicPlayer;
+	EntitiesTemplateStorage& mTemplateStorage;
 	sf::Clock mBreakClock;
 	float mTimeFromStart = 0.f;
 	float mTimeBeforeStartingFirstWave = 10.f;
@@ -47,7 +51,7 @@ private:
 	bool mHasWon = false;
 	bool mShouldSpawnEnemies = false;
 
-	inline static bool mIsActive = false;
+	inline static bool sIsActive = false;
 };
 
 }
