@@ -2,6 +2,7 @@
 
 #include "guiActionsParser.hpp"
 #include "sliderWidget.hpp"
+#include "Resources/resourceHolder.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <memory>
@@ -39,6 +40,8 @@ public:
 
 private:
 	GameData* mGameData;
+	GUI* mGui;
+	FontHolder* mFontHolder;
 	static std::unique_ptr<GuiActionsParser> mActionsParser;
 };
 
