@@ -94,8 +94,8 @@ void SceneManager::handleEvent(const Event& e)
 
 void SceneManager::update(sf::Time dt)
 {
-	if(mScene != nullptr)
-		mScene->update(dt);
+	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
+	mScene->update(dt);
 }
 
 void SceneManager::setGameData(GameData* const gameData)

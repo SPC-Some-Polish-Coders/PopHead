@@ -5,14 +5,18 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
+#include "Scenes/scene.hpp"
+#include "GUI/gui.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/profiling.hpp"
 #include <cmath>
 
 namespace ph::system {
 
-	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager)
+	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager, GUI& gui, Scene* scene)
 		:System(registry)
+		,mScene(scene)
+		,mGui(gui)
 		,mAIManager(aiManager)
 	{
 	}
@@ -44,13 +48,24 @@ namespace ph::system {
 
 	void PlayerMovementInput::onEvent(const ActionEvent& event)
 	{
-		if(event.mType == ActionEvent::Type::Pressed && event.mAction == "gunAttack")
+		if(event.mType == ActionEvent::Type::Pressed)
 		{
-			auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-			for (auto player : playerGunView)
+			if(event.mAction == "gunAttack") 
 			{
-				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-				playerGunAttack.isTryingToAttack = true;
+				auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
+				for (auto player : playerGunView) {
+					auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+					playerGunAttack.isTryingToAttack = true;
+				}
+			}
+			else if(event.mAction == "pauseScreen") 
+			{
+				auto players = mRegistry.view<component::Player>();
+				if(!players.empty()) {
+					const bool pause = mScene->getPause();
+					pause ? mGui.getInterface("pauseScreen")->hide() : mGui.getInterface("pauseScreen")->show();
+					mScene->setPause(!pause);
+				}
 			}
 		}
 	}

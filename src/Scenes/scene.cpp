@@ -48,7 +48,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager));
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
@@ -84,6 +84,9 @@ void Scene::handleEvent(const ActionEvent& event)
 
 void Scene::update(sf::Time dt)
 {
+	if(mPause)
+		return;
+
  	if(mCutSceneManager.isCutSceneActive())
 		mCutSceneManager.updateCutScene(dt);
 
