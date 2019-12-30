@@ -60,12 +60,12 @@ namespace ph::system {
 			}
 			else if(event.mAction == "pauseScreen") 
 			{
-				auto players = mRegistry.view<component::Player>();
-				if(!players.empty()) {
+				auto players = mRegistry.view<component::Player, component::Health>();
+				players.each([this](component::Player, component::Health) {
 					const bool pause = mScene->getPause();
-					pause ? mGui.getInterface("pauseScreen")->hide() : mGui.getInterface("pauseScreen")->show();
+					pause ? mGui.hideInterface("pauseScreen") : mGui.showInterface("pauseScreen");
 					mScene->setPause(!pause);
-				}
+				});
 			}
 		}
 	}

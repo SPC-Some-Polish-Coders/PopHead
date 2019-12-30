@@ -4,10 +4,17 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
+
+	DamageAndDeath::DamageAndDeath(entt::registry& registry, GUI& gui)
+		:System(registry)
+		,mGui(gui)
+	{
+	}
 
 	void DamageAndDeath::update(float dt)
 	{
@@ -127,6 +134,7 @@ namespace ph::system {
 					camera.camera = mRegistry.get<component::Camera>(entity).camera;
 					camera.priority = 2;
 					mRegistry.assign<component::Camera>(deathCameraEntity, camera);
+					mGui.showInterface("gameOverScreen");
 				}
 
 				auto& animation = mRegistry.get<component::AnimationData>(entity);
