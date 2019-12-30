@@ -448,13 +448,12 @@ void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::en
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
-	unsigned bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
-	bool isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
-	const float cooldown = 0.f;
-	bool canAttack = true;
-	float timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding").toFloat();
-	float timeToHide = 0.f;
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, cooldown, bullets, isTryingToAttack, canAttack, timeBeforeHiding, timeToHide);
+	component::GunAttacker gunAttacker;
+	gunAttacker.bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
+	gunAttacker.isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
+	gunAttacker.timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding").toFloat();
+	gunAttacker.timeToHide = 0.f;
+	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, gunAttacker);
 }
 
 void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
@@ -471,12 +470,12 @@ void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::
 void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath").toString();
-	float minShotsInterval = entityComponentNode.getAttribute("minShotsInterval").toFloat();
 	float range = entityComponentNode.getAttribute("range").toFloat();
 	float deflectionAngle = entityComponentNode.getAttribute("deflectionAngle").toFloat();
 	int damage = entityComponentNode.getAttribute("damage").toInt();
 	int numberOfBulletsShot = entityComponentNode.getAttribute("numberOfBullets").toInt();
-	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, minShotsInterval, range, deflectionAngle, damage, numberOfBulletsShot);
+	unsigned gunId = entityComponentNode.getAttribute("gunId").toUnsigned();
+	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, range, deflectionAngle, damage, numberOfBulletsShot, gunId);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)

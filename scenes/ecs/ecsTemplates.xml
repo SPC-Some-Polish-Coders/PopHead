@@ -32,7 +32,7 @@
     <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
-    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="10" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />
     <component name="MultiParticleEmitter" />
   </entityTemplate>
@@ -167,19 +167,19 @@
   </entityTemplate>
 
   <entityTemplate name="Pistol">
-    <component name="BodyRect" x="0.0" y="0.0" width="15" height="9" />
-    <component name="RenderQuad" textureFilepath="textures/others/pistol.png" z="94" />
-    <component name="TextureRect" x="0" y="0" width="7" height="14" />
+    <component name="BodyRect" x="0.0" y="0.0" width="50" height="50" />
+    <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
+    <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" minShotsInterval="0.3" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" />
+    <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" gunId="0"/>
   </entityTemplate>
 
   <entityTemplate name="Shotgun">
-    <component name="BodyRect" x="0.0" y="0.0" width="14" height="9" />
-    <component name="RenderQuad" textureFilepath="textures/others/shotgun.png" z="94" />
-    <component name="TextureRect" x="0" y="0" width="16" height="16" />
+    <component name="BodyRect" x="0.0" y="0.0" width="50" height="50" />
+    <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
+    <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
-    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" minShotsInterval="0.6" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" />
+    <component name="GunProperties" shotSoundFilepath="sounds/shotgunShot.ogg" range="175.0" deflectionAngle="12.0" damage="25" numberOfBullets="4" gunId="1"/>
   </entityTemplate>
 
   <entityTemplate name="BaseballBat">
