@@ -17,7 +17,7 @@ namespace ph::system {
 
 	private:
 		void handlePendingGunAttacks() const;
-		sf::Vector2f getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const;
+		sf::Vector2f getBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const;
 		void tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const;
 		std::vector<sf::Vector2f> performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const;
 		sf::Vector2f getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const;

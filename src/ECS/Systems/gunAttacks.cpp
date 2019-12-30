@@ -79,7 +79,7 @@ void GunAttacks::handlePendingGunAttacks() const
 				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
 				auto& playerFaceDirection = gunAttackerView.get<component::FaceDirection>(gunAttacker);
 
-				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
+				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getBulletStartingPosition(playerFaceDirection.direction);
 
 				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(), gunProperties.range, gunProperties.deflectionAngle);
 				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
@@ -92,11 +92,11 @@ void GunAttacks::handlePendingGunAttacks() const
 	}
 }
 
-sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const
+sf::Vector2f GunAttacks::getBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
 {
 	if (playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
 		return sf::Vector2f(25.f * playerFaceDirection.x, 25.f);
-	else if (playerFaceDirection == PH_NORTH || playerFaceDirection == PH_SOUTH)
+	if (playerFaceDirection == PH_NORTH || playerFaceDirection == PH_SOUTH)
 		return sf::Vector2f(25.f, 25.f * -playerFaceDirection.y);
 	else if (playerFaceDirection == PH_NORTH_EAST || playerFaceDirection == PH_SOUTH_EAST)
 		return sf::Vector2f(25.f, 25.f);
@@ -216,7 +216,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += deflectionFactor;
 		}
 	}
-	else if (playerFaceDirection == PH_EAST) // right
+	else if (playerFaceDirection == PH_EAST)
 	{
 		if (deflectionFactor < 0.f)
 		{
@@ -229,7 +229,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += deflectionFactor;
 		}
 	}
-	else if (playerFaceDirection == PH_SOUTH) //down
+	else if (playerFaceDirection == PH_SOUTH)
 		if (deflectionFactor < 0.f)
 		{
 			deflectedBulletDirection.x += -deflectionFactor;
@@ -240,7 +240,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.x += -deflectionFactor;
 			deflectedBulletDirection.y += -deflectionFactor;
 		}
-	else if (playerFaceDirection == PH_WEST) //left
+	else if (playerFaceDirection == PH_WEST)
 		if (deflectionFactor < 0.f)
 		{
 			deflectedBulletDirection.x += -deflectionFactor;
@@ -252,28 +252,28 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 			deflectedBulletDirection.y += -deflectionFactor;
 		}
 
-	else if (playerFaceDirection == PH_NORTH_WEST) // up-left
+	else if (playerFaceDirection == PH_NORTH_WEST)
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.y += -deflectionFactor;
 		else
 			deflectedBulletDirection.x += deflectionFactor;
 	}
-	else if (playerFaceDirection == PH_NORTH_EAST) // up-right
+	else if (playerFaceDirection == PH_NORTH_EAST)
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.x += deflectionFactor;
 		else
 			deflectedBulletDirection.y += deflectionFactor;
 	}
-	else if (playerFaceDirection == PH_SOUTH_WEST) //down-left
+	else if (playerFaceDirection == PH_SOUTH_WEST)
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.x += -deflectionFactor;
 		else
 			deflectedBulletDirection.y += -deflectionFactor;
 	}
-	else if (playerFaceDirection == PH_SOUTH_EAST) // down-right
+	else if (playerFaceDirection == PH_SOUTH_EAST)
 	{
 		if (deflectionFactor < 0.f)
 			deflectedBulletDirection.y += deflectionFactor;
