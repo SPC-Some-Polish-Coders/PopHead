@@ -39,6 +39,9 @@ void MeleeAttacks::update(float dt)
 				mIsAttackButtonPressed = false;
 				mStartWeaponRotation = getStartAttackRotation(faceDirection.direction);
 
+				// set melee weapon ahead or behind player 
+				renderQuad.z = faceDirection.direction.y >= 0.f ? 93 : 96;
+
 				// deal damage
 				FloatRect attackArea(
 					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
