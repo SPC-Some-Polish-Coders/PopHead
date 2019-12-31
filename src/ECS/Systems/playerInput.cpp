@@ -50,15 +50,8 @@ namespace ph::system {
 	{
 		if(event.mType == ActionEvent::Type::Pressed)
 		{
-			if(event.mAction == "gunAttack") 
-			{
-				auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-				for (auto player : playerGunView) {
-					auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-					playerGunAttack.isTryingToAttack = true;
-				}
-			}
-			else if(event.mAction == "pauseScreen") 
+			// TODO_states: Pause screen could be handled by states
+			if(event.mAction == "pauseScreen") 
 			{
 				auto players = mRegistry.view<component::Player, component::Health>();
 				players.each([this](component::Player, component::Health) {

@@ -48,6 +48,7 @@ Game::Game()
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
+	mWindow.setKeyRepeatEnabled(false);
 
 	ActionEventManager::init();
 }

@@ -26,7 +26,5 @@ namespace ph::system {
 
 		void createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
 		void handleLastingBullets() const;
-
-		void changeWeapon();
 	};
 }

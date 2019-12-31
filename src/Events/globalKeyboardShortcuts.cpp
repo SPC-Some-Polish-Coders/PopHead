@@ -20,6 +20,7 @@ void handleGlobalKeyboardShortcuts(sf::Window& window, GameCloser& gameCloser, c
 				Renderer::restart(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 			}
 			window.setVerticalSyncEnabled(true);
+			window.setKeyRepeatEnabled(false);
 		}
 	}
 
