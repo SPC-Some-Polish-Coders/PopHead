@@ -17,7 +17,6 @@ Interface::Interface(GameData* data)
 
 	mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getWindow());
 
-	//mSize = sf::Vector2u(300, 300);
 	mSize = mWindow->getSize();
 	mDefaultSize = mSize;
 	scale(sf::Vector2f(1, 1));
