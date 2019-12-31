@@ -149,32 +149,11 @@ setvolume sound 100
 ```
 
 ## Collision Debug commands
--------------------------
-### **`collisiondebug`** is **many-argumented** command which is generally associated with displaying collision debugging features:
-
-#### `turn` argument switches the mode of collision debug to turned off/on
-| **turn arguments** | **Describe** |
-| -----------: | ------------ |
-| `off` | argument turns off the collision debug |
-| `on` | argument turns on the collision debug |
-#### `color` argument changes color set of the collision debug
-| **color arguments** | **Describe** |
-| -----------: | ------------ |
-| `1` | argument sets first color set |
-| `2` | argument sets second color set |
-|  `3` | argument sets third color set |
-#### `display`argument changes type of highlighted objects
-| **display arguments** | **Describe** |
-| -----------: | ------------ |
-| `static` | argument highlights static objects |
-| `kinematic` | argument highlights kinematic objects |
-| `all` | argument highlights all objects |
-	
+------------------------- 
 #### Examples: 
 ```
-collisiondebug turn on
-collisiondebug color 3
-collisiondebug display static
+collisiondebug on
+collisiondebug off
 ```
 ## Player location commands
 -------------------------
@@ -214,7 +193,6 @@ m x 1500
 | `<height value>` | argument is a number which sets camera view height |
 | `<only one argument>` | if only one argument is given, second one implicitly gets its value |
 | `normal` | sets camera view size back to default value (640, 480); should be passed as a single argument |
-| `chunkdebug` | makes chunks render as for default camera view size; has to be passed as third argument; |
 #### Hint:
 Remember that default aspect ratio in PopHead is 4x3 so consider that using this command. Rather use ``view 2000 1500`` then ``view 2000``.
 #### Examples: 
@@ -222,22 +200,25 @@ Remember that default aspect ratio in PopHead is 4x3 so consider that using this
 view 2000 1500
 view 1000
 view normal
-view 1000 750 chunkdebug
 ```
 
-## Spawn commands
+## Lighting commands
 ------------------------
-### **`spawn`** is **many-argumented** command which spawns game object to given coordinates
-| **spawn arguments** | **Describe** |
+### **`light`** is **many-argumented** command which spawns game object to given coordinates
+| **arguments** | **Describe** |
 | -----------: | ------------ |
-| `<game object>` | argument which is one of the game objects |
-| `<X coordinate>` | argument is a number which sets the object on X axis |
-| `<Y coordinate>` | argument is a number which sets the object on Y axis |
+| `on` | turn on light sources |
+| `off` | turn off light sources |
+| `walls on` | turn on light walls rendering |
+| `walls off` | turn off light walls rendering |
+| `rays on` | turn on rays rendering |
+| `rays off` | turn off rays rendering |
 
 #### Examples: 
 ```
-spawn npc 200 250
-spawn zombie 500
+light on
+light walls on
+light rays off
 ```
 
 ### **`give`** is **many-argumented** command which gives the player specified item

@@ -29,7 +29,6 @@ void CommandInterpreter::init()
 	mCommandsMap["help"] =				&CommandInterpreter::executeHelp;
 	mCommandsMap["clear"] =				&CommandInterpreter::executeClear;
 	mCommandsMap["view"] =				&CommandInterpreter::executeView;
-	mCommandsMap["spawn"] =				&CommandInterpreter::executeSpawn;
 	mCommandsMap["gotoscene"] =			&CommandInterpreter::executeGotoScene;
 	mCommandsMap["light"] =				&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =					&CommandInterpreter::executeMove;
@@ -109,10 +108,6 @@ void CommandInterpreter::executeGotoScene() const
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
 	mGameData->getSceneManager().replaceScene(scenePath);
-}
-
-void CommandInterpreter::executeSpawn() const
-{
 }
 
 void CommandInterpreter::executeClear() const
