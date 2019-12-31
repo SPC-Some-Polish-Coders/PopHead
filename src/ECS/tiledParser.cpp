@@ -4,6 +4,7 @@
 #include "Components/charactersComponents.hpp"
 #include "Components/graphicsComponents.hpp"
 #include "Components/objectsComponents.hpp"
+#include "Components/itemComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -191,21 +192,21 @@ namespace ph {
 	}
 
 	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const
-	{/*
-		const std::string areaName = getProperty(activateAreaNode, "areaName").toString();*/
+	{
+		//const std::string areaName = getProperty(activateAreaNode, "areaName").toString();
 
-		auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
+		/*auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
 		loadPosition(activateAreaNode, activateArea);
-		loadSize(activateAreaNode, activateArea);
+		loadSize(activateAreaNode, activateArea);*/
 	}
 
 	void TiledParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
 	{/*
 		const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();*/
 
-		auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
-		loadPosition(cutSceneAreaNode, cutSceneArea);
-		loadSize(cutSceneAreaNode, cutSceneArea);
+		//auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
+		//loadPosition(cutSceneAreaNode, cutSceneArea);
+		//loadSize(cutSceneAreaNode, cutSceneArea);
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
@@ -237,9 +238,9 @@ namespace ph {
 			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat())
 			);*/
 
-		auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
-		loadPosition(carNode, car);
-		loadSize(carNode, car);
+		//auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
+		//loadPosition(carNode, car);
+		//loadSize(carNode, car);
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
@@ -337,10 +338,11 @@ namespace ph {
 
 	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const
 	{
-		// TODO: Finish it
-
-		auto bulletItem = mTemplatesStorage.createCopy("BulletBox", mGameRegistry);
-		loadPosition(bulletItemNode, bulletItem);
+		auto bulletBoxEntity = mTemplatesStorage.createCopy("BulletBox", mGameRegistry);
+		loadPosition(bulletItemNode, bulletBoxEntity);
+		auto& bullets= mGameRegistry.get<component::Bullets>(bulletBoxEntity);
+		bullets.numOfPistolBullets = getProperty(bulletItemNode, "numOfPistolBullets").toInt();
+		bullets.numOfShotgunBullets = getProperty(bulletItemNode, "numOfShotgunBullets").toInt();
 	}
 
 	void TiledParser::loadMedkit(const Xml& medkitItemNode) const

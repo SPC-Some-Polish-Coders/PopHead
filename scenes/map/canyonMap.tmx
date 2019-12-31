@@ -856,148 +856,7 @@
   <object id="69" type="Zombie" x="2400.67" y="851.664">
    <point/>
   </object>
-  <object id="81" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="82" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="83" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="84" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="85" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="86" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="87" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="88" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="89" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="90" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="91" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="92" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="93" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="94" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="95" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="96" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="97" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="98" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="99" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="100" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="101" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="102" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="103" type="BulletItem" x="520" y="243">
-   <point/>
-  </object>
-  <object id="104" type="BulletItem" x="533" y="228.25">
-   <point/>
-  </object>
-  <object id="105" type="BulletItem" x="530" y="232.25">
-   <point/>
-  </object>
-  <object id="106" type="BulletItem" x="524.25" y="234.75">
-   <point/>
-  </object>
-  <object id="107" type="BulletItem" x="533.25" y="229.75">
-   <point/>
-  </object>
-  <object id="108" type="BulletItem" x="513" y="246.25">
-   <point/>
-  </object>
-  <object id="109" type="BulletItem" x="506.75" y="237">
-   <point/>
-  </object>
-  <object id="110" type="BulletItem" x="537" y="235.75">
-   <point/>
-  </object>
-  <object id="111" type="BulletItem" x="537.25" y="230.25">
-   <point/>
-  </object>
-  <object id="112" type="BulletItem" x="513.25" y="226.5">
-   <point/>
-  </object>
-  <object id="113" type="BulletItem" x="521.25" y="222.75">
-   <point/>
-  </object>
-  <object id="114" type="BulletItem" x="508.25" y="220.25">
-   <point/>
-  </object>
-  <object id="115" type="BulletItem" x="531" y="238.5">
-   <point/>
-  </object>
-  <object id="116" type="BulletItem" x="544" y="252">
-   <point/>
-  </object>
-  <object id="117" type="BulletItem" x="532" y="250.25">
-   <point/>
-  </object>
-  <object id="118" type="BulletItem" x="536.75" y="225.25">
-   <point/>
-  </object>
-  <object id="119" type="BulletItem" x="503.75" y="248.25">
-   <point/>
-  </object>
-  <object id="120" type="BulletItem" x="535.083" y="231.083">
-   <point/>
-  </object>
-  <object id="121" type="BulletItem" x="541.25" y="242.25">
-   <point/>
-  </object>
-  <object id="123" type="BulletItem" x="500.5" y="242.5">
-   <point/>
-  </object>
-  <object id="124" type="BulletItem" x="545" y="243.25">
-   <point/>
-  </object>
-  <object id="125" type="BulletItem" x="500.5" y="242.5">
-   <point/>
-  </object>
-  <object id="143" type="BulletItem" x="513" y="246.25">
-   <point/>
-  </object>
-  <object id="144" type="BulletItem" x="513" y="246.25">
-   <point/>
-  </object>
-  <object id="145" type="BulletItem" x="513" y="246.25">
-   <point/>
-  </object>
-  <object id="146" type="Zombie" x="2397.5" y="747.167">
+    <object id="146" type="Zombie" x="2397.5" y="747.167">
    <point/>
   </object>
   <object id="148" type="Zombie" x="2459" y="842">
@@ -1009,40 +868,7 @@
   <object id="151" type="Zombie" x="1666.67" y="385.666">
    <point/>
   </object>
-  <object id="155" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="156" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="157" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="158" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="159" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="160" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="161" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="162" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="163" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="164" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="165" type="BulletItem" x="1573.33" y="689.333">
-   <point/>
-  </object>
-  <object id="173" type="Medkit" x="1560" y="723">
+    <object id="173" type="Medkit" x="1560" y="723">
    <point/>
   </object>
   <object id="174" type="Medkit" x="475.667" y="245">
@@ -1063,28 +889,7 @@
   <object id="183" type="Zombie" x="1153.17" y="1066.67">
    <point/>
   </object>
-  <object id="185" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="186" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="187" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="188" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="189" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="190" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="191" type="BulletItem" x="1165.67" y="815">
-   <point/>
-  </object>
-  <object id="192" type="Medkit" x="1179.33" y="752.333">
+    <object id="192" type="Medkit" x="1179.33" y="752.333">
    <point/>
   </object>
   <object id="193" type="Zombie" x="1993.34" y="651.667">

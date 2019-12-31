@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="170" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="53" nextobjectid="502">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="170" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="53" nextobjectid="504">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -455,9 +455,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,138,138,0,0,138,138,138,327,328,199,200,135,136,199,200,135,136,260,199,200,263,264,0,0,0,0,0,0,39,0,0,0,65,66,66,67,68,0,0,0,0,0,0,0,0,0,295,296,225,226,295,296,295,296,359,360,322,231,232,226,231,232,359,360,359,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,0,0,196,359,360,231,232,167,168,231,232,167,168,292,231,232,295,296,0,0,0,261,0,0,0,0,0,0,33,66,34,35,36,0,0,0,0,0,0,0,0,0,0,263,264,135,136,199,200,263,264,327,328,135,136,193,327,328,327,328,327,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,0,0,228,263,264,263,264,263,264,327,328,263,264,199,200,135,136,225,226,289,290,293,0,0,0,0,0,0,65,66,66,35,68,0,0,0,0,0,0,0,0,0,0,295,296,167,168,231,232,295,296,359,360,167,168,225,359,360,359,360,359,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,327,328,196,295,296,295,296,295,296,359,360,295,296,231,232,167,168,257,258,225,226,199,200,196,327,328,322,0,33,66,34,35,36,0,0,0,0,199,200,263,264,135,136,196,199,200,263,264,135,136,263,264,130,199,200,132,327,328,327,328,327,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,359,360,228,263,264,327,328,199,200,135,136,199,200,263,264,199,200,225,353,354,258,231,232,228,359,360,199,200,33,66,34,35,68,0,199,200,0,231,232,295,296,167,168,228,231,232,295,296,167,168,295,296,322,231,232,164,359,360,359,360,359,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,226,225,225,226,226,295,296,359,360,231,232,167,168,231,232,295,296,231,232,257,257,258,322,225,226,322,257,258,231,232,65,66,66,35,36,0,231,232,0,353,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,327,328,196,295,296,295,296,295,296,359,360,295,296,231,232,167,168,257,258,225,226,225,226,0,0,0,322,0,33,66,34,35,36,0,0,0,0,199,200,263,264,135,136,196,199,200,263,264,135,136,263,264,130,199,200,132,327,328,327,328,327,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,0,0,359,360,228,263,264,327,328,199,200,135,136,199,200,263,264,199,200,225,353,354,258,199,200,196,327,328,199,200,33,66,34,35,68,0,199,200,0,231,232,295,296,167,168,228,231,232,295,296,167,168,295,296,322,231,232,164,359,360,359,360,359,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,138,138,138,138,138,138,0,0,226,225,225,226,226,295,296,359,360,231,232,167,168,231,232,295,296,231,232,257,257,258,130,231,232,228,359,360,231,232,65,66,66,35,36,0,231,232,0,353,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65,66,67,66,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65,66,67,66,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,65,66,67,66,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -652,15 +652,6 @@
     <property name="areaName" value="closeGate"/>
    </properties>
   </object>
-  <object id="167" name="BulletItem" type="BulletItem" x="1461.83" y="898.17">
-   <point/>
-  </object>
-  <object id="168" name="BulletItem" type="BulletItem" x="2017.33" y="808.333">
-   <point/>
-  </object>
-  <object id="170" name="BulletItem" type="BulletItem" x="865" y="572.834">
-   <point/>
-  </object>
   <object id="171" name="ActivateArea" type="ActivateArea" x="1842.75" y="654" width="106.5" height="61.5">
    <properties>
     <property name="areaName" value="openGate"/>
@@ -677,12 +668,6 @@
    </properties>
   </object>
   <object id="209" name="SlowZombie" type="SlowZombie" x="1399.33" y="508.166">
-   <point/>
-  </object>
-  <object id="211" name="BulletItem" type="BulletItem" x="893.666" y="556.667">
-   <point/>
-  </object>
-  <object id="212" name="BulletItem" type="BulletItem" x="898.666" y="604.834">
    <point/>
   </object>
   <object id="213" name="SlowZombie" type="SlowZombie" x="1301" y="798">
@@ -718,13 +703,7 @@
   <object id="227" name="SlowZombie" type="SlowZombie" x="1844.67" y="848.333">
    <point/>
   </object>
-  <object id="228" name="BulletItem" type="BulletItem" x="870.666" y="612.667">
-   <point/>
-  </object>
   <object id="230" type="Medkit" x="1700" y="573.5">
-   <point/>
-  </object>
-  <object id="232" name="BulletItem" type="BulletItem" x="1750.66" y="611.5">
    <point/>
   </object>
   <object id="237" name="SlowZombie" type="SlowZombie" x="1703.17" y="1253">
@@ -751,25 +730,10 @@
   <object id="244" name="SlowZombie" type="SlowZombie" x="1873.83" y="1151">
    <point/>
   </object>
-  <object id="245" name="BulletItem" type="BulletItem" x="1771.66" y="610">
-   <point/>
-  </object>
-  <object id="246" name="BulletItem" type="BulletItem" x="1794.66" y="610.5">
-   <point/>
-  </object>
-  <object id="247" name="BulletItem" type="BulletItem" x="1809.16" y="610">
-   <point/>
-  </object>
-  <object id="248" name="BulletItem" type="BulletItem" x="1809.16" y="610">
-   <point/>
-  </object>
   <object id="249" name="CutSceneArea" type="CutSceneArea" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
    <properties>
     <property name="cutSceneName" value="movementControlsGuide"/>
    </properties>
-  </object>
-  <object id="250" name="BulletItem" type="BulletItem" x="1461.83" y="920.837">
-   <point/>
   </object>
   <object id="253" name="SlowZombie" type="SlowZombie" x="2307.16" y="1168.17">
    <point/>
@@ -874,168 +838,6 @@
    <point/>
   </object>
   <object id="287" type="Zombie" x="424.667" y="1157.67">
-   <point/>
-  </object>
-  <object id="288" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="289" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="290" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="291" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="292" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="293" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="294" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="295" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="296" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="297" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="298" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="299" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="300" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="301" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="302" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="303" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="304" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="305" type="BulletItem" x="58.6667" y="1185.33">
-   <point/>
-  </object>
-  <object id="306" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="307" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="308" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="309" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="310" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="311" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="312" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="313" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="314" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="315" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="316" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="317" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="318" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="319" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="320" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="321" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="322" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="323" type="BulletItem" x="253.167" y="1369.67">
-   <point/>
-  </object>
-  <object id="324" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="325" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="326" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="327" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="328" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="329" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="330" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="331" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="332" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="333" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="334" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="335" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="336" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="337" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="338" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="339" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="340" type="BulletItem" x="257.667" y="940.333">
-   <point/>
-  </object>
-  <object id="341" type="BulletItem" x="257.667" y="940.333">
    <point/>
   </object>
   <object id="360" type="Zombie" x="459.583" y="1150.83">
@@ -1152,202 +954,17 @@
   <object id="434" type="Medkit" x="2677.33" y="1176.33">
    <point/>
   </object>
-  <object id="435" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="436" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="437" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="438" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="439" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="440" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="441" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="442" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="443" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="444" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="445" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="446" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="447" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="448" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="449" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="450" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="451" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="452" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="453" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="454" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="455" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="456" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="457" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="458" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="459" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="460" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="461" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="462" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="463" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="464" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="465" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="466" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="467" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="468" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="469" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="470" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="471" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="472" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="473" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="474" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="475" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="476" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="477" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="478" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="479" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="480" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="481" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="482" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="483" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="484" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="485" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="486" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="487" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="488" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="489" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="490" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="491" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="492" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="493" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="494" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="495" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="496" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="497" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="498" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
-  <object id="499" type="BulletItem" x="2640.67" y="1174">
-   <point/>
-  </object>
   <object id="500" name="SlowZombie" type="SlowZombie" x="2240.5" y="1191.5">
+   <point/>
+  </object>
+  <object id="502" type="BulletBox" x="1397.25" y="1002.75">
+   <point/>
+  </object>
+  <object id="503" type="BulletBox" x="1812.5" y="473.5">
+   <properties>
+    <property name="numOfPistolBullets" type="int" value="50"/>
+    <property name="numOfShotgunBullets" type="int" value="30"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

@@ -25,7 +25,10 @@
  <objecttype name="Bilbord" color="#550000">
   <property name="isLying" type="bool" default="false"/>
  </objecttype>
- <objecttype name="BulletItem" color="#00aaff"/>
+ <objecttype name="BulletBox" color="#e9ff1d">
+  <property name="numOfPistolBullets" type="int" default="30"/>
+  <property name="numOfShotgunBullets" type="int" default="0"/>
+ </objecttype>
  <objecttype name="Camera" color="#55ffff">
   <property name="isValid" type="bool" default="false"/>
   <property name="priority" type="int" default="0"/>
