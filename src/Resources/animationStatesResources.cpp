@@ -21,10 +21,10 @@ void loadAnimationStatesFromFile(const std::string& filepath)
 	{
 		StateData state;
 		state.startFrame = IntRect(
-			data.getAttribute("startFrameX").toInt(),
-			data.getAttribute("startFrameY").toInt(),
-			data.getAttribute("startFrameWidth").toInt(),
-			data.getAttribute("startFrameHeight").toInt()
+			data.getAttribute("startFrameX").toUnsigned(),
+			data.getAttribute("startFrameY").toUnsigned(),
+			data.getAttribute("startFrameWidth").toUnsigned(),
+			data.getAttribute("startFrameHeight").toUnsigned()
 		);
 		state.frameCount = data.getAttribute("frameCount").toUnsigned();
 		const std::string stateName = data.getAttribute("name").toString();

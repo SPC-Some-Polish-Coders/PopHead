@@ -46,7 +46,7 @@ private:
 	void parseLever(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLeverListener(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
-	void parseBullet(const Xml& entityComponentNode, entt::entity& entity);
+	void parseBullets(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity);
@@ -60,6 +60,8 @@ private:
 	void parseZombie(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 	void parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity);
+	void parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity);
+	void parseBulletBox(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

@@ -7,6 +7,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 #include "ECS/Systems/collisionDebug.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include <entt/entt.hpp>
@@ -158,9 +159,10 @@ void CommandInterpreter::executeGive() const
 	if (commandContains("bullet"))
 	{
 		int numberOfItems = static_cast<int>(getVolumeFromCommand());
-		auto view = mSceneRegistry->view<component::GunAttacker>();
-		view.each([numberOfItems](component::GunAttacker& gunAttacker) {
-			gunAttacker.bullets += numberOfItems;
+		auto view = mSceneRegistry->view<component::Player, component::Bullets>();
+		view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
+			bullets.numOfPistolBullets += numberOfItems;
+			bullets.numOfShotgunBullets += numberOfItems;
 		});
 	}
 	else

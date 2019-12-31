@@ -4,21 +4,11 @@
 
 namespace ph::system {
 
-	class PickupMedkit : public System
+	class PickupItems : public System
 	{
 	public:
 		using System::System;
 
 		void update(float dt) override;
-	};
-
-	class PickupBullet : public System
-	{
-	public:
-		using System::System;
-
-		void update(float dt) override;
-
-	
 	};
 }

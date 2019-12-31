@@ -3,6 +3,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/direction.hpp"
 
@@ -24,11 +25,11 @@ namespace ph::system {
 
 	void GunPositioningAndTexture::updateTexture(float dt, sf::Vector2f playerFaceDirection, bool wantToAttack) const
 	{
-		auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
+		auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker, component::Bullets>();
 		auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::TextureRect>();
 		for (auto gunAttacker : gunAttackerView)
 		{
-			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+			auto& [gunAttackerDetails, playerBullets] = gunAttackerView.get<component::GunAttacker, component::Bullets>(gunAttacker);
 			for (auto gun : gunView)
 			{
 				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);
@@ -38,7 +39,8 @@ namespace ph::system {
 				if (wantToAttack)
 				{
 					gunAttackerDetails.timeToHide = gunAttackerDetails.timeBeforeHiding;
-					if (gunAttackerDetails.bullets > 0)
+					if ((gunProperties.type == component::GunProperties::Type::Pistol && playerBullets.numOfPistolBullets > 0) ||
+					    (gunProperties.type == component::GunProperties::Type::Shotgun && playerBullets.numOfShotgunBullets > 0)) 
 						offsetX -= 50;
 				}
 

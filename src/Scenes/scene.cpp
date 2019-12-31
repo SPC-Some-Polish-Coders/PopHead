@@ -52,8 +52,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::PickupBullet>();
-	mSystemsQueue.appendSystem<system::PickupMedkit>();
+	mSystemsQueue.appendSystem<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::CollisionDebug>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();

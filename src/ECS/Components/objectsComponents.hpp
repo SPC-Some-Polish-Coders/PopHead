@@ -18,6 +18,12 @@ namespace ph::component {
 		float timeFromLastSpawn = 0.3f;
 	};
 
+	struct LootSpawner
+	{
+		enum LootType { Bullets, Medkit };
+		LootType type;
+	};
+
 	struct AreaVelocityChangingEffect
 	{
 		float areaSpeedMultiplier;
@@ -60,6 +66,9 @@ namespace ph::component {
 		int damage;
 		int numberOfBullets;
 		unsigned gunId;
+
+		enum class Type { Pistol, Shotgun };
+		Type type;
 	};
 
 	struct MeleeProperties

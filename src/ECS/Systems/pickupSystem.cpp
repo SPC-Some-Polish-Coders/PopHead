@@ -6,57 +6,40 @@
 
 namespace ph::system {
 
-	void PickupMedkit::update(float dt)
+	void PickupItems::update(float dt)
 	{
 		PH_PROFILE_FUNCTION();
 
-		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health>();
-		auto itemView = mRegistry.view<component::Medkit, component::BodyRect>();
+		auto players = mRegistry.view<component::Player, component::BodyRect, component::Health, component::Bullets>();
+		auto medkits = mRegistry.view<component::Medkit, component::BodyRect>();
+		auto bulletBoxes = mRegistry.view<component::BulletBox, component::Bullets, component::BodyRect>();
 
-		for (auto player : playerView)
+		for (auto player : players)
 		{
-			const auto& playerBody  = playerView.get<component::BodyRect>(player);
-			auto& playerHealth = playerView.get<component::Health>(player);
+			const auto& playerBody  = players.get<component::BodyRect>(player);
+			auto& [playerHealth, playerBullets] = players.get<component::Health, component::Bullets>(player);
 			
-			for (auto item : itemView)
+			for (auto medkitEntity : medkits)
 			{
-				const auto& itemBody = itemView.get<component::BodyRect>(item);
-				const auto& medkitMed = itemView.get<component::Medkit>(item);
+				const auto& [medkit, medkitBody] = medkits.get<component::Medkit, component::BodyRect>(medkitEntity);
 
-				if (playerBody.rect.doPositiveRectsIntersect(itemBody.rect))
-				{
-					if (playerHealth.healthPoints + medkitMed.addHealthPoints < playerHealth.maxHealthPoints)
-						playerHealth.healthPoints += medkitMed.addHealthPoints;
+				if (playerBody.rect.doPositiveRectsIntersect(medkitBody.rect)) {
+					if (playerHealth.healthPoints + medkit.addHealthPoints < playerHealth.maxHealthPoints)
+						playerHealth.healthPoints += medkit.addHealthPoints;
 					else
 						playerHealth.healthPoints = playerHealth.maxHealthPoints;
-
-					mRegistry.assign<component::TaggedToDestroy>(item);
+					mRegistry.assign<component::TaggedToDestroy>(medkitEntity);
 				}
 			}
-		}
-	}
 
-	void PickupBullet::update(float dt)
-	{
-		PH_PROFILE_FUNCTION();
-
-		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::GunAttacker>();
-		auto itemView = mRegistry.view<component::Bullet, component::BodyRect>();
-
-		for (auto player : playerView)
-		{
-			const auto& playerBody = playerView.get<component::BodyRect>(player);
-			auto& playerBullets = playerView.get<component::GunAttacker>(player);
-
-			for (auto item : itemView)
+			for (auto bulletBoxEntity : bulletBoxes)
 			{
-				const auto& itemBody = itemView.get<component::BodyRect>(item);
-				const auto& bulletsToAdd = itemView.get<component::Bullet>(item);
+				const auto& [bulletBoxBullets, bulletBoxBody] = bulletBoxes.get<component::Bullets, component::BodyRect>(bulletBoxEntity);
 
-				if (playerBody.rect.doPositiveRectsIntersect(itemBody.rect))
-				{
-					playerBullets.bullets += bulletsToAdd.numOfBullets;
-					mRegistry.assign<component::TaggedToDestroy>(item);
+				if (playerBody.rect.doPositiveRectsIntersect(bulletBoxBody.rect)) {
+					playerBullets.numOfPistolBullets += bulletBoxBullets.numOfPistolBullets;
+					playerBullets.numOfShotgunBullets += bulletBoxBullets.numOfShotgunBullets;
+					mRegistry.assign<component::TaggedToDestroy>(bulletBoxEntity);
 				}
 			}
 		}

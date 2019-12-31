@@ -10,6 +10,7 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 #include "Utilities/random.hpp"
 
 namespace ph::system {
@@ -38,12 +39,13 @@ void ArcadeMode::update(float dt)
 
 	updateGuiCounters();
 
-	// TODO: Why can't it be in constructor
+	// TODO: Can't it be in constructor
 	// init bullets
 	if(!mMadeInit) {
-		auto players = mRegistry.view<component::Player, component::GunAttacker>();
-		players.each([](const component::Player, component::GunAttacker& gunAttacker) {
-			gunAttacker.bullets = 350;
+		auto players = mRegistry.view<component::Player, component::Bullets>();
+		players.each([](const component::Player, component::Bullets& bullets) {
+			bullets.numOfPistolBullets = 350;
+			bullets.numOfShotgunBullets = 50;
 		});
 		mMadeInit = true;
 	}
@@ -125,20 +127,31 @@ void ArcadeMode::createNextWave()
 
 void ArcadeMode::startBreakTime()
 {
-	// spawn items
-	//auto* invisibleObjects = mRoot->getChild("LAYER_invisibleObjects");
-	//auto& gameObjects = invisibleObjects->getChildren();
-	//for(const auto& gameObject : gameObjects)
-	//	if(gameObject->getName().find("lootSpawner") != std::string::npos)
-	//		dynamic_cast<LootSpawner*>(gameObject.get())->spawnLoot();
+	auto lootSpawners = mRegistry.view<component::LootSpawner, component::BodyRect>();
+	lootSpawners.each([this](const component::LootSpawner lootSpawner, const component::BodyRect& lootSpawnerBody) 
+	{
+		switch(lootSpawner.type) 
+		{
+			case component::LootSpawner::Medkit: {
+				auto medkitEntity = mTemplateStorage.createCopy("Medkit", mRegistry);
+				auto& body = mRegistry.get<component::BodyRect>(medkitEntity);
+				body.rect.setPosition(lootSpawnerBody.rect.getTopLeft());
+			} break;
+			case component::LootSpawner::Bullets: {
+				auto bulletBoxEntity = mTemplateStorage.createCopy("BulletBox", mRegistry);
+				auto& [bullets, body] = mRegistry.get<component::Bullets, component::BodyRect>(bulletBoxEntity);
+				body.rect.setPosition(lootSpawnerBody.rect.getTopLeft());
+				bullets.numOfPistolBullets = 10 * Random::generateNumber(2, 10);
+				bullets.numOfShotgunBullets = 10 * Random::generateNumber(2, 10);
+			} break;
+		}
+	});
 
 	mIsBreakTime = true;
 	mBreakClock.restart();
 
-	auto* nextWaveInfo = mGui.getInterface("nextWaveInfo");
-	nextWaveInfo->show();
-	auto* arcadeInterface = mGui.getInterface("arcadeCounters");
-	arcadeInterface->hide();
+	mGui.showInterface("nextWaveInfo");
+	mGui.hideInterface("arcadeCounters");
 
 	mMusicPlayer.playFromMusicState("break");
 }

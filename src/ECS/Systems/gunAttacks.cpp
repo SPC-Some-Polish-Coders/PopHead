@@ -6,6 +6,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 #include "Events/actionEventManager.hpp"
 #include "Renderer/renderer.hpp"
 
@@ -44,8 +45,7 @@ void GunAttacks::changeWeapon()
 		mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
 		mRegistry.remove<component::CurrentGun>(currentGun);
 
-		for (auto otherGun : otherGunsView)
-		{
+		for (auto otherGun : otherGunsView) {
 			const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
 			if (gunProperties.gunId != currentGunProperties.gunId)
 				mRegistry.assign<component::CurrentGun>(otherGun);
@@ -53,31 +53,31 @@ void GunAttacks::changeWeapon()
 	}
 
 	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
-	gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker)
-	{
+	gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
 		gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
 	});
 }
 
 void GunAttacks::handlePendingGunAttacks() const
 {
-	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker, component::FaceDirection, component::BodyRect>();
-	for (const auto& gunAttacker : gunAttackerView)
+	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker, component::Bullets, component::FaceDirection, component::BodyRect>();
+	gunAttackerView.each([this]
+	(const component::Player, component::GunAttacker& playerGunAttack, component::Bullets& playerBullets,
+	 const component::FaceDirection playerFaceDirection, const component::BodyRect& playerBody)
 	{
-		auto& playerGunAttack = gunAttackerView.get<component::GunAttacker>(gunAttacker);
-
 		if (playerGunAttack.isTryingToAttack)
 		{
 			playerGunAttack.isTryingToAttack = false;
-			if (playerGunAttack.bullets <= 0)
-				return;
 
 			auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::BodyRect>();
 			for (const auto& gun : gunView)
 			{
 				const auto& [gunBody, gunProperties] = gunView.get<component::BodyRect, component::GunProperties>(gun);
-				const auto& playerBody = gunAttackerView.get<component::BodyRect>(gunAttacker);
-				auto& playerFaceDirection = gunAttackerView.get<component::FaceDirection>(gunAttacker);
+
+				if((gunProperties.type == component::GunProperties::Type::Pistol && playerBullets.numOfPistolBullets <= 0.f) ||
+				   (gunProperties.type == component::GunProperties::Type::Shotgun && playerBullets.numOfShotgunBullets <= 0.f)) {
+					return;
+				}
 
 				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getCorrectedBulletStartingPosition(playerFaceDirection.direction, gunBody.rect.getSize());
 
@@ -86,10 +86,13 @@ void GunAttacks::handlePendingGunAttacks() const
 				createShotImage(startingBulletPosition, shotsEndingPositions, gunProperties.shotSoundFilepath);
 				clearInGunAttackAreaTags();
 
-				playerGunAttack.bullets -= gunProperties.numberOfBullets;
+				if(gunProperties.type == component::GunProperties::Type::Pistol)
+					--playerBullets.numOfPistolBullets;
+				else if(gunProperties.type == component::GunProperties::Type::Shotgun)
+					--playerBullets.numOfShotgunBullets;
 			}
 		}
-	}
+	});
 }
 
 sf::Vector2f GunAttacks::getCorrectedBulletStartingPosition(const sf::Vector2f& playerFaceDirection, sf::Vector2f gunSize) const

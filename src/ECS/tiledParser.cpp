@@ -69,7 +69,7 @@ namespace ph {
 			else if (objectType == "Player") loadPlayer(gameObjectNode);
 			else if (objectType == "Camera") loadCamera(gameObjectNode);
 			else if (objectType == "Npc") loadNpc(gameObjectNode);
-			else if (objectType == "BulletItem") loadBulletItem(gameObjectNode);
+			else if (objectType == "BulletBox") loadBulletBox(gameObjectNode);
 			else if (objectType == "Medkit") loadMedkit(gameObjectNode);
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
@@ -105,22 +105,17 @@ namespace ph {
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
-	{/*
+	{
+		auto lootSpawnerEntity = mTemplatesStorage.createCopy("LootSpawner", mGameRegistry);
+		loadPosition(lootSpawnerNode, lootSpawnerEntity);
 		const std::string lootTypeString = getProperty(lootSpawnerNode, "lootType").toString();
-		LootType lootType;
+		auto& lootSpawner = mGameRegistry.get<component::LootSpawner>(lootSpawnerEntity);
 		if (lootTypeString == "medkit")
-			lootType = LootType::Medkit;
+			lootSpawner.type= component::LootSpawner::Medkit;
 		else if (lootTypeString == "bullets")
-			lootType = LootType::Bullets;
+			lootSpawner.type = component::LootSpawner::Bullets;
 		else
 			PH_UNEXPECTED_SITUATION("We don't support this loot type");
-
-		auto lootSpawner = std::make_unique<LootSpawner>(
-			lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
-			);*/
-
-		//auto lootSpawner = mTemplatesStorage.createCopy("lootSpawner", mGameRegistry);
-		//loadPosition(lootSpawnerNode, lootSpawner);
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
@@ -340,9 +335,11 @@ namespace ph {
 		loadPosition(gateGuardNpcNode, gateGuard);
 	}
 
-	void TiledParser::loadBulletItem(const Xml& bulletItemNode) const
+	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const
 	{
-		auto bulletItem = mTemplatesStorage.createCopy("BulletItem", mGameRegistry);
+		// TODO: Finish it
+
+		auto bulletItem = mTemplatesStorage.createCopy("BulletBox", mGameRegistry);
 		loadPosition(bulletItemNode, bulletItem);
 	}
 
@@ -376,8 +373,8 @@ namespace ph {
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& healthComponent = mGameRegistry.get<component::Health>(entity);
-		healthComponent.healthPoints = getProperty(entityNode, "hp").toInt();
-		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toInt();
+		healthComponent.healthPoints = getProperty(entityNode, "hp").toUnsigned();
+		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toUnsigned();
 	}
 
 	void TiledParser::loadPosition(const Xml& entityNode, entt::entity entity) const
