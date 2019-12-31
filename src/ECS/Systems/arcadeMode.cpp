@@ -76,8 +76,9 @@ void ArcadeMode::update(float dt)
 		spawners.each([dt, this](component::ArcadeSpawner& arcadeModeSpawner, const component::BodyRect& spawnerBody) 
 		{
 			arcadeModeSpawner.timeFromLastSpawn += dt;
-			if(arcadeModeSpawner.timeFromLastSpawn > 0.3f) 
+			if(arcadeModeSpawner.timeFromLastSpawn > 0.5f) 
 			{
+				arcadeModeSpawner.timeFromLastSpawn = 0.f;
 				const sf::Vector2f spawnerPos = spawnerBody.rect.getTopLeft();
 				auto& wave = arcadeModeSpawner.waves[mCurrentWave - 1];
 				if(wave.normalZombiesToSpawn > 0 && wave.slowZombiesToSpawn > 0) {
