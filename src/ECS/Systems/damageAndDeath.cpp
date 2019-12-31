@@ -130,6 +130,8 @@ namespace ph::system {
 
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
+					mRegistry.remove<component::GunAttacker>(entity);
+					mRegistry.remove<component::FaceDirection>(entity);
 					component::Camera camera;
 					camera.camera = mRegistry.get<component::Camera>(entity).camera;
 					camera.priority = 2;
