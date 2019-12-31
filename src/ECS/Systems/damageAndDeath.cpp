@@ -120,8 +120,8 @@ namespace ph::system {
 				mRegistry.remove<component::KinematicCollisionBody>(entity);
 				if(!isPlayer)
 					mRegistry.remove<component::Damage>(entity);
-				if(mRegistry.has<component::PushingVelocity>(entity)) {
-					auto& pushingVelocity = mRegistry.get<component::PushingVelocity>(entity);
+				if(mRegistry.has<component::PushingForces>(entity)) {
+					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
 					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
 				}
 

@@ -42,16 +42,16 @@ void MeleeAttacks::update(float dt)
 				// set melee weapon ahead or behind player 
 				renderQuad.z = faceDirection.direction.y >= 0.f ? 93 : 96;
 
-				// deal damage
+				// deal damage and push enemy
 				FloatRect attackArea(
 					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
 					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
 				);
-				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::PushingVelocity>(entt::exclude<component::Player>);
+				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::PushingForces>(entt::exclude<component::Player>);
 				for(auto enemy : enemies)
 				{
 					const auto& enemyBody = enemies.get<component::BodyRect>(enemy);
-					auto& enemyPushingVelocity = enemies.get<component::PushingVelocity>(enemy);
+					auto& enemyPushingForces = enemies.get<component::PushingForces>(enemy);
 					const sf::Vector2f enemyBodyCenter = enemyBody.rect.getCenter();
 					if(attackArea.doPositiveRectsIntersect(enemyBody.rect))
 					{
@@ -59,7 +59,8 @@ void MeleeAttacks::update(float dt)
 						enemyAngle = Math::radiansToDegrees(enemyAngle);
 						if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10 && enemyAngle <= mStartWeaponRotation + 10) {
 							mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
-							enemyPushingVelocity.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 5.f;
+							enemyPushingForces.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 3.f;
+							enemyPushingForces.friction = 1.8f;
 						}
 					}
 				};

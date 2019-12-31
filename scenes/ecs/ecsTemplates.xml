@@ -47,11 +47,12 @@
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="KinematicCollisionBody" mass="5" />
     <component name="Damage" damageDealt="25" />
-    <component name="CollisionWithPlayer" pushForce="3"/>
+    <component name="CollisionWithPlayer" pushForce="2"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="CharacterSpeed" speed="50" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingVelocity" vel="0, 0" />
-    <component name="Zombie" />
+    <component name="Zombie" timeToMoveToAnotherTile="0.2" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />
@@ -63,12 +64,13 @@
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="KinematicCollisionBody" mass="10" />
     <component name="Damage" damageDealt="25" />
-    <component name="CollisionWithPlayer" pushForce="5.5"/>
+    <component name="CollisionWithPlayer" pushForce="4"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="CharacterSpeed" speed="20" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingVelocity" vel="0, 0" />
-    <component name="Zombie" />
-    <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
+    <component name="Zombie" timeToMoveToAnotherTile="0.15" />
+    <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />

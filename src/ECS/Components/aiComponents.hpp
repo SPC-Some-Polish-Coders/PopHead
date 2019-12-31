@@ -11,6 +11,7 @@ namespace ph::component {
 		sf::Vector2f currentDirectionVector;
 		float timeFromStartingThisMove = 0.f;
 		float timeFromLastGrowl;
+		float timeToMoveToAnotherTile;
 	};
 }
 

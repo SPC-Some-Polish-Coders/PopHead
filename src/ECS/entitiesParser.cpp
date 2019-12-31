@@ -256,7 +256,7 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 void EntitiesParser::parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity)
 {
 	sf::Vector2f vel = entityComponentNode.getAttribute("vel").toVector2f();
-	mUsedRegistry->assign_or_replace<component::PushingVelocity>(entity, vel);
+	mUsedRegistry->assign_or_replace<component::PushingForces>(entity, vel);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
@@ -435,6 +435,7 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 {
 	component::Zombie zombie;
 	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+	zombie.timeToMoveToAnotherTile = entityComponentNode.getAttribute("timeToMoveToAnotherTile").toFloat();
 	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
 }
 
