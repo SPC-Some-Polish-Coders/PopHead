@@ -24,8 +24,8 @@ void GameplayUI::update(float dt)
 
 		// set bullets counter
 		const auto bullets = view.get<component::Bullets>(player);
-		dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"))->setString(std::to_string(bullets.numOfPistolBullets));
-		// TODO: shotgun bullets
+		dynamic_cast<TextWidget*>(canvas->getWidget("pistolBulletCounter"))->setString(std::to_string(bullets.numOfPistolBullets));
+		dynamic_cast<TextWidget*>(canvas->getWidget("shotgunBulletCounter"))->setString(std::to_string(bullets.numOfShotgunBullets));
 
 		// set health counter
 		if(mRegistry.has<component::Health>(player)) {
@@ -40,3 +40,4 @@ void GameplayUI::update(float dt)
 }
 
 }
+

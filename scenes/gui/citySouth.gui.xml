@@ -15,7 +15,8 @@
     <interface name="gameplayCounters">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
             <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
-            <textWidget name="bulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
+            <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
+            <textWidget name="pistolBulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
         </widget>
     </interface>
     <interface name="labels" hide="true">
