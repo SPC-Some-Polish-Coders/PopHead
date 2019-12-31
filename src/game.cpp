@@ -55,20 +55,12 @@ Game::Game()
 void Game::run()
 {
 	sf::Clock clock;
-	const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
-	sf::Time dt = sf::Time::Zero;
-
 	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
 	{
 		mSceneManager->changingScenesProcess();
-
-		dt += clock.restart();
-
-		while(dt >= timePerFrame) {
-			handleEvents();
-			update(correctDeltaTime(dt));
-			dt = sf::Time::Zero;
-		}
+		handleEvents();
+		const sf::Time dt = clock.restart();
+		update(correctDeltaTime(dt));
 	}
 
 	Renderer::shutDown();
