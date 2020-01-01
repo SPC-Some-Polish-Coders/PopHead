@@ -7,8 +7,14 @@ namespace ph::component {
 		int addHealthPoints;
 	};
 
-	struct Bullet
+	struct BulletBox
 	{
-		int numOfBullets;
+	};
+
+	struct Bullets
+	{
+		int numOfPistolBullets;
+		int numOfShotgunBullets;
 	};
 }
+

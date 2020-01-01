@@ -2,12 +2,16 @@
 
 #include "ECS/system.hpp"
 
+namespace ph {
+	class GUI;
+}
+
 namespace ph::system {
 
 	class DamageAndDeath : public System
 	{
 	public:
-		using System::System;
+		DamageAndDeath(entt::registry&, GUI&);
 
 		void update(float dt) override;
 
@@ -16,5 +20,8 @@ namespace ph::system {
 		void makeDamageJuice(float dt) const; // NOTE: Juice is a game design term
 		void makeCharactersDie() const;
 		void makeCorpsesFadeOut(float dt) const;
+
+	private:
+		GUI& mGui;
 	};
 }

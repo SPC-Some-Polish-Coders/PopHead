@@ -4,6 +4,7 @@
 #include "Components/charactersComponents.hpp"
 #include "Components/graphicsComponents.hpp"
 #include "Components/objectsComponents.hpp"
+#include "Components/itemComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -40,8 +41,6 @@ namespace ph {
 			return;
 
 		loadObjects(gameObjects);
-		if (filePath.find("arcade") != std::string::npos && filePath.find("arcadeMode") == std::string::npos)
-			loadArcadeManager();
 
 		//mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 		ActionEventManager::setEnabled(true);
@@ -71,7 +70,7 @@ namespace ph {
 			else if (objectType == "Player") loadPlayer(gameObjectNode);
 			else if (objectType == "Camera") loadCamera(gameObjectNode);
 			else if (objectType == "Npc") loadNpc(gameObjectNode);
-			else if (objectType == "BulletItem") loadBulletItem(gameObjectNode);
+			else if (objectType == "BulletBox") loadBulletBox(gameObjectNode);
 			else if (objectType == "Medkit") loadMedkit(gameObjectNode);
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
@@ -92,63 +91,70 @@ namespace ph {
 		}
 	}
 
-	void TiledParser::loadArcadeManager() const
-	{/*
-		auto* invisibleObjects = mRoot.getChild("LAYER_invisibleObjects");
-		invisibleObjects->addChild(std::make_unique<ArcadeManager>(mGameData->getGui(), mGameData->getMusicPlayer()));
-		mGameData->getAIManager().setAIMode(AIMode::zombieAlwaysLookForPlayer);*/
-	}
-
 	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
 	{
 		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
-		auto& zombiePosition = mGameRegistry.get<component::BodyRect>(zombie);
-
-		sf::Vector2f position = getPositionAttribute(zombieNode);
-		zombiePosition.rect.left = position.x;
-		zombiePosition.rect.top = position.y;
-
+		loadPosition(zombieNode, zombie);
 		loadHealthComponent(zombieNode, zombie);
 	}
 
 	void TiledParser::loadNpc(const Xml& npcNode) const
 	{
 		auto npc = mTemplatesStorage.createCopy("Npc", mGameRegistry);
-		auto& npcPosition = mGameRegistry.get<component::BodyRect>(npc);
-
-		sf::Vector2f position = getPositionAttribute(npcNode);
-		npcPosition.rect.left = position.x;
-		npcPosition.rect.top = position.y;
-
+		loadPosition(npcNode, npc);
 		loadHealthComponent(npcNode, npc);
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
-	{/*
+	{
+		auto lootSpawnerEntity = mTemplatesStorage.createCopy("LootSpawner", mGameRegistry);
+		loadPosition(lootSpawnerNode, lootSpawnerEntity);
 		const std::string lootTypeString = getProperty(lootSpawnerNode, "lootType").toString();
-		LootType lootType;
+		auto& lootSpawner = mGameRegistry.get<component::LootSpawner>(lootSpawnerEntity);
 		if (lootTypeString == "medkit")
-			lootType = LootType::Medkit;
+			lootSpawner.type= component::LootSpawner::Medkit;
 		else if (lootTypeString == "bullets")
-			lootType = LootType::Bullets;
+			lootSpawner.type = component::LootSpawner::Bullets;
 		else
 			PH_UNEXPECTED_SITUATION("We don't support this loot type");
-
-		auto lootSpawner = std::make_unique<LootSpawner>(
-			lootType, mRoot.getChild("LAYER_standingObjects")->getChild("ItemsContainer"), mGameData
-			);*/
-
-		//auto lootSpawner = mTemplatesStorage.createCopy("lootSpawner", mGameRegistry);
-		//loadPosition(lootSpawnerNode, lootSpawner);
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
-	{/*
-		auto arcadeSpawner = std::make_unique<ArcadeSpawner>(
-			mGameData, Cast::toObjectType(getProperty(arcadeSpawnerNode, "spawnType").toString()),*/
+	{
+		auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
+		loadPosition(arcadeSpawnerNode, arcadeSpawner);
 
-		//auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
-		//loadPosition(arcadeSpawnerNode, arcadeSpawner);
+		auto& waves = mGameRegistry.get<component::ArcadeSpawner>(arcadeSpawner).waves;
+
+		waves[0].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave01-normalZombies").toUnsigned();
+		waves[0].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave01-slowZombies").toUnsigned();
+
+		waves[1].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave02-normalZombies").toUnsigned();
+		waves[1].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave02-slowZombies").toUnsigned();
+
+		waves[2].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave03-normalZombies").toUnsigned();
+		waves[2].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave03-slowZombies").toUnsigned();
+
+		waves[3].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave04-normalZombies").toUnsigned();
+		waves[3].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave04-slowZombies").toUnsigned();
+
+		waves[4].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave05-normalZombies").toUnsigned();
+		waves[4].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave05-slowZombies").toUnsigned();
+		
+		waves[5].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave06-normalZombies").toUnsigned();
+		waves[5].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave06-slowZombies").toUnsigned();
+
+		waves[6].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave07-normalZombies").toUnsigned();
+		waves[6].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave07-slowZombies").toUnsigned();
+
+		waves[7].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave08-normalZombies").toUnsigned();
+		waves[7].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave08-slowZombies").toUnsigned();
+
+		waves[8].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave09-slowZombies").toUnsigned();
+		waves[8].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave09-slowZombies").toUnsigned();
+
+		waves[9].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave10-slowZombies").toUnsigned();
+		waves[9].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave10-slowZombies").toUnsigned();
 	}
 
 	void TiledParser::loadEntrance(const Xml& entranceNode) const
@@ -186,21 +192,21 @@ namespace ph {
 	}
 
 	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const
-	{/*
-		const std::string areaName = getProperty(activateAreaNode, "areaName").toString();*/
+	{
+		//const std::string areaName = getProperty(activateAreaNode, "areaName").toString();
 
-		auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
+		/*auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
 		loadPosition(activateAreaNode, activateArea);
-		loadSize(activateAreaNode, activateArea);
+		loadSize(activateAreaNode, activateArea);*/
 	}
 
 	void TiledParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
 	{/*
 		const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();*/
 
-		auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
-		loadPosition(cutSceneAreaNode, cutSceneArea);
-		loadSize(cutSceneAreaNode, cutSceneArea);
+		//auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
+		//loadPosition(cutSceneAreaNode, cutSceneArea);
+		//loadSize(cutSceneAreaNode, cutSceneArea);
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
@@ -232,9 +238,9 @@ namespace ph {
 			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat())
 			);*/
 
-		auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
-		loadPosition(carNode, car);
-		loadSize(carNode, car);
+		//auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
+		//loadPosition(carNode, car);
+		//loadSize(carNode, car);
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
@@ -330,10 +336,13 @@ namespace ph {
 		loadPosition(gateGuardNpcNode, gateGuard);
 	}
 
-	void TiledParser::loadBulletItem(const Xml& bulletItemNode) const
+	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const
 	{
-		auto bulletItem = mTemplatesStorage.createCopy("BulletItem", mGameRegistry);
-		loadPosition(bulletItemNode, bulletItem);
+		auto bulletBoxEntity = mTemplatesStorage.createCopy("BulletBox", mGameRegistry);
+		loadPosition(bulletItemNode, bulletBoxEntity);
+		auto& bullets= mGameRegistry.get<component::Bullets>(bulletBoxEntity);
+		bullets.numOfPistolBullets = getProperty(bulletItemNode, "numOfPistolBullets").toInt();
+		bullets.numOfShotgunBullets = getProperty(bulletItemNode, "numOfShotgunBullets").toInt();
 	}
 
 	void TiledParser::loadMedkit(const Xml& medkitItemNode) const
@@ -366,8 +375,8 @@ namespace ph {
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const
 	{
 		auto& healthComponent = mGameRegistry.get<component::Health>(entity);
-		healthComponent.healthPoints = getProperty(entityNode, "hp").toInt();
-		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toInt();
+		healthComponent.healthPoints = getProperty(entityNode, "hp").toUnsigned();
+		healthComponent.maxHealthPoints = getProperty(entityNode, "maxHp").toUnsigned();
 	}
 
 	void TiledParser::loadPosition(const Xml& entityNode, entt::entity entity) const

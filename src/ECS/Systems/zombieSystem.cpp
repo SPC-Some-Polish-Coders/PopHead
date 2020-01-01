@@ -44,13 +44,13 @@ void ZombieSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::Velocity, component::AnimationData>
+	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Velocity, component::AnimationData>
 		(entt::exclude<component::TimeToFadeOut>);
 	
 	for(auto zombieEntity : zombies)
 	{
 		auto& [zombie, velocity, animationData] = zombies.get<component::Zombie, component::Velocity, component::AnimationData>(zombieEntity);
-		const auto& body = zombies.get<component::BodyRect>(zombieEntity);
+		const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(zombieEntity);
 
 		// make sounds
 		zombie.timeFromLastGrowl += dt;
@@ -77,8 +77,7 @@ void ZombieSystem::update(float dt)
 			zombie.timeFromStartingThisMove = 0.f;
 		}
 
-		constexpr float timeToMoveToAnotherTile = 0.2f;
-		if(zombie.timeFromStartingThisMove > timeToMoveToAnotherTile)
+		if(zombie.timeFromStartingThisMove > zombie.timeToMoveToAnotherTile)
 		{
 			zombie.timeFromStartingThisMove = 0.f;
 			Direction currentDirection = zombie.pathMode.path.front();
@@ -86,8 +85,8 @@ void ZombieSystem::update(float dt)
 			zombie.currentDirectionVector = toDirectionVector(currentDirection);
 		}
 
-		velocity.dx = 50.f * zombie.currentDirectionVector.x;
-		velocity.dy = 50.f * zombie.currentDirectionVector.y;
+		velocity.dx = zombie.currentDirectionVector.x * speed.speed;
+		velocity.dy = zombie.currentDirectionVector.y * speed.speed;
 
 		// update animation
 		if(zombie.currentDirectionVector == PH_NORTH_WEST) {

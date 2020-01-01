@@ -4,10 +4,17 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
+
+	DamageAndDeath::DamageAndDeath(entt::registry& registry, GUI& gui)
+		:System(registry)
+		,mGui(gui)
+	{
+	}
 
 	void DamageAndDeath::update(float dt)
 	{
@@ -113,8 +120,8 @@ namespace ph::system {
 				mRegistry.remove<component::KinematicCollisionBody>(entity);
 				if(!isPlayer)
 					mRegistry.remove<component::Damage>(entity);
-				if(mRegistry.has<component::PushingVelocity>(entity)) {
-					auto& pushingVelocity = mRegistry.get<component::PushingVelocity>(entity);
+				if(mRegistry.has<component::PushingForces>(entity)) {
+					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
 					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
 				}
 
@@ -123,10 +130,13 @@ namespace ph::system {
 
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
+					mRegistry.remove<component::GunAttacker>(entity);
+					mRegistry.remove<component::FaceDirection>(entity);
 					component::Camera camera;
 					camera.camera = mRegistry.get<component::Camera>(entity).camera;
 					camera.priority = 2;
 					mRegistry.assign<component::Camera>(deathCameraEntity, camera);
+					mGui.showInterface("gameOverScreen");
 				}
 
 				auto& animation = mRegistry.get<component::AnimationData>(entity);

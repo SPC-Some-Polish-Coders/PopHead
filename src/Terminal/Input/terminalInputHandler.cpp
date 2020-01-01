@@ -18,7 +18,7 @@ void TerminalInputHandler::handleEvent(const sf::Event& e)
 	if(e.type != sf::Event::KeyPressed)
 		return;
 
-	if(e.key.code == sf::Keyboard::Tab) {
+	if(e.key.code == sf::Keyboard::Tab && e.key.control) {
 		showOrHideCommandPrompt();
 		return;
 	}

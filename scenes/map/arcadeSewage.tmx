@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="125" height="105" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="265">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="125" height="105" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="305">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -582,9 +582,9 @@
 </data>
  </layer>
  <objectgroup id="20" name="gameObjects">
-  <object id="34" type="SlowDownArea" x="896.41" y="6.68182" width="92.6667" height="1666.67"/>
+  <object id="34" type="VelocityChangingArea" x="896.41" y="6.68182" width="92.6667" height="1666.67"/>
   <object id="127" type="Camera" x="90.0603" y="99.3939" width="640" height="360"/>
-  <object id="135" type="SlowDownArea" x="12" y="720.83" width="1968.79" height="95.17"/>
+  <object id="135" type="VelocityChangingArea" x="12" y="720.83" width="1968.79" height="95.17"/>
   <object id="136" type="Player" x="397.187" y="363.3">
    <properties>
     <property name="hasFlashlight" type="bool" value="true"/>
@@ -597,8 +597,8 @@
    </properties>
    <point/>
   </object>
-  <object id="168" type="SlowDownArea" x="1071" y="896.41" width="303" height="188.17"/>
-  <object id="170" type="SlowDownArea" x="501.833" y="498.915" width="313.667" height="139.67"/>
+  <object id="168" type="VelocityChangingArea" x="1071" y="896.41" width="303" height="188.17"/>
+  <object id="170" type="VelocityChangingArea" x="501.833" y="498.915" width="313.667" height="139.67"/>
   <object id="181" type="ArcadeSpawner" x="988" y="1285.67">
    <properties>
     <property name="spawnType" value="zombie"/>
@@ -623,46 +623,46 @@
    </properties>
    <point/>
   </object>
-  <object id="185" type="SlowDownArea" x="1073" y="1086.41" width="263" height="32.17"/>
-  <object id="186" type="SlowDownArea" x="562.5" y="433.915" width="250" height="59.17"/>
-  <object id="187" type="SlowDownArea" x="544.75" y="450.29" width="15.125" height="40.67"/>
-  <object id="188" type="SlowDownArea" x="528.75" y="465.165" width="15.125" height="27.67"/>
-  <object id="189" type="SlowDownArea" x="878.917" y="817.665" width="17.3333" height="43.17"/>
-  <object id="190" type="SlowDownArea" x="864.25" y="820.332" width="13.6667" height="55.17"/>
-  <object id="192" type="SlowDownArea" x="849.583" y="819.998" width="13.6667" height="72.5033"/>
-  <object id="193" type="SlowDownArea" x="833.25" y="835.998" width="13.6667" height="72.5033"/>
-  <object id="194" type="SlowDownArea" x="818.25" y="850.332" width="13.6667" height="72.5033"/>
-  <object id="195" type="SlowDownArea" x="801.25" y="867.665" width="13.6667" height="72.5033"/>
-  <object id="196" type="SlowDownArea" x="768.917" y="900.332" width="13.6667" height="72.5033"/>
-  <object id="197" type="SlowDownArea" x="785.583" y="882.998" width="13.6667" height="72.5033"/>
-  <object id="198" type="SlowDownArea" x="753.25" y="916.665" width="13.6667" height="72.5033"/>
-  <object id="199" type="SlowDownArea" x="737.583" y="931.998" width="13.6667" height="72.5033"/>
-  <object id="200" type="SlowDownArea" x="721.583" y="948.665" width="13.6667" height="72.5033"/>
-  <object id="201" type="SlowDownArea" x="704.917" y="962.665" width="13.6667" height="72.5033"/>
-  <object id="202" type="SlowDownArea" x="689.583" y="980.332" width="13.6667" height="72.5033"/>
-  <object id="203" type="SlowDownArea" x="672.917" y="996.332" width="13.6667" height="135.17"/>
-  <object id="204" type="SlowDownArea" x="688.917" y="1090" width="13.6667" height="57.8367"/>
-  <object id="205" type="SlowDownArea" x="657.583" y="1010.67" width="13.6667" height="105.837"/>
-  <object id="206" type="SlowDownArea" x="641.28" y="1026.91" width="13.6667" height="73.4427"/>
-  <object id="207" type="SlowDownArea" x="625.644" y="1030.15" width="13.6667" height="55.0791"/>
-  <object id="209" type="SlowDownArea" x="1138.8" y="533.549" width="13.6667" height="72.5033"/>
-  <object id="210" type="SlowDownArea" x="1123.13" y="549.889" width="13.6667" height="72.5033"/>
-  <object id="211" type="SlowDownArea" x="1107.46" y="565.219" width="13.6667" height="72.5033"/>
-  <object id="212" type="SlowDownArea" x="1091.46" y="581.889" width="13.6667" height="72.5033"/>
-  <object id="213" type="SlowDownArea" x="1074.8" y="595.889" width="13.6667" height="72.5033"/>
-  <object id="214" type="SlowDownArea" x="1059.46" y="613.549" width="13.6667" height="72.5033"/>
-  <object id="215" type="SlowDownArea" x="1042.8" y="629.549" width="13.6667" height="72.5033"/>
-  <object id="216" type="SlowDownArea" x="1026.8" y="645.219" width="13.6667" height="72.5033"/>
-  <object id="217" type="SlowDownArea" x="1026.8" y="645.219" width="13.6667" height="72.5033"/>
-  <object id="218" type="SlowDownArea" x="1011.16" y="660.129" width="13.6667" height="57.7761"/>
-  <object id="219" type="SlowDownArea" x="995.529" y="675.039" width="13.6667" height="43.4124"/>
-  <object id="222" type="SlowDownArea" x="1153.47" y="514.549" width="13.6667" height="72.5033"/>
-  <object id="223" type="SlowDownArea" x="1168.47" y="504.215" width="13.6667" height="72.5033"/>
-  <object id="224" type="SlowDownArea" x="1185.8" y="481.549" width="13.6667" height="72.5033"/>
-  <object id="225" type="SlowDownArea" x="1201.47" y="466.549" width="13.6667" height="72.5033"/>
-  <object id="226" type="SlowDownArea" x="1216.8" y="420.549" width="13.6667" height="101.503"/>
-  <object id="227" type="SlowDownArea" x="1234.47" y="449.549" width="13.6667" height="60.5033"/>
-  <object id="228" type="SlowDownArea" x="1249.47" y="448.549" width="13.6667" height="74.5033"/>
+  <object id="185" type="VelocityChangingArea" x="1073" y="1086.41" width="263" height="32.17"/>
+  <object id="186" type="VelocityChangingArea" x="562.5" y="433.915" width="250" height="59.17"/>
+  <object id="187" type="VelocityChangingArea" x="544.75" y="450.29" width="15.125" height="40.67"/>
+  <object id="188" type="VelocityChangingArea" x="528.75" y="465.165" width="15.125" height="27.67"/>
+  <object id="189" type="VelocityChangingArea" x="878.917" y="817.665" width="17.3333" height="43.17"/>
+  <object id="190" type="VelocityChangingArea" x="864.25" y="820.332" width="13.6667" height="55.17"/>
+  <object id="192" type="VelocityChangingArea" x="849.583" y="819.998" width="13.6667" height="72.5033"/>
+  <object id="193" type="VelocityChangingArea" x="833.25" y="835.998" width="13.6667" height="72.5033"/>
+  <object id="194" type="VelocityChangingArea" x="818.25" y="850.332" width="13.6667" height="72.5033"/>
+  <object id="195" type="VelocityChangingArea" x="801.25" y="867.665" width="13.6667" height="72.5033"/>
+  <object id="196" type="VelocityChangingArea" x="768.917" y="900.332" width="13.6667" height="72.5033"/>
+  <object id="197" type="VelocityChangingArea" x="785.583" y="882.998" width="13.6667" height="72.5033"/>
+  <object id="198" type="VelocityChangingArea" x="753.25" y="916.665" width="13.6667" height="72.5033"/>
+  <object id="199" type="VelocityChangingArea" x="737.583" y="931.998" width="13.6667" height="72.5033"/>
+  <object id="200" type="VelocityChangingArea" x="721.583" y="948.665" width="13.6667" height="72.5033"/>
+  <object id="201" type="VelocityChangingArea" x="704.917" y="962.665" width="13.6667" height="72.5033"/>
+  <object id="202" type="VelocityChangingArea" x="689.583" y="980.332" width="13.6667" height="72.5033"/>
+  <object id="203" type="VelocityChangingArea" x="672.917" y="996.332" width="13.6667" height="135.17"/>
+  <object id="204" type="VelocityChangingArea" x="688.917" y="1090" width="13.6667" height="57.8367"/>
+  <object id="205" type="VelocityChangingArea" x="657.583" y="1010.67" width="13.6667" height="105.837"/>
+  <object id="206" type="VelocityChangingArea" x="641.28" y="1026.91" width="13.6667" height="73.4427"/>
+  <object id="207" type="VelocityChangingArea" x="625.644" y="1030.15" width="13.6667" height="55.0791"/>
+  <object id="209" type="VelocityChangingArea" x="1138.8" y="533.549" width="13.6667" height="72.5033"/>
+  <object id="210" type="VelocityChangingArea" x="1123.13" y="549.889" width="13.6667" height="72.5033"/>
+  <object id="211" type="VelocityChangingArea" x="1107.46" y="565.219" width="13.6667" height="72.5033"/>
+  <object id="212" type="VelocityChangingArea" x="1091.46" y="581.889" width="13.6667" height="72.5033"/>
+  <object id="213" type="VelocityChangingArea" x="1074.8" y="595.889" width="13.6667" height="72.5033"/>
+  <object id="214" type="VelocityChangingArea" x="1059.46" y="613.549" width="13.6667" height="72.5033"/>
+  <object id="215" type="VelocityChangingArea" x="1042.8" y="629.549" width="13.6667" height="72.5033"/>
+  <object id="216" type="VelocityChangingArea" x="1026.8" y="645.219" width="13.6667" height="72.5033"/>
+  <object id="217" type="VelocityChangingArea" x="1026.8" y="645.219" width="13.6667" height="72.5033"/>
+  <object id="218" type="VelocityChangingArea" x="1011.16" y="660.129" width="13.6667" height="57.7761"/>
+  <object id="219" type="VelocityChangingArea" x="995.529" y="675.039" width="13.6667" height="43.4124"/>
+  <object id="222" type="VelocityChangingArea" x="1153.47" y="514.549" width="13.6667" height="72.5033"/>
+  <object id="223" type="VelocityChangingArea" x="1168.47" y="504.215" width="13.6667" height="72.5033"/>
+  <object id="224" type="VelocityChangingArea" x="1185.8" y="481.549" width="13.6667" height="72.5033"/>
+  <object id="225" type="VelocityChangingArea" x="1201.47" y="466.549" width="13.6667" height="72.5033"/>
+  <object id="226" type="VelocityChangingArea" x="1216.8" y="420.549" width="13.6667" height="101.503"/>
+  <object id="227" type="VelocityChangingArea" x="1234.47" y="449.549" width="13.6667" height="60.5033"/>
+  <object id="228" type="VelocityChangingArea" x="1249.47" y="448.549" width="13.6667" height="74.5033"/>
   <object id="229" type="ArcadeSpawner" x="1421.33" y="830.003">
    <properties>
     <property name="spawnType" value="zombie"/>
@@ -690,32 +690,32 @@
    </properties>
    <point/>
   </object>
-  <object id="235" type="SlowDownArea" x="608.977" y="1011.48" width="13.6667" height="55.0791"/>
-  <object id="236" type="SlowDownArea" x="593.644" y="995.15" width="13.6667" height="55.0791"/>
-  <object id="237" type="SlowDownArea" x="576.977" y="980.817" width="13.6667" height="55.0791"/>
-  <object id="238" type="SlowDownArea" x="561.311" y="963.817" width="13.6667" height="55.0791"/>
-  <object id="239" type="SlowDownArea" x="545.644" y="947.817" width="13.6667" height="55.0791"/>
-  <object id="240" type="SlowDownArea" x="528.977" y="963.483" width="13.6667" height="23.7458"/>
-  <object id="241" type="SlowDownArea" x="512.977" y="960.483" width="13.6667" height="13.7458"/>
-  <object id="242" type="SlowDownArea" x="498.311" y="817.817" width="43" height="135.746"/>
-  <object id="243" type="SlowDownArea" x="499.644" y="646.483" width="43" height="73.7458"/>
-  <object id="244" type="SlowDownArea" x="512" y="481.915" width="15.125" height="17.17"/>
-  <object id="245" type="SlowDownArea" x="704.917" y="1106.33" width="13.6667" height="57.8367"/>
-  <object id="246" type="SlowDownArea" x="720.25" y="1123.67" width="13.6667" height="57.8367"/>
-  <object id="247" type="SlowDownArea" x="737.25" y="1138.67" width="155.667" height="42.8367"/>
-  <object id="248" type="SlowDownArea" x="1169.33" y="370.913" width="13.368" height="72.2393"/>
-  <object id="249" type="SlowDownArea" x="1184.98" y="386.886" width="13.368" height="70.2393"/>
-  <object id="250" type="SlowDownArea" x="1199.97" y="403.847" width="13.368" height="58.5726"/>
-  <object id="251" type="SlowDownArea" x="1153.99" y="372.247" width="13.368" height="59.5726"/>
-  <object id="252" type="SlowDownArea" x="995.992" y="373.247" width="155.368" height="38.2393"/>
-  <object id="253" type="SlowDownArea" x="1265" y="467.247" width="13.368" height="72.2393"/>
-  <object id="254" type="SlowDownArea" x="1280.65" y="483.22" width="13.368" height="70.2393"/>
-  <object id="255" type="SlowDownArea" x="1296.89" y="497.431" width="13.368" height="73.8226"/>
-  <object id="256" type="SlowDownArea" x="1313" y="515.247" width="13.368" height="72.2393"/>
-  <object id="257" type="SlowDownArea" x="1328.65" y="531.22" width="13.368" height="58.0575"/>
-  <object id="258" type="SlowDownArea" x="1345.27" y="547.09" width="13.368" height="42.5726"/>
-  <object id="259" type="SlowDownArea" x="1360.18" y="561.999" width="13.368" height="26.5726"/>
-  <object id="260" type="SlowDownArea" x="1331.18" y="592.999" width="41.368" height="123.073"/>
+  <object id="235" type="VelocityChangingArea" x="608.977" y="1011.48" width="13.6667" height="55.0791"/>
+  <object id="236" type="VelocityChangingArea" x="593.644" y="995.15" width="13.6667" height="55.0791"/>
+  <object id="237" type="VelocityChangingArea" x="576.977" y="980.817" width="13.6667" height="55.0791"/>
+  <object id="238" type="VelocityChangingArea" x="561.311" y="963.817" width="13.6667" height="55.0791"/>
+  <object id="239" type="VelocityChangingArea" x="545.644" y="947.817" width="13.6667" height="55.0791"/>
+  <object id="240" type="VelocityChangingArea" x="528.977" y="963.483" width="13.6667" height="23.7458"/>
+  <object id="241" type="VelocityChangingArea" x="512.977" y="960.483" width="13.6667" height="13.7458"/>
+  <object id="242" type="VelocityChangingArea" x="498.311" y="817.817" width="43" height="135.746"/>
+  <object id="243" type="VelocityChangingArea" x="499.644" y="646.483" width="43" height="73.7458"/>
+  <object id="244" type="VelocityChangingArea" x="512" y="481.915" width="15.125" height="17.17"/>
+  <object id="245" type="VelocityChangingArea" x="704.917" y="1106.33" width="13.6667" height="57.8367"/>
+  <object id="246" type="VelocityChangingArea" x="720.25" y="1123.67" width="13.6667" height="57.8367"/>
+  <object id="247" type="VelocityChangingArea" x="737.25" y="1138.67" width="155.667" height="42.8367"/>
+  <object id="248" type="VelocityChangingArea" x="1169.33" y="370.913" width="13.368" height="72.2393"/>
+  <object id="249" type="VelocityChangingArea" x="1184.98" y="386.886" width="13.368" height="70.2393"/>
+  <object id="250" type="VelocityChangingArea" x="1199.97" y="403.847" width="13.368" height="58.5726"/>
+  <object id="251" type="VelocityChangingArea" x="1153.99" y="372.247" width="13.368" height="59.5726"/>
+  <object id="252" type="VelocityChangingArea" x="995.992" y="373.247" width="155.368" height="38.2393"/>
+  <object id="253" type="VelocityChangingArea" x="1265" y="467.247" width="13.368" height="72.2393"/>
+  <object id="254" type="VelocityChangingArea" x="1280.65" y="483.22" width="13.368" height="70.2393"/>
+  <object id="255" type="VelocityChangingArea" x="1296.89" y="497.431" width="13.368" height="73.8226"/>
+  <object id="256" type="VelocityChangingArea" x="1313" y="515.247" width="13.368" height="72.2393"/>
+  <object id="257" type="VelocityChangingArea" x="1328.65" y="531.22" width="13.368" height="58.0575"/>
+  <object id="258" type="VelocityChangingArea" x="1345.27" y="547.09" width="13.368" height="42.5726"/>
+  <object id="259" type="VelocityChangingArea" x="1360.18" y="561.999" width="13.368" height="26.5726"/>
+  <object id="260" type="VelocityChangingArea" x="1331.18" y="592.999" width="41.368" height="123.073"/>
   <object id="261" type="LootSpawner" x="1210.85" y="614.633">
    <properties>
     <property name="lootType" value="medkit"/>
@@ -740,5 +740,45 @@
    </properties>
    <point/>
   </object>
+  <object id="265" type="LightWall" x="5" y="408" width="442.5" height="219.5"/>
+  <object id="266" type="LightWall" x="194.75" y="237.583" width="126.5" height="174.167"/>
+  <object id="267" type="LightWall" x="322.75" y="59.5833" width="161.833" height="219.5"/>
+  <object id="268" type="LightWall" x="482.75" y="0.25" width="332.5" height="355.5"/>
+  <object id="269" type="LightWall" x="1076.08" y="4.25" width="147.167" height="288.833"/>
+  <object id="270" type="LightWall" x="1218.08" y="292.917" width="147.167" height="15.5"/>
+  <object id="271" type="LightWall" x="1234.75" y="308.25" width="147.167" height="15.5"/>
+  <object id="272" type="LightWall" x="1250.75" y="324.25" width="147.167" height="16.5"/>
+  <object id="273" type="LightWall" x="1266.42" y="340.25" width="147.167" height="16.5"/>
+  <object id="274" type="LightWall" x="1282.75" y="355.583" width="147.167" height="16.5"/>
+  <object id="275" type="LightWall" x="1299.42" y="372.917" width="147.167" height="16.5"/>
+  <object id="276" type="LightWall" x="1315.42" y="389.25" width="147.167" height="16.5"/>
+  <object id="277" type="LightWall" x="1331.75" y="403.583" width="147.167" height="16.5"/>
+  <object id="278" type="LightWall" x="1346.08" y="420.25" width="147.167" height="16.5"/>
+  <object id="279" type="LightWall" x="1363.08" y="436.917" width="147.167" height="16.5"/>
+  <object id="280" type="LightWall" x="1379.75" y="451.917" width="147.167" height="16.5"/>
+  <object id="281" type="LightWall" x="1395.08" y="468.583" width="147.167" height="16.5"/>
+  <object id="282" type="LightWall" x="1410.08" y="484.25" width="147.167" height="16.5"/>
+  <object id="283" type="LightWall" x="1427.08" y="500.25" width="147.167" height="16.5"/>
+  <object id="284" type="LightWall" x="1442.58" y="511.25" width="551.167" height="118.833"/>
+  <object id="285" type="LightWall" x="1441.08" y="886.25" width="551.167" height="206.833"/>
+  <object id="286" type="LightWall" x="1509.08" y="1095.58" width="469.167" height="206.833"/>
+  <object id="287" type="LightWall" x="1342.42" y="1223.25" width="167.167" height="206.833"/>
+  <object id="288" type="LightWall" x="1077.08" y="1179.25" width="267.167" height="490.167"/>
+  <object id="289" type="LightWall" x="547.75" y="1223.25" width="267.167" height="446.167"/>
+  <object id="290" type="LightWall" x="524.174" y="1206.52" width="147.167" height="16.5"/>
+  <object id="291" type="LightWall" x="507.508" y="1191.52" width="147.167" height="16.5"/>
+  <object id="292" type="LightWall" x="490.508" y="1174.86" width="147.167" height="16.5"/>
+  <object id="293" type="LightWall" x="476.174" y="1158.19" width="147.167" height="16.5"/>
+  <object id="294" type="LightWall" x="459.841" y="1143.86" width="147.167" height="16.5"/>
+  <object id="295" type="LightWall" x="443.841" y="1127.52" width="147.167" height="16.5"/>
+  <object id="296" type="LightWall" x="427.174" y="1110.19" width="147.167" height="16.5"/>
+  <object id="297" type="LightWall" x="410.841" y="1094.86" width="147.167" height="16.5"/>
+  <object id="298" type="LightWall" x="395.174" y="1078.86" width="147.167" height="16.5"/>
+  <object id="299" type="LightWall" x="379.174" y="1062.86" width="147.167" height="15.5"/>
+  <object id="300" type="LightWall" x="365.174" y="1045.52" width="147.167" height="16.5"/>
+  <object id="301" type="LightWall" x="348.508" y="1028.19" width="147.167" height="16.5"/>
+  <object id="302" type="LightWall" x="332.174" y="1012.86" width="147.167" height="16.5"/>
+  <object id="303" type="LightWall" x="316.508" y="996.856" width="147.167" height="16.5"/>
+  <object id="304" type="LightWall" x="2.50758" y="888.856" width="445.167" height="107.5"/>
  </objectgroup>
 </map>

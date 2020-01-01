@@ -2,6 +2,7 @@
 #include "GUI/gui.hpp"
 #include "GUI/textWidget.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
@@ -16,14 +17,15 @@ void GameplayUI::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto view = mRegistry.view<component::Player, component::GunAttacker>();
+	auto view = mRegistry.view<component::Player, component::Bullets>();
 	for(auto player : view)
 	{
 		auto* canvas = mGui.getInterface("gameplayCounters")->getWidget("canvas");
 
 		// set bullets counter
-		const unsigned bullets = view.get<component::GunAttacker>(player).bullets;
-		dynamic_cast<TextWidget*>(canvas->getWidget("bulletCounter"))->setString(std::to_string(bullets));
+		const auto bullets = view.get<component::Bullets>(player);
+		dynamic_cast<TextWidget*>(canvas->getWidget("pistolBulletCounter"))->setString(std::to_string(bullets.numOfPistolBullets));
+		dynamic_cast<TextWidget*>(canvas->getWidget("shotgunBulletCounter"))->setString(std::to_string(bullets.numOfShotgunBullets));
 
 		// set health counter
 		if(mRegistry.has<component::Health>(player)) {
@@ -38,3 +40,4 @@ void GameplayUI::update(float dt)
 }
 
 }
+
