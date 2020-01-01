@@ -748,6 +748,13 @@
    <point/>
   </object>
   <object id="257" name="Car" type="Car" x="1111.21" y="1168">
+   <properties>
+    <property name="acceleration" type="float" value="0"/>
+    <property name="directionX" type="float" value="0"/>
+    <property name="shouldSpeedUp" type="bool" value="false"/>
+    <property name="slowingDown" type="float" value="0"/>
+    <property name="velocity" type="float" value="0"/>
+   </properties>
    <point/>
   </object>
   <object id="258" type="Zombie" x="322" y="1179.33">

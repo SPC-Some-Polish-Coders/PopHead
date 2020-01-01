@@ -37,7 +37,10 @@
   <property name="acceleration" type="float" default="1"/>
   <property name="directionX" type="float" default="0"/>
   <property name="directionY" type="float" default="0"/>
+  <property name="shouldSlowDown" type="bool" default="false"/>
+  <property name="shouldSpeedUp" type="bool" default="true"/>
   <property name="slowingDown" type="float" default="2"/>
+  <property name="velocity" type="float" default="5"/>
  </objecttype>
  <objecttype name="CrawlingNpc" color="#f4ef5f">
   <property name="isAlreadyDead" type="bool" default="true"/>

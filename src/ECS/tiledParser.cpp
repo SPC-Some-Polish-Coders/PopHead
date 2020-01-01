@@ -231,16 +231,18 @@ namespace ph {
 	}
 
 	void TiledParser::loadCar(const Xml& carNode) const
-	{/*
-		auto car = std::make_unique<Car>(
-			getProperty(carNode, "acceleration").toFloat(),
-			getProperty(carNode, "slowingDown").toFloat(),
-			sf::Vector2f(getProperty(carNode, "directionX").toFloat(), getProperty(carNode, "directionY").toFloat())
-			);*/
-
-		//auto car = mTemplatesStorage.createCopy("Car", mGameRegistry);
-		//loadPosition(carNode, car);
-		//loadSize(carNode, car);
+	{
+		auto entityCar = mTemplatesStorage.createCopy("Car", mGameRegistry);
+		loadPosition(carNode, entityCar);
+		auto& car = mGameRegistry.get<component::Car>(entityCar);
+		car.acceleration = getProperty(carNode, "acceleration").toFloat();
+		car.slowingDown = getProperty(carNode, "slowingDown").toFloat();
+		car.velocity = getProperty(carNode, "velocity").toFloat();
+		car.direction.x = getProperty(carNode, "directionX").toFloat();
+		car.direction.y = getProperty(carNode, "directionY").toFloat();
+		car.shouldSlowDown = getProperty(carNode, "shouldSlowDown").toBool();
+		car.shouldSpeedUp = getProperty(carNode, "shouldSpeedUp").toBool();
+		car.velocity = getProperty(carNode, "velocity").toFloat();
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const

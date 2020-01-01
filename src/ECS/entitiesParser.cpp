@@ -111,8 +111,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"CurrentMeleeWeapon",    	    &EntitiesParser::parseCurrentMeleeWeapon},
 		{"GunProperties",		  	    &EntitiesParser::parseGunProperties},
 		{"MeleeProperties",		  	    &EntitiesParser::parseMeleeProperties},
-		{"FaceDirection",         	    &EntitiesParser::parseFaceDirection},
-		{"Lifetime",			  	    &EntitiesParser::parseLifetime},
+		{"FaceDirection",               &EntitiesParser::parseFaceDirection},
+		{"Lifetime",                    &EntitiesParser::parseLifetime},
 		{"Camera",                	    &EntitiesParser::parseCamera},
 		{"LightSource",           	    &EntitiesParser::parseLightSource},
 		{"HiddenForRenderer",	  	    &EntitiesParser::parseHiddenForRenderer},
@@ -128,7 +128,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"RenderChunk",                 &EntitiesParser::parseRenderChunk},
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
-		{"BulletBox",                   &EntitiesParser::parseBulletBox}
+		{"BulletBox",                   &EntitiesParser::parseBulletBox},
+		{"Car",                         &EntitiesParser::parseCar}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -457,6 +458,11 @@ void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
+}
+
+void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::Car>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

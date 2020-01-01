@@ -30,6 +30,7 @@
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/collisionDebug.hpp"
+#include "ECS/Systems/cars.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -72,6 +73,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
+	mSystemsQueue.appendSystem<system::Cars>();
 }
 
 void Scene::handleEvent(const ActionEvent& event)
