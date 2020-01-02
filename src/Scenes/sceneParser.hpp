@@ -28,6 +28,7 @@ private:
 	void parseArcadeMode(const Xml& sceneLinksNode, SystemsQueue&, GUI&, AIManager& aiManager, MusicPlayer&, EntitiesTemplateStorage&);
 	void parseMap(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures);
 	void parseMapObjects(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, CutSceneManager& cutSceneManager, SceneManager& sceneManager);
+	void parseAudio(const Xml& sceneLinksNode, SoundPlayer&, MusicPlayer&);
 };
 
 }
