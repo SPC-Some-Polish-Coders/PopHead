@@ -36,8 +36,8 @@ private:
 	AIManager& mAIManager;
 	MusicPlayer& mMusicPlayer;
 	EntitiesTemplateStorage& mTemplateStorage;
-	sf::Clock mBreakClock;
 	float mTimeFromStart = 0.f;
+	float mTimeFromBreakTimeStart;
 	float mTimeBeforeStartingFirstWave = 10.f;
 	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn = 0;

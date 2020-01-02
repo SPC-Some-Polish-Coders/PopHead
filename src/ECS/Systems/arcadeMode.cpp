@@ -110,10 +110,11 @@ void ArcadeMode::update(float dt)
 	auto zombies = mRegistry.view<component::Zombie>();
 	mEnemiesCounter = zombies.size();
 	
-	// start or end break time
-	if(mTimeFromStart > 10.f && !mIsBreakTime && mEnemiesCounter <= 5)
+	// break time
+	mTimeFromBreakTimeStart += dt;
+	if(mTimeFromStart > 15.f && !mIsBreakTime && !mShouldSpawnEnemies && mEnemiesCounter <= 5)
 		startBreakTime();
-	else if(mIsBreakTime && mBreakClock.getElapsedTime().asSeconds() > 20){
+	else if(mIsBreakTime && mTimeFromBreakTimeStart > 20.f){
 		endBreakTime();
 		createNextWave();
 	}
@@ -149,7 +150,7 @@ void ArcadeMode::startBreakTime()
 	});
 
 	mIsBreakTime = true;
-	mBreakClock.restart();
+	mTimeFromBreakTimeStart = 0.f;
 
 	mGui.showInterface("nextWaveInfo");
 	mGui.hideInterface("arcadeCounters");
@@ -175,7 +176,7 @@ void ArcadeMode::updateGuiCounters()
 		auto* arcadeInterface2 = mGui.getInterface("nextWaveInfo");
 		auto* counters = arcadeInterface2->getWidget("canvas")->getWidget("counters");
 		auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
-		int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mBreakClock.getElapsedTime().asSeconds());
+		int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mTimeFromBreakTimeStart);
 		timeToNextWave->setString("Time to next wave: " + addZero(secondsUntilTheEndOfBreak));
 	}
 	else {
