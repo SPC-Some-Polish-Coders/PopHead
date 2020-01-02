@@ -1,0 +1,8 @@
+<state name="down"       startFrameX="0" startFrameY="0"   startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="right"      startFrameX="0" startFrameY="20"  startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="left"       startFrameX="0" startFrameY="20"  startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="rightUp"    startFrameX="0" startFrameY="60"  startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="leftUp"     startFrameX="0" startFrameY="80"  startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="up"         startFrameX="0" startFrameY="100" startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="crawlingUp" startFrameX="0" startFrameY="120" startFrameWidth="17" startFrameHeight="19.99" frameCount="2"/>
+<state name="dead"       startFrameX="0" startFrameY="140" startFrameWidth="17" startFrameHeight="18.00" frameCount="1"/>

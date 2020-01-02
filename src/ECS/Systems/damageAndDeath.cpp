@@ -111,23 +111,23 @@ namespace ph::system {
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurt enemy must have AnimationData!");
 
-				bool isPlayer = mRegistry.has<component::Player>(entity);
-
 				mRegistry.assign<component::TimeToFadeOut>(entity);
 
 				mRegistry.remove<component::Health>(entity);
-				mRegistry.remove<component::Killable>(entity);
-				mRegistry.remove<component::KinematicCollisionBody>(entity);
-				if(!isPlayer)
+				if(mRegistry.has<component::Killable>(entity))
+					mRegistry.remove<component::Killable>(entity);
+				if(mRegistry.has<component::KinematicCollisionBody>(entity))
+					mRegistry.remove<component::KinematicCollisionBody>(entity);
+				if(mRegistry.has<component::Damage>(entity))
 					mRegistry.remove<component::Damage>(entity);
 				if(mRegistry.has<component::PushingForces>(entity)) {
 					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
 					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
 				}
 
+				bool isPlayer = mRegistry.has<component::Player>(entity);
 				auto& z = mRegistry.get<component::RenderQuad>(entity).z;
 				z = isPlayer ? 96 : 97;
-
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
 					mRegistry.remove<component::GunAttacker>(entity);

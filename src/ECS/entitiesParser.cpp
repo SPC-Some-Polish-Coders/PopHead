@@ -570,10 +570,18 @@ void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::en
 	animationData.states = getAnimationStates(animationStateFilepath);
 	
 	animationData.currentStateName = entityComponentNode.getAttribute("firstStateName").toString();
-	
-	animationData.delay = entityComponentNode.getAttribute("delay").toFloat();
+
+	const float delay = entityComponentNode.getAttribute("delay").toFloat();
+	animationData.delay = delay;
+	animationData.elapsedTime = delay;
+
+	if(entityComponentNode.hasAttribute("isPlaying"))
+		animationData.isPlaying = entityComponentNode.getAttribute("isPlaying").toBool();
+	else
+		animationData.isPlaying = false;
 	
 	mUsedRegistry->assign_or_replace<component::AnimationData>(entity, animationData);
 }
 
 }
+
