@@ -1,6 +1,7 @@
 # Executables, env dependend files
 *.o
 *.so
+PopHead.exe
 openal32.dll
 
 # Build directories
