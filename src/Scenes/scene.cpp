@@ -30,6 +30,7 @@
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/collisionDebug.hpp"
+#include "ECS/Systems/cars.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -47,13 +48,12 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager));
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::PickupBullet>();
-	mSystemsQueue.appendSystem<system::PickupMedkit>();
+	mSystemsQueue.appendSystem<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::CollisionDebug>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
@@ -62,7 +62,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::GunAttacks>();
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DamageAndDeath>();
+	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui));
 	mSystemsQueue.appendSystem<system::Levers>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PushingMovement>();
@@ -73,6 +73,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
+	mSystemsQueue.appendSystem<system::Cars>();
 }
 
 void Scene::handleEvent(const ActionEvent& event)
@@ -82,6 +83,9 @@ void Scene::handleEvent(const ActionEvent& event)
 
 void Scene::update(sf::Time dt)
 {
+	if(mPause)
+		return;
+
  	if(mCutSceneManager.isCutSceneActive())
 		mCutSceneManager.updateCutScene(dt);
 

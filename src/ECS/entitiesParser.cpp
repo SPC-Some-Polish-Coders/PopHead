@@ -100,7 +100,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Medkit",	              	    &EntitiesParser::parseMedkit},
 		{"Player",                	    &EntitiesParser::parsePlayer},
 		{"Zombie",                	    &EntitiesParser::parseZombie},
-		{"Bullet",                	    &EntitiesParser::parseBullet},
+		{"Bullets",                	    &EntitiesParser::parseBullets},
 		{"Velocity",              	    &EntitiesParser::parseVelocity},
 		{"PushingVelocity",             &EntitiesParser::parsePushingVelocity},
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
@@ -111,8 +111,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"CurrentMeleeWeapon",    	    &EntitiesParser::parseCurrentMeleeWeapon},
 		{"GunProperties",		  	    &EntitiesParser::parseGunProperties},
 		{"MeleeProperties",		  	    &EntitiesParser::parseMeleeProperties},
-		{"FaceDirection",         	    &EntitiesParser::parseFaceDirection},
-		{"Lifetime",			  	    &EntitiesParser::parseLifetime},
+		{"FaceDirection",               &EntitiesParser::parseFaceDirection},
+		{"Lifetime",                    &EntitiesParser::parseLifetime},
 		{"Camera",                	    &EntitiesParser::parseCamera},
 		{"LightSource",           	    &EntitiesParser::parseLightSource},
 		{"HiddenForRenderer",	  	    &EntitiesParser::parseHiddenForRenderer},
@@ -125,7 +125,11 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"AnimationData",          	    &EntitiesParser::parseAnimationData},
 		{"ParticleEmitter",             &EntitiesParser::parseParticleEmitter},
 		{"MultiParticleEmitter",        &EntitiesParser::parseMultiParticleEmitter},
-		{"RenderChunk",                 &EntitiesParser::parseRenderChunk}
+		{"RenderChunk",                 &EntitiesParser::parseRenderChunk},
+		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
+		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
+		{"BulletBox",                   &EntitiesParser::parseBulletBox},
+		{"Car",                         &EntitiesParser::parseCar}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -211,10 +215,10 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int left = entityComponentNode.getAttribute("x").toInt();
-	int top = entityComponentNode.getAttribute("y").toInt();
-	int width = entityComponentNode.getAttribute("width").toInt();
-	int height = entityComponentNode.getAttribute("height").toInt();
+	int left = entityComponentNode.getAttribute("x").toUnsigned();
+	int top = entityComponentNode.getAttribute("y").toUnsigned();
+	int width = entityComponentNode.getAttribute("width").toUnsigned();
+	int height = entityComponentNode.getAttribute("height").toUnsigned();
 	IntRect rect(left, top, width, height);
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
 }
@@ -253,19 +257,19 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 void EntitiesParser::parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity)
 {
 	sf::Vector2f vel = entityComponentNode.getAttribute("vel").toVector2f();
-	mUsedRegistry->assign_or_replace<component::PushingVelocity>(entity, vel);
+	mUsedRegistry->assign_or_replace<component::PushingForces>(entity, vel);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int healthPoints = entityComponentNode.getAttribute("healthPoints").toInt();
-	int maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints").toInt();
+	int healthPoints = entityComponentNode.getAttribute("healthPoints").toUnsigned();
+	int maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints").toUnsigned();
 	mUsedRegistry->assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
 }
 
 void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int damageDealt = entityComponentNode.getAttribute("damageDealt").toInt();
+	int damageDealt = entityComponentNode.getAttribute("damageDealt").toUnsigned();
 	mUsedRegistry->assign_or_replace<component::Damage>(entity, damageDealt);
 }
 
@@ -432,6 +436,7 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 {
 	component::Zombie zombie;
 	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+	zombie.timeToMoveToAnotherTile = entityComponentNode.getAttribute("timeToMoveToAnotherTile").toFloat();
 	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
 }
 
@@ -440,10 +445,29 @@ void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::enti
 	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
 }
 
+void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
+}
+
+void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::LootSpawner>(entity);
+}
+
+void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
+}
+
+void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::Car>(entity);
+}
+
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
 	component::GunAttacker gunAttacker;
-	gunAttacker.bullets = entityComponentNode.getAttribute("bullets").toUnsigned();
 	gunAttacker.isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack").toBool();
 	gunAttacker.timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding").toFloat();
 	gunAttacker.timeToHide = 0.f;
@@ -457,19 +481,30 @@ void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::
 	mp.rotationSpeed = entityComponentNode.getAttribute("rotationSpeed").toFloat();
 	mp.rotationRange = entityComponentNode.getAttribute("rotationRange").toFloat();
 	mp.range = entityComponentNode.getAttribute("range").toFloat();
-	mp.damage = entityComponentNode.getAttribute("damage").toInt();
+	mp.damage = entityComponentNode.getAttribute("damage").toUnsigned();
 	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, mp);
 }
 
 void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
-	std::string shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath").toString();
-	float range = entityComponentNode.getAttribute("range").toFloat();
-	float deflectionAngle = entityComponentNode.getAttribute("deflectionAngle").toFloat();
-	int damage = entityComponentNode.getAttribute("damage").toInt();
-	int numberOfBulletsShot = entityComponentNode.getAttribute("numberOfBullets").toInt();
-	unsigned gunId = entityComponentNode.getAttribute("gunId").toUnsigned();
-	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, shotSoundFilepath, range, deflectionAngle, damage, numberOfBulletsShot, gunId);
+	component::GunProperties gp;
+
+	gp.shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath").toString();
+	gp.range = entityComponentNode.getAttribute("range").toFloat();
+	gp.deflectionAngle = entityComponentNode.getAttribute("deflectionAngle").toFloat();
+	gp.damage = entityComponentNode.getAttribute("damage").toUnsigned();
+	gp.numberOfBullets = entityComponentNode.getAttribute("numberOfBullets").toUnsigned();
+	gp.gunId = entityComponentNode.getAttribute("gunId").toUnsigned();
+	
+	const std::string type = entityComponentNode.getAttribute("type").toString();
+	if(type == "pistol")
+		gp.type = component::GunProperties::Type::Pistol;
+	else if(type == "shotgun")
+		gp.type = component::GunProperties::Type::Shotgun;
+	else
+		PH_UNEXPECTED_SITUATION("Unknown Gun type!");
+	
+	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, gp);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
@@ -487,10 +522,12 @@ void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity&
 	mUsedRegistry->assign_or_replace<component::Killable>(entity);
 }
 
-void EntitiesParser::parseBullet(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseBullets(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int numOfBullets = entityComponentNode.getAttribute("numOfBullets").toInt();
-	mUsedRegistry->assign_or_replace<component::Bullet>(entity, numOfBullets);
+	component::Bullets bullets;
+	bullets.numOfPistolBullets = entityComponentNode.getAttribute("numOfPistolBullets").toUnsigned();
+	bullets.numOfShotgunBullets = entityComponentNode.getAttribute("numOfShotgunBullets").toUnsigned();
+	mUsedRegistry->assign_or_replace<component::Bullets>(entity, bullets);
 }
 
 void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity)
@@ -533,10 +570,18 @@ void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::en
 	animationData.states = getAnimationStates(animationStateFilepath);
 	
 	animationData.currentStateName = entityComponentNode.getAttribute("firstStateName").toString();
-	
-	animationData.delay = entityComponentNode.getAttribute("delay").toFloat();
+
+	const float delay = entityComponentNode.getAttribute("delay").toFloat();
+	animationData.delay = delay;
+	animationData.elapsedTime = delay;
+
+	if(entityComponentNode.hasAttribute("isPlaying"))
+		animationData.isPlaying = entityComponentNode.getAttribute("isPlaying").toBool();
+	else
+		animationData.isPlaying = false;
 	
 	mUsedRegistry->assign_or_replace<component::AnimationData>(entity, animationData);
 }
 
 }
+

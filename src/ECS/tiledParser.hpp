@@ -23,9 +23,7 @@ namespace ph {
 
 	private:
 		Xml findGameObjects(const Xml& mapFile) const;
-		
 		void loadObjects(const Xml& gameObjects) const;
-		void loadArcadeManager() const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadNpc(const Xml& npcNode) const;
@@ -44,7 +42,7 @@ namespace ph {
 		void loadCutScene(const Xml& cutSceneNode) const;
 		void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
 		void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
-		void loadBulletItem(const Xml& bulletItemNode) const;
+		void loadBulletBox(const Xml& bulletItemNode) const;
 		void loadMedkit(const Xml& medkitItemNode) const;
 		void loadSpriteNode(const Xml& spriteNodeNode) const;
 		void loadTorch(const Xml& torchNode) const;

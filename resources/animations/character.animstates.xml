@@ -3,7 +3,7 @@
 <state name="left"         startFrameX="0" startFrameY="40"  startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
 <state name="rightUp"      startFrameX="0" startFrameY="60"  startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
 <state name="leftUp"       startFrameX="0" startFrameY="80"  startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
-<state name="up"           startFrameX="0" startFrameY="100"  startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
+<state name="up"           startFrameX="0" startFrameY="100" startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
 <state name="fightDown"    startFrameX="0" startFrameY="120" startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
 <state name="fightRight"   startFrameX="0" startFrameY="140" startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>
 <state name="fightLeft"    startFrameX="0" startFrameY="160" startFrameWidth="19" startFrameHeight="19.99" frameCount="4"/>

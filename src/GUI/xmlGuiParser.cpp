@@ -23,7 +23,8 @@ void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileNa
 
 	mGameData = gameData;
 
-	auto& gui = gameData->getGui();
+	mGui = &(gameData->getGui());
+	mFontHolder = &(gameData->getFonts());
 
 	Xml guiTag;
 	guiTag.loadFromFile(fileName);
@@ -31,7 +32,7 @@ void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileNa
 
 	auto interfaces = guiTag.getChildren("interface");
 	for (auto& interface : interfaces)
-		parseInterface(interface, gui);
+		parseInterface(interface, *mGui);
 }
 
 void XmlGuiParser::parseInterface(const Xml& interfaceTag, GUI& gui)
@@ -56,7 +57,7 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 {
 	if (widgetTag.hasAttribute("contentPath")) {
 		auto path = widgetTag.getAttribute("contentPath").toString();
-		mGameData->getGui().getTextures().load(path);
+		mGui->getTextures().load(path);
 		widget.setContentPath(path);
 	}
 	if (widgetTag.hasAttribute("origin"))
@@ -93,7 +94,7 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 	if (textWidgetTag.hasAttribute("fontPath"))
 	{
 		auto path = textWidgetTag.getAttribute("fontPath").toString();
-		mGameData->getFonts().load(path);
+		mFontHolder->load(path);
 		widget.setFontPath(path);
 	}
 	if (textWidgetTag.hasAttribute("textPosition"))
@@ -119,7 +120,7 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 	if (widgetTag.hasAttribute("contentPathSlider"))
 	{
 		auto path = widgetTag.getAttribute("contentPathSlider").toString();
-		mGameData->getGui().getTextures().load(path);
+		mGui->getTextures().load(path);
 		widget.createSlider(path);
 	}
 	else throwMissingAttributeException("contentPathSlider");

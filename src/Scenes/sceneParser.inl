@@ -11,7 +11,7 @@ template<typename GuiParser, typename MapParser, typename ObjectsParser, typenam
 SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	::SceneParser(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
                   entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
-	              GUI& gui, MusicPlayer& musicPlayer)
+	              GUI& gui, MusicPlayer& musicPlayer, AIManager& aiManager)
 {
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
@@ -26,9 +26,9 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);
 	parseMapObjects(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, cutSceneManager, gameData->getSceneManager());
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
-	parse<AudioParser>(gameData, sceneLinksNode, "audio");
+	parseAudio(sceneLinksNode, gameData->getSoundPlayer(), gameData->getMusicPlayer());
 	parseAmbientLight(sceneLinksNode);
-	parseArcadeMode(sceneLinksNode, systemsQueue, gui, musicPlayer);
+	parseArcadeMode(sceneLinksNode, systemsQueue, gui, aiManager, musicPlayer, templateStorage);
 }
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
@@ -74,10 +74,11 @@ void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>::
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
 inline void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
-	::parseArcadeMode(const Xml& sceneLinksNode, SystemsQueue& systemsQueue, GUI& gui, MusicPlayer& musicPlayer)
+	::parseArcadeMode(const Xml& sceneLinksNode, SystemsQueue& systemsQueue, GUI& gui, AIManager& aiManager,
+	                  MusicPlayer& musicPlayer, EntitiesTemplateStorage& templateStorage)
 {
 	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(musicPlayer));
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
 }
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
@@ -106,6 +107,18 @@ void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 			aiManager.setIsPlayerOnScene(true);
 		else
 			aiManager.setIsPlayerOnScene(false);
+	}
+}
+
+template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
+void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>::parseAudio(const Xml& sceneLinksNode, SoundPlayer& sound, MusicPlayer& music)
+{
+	const auto audioNode = sceneLinksNode.getChildren("audio");
+	if (audioNode.size() == 1)
+	{
+		const std::string audioFilePath = "scenes/audio/" + audioNode[0].getAttribute("filename").toString();
+		AudioParser audioParser;
+		audioParser.parseFile(sound, music, audioFilePath);
 	}
 }
 

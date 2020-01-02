@@ -15,9 +15,10 @@ namespace ph::component {
 		float dx, dy;
 	};
 
-	struct PushingVelocity
+	struct PushingForces
 	{
 		sf::Vector2f vel;
+		float friction = 1.5f;
 	};
 
 	struct CharacterSpeed

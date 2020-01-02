@@ -69,7 +69,8 @@ void SceneManager::replaceAction()
 			mGameData->getAIManager(), mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
 		SceneParser<XmlGuiParser, XmlMapParser, TiledParser, XmlAudioParser, EntitiesParser>
 			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(),
-				mFileOfSceneToMake, mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getMusicPlayer());
+				mFileOfSceneToMake, mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(),
+				mGameData->getMusicPlayer(), mGameData->getAIManager());
 
 		if (mGameData->getAIManager().isPlayerOnScene())
 		{
@@ -93,8 +94,8 @@ void SceneManager::handleEvent(const Event& e)
 
 void SceneManager::update(sf::Time dt)
 {
-	if(mScene != nullptr)
-		mScene->update(dt);
+	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
+	mScene->update(dt);
 }
 
 void SceneManager::setGameData(GameData* const gameData)

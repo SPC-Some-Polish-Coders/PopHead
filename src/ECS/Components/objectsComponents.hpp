@@ -3,11 +3,25 @@
 #include "Utilities/rect.hpp"
 #include "Renderer/MinorRenderers/quadData.hpp"
 #include <vector>
+#include <array>
 
 namespace ph::component {
 
-	struct ArcadeModeSpawner
+	struct ArcadeSpawner
 	{
+		struct Wave
+		{
+			unsigned normalZombiesToSpawn;
+			unsigned slowZombiesToSpawn;
+		};
+		std::array<Wave, 10> waves;
+		float timeFromLastSpawn = 0.3f;
+	};
+
+	struct LootSpawner
+	{
+		enum LootType { Bullets, Medkit };
+		LootType type;
 	};
 
 	struct AreaVelocityChangingEffect
@@ -44,6 +58,16 @@ namespace ph::component {
 		bool isOpened;
 	};
 
+	struct Car
+	{
+		sf::Vector2f direction;
+		float velocity;
+		float acceleration;
+		float slowingDown;
+		bool shouldSpeedUp = false;
+		bool shouldSlowDown = false;
+	};
+
 	struct GunProperties
 	{
 		std::string shotSoundFilepath;
@@ -52,6 +76,9 @@ namespace ph::component {
 		int damage;
 		int numberOfBullets;
 		unsigned gunId;
+
+		enum class Type { Pistol, Shotgun };
+		Type type;
 	};
 
 	struct MeleeProperties
