@@ -23,7 +23,7 @@ namespace ph::system {
 		dealDamage();
 		makeDamageJuice(dt);
 		makeCharactersDie();
-		makeCorpsesFadeOut(dt);
+		updateDeadCharacters(dt);
 	}
 
 	void DamageAndDeath::dealDamage() const
@@ -111,7 +111,7 @@ namespace ph::system {
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurt enemy must have AnimationData!");
 
-				mRegistry.assign<component::TimeToFadeOut>(entity);
+				mRegistry.assign<component::DeadCharacter>(entity, 10.f);
 				mRegistry.remove<component::Health>(entity);
 				mRegistry.reset<component::Killable>(entity);
 				mRegistry.reset<component::KinematicCollisionBody>(entity);
@@ -123,7 +123,8 @@ namespace ph::system {
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 				auto& z = mRegistry.get<component::RenderQuad>(entity).z;
-				z = isPlayer ? 96 : 97;
+				z = 100;
+
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
 					mRegistry.remove<component::GunAttacker>(entity);
@@ -141,17 +142,23 @@ namespace ph::system {
 		}
 	}
 
-	void DamageAndDeath::makeCorpsesFadeOut(float dt) const
+	void DamageAndDeath::updateDeadCharacters(float dt) const
 	{
-		auto view = mRegistry.view<component::TimeToFadeOut, component::RenderQuad>();
+		auto view = mRegistry.view<component::DeadCharacter, component::RenderQuad>();
 		for(auto entity : view)
 		{
-			auto& [timeToFadeOut, renderQuad] = view.get<component::TimeToFadeOut, component::RenderQuad>(entity);
-			timeToFadeOut.seconds += dt;
-			if(timeToFadeOut.seconds > 10.f)
+			auto& [deadCharacter, renderQuad] = view.get<component::DeadCharacter, component::RenderQuad>(entity);
+			
+			// fade out
+			deadCharacter.timeToFadeOut -= dt;
+			if(deadCharacter.timeToFadeOut < 0.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
-			auto alpha = static_cast<unsigned char>(255.f - (timeToFadeOut.seconds * 25.5f));
+			auto alpha = static_cast<unsigned char>(deadCharacter.timeToFadeOut * 25.5f);
 			renderQuad.color = sf::Color(255, 255, 255, alpha);
+
+			// update z component
+			deadCharacter.timeFromDeath += dt;
+			renderQuad.z = static_cast<unsigned char>(101.f + deadCharacter.timeFromDeath * 3.f);
 		}
 	}
 }

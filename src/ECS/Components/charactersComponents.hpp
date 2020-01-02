@@ -43,9 +43,10 @@ namespace ph::component {
 		float timeToHide;
 	};
 
-	struct TimeToFadeOut
+	struct DeadCharacter
 	{
-		float seconds = 0.f;
+		float timeToFadeOut = 0.f;
+		float timeFromDeath = 0.f;
 	};
 
 	struct TaggedToDestroy

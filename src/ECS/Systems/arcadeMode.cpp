@@ -58,7 +58,7 @@ void ArcadeMode::update(float dt)
 
 		auto* canvas = mGui.getInterface("nextWaveInfo")->getWidget("canvas");
 		auto* timeToNextWave = dynamic_cast<TextWidget*>(canvas->getWidget("counters")->getWidget("timeToNextWave"));
-		std::string timeLeft = std::to_string(static_cast<int>(mTimeBeforeStartingFirstWave));
+		std::string timeLeft = std::to_string(static_cast<int>(mTimeBeforeStartingFirstWave + 1.f));
 		timeToNextWave->setString("Start in " + timeLeft  + " seconds!");
 
 		if(mTimeBeforeStartingFirstWave <= 0.f) {
