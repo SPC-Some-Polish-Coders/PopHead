@@ -112,14 +112,10 @@ namespace ph::system {
 				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::AnimationData>(entity), "Hurt enemy must have AnimationData!");
 
 				mRegistry.assign<component::TimeToFadeOut>(entity);
-
 				mRegistry.remove<component::Health>(entity);
-				if(mRegistry.has<component::Killable>(entity))
-					mRegistry.remove<component::Killable>(entity);
-				if(mRegistry.has<component::KinematicCollisionBody>(entity))
-					mRegistry.remove<component::KinematicCollisionBody>(entity);
-				if(mRegistry.has<component::Damage>(entity))
-					mRegistry.remove<component::Damage>(entity);
+				mRegistry.reset<component::Killable>(entity);
+				mRegistry.reset<component::KinematicCollisionBody>(entity);
+				mRegistry.reset<component::Damage>(entity);
 				if(mRegistry.has<component::PushingForces>(entity)) {
 					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
 					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
