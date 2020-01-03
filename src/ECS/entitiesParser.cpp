@@ -7,6 +7,7 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
+#include "ECS/Components/actionComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Resources/animationStatesResources.hpp"
@@ -129,7 +130,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"Car",                         &EntitiesParser::parseCar}
+		{"Car",                         &EntitiesParser::parseCar},
+		{"CutScene",                    &EntitiesParser::parseCutScene}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -463,6 +465,11 @@ void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity
 void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Car>(entity);
+}
+
+void EntitiesParser::parseCutScene(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign<component::CutScene>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

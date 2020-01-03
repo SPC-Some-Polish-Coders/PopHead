@@ -1,27 +1,27 @@
 #include "gateGuardDialogue.hpp"
-#include "gameData.hpp"
+#include "GUI/gui.hpp"
 #include "Events/actionEventManager.hpp"
 
 namespace ph {
 
-GateGuardDialogue::GateGuardDialogue(GameData* const gameData)
-	:mGameData(gameData)
+GateGuardDialogue::GateGuardDialogue(GUI& gui)
+	:mGui(gui)
 	,mPlayerOnThePosition(false)
 	,mTimesPressedSkip(1)
 {
 	//mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
-	mGameData->getGui().hideInterface("gameplayCounters");
+	mGui.hideInterface("gameplayCounters");
 	/*mGameData->getRenderer().getCamera().setSize({320, 240});*/
 	initGui();
 }
 
 void GateGuardDialogue::initGui()
 {
-	mGameData->getGui().showInterface("labels");
-	auto playerSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
-	auto guardSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
-	auto hint = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("hint");
+	mGui.showInterface("labels");
+	auto playerSpeechBubble = mGui.getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
+	auto guardSpeechBubble = mGui.getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
+	auto hint = mGui.getInterface("labels")->getWidget("canvas")->getWidget("hint");
 	
 	playerSpeechBubble->hide();
 	guardSpeechBubble->hide();
@@ -70,9 +70,9 @@ void GateGuardDialogue::update(const sf::Time dt)
 		mTimeSinceLastSkipPress.restart();
 	}
 
-	auto guardSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
-	auto playerSpeechBubble = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
-	auto hint = mGameData->getGui().getInterface("labels")->getWidget("canvas")->getWidget("hint");
+	auto guardSpeechBubble = mGui.getInterface("labels")->getWidget("canvas")->getWidget("guardSpeechBubble");
+	auto playerSpeechBubble = mGui.getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
+	auto hint = mGui.getInterface("labels")->getWidget("canvas")->getWidget("hint");
 
 	if(mPlayerOnThePosition) 
 	{
@@ -186,7 +186,7 @@ void GateGuardDialogue::leaveCutScene()
 {
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
-	mGameData->getGui().showInterface("gameplayCounters");
+	mGui.showInterface("gameplayCounters");
 	/*mGameData->getRenderer().getCamera().setSize({640, 480});*/
 }
 

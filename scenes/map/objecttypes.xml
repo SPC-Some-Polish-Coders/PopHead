@@ -46,11 +46,8 @@
   <property name="isAlreadyDead" type="bool" default="true"/>
  </objecttype>
  <objecttype name="CutScene" color="#ffff00">
-  <property name="cutSceneName" type="string"/>
   <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
- </objecttype>
- <objecttype name="CutSceneArea" color="#ffff00">
-  <property name="cutSceneName" type="string"/>
+  <property name="name" type="string"/>
  </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>

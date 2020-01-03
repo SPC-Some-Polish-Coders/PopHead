@@ -112,17 +112,13 @@ void SubtitlesBeforeStartGameCutscene::update(sf::Time dt)
 				playerSpeechBubble->getWidget("player3")->hide();
 				playerSpeechBubble->getWidget("player3b")->hide();
 				mGui.getInterface("labels")->getWidget("canvas")->getWidget("hint")->hide();
-				endCutscene();
+				mIsActive = false;
+				mSceneManager.replaceScene("scenes/startGameCutscene.xml");
 				break;
 			}
 		}
 	}
 }
 
-void SubtitlesBeforeStartGameCutscene::endCutscene()
-{
-	mIsActive = false;
-	mSceneManager.replaceScene("scenes/startGameCutscene.xml");
 }
 
-}

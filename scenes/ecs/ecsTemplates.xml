@@ -101,6 +101,11 @@
     <component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0" />
   </entityTemplate>
 
+  <entityTemplate name="CutScene">
+    <component name="BodyRect" x="0" y="0" width="0" height="0" />
+    <component name="CutScene" />
+  </entityTemplate>
+
   <entityTemplate name="Gate">
     <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
     <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />

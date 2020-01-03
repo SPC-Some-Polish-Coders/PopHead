@@ -5,6 +5,7 @@
 #include "Components/graphicsComponents.hpp"
 #include "Components/objectsComponents.hpp"
 #include "Components/itemComponents.hpp"
+#include "Components/actionComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -75,7 +76,7 @@ namespace ph {
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
-			else if (objectType == "CutSceneArea") loadCutSceneArea(gameObjectNode);
+			else if (objectType == "CutSceneArea") loadCutScene(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Car") loadCar(gameObjectNode);
@@ -200,13 +201,16 @@ namespace ph {
 		loadSize(activateAreaNode, activateArea);*/
 	}
 
-	void TiledParser::loadCutSceneArea(const Xml& cutSceneAreaNode) const
-	{/*
-		const std::string cutSceneName = getProperty(cutSceneAreaNode, "cutSceneName").toString();*/
-
-		//auto cutSceneArea = mTemplatesStorage.createCopy("CutSceneArea", mGameRegistry);
-		//loadPosition(cutSceneAreaNode, cutSceneArea);
-		//loadSize(cutSceneAreaNode, cutSceneArea);
+	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
+	{
+		const std::string cutSceneName = getProperty(cutSceneNode, "cutSceneName").toString();
+		auto cutSceneEntity = mTemplatesStorage.createCopy("CutScene", mGameRegistry);
+		loadPosition(cutSceneNode, cutSceneEntity);
+		loadSize(cutSceneNode, cutSceneEntity);
+		auto& cutscene = mGameRegistry.get<component::CutScene>(cutSceneEntity);
+		PH_ASSERT_UNEXPECTED_SITUATION(cutSceneNode.hasAttribute("name"), "Every cutscene must have name!");
+		cutscene.name = cutSceneNode.getAttribute("name").toString();
+		cutscene.isStartingCutSceneOnThisMap = getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool();
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
@@ -293,34 +297,6 @@ namespace ph {
 			flashlight.attenuationSquareFactor = 1.5f;
 			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
 		}	
-	}
-
-	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
-	{/*
-		if (!getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool())
-			return;
-
-		const std::string name = getProperty(cutSceneNode, "cutSceneName").toString();
-
-		if (name == "subtitlesBeforeStartGameCutscene") {
-			auto subtitlesBeforeStartGameCutscene = std::make_unique<SubtitlesBeforeStartGameCutscene>(
-				mRoot,
-				mGameData->getSceneManager(),
-				mGameData->getGui()
-				);
-			mCutSceneManager.activateCutscene(std::move(subtitlesBeforeStartGameCutscene));
-		}
-		else if (name == "startGameCutScene") {
-			auto startGameCutScene = std::make_unique<StartGameCutScene>(
-				mRoot,
-				mGameData->getRenderer().getCamera(),
-				mGameData->getSoundPlayer(),
-				mGameData->getMusicPlayer(),
-				mGameData->getGui(),
-				mGameData
-				);
-			mCutSceneManager.activateCutscene(std::move(startGameCutScene));
-		}*/
 	}
 
 	void TiledParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const

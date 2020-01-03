@@ -32,14 +32,13 @@ namespace ph {
 		void loadEntrance(const Xml& entranceNode) const;
 		void loadVelocityChangingArea(const Xml& velocityChangingAreaNode) const;
 		void loadActivateArea(const Xml& openGateAreaNode) const;
-		void loadCutSceneArea(const Xml& cutSceneAreaNode) const;
+		void loadCutScene(const Xml& cutSceneAreaNode) const;
 		std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 		void loadGate(const Xml& gateNode) const;
 		void loadLever(const Xml& leverNode) const;
 		void loadCar(const Xml& carNode) const;
 		void loadCamera(const Xml& cameraNode) const;
 		void loadPlayer(const Xml& playerNode) const;
-		void loadCutScene(const Xml& cutSceneNode) const;
 		void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
 		void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 		void loadBulletBox(const Xml& bulletItemNode) const;

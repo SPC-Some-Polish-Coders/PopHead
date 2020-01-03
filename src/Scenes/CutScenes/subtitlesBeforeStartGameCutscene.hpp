@@ -15,9 +15,6 @@ public:
 	void update(sf::Time dt) override;
 
 private:
-	void endCutscene();
-
-private:
 	SceneManager& mSceneManager;
 	GUI& mGui;
 	sf::Clock mClock;
