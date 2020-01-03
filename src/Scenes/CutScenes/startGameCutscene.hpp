@@ -2,6 +2,7 @@
 
 #include "Scenes/cutScene.hpp"
 #include <SFML/System.hpp>
+#include <entt/entt.hpp>
 
 namespace ph {
 
@@ -9,12 +10,12 @@ class Camera;
 class SoundPlayer;
 class MusicPlayer;
 class GUI;
-class GameData;
+class SceneManager;
 
 class StartGameCutScene : public CutScene
 {
 public:
-	StartGameCutScene(Camera&, SoundPlayer&, MusicPlayer&, GUI& gui, GameData* const);
+	StartGameCutScene(entt::registry& gameRegistry, SoundPlayer&, MusicPlayer&, GUI&, SceneManager&);
 
 	void update(const sf::Time dt) override;
 
@@ -22,11 +23,11 @@ private:
 	void closeCutScene();
 
 private:
-	Camera& mCamera;
+	entt::registry& mRegistry;
 	SoundPlayer& mSoundPlayer;
 	MusicPlayer& mMusicPlayer;
 	GUI& mGui;
-	GameData* const mGameData;
+	SceneManager& mSceneManager;
 	float mCutsceneTimeInSeconds;
 	bool mWasGuiHidden;
 	bool mHasStartedToSlowDown;

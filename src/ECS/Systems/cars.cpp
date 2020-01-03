@@ -12,7 +12,7 @@ void Cars::update(float dt)
 		if(car.shouldSpeedUp)
 			car.velocity += car.acceleration * dt;
 		if(car.shouldSlowDown)
-			car.velocity -= car.acceleration * dt;
+			car.velocity -= car.slowingDown * dt;
 		
 		constexpr float frictionForce = 0.1f;
 		car.velocity -= frictionForce * dt;
@@ -20,7 +20,7 @@ void Cars::update(float dt)
 		if(car.velocity < 1.f)
 			car.velocity = 0.f;
 		
-		body.rect.move(car.direction * car.velocity);
+		body.rect.move(car.direction * car.velocity * dt);
 	});
 }
 

@@ -659,12 +659,12 @@
   </object>
   <object id="172" name="Dialogue with gate guard" type="CutScene" x="1851.25" y="605.333" width="79" height="47">
    <properties>
-    <property name="cutSceneName" value="gateGuardDialogue"/>
+    <property name="name" value="gateGuardDialogue"/>
    </properties>
   </object>
   <object id="199" name="Fight tutorial popup" type="CutScene" x="1130.25" y="491.917" width="31.3333" height="67.8333">
    <properties>
-    <property name="cutSceneName" value="fightControlsGuide"/>
+    <property name="name" value="fightControlsGuide"/>
    </properties>
   </object>
   <object id="209" name="SlowZombie" type="SlowZombie" x="1399.33" y="508.166">
@@ -732,7 +732,7 @@
   </object>
   <object id="249" name="Movement tutorial popup" type="CutScene" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
    <properties>
-    <property name="cutSceneName" value="movementControlsGuide"/>
+    <property name="name" value="movementControlsGuide"/>
    </properties>
   </object>
   <object id="253" name="SlowZombie" type="SlowZombie" x="2307.16" y="1168.17">
