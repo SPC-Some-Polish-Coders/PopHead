@@ -5,7 +5,6 @@
 #include "Components/graphicsComponents.hpp"
 #include "Components/objectsComponents.hpp"
 #include "Components/itemComponents.hpp"
-#include "Components/actionComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -79,7 +78,6 @@ namespace ph {
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "PushingArea") loadPushingArea(gameObjectNode);
-			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Car") loadCar(gameObjectNode);
@@ -203,15 +201,6 @@ namespace ph {
 		auto& pushDirection = mGameRegistry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty(pushingAreaNode, "pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty(pushingAreaNode, "pushForceY").toFloat();
-	}
-
-	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const
-	{
-		//const std::string areaName = getProperty(activateAreaNode, "areaName").toString();
-
-		/*auto activateArea = mTemplatesStorage.createCopy("ActivateArea", mGameRegistry);
-		loadPosition(activateAreaNode, activateArea);
-		loadSize(activateAreaNode, activateArea);*/
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const

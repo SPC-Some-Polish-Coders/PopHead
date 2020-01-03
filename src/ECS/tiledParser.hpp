@@ -34,7 +34,6 @@ namespace ph {
 		void loadEntrance(const Xml& entranceNode) const;
 		void loadVelocityChangingArea(const Xml& velocityChangingAreaNode) const;
 		void loadPushingArea(const Xml& velocityChangingAreaNode) const;
-		void loadActivateArea(const Xml& openGateAreaNode) const;
 		void loadCutScene(const Xml& cutSceneAreaNode) const;
 		std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 		void loadGate(const Xml& gateNode) const;
