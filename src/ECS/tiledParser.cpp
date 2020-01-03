@@ -344,6 +344,19 @@ namespace ph {
 				PH_EXIT_GAME("TiledParser::loadSprite() wasn't able to load texture \"" + texturePath + "\"");
 		}
 
+		// load texture rect
+		if(getProperty(spriteNode, "activeTextureRect").toBool()) {
+			mGameRegistry.assign_or_replace<component::TextureRect>(
+				spriteEntity,
+				IntRect(
+					getProperty(spriteNode, "left").toInt(),
+					getProperty(spriteNode, "top").toInt(),
+					getProperty(spriteNode, "width").toInt(),
+					getProperty(spriteNode, "height").toInt()
+				)
+			);
+		}
+
 		// load shader
 		const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
 		if(shaderName != "none") {
@@ -367,7 +380,7 @@ namespace ph {
 		rq.rotationOrigin.y = getProperty(spriteNode, "rotationOriginY").toFloat();
 
 		// load z
-		rq.z = getProperty(spriteNode, "z").toFloat();
+		rq.z = getProperty(spriteNode, "z").toUnsignedChar();
 
 		// TODO: Load color
 		rq.color = sf::Color::White;

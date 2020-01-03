@@ -8,7 +8,7 @@ namespace ph {
 SubtitlesBeforeStartGameCutscene::SubtitlesBeforeStartGameCutscene(SceneManager& sceneManager, GUI& gui)
 	:mSceneManager(sceneManager)
 	,mGui(gui)
-	,mTimesPressedSkip(1u)
+	,mTimesPressedSkip(1)
 {
 	gui.showInterface("labels");
 	auto* playerSpeechBubble = gui.getInterface("labels")->getWidget("canvas")->getWidget("playerSpeechBubble");
