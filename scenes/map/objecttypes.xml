@@ -83,11 +83,10 @@
  <objecttype name="Sprite" color="#454fa4">
   <property name="activeTextureRect" type="bool" default="false"/>
   <property name="fragmentShaderFilepath" type="string" default="none"/>
+  <property name="hiddenForRenderer" type="bool" default="false"/>
   <property name="rotation" type="float" default="0"/>
   <property name="rotationOriginX" type="float" default="0"/>
   <property name="rotationOriginY" type="float" default="0"/>
-  <property name="scaleX" type="float" default="1"/>
-  <property name="scaleY" type="float" default="1"/>
   <property name="shaderName" type="string" default="none"/>
   <property name="texturePath" type="string" default="none"/>
   <property name="textureRectHeight" type="int" default="0"/>

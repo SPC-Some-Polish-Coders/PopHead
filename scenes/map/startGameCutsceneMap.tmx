@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="400" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="86">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="400" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="88">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  </tileset>
@@ -132,6 +132,17 @@
     <property name="name" value="startGameCutScene"/>
    </properties>
    <point/>
+  </object>
+  <object id="87" type="Sprite" x="5725.84" y="394.735" width="20" height="20">
+   <properties>
+    <property name="activeTextureRect" type="bool" value="true"/>
+    <property name="hiddenForRenderer" type="bool" value="true"/>
+    <property name="texturePath" value="textures/characters/playerFullAnimation.png"/>
+    <property name="textureRectHeight" type="int" value="20"/>
+    <property name="textureRectTop" type="int" value="20"/>
+    <property name="textureRectWidth" type="int" value="20"/>
+    <property name="z" type="float" value="94"/>
+   </properties>
   </object>
  </objectgroup>
 </map>
