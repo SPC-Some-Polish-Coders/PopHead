@@ -730,7 +730,7 @@
   <object id="244" name="SlowZombie" type="SlowZombie" x="1873.83" y="1151">
    <point/>
   </object>
-  <object id="249" name="Movement tutorial popup" type="CutScene" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
+  <object id="249" name="Movement tutorial popup" type="CutScene" x="1097.25" y="1141.59" width="96.3333" height="90.1666">
    <properties>
     <property name="name" value="movementControlsGuide"/>
    </properties>

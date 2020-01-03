@@ -5,7 +5,8 @@
 namespace ph {
 
 GateGuardDialogue::GateGuardDialogue(GUI& gui)
-	:mGui(gui)
+	:CutScene(false)
+	,mGui(gui)
 	,mPlayerOnThePosition(false)
 	,mTimesPressedSkip(1)
 {

@@ -11,7 +11,8 @@
 namespace ph {
 
 StartGameCutScene::StartGameCutScene(entt::registry& registry, SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, GUI& gui, SceneManager& sceneManager)
-	:mRegistry(registry)
+	:CutScene(false)
+	,mRegistry(registry)
 	,mSoundPlayer(soundPlayer)
 	,mMusicPlayer(musicPlayer)
 	,mGui(gui)

@@ -2,8 +2,9 @@
 
 namespace ph {
 
-CutScene::CutScene()
-	: mIsActive(true)
+CutScene::CutScene(bool pausesSystems)
+	:mIsActive(true)
+	,mPausesSystems(pausesSystems)
 {
 }
 

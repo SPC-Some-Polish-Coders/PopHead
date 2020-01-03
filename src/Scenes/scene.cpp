@@ -88,10 +88,12 @@ void Scene::update(sf::Time dt)
 	if(mPause)
 		return;
 
- 	if(mCutSceneManager.isCutSceneActive())
+	const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
+ 	if(isCutsceneActive)
 		mCutSceneManager.updateCutScene(dt);
 
-	mSystemsQueue.update(dt.asSeconds());
+	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
+		mSystemsQueue.update(dt.asSeconds());
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

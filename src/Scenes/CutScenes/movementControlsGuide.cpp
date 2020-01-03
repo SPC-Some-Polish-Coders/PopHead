@@ -7,12 +7,11 @@
 namespace ph {
 
 MovementContolsGuide::MovementContolsGuide(GUI& gui, SceneManager& sceneManager)
-	:mGui(gui)
+	:CutScene(true)
+	,mGui(gui)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {
-	mSceneManager.getScene().setPause(true);
-	
 	auto* hints = mGui.getInterface("hints");
 	hints->show();
 	auto* greyBackground = hints->getWidget("canvas")->getWidget("smallGreyBackground");
@@ -46,7 +45,6 @@ void MovementContolsGuide::update(const sf::Time dt)
 void MovementContolsGuide::closeCutscene()
 {
 	mGui.getInterface("hints")->hide();
-	mSceneManager.getScene().setPause(false);
 	mIsActive = false;
 }
 

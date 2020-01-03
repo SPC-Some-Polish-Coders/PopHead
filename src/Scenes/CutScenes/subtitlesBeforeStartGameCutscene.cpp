@@ -6,7 +6,8 @@
 namespace ph {
 
 SubtitlesBeforeStartGameCutscene::SubtitlesBeforeStartGameCutscene(SceneManager& sceneManager, GUI& gui)
-	:mSceneManager(sceneManager)
+	:CutScene(true)
+	,mSceneManager(sceneManager)
 	,mGui(gui)
 	,mTimesPressedSkip(1)
 {
