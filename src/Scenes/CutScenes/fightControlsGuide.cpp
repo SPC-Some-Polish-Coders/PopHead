@@ -12,8 +12,6 @@ FightControlsGuide::FightControlsGuide(GUI& gui, SceneManager& sceneManager)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {
-	mSceneManager.getScene().setPause(true);
-
 	auto* hints = mGui.getInterface("hints");
 	hints->show();
 	auto* greyBackground = hints->getWidget("canvas")->getWidget("smallGreyBackground");
@@ -51,7 +49,6 @@ void FightControlsGuide::update(const sf::Time dt)
 void FightControlsGuide::closeCutscene()
 {
 	mGui.getInterface("hints")->hide();
-	mSceneManager.getScene().setPause(false);
 	mIsActive = false;
 }
 
