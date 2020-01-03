@@ -78,6 +78,7 @@ namespace ph {
 			else if (objectType == "Medkit") loadMedkit(gameObjectNode);
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
+			else if (objectType == "PushingArea") loadPushingArea(gameObjectNode);
 			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
@@ -192,6 +193,16 @@ namespace ph {
 		loadSize(velocityChanginAreaNode, entity);
 		float& areaSpeedMultiplier = mGameRegistry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty(velocityChanginAreaNode, "velocityMultiplier").toFloat();
+	}
+
+	void TiledParser::loadPushingArea(const Xml& pushingAreaNode) const
+	{
+		auto entity = mTemplatesStorage.createCopy("PushingArea", mGameRegistry);
+		loadPosition(pushingAreaNode, entity);
+		loadSize(pushingAreaNode, entity);
+		auto& pushDirection = mGameRegistry.get<component::PushingArea>(entity);
+		pushDirection.pushForce.x = getProperty(pushingAreaNode, "pushForceX").toFloat();
+		pushDirection.pushForce.y = getProperty(pushingAreaNode, "pushForceY").toFloat();
 	}
 
 	void TiledParser::loadActivateArea(const Xml& activateAreaNode) const
