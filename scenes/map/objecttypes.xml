@@ -46,11 +46,8 @@
   <property name="isAlreadyDead" type="bool" default="true"/>
  </objecttype>
  <objecttype name="CutScene" color="#ffff00">
-  <property name="cutSceneName" type="string"/>
   <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
- </objecttype>
- <objecttype name="CutSceneArea" color="#ffff00">
-  <property name="cutSceneName" type="string"/>
+  <property name="name" type="string"/>
  </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>
@@ -83,8 +80,22 @@
   <property name="spawnFrequency" type="float" default="3"/>
   <property name="spawnType" type="string" default="zombie"/>
  </objecttype>
- <objecttype name="SpriteNode" color="#454fa4">
-  <property name="texturePath" type="string"/>
+ <objecttype name="Sprite" color="#454fa4">
+  <property name="activeTextureRect" type="bool" default="false"/>
+  <property name="fragmentShaderFilepath" type="string" default="none"/>
+  <property name="rotation" type="float" default="0"/>
+  <property name="rotationOriginX" type="float" default="0"/>
+  <property name="rotationOriginY" type="float" default="0"/>
+  <property name="scaleX" type="float" default="1"/>
+  <property name="scaleY" type="float" default="1"/>
+  <property name="shaderName" type="string" default="none"/>
+  <property name="texturePath" type="string" default="none"/>
+  <property name="textureRectHeight" type="int" default="0"/>
+  <property name="textureRectLeft" type="int" default="0"/>
+  <property name="textureRectTop" type="int" default="0"/>
+  <property name="textureRectWidth" type="int" default="0"/>
+  <property name="vertexShaderFilepath" type="string" default="none"/>
+  <property name="z" type="float" default="0"/>
  </objecttype>
  <objecttype name="Torch" color="#ffff00"/>
  <objecttype name="VelocityChangingArea" color="#5eb825">

@@ -38,7 +38,7 @@ private:
 	EntitiesTemplateStorage& mTemplateStorage;
 	float mTimeFromStart = 0.f;
 	float mTimeFromBreakTimeStart;
-	float mTimeBeforeStartingFirstWave = 10.f;
+	float mTimeBeforeStartingFirstWave = 5.f;
 	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn = 0;
 	int mSlowZombiesToSpawnPerSpawner = 0;

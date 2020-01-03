@@ -7,6 +7,7 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
+#include "ECS/Components/actionComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Resources/animationStatesResources.hpp"
@@ -129,7 +130,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"Car",                         &EntitiesParser::parseCar}
+		{"Car",                         &EntitiesParser::parseCar},
+		{"CutScene",                    &EntitiesParser::parseCutScene}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -161,7 +163,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 		if(mTextureHolder->load(filepath))
 			quad.texture = &mTextureHolder->get(filepath);
 		else
-			PH_EXIT_GAME("EntitiesParser::parseTexture() wasn't able to load texture \"" + filepath + "\"");
+			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load texture \"" + filepath + "\"");
 	}
 	else
 		quad.texture = nullptr;
@@ -181,7 +183,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 		if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
 			quad.shader = sl.get(shaderName);
 		else
-			PH_EXIT_GAME("EntitiesParser::parseShader() wasn't able to load shader!");
+			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
 	}
 	else
 		quad.shader = nullptr;
@@ -206,8 +208,7 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 
 	// parse z
-	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("z"), "Every RenderQuad has to have z atribute!");
-	quad.z = entityComponentNode.getAttribute("z").toUnsignedChar();
+	quad.z = entityComponentNode.hasAttribute("z") ? entityComponentNode.getAttribute("z").toUnsignedChar() : 100;
 
 	// assign component
 	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
@@ -463,6 +464,11 @@ void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity
 void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Car>(entity);
+}
+
+void EntitiesParser::parseCutScene(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign<component::CutScene>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

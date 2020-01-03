@@ -657,12 +657,12 @@
     <property name="areaName" value="openGate"/>
    </properties>
   </object>
-  <object id="172" name="CutSceneArea" type="CutSceneArea" x="1851.25" y="605.333" width="79" height="47">
+  <object id="172" name="Dialogue with gate guard" type="CutScene" x="1851.25" y="605.333" width="79" height="47">
    <properties>
     <property name="cutSceneName" value="gateGuardDialogue"/>
    </properties>
   </object>
-  <object id="199" name="CutSceneArea" type="CutSceneArea" x="1130.25" y="491.917" width="31.3333" height="67.8333">
+  <object id="199" name="Fight tutorial popup" type="CutScene" x="1130.25" y="491.917" width="31.3333" height="67.8333">
    <properties>
     <property name="cutSceneName" value="fightControlsGuide"/>
    </properties>
@@ -730,7 +730,7 @@
   <object id="244" name="SlowZombie" type="SlowZombie" x="1873.83" y="1151">
    <point/>
   </object>
-  <object id="249" name="CutSceneArea" type="CutSceneArea" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
+  <object id="249" name="Movement tutorial popup" type="CutScene" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
    <properties>
     <property name="cutSceneName" value="movementControlsGuide"/>
    </properties>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="5">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="40" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="6">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  </tileset>
- <layer id="11" name="sand'" width="40" height="30">
+ <layer id="15" name="sand'" width="40" height="30">
   <data encoding="csv">
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,
@@ -37,7 +37,7 @@
 69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69
 </data>
  </layer>
- <layer id="12" name="cactuses" width="40" height="30">
+ <layer id="16" name="cactuses" width="40" height="30">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -45,9 +45,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,7,0,0,0,0,0,162,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,39,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -71,21 +71,26 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="2" name="gameObjects" locked="1">
-  <object id="1" type="CutScene" x="234.667" y="194.333">
+ <objectgroup id="2" name="gameObjects">
+  <object id="1" type="CutScene" x="203.167" y="228.833">
    <properties>
-    <property name="cutSceneName" value="subtitlesBeforeStartGameCutscene"/>
     <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
+    <property name="name" value="subtitlesBeforeStartGameCutscene"/>
    </properties>
    <point/>
   </object>
-  <object id="2" type="SpriteNode" x="242.083" y="199.5">
+  <object id="2" type="Sprite" x="242.083" y="199.5">
    <properties>
+    <property name="activeTextureRect" type="bool" value="false"/>
     <property name="texturePath" value="textures/characters/phoneCallPlayer.png"/>
    </properties>
    <point/>
   </object>
-  <object id="3" type="Camera" x="84.3333" y="82.3333" width="320" height="180"/>
+  <object id="3" type="Camera" x="81.3333" y="107.333" width="320" height="180">
+   <properties>
+    <property name="isValid" type="bool" value="true"/>
+   </properties>
+  </object>
   <object id="4" type="Car" x="125.333" y="213.333">
    <properties>
     <property name="acceleration" type="float" value="0"/>

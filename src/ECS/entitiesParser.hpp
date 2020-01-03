@@ -63,6 +63,7 @@ private:
 	void parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBulletBox(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCar(const Xml& entityComponentNode, entt::entity& entity);
+	void parseCutScene(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

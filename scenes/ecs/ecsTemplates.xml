@@ -101,6 +101,11 @@
     <component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0" />
   </entityTemplate>
 
+  <entityTemplate name="CutScene">
+    <component name="BodyRect" x="0" y="0" width="0" height="0" />
+    <component name="CutScene" />
+  </entityTemplate>
+
   <entityTemplate name="Gate">
     <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
     <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />
@@ -200,6 +205,11 @@
     <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="93" rotationOrigin="12, 12"/>
     <component name="HiddenForRenderer" />
     <component name="MeleeProperties" minHitInterval="0.8" rotationRange="100.0" rotationSpeed="270.0" range="27.0" damage="50" />
+  </entityTemplate>
+
+  <entityTemplate name="Sprite">
+    <component name="BodyRect" x="0" y="0" width="0" height="0" />
+    <component name="RenderQuad" />
   </entityTemplate>
 
 </entityTemplates>

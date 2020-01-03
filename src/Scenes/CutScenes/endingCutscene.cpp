@@ -1,7 +1,7 @@
 #include "endingCutscene.hpp"
 #include "GUI/gui.hpp"
 #include "Audio/Music/musicPlayer.hpp"
-//#include "Renderer/camera.hpp"
+#include "Renderer/API/camera.hpp"
 #include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
@@ -18,7 +18,7 @@ EndingCutScene::EndingCutScene(GUI& gui, MusicPlayer& musicPlayer,
 	,mTimesPressedSkip(1)
 {
 	aiManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
-	/*camera.setSize({320, 240});*/
+	camera.setSize({320, 240});
 	ActionEventManager::setEnabled(false);
 	gui.hideInterface("gameplayCounters");
 	initGui();

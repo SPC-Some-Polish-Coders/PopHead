@@ -4,12 +4,12 @@
 
 namespace ph {
 
-class GameData;
+class GUI;
 
 class GateGuardDialogue : public CutScene
 {
 public:
-	GateGuardDialogue(GameData* const gameData);
+	GateGuardDialogue(GUI& gui);
 
 	void update(const sf::Time dt) override;
 
@@ -18,7 +18,7 @@ private:
 	void leaveCutScene();
 
 private:
-	GameData* const mGameData;
+	GUI& mGui;
 	sf::Clock mTimeSinceLastSkipPress;
 	int mTimesPressedSkip;
 	bool mPlayerOnThePosition;

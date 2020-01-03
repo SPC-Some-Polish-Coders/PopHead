@@ -67,7 +67,7 @@ namespace ph::system {
 	{
 		auto view = mRegistry.view<component::Player>();
 		for(auto entity : view)
-			return mRegistry.has<component::TimeToFadeOut>(entity);
+			return mRegistry.has<component::DeadCharacter>(entity);
 		return false;
 	}
 

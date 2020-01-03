@@ -45,7 +45,7 @@ void ZombieSystem::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Velocity, component::AnimationData>
-		(entt::exclude<component::TimeToFadeOut>);
+		(entt::exclude<component::DeadCharacter>);
 	
 	for(auto zombieEntity : zombies)
 	{
