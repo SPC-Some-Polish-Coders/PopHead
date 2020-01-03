@@ -360,13 +360,17 @@ namespace ph {
 			mGameRegistry.assign_or_replace<component::TextureRect>(
 				spriteEntity,
 				IntRect(
-					getProperty(spriteNode, "left").toInt(),
-					getProperty(spriteNode, "top").toInt(),
-					getProperty(spriteNode, "width").toInt(),
-					getProperty(spriteNode, "height").toInt()
+					getProperty(spriteNode, "textureRectLeft").toInt(),
+					getProperty(spriteNode, "textureRectTop").toInt(),
+					getProperty(spriteNode, "textureRectWidth").toInt(),
+					getProperty(spriteNode, "textureRectHeight").toInt()
 				)
 			);
 		}
+
+		// load hidden for renderer
+		if(getProperty(spriteNode, "hiddenForRenderer").toBool())
+			mGameRegistry.assign_or_replace<component::HiddenForRenderer>(spriteEntity);
 
 		// load shader
 		const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
@@ -397,10 +401,7 @@ namespace ph {
 		rq.color = sf::Color::White;
 
 		// load body rect
-		body.rect.setPosition(getPositionAttribute(spriteNode));
-		const float scaleX = getProperty(spriteNode, "scaleX").toFloat();
-		const float scaleY = getProperty(spriteNode, "scaleY").toFloat();
-		body.rect.setSize({(float)rq.texture->getWidth() * scaleX, (float)rq.texture->getHeight() * scaleY});
+		loadPositionAndSize(spriteNode, spriteEntity);
 	}
 
 	void TiledParser::loadTorch(const Xml& torchNode) const

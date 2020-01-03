@@ -82,11 +82,11 @@ void StartGameCutScene::update(const sf::Time dt)
 
 	// CAR SLOWS DOWN
 	cars.each([this](component::Car& car, const component::BodyRect& body) {
-		if(body.rect.left > 5100.f && !mHasStartedToSlowDown) {
+		if(body.rect.left > 5120.f && !mHasStartedToSlowDown) {
 			mSoundPlayer.playAmbientSound("sounds/carTireScreech.ogg");
 			mHasStartedToSlowDown = true;
 		}
-		if(body.rect.left > 5110.f) {
+		if(body.rect.left > 5130.f) {
 			car.shouldSpeedUp = false;
 			car.shouldSlowDown = true;
 		}
@@ -94,10 +94,9 @@ void StartGameCutScene::update(const sf::Time dt)
 
 	// AGENT LEAVES CAR
 	if(mCutsceneTimeInSeconds > 23 && !mWasPlayerCreated) {
-	/*	auto playerNpc = std::make_unique<Npc>(mGameData, "playerNpc");
-		playerNpc->setAnimationState("stayingRight");
-		playerNpc->setPosition({5760, 392});
-		mRoot.addChild(std::move(playerNpc));*/
+		auto agents = mRegistry.view<component::HiddenForRenderer>();
+		for(auto agent : agents)
+			mRegistry.remove<component::HiddenForRenderer>(agent);
 		mWasPlayerCreated = true;
 	}
 
