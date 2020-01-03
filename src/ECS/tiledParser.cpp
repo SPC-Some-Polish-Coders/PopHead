@@ -14,14 +14,17 @@
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
 #include "Events/actionEventManager.hpp"
+#include "Renderer/API/shader.hpp"
 
 namespace ph {
 
-	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager)
+	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
+	                         SceneManager& sceneManager, TextureHolder& textureHolder)
 		:mCutSceneManager(cutSceneManager)
 		,mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
 		,mSceneManager(sceneManager)
+		,mTextureHolder(textureHolder)
 	{
 	}
 
@@ -76,7 +79,6 @@ namespace ph {
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "ActivateArea") loadActivateArea(gameObjectNode);
-			else if (objectType == "CutSceneArea") loadCutScene(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Car") loadCar(gameObjectNode);
@@ -85,7 +87,7 @@ namespace ph {
 			else if (objectType == "CutScene") loadCutScene(gameObjectNode);
 			else if (objectType == "CrawlingNpc") loadCrawlingNpc(gameObjectNode);
 			else if (objectType == "GateGuardNpc") loadGateGuardNpc(gameObjectNode);
-			else if (objectType == "SpriteNode") loadSpriteNode(gameObjectNode);
+			else if (objectType == "Sprite") loadSprite(gameObjectNode);
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
@@ -205,11 +207,9 @@ namespace ph {
 	{
 		const std::string cutSceneName = getProperty(cutSceneNode, "cutSceneName").toString();
 		auto cutSceneEntity = mTemplatesStorage.createCopy("CutScene", mGameRegistry);
-		loadPosition(cutSceneNode, cutSceneEntity);
-		loadSize(cutSceneNode, cutSceneEntity);
+		loadPositionAndOptionalSize(cutSceneNode, cutSceneEntity);
 		auto& cutscene = mGameRegistry.get<component::CutScene>(cutSceneEntity);
-		PH_ASSERT_UNEXPECTED_SITUATION(cutSceneNode.hasAttribute("name"), "Every cutscene must have name!");
-		cutscene.name = cutSceneNode.getAttribute("name").toString();
+		cutscene.name = getProperty(cutSceneNode, "name").toString();
 		cutscene.isStartingCutSceneOnThisMap = getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool();
 	}
 
@@ -329,13 +329,54 @@ namespace ph {
 		loadPosition(medkitItemNode, medkit);
 	}
 
-	void TiledParser::loadSpriteNode(const Xml& spriteNodeNode) const
+	void TiledParser::loadSprite(const Xml& spriteNode) const
 	{
-		/*const std::string texturePath = getProperty(spriteNodeNode, "texturePath").toString();
-		auto spriteNode = std::make_unique<SpriteNode>(mGameData->getTextures().get(texturePath));
-		spriteNode->setPosition(getPositionAttribute(spriteNodeNode));
-		auto* standingObjects = mRoot.getChild("LAYER_standingObjects");
-		standingObjects->addChild(std::move(spriteNode));*/
+		// create sprite entity
+		auto spriteEntity = mTemplatesStorage.createCopy("Sprite", mGameRegistry);
+		auto& [rq, body] = mGameRegistry.get<component::RenderQuad, component::BodyRect>(spriteEntity);
+
+		// load texture
+		const std::string texturePath = getProperty(spriteNode, "texturePath").toString();
+		if(texturePath != "none") {
+			if(mTextureHolder.load(texturePath))
+				rq.texture = &mTextureHolder.get(texturePath);
+			else
+				PH_EXIT_GAME("TiledParser::loadSprite() wasn't able to load texture \"" + texturePath + "\"");
+		}
+
+		// load shader
+		const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
+		if(shaderName != "none") {
+			const std::string vertexShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
+			PH_ASSERT_CRITICAL(vertexShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'vertexShaderFilepath'!");
+			const std::string fragmentShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
+			PH_ASSERT_CRITICAL(fragmentShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'fragmentShaderFilepath'!");
+
+			auto& sl = ShaderLibrary::getInstance();
+			if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
+				rq.shader = sl.get(shaderName);
+			else
+				PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
+		}
+		else
+			rq.shader = nullptr;
+
+		// load rotation and rotation origin
+		rq.rotation = getProperty(spriteNode, "rotation").toFloat();
+		rq.rotationOrigin.x = getProperty(spriteNode, "rotationOriginX").toFloat();
+		rq.rotationOrigin.y = getProperty(spriteNode, "rotationOriginY").toFloat();
+
+		// load z
+		rq.z = getProperty(spriteNode, "z").toFloat();
+
+		// TODO: Load color
+		rq.color = sf::Color::White;
+
+		// load body rect
+		body.rect.setPosition(getPositionAttribute(spriteNode));
+		const float scaleX = getProperty(spriteNode, "scaleX").toFloat();
+		const float scaleY = getProperty(spriteNode, "scaleY").toFloat();
+		body.rect.setSize({(float)rq.texture->getWidth() * scaleX, (float)rq.texture->getHeight() * scaleY});
 	}
 
 	void TiledParser::loadTorch(const Xml& torchNode) const
@@ -374,6 +415,14 @@ namespace ph {
 		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
 		bodyRect.rect.setPosition(getPositionAttribute(entityNode));
 		bodyRect.rect.setSize(getSizeAttribute(entityNode));
+	}
+
+	void TiledParser::loadPositionAndOptionalSize(const Xml& entityNode, entt::entity entity) const
+	{
+		auto& bodyRect = mGameRegistry.get<component::BodyRect>(entity);
+		bodyRect.rect.setPosition(getPositionAttribute(entityNode));
+		if(auto size = getOptionalSizeAttribute(entityNode))
+			bodyRect.rect.setSize(*size);
 	}
 
 	Xml TiledParser::getProperty(const Xml& objectNode, const std::string& propertyName) const
@@ -450,6 +499,15 @@ namespace ph {
 		return sf::Vector2f(
 			DrawableGameObjectNode.getAttribute("width").toFloat(),
 			DrawableGameObjectNode.getAttribute("height").toFloat()
+		);
+	}
+
+	std::optional<sf::Vector2f> TiledParser::getOptionalSizeAttribute(const Xml& gameObjectNode) const
+	{
+		if(gameObjectNode.hasAttribute("witdh") && gameObjectNode.hasAttribute("height"))
+		return sf::Vector2f(
+			gameObjectNode.getAttribute("width").toFloat(),
+			gameObjectNode.getAttribute("height").toFloat()
 		);
 	}
 

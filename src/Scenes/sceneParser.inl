@@ -24,7 +24,7 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 
 	parseEcsEntities(sceneLinksNode, gameData->getAIManager(), templateStorage, gameRegistry, textureHolder);
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);
-	parseMapObjects(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, cutSceneManager, gameData->getSceneManager());
+	parseMapObjects(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, cutSceneManager, gameData->getSceneManager(), textureHolder);
 	parse<GuiParser>(gameData, sceneLinksNode, "gui");	
 	parseAudio(sceneLinksNode, gameData->getSoundPlayer(), gameData->getMusicPlayer());
 	parseAmbientLight(sceneLinksNode);
@@ -95,13 +95,14 @@ void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>::
 
 template<typename GuiParser, typename MapParser, typename ObjectsParser, typename AudioParser, typename EnttParser>
 void SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
-	::parseMapObjects(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, CutSceneManager& cutSceneManager, SceneManager& sceneManager)
+	::parseMapObjects(const Xml& sceneLinksNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates,
+	                  CutSceneManager& cutSceneManager, SceneManager& sceneManager, TextureHolder& textureHolder)
 {
 	const auto categoryNode = sceneLinksNode.getChildren("map");
 	if (categoryNode.size() == 1)
 	{
 		const std::string filePath = "scenes/map/" + categoryNode[0].getAttribute("filename").toString();
-		ObjectsParser objectsParser(cutSceneManager, templates, gameRegistry, sceneManager);
+		ObjectsParser objectsParser(cutSceneManager, templates, gameRegistry, sceneManager, textureHolder);
 		objectsParser.parseFile(filePath);
 		if (objectsParser.hasLoadedPlayer())
 			aiManager.setIsPlayerOnScene(true);

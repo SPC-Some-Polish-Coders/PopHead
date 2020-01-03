@@ -2,6 +2,7 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Scenes/sceneManager.hpp"
+#include "Resources/resourceHolder.hpp"
 #include "Utilities/rect.hpp"
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
@@ -16,7 +17,8 @@ namespace ph {
 	class TiledParser
 	{
 	public:
-		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry, SceneManager& sceneManager);
+		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
+		            SceneManager& sceneManager, TextureHolder& textureHolder);
 
 		void parseFile(const std::string& filePath) const;
 		bool hasLoadedPlayer() const { return mHasLoadedPlayer; }
@@ -43,7 +45,7 @@ namespace ph {
 		void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 		void loadBulletBox(const Xml& bulletItemNode) const;
 		void loadMedkit(const Xml& medkitItemNode) const;
-		void loadSpriteNode(const Xml& spriteNodeNode) const;
+		void loadSprite(const Xml& spriteNodeNode) const;
 		void loadTorch(const Xml& torchNode) const;
 		void loadLightWall(const Xml& wallNode) const;
 
@@ -51,6 +53,7 @@ namespace ph {
 		void loadPosition(const Xml& entityNode, entt::entity entity) const;
 		void loadSize(const Xml& entityNode, entt::entity entity) const;
 		void loadPositionAndSize(const Xml& entityNode, entt::entity entity) const;
+		void loadPositionAndOptionalSize(const Xml& entityNode, entt::entity entity) const;
 
 		Xml getProperty(const Xml& objectNode, const std::string& propertyName) const;
 		bool hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const;
@@ -60,12 +63,14 @@ namespace ph {
 
 		sf::Vector2f getPositionAttribute(const Xml& gameObjectNode) const;
 		sf::Vector2f getSizeAttribute(const Xml& gameObjectNode) const;
+		std::optional<sf::Vector2f> getOptionalSizeAttribute(const Xml& gameObjectNode) const;
 
 	private:
 		CutSceneManager& mCutSceneManager;
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;
+		TextureHolder& mTextureHolder;
 		mutable bool mHasLoadedPlayer = false;
 	};
 
