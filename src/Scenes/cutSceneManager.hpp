@@ -16,6 +16,7 @@ public:
 	void updateCutScene(const sf::Time dt);
 
 	bool isCutSceneActive();
+	bool pausesSystems();
 
 private:
 	std::unique_ptr<CutScene> mActiveCutscene;

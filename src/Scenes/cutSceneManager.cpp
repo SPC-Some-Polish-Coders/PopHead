@@ -22,4 +22,9 @@ bool CutSceneManager::isCutSceneActive()
 	return mActiveCutscene != nullptr && mActiveCutscene->isActive();
 }
 
+bool CutSceneManager::pausesSystems()
+{
+	return mActiveCutscene->pausesSystems();
+}
+
 }

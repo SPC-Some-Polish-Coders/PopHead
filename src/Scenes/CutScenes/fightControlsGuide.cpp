@@ -7,7 +7,8 @@
 namespace ph {
 
 FightControlsGuide::FightControlsGuide(GUI& gui, SceneManager& sceneManager)
-	:mGui(gui)
+	:CutScene(true)
+	,mGui(gui)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {

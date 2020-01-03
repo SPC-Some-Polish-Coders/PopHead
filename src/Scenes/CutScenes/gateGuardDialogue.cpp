@@ -10,7 +10,8 @@
 namespace ph {
 
 GateGuardDialogue::GateGuardDialogue(entt::registry& gameRegistry, GUI& gui)
-	:mRegistry(gameRegistry)
+	:CutScene(false)
+	,mRegistry(gameRegistry)
 	,mGui(gui)
 	,mPlayerOnThePosition(false)
 	,mTimesPressedSkip(1)

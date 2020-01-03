@@ -21,7 +21,7 @@ private:
 	sf::Clock mTimeSinceLastSkipPress;
 	GUI& mGui;
 	SceneManager& mSceneManager;
-	unsigned int mTimesPressedSkip;
+	unsigned mTimesPressedSkip;
 };
 
 }

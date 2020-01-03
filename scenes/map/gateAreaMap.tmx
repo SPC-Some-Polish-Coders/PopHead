@@ -627,7 +627,7 @@
  </layer>
  <objectgroup id="49" name="gameObjects">
   <object id="1" type="Camera" x="730" y="928" width="640" height="360"/>
-  <object id="3" name="Player" type="Player" x="1105.55" y="1186.66">
+  <object id="3" name="Player" type="Player" x="1136.55" y="1176.66">
    <point/>
   </object>
   <object id="82" type="Entrance" x="1701" y="252" width="394.5" height="90">

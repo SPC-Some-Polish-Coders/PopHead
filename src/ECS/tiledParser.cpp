@@ -530,10 +530,12 @@ namespace ph {
 	std::optional<sf::Vector2f> TiledParser::getOptionalSizeAttribute(const Xml& gameObjectNode) const
 	{
 		if(gameObjectNode.hasAttribute("width") && gameObjectNode.hasAttribute("height"))
-		return sf::Vector2f(
-			gameObjectNode.getAttribute("width").toFloat(),
-			gameObjectNode.getAttribute("height").toFloat()
-		);
+			return sf::Vector2f(
+				gameObjectNode.getAttribute("width").toFloat(),
+				gameObjectNode.getAttribute("height").toFloat()
+			);
+		else
+			return std::nullopt;
 	}
 
 }

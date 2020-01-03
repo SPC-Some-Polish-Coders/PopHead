@@ -10,7 +10,8 @@ namespace ph {
 
 EndingCutScene::EndingCutScene(GUI& gui, MusicPlayer& musicPlayer,
                                Camera& camera, AIManager& aiManager, SceneManager& sceneManager)
-	:mGui(gui)
+	:CutScene(false)
+	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
 	,mCamera(camera)
 	,mAIManager(aiManager)
