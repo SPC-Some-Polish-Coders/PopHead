@@ -1,19 +1,28 @@
 #include "gateGuardDialogue.hpp"
 #include "GUI/gui.hpp"
 #include "Events/actionEventManager.hpp"
+#include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/animationComponents.hpp"
 
 namespace ph {
 
-GateGuardDialogue::GateGuardDialogue(GUI& gui)
-	:mGui(gui)
+GateGuardDialogue::GateGuardDialogue(entt::registry& gameRegistry, GUI& gui)
+	:mRegistry(gameRegistry)
+	,mGui(gui)
 	,mPlayerOnThePosition(false)
 	,mTimesPressedSkip(1)
 {
-	//mPlayer = dynamic_cast<Player*>(mGameData->getSceneManager().getScene().getRoot().getChild("LAYER_standingObjects")->getChild("player"));
 	ActionEventManager::setEnabled(false);
 	mGui.hideInterface("gameplayCounters");
-	/*mGameData->getRenderer().getCamera().setSize({320, 240});*/
 	initGui();
+
+	auto cameraView = mRegistry.view<component::Camera>();
+	cameraView.each([](component::Camera& cameraDetails) {
+			cameraDetails.camera.setSize(sf::Vector2f(426.f, 240.f));
+		});
 }
 
 void GateGuardDialogue::initGui()
@@ -56,12 +65,7 @@ void GateGuardDialogue::initGui()
 void GateGuardDialogue::update(const sf::Time dt)
 {
 	if (!mPlayerOnThePosition)
-	{
-		/*if (mPlayer->getPosition().y > 600.f)
-			mPlayer->move(sf::Vector2f(0.f, -20.f * delta.asSeconds()));
-		else
-			mPlayerOnThePosition = true;*/
-	}
+		prepareCutScene(dt.asSeconds());
 
 	// TODO: Use events here
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f)
@@ -182,12 +186,37 @@ void GateGuardDialogue::update(const sf::Time dt)
 	}
 }
 
+void GateGuardDialogue::prepareCutScene(float dt)
+{
+	auto playerView = mRegistry.view<component::Player, component::BodyRect, component::AnimationData>();
+	for (auto player : playerView)
+	{
+		auto& playerBody = playerView.get<component::BodyRect>(player);
+		if (playerBody.rect.top > 600.f)
+			playerBody.rect.top += -20.f * dt;
+		else
+		{
+			auto& animationData = playerView.get<component::AnimationData>(player);
+			animationData.currentStateName = "rightUp";
+			mPlayerOnThePosition = true;
+			auto leverListenerView = mRegistry.view<component::LeverListener>();
+			leverListenerView.each([](component::LeverListener& leverListenerDetails) {
+				leverListenerDetails.isActivated = true;
+				});
+		}
+	}
+}
+
 void GateGuardDialogue::leaveCutScene()
 {
 	ActionEventManager::setEnabled(true);
 	mIsActive = false;
 	mGui.showInterface("gameplayCounters");
-	/*mGameData->getRenderer().getCamera().setSize({640, 480});*/
+	auto cameraView = mRegistry.view<component::Camera>();
+
+	cameraView.each([](component::Camera& cameraDetails) {
+		cameraDetails.camera.setSize(sf::Vector2f(640.f, 360.f));
+		});
 }
 
 }

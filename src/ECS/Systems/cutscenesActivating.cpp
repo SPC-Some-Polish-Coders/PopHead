@@ -39,7 +39,7 @@ void CutScenesActivating::update(float dt)
 	cutscenes.each([this, playerBodyRect](component::CutScene& cutscene, const component::BodyRect& body) {
 		if(cutscene.wasActivated)
 			return;
-		if(cutscene.isStartingCutSceneOnThisMap || body.rect.doPositiveRectsIntersect(playerBodyRect)) {
+		if(cutscene.isStartingCutSceneOnThisMap || body.rect.contains(playerBodyRect.getCenter())) {
 			cutscene.wasActivated = true;
 			activateCutscene(cutscene.name);
 		}
@@ -61,7 +61,7 @@ void CutScenesActivating::activateCutscene(const std::string& name) const
 		mCutSceneManager.activateCutscene(std::make_unique<MovementContolsGuide>(mGui, mSceneManager));
 	}
 	else if(name == "gateGuardDialogue") {
-		mCutSceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mGui));
+		mCutSceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mRegistry, mGui));
 	}
 	else if(name == "endingDialogue") {
 		/*auto cameras = mRegistry.view<component::Camera, component::BodyRect>();
