@@ -939,9 +939,9 @@
   <object id="469" name="Zombie" type="Zombie" x="618" y="1201">
    <point/>
   </object>
-  <object id="470" type="CutSceneArea" x="818.008" y="354.159" width="28.7579" height="26">
+  <object id="470" type="CutScene" x="818.008" y="354.159" width="28.7579" height="26">
    <properties>
-    <property name="cutSceneName" value="endingDialogue"/>
+    <property name="name" value="endingDialogue"/>
    </properties>
   </object>
   <object id="471" type="Npc" x="852.856" y="356.159">

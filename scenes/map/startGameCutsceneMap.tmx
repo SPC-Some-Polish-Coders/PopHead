@@ -112,19 +112,24 @@
 </data>
  </layer>
  <objectgroup id="19" name="gameObjects">
-  <object id="1" type="Camera" x="2.1212" y="199.636" width="640" height="360"/>
+  <object id="1" type="Camera" x="2.1212" y="199.636" width="640" height="360">
+   <properties>
+    <property name="isValid" type="bool" value="true"/>
+   </properties>
+  </object>
   <object id="2" name="Player's car" type="Car" x="320.5" y="384.894">
    <properties>
     <property name="acceleration" type="float" value="16"/>
     <property name="directionX" type="float" value="1"/>
     <property name="slowingDown" type="float" value="150"/>
+    <property name="velocity" type="float" value="120"/>
    </properties>
    <point/>
   </object>
   <object id="3" name="startGameCutScene" type="CutScene" x="317.333" y="279.061">
    <properties>
-    <property name="cutSceneName" value="startGameCutScene"/>
     <property name="isStartingCutSceneOnThisMap" type="bool" value="true"/>
+    <property name="name" value="startGameCutScene"/>
    </properties>
    <point/>
   </object>

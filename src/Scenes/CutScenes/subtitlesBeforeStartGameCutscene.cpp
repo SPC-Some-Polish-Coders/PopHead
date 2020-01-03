@@ -37,6 +37,11 @@ SubtitlesBeforeStartGameCutscene::SubtitlesBeforeStartGameCutscene(SceneManager&
 
 void SubtitlesBeforeStartGameCutscene::update(sf::Time dt)
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		mIsActive = false;
+		mSceneManager.replaceScene("scenes/startGameCutscene.xml");
+	}
+
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mClock.getElapsedTime().asSeconds() > 0.3f)
 	{
 		mClock.restart();
