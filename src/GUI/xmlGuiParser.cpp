@@ -68,6 +68,9 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 		widget.scale(getVector(widgetTag, "scale"));
 	if (widgetTag.hasAttribute("alpha"))
 		widget.setAlpha(widgetTag.getAttribute("alpha").toUnsigned());
+	if (widgetTag.hasAttribute("hide"))
+		if (widgetTag.getAttribute("hide").toBool())
+			widget.hide();
 		
 	if (mActionsParser)
 	{
