@@ -7,7 +7,6 @@
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
-#include <iostream>
 
 namespace ph {
 

@@ -8,7 +8,6 @@
 #include "Utilities/math.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/profiling.hpp"
-#include <iostream>
 
 namespace ph::system {
 
