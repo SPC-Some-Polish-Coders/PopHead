@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 namespace ph::OpenGLErrors
 {
 #ifndef PH_DISTRIBUTION

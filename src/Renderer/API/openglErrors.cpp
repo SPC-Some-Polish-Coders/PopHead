@@ -1,5 +1,6 @@
 #include "openglErrors.hpp"
 #include "GL/glew.h"
+#include <iostream>
 
 namespace ph::OpenGLErrors {
 
