@@ -91,7 +91,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"BodyRect",			        &EntitiesParser::parseBodyRect},
 		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
-		{"BlocksLight",			  	    &EntitiesParser::parseBlocksLight},
+		{"LightWall",			  	    &EntitiesParser::parseLightWall},
 		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
 		{"Hint",			  			&EntitiesParser::parseHint},
 		{"CharacterSpeed",		  	    &EntitiesParser::parseCharacterSpeed},
@@ -224,9 +224,20 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
 }
 
-void EntitiesParser::parseBlocksLight(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::BlocksLight>(entity);
+	FloatRect rect;
+	if(entityComponentNode.hasAttribute("x"))
+		rect = FloatRect(
+			entityComponentNode.getAttribute("x").toFloat(),
+			entityComponentNode.getAttribute("y").toFloat(),
+			entityComponentNode.getAttribute("width").toFloat(),
+			entityComponentNode.getAttribute("height").toFloat()
+		);
+	else
+		rect = FloatRect(-1.f, -1.f, -1.f, -1.f);
+
+	mUsedRegistry->assign_or_replace<component::LightWall>(entity, rect);
 }
 
 void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
@@ -427,6 +438,9 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 		else if(name == "lifetime") {
 			emitter.parWholeLifetime = attrib.getAttribute("v").toFloat();
+		}
+		else if(name == "z") {
+			emitter.parZ = attrib.getAttribute("v").toUnsignedChar();
 		}
 		else if(name == "isEmitting") {
 			emitter.isEmitting = attrib.getAttribute("v").toBool();

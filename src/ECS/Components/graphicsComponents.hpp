@@ -40,8 +40,9 @@ namespace component {
 		unsigned priority; // greater number - greater priority, lesser number - lesser priority
 	};
 
-	struct BlocksLight
+	struct LightWall
 	{
+		FloatRect rect;
 	};
 
 	struct LightSource

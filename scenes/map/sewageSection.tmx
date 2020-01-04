@@ -725,7 +725,7 @@
   <object id="21" type="Lever" x="641.5" y="485">
    <point/>
   </object>
-  <object id="34" type="PushingArea" x="225" y="1230.16" width="176.667" height="1012.97">
+  <object id="34" type="FlowingRiver" x="231.667" y="1230.16" width="165.334" height="1012.97">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-115"/>
@@ -839,19 +839,19 @@
   <object id="298" type="LightWall" x="989.625" y="1964.96" width="94.0837" height="18.7502"/>
   <object id="299" type="LightWall" x="1071.46" y="2077.46" width="221.084" height="17.7503"/>
   <object id="300" type="LightWall" x="1070.29" y="2159.79" width="223.084" height="17.7503"/>
-  <object id="303" type="PushingArea" x="227" y="743.65" width="176.667" height="333.405">
+  <object id="303" type="FlowingRiver" x="231" y="743.65" width="165.334" height="333.405">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-105"/>
    </properties>
   </object>
-  <object id="305" type="PushingArea" x="368.334" y="1077.24" width="31.5003" height="151.762">
+  <object id="305" type="FlowingRiver" x="368.334" y="1077.24" width="28.167" height="151.762">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-120"/>
    </properties>
   </object>
-  <object id="306" type="PushingArea" x="229" y="1078.16" width="29.0003" height="151.823">
+  <object id="306" type="FlowingRiver" x="233" y="1078.16" width="25.0003" height="151.823">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-120"/>
@@ -874,7 +874,7 @@
   <object id="327" type="BulletBox" x="387" y="1122.83">
    <point/>
   </object>
-  <object id="329" type="PushingArea" x="272.875" y="639.323" width="79.667" height="16.6858">
+  <object id="329" type="FlowingRiver" x="272.875" y="639.323" width="79.667" height="16.6858">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-60"/>
@@ -965,7 +965,7 @@
    </properties>
    <point/>
   </object>
-  <object id="380" type="PushingArea" x="304.875" y="624.323" width="13.5761" height="13.1858">
+  <object id="380" type="FlowingRiver" x="304.875" y="624.323" width="13.5761" height="13.1858">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-40"/>
@@ -1004,7 +1004,7 @@
   <object id="386" type="Zombie" x="282.833" y="373.5">
    <point/>
   </object>
-  <object id="389" type="PushingArea" x="227.375" y="658.323" width="172.167" height="85.6858">
+  <object id="389" type="FlowingRiver" x="232.042" y="658.323" width="164.834" height="85.6858">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-100"/>
@@ -1064,8 +1064,9 @@
   <object id="430" type="Gate" x="541" y="595.5">
    <point/>
   </object>
-  <object id="431" type="PushingArea" x="542" y="407.65" width="34.667" height="930.905">
+  <object id="431" type="FlowingRiver" x="542" y="407.65" width="34.667" height="930.905">
    <properties>
+    <property name="particleAmountMultiplier" type="float" value="1.7"/>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-150"/>
    </properties>

@@ -49,6 +49,7 @@ namespace ph {
 		void loadSprite(const Xml& spriteNodeNode) const;
 		void loadTorch(const Xml& torchNode) const;
 		void loadLightWall(const Xml& wallNode) const;
+		void loadFlowingRiver(const Xml& flowingRiverNode) const;
 
 		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
 		void loadPosition(const Xml& entityNode, entt::entity entity) const;

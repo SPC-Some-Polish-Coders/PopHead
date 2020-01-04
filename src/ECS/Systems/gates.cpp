@@ -25,13 +25,13 @@ void Gates::update(float dt)
 			if (gateDetails.isOpened)
 			{
 				mRegistry.remove<component::StaticCollisionBody>(gate);
-				mRegistry.remove<component::BlocksLight>(gate);
+				mRegistry.remove<component::LightWall>(gate);
 				mRegistry.assign_or_replace<component::HiddenForRenderer>(gate);
 			}
 			else
 			{
 				mRegistry.assign_or_replace<component::StaticCollisionBody>(gate);
-				mRegistry.assign_or_replace<component::BlocksLight>(gate);
+				mRegistry.assign_or_replace<component::LightWall>(gate);
 				mRegistry.remove<component::HiddenForRenderer>(gate);
 			}
 		}
