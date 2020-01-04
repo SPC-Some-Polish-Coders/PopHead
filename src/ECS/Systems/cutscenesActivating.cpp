@@ -5,9 +5,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
-#include "Scenes/CutScenes/fightControlsGuide.hpp"
 #include "Scenes/CutScenes/gateGuardDialogue.hpp"
-#include "Scenes/CutScenes/movementControlsGuide.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 
@@ -53,12 +51,6 @@ void CutScenesActivating::activateCutscene(const std::string& name) const
 	}
 	else if(name == "startGameCutScene") {
 		mCutSceneManager.activateCutscene(std::make_unique<StartGameCutScene>(mRegistry, mSoundPlayer, mMusicPlayer, mGui, mSceneManager));
-	}
-	else if(name == "fightControlsGuide") {
-		mCutSceneManager.activateCutscene(std::make_unique<FightControlsGuide>(mGui, mSceneManager));
-	}
-	else if(name == "movementControlsGuide") {
-		mCutSceneManager.activateCutscene(std::make_unique<MovementContolsGuide>(mGui, mSceneManager));
 	}
 	else if(name == "gateGuardDialogue") {
 		mCutSceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mRegistry, mGui));
