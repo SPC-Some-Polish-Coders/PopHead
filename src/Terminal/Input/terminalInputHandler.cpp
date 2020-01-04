@@ -15,84 +15,49 @@ TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData
 
 void TerminalInputHandler::handleEvent(const sf::Event& e)
 {
-	if(e.type != sf::Event::KeyPressed)
-		return;
-
-	if(e.key.code == sf::Keyboard::Tab && e.key.control) {
-		showOrHideCommandPrompt();
-		return;
+	if(mTerminalSharedData->mIsVisible && e.type == sf::Event::TextEntered)
+	{
+		char key = static_cast<char>(e.text.unicode);
+		if (!iscntrl(key))
+			mContent += key;
 	}
 
-	if(mTerminalSharedData->mIsVisible)
+	if (e.type == sf::Event::KeyPressed)
 	{
-		switch(e.key.code)
+		switch (e.key.code)
 		{
-			case sf::Keyboard::A: mContent += "a"; break;
-			case sf::Keyboard::B: mContent += "b"; break;
-			case sf::Keyboard::C: mContent += "c"; break;
-			case sf::Keyboard::D: mContent += "d"; break;
-			case sf::Keyboard::E: mContent += "e"; break;
-			case sf::Keyboard::F: mContent += "f"; break;
-			case sf::Keyboard::G: mContent += "g"; break;
-			case sf::Keyboard::H: mContent += "h"; break;
-			case sf::Keyboard::I: mContent += "i"; break;
-			case sf::Keyboard::J: mContent += "j"; break;
-			case sf::Keyboard::K: mContent += "k"; break;
-			case sf::Keyboard::L: mContent += "l"; break;
-			case sf::Keyboard::M: mContent += "m"; break;
-			case sf::Keyboard::N: mContent += "n"; break;
-			case sf::Keyboard::O: mContent += "o"; break;
-			case sf::Keyboard::P: mContent += "p"; break;
-			case sf::Keyboard::Q: mContent += "q"; break;
-			case sf::Keyboard::R: mContent += "r"; break;
-			case sf::Keyboard::S: mContent += "s"; break;
-			case sf::Keyboard::T: mContent += "t"; break;
-			case sf::Keyboard::U: mContent += "u"; break;
-			case sf::Keyboard::V: mContent += "v"; break;
-			case sf::Keyboard::W: mContent += "w"; break;
-			case sf::Keyboard::X: mContent += "x"; break;
-			case sf::Keyboard::Y: mContent += "y"; break;
-			case sf::Keyboard::Z: mContent += "z"; break;
-			case sf::Keyboard::Num1: mContent += "1"; break;
-			case sf::Keyboard::Num2: mContent += "2"; break;
-			case sf::Keyboard::Num3: mContent += "3"; break;
-			case sf::Keyboard::Num4: mContent += "4"; break;
-			case sf::Keyboard::Num5: mContent += "5"; break;
-			case sf::Keyboard::Num6: mContent += "6"; break;
-			case sf::Keyboard::Num7: mContent += "7"; break;
-			case sf::Keyboard::Num8: mContent += "8"; break;
-			case sf::Keyboard::Num9: mContent += "9"; break;
-			case sf::Keyboard::Num0: mContent += "0"; break;
-			case sf::Keyboard::Hyphen: mContent += "-"; break;
-			case sf::Keyboard::Space: mContent += " "; break;
+		case sf::Keyboard::Tab: 
+			if(e.key.control)
+				showOrHideCommandPrompt();
+			break;
 
-			case sf::Keyboard::BackSpace:
-				if(mContent.size() > 0)
-					mContent.pop_back();
-				break;
+		case sf::Keyboard::BackSpace:
+			if (mContent.size() > 0)
+				mContent.pop_back();
+			break;
 
-			case sf::Keyboard::Enter:
-				mIsEnterClicked = true;
-				updateLastCommands();
-				break;
+		case sf::Keyboard::Enter:
+			mIsEnterClicked = true;
+			updateLastCommands();
+			break;
 
-			case sf::Keyboard::Up:
-				if(mIndexOfCurrentLastCommand + 1 < static_cast<int>(mTerminalSharedData->mLastCommands.size()))
-				{
-					++mIndexOfCurrentLastCommand;
-					if(mIndexOfCurrentLastCommand >= 0)
-						mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
-				}
-				break;
-			case sf::Keyboard::Down:
-				if(mIndexOfCurrentLastCommand > -1)
-				{
-					--mIndexOfCurrentLastCommand;
-					if(mIndexOfCurrentLastCommand == -1)
-						mContent.clear();
-					else
-						mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
-				}
+		case sf::Keyboard::Up:
+			if (mIndexOfCurrentLastCommand + 1 < static_cast<int>(mTerminalSharedData->mLastCommands.size()))
+			{
+				++mIndexOfCurrentLastCommand;
+				if (mIndexOfCurrentLastCommand >= 0)
+					mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
+			}
+			break;
+		case sf::Keyboard::Down:
+			if (mIndexOfCurrentLastCommand > -1)
+			{
+				--mIndexOfCurrentLastCommand;
+				if (mIndexOfCurrentLastCommand == -1)
+					mContent.clear();
+				else
+					mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
+			}
 		}
 	}
 }
