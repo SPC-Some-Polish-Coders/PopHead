@@ -5,21 +5,24 @@
 #include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 
 namespace ph {
 
-EndingCutScene::EndingCutScene(GUI& gui, MusicPlayer& musicPlayer,
-                               Camera& camera, AIManager& aiManager, SceneManager& sceneManager)
+EndingCutScene::EndingCutScene(entt::registry& registry, GUI& gui, MusicPlayer& musicPlayer, AIManager& aiManager, SceneManager& sceneManager)
 	:CutScene(false)
+	,mRegistry(registry)
 	,mGui(gui)
 	,mMusicPlayer(musicPlayer)
-	,mCamera(camera)
 	,mAIManager(aiManager)
 	,mSceneManager(sceneManager)
 	,mTimesPressedSkip(1)
 {
 	aiManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
-	camera.setSize({320, 240});
+	auto cameras = mRegistry.view<component::Camera>();
+	cameras.each([](component::Camera& camera) {
+		camera.camera.setSize({320, 180});
+	});
 	ActionEventManager::setEnabled(false);
 	gui.hideInterface("gameplayCounters");
 	initGui();

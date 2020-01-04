@@ -73,7 +73,6 @@ namespace ph {
 			else if (objectType == "SlowZombie") loadZombie(gameObjectNode, "SlowZombie");
 			else if (objectType == "Player") loadPlayer(gameObjectNode);
 			else if (objectType == "Camera") loadCamera(gameObjectNode);
-			else if (objectType == "Npc") loadNpc(gameObjectNode);
 			else if (objectType == "BulletBox") loadBulletBox(gameObjectNode);
 			else if (objectType == "Medkit") loadMedkit(gameObjectNode);
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
@@ -100,13 +99,6 @@ namespace ph {
 		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
 		loadPosition(zombieNode, zombie);
 		loadHealthComponent(zombieNode, zombie);
-	}
-
-	void TiledParser::loadNpc(const Xml& npcNode) const
-	{
-		auto npc = mTemplatesStorage.createCopy("Npc", mGameRegistry);
-		loadPosition(npcNode, npc);
-		loadHealthComponent(npcNode, npc);
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const

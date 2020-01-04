@@ -68,12 +68,6 @@
   <property name="lootType" type="string" default="bullets"/>
  </objecttype>
  <objecttype name="Medkit" color="#aaffff"/>
- <objecttype name="Npc" color="#ffff00">
-  <property name="hp" type="file" default="50"/>
-  <property name="maxHp" type="file" default="50"/>
-  <property name="shouldAnimate" type="bool" default="true"/>
-  <property name="textureFileName" type="string" default="negroDudeWalkingAnimation.png"/>
- </objecttype>
  <objecttype name="Player" color="#55ffff">
   <property name="hasFlashlight" type="bool" default="false"/>
  </objecttype>
