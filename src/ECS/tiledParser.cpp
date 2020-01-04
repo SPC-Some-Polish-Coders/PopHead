@@ -5,6 +5,7 @@
 #include "Components/graphicsComponents.hpp"
 #include "Components/objectsComponents.hpp"
 #include "Components/itemComponents.hpp"
+#include "Components/particleComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -89,6 +90,7 @@ namespace ph {
 			else if (objectType == "Sprite") loadSprite(gameObjectNode);
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
+			else if (objectType == "FlowingRiver") loadFlowingRiver(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
 		}
 	}
@@ -400,6 +402,28 @@ namespace ph {
 	{
 		auto entity = mTemplatesStorage.createCopy("LightWall", mGameRegistry);
 		loadPositionAndSize(wallNode, entity);
+	}
+
+	void TiledParser::loadFlowingRiver(const Xml& flowingRiverNode) const
+	{
+		auto entity = mTemplatesStorage.createCopy("FlowingRiver", mGameRegistry);
+		auto& [pushingArea, particleEmitter, body] = mGameRegistry.get<component::PushingArea, component::ParticleEmitter, component::BodyRect>(entity);
+		body.rect.setPosition(getPositionAttribute(flowingRiverNode));
+		const sf::Vector2f size = getSizeAttribute(flowingRiverNode);
+		body.rect.setSize(size);
+		const sf::Vector2f pushForce(
+			getProperty(flowingRiverNode, "pushForceX").toFloat(),
+			getProperty(flowingRiverNode, "pushForceY").toFloat()
+		);
+		PH_ASSERT_CRITICAL(pushForce.x == 0.f || pushForce.y == 0.f, "We don't support diagonal flowing rivers! - Either pushForceX or pushForceY must be zero.");
+		pushingArea.pushForce = pushForce;
+		const float particleAmountMultiplier = getProperty(flowingRiverNode, "particleAmountMultiplier").toFloat();
+		particleEmitter.amountOfParticles = particleAmountMultiplier * size.x * size.y / 100.f;
+		particleEmitter.parInitialVelocity = pushForce;
+		particleEmitter.parInitialVelocityRandom = pushForce;
+		particleEmitter.spawnPositionOffset = pushForce.x == 0.f ? sf::Vector2f(0.f, size.y) : sf::Vector2f(size.x, 0.f);
+		particleEmitter.randomSpawnAreaSize = pushForce.x == 0.f ? sf::Vector2f(size.x, 0.f) : sf::Vector2f(0.f, size.y);
+		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
 	}
 
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const

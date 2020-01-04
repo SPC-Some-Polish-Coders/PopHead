@@ -60,8 +60,8 @@ namespace ph::system {
 				component::ParticleEmitter bloodParEmitter;
 
 				bloodParEmitter.oneShot = true;
-				bloodParEmitter.parInitialVelocity = {-1.f, -1.f};
-				bloodParEmitter.parInitialVelocityRandom = {1.f, 1.f};
+				bloodParEmitter.parInitialVelocity = {-60.f, -60.f};
+				bloodParEmitter.parInitialVelocityRandom = {60.f, 60.f};
 				bloodParEmitter.parSize = {4.f, 4.f};
 				bloodParEmitter.parStartColor = sf::Color::Red;
 				bloodParEmitter.parEndColor = sf::Color(255, 0, 0, 100);

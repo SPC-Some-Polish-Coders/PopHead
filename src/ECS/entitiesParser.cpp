@@ -420,6 +420,9 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		else if(name == "lifetime") {
 			emitter.parWholeLifetime = attrib.getAttribute("v").toFloat();
 		}
+		else if(name == "z") {
+			emitter.parZ = attrib.getAttribute("v").toUnsignedChar();
+		}
 		else if(name == "isEmitting") {
 			emitter.isEmitting = attrib.getAttribute("v").toBool();
 		}

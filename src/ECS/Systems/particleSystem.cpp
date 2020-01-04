@@ -105,7 +105,7 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 		// update particle
 		particle.lifetime += dt;
 		particle.velocity += emi.parAcceleration * dt;
-		particle.position += particle.velocity;
+		particle.position += particle.velocity * dt;
 
 		// compute current particle color
 		sf::Color color = emi.parStartColor;
@@ -120,11 +120,11 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 
 		// submit particle to renderer
 		if(emi.parTexture)
-			Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, {});
+			Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, emi.parZ, 0.f, {});
 		else if(emi.parSize.x != emi.parSize.y)
-			Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, 0, 0.f, {});
+			Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, emi.parZ, 0.f, {});
 		else
-			Renderer::submitPoint(particle.position, color, 0, emi.parSize.x);
+			Renderer::submitPoint(particle.position, color, emi.parZ, emi.parSize.x);
 	}
 }
 

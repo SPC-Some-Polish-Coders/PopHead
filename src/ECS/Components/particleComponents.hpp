@@ -32,6 +32,7 @@ struct ParticleEmitter
 	unsigned amountOfParticles = 1;
 	unsigned amountOfAlreadySpawnParticles = 0;
 	float parWholeLifetime = 1.f;
+	unsigned char parZ = 100;
 	bool oneShot = false;
 	bool isEmitting = true;
 	bool wasInitialized = false;
