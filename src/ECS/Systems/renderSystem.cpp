@@ -50,10 +50,13 @@ void RenderSystem::update(float dt)
 	});
 
 	//submit light walls
-	auto lightWalls = mRegistry.view<component::BlocksLight, component::BodyRect>();
-	lightWalls.each([](const component::BlocksLight, const component::BodyRect& body) 
+	auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
+	lightWalls.each([](const component::LightWall& bl, const component::BodyRect& body) 
 	{
-		Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
+		if(bl.rect.top == -1.f)
+			Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
+		else
+			Renderer::submitLightBlockingQuad(body.rect.getTopLeft() + bl.rect.getTopLeft(), bl.rect.getSize());
 	});
 
 	// submit map chunks

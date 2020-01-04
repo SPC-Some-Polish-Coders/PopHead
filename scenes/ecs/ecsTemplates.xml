@@ -110,7 +110,7 @@
     <component name="BodyRect" x="70.0" y="2.0" width="40" height="13" />
     <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />
     <component name="TextureRect" x="0" y="4" width="32" height="12" />
-    <component name="BlocksLight"/>
+    <component name="LightWall" x="0" y="0" width="40" height="1"/>
     <component name="Gate" isOpened="false" />
     <component name="StaticCollisionBody" />
     <component name="LeverListener" observedLeverId="0"/>
@@ -154,7 +154,7 @@
 
   <entityTemplate name="LightWall">
     <component name="BodyRect" x="0" y="0" width="0" height="0"/>
-    <component name="BlocksLight"/>
+    <component name="LightWall"/>
   </entityTemplate>
 
   <entityTemplate name="Lever">

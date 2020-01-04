@@ -418,7 +418,7 @@ namespace ph {
 		PH_ASSERT_CRITICAL(pushForce.x == 0.f || pushForce.y == 0.f, "We don't support diagonal flowing rivers! - Either pushForceX or pushForceY must be zero.");
 		pushingArea.pushForce = pushForce;
 		const float particleAmountMultiplier = getProperty(flowingRiverNode, "particleAmountMultiplier").toFloat();
-		particleEmitter.amountOfParticles = particleAmountMultiplier * size.x * size.y / 100.f;
+		particleEmitter.amountOfParticles = static_cast<unsigned>(particleAmountMultiplier * size.x * size.y / 100.f);
 		particleEmitter.parInitialVelocity = pushForce;
 		particleEmitter.parInitialVelocityRandom = pushForce;
 		particleEmitter.spawnPositionOffset = pushForce.x == 0.f ? sf::Vector2f(0.f, size.y) : sf::Vector2f(size.x, 0.f);
