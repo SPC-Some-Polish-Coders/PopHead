@@ -25,16 +25,12 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	// choose camera with the biggest priority
+	// get current camera
 	auto cameras = mRegistry.view<component::Camera>();
-	unsigned currentCameraPriority = 0;
 	Camera* currentCamera = &defaultCamera;
-	cameras.each([&currentCameraPriority, &currentCamera](component::Camera& camera)
-	{
-		if(camera.priority >= currentCameraPriority) {
-			currentCameraPriority = camera.priority;
+	cameras.each([&currentCamera](component::Camera& camera) {
+		if(camera.name == component::Camera::currentCameraName)
 			currentCamera = &camera.camera;
-		}
 	});
 
 	// begin scene

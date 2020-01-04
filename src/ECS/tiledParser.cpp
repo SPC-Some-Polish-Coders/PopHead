@@ -245,10 +245,11 @@ namespace ph {
 		if(getProperty(cameraNode, "isValid").toBool()) {
 			auto cameraEntity = mTemplatesStorage.createCopy("Camera", mGameRegistry);
 			auto& camera = mGameRegistry.get<component::Camera>(cameraEntity);
-			sf::Vector2f size = getSizeAttribute(cameraNode);
-			camera.camera.setSize(size);
-			camera.camera.setCenter(getPositionAttribute(cameraNode) + (size / 2.f));
-			camera.priority = getProperty(cameraNode, "priority").toUnsigned();
+			const sf::Vector2f pos = getPositionAttribute(cameraNode);
+			const sf::Vector2f size = getSizeAttribute(cameraNode);
+			const sf::Vector2f center(pos + (size / 2.f));
+			camera.camera = Camera(center, size);
+			camera.name = getProperty(cameraNode, "name").toString();
 		}
 	}
 

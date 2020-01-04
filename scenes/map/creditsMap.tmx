@@ -85,7 +85,6 @@
   <object id="2" type="Camera" x="71" y="46" width="640" height="360">
    <properties>
     <property name="isValid" type="bool" value="true"/>
-    <property name="priority" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

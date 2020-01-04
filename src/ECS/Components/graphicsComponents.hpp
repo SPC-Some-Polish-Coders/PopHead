@@ -37,7 +37,9 @@ namespace component {
 	struct Camera
 	{
 		ph::Camera camera;
-		unsigned priority; // greater number - greater priority, lesser number - lesser priority
+		std::string name;
+
+		inline static std::string currentCameraName;
 	};
 
 	struct LightWall

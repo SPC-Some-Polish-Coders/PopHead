@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
-    <interface name="labels">
+    <interface name="labels" hide="true" >
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
 		        <textWidget name="place"     origin="0.5" position="0.1,  0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text="Nevada, near to Rochester town"/>
             <textWidget name="time"      origin="0.5" position="0.14, 0.1" fontPath="fonts/joystixMonospace.ttf" characterSize="20" color="black" text="13th july of 2044 - 12:09 PM "/>

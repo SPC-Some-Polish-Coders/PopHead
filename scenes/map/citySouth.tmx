@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="497">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="498">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -1011,7 +1011,7 @@
   <object id="495" type="SlowZombie" x="980" y="818">
    <point/>
   </object>
-  <object id="496" type="Sprite" x="852.909" y="355.636" width="20" height="20">
+  <object id="496" type="Sprite" x="854.242" y="350.47" width="20" height="20">
    <properties>
     <property name="activeTextureRect" type="bool" value="true"/>
     <property name="texturePath" value="textures/characters/dudeWithCapWalkingAnimation.png"/>
@@ -1019,6 +1019,12 @@
     <property name="textureRectTop" type="int" value="20"/>
     <property name="textureRectWidth" type="int" value="20"/>
     <property name="z" type="float" value="95"/>
+   </properties>
+  </object>
+  <object id="497" type="Camera" x="687.545" y="258.295" width="320" height="180">
+   <properties>
+    <property name="isValid" type="bool" value="true"/>
+    <property name="name" value="endingCutScene"/>
    </properties>
   </object>
  </objectgroup>

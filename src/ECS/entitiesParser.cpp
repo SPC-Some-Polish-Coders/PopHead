@@ -556,12 +556,13 @@ void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt
 
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
 {
-	const float x = entityComponentNode.getAttribute("x").toFloat();
-	const float y = entityComponentNode.getAttribute("y").toFloat();
-	const float width = entityComponentNode.getAttribute("width").toFloat();
-	const float height = entityComponentNode.getAttribute("height").toFloat();
-	const unsigned priority = entityComponentNode.getAttribute("priority").toUnsigned();
-	mUsedRegistry->assign_or_replace<component::Camera>(entity, Camera({x, y, width, height}), priority);
+	component::Camera camera;
+	sf::Vector2f size(entityComponentNode.getAttribute("width").toFloat(), entityComponentNode.getAttribute("height").toFloat());
+	sf::Vector2f center(entityComponentNode.getAttribute("x").toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y").toFloat() + (size.y / 2.f));
+	camera.camera = Camera(center, size);
+	camera.name = entityComponentNode.getAttribute("cameraName").toString();
+	mUsedRegistry->assign_or_replace<component::Camera>(entity, camera);
+	component::Camera::currentCameraName = "default";
 }
 
 void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::entity& entity)

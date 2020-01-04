@@ -1,7 +1,7 @@
 <entityTemplates>
 
   <entityTemplate name="Camera">
-    <component name="Camera" priority="0" x="0" y="0" width="640" height="360" />
+    <component name="Camera" priority="0" x="0" y="0" cameraName="" width="640" height="360" />
   </entityTemplate>
 
   <entityTemplate name="ArcadeSpawner">
@@ -35,7 +35,7 @@
     <component name="CharacterSpeed" speed="100" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingVelocity" vel="0, 0" />
-    <component name="Camera" priority="1" x="0" y="0" width="640" height="360" />
+    <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="94" />

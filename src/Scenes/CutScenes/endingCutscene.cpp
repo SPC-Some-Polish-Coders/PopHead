@@ -20,9 +20,7 @@ EndingCutScene::EndingCutScene(entt::registry& registry, GUI& gui, MusicPlayer& 
 {
 	aiManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
 	auto cameras = mRegistry.view<component::Camera>();
-	cameras.each([](component::Camera& camera) {
-		camera.camera.setSize({320, 180});
-	});
+	component::Camera::currentCameraName = "endingCutScene";
 	ActionEventManager::setEnabled(false);
 	gui.hideInterface("gameplayCounters");
 	initGui();
