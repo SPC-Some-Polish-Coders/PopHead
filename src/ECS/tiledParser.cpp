@@ -173,14 +173,11 @@ namespace ph {
 		loadPosition(entranceNode, entrance);
 		loadSize(entranceNode, entrance);
 
-		if (getProperty(entranceNode, "isEntranceWithCustomPosition").toBool())
-		{
-			sf::Vector2f positionToGo(
+		if (getProperty(entranceNode, "isEntranceWithCustomPosition").toBool()) {
+			entranceComponent.playerSpawnPosition = sf::Vector2f(
 				getProperty(entranceNode, "gotoX").toFloat(),
 				getProperty(entranceNode, "gotoY").toFloat()
 			);
-
-			// TODO: add optional position to component
 		}
 	}
 
