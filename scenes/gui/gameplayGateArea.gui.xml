@@ -53,19 +53,37 @@
     </interface>
     <interface name="hints" hide="true">
         <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <widget name="smallGreyBackground" contentPath="textures/gui/smallGreyBackground.png" origin="0.5" position="0.5">
-                <textWidget name="controls" origin="0.5" position="0.3,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="controls:"/>
-                <widget name="awsdHint" contentPath="textures/others/awsdHint.png" origin="0.5" position="0.5">
-                    <textWidget name="moving"  origin="0.5" position="0.4,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="moving"/>
+            <widget name="controlHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="moving" origin="0.5" position="0.31,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="controls:"/>
+                    <textWidget name="moving2"  position="0.1,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Use [          ] to"/>
+                    <textWidget name="moving3" position="0.1,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     W, S, A, D"/>
+                    <textWidget name="moving4" position="0.4,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="walk."/>                  
+            </widget>
+                <widget name="shootingHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="shooting" origin="0.5" position="0.32,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="shooting:"/>
+                    <textWidget name="shooting2"  position="0.22,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Use [     ] to"/>
+                    <textWidget name="moving3" position="0.22,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     enter"/>
+                    <textWidget name="moving4" position="0.4,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="shoot."/>                  
                 </widget>
-                <widget name="enterHint" contentPath="textures/others/enterHint.png" origin="0.5" position="0.4, 0.5">
-                    <textWidget name="shooting"  origin="0.5" position="0.3,  0.15"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="shooting"/>
+                <widget name="meleeFightingHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="melee" origin="0.5" position="0.2,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="melee fighting:"/>
+                    <textWidget name="melee2"  position="0.28,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Use [ ] to"/>
+                    <textWidget name="melee3" position="0.28,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     \"/>
+                    <textWidget name="melee4" position="0.42,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="hit."/>              
                 </widget>
-                <widget name="backslashHint" contentPath="textures/others/backslashHint.png" origin="0.5" position="0.4, 0.5">
-                    <textWidget name="hitting"  origin="0.5" position="0.3,  0.01"  fontPath="fonts/joystixMonospace.ttf" characterSize="25" color="white" text="hitting"/>
+                <widget name="interactionHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="interaction" origin="0.5" position="0.26,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="interaction:"/>
+                    <textWidget name="interaction2"  position="0.29,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Use [ ] to"/>
+                    <textWidget name="interaction3" position="0.29,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     E"/>
+                    <textWidget name="interaction4" position="0.33,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="interact."/>            
+                </widget>
+                <widget name="warningHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="warning" origin="0.5" position="0.32,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="red" text="warning!"/>
+                    <textWidget name="warning2"  position="0.07,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Sometimes it's better"/>
+                    <textWidget name="warning3" position="0.07,  0.5"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="to       big groups"/>
+                    <textWidget name="warning4" position="0.07,  0.5"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="red" text="   avoid"/>
+                    <textWidget name="warning5" position="0.07,  0.7"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="of enemies"/>                  
                 </widget>
             </widget>
-            <widget name="pressSpaceHint" origin="0.5" position="0.5, 0.9" contentPath="textures/others/pressSpaceHint.png"/>
-        </widget>
     </interface>
 </gui>

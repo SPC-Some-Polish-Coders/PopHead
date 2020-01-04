@@ -123,6 +123,11 @@
   <entityTemplate name="CutSceneArea">
 
   </entityTemplate>
+  
+  <entityTemplate name="HintArea">
+    <component name="BodyRect" x="0" y="0" width="0" height="0" />
+    <component name="Hint" hintName="hint"/>
+  </entityTemplate>
 
   <entityTemplate name="PushingArea">
     <component name="BodyRect" x="0" y="0" width="0" height="0" />

@@ -49,6 +49,7 @@ void StartGameCutScene::update(const sf::Time dt)
 
 	// HIDE ALL GUI
 	if(!mWasGuiHidden) {
+		mGui.getInterface("labels")->show();
 		canvas->getWidget("place")->hide();
 		canvas->getWidget("time")->hide();
 		canvas->getWidget("velocity")->hide();

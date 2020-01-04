@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="170" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="53" nextobjectid="506">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="170" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="53" nextobjectid="512">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -627,7 +627,7 @@
  </layer>
  <objectgroup id="49" name="gameObjects">
   <object id="1" type="Camera" x="730" y="928" width="640" height="360"/>
-  <object id="3" name="Player" type="Player" x="1136.55" y="1176.66">
+  <object id="3" name="Player" type="Player" x="1128.55" y="1179.99">
    <point/>
   </object>
   <object id="82" type="Entrance" x="1701" y="252" width="394.5" height="90">
@@ -650,11 +650,6 @@
   <object id="172" name="Dialogue with gate guard" type="CutScene" x="1871.51" y="598.583" width="44.0455" height="47">
    <properties>
     <property name="name" value="gateGuardDialogue"/>
-   </properties>
-  </object>
-  <object id="199" name="Fight tutorial popup" type="CutScene" x="1130.25" y="491.917" width="31.3333" height="67.8333">
-   <properties>
-    <property name="name" value="fightControlsGuide"/>
    </properties>
   </object>
   <object id="209" name="SlowZombie" type="SlowZombie" x="1399.33" y="508.166">
@@ -690,7 +685,7 @@
   <object id="226" name="SlowZombie" type="SlowZombie" x="1973.17" y="951.833">
    <point/>
   </object>
-  <object id="227" name="SlowZombie" type="SlowZombie" x="1844.67" y="848.333">
+  <object id="227" name="SlowZombie" type="SlowZombie" x="1822" y="907.666">
    <point/>
   </object>
   <object id="230" type="Medkit" x="1700" y="573.5">
@@ -720,9 +715,9 @@
   <object id="244" name="SlowZombie" type="SlowZombie" x="1873.83" y="1151">
    <point/>
   </object>
-  <object id="249" name="Movement tutorial popup" type="CutScene" x="1130.25" y="1136.92" width="31.3333" height="67.8333">
+  <object id="249" name="Movement tutorial popup" type="HintArea" x="1075.58" y="1111.59" width="120" height="120">
    <properties>
-    <property name="name" value="movementControlsGuide"/>
+    <property name="hintName" value="controlHint"/>
    </properties>
   </object>
   <object id="253" name="SlowZombie" type="SlowZombie" x="2307.16" y="1168.17">
@@ -966,6 +961,26 @@
   </object>
   <object id="504" name="Lever" type="Lever" x="1873.33" y="656.5">
    <point/>
+  </object>
+  <object id="506" name="Shooting Tutorial" type="HintArea" x="1099.67" y="498.833" width="100" height="63.5">
+   <properties>
+    <property name="hintName" value="shootingHint"/>
+   </properties>
+  </object>
+  <object id="507" name="Melee Fighting Tutorial" type="HintArea" x="1208.19" y="499.326" width="100" height="63.5">
+   <properties>
+    <property name="hintName" value="meleeFightingHint"/>
+   </properties>
+  </object>
+  <object id="508" name="Interaction Tutorial" type="HintArea" x="1844.83" y="645.75" width="100" height="191.833">
+   <properties>
+    <property name="hintName" value="interactionHint"/>
+   </properties>
+  </object>
+  <object id="511" name="Warning" type="HintArea" x="547.5" y="1142.25" width="269" height="63.5">
+   <properties>
+    <property name="hintName" value="warningHint"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

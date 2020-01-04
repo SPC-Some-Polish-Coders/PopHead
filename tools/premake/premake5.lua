@@ -88,11 +88,13 @@ project "PopHead"
             "sfml-audio-s", 
             "sfml-network-s",
             "sfml-window-s",
-            "sfml-system-s"
+            "sfml-system-s",
+            "sfml-main"
         }
 
     filter{"configurations:Distribution"}
         defines{"PH_DISTRIBUTION"}
+        kind "WindowedApp"
 
     filter "system:Windows"
         defines{"PH_WINDOWS"}

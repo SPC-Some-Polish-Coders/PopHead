@@ -29,6 +29,12 @@ namespace ph::component {
 		float areaSpeedMultiplier;
 	};
 
+	struct Hint
+	{
+		std::string hintName;
+		bool isShown;
+	};
+
 	struct PushingArea
 	{
 		sf::Vector2f pushForce;

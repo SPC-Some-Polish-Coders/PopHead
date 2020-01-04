@@ -93,6 +93,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
 		{"LightWall",			  	    &EntitiesParser::parseLightWall},
 		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
+		{"Hint",			  			&EntitiesParser::parseHint},
 		{"CharacterSpeed",		  	    &EntitiesParser::parseCharacterSpeed},
 		{"Killable",			  	    &EntitiesParser::parseKillable},
 		{"Health",	              	    &EntitiesParser::parseHealth},
@@ -244,6 +245,13 @@ void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::enti
 	float directionX = entityComponentNode.getAttribute("pushForceX").toFloat();
 	float directionY = entityComponentNode.getAttribute("pushForceY").toFloat();
 	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY));
+}
+
+void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
+{
+	std::string hintName = entityComponentNode.getAttribute("hintName").toString();
+	bool isShown = false;
+	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName, isShown);
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
