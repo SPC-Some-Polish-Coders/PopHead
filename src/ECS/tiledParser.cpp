@@ -78,6 +78,7 @@ namespace ph {
 			else if (objectType == "Entrance") loadEntrance(gameObjectNode);
 			else if (objectType == "VelocityChangingArea") loadVelocityChangingArea(gameObjectNode);
 			else if (objectType == "PushingArea") loadPushingArea(gameObjectNode);
+			else if (objectType == "HintArea") loadHintArea(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Car") loadCar(gameObjectNode);
@@ -198,6 +199,15 @@ namespace ph {
 		auto& pushDirection = mGameRegistry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty(pushingAreaNode, "pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty(pushingAreaNode, "pushForceY").toFloat();
+	}
+
+	void TiledParser::loadHintArea(const Xml& hintAreaNode) const
+	{
+		auto entity = mTemplatesStorage.createCopy("HintArea", mGameRegistry);
+		loadPosition(hintAreaNode, entity);
+		loadSize(hintAreaNode, entity);
+		auto& hintDetails = mGameRegistry.get<component::Hint>(entity);
+		hintDetails.hintName = getProperty(hintAreaNode, "hintName").toString();
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const

@@ -26,6 +26,7 @@ private:
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBlocksLight(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePushingArea(const Xml& entityComponentNode, entt::entity& entity);
+	void parseHint(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
