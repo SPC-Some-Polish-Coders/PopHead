@@ -15,7 +15,6 @@ class ArcadeMode : public System
 {
 public:
 	ArcadeMode(entt::registry&, GUI&, AIManager&, MusicPlayer&, EntitiesTemplateStorage&);
-	~ArcadeMode();
 
 	void update(float dt) override;
 

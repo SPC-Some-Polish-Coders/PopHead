@@ -22,6 +22,8 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	sceneFile.loadFromFile(sceneFileName);
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
+	aiManager.setAIMode(AIMode::normal);
+
 	parseEcsEntities(sceneLinksNode, gameData->getAIManager(), templateStorage, gameRegistry, textureHolder);
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);
 	parseMapObjects(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, cutSceneManager, gameData->getSceneManager(), textureHolder);

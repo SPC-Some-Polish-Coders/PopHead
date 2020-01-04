@@ -27,12 +27,6 @@ ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, AIManager& aiManager,
 	mAIManager.setAIMode(AIMode::zombieAlwaysLookForPlayer);
 }
 
-ArcadeMode::~ArcadeMode()
-{
-	sIsActive = false;
-	mAIManager.setAIMode(AIMode::normal);
-}
-
 void ArcadeMode::update(float dt)
 {
 	mTimeFromStart += dt;
