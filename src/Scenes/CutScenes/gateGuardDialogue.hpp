@@ -17,7 +17,6 @@ public:
 
 private:
 	void initGui();
-	void prepareCutScene(float dt);
 	void leaveCutScene();
 
 private:

@@ -23,7 +23,7 @@ GateGuardDialogue::GateGuardDialogue(entt::registry& gameRegistry, GUI& gui)
 	auto cameraView = mRegistry.view<component::Camera>();
 	cameraView.each([](component::Camera& cameraDetails) {
 			cameraDetails.camera.setSize(sf::Vector2f(426.f, 240.f));
-		});
+	});
 }
 
 void GateGuardDialogue::initGui()
@@ -65,8 +65,25 @@ void GateGuardDialogue::initGui()
 	
 void GateGuardDialogue::update(const sf::Time dt)
 {
-	if (!mPlayerOnThePosition)
-		prepareCutScene(dt.asSeconds());
+	if(!mPlayerOnThePosition) {
+		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::AnimationData>();
+		for (auto player : playerView)
+		{
+			auto& playerBody = playerView.get<component::BodyRect>(player);
+			if (playerBody.rect.top > 920.f)
+				playerBody.rect.top -= 20.f * dt.asSeconds();
+			else
+			{
+				auto& animationData = playerView.get<component::AnimationData>(player);
+				animationData.currentStateName = "rightUp";
+				mPlayerOnThePosition = true;
+				auto leverListenerView = mRegistry.view<component::LeverListener>();
+				leverListenerView.each([](component::LeverListener& leverListenerDetails) {
+					leverListenerDetails.isActivated = true;
+				});
+			}
+		}
+	}
 
 	// TODO: Use events here
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && mTimeSinceLastSkipPress.getElapsedTime().asSeconds() > 0.3f)
@@ -187,27 +204,6 @@ void GateGuardDialogue::update(const sf::Time dt)
 	}
 }
 
-void GateGuardDialogue::prepareCutScene(float dt)
-{
-	auto playerView = mRegistry.view<component::Player, component::BodyRect, component::AnimationData>();
-	for (auto player : playerView)
-	{
-		auto& playerBody = playerView.get<component::BodyRect>(player);
-		if (playerBody.rect.top > 600.f)
-			playerBody.rect.top += -20.f * dt;
-		else
-		{
-			auto& animationData = playerView.get<component::AnimationData>(player);
-			animationData.currentStateName = "rightUp";
-			mPlayerOnThePosition = true;
-			auto leverListenerView = mRegistry.view<component::LeverListener>();
-			leverListenerView.each([](component::LeverListener& leverListenerDetails) {
-				leverListenerDetails.isActivated = true;
-				});
-		}
-	}
-}
-
 void GateGuardDialogue::leaveCutScene()
 {
 	ActionEventManager::setEnabled(true);
@@ -217,7 +213,7 @@ void GateGuardDialogue::leaveCutScene()
 
 	cameraView.each([](component::Camera& cameraDetails) {
 		cameraDetails.camera.setSize(sf::Vector2f(640.f, 360.f));
-		});
+	});
 }
 
 }

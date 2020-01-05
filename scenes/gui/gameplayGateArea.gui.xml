@@ -77,6 +77,12 @@
                     <textWidget name="interaction3" position="0.29,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     E"/>
                     <textWidget name="interaction4" position="0.33,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="interact."/>            
                 </widget>
+                <widget name="weaponChangingHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
+                    <textWidget name="1" origin="0.5" position="0.22,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="weapon changing:"/>
+                    <textWidget name="2" position="0.01,  0.35"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="You just got a new weapon"/>
+                    <textWidget name="3" position="0.01,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="Use [ ] to change weapon"/>            
+                    <textWidget name="4" position="0.01 ,  0.55"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="yellow" text="     Q"/>
+                </widget>
                 <widget name="warningHint" contentPath="textures/gui/hintBackground.png" origin="0.5" position="0.22, 0.13" alpha="200" hide="true">
                     <textWidget name="warning" origin="0.5" position="0.32,  0.02"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="red" text="warning!"/>
                     <textWidget name="warning2"  position="0.07,  0.3"  fontPath="fonts/joystixMonospace.ttf" characterSize="12" color="white" text="It is advised"/>
