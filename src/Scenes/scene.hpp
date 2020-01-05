@@ -34,7 +34,7 @@ public:
 	SystemsQueue& getSystemsQueue() { return mSystemsQueue; }
 
 	void setPlayerStatus(const PlayerStatus& status);
-	PlayerStatus getPlayerStatus() const;
+	PlayerStatus getPlayerStatus();
 	void setPlayerPosition(sf::Vector2f newPosition);
 
 	entt::registry& getRegistry();

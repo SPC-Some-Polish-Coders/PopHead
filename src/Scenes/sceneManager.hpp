@@ -22,8 +22,8 @@ public:
     
 	void changingScenesProcess();
 
-	bool hasPlayerPosition() const;
-	const sf::Vector2f& getPlayerPosition() const;
+	bool hasPlayerPositionForNextScene() const;
+	const sf::Vector2f& getPlayerPositionForNextScene() const;
 
 private:
 	void replaceAction();
@@ -39,20 +39,17 @@ public:
 	std::string getCurrentMapName() const { return mCurrentSceneFile; }
 
 private:
+	EntitiesTemplateStorage mEntitiesTemplateStorage;
     std::unique_ptr<Scene> mScene;
 	PlayerStatus mLastPlayerStatus;
 	std::string mFileOfSceneToMake;
 	std::string mCurrentSceneFile;
     GameData* mGameData;
+	Texture* mTilesetTexture;
+	sf::Vector2f mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;
-
-	EntitiesTemplateStorage mEntitiesTemplateStorage;
-	
-	bool mHasPlayerPosition;
-	sf::Vector2f mPlayerPosition;
-
-	Texture* mTilesetTexture;
+	bool mHasPlayerPositionForNextScene;
 };
 
 }

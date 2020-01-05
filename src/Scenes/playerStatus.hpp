@@ -4,7 +4,10 @@ namespace ph {
 
 struct PlayerStatus
 {
-	int mHealthPoints = 100;
-	unsigned mNumOfBullets = 60u;
+	int healthPoints = 100;
+	int numOfPistolBullets = 100;
+	int numOfShotgunBullets = 0;
 };
+
 }
+

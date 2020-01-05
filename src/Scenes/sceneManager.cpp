@@ -16,7 +16,7 @@ SceneManager::SceneManager()
 	,mGameData(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
-	,mHasPlayerPosition(false)
+	,mHasPlayerPositionForNextScene(false)
 	,mLastPlayerStatus()
 	,mTilesetTexture(nullptr)
 {
@@ -31,14 +31,14 @@ void SceneManager::changingScenesProcess()
 		replaceAction();
 }
 
-bool SceneManager::hasPlayerPosition() const
+bool SceneManager::hasPlayerPositionForNextScene() const
 {
-	return mHasPlayerPosition;
+	return mHasPlayerPositionForNextScene;
 }
 
-const sf::Vector2f& SceneManager::getPlayerPosition() const
+const sf::Vector2f& SceneManager::getPlayerPositionForNextScene() const
 {
-	return mPlayerPosition;
+	return mPlayerPositionForNextScene;
 }
 
 void SceneManager::popAction()
@@ -57,10 +57,9 @@ void SceneManager::replaceAction()
 {
 	mGameData->getGui().clearGUI();
 
-	if (mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPosition)
-		mScene->setPlayerPosition(mPlayerPosition);
-	else
-	{
+	if(mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPositionForNextScene)
+		mScene->setPlayerPosition(mPlayerPositionForNextScene);
+	else {
 		bool thereIsPlayerStatus = mScene && mGameData->getAIManager().isPlayerOnScene();
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
@@ -72,12 +71,10 @@ void SceneManager::replaceAction()
 				mFileOfSceneToMake, mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(),
 				mGameData->getMusicPlayer(), mGameData->getAIManager());
 
-		if (mGameData->getAIManager().isPlayerOnScene())
-		{
+		if(mGameData->getAIManager().isPlayerOnScene()) {
 			mScene->setPlayerStatus(mLastPlayerStatus);
-
-			if (mHasPlayerPosition)
-				mScene->setPlayerPosition(mPlayerPosition);
+			if(mHasPlayerPositionForNextScene)
+				mScene->setPlayerPosition(mPlayerPositionForNextScene);
 		}
 	}
 
@@ -109,15 +106,15 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
 	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
-	mHasPlayerPosition = false;
+	mHasPlayerPositionForNextScene = false;
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
 {
 	mFileOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
-	mHasPlayerPosition = true;
-	mPlayerPosition = playerPosition;
+	mHasPlayerPositionForNextScene = true;
+	mPlayerPositionForNextScene = playerPosition;
 }
 
 void SceneManager::popScene()

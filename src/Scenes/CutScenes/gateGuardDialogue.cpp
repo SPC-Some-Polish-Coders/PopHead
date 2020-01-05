@@ -71,7 +71,7 @@ void GateGuardDialogue::update(const sf::Time dt)
 		{
 			auto& playerBody = playerView.get<component::BodyRect>(player);
 			if (playerBody.rect.top > 920.f)
-				playerBody.rect.top -= 20.f * dt.asSeconds();
+				playerBody.rect.top -= 100.f * dt.asSeconds();
 			else
 			{
 				auto& animationData = playerView.get<component::AnimationData>(player);

@@ -271,14 +271,8 @@ namespace ph {
 		auto& playerBody = mGameRegistry.get<component::BodyRect>(player);
 		auto& playerCamera = mGameRegistry.get<component::Camera>(player);
 		
-		sf::Vector2f position;
-		if (mSceneManager.hasPlayerPosition())
-			position = mSceneManager.getPlayerPosition();
-		else
-			position = getPositionAttribute(playerNode);
-
-		playerBody.rect.left = position.x;
-		playerBody.rect.top = position.y;
+		playerBody.rect.setPosition(mSceneManager.hasPlayerPositionForNextScene() ?
+			mSceneManager.getPlayerPositionForNextScene() : getPositionAttribute(playerNode));
 
 		playerCamera.camera = Camera(playerBody.rect.getCenter(), sf::Vector2f(640, 360));
 

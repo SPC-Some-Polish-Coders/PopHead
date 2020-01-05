@@ -36,6 +36,7 @@
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
 
 namespace ph {
 
@@ -100,27 +101,28 @@ void Scene::update(sf::Time dt)
 
 void Scene::setPlayerStatus(const PlayerStatus& status)
 {
-	//auto& player = getPlayer();
-	//player.setHp(status.mHealthPoints);
-	//player.setNumOfBullets(status.mNumOfBullets);
+	auto playerView = mRegistry.view<component::Bullets, component::Health, component::Player>();
+	auto& [bullets, health] = playerView.get<component::Bullets, component::Health>(*playerView.begin());
+	bullets.numOfPistolBullets = status.numOfPistolBullets;
+	bullets.numOfShotgunBullets = status.numOfShotgunBullets;
+	health.healthPoints = status.healthPoints;
 }
 
-PlayerStatus Scene::getPlayerStatus() const
+PlayerStatus Scene::getPlayerStatus()
 {
-	/*auto& player = getPlayer();
-	PlayerStatus status;
-	status.mHealthPoints = player.getHp();
-	status.mNumOfBullets = player.getNumOfBullets();
-	return status;*/
-	return PlayerStatus();
+	auto playerView = mRegistry.view<component::Bullets, component::Health, component::Player>();
+	for(auto player : playerView) {
+		const auto [bullets, health] = playerView.get<component::Bullets, component::Health>(player);
+		return PlayerStatus{health.healthPoints, bullets.numOfPistolBullets, bullets.numOfShotgunBullets};
+	}
+	return PlayerStatus{};
 }
 
 void Scene::setPlayerPosition(sf::Vector2f newPosition)
 {
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto& bodyRect = playerView.get<component::BodyRect>(*playerView.begin());
-	bodyRect.rect.left = newPosition.x;
-	bodyRect.rect.top = newPosition.y;
+	bodyRect.rect.setPosition(newPosition);
 }
 
 entt::registry& Scene::getRegistry()
@@ -129,3 +131,4 @@ entt::registry& Scene::getRegistry()
 }
 
 }
+
