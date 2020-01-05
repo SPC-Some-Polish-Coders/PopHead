@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="498">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="80" height="140" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="509">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -898,8 +898,8 @@
   <object id="436" type="Entrance" x="426.833" y="1963.5" width="235.667" height="73">
    <properties>
     <property name="gotoScene" type="file" value="../canyon.xml"/>
-    <property name="gotoX" type="float" value="2400"/>
-    <property name="gotoY" type="float" value="780"/>
+    <property name="gotoX" type="float" value="2440"/>
+    <property name="gotoY" type="float" value="380"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
   </object>
@@ -1026,6 +1026,43 @@
     <property name="isValid" type="bool" value="true"/>
     <property name="name" value="endingCutScene"/>
    </properties>
+  </object>
+  <object id="498" type="BulletBox" x="472.333" y="1809">
+   <properties>
+    <property name="numOfPistolBullets" type="int" value="0"/>
+    <property name="numOfShotgunBullets" type="int" value="20"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="499" type="SlowZombie" x="605.333" y="1088.67">
+   <point/>
+  </object>
+  <object id="500" type="SlowZombie" x="400" y="1126">
+   <point/>
+  </object>
+  <object id="501" type="SlowZombie" x="466.667" y="1107.33">
+   <point/>
+  </object>
+  <object id="502" type="SlowZombie" x="650" y="1112">
+   <point/>
+  </object>
+  <object id="503" type="SlowZombie" x="713.333" y="1022.67">
+   <point/>
+  </object>
+  <object id="504" type="SlowZombie" x="638" y="968.667">
+   <point/>
+  </object>
+  <object id="505" type="SlowZombie" x="469.333" y="948.667">
+   <point/>
+  </object>
+  <object id="506" type="SlowZombie" x="796" y="1036">
+   <point/>
+  </object>
+  <object id="507" type="SlowZombie" x="798.667" y="956">
+   <point/>
+  </object>
+  <object id="508" type="SlowZombie" x="868" y="1005.33">
+   <point/>
   </object>
  </objectgroup>
 </map>
