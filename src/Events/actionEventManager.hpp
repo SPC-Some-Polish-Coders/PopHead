@@ -8,6 +8,12 @@
 
 namespace ph {
 
+struct Action
+{
+	std::vector<sf::Keyboard::Key> keys;
+	bool enabled;
+};
+
 class ActionEventManager
 {
 public:
@@ -19,6 +25,8 @@ public:
 	static void addKeyToAction(const std::string& action, sf::Keyboard::Key);
 	static void deleteKeyFromAction(const std::string& action, sf::Keyboard::Key);
 	static void deleteAction(const std::string& action);
+	static void setActionEnabled(const std::string& action, bool enabled);
+	static void setAllActionsEnabled(bool enabled);
 	static void clearAllActions() noexcept;
 
 	static bool isEnabled() { return mEnabled; }
@@ -29,7 +37,7 @@ public:
 	static void addActionEventsTo(std::vector<ActionEvent>&, const sf::Event currentSfmlEvent);
 
 private:
-	inline static std::map<std::string, std::vector<sf::Keyboard::Key>> mActions;
+	inline static std::map<std::string, Action> mActions;
 	inline static bool mEnabled;
 };
 

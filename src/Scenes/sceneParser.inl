@@ -4,6 +4,7 @@
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
 #include "ECS/Systems/arcadeMode.hpp"
+#include "Events/actionEventManager.hpp"
 
 namespace ph {
 
@@ -23,6 +24,7 @@ SceneParser<GuiParser, MapParser, ObjectsParser, AudioParser, EnttParser>
 	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
 
 	aiManager.setAIMode(AIMode::normal);
+	ActionEventManager::setAllActionsEnabled(true);
 
 	parseEcsEntities(sceneLinksNode, gameData->getAIManager(), templateStorage, gameRegistry, textureHolder);
 	parseMap(sceneLinksNode, gameData->getAIManager(), gameRegistry, templateStorage, textureHolder);

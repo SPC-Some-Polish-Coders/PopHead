@@ -4,6 +4,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "Events/actionEventManager.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
@@ -34,6 +35,22 @@ void HintAreas::update(float dt)
 				mGui.getInterface("hints")->show();
 				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName)->show();
 				hintDetails.isShown = true;
+
+				// NOTE: This is temporary
+				if(hintDetails.hintName == "controlHint") {
+					ActionEventManager::setActionEnabled("changeWeapon", false);
+					ActionEventManager::setActionEnabled("gunAttack", false);
+					ActionEventManager::setActionEnabled("meleeAttack", false);
+				}
+				else if(hintDetails.hintName == "shootingHint") {
+					ActionEventManager::setActionEnabled("gunAttack", true);
+				}
+				else if(hintDetails.hintName == "meleeFightingHint") {
+					ActionEventManager::setActionEnabled("meleeAttack", true);
+				}
+				else if(hintDetails.hintName == "weaponChangingHint") {
+					ActionEventManager::setActionEnabled("changeWeapon", true);
+				}
 			}
 			else if (hintDetails.isShown)
 			{
