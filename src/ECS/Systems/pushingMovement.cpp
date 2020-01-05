@@ -15,10 +15,10 @@ namespace ph::system {
 			pushingVel.vel -=  pushingVel.vel * pushingVel.friction * dt;
 			if(pushingVel.vel.x < 1 && pushingVel.vel.x > -1 && pushingVel.vel.y < 1 && pushingVel.vel.y > -1)
 				pushingVel.vel = sf::Vector2f(0, 0);
-			if(kinematicCollisionBody.staticallyMovedByX)
+			/*if(kinematicCollisionBody.staticallyMovedByX)
 				pushingVel.vel.x = 0.f;
 			if(kinematicCollisionBody.staticallyMovedByY)
-				pushingVel.vel.y = 0.f;
+				pushingVel.vel.y = 0.f;*/
 		});
 	}
 }
