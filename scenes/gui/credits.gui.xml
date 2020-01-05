@@ -21,7 +21,7 @@
         <textWidget name="CzapaGLD"             origin="0.5" position="0.35, 1.8"  fontPath="fonts/joystixMonospace.ttf" color="rgb(110, 5, 5)" characterSize="10" text="Grzegorz 'Czapa' Bednorz" scrollingEffect="true"/>
 
         <textWidget name="MusicAndSoundCreator" origin="0.5" position="0.3, 1.90" fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="15" text="Music and Sound creator:" scrollingEffect="true"/>
-        <textWidget name="'Thief'"              origin="0.5" position="0.35, 1.95"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka" scrollingEffect="true"/>
+        <textWidget name="'Mateusz Stepka'"     origin="0.5" position="0.35, 1.95"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Mateusz Stepka" scrollingEffect="true"/>
         <textWidget name="Jerzy Wujczyk"        origin="0.5" position="0.35, 2.00"  fontPath="fonts/joystixMonospace.ttf" color="rgb(135, 2, 75)" characterSize="10" text="Jerzy Wujczyk" scrollingEffect="true"/>
 
         <textWidget name="GraphicsCreators"     origin="0.5" position="0.3, 2.10"  fontPath="fonts/joystixMonospace.ttf" color="rgb(0, 0, 100)" characterSize="15" text="Graphics creators:" scrollingEffect="true"/>

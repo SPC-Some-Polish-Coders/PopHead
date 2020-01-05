@@ -8,9 +8,9 @@
 
 namespace ph::system {
 
-	HintAreas::HintAreas(entt::registry& registry, GUI& gui)
-	:System(registry)
-	,mGui(gui)
+HintAreas::HintAreas(entt::registry& registry, GUI& gui)
+:System(registry)
+,mGui(gui)
 {
 }
 
