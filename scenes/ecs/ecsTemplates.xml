@@ -27,7 +27,7 @@
   <entityTemplate name="Player">
     <component name="KinematicCollisionBody" mass="3" />
     <component name="GunAttacker" isTryingToAttack="false" timeBeforeHiding="3" />
-    <component name="Bullets" numOfPistolBullets="100" numOfShotgunBullets="100" /> 
+    <component name="Bullets" numOfPistolBullets="90" numOfShotgunBullets="0" /> 
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="Player" />
     <component name="FaceDirection" />
@@ -194,6 +194,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/weapons.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="50" height="50" />
     <component name="HiddenForRenderer" />
+    <component name="CurrentGun" />
     <component name="GunProperties" shotSoundFilepath="sounds/pistolShot.ogg" range="250.0" deflectionAngle="1.0" damage="50" numberOfBullets="1" gunId="0" type="pistol" />
   </entityTemplate>
 

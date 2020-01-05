@@ -284,7 +284,6 @@ namespace ph {
 
 		mTemplatesStorage.createCopy("Pistol", mGameRegistry);
 		auto shotgun = mTemplatesStorage.createCopy("Shotgun", mGameRegistry);
-		mGameRegistry.assign<component::CurrentGun>(shotgun);
 		auto melee = mTemplatesStorage.createCopy("BaseballBat", mGameRegistry);
 		mGameRegistry.assign<component::CurrentMeleeWeapon>(melee);
 
