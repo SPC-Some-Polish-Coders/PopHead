@@ -398,18 +398,29 @@ namespace ph {
 		body.rect.setPosition(getPositionAttribute(flowingRiverNode));
 		const sf::Vector2f size = getSizeAttribute(flowingRiverNode);
 		body.rect.setSize(size);
-		const sf::Vector2f pushForce(
-			getProperty(flowingRiverNode, "pushForceX").toFloat(),
-			getProperty(flowingRiverNode, "pushForceY").toFloat()
-		);
+		const sf::Vector2f pushForce(getProperty(flowingRiverNode, "pushForceX").toFloat(), getProperty(flowingRiverNode, "pushForceY").toFloat());
 		PH_ASSERT_CRITICAL(pushForce.x == 0.f || pushForce.y == 0.f, "We don't support diagonal flowing rivers! - Either pushForceX or pushForceY must be zero.");
 		pushingArea.pushForce = pushForce;
 		const float particleAmountMultiplier = getProperty(flowingRiverNode, "particleAmountMultiplier").toFloat();
 		particleEmitter.amountOfParticles = static_cast<unsigned>(particleAmountMultiplier * size.x * size.y / 100.f);
 		particleEmitter.parInitialVelocity = pushForce;
 		particleEmitter.parInitialVelocityRandom = pushForce;
-		particleEmitter.spawnPositionOffset = pushForce.x == 0.f ? sf::Vector2f(0.f, size.y) : sf::Vector2f(size.x, 0.f);
-		particleEmitter.randomSpawnAreaSize = pushForce.x == 0.f ? sf::Vector2f(size.x, 0.f) : sf::Vector2f(0.f, size.y);
+		if(pushForce.y > 0.f) {
+			particleEmitter.spawnPositionOffset = {0.f, 0.f};
+			particleEmitter.randomSpawnAreaSize = {size.x, 0.f};
+		}
+		else if(pushForce.y < 0.f) {
+			particleEmitter.spawnPositionOffset = {0.f, size.y};
+			particleEmitter.randomSpawnAreaSize = {size.x, 0.f};
+		}
+		else if(pushForce.x > 0.f) {
+			particleEmitter.spawnPositionOffset = {0.f, 0.f};
+			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
+		}
+		else if(pushForce.x < 0.f) {
+			particleEmitter.spawnPositionOffset = {size.x, 0.f};
+			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
+		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
 	}
 
