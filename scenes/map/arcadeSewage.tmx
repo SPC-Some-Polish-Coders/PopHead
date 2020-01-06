@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="160" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="501">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="160" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="23" nextobjectid="518">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
   <tile id="6">
@@ -703,9 +703,9 @@
   <object id="205" type="VelocityChangingArea" x="929.583" y="1489.17" width="13.6667" height="75.337"/>
   <object id="206" type="VelocityChangingArea" x="913.28" y="1474.91" width="13.6667" height="73.4427"/>
   <object id="207" type="VelocityChangingArea" x="897.644" y="1462.48" width="13.6667" height="70.7458"/>
-  <object id="226" type="VelocityChangingArea" x="1489.16" y="864.731" width="13.6667" height="78.7757"/>
-  <object id="227" type="VelocityChangingArea" x="1505.56" y="883.731" width="13.6667" height="74.1397"/>
-  <object id="228" type="VelocityChangingArea" x="1521.47" y="896.549" width="13.6667" height="74.5033"/>
+  <object id="226" type="VelocityChangingArea" x="1489.66" y="863.231" width="14.8662" height="78.6895"/>
+  <object id="227" type="VelocityChangingArea" x="1504.5" y="881.399" width="14.8662" height="80.6466"/>
+  <object id="228" type="VelocityChangingArea" x="1521.81" y="896.342" width="14.8662" height="81.0421"/>
   <object id="234" type="LootSpawner" x="1272.19" y="1967.3">
    <properties>
     <property name="lootType" value="medkit"/>
@@ -716,13 +716,13 @@
   <object id="246" type="VelocityChangingArea" x="992.25" y="1555.17" width="13.6667" height="74.3367"/>
   <object id="247" type="VelocityChangingArea" x="1073.25" y="1664.67" width="122.334" height="42.8367"/>
   <object id="250" type="VelocityChangingArea" x="1473.97" y="865.514" width="13.368" height="60.5726"/>
-  <object id="253" type="VelocityChangingArea" x="1537" y="915.247" width="13.368" height="72.2393"/>
-  <object id="254" type="VelocityChangingArea" x="1552.65" y="931.22" width="13.368" height="70.2393"/>
+  <object id="253" type="VelocityChangingArea" x="1537.7" y="913.181" width="14.5412" height="78.5794"/>
+  <object id="254" type="VelocityChangingArea" x="1552.72" y="927.555" width="14.5412" height="76.4039"/>
   <object id="255" type="VelocityChangingArea" x="1568.89" y="945.431" width="13.368" height="73.8226"/>
-  <object id="256" type="VelocityChangingArea" x="1585" y="963.247" width="13.368" height="72.2393"/>
-  <object id="257" type="VelocityChangingArea" x="1681.32" y="1059.89" width="13.368" height="58.0575"/>
+  <object id="256" type="VelocityChangingArea" x="1583.03" y="960.641" width="15.8201" height="77.2052"/>
+  <object id="257" type="VelocityChangingArea" x="1680.66" y="1058.95" width="13.9479" height="60.5762"/>
   <object id="258" type="VelocityChangingArea" x="1632.27" y="1105.09" width="13.368" height="42.5726"/>
-  <object id="259" type="VelocityChangingArea" x="1713.85" y="1090.67" width="13.368" height="26.5726"/>
+  <object id="259" type="VelocityChangingArea" x="1714.6" y="1091.06" width="13.9479" height="27.7254"/>
   <object id="260" type="VelocityChangingArea" x="1684.51" y="1122.33" width="41.368" height="73.073"/>
   <object id="269" type="LightWall" x="1397.41" y="336.25" width="147.167" height="516.833"/>
   <object id="270" type="LightWall" x="1505.08" y="850.917" width="147.167" height="15.5"/>
@@ -843,29 +843,13 @@
   <object id="421" type="VelocityChangingArea" x="1727.17" y="1471.16" width="13.6667" height="14.337" rotation="180"/>
   <object id="442" type="ArcadeSpawner" x="1235" y="26.1703" width="119.167" height="667.334"/>
   <object id="443" type="ArcadeSpawner" x="390.382" y="62.4965" width="1782.26" height="213.333"/>
-  <object id="444" type="VelocityChangingArea" x="945.682" y="1083.29" width="13.6667" height="71.67" rotation="180"/>
-  <object id="445" type="VelocityChangingArea" x="929.682" y="1099.63" width="13.6667" height="73.3367" rotation="180"/>
-  <object id="446" type="VelocityChangingArea" x="961.016" y="1068.3" width="13.6667" height="75.337" rotation="180"/>
-  <object id="447" type="VelocityChangingArea" x="977.319" y="1052.15" width="13.6667" height="73.4427" rotation="180"/>
-  <object id="448" type="VelocityChangingArea" x="913.682" y="1115.96" width="13.6667" height="73.3367" rotation="180"/>
-  <object id="449" type="VelocityChangingArea" x="1024.68" y="1001.9" width="13.6667" height="71.67" rotation="180"/>
-  <object id="450" type="VelocityChangingArea" x="1008.68" y="1018.24" width="13.6667" height="73.3367" rotation="180"/>
-  <object id="451" type="VelocityChangingArea" x="1040.02" y="986.91" width="13.6667" height="75.337" rotation="180"/>
-  <object id="452" type="VelocityChangingArea" x="1056.32" y="970.76" width="13.6667" height="73.4427" rotation="180"/>
-  <object id="453" type="VelocityChangingArea" x="992.681" y="1034.57" width="13.6667" height="73.3367" rotation="180"/>
-  <object id="454" type="VelocityChangingArea" x="1072.02" y="957.406" width="13.6667" height="75.337" rotation="180"/>
-  <object id="455" type="VelocityChangingArea" x="1088.32" y="941.256" width="13.6667" height="73.4427" rotation="180"/>
-  <object id="456" type="VelocityChangingArea" x="1103.17" y="926.945" width="13.6667" height="60.776" rotation="180"/>
-  <object id="457" type="VelocityChangingArea" x="896.667" y="1118.58" width="13.6667" height="62.3367" rotation="180"/>
-  <object id="458" type="VelocityChangingArea" x="881.167" y="1120.33" width="13.6667" height="49.3367" rotation="180"/>
-  <object id="459" type="VelocityChangingArea" x="866.167" y="1120.83" width="13.6667" height="33.0867" rotation="180"/>
-  <object id="460" type="VelocityChangingArea" x="892.667" y="1198.96" width="40.1667" height="76.0867" rotation="180"/>
-  <object id="461" type="VelocityChangingArea" x="1697.32" y="1073.3" width="13.368" height="43.0575"/>
-  <object id="462" type="VelocityChangingArea" x="1602.22" y="978.531" width="13.6667" height="74.5033"/>
-  <object id="463" type="VelocityChangingArea" x="1617.75" y="997.229" width="13.368" height="72.2393"/>
-  <object id="464" type="VelocityChangingArea" x="1633.4" y="1013.2" width="13.368" height="70.2393"/>
-  <object id="465" type="VelocityChangingArea" x="1649.64" y="1027.41" width="13.368" height="73.8226"/>
-  <object id="466" type="VelocityChangingArea" x="1665.75" y="1045.23" width="13.368" height="72.2393"/>
+  <object id="460" type="VelocityChangingArea" x="851.667" y="1123.21" width="43.1667" height="76.8367"/>
+  <object id="461" type="VelocityChangingArea" x="1697.36" y="1072.94" width="13.9479" height="44.9255"/>
+  <object id="462" type="VelocityChangingArea" x="1600.58" y="977.215" width="15.8789" height="77.023"/>
+  <object id="463" type="VelocityChangingArea" x="1617.64" y="993.045" width="15.3201" height="78.4324"/>
+  <object id="464" type="VelocityChangingArea" x="1633.82" y="1009.06" width="13.8201" height="75.8648"/>
+  <object id="465" type="VelocityChangingArea" x="1649.35" y="1024.5" width="13.8201" height="76.3193"/>
+  <object id="466" type="VelocityChangingArea" x="1664.42" y="1043.65" width="13.9479" height="75.3733"/>
   <object id="467" type="VelocityChangingArea" x="1395.98" y="866.38" width="74.7013" height="43.9059"/>
   <object id="468" type="VelocityChangingArea" x="1106.65" y="865.547" width="94.2013" height="43.9059"/>
   <object id="471" type="LootSpawner" x="1316" y="1956">
@@ -990,5 +974,22 @@
     <property name="pushForceY" type="float" value="0"/>
    </properties>
   </object>
+  <object id="501" type="VelocityChangingArea" x="852.333" y="1087.62" width="14.6667" height="34.67"/>
+  <object id="502" type="VelocityChangingArea" x="868.083" y="1074.46" width="14.0834" height="47.5033"/>
+  <object id="503" type="VelocityChangingArea" x="883.333" y="1056.96" width="14.3334" height="66.2533"/>
+  <object id="504" type="VelocityChangingArea" x="897.417" y="1039.96" width="13.8334" height="78.42"/>
+  <object id="505" type="VelocityChangingArea" x="912.583" y="1025.79" width="15.1668" height="78.42"/>
+  <object id="506" type="VelocityChangingArea" x="929.917" y="1008.79" width="15.5001" height="78.42"/>
+  <object id="507" type="VelocityChangingArea" x="945.917" y="991.457" width="15.5001" height="78.42"/>
+  <object id="508" type="VelocityChangingArea" x="962.583" y="978.123" width="15.1668" height="78.42"/>
+  <object id="509" type="VelocityChangingArea" x="978.583" y="960.457" width="14.1668" height="78.42"/>
+  <object id="510" type="VelocityChangingArea" x="993.583" y="944.438" width="14.2186" height="79.5927"/>
+  <object id="511" type="VelocityChangingArea" x="1008.08" y="924.308" width="17.2186" height="83.2594"/>
+  <object id="512" type="VelocityChangingArea" x="1025.78" y="908.783" width="14.552" height="83.5927"/>
+  <object id="513" type="VelocityChangingArea" x="1041" y="893.048" width="14.8853" height="81.9261"/>
+  <object id="514" type="VelocityChangingArea" x="1056.83" y="877.281" width="14.552" height="85.5927"/>
+  <object id="515" type="VelocityChangingArea" x="1073.45" y="863.123" width="15.1493" height="80.8472"/>
+  <object id="516" type="VelocityChangingArea" x="1089.42" y="862.957" width="15.8334" height="62.7533"/>
+  <object id="517" type="VelocityChangingArea" x="1685.32" y="1390.13" width="41.368" height="64.4063"/>
  </objectgroup>
 </map>

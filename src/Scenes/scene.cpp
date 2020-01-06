@@ -30,7 +30,7 @@
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
-#include "ECS/Systems/collisionDebug.hpp"
+#include "ECS/Systems/areasDebug.hpp"
 #include "ECS/Systems/cars.hpp"
 #include "ECS/Systems/cutscenesActivating.hpp"
 
@@ -58,7 +58,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
-	mSystemsQueue.appendSystem<system::CollisionDebug>();
+	mSystemsQueue.appendSystem<system::AreasDebug>();
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();

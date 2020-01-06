@@ -8,7 +8,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
-#include "ECS/Systems/collisionDebug.hpp"
+#include "ECS/Systems/areasDebug.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include <entt/entt.hpp>
 
@@ -16,23 +16,25 @@ namespace ph {
 
 void CommandInterpreter::init()
 {
-	mCommandsMap["echo"] =				&CommandInterpreter::executeEcho;
-	mCommandsMap["exit"] =				&CommandInterpreter::executeExit;
-	mCommandsMap["teleport"] =			&CommandInterpreter::executeTeleport;
-	mCommandsMap["give"] =	    		&CommandInterpreter::executeGive;
-	mCommandsMap["currentpos"] =	 	&CommandInterpreter::executeCurrentPos;
-	mCommandsMap["collisiondebug"] = 	&CommandInterpreter::executeCollisionDebug;
-	mCommandsMap["mute"] =				&CommandInterpreter::executeMute;
-	mCommandsMap["unmute"] =			&CommandInterpreter::executeUnmute;
-	mCommandsMap["setvolume"] =			&CommandInterpreter::executeSetVolume;
-	mCommandsMap["history"] =			&CommandInterpreter::executeHistory;
-	mCommandsMap["help"] =				&CommandInterpreter::executeHelp;
-	mCommandsMap["clear"] =				&CommandInterpreter::executeClear;
-	mCommandsMap["view"] =				&CommandInterpreter::executeView;
-	mCommandsMap["gotoscene"] =			&CommandInterpreter::executeGotoScene;
-	mCommandsMap["light"] =				&CommandInterpreter::executeLight;
-	mCommandsMap["m"] =					&CommandInterpreter::executeMove;
-	mCommandsMap[""] =					&CommandInterpreter::executeInfoMessage;
+	mCommandsMap["echo"] =						&CommandInterpreter::executeEcho;
+	mCommandsMap["exit"] =						&CommandInterpreter::executeExit;
+	mCommandsMap["teleport"] =					&CommandInterpreter::executeTeleport;
+	mCommandsMap["give"] =	    				&CommandInterpreter::executeGive;
+	mCommandsMap["currentpos"] =				&CommandInterpreter::executeCurrentPos;
+	mCommandsMap["collisiondebug"] =			&CommandInterpreter::executeCollisionDebug;
+	mCommandsMap["velocitychangingareadebug"] = &CommandInterpreter::executeVelocityChangingAreaDebug;
+	mCommandsMap["pushingareadebug"] =			&CommandInterpreter::executePushingAreaDebug;
+	mCommandsMap["mute"] =						&CommandInterpreter::executeMute;
+	mCommandsMap["unmute"] =					&CommandInterpreter::executeUnmute;
+	mCommandsMap["setvolume"] =					&CommandInterpreter::executeSetVolume;
+	mCommandsMap["history"] =					&CommandInterpreter::executeHistory;
+	mCommandsMap["help"] =						&CommandInterpreter::executeHelp;
+	mCommandsMap["clear"] =						&CommandInterpreter::executeClear;
+	mCommandsMap["view"] =						&CommandInterpreter::executeView;
+	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
+	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
+	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
+	mCommandsMap[""] =							&CommandInterpreter::executeInfoMessage;
 }
 
 void CommandInterpreter::handleCommand(const std::string& command)
@@ -176,9 +178,29 @@ void CommandInterpreter::executeCurrentPos() const
 void CommandInterpreter::executeCollisionDebug() const
 {
 	if(commandContains("on"))
-		system::CollisionDebug::setIsCollisionDebugActive(true);
+		system::AreasDebug::setIsCollisionDebugActive(true);
 	if(commandContains("off"))
-		system::CollisionDebug::setIsCollisionDebugActive(false);
+		system::AreasDebug::setIsCollisionDebugActive(false);
+	else
+		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
+}
+
+void CommandInterpreter::executeVelocityChangingAreaDebug() const
+{
+	if(commandContains("on"))
+		system::AreasDebug::setIsVelocityChangingAreaDebugActive(true);
+	if(commandContains("off"))
+		system::AreasDebug::setIsVelocityChangingAreaDebugActive(false);
+	else
+		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
+}
+
+void CommandInterpreter::executePushingAreaDebug() const
+{
+	if(commandContains("on"))
+		system::AreasDebug::setIsPushingAreaDebugActive(true);
+	if(commandContains("off"))
+		system::AreasDebug::setIsPushingAreaDebugActive(false);
 	else
 		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
 }

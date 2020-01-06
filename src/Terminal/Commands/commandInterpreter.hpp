@@ -42,9 +42,8 @@ private:
 	void executeClear() const;
 
 	void executeCollisionDebug() const;
-	void changeCollisionDebugColor() const;
-	void changeCollisionDebugDisplayMode() const;
-	void turnOnOrTurnOffCollisionDebug() const;
+	void executeVelocityChangingAreaDebug() const;
+	void executePushingAreaDebug() const;
 	
 	void executeMute() const;
 	void executeUnmute() const;
