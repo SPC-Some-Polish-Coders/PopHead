@@ -11,14 +11,14 @@
 	- [Game commands](#game-commands)
 	- [Logging commands](#logging-commands)
 	- [Audio commands](#audio-commands)
-	- [Collision Debug commands](#collision-debug-commands)
+	- [Area Debug commands](#area-debug-commands)
 	- [Player location commands](#player-location-commands)
 	- [Camera commands](#camera-commands)
 
 </details>
 
 ## General usage in game
-If you'd like to get access to the terminal, during your play, **press "Tab"** key. The console window will appear.
+Press **Ctrl + Tab** key shortcut to open or close terminal. The console window will appear.
 Then you can enter one of the commands listed below. These can be either many-argumented or with no arguments. 
 
 #### General way of entering for **many-argumented** commands is following:
@@ -27,7 +27,7 @@ Then you can enter one of the commands listed below. These can be either many-ar
 #### `<command>`
 
 
-Confirm it by **pressing "Enter"**. You can keep entering commands or if you'd like to leave **press "Tab"** once again.
+Confirm it by pressing **Enter**. You can keep entering commands or if you'd like to leave press **Tab** once again.
 In fact, order of arguments is not important at all. It's crucial to include "basic" command name in the beggining and arguments might be mixed.
 
 ```
@@ -148,12 +148,18 @@ setvolume music 5
 setvolume sound 100
 ```
 
-## Collision Debug commands
+## Area Debug commands
 ------------------------- 
 #### Examples: 
 ```
 collisiondebug on
 collisiondebug off
+
+velocitychangingareadebug on
+velocitychangingareadebug off
+
+pushingareadebug on
+pushingareadebug off
 ```
 ## Player location commands
 -------------------------
