@@ -9,7 +9,6 @@ namespace ph::system {
 		PH_PROFILE_FUNCTION();
 		calculateStaticCollisions();
 		calculateKinematicCollisions();
-		
 	}
 
 	void StaticCollisions::calculateStaticCollisions()
@@ -56,20 +55,28 @@ namespace ph::system {
 			if (intersection.width < intersection.height)
 			{
 				if (kinematicBody.left < staticBody.left)
+				{
 					kinematicBody.left -= intersection.width;
+					collision.staticallyMovedLeft;
+				}
 				else
+				{
 					kinematicBody.left += intersection.width;
-
-				//kinematicCollision.staticallyMovedByX = true;
+					collision.staticallyMovedRight;
+				}
 			}
 			else
 			{
 				if (kinematicBody.top < staticBody.top)
+				{
 					kinematicBody.top -= intersection.height;
+					collision.staticallyMovedUp;
+				}
 				else
+				{
 					kinematicBody.top += intersection.height;
-
-				//kinematicCollision.staticallyMovedByY = true;
+					collision.staticallyMovedDown;
+				}
 			}
 		}
 	}
