@@ -1,6 +1,6 @@
 ![](docs/res/logo_header.png)
 
-### PopHead is an 2D action RPG game with zombie, which is being made on our own engine. The engine is being written in C++.
+### 2D, Zombie, RPG game made from scratch in C++
 
 ## Download:
 Gamejolt: https://gamejolt.com/games/somepolishcoders/440031<br/>
@@ -36,11 +36,11 @@ https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forProgrammer
 #### programmers:
 - Grzegorz "Czapa" Bednorz
 - Piotr Gardocki
-- Szymon "Whittler" Struga�a
+- Szymon "Whittler" Strugała
 - Hubert Misiewicz
 - Kamil Lewan
 - Kamil "Sajko"
-- Adam "Bobem" �ukowski
+- Adam "Bobem" Żukowski
 - Lorwin "Graphffiti"
 - Piotek "Fave"
 - "Thief"
@@ -61,7 +61,7 @@ https://github.com/SPC-Some-Polish-Coders/PopHead/blob/master/docs/forProgrammer
 
 #### quality assurance:
 - "Pavko"
-- Piotr Wielg�rski
+- Piotr Wielgórski
 - "Siwy Kleszcz"
 
 #### marketing:
