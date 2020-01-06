@@ -100,8 +100,10 @@ void ArcadeMode::update(float dt)
 	}
 
 	// update enemies counter
-	auto zombies = mRegistry.view<component::Zombie>();
-	mEnemiesCounter = zombies.size();
+	mEnemiesCounter = 0;
+	auto zombies = mRegistry.view<component::Zombie, component::Health>();
+	for(auto zombie : zombies)
+		++mEnemiesCounter;
 	
 	// break time
 	mTimeFromBreakTimeStart += dt;
