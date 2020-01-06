@@ -11,7 +11,7 @@
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mGameData()
 	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
