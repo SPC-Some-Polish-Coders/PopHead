@@ -4,6 +4,7 @@
 
 namespace ph {
 	class GUI;
+	class AIManager;
 }
 
 namespace ph::system {
@@ -11,7 +12,7 @@ namespace ph::system {
 	class DamageAndDeath : public System
 	{
 	public:
-		DamageAndDeath(entt::registry&, GUI&);
+		DamageAndDeath(entt::registry&, GUI&, AIManager&);
 
 		void update(float dt) override;
 
@@ -23,6 +24,7 @@ namespace ph::system {
 
 	private:
 		GUI& mGui;
+		AIManager& mAIManager;
 		unsigned char mLastDeadBodyZ = 170;
 	};
 }

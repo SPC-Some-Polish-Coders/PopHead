@@ -5,14 +5,16 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "GUI/gui.hpp"
+#include "AI/aiManager.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
-	DamageAndDeath::DamageAndDeath(entt::registry& registry, GUI& gui)
+	DamageAndDeath::DamageAndDeath(entt::registry& registry, GUI& gui, AIManager& aiManager)
 		:System(registry)
 		,mGui(gui)
+		,mAIManager(aiManager)
 	{
 	}
 
@@ -137,6 +139,7 @@ namespace ph::system {
 					camera.currentCameraName = "death";
 					mRegistry.assign<component::Camera>(deathCameraEntity, camera);
 					mGui.showInterface("gameOverScreen");
+					mAIManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
 				}
 
 				auto& animation = mRegistry.get<component::AnimationData>(entity);
