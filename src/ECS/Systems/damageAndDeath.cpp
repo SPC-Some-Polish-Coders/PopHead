@@ -123,8 +123,8 @@ namespace ph::system {
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 				auto& z = mRegistry.get<component::RenderQuad>(entity).z;
-				if(z == 101)
-					z = 170;
+				if(mLastDeadBodyZ == 101)
+					mLastDeadBodyZ = 170;
 				z = --mLastDeadBodyZ;
 
 				if(isPlayer) {
