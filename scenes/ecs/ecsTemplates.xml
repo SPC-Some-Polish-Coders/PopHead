@@ -181,14 +181,12 @@
     <component name="Bullets" numOfPistolBullets="10" numOfShotgunBullets="0" />
     <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/bulletBox.png" z="99" />
-    <component name="Velocity" dx="0" dy="0" />
   </entityTemplate>
 
   <entityTemplate name="Medkit">
     <component name="Medkit" addHealthPoints="25" />
     <component name="BodyRect" x="0" y="0" width="15" height="15" />
     <component name="RenderQuad" textureFilepath="textures/others/medkit.png" z="99" />
-    <component name="Velocity" dx="0" dy="0" />
   </entityTemplate>
 
   <entityTemplate name="Pistol">

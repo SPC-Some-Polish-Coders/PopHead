@@ -131,14 +131,17 @@ void ArcadeMode::startBreakTime()
 				auto medkitEntity = mTemplateStorage.createCopy("Medkit", mRegistry);
 				auto& body = mRegistry.get<component::BodyRect>(medkitEntity);
 				body.rect.setPosition(lootSpawnerBody.rect.getTopLeft());
+				mRegistry.assign<component::Velocity>(medkitEntity);
 			} break;
 			case component::LootSpawner::Bullets: {
 				auto bulletBoxEntity = mTemplateStorage.createCopy("BulletBox", mRegistry);
 				auto& [bullets, body] = mRegistry.get<component::Bullets, component::BodyRect>(bulletBoxEntity);
 				body.rect.setPosition(lootSpawnerBody.rect.getTopLeft());
+				mRegistry.assign<component::Velocity>(bulletBoxEntity);
 				bullets.numOfPistolBullets = 5 * Random::generateNumber(3, 5);
 				bullets.numOfShotgunBullets = 5 * Random::generateNumber(1, 2);
 			} break;
+			// NOTE: We assign velocity component so they are pushed by pusingArea in arcade sewage map
 		}
 	});
 
