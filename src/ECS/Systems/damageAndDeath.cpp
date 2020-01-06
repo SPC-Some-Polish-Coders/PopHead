@@ -148,7 +148,7 @@ namespace ph::system {
 	void DamageAndDeath::updateDeadCharacters(float dt)
 	{
 		auto view = mRegistry.view<component::DeadCharacter, component::RenderQuad>();
-		unsigned nrOfDeadCharacters;
+		unsigned nrOfDeadCharacters = 0;
 		for(auto entity : view)
 		{
 			++nrOfDeadCharacters;
