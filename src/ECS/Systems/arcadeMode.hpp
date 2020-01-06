@@ -26,7 +26,6 @@ private:
 	void startBreakTime();
 	void endBreakTime();
 	std::string addZero(int number);
-	int getNumberOfSpawners();
 	void createNormalZombie(sf::Vector2f position);
 	void createSlowZombie(sf::Vector2f position);
 
@@ -38,7 +37,6 @@ private:
 	float mTimeFromStart = 0.f;
 	float mTimeFromBreakTimeStart;
 	float mTimeBeforeStartingFirstWave = 5.f;
-	int mNumberOfSpawnersOnTheMap;
 	int mEnemiesToSpawn = 0;
 	int mSlowZombiesToSpawnPerSpawner = 0;
 	int mNormalZombiesToSpawnPerSpawner = 0;

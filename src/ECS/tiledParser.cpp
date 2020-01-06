@@ -120,37 +120,28 @@ namespace ph {
 	{
 		auto arcadeSpawner = mTemplatesStorage.createCopy("ArcadeSpawner", mGameRegistry);
 		loadPosition(arcadeSpawnerNode, arcadeSpawner);
+		loadSize(arcadeSpawnerNode, arcadeSpawner);
 
 		auto& waves = mGameRegistry.get<component::ArcadeSpawner>(arcadeSpawner).waves;
-
 		waves[0].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave01-normalZombies").toUnsigned();
 		waves[0].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave01-slowZombies").toUnsigned();
-
 		waves[1].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave02-normalZombies").toUnsigned();
 		waves[1].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave02-slowZombies").toUnsigned();
-
 		waves[2].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave03-normalZombies").toUnsigned();
 		waves[2].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave03-slowZombies").toUnsigned();
-
 		waves[3].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave04-normalZombies").toUnsigned();
 		waves[3].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave04-slowZombies").toUnsigned();
-
 		waves[4].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave05-normalZombies").toUnsigned();
 		waves[4].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave05-slowZombies").toUnsigned();
-		
 		waves[5].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave06-normalZombies").toUnsigned();
 		waves[5].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave06-slowZombies").toUnsigned();
-
 		waves[6].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave07-normalZombies").toUnsigned();
 		waves[6].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave07-slowZombies").toUnsigned();
-
 		waves[7].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave08-normalZombies").toUnsigned();
 		waves[7].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave08-slowZombies").toUnsigned();
-
+		waves[8].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave09-normalZombies").toUnsigned();
 		waves[8].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave09-slowZombies").toUnsigned();
-		waves[8].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave09-slowZombies").toUnsigned();
-
-		waves[9].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave10-slowZombies").toUnsigned();
+		waves[9].normalZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave10-normalZombies").toUnsigned();
 		waves[9].slowZombiesToSpawn = getProperty(arcadeSpawnerNode, "wave10-slowZombies").toUnsigned();
 	}
 

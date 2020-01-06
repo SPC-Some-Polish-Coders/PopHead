@@ -103,7 +103,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Zombie",                	    &EntitiesParser::parseZombie},
 		{"Bullets",                	    &EntitiesParser::parseBullets},
 		{"Velocity",              	    &EntitiesParser::parseVelocity},
-		{"PushingVelocity",             &EntitiesParser::parsePushingVelocity},
+		{"PushingForces",               &EntitiesParser::parsePushingForces},
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
@@ -273,7 +273,7 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 	mUsedRegistry->assign_or_replace<component::Velocity>(entity, dx, dy);
 }
 
-void EntitiesParser::parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parsePushingForces(const Xml& entityComponentNode, entt::entity& entity)
 {
 	sf::Vector2f vel = entityComponentNode.getAttribute("vel").toVector2f();
 	mUsedRegistry->assign_or_replace<component::PushingForces>(entity, vel);

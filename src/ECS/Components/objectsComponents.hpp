@@ -15,7 +15,7 @@ namespace ph::component {
 			unsigned slowZombiesToSpawn;
 		};
 		std::array<Wave, 10> waves;
-		float timeFromLastSpawn = 0.3f;
+		float timeFromLastSpawn = 0.5f;
 	};
 
 	struct LootSpawner

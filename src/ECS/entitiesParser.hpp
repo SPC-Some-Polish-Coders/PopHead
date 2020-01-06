@@ -30,7 +30,7 @@ private:
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
-	void parsePushingVelocity(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePushingForces(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseDamage(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);

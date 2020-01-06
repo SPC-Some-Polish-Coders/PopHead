@@ -34,7 +34,7 @@
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="CharacterSpeed" speed="100" />
     <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingVelocity" vel="0, 0" />
+    <component name="PushingForces" vel="0, 0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
@@ -51,7 +51,7 @@
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="CharacterSpeed" speed="50" />
     <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingVelocity" vel="0, 0" />
+    <component name="PushingForces" vel="0, 0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.2" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
@@ -68,7 +68,7 @@
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="CharacterSpeed" speed="20" />
     <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingVelocity" vel="0, 0" />
+    <component name="PushingForces" vel="0, 0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.15" />
     <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
@@ -181,12 +181,14 @@
     <component name="Bullets" numOfPistolBullets="10" numOfShotgunBullets="0" />
     <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/bulletBox.png" z="99" />
+    <component name="Velocity" dx="0" dy="0" />
   </entityTemplate>
 
   <entityTemplate name="Medkit">
     <component name="Medkit" addHealthPoints="25" />
     <component name="BodyRect" x="0" y="0" width="15" height="15" />
     <component name="RenderQuad" textureFilepath="textures/others/medkit.png" z="99" />
+    <component name="Velocity" dx="0" dy="0" />
   </entityTemplate>
 
   <entityTemplate name="Pistol">

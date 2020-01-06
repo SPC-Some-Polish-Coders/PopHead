@@ -21,7 +21,6 @@ ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, AIManager& aiManager,
 	,mAIManager(aiManager)
 	,mTemplateStorage(templateStorage)
 	,mMusicPlayer(musicPlayer)
-	,mNumberOfSpawnersOnTheMap(getNumberOfSpawners())
 {
 	sIsActive = true;
 	mAIManager.setAIMode(AIMode::zombieAlwaysLookForPlayer);
@@ -38,8 +37,8 @@ void ArcadeMode::update(float dt)
 	if(!mMadeInit) {
 		auto players = mRegistry.view<component::Player, component::Bullets>();
 		players.each([](const component::Player, component::Bullets& bullets) {
-			bullets.numOfPistolBullets = 350;
-			bullets.numOfShotgunBullets = 50;
+			bullets.numOfPistolBullets = 200;
+			bullets.numOfShotgunBullets = 0;
 		});
 		mMadeInit = true;
 	}
@@ -73,25 +72,25 @@ void ArcadeMode::update(float dt)
 			if(arcadeModeSpawner.timeFromLastSpawn > 0.5f) 
 			{
 				arcadeModeSpawner.timeFromLastSpawn = 0.f;
-				const sf::Vector2f spawnerPos = spawnerBody.rect.getTopLeft();
+				const sf::Vector2f spawnPos = Random::generateVector(spawnerBody.rect.getTopLeft(), spawnerBody.rect.getBottomRight());
 				auto& wave = arcadeModeSpawner.waves[mCurrentWave - 1];
 				if(wave.normalZombiesToSpawn > 0 && wave.slowZombiesToSpawn > 0) {
 					int ran = Random::generateNumber(0, 5);
 					if(ran == 0) {
-						createNormalZombie(spawnerPos);
+						createNormalZombie(spawnPos);
 						--wave.normalZombiesToSpawn;
 					}
 					else {
-						createSlowZombie(spawnerPos);
+						createSlowZombie(spawnPos);
 						--wave.slowZombiesToSpawn;
 					}
 				}
 				else if(wave.normalZombiesToSpawn > 0) {
-					createNormalZombie(spawnerPos);
+					createNormalZombie(spawnPos);
 					--wave.normalZombiesToSpawn;
 				}
 				else if(wave.slowZombiesToSpawn > 0) {
-					createSlowZombie(spawnerPos);
+					createSlowZombie(spawnPos);
 					--wave.slowZombiesToSpawn;
 				}
 				else
@@ -137,8 +136,8 @@ void ArcadeMode::startBreakTime()
 				auto bulletBoxEntity = mTemplateStorage.createCopy("BulletBox", mRegistry);
 				auto& [bullets, body] = mRegistry.get<component::Bullets, component::BodyRect>(bulletBoxEntity);
 				body.rect.setPosition(lootSpawnerBody.rect.getTopLeft());
-				bullets.numOfPistolBullets = 10 * Random::generateNumber(2, 10);
-				bullets.numOfShotgunBullets = 10 * Random::generateNumber(2, 10);
+				bullets.numOfPistolBullets = 5 * Random::generateNumber(3, 5);
+				bullets.numOfShotgunBullets = 5 * Random::generateNumber(1, 2);
 			} break;
 		}
 	});
@@ -182,17 +181,6 @@ void ArcadeMode::updateGuiCounters()
 		auto* enemiesCounter = dynamic_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
 		enemiesCounter->setString("Enemies: " + addZero(mEnemiesCounter));
 	}
-}
-
-int ArcadeMode::getNumberOfSpawners()
-{
-	//auto* invisibleObjects = mRoot->getChild("LAYER_invisibleObjects");
-	//auto& gameObjects = invisibleObjects->getChildren();
-	int counter = 0;
-	//for(const auto& gameObject : gameObjects)
-		//if(gameObject->getName().find("arcadeSpawner") != std::string::npos)
-			//++counter;
-	return counter;
 }
 
 void ArcadeMode::createNormalZombie(sf::Vector2f position)

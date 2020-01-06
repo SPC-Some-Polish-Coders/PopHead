@@ -12,7 +12,7 @@ void PushingAreas::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
-	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
+	auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity>();
 
 	for (auto pushingArea : pushingAreasView)
 	{
