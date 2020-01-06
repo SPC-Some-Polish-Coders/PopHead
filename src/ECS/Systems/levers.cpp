@@ -10,7 +10,6 @@ namespace ph::system {
 
 void Levers::update(float dt)
 {
-
 }
 
 void Levers::onEvent(const ActionEvent& event)

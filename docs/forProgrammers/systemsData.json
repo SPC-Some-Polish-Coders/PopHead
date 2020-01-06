@@ -8,6 +8,28 @@
             ]
         },
         {
+            "name" : "ArcadeMode",
+            "componentsRead" : [
+                "LootSpawner",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Bullets",
+                "ArcadeSpawner"
+            ]
+        },
+        {
+            "name" : "AreasDebug",
+            "componentsRead":[
+                "BodyRect",
+                "StaticCollisionBody",
+                "MultiStaticCollisionBody",
+                "KinematicCollisionBody",
+                "AreaVelocityChangingEffect",
+                "PushingArea"
+            ]
+        },
+        {
             "name" : "AudioSystem",
             "componentsRead" : [
                 "Player",
@@ -20,25 +42,19 @@
             ]
         },
         {
-            "name" : "CanUseWeapon",
-            "componentsRead" : [
-                "CurrentMeleeWeapon",
-                "MeleeProperties",
-                "CurrentGun",
-                "GunProperties"
-            ],
-            "componentsWrite" : [
-                "MeleeAttacker",
-                "GunAttacker"
+            "name" : "Cars",
+            "componentsWrite" :[
+                "BodyRect",
+                "Car"
             ]
         },
-		{
-            "name" : "CollisionDebug",
+        {
+            "name" : "CutScenesActivating",
             "componentsRead" : [
-                "StaticCollisionBody",
-                "BodyRect",
-                "MultiStaticCollisionBody",
-                "KinematicCollisionBody"
+                "BodyRect"    
+            ],
+            "componentsWrite" : [
+                "CutScene"
             ]
         },
         {
@@ -52,10 +68,13 @@
                 "DamageAnimation",
                 "RenderQuad",
                 "MultiParticleEmitter",
-                "TimeToFadeOut",
+                "DeadCharacter",
                 "Killable",
                 "KinematicCollisionBody",
                 "Damage",
+                "PushingForces",
+                "GunAttackre",
+                "FaceDirection",
                 "Camera",
                 "AnimationData",
                 "TaggedToDestroy"
@@ -79,7 +98,7 @@
             "name" : "GameplayUI",
             "componentsRead" : [
                 "Player",
-                "GunAttacker",
+                "Bullets",
                 "Health"
             ]
         },
@@ -89,7 +108,7 @@
                 "Gate",
                 "LeverListener",
                 "StaticCollisionBody",
-                "BlocksLight",
+                "LightWall",
                 "HiddenForRenderer"
             ]
         },
@@ -106,6 +125,7 @@
                 "CurrentGun",
                 "HiddenForRenderer",
                 "GunAttacker",
+                "Bullets",
                 "InPlayerGunAttackArea",
                 "DamageTag",
                 "LastingShot",
@@ -118,6 +138,7 @@
             "componentsRead" : [
                 "Player",
                 "CurrentGun",
+                "Bullets",
                 "FaceDirection"
             ],
             "componentsWrite" : [
@@ -126,6 +147,17 @@
                 "BodyRect",
                 "GunAttacker"
             ]
+        },
+        {
+            "name" : "HintAreas",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Hint"
+            ]
+            
         },
         {
             "name" : "HostileCollisions",
@@ -137,7 +169,8 @@
             ],
             "componentsWrite" : [
                 "CollisionWithPlayer",
-                "DamageTag"
+                "DamageTag",
+                "PushingForces"
             ]
         },
         {
@@ -180,36 +213,23 @@
             "name" : "MeleeAttacks",
             "componentsRead" : [
                 "Player",
-                "BodyRect",
                 "FaceDirection",
                 "MeleeProperties",
                 "CurrentMeleeWeapon",
                 "Killable"
             ],
             "componentsWrite" : [
-                "MeleeAttacker",
-                "InPlayerAttackArea",
-                "DamageTag"
-            ]
-        },
-        {
-            "name" : "MeleePositioning",
-            "componentsRead" : [
-                "Player",
-                "FaceDirection",
-                "MeleeAttacker"
-            ],
-            "componentsWrite" : [
                 "BodyRect",
-                "HiddenForRenderer",
-                "CurrentMeleeWeapon",
-                "RenderQuad"
+                "DamageTag",
+                "RenderQuad",
+                "HiddenForRenderer"
             ]
         },
         {
             "name" : "Movement",
             "componentsRead" : [
-                "Velocity"
+                "Velocity",
+                "PushingForces"
             ],
             "componentsWrite" : [
                 "BodyRect"
@@ -218,33 +238,24 @@
         {
             "name" : "ParticleSystem",
             "componentsRead" : [
-                ""
+                "BodyRect"
             ],
             "componentsWrite" : [
-                ""
+                "ParticleEmitter",
+                "MultiParticleEmitter"
             ]
         },
         {
-            "name" : "PickupMedkit",
+            "name" : "PickupSystem",
             "componentsRead" : [
                 "BodyRect",
                 "Medkit",
-                "Player"
+                "Player",
+                "BulletBox"
             ],
             "componentsWrite" : [
                 "Health",
-                "TaggedToDestroy"
-            ]
-        },
-        {
-            "name" : "PickupBullet",
-            "componentsRead" : [
-                "BodyRect",
-                "Player",
-                "Bullet"
-            ],
-            "componentsWrite" : [
-                "GunAttacker",
+                "Bullets",
                 "TaggedToDestroy"
             ]
         },
@@ -262,16 +273,15 @@
             "name" : "PlayerMovementInput",
             "componentsRead" : [
                 "Player",
-                "TimeToFadeOut",
+                "DeadCharacter",
                 "CharacterSpeed",
-                "BodyRect"
+                "BodyRect",
+                "Health"
             ],
             "componentsWrite" : [
                 "AnimationData",
                 "FaceDirection",
                 "LightSource",
-                "GunAttacker",
-                "MeleeAttacker",
                 "Velocity"
             ]
         },
@@ -287,13 +297,27 @@
             ]
         },
         {
+            "name" : "PushingMovement",
+            "componentsRead" : [
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect",
+                "PushingForces"
+            ]
+        },
+        {
             "name" : "RenderSystem",
             "componentsRead" : [
                 "BodyRect",
-                "TexturePtr",
-                "TextureRect",
-                "ShaderPtr",
-                "Color"
+                "LightSource",
+                "LightWall",
+                "RenderQuad",
+                "TextureRect"
+            ],
+            "componentsWrite" : [
+                "Camera",
+                "RenderChunk"
             ]
         },
         {
@@ -328,12 +352,14 @@
             "name" : "ZombieSystem",
             "componentsRead" : [
                 "BodyRect",
-                "TimeToFadeOut"
+                "CharacterSpeed",
+                "DeadCharacter"
             ],
             "componentsWrite" : [
                 "Zombie",
                 "Velocity",
-                "SpatialSound"
+                "SpatialSound",
+                "AnimationData"
             ]
         }
     ]

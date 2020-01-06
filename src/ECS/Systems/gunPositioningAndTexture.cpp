@@ -29,7 +29,8 @@ namespace ph::system {
 		auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::TextureRect>();
 		for (auto gunAttacker : gunAttackerView)
 		{
-			auto& [gunAttackerDetails, playerBullets] = gunAttackerView.get<component::GunAttacker, component::Bullets>(gunAttacker);
+			auto& gunAttackerDetails = gunAttackerView.get<component::GunAttacker>(gunAttacker);
+			const auto& playerBullets = gunAttackerView.get<component::Bullets>(gunAttacker);
 			for (auto gun : gunView)
 			{
 				auto& gunTextureBody = gunView.get<component::TextureRect>(gun);

@@ -26,7 +26,8 @@ void HintAreas::update(float dt)
 		const auto& playerBody = playerView.get<component::BodyRect>(player);
 		for (auto hintArea : hintAreasView)
 		{
-			auto& [hintAreaBody, hintDetails] = hintAreasView.get<component::BodyRect, component::Hint>(hintArea);
+			const auto& hintAreaBody = hintAreasView.get<component::BodyRect>(hintArea);
+			auto& hintDetails = hintAreasView.get<component::Hint>(hintArea);
 			if (hintAreaBody.rect.contains(playerBody.rect.getCenter()))
 			{
 				if (hintDetails.isShown)
