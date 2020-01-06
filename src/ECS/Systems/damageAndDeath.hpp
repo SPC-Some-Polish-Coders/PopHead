@@ -18,10 +18,11 @@ namespace ph::system {
 	private:
 		void dealDamage() const;
 		void makeDamageJuice(float dt) const; // NOTE: Juice is a game design term
-		void makeCharactersDie() const;
-		void updateDeadCharacters(float dt) const;
+		void makeCharactersDie();
+		void updateDeadCharacters(float dt);
 
 	private:
 		GUI& mGui;
+		unsigned char mLastDeadBodyZ = 170;
 	};
 }

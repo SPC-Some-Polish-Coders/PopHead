@@ -100,7 +100,7 @@ namespace ph::system {
 		}
 	}
 
-	void DamageAndDeath::makeCharactersDie() const
+	void DamageAndDeath::makeCharactersDie() 
 	{
 		auto view = mRegistry.view<component::Health>();
 		for(auto entity : view)
@@ -123,7 +123,9 @@ namespace ph::system {
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);
 				auto& z = mRegistry.get<component::RenderQuad>(entity).z;
-				z = 100;
+				if(z == 101)
+					z = 170;
+				z = --mLastDeadBodyZ;
 
 				if(isPlayer) {
 					auto deathCameraEntity = mRegistry.create();
@@ -143,11 +145,14 @@ namespace ph::system {
 		}
 	}
 
-	void DamageAndDeath::updateDeadCharacters(float dt) const
+	void DamageAndDeath::updateDeadCharacters(float dt)
 	{
 		auto view = mRegistry.view<component::DeadCharacter, component::RenderQuad>();
+		unsigned nrOfDeadCharacters;
 		for(auto entity : view)
 		{
+			++nrOfDeadCharacters;
+
 			auto& [deadCharacter, renderQuad] = view.get<component::DeadCharacter, component::RenderQuad>(entity);
 			
 			// fade out
@@ -159,7 +164,8 @@ namespace ph::system {
 
 			// update z component
 			deadCharacter.timeFromDeath += dt;
-			renderQuad.z = static_cast<unsigned char>(101.f + deadCharacter.timeFromDeath * 3.f);
 		}
+		if(nrOfDeadCharacters == 0)
+			mLastDeadBodyZ = 170;
 	}
 }
