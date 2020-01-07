@@ -6,7 +6,7 @@ namespace ph{
 
 MusicData::MusicData(float volumeMultiplier, bool loop)
 	:mVolumeMultiplier(volumeMultiplier)
-	, mLoop(loop)
+	,mLoop(loop)
 {
 }
 
@@ -28,8 +28,7 @@ MusicDataHolder::MusicDataHolder()
 auto MusicDataHolder::getMusicData(const std::string& filePath) -> const MusicData&
 {
 	auto found = mAllThemesData.find(filePath);
-	if (found == mAllThemesData.end())
-		PH_EXCEPTION("MusicData with filepath \"" + filePath + "\" was not found.");
+	PH_ASSERT_CRITICAL(found != mAllThemesData.end(), "MusicData with filepath \"" + filePath + "\" was not found.");
 	mCurrentThemeData = found->second;
 	return found->second;
 }

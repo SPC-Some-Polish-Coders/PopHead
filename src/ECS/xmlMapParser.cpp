@@ -41,10 +41,10 @@ void XmlMapParser::checkMapSupport(const Xml& mapNode) const
 {
 	const std::string orientation = mapNode.getAttribute("orientation")->toString();
 	if(orientation != "orthogonal")
-		PH_EXCEPTION("Used unsupported map orientation: " + orientation);
+		PH_EXIT_GAME("Used unsupported map orientation: " + orientation);
 	const std::string infinite = mapNode.getAttribute("infinite")->toString();
 	if(infinite != "0")
-		PH_EXCEPTION("Infinite maps are not supported");
+		PH_EXIT_GAME("Infinite maps are not supported");
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
@@ -156,7 +156,7 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 	const std::string encoding = dataNode.getAttribute("encoding")->toString();
 	if(encoding == "csv")
 		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+	PH_EXIT_GAME("Used unsupported data encoding: " + encoding);
 }
 
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
