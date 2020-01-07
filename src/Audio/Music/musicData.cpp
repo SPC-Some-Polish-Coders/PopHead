@@ -14,8 +14,8 @@ MusicDataHolder::MusicDataHolder()
 {
 	Xml musicDataXml;
 	musicDataXml.loadFromFile("resources/music/musicData.xml");
-	const Xml musicDataNode = musicDataXml.getChild("musicdata");
-	const std::vector<Xml> themeNodes = musicDataNode.getChildren("theme");
+	const auto musicDataNode = musicDataXml.getChild("musicdata");
+	const std::vector<Xml> themeNodes = musicDataNode->getChildren("theme");
 	for(const auto& themeNode : themeNodes) {
 		const std::string fileName = themeNode.getAttribute("filename")->toString();
 		const std::string filePath = "music/" + fileName;

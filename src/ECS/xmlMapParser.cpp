@@ -23,7 +23,7 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 		
 	Xml mapFile;
 	mapFile.loadFromFile(fileName);
-	const Xml mapNode = mapFile.getChild("map");
+	const Xml mapNode = *mapFile.getChild("map");
 	checkMapSupport(mapNode);
 
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
@@ -92,12 +92,12 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
 			tilesetDocument.loadFromFile(tilesetNodeSource);
-			tilesetNode = tilesetDocument.getChild("tileset");
+			tilesetNode = *tilesetDocument.getChild("tileset");
 		}
 
 		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
 		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns")->toUnsigned());
-		const Xml imageNode = tilesetNode.getChild("image");
+		const Xml imageNode = *tilesetNode.getChild("image");
 		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source")->toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesData tilesData = getTilesData(tileNodes);
@@ -115,8 +115,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) {
 		tilesData.ids.push_back(tileNode.getAttribute("id")->toUnsigned());
-		const Xml objectGroupNode = tileNode.getChild("objectgroup");
-		const Xml objectNode = objectGroupNode.getChild("object");
+		const auto objectGroupNode = tileNode.getChild("objectgroup");
+		const Xml objectNode = *objectGroupNode->getChild("object");
 		auto width = objectNode.getAttribute("width");
 		auto height = objectNode.getAttribute("height");
 		const sf::FloatRect bounds(
@@ -144,7 +144,7 @@ void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const Til
 	unsigned char z = 200;
 	for (const Xml& layerNode : layerNodes)
 	{
-		const Xml dataNode = layerNode.getChild("data");
+		const Xml dataNode = *layerNode.getChild("data");
 		const auto globalIds = toGlobalTileIds(dataNode);
 		createLayer(globalIds, tilesets, info, z, aiManager);
 		--z;

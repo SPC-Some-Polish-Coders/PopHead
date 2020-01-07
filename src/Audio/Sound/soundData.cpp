@@ -17,7 +17,7 @@ SoundDataHolder::SoundDataHolder()
 	Xml soundDataXml;
 	soundDataXml.loadFromFile("resources/sounds/soundData.xml");
 	const auto soundDataNode = soundDataXml.getChild("soundData");
-	const std::vector<Xml> soundNodes = soundDataNode.getChildren("sound");
+	const std::vector<Xml> soundNodes = soundDataNode->getChildren("sound");
 	for(const auto& soundNode : soundNodes) {
 		const std::string fileName = soundNode.getAttribute("fileName")->toString();
 		const std::string filePath = "sounds/" + fileName;

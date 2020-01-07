@@ -28,7 +28,7 @@ void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileNa
 
 	Xml guiTag;
 	guiTag.loadFromFile(fileName);
-	guiTag = guiTag.getChild("gui");
+	guiTag = *guiTag.getChild("gui");
 
 	auto interfaces = guiTag.getChildren("interface");
 	for(auto& interface : interfaces)

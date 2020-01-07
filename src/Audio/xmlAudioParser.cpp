@@ -15,7 +15,7 @@ void XmlAudioParser::parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlaye
 
 	Xml audioFile;
 	audioFile.loadFromFile(filePath);
-	const Xml audioNode = audioFile.getChild("audio");
+	const Xml audioNode = *audioFile.getChild("audio");
 
 	parseSoundMute(audioNode);
 	parseStartTheme(audioNode);
@@ -24,8 +24,8 @@ void XmlAudioParser::parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlaye
 
 void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 {
-	const Xml volumeNode = audioNode.getChild("mute");
-	bool soundMute = volumeNode.getAttribute("soundmute")->toBool();
+	const auto volumeNode = audioNode.getChild("mute");
+	bool soundMute = volumeNode->getAttribute("soundmute")->toBool();
 	mSoundPlayer->setSceneMute(soundMute);
 }
 
@@ -33,8 +33,8 @@ void XmlAudioParser::parseStartTheme(const Xml& audioNode)
 {
 	//TODO: What should we do with volumeMultiplier parameter
 
-	const Xml startThemeNode = audioNode.getChild("starttheme");
-	const std::string filepath = "music/" + startThemeNode.getAttribute("filename")->toString();
+	const auto startThemeNode = audioNode.getChild("starttheme");
+	const std::string filepath = "music/" + startThemeNode->getAttribute("filename")->toString();
 	mMusicPlayer->playFromFile(filepath);
 }
 

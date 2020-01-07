@@ -24,7 +24,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	Xml sceneFile;
 	sceneFile.loadFromFile(sceneFileName);
-	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
+	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
 
 	aiManager.setAIMode(AIMode::normal);
 	aiManager.setIsPlayerOnScene(false);
@@ -67,7 +67,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	// parse ambient light 
 	const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
-	sf::Color color = ambientLightNode.getAttribute("color")->toColor();
+	const sf::Color color = ambientLightNode->getAttribute("color")->toColor();
 	Renderer::setAmbientLightColor(color);
 
 	// parse arcade mode

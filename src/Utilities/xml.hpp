@@ -11,9 +11,9 @@ namespace ph {
 class Xml 
 {
 public:
-	void loadFromFile(std::string filePath);
+	void loadFromFile(const std::string& filePath);
 
-	Xml getChild(const std::string& name) const;
+	std::optional<Xml> getChild(const std::string& name) const;
 	std::vector<Xml> getChildren(const std::string& name) const;
 	std::optional<Xml> getAttribute(const std::string& name) const;
 
@@ -39,3 +39,4 @@ private:
 };
 
 }
+

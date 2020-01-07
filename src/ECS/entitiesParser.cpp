@@ -32,8 +32,7 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 	entitiesFile.loadFromFile(filePath);
 
 	mUsedRegistry = &templateStorage.getTemplateRegistry();
-	const Xml entityTemplatesNode = entitiesFile.getChild("entityTemplates");
-	parseTemplates(entityTemplatesNode);
+	parseTemplates(*entitiesFile.getChild("entityTemplates"));
 
 	// TODO: Enable entities parsing in some form
 	//mUsedRegistry = &gameRegistry;
@@ -159,10 +158,10 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 	// parse shader
 	if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) {
-		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("vertexShaderFilepath"), "Not specifiled vertexShaderFilepath attribute!");
+		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
 		const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath")->toString();
 
-		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.hasAttribute("fragmentShaderFilepath"), "Not specified fragmentShaderFilepath attribute!");
+		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("fragmentShaderFilepath").has_value(), "Not specified fragmentShaderFilepath attribute!");
 		const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath")->toString();
 
 		auto& sl = ShaderLibrary::getInstance();

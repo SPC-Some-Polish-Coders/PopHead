@@ -4,15 +4,15 @@
 
 namespace ph {
 
-void Xml::loadFromFile(std::string filePath)
+void Xml::loadFromFile(const std::string& filePath)
 {
 	mContent.clear();
 	std::ifstream ifs(filePath);
 	if(!ifs.is_open())
-		PH_EXCEPTION("cannot open file: " + filePath);
+		PH_EXIT_GAME("cannot open file: " + filePath);
 	std::string line;
 	if(!std::getline(ifs, line))
-		PH_EXCEPTION("given xml file is empty or something bad happened (" + filePath + ")");
+		PH_EXIT_GAME("given xml file is empty or something bad happened (" + filePath + ")");
 	// NOTE: Delete prolog but keep '?>' for implementation purpose
 	const std::size_t begin = line.find("?>");
 	if(begin == std::string::npos)
@@ -22,29 +22,27 @@ void Xml::loadFromFile(std::string filePath)
 	mContent += line;
 	while(std::getline(ifs, line))
 		mContent += line;
-	PH_LOG_INFO("Xml loadFromFile(): " + mContent);
 }
 
-Xml Xml::getChild(const std::string& name) const
+std::optional<Xml> Xml::getChild(const std::string& name) const
 {
-	PH_ASSERT(!name.empty(), "child name cannot be empty");
+	PH_ASSERT_CRITICAL(!name.empty(), "child name cannot be empty");
 	std::size_t begin = findEndOfTagAttributes();
-	PH_ASSERT(begin != std::string::npos, "missing closing angle bracket");
+	PH_ASSERT_CRITICAL(begin != std::string::npos, "missing closing angle bracket");
 	if(isSelfClosingTag(begin))
-		PH_EXCEPTION("current tag cannot have children");
+		return std::nullopt;
 	while(true) {
 		begin = mContent.find('<', begin + 1);
 		if(begin == std::string::npos)
-			PH_EXCEPTION("cannot find child");
+			return std::nullopt;
 		++begin;
 		std::size_t end = mContent.find_first_of(whitespaceCharacters + ">", begin + 1);
 		if(end == std::string::npos)
-			PH_EXCEPTION("missing angle bracket in child opening tag");
+			PH_EXIT_GAME("missing angle bracket in child opening tag");
 		if(isSelfClosingTag(end)) {
 			if(mContent.compare(begin, end - begin - 1, name) == 0) {
 				Xml xml;
 				xml.mContent = mContent.substr(begin, end - begin + 1);
-				PH_LOG_INFO("Xml getChild(): " + xml.mContent);
 				return xml;
 			}
 			else
@@ -54,7 +52,7 @@ Xml Xml::getChild(const std::string& name) const
 			if(mContent[end] != '>') {
 				end = findEndOfTagAttributes(end + 1);
 				if(end == std::string::npos)
-					PH_EXCEPTION("missing closing angle bracket in child opening tag");
+					PH_EXIT_GAME("missing closing angle bracket in child opening tag");
 			}
 			if(isSelfClosingTag(end)) {
 				Xml xml;
@@ -66,11 +64,10 @@ Xml Xml::getChild(const std::string& name) const
 			while(true) {
 				end = mContent.find(name, end + 2);
 				if(end == std::string::npos)
-					PH_EXCEPTION("missing child closing tag");
+					PH_EXIT_GAME("missing child closing tag");
 				if(isClosingTag(end) && count == 0) {
 					Xml xml;
 					xml.mContent = mContent.substr(begin, end - begin - 2);
-					PH_LOG_INFO("Xml getChild(): " + xml.mContent);
 					return xml;
 				}
 				else if(isClosingTag(end)) {
@@ -80,7 +77,7 @@ Xml Xml::getChild(const std::string& name) const
 				else if(mContent[end - 1] == '<') {
 					end = findEndOfTagAttributes(end + name.size());
 					if(end == std::string::npos)
-						PH_EXCEPTION("missing closing angle bracket in child opening tag");
+						PH_EXIT_GAME("missing closing angle bracket in child opening tag");
 					if(!isSelfClosingTag(end))
 						++count;
 				}
@@ -91,7 +88,7 @@ Xml Xml::getChild(const std::string& name) const
 		else {
 			/*
 				NOTE:
-				It is child which is not equel to given name paramiter.
+				It is child which is not equel to given name parameter.
 				So we need to find his ending tag to skip him and his children.
 			*/
 			const std::string childName = mContent.substr(begin, end - begin);
@@ -99,7 +96,7 @@ Xml Xml::getChild(const std::string& name) const
 			if(mContent[begin] != '>') {
 				begin = findEndOfTagAttributes(begin + 1);
 				if(begin == std::string::npos)
-					PH_EXCEPTION("missing closing angle bracket in child opening tag");
+					PH_EXIT_GAME("missing closing angle bracket in child opening tag");
 			}
 			if(isSelfClosingTag(begin))
 				continue;
@@ -107,7 +104,7 @@ Xml Xml::getChild(const std::string& name) const
 			while(true) {
 				begin = mContent.find(childName, begin + 2);
 				if(begin == std::string::npos)
-					PH_EXCEPTION("missing child closing tag");
+					PH_EXIT_GAME("missing child closing tag");
 				if(isClosingTag(begin) && count == 0) {
 					begin += childName.size();
 					break;
@@ -119,7 +116,7 @@ Xml Xml::getChild(const std::string& name) const
 				else if(mContent[begin - 1] == '<') {
 					begin = findEndOfTagAttributes(begin + childName.size());
 					if(begin == std::string::npos)
-						PH_EXCEPTION("missing closing angle bracket in child opening tag");
+						PH_EXIT_GAME("missing closing angle bracket in child opening tag");
 					if(!isSelfClosingTag(begin))
 						++count;
 				}

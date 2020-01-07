@@ -35,8 +35,7 @@ namespace ph {
 		Xml mapFile;
 		mapFile.loadFromFile(filePath);
 
-		const Xml mapNode = mapFile.getChild("map");
-		const Xml gameObjects = findGameObjects(mapNode);
+		const Xml gameObjects = findGameObjects(*mapFile.getChild("map"));
 
 		// TODO: refactor this statement
 		if (gameObjects.toString() == "")
@@ -51,10 +50,8 @@ namespace ph {
 	{
 		const std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
 		for (const auto& objectGroupNode : objectGroupNodes)
-		{
 			if ((objectGroupNode.getAttribute("name")->toString() == "gameObjects"))
 				return objectGroupNode;
-		}
 		return Xml();
 	}
 
@@ -465,9 +462,8 @@ namespace ph {
 
 	bool TiledParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const
 	{
-		// TODO_xml
-		if (gameObjectNode.getChildren("properties").size() != 0) {
-			auto properties = gameObjectNode.getChild("properties").getChildren("property");
+		if (const auto propertiesNode = gameObjectNode.getChild("properties")) {
+			const std::vector<Xml> properties = propertiesNode->getChildren("property");
 			for (const auto& property : properties)
 				if (property.getAttribute("name")->toString() == propertyName)
 					return true;
@@ -478,8 +474,8 @@ namespace ph {
 
 	Xml TiledParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name) const
 	{
-		const Xml propertiesNode = gameObjectNode.getChild("properties");
-		auto properties = propertiesNode.getChildren("property");
+		const auto propertiesNode = gameObjectNode.getChild("properties");
+		auto properties = propertiesNode->getChildren("property");
 		for (const auto& property : properties)
 			if (property.getAttribute("name")->toString() == name)
 				return *property.getAttribute("value");
@@ -505,8 +501,8 @@ namespace ph {
 	{
 		Xml objectTypesFile;
 		objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
-		const Xml objectTypesNode = objectTypesFile.getChild("objecttypes");
-		std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
+		const auto objectTypesNode = objectTypesFile.getChild("objecttypes");
+		std::vector<Xml> getObjectTypeNodes = objectTypesNode->getChildren("objecttype");
 		return getObjectTypeNodes;
 	}
 
