@@ -19,12 +19,12 @@ SoundDataHolder::SoundDataHolder()
 	const auto soundDataNode = soundDataXml.getChild("soundData");
 	const std::vector<Xml> soundNodes = soundDataNode.getChildren("sound");
 	for(const auto& soundNode : soundNodes) {
-		const std::string fileName = soundNode.getAttribute("fileName").toString();
+		const std::string fileName = soundNode.getAttribute("fileName")->toString();
 		const std::string filePath = "sounds/" + fileName;
-		const float volumeMultiplier = soundNode.getAttribute("volumeMultiplier").toFloat();
-		const bool loop = soundNode.getAttribute("loop").toBool();
-		const float maximalFullVolumeDistance = soundNode.getAttribute("maximalFullVolumeDistance").toFloat();
-		const float maximalHearableDistance = soundNode.getAttribute("maximalHearableDistance").toFloat();
+		const float volumeMultiplier = soundNode.getAttribute("volumeMultiplier")->toFloat();
+		const bool loop = soundNode.getAttribute("loop")->toBool();
+		const float maximalFullVolumeDistance = soundNode.getAttribute("maximalFullVolumeDistance")->toFloat();
+		const float maximalHearableDistance = soundNode.getAttribute("maximalHearableDistance")->toFloat();
 		mAllSoundsData[filePath] = SoundData(volumeMultiplier, loop, maximalFullVolumeDistance, maximalHearableDistance);
 	}
 }
