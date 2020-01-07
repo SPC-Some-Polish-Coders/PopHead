@@ -64,12 +64,11 @@ void SceneManager::replaceAction()
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
-		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(),
-			mGameData->getAIManager(), mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
-		SceneParser<XmlGuiParser, XmlMapParser, TiledParser, XmlAudioParser, EntitiesParser>
-			sceneParser(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(),
-				mFileOfSceneToMake, mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(),
-				mGameData->getMusicPlayer(), mGameData->getAIManager());
+		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
+			                   mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
+
+		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake,
+		           mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getMusicPlayer(), mGameData->getAIManager());
 
 		if(mGameData->getAIManager().isPlayerOnScene()) {
 			mScene->setPlayerStatus(mLastPlayerStatus);
