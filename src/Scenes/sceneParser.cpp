@@ -66,9 +66,14 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	}
 
 	// parse ambient light 
-	const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
-	sf::Color color = ambientLightNode.getAttribute("color").toColor();
-	Renderer::setAmbientLightColor(color);
+	const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
+	if (ambientLightNode.size() == 1)
+	{
+		sf::Color color = ambientLightNode.at(0).getAttribute("color").toColor();
+		Renderer::setAmbientLightColor(color);
+	}
+	else
+		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
 	// parse arcade mode
 	if(!sceneLinksNode.getChildren("arcadeMode").empty())
@@ -76,4 +81,3 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 }
 
 }
-
