@@ -20,7 +20,7 @@ namespace ph {
 		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
 		            SceneManager& sceneManager, TextureHolder& textureHolder);
 
-		void parseFile(const std::string& filePath) const;
+		void parseFile(const Xml& mapNode) const;
 		bool hasLoadedPlayer() const { return mHasLoadedPlayer; }
 
 	private:

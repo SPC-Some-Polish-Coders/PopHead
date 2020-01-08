@@ -13,7 +13,7 @@
 
 namespace ph {
 
-void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
+void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
 {
 	PH_LOG_INFO("Map file (" + fileName + ") is being parsed.");
 
@@ -21,9 +21,6 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 	mTemplates = &templates;
 	mTextures = &textures;
 		
-	Xml mapFile;
-	mapFile.loadFromFile(fileName);
-	const Xml mapNode = *mapFile.getChild("map");
 	checkMapSupport(mapNode);
 
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);

@@ -39,11 +39,13 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	// parse map
 	if(const auto mapNode = sceneLinksNode.getChild("map")) {
-		const std::string filePath = "scenes/map/" + mapNode->getAttribute("filename")->toString();
+		Xml map;
+		map.loadFromFile("scenes/map/" + mapNode->getAttribute("filename")->toString());
+		map = *map.getChild("map");
 		XmlMapParser mapParser;
-		mapParser.parseFile(filePath, aiManager, gameRegistry, templateStorage, textureHolder);
+		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);
 		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, gameData->getSceneManager(), textureHolder);
-		tiledParser.parseFile(filePath);
+		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}
 

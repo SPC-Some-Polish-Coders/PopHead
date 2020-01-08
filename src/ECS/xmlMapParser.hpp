@@ -37,7 +37,7 @@ struct TilesetsData
 class XmlMapParser
 {
 public:
-	void parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry,
+	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry,
 	               EntitiesTemplateStorage& templates, TextureHolder& textures);
 private:
 	void checkMapSupport(const Xml& mapNode) const;

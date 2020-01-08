@@ -28,14 +28,11 @@ namespace ph {
 	{
 	}
 
-	void TiledParser::parseFile(const std::string& filePath) const
+	void TiledParser::parseFile(const Xml& mapNode) const
 	{
 		PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
 
-		Xml mapFile;
-		mapFile.loadFromFile(filePath);
-
-		const Xml gameObjects = findGameObjects(*mapFile.getChild("map"));
+		const Xml gameObjects = findGameObjects(mapNode);
 
 		// TODO: refactor this statement
 		if (gameObjects.toString() == "")
