@@ -31,17 +31,15 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	ActionEventManager::setAllActionsEnabled(true);
 
 	// parse ecs entities
-	const auto entitiesNode = sceneLinksNode.getChildren("ecsObjects");
-	if(entitiesNode.size() == 1) {
-		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename")->toString();
+	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
+		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
 		EntitiesParser parser;
 		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
 	}
 
 	// parse map
-	const auto mapNode = sceneLinksNode.getChildren("map");
-	if(mapNode.size() == 1) {
-		const std::string filePath = "scenes/map/" + mapNode[0].getAttribute("filename")->toString();
+	if(const auto mapNode = sceneLinksNode.getChild("map")) {
+		const std::string filePath = "scenes/map/" + mapNode->getAttribute("filename")->toString();
 		XmlMapParser mapParser;
 		mapParser.parseFile(filePath, aiManager, gameRegistry, templateStorage, textureHolder);
 		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, gameData->getSceneManager(), textureHolder);
@@ -50,17 +48,15 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	}
 
 	// parse gui
-	const auto guiNode = sceneLinksNode.getChildren("gui");
-	if(guiNode.size() == 1) {
-		const std::string categoryFilePath = "scenes/gui/" + guiNode[0].getAttribute("filename")->toString();
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
 		XmlGuiParser categoryParser;
 		categoryParser.parseFile(gameData, categoryFilePath);
 	}
 
 	// parse audio
-	const auto audioNode = sceneLinksNode.getChildren("audio");
-	if(audioNode.size() == 1) {
-		const std::string audioFilePath = "scenes/audio/" + audioNode[0].getAttribute("filename")->toString();
+	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
 		XmlAudioParser audioParser;
 		audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
 	}
