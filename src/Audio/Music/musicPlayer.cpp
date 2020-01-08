@@ -56,6 +56,11 @@ void MusicPlayer::playFromMusicState(const std::string& musicStateName)
 	mMusic.play();
 }
 
+bool MusicPlayer::hasMusicState(const std::string& musicStateName) const
+{
+	return mMusicStateMachine.hasMusicState(musicStateName);
+}
+
 void MusicPlayer::stop()
 {
 	mMusic.stop();

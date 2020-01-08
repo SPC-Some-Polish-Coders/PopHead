@@ -23,6 +23,11 @@ auto MusicStateMachine::getRandomThemeFromState(const std::string& stateName) co
 	}
 }
 
+bool MusicStateMachine::hasMusicState(const std::string& musicStateName) const
+{
+	return mStates.find(musicStateName) != mStates.cend();
+}
+
 void MusicStateMachine::clearStates() noexcept
 {
 	mStates.clear();
