@@ -18,6 +18,7 @@ public:
 	Widget* addInterface(const std::string& name);
 
 	Widget* getInterface(const std::string& name);
+	bool hasInterface(const std::string& name) const;
 
 	void move(const sf::Vector2f&);
 

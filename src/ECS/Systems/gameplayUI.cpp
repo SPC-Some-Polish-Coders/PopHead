@@ -18,6 +18,10 @@ void GameplayUI::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	auto view = mRegistry.view<component::Player, component::Bullets>();
+
+	if (!mGui.hasInterface("gameplayCounters"))
+		return;
+
 	for(auto player : view)
 	{
 		auto* canvas = mGui.getInterface("gameplayCounters")->getWidget("canvas");
