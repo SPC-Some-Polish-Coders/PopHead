@@ -330,8 +330,7 @@ float Xml::toFloat() const
 
 sf::Color Xml::toColor() const
 {
-	auto intoUint8 = [](const std::string& str) -> sf::Uint8
-	{
+	auto intoUint8 = [](const std::string& str) -> sf::Uint8 {
 		return static_cast<sf::Uint8>(std::stoi(str));
 	};
 
@@ -369,8 +368,26 @@ sf::Color Xml::toColor() const
 
 		return sf::Color(values[0], values[1], values[2]);
 	}
-
-	PH_EXIT_GAME("Could not cast to color!");
+	else if(mContent == "black")
+		return sf::Color::Black;
+	else if(mContent == "white")
+		return sf::Color::White;
+	else if(mContent == "red")
+		return sf::Color::Red;
+	else if(mContent == "green")
+		return sf::Color::Green;
+	else if(mContent == "blue")
+		return sf::Color::Blue;
+	else if(mContent == "yellow")
+		return sf::Color::Yellow;
+	else if(mContent == "magenta")
+		return sf::Color::Magenta;
+	else if(mContent == "cyan")
+		return sf::Color::Cyan;
+	else if(mContent == "transparent")
+		return sf::Color::Transparent;
+	else
+		return sf::Color::Black;
 }
 
 sf::Vector2f Xml::toVector2f() const

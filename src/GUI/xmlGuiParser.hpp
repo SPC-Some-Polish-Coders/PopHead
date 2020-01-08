@@ -28,12 +28,7 @@ public:
 	void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
 	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
 	void parseSliderWidgetAttributes(const Xml& textWidgetTag, SliderWidget& widget);
-
 	void parseWidgetChildren(const Xml& widgetTag, Widget& widget);
-		
-	sf::Color getColor(const Xml& widgetTag);
-	sf::Color parseRGB(std::string colorStr);
-	sf::Color parseRGBA(std::string colorStr);
 
 private:
 	GameData* mGameData;
