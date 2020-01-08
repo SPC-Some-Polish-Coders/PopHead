@@ -30,15 +30,16 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 	mTemplateStorage = &templateStorage;
 	Xml entitiesFile;
 	entitiesFile.loadFromFile(filePath);
+	const auto rootNode = entitiesFile.getChild("root");
 
 	mUsedRegistry = &templateStorage.getTemplateRegistry();
-	const Xml entityTemplatesNode = entitiesFile.getChild("entityTemplates");
+	const Xml entityTemplatesNode = rootNode.getChild("entityTemplates");
 	parseTemplates(entityTemplatesNode);
 
 	// TODO: Enable entities parsing in some form
-	//mUsedRegistry = &gameRegistry;
-	//const Xml entitiesNode = entitiesFile.getChild("entities");
-	//parseEntities(entitiesNode);
+	mUsedRegistry = &gameRegistry;
+	const Xml entitiesNode = rootNode.getChild("entities");
+	parseEntities(entitiesNode);
 
 	mTemplateStorage = nullptr;
 	mUsedRegistry = nullptr;
