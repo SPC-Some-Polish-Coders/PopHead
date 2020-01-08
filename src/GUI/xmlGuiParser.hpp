@@ -28,21 +28,13 @@ public:
 	void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
 	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
 	void parseSliderWidgetAttributes(const Xml& textWidgetTag, SliderWidget& widget);
-
 	void parseWidgetChildren(const Xml& widgetTag, Widget& widget);
-		
-	sf::Vector2f getVector(const Xml& widgetTag, const std::string& attributeName);
-	std::pair<std::string, std::string> splitString(const std::string& attributeValue);
-		
-	sf::Color getColor(const Xml& widgetTag);
-	sf::Color parseRGB(std::string colorStr);
-	sf::Color parseRGBA(std::string colorStr);
 
 private:
 	GameData* mGameData;
 	GUI* mGui;
 	FontHolder* mFontHolder;
-	static std::unique_ptr<GuiActionsParser> mActionsParser;
+	inline static std::unique_ptr<GuiActionsParser> mActionsParser = nullptr;
 };
 
 }

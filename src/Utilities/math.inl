@@ -44,7 +44,7 @@ namespace ph::Math {
 
 	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns)
 	{
-		PH_ASSERT_EXCEPTION(numberOfColumns != 0, "Number of columns cannot be 0");
+		PH_ASSERT_UNEXPECTED_SITUATION(numberOfColumns != 0, "Number of columns cannot be 0");
 		return sf::Vector2u(index % numberOfColumns, index / numberOfColumns);
 	}
 
@@ -55,7 +55,7 @@ namespace ph::Math {
 
 	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed)
 	{
-		PH_ASSERT(speed >= 0.f, "Speed cannot be less than 0");
+		PH_ASSERT_UNEXPECTED_SITUATION(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
 	}
 

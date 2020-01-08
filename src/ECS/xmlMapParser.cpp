@@ -13,17 +13,12 @@
 
 namespace ph {
 
-void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
+void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
 {
-	PH_LOG_INFO("Map file (" + fileName + ") is being parsed.");
-
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
 	mTextures = &textures;
 		
-	Xml mapFile;
-	mapFile.loadFromFile(fileName);
-	const Xml mapNode = mapFile.getChild("map");
 	checkMapSupport(mapNode);
 
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
@@ -39,12 +34,12 @@ void XmlMapParser::parseFile(const std::string& fileName, AIManager& aiManager, 
 
 void XmlMapParser::checkMapSupport(const Xml& mapNode) const
 {
-	const std::string orientation = mapNode.getAttribute("orientation").toString();
+	const std::string orientation = mapNode.getAttribute("orientation")->toString();
 	if(orientation != "orthogonal")
-		PH_EXCEPTION("Used unsupported map orientation: " + orientation);
-	const std::string infinite = mapNode.getAttribute("infinite").toString();
+		PH_EXIT_GAME("Used unsupported map orientation: " + orientation);
+	const std::string infinite = mapNode.getAttribute("infinite")->toString();
 	if(infinite != "0")
-		PH_EXCEPTION("Infinite maps are not supported");
+		PH_EXIT_GAME("Infinite maps are not supported");
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
@@ -55,16 +50,16 @@ auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
 sf::Vector2u XmlMapParser::getMapSize(const Xml& mapNode) const
 {
 	return sf::Vector2u(
-		mapNode.getAttribute("width").toUnsigned(),
-		mapNode.getAttribute("height").toUnsigned()
+		mapNode.getAttribute("width")->toUnsigned(),
+		mapNode.getAttribute("height")->toUnsigned()
 	);
 }
 
 sf::Vector2u XmlMapParser::getTileSize(const Xml& mapNode) const
 {
 	return sf::Vector2u(
-		mapNode.getAttribute("tilewidth").toUnsigned(),
-		mapNode.getAttribute("tileheight").toUnsigned()
+		mapNode.getAttribute("tilewidth")->toUnsigned(),
+		mapNode.getAttribute("tileheight")->toUnsigned()
 	);
 }
 
@@ -84,21 +79,22 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
 	
 	for(Xml tilesetNode : tilesetNodes) {
-		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid").toUnsigned();
+		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid")->toUnsigned();
 		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
-		if(tilesetNode.hasAttribute("source")) {
-			std::string tilesetNodeSource = tilesetNode.getAttribute("source").toString();
+		if(auto source = tilesetNode.getAttribute("source")) {
+			std::string tilesetNodeSource = source->toString();
 			tilesetNodeSource = FilePath::toFilename(tilesetNodeSource, '/');
 			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
-			tilesetDocument.loadFromFile(tilesetNodeSource);
-			tilesetNode = tilesetDocument.getChild("tileset");
+			PH_ASSERT_CRITICAL(tilesetDocument.loadFromFile(tilesetNodeSource),
+				"Not embedded tileset file \"" + tilesetNodeSource + "\" wasn't loaded correctly!");
+			tilesetNode = *tilesetDocument.getChild("tileset");
 		}
 
-		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount").toUnsigned());
-		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns").toUnsigned());
-		const Xml imageNode = tilesetNode.getChild("image");
-		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source").toString(), '/');
+		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
+		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns")->toUnsigned());
+		const Xml imageNode = *tilesetNode.getChild("image");
+		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source")->toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
@@ -114,16 +110,17 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	tilesData.ids.reserve(tileNodes.size());
 	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) {
-		tilesData.ids.push_back(tileNode.getAttribute("id").toUnsigned());
-		const Xml objectGroupNode = tileNode.getChild("objectgroup");
-		const Xml objectNode = objectGroupNode.getChild("object");
+		tilesData.ids.push_back(tileNode.getAttribute("id")->toUnsigned());
+		const auto objectGroupNode = tileNode.getChild("objectgroup");
+		const Xml objectNode = *objectGroupNode->getChild("object");
+		auto width = objectNode.getAttribute("width");
+		auto height = objectNode.getAttribute("height");
 		const sf::FloatRect bounds(
-			objectNode.getAttribute("x").toFloat(),
-			objectNode.getAttribute("y").toFloat(),
-			objectNode.hasAttribute("width") ? objectNode.getAttribute("width").toFloat() : 0.f,
-			objectNode.hasAttribute("height") ? objectNode.getAttribute("height").toFloat() : 0.f
+			objectNode.getAttribute("x")->toFloat(),
+			objectNode.getAttribute("y")->toFloat(),
+			width ? width->toFloat() : 0.f,
+			height ? height->toFloat() : 0.f
 		);
-		
 		tilesData.bounds.push_back(bounds);
 	}
 	return tilesData;
@@ -143,7 +140,7 @@ void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const Til
 	unsigned char z = 200;
 	for (const Xml& layerNode : layerNodes)
 	{
-		const Xml dataNode = layerNode.getChild("data");
+		const Xml dataNode = *layerNode.getChild("data");
 		const auto globalIds = toGlobalTileIds(dataNode);
 		createLayer(globalIds, tilesets, info, z, aiManager);
 		--z;
@@ -152,10 +149,10 @@ void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const Til
 
 std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 {
-	const std::string encoding = dataNode.getAttribute("encoding").toString();
+	const std::string encoding = dataNode.getAttribute("encoding")->toString();
 	if(encoding == "csv")
 		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXCEPTION("Used unsupported data encoding: " + encoding);
+	PH_EXIT_GAME("Used unsupported data encoding: " + encoding);
 }
 
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,

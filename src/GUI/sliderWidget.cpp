@@ -4,7 +4,9 @@
 #include <cmath>
 
 namespace ph {
+
 namespace {
+
 	float getNewIconXPosition(double distanceXFromCenter, double parentXSize, int iconSize) {
 		double x = (parentXSize / 2) + distanceXFromCenter;
 		if (x > parentXSize)
@@ -14,13 +16,14 @@ namespace {
 		return static_cast<float>(std::min((x - iconSize * 0.5) / parentXSize, 0.95));
 	}
 }
+
 SliderWidget::SliderWidget()
 {
 }
+
 int SliderWidget::getSliderValue() {
 	return static_cast<int>(icon->getPosition().x * 100);
 }
-
 
 void SliderWidget::createSlider(std::string path) {
 	icon = std::make_unique<Widget>();
@@ -57,5 +60,6 @@ bool SliderWidget::isMouseOnSliderIcon(const sf::Vector2f& distanceFromCenter)
 		&& icon->getGlobalPosition().y < distanceFromCenter.y
 		&& icon->getGlobalPosition().y + icon->getSize().y > distanceFromCenter.y;
 }
+
 }
 

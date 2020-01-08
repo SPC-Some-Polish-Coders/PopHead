@@ -15,19 +15,20 @@ void loadAnimationStatesFromFile(const std::string& filepath)
 	AnimationStatesData animation;
 
 	Xml animationStatesFile;
-	animationStatesFile.loadFromFile("resources/" + filepath);
+	PH_ASSERT_CRITICAL(animationStatesFile.loadFromFile("resources/" + filepath),
+		"animation states file \"resources/" + filepath + "\" wasn't loaded correctly!");
 	const auto statesData = animationStatesFile.getChildren("state");
 	for(const auto& data : statesData)
 	{
 		StateData state;
 		state.startFrame = IntRect(
-			data.getAttribute("startFrameX").toUnsigned(),
-			data.getAttribute("startFrameY").toUnsigned(),
-			data.getAttribute("startFrameWidth").toUnsigned(),
-			data.getAttribute("startFrameHeight").toUnsigned()
+			data.getAttribute("startFrameX")->toUnsigned(),
+			data.getAttribute("startFrameY")->toUnsigned(),
+			data.getAttribute("startFrameWidth")->toUnsigned(),
+			data.getAttribute("startFrameHeight")->toUnsigned()
 		);
-		state.frameCount = data.getAttribute("frameCount").toUnsigned();
-		const std::string stateName = data.getAttribute("name").toString();
+		state.frameCount = data.getAttribute("frameCount")->toUnsigned();
+		const std::string stateName = data.getAttribute("name")->toString();
 		animation[stateName] = state;
 	}
 	 

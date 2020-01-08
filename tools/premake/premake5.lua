@@ -59,7 +59,7 @@ project "PopHead"
 		"glew32s.lib"
     }
 
-	ignoredefaultlibraries { "libcmt" }
+	ignoredefaultlibraries "libcmt"
 
     defines{
 		"SFML_STATIC",
@@ -80,7 +80,7 @@ project "PopHead"
 	filter {"configurations:Debug", "action:vs*"}
 		inlining "Explicit"
 
-    filter{"configurations:Release or Distribution"}
+    filter "configurations:Release or Distribution"
         optimize "On"
 
         links{
@@ -92,50 +92,57 @@ project "PopHead"
             "sfml-main"
         }
 
-    filter{"configurations:Distribution"}
-        defines{"PH_DISTRIBUTION"}
+    filter "configurations:Distribution"
+        defines "PH_DISTRIBUTION" 
         kind "WindowedApp"
 
     filter "system:Windows"
-        defines{"PH_WINDOWS"}
+        defines "PH_WINDOWS"
 
     filter "system:Unix"
-        defines{"PH_LINUX"}
+        defines "PH_LINUX"
 
     filter "system:Mac"
-        defines{"PH_MAC"}
+        defines "PH_MAC"
 
     filter{}
+
+
 
 project "Tests"
     location (root_dir)
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-
-    targetdir (exe_dir)
-	objdir (obj_dir)
+    
+    targetdir (exe_dir)	
+    objdir (obj_dir)
     
     debugdir "%{wks.location}"
     
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
+	root_dir .. "vendor/glew-2.1.0/include",
+	root_dir .. "vendor/stb",
         root_dir .. "vendor/entt-3.2.0/src",
         root_dir .. "vendor/catch2"
     }
-
-    libdirs{root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio"}
+   
+    libdirs{
+		root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio",
+		root_dir .. "vendor/glew-2.1.0/lib"
+	}
 
     files{
         root_dir .. "src/**.hpp",
         root_dir .. "src/**.cpp",
         root_dir .. "src/**.inl",
-        root_dir .. "tests/**.hpp",
-        root_dir .. "tests/**.cpp",
-        root_dir .. "tests/**.inl"
+        root_dir .. "tests/unitTests/**.hpp",
+        root_dir .. "tests/unitTests/**.cpp",
+        root_dir .. "tests/unitTests/**.inl"
     }
-    
+
     removefiles{
         root_dir .. "src/main.cpp"
     }
@@ -150,11 +157,17 @@ project "Tests"
         "vorbisfile.lib",
         "vorbis.lib",
         "ogg.lib",
-        "openal32.lib"
+        "openal32.lib",
+	"glew32s.lib"
     }
 
-    defines{"SFML_STATIC"}
+	ignoredefaultlibraries { "libcmt" }
 
+    defines{
+		"SFML_STATIC",
+		"GLEW_STATIC"
+	}
+	
     filter "configurations:Debug or Tests"
         symbols "On"
 
@@ -166,7 +179,10 @@ project "Tests"
             "sfml-system-s-d"
         }
 
-    filter{"configurations:Release or Distribution"}
+	filter {"configurations:Debug", "action:vs*"}
+		inlining "Explicit"
+
+    filter "configurations:Release or Distribution"
         optimize "On"
 
         links{
@@ -174,20 +190,23 @@ project "Tests"
             "sfml-audio-s", 
             "sfml-network-s",
             "sfml-window-s",
-            "sfml-system-s"
+            "sfml-system-s",
         }
-        
-    filter{"configurations:Tests"}
-        defines{"PH_TESTS"}
-        
+
+	filter "configurations:Tests"
+		defines "PH_TESTS"
+
+    filter "configurations:Distribution"
+        defines "PH_DISTRIBUTION"
+
     filter "system:Windows"
-        defines{"PH_WINDOWS"}
+        defines "PH_WINDOWS" 
 
     filter "system:Unix"
-        defines{"PH_LINUX"}
+        defines "PH_LINUX"
 
     filter "system:Mac"
-        defines{"PH_MAC"}
+        defines "PH_MAC"
 
     filter{}
     

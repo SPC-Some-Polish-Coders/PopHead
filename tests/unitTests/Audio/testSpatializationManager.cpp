@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "Audio/Sound/Spatialization/spatializationManager.hpp"
+#include "Audio/Sound/spatializationManager.hpp"
 
 namespace ph {
 

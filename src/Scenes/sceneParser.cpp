@@ -22,9 +22,10 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	// TODO: place it somewhere else
 	textureHolder.load("textures/map/FULL_DESERT_TILESET_WIP.png");
 
+	// TODO: We don't want to exit game if we misspelled something in gotoscene terminal command
 	Xml sceneFile;
-	sceneFile.loadFromFile(sceneFileName);
-	const auto sceneLinksNode = sceneFile.getChild("scenelinks");
+	PH_ASSERT_CRITICAL(sceneFile.loadFromFile(sceneFileName), "scene file \"" + sceneFileName + "\" wasn't loaded correctly!");
+	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
 
 	aiManager.setAIMode(AIMode::normal);
 	aiManager.setIsPlayerOnScene(false);
@@ -32,45 +33,44 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	// parse ecs entities
 	templateStorage.clearStorage();
-	const auto entitiesNode = sceneLinksNode.getChildren("ecsObjects");
-	if(entitiesNode.size() == 1) {
-		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename").toString();
+	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
+		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
 		EntitiesParser parser;
 		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
 	}
 
 	// parse map
-	const auto mapNode = sceneLinksNode.getChildren("map");
-	if(mapNode.size() == 1) {
-		const std::string filePath = "scenes/map/" + mapNode[0].getAttribute("filename").toString();
+	if(const auto mapNode = sceneLinksNode.getChild("map")) {
+		Xml map;
+		const std::string mapFilepath = "scenes/map/" + mapNode->getAttribute("filename")->toString();
+		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");
+		map = *map.getChild("map");
 		XmlMapParser mapParser;
-		mapParser.parseFile(filePath, aiManager, gameRegistry, templateStorage, textureHolder);
+		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);
 		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, gameData->getSceneManager(), textureHolder);
-		tiledParser.parseFile(filePath);
+		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}
 
 	// parse gui
-	const auto guiNode = sceneLinksNode.getChildren("gui");
-	if(guiNode.size() == 1) {
-		const std::string categoryFilePath = "scenes/gui/" + guiNode[0].getAttribute("filename").toString();
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
 		XmlGuiParser categoryParser;
 		categoryParser.parseFile(gameData, categoryFilePath);
 	}
 
 	// parse audio
-	const auto audioNode = sceneLinksNode.getChildren("audio");
-	if(audioNode.size() == 1) {
-		const std::string audioFilePath = "scenes/audio/" + audioNode[0].getAttribute("filename").toString();
+	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
 		XmlAudioParser audioParser;
 		audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
 	}
 
 	// parse ambient light 
 	const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
-	if (ambientLightNode.size() == 1)
+	if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight"))
 	{
-		sf::Color color = ambientLightNode.at(0).getAttribute("color").toColor();
+		sf::Color color = ambientLightNode->getAttribute("color")->toColor();
 		Renderer::setAmbientLightColor(color);
 	}
 	else

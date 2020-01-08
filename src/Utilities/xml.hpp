@@ -3,6 +3,7 @@
 #include "cast.hpp"
 #include <string>
 #include <vector>
+#include <optional>
 #include <SFML/Graphics/Color.hpp>
 
 namespace ph {
@@ -10,13 +11,11 @@ namespace ph {
 class Xml 
 {
 public:
-	void loadFromFile(std::string filePath);
+	bool loadFromFile(const std::string& filePath);
 
-	Xml getChild(const std::string& name) const;
+	std::optional<Xml> getChild(const std::string& name) const;
 	std::vector<Xml> getChildren(const std::string& name) const;
-
-	bool hasAttribute(const std::string& name) const;
-	Xml getAttribute(const std::string& name) const;
+	std::optional<Xml> getAttribute(const std::string& name) const;
 
 	std::string toString() const;
 	bool toBool() const;
@@ -40,3 +39,4 @@ private:
 };
 
 }
+

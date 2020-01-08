@@ -28,16 +28,8 @@ namespace ph {
 	{
 	}
 
-	void TiledParser::parseFile(const std::string& filePath) const
+	void TiledParser::parseFile(const Xml& mapNode) const
 	{
-		PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
-
-		//mGameData->getAIManager().setAIMode(AIMode::normal);
-
-		Xml mapFile;
-		mapFile.loadFromFile(filePath);
-
-		const Xml mapNode = mapFile.getChild("map");
 		const Xml gameObjects = findGameObjects(mapNode);
 
 		// TODO: refactor this statement
@@ -46,7 +38,6 @@ namespace ph {
 
 		loadObjects(gameObjects);
 
-		//mGameData->getAIManager().setIsPlayerOnScene(mHasLoadedPlayer);
 		ActionEventManager::setEnabled(true);
 	}
 
@@ -54,10 +45,8 @@ namespace ph {
 	{
 		const std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
 		for (const auto& objectGroupNode : objectGroupNodes)
-		{
-			if ((objectGroupNode.hasAttribute("name") && objectGroupNode.getAttribute("name").toString() == "gameObjects"))
+			if ((objectGroupNode.getAttribute("name")->toString() == "gameObjects"))
 				return objectGroupNode;
-		}
 		return Xml();
 	}
 
@@ -67,7 +56,7 @@ namespace ph {
 
 		for (const auto& gameObjectNode : objects)
 		{
-			auto objectType = gameObjectNode.getAttribute("type").toString();
+			auto objectType = gameObjectNode.getAttribute("type")->toString();
 
 			if (objectType == "Zombie") loadZombie(gameObjectNode);
 			else if (objectType == "SlowZombie") loadZombie(gameObjectNode, "SlowZombie");
@@ -91,7 +80,7 @@ namespace ph {
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
 			else if (objectType == "FlowingRiver") loadFlowingRiver(gameObjectNode);
-			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type").toString() + ") is unknown!");
+			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type")->toString() + ") is unknown!");
 		}
 	}
 
@@ -463,19 +452,16 @@ namespace ph {
 		if (hasCustomProperty(objectNode, propertyName))
 			return getCustomProperties(objectNode, propertyName);
 		else
-			return getDefaultProperties(objectNode.getAttribute("type").toString(), propertyName);
+			return getDefaultProperties(objectNode.getAttribute("type")->toString(), propertyName);
 	}
 
 	bool TiledParser::hasCustomProperty(const Xml& gameObjectNode, const std::string& propertyName) const
 	{
-		if (gameObjectNode.getChildren("properties").size() != 0)
-		{
-			auto properties = gameObjectNode.getChild("properties").getChildren("property");
+		if (const auto propertiesNode = gameObjectNode.getChild("properties")) {
+			const std::vector<Xml> properties = propertiesNode->getChildren("property");
 			for (const auto& property : properties)
-			{
-				if (property.getAttribute("name").toString() == propertyName)
+				if (property.getAttribute("name")->toString() == propertyName)
 					return true;
-			}
 			return false;
 		}
 		return false;
@@ -483,12 +469,11 @@ namespace ph {
 
 	Xml TiledParser::getCustomProperties(const Xml& gameObjectNode, const std::string& name) const
 	{
-		const Xml propertiesNode = gameObjectNode.getChild("properties");
-		auto properties = propertiesNode.getChildren("property");
+		const auto propertiesNode = gameObjectNode.getChild("properties");
+		auto properties = propertiesNode->getChildren("property");
 		for (const auto& property : properties)
-			if (property.getAttribute("name").toString() == name)
-				return property.getAttribute("value");
-
+			if (property.getAttribute("name")->toString() == name)
+				return *property.getAttribute("value");
 		return Xml();
 	}
 
@@ -497,14 +482,11 @@ namespace ph {
 		const std::vector<Xml> objectNodes = getObjectTypeNodes();
 		for (const auto& objectNode : objectNodes)
 		{
-			if (objectNode.getAttribute("name").toString() == objectName)
-			{
+			if (objectNode.getAttribute("name")->toString() == objectName) {
 				std::vector<Xml> propertiesNodes = objectNode.getChildren("property");
 				for (const auto& propertyNode : propertiesNodes)
-				{
-					if (propertyNode.getAttribute("name").toString() == propertyName)
-						return propertyNode.getAttribute("default");
-				}
+					if (propertyNode.getAttribute("name")->toString() == propertyName)
+						return *propertyNode.getAttribute("default");
 			}
 		}
 		return Xml();
@@ -513,35 +495,37 @@ namespace ph {
 	std::vector<Xml> TiledParser::getObjectTypeNodes() const
 	{
 		Xml objectTypesFile;
-		objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
-		const Xml objectTypesNode = objectTypesFile.getChild("objecttypes");
-		std::vector<Xml> getObjectTypeNodes = objectTypesNode.getChildren("objecttype");
+		PH_ASSERT_CRITICAL(objectTypesFile.loadFromFile("scenes/map/objecttypes.xml"),
+			"Tiled object type file \"scenes/map/objecttypes.xml\" wasn't loaded correctly!");
+		const auto objectTypesNode = objectTypesFile.getChild("objecttypes");
+		std::vector<Xml> getObjectTypeNodes = objectTypesNode->getChildren("objecttype");
 		return getObjectTypeNodes;
 	}
 
 	sf::Vector2f TiledParser::getPositionAttribute(const Xml& DrawableGameObjectNode) const
 	{
 		return sf::Vector2f(
-			DrawableGameObjectNode.getAttribute("x").toFloat(),
-			DrawableGameObjectNode.getAttribute("y").toFloat()
+			DrawableGameObjectNode.getAttribute("x")->toFloat(),
+			DrawableGameObjectNode.getAttribute("y")->toFloat()
 		);
 	}
 
 	sf::Vector2f TiledParser::getSizeAttribute(const Xml& DrawableGameObjectNode) const
 	{
 		return sf::Vector2f(
-			DrawableGameObjectNode.getAttribute("width").toFloat(),
-			DrawableGameObjectNode.getAttribute("height").toFloat()
+			DrawableGameObjectNode.getAttribute("width")->toFloat(),
+			DrawableGameObjectNode.getAttribute("height")->toFloat()
 		);
 	}
 
+	// TODO_xml: Refactor this size getting mess
+
 	std::optional<sf::Vector2f> TiledParser::getOptionalSizeAttribute(const Xml& gameObjectNode) const
 	{
-		if(gameObjectNode.hasAttribute("width") && gameObjectNode.hasAttribute("height"))
-			return sf::Vector2f(
-				gameObjectNode.getAttribute("width").toFloat(),
-				gameObjectNode.getAttribute("height").toFloat()
-			);
+		auto width = gameObjectNode.getAttribute("width");
+		auto height = gameObjectNode.getAttribute("height");
+		if(width && height)
+			return sf::Vector2f(width->toFloat(), height->toFloat());
 		else
 			return std::nullopt;
 	}
