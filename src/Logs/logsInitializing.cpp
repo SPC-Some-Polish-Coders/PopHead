@@ -13,7 +13,7 @@ namespace ph {
 	void initializeLogsModule(const std::string& configFileName, Terminal* terminal)
 	{
 		Xml document;
-		document.loadFromFile(configFileName);
+		PH_ASSERT_CRITICAL(document.loadFromFile(configFileName), "gui config file \"" + configFileName + "\" wasn't loaded correctly!");
 
 		auto mainTag = document.getChild("handlers");
 		auto handlers = mainTag->getChildren("handler");

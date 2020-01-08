@@ -497,7 +497,8 @@ namespace ph {
 	std::vector<Xml> TiledParser::getObjectTypeNodes() const
 	{
 		Xml objectTypesFile;
-		objectTypesFile.loadFromFile("scenes/map/objecttypes.xml");
+		PH_ASSERT_CRITICAL(objectTypesFile.loadFromFile("scenes/map/objecttypes.xml"),
+			"Tiled object type file \"scenes/map/objecttypes.xml\" wasn't loaded correctly!");
 		const auto objectTypesNode = objectTypesFile.getChild("objecttypes");
 		std::vector<Xml> getObjectTypeNodes = objectTypesNode->getChildren("objecttype");
 		return getObjectTypeNodes;

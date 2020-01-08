@@ -13,7 +13,7 @@ MusicData::MusicData(float volumeMultiplier, bool loop)
 MusicDataHolder::MusicDataHolder()
 {
 	Xml musicDataXml;
-	musicDataXml.loadFromFile("resources/music/musicData.xml");
+	PH_ASSERT_CRITICAL(musicDataXml.loadFromFile("resources/music/musicData.xml"), "\"resources/music/musicData.xml\" wasn't loaded correctly!");
 	const auto musicDataNode = musicDataXml.getChild("musicdata");
 	const std::vector<Xml> themeNodes = musicDataNode->getChildren("theme");
 	for(const auto& themeNode : themeNodes) {

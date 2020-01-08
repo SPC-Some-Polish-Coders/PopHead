@@ -11,7 +11,7 @@ namespace ph {
 class Xml 
 {
 public:
-	void loadFromFile(const std::string& filePath);
+	bool loadFromFile(const std::string& filePath);
 
 	std::optional<Xml> getChild(const std::string& name) const;
 	std::vector<Xml> getChildren(const std::string& name) const;

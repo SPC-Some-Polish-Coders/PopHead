@@ -22,8 +22,9 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	// TODO: place it somewhere else
 	textureHolder.load("textures/map/FULL_DESERT_TILESET_WIP.png");
 
+	// TODO: We don't want to exit game if we misspelled something in gotoscene terminal command
 	Xml sceneFile;
-	sceneFile.loadFromFile(sceneFileName);
+	PH_ASSERT_CRITICAL(sceneFile.loadFromFile(sceneFileName), "scene file \"" + sceneFileName + "\" wasn't loaded correctly!");
 	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
 
 	aiManager.setAIMode(AIMode::normal);
@@ -40,7 +41,8 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	// parse map
 	if(const auto mapNode = sceneLinksNode.getChild("map")) {
 		Xml map;
-		map.loadFromFile("scenes/map/" + mapNode->getAttribute("filename")->toString());
+		const std::string mapFilepath = "scenes/map/" + mapNode->getAttribute("filename")->toString();
+		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);

@@ -29,7 +29,7 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 
 	mTemplateStorage = &templateStorage;
 	Xml entitiesFile;
-	entitiesFile.loadFromFile(filePath);
+	PH_ASSERT_CRITICAL(entitiesFile.loadFromFile(filePath), "entities file \"" + filePath + "\"wasn't loaded correctly!");
 
 	mUsedRegistry = &templateStorage.getTemplateRegistry();
 	parseTemplates(*entitiesFile.getChild("entityTemplates"));

@@ -15,7 +15,7 @@ SoundData::SoundData(const float volumeMultiplier, const bool loop,
 SoundDataHolder::SoundDataHolder()
 {
 	Xml soundDataXml;
-	soundDataXml.loadFromFile("resources/sounds/soundData.xml");
+	PH_ASSERT_CRITICAL(soundDataXml.loadFromFile("resources/sounds/soundData.xml"), "\"resources/sounds/soundData.xml\" wasn't loaded correctly!");
 	const auto soundDataNode = soundDataXml.getChild("soundData");
 	const std::vector<Xml> soundNodes = soundDataNode->getChildren("sound");
 	for(const auto& soundNode : soundNodes) {

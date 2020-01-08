@@ -15,7 +15,8 @@ void loadAnimationStatesFromFile(const std::string& filepath)
 	AnimationStatesData animation;
 
 	Xml animationStatesFile;
-	animationStatesFile.loadFromFile("resources/" + filepath);
+	PH_ASSERT_CRITICAL(animationStatesFile.loadFromFile("resources/" + filepath),
+		"animation states file \"resources/" + filepath + "\" wasn't loaded correctly!");
 	const auto statesData = animationStatesFile.getChildren("state");
 	for(const auto& data : statesData)
 	{

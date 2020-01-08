@@ -21,7 +21,7 @@ void XmlGuiParser::parseFile(GameData* const gameData, const std::string& fileNa
 	mFontHolder = &(gameData->getFonts());
 
 	Xml guiTag;
-	guiTag.loadFromFile(fileName);
+	PH_ASSERT_CRITICAL(guiTag.loadFromFile(fileName), "Gui file \"" + fileName + "\" wasn't loaded correctly!");
 	guiTag = *guiTag.getChild("gui");
 
 	auto interfaces = guiTag.getChildren("interface");

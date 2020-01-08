@@ -14,7 +14,7 @@ void XmlAudioParser::parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlaye
 	mMusicPlayer = &musicPlayer;
 
 	Xml audioFile;
-	audioFile.loadFromFile(filePath);
+	PH_ASSERT_CRITICAL(audioFile.loadFromFile(filePath), "scene audio file \"" + filePath + "\" wasn't loaded correctly!");
 	const Xml audioNode = *audioFile.getChild("audio");
 
 	parseSoundMute(audioNode);

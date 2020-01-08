@@ -4,15 +4,15 @@
 
 namespace ph {
 
-void Xml::loadFromFile(const std::string& filePath)
+bool Xml::loadFromFile(const std::string& filePath)
 {
 	mContent.clear();
 	std::ifstream ifs(filePath);
 	if(!ifs.is_open())
-		PH_EXIT_GAME("cannot open file: " + filePath);
+		return false;
 	std::string line;
 	if(!std::getline(ifs, line))
-		PH_EXIT_GAME("given xml file is empty or something bad happened (" + filePath + ")");
+		return false;
 	// NOTE: Delete prolog but keep '?>' for implementation purpose
 	const std::size_t begin = line.find("?>");
 	if(begin == std::string::npos)
@@ -22,6 +22,7 @@ void Xml::loadFromFile(const std::string& filePath)
 	mContent += line;
 	while(std::getline(ifs, line))
 		mContent += line;
+	return true;
 }
 
 std::optional<Xml> Xml::getChild(const std::string& name) const
