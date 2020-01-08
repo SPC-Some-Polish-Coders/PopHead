@@ -5,12 +5,6 @@
 #include "Utilities/xml.hpp"
 
 namespace ph {
-namespace {
-void throwMissingAttributeException(std::string attributeName) {
-	throw std::runtime_error(attributeName + " is mandatory attribute");
-}
-}
-std::unique_ptr<GuiActionsParser> XmlGuiParser::mActionsParser = nullptr;
 
 void XmlGuiParser::setActionsParser(std::unique_ptr<GuiActionsParser> actionsParser)
 {
@@ -112,7 +106,8 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 		mGui->getTextures().load(path);
 		widget.createSlider(path);
 	}
-	else throwMissingAttributeException("contentPathSlider");
+	else
+		PH_EXIT_GAME("GUI XML ERROR: contentPathSilder is mandatory attribute");
 }
 
 void XmlGuiParser::parseWidgetChildren(const Xml& widgetTag, Widget& widget)
