@@ -30,8 +30,6 @@ namespace ph {
 
 	void TiledParser::parseFile(const Xml& mapNode) const
 	{
-		PH_LOG_INFO("Game objects file (" + filePath + ") is being parsed.");
-
 		const Xml gameObjects = findGameObjects(mapNode);
 
 		// TODO: refactor this statement

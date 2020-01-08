@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <child name="Guy">
+    <body position="12.4, 1231.12" z="111" width="50" height="0"></body>
+  </child>
+  <child name="Guy">
+    <body position="1.4, -2.1" z="-20" width="20" height="20"/>
+    <playerTag  />
+  </child>
+  <zombie>
+    <body position="1.4, -2.1" z="-20" width="20" height="20"/>
+    <info isDangerous="true"     isFriendly="false"   />
+    <monsterTag/>
+  </zombie>
+</root>

@@ -15,8 +15,6 @@ namespace ph {
 
 void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
 {
-	PH_LOG_INFO("Map file (" + fileName + ") is being parsed.");
-
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
 	mTextures = &textures;
