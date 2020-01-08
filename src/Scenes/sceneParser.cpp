@@ -31,6 +31,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	ActionEventManager::setAllActionsEnabled(true);
 
 	// parse ecs entities
+	templateStorage.clearStorage();
 	const auto entitiesNode = sceneLinksNode.getChildren("ecsObjects");
 	if(entitiesNode.size() == 1) {
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode[0].getAttribute("filename").toString();
