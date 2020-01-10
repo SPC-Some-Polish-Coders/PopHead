@@ -10,6 +10,7 @@
 #include "ECS/xmlMapParser.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
+#include <thread>
 
 namespace ph {
 
@@ -31,6 +32,31 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	aiManager.setIsPlayerOnScene(false);
 	ActionEventManager::setAllActionsEnabled(true);
 
+	std::thread workerThread([&]() {
+		// parse gui
+		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+			const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
+			XmlGuiParser categoryParser;
+			categoryParser.parseFile(gameData, categoryFilePath);
+		}
+
+		// parse audio
+		if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+			const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
+			XmlAudioParser audioParser;
+			audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
+		}
+
+		// parse ambient light 
+		const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
+		const sf::Color color = ambientLightNode->getAttribute("color")->toColor();
+		Renderer::setAmbientLightColor(color);
+
+		// parse arcade mode
+		if(!sceneLinksNode.getChildren("arcadeMode").empty())
+			systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
+	});
+
 	// parse ecs entities
 	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
@@ -50,29 +76,9 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}
-
-	// parse gui
-	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
-		const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
-		XmlGuiParser categoryParser;
-		categoryParser.parseFile(gameData, categoryFilePath);
-	}
-
-	// parse audio
-	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
-		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
-		XmlAudioParser audioParser;
-		audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
-	}
-
-	// parse ambient light 
-	const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
-	const sf::Color color = ambientLightNode->getAttribute("color")->toColor();
-	Renderer::setAmbientLightColor(color);
-
-	// parse arcade mode
-	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
+	
+	// join worker thread
+	workerThread.join();
 }
 
 }
