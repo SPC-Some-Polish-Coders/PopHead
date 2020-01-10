@@ -50,7 +50,7 @@ private:
 
 }
 
-#define PH_PROFILING 1 
+#define PH_PROFILING 0 
 #if PH_PROFILING
 	#if _MSC_VER 
 		#pragma message ("POPHEAD WARNING: Make sure to disable PH_PROFILING before making commit!")

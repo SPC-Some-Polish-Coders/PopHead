@@ -15,6 +15,7 @@ public:
 
 	void playFromFile(const std::string& filePath);
 	void playFromMusicState(const std::string& musicStateName);
+	bool hasMusicState(const std::string& musicStateName) const;
 	void stop();
 
 	void setPaused(const bool pause);

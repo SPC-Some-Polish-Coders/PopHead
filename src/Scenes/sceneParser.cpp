@@ -52,9 +52,13 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 		}
 
 		// parse ambient light 
-		const auto ambientLightNode = sceneLinksNode.getChild("ambientLight");
-		const sf::Color color = ambientLightNode->getAttribute("color")->toColor();
-		Renderer::setAmbientLightColor(color);
+		const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
+		if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
+			sf::Color color = ambientLightNode->getAttribute("color")->toColor();
+			Renderer::setAmbientLightColor(color);
+		}
+		else
+			Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
 		// parse arcade mode
 		if(!sceneLinksNode.getChildren("arcadeMode").empty())
@@ -62,6 +66,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	});
 
 	// parse ecs entities
+	templateStorage.clearStorage();
 	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
 		EntitiesParser parser;

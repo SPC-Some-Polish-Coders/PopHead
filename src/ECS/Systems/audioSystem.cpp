@@ -23,6 +23,10 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		// for scenes without music
+		if (!mMusicPlayer.hasMusicState("fight") || !mMusicPlayer.hasMusicState("exploration"))
+			return;
+
 		// define constants
 		constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
 		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
@@ -55,7 +59,7 @@ namespace ph::system {
 				themeTypeWhichShouldBePlayed = Theme::Exploration;
 			else
 				themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
-
+			
 			if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
 				mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
 				if(mCurrentlyPlayerTheme == Theme::Fight)

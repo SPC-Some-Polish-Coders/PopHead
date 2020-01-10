@@ -24,6 +24,11 @@ Widget* GUI::getInterface(const std::string& name)
 	return mInterfaceList.find(name)->second.get();
 }
 
+bool GUI::hasInterface(const std::string& name) const
+{
+	return mInterfaceList.find(name) != mInterfaceList.cend();
+}
+
 void GUI::move(const sf::Vector2f& delta)
 {
 	for(const auto& k : mInterfaceList)
