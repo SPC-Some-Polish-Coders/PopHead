@@ -8,7 +8,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 		calculateStaticCollisions();
-		calculateKinematicCollisions();
+		//calculateKinematicCollisions();
 	}
 
 	void StaticCollisions::calculateStaticCollisions()
@@ -83,6 +83,66 @@ namespace ph::system {
 
 	void StaticCollisions::calculateKinematicCollisions()
 	{
+		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
+
+		std::vector<entt::entity> pushedLeft;
+		std::vector<entt::entity> pushedRight;
+		std::vector<entt::entity> pushedUp;
+		std::vector<entt::entity> pushedDown;
+
+		for (auto object : kinematicObjects)
+		{
+			const auto& collision = kinematicObjects.get<component::KinematicCollisionBody>(object);
+			if (collision.staticallyMovedLeft)
+				pushedLeft.emplace_back(object);
+			if (collision.staticallyMovedRight)
+				pushedRight.emplace_back(object);
+			if (collision.staticallyMovedUp)
+				pushedUp.emplace_back(object);
+			if (collision.staticallyMovedDown)
+				pushedDown.emplace_back(object);
+		}
+
+		size_t index = 0;
+		while (index != pushedLeft.size())
+		{
+			const auto& bodyRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]).rect;
+			for (auto object : kinematicObjects)
+			{
+				if (object == pushedLeft[index])
+					continue;
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+				
+				if (bodyRect.doPositiveRectsIntersect(anotherRect))
+				{
+					sf::FloatRect intersection;
+					bodyRect.intersects(anotherRect, intersection);
+
+					if (intersection.width < intersection.height)
+					{
+						if (anotherRect.left < bodyRect.left)
+						{
+							anotherRect.left -= intersection.width;
+						}
+						else
+						{
+							anotherRect.left += intersection.width;
+						}
+					}
+					else
+					{
+						if (anotherRect.top < bodyRect.top)
+						{
+							anotherRect.top -= intersection.height;
+						}
+						else
+						{
+							anotherRect.top += intersection.height;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	void StaticCollisions::resetKinematicBody(component::KinematicCollisionBody& kinematicBody)
