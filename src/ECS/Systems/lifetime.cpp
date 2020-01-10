@@ -6,7 +6,7 @@ namespace ph::system {
 
 	void Lifetime::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto entitiesView = mRegistry.view<component::Lifetime>();
 		for (auto entity : entitiesView)

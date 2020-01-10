@@ -6,13 +6,6 @@
 
 namespace ph {
 
-struct ProfilingResult
-{
-	std::string name;
-	long long start, end;
-	uint32_t threadID;
-};
-
 class ProfilingManager
 {
 private:
@@ -30,7 +23,7 @@ public:
 	void beginSession(const std::string& name, const std::string& filepath = "results.json");
 	void endSession();
 
-	void writeProfile(const ProfilingResult& result);
+	void writeProfile(std::string&& profilingScopeName, long long start, long long end, unsigned threadID);
 	void writeHeader();
 	void writeFooter();
 
@@ -43,7 +36,7 @@ private:
 class ProfilingTimer
 {
 public:
-	ProfilingTimer(const char* name);
+	ProfilingTimer(const char* name, unsigned threadID);
 	~ProfilingTimer();
 
 	void stop();
@@ -51,23 +44,24 @@ public:
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint;
 	const char* mName;
+	unsigned mThreadID;
 	bool mStopped;
 };
 
 }
 
-#define PH_PROFILING 0
+#define PH_PROFILING 1 
 #if PH_PROFILING
 	#if _MSC_VER 
 		#pragma message ("POPHEAD WARNING: Make sure to disable PH_PROFILING before making commit!")
 	#endif
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
 	#define PH_END_PROFILING_SESSION() ph::ProfilingManager::getInstance().endSession()
-	#define PH_PROFILE_SCOPE(name) ph::ProfilingTimer profTimer##__LINE__(name);
-	#define PH_PROFILE_FUNCTION() PH_PROFILE_SCOPE(__FUNCTION__);
+	#define PH_PROFILE_SCOPE(name, threadID) ph::ProfilingTimer profTimer##__LINE__(name, threadID);
+	#define PH_PROFILE_FUNCTION(threadID) PH_PROFILE_SCOPE(__FUNCTION__, threadID);
 #else
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath)
 	#define PH_END_PROFILING_SESSION()
-	#define PH_PROFILE_SCOPE(name)
-	#define PH_PROFILE_FUNCTION()
+	#define PH_PROFILE_SCOPE(name, threadID)
+	#define PH_PROFILE_FUNCTION(threadID)
 #endif

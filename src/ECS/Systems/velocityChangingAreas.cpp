@@ -7,7 +7,7 @@ namespace ph::system {
 
 	void VelocityChangingAreas::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto velocityChaningAreasView = mRegistry.view<component::BodyRect, component::AreaVelocityChangingEffect>();
 		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();

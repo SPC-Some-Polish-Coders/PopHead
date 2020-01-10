@@ -20,7 +20,7 @@ namespace ph::system {
 
 	void DamageAndDeath::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		dealDamage();
 		makeDamageJuice(dt);

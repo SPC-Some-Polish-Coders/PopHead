@@ -11,7 +11,7 @@ namespace ph::system {
 
 	void GunPositioningAndTexture::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto playerView = mRegistry.view<component::GunAttacker, component::Player, component::BodyRect, component::FaceDirection>();
 		for (auto player : playerView)

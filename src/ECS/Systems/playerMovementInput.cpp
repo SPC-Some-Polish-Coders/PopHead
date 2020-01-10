@@ -23,7 +23,7 @@ namespace ph::system {
 
 	void PlayerMovementInput::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		if(isPlayerWithoutControl())
 			return;

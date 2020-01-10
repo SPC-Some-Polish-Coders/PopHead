@@ -19,7 +19,7 @@ void MeleeAttacks::onEvent(const ActionEvent& e)
 
 void MeleeAttacks::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	auto players = mRegistry.view<component::FaceDirection, component::BodyRect, component::Player>();
 	for(auto player : players)

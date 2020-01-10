@@ -64,7 +64,7 @@ void LightRenderer::submitLight(Light light)
 
 void LightRenderer::flush()
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightBlockingQuad(
@@ -78,7 +78,7 @@ void LightRenderer::flush()
 
 		// create vertex data
 		{
-			PH_PROFILE_SCOPE("create vertex data");
+			PH_PROFILE_SCOPE("create vertex data", 0);
 
 			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
@@ -104,7 +104,7 @@ void LightRenderer::flush()
 		// draw light using triangle fan
 		if(sDebug.drawLight)
 		{
-			PH_PROFILE_SCOPE("draw light triangle fan");
+			PH_PROFILE_SCOPE("draw light triangle fan", 0);
 
 			mLightShader->bind();
 			mLightShader->setUniformVector2("lightPos", light.pos);

@@ -8,7 +8,7 @@ namespace ph::system {
 
 	void PickupItems::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto players = mRegistry.view<component::Player, component::BodyRect, component::Health, component::Bullets>();
 		auto medkits = mRegistry.view<component::Medkit, component::BodyRect>();

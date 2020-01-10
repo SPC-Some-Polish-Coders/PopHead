@@ -11,7 +11,7 @@ namespace ph::system {
 
 void Gates::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	auto gatesView = mRegistry.view<component::Gate, component::LeverListener>();
 	for (auto gate : gatesView)

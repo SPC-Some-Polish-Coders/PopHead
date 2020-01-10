@@ -17,7 +17,7 @@ HintAreas::HintAreas(entt::registry& registry, GUI& gui)
 
 void HintAreas::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();

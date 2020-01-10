@@ -11,6 +11,7 @@
 #include "GUI/xmlGuiParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include <thread>
+#include "Utilities/profiling.hpp"
 
 namespace ph {
 
@@ -18,6 +19,8 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
                 entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
                 GUI& gui, MusicPlayer& musicPlayer, AIManager& aiManager)
 {
+	PH_PROFILE_FUNCTION(0);
+
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
 	// TODO: place it somewhere else
@@ -33,6 +36,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	ActionEventManager::setAllActionsEnabled(true);
 
 	std::thread workerThread([&]() {
+		PH_PROFILE_SCOPE("working thread", 1);
 		// parse gui
 		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
 			const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();

@@ -6,7 +6,7 @@ namespace ph::system {
 
 	void IsPlayerAlive::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto playerView = mRegistry.view<component::Player, component::Health>();
 		for (const auto& player : playerView)

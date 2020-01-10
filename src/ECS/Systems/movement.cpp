@@ -6,7 +6,7 @@ namespace ph::system {
 	
 	void Movement::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto bodiesWithVel = mRegistry.view<component::BodyRect, component::Velocity>(entt::exclude<component::PushingForces>);
 		bodiesWithVel.each([dt](component::BodyRect& body, const component::Velocity& vel) {

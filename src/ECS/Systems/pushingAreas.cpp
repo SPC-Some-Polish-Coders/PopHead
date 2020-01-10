@@ -9,7 +9,7 @@ namespace ph::system {
 
 void PushingAreas::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
 	auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity>();

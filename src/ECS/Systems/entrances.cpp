@@ -18,7 +18,7 @@ Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
 
 void Entrances::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();

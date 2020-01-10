@@ -123,7 +123,7 @@ void Renderer::shutDown()
 
 void Renderer::beginScene(Camera& camera)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
@@ -140,7 +140,7 @@ void Renderer::beginScene(Camera& camera)
 
 void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	// render scene
 	quadRenderer.flush();

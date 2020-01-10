@@ -21,7 +21,7 @@ namespace ph::system {
 
 	void AudioSystem::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		// define constants
 		constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;

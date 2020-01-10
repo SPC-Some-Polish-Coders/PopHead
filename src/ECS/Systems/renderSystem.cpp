@@ -23,7 +23,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 
 void RenderSystem::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	// get current camera
 	auto cameras = mRegistry.view<component::Camera>();

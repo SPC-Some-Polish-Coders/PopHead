@@ -217,7 +217,7 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 
 void QuadRenderer::flush()
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
 	mCurrentlyBoundQuadShader = nullptr;

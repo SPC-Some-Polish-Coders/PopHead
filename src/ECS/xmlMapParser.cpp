@@ -158,7 +158,7 @@ std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
                                const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION(0);
 
 	constexpr float chunkSize = 12.f;
 	float nrOfChunksInOneRow = std::ceil(info.mapSize.x / chunkSize);

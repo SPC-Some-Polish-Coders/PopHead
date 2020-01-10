@@ -6,7 +6,7 @@ namespace ph::system {
 
 	void VelocityClear::update(float dt)
 	{
-		PH_PROFILE_FUNCTION();
+		PH_PROFILE_FUNCTION(0);
 
 		auto view = mRegistry.view<component::Velocity>();
 
