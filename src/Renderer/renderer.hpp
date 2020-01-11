@@ -42,6 +42,8 @@ namespace Renderer
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
+	void submitText(const char* string, unsigned characterSize, sf::Vector2f position);
+
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
 	void submitSFMLObject(const sf::Drawable&);

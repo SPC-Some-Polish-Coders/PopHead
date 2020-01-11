@@ -8,6 +8,8 @@
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
 
+#include "Renderer/MinorRenderers/textRenderer.hpp"
+
 namespace ph {
 
 Game::Game()
@@ -102,13 +104,16 @@ void Game::update(sf::Time dt)
 
 	if(mWindow.hasFocus())
 	{
-		mSceneManager->update(dt);
-		mAIManager->update();
-		mGui->update(dt);
-		mDebugCounter->draw();
-		mTerminal->update();
+		//mSceneManager->update(dt);
+		//mAIManager->update();
+		//mGui->update(dt);
+		//mDebugCounter->draw();
+		//mTerminal->update();
 
-		Renderer::endScene(mWindow, *mDebugCounter);
+		initFontBitmap();
+		drawFontBitmap();
+
+		//Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
 	}
 }

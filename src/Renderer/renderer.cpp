@@ -230,6 +230,11 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
+void Renderer::submitText(const char* string, unsigned characterSize, sf::Vector2f position)
+{
+
+}
+
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
 	lightRenderer.submitLightBlockingQuad(position, size);
