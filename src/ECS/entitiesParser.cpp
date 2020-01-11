@@ -35,7 +35,6 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 	mUsedRegistry = &templateStorage.getTemplateRegistry();
 	parseTemplates(*rootNode->getChild("entityTemplates"));
 
-	// TODO: Enable entities parsing in some form
 	mUsedRegistry = &gameRegistry;
 
 	const auto entitiesNode = rootNode->getChild("entities");
