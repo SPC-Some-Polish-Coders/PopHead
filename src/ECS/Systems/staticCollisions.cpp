@@ -57,12 +57,12 @@ namespace ph::system {
 				if (kinematicBody.left < staticBody.left)
 				{
 					kinematicBody.left -= intersection.width;
-					collision.staticallyMovedLeft;
+					collision.staticallyMovedLeft = true;
 				}
 				else
 				{
 					kinematicBody.left += intersection.width;
-					collision.staticallyMovedRight;
+					collision.staticallyMovedRight = true;
 				}
 			}
 			else
@@ -70,12 +70,12 @@ namespace ph::system {
 				if (kinematicBody.top < staticBody.top)
 				{
 					kinematicBody.top -= intersection.height;
-					collision.staticallyMovedUp;
+					collision.staticallyMovedUp = true;
 				}
 				else
 				{
 					kinematicBody.top += intersection.height;
-					collision.staticallyMovedDown;
+					collision.staticallyMovedDown = true;
 				}
 			}
 		}
