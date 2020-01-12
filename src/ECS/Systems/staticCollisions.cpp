@@ -8,7 +8,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 		calculateStaticCollisions();
-		//calculateKinematicCollisions();
+		calculateKinematicCollisions();
 	}
 
 	void StaticCollisions::calculateStaticCollisions()
