@@ -106,42 +106,33 @@ namespace ph::system {
 		size_t index = 0;
 		while (index != pushedLeft.size())
 		{
-			const auto& bodyRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]).rect;
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]).rect;
 			for (auto object : kinematicObjects)
 			{
 				if (object == pushedLeft[index])
 					continue;
+
+				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
+				if (anotherCollisionBody.staticallyMovedLeft) continue;
+				
 				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
 				
-				if (bodyRect.doPositiveRectsIntersect(anotherRect))
+				if (firstRect.doPositiveRectsIntersect(anotherRect))
 				{
 					sf::FloatRect intersection;
-					bodyRect.intersects(anotherRect, intersection);
+					firstRect.intersects(anotherRect, intersection);
 
-					if (intersection.width < intersection.height)
+					if (intersection.width < intersection.height && anotherRect.left < firstRect.left)
 					{
-						if (anotherRect.left < bodyRect.left)
-						{
-							anotherRect.left -= intersection.width;
-						}
-						else
-						{
-							anotherRect.left += intersection.width;
-						}
+						anotherCollisionBody.staticallyMovedLeft = true;
+						anotherRect.left -= intersection.width;
+						pushedLeft.emplace_back(object);
 					}
-					else
-					{
-						if (anotherRect.top < bodyRect.top)
-						{
-							anotherRect.top -= intersection.height;
-						}
-						else
-						{
-							anotherRect.top += intersection.height;
-						}
-					}
+					//handleStaticCollision(firstRect, anotherRect, anotherCollisionBody);
 				}
 			}
+
+			++index;
 		}
 	}
 
