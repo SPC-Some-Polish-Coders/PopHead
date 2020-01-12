@@ -55,6 +55,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
+	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
@@ -68,7 +69,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
 	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui), std::ref(aiManager));
 	mSystemsQueue.appendSystem<system::Levers>();
-	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PushingMovement>();
 	mSystemsQueue.appendSystem<system::Gates>();
 	mSystemsQueue.appendSystem<system::Lifetime>();
