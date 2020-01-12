@@ -4,32 +4,22 @@
   <entityTemplate name="Camera">
     <component name="Camera" priority="0" x="0" y="0" cameraName="" width="640" height="360" />
   </entityTemplate>
+
+    <entityTemplate name="ColorRect">
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="RenderQuad"/>
+        <component name="KinematicCollisionBody" mass="3" />
+        <component name="Velocity" dx="0" dy="0" />
+    </entityTemplate>
   
-  <entityTemplate name="Player">
+  <entityTemplate name="Player" sourceTemplate="ColorRect">
     <component name="KinematicCollisionBody" mass="3" />
     <component name="Player" />
-    <component name="FaceDirection" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
     <component name="CharacterSpeed" speed="100" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
-    <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
-    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="94" />
-    <component name="TextureRect" x="0" y="0" width="0" height="0" />
-    <component name="MultiParticleEmitter" />
-  </entityTemplate>
-
-  <entityTemplate name="Zombie">>
-    <component name="KinematicCollisionBody" mass="5" />
-    <component name="CollisionWithPlayer" pushForce="2"/>
-    <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="50" />
-    <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingForces" vel="0, 0" />
-    <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
-    <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />
-    <component name="TextureRect" x="0" y="0" width="0" height="0" />
-    <component name="MultiParticleEmitter" />
+    <component name="RenderQuad" color="rgb(0,0,255)" z="90" />
   </entityTemplate>
 
 </entityTemplates>
@@ -37,11 +27,19 @@
 <entities>
     <entity sourceTemplate="Camera"></entity>
     <entity sourceTemplate="Player"></entity>
-    <entity sourceTemplate="Zombie">
+    <entity sourceTemplate="ColorRect">
         <component name="BodyRect" x="30.0" y="30.0" width="20.0" height="20.0" />
+        <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
     </entity>
-    <entity sourceTemplate="Zombie">
+    <entity sourceTemplate="ColorRect">
         <component name="BodyRect" x="60.0" y="30.0" width="20.0" height="20.0" />
+        <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
+    </entity>
+    
+    <entity>
+        <component name="BodyRect" x="50.0" y="70.0" width="40.0" height="40.0"></component>
+        <component name="RenderQuad" z="94" color="rgb(0,0,0)"/>
+        <component name="StaticCollisionBody"></component>
     </entity>
 </entities>
 </root>
