@@ -34,8 +34,8 @@ namespace ph::system {
 
 					if (intersection.width < intersection.height)
 					{
-						currentVel.dx = newVel.dx;
-						anotherVel.dx = newVel.dx;
+						//currentVel.dx = newVel.dx;
+						//anotherVel.dx = newVel.dx;
 						auto halfWidth = intersection.width / 2.f;
 						if (currentBody.rect.left < anotherBody.rect.left)
 						{
@@ -50,8 +50,8 @@ namespace ph::system {
 					}
 					else
 					{
-						currentVel.dy = newVel.dy;
-						anotherVel.dy = newVel.dy;
+						//currentVel.dy = newVel.dy;
+						//anotherVel.dy = newVel.dy;
 						auto halfHeight = intersection.height / 2.f;
 						if (currentBody.rect.top < anotherBody.rect.top)
 						{
