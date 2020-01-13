@@ -131,15 +131,11 @@ void drawFontBitmap()
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-namespace {
-	std::vector<Font> fonts;
-}
-
 void drawText(const char* text, sf::Vector2f position, float size, sf::Color color)
 {
-	auto* afont = &font;
-
+	// TODO: Handle size
 	glBindVertexArray(textVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, textVBO);
 	textShader->bind();
 	textShader->setUniformVector4Color("color", color);
 	glActiveTexture(GL_TEXTURE0);
@@ -150,8 +146,6 @@ void drawText(const char* text, sf::Vector2f position, float size, sf::Color col
 		if(*text >= font.firstChar && *text <= font.numberOfChars) {
 			stbtt_aligned_quad q;
 			stbtt_GetBakedQuad(font.mCharactersData, font.bitmapSize.x, font.bitmapSize.y, *text-32, &position.x, &position.y, &q, 1);
-			//float w = q.x1 * size;
-			//float h = q.y1 * size;
 			float vertexData[] = {
 				q.x0, q.y0, q.s0, q.t0,
 				q.x1, q.y0, q.s1, q.t0,

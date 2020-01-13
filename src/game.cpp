@@ -46,7 +46,7 @@ Game::Game()
 	mDebugCounter->init(*mFonts);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/empty.xml");
+	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
@@ -113,8 +113,8 @@ void Game::update(sf::Time dt)
 		initTextRenderer();
 		drawFontBitmap();
 		//drawText("abcde123 XYZ", {200.f, 300.f}, 50.f, sf::Color::Red);
-		drawText("123", {100.f, 100.f}, 40.f, sf::Color::Blue);
-		drawText("ABCDEF", {100.f, 150.f}, 60.f, sf::Color::Green);
+		drawText("123", {200.f, 200.f}, 40.f, sf::Color::Blue);
+		drawText("ABCDEF", {200.f, 350.f}, 60.f, sf::Color::Green);
 
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
