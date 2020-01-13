@@ -13,7 +13,7 @@
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3))
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mGameData()
 	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
@@ -46,7 +46,7 @@ Game::Game()
 	mDebugCounter->init(*mFonts);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
-	mSceneManager->replaceScene("scenes/mainMenu.xml");
+	mSceneManager->replaceScene("scenes/empty.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
@@ -104,16 +104,19 @@ void Game::update(sf::Time dt)
 
 	if(mWindow.hasFocus())
 	{
-		//mSceneManager->update(dt);
-		//mAIManager->update();
+		mSceneManager->update(dt);
+		mAIManager->update();
 		//mGui->update(dt);
-		//mDebugCounter->draw();
-		//mTerminal->update();
+		mDebugCounter->draw();
+		mTerminal->update();
 
-		initFontBitmap();
+		initTextRenderer();
 		drawFontBitmap();
+		//drawText("abcde123 XYZ", {200.f, 300.f}, 50.f, sf::Color::Red);
+		drawText("123", {100.f, 100.f}, 40.f, sf::Color::Blue);
+		drawText("ABCDEF", {100.f, 150.f}, 60.f, sf::Color::Green);
 
-		//Renderer::endScene(mWindow, *mDebugCounter);
+		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
 	}
 }

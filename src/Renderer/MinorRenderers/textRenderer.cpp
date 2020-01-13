@@ -1,68 +1,74 @@
 #include "textRenderer.hpp"
 #include "Renderer/API/shader.hpp"
-#include <cstdio>
+#include "Renderer/API/openglErrors.hpp"
 #include <GL/glew.h>
+#include <cstdio>
+#include <vector>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
 namespace ph {
 
-class Font
+struct Font
 {
-public:
-	void loadFromFile(const std::string& filepath);
+	void loadFromFile(const std::string& filepath, int firstChar, int numberOfChars);
 
-private:
 	stbtt_bakedchar mCharactersData[96];
+	sf::Vector2f bitmapSize;
+	int firstChar, numberOfChars;
 	unsigned fontTextureAtlas;
-
-	friend void drawFontBitmap();
 };
 
-void Font::loadFromFile(const std::string& filepath)
+void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOfChars)
 {
 	// TODO: Get rid of these
 	constexpr float pixelFontHeight = 40;
 	constexpr int bitmapWidth = 512;
 	constexpr int bitmapHeight = 512;
-	constexpr int firstChar = 32;
-	constexpr int numberOfChars = 96;
+
+	this->firstChar = firstChar;
+	this->numberOfChars = numberOfChars;
+	this->bitmapSize = {bitmapWidth, bitmapHeight};
 
 	unsigned char* ttfBuffer = new unsigned char[1 << 20];
 	unsigned char* tempBitmap = new unsigned char[512 * 512];
 
-	std::fread(ttfBuffer, 1, 1 << 20, std::fopen(filepath.c_str(), "rb"));
+	FILE* file = std::fopen(filepath.c_str(), "rb");
+	std::fread(ttfBuffer, 1, 1 << 20, file);
+	std::fclose(file);
 	stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapWidth, bitmapHeight, firstChar, numberOfChars, mCharactersData);
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &fontTextureAtlas);
-	glBindTexture(GL_TEXTURE_2D, fontTextureAtlas);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+	GLCheck(glGenTextures(1, &fontTextureAtlas));
+	GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
+	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
 	delete[] ttfBuffer;
 	delete[] tempBitmap;
 }
 
 namespace {
+	Shader* bitmapDebugShader;
 	Shader* textShader;
 	Font font;
-	unsigned vao, vbo, ibo;
+	unsigned fontBitmapVAO, fontBitmapVBO, fontBitmapIBO;
+	unsigned textVAO, textVBO, textIBO;
 	bool wasInitialized = false;
 }
 
-void initFontBitmap()
+void initTextRenderer()
 {
 	if(wasInitialized)
 		return;
 	wasInitialized = true;
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenVertexArrays(1, &fontBitmapVAO);
+	glBindVertexArray(fontBitmapVAO);
 
 	float vertexData[] = {
 		0.f, 0.f, 0.f, 1.f,
@@ -71,13 +77,14 @@ void initFontBitmap()
 		0.f, 1.f, 0.f, 0.f
 	};
 
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	// create temporary font bitmap vao, vbo, ibo
+	glGenBuffers(1, &fontBitmapVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, fontBitmapVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
 	unsigned indexData[] = {0, 1, 2, 2, 3, 0};
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glGenBuffers(1, &fontBitmapIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, fontBitmapIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
@@ -85,18 +92,77 @@ void initFontBitmap()
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
+	// create text vao, vbo, ibo
+	glGenVertexArrays(1, &textVAO);
+	glBindVertexArray(textVAO);
+
+	glGenBuffers(1, &textVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+	glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+
+	unsigned indices[] = {0, 1, 2, 2, 3, 0};
+	glGenBuffers(1, &textIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, textIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	// load shader and font
+	bitmapDebugShader = new Shader;
+	bitmapDebugShader->loadFromFile("resources/shaders/fontBitmapDebug.vs.glsl", "resources/shaders/fontBitmapDebug.fs.glsl");
+
 	textShader = new Shader;
 	textShader->loadFromFile("resources/shaders/text.vs.glsl", "resources/shaders/text.fs.glsl");
-	font.loadFromFile("resources/fonts/joystixMonospace.ttf");
+	unsigned uniformBlockIndex = glGetUniformBlockIndex(textShader->getID(), "SharedData");
+	glUniformBlockBinding(textShader->getID(), uniformBlockIndex, 0);
+
+	font.loadFromFile("resources/fonts/joystixMonospace.ttf", 32, 96);
 }
 
 void drawFontBitmap()
 {
-	glBindVertexArray(vao);
+	glBindVertexArray(fontBitmapVAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, font.fontTextureAtlas);
-	textShader->bind();
+	bitmapDebugShader->bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+namespace {
+	std::vector<Font> fonts;
+}
+
+void drawText(const char* text, sf::Vector2f position, float size, sf::Color color)
+{
+	auto* afont = &font;
+
+	glBindVertexArray(textVAO);
+	textShader->bind();
+	textShader->setUniformVector4Color("color", color);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, font.fontTextureAtlas);
+
+	while(*text) {
+		// TODO: Is this necessary
+		if(*text >= font.firstChar && *text <= font.numberOfChars) {
+			stbtt_aligned_quad q;
+			stbtt_GetBakedQuad(font.mCharactersData, font.bitmapSize.x, font.bitmapSize.y, *text-32, &position.x, &position.y, &q, 1);
+			//float w = q.x1 * size;
+			//float h = q.y1 * size;
+			float vertexData[] = {
+				q.x0, q.y0, q.s0, q.t0,
+				q.x1, q.y0, q.s1, q.t0,
+				q.x1, q.y1, q.s1, q.t1,
+				q.x0, q.y1, q.s0, q.t1
+			};
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
+		++text;
+	} 
 }
 
 }
