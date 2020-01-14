@@ -24,7 +24,7 @@ struct Font
 void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOfChars)
 {
 	// TODO: Get rid of these
-	constexpr float pixelFontHeight = 40;
+	constexpr float pixelFontHeight = 30;
 	constexpr int bitmapWidth = 512;
 	constexpr int bitmapHeight = 512;
 
@@ -46,8 +46,8 @@ void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOf
 		GLCheck(glGenTextures(1, &fontTextureAtlas));
 		GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
 		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
-		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 

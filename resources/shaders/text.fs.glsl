@@ -9,6 +9,9 @@ uniform vec4 color;
 
 void main()
 {
-	fragColor = vec4(color.rgb, texture(image, texCoords).r * color.a);
+	float alpha = texture(image, texCoords).r * color.a;
+	if(alpha < 0.1)
+		discard;
+	fragColor = vec4(color.rgb, alpha * color.a);
 }
 
