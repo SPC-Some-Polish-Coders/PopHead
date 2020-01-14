@@ -4,45 +4,68 @@
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <cstdio>
-#include <vector>
+#include <cstring>
+#include <map>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
 namespace ph {
 
-struct Font
+struct SizeSpecificFontData
 {
-	void loadFromFile(const std::string& filepath, int firstChar, int numberOfChars);
-
-	stbtt_bakedchar mCharactersData[96];
-	int bitmapSideSize;
-	int firstChar, numberOfChars;
-	unsigned fontTextureAtlas;
+	stbtt_bakedchar charactersData[96];
+	int textureAtlasSideSize;
+	unsigned textureAtlas;
 };
 
-void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOfChars)
+class Font
 {
-	constexpr float pixelFontHeight = 40;
-	constexpr int bitmapSideSize = pixelFontHeight > 30 ? pixelFontHeight > 70 ? pixelFontHeight > 150 ? 2048 : 1024 : 512 : 256;
+public:
+	Font(const char* filename);
+	SizeSpecificFontData& getSizeSpecificFontData(float size);
 
-	this->firstChar = firstChar;
-	this->numberOfChars = numberOfChars;
-	this->bitmapSideSize = bitmapSideSize;
+private:
+	std::map<float, SizeSpecificFontData> mFontDataMap;
+	const char* mFilename;
+};
 
-	FILE* file;
-	fopen_s(&file, filepath.c_str(), "rb");
-	if(file) {
+Font::Font(const char* filename)
+	:mFilename(filename)
+{
+}
+
+SizeSpecificFontData& Font::getSizeSpecificFontData(float size)
+{
+	auto found = mFontDataMap.find(size);
+	if(found != mFontDataMap.end()) 
+	{
+		return found->second;
+	}
+	else {
+		mFontDataMap[size] = SizeSpecificFontData();
+		SizeSpecificFontData& data = mFontDataMap[size];
+
+		const int bitmapSideSize = size > 30.f ? size > 70.f ? size > 150.f ? 2048 : 1024 : 512 : 256;
+		data.textureAtlasSideSize = bitmapSideSize;
+
+		FILE* file;
+		char filepath[50] = "resources/fonts/";
+		std::strcat(filepath, mFilename);
+		fopen_s(&file, filepath, "rb");
+		if(!file)
+			PH_EXIT_GAME("Opening font file \" resources/fonts/" + std::string(filepath) + "\" has failed!");
+
 		unsigned char* ttfBuffer = new unsigned char[1 << 20];
 		unsigned char* tempBitmap = new unsigned char[bitmapSideSize * bitmapSideSize];
 
 		std::fread(ttfBuffer, 1, 1 << 20, file);
 		std::fclose(file);
-		stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapSideSize, bitmapSideSize, firstChar, numberOfChars, mCharactersData);
+		stbtt_BakeFontBitmap(ttfBuffer, 0, size, tempBitmap, bitmapSideSize, bitmapSideSize, 32, 96, data.charactersData);
 
 		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-		GLCheck(glGenTextures(1, &fontTextureAtlas));
-		GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
+		GLCheck(glGenTextures(1, &data.textureAtlas));
+		GLCheck(glBindTexture(GL_TEXTURE_2D, data.textureAtlas));
 		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapSideSize, bitmapSideSize, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -51,15 +74,15 @@ void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOf
 
 		delete[] ttfBuffer;
 		delete[] tempBitmap;
+
+		return data;
 	}
-	else
-		PH_EXIT_GAME("Opening font file \"" + filepath + "\" has failed!");
 }
 
 namespace {
 	Shader* bitmapDebugShader;
 	Shader* textShader;
-	Font font;
+	Font font = Font("joystixMonospace.ttf");
 	unsigned fontBitmapVAO, fontBitmapVBO, fontBitmapIBO;
 	unsigned textVAO, textVBO, textIBO;
 	bool wasInitialized = false;
@@ -122,34 +145,35 @@ void initTextRenderer()
 	textShader->loadFromFile("resources/shaders/text.vs.glsl", "resources/shaders/text.fs.glsl");
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(textShader->getID(), "SharedData");
 	glUniformBlockBinding(textShader->getID(), uniformBlockIndex, 0);
-
-	font.loadFromFile("resources/fonts/joystixMonospace.ttf", 32, 96);
 }
 
-void drawFontBitmap()
+void drawFontBitmap(const char* filename, float size)
 {
+	auto& data = font.getSizeSpecificFontData(size);
+
 	glBindVertexArray(fontBitmapVAO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, font.fontTextureAtlas);
+	glBindTexture(GL_TEXTURE_2D, data.textureAtlas);
 	bitmapDebugShader->bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void drawText(const char* text, sf::Vector2f position, float size, sf::Color color)
+void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
 {
-	// TODO: Handle size
+	auto& data = font.getSizeSpecificFontData(size);
+
 	glBindVertexArray(textVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, textVBO);
 	textShader->bind();
 	textShader->setUniformVector4Color("color", color);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, font.fontTextureAtlas);
+	glBindTexture(GL_TEXTURE_2D, data.textureAtlas);
 
 	while(*text) {
 		// TODO: Is this necessary
-		if(*text >= font.firstChar && *text <= font.numberOfChars) {
+		if(*text >= 32 && *text <= 96) {
 			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(font.mCharactersData, font.bitmapSideSize, font.bitmapSideSize, *text-32, &position.x, &position.y, &q, 1);
+			stbtt_GetBakedQuad(data.charactersData, data.textureAtlasSideSize, data.textureAtlasSideSize, *text-32, &position.x, &position.y, &q, 1);
 			float vertexData[] = {
 				q.x0, q.y0, q.s0, q.t0,
 				q.x1, q.y0, q.s1, q.t0,

@@ -111,10 +111,10 @@ void Game::update(sf::Time dt)
 		mTerminal->update();
 
 		initTextRenderer();
-		drawFontBitmap();
-		//drawText("abcde123 XYZ", {200.f, 300.f}, 50.f, sf::Color::Red);
-		drawText("123", {200.f, 200.f}, 40.f, sf::Color::Blue);
-		drawText("ABCDEF", {200.f, 250.f}, 60.f, sf::Color::Green);
+		drawFontBitmap("joystixMonospace.ttf", 60);
+		drawText("abcde123 XYZ", "joystixMonospace.ttf", {200.f, 300.f}, 50.f, sf::Color::Red);
+		drawText("ABCDEF", "joystixMonospace.ttf", {200.f, 250.f}, 40.f, sf::Color::Green);
+		drawText("123", "joystixMonospace.ttf", {200.f, 200.f}, 20.f, sf::Color::Blue);
 
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();

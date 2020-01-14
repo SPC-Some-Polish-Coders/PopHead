@@ -7,8 +7,8 @@
 namespace ph {
 
 void initTextRenderer();
-void drawFontBitmap();
-void drawText(const char* text, sf::Vector2f position, float size, sf::Color color);
+void drawFontBitmap(const char* filename, float size);
+void drawText(const char* text, const char* filename, sf::Vector2f position, float size, sf::Color color);
 
 }
 
