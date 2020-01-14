@@ -124,7 +124,7 @@ namespace ph::system {
 
 					if (intersection.width < intersection.height && anotherRect.left < firstRect.left)
 					{
-						anotherCollisionBody.staticallyMovedLeft = true;
+						//anotherCollisionBody.staticallyMovedLeft = true;
 						anotherRect.left -= intersection.width;
 						pushedLeft.emplace_back(object);
 					}
