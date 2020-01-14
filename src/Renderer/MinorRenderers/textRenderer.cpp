@@ -16,38 +16,36 @@ struct Font
 	void loadFromFile(const std::string& filepath, int firstChar, int numberOfChars);
 
 	stbtt_bakedchar mCharactersData[96];
-	sf::Vector2f bitmapSize;
+	int bitmapSideSize;
 	int firstChar, numberOfChars;
 	unsigned fontTextureAtlas;
 };
 
 void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOfChars)
 {
-	// TODO: Get rid of these
-	constexpr float pixelFontHeight = 30;
-	constexpr int bitmapWidth = 512;
-	constexpr int bitmapHeight = 512;
+	constexpr float pixelFontHeight = 40;
+	constexpr int bitmapSideSize = pixelFontHeight > 30 ? pixelFontHeight > 70 ? pixelFontHeight > 150 ? 2048 : 1024 : 512 : 256;
 
 	this->firstChar = firstChar;
 	this->numberOfChars = numberOfChars;
-	this->bitmapSize = {bitmapWidth, bitmapHeight};
+	this->bitmapSideSize = bitmapSideSize;
 
 	FILE* file;
 	fopen_s(&file, filepath.c_str(), "rb");
 	if(file) {
 		unsigned char* ttfBuffer = new unsigned char[1 << 20];
-		unsigned char* tempBitmap = new unsigned char[512 * 512];
+		unsigned char* tempBitmap = new unsigned char[bitmapSideSize * bitmapSideSize];
 
 		std::fread(ttfBuffer, 1, 1 << 20, file);
 		std::fclose(file);
-		stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapWidth, bitmapHeight, firstChar, numberOfChars, mCharactersData);
+		stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapSideSize, bitmapSideSize, firstChar, numberOfChars, mCharactersData);
 
 		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 		GLCheck(glGenTextures(1, &fontTextureAtlas));
 		GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
-		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
-		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapSideSize, bitmapSideSize, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
@@ -151,7 +149,7 @@ void drawText(const char* text, sf::Vector2f position, float size, sf::Color col
 		// TODO: Is this necessary
 		if(*text >= font.firstChar && *text <= font.numberOfChars) {
 			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(font.mCharactersData, font.bitmapSize.x, font.bitmapSize.y, *text-32, &position.x, &position.y, &q, 1);
+			stbtt_GetBakedQuad(font.mCharactersData, font.bitmapSideSize, font.bitmapSideSize, *text-32, &position.x, &position.y, &q, 1);
 			float vertexData[] = {
 				q.x0, q.y0, q.s0, q.t0,
 				q.x1, q.y0, q.s1, q.t0,
