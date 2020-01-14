@@ -1,6 +1,7 @@
 #include "textRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <cstdio>
 #include <vector>
@@ -31,25 +32,30 @@ void Font::loadFromFile(const std::string& filepath, int firstChar, int numberOf
 	this->numberOfChars = numberOfChars;
 	this->bitmapSize = {bitmapWidth, bitmapHeight};
 
-	unsigned char* ttfBuffer = new unsigned char[1 << 20];
-	unsigned char* tempBitmap = new unsigned char[512 * 512];
+	FILE* file;
+	fopen_s(&file, filepath.c_str(), "rb");
+	if(file) {
+		unsigned char* ttfBuffer = new unsigned char[1 << 20];
+		unsigned char* tempBitmap = new unsigned char[512 * 512];
 
-	FILE* file = std::fopen(filepath.c_str(), "rb");
-	std::fread(ttfBuffer, 1, 1 << 20, file);
-	std::fclose(file);
-	stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapWidth, bitmapHeight, firstChar, numberOfChars, mCharactersData);
+		std::fread(ttfBuffer, 1, 1 << 20, file);
+		std::fclose(file);
+		stbtt_BakeFontBitmap(ttfBuffer, 0, pixelFontHeight, tempBitmap, bitmapWidth, bitmapHeight, firstChar, numberOfChars, mCharactersData);
 
-	GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-	GLCheck(glGenTextures(1, &fontTextureAtlas));
-	GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
-	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+		GLCheck(glGenTextures(1, &fontTextureAtlas));
+		GLCheck(glBindTexture(GL_TEXTURE_2D, fontTextureAtlas));
+		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-	delete[] ttfBuffer;
-	delete[] tempBitmap;
+		delete[] ttfBuffer;
+		delete[] tempBitmap;
+	}
+	else
+		PH_EXIT_GAME("Opening font file \"" + filepath + "\" has failed!");
 }
 
 namespace {

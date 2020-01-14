@@ -106,7 +106,7 @@ void Game::update(sf::Time dt)
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
-		//mGui->update(dt);
+		mGui->update(dt);
 		mDebugCounter->draw();
 		mTerminal->update();
 
@@ -114,7 +114,7 @@ void Game::update(sf::Time dt)
 		drawFontBitmap();
 		//drawText("abcde123 XYZ", {200.f, 300.f}, 50.f, sf::Color::Red);
 		drawText("123", {200.f, 200.f}, 40.f, sf::Color::Blue);
-		drawText("ABCDEF", {200.f, 350.f}, 60.f, sf::Color::Green);
+		drawText("ABCDEF", {200.f, 250.f}, 60.f, sf::Color::Green);
 
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
