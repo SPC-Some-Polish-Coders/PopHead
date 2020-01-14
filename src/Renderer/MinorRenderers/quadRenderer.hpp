@@ -1,6 +1,7 @@
 #pragma once
 
 #include "quadData.hpp"
+#include "Renderer/API/shader.hpp"
 #include "Renderer/API/indexBuffer.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
@@ -13,7 +14,6 @@
 
 namespace ph {
 
-class Shader;
 class Texture;
 
 bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
@@ -65,9 +65,9 @@ private:
 
 private:
 	RenderGroupsHashMap mRenderGroupsHashMap;
+	Shader mDefaultInstanedSpriteShader;
 	const FloatRect* mScreenBounds;
 	const Shader* mCurrentlyBoundQuadShader;
-	Shader* mDefaultInstanedSpriteShader;
 	Texture* mWhiteTexture;
 	IndexBuffer mQuadIBO;
 	unsigned mQuadsDataVBO;

@@ -12,32 +12,6 @@ namespace ph {
 
 void TextRenderer::init()
 {
-	/*
-	glGenVertexArrays(1, &mFontBitmapVAO);
-	glBindVertexArray(mFontBitmapVAO);
-
-	float vertexData[] = {
-		0.f, 0.f, 0.f, 1.f,
-		1.f, 0.f, 1.f, 1.f,
-		1.f, 1.f, 1.f, 0.f,
-		0.f, 1.f, 0.f, 0.f
-	};
-
-	// create temporary font bitmap vao, vbo, ibo
-	glGenBuffers(1, &mFontBitmapVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mFontBitmapVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-
-	unsigned indexData[] = {0, 1, 2, 2, 3, 0};
-	glGenBuffers(1, &mFontBitmapIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mFontBitmapIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-	*/
 	// create text vao, vbo, ibo
 	GLCheck( glGenVertexArrays(1, &mTextVAO) );
 	GLCheck( glBindVertexArray(mTextVAO) );
@@ -57,13 +31,9 @@ void TextRenderer::init()
 	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 
 	// load shader and font
-	//mBitmapDebugShader = new Shader;
-	//mBitmapDebugShader->loadFromFile("resources/shaders/mFontBitmapDebug.vs.glsl", "resources/shaders/fontBitmapDebug.fs.glsl");
-
-	mTextShader = new Shader;
-	mTextShader->loadFromFile("resources/shaders/text.vs.glsl", "resources/shaders/text.fs.glsl");
-	unsigned uniformBlockIndex = glGetUniformBlockIndex(mTextShader->getID(), "SharedData");
-	glUniformBlockBinding(mTextShader->getID(), uniformBlockIndex, 0);
+	mTextShader.initFromFile("resources/shaders/text.vs.glsl", "resources/shaders/text.fs.glsl");
+	unsigned uniformBlockIndex = glGetUniformBlockIndex(mTextShader.getID(), "SharedData");
+	glUniformBlockBinding(mTextShader.getID(), uniformBlockIndex, 0);
 }
 
 void TextRenderer::shutDown()
@@ -72,19 +42,8 @@ void TextRenderer::shutDown()
 	glDeleteVertexArrays(1, &mTextVAO);
 	glDeleteBuffers(1, &mTextVBO);
 	glDeleteBuffers(1, &mTextIBO);
-	delete mTextShader;
+	mTextShader.remove();
 }
-//
-//void drawFontBitmap(const char* filename, float size)
-//{
-//	auto& data = font.getSizeSpecificFontData(size);
-//
-//	glBindVertexArray(mFontBitmapVAO);
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, data.textureAtlas);
-//	mBitmapDebugShader->bind();
-//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//}
 
 void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
 {
@@ -92,8 +51,8 @@ void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vect
 
 	GLCheck( glBindVertexArray(mTextVAO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
-	GLCheck( mTextShader->bind() );
-	GLCheck( mTextShader->setUniformVector4Color("color", color) );
+	GLCheck( mTextShader.bind() );
+	GLCheck( mTextShader.setUniformVector4Color("color", color) );
 	GLCheck( glActiveTexture(GL_TEXTURE0) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, data.textureAtlas) );
 

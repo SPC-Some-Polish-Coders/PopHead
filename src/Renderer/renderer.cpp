@@ -9,10 +9,11 @@
 #include "API/shader.hpp"
 #include "API/vertexArray.hpp"
 #include "API/camera.hpp"
-#include "DebugCounter/debugCounter.hpp"
-#include "Logs/logs.hpp"
+#include "API/font.hpp"
 #include "API/openglErrors.hpp"
 #include "API/framebuffer.hpp"
+#include "DebugCounter/debugCounter.hpp"
+#include "Logs/logs.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
@@ -23,8 +24,8 @@
 namespace {
 	ph::FloatRect screenBounds;
 
-	ph::Shader* defaultFramebufferShader;
-	ph::Shader* gaussianBlurFramebufferShader;
+	ph::Shader defaultFramebufferShader;
+	ph::Shader gaussianBlurFramebufferShader;
 	
 	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer gameObjectsFramebuffer;
@@ -77,11 +78,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 16 * sizeof(float));
 
 	// set up framebuffer
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("defaultFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
-	defaultFramebufferShader = sl.get("defaultFramebuffer");
-	sl.loadFromFile("gaussianBlurFramebuffer", "resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/gaussianBlur.fs.glsl");
-	gaussianBlurFramebufferShader = sl.get("gaussianBlurFramebuffer");
+	defaultFramebufferShader.initFromFile("resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
+	gaussianBlurFramebufferShader.initFromFile("resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/gaussianBlur.fs.glsl");
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
@@ -123,6 +121,8 @@ void Renderer::shutDown()
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
 	lightingGaussianBlurFramebuffer.remove();
+	defaultFramebufferShader.remove();
+	gaussianBlurFramebufferShader.remove();
 }
 
 void Renderer::beginScene(Camera& camera)
@@ -153,6 +153,10 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	// disable depth test for performance purposes
 	GLCheck( glDisable(GL_DEPTH_TEST) );
 
+	// render font debug
+	if(FontDebugRenderer::isActive())
+		FontDebugRenderer::draw();
+
 	// render lights to lighting framebuffer
 	lightingFramebuffer.bind();
 	setClearColor(ambientLightColor);
@@ -166,16 +170,16 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lightingGaussianBlurFramebuffer.bind();
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	lightingFramebuffer.bindTextureColorBuffer(0);
-	gaussianBlurFramebufferShader->bind();
+	gaussianBlurFramebufferShader.bind();
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
 	// render everything onto quad in default framebuffer
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
-	defaultFramebufferShader->bind();
-	defaultFramebufferShader->setUniformInt("gameObjectsTexture", 0);
+	defaultFramebufferShader.bind();
+	defaultFramebufferShader.setUniformInt("gameObjectsTexture", 0);
 	gameObjectsFramebuffer.bindTextureColorBuffer(0);
-	defaultFramebufferShader->setUniformInt("lightingTexture", 1);
+	defaultFramebufferShader.setUniformInt("lightingTexture", 1);
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 

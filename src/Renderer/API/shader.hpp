@@ -14,10 +14,9 @@ namespace ph {
 class Shader
 {
 public:
-	Shader();
-
-	bool loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
-	void loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
+	bool initFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
+	void initFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
+	void remove();
 
 	void bind() const;
 	void unbind() const;
@@ -53,25 +52,5 @@ private:
 	unsigned mID;
 };
 
-class ShaderLibrary
-{
-	ShaderLibrary() {};
-public:
-	ShaderLibrary(ShaderLibrary&) = delete;
-	void operator=(ShaderLibrary const&) = delete;
-
-	static ShaderLibrary& getInstance()
-	{
-		static ShaderLibrary shaderLibary;
-		return shaderLibary;
-	}
-
-	bool loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
-	void loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode);
-	Shader* get(const std::string& name);
-
-private:
-	std::map<std::string, Shader> mShaders;
-};
-
 }
+

@@ -8,14 +8,12 @@ namespace ph {
 
 void PointRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("points", "resources/shaders/points.vs.glsl", "resources/shaders/points.fs.glsl");
-	mPointsShader = sl.get("points");
+	mPointsShader.initFromFile("resources/shaders/points.vs.glsl", "resources/shaders/points.fs.glsl");
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mPointsShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mPointsShader->getID(), uniformBlockIndex, 0) );
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mPointsShader.getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mPointsShader.getID(), uniformBlockIndex, 0) );
 
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
@@ -39,6 +37,7 @@ void PointRenderer::shutDown()
 {
 	glDeleteBuffers(1, &mVBO);
 	glDeleteVertexArrays(1, &mVAO);
+	mPointsShader.remove();
 }
 
 void PointRenderer::setDebugNumbersToZero()
@@ -66,7 +65,7 @@ void PointRenderer::flush()
 	if(mSubmitedPointsVertexData.empty())
 		return;
 
-	mPointsShader->bind();
+	mPointsShader.bind();
 	glBindVertexArray(mVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);

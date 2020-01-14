@@ -28,33 +28,27 @@ private:
 
 	void executeInfoMessage() const;
 	void executeEcho() const;
-
 	void executeExit() const;
-
 	void executeGotoScene() const;
 	void executeTeleport() const;
 	void executeCurrentPos() const;
 	void executeMove() const;
 	void executeGive() const;
-
 	void executeHistory() const;
 	void executeHelp() const;
 	void executeClear() const;
-
 	void executeCollisionDebug() const;
 	void executeVelocityChangingAreaDebug() const;
 	void executePushingAreaDebug() const;
-	
 	void executeMute() const;
 	void executeUnmute() const;
-	void setAudioMuted(bool mute) const;
 	void executeSetVolume() const;
-	float getVolumeFromCommand() const;
-
 	void executeView() const;
-
 	void executeLight() const;
+	void executeFontDebug() const;
 
+	void setAudioMuted(bool mute) const;
+	float getVolumeFromCommand() const;
 	auto getVector2Argument() const -> sf::Vector2f;
 	sf::Vector2f handleGetVector2ArgumentError() const;
 

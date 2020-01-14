@@ -10,6 +10,7 @@
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Systems/areasDebug.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
+#include "Renderer/API/font.hpp"
 #include <entt/entt.hpp>
 
 namespace ph {
@@ -34,6 +35,7 @@ void CommandInterpreter::init()
 	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
+	mCommandsMap["fontd"] =						&CommandInterpreter::executeFontDebug;
 	mCommandsMap[""] =							&CommandInterpreter::executeInfoMessage;
 }
 
@@ -291,6 +293,17 @@ void CommandInterpreter::executeLight() const
 		lightDebug.drawRays = on;
 	else
 		lightDebug.drawLight = on;
+}
+
+void CommandInterpreter::executeFontDebug() const
+{
+	// TODO: Add font filename command argument and font size command argument
+	if(commandContains("on") && !FontDebugRenderer::isActive()) {
+		FontDebugRenderer::init("joystixMonospace.ttf", 50);
+	}
+	if(commandContains("off") && FontDebugRenderer::isActive()) {
+		FontDebugRenderer::shutDown();
+	}
 }
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f

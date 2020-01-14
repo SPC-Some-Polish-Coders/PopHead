@@ -1,3 +1,4 @@
+#include "Renderer/API/shader.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -5,8 +6,6 @@
 #include <vector>
 
 namespace ph{
-
-class Shader;
 
 struct PointVertexData
 {
@@ -38,7 +37,7 @@ private:
 private:
 	std::vector<PointVertexData> mSubmitedPointsVertexData;
 	const FloatRect* mScreenBounds;
-	Shader* mPointsShader;
+	Shader mPointsShader;
 	unsigned mVAO;
 	unsigned mVBO;
 	unsigned mNrOfDrawnPoints;
@@ -46,3 +45,4 @@ private:
 };
 
 }
+

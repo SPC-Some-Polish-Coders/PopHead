@@ -10,12 +10,10 @@ namespace ph {
 
 void LineRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("line", "resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
-	mLineShader = sl.get("line");
+	mLineShader.initFromFile("resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
 
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mLineShader->getID(), uniformBlockIndex, 0) );
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader.getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mLineShader.getID(), uniformBlockIndex, 0) );
 
 	GLCheck( glEnable(GL_LINE_SMOOTH) );
 	GLCheck( glHint(GL_LINE_SMOOTH_HINT, GL_NICEST) );
@@ -57,7 +55,7 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * 6 * sizeof(float), vertexData) );
 
 	GLCheck( glBindVertexArray(mLineVAO) );
-	mLineShader->bind();
+	mLineShader.bind();
 	
 	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->height)) );
 

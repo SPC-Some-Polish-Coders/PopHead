@@ -337,7 +337,9 @@ namespace ph {
 			mGameRegistry.assign_or_replace<component::HiddenForRenderer>(spriteEntity);
 
 		// load shader
-		const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
+		rq.shader = nullptr;
+		// TODO: Enable custom shaders
+		/*const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
 		if(shaderName != "none") {
 			const std::string vertexShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
 			PH_ASSERT_CRITICAL(vertexShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'vertexShaderFilepath'!");
@@ -349,9 +351,7 @@ namespace ph {
 				rq.shader = sl.get(shaderName);
 			else
 				PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
-		}
-		else
-			rq.shader = nullptr;
+		}*/
 
 		// load rotation and rotation origin
 		rq.rotation = getProperty(spriteNode, "rotation").toFloat();

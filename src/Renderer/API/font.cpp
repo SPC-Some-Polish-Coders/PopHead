@@ -1,6 +1,8 @@
 #include "font.hpp"
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
+#include "Renderer/API/shader.hpp"
+#include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <cstdio>
 #include <cstring>
@@ -86,5 +88,63 @@ namespace ph {
 		mFonts.clear();
 	}
 
+	FontDebugRenderer::FontDebugRendererData::FontDebugRendererData(const char* filename, float size)
+		:sizeSpecificFontData(filename, size)
+	{
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		float vertexData[] = {
+		   -1.f, -1.f,  0.f,  1.f,
+		    1.f, -1.f,  1.f,  1.f,
+		    1.f,  1.f,  1.f,  0.f,
+		   -1.f,  1.f,  0.f,  0.f
+		};
+
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+
+		unsigned indexData[] = {0, 1, 2, 2, 3, 0};
+		glGenBuffers(1, &ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+		shader.initFromFile("resources/shaders/fontBitmapDebug.vs.glsl", "resources/shaders/fontBitmapDebug.fs.glsl");
+	}
+
+	FontDebugRenderer::FontDebugRendererData::~FontDebugRendererData()
+	{
+		glDeleteTextures(1, &sizeSpecificFontData.textureAtlas);
+		glDeleteBuffers(1, &vbo);
+		glDeleteBuffers(1, &ibo);
+		glDeleteVertexArrays(1, &vao);
+		shader.remove();
+	}
+
+	void FontDebugRenderer::init(const char* filename, float size)
+	{
+		sData = new FontDebugRendererData(filename, size);
+	}
+
+	void FontDebugRenderer::shutDown()
+	{
+		delete sData;
+		sData = nullptr;
+	}
+
+	void FontDebugRenderer::draw()
+	{
+		glBindVertexArray(sData->vao);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, sData->sizeSpecificFontData.textureAtlas);
+		sData->shader.bind();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 }
 

@@ -18,7 +18,7 @@ public:
 
 private:
 	FontHolder mFontHolder;
-	Shader* mTextShader;
+	Shader mTextShader;
 	unsigned mTextVAO, mTextVBO, mTextIBO;
 };
 

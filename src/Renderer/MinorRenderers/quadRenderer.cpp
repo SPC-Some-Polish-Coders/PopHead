@@ -1,6 +1,5 @@
 #include "quadRenderer.hpp"
 #include "Renderer/API/texture.hpp"
-#include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
@@ -70,12 +69,10 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 
 void QuadRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
-	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
+	mDefaultInstanedSpriteShader.initFromFile("resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
 
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader->getID(), uniformBlockIndex, 0) );
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader.getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader.getID(), uniformBlockIndex, 0) );
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
 	mQuadIBO.init();
@@ -113,6 +110,7 @@ void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
 	mQuadIBO.remove();
+	mDefaultInstanedSpriteShader.remove();
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
@@ -131,7 +129,7 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 	// NOTE: this function doesn't do any culling
 
 	if(!shader)
-		shader = mDefaultInstanedSpriteShader;
+		shader = &mDefaultInstanedSpriteShader;
 
 	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
 	
@@ -161,7 +159,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 
 	// if shader is not specified use default shader 
 	if(!shader)
-		shader = mDefaultInstanedSpriteShader;
+		shader = &mDefaultInstanedSpriteShader;
 
 	// find or add draw call group
 	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z});

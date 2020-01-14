@@ -1,9 +1,12 @@
 #pragma once
 
+#include "shader.hpp"
 #include <vector>
 #include <stb_truetype.h>
 
 namespace ph {
+
+	class Shader;
 
 	struct SizeSpecificFontData
 	{
@@ -34,6 +37,26 @@ namespace ph {
 		void clear();
 	private:
 		std::vector<Font> mFonts;
+	};
+
+	class FontDebugRenderer
+	{
+	public:
+		static void init(const char* filename, float size);
+		static void shutDown();
+		static void draw();
+		static bool isActive() { return sData; }
+	private:
+		struct FontDebugRendererData
+		{
+			FontDebugRendererData(const char* filename, float size); 
+			~FontDebugRendererData();
+
+			SizeSpecificFontData sizeSpecificFontData;
+			Shader shader;
+			unsigned vao, vbo, ibo;
+		};
+		inline static FontDebugRendererData* sData = nullptr;
 	};
 
 }

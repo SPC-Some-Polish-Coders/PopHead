@@ -9,12 +9,12 @@
 
 namespace ph {
 
-Shader::Shader()
+void Shader::remove()
 {
-	mID = glCreateProgram();
+	glDeleteProgram(mID);
 }
 
-bool Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
+bool Shader::initFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
 {
 	auto vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
 	auto fragmentShaderCode = getShaderCodeFromFile(fragmentShaderFilename);
@@ -22,7 +22,7 @@ bool Shader::loadFromFile(const char* vertexShaderFilename, const char* fragment
 	if(vertexShaderCode == std::nullopt || fragmentShaderCode == std::nullopt)
 		return false;
 
-	loadFromString(vertexShaderCode->c_str(), fragmentShaderCode->c_str());
+	initFromString(vertexShaderCode->c_str(), fragmentShaderCode->c_str());
 	return true;
 }
 
@@ -45,8 +45,9 @@ auto Shader::getShaderCodeFromFile(const char* filename) -> const std::optional<
 	return code;
 }
 
-void Shader::loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource)
+void Shader::initFromString(const char* vertexShaderSource, const char* fragmentShaderSource)
 {
+	mID = glCreateProgram();
 	int vertexShaderId = compileShaderAndGetId(vertexShaderSource, GL_VERTEX_SHADER);
 	int fragmentShaderId = compileShaderAndGetId(fragmentShaderSource, GL_FRAGMENT_SHADER);
 	linkProgram(vertexShaderId, fragmentShaderId);
@@ -186,36 +187,5 @@ int Shader::getUniformLocation(const char* name) const
 	return location;
 }
 
-bool ShaderLibrary::loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath)
-{
-	if(mShaders.find(name) != mShaders.end())
-		return true;
-	Shader shader;
-	if(shader.loadFromFile(vertexShaderFilepath, fragmentShaderFilepath)) {
-		mShaders[name] = shader;
-		return true;
-	}
-	else
-		return false;
 }
 
-void ShaderLibrary::loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode)
-{
-	if(mShaders.find(name) != mShaders.end())
-		return;
-	Shader shader;
-	shader.loadFromString(vertexShaderCode, fragmentShaderCode);
-	mShaders[name] = shader;
-}
-
-Shader* ShaderLibrary::get(const std::string& name)
-{
-	auto found = mShaders.find(name);
-	if(found == mShaders.end()) {
-		PH_EXIT_GAME("You try to get a shader that wasn't loaded: " + name);
-	}
-	return &found->second;
-}
-
-
-}
