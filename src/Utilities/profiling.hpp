@@ -65,3 +65,10 @@ private:
 	#define PH_PROFILE_SCOPE(name, threadID)
 	#define PH_PROFILE_FUNCTION(threadID)
 #endif
+
+// Make sure to not commit calls of these macros! They should be used to measure performance of some small piece of code.
+#define PH_BEGIN_PROFILING_LOCAL_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
+#define PH_END_PROFILING_LOCAL_SESSION() ph::ProfilingManager::getInstance().endSession()
+#define PH_PROFILE_SCOPE_LOCAL_SESSION(name, threadID) ph::ProfilingTimer profLocalTimer##__LINE__(name, threadID);
+#define PH_PROFILE_FUNCTION_LOCAL_SESSION(threadID) PH_PROFILE_SCOPE(__FUNCTION__, threadID);
+
