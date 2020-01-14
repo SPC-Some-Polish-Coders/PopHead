@@ -5,6 +5,7 @@
 #include "MinorRenderers/SFMLrenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
 #include "MinorRenderers/lightRenderer.hpp"
+#include "MinorRenderers/textRenderer.hpp"
 #include "API/shader.hpp"
 #include "API/vertexArray.hpp"
 #include "API/camera.hpp"
@@ -39,6 +40,7 @@ namespace {
 	ph::LineRenderer lineRenderer;
 	ph::SFMLRenderer sfmlRenderer;
 	ph::LightRenderer lightRenderer;
+	ph::TextRenderer textRenderer;
 }
 
 namespace ph {
@@ -58,6 +60,7 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
+	textRenderer.init();
 	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
@@ -115,6 +118,7 @@ void Renderer::shutDown()
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
+	textRenderer.shutDown();
 	framebufferVertexArray.remove();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
@@ -230,9 +234,9 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
-void Renderer::submitText(const char* string, unsigned characterSize, sf::Vector2f position)
+void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color)
 {
-
+	textRenderer.drawText(text, fontFilename, position, characterSize, color);
 }
 
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)

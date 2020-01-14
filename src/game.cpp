@@ -8,8 +8,6 @@
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
 
-#include "Renderer/MinorRenderers/textRenderer.hpp"
-
 namespace ph {
 
 Game::Game()
@@ -18,7 +16,7 @@ Game::Game()
 	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
 	,mTextures(std::make_unique<TextureHolder>())
-	,mFonts(std::make_unique<FontHolder>())
+	,mFonts(std::make_unique<OldFontHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 	,mTerminal(std::make_unique<Terminal>())
@@ -110,11 +108,9 @@ void Game::update(sf::Time dt)
 		mDebugCounter->draw();
 		mTerminal->update();
 
-		initTextRenderer();
-		drawFontBitmap("joystixMonospace.ttf", 60);
-		drawText("abcde123 XYZ", "joystixMonospace.ttf", {200.f, 300.f}, 50.f, sf::Color::Red);
-		drawText("ABCDEF", "joystixMonospace.ttf", {200.f, 250.f}, 40.f, sf::Color::Green);
-		drawText("123", "joystixMonospace.ttf", {200.f, 200.f}, 20.f, sf::Color::Blue);
+		Renderer::submitText("abcde123 XYZ", "joystixMonospace.ttf", {200.f, 300.f}, 50.f, sf::Color::Red);
+		Renderer::submitText("ABCDEF", "joystixMonospace.ttf", {200.f, 250.f}, 40.f, sf::Color::Green);
+		Renderer::submitText("123", "joystixMonospace.ttf", {200.f, 200.f}, 20.f, sf::Color::Blue);
 
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();

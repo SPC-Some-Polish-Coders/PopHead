@@ -123,8 +123,8 @@ project "Tests"
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
-	root_dir .. "vendor/glew-2.1.0/include",
-	root_dir .. "vendor/stb",
+        root_dir .. "vendor/glew-2.1.0/include",
+        root_dir .. "vendor/stb",
         root_dir .. "vendor/entt-3.2.0/src",
         root_dir .. "vendor/catch2"
     }
@@ -158,7 +158,7 @@ project "Tests"
         "vorbis.lib",
         "ogg.lib",
         "openal32.lib",
-	"glew32s.lib"
+        "glew32s.lib"
     }
 
 	ignoredefaultlibraries { "libcmt" }

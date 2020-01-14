@@ -15,7 +15,7 @@ DebugCounter::DebugCounter()
 {
 }
 
-void DebugCounter::init(FontHolder& fonts)
+void DebugCounter::init(OldFontHolder& fonts)
 {
 	mFont = &fonts.get("fonts/joystixMonospace.ttf");
 }

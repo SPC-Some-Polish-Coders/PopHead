@@ -23,7 +23,7 @@ private:
 
 using SoundBufferHolder = ResourceHolder<sf::SoundBuffer>;
 using TextureHolder = ResourceHolder<ph::Texture>;
-using FontHolder = ResourceHolder<sf::Font>;
+using OldFontHolder = ResourceHolder<sf::Font>;
 
 }
 

@@ -78,3 +78,4 @@ void Texture::bind(unsigned slot) const
 }
 
 }
+

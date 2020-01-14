@@ -33,7 +33,7 @@ public:
 private:
 	GameData* mGameData;
 	GUI* mGui;
-	FontHolder* mFontHolder;
+	OldFontHolder* mFontHolder;
 	inline static std::unique_ptr<GuiActionsParser> mActionsParser = nullptr;
 };
 

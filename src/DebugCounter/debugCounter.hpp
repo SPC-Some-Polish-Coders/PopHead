@@ -14,7 +14,7 @@ class DebugCounter
 {
 public:
 	DebugCounter();
-	void init(FontHolder& fonts);
+	void init(OldFontHolder& fonts);
 
 	void handleEvent(const ph::Event&);
 	void update();
