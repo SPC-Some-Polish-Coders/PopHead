@@ -12,6 +12,7 @@ ShaderSource lightSrc();
 ShaderSource lineSrc();
 ShaderSource pointsSrc();
 ShaderSource textSrc();
+ShaderSource debugTextSrc();
 
 }
 

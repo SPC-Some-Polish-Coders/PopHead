@@ -14,11 +14,17 @@ public:
 	void init();
 	void shutDown();
 
-	void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color);
+	void beginFrame();
+	void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color);
+	void drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color color);
+private:
+	void drawTextInternal(Shader&, const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color);
 
 private:
 	FontHolder mFontHolder;
 	Shader mTextShader;
+	Shader mDebugTextShader;
+	sf::Vector2f mDebugTextPosition;
 	unsigned mTextVAO, mTextVBO, mTextIBO;
 };
 

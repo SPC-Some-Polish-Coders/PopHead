@@ -101,5 +101,18 @@ ShaderSource textSrc()
 	return ShaderSource{sTextVS, sTextFS};
 }
 
+
+// debug text
+static const char* sDebugTextVS =
+	#include "debugText.vs.glsl"
+;
+static const char* sDebugTextFS =
+	#include "debugText.fs.glsl"
+;
+ShaderSource debugTextSrc()
+{
+	return ShaderSource{sDebugTextVS, sDebugTextFS};
+}
+
 };
 

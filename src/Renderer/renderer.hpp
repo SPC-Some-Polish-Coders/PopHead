@@ -34,15 +34,16 @@ namespace Renderer
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
-	void submitLine(sf::Color colorA, sf::Color colorB,
-	                const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+	void submitLine(sf::Color colorA, sf::Color colorB, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
 	void submitPoint(sf::Vector2f position, sf::Color, unsigned char z, float size = 1.f);
 
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
-	void submitText(const char* string, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color);
+	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color);
+
+	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color);
 
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 

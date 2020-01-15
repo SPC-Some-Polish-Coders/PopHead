@@ -1,5 +1,6 @@
 #include "textRenderer.hpp"
 #include "Renderer/API/shader.hpp"
+#include "Renderer/API/camera.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Logs/logs.hpp"
@@ -31,10 +32,15 @@ void TextRenderer::init()
 	GLCheck( glEnableVertexAttribArray(1) );
 	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 
-	// load shader and font
+	// load shaders
 	mTextShader.init(shader::textSrc());
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(mTextShader.getID(), "SharedData");
 	glUniformBlockBinding(mTextShader.getID(), uniformBlockIndex, 0);
+
+	mDebugTextShader.init(shader::debugTextSrc());
+	mDebugTextShader.bind();
+	Camera debugTextCamera({960, 540}, {1920, 1080});
+	mDebugTextShader.setUniformMatrix4x4("debugTextViewProjectionMatrix", debugTextCamera.getViewProjectionMatrix4x4().getMatrix());
 }
 
 void TextRenderer::shutDown()
@@ -46,19 +52,36 @@ void TextRenderer::shutDown()
 	mTextShader.remove();
 }
 
+void TextRenderer::beginFrame()
+{
+	mDebugTextPosition = {5.f, 5.f};
+}
+
 void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
+{
+	drawTextInternal(mTextShader, text, fontFilename, position, size, color);
+}
+
+void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color color)
+{
+	mDebugTextPosition.y += upMargin + size * 3.f;
+	drawTextInternal(mDebugTextShader, text, fontFilename, mDebugTextPosition, size * 3, color);
+	mDebugTextPosition.y += downMargin;
+}
+
+void TextRenderer::drawTextInternal(Shader& shader, const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
 
 	GLCheck( glBindVertexArray(mTextVAO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
-	GLCheck( mTextShader.bind() );
-	GLCheck( mTextShader.setUniformVector4Color("color", color) );
+	GLCheck( shader.bind() );
+	GLCheck( shader.setUniformVector4Color("color", color) );
 	GLCheck( glActiveTexture(GL_TEXTURE0) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, data.textureAtlas) );
 
 	while(*text) {
-		if(*text >= 32 && *text <= 96) {
+		if(*text >= '!' && *text <= '~') {
 			stbtt_aligned_quad q;
 			stbtt_GetBakedQuad(data.charactersData, data.textureAtlasSideSize, data.textureAtlasSideSize, *text-32, &position.x, &position.y, &q, 1);
 			float vertexData[] = {
@@ -69,6 +92,9 @@ void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vect
 			};
 			GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData) );
 			GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+		}
+		else {
+			position.x += size;
 		}
 		++text;
 	}

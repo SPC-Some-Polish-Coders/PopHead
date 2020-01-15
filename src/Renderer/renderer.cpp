@@ -141,6 +141,8 @@ void Renderer::beginScene(Camera& camera)
 	const sf::Vector2f center = camera.getCenter();
 	const sf::Vector2f size = camera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
+
+	textRenderer.beginFrame();
 }
 
 void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
@@ -242,6 +244,11 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
 void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color)
 {
 	textRenderer.drawText(text, fontFilename, position, characterSize, color);
+}
+
+void Renderer::submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
+{
+	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, color);
 }
 
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)

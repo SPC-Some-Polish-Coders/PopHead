@@ -109,8 +109,9 @@ void Game::update(sf::Time dt)
 		mTerminal->update();
 
 		Renderer::submitText("abcde123 XYZ", "joystixMonospace.ttf", {200.f, 300.f}, 50.f, sf::Color::Red);
-		Renderer::submitText("ABCDEF", "joystixMonospace.ttf", {200.f, 250.f}, 40.f, sf::Color::Green);
-		Renderer::submitText("123", "joystixMonospace.ttf", {200.f, 200.f}, 20.f, sf::Color::Blue);
+
+		Renderer::submitDebugText("ABCDEF", "joystixMonospace.ttf", 40.f, 0.f, 0.f, sf::Color::Green);
+		Renderer::submitDebugText("123", "joystixMonospace.ttf", 20.f, 0.f, 0.f, sf::Color::Blue);
 
 		Renderer::endScene(mWindow, *mDebugCounter);
 		mWindow.display();
