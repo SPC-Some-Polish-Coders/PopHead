@@ -14,7 +14,7 @@ namespace ph {
 
 void LightRenderer::init()
 {
-	mLightShader.initFromSource(shader::lightSrc());
+	mLightShader.init(shader::lightSrc());
 
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(mLightShader.getID(), "SharedData");
 	glUniformBlockBinding(mLightShader.getID(), uniformBlockIndex, 0);

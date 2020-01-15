@@ -9,52 +9,11 @@
 
 namespace ph {
 
-void Shader::remove()
-{
-	glDeleteProgram(mID);
-}
-
-bool Shader::initFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
-{
-	auto vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
-	auto fragmentShaderCode = getShaderCodeFromFile(fragmentShaderFilename);
-	
-	if(vertexShaderCode == std::nullopt || fragmentShaderCode == std::nullopt)
-		return false;
-
-	initFromString(vertexShaderCode->c_str(), fragmentShaderCode->c_str());
-	return true;
-}
-
-auto Shader::getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>
-{
-	std::string code;
-	std::ifstream file;
-	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	try {
-		file.open(filename);
-		std::stringstream stream;
-		stream << file.rdbuf();
-		file.close();
-		code = stream.str();
-	}
-	catch(std::istream::failure) {
-		PH_LOG_ERROR("Shader file \"" + std::string(filename) + "\" was not succesfully read. (probably file doesn't exist)");
-		return std::nullopt;
-	}
-	return code;
-}
-
-void Shader::initFromSource(ShaderSource& ss)
-{
-	initFromString(ss.vertexShader, ss.fragmentShader);
-}
-
-void Shader::initFromString(const char* vertexShaderSource, const char* fragmentShaderSource)
+void Shader::init(ShaderSource& ss)
 {
 	mID = glCreateProgram();
-	int vertexShaderId = compileShaderAndGetId(vertexShaderSource, GL_VERTEX_SHADER);
-	int fragmentShaderId = compileShaderAndGetId(fragmentShaderSource, GL_FRAGMENT_SHADER);
+	int vertexShaderId = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
+	int fragmentShaderId = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
 	linkProgram(vertexShaderId, fragmentShaderId);
 }
 
@@ -97,6 +56,11 @@ void Shader::checkLinkingErrors()
 		glGetProgramInfoLog(mID, sizeof(infoLog), NULL, infoLog);
 		PH_EXIT_GAME("Shader linking error:\n" + std::string(infoLog));
 	}
+}
+
+void Shader::remove()
+{
+	glDeleteProgram(mID);
 }
 
 void Shader::bind() const

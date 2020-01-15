@@ -79,8 +79,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 16 * sizeof(float));
 
 	// set up framebuffer
-	defaultFramebufferShader.initFromSource(shader::defaultFramebufferSrc());
-	gaussianBlurFramebufferShader.initFromSource(shader::gaussianBlurFramebufferSrc());
+	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
+	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,

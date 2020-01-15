@@ -9,7 +9,7 @@ namespace ph {
 
 void PointRenderer::init()
 {
-	mPointsShader.initFromSource(shader::pointsSrc());
+	mPointsShader.init(shader::pointsSrc());
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 

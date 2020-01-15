@@ -11,7 +11,7 @@ namespace ph {
 
 void LineRenderer::init()
 {
-	mLineShader.initFromSource(shader::lineSrc());
+	mLineShader.init(shader::lineSrc());
 
 	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader.getID(), "SharedData") );
 	GLCheck( glUniformBlockBinding(mLineShader.getID(), uniformBlockIndex, 0) );

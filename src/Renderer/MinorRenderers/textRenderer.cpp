@@ -32,7 +32,7 @@ void TextRenderer::init()
 	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 
 	// load shader and font
-	mTextShader.initFromSource(shader::textSrc());
+	mTextShader.init(shader::textSrc());
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(mTextShader.getID(), "SharedData");
 	glUniformBlockBinding(mTextShader.getID(), uniformBlockIndex, 0);
 }

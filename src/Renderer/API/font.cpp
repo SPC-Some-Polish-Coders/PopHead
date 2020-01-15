@@ -2,6 +2,7 @@
 #include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "Renderer/API/shader.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <cstdio>
@@ -115,7 +116,7 @@ namespace ph {
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
-		shader.initFromFile("resources/shaders/fontBitmapDebug.vs.glsl", "resources/shaders/fontBitmapDebug.fs.glsl");
+		shader.init(shader::fontBitmapDebugSrc());
 	}
 
 	FontDebugRenderer::FontDebugRendererData::~FontDebugRendererData()

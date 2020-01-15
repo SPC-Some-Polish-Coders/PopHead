@@ -70,7 +70,7 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 
 void QuadRenderer::init()
 {
-	mDefaultInstanedSpriteShader.initFromSource(shader::instancedSpriteSrc());
+	mDefaultInstanedSpriteShader.init(shader::instancedSpriteSrc());
 
 	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader.getID(), "SharedData") );
 	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader.getID(), uniformBlockIndex, 0) );

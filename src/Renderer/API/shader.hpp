@@ -20,9 +20,7 @@ struct ShaderSource
 class Shader
 {
 public:
-	bool initFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
-	void initFromSource(ShaderSource&);
-	void initFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
+	void init(ShaderSource&);
 	void remove();
 
 	void bind() const;
