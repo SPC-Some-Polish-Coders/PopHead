@@ -13,7 +13,6 @@
 #include "API/openglErrors.hpp"
 #include "API/framebuffer.hpp"
 #include "Shaders/embeddedShaders.hpp"
-#include "DebugCounter/debugCounter.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
@@ -21,6 +20,7 @@
 #include <SFML/Graphics/Transform.hpp>
 #include <vector>
 #include <algorithm>
+#include <cstdio>
 
 namespace {
 	ph::FloatRect screenBounds;
@@ -43,6 +43,8 @@ namespace {
 	ph::SFMLRenderer sfmlRenderer;
 	ph::LightRenderer lightRenderer;
 	ph::TextRenderer textRenderer;
+
+	bool isDebugDisplayActive = false;
 }
 
 namespace ph {
@@ -75,9 +77,15 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	// set up uniform buffer object
 	glGenBuffers(1, &sharedDataUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO);
-	glBufferData(GL_UNIFORM_BUFFER, 16 * sizeof(float), nullptr, GL_STATIC_DRAW);
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 16 * sizeof(float));
+	glBufferData(GL_UNIFORM_BUFFER, 32 * sizeof(float), nullptr, GL_STATIC_DRAW);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 32 * sizeof(float));
 
+	// initialize gui view projection matrix
+	ph::Camera guiCamera({960, 540}, {1920, 1080});
+	const float* guiViewProjectionMatrix = guiCamera.getViewProjectionMatrix4x4().getMatrix();
+	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
+	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
+	
 	// set up framebuffer
 	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
 	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
@@ -142,10 +150,10 @@ void Renderer::beginScene(Camera& camera)
 	const sf::Vector2f size = camera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 
-	textRenderer.beginFrame();
+	textRenderer.beginDebugDisplay();
 }
 
-void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
+void Renderer::endScene(sf::RenderWindow& window)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -186,37 +194,49 @@ void Renderer::endScene(sf::RenderWindow& window, DebugCounter& debugCounter)
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 
-	// pass debug data to debug counter
-	debugCounter.setAllDrawCallsPerFrame(
-		sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
-		lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls()
-	);
-	debugCounter.setNumberOfInstancedDrawCalls(quadRenderer.getNumberOfDrawCalls());
-	debugCounter.setNumberOfRenderGroups(quadRenderer.getNumberOfRenderGroups());
-	debugCounter.setNumberOfDrawnInstancedSprites(quadRenderer.getNumberOfDrawnSprites());
-	debugCounter.setNumberOfTexturesDrawnByInstancedRendering(quadRenderer.getNumberOfDrawnTextures());
-	debugCounter.setNumberOfSFMLDrawCalls(sfmlRenderer.getNumberOfSubmitedObjects());
-	debugCounter.setNumberOfLineDrawCalls(lineRenderer.getNumberOfDrawCalls());
-	debugCounter.setNumberOfDrawnLines(lineRenderer.getNumberOfDrawnLines());
-	debugCounter.setNumberOfPointDrawCalls(pointRenderer.getNrOfDrawCalls());
-	debugCounter.setNumberOfDrawnPoints(pointRenderer.getNrOfDrawnPoints());
-	quadRenderer.setDebugNumbersToZero();
-	lineRenderer.setDebugNumbersToZero();
-	pointRenderer.setDebugNumbersToZero();
+	// display renderer debug info 
+	if(isDebugDisplayActive)
+	{
+		char debugText[50];
+		auto submitDebugCounter = [&debugText](const char* text, unsigned number) {
+			sprintf_s(debugText, "%s%u", text, number);
+			submitDebugText(debugText, "consola.ttf", 20.f, 0.f, 0.f, sf::Color::Black);
+		};
+
+		submitDebugCounter("All draw calls per frame: ",
+			sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
+			lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+
+		submitDebugCounter("Nr of instanced draw calls: ", quadRenderer.getNumberOfDrawCalls());
+		submitDebugCounter("Nr of render groups: ", quadRenderer.getNumberOfRenderGroups());
+		submitDebugCounter("Nr of drawn instanced sprites: ", quadRenderer.getNumberOfDrawnSprites());
+		submitDebugCounter("Nr of instanced textures: ", quadRenderer.getNumberOfDrawnTextures());
+		submitDebugCounter("Nr of SFML draw calls: ", sfmlRenderer.getNumberOfSubmitedObjects());
+		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
+		submitDebugCounter("Nr of drawn lines calls: ", lineRenderer.getNumberOfDrawnLines());
+		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
+		submitDebugCounter("Nr of drawn points calls: ", pointRenderer.getNrOfDrawnPoints());
+		
+		quadRenderer.setDebugNumbersToZero();
+		lineRenderer.setDebugNumbersToZero();
+		pointRenderer.setDebugNumbersToZero();
+	}
 
 	// draw gui using sfml
 	sfmlRenderer.flush(window);
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin)
+                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
+                          ProjectionType projectionType)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin);
+	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
 }
 
-void Renderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s, unsigned char z)
+void Renderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
+                                                    unsigned char z, ProjectionType projectionType)
 {
-	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z));
+	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
 void Renderer::submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
@@ -261,11 +281,22 @@ void Renderer::submitSFMLObject(const sf::Drawable& object)
 	sfmlRenderer.submit(&object);
 }
 
-void Renderer::onWindowResize(unsigned width, unsigned height)
+void Renderer::handleEvent(Event& phEvent)
 {
-	GLCheck( glViewport(0, 0, width, height) );
-	gameObjectsFramebuffer.onWindowResize(width, height);
-	lightingFramebuffer.onWindowResize(width, height);
+	if(auto* e = std::get_if<sf::Event>(&phEvent))
+	{
+		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F3) {
+			isDebugDisplayActive = !isDebugDisplayActive;
+			lineRenderer.setDebugCountingActive(isDebugDisplayActive);
+			pointRenderer.setDebugCountingActive(isDebugDisplayActive);
+			quadRenderer.setDebugCountingActive(isDebugDisplayActive);
+		}
+		if(e->type == sf::Event::Resized) {
+			GLCheck( glViewport(0, 0, e->size.width, e->size.height) );
+			gameObjectsFramebuffer.onWindowResize(e->size.width, e->size.height);
+			lightingFramebuffer.onWindowResize(e->size.width, e->size.height);
+		}
+	}
 }
 
 void Renderer::setAmbientLightColor(sf::Color color)

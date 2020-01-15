@@ -20,7 +20,7 @@ Game::Game()
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 	,mTerminal(std::make_unique<Terminal>())
-	,mDebugCounter(std::make_unique<DebugCounter>())
+	,mDebugCounter(std::make_unique<FPSCounter>())
 	,mGui(std::make_unique<GUI>())
 {
 	mGameData.reset(new GameData(
@@ -41,7 +41,6 @@ Game::Game()
 
 	loadFonts(gameData);
 	mTerminal->init(gameData);
-	mDebugCounter->init(*mFonts);
 	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
@@ -90,30 +89,23 @@ void Game::handleEvents()
 		if(!mTerminal->getSharedData()->mIsVisible)
 			mSceneManager->handleEvent(phEvent);
 
-		if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
-			if(sfEvent->type == sf::Event::Resized)
-				Renderer::onWindowResize(sfEvent->size.width, sfEvent->size.height);
+		Renderer::handleEvent(phEvent);
 	}
 }
 
 void Game::update(sf::Time dt)
 {
-	mDebugCounter->update();
+	mDebugCounter->sampleFrame();
 
 	if(mWindow.hasFocus())
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
 		mGui->update(dt);
-		mDebugCounter->draw();
 		mTerminal->update();
+		mDebugCounter->update();
 
-		Renderer::submitText("abcde123 XYZ", "joystixMonospace.ttf", {200.f, 300.f}, 50.f, sf::Color::Red);
-
-		Renderer::submitDebugText("ABCDEF", "joystixMonospace.ttf", 40.f, 0.f, 0.f, sf::Color::Green);
-		Renderer::submitDebugText("123", "joystixMonospace.ttf", 20.f, 0.f, 0.f, sf::Color::Blue);
-
-		Renderer::endScene(mWindow, *mDebugCounter);
+		Renderer::endScene(mWindow);
 		mWindow.display();
 	}
 }

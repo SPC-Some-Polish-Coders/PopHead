@@ -10,6 +10,7 @@ out vec2 texCoords;
 layout (std140) uniform SharedData
 {
     mat4 viewProjectionMatrix;
+	mat4 guiViewProjectionMatrix;
 };
 
 void main()

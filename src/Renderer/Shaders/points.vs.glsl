@@ -10,6 +10,7 @@ layout (location = 3) in float aZ;
 layout (std140) uniform SharedData
 {
     mat4 viewProjectionMatrix;
+	mat4 guiViewProjectionMatrix;
 };
 
 out vec4 color;

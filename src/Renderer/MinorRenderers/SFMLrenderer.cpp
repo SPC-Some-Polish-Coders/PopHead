@@ -16,9 +16,8 @@ unsigned SFMLRenderer::getNumberOfSubmitedObjects() const
 
 void SFMLRenderer::flush(sf::RenderWindow& window)
 {
-	if(mSubmitedObjects.empty()) {
+	if(mSubmitedObjects.empty())
 		return;
-	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

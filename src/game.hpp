@@ -37,7 +37,7 @@ private:
 	std::unique_ptr<AIManager>     mAIManager;
 	std::unique_ptr<SceneManager>  mSceneManager;
 	std::unique_ptr<Terminal>      mTerminal;
-	std::unique_ptr<DebugCounter>  mDebugCounter;
+	std::unique_ptr<FPSCounter>  mDebugCounter;
 	std::unique_ptr<GUI>           mGui;
 };
 

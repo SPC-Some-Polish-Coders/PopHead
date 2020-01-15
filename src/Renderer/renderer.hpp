@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MinorRenderers/quadData.hpp"
+#include "Events/event.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -13,7 +14,6 @@ namespace sf {
 
 namespace ph {
 
-class DebugCounter;
 class Camera;
 class Texture;
 class Shader;
@@ -25,12 +25,13 @@ namespace Renderer
 	void shutDown();
 	
 	void beginScene(Camera&);
-	void endScene(sf::RenderWindow& window, DebugCounter&);
+	void endScene(sf::RenderWindow& window);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
-	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin);
+	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld);
 
-	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, unsigned char z);
+	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*,
+	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
@@ -51,7 +52,7 @@ namespace Renderer
 
 	void setAmbientLightColor(sf::Color);
 
-	void onWindowResize(unsigned width, unsigned height);
-};
+	void handleEvent(Event&);
+}
 
 }

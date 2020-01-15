@@ -15,18 +15,6 @@ ShaderSource defaultFramebufferSrc()
 	return ShaderSource{sDefaultFramebufferVS, sDefaultFramebufferFS};
 }
 
-// font bitmap debug
-static const char* sFontBitmapDebugVS = 
-	#include "fontBitmapDebug.vs.glsl"
-;
-static const char* sFontBitmapDebugFS = 
-	#include "fontBitmapDebug.fs.glsl"
-;
-ShaderSource fontBitmapDebugSrc()
-{
-	return ShaderSource{sFontBitmapDebugVS, sFontBitmapDebugFS};
-}
-
 
 // gaussian blur
 static const char* sGaussianBlurFS =
@@ -35,19 +23,6 @@ static const char* sGaussianBlurFS =
 ShaderSource gaussianBlurFramebufferSrc()
 {
 	return ShaderSource{sDefaultFramebufferVS, sGaussianBlurFS};
-}
-
-
-// instanced sprite
-static const char* sInstancedSpriteVS = 
-	#include "instancedSprite.vs.glsl"
-;
-static const char* sInstancedSpriteFS =
-	#include "instancedSprite.fs.glsl"
-;
-ShaderSource instancedSpriteSrc()
-{
-	return ShaderSource{sInstancedSpriteVS, sInstancedSpriteFS};
 }
 
 
@@ -61,6 +36,19 @@ static const char* sLightFS =
 ShaderSource lightSrc()
 {
 	return ShaderSource{sLightVS, sLightFS};
+}
+
+
+// quad 
+static const char* sInstancedSpriteVS = 
+	#include "quad.vs.glsl"
+;
+static const char* sInstancedSpriteFS =
+	#include "quad.fs.glsl"
+;
+ShaderSource quadSrc()
+{
+	return ShaderSource{sInstancedSpriteVS, sInstancedSpriteFS};
 }
 
 
@@ -113,6 +101,33 @@ ShaderSource debugTextSrc()
 {
 	return ShaderSource{sDebugTextVS, sDebugTextFS};
 }
+
+
+// debug text background
+static const char* sDebugTextBackgroundVS =
+	#include "debugTextBackground.vs.glsl"
+;
+static const char* sDebugTextBackgroundFS =
+	#include "debugTextBackground.fs.glsl"
+;
+ShaderSource debugTextBackgroundSrc()
+{
+	return ShaderSource{sDebugTextBackgroundVS, sDebugTextBackgroundFS};
+}
+
+
+// font bitmap debug
+static const char* sFontBitmapDebugVS = 
+	#include "fontBitmapDebug.vs.glsl"
+;
+static const char* sFontBitmapDebugFS = 
+	#include "fontBitmapDebug.fs.glsl"
+;
+ShaderSource fontBitmapDebugSrc()
+{
+	return ShaderSource{sFontBitmapDebugVS, sFontBitmapDebugFS};
+}
+
 
 };
 

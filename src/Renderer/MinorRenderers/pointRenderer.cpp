@@ -58,7 +58,9 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 	point.size = size * (360.f / mScreenBounds->height);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
-	++mNrOfDrawnPoints;
+
+	if(mIsDebugCountingActive)
+		++mNrOfDrawnPoints;
 }
 
 void PointRenderer::flush()
@@ -75,7 +77,9 @@ void PointRenderer::flush()
 	glDrawArrays(GL_POINTS, 0, mSubmitedPointsVertexData.size());
 
 	mSubmitedPointsVertexData.clear();
-	++mNrOfDrawCalls;
+
+	if(mIsDebugCountingActive)
+		++mNrOfDrawCalls;
 }
 
 bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)

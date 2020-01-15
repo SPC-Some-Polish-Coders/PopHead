@@ -13,6 +13,7 @@ out DATA
 layout (std140) uniform SharedData
 {
 	mat4 viewProjectionMatrix;
+	mat4 guiViewProjectionMatrix;
 };
 uniform vec2 lightPos;
 

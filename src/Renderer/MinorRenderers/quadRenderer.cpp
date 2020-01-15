@@ -42,10 +42,10 @@ void RenderGroupsHashMap::sort()
 	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
 	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
 
-	std::sort(mRenderGroups.begin(), mRenderGroups.end(),
-		[](const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
-			return a.first.z > b.first.z;
-		});
+	std::sort(mRenderGroups.begin(), mRenderGroups.end(), []
+	(const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
+		return a.first.z > b.first.z;
+	});
 }
 
 void RenderGroupsHashMap::eraseUselessGroups()
@@ -70,10 +70,10 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 
 void QuadRenderer::init()
 {
-	mDefaultInstanedSpriteShader.init(shader::instancedSpriteSrc());
+	mDefaultQuadShader.init(shader::quadSrc());
 
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader.getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader.getID(), uniformBlockIndex, 0) );
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultQuadShader.getID(), "SharedData") );
+	GLCheck( glUniformBlockBinding(mDefaultQuadShader.getID(), uniformBlockIndex, 0) );
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
 	mQuadIBO.init();
@@ -111,7 +111,7 @@ void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
 	mQuadIBO.remove();
-	mDefaultInstanedSpriteShader.remove();
+	mDefaultQuadShader.remove();
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
@@ -125,14 +125,14 @@ void QuadRenderer::setDebugNumbersToZero()
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
-                                                        const Shader* shader, float z)
+                                                        const Shader* shader, float z, ProjectionType projectionType)
 {
 	// NOTE: this function doesn't do any culling
 
 	if(!shader)
-		shader = &mDefaultInstanedSpriteShader;
+		shader = &mDefaultQuadShader;
 
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z, projectionType});
 	
 	if(!texture)
 		texture = mWhiteTexture;
@@ -152,7 +152,8 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                              sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin)
+                              sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
+                              ProjectionType projectionType)
 {
 	// culling
 	if(!isInsideScreen(position, size, rotation))
@@ -160,10 +161,10 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 
 	// if shader is not specified use default shader 
 	if(!shader)
-		shader = &mDefaultInstanedSpriteShader;
+		shader = &mDefaultQuadShader;
 
 	// find or add draw call group
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z});
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
 
 	// submit data
 	QuadData quadData;
@@ -224,8 +225,10 @@ void QuadRenderer::flush()
 	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
-		mNumberOfDrawnSprites += rg.quadsData.size();
-		mNumberOfDrawnTextures += rg.textures.size();
+		if(mIsDebugCountingActive) {
+			mNumberOfDrawnSprites += rg.quadsData.size();
+			mNumberOfDrawnTextures += rg.textures.size();
+		}
 
 		// set up shader
 		if(key.shader != mCurrentlyBoundQuadShader) 
@@ -239,6 +242,7 @@ void QuadRenderer::flush()
 			key.shader->setUniformIntArray("textures", 32, textures);
 		}
 		key.shader->setUniformFloat("z", key.z);
+		key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
 
 		// sort quads by texture slot ref
 		std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) {
@@ -291,7 +295,8 @@ void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quads
 	GLCheck( glBindVertexArray(mVAO) );
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
 
-	++mNumberOfDrawCalls;
+	if(mIsDebugCountingActive)
+		++mNumberOfDrawCalls;
 }
 
 }

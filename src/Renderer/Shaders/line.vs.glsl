@@ -9,7 +9,8 @@ out vec4 color;
 
 layout (std140) uniform SharedData
 {   
-    uniform mat4 viewProjectionMatrix;
+    mat4 viewProjectionMatrix;
+	mat4 guiViewProjectionMatrix;
 };
 
 void main()

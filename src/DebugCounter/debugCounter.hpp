@@ -10,62 +10,21 @@
 
 namespace ph {
 
-class DebugCounter
+class FPSCounter
 {
 public:
-	DebugCounter();
-	void init(OldFontHolder& fonts);
+	FPSCounter();
 
 	void handleEvent(const ph::Event&);
+	void sampleFrame();
 	void update();
-	void draw() const;
-
-	void setAllDrawCallsPerFrame(unsigned alldrawCallsPerFrame);
-	void setNumberOfSFMLDrawCalls(unsigned nrOfDrawnSprites);
-	void setNumberOfInstancedDrawCalls(unsigned nrOfInstancedDrawCalls);
-	void setNumberOfRenderGroups(unsigned nrOfRenderGroups);
-	void setNumberOfDrawnInstancedSprites(unsigned nrOfDrawnInstancedSprites);
-	void setNumberOfTexturesDrawnByInstancedRendering(unsigned nrOfTexturesDrawnByInstancedRendering);
-	void setNumberOfLineDrawCalls(unsigned nrOfTexturesDrawnByInstancedRendering);
-	void setNumberOfDrawnLines(unsigned nrOfTexturesDrawnByInstancedRendering);
-	void setNumberOfDrawnPoints(unsigned nrOfDrawnPoints);
-	void setNumberOfPointDrawCalls(unsigned nrOfDrawCalls);
 
 private:
-	void initFPSCounter();
-	void initRendererDebug();
-
-private:
-	struct FPSCounter
-	{
-		sf::Text fpsText;
-		sf::RectangleShape fpsBackground;
-	};	
-	std::unique_ptr<FPSCounter> mFPSCounter;
-
-	struct RendererDebug
-	{
-		sf::Text allDrawCallsText;
-		sf::Text sfmlDrawCallsText;
-		sf::Text instancedDrawCallsText;
-		sf::Text renderGroupsInQuadRendererText;
-		sf::Text drawnInstancedSpritesText;
-		sf::Text texturesDrawnByInstancingText;
-		sf::Text lineDrawCallsText;
-		sf::Text drawnLinesText;
-		sf::Text pointDrawCallsText;
-		sf::Text drawnPointsText;
-		sf::RectangleShape rendererDebugBackground;
-	};
-	std::unique_ptr<RendererDebug> mRendererDebug;	
-
-	sf::Font* mFont;
-
 	sf::Clock mClock;
 	unsigned mFPS;
 	unsigned mFramesFromLastSecond;
-	bool mIsFPSCounterActive;
-	bool mIsRendererDebugActive;
+	bool mIsActive;
 };
 
 }
+

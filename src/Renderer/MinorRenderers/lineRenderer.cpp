@@ -61,7 +61,9 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->height)) );
 
 	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
-	++mNumberOfDrawCalls;
+
+	if(mIsDebugCountingActive)
+		++mNumberOfDrawCalls;
 }
 
 }

@@ -23,9 +23,10 @@ public:
 
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
+	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
+	void setDebugNumbersToZero();
 	unsigned getNrOfDrawnPoints() const { return mNrOfDrawnPoints; }
 	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
-	void setDebugNumbersToZero();
 
 	void submitPoint(sf::Vector2f position, const sf::Color&, float z, float size);
 
@@ -42,6 +43,7 @@ private:
 	unsigned mVBO;
 	unsigned mNrOfDrawnPoints;
 	unsigned mNrOfDrawCalls;
+	bool mIsDebugCountingActive = false;
 };
 
 }

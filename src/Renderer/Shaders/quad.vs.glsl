@@ -1,5 +1,4 @@
 R"(
-
 #version 330 core 
 
 layout (location = 0) in vec4 aColor;
@@ -20,10 +19,12 @@ out DATA
 
 layout (std140) uniform SharedData
 {
-    mat4 viewProjectionMatrix;
+    mat4 gameWorldVPM;
+	mat4 guiVPM;
 };
 
 uniform float z;
+uniform bool isGameWorldProjection;
 uniform sampler2D textures[32];
 
 mat2 getRotationMatrix(float angle);
@@ -37,32 +38,37 @@ void main()
     
     switch(gl_VertexID)
     {
-        case 0:
+        case 0: {
             modelVertexPos = vec2(0, 0);
             vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y + aTextureRect.w);
-            break;
-        case 1:
+        } break;
+        
+		case 1: {
             modelVertexPos = vec2(aSize.x, 0);
             vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y + aTextureRect.w);
-            break;
-        case 2:
+        } break;
+
+        case 2: {
             modelVertexPos = vec2(aSize.x, aSize.y);
             vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
-            break;
-        case 3:
+        } break;
+
+        case 3: {
             modelVertexPos = vec2(0, aSize.y);
             vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
-            break;
+        } break;
     }
 
 	vs_out.texSize = vec2(textureSize(textures[int(aTextureSlotRef)], 0));
 	vs_out.texCoords *= vs_out.texSize;
+	
+	mat4 VPM = isGameWorldProjection ? gameWorldVPM : guiVPM;
     
     if(aRotation == 0)
-        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, z, 1);
+        gl_Position = VPM * vec4(modelVertexPos + aPosition, z, 1);
 	else {
 		vec2 rotatedVertexPos = (modelVertexPos - aRotationOrigin) * getRotationMatrix(aRotation) + aPosition + aRotationOrigin;
-		gl_Position = viewProjectionMatrix * vec4(rotatedVertexPos, z, 1);
+		gl_Position = VPM * vec4(rotatedVertexPos, z, 1);
 	}
 }
 

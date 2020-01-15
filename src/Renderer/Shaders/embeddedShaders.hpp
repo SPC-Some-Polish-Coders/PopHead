@@ -5,14 +5,15 @@
 namespace ph::shader {
 
 ShaderSource defaultFramebufferSrc();
-ShaderSource fontBitmapDebugSrc();
 ShaderSource gaussianBlurFramebufferSrc();
-ShaderSource instancedSpriteSrc();
 ShaderSource lightSrc();
+ShaderSource quadSrc();
 ShaderSource lineSrc();
 ShaderSource pointsSrc();
 ShaderSource textSrc();
 ShaderSource debugTextSrc();
+ShaderSource debugTextBackgroundSrc();
+ShaderSource fontBitmapDebugSrc();
 
 }
 

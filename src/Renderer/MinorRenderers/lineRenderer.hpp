@@ -18,6 +18,7 @@ public:
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnLines() const { return mNumberOfDrawCalls; }
 
+	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 	void setDebugNumbersToZero();
 
 	void drawLine(const sf::Color& colorA, const sf::Color& colorB,
@@ -28,6 +29,7 @@ private:
 	unsigned mLineVAO;
 	unsigned mLineVBO;
 	unsigned mNumberOfDrawCalls;
+	bool mIsDebugCountingActive = false;
 };
 
 }
