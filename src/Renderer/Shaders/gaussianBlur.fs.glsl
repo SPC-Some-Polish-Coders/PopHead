@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core
 
 in vec2 texCoords;
@@ -39,3 +41,6 @@ void main()
     
     fragColor = vec4(col, 1.0);
 }  
+
+)"
+

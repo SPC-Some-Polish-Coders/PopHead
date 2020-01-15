@@ -1,6 +1,7 @@
 #include "quadRenderer.hpp"
 #include "Renderer/API/texture.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/math.hpp"
@@ -69,7 +70,7 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 
 void QuadRenderer::init()
 {
-	mDefaultInstanedSpriteShader.initFromFile("resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
+	mDefaultInstanedSpriteShader.initFromSource(shader::instancedSpriteSrc());
 
 	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader.getID(), "SharedData") );
 	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader.getID(), uniformBlockIndex, 0) );

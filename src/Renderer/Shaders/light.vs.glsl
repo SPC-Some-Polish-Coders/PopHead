@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core
 
 layout (location = 0) in vec2 aPos;
@@ -21,3 +23,6 @@ void main()
 	vs_out.lightPos = vec2(viewProjectionMatrix * vec4(lightPos, 0, 1));
 	gl_Position = vertexPos;
 }
+
+)"
+

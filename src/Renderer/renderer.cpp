@@ -12,6 +12,7 @@
 #include "API/font.hpp"
 #include "API/openglErrors.hpp"
 #include "API/framebuffer.hpp"
+#include "Shaders/embeddedShaders.hpp"
 #include "DebugCounter/debugCounter.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/vector4.hpp"
@@ -78,8 +79,8 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 16 * sizeof(float));
 
 	// set up framebuffer
-	defaultFramebufferShader.initFromFile("resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/defaultFramebuffer.fs.glsl");
-	gaussianBlurFramebufferShader.initFromFile("resources/shaders/defaultFramebuffer.vs.glsl", "resources/shaders/gaussianBlur.fs.glsl");
+	defaultFramebufferShader.initFromSource(shader::defaultFramebufferSrc());
+	gaussianBlurFramebufferShader.initFromSource(shader::gaussianBlurFramebufferSrc());
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,

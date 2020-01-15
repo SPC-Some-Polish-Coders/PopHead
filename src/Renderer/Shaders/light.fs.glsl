@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core
 
 in DATA
@@ -20,3 +22,6 @@ void main()
 	float lightIntensity = 1.0 / (cameraZoom * (a + b * dist + c * c * dist)); 
 	fragColor = color * lightIntensity;
 }
+
+)"
+

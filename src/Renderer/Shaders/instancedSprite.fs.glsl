@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core 
 
 in DATA
@@ -22,3 +24,6 @@ void main()
 }
 
 // TODO: Make alpha be set in the smart way
+
+)"
+

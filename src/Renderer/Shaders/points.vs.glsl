@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core 
 
 layout (location = 0) in vec4 aColor;
@@ -18,3 +20,6 @@ void main()
     gl_Position = viewProjectionMatrix * vec4(aPos, aZ, 1.0);
     gl_PointSize = aSize;
 }
+
+)"
+

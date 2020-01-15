@@ -1,3 +1,4 @@
+R"(
 #version 330 core 
 
 in vec4 color;
@@ -8,3 +9,6 @@ void main()
 {
     fragColor = color;
 }
+
+)"
+

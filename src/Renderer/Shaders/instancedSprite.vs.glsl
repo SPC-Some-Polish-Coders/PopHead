@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core 
 
 layout (location = 0) in vec4 aColor;
@@ -21,9 +23,10 @@ layout (std140) uniform SharedData
     mat4 viewProjectionMatrix;
 };
 
-uniform mat4 modelMatrix;
 uniform float z;
 uniform sampler2D textures[32];
+
+mat2 getRotationMatrix(float angle);
 
 void main()
 {
@@ -55,6 +58,20 @@ void main()
 	vs_out.texSize = vec2(textureSize(textures[int(aTextureSlotRef)], 0));
 	vs_out.texCoords *= vs_out.texSize;
     
-	gl_Position = viewProjectionMatrix * modelMatrix * vec4(modelVertexPos, z, 1);
+    if(aRotation == 0)
+        gl_Position = viewProjectionMatrix * vec4(modelVertexPos + aPosition, z, 1);
+	else {
+		vec2 rotatedVertexPos = (modelVertexPos - aRotationOrigin) * getRotationMatrix(aRotation) + aPosition + aRotationOrigin;
+		gl_Position = viewProjectionMatrix * vec4(rotatedVertexPos, z, 1);
+	}
 }
 
+mat2 getRotationMatrix(float angle)
+{
+    return mat2(
+        cos(angle), -sin(angle),
+        sin(angle),  cos(angle)
+    );
+}
+
+)"

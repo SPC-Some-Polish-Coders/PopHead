@@ -1,6 +1,7 @@
 #include "textRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <stb_truetype.h>
@@ -31,7 +32,7 @@ void TextRenderer::init()
 	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 
 	// load shader and font
-	mTextShader.initFromFile("resources/shaders/text.vs.glsl", "resources/shaders/text.fs.glsl");
+	mTextShader.initFromSource(shader::textSrc());
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(mTextShader.getID(), "SharedData");
 	glUniformBlockBinding(mTextShader.getID(), uniformBlockIndex, 0);
 }

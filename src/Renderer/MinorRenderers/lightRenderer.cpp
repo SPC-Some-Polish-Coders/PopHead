@@ -3,6 +3,7 @@
 #include "Renderer/API/shader.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/profiling.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Logs/logs.hpp"
 #include <optional>
 #include <cmath>
@@ -13,7 +14,7 @@ namespace ph {
 
 void LightRenderer::init()
 {
-	mLightShader.initFromFile("resources/shaders/light.vs.glsl", "resources/shaders/light.fs.glsl");
+	mLightShader.initFromSource(shader::lightSrc());
 
 	unsigned uniformBlockIndex = glGetUniformBlockIndex(mLightShader.getID(), "SharedData");
 	glUniformBlockBinding(mLightShader.getID(), uniformBlockIndex, 0);

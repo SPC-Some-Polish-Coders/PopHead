@@ -1,3 +1,4 @@
+R"(
 #version 330 core 
 
 in vec2 texCoords;
@@ -11,3 +12,6 @@ void main()
 {
     fragColor = texture(gameObjectsTexture, texCoords) * texture(lightingTexture, texCoords);
 }
+
+)"
+

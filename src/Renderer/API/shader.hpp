@@ -11,10 +11,17 @@
 
 namespace ph {
 
+struct ShaderSource
+{
+	const char* vertexShader;
+	const char* fragmentShader;
+};
+
 class Shader
 {
 public:
 	bool initFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
+	void initFromSource(ShaderSource&);
 	void initFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
 	void remove();
 

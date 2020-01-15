@@ -1,3 +1,5 @@
+R"(
+
 #version 330 core
 
 out vec4 fragColor;
@@ -14,4 +16,6 @@ void main()
 		discard;
 	fragColor = vec4(color.rgb, alpha * color.a);
 }
+
+)"
 

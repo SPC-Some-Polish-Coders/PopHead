@@ -2,13 +2,14 @@
 #include "Utilities/cast.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include <GL/glew.h>
 
 namespace ph {
 
 void PointRenderer::init()
 {
-	mPointsShader.initFromFile("resources/shaders/points.vs.glsl", "resources/shaders/points.fs.glsl");
+	mPointsShader.initFromSource(shader::pointsSrc());
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 

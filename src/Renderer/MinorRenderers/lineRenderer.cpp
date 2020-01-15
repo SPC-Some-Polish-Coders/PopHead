@@ -1,6 +1,7 @@
 #include "lineRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
@@ -10,7 +11,7 @@ namespace ph {
 
 void LineRenderer::init()
 {
-	mLineShader.initFromFile("resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
+	mLineShader.initFromSource(shader::lineSrc());
 
 	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader.getID(), "SharedData") );
 	GLCheck( glUniformBlockBinding(mLineShader.getID(), uniformBlockIndex, 0) );

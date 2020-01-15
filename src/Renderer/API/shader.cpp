@@ -45,6 +45,11 @@ auto Shader::getShaderCodeFromFile(const char* filename) -> const std::optional<
 	return code;
 }
 
+void Shader::initFromSource(ShaderSource& ss)
+{
+	initFromString(ss.vertexShader, ss.fragmentShader);
+}
+
 void Shader::initFromString(const char* vertexShaderSource, const char* fragmentShaderSource)
 {
 	mID = glCreateProgram();
