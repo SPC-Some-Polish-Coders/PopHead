@@ -73,6 +73,13 @@ void Shader::unbind() const
 	GLCheck( glUseProgram(0) );
 }
 
+void Shader::initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding)
+{
+	bind();
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mID, uniformBlockName) );
+	GLCheck( glUniformBlockBinding(mID, uniformBlockIndex, uniformBlockBinding) );
+}
+
 void Shader::setUniformBool(const char* name, const bool value) const
 {
 	GLCheck( glUniform1i(getUniformLocation(name), static_cast<int>(value)) );

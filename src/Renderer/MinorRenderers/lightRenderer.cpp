@@ -15,9 +15,7 @@ namespace ph {
 void LightRenderer::init()
 {
 	mLightShader.init(shader::lightSrc());
-
-	unsigned uniformBlockIndex = glGetUniformBlockIndex(mLightShader.getID(), "SharedData");
-	glUniformBlockBinding(mLightShader.getID(), uniformBlockIndex, 0);
+	mLightShader.initUniformBlock("SharedData", 0);
 	
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
@@ -26,7 +24,7 @@ void LightRenderer::init()
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
 	mLightPolygonVertexData.reserve(361);
 }

@@ -10,11 +10,8 @@ namespace ph {
 void PointRenderer::init()
 {
 	mPointsShader.init(shader::pointsSrc());
-
+	mPointsShader.initUniformBlock("SharedData", 0);
 	glEnable(GL_PROGRAM_POINT_SIZE);
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mPointsShader.getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mPointsShader.getID(), uniformBlockIndex, 0) );
 
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);

@@ -12,9 +12,7 @@ namespace ph {
 void LineRenderer::init()
 {
 	mLineShader.init(shader::lineSrc());
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader.getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mLineShader.getID(), uniformBlockIndex, 0) );
+	mLineShader.initUniformBlock("SharedData", 0);
 
 	GLCheck( glEnable(GL_LINE_SMOOTH) );
 	GLCheck( glHint(GL_LINE_SMOOTH_HINT, GL_NICEST) );

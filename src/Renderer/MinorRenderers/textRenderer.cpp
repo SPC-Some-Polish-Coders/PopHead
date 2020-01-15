@@ -51,18 +51,13 @@ void TextRenderer::init()
 
 	// load shaders
 	mTextShader.init(shader::textSrc());
-	unsigned textUniformBlockIndex = glGetUniformBlockIndex(mTextShader.getID(), "SharedData");
-	glUniformBlockBinding(mTextShader.getID(), textUniformBlockIndex, 0);
+	mTextShader.initUniformBlock("SharedData", 0);
 
 	mDebugTextShader.init(shader::debugTextSrc());
-	mDebugTextShader.bind();
-	unsigned debugTextUniformBlockIndex = glGetUniformBlockIndex(mDebugTextShader.getID(), "SharedData");
-	glUniformBlockBinding(mDebugTextShader.getID(), debugTextUniformBlockIndex, 0);
+	mDebugTextShader.initUniformBlock("SharedData", 0);
 	
 	mDebugTextBackgroundShader.init(shader::debugTextBackgroundSrc());
-	mDebugTextBackgroundShader.bind();
-	unsigned debugTextBackgroundShaderBlockIndex = glGetUniformBlockIndex(mDebugTextBackgroundShader.getID(), "SharedData");
-	glUniformBlockBinding(mDebugTextBackgroundShader.getID(), debugTextBackgroundShaderBlockIndex, 0);
+	mDebugTextBackgroundShader.initUniformBlock("SharedData", 0);
 }
 
 void TextRenderer::shutDown()

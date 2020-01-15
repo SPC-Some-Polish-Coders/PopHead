@@ -26,6 +26,8 @@ public:
 	void bind() const;
 	void unbind() const;
 
+	void initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding);
+
 	void setUniformBool(const char* name, const bool value) const;
 	void setUniformInt(const char* name, const int value) const;
 	void setUniformUnsignedInt(const char* name, const unsigned value) const;
@@ -44,7 +46,6 @@ public:
 	unsigned getID() const { return mID; }
 
 private:
-	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;
 	int compileShaderAndGetId(const char* sourceCode, const unsigned shaderType);
 	void checkCompilationErrors(const unsigned shaderId, const unsigned shaderType);
 	void linkProgram(const int vertexShaderId, const int fragmentShaderId);

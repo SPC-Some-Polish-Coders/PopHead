@@ -71,9 +71,7 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 void QuadRenderer::init()
 {
 	mDefaultQuadShader.init(shader::quadSrc());
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultQuadShader.getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mDefaultQuadShader.getID(), uniformBlockIndex, 0) );
+	mDefaultQuadShader.initUniformBlock("SharedData", 0);
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
 	mQuadIBO.init();
