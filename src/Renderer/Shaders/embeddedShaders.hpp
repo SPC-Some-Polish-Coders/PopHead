@@ -11,7 +11,6 @@ ShaderSource quadSrc();
 ShaderSource lineSrc();
 ShaderSource pointsSrc();
 ShaderSource textSrc();
-ShaderSource debugTextSrc();
 ShaderSource debugTextBackgroundSrc();
 ShaderSource fontBitmapDebugSrc();
 

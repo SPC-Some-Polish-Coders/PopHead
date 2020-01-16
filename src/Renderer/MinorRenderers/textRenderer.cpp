@@ -52,9 +52,6 @@ void TextRenderer::init()
 	// load shaders
 	mTextShader.init(shader::textSrc());
 	mTextShader.initUniformBlock("SharedData", 0);
-
-	mDebugTextShader.init(shader::debugTextSrc());
-	mDebugTextShader.initUniformBlock("SharedData", 0);
 	
 	mDebugTextBackgroundShader.init(shader::debugTextBackgroundSrc());
 	mDebugTextBackgroundShader.initUniformBlock("SharedData", 0);
@@ -94,25 +91,28 @@ void TextRenderer::beginDebugDisplay()
 	//mWasDebugTextDrawnInLastFrame = false;
 }
 
-void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
+void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
+                            ProjectionType projectionType)
 {
-	drawTextInternal(mTextShader, text, fontFilename, position, size, color);
+	drawTextInternal(text, fontFilename, position, size, color, projectionType);
 }
 
 void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color color)
 {
 	mWasDebugTextDrawnInLastFrame = true;
 	mDebugTextPosition.y += upMargin + size;
-	drawTextInternal(mDebugTextShader, text, fontFilename, mDebugTextPosition, size, color);
+	drawTextInternal(text, fontFilename, mDebugTextPosition, size, color, ProjectionType::gui);
 	mDebugTextPosition.y += downMargin;
 }
 
-void TextRenderer::drawTextInternal(Shader& shader, const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color)
+void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size,
+                                    sf::Color color, ProjectionType projectionType)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
 
-	shader.bind();
-	shader.setUniformVector4Color("color", color);
+	mTextShader.bind();
+	mTextShader.setUniformVector4Color("color", color);
+	mTextShader.setUniformBool("isGameWorldProjection", projectionType == ProjectionType::gameWorld);
 	GLCheck( glBindVertexArray(mTextVAO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
 	GLCheck( glActiveTexture(GL_TEXTURE0) );

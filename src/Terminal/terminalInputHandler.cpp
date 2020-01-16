@@ -5,8 +5,7 @@
 namespace ph {
 
 TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
-	:mTerminalSharedData(terminalSharedData)
-	,mContent(mTerminalSharedData->mContent)
+	:mSharedData(terminalSharedData)
 	,mIsEnterClicked(false)
 	,mIndexOfCurrentLastCommand(-1)
 	,mGameData(nullptr)
@@ -15,11 +14,11 @@ TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData
 
 void TerminalInputHandler::handleEvent(const sf::Event& e)
 {
-	if(mTerminalSharedData->mIsVisible && e.type == sf::Event::TextEntered)
+	if(mSharedData->isVisible && e.type == sf::Event::TextEntered)
 	{
 		char key = static_cast<char>(e.text.unicode);
 		if (!iscntrl(key))
-			mContent += key;
+			mSharedData->content += key;
 	}
 
 	if (e.type == sf::Event::KeyPressed)
@@ -32,8 +31,8 @@ void TerminalInputHandler::handleEvent(const sf::Event& e)
 			break;
 
 		case sf::Keyboard::BackSpace:
-			if (mContent.size() > 0)
-				mContent.pop_back();
+			if (mSharedData->content.size() > 0)
+				mSharedData->content.pop_back();
 			break;
 
 		case sf::Keyboard::Enter:
@@ -42,11 +41,11 @@ void TerminalInputHandler::handleEvent(const sf::Event& e)
 			break;
 
 		case sf::Keyboard::Up:
-			if (mIndexOfCurrentLastCommand + 1 < static_cast<int>(mTerminalSharedData->mLastCommands.size()))
+			if (mIndexOfCurrentLastCommand + 1 < static_cast<int>(mSharedData->lastCommands.size()))
 			{
 				++mIndexOfCurrentLastCommand;
 				if (mIndexOfCurrentLastCommand >= 0)
-					mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
+					mSharedData->content = mSharedData->lastCommands[mIndexOfCurrentLastCommand];
 			}
 			break;
 		case sf::Keyboard::Down:
@@ -54,9 +53,9 @@ void TerminalInputHandler::handleEvent(const sf::Event& e)
 			{
 				--mIndexOfCurrentLastCommand;
 				if (mIndexOfCurrentLastCommand == -1)
-					mContent.clear();
+					mSharedData->content.clear();
 				else
-					mContent = mTerminalSharedData->mLastCommands[mIndexOfCurrentLastCommand];
+					mSharedData->content = mSharedData->lastCommands[mIndexOfCurrentLastCommand];
 			}
 		}
 	}
@@ -64,16 +63,14 @@ void TerminalInputHandler::handleEvent(const sf::Event& e)
 
 void TerminalInputHandler::update()
 {
-	mTerminalSharedData->mInputLine.setString(mContent);
-
 	mIsEnterClicked = false;
 }
 
 void TerminalInputHandler::updateLastCommands()
 {
 	mIndexOfCurrentLastCommand = -1;
-	auto& content = mTerminalSharedData->mContent;
-	auto& lastCommands = mTerminalSharedData->mLastCommands;
+	auto& content = mSharedData->content;
+	auto& lastCommands = mSharedData->lastCommands;
 	if(content.size() != 0) {
 		lastCommands.emplace_front(content);
 		if(lastCommands.size() > 10)
@@ -83,7 +80,7 @@ void TerminalInputHandler::updateLastCommands()
 
 void TerminalInputHandler::showOrHideCommandPrompt()
 {
-	bool& isVisible = mTerminalSharedData->mIsVisible;
+	bool& isVisible = mSharedData->isVisible;
 	ActionEventManager::setEnabled(isVisible);
 	isVisible = !isVisible;
 	auto& window = mGameData->getWindow();

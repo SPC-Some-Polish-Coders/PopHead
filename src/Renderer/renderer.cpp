@@ -261,9 +261,10 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
-void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color)
+void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
+                          ProjectionType projecitonType)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color);
+	textRenderer.drawText(text, fontFilename, position, characterSize, color, projecitonType);
 }
 
 void Renderer::submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)

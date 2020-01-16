@@ -77,7 +77,7 @@ void CommandInterpreter::executeEcho() const
 void CommandInterpreter::executeHistory() const
 {
 	auto& terminalData = mGameData->getTerminal();
-	auto& commandsHistory = mGameData->getTerminal().getSharedData()->mLastCommands;
+	auto& commandsHistory = mGameData->getTerminal().getSharedData()->lastCommands;
 	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
 	for (; it != commandsHistory.rend(); ++it)

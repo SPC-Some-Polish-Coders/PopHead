@@ -86,7 +86,7 @@ void Game::handleEvents()
 		mTerminal->handleEvent(phEvent);
 		mGui->handleEvent(phEvent);
 		
-		if(!mTerminal->getSharedData()->mIsVisible)
+		if(!mTerminal->getSharedData()->isVisible)
 			mSceneManager->handleEvent(phEvent);
 
 		Renderer::handleEvent(phEvent);

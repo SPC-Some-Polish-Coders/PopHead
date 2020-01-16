@@ -154,7 +154,7 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
                               ProjectionType projectionType)
 {
 	// culling
-	if(!isInsideScreen(position, size, rotation))
+	if(!isInsideScreen(position, size, rotation, projectionType))
 		return;
 
 	// if shader is not specified use default shader 
@@ -188,12 +188,13 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	renderGroup.quadsData.emplace_back(quadData);
 }
 
-bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
+bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation, ProjectionType projectionType)
 {
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
 	if(rotation == 0.f)
-		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x, pos.y, size.x, size.y));
+		return bounds.doPositiveRectsIntersect(FloatRect(pos.x, pos.y, size.x, size.y));
 	else
-		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
+		return bounds.doPositiveRectsIntersect(FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
 }
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup& rg) -> std::optional<float>

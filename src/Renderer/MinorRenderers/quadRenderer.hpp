@@ -58,7 +58,7 @@ public:
 	void flush();
 
 private:
-	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation);
+	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation, ProjectionType);
 	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup&) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
 	void bindTexturesForNextDrawCall(std::vector<const Texture*>& textures);

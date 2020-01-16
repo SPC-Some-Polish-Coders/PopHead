@@ -9,13 +9,16 @@ out vec2 texCoords;
 
 layout (std140) uniform SharedData
 {
-    mat4 viewProjectionMatrix;
-	mat4 guiViewProjectionMatrix;
+    mat4 gameWorldVPM;
+	mat4 guiVPM;
 };
+
+uniform bool isGameWorldProjection;
 
 void main()
 {
-	gl_Position = viewProjectionMatrix * vec4(aPos, 0, 1); 
+	mat4 VPM = isGameWorldProjection ? gameWorldVPM : guiVPM;
+	gl_Position = VPM * vec4(aPos, 0, 1); 
 	texCoords = aTexCoords;
 }
 

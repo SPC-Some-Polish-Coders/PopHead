@@ -4,9 +4,9 @@
 #include <string>
 #include <memory>
 #include "terminalSharedData.hpp"
-#include "Input/terminalInputHandler.hpp"
-#include "Commands/commandInterpreter.hpp"
-#include "Image/terminalImage.hpp"
+#include "terminalInputHandler.hpp"
+#include "commandInterpreter.hpp"
+#include "terminalRenderer.hpp"
 #include "Events/event.hpp"
 #include <entt/entt.hpp>
 
@@ -29,7 +29,7 @@ public:
 
 private:
 	TerminalSharedData mTerminalSharedData;
-	TerminalImage mTerminalImage;
+	TerminalRenderer mTerminalRenderer;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
 	GameData* mGameData;

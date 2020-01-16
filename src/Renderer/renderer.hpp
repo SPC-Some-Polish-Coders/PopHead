@@ -42,7 +42,7 @@ namespace Renderer
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
-	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color);
+	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color, ProjectionType);
 
 	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color);
 

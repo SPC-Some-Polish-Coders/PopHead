@@ -1,12 +1,11 @@
 #include "terminal.hpp"
-
 #include "gameData.hpp"
 
 namespace ph {
 
 Terminal::Terminal()
 	:mTerminalSharedData(new TerminalData())
-	,mTerminalImage(mTerminalSharedData)
+	,mTerminalRenderer(mTerminalSharedData)
 	,mKeyboardInputHandler(mTerminalSharedData)
 	,mGameData(nullptr)
 {
@@ -18,7 +17,6 @@ void Terminal::init(GameData* gameData)
 	mKeyboardInputHandler.setGameData(mGameData);
 	mCommandInterpreter.setGameData(mGameData);
 	mCommandInterpreter.init();
-	mTerminalImage.init(gameData);
 }
 
 void Terminal::setSceneRegistry(entt::registry* reg)
@@ -35,12 +33,12 @@ void Terminal::handleEvent(const ph::Event& phEvent)
 void Terminal::update()
 {
 	if(mKeyboardInputHandler.isEnterClicked()) {
-		auto& content = mTerminalSharedData->mContent;
+		auto& content = mTerminalSharedData->content;
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
 
-	mTerminalImage.draw();
+	mTerminalRenderer.update();
 
 	// TODO: Refactor this mess
 	mKeyboardInputHandler.update();
@@ -48,7 +46,7 @@ void Terminal::update()
 
 void Terminal::pushOutputLine(const OutputLine& line)
 {
-	mTerminalImage.getOutputArea().pushOutputLine(line);
+	mTerminalRenderer.pushOutputLine(line);
 }
 
 }
