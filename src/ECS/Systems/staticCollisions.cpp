@@ -79,6 +79,10 @@ namespace ph::system {
 				}
 			}
 		}
+		else if (staticBody.left == kinematicBody.right())
+		{
+			collision.staticallyMovedLeft = true;
+		}
 	}
 
 	void StaticCollisions::calculateKinematicCollisions()
