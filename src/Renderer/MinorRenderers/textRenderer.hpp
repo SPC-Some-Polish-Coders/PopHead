@@ -25,11 +25,8 @@ private:
 private:
 	FontHolder mFontHolder;
 	Shader mTextShader;
-	Shader mDebugTextBackgroundShader;
 	sf::Vector2f mDebugTextPosition;
-	unsigned mTextVAO, mTextVBO;
-	unsigned mDebugTextBackgroundVAO, mDebugTextBackgroundVBO;
-	unsigned mIBO;
+	unsigned mTextVAO, mTextVBO, mTextIBO;
 	bool mWasDebugTextDrawnInLastFrame;
 };
 

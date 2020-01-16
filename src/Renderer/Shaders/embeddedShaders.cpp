@@ -89,19 +89,6 @@ ShaderSource textSrc()
 }
 
 
-// debug text background
-static const char* sDebugTextBackgroundVS =
-	#include "debugTextBackground.vs.glsl"
-;
-static const char* sDebugTextBackgroundFS =
-	#include "debugTextBackground.fs.glsl"
-;
-ShaderSource debugTextBackgroundSrc()
-{
-	return ShaderSource{sDebugTextBackgroundVS, sDebugTextBackgroundFS};
-}
-
-
 // font bitmap debug
 static const char* sFontBitmapDebugVS = 
 	#include "fontBitmapDebug.vs.glsl"

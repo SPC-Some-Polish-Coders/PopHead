@@ -1,4 +1,5 @@
 #include "textRenderer.hpp"
+#include "Renderer/renderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/camera.hpp"
 #include "Renderer/API/openglErrors.hpp"
@@ -15,56 +16,37 @@ namespace ph {
 
 void TextRenderer::init()
 {
-	// create ibo
-	unsigned quadIndices[] = {0, 1, 2, 2, 3, 0};
-	GLCheck( glGenBuffers(1, &mIBO) );
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO) );
-	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) );
-
-	// create text vao, vbo
+	// create text vao, vbo, ibo
 	GLCheck( glGenVertexArrays(1, &mTextVAO) );
 	GLCheck( glBindVertexArray(mTextVAO) );
 
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO) );
+	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTextIBO) );
 
 	GLCheck( glGenBuffers(1, &mTextVBO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
 	GLCheck( glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), nullptr, GL_DYNAMIC_DRAW); )
+
+	unsigned quadIndices[] = {0, 1, 2, 2, 3, 0};
+	GLCheck( glGenBuffers(1, &mTextIBO) );
+	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTextIBO) );
+	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) );
 
 	GLCheck( glEnableVertexAttribArray(0) );
 	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0) );
 	GLCheck( glEnableVertexAttribArray(1) );
 	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
 
-	// create debug text background vao, vbo
-	GLCheck( glGenVertexArrays(1, &mDebugTextBackgroundVAO) );
-	GLCheck( glBindVertexArray(mDebugTextBackgroundVAO) );
-
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO) );
-
-	GLCheck( glGenBuffers(1, &mDebugTextBackgroundVBO) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mDebugTextBackgroundVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), nullptr, GL_DYNAMIC_DRAW); )
-
-	GLCheck( glEnableVertexAttribArray(0) );
-	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0) );
-
 	// load shaders
 	mTextShader.init(shader::textSrc());
 	mTextShader.initUniformBlock("SharedData", 0);
-	
-	mDebugTextBackgroundShader.init(shader::debugTextBackgroundSrc());
-	mDebugTextBackgroundShader.initUniformBlock("SharedData", 0);
 }
 
 void TextRenderer::shutDown()
 {
 	mFontHolder.clear();
 	glDeleteVertexArrays(1, &mTextVAO);
-	glDeleteVertexArrays(1, &mDebugTextBackgroundVAO);
 	glDeleteBuffers(1, &mTextVBO);
-	glDeleteBuffers(1, &mDebugTextBackgroundVBO);
-	glDeleteBuffers(1, &mIBO);
+	glDeleteBuffers(1, &mTextIBO);
 	mTextShader.remove();
 }
 
@@ -72,23 +54,9 @@ void TextRenderer::beginDebugDisplay()
 {
 	mDebugTextPosition = {1150.f, 10.f};
 
-	// TODO: Make this work properly
-	//if(mWasDebugTextDrawnInLastFrame) {
-	//	mDebugTextBackgroundShader.bind();
-	//	glBindVertexArray(mDebugTextBackgroundVAO);
-	//	sf::Vector2f p1 = {1150.f, 10.f}; // top left
-	//	sf::Vector2f p2 = {1700.f, 300.f}; // bottom down
-	//	float vertexData[] = {
-	//		p1.x, p1.y,
-	//		p2.x, p1.y,
-	//		p2.x, p2.y,
-	//		p1.x, p2.y
-	//	};
-	//	glBindBuffer(GL_ARRAY_BUFFER, mDebugTextBackgroundVBO);
-	//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-	//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//}
-	//mWasDebugTextDrawnInLastFrame = false;
+	if(mWasDebugTextDrawnInLastFrame)
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Black, nullptr, {1120.f, 10.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
+	mWasDebugTextDrawnInLastFrame = false;
 }
 
 void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
