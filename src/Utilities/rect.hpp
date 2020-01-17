@@ -34,6 +34,8 @@ public:
 
 	FORCE_INLINE bool doPositiveRectsIntersect(const sf::Rect<T>& rect) const;
 	FORCE_INLINE static bool doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b);
+
+	FORCE_INLINE bool doPositiveRectsTouch(const Rect<T>& rect, sf::Vector2<short>& direction) const;
 };
 
 using IntRect = Rect<int>;
