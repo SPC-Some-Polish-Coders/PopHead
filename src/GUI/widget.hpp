@@ -17,7 +17,7 @@ public:
 	Widget(const char* name);
 
 	void handleEvent(const Event&);
-	virtual void update(float dt);
+	virtual void update(float dt, float z);
 
 	void addChildWidget(Widget* ptr);
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
@@ -26,15 +26,20 @@ public:
 	void show();
 
 	void setParent(Widget* parent) { mParent = parent; };
-	void setAlpha(unsigned int alpha) { mAlpha = alpha; }
 	void setTexture(const std::string& path);
+	void setColor(sf::Color color) { mColor = color; }
+	void setSize(sf::Vector2f size);
+	void move(sf::Vector2f offset);
+
 	void setCenterPosition(sf::Vector2f pos);
 	void setTopLeftPosition(sf::Vector2f pos);
 	void setTopRightPosition(sf::Vector2f pos);
 	void setBottomLeftPosition(sf::Vector2f pos);
 	void setBottomRightPosition(sf::Vector2f pos);
-	void setSize(sf::Vector2f size);
-	void move(sf::Vector2f offset);
+	void setTopCenterPosition(sf::Vector2f pos);
+	void setBottomCenterPosition(sf::Vector2f pos);
+	void setRightCenterPosition(sf::Vector2f pos);
+	void setLeftCenterPosition(sf::Vector2f pos);
 
 	const char* getName() { return mName; }
 	Widget* getWidget(const char* name);
@@ -63,7 +68,7 @@ protected:
 	Texture* mTexture;
 	sf::Vector2f mLocalNormalizedPosition;
 	sf::Vector2f mLocalNormalizedSize;
-	unsigned char mAlpha; // TODO_gui: Alpha handling or color multiplication
+	sf::Color mColor;
 	bool mIsTextureSize;
 	bool mIsActive;
 

@@ -75,7 +75,8 @@ Game::Game()
 	centerWidget->addChildWidget(cbut1);
 	cbut1->setTexture("textures/gui/sewage.jpg");
 	cbut1->setSize({0.5f, 0.5f});
-	cbut1->setCenterPosition({0.5f, 0.f});
+	cbut1->setTopCenterPosition({0.5f, 0.f});
+	cbut1->setColor(sf::Color::Magenta);
 	
 }
 

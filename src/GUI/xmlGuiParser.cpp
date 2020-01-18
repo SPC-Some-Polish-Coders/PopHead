@@ -63,8 +63,9 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 	// TODO_gui: change scale to size
 	/*if(auto scale = widgetTag.getAttribute("scale"))
 		widget.scale(scale->toVector2f());*/
-	if(auto alpha = widgetTag.getAttribute("alpha"))
-		widget.setAlpha(alpha->toUnsigned());
+	// TODO_gui: change alpha to color 
+	/*if(auto alpha = widgetTag.getAttribute("alpha"))
+		widget.setAlpha(alpha->toUnsigned());*/
 	if(auto hide = widgetTag.getAttribute("hide"))
 		if(hide->toBool())
 			widget.hide();

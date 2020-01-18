@@ -11,7 +11,7 @@ Interface* GUI::addInterface(const char* name)
 Interface* GUI::getInterface(const char* name)
 {
 	for(auto& interface : mInterfaces)
-		if(strcmp(interface.getName(), name) == 0)
+		if(std::strcmp(interface.getName(), name) == 0)
 			return &interface;
 	return nullptr;
 }
@@ -24,7 +24,7 @@ bool GUI::hasInterface(const char* name)
 void GUI::deleteInterface(const char* name)
 {
 	for(auto it = mInterfaces.begin(); it != mInterfaces.end(); ++it)
-		if(strcmp(it->getName(), name) == 0)
+		if(std::strcmp(it->getName(), name) == 0)
 			mInterfaces.erase(it);
 }
 

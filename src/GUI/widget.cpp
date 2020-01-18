@@ -9,7 +9,7 @@ Widget::Widget(const char* name)
 	,mTexture(nullptr)
 	,mLocalNormalizedPosition(0.f, 0.f)
 	,mLocalNormalizedSize(0.f, 0.f)
-	,mAlpha(255)
+	,mColor(sf::Color::White)
 	,mIsTextureSize(false)
 	,mIsActive(true)
 {
@@ -56,7 +56,7 @@ void Widget::handleEventOnChildren(const ph::Event& phEvent)
 		widget->handleEvent(phEvent);
 }
 
-void Widget::update(float dt)
+void Widget::update(float dt, float z)
 {
 	if(mIsActive) 
 	{
@@ -64,11 +64,11 @@ void Widget::update(float dt)
 			if(behaviour.first == BehaviorType::onUpdate)
 				behaviour.second(this);
 
-		Renderer::submitQuad(mTexture, nullptr, &sf::Color(255, 255, 255, mAlpha), nullptr,
-			getScreenPosition(), getScreenSize(), 10, 0.f, {}, ProjectionType::gui);
+		Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
+			getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
 
 		for(const auto& widget : mChildren)
-			widget->update(dt);
+			widget->update(dt, z);
 	}
 }
 
@@ -76,6 +76,11 @@ void Widget::addChildWidget(Widget* ptr)
 {
 	ptr->setParent(this);
 	mChildren.emplace_back(ptr);
+}
+
+void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
+{
+	mBehaviors.insert({type,func});
 }
 
 void Widget::hide()
@@ -95,6 +100,17 @@ void Widget::setTexture(const std::string& path)
 	auto textureSize = static_cast<sf::Vector2f>(mTexture->getSize());
 	mLocalNormalizedSize = {textureSize.x / 1920.f, textureSize.y / 1080.f};
 	mIsTextureSize = true;
+}
+
+void Widget::setSize(sf::Vector2f size)
+{
+	mIsTextureSize = false;
+	mLocalNormalizedSize = size;
+}
+
+void Widget::move(sf::Vector2f offset)
+{
+	mLocalNormalizedPosition += offset;
 }
 
 void Widget::setCenterPosition(sf::Vector2f centerPos)
@@ -122,20 +138,24 @@ void Widget::setBottomRightPosition(sf::Vector2f bottomRightPos)
 	mLocalNormalizedPosition = {bottomRightPos.x - mLocalNormalizedSize.x, bottomRightPos.y - mLocalNormalizedSize.y};
 }
 
-void Widget::setSize(sf::Vector2f size)
+void Widget::setTopCenterPosition(sf::Vector2f pos)
 {
-	mIsTextureSize = false;
-	mLocalNormalizedSize = size;
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x / 2.f, pos.y};
 }
 
-void Widget::move(sf::Vector2f offset)
+void Widget::setBottomCenterPosition(sf::Vector2f pos)
 {
-	mLocalNormalizedPosition += offset;
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x / 2.f, pos.y - mLocalNormalizedSize.y};
 }
 
-void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
+void Widget::setRightCenterPosition(sf::Vector2f pos)
 {
-	mBehaviors.insert({type,func});
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x, pos.y - mLocalNormalizedSize.y / 2.f};
+}
+
+void Widget::setLeftCenterPosition(sf::Vector2f pos)
+{
+	mLocalNormalizedPosition = {pos.x, pos.y - mLocalNormalizedSize.y / 2.f};
 }
 
 Widget* Widget::getWidget(const char* name)

@@ -19,7 +19,7 @@ void Interface::update(float dt)
 {
 	for(auto& widget : mWidgets)
 		if(widget->isActive())
-			widget->update(dt);
+			widget->update(dt, 20);
 }
 
 void Interface::show()
