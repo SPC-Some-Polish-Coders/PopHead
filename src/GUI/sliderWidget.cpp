@@ -19,7 +19,9 @@ namespace {
 }
 
 int SliderWidget::getSliderValue() {
-	return static_cast<int>(mIcon->getPosition().x * 100);
+	// TODO_gui
+	return 50;
+	//return static_cast<int>(mIcon->getPosition().x * 100);
 }
 
 void SliderWidget::createSlider(std::string path) 

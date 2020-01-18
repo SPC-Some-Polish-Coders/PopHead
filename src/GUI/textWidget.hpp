@@ -8,7 +8,7 @@ namespace ph {
 class TextWidget : public Widget 
 {
 public:
-	TextWidget();
+	TextWidget(const char* name);
 
 	void setString(const std::string& text);
 	void setTextColor(sf::Color color) { mTextColor = color; }

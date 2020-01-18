@@ -32,7 +32,7 @@ void Interface::hide()
 	mIsActive = false;
 }
 
-void Interface::addWidget(const char* name, Widget* widget)
+void Interface::addWidget(Widget* widget)
 {
 	mWidgets.emplace_back(widget);
 }

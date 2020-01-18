@@ -14,12 +14,12 @@ namespace ph {
 class Widget 
 {
 public:
-	Widget();
+	Widget(const char* name);
 
 	void handleEvent(const Event&);
 	virtual void update(float dt);
 
-	void addChildWidget(const char* name, Widget* ptr);
+	void addChildWidget(Widget* ptr);
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
 	void hide();
@@ -27,17 +27,24 @@ public:
 
 	void setParent(Widget* parent) { mParent = parent; };
 	void setAlpha(unsigned int alpha) { mAlpha = alpha; }
-	void setContentPath(const std::string& path);
-	void setPosition(sf::Vector2f pos);
-	void rePosition();
+	void setTexture(const std::string& path);
+	void setCenterPosition(sf::Vector2f pos);
+	void setTopLeftPosition(sf::Vector2f pos);
+	void setTopRightPosition(sf::Vector2f pos);
+	void setBottomLeftPosition(sf::Vector2f pos);
+	void setBottomRightPosition(sf::Vector2f pos);
+	void setSize(sf::Vector2f size);
 	void move(sf::Vector2f offset);
-	void scale(sf::Vector2f scale);
 
 	const char* getName() { return mName; }
 	Widget* getWidget(const char* name);
-	sf::Vector2f getPosition() { return mPosition; }
-	sf::Vector2f getSize() { return mSize; } 
 	bool isActive() { return mIsActive; }
+
+	sf::Vector2f getLocalVirtualPosition() const { return mLocalNormalizedPosition; }
+	sf::Vector2f getLocalVirtualSize() const { return mLocalNormalizedSize; }
+
+	sf::Vector2f getScreenPosition() const;
+	sf::Vector2f getScreenSize() const;
 
 	static void setWindow(sf::Window* window) { sWindow = window; }
 	static void setTextures(TextureHolder* textures) { sTextures = textures; }
@@ -54,12 +61,10 @@ protected:
 	char mName[50];
 
 	Texture* mTexture;
-	sf::Vector2f mPosition;
-	sf::Vector2f mLocalPosition;
-	sf::Vector2f mSize;
-	sf::Vector2f mVirtualSize;
-	sf::Vector2f mDefaultSize;
+	sf::Vector2f mLocalNormalizedPosition;
+	sf::Vector2f mLocalNormalizedSize;
 	unsigned char mAlpha; // TODO_gui: Alpha handling or color multiplication
+	bool mIsTextureSize;
 	bool mIsActive;
 
 	inline static sf::Window* sWindow;

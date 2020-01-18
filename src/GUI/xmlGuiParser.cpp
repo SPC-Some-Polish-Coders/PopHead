@@ -53,15 +53,16 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetTag, Widget& widget)
 		// TODO_gui
 		const std::string path = contentPath->toString();
 		//mGui->getTextures().load(path);
-		widget.setContentPath(path);
+		widget.setTexture(path);
 	}
 	// TODO_gui
 	//if(auto origin = widgetTag.getAttribute("origin"))
 		//widget.setOrigin(origin->toVector2f());
 	if(auto position = widgetTag.getAttribute("position"))
-		widget.setPosition(position->toVector2f());
-	if(auto scale = widgetTag.getAttribute("scale"))
-		widget.scale(scale->toVector2f());
+		widget.setCenterPosition(position->toVector2f());
+	// TODO_gui: change scale to size
+	/*if(auto scale = widgetTag.getAttribute("scale"))
+		widget.scale(scale->toVector2f());*/
 	if(auto alpha = widgetTag.getAttribute("alpha"))
 		widget.setAlpha(alpha->toUnsigned());
 	if(auto hide = widgetTag.getAttribute("hide"))

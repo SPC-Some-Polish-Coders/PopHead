@@ -4,13 +4,16 @@
 
 namespace ph {
 
-Widget::Widget()
+Widget::Widget(const char* name)
 	:mParent(nullptr)
 	,mTexture(nullptr)
-	,mPosition(0, 0)
-	,mSize(0, 0)
+	,mLocalNormalizedPosition(0.f, 0.f)
+	,mLocalNormalizedSize(0.f, 0.f)
+	,mAlpha(255)
+	,mIsTextureSize(false)
 	,mIsActive(true)
 {
+	std::strcpy(mName, name);
 }
 
 void Widget::handleEvent(const ph::Event& phEvent)
@@ -30,7 +33,7 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 			&& e->mouseButton.button == sf::Mouse::Left)
 		{
 			auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
-			if(FloatRect(mPosition, mSize).contains(mousePos))
+			if(FloatRect(getScreenPosition(), getScreenSize()).contains(mousePos))
 			{
 				if(e->type == sf::Event::MouseButtonPressed) {
 					for(const auto& k : mBehaviors)
@@ -57,22 +60,22 @@ void Widget::update(float dt)
 {
 	if(mIsActive) 
 	{
-		for(const auto& k : mBehaviors)
-			if(k.first == BehaviorType::onUpdate)
-				k.second(this);
+		for(const auto& behaviour : mBehaviors)
+			if(behaviour.first == BehaviorType::onUpdate)
+				behaviour.second(this);
 
-		Renderer::submitQuad(mTexture, nullptr, &sf::Color(255, 255, 255, mAlpha), nullptr, mPosition, mSize, 10, 0.f, {}, ProjectionType::gui);
+		Renderer::submitQuad(mTexture, nullptr, &sf::Color(255, 255, 255, mAlpha), nullptr,
+			getScreenPosition(), getScreenSize(), 10, 0.f, {}, ProjectionType::gui);
 
 		for(const auto& widget : mChildren)
 			widget->update(dt);
 	}
 }
 
-void Widget::addChildWidget(const char* name, Widget* ptr)
+void Widget::addChildWidget(Widget* ptr)
 {
-	mChildren.emplace_back(ptr);
 	ptr->setParent(this);
-	ptr->rePosition();
+	mChildren.emplace_back(ptr);
 }
 
 void Widget::hide()
@@ -85,44 +88,49 @@ void Widget::show()
 	mIsActive = true;
 }
 
-void Widget::setContentPath(const std::string& path)
+void Widget::setTexture(const std::string& path)
 {
 	sTextures->load(path);
 	mTexture = &sTextures->get(path);
-	mSize = static_cast<sf::Vector2f>(mTexture->getSize());
-	mDefaultSize = mSize;
-	rePosition();
+	auto textureSize = static_cast<sf::Vector2f>(mTexture->getSize());
+	mLocalNormalizedSize = {textureSize.x / 1920.f, textureSize.y / 1080.f};
+	mIsTextureSize = true;
 }
 
-void Widget::setPosition(sf::Vector2f position)
+void Widget::setCenterPosition(sf::Vector2f centerPos)
 {
-	mLocalPosition = position;
-	if(mParent != nullptr)
-	{
-		auto parentPos = mParent->getPosition();
-		auto parentSize = mParent->getSize();
-		mPosition = {parentPos.x * parentSize.x + mLocalPosition.x - mSize.x, parentPos.y * parentSize.y + mLocalPosition.y - mSize.y};
+	mLocalNormalizedPosition = centerPos - mLocalNormalizedSize / 2.f;
+}
 
-		for(const auto& widget : mChildren)
-			widget->rePosition();
-	}
+void Widget::setTopLeftPosition(sf::Vector2f topLeftPos)
+{
+	mLocalNormalizedPosition = topLeftPos;
+}
+
+void Widget::setTopRightPosition(sf::Vector2f topRightPos)
+{
+	mLocalNormalizedPosition = {topRightPos.x - mLocalNormalizedSize.x, topRightPos.y};
+}
+
+void Widget::setBottomLeftPosition(sf::Vector2f bottomLeftPos)
+{
+	mLocalNormalizedPosition = {bottomLeftPos.x, bottomLeftPos.y - mLocalNormalizedSize.y};
+}
+
+void Widget::setBottomRightPosition(sf::Vector2f bottomRightPos)
+{
+	mLocalNormalizedPosition = {bottomRightPos.x - mLocalNormalizedSize.x, bottomRightPos.y - mLocalNormalizedSize.y};
+}
+
+void Widget::setSize(sf::Vector2f size)
+{
+	mIsTextureSize = false;
+	mLocalNormalizedSize = size;
 }
 
 void Widget::move(sf::Vector2f offset)
 {
-	mPosition += offset;
-	for(const auto& widget : mChildren)
-		widget->move(offset);
-}
-
-void Widget::scale(sf::Vector2f scale)
-{
-	mSize.x = unsigned int(scale.x * mSize.x);
-	mSize.y = unsigned int(scale.y * mSize.y);
-	this->scale(scale);
-	rePosition();
-	for(const auto& widget : mChildren)
-		widget->scale(scale);
+	mLocalNormalizedPosition += offset;
 }
 
 void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
@@ -138,12 +146,30 @@ Widget* Widget::getWidget(const char* name)
 	return nullptr;
 }
 
-void Widget::rePosition()
+sf::Vector2f Widget::getScreenPosition() const
 {
-	setPosition(mPosition);
-	for(const auto& widget : mChildren)
-		widget->rePosition();
+	if(mParent) {
+		const auto parentPos = mParent->getScreenPosition(); 
+		const auto parentSize = mParent->getScreenSize();
+		return parentPos + sf::Vector2f(mLocalNormalizedPosition.x * parentSize.x, mLocalNormalizedPosition.y * parentSize.y);
+	}
+	else {
+		return sf::Vector2f(mLocalNormalizedPosition.x * 1920.f, mLocalNormalizedPosition.y * 1080.f);
+	}
 }
-	
+
+sf::Vector2f Widget::getScreenSize() const
+{
+	if(mIsTextureSize)
+		return static_cast<sf::Vector2f>(mTexture->getSize());
+	if(mParent) {
+		const auto parentSize = mParent->getScreenSize();
+		return sf::Vector2f(parentSize.x * mLocalNormalizedSize.x, parentSize.y * mLocalNormalizedSize.y);
+	}
+	else {
+		return sf::Vector2f(mLocalNormalizedSize.x * 1920.f, mLocalNormalizedSize.y * 1080.f);
+	}
+}
+
 }
 

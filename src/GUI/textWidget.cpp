@@ -5,8 +5,9 @@
 
 namespace ph {
 
-TextWidget::TextWidget()
-	:mTextPosition{0,0}
+TextWidget::TextWidget(const char* name)
+	:Widget(name)
+	,mTextPosition{0,0}
 {
 }
 

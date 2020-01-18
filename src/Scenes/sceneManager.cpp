@@ -55,7 +55,8 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getGui().clearGUI();
+	// TODO_gui
+	//mGameData->getGui().clearGUI();
 
 	if(mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPositionForNextScene)
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);

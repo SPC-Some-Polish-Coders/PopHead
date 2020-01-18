@@ -47,9 +47,36 @@ Game::Game()
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
 
+	// TODO_gui: do it some better way
 	Widget::setWindow(&mWindow);
+	Widget::setTextures(mTextures.get());
 
 	ActionEventManager::init();
+
+	// TEMPORARY GUI TEST
+	auto menu = mGui->addInterface("buttons");
+
+	auto* button1 = new Widget("button1");
+	button1->setTexture("textures/gui/optionsButton.png");
+	menu->addWidget(button1);
+
+	auto* livebar = new Widget("livebar");
+	livebar->setTexture("textures/gui/exitButton.png");
+	livebar->setTopRightPosition({1.f, 0.f});
+	menu->addWidget(livebar);
+
+	auto* centerWidget = new Widget("button2");
+	centerWidget->setTexture("textures/gui/creditsButton.png");
+	centerWidget->setSize({0.2f, 0.2f});
+	centerWidget->setCenterPosition({0.5f, 0.5f});
+	menu->addWidget(centerWidget);
+
+	auto* cbut1 = new Widget("cbut1");
+	centerWidget->addChildWidget(cbut1);
+	cbut1->setTexture("textures/gui/sewage.jpg");
+	cbut1->setSize({0.5f, 0.5f});
+	cbut1->setCenterPosition({0.5f, 0.f});
+	
 }
 
 void Game::run()

@@ -17,7 +17,7 @@ public:
 	void show();
 	void hide();
 
-	void addWidget(const char* name, Widget* widget);
+	void addWidget(Widget* widget);
 	Widget* getWidget(const char* name);
 
 	bool isActive() { return mIsActive; }
