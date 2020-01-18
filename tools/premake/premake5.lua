@@ -60,6 +60,7 @@ project "PopHead"
     }
 
 	ignoredefaultlibraries "libcmt"
+	disablewarnings { "4996" } -- disable depricated C std libary functions 
 
     defines{
 		"SFML_STATIC",
@@ -162,6 +163,7 @@ project "Tests"
     }
 
 	ignoredefaultlibraries { "libcmt" }
+	disablewarnings { "4996" } -- disable depricated C std libary functions 
 
     defines{
 		"SFML_STATIC",
