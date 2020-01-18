@@ -47,6 +47,8 @@ namespace ph::system {
 
 	void StaticCollisions::handleStaticCollision(const ph::FloatRect& staticBody, ph::FloatRect& kinematicBody, component::KinematicCollisionBody& collision)
 	{
+		sf::Vector2<short> collisionDirection;
+
 		if (staticBody.doPositiveRectsIntersect(kinematicBody))
 		{
 			sf::FloatRect intersection;
@@ -79,9 +81,16 @@ namespace ph::system {
 				}
 			}
 		}
-		else if (staticBody.left == kinematicBody.right())
+		else if (kinematicBody.doPositiveRectsTouch(staticBody, collisionDirection))
 		{
-			collision.staticallyMovedLeft = true;
+			if (collisionDirection.x == -1)
+				collision.staticallyMovedLeft = true;
+			else if (collisionDirection.x == 1)
+				collision.staticallyMovedRight = true;
+			else if (collisionDirection.y == -1)
+				collision.staticallyMovedUp = true;
+			else if (collisionDirection.y == 1)
+				collision.staticallyMovedDown = true;
 		}
 	}
 
@@ -128,11 +137,103 @@ namespace ph::system {
 
 					if (intersection.width < intersection.height && anotherRect.left < firstRect.left)
 					{
-						//anotherCollisionBody.staticallyMovedLeft = true;
+						anotherCollisionBody.staticallyMovedLeft = true;
 						anotherRect.left -= intersection.width;
 						pushedLeft.emplace_back(object);
 					}
-					//handleStaticCollision(firstRect, anotherRect, anotherCollisionBody);
+				}
+			}
+
+			++index;
+		}
+		
+		index = 0;
+		while (index != pushedRight.size())
+		{
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedRight[index]).rect;
+			for (auto object : kinematicObjects)
+			{
+				if (object == pushedRight[index])
+					continue;
+
+				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
+				if (anotherCollisionBody.staticallyMovedRight) continue;
+
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+
+				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				{
+					sf::FloatRect intersection;
+					firstRect.intersects(anotherRect, intersection);
+
+					if (intersection.width < intersection.height && firstRect.left < anotherRect.left)
+					{
+						anotherCollisionBody.staticallyMovedRight = true;
+						anotherRect.left += intersection.width;
+						pushedRight.emplace_back(object);
+					}
+				}
+			}
+
+			++index;
+		}
+
+		index = 0;
+		while (index != pushedUp.size())
+		{
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedUp[index]).rect;
+			for (auto object : kinematicObjects)
+			{
+				if (object == pushedUp[index])
+					continue;
+
+				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
+				if (anotherCollisionBody.staticallyMovedUp) continue;
+
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+
+				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				{
+					sf::FloatRect intersection;
+					firstRect.intersects(anotherRect, intersection);
+
+					if (intersection.height < intersection.width && anotherRect.top < firstRect.top)
+					{
+						anotherCollisionBody.staticallyMovedUp = true;
+						anotherRect.top -= intersection.height;
+						pushedUp.emplace_back(object);
+					}
+				}
+			}
+
+			++index;
+		}
+
+		index = 0;
+		while (index != pushedDown.size())
+		{
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedDown[index]).rect;
+			for (auto object : kinematicObjects)
+			{
+				if (object == pushedDown[index])
+					continue;
+
+				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
+				if (anotherCollisionBody.staticallyMovedDown) continue;
+
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+
+				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				{
+					sf::FloatRect intersection;
+					firstRect.intersects(anotherRect, intersection);
+
+					if (intersection.height < intersection.width && firstRect.top < anotherRect.top)
+					{
+						anotherCollisionBody.staticallyMovedDown = true;
+						anotherRect.top += intersection.height;
+						pushedDown.emplace_back(object);
+					}
 				}
 			}
 
