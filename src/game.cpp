@@ -67,17 +67,23 @@ Game::Game()
 
 	auto* centerWidget = new Widget("button2");
 	centerWidget->setTexture("textures/gui/creditsButton.png");
-	centerWidget->setSize({0.2f, 0.2f});
+	centerWidget->setSize({0.5f, 0.5f});
 	centerWidget->setCenterPosition({0.5f, 0.5f});
 	menu->addWidget(centerWidget);
 
 	auto* cbut1 = new Widget("cbut1");
 	centerWidget->addChildWidget(cbut1);
 	cbut1->setTexture("textures/gui/sewage.jpg");
-	cbut1->setSize({0.5f, 0.5f});
+	cbut1->setSize({0.25f, 0.25f});
 	cbut1->setTopCenterPosition({0.5f, 0.f});
 	cbut1->setColor(sf::Color::Magenta);
-	
+
+	auto* cbut2 = new TextWidget("cbut2");
+	centerWidget->addChildWidget(cbut2);
+	cbut2->setTexture("textures/gui/optionsButton.png");
+	cbut2->setString("abCD123!");
+	cbut2->setFontName("joystixMonospace.ttf");
+	cbut2->setTopCenterPosition({0.5f, 0.f});
 }
 
 void Game::run()

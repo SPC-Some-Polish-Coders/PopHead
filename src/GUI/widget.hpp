@@ -17,8 +17,14 @@ public:
 	Widget(const char* name);
 
 	void handleEvent(const Event&);
-	virtual void update(float dt, float z);
+	void update(float dt, float z);
+private:
+	virtual void handleEventOnCurrent(const ph::Event&);
+	virtual void updateCurrent(float dt, float z);
+	void handleEventOnChildren(const ph::Event&);
+	void updateChildren(float dt, float z);
 
+public:
 	void addChildWidget(Widget* ptr);
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
@@ -53,10 +59,6 @@ public:
 
 	static void setWindow(sf::Window* window) { sWindow = window; }
 	static void setTextures(TextureHolder* textures) { sTextures = textures; }
-
-private:
-	virtual void handleEventOnCurrent(const ph::Event&);
-	virtual void handleEventOnChildren(const ph::Event&);
 
 protected:
 	Widget* mParent;

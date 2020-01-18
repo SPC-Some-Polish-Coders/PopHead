@@ -1,97 +1,42 @@
 #include "textWidget.hpp"
-#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
-#include <sstream>
+#include <cstring>
 
 namespace ph {
 
 TextWidget::TextWidget(const char* name)
 	:Widget(name)
-	,mTextPosition{0,0}
+	,mFontName()
+	,mTextSize(30.f)
+	,mTextColor(sf::Color::White)
+	,mScrollingEffect(false)
 {
 }
 
-
-void TextWidget::setString(const std::string& text)
+void TextWidget::updateCurrent(float dt, float z)
 {
-	//mText = text;
-	// TODO: get mSize
+	if(mIsActive) 
+	{
+		for(const auto& behaviour : mBehaviors)
+			if(behaviour.first == BehaviorType::onUpdate)
+				behaviour.second(this);
+
+		if (mScrollingEffect)
+			move({0, -0.35f});
+
+		Renderer::submitText(mText.c_str(), mFontName, getScreenPosition(), mTextSize, mTextColor, ProjectionType::gui);
+	}
 }
 
-void TextWidget::setTextPosition(const sf::Vector2f& pos)
+void TextWidget::setString(const char* text)
 {
-	//auto localPosition = getGlobalPosition();
-	//auto size = getSize();
-
-	//mText.setPosition(pos.x * size.x + localPosition.x, pos.y * size.y + localPosition.y);
-
-	//mTextPosition = pos;
-}
-//
-//void TextWidget::setAlpha(unsigned int alpha)
-//{
-//	mText.setFillColor(sf::Color(255, 255, 255, alpha));
-//	Widget::setAlpha(alpha);
-//}
-
-void TextWidget::setTextOrigin(const sf::Vector2f& origin)
-{
-	//mText.setOrigin(origin);
+	mText = text;
+	// TODO_gui: get mSize
 }
 
-void TextWidget::setTextAlpha(unsigned int alpha)
+void TextWidget::setFontName(const char* fontName)
 {
-	//mText.setFillColor(sf::Color(255, 255, 255, alpha));
-}
-
-void TextWidget::scaleText(const sf::Vector2f& scale)
-{
-	//mText.scale(scale);
-	//setTextPosition(mTextPosition);
-}
-//
-//void TextWidget::setPosition(const sf::Vector2f& pos)
-//{
-//	Widget::setPosition(pos);
-//	setTextPosition(mTextPosition);
-//}
-//
-//void TextWidget::move(const sf::Vector2f& delta)
-//{
-//	Widget::move(delta);
-//	mText.move(delta);
-//}
-
-void TextWidget::setCharacterSize(unsigned int size)
-{
-	//mText.setCharacterSize(size);
-}
-
-void TextWidget::setFontPath(const std::string& path)
-{
-	//mText.setFont(mGameData->getFonts().get(path));
-}
-//
-//void TextWidget::scale(const sf::Vector2f& scale)
-//{
-//	Widget::scale(scale);
-//	scaleText(scale);
-//}
-//
-//void TextWidget::draw()
-//{
-//	if(mIsActive) {
-//		if (scrollingEffect)
-//			mText.move(0, -0.35f);
-//
-//		Widget::draw();
-//		Renderer::submitSFMLObject(mText);
-//	}
-//}
-
-void TextWidget::setScrollingEffect(bool flag)
-{
-	//scrollingEffect = flag;
+	std::strcpy(mFontName, fontName);
 }
 
 }

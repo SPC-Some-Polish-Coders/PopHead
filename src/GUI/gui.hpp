@@ -1,6 +1,8 @@
 #pragma once
 
 #include "interface.hpp"
+#include "textWidget.hpp"
+#include "sliderWidget.hpp"
 #include "Events/event.hpp"
 #include <vector>
 

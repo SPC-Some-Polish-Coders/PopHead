@@ -18,11 +18,10 @@ Widget::Widget(const char* name)
 
 void Widget::handleEvent(const ph::Event& phEvent)
 {
-	if(!mIsActive)
-		return;
-	
-	handleEventOnCurrent(phEvent);
-	handleEventOnChildren(phEvent);
+	if(mIsActive) {
+		handleEventOnCurrent(phEvent);
+		handleEventOnChildren(phEvent);
+	}
 }
 
 void Widget::handleEventOnCurrent(const ph::Event& phEvent)
@@ -67,9 +66,19 @@ void Widget::update(float dt, float z)
 		Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
 			getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
 
-		for(const auto& widget : mChildren)
-			widget->update(dt, z);
+		updateCurrent(dt, z - 2);
+		updateChildren(dt, z);
 	}
+}
+
+void Widget::updateCurrent(float dt, float z)
+{
+}
+
+void Widget::updateChildren(float dt, float z)
+{
+	for(const auto& widget : mChildren)
+		widget->update(dt, z);
 }
 
 void Widget::addChildWidget(Widget* ptr)

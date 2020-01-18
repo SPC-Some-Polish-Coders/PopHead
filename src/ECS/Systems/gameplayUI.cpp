@@ -4,6 +4,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "Utilities/profiling.hpp"
+#include <cstdio>
 
 namespace ph::system {
 
@@ -25,19 +26,25 @@ void GameplayUI::update(float dt)
 	for(auto player : view)
 	{
 		auto* canvas = mGui.getInterface("gameplayCounters")->getWidget("canvas");
+		char string[6];
 
 		// set bullets counter
 		const auto bullets = view.get<component::Bullets>(player);
-		dynamic_cast<TextWidget*>(canvas->getWidget("pistolBulletCounter"))->setString(std::to_string(bullets.numOfPistolBullets));
-		dynamic_cast<TextWidget*>(canvas->getWidget("shotgunBulletCounter"))->setString(std::to_string(bullets.numOfShotgunBullets));
+		std::sprintf(string, "%i", bullets.numOfPistolBullets);
+		dynamic_cast<TextWidget*>(canvas->getWidget("pistolBulletCounter"))->setString(string);
+		std::sprintf(string, "%i", bullets.numOfShotgunBullets);
+		dynamic_cast<TextWidget*>(canvas->getWidget("shotgunBulletCounter"))->setString(string);
 
 		// set health counter
 		if(mRegistry.has<component::Health>(player)) {
-			const auto playerHP = mRegistry.get<component::Health>(player).healthPoints;
-			dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"))->setString(std::to_string(playerHP));
+			const int playerHP = mRegistry.get<component::Health>(player).healthPoints;
+			std::sprintf(string, "%i", playerHP);
+			dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"))->setString(string);
 		}
-		else
-			dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"))->setString(std::to_string(0));
+		else {
+			std::sprintf(string, "%i", 0);
+			dynamic_cast<TextWidget*>(canvas->getWidget("vitalityCounter"))->setString(string);
+		}
 
 		// NOTE: We have to take player's health from registry because health component is removed from player after death
 	}

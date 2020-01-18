@@ -86,10 +86,13 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 	GLCheck( glActiveTexture(GL_TEXTURE0) );
 	GLCheck( glBindTexture(GL_TEXTURE_2D, data.textureAtlas) );
 
+	position.y += size;
+
 	while(*text) {
 		if(*text >= '!' && *text <= '~') {
 			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(data.charactersData, data.textureAtlasSideSize, data.textureAtlasSideSize, *text-32, &position.x, &position.y, &q, 1);
+			stbtt_GetBakedQuad(data.charactersData, data.textureAtlasSideSize, data.textureAtlasSideSize,
+				*text-32, &position.x, &position.y, &q, 1);
 			float vertexData[] = {
 				q.x0, q.y0, q.s0, q.t0,
 				q.x1, q.y0, q.s1, q.t0,
