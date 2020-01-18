@@ -24,7 +24,7 @@ public:
 
 	void parseFile(GameData* const gameData, const std::string& fileName);
 	void parseInterface(const Xml& interfaceTag, GUI& gui);
-	void handleInterfaceHideAttribute(const std::string& interfaceName, const Xml& interfaceTag, GUI& gui);
+	void handleInterfaceHideAttribute(const char* interfaceName, const Xml& interfaceTag, GUI& gui);
 	void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
 	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
 	void parseSliderWidgetAttributes(const Xml& textWidgetTag, SliderWidget& widget);

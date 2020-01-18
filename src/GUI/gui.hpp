@@ -2,50 +2,26 @@
 
 #include "interface.hpp"
 #include "Events/event.hpp"
-#include "Resources/resourceHolder.hpp"
-#include <SFML/Graphics.hpp>
-#include <memory>
+#include <vector>
 
 namespace ph {
-
-class GameData;
 
 class GUI
 {
 public:
-	GUI();
-
-	Widget* addInterface(const std::string& name);
-
-	Widget* getInterface(const std::string& name);
-	bool hasInterface(const std::string& name) const;
-
-	void move(const sf::Vector2f&);
-
-	void deleteInterface(const std::string& name);
-
-	void showInterface(const std::string& name);
-
-	void hideInterface(const std::string& name);
-
-	void swap(const std::string& first, const std::string& second);
-
-	void moveUp(const std::string& name);
-
 	void handleEvent(const ph::Event&);
+	void update(float dt);
 
-	void update(sf::Time deltaTime);
-
-	void init(GameData* gamedata);
-
+	Interface* addInterface(const char* name);
+	Interface* getInterface(const char* name);
+	bool hasInterface(const char* name);
+	void deleteInterface(const char* name);
+	void showInterface(const char* name);
+	void hideInterface(const char* name);
 	void clearGUI();
 
-	auto getTextures() -> ResourceHolder<sf::Texture>& { return mTextureHolder; }
-
 private:
-	std::map<std::string, std::unique_ptr<Interface>> mInterfaceList;
-	ResourceHolder<sf::Texture> mTextureHolder;
-	GameData* mGameData;
+	std::vector<Interface> mInterfaces;
 };
 
 }

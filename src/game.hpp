@@ -25,7 +25,7 @@ public:
 private:
 	sf::Time correctDeltaTime(sf::Time dt);
 	void handleEvents();
-	void update(sf::Time dt);
+	void update(float dt);
 
 private:
 	sf::RenderWindow               mWindow;

@@ -88,7 +88,7 @@ void SceneManager::handleEvent(const Event& e)
 		mScene->handleEvent(*event);
 }
 
-void SceneManager::update(sf::Time dt)
+void SceneManager::update(float dt)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
 	mScene->update(dt);

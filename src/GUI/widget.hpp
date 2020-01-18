@@ -2,92 +2,69 @@
 
 #include "behaviorType.hpp"
 #include "Events/event.hpp"
-#include <SFML/Graphics.hpp>
+#include "Renderer/API/texture.hpp"
+#include "Resources/resourceHolder.hpp"
 #include <map>
+#include <vector>
 #include <functional>
 #include <memory>
 
 namespace ph {
-
-class GameData;
 
 class Widget 
 {
 public:
 	Widget();
 
-	virtual void draw();
+	void handleEvent(const Event&);
+	virtual void update(float dt);
 
-	virtual void setAlpha(unsigned int alpha);
+	void addChildWidget(const char* name, Widget* ptr);
+	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
-	void handleEvent(const ph::Event&);
+	void hide();
+	void show();
 
-	virtual void update(sf::Time delta);
+	void setParent(Widget* parent) { mParent = parent; };
+	void setAlpha(unsigned int alpha) { mAlpha = alpha; }
+	void setContentPath(const std::string& path);
+	void setPosition(sf::Vector2f pos);
+	void rePosition();
+	void move(sf::Vector2f offset);
+	void scale(sf::Vector2f scale);
 
-	virtual void addWidget(const std::string& name, Widget* ptr);
+	const char* getName() { return mName; }
+	Widget* getWidget(const char* name);
+	sf::Vector2f getPosition() { return mPosition; }
+	sf::Vector2f getSize() { return mSize; } 
+	bool isActive() { return mIsActive; }
 
-	virtual void hide();
-
-	virtual void show();
-
-	virtual bool setContentPath(const std::string& path);
-
-	virtual void setPosition(const sf::Vector2f& pos);
-
-	virtual void move(const sf::Vector2f& delta);
-
-	virtual void moveAlongBranch(const sf::Vector2f& delta);
-
-	virtual void scale(const sf::Vector2f& scale);
-
-	virtual void scaleAlongBranch(const sf::Vector2f& scale);
-
-	virtual void setAlphaAlongBranch(unsigned int alpha);
-
-	virtual sf::Vector2u getSize() const;
-
-	virtual void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
-
-	virtual Widget* getWidget(const std::string& name);
-
-	virtual void setGameData(GameData* GameData);
-
-	virtual bool isActive();
-
-	virtual void setRoot(Widget* ptr);
-
-	virtual void setOrigin(const sf::Vector2f& origin);
-	virtual sf::Vector2f getOrigin() const;
-
-	virtual sf::Vector2f getPosition() const;
-	virtual sf::Vector2f getGlobalPosition() const;
-
-	virtual void rePosition();
+	static void setWindow(sf::Window* window) { sWindow = window; }
+	static void setTextures(TextureHolder* textures) { sTextures = textures; }
 
 private:
 	virtual void handleEventOnCurrent(const ph::Event&);
 	virtual void handleEventOnChildren(const ph::Event&);
-	virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
-	void setVirtualSize(const sf::Vector2f& size);
 
 protected:
-	std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;
-	std::multimap < BehaviorType, std::function<void(Widget*)>> mBehaviors;
-	GameData* mGameData;
-	sf::RenderWindow* mWindow;
+	Widget* mParent;
+	std::vector<std::unique_ptr<Widget>> mChildren;
+	std::multimap<BehaviorType, std::function<void(Widget*)>> mBehaviors;
+
+	char mName[50];
+
+	Texture* mTexture;
 	sf::Vector2f mPosition;
-	sf::Vector2u mSize;
-	sf::Vector2i mVirtualSize;
-	sf::Vector2f mOrigin;
-	sf::Vector2f mScale;
-	sf::Vector2u mDefaultSize;
-	unsigned int mAlpha;
+	sf::Vector2f mLocalPosition;
+	sf::Vector2f mSize;
+	sf::Vector2f mVirtualSize;
+	sf::Vector2f mDefaultSize;
+	unsigned char mAlpha; // TODO_gui: Alpha handling or color multiplication
 	bool mIsActive;
 
-private:
-	sf::Sprite mSprite;
-	Widget* mRoot;
+	inline static sf::Window* sWindow;
+	inline static TextureHolder* sTextures;
 };
 
-
 }
+

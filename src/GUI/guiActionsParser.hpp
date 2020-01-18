@@ -1,20 +1,18 @@
 #pragma once
 
 #include "widget.hpp"
-
 #include <functional>
 #include <string>
 
 namespace ph {
 
-class GUI;
-class SceneManager;
-class GameCloser;
-
 class GuiActionsParser
 {
 public:
-	virtual std::function<void(Widget*)> getGuiAction(GameData& mGameData, const std::string& actionStr) const = 0;
+	std::function<void(Widget*)> getGuiAction(const std::string& actionStr) const;
+private:
+	std::pair<std::string, std::string> getSplitAction(const std::string& actionStr) const;
 };
 
 }
+

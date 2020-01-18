@@ -1,6 +1,7 @@
 #pragma once
 
 #include "widget.hpp"
+#include <SFML/Graphics/Color.hpp>
 
 namespace ph {
 
@@ -10,37 +11,21 @@ public:
 	TextWidget();
 
 	void setString(const std::string& text);
-
-	void setColor(const sf::Color& color);
-
+	void setTextColor(sf::Color color) { mTextColor = color; }
 	void setTextPosition(const sf::Vector2f& pos);
-
-	void setAlpha(unsigned int alpha) override;
-
 	void setTextOrigin(const sf::Vector2f& origin);
-
 	void setTextAlpha(unsigned int alpha);
-
 	void scaleText(const sf::Vector2f& scale);
-
-	void setPosition(const sf::Vector2f& pos) override;
-
-	void move(const sf::Vector2f& delta) override;
-
 	void setCharacterSize(unsigned int size);
-
 	void setFontPath(const std::string& path);
-
-	void scale(const sf::Vector2f& scale) override;
-
-	void draw() override;
-
 	void setScrollingEffect(bool flag);
 
 private:
-	sf::Text mText;
+	std::string mText;
 	sf::Vector2f mTextPosition;
+	sf::Color mTextColor;
 	bool scrollingEffect = false;
 };
 
 }
+

@@ -8,7 +8,7 @@ class CutScene
 {
 public:
 	CutScene(bool pausesSystems);
-	virtual void update(const sf::Time dt) = 0;
+	virtual void update(float dt) = 0;
 	bool isActive() const;
 	bool pausesSystems() const { return mPausesSystems; }
 

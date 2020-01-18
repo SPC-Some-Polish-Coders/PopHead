@@ -86,7 +86,7 @@ void Scene::handleEvent(const ActionEvent& event)
 	mSystemsQueue.handleEvents(event);
 }
 
-void Scene::update(sf::Time dt)
+void Scene::update(float dt)
 {
 	if(mPause)
 		return;
@@ -96,7 +96,7 @@ void Scene::update(sf::Time dt)
 		mCutSceneManager.updateCutScene(dt);
 
 	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
-		mSystemsQueue.update(dt.asSeconds());
+		mSystemsQueue.update(dt);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

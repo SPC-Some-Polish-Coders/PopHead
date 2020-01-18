@@ -41,12 +41,13 @@ Game::Game()
 
 	loadFonts(gameData);
 	mTerminal->init(gameData);
-	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
+
+	Widget::setWindow(&mWindow);
 
 	ActionEventManager::init();
 }
@@ -58,18 +59,13 @@ void Game::run()
 	{
 		mSceneManager->changingScenesProcess();
 		handleEvents();
-		const sf::Time dt = clock.restart();
-		update(correctDeltaTime(dt));
+		const float dt = clock.restart().asSeconds();
+		constexpr float minimalDTConstrain = 1.f/20.f;
+		update(dt > minimalDTConstrain ? minimalDTConstrain : dt);
 	}
 
 	Renderer::shutDown();
 	mWindow.close();
-}
-
-sf::Time Game::correctDeltaTime(sf::Time dt)
-{
-	const sf::Time dtMinimalConstrain = sf::seconds(1.f/20.f);
-	return dt > dtMinimalConstrain ? dtMinimalConstrain : dt;
 }
 
 void Game::handleEvents()
@@ -93,7 +89,7 @@ void Game::handleEvents()
 	}
 }
 
-void Game::update(sf::Time dt)
+void Game::update(float dt)
 {
 	mDebugCounter->sampleFrame();
 

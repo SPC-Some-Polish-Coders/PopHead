@@ -1,106 +1,61 @@
 #include "gui.hpp"
-#include "gameData.hpp"
+#include <cstring>
 
 namespace ph {
 
-GUI::GUI()
-	:mGameData(nullptr)
+Interface* GUI::addInterface(const char* name)
 {
+	return &mInterfaces.emplace_back(name);
 }
 
-Widget* GUI::addInterface(const std::string& name)
+Interface* GUI::getInterface(const char* name)
 {
-	auto iter = mInterfaceList.insert({name,std::make_unique<Interface>(mGameData)});
-	if (iter.second)
-	{
-		iter.first->second->setGameData(mGameData);
-		return iter.first->second.get();
-	}
+	for(auto& interface : mInterfaces)
+		if(strcmp(interface.getName(), name) == 0)
+			return &interface;
 	return nullptr;
 }
 
-Widget* GUI::getInterface(const std::string& name)
+bool GUI::hasInterface(const char* name)
 {
-	return mInterfaceList.find(name)->second.get();
+	return getInterface(name);
 }
 
-bool GUI::hasInterface(const std::string& name) const
+void GUI::deleteInterface(const char* name)
 {
-	return mInterfaceList.find(name) != mInterfaceList.cend();
+	for(auto it = mInterfaces.begin(); it != mInterfaces.end(); ++it)
+		if(strcmp(it->getName(), name) == 0)
+			mInterfaces.erase(it);
 }
 
-void GUI::move(const sf::Vector2f& delta)
+void GUI::showInterface(const char* name)
 {
-	for(const auto& k : mInterfaceList)
-		k.second->moveAlongBranch(delta);
+	if(auto* interface = getInterface(name))
+		interface->show();
 }
 
-void GUI::deleteInterface(const std::string& name)
+void GUI::hideInterface(const char* name)
 {
-	auto k = mInterfaceList.find(name);
-	if(k != mInterfaceList.end())
-		mInterfaceList.erase(k);
-}
-
-void GUI::showInterface(const std::string& name)
-{
-	auto k = mInterfaceList.find(name);
-	if(k != mInterfaceList.end())
-		k->second->show();
-}
-
-void GUI::hideInterface(const std::string& name)
-{
-	auto k = mInterfaceList.find(name);
-	if(k != mInterfaceList.end())
-		k->second->hide();
-}
-
-void GUI::swap(const std::string& first, const std::string& second)
-{
-	auto Ifirst = mInterfaceList.find(first);
-	auto Isecond = mInterfaceList.find(second);
-	if(Ifirst != mInterfaceList.end() && Isecond != mInterfaceList.end())
-		std::swap(Ifirst, Isecond);
-}
-
-void GUI::moveUp(const std::string& name)
-{
-	if(!mInterfaceList.empty())
-	{
-		auto current = mInterfaceList.find(name);
-		if(current != mInterfaceList.end()) {
-			auto top = mInterfaceList.end()--;
-			std::swap(current, top);
-		}
-	}
+	if(auto* interface = getInterface(name))
+		interface->hide();
 }
 
 void GUI::handleEvent(const ph::Event& e)
 {
-	for(const auto& i : mInterfaceList)
-		i.second->handleEvent(e);
+	for(auto& interface : mInterfaces)
+		interface.handleEvent(e);
 }
 
-void GUI::update(sf::Time dt)
+void GUI::update(float dt)
 {
-	for(const auto& k : mInterfaceList)
-		if(k.second->isActive())
-			k.second->update(dt);
-
-	for(const auto& k : mInterfaceList)
-		if(k.second->isActive())
-			k.second->draw();
-}
-
-void GUI::init(GameData* gamedata)
-{
-	mGameData = gamedata;
+	for(auto& interface : mInterfaces)
+		if(interface.isActive())
+			interface.update(dt);
 }
 
 void GUI::clearGUI()
 {
-	mInterfaceList.clear();
+	mInterfaces.clear();
 }
 
 }

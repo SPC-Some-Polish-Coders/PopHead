@@ -34,7 +34,7 @@ void HintAreas::update(float dt)
 					break;
 
 				mGui.getInterface("hints")->show();
-				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName)->show();
+				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName.c_str())->show();
 				hintDetails.isShown = true;
 
 				// NOTE: This is temporary
@@ -55,7 +55,7 @@ void HintAreas::update(float dt)
 			}
 			else if (hintDetails.isShown)
 			{
-				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName)->hide();
+				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName.c_str())->hide();
 				mGui.getInterface("hints")->hide();
 				hintDetails.isShown = false;
 			}

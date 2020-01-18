@@ -1,70 +1,49 @@
 #include "interface.hpp"
-#include "gameData.hpp"
+#include <cstring>
 
 namespace ph {
 
-Interface::Interface()
+Interface::Interface(const char* name)
 {
-	mSize = sf::Vector2u(300, 300);
-	mDefaultSize = mSize;
-	scale(sf::Vector2f(1, 1));
+	std::strcpy(mName, name);
 }
 
-Interface::Interface(GameData* data)
-	:Widget()
+void Interface::handleEvent(const Event& e)
 {
-	mGameData = data;
-
-	mWindow = dynamic_cast<sf::RenderWindow*>(&mGameData->getWindow());
-
-	mSize = mWindow->getSize();
-	mDefaultSize = mSize;
-	scale(sf::Vector2f(1, 1));
-
+	for(auto& widget : mWidgets)
+		if(widget->isActive())
+			widget->handleEvent(e);
 }
 
-void Interface::update(sf::Time dt)
+void Interface::update(float dt)
 {
-	for(const auto& k : mWidgetList)
-		if(k.second->isActive())
-			k.second->update(dt);
+	for(auto& widget : mWidgets)
+		if(widget->isActive())
+			widget->update(dt);
 }
 
-void Interface::draw()
+void Interface::show()
 {
-	if(isActive())
-		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
-			if(k->second->isActive())
-				k->second->draw();
+	mIsActive = true;
 }
 
-bool Interface::setContentPath(const std::string& path)
+void Interface::hide()
 {
-	/* Interface shouldn't be textured */
-	return false;
+	mIsActive = false;
 }
 
-void Interface::setPosition(const sf::Vector2f& pos)
+void Interface::addWidget(const char* name, Widget* widget)
 {
-	auto k = mGameData->getWindow().getSize();
-	mPosition.x = pos.x * k.x /2;
-	mPosition.y = pos.y * k.y /2;
-	for(const auto& k : mWidgetList)
-		k.second->rePosition();
+	mWidgets.emplace_back(widget);
 }
 
-void Interface::addWidget(const std::string& name, Widget* ptr)
+Widget* Interface::getWidget(const char* name)
 {
-	Widget::addWidget(name, ptr);
-}
-
-void Interface::move(const sf::Vector2f& delta)
-{
-}
-
-sf::Vector2f Interface::getGlobalPosition() const
-{
-	return mPosition;
+	for(auto& widget : mWidgets)
+		if(std::strcmp(widget->getName(), name) == 0)
+			return widget.get();
+	return nullptr;
 }
 
 }
+
