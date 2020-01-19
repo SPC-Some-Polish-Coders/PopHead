@@ -272,7 +272,7 @@ MultiParticleEmitter<br />
 </td>
 </tr>
 <tr>
-<td>PickupSystem</td>
+<td>PickupItems</td>
 <td>
 BodyRect<br />
 Medkit<br />

@@ -246,7 +246,7 @@
             ]
         },
         {
-            "name" : "PickupSystem",
+            "name" : "PickupItems",
             "componentsRead" : [
                 "BodyRect",
                 "Medkit",
