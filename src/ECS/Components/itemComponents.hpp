@@ -7,7 +7,7 @@ namespace ph::component {
 		int addHealthPoints;
 	};
 
-	struct BulletBox
+	struct BulletBox // should be removed?
 	{
 	};
 
