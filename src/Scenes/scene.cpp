@@ -60,7 +60,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::StaticCollisions>();
 	mSystemsQueue.appendSystem<system::AreasDebug>();
-	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::IsPlayerAlive>(); // is not used?
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
 	mSystemsQueue.appendSystem<system::HintAreas>(std::ref(gui));
