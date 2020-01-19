@@ -35,35 +35,31 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	aiManager.setIsPlayerOnScene(false);
 	ActionEventManager::setAllActionsEnabled(true);
 
-	std::thread workerThread([&]() {
-		PH_PROFILE_SCOPE("working thread", 1);
-		// parse gui
-		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
-			const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
-			XmlGuiParser categoryParser;
-			categoryParser.parseFile(gameData, categoryFilePath);
-		}
+	// parse gui
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		const std::string filePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
+		parseGuiXml(filePath, &gui, &textureHolder);
+	}
 
-		// parse audio
-		if(const auto audioNode = sceneLinksNode.getChild("audio")) {
-			const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
-			XmlAudioParser audioParser;
-			audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
-		}
+	// parse audio
+	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
+		XmlAudioParser audioParser;
+		audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
+	}
 
-		// parse ambient light 
-		const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
-		if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
-			sf::Color color = ambientLightNode->getAttribute("color")->toColor();
-			Renderer::setAmbientLightColor(color);
-		}
-		else
-			Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
+	// parse ambient light 
+	const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
+	if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
+		sf::Color color = ambientLightNode->getAttribute("color")->toColor();
+		Renderer::setAmbientLightColor(color);
+	}
+	else
+		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
-		// parse arcade mode
-		if(!sceneLinksNode.getChildren("arcadeMode").empty())
-			systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
-	});
+	// parse arcade mode
+	if(!sceneLinksNode.getChildren("arcadeMode").empty())
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();
@@ -85,9 +81,6 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}
-	
-	// join worker thread
-	workerThread.join();
 }
 
 }

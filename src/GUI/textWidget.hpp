@@ -10,9 +10,10 @@ class TextWidget : public Widget
 public:
 	TextWidget(const char* name);
 
-	void updateCurrent(float dt, float z) override;
+	void updateCurrent(float dt, unsigned char z) override;
 
-	void setString(const char* text);
+	void setText(const char* text);
+	void setText(const std::string& text) { mText = text; }
 	void setTextColor(sf::Color color) { mTextColor = color; }
 	void setTextSize(float size) { mTextSize = size; }
 	void setFontName(const char* fontName);

@@ -47,50 +47,9 @@ Game::Game()
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
 
-	// TODO_gui: do it some better way
 	Widget::setWindow(&mWindow);
-	Widget::setTextures(mTextures.get());
 
 	ActionEventManager::init();
-
-	// TEMPORARY GUI TEST
-	auto menu = mGui->addInterface("buttons");
-
-	auto* button1 = new Widget("button1");
-	button1->setTexture("textures/gui/optionsButton.png");
-	menu->addWidget(button1);
-
-	auto* livebar = new Widget("livebar");
-	livebar->setTexture("textures/gui/exitButton.png");
-	livebar->setTopRightPosition({1.f, 0.f});
-	menu->addWidget(livebar);
-
-	auto* slider = new SliderWidget("slider", "textures/others/zombieHead.png", 20.f, 80.f);
-	slider->setTexture("textures/others/bar.png");
-	slider->setBottomLeftPosition({0.2, 0.8});
-	slider->setSize({0.3f, 0.1f});
-	slider->setIconSize({0.2f, 1.f});
-	menu->addWidget(slider);
-
-	auto* centerWidget = new Widget("button2");
-	centerWidget->setTexture("textures/gui/creditsButton.png");
-	centerWidget->setSize({0.5f, 0.5f});
-	centerWidget->setCenterPosition({0.5f, 0.5f});
-	menu->addWidget(centerWidget);
-
-	auto* cbut1 = new Widget("cbut1");
-	centerWidget->addChildWidget(cbut1);
-	cbut1->setTexture("textures/gui/sewage.jpg");
-	cbut1->setSize({0.25f, 0.25f});
-	cbut1->setTopCenterPosition({0.5f, 0.f});
-	cbut1->setColor(sf::Color::Magenta);
-
-	auto* cbut2 = new TextWidget("cbut2");
-	centerWidget->addChildWidget(cbut2);
-	cbut2->setTexture("textures/gui/optionsButton.png");
-	cbut2->setString("abCD123!");
-	cbut2->setFontName("joystixMonospace.ttf");
-	cbut2->setTopCenterPosition({0.5f, 0.f});
 }
 
 void Game::run()

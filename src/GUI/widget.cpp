@@ -51,11 +51,11 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 
 void Widget::handleEventOnChildren(const ph::Event& phEvent)
 {
-	for(const auto& widget : mChildren)
+	for(const auto& widget : mWidgetChildren)
 		widget->handleEvent(phEvent);
 }
 
-void Widget::update(float dt, float z)
+void Widget::update(float dt, unsigned char z)
 {
 	if(mIsActive) 
 	{
@@ -71,20 +71,20 @@ void Widget::update(float dt, float z)
 	}
 }
 
-void Widget::updateCurrent(float dt, float z)
+void Widget::updateCurrent(float dt, unsigned char z)
 {
 }
 
-void Widget::updateChildren(float dt, float z)
+void Widget::updateChildren(float dt, unsigned char z)
 {
-	for(const auto& widget : mChildren)
+	for(const auto& widget : mWidgetChildren)
 		widget->update(dt, z);
 }
 
 Widget* Widget::addChildWidget(Widget* ptr)
 {
 	ptr->setParent(this);
-	return mChildren.emplace_back(ptr).get();
+	return mWidgetChildren.emplace_back(ptr).get();
 }
 
 void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
@@ -102,10 +102,9 @@ void Widget::show()
 	mIsActive = true;
 }
 
-void Widget::setTexture(const std::string& path)
+void Widget::setTexture(const Texture* texture)
 {
-	sTextures->load(path);
-	mTexture = &sTextures->get(path);
+	mTexture = texture;
 	auto textureSize = static_cast<sf::Vector2f>(mTexture->getSize());
 	mLocalNormalizedSize = {textureSize.x / 1920.f, textureSize.y / 1080.f};
 	mIsTextureSize = true;
@@ -165,14 +164,6 @@ void Widget::setRightCenterPosition(sf::Vector2f pos)
 void Widget::setLeftCenterPosition(sf::Vector2f pos)
 {
 	mLocalNormalizedPosition = {pos.x, pos.y - mLocalNormalizedSize.y / 2.f};
-}
-
-Widget* Widget::getWidget(const char* name)
-{
-	for(auto& widget : mChildren)
-		if(std::strcmp(widget->getName(), name))
-			return widget.get();
-	return nullptr;
 }
 
 sf::Vector2f Widget::getScreenPosition() const

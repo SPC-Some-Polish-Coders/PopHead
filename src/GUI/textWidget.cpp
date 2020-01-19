@@ -13,7 +13,7 @@ TextWidget::TextWidget(const char* name)
 {
 }
 
-void TextWidget::updateCurrent(float dt, float z)
+void TextWidget::updateCurrent(float dt, unsigned char z)
 {
 	if(mIsActive) 
 	{
@@ -28,7 +28,7 @@ void TextWidget::updateCurrent(float dt, float z)
 	}
 }
 
-void TextWidget::setString(const char* text)
+void TextWidget::setText(const char* text)
 {
 	mText = text;
 	// TODO_gui: get mSize

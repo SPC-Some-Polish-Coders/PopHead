@@ -1,38 +1,37 @@
 #pragma once
 
+#include "widgetParent.hpp"
 #include "behaviorType.hpp"
 #include "Events/event.hpp"
 #include "Renderer/API/texture.hpp"
 #include "Resources/resourceHolder.hpp"
 #include <map>
-#include <vector>
 #include <functional>
-#include <memory>
 
 namespace ph {
 
-class Widget 
+class Widget : public WidgetParent
 {
 public:
 	Widget(const char* name);
 
 	void handleEvent(const Event&);
-	void update(float dt, float z);
+	void update(float dt, unsigned char z);
 private:
 	virtual void handleEventOnCurrent(const ph::Event&);
-	virtual void updateCurrent(float dt, float z);
+	virtual void updateCurrent(float dt, unsigned char z);
 	void handleEventOnChildren(const ph::Event&);
-	void updateChildren(float dt, float z);
+	void updateChildren(float dt, unsigned char z);
 
 public:
-	Widget* addChildWidget(Widget* ptr);
+	Widget* addChildWidget(Widget* ptr) override;
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
 	void hide();
 	void show();
 
 	void setParent(Widget* parent) { mParent = parent; };
-	void setTexture(const std::string& path);
+	void setTexture(const Texture*);
 	void setColor(sf::Color color) { mColor = color; }
 	void setSize(sf::Vector2f size);
 	void move(sf::Vector2f offset);
@@ -48,7 +47,6 @@ public:
 	void setLeftCenterPosition(sf::Vector2f pos);
 
 	const char* getName() { return mName; }
-	Widget* getWidget(const char* name);
 	bool isActive() { return mIsActive; }
 
 	sf::Vector2f getLocalVirtualPosition() const { return mLocalNormalizedPosition; }
@@ -62,12 +60,11 @@ public:
 
 protected:
 	Widget* mParent;
-	std::vector<std::unique_ptr<Widget>> mChildren;
 	std::multimap<BehaviorType, std::function<void(Widget*)>> mBehaviors;
 
 	char mName[50];
 
-	Texture* mTexture;
+	const Texture* mTexture;
 	sf::Vector2f mLocalNormalizedPosition;
 	sf::Vector2f mLocalNormalizedSize;
 	sf::Color mColor;

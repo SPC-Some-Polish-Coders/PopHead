@@ -4,14 +4,13 @@
 
 namespace ph {
 
-SliderWidget::SliderWidget(const char* name, const std::string& iconTexturePath, float initSliderValue, float sliderMaxValue)
+SliderWidget::SliderWidget(const char* name)
 	:Widget(name)
-	,mSliderValue(initSliderValue)
-	,mSliderMaxValue(sliderMaxValue)
+	,mSliderValue(50.f)
+	,mSliderMaxValue(100.f)
 {
 	auto* icon = new Widget("sliderIcon");
-	icon->setTexture(iconTexturePath);
-	icon->setCenterPosition({initSliderValue / sliderMaxValue, 0.5f});
+	icon->setCenterPosition({mSliderValue / mSliderMaxValue, 0.5f});
 	mIconWidget = addChildWidget(icon);
 }
 
@@ -21,7 +20,12 @@ void SliderWidget::setIconSize(sf::Vector2f size)
 	mIconWidget->setCenterPosition({mSliderValue / mSliderMaxValue, 0.5f});
 }
 
-void SliderWidget::updateCurrent(float dt, float z)
+void SliderWidget::setIconTexture(const Texture* texture)
+{
+	mIconWidget->setTexture(texture);
+}
+
+void SliderWidget::updateCurrent(float dt, unsigned char z)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
 	{
