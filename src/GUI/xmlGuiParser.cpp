@@ -113,7 +113,7 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 		const std::string path = contentPathSlider->toString();
 		// TODO_gui
 		//mGui->getTextures().load(path);
-		widget.createSlider(path);
+		//widget.createSlider(path);
 	}
 	else
 		PH_EXIT_GAME("GUI XML ERROR: contentPathSilder is mandatory attribute");

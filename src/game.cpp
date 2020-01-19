@@ -65,6 +65,13 @@ Game::Game()
 	livebar->setTopRightPosition({1.f, 0.f});
 	menu->addWidget(livebar);
 
+	auto* slider = new SliderWidget("slider", "textures/others/zombieHead.png", 20.f, 80.f);
+	slider->setTexture("textures/others/bar.png");
+	slider->setBottomLeftPosition({0.2, 0.8});
+	slider->setSize({0.3f, 0.1f});
+	slider->setIconSize({0.2f, 1.f});
+	menu->addWidget(slider);
+
 	auto* centerWidget = new Widget("button2");
 	centerWidget->setTexture("textures/gui/creditsButton.png");
 	centerWidget->setSize({0.5f, 0.5f});

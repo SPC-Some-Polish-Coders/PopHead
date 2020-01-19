@@ -25,7 +25,7 @@ private:
 	void updateChildren(float dt, float z);
 
 public:
-	void addChildWidget(Widget* ptr);
+	Widget* addChildWidget(Widget* ptr);
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
 	void hide();

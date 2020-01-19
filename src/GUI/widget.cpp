@@ -81,10 +81,10 @@ void Widget::updateChildren(float dt, float z)
 		widget->update(dt, z);
 }
 
-void Widget::addChildWidget(Widget* ptr)
+Widget* Widget::addChildWidget(Widget* ptr)
 {
 	ptr->setParent(this);
-	mChildren.emplace_back(ptr);
+	return mChildren.emplace_back(ptr).get();
 }
 
 void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)

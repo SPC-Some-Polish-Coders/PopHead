@@ -1,68 +1,61 @@
 #include "sliderWidget.hpp"
-#include "gameData.hpp"
-
+#include "Renderer/renderer.hpp"
 #include <cmath>
 
 namespace ph {
 
-namespace {
-
-	// TODO_gui
-	//float getNewIconXPosition(double distanceXFromCenter, double parentXSize, int iconSize) {
-	//	double x = (parentXSize / 2) + distanceXFromCenter;
-	//	if (x > parentXSize)
-	//		return 0.95f;
-	//	if (x < 0)
-	//		return 0.f;
-	//	return static_cast<float>(std::min((x - iconSize * 0.5) / parentXSize, 0.95));
-	//}
-}
-
-int SliderWidget::getSliderValue() {
-	// TODO_gui
-	return 50;
-	//return static_cast<int>(mIcon->getPosition().x * 100);
-}
-
-void SliderWidget::createSlider(std::string path) 
+SliderWidget::SliderWidget(const char* name, const std::string& iconTexturePath, float initSliderValue, float sliderMaxValue)
+	:Widget(name)
+	,mSliderValue(initSliderValue)
+	,mSliderMaxValue(sliderMaxValue)
 {
-	// TODO_gui
-	/*mIcon = std::make_unique<Widget>();
-	addChildWidget("slider", mIcon.get());
-	mIcon->setContentPath(path);
-	mIcon->setPosition({ 0.95f, 0.f });*/
+	auto* icon = new Widget("sliderIcon");
+	icon->setTexture(iconTexturePath);
+	icon->setCenterPosition({initSliderValue / sliderMaxValue, 0.5f});
+	mIconWidget = addChildWidget(icon);
 }
 
-void SliderWidget::handleEventOnCurrent(const ph::Event& phEvent)
+void SliderWidget::setIconSize(sf::Vector2f size)
 {
-	// TODO_gui
-	//if (auto* e = std::get_if<sf::Event>(&phEvent))
-	//{
-	//	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	//	{
-	//		auto c = sf::Mouse::getPosition(mGameData->getWindow());
-	//		auto distanceFromCenter = mWindow->mapPixelToCoords(c);
-	//		if (mIsIconChecked || isMouseOnSliderIcon(distanceFromCenter))
-	//		{
-	//			mIsIconChecked = true;
-	//			mIcon->setPosition({ getNewIconXPosition(distanceFromCenter.x, mSize.x, mIcon->getSize().x), 0});
-	//		}
-	//		for (const auto& k : mBehaviors)
-	//			if (k.first == BehaviorType::onPressed)
-	//				k.second(this);
-	//	}
-	//	else mIsIconChecked = false;
-	//}
+	mIconWidget->setSize(size);
+	mIconWidget->setCenterPosition({mSliderValue / mSliderMaxValue, 0.5f});
 }
 
-bool SliderWidget::isMouseOnSliderIcon(const sf::Vector2f& distanceFromCenter)
+void SliderWidget::updateCurrent(float dt, float z)
 {
-	// TODO_gui
-	return false;
-	/*return mIcon->getGlobalPosition().x < distanceFromCenter.x
-		&& mIcon->getGlobalPosition().x + mIcon->getSize().x > distanceFromCenter.x
-		&& mIcon->getGlobalPosition().y < distanceFromCenter.y
-		&& mIcon->getGlobalPosition().y + mIcon->getSize().y > distanceFromCenter.y;*/
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
+	{
+		auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
+		if (mIsIconChecked || isMouseOnSliderIcon(mousePos)) {
+			const float barLeftEndPos = getScreenPosition().x;
+			const float barWidth = getScreenSize().x;
+			if(mousePos.x <= barLeftEndPos) {
+				mSliderValue = 0.f;
+				mIconWidget->setCenterPosition({0.f, 0.5f});
+			}
+			else if(mousePos.x >= barLeftEndPos + barWidth) {
+				mSliderValue = mSliderMaxValue;
+				mIconWidget->setCenterPosition({1.f, 0.5f});
+			}
+			else {
+				const float distanceFromLeftEnd = mousePos.x - barLeftEndPos;
+				const float normalizedValue = distanceFromLeftEnd / barWidth;
+				mSliderValue = normalizedValue * mSliderMaxValue;
+				mIconWidget->setCenterPosition({mSliderValue / mSliderMaxValue, 0.5f});
+			}
+		}
+	}
+	else {
+		mIsIconChecked = false;
+	}
+}
+
+bool SliderWidget::isMouseOnSliderIcon(const sf::Vector2f& mousePos)
+{
+	return mIconWidget->getScreenPosition().x < mousePos.x
+		&& mIconWidget->getScreenPosition().x + mIconWidget->getScreenSize().x > mousePos.x
+		&& mIconWidget->getScreenPosition().y < mousePos.y
+		&& mIconWidget->getScreenPosition().y + mIconWidget->getScreenSize().y > mousePos.y;
 }
 
 }
