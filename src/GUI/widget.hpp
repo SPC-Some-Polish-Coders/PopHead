@@ -56,7 +56,6 @@ public:
 	sf::Vector2f getScreenSize() const;
 
 	static void setWindow(sf::Window* window) { sWindow = window; }
-	static void setTextures(TextureHolder* textures) { sTextures = textures; }
 
 protected:
 	Widget* mParent;
@@ -72,7 +71,6 @@ protected:
 	bool mIsActive;
 
 	inline static sf::Window* sWindow;
-	inline static TextureHolder* sTextures;
 };
 
 }

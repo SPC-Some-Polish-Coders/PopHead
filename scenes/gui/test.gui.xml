@@ -2,7 +2,7 @@
 <gui>
     <interface name="buttons">
           <widget name="b1" texturePath="textures/gui/optionsButton.png" />
-          <widget name="lifebar" texturePath="textures/gui/exitButton.png" topRightPosition="1, 0"/>
+          <widget name="lifebar" texturePath="textures/gui/exitButton.png" topRightPosition="1, 0" onButtonPressed="closeGame"/>
           <sliderWidget name="slider" texturePath="textures/others/bar.png" iconTexturePath="textures/others/zombieHead.png" bottomLeftPosition="0.1, 0.9" size="0.3, 0.1" iconSize="0.2, 1" sliderValue="20" maxSliderValue="115"/>
           <widget name="center" texturePath="textures/gui/creditsButton.png" centerPosition="0.5, 0.5" size="0.5, 0.5">
               <widget name="cb1" texturePath="textures/gui/sewage.jpg" size="0.25, 0.25" topCenterPosition="0.5, 0" color="magenta"/>

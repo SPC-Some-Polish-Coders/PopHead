@@ -5,6 +5,7 @@ namespace ph {
 
 Interface::Interface(const char* name)
 {
+	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Interface name length can be max 50 characters long!");
 	std::strcpy(mName, name);
 }
 

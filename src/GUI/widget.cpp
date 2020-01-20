@@ -13,6 +13,7 @@ Widget::Widget(const char* name)
 	,mIsTextureSize(false)
 	,mIsActive(true)
 {
+	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Widget name length can be max 50 characters long!");
 	std::strcpy(mName, name);
 }
 
