@@ -31,9 +31,11 @@ public:
 	void show();
 
 	void setParent(Widget* parent) { mParent = parent; };
-	void setTexture(const Texture*);
+	void setTexture(const Texture* texture) { mTexture = texture; }
 	void setColor(sf::Color color) { mColor = color; }
-	void setSize(sf::Vector2f size);
+	void setSize(sf::Vector2f size) { mLocalNormalizedSize = size; }
+	void setScreenSize(sf::Vector2f size);
+	void scale(sf::Vector2f scale);
 	void move(sf::Vector2f offset);
 
 	void setCenterPosition(sf::Vector2f pos);
@@ -67,7 +69,6 @@ protected:
 	sf::Vector2f mLocalNormalizedPosition;
 	sf::Vector2f mLocalNormalizedSize;
 	sf::Color mColor;
-	bool mIsTextureSize;
 	bool mIsActive;
 
 	inline static sf::Window* sWindow;

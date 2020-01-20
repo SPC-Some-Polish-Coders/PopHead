@@ -83,47 +83,51 @@ static void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent, Tex
 	}
 }
 
-void parseWidgetAttributes(const Xml& widgetTag, Widget* widget, TextureHolder& textureHolder, SceneManager& sceneManager,
+void parseWidgetAttributes(const Xml& widgetNode, Widget* widget, TextureHolder& textureHolder, SceneManager& sceneManager,
                            GameCloser& gameCloser, GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
 {
-	if(auto texturePath = widgetTag.getAttribute("texturePath")) {
+	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
 		const std::string path = texturePath->toString();
 		if(textureHolder.load(path))
 			widget->setTexture(&textureHolder.get(path));
 		else
 			PH_EXIT_GAME("XmlGuiParser error: Texture path wasn't properly loaded " + path);
 	}
-	if(auto size = widgetTag.getAttribute("size"))
+	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
-	if(auto pos = widgetTag.getAttribute("centerPosition"))
+	if(auto screenSize = widgetNode.getAttribute("screenSize"))
+		widget->setScreenSize(screenSize->toVector2f());
+	if(auto scale = widgetNode.getAttribute("scale"))
+		widget->scale(scale->toVector2f());
+	if(auto pos = widgetNode.getAttribute("centerPosition"))
 		widget->setCenterPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("leftCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("leftCenterPosition"))
 		widget->setLeftCenterPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("rightCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("rightCenterPosition"))
 		widget->setRightCenterPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("topCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("topCenterPosition"))
 		widget->setTopCenterPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("bottomCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomCenterPosition"))
 		widget->setBottomCenterPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("topLeftPosition"))
+	if(auto pos = widgetNode.getAttribute("topLeftPosition"))
 		widget->setTopLeftPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("topRightPosition"))
+	if(auto pos = widgetNode.getAttribute("topRightPosition"))
 		widget->setTopRightPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("bottomLeftPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomLeftPosition"))
 		widget->setBottomLeftPosition(pos->toVector2f());
-	if(auto pos = widgetTag.getAttribute("bottomRightPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomRightPosition"))
 		widget->setBottomRightPosition(pos->toVector2f());
-	if(auto color = widgetTag.getAttribute("color"))
+	if(auto color = widgetNode.getAttribute("color"))
 		widget->setColor(color->toColor());
-	if(auto hide = widgetTag.getAttribute("hide"))
+	if(auto hide = widgetNode.getAttribute("hide"))
 		if(hide->toBool())
 			widget->hide();
 
-	if(auto onButtonPressed = widgetTag.getAttribute("onButtonPressed"))
+	if(auto onButtonPressed = widgetNode.getAttribute("onButtonPressed"))
 		widget->addBehavior(BehaviorType::onPressed, getGuiAction(onButtonPressed->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
-	if(auto onButtonReleased = widgetTag.getAttribute("onButtonReleased"))
+	if(auto onButtonReleased = widgetNode.getAttribute("onButtonReleased"))
 		widget->addBehavior(BehaviorType::onReleased, getGuiAction(onButtonReleased->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
-	if(auto onButtonUpdate = widgetTag.getAttribute("onButtonUpdate"))
+	if(auto onButtonUpdate = widgetNode.getAttribute("onButtonUpdate"))
 		widget->addBehavior(BehaviorType::onUpdate, getGuiAction(onButtonUpdate->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
 }
 

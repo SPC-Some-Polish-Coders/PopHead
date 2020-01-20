@@ -10,7 +10,6 @@ Widget::Widget(const char* name)
 	,mLocalNormalizedPosition(0.f, 0.f)
 	,mLocalNormalizedSize(0.f, 0.f)
 	,mColor(sf::Color::White)
-	,mIsTextureSize(false)
 	,mIsActive(true)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Widget name length can be max 50 characters long!");
@@ -103,18 +102,15 @@ void Widget::show()
 	mIsActive = true;
 }
 
-void Widget::setTexture(const Texture* texture)
+void Widget::setScreenSize(sf::Vector2f size)
 {
-	mTexture = texture;
-	auto textureSize = static_cast<sf::Vector2f>(mTexture->getSize());
-	mLocalNormalizedSize = {textureSize.x / 1920.f, textureSize.y / 1080.f};
-	mIsTextureSize = true;
+	PH_ASSERT_CRITICAL(mParent == nullptr, "You can set screen size only to widgets which don't have parents");
+	mLocalNormalizedSize = {size.x / 1920.f, size.y / 1080.f};
 }
 
-void Widget::setSize(sf::Vector2f size)
+void Widget::scale(sf::Vector2f scale)
 {
-	mIsTextureSize = false;
-	mLocalNormalizedSize = size;
+	mLocalNormalizedSize = {mLocalNormalizedSize.x * scale.x, mLocalNormalizedSize.y * scale.y};
 }
 
 void Widget::move(sf::Vector2f offset)
@@ -181,8 +177,6 @@ sf::Vector2f Widget::getScreenPosition() const
 
 sf::Vector2f Widget::getScreenSize() const
 {
-	if(mIsTextureSize)
-		return static_cast<sf::Vector2f>(mTexture->getSize());
 	if(mParent) {
 		const auto parentSize = mParent->getScreenSize();
 		return sf::Vector2f(parentSize.x * mLocalNormalizedSize.x, parentSize.y * mLocalNormalizedSize.y);

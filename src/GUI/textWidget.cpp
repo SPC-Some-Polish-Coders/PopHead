@@ -31,7 +31,6 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 void TextWidget::setText(const char* text)
 {
 	mText = text;
-	// TODO_gui: get mSize
 }
 
 void TextWidget::setFontName(const char* fontName)
