@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui>
+  <widgetTemplate name="button" texturePath="textures/gui/button.png" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" />
   <interface name="mainMenu">
-    <widget name="buttons" topCenterPosition="0.5, 0.4" size="0.2, 0.6" color="transparent" >
-      <textWidget name="storyButton"   text="Story"   color="green"   texturePath="textures/gui/button.png" topCenterPosition="0.5, 0.0" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:scenes/subtitlesBeforeStartGameCutscene.xml" />
-      <textWidget name="arcadeButton"  text="Arcade"  color="orange"  texturePath="textures/gui/button.png" topCenterPosition="0.5, 0.2" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:scenes/arcadeModeChooseMenu.xml" />
-      <textWidget name="cretitsButton" text="Credits" color="blue"    texturePath="textures/gui/button.png" topCenterPosition="0.5, 0.4" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:scenes/credits.xml" />
-      <textWidget name="optionsButton" text="Options" color="magenta" texturePath="textures/gui/button.png" topCenterPosition="0.5, 0.6" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:scenes/options.xml" />
-      <textWidget name="exitButton"    text="Exit"    color="red"     texturePath="textures/gui/button.png" topCenterPosition="0.5, 0.8" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="closeGame" />
+    <widget name="buttons" topCenterPosition="0.5, 0.4" size="0.2, 0.5" color="transparent" >
+      <textWidget name="storyButton"   template="button" text="Story"   color="green"   topCenterPosition="0.5, 0.0" onButtonPressed="replaceScene:scenes/subtitlesBeforeStartGameCutscene.xml" />
+      <textWidget name="arcadeButton"  template="button" text="Arcade"  color="orange"  topCenterPosition="0.5, 0.2" onButtonPressed="replaceScene:scenes/arcadeModeChooseMenu.xml" />
+      <textWidget name="cretitsButton" template="button" text="Credits" color="blue"    topCenterPosition="0.5, 0.4" onButtonPressed="replaceScene:scenes/credits.xml" />
+      <textWidget name="optionsButton" template="button" text="Options" color="magenta" topCenterPosition="0.5, 0.6" onButtonPressed="replaceScene:scenes/options.xml" />
+      <textWidget name="exitButton"    template="button" text="Exit"    color="red"     topCenterPosition="0.5, 0.8" onButtonPressed="closeGame" />
     </widget>
   </interface>
 </gui>

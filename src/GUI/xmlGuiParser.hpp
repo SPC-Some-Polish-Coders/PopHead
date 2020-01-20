@@ -13,7 +13,7 @@ class SceneManager;
 class GameCloser;
 class MusicPlayer;
 class SoundPlayer;
-class WidgetParent;
+class WidgetParent;		
 class Widget;
 class TextWidget;
 class SliderWidget;

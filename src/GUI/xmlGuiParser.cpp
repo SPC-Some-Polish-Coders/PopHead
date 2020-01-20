@@ -46,41 +46,60 @@ void XmlGuiParser::parseGuiXml(const std::string& filepath)
 
 void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const
 {
-	auto widgets = widgetNode.getChildren("widget");
-	for(auto const& childTag : widgets)
+	enum class WidgetType {Widget, TextWidget, SliderWidget};
+
+	auto parseTemplateAttributes = [this](const Xml& widgetNode, Widget* widget, WidgetType widgetType)
 	{
-		auto name = childTag.getAttribute("name")->toString();
+		if(auto templateName = widgetNode.getAttribute("template"))
+			for(auto& widgetTemplate : mWidgetTemplates)
+				if(auto name = widgetTemplate.getAttribute("name"))
+					if(name->toString() == templateName->toString()) {
+						parseWidgetAttributes(widgetTemplate, widget);
+						if(widgetType == WidgetType::TextWidget)
+							parseTextWidgetAttributes(widgetTemplate, dynamic_cast<TextWidget*>(widget));
+						else if(widgetType == WidgetType::SliderWidget)
+							parseSliderWidgetAttributes(widgetTemplate, dynamic_cast<SliderWidget*>(widget));
+					}
+	};
+
+	auto widgets = widgetNode.getChildren("widget");
+	for(auto const& childNode : widgets)
+	{
+		auto name = childNode.getAttribute("name")->toString();
 		auto* childWidget = new Widget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget);
-		parseChildren(childTag, childWidget);
+		parseTemplateAttributes(childNode, childWidget, WidgetType::Widget);
+		parseWidgetAttributes(childNode, childWidget);
+		parseChildren(childNode, childWidget);
 	}
 
 	auto textWidgets = widgetNode.getChildren("textWidget");
-	for(auto const& childTag : textWidgets)
+	for(auto const& childNode : textWidgets)
 	{
-		auto name = childTag.getAttribute("name")->toString();
+		auto name = childNode.getAttribute("name")->toString();
 		auto* childWidget = new TextWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget);
-		parseTextWidgetAttributes(childTag, childWidget);
-		parseChildren(childTag, childWidget);
+		parseTemplateAttributes(childNode, childWidget, WidgetType::TextWidget);
+		parseWidgetAttributes(childNode, childWidget);
+		parseTextWidgetAttributes(childNode, childWidget);
+		parseChildren(childNode, childWidget);
 	}
 
 	auto sliderWidget = widgetNode.getChildren("sliderWidget");
-	for(auto const& childTag : sliderWidget)
+	for(auto const& childNode : sliderWidget)
 	{
-		auto name = childTag.getAttribute("name")->toString();
+		auto name = childNode.getAttribute("name")->toString();
 		auto childWidget = new SliderWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget);
-		parseSliderWidgetAttributes(childTag, childWidget);
-		parseChildren(childTag, childWidget);
+		parseTemplateAttributes(childNode, childWidget, WidgetType::SliderWidget);
+		parseWidgetAttributes(childNode, childWidget);
+		parseSliderWidgetAttributes(childNode, childWidget);
+		parseChildren(childNode, childWidget);
 	}
 }
 
 void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) const
-{
+{	
 	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
 		const std::string path = texturePath->toString();
 		if(mTextureHolder.load(path))
@@ -143,8 +162,6 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 		mTextureHolder.load(path);
 		widget->setIconTexture(&mTextureHolder.get(path));
 	}
-	else
-		PH_EXIT_GAME("GUI XML ERROR: iconTexturePath is mandatory attribute");
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
 		widget->setIconSize(iconSize->toVector2f());
 	if(auto sliderValue = widgetTag.getAttribute("sliderValue"))
