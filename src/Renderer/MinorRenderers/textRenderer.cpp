@@ -52,10 +52,10 @@ void TextRenderer::shutDown()
 
 void TextRenderer::beginDebugDisplay()
 {
-	mDebugTextPosition = {1150.f, 10.f};
+	mDebugTextPosition = {1150.f, 0.f};
 
 	if(mWasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Black, nullptr, {1120.f, 10.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Black, nullptr, {1120.f, 0.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
 	mWasDebugTextDrawnInLastFrame = false;
 }
 
@@ -68,9 +68,9 @@ void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vect
 void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color color)
 {
 	mWasDebugTextDrawnInLastFrame = true;
-	mDebugTextPosition.y += upMargin + size;
+	mDebugTextPosition.y += upMargin;
 	drawTextInternal(text, fontFilename, mDebugTextPosition, size, color, ProjectionType::gui);
-	mDebugTextPosition.y += downMargin;
+	mDebugTextPosition.y += downMargin + size;
 }
 
 void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size,
