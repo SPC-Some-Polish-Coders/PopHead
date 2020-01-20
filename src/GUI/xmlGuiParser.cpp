@@ -10,14 +10,23 @@
 
 namespace ph {
 
-XmlGuiParser::XmlGuiParser(GUI& gui, TextureHolder& th, SceneManager& sm, GameCloser& gc, MusicPlayer& mp, SoundPlayer& sp)
-	:mGui(gui)
-	,mTextureHolder(th)
-	,mSceneManager(sm)
-	,mGameCloser(gc)
-	,mMusicPlayer(mp)
-	,mSoundPlayer(sp)
+namespace {
+	GUI* gui = nullptr;
+	TextureHolder* textureHolder = nullptr;
+	SceneManager* sceneManager = nullptr;
+	GameCloser* gameCloser = nullptr;
+	MusicPlayer* musicPlayer = nullptr;
+	SoundPlayer* soundPlayer = nullptr;
+}
+
+void XmlGuiParser::init(GUI* g, TextureHolder* th, SceneManager* sm, GameCloser* gc, MusicPlayer* mp, SoundPlayer* sp)
 {
+	gui = g;
+	textureHolder = th;
+	sceneManager = sm;
+	gameCloser = gc;
+	musicPlayer = mp;
+	soundPlayer = sp;
 }
 
 void XmlGuiParser::parseGuiXml(const std::string& filepath)
@@ -34,7 +43,7 @@ void XmlGuiParser::parseGuiXml(const std::string& filepath)
 	for(auto& interfaceNode : interfaceNodes)
 	{
 		auto interfaceName = interfaceNode.getAttribute("name")->toString();
-		auto interface = mGui.addInterface(interfaceName.c_str());
+		auto interface = gui->addInterface(interfaceName.c_str());
 
 		if(auto hide = interfaceNode.getAttribute("hide"))
 			if(hide->toBool())
@@ -102,8 +111,8 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 {	
 	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
 		const std::string path = texturePath->toString();
-		if(mTextureHolder.load(path))
-			widget->setTexture(&mTextureHolder.get(path));
+		if(textureHolder->load(path))
+			widget->setTexture(&textureHolder->get(path));
 		else
 			PH_EXIT_GAME("XmlGuiParser error: Texture path wasn't properly loaded " + path);
 	}
@@ -159,8 +168,8 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 {
 	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) {
 		const std::string path = iconTexturePath->toString();
-		mTextureHolder.load(path);
-		widget->setIconTexture(&mTextureHolder.get(path));
+		textureHolder->load(path);
+		widget->setIconTexture(&textureHolder->get(path));
 	}
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
 		widget->setIconSize(iconSize->toVector2f());
@@ -177,37 +186,37 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	auto data = actionStr.substr(colonPos + 1);
 
 	if(name == "replaceScene") {
-		return [this, &data](Widget*) { mSceneManager.replaceScene(data); };
+		return [&data](Widget*) { sceneManager->replaceScene(data); };
 	}
 	else if(name == "loadLastSave") {
-		return [this](Widget*) { mSceneManager.replaceScene(mSceneManager.getCurrentMapName()); };
+		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentMapName()); };
 	}
 	else if(name == "changeMusicVolume") {
-		return [this](Widget* widget) {
+		return [](Widget* widget) {
 			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			mMusicPlayer.setVolume(static_cast<float>(volume));
+			musicPlayer->setVolume(static_cast<float>(volume));
 		};
 	}
 	else if(name == "changeSoundVolume") {
-		return [this](Widget* widget) {
+		return [](Widget* widget) {
 			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			mSoundPlayer.setVolume(static_cast<float>(volume));
+			soundPlayer->setVolume(static_cast<float>(volume));
 		};
 	}
 	else if(name == "closeGame") {
-		return [this](Widget*) {mGameCloser.closeGame(); };
+		return [](Widget*) {gameCloser->closeGame(); };
 	}
 	else if(name == "hideGuiInterface") {
-		return [this, &data](Widget*) {mGui.hideInterface(data.c_str()); };
+		return [&data](Widget*) {gui->hideInterface(data.c_str()); };
 	}
 	else if(name == "showGuiInterface") {
-		return [this, &data](Widget*) {mGui.showInterface(data.c_str()); };
+		return [&data](Widget*) {gui->showInterface(data.c_str()); };
 	}
 	else if(name == "setGamePause") {
-		return [this, &data](Widget*) {
+		return [&data](Widget*) {
 			bool pause = Cast::toBool(data);
-			mSceneManager.getScene().setPause(pause);
-			pause ? mGui.showInterface("pauseScreen") : mGui.hideInterface("pauseScreen");
+			sceneManager->getScene().setPause(pause);
+			pause ? gui->showInterface("pauseScreen") : gui->hideInterface("pauseScreen");
 		};
 	}
 

@@ -38,7 +38,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	// parse gui
 	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
 		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
-		XmlGuiParser guiParser(gui, textureHolder, gameData->getSceneManager(), gameData->getGameCloser(), musicPlayer, gameData->getSoundPlayer());
+		XmlGuiParser guiParser;
 		guiParser.parseGuiXml(filepath);
 	}
 

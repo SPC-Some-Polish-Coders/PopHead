@@ -23,7 +23,6 @@ public:
 	Terminal* getTerminal() { return mTerminal.get(); }
 
 private:
-	sf::Time correctDeltaTime(sf::Time dt);
 	void handleEvents();
 	void update(float dt);
 

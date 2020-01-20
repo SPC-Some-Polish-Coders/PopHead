@@ -4,6 +4,7 @@
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
+#include "GUI/xmlGuiParser.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
@@ -48,6 +49,7 @@ Game::Game()
 	mWindow.setKeyRepeatEnabled(false);
 
 	Widget::setWindow(&mWindow);
+	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser(), mMusicPlayer.get(), mSoundPlayer.get());
 
 	ActionEventManager::init();
 }

@@ -21,7 +21,8 @@ class SliderWidget;
 class XmlGuiParser
 {
 public:
-	XmlGuiParser(GUI&, TextureHolder&, SceneManager&, GameCloser&, MusicPlayer&, SoundPlayer&);
+	static void init(GUI* gui, TextureHolder* th, SceneManager* sm, GameCloser* gc, MusicPlayer* mp, SoundPlayer* sp);
+
 	void parseGuiXml(const std::string& filepath);
 private:
 	void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const;
@@ -32,12 +33,6 @@ private:
 
 private:
 	std::vector<Xml> mWidgetTemplates;
-	GUI& mGui;
-	TextureHolder& mTextureHolder;
-	SceneManager& mSceneManager;
-	GameCloser& mGameCloser;
-	MusicPlayer& mMusicPlayer;
-	SoundPlayer& mSoundPlayer;
 };
 
 }
