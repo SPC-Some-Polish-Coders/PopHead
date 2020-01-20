@@ -20,7 +20,7 @@ int main()
 
 #include "game.hpp"
 
-#include "GUI/messageBox.hpp"
+#include "Utilities/messageBox.hpp"
 #include "Logs/logs.hpp"
 #include "Logs/logsInitializing.hpp"
 

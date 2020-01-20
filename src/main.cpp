@@ -3,7 +3,7 @@
 #include "Logs/logger.hpp"
 #include "Logs/logsInitializing.hpp"
 #include "Utilities/profiling.hpp"
-#include "GUI/messageBox.hpp"
+#include "Utilities/messageBox.hpp"
 #include <stdexcept>
 #include <string>
 
