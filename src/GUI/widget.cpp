@@ -102,17 +102,6 @@ void Widget::show()
 	mIsActive = true;
 }
 
-void Widget::setScreenSize(sf::Vector2f size)
-{
-	PH_ASSERT_CRITICAL(mParent == nullptr, "You can set screen size only to widgets which don't have parents");
-	mLocalNormalizedSize = {size.x / 1920.f, size.y / 1080.f};
-}
-
-void Widget::scale(sf::Vector2f scale)
-{
-	mLocalNormalizedSize = {mLocalNormalizedSize.x * scale.x, mLocalNormalizedSize.y * scale.y};
-}
-
 void Widget::move(sf::Vector2f offset)
 {
 	mLocalNormalizedPosition += offset;

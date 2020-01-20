@@ -10,45 +10,41 @@
 
 namespace ph {
 
-static void parseChildren(const Xml& widgetTag, WidgetParent* widget, TextureHolder& textureHolder, SceneManager& sceneManager,
-                          GameCloser& gameCloser, GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer);
-
-static void parseWidgetAttributes(const Xml& widgetTag, Widget* widget, TextureHolder& textureHolder, SceneManager& sceneManager,
-                          GameCloser& gameCloser, GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer);
-
-static void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget);
-
-static void parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget, TextureHolder& textureHolder);
-
-static std::function<void(Widget*)> getGuiAction(const std::string& actionStr, SceneManager& sceneManager, GameCloser& gameCloser,
-                                                 GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer);
-
-
-void parseGuiXml(const std::string& fileName, GUI& gui, TextureHolder& textureHolder, SceneManager& sceneManager,
-                 GameCloser& gameCloser, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+XmlGuiParser::XmlGuiParser(GUI& gui, TextureHolder& th, SceneManager& sm, GameCloser& gc, MusicPlayer& mp, SoundPlayer& sp)
+	:mGui(gui)
+	,mTextureHolder(th)
+	,mSceneManager(sm)
+	,mGameCloser(gc)
+	,mMusicPlayer(mp)
+	,mSoundPlayer(sp)
 {
-	PH_LOG_INFO("Gui file (" + fileName + ") is being parsed.");
+}
 
-	Xml guiTag;
-	PH_ASSERT_CRITICAL(guiTag.loadFromFile(fileName), "Gui file \"" + fileName + "\" wasn't loaded correctly!");
-	guiTag = *guiTag.getChild("gui");
+void XmlGuiParser::parseGuiXml(const std::string& filepath)
+{
+	PH_LOG_INFO("Gui file (" + filepath + ") is being parsed.");
 
-	auto interfaceNodes = guiTag.getChildren("interface");
+	Xml guiNode;
+	PH_ASSERT_CRITICAL(guiNode.loadFromFile(filepath), "Gui file \"" + filepath + "\" wasn't loaded correctly!");
+	guiNode = *guiNode.getChild("gui");
+
+	mWidgetTemplates = guiNode.getChildren("widgetTemplate");
+
+	auto interfaceNodes = guiNode.getChildren("interface");
 	for(auto& interfaceNode : interfaceNodes)
 	{
 		auto interfaceName = interfaceNode.getAttribute("name")->toString();
-		auto interface = gui.addInterface(interfaceName.c_str());
+		auto interface = mGui.addInterface(interfaceName.c_str());
 
 		if(auto hide = interfaceNode.getAttribute("hide"))
 			if(hide->toBool())
 				interface->hide();
 
-		parseChildren(interfaceNode, interface, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
+		parseChildren(interfaceNode, interface);
 	}
 }
 
-static void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent, TextureHolder& textureHolder, SceneManager& sceneManager,
-                          GameCloser& gameCloser, GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const
 {
 	auto widgets = widgetNode.getChildren("widget");
 	for(auto const& childTag : widgets)
@@ -56,8 +52,8 @@ static void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent, Tex
 		auto name = childTag.getAttribute("name")->toString();
 		auto* childWidget = new Widget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
-		parseChildren(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
+		parseWidgetAttributes(childTag, childWidget);
+		parseChildren(childTag, childWidget);
 	}
 
 	auto textWidgets = widgetNode.getChildren("textWidget");
@@ -66,9 +62,9 @@ static void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent, Tex
 		auto name = childTag.getAttribute("name")->toString();
 		auto* childWidget = new TextWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
+		parseWidgetAttributes(childTag, childWidget);
 		parseTextWidgetAttributes(childTag, childWidget);
-		parseChildren(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
+		parseChildren(childTag, childWidget);
 	}
 
 	auto sliderWidget = widgetNode.getChildren("sliderWidget");
@@ -77,28 +73,23 @@ static void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent, Tex
 		auto name = childTag.getAttribute("name")->toString();
 		auto childWidget = new SliderWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseWidgetAttributes(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
-		parseSliderWidgetAttributes(childTag, childWidget, textureHolder);
-		parseChildren(childTag, childWidget, textureHolder, sceneManager, gameCloser, gui, musicPlayer, soundPlayer);
+		parseWidgetAttributes(childTag, childWidget);
+		parseSliderWidgetAttributes(childTag, childWidget);
+		parseChildren(childTag, childWidget);
 	}
 }
 
-void parseWidgetAttributes(const Xml& widgetNode, Widget* widget, TextureHolder& textureHolder, SceneManager& sceneManager,
-                           GameCloser& gameCloser, GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) const
 {
 	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
 		const std::string path = texturePath->toString();
-		if(textureHolder.load(path))
-			widget->setTexture(&textureHolder.get(path));
+		if(mTextureHolder.load(path))
+			widget->setTexture(&mTextureHolder.get(path));
 		else
 			PH_EXIT_GAME("XmlGuiParser error: Texture path wasn't properly loaded " + path);
 	}
 	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
-	if(auto screenSize = widgetNode.getAttribute("screenSize"))
-		widget->setScreenSize(screenSize->toVector2f());
-	if(auto scale = widgetNode.getAttribute("scale"))
-		widget->scale(scale->toVector2f());
 	if(auto pos = widgetNode.getAttribute("centerPosition"))
 		widget->setCenterPosition(pos->toVector2f());
 	if(auto pos = widgetNode.getAttribute("leftCenterPosition"))
@@ -124,14 +115,14 @@ void parseWidgetAttributes(const Xml& widgetNode, Widget* widget, TextureHolder&
 			widget->hide();
 
 	if(auto onButtonPressed = widgetNode.getAttribute("onButtonPressed"))
-		widget->addBehavior(BehaviorType::onPressed, getGuiAction(onButtonPressed->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
+		widget->addBehavior(BehaviorType::onPressed, getGuiAction(onButtonPressed->toString()));
 	if(auto onButtonReleased = widgetNode.getAttribute("onButtonReleased"))
-		widget->addBehavior(BehaviorType::onReleased, getGuiAction(onButtonReleased->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
+		widget->addBehavior(BehaviorType::onReleased, getGuiAction(onButtonReleased->toString()));
 	if(auto onButtonUpdate = widgetNode.getAttribute("onButtonUpdate"))
-		widget->addBehavior(BehaviorType::onUpdate, getGuiAction(onButtonUpdate->toString(), sceneManager, gameCloser, gui, musicPlayer, soundPlayer));
+		widget->addBehavior(BehaviorType::onUpdate, getGuiAction(onButtonUpdate->toString()));
 }
 
-static void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget)
+void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget) const
 {
 	if(auto pathXml = textWidgetTag.getAttribute("fontName"))
 		widget->setFontName(pathXml->toString().c_str());
@@ -145,12 +136,12 @@ static void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widg
 		widget->setScrollingEffect(scrollingEffect->toBool());
 }
 
-static void parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget, TextureHolder& textureHolder)
+void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const
 {
 	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) {
 		const std::string path = iconTexturePath->toString();
-		textureHolder.load(path);
-		widget->setIconTexture(&textureHolder.get(path));
+		mTextureHolder.load(path);
+		widget->setIconTexture(&mTextureHolder.get(path));
 	}
 	else
 		PH_EXIT_GAME("GUI XML ERROR: iconTexturePath is mandatory attribute");
@@ -162,45 +153,44 @@ static void parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widg
 		widget->setSliderMaxValue(maxSliderValue->toFloat());
 }
 
-static std::function<void(Widget*)> getGuiAction(const std::string& actionStr, SceneManager& sceneManager, GameCloser& gameCloser,
-                                                 GUI& gui, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actionStr) const
 {
 	auto colonPos = actionStr.find(':');
 	auto name = actionStr.substr(0, colonPos);
 	auto data = actionStr.substr(colonPos + 1);
 
 	if(name == "replaceScene") {
-		return [&sceneManager, &data](Widget*) { sceneManager.replaceScene(data); };
+		return [this, &data](Widget*) { mSceneManager.replaceScene(data); };
 	}
 	else if(name == "loadLastSave") {
-		return [&sceneManager](Widget*) { sceneManager.replaceScene(sceneManager.getCurrentMapName()); };
+		return [this](Widget*) { mSceneManager.replaceScene(mSceneManager.getCurrentMapName()); };
 	}
 	else if(name == "changeMusicVolume") {
-		return [&musicPlayer](Widget* widget) {
+		return [this](Widget* widget) {
 			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			musicPlayer.setVolume(static_cast<float>(volume));
+			mMusicPlayer.setVolume(static_cast<float>(volume));
 		};
 	}
 	else if(name == "changeSoundVolume") {
-		return [&soundPlayer](Widget* widget) {
+		return [this](Widget* widget) {
 			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			soundPlayer.setVolume(static_cast<float>(volume));
+			mSoundPlayer.setVolume(static_cast<float>(volume));
 		};
 	}
 	else if(name == "closeGame") {
-		return [&gameCloser](Widget*) {gameCloser.closeGame(); };
+		return [this](Widget*) {mGameCloser.closeGame(); };
 	}
 	else if(name == "hideGuiInterface") {
-		return [&gui, &data](Widget*) {gui.hideInterface(data.c_str()); };
+		return [this, &data](Widget*) {mGui.hideInterface(data.c_str()); };
 	}
 	else if(name == "showGuiInterface") {
-		return [&gui, &data](Widget*) {gui.showInterface(data.c_str()); };
+		return [this, &data](Widget*) {mGui.showInterface(data.c_str()); };
 	}
 	else if(name == "setGamePause") {
-		return [&sceneManager, &gui, &data](Widget*) {
+		return [this, &data](Widget*) {
 			bool pause = Cast::toBool(data);
-			sceneManager.getScene().setPause(pause);
-			pause ? gui.showInterface("pauseScreen") : gui.hideInterface("pauseScreen");
+			mSceneManager.getScene().setPause(pause);
+			pause ? mGui.showInterface("pauseScreen") : mGui.hideInterface("pauseScreen");
 		};
 	}
 
