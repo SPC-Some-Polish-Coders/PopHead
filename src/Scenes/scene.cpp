@@ -48,6 +48,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 {
 	terminal.setSceneRegistry(&mRegistry);
 
+	/*
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
@@ -79,6 +80,7 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
 	mSystemsQueue.appendSystem<system::Cars>();
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
+	*/
 }
 
 void Scene::handleEvent(const ActionEvent& event)
