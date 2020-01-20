@@ -25,7 +25,9 @@ public:
 
 	void parseGuiXml(const std::string& filepath);
 private:
+	template<typename WidgetParent>
 	void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const;
+
 	void parseWidgetAttributes(const Xml& widgetNode, Widget* widget) const;
 	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget) const;
 	void parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const;

@@ -38,5 +38,13 @@ Widget* Interface::addChildWidget(Widget* widget)
 	return mWidgetChildren.emplace_back(widget).get();
 }
 
+Widget* Interface::getWidget(const char* name)
+{
+	for(auto& widget : mWidgetChildren)
+		if(std::strcmp(widget->getName(), name))
+			return widget.get();
+	return nullptr;
+}
+
 }
 

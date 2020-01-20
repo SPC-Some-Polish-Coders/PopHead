@@ -1,13 +1,12 @@
 #pragma once
 
-#include "widgetParent.hpp"
 #include "widget.hpp"
 #include "Events/event.hpp"
 #include <vector>
 
 namespace ph {
 
-class Interface : public WidgetParent
+class Interface 
 {
 public:
 	Interface(const char* name);
@@ -18,12 +17,14 @@ public:
 	void show();
 	void hide();
 
-	Widget* addChildWidget(Widget* widget) override;
+	Widget* addChildWidget(Widget* widget);
+	Widget* getWidget(const char* name);
 
 	bool isActive() { return mIsActive; }
 	const char* getName() { return mName; }
 
 private:
+	std::vector<std::unique_ptr<Widget>> mWidgetChildren;
 	char mName[50];
 	bool mIsActive = true;
 };

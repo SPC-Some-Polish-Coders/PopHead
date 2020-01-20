@@ -1,6 +1,5 @@
 #pragma once
 
-#include "widgetParent.hpp"
 #include "behaviorType.hpp"
 #include "Events/event.hpp"
 #include "Renderer/API/texture.hpp"
@@ -10,7 +9,7 @@
 
 namespace ph {
 
-class Widget : public WidgetParent
+class Widget
 {
 public:
 	Widget(const char* name);
@@ -24,7 +23,9 @@ private:
 	void updateChildren(float dt, unsigned char z);
 
 public:
-	Widget* addChildWidget(Widget* ptr) override;
+	Widget* addChildWidget(Widget* ptr);
+	Widget* getWidget(const char* name);
+
 	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
 
 	void hide();
@@ -58,11 +59,12 @@ public:
 	static void setWindow(sf::Window* window) { sWindow = window; }
 
 protected:
-	Widget* mParent;
-	std::multimap<BehaviorType, std::function<void(Widget*)>> mBehaviors;
-
 	char mName[50];
 
+	std::multimap<BehaviorType, std::function<void(Widget*)>> mBehaviors;
+	std::vector<std::unique_ptr<Widget>> mWidgetChildren;
+
+	Widget* mParent;
 	const Texture* mTexture;
 	sf::Vector2f mLocalNormalizedPosition;
 	sf::Vector2f mLocalNormalizedSize;

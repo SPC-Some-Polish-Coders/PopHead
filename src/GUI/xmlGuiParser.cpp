@@ -49,10 +49,11 @@ void XmlGuiParser::parseGuiXml(const std::string& filepath)
 			if(hide->toBool())
 				interface->hide();
 
-		parseChildren(interfaceNode, interface);
+		parseChildren<Interface>(interfaceNode, interface);
 	}
 }
 
+template<typename WidgetParent>
 void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const
 {
 	enum class WidgetType {Widget, TextWidget, SliderWidget};
@@ -79,7 +80,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		widgetParent->addChildWidget(childWidget);
 		parseTemplateAttributes(childNode, childWidget, WidgetType::Widget);
 		parseWidgetAttributes(childNode, childWidget);
-		parseChildren(childNode, childWidget);
+		parseChildren<Widget>(childNode, childWidget);
 	}
 
 	auto textWidgets = widgetNode.getChildren("textWidget");
@@ -91,7 +92,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		parseTemplateAttributes(childNode, childWidget, WidgetType::TextWidget);
 		parseWidgetAttributes(childNode, childWidget);
 		parseTextWidgetAttributes(childNode, childWidget);
-		parseChildren(childNode, childWidget);
+		parseChildren<Widget>(childNode, childWidget);
 	}
 
 	auto sliderWidget = widgetNode.getChildren("sliderWidget");
@@ -103,7 +104,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		parseTemplateAttributes(childNode, childWidget, WidgetType::SliderWidget);
 		parseWidgetAttributes(childNode, childWidget);
 		parseSliderWidgetAttributes(childNode, childWidget);
-		parseChildren(childNode, childWidget);
+		parseChildren<Widget>(childNode, childWidget);
 	}
 }
 

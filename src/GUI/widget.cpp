@@ -87,6 +87,14 @@ Widget* Widget::addChildWidget(Widget* ptr)
 	return mWidgetChildren.emplace_back(ptr).get();
 }
 
+Widget* Widget::getWidget(const char* name)
+{
+	for(auto& widget : mWidgetChildren)
+		if(std::strcmp(widget->getName(), name))
+			return widget.get();
+	return nullptr;
+}
+
 void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
 {
 	mBehaviors.insert({type,func});
