@@ -88,7 +88,7 @@ Killable<br />
 KinematicCollisionBody<br />
 Damage<br />
 PushingForces<br />
-GunAttackre<br />
+GunAttacker<br />
 FaceDirection<br />
 Camera<br />
 AnimationData<br />
