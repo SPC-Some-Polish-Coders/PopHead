@@ -110,7 +110,8 @@ void Game::update(float dt)
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 			width += 5.f;
 		Renderer::submitQuad(0, 0, &sf::Color::Red, 0, {100.f, 100.f}, {width, 4.f}, 0, 0.f, {}, ProjectionType::gui);
-		Renderer::submitTextArea("abcdef 1234 lol", "joystixMonospace.ttf", {100.f, 100.f}, width, TextAligment::center, 30, sf::Color::Red, ProjectionType::gui);
+		Renderer::submitTextArea("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean purus leo, auctor semper hendrerit quis, egestas eget lorem.Nunc ullamcorper ante tempor imperdiet malesuada.In eros purus, rhoncus at pharetra sed, consectetur eu eros.Donec luctus odio at leo consectetur, in auctor orci vulputate.In ullamcorper, ",
+			"joystixMonospace.ttf", {100.f, 100.f}, width, TextAligment::left, 40, sf::Color::Red, ProjectionType::gui);
 		}
 
 		Renderer::endScene(mWindow);

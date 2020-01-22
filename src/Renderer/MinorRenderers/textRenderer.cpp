@@ -82,121 +82,91 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 
 	worldPos.y += size;
 
-	switch(aligment)
-	{
-		case ph::TextAligment::left: {
-			// TODO: This algorithm is wrong!!!
-			sf::Vector2f localPos;
-			while(*text) 
-			{
-				if(*text >= '!' && *text <= '~') {
-					auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
-					// TODO: Handle z
-					Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
-						localPos + worldPos, cq.size, 0, 0.f, {}, ProjectionType::gui);
-					localPos.x += cq.advance;
-				}
-				else {
-					if(localPos.x >= textAreaWidth) {
-						localPos.y += size;
-						localPos.x = 0.f;
-					}
-					else {
-						localPos.x += size;
-					}
-				}
-				++text;
-			}
-		} break;
+	std::vector<CharacterQuad> rowCharacters;
+	sf::Vector2f localPos;
+	unsigned wordsInCurrentRow = 0;
+	unsigned lettersInCurrentWord = 0;
 
-		case ph::TextAligment::center: {
-			std::vector<CharacterQuad> rowCharacters;
-			sf::Vector2f localPos;
-			unsigned wordsInCurrentRow = 0;
-			unsigned lettersInCurrentWord = 0;
-			
-			if(textAreaWidth <= 25.f)
+	auto getXOffset = [textAreaWidth, aligment, size](float mostRightCharacterPosX)
+	{
+		switch(aligment)
+		{
+			case ph::TextAligment::left: return 0.f;
+			case ph::TextAligment::center: return (textAreaWidth - mostRightCharacterPosX) / 2.f;
+			case ph::TextAligment::right: return textAreaWidth - mostRightCharacterPosX + size;
+			default: break;
+		}
+	};
+
+	while(1)
+	{
+		if(*text >= '!' && *text <= '~') 
+		{
+			auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
+			localPos.x += cq.advance;
+			rowCharacters.emplace_back(cq);
+			++lettersInCurrentWord;
+		}
+		else //probably space character     // TODO: What with double/triple spaces
+		{
+			localPos.x += size;
+			if(localPos.x > textAreaWidth) 
 			{
+				if(wordsInCurrentRow > 0)
+				{
+					auto firstNotFittingLetterInTheRow = rowCharacters.begin() + rowCharacters.size() - lettersInCurrentWord;
+					const float xOffset = getXOffset(firstNotFittingLetterInTheRow->pos.x);
+					for(auto it = rowCharacters.begin(); it != firstNotFittingLetterInTheRow; ++it) 
+					{
+						it->pos.x += xOffset;
+						// TODO: Handle z
+						Renderer::submitQuad(data.textureAtlas.get(), &it->textureRect, &color, &mTextShader,
+							it->pos + worldPos, it->size, 0, 0.f, {}, projectionType);
+					}
+					rowCharacters.clear();
+					text -= lettersInCurrentWord + 1;
+				}
+				else
+				{
+					const float xOffset = getXOffset(localPos.x);
+					for(auto& cq : rowCharacters)
+					{
+						cq.pos.x += xOffset;
+						// TODO: Handle z
+						Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+							cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
+					}
+					rowCharacters.clear();
+				}
+				localPos.x = 0;
+				localPos.y += size;
 				wordsInCurrentRow = 0;
 			}
-
-			while(1)
+			else 
 			{
-				if(*text >= '!' && *text <= '~') 
-				{
-					auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
-					localPos.x += cq.advance;
-					rowCharacters.emplace_back(cq);
-					++lettersInCurrentWord;
-				}
-				else //probably space character     // TODO: What with double/triple spaces
-				{
-					localPos.x += size;
-					if(localPos.x > textAreaWidth) 
-					{
-						if(wordsInCurrentRow > 0)
-						{
-							auto firstNotFittingLetterInTheRow = rowCharacters.begin() + rowCharacters.size() - lettersInCurrentWord;
-							float rowXOffset = (textAreaWidth - firstNotFittingLetterInTheRow->pos.x) / 2.f;
-							for(auto it = rowCharacters.begin(); it != firstNotFittingLetterInTheRow; ++it) 
-							{
-								it->pos.x += rowXOffset;
-								// TODO: Handle z
-								Renderer::submitQuad(data.textureAtlas.get(), &it->textureRect, &color, &mTextShader,
-									it->pos + worldPos, it->size, 0, 0.f, {}, projectionType);
-							}
-							rowCharacters.clear();
-							text -= lettersInCurrentWord + 1;
-						}
-						else
-						{
-							float xOffset = (textAreaWidth - localPos.x) / 2.f;
-							for(auto& cq : rowCharacters)
-							{
-								cq.pos.x += xOffset;
-								// TODO: Handle z
-								Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
-									cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
-							}
-							rowCharacters.clear();
-						}
-						localPos.x = 0;
-						localPos.y += size;
-						wordsInCurrentRow = 0;
-					}
-					else 
-					{
-						++wordsInCurrentRow;
-					}
-					lettersInCurrentWord = 0;
-				}
-
-				text++;
-
-				if(*(text) == '\0')
-				{
-					if(!rowCharacters.empty())
-					{
-						float rowLeftOffset = (textAreaWidth - localPos.x) / 2.f;
-						for(auto& cq : rowCharacters)
-						{
-							cq.pos.x += rowLeftOffset;
-							// TODO: Handle z
-							Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
-								cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
-						}
-						rowCharacters.clear();
-					}
-					break;
-				}
+				++wordsInCurrentRow;
 			}
-		} break;
+			lettersInCurrentWord = 0;
+		}
 
-		case ph::TextAligment::right:
+		text++;
+
+		if(*(text) == '\0')
+		{
+			if(!rowCharacters.empty())
+			{
+				const float xOffset = getXOffset(localPos.x);
+				for(auto& cq : rowCharacters)
+				{
+					cq.pos.x += xOffset;
+					// TODO: Handle z
+					Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+						cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
+				}
+				rowCharacters.clear();
+			}
 			break;
-			
-		default:
-			break;
+		}
 	}
 }
 
