@@ -17,7 +17,7 @@ public:
 	void setText(const std::string& text) { mText = text; }
 	void setTextAligment(TextAligment aligment) { mTextAligment = aligment; }
 	void setTextColor(sf::Color color) { mTextColor = color; }
-	void setTextSize(float size) { mTextSize = size; }
+	void setFontSize(float size) { mFontSize = size; }
 	void setFontName(const char* fontName);
 	void setScrollingEffect(bool se) { mScrollingEffect = se; }
 
@@ -25,7 +25,7 @@ private:
 	char mFontName[50];
 	std::string mText;
 	TextAligment mTextAligment;
-	float mTextSize;
+	float mFontSize;
 	sf::Color mTextColor;
 	bool mScrollingEffect;
 };

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
-    <interface name="credits">
-        <widget name="border" contentPath="textures/gui/menuBorder.png" origin="0.5"> <textWidget name="Music"   origin="0.5" position="0.4, 0.4"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="20" text="Music"/>
-            <sliderWidget name="musicSlider" origin="0.5" position="0.5, 0.5" contentPath="textures/others/bar.png" startValue="50" minValue="0" maxValue="100" contentPathSlider="textures/others/zombieHead.png" onButtonPressed="changeMusicVolume:"/>
-            <textWidget name="Sound"   origin="0.5" position="0.4, 0.6"  fontPath="fonts/joystixMonospace.ttf" color="rgb(27, 74, 32)" characterSize="20" text="Sound"/>
-            <sliderWidget name="SoundSlider" origin="0.5" position="0.5, 0.7" contentPath="textures/others/bar.png" startValue="50" minValue="0" maxValue="100" contentPathSlider="textures/others/zombieHead.png" onButtonPressed="changeSoundVolume:"/>
-            <textWidget name="exitButton" contentPath="textures/gui/exitButton.png" origin="0.5" position="0.5,0.9" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main menu"></textWidget>
-        </widget>
-    </interface>
+  <widgetTemplate name="slider" texturePath="others/bar.png" size="0.5, 0.1" startValue="50" minValue="0" maxValue="100" iconTexturePath="others/zombieHead.png" />
+  <interface name="credits">
+    <textWidget name="Music" text="Music" bottomCenterPosition="0.4, 0.5"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
+    <sliderWidget name="musicSlider" template="slider" centerPosition="0.5, 0.5" onButtonPressed="changeMusicVolume:"/>
+    <textWidget name="Sound" text="Sound" bottomCenterPosition="0.4, 0.7"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
+    <sliderWidget name="SoundSlider" template="slider" centerPosition="0.5, 0.7" onButtonPressed="changeSoundVolume:"/>
+    <textWidget name="exitButton" text="Main menu" texturePath="gui/button.png" color="red" fontSize="50" centerPosition="0.5,0.9" size="0.3, 0.1" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" />
+  </interface>
 </gui>

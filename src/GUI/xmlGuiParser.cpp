@@ -111,11 +111,9 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) const
 {	
 	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
-		const std::string path = texturePath->toString();
-		if(textureHolder->load(path))
-			widget->setTexture(&textureHolder->get(path));
-		else
-			PH_EXIT_GAME("XmlGuiParser error: Texture path wasn't properly loaded " + path);
+		const std::string path = "textures/" + texturePath->toString();
+		PH_ASSERT_CRITICAL(textureHolder->load(path), "XmlGuiParser error: Texture path wasn't properly loaded " + path)
+		widget->setTexture(&textureHolder->get(path));
 	}
 	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
@@ -168,8 +166,8 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 		widget->setTextColor(textColor->toColor());
 	if(auto text = textWidgetTag.getAttribute("text"))
 		widget->setText(text->toString());
-	if(auto textSize = textWidgetTag.getAttribute("textSize"))
-		widget->setTextSize(textSize->toFloat());
+	if(auto fontSize = textWidgetTag.getAttribute("fontSize"))
+		widget->setFontSize(fontSize->toFloat());
 	if(auto scrollingEffect = textWidgetTag.getAttribute("scrollingEffect"))
 		widget->setScrollingEffect(scrollingEffect->toBool());
 }
@@ -177,8 +175,8 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const
 {
 	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) {
-		const std::string path = iconTexturePath->toString();
-		textureHolder->load(path);
+		const std::string path = "textures/" + iconTexturePath->toString();
+		PH_ASSERT_CRITICAL(textureHolder->load(path), "XmlGuiParser error: Icon texture path wasn't properly loaded " + path)
 		widget->setIconTexture(&textureHolder->get(path));
 	}
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
@@ -196,7 +194,7 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	auto data = actionStr.substr(colonPos + 1);
 
 	if(name == "replaceScene") {
-		return [&data](Widget*) { sceneManager->replaceScene(data); };
+		return [data](Widget*) { sceneManager->replaceScene("scenes/" + data); };
 	}
 	else if(name == "loadLastSave") {
 		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentMapName()); };
@@ -217,13 +215,13 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 		return [](Widget*) {gameCloser->closeGame(); };
 	}
 	else if(name == "hideGuiInterface") {
-		return [&data](Widget*) {gui->hideInterface(data.c_str()); };
+		return [data](Widget*) {gui->hideInterface(data.c_str()); };
 	}
 	else if(name == "showGuiInterface") {
-		return [&data](Widget*) {gui->showInterface(data.c_str()); };
+		return [data](Widget*) {gui->showInterface(data.c_str()); };
 	}
 	else if(name == "setGamePause") {
-		return [&data](Widget*) {
+		return [data](Widget*) {
 			bool pause = Cast::toBool(data);
 			sceneManager->getScene().setPause(pause);
 			pause ? gui->showInterface("pauseScreen") : gui->hideInterface("pauseScreen");

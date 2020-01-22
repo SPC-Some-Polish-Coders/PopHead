@@ -10,6 +10,7 @@ SliderWidget::SliderWidget(const char* name)
 	,mSliderMaxValue(100.f)
 {
 	auto* icon = new Widget("sliderIcon");
+	icon->setSize({0.15f, 1.f});
 	icon->setCenterPosition({mSliderValue / mSliderMaxValue, 0.5f});
 	mIconWidget = addChildWidget(icon);
 }

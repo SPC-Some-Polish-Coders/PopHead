@@ -8,7 +8,7 @@ TextWidget::TextWidget(const char* name)
 	:Widget(name)
 	,mFontName()
 	,mTextAligment(TextAligment::center)
-	,mTextSize(30.f)
+	,mFontSize(30.f)
 	,mTextColor(sf::Color::White)
 	,mScrollingEffect(false)
 {
@@ -26,7 +26,7 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 			move({0, -0.35f});
 
 		Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
-			mTextAligment, mTextSize, mTextColor, --z, ProjectionType::gui);
+			mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui);
 	}
 }
 
