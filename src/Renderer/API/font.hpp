@@ -1,20 +1,19 @@
 #pragma once
 
 #include "shader.hpp"
+#include "texture.hpp"
 #include <vector>
 #include <stb_truetype.h>
+#include <memory>
 
 namespace ph {
-
-	class Shader;
 
 	struct SizeSpecificFontData
 	{
 		SizeSpecificFontData(const char* filename, float size);
 
 		stbtt_bakedchar charactersData[96];
-		int textureAtlasSideSize;
-		unsigned textureAtlas;
+		std::shared_ptr<Texture> textureAtlas;
 	};
 
 	class Font

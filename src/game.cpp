@@ -103,6 +103,8 @@ void Game::update(float dt)
 		mTerminal->update();
 		mDebugCounter->update();
 
+		//Renderer::submitTextArea("abcdef 1234 lol", "joystixMonospace.ttf", {100.f, 100.f}, 100.f, TextAligment::left, 30, sf::Color::Red, ProjectionType::gui);
+
 		Renderer::endScene(mWindow);
 		mWindow.display();
 	}

@@ -10,44 +10,45 @@
 #include <stb_truetype.h>
 #include <cstdio>
 #include <cstring>
-#include <map>
+#include <vector>
+#include <array>
+#include <cmath>
 
 namespace ph {
 
+namespace {
+	struct CharacterQuad
+	{
+		sf::Vector2f pos;
+		sf::Vector2f size;
+		IntRect textureRect;
+	};
+
+	CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
+	{
+		const stbtt_bakedchar* bc = chardata + charIndex;
+		CharacterQuad q;
+		q.pos.x = std::floorf(pos->x + bc->xoff + 0.5f);
+		q.pos.y = std::floorf(pos->y + bc->yoff + 0.5f);
+		unsigned short width = bc->x1 - bc->x0;
+		unsigned short height = bc->y1 - bc->y0;
+		q.size = {float(width), float(height)};
+		q.textureRect = {bc->x0, textureWidth - bc->y0 - height, width, height};
+		pos->x += bc->xadvance;
+		return q;
+	}
+}
+
 void TextRenderer::init()
 {
-	// create text vao, vbo, ibo
-	GLCheck( glGenVertexArrays(1, &mTextVAO) );
-	GLCheck( glBindVertexArray(mTextVAO) );
-
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTextIBO) );
-
-	GLCheck( glGenBuffers(1, &mTextVBO) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(float), nullptr, GL_DYNAMIC_DRAW); )
-
-	unsigned quadIndices[] = {0, 1, 2, 2, 3, 0};
-	GLCheck( glGenBuffers(1, &mTextIBO) );
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mTextIBO) );
-	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) );
-
-	GLCheck( glEnableVertexAttribArray(0) );
-	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0) );
-	GLCheck( glEnableVertexAttribArray(1) );
-	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))) );
-
-	// load shaders
 	mTextShader.init(shader::textSrc());
 	mTextShader.initUniformBlock("SharedData", 0);
 }
 
 void TextRenderer::shutDown()
 {
-	mFontHolder.clear();
-	glDeleteVertexArrays(1, &mTextVAO);
-	glDeleteBuffers(1, &mTextVBO);
-	glDeleteBuffers(1, &mTextIBO);
 	mTextShader.remove();
+	mFontHolder.clear();
 }
 
 void TextRenderer::beginDebugDisplay()
@@ -73,34 +74,28 @@ void TextRenderer::drawDebugText(const char* text, const char* fontFilename, flo
 	mDebugTextPosition.y += downMargin + size;
 }
 
+void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+                                TextAligment aligment, float size, sf::Color color, ProjectionType projectionType)
+{
+	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
+
+	position.y += size;
+
+	std::vector<CharacterQuad> characterQuads;
+	characterQuads.reserve(std::strlen(text));
+}
+
 void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size,
                                     sf::Color color, ProjectionType projectionType)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
 
-	mTextShader.bind();
-	mTextShader.setUniformVector4Color("color", color);
-	mTextShader.setUniformBool("isGameWorldProjection", projectionType == ProjectionType::gameWorld);
-	GLCheck( glBindVertexArray(mTextVAO) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mTextVBO) );
-	GLCheck( glActiveTexture(GL_TEXTURE0) );
-	GLCheck( glBindTexture(GL_TEXTURE_2D, data.textureAtlas) );
-
 	position.y += size;
 
 	while(*text) {
 		if(*text >= '!' && *text <= '~') {
-			stbtt_aligned_quad q;
-			stbtt_GetBakedQuad(data.charactersData, data.textureAtlasSideSize, data.textureAtlasSideSize,
-				*text-32, &position.x, &position.y, &q, 1);
-			float vertexData[] = {
-				q.x0, q.y0, q.s0, q.t0,
-				q.x1, q.y0, q.s1, q.t0,
-				q.x1, q.y1, q.s1, q.t1,
-				q.x0, q.y1, q.s0, q.t1
-			};
-			GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData) );
-			GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
+			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, 0, 0.f, {}, projectionType);
 		}
 		else {
 			position.x += size;

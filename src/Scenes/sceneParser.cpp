@@ -23,9 +23,6 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 
-	// TODO: place it somewhere else
-	textureHolder.load("textures/map/FULL_DESERT_TILESET_WIP.png");
-
 	// TODO: We don't want to exit game if we misspelled something in gotoscene terminal command
 	Xml sceneFile;
 	PH_ASSERT_CRITICAL(sceneFile.loadFromFile(sceneFileName), "scene file \"" + sceneFileName + "\" wasn't loaded correctly!");

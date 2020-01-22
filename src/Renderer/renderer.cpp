@@ -272,6 +272,12 @@ void Renderer::submitDebugText(const char* text, const char* fontFilename, float
 	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, color);
 }
 
+void Renderer::submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+                           TextAligment aligment, float size, sf::Color color, ProjectionType projectionType)
+{
+	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, projectionType);
+}
+
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
 	lightRenderer.submitLightBlockingQuad(position, size);

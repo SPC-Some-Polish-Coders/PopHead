@@ -16,7 +16,7 @@ namespace ph {
 
 	SizeSpecificFontData::SizeSpecificFontData(const char* filename, float size)
 	{
-		textureAtlasSideSize = size > 30.f ? size > 70.f ? size > 150.f ? 2048 : 1024 : 512 : 256;
+		int textureAtlasSideSize = size > 30.f ? size > 70.f ? size > 150.f ? 2048 : 1024 : 512 : 256;
 
 		FILE* file;
 		char filepath[50] = "resources/fonts/";
@@ -32,14 +32,16 @@ namespace ph {
 		std::fclose(file);
 		stbtt_BakeFontBitmap(ttfBuffer, 0, size, tempBitmap, textureAtlasSideSize, textureAtlasSideSize, 32, 96, charactersData);
 
-		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-		GLCheck(glGenTextures(1, &textureAtlas));
-		GLCheck(glBindTexture(GL_TEXTURE_2D, textureAtlas));
+		unsigned textureAtlasID;
+		GLCheck(glGenTextures(1, &textureAtlasID));
+		GLCheck(glBindTexture(GL_TEXTURE_2D, textureAtlasID));
 		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, textureAtlasSideSize, textureAtlasSideSize, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+		textureAtlas = std::make_shared<Texture>(textureAtlasID, sf::Vector2i(textureAtlasSideSize, textureAtlasSideSize));
 
 		delete[] ttfBuffer;
 		delete[] tempBitmap;
@@ -67,7 +69,7 @@ namespace ph {
 		auto findFont = [filename, size, this]() -> Font*
 		{
 			for(auto& font : mFonts)
-				if(strcmp(font.getFontFilename(), filename) == 0)
+				if(std::strcmp(font.getFontFilename(), filename) == 0)
 					return &font;
 			return nullptr;
 		};
@@ -83,9 +85,6 @@ namespace ph {
 
 	void FontHolder::clear()
 	{
-		for(auto& font : mFonts)
-			for(auto& sizeData : font.getFontData())
-				glDeleteTextures(1, &sizeData.textureAtlas);
 		mFonts.clear();
 	}
 
@@ -121,7 +120,6 @@ namespace ph {
 
 	FontDebugRenderer::FontDebugRendererData::~FontDebugRendererData()
 	{
-		glDeleteTextures(1, &sizeSpecificFontData.textureAtlas);
 		glDeleteBuffers(1, &vbo);
 		glDeleteBuffers(1, &ibo);
 		glDeleteVertexArrays(1, &vao);
@@ -143,7 +141,7 @@ namespace ph {
 	{
 		glBindVertexArray(sData->vao);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, sData->sizeSpecificFontData.textureAtlas);
+		glBindTexture(GL_TEXTURE_2D, sData->sizeSpecificFontData.textureAtlas->getID());
 		sData->shader.bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}

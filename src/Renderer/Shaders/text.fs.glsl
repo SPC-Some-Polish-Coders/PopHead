@@ -1,21 +1,24 @@
 R"(
 
-#version 330 core
+#version 330 core 
+
+in DATA
+{
+    vec4 color;
+    vec2 texCoords;
+    flat int textureSlotRef; 
+} fs_in;
 
 out vec4 fragColor;
 
-in vec2 texCoords;
-
-uniform sampler2D image;
-uniform vec4 color;
+uniform sampler2D textures[32];
 
 void main()
 {
-	float alpha = texture(image, texCoords).r * color.a;
-	if(alpha < 0.1)
-		discard;
-	fragColor = vec4(color.rgb, alpha);
+    fragColor = vec4(fs_in.color.rgb, texture(textures[fs_in.textureSlotRef], fs_in.texCoords).r * fs_in.color.a);
 }
+
+// TODO: Make alpha be set in the smart way
 
 )"
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui>
-  <widgetTemplate name="button" texturePath="textures/gui/button.png" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" />
+  <widgetTemplate name="button" texturePath="textures/gui/button.png" size="1, 0.15" fontName="joystixMonospace.ttf" textColor="black" textSize="55"/>
   <interface name="mainMenu">
     <widget name="buttons" topCenterPosition="0.5, 0.4" size="0.2, 0.5" color="transparent" >
       <textWidget name="storyButton"   template="button" text="Story"   color="green"   topCenterPosition="0.5, 0.0" onButtonPressed="replaceScene:scenes/subtitlesBeforeStartGameCutscene.xml" />

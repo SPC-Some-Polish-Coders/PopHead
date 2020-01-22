@@ -1,5 +1,6 @@
 #pragma once
 
+#include "API/textAligment.hpp"
 #include "MinorRenderers/quadData.hpp"
 #include "Events/event.hpp"
 #include "Utilities/rect.hpp"
@@ -45,6 +46,9 @@ namespace Renderer
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color, ProjectionType);
 
 	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color);
+
+	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+                        TextAligment, float size, sf::Color, ProjectionType);
 
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
