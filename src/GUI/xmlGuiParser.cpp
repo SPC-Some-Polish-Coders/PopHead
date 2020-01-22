@@ -153,6 +153,15 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 
 void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget) const
 {
+	if(auto aligment = textWidgetTag.getAttribute("textAligment")) {
+		const std::string aligmentStr = aligment->toString();
+		if(aligmentStr == "center")
+			widget->setTextAligment(TextAligment::center);
+		if(aligmentStr == "left")
+			widget->setTextAligment(TextAligment::left);
+		if(aligmentStr == "right")
+			widget->setTextAligment(TextAligment::right);
+	}
 	if(auto pathXml = textWidgetTag.getAttribute("fontName"))
 		widget->setFontName(pathXml->toString().c_str());
 	if(auto textColor = textWidgetTag.getAttribute("textColor"))

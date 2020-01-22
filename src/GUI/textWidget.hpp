@@ -1,6 +1,7 @@
 #pragma once
 
 #include "widget.hpp"
+#include "Renderer/API/textAligment.hpp"
 #include <SFML/Graphics/Color.hpp>
 
 namespace ph {
@@ -14,6 +15,7 @@ public:
 
 	void setText(const char* text);
 	void setText(const std::string& text) { mText = text; }
+	void setTextAligment(TextAligment aligment) { mTextAligment = aligment; }
 	void setTextColor(sf::Color color) { mTextColor = color; }
 	void setTextSize(float size) { mTextSize = size; }
 	void setFontName(const char* fontName);
@@ -22,6 +24,7 @@ public:
 private:
 	char mFontName[50];
 	std::string mText;
+	TextAligment mTextAligment;
 	float mTextSize;
 	sf::Color mTextColor;
 	bool mScrollingEffect;

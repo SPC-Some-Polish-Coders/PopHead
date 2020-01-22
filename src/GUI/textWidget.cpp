@@ -7,6 +7,7 @@ namespace ph {
 TextWidget::TextWidget(const char* name)
 	:Widget(name)
 	,mFontName()
+	,mTextAligment(TextAligment::center)
 	,mTextSize(30.f)
 	,mTextColor(sf::Color::White)
 	,mScrollingEffect(false)
@@ -24,7 +25,8 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 		if (mScrollingEffect)
 			move({0, -0.35f});
 
-		Renderer::submitText(mText.c_str(), mFontName, getScreenPosition(), mTextSize, mTextColor, ProjectionType::gui);
+		Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
+			mTextAligment, mTextSize, mTextColor, ProjectionType::gui);
 	}
 }
 
