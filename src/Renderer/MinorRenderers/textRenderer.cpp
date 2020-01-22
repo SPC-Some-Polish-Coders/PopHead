@@ -107,8 +107,12 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			rowCharacters.emplace_back(cq);
 			++lettersInCurrentWord;
 		}
-		else //probably space character     // TODO: What with double/triple spaces
+		else if(*text == ' ')
 		{
+			while(*(text + 1) == ' ') {
+				++text;
+				localPos.x += size;
+			}
 			localPos.x += size;
 			if(localPos.x > textAreaWidth) 
 			{
