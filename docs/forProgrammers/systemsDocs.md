@@ -67,6 +67,7 @@ Car<br />
 <td>CutScenesActivating</td>
 <td>
 BodyRect<br />
+Player<br />
 </td>
 <td>
 CutScene<br />
@@ -88,7 +89,7 @@ Killable<br />
 KinematicCollisionBody<br />
 Damage<br />
 PushingForces<br />
-GunAttackre<br />
+GunAttacker<br />
 FaceDirection<br />
 Camera<br />
 AnimationData<br />
