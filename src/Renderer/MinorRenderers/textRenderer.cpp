@@ -1,17 +1,13 @@
 #include "textRenderer.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/API/shader.hpp"
-#include "Renderer/API/camera.hpp"
-#include "Renderer/API/openglErrors.hpp"
-#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "quadRenderer.hpp"
-#include "Logs/logs.hpp"
+#include "Renderer/API/shader.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include <GL/glew.h>
 #include <stb_truetype.h>
 #include <cstdio>
 #include <cstring>
 #include <vector>
-#include <array>
 #include <cmath>
 
 namespace ph {
@@ -75,25 +71,46 @@ void TextRenderer::drawDebugText(const char* text, const char* fontFilename, flo
 	mDebugTextPosition.y += downMargin + size;
 }
 
-void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, const float textAreaWidth,
-                                TextAligment aligment, float size, sf::Color color, ProjectionType projectionType)
+void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize,
+                                    sf::Color color, ProjectionType projectionType)
 {
-	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
+	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
-	worldPos.y += size;
+	position.y += fontSize;
+
+	while(*text) {
+		if(*text >= '!' && *text <= '~') {
+			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
+			// TODO: Handle z
+			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, 0, 0.f, {}, projectionType);
+			position.x += cq.advance;
+		}
+		else {
+			position.x += fontSize;
+		}
+		++text;
+	}
+}
+
+void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, const float textAreaWidth,
+                                TextAligment aligment, float fontSize, sf::Color textColor, ProjectionType projectionType)
+{
+	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
+
+	worldPos.y += fontSize;
 
 	std::vector<CharacterQuad> rowCharacters;
 	sf::Vector2f localPos;
 	unsigned wordsInCurrentRow = 0;
 	unsigned lettersInCurrentWord = 0;
 
-	auto getXOffset = [textAreaWidth, aligment, size](float mostRightCharacterPosX)
+	auto getXOffset = [textAreaWidth, aligment, fontSize](float mostRightCharacterPosX)
 	{
 		switch(aligment)
 		{
 			case ph::TextAligment::left: return 0.f;
 			case ph::TextAligment::center: return (textAreaWidth - mostRightCharacterPosX) / 2.f;
-			case ph::TextAligment::right: return textAreaWidth - mostRightCharacterPosX + size;
+			case ph::TextAligment::right: return textAreaWidth - mostRightCharacterPosX + fontSize;
 			default: break;
 		}
 	};
@@ -111,9 +128,9 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 		{
 			while(*(text + 1) == ' ') {
 				++text;
-				localPos.x += size;
+				localPos.x += fontSize;
 			}
-			localPos.x += size;
+			localPos.x += fontSize;
 			if(localPos.x > textAreaWidth) 
 			{
 				if(wordsInCurrentRow > 0)
@@ -124,7 +141,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 					{
 						it->pos.x += xOffset;
 						// TODO: Handle z
-						Renderer::submitQuad(data.textureAtlas.get(), &it->textureRect, &color, &mTextShader,
+						Renderer::submitQuad(data.textureAtlas.get(), &it->textureRect, &textColor, &mTextShader,
 							it->pos + worldPos, it->size, 0, 0.f, {}, projectionType);
 					}
 					rowCharacters.clear();
@@ -137,13 +154,13 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 					{
 						cq.pos.x += xOffset;
 						// TODO: Handle z
-						Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+						Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &textColor, &mTextShader,
 							cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
 					}
 					rowCharacters.clear();
 				}
 				localPos.x = 0;
-				localPos.y += size;
+				localPos.y += fontSize;
 				wordsInCurrentRow = 0;
 			}
 			else 
@@ -164,34 +181,13 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 				{
 					cq.pos.x += xOffset;
 					// TODO: Handle z
-					Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+					Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &textColor, &mTextShader,
 						cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
 				}
 				rowCharacters.clear();
 			}
 			break;
 		}
-	}
-}
-
-void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size,
-                                    sf::Color color, ProjectionType projectionType)
-{
-	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
-
-	position.y += size;
-
-	while(*text) {
-		if(*text >= '!' && *text <= '~') {
-			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
-			// TODO: Handle z
-			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, 0, 0.f, {}, projectionType);
-			position.x += cq.advance;
-		}
-		else {
-			position.x += size;
-		}
-		++text;
 	}
 }
 
