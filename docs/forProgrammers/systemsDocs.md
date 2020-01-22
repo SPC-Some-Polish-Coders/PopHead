@@ -67,6 +67,7 @@ Car<br />
 <td>CutScenesActivating</td>
 <td>
 BodyRect<br />
+Player<br />
 </td>
 <td>
 CutScene<br />

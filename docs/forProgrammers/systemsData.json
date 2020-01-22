@@ -51,7 +51,8 @@
         {
             "name" : "CutScenesActivating",
             "componentsRead" : [
-                "BodyRect"    
+                "BodyRect",
+                "Player"
             ],
             "componentsWrite" : [
                 "CutScene"
