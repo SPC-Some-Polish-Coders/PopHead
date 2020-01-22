@@ -18,13 +18,17 @@ public:
 
 	void beginDebugDisplay();
 
-	void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize, sf::Color, ProjectionType);
-	void drawDebugText(const char* text, const char* fontFilename, float fontSize, float upMargin, float downMargin, sf::Color);
-	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, const float textAreaWidth,
-                      TextAligment, float fontSize, sf::Color textColor, ProjectionType);
-private:
-	void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize, sf::Color, ProjectionType);
+	void drawText(const char* text, const char* fontFilename, sf::Vector2f position,
+		          float fontSize, sf::Color textColor, unsigned char z, ProjectionType);
 
+	void drawDebugText(const char* text, const char* fontFilename, float fontSize,
+		               float upMargin, float downMargin, sf::Color textColor);
+
+	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, const float textAreaWidth,
+                      TextAligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType);
+private:
+	void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position,
+		                  float fontSize, sf::Color, unsigned char z, ProjectionType);
 private:
 	FontHolder mFontHolder;
 	Shader mTextShader;

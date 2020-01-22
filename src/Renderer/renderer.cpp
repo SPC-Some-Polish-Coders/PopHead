@@ -262,9 +262,9 @@ void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAn
 }
 
 void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
-                          ProjectionType projecitonType)
+                          unsigned char z, ProjectionType projecitonType)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, projecitonType);
+	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType);
 }
 
 void Renderer::submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
@@ -273,9 +273,9 @@ void Renderer::submitDebugText(const char* text, const char* fontFilename, float
 }
 
 void Renderer::submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                           TextAligment aligment, float size, sf::Color color, ProjectionType projectionType)
+                              TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, projectionType);
+	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType);
 }
 
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)

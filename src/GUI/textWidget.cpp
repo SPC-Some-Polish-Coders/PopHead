@@ -26,7 +26,7 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 			move({0, -0.35f});
 
 		Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
-			mTextAligment, mTextSize, mTextColor, ProjectionType::gui);
+			mTextAligment, mTextSize, mTextColor, --z, ProjectionType::gui);
 	}
 }
 
