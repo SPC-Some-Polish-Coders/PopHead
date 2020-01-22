@@ -35,7 +35,7 @@ private:
 	MusicPlayer& mMusicPlayer;
 	EntitiesTemplateStorage& mTemplateStorage;
 	float mTimeFromStart = 0.f;
-	float mTimeFromBreakTimeStart;
+	float mTimeFromBreakTimeStart = 0.f;;
 	float mTimeBeforeStartingFirstWave = 5.f;
 	int mEnemiesToSpawn = 0;
 	int mSlowZombiesToSpawnPerSpawner = 0;
