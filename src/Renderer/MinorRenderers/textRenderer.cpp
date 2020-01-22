@@ -19,9 +19,10 @@ namespace ph {
 namespace {
 	struct CharacterQuad
 	{
+		IntRect textureRect;
 		sf::Vector2f pos;
 		sf::Vector2f size;
-		IntRect textureRect;
+		float advance;
 	};
 
 	CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
@@ -34,7 +35,7 @@ namespace {
 		unsigned short height = bc->y1 - bc->y0;
 		q.size = {float(width), float(height)};
 		q.textureRect = {bc->x0, textureWidth - bc->y0 - height, width, height};
-		pos->x += bc->xadvance;
+		q.advance = bc->xadvance;
 		return q;
 	}
 }
@@ -74,15 +75,129 @@ void TextRenderer::drawDebugText(const char* text, const char* fontFilename, flo
 	mDebugTextPosition.y += downMargin + size;
 }
 
-void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, const float textAreaWidth,
                                 TextAligment aligment, float size, sf::Color color, ProjectionType projectionType)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, size);
 
-	position.y += size;
+	worldPos.y += size;
 
-	std::vector<CharacterQuad> characterQuads;
-	characterQuads.reserve(std::strlen(text));
+	switch(aligment)
+	{
+		case ph::TextAligment::left: {
+			// TODO: This algorithm is wrong!!!
+			sf::Vector2f localPos;
+			while(*text) 
+			{
+				if(*text >= '!' && *text <= '~') {
+					auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
+					// TODO: Handle z
+					Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+						localPos + worldPos, cq.size, 0, 0.f, {}, ProjectionType::gui);
+					localPos.x += cq.advance;
+				}
+				else {
+					if(localPos.x >= textAreaWidth) {
+						localPos.y += size;
+						localPos.x = 0.f;
+					}
+					else {
+						localPos.x += size;
+					}
+				}
+				++text;
+			}
+		} break;
+
+		case ph::TextAligment::center: {
+			std::vector<CharacterQuad> rowCharacters;
+			sf::Vector2f localPos;
+			unsigned wordsInCurrentRow = 0;
+			unsigned lettersInCurrentWord = 0;
+			
+			if(textAreaWidth <= 25.f)
+			{
+				wordsInCurrentRow = 0;
+			}
+
+			while(1)
+			{
+				if(*text >= '!' && *text <= '~') 
+				{
+					auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
+					localPos.x += cq.advance;
+					rowCharacters.emplace_back(cq);
+					++lettersInCurrentWord;
+				}
+				else //probably space character     // TODO: What with double/triple spaces
+				{
+					localPos.x += size;
+					if(localPos.x > textAreaWidth) 
+					{
+						if(wordsInCurrentRow > 0)
+						{
+							auto firstNotFittingLetterInTheRow = rowCharacters.begin() + rowCharacters.size() - lettersInCurrentWord;
+							float rowXOffset = (textAreaWidth - firstNotFittingLetterInTheRow->pos.x) / 2.f;
+							for(auto it = rowCharacters.begin(); it != firstNotFittingLetterInTheRow; ++it) 
+							{
+								it->pos.x += rowXOffset;
+								// TODO: Handle z
+								Renderer::submitQuad(data.textureAtlas.get(), &it->textureRect, &color, &mTextShader,
+									it->pos + worldPos, it->size, 0, 0.f, {}, projectionType);
+							}
+							rowCharacters.clear();
+							text -= lettersInCurrentWord + 1;
+						}
+						else
+						{
+							float xOffset = (textAreaWidth - localPos.x) / 2.f;
+							for(auto& cq : rowCharacters)
+							{
+								cq.pos.x += xOffset;
+								// TODO: Handle z
+								Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+									cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
+							}
+							rowCharacters.clear();
+						}
+						localPos.x = 0;
+						localPos.y += size;
+						wordsInCurrentRow = 0;
+					}
+					else 
+					{
+						++wordsInCurrentRow;
+					}
+					lettersInCurrentWord = 0;
+				}
+
+				text++;
+
+				if(*(text) == '\0')
+				{
+					if(!rowCharacters.empty())
+					{
+						float rowLeftOffset = (textAreaWidth - localPos.x) / 2.f;
+						for(auto& cq : rowCharacters)
+						{
+							cq.pos.x += rowLeftOffset;
+							// TODO: Handle z
+							Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader,
+								cq.pos + worldPos, cq.size, 0, 0.f, {}, projectionType);
+						}
+						rowCharacters.clear();
+					}
+					break;
+				}
+			}
+		} break;
+
+		case ph::TextAligment::right:
+			break;
+			
+		default:
+			break;
+	}
 }
 
 void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size,
@@ -95,7 +210,9 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 	while(*text) {
 		if(*text >= '!' && *text <= '~') {
 			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
+			// TODO: Handle z
 			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, 0, 0.f, {}, projectionType);
+			position.x += cq.advance;
 		}
 		else {
 			position.x += size;

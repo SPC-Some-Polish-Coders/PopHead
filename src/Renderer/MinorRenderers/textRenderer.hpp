@@ -20,7 +20,7 @@ public:
 
 	void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color, ProjectionType);
 	void drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color);
-	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, const float textAreaWidth,
                       TextAligment, float size, sf::Color, ProjectionType);
 private:
 	void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color, ProjectionType);

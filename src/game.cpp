@@ -103,7 +103,15 @@ void Game::update(float dt)
 		mTerminal->update();
 		mDebugCounter->update();
 
-		//Renderer::submitTextArea("abcdef 1234 lol", "joystixMonospace.ttf", {100.f, 100.f}, 100.f, TextAligment::left, 30, sf::Color::Red, ProjectionType::gui);
+		{
+		static float width = 100.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+			width -= 5.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+			width += 5.f;
+		Renderer::submitQuad(0, 0, &sf::Color::Red, 0, {100.f, 100.f}, {width, 4.f}, 0, 0.f, {}, ProjectionType::gui);
+		Renderer::submitTextArea("abcdef 1234 lol", "joystixMonospace.ttf", {100.f, 100.f}, width, TextAligment::center, 30, sf::Color::Red, ProjectionType::gui);
+		}
 
 		Renderer::endScene(mWindow);
 		mWindow.display();
