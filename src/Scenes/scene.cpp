@@ -81,6 +81,62 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::Cars>();
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
 	*/
+
+	// should be at the start
+	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
+
+	// must be before Movement
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
+	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
+	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
+	mSystemsQueue.appendSystem<system::PushingAreas>();
+
+	mSystemsQueue.appendSystem<system::PushingMovement>(); // physics
+	mSystemsQueue.appendSystem<system::Movement>(); // physics
+
+
+	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
+	mSystemsQueue.appendSystem<system::GunAttacks>();
+	mSystemsQueue.appendSystem<system::MeleeAttacks>();
+
+	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
+
+	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui), std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
+	
+	// must be after DamageAndDeath
+	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::PatricleSystem>();
+
+	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
+
+	mSystemsQueue.appendSystem<system::Cars>(); // better before StaticCollisions, but for now it's actually not important
+
+	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
+	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
+
+	mSystemsQueue.appendSystem<system::AnimationSystem>(); // must be after Levers and DamageAndDeath
+
+	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
+
+	// should be after StaticCollisions
+	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
+	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
+	mSystemsQueue.appendSystem<system::AreasDebug>();
+
+	// must be after StaticCollisions
+	mSystemsQueue.appendSystem<system::PickupItems>();
+	mSystemsQueue.appendSystem<system::HintAreas>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
+
+	// must be after GunAttacks and before EntityDestroying
+	mSystemsQueue.appendSystem<system::Lifetime>();
+
+	// must be at the end
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
+
+	// mSystemsQueue.appendSystem<system::IsPlayerAlive>(); // not used for now
 }
 
 void Scene::handleEvent(const ActionEvent& event)
