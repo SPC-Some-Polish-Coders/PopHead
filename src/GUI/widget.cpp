@@ -9,6 +9,7 @@ Widget::Widget(const char* name)
 	,mTexture(nullptr)
 	,mLocalNormalizedPosition(0.f, 0.f)
 	,mLocalNormalizedSize(0.f, 0.f)
+	,mVelocity(0.f, 0.f)
 	,mColor(sf::Color::White)
 	,mIsActive(true)
 {
@@ -57,18 +58,17 @@ void Widget::handleEventOnChildren(const ph::Event& phEvent)
 
 void Widget::update(float dt, unsigned char z)
 {
-	if(mIsActive) 
-	{
-		for(const auto& behaviour : mBehaviors)
-			if(behaviour.first == BehaviorType::onUpdate)
-				behaviour.second(this);
+	for(const auto& behaviour : mBehaviors)
+		if(behaviour.first == BehaviorType::onUpdate)
+			behaviour.second(this);
 
-		Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
-			getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
+	move(mVelocity * dt);
 
-		updateCurrent(dt, z - 2);
-		updateChildren(dt, z);
-	}
+	Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
+		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
+	
+	updateCurrent(dt, z - 2);
+	updateChildren(dt, z);
 }
 
 void Widget::updateCurrent(float dt, unsigned char z)

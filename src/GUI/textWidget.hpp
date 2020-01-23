@@ -19,7 +19,6 @@ public:
 	void setTextColor(sf::Color color) { mTextColor = color; }
 	void setFontSize(float size) { mFontSize = size; }
 	void setFontName(const char* fontName);
-	void setScrollingEffect(bool se) { mScrollingEffect = se; }
 
 private:
 	char mFontName[50];
@@ -27,7 +26,6 @@ private:
 	TextAligment mTextAligment;
 	float mFontSize;
 	sf::Color mTextColor;
-	bool mScrollingEffect;
 };
 
 }

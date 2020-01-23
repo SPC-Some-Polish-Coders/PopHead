@@ -46,6 +46,7 @@ void CommandInterpreter::init()
 #ifndef PH_DISTRIBUTION
 
 	mCommandsMap["rguilive"] =					&CommandInterpreter::executeResetGuiLive;
+	mCommandsMap["rguilivefreq"] =				&CommandInterpreter::executeResetGuiLiveFrequency;
 
 #endif
 
@@ -56,7 +57,7 @@ void CommandInterpreter::update(float dt)
 #ifndef PH_DISTRIBUTION
 	if(mResetGuiLive.isActive) {
 		mResetGuiLive.timeFromReset += dt;
-		if(mResetGuiLive.timeFromReset > 0.2f) {
+		if(mResetGuiLive.timeFromReset > mResetGuiLive.resetFrequency) {
 			executeResetGui();
 			mResetGuiLive.timeFromReset = 0.f;
 		}
@@ -195,7 +196,7 @@ void CommandInterpreter::executeGive()
 {
 	if (commandContains("bullet"))
 	{
-		int numberOfItems = static_cast<int>(getVolumeFromCommand());
+		int numberOfItems = static_cast<int>(getSingleFloatArgument());
 		auto view = mSceneRegistry->view<component::Player, component::Bullets>();
 		view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
 			bullets.numOfPistolBullets += numberOfItems;
@@ -271,7 +272,7 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 
 void CommandInterpreter::executeSetVolume()
 {
-	const float newVolume = getVolumeFromCommand();
+	const float newVolume = getSingleFloatArgument();
 	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
 		executeMessage("Incorrect volume value! Enter value from 0 to 100", MessageType::ERROR);
 		return;
@@ -285,15 +286,6 @@ void CommandInterpreter::executeSetVolume()
 		mGameData->getMusicPlayer().setVolume(newVolume);
 		mGameData->getSoundPlayer().setVolume(newVolume);
 	}
-}
-
-float CommandInterpreter::getVolumeFromCommand() const
-{
-	const size_t spacePosition = mCommand.find_last_of(' ');
-	const size_t valueStartPos = spacePosition + 1;
-	const size_t valueLength = mCommand.size() - valueStartPos;
-	const std::string volumeValue = mCommand.substr(valueStartPos, valueLength);
-	return std::strtof(volumeValue.c_str(), nullptr);
 }
 
 void CommandInterpreter::executeView()
@@ -357,6 +349,11 @@ void CommandInterpreter::executeResetGuiLive()
 	Game::setNoFocusUpdate(mResetGuiLive.isActive);
 }
 
+void CommandInterpreter::executeResetGuiLiveFrequency()
+{
+	mResetGuiLive.resetFrequency = getSingleFloatArgument();
+}
+
 #endif 
 
 
@@ -388,6 +385,15 @@ sf::Vector2f CommandInterpreter::handleGetVector2ArgumentError() const
 {
 	executeMessage("Incorrect argument! Argument has to be a number.", MessageType::ERROR);
 	return mVector2ArgumentError;
+}
+
+float CommandInterpreter::getSingleFloatArgument() const
+{
+	const size_t spacePosition = mCommand.find_last_of(' ');
+	const size_t valueStartPos = spacePosition + 1;
+	const size_t valueLength = mCommand.size() - valueStartPos;
+	const std::string value = mCommand.substr(valueStartPos, valueLength);
+	return std::strtof(value.c_str(), nullptr);
 }
 
 bool CommandInterpreter::commandContains(const char c) const

@@ -23,7 +23,7 @@ namespace ph {
 		strcat_s(filepath, filename);
 		fopen_s(&file, filepath, "rb");
 		if(!file)
-			PH_EXIT_GAME("Opening font file \" resources/fonts/" + std::string(filepath) + "\" has failed!");
+			PH_EXIT_GAME("Opening font file \"" + std::string(filepath) + "\" has failed!");
 
 		unsigned char* ttfBuffer = new unsigned char[1 << 20];
 		unsigned char* tempBitmap = new unsigned char[textureAtlasSideSize * textureAtlasSideSize];

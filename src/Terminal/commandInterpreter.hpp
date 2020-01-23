@@ -54,11 +54,12 @@ private:
 #ifndef PH_DISTRIBUTION
 
 	void executeResetGuiLive();
+	void executeResetGuiLiveFrequency();
 
 #endif 
 
 	void setAudioMuted(bool mute) const;
-	float getVolumeFromCommand() const;
+	float getSingleFloatArgument() const;
 	auto getVector2Argument() const -> sf::Vector2f;
 	sf::Vector2f handleGetVector2ArgumentError() const;
 
@@ -79,6 +80,7 @@ private:
 	struct ResetGuiLive
 	{
 		float timeFromReset = 0.f;
+		float resetFrequency = 0.2f;
 		bool isActive = false;
 	};
 	ResetGuiLive mResetGuiLive;

@@ -10,7 +10,6 @@ TextWidget::TextWidget(const char* name)
 	,mTextAligment(TextAligment::center)
 	,mFontSize(30.f)
 	,mTextColor(sf::Color::White)
-	,mScrollingEffect(false)
 {
 }
 
@@ -21,9 +20,6 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 		for(const auto& behaviour : mBehaviors)
 			if(behaviour.first == BehaviorType::onUpdate)
 				behaviour.second(this);
-
-		if (mScrollingEffect)
-			move({0, -0.35f});
 
 		Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
 			mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui);

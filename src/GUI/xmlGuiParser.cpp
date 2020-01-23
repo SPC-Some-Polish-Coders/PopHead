@@ -7,6 +7,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "GUI/gui.hpp"
 #include "gameData.hpp"
+#include <functional>
 #include <string_view>
 
 namespace ph {
@@ -61,17 +62,24 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 {
 	enum class WidgetType {Widget, TextWidget, SliderWidget};
 
-	auto parseTemplateAttributes = [this](const Xml& widgetNode, Widget* widget, WidgetType widgetType)
+	std::function<void(const Xml*, Widget*, WidgetType)> parseTemplateAttributes;
+	parseTemplateAttributes = [this, &parseTemplateAttributes](const Xml* widgetNode, Widget* widget, WidgetType widgetType)
 	{
-		if(auto templateName = widgetNode.getAttribute("template"))
+		if(auto templateName = widgetNode->getAttribute("template"))
 			for(auto& widgetTemplate : mWidgetTemplates)
 				if(auto name = widgetTemplate.getAttribute("name"))
-					if(name->toString() == templateName->toString()) {
+					if(name->toString() == templateName->toString()) 
+					{
+						parseTemplateAttributes(&widgetTemplate, widget, WidgetType::Widget);
 						parseWidgetAttributes(widgetTemplate, widget);
-						if(widgetType == WidgetType::TextWidget)
+						if(widgetType == WidgetType::TextWidget) {
+							parseTemplateAttributes(&widgetTemplate, widget, WidgetType::TextWidget);
 							parseTextWidgetAttributes(widgetTemplate, dynamic_cast<TextWidget*>(widget));
-						else if(widgetType == WidgetType::SliderWidget)
+						}
+						else if(widgetType == WidgetType::SliderWidget) {
+							parseTemplateAttributes(&widgetTemplate, widget, WidgetType::SliderWidget);
 							parseSliderWidgetAttributes(widgetTemplate, dynamic_cast<SliderWidget*>(widget));
+						}
 					}
 	};
 
@@ -81,7 +89,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		auto name = childNode.getAttribute("name")->toString();
 		auto* childWidget = new Widget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseTemplateAttributes(childNode, childWidget, WidgetType::Widget);
+		parseTemplateAttributes(&childNode, childWidget, WidgetType::Widget);
 		parseWidgetAttributes(childNode, childWidget);
 		parseChildren<Widget>(childNode, childWidget);
 	}
@@ -92,7 +100,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		auto name = childNode.getAttribute("name")->toString();
 		auto* childWidget = new TextWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseTemplateAttributes(childNode, childWidget, WidgetType::TextWidget);
+		parseTemplateAttributes(&childNode, childWidget, WidgetType::TextWidget);
 		parseWidgetAttributes(childNode, childWidget);
 		parseTextWidgetAttributes(childNode, childWidget);
 		parseChildren<Widget>(childNode, childWidget);
@@ -104,7 +112,7 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 		auto name = childNode.getAttribute("name")->toString();
 		auto childWidget = new SliderWidget(name.c_str());
 		widgetParent->addChildWidget(childWidget);
-		parseTemplateAttributes(childNode, childWidget, WidgetType::SliderWidget);
+		parseTemplateAttributes(&childNode, childWidget, WidgetType::SliderWidget);
 		parseWidgetAttributes(childNode, childWidget);
 		parseSliderWidgetAttributes(childNode, childWidget);
 		parseChildren<Widget>(childNode, childWidget);
@@ -120,6 +128,8 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 	}
 	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
+	if(auto vel = widgetNode.getAttribute("velocity"))
+		widget->setVelocity(vel->toVector2f());
 	if(auto pos = widgetNode.getAttribute("centerPos"))
 		widget->setCenterPosition(pos->toVector2f());
 	if(auto pos = widgetNode.getAttribute("leftCenterPos"))
@@ -171,8 +181,6 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 		widget->setText(text->toString());
 	if(auto fontSize = textWidgetTag.getAttribute("fontSize"))
 		widget->setFontSize(fontSize->toFloat());
-	if(auto scrollingEffect = textWidgetTag.getAttribute("scrollingEffect"))
-		widget->setScrollingEffect(scrollingEffect->toBool());
 }
 
 void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const
