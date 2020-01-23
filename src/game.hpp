@@ -22,6 +22,8 @@ public:
 	inline auto getGameData() const -> const GameData & { return *(mGameData); };
 	Terminal* getTerminal() { return mTerminal.get(); }
 
+	static void setNoFocusUpdate(bool flag) { sNoFocusUpdate = flag; }
+
 private:
 	void handleEvents();
 	void update(float dt);
@@ -38,6 +40,8 @@ private:
 	std::unique_ptr<Terminal>      mTerminal;
 	std::unique_ptr<FPSCounter>  mDebugCounter;
 	std::unique_ptr<GUI>           mGui;
+
+	inline static bool sNoFocusUpdate = false;
 };
 
 }

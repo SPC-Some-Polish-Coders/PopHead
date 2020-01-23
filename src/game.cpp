@@ -95,12 +95,12 @@ void Game::update(float dt)
 {
 	mDebugCounter->sampleFrame();
 
-	if(mWindow.hasFocus())
+	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
 		mGui->update(dt);
-		mTerminal->update();
+		mTerminal->update(dt);
 		mDebugCounter->update();
 
 		Renderer::endScene(mWindow);

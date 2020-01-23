@@ -21,32 +21,41 @@ public:
 	void setSceneRegistry(entt::registry* registry) { mSceneRegistry = registry; }
 	void init();
 
+	void update(float dt);
+
 	void handleCommand(const std::string&);
 private:
 	std::string getCommandWithoutArguments() const;
 	int getArgumentPositionInCommand() const;
 
-	void executeInfoMessage() const;
-	void executeEcho() const;
-	void executeExit() const;
-	void executeGotoScene() const;
-	void executeResetGui() const;
-	void executeTeleport() const;
-	void executeCurrentPos() const;
-	void executeMove() const;
-	void executeGive() const;
-	void executeHistory() const;
-	void executeHelp() const;
-	void executeClear() const;
-	void executeCollisionDebug() const;
-	void executeVelocityChangingAreaDebug() const;
-	void executePushingAreaDebug() const;
-	void executeMute() const;
-	void executeUnmute() const;
-	void executeSetVolume() const;
-	void executeView() const;
-	void executeLight() const;
-	void executeFontDebug() const;
+	void executeInfoMessage();
+	void executeEcho();
+	void executeExit();
+	void executeGotoScene();
+	void executeResetGui();
+	void executeTeleport();
+	void executeCurrentPos();
+	void executeMove();
+	void executeGive();
+	void executeHistory();
+	void executeHelp();
+	void executeClear();
+	void executeCollisionDebug();
+	void executeVelocityChangingAreaDebug();
+	void executePushingAreaDebug();
+	void executeMute();
+	void executeUnmute();
+	void executeSetVolume();
+	void executeView();
+	void executeLight();
+	void executeFontDebug();
+	void executeNoFocusUpdate();
+
+#ifndef PH_DISTRIBUTION
+
+	void executeResetGuiLive();
+
+#endif 
 
 	void setAudioMuted(bool mute) const;
 	float getVolumeFromCommand() const;
@@ -59,11 +68,22 @@ private:
 	void executeMessage(const std::string&, const MessageType) const;
 
 private:
-	std::unordered_map<std::string, void(CommandInterpreter::*)() const> mCommandsMap;
+	std::unordered_map<std::string, void(CommandInterpreter::*)() > mCommandsMap;
 	std::string mCommand;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
 	GameData* mGameData;
 	entt::registry* mSceneRegistry;
+
+#ifndef PH_DISTRIBUTION
+
+	struct ResetGuiLive
+	{
+		float timeFromReset = 0.f;
+		bool isActive = false;
+	};
+	ResetGuiLive mResetGuiLive;
+
+#endif 
 };
 
 }

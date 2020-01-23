@@ -22,7 +22,7 @@ public:
 
 	void setSceneRegistry(entt::registry*);
 	void handleEvent(const ph::Event&);
-	void update();
+	void update(float dt);
 	void pushOutputLine(const OutputLine&);
 
 	auto getSharedData() -> TerminalSharedData & { return mTerminalSharedData; }

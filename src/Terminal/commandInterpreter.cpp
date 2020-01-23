@@ -4,6 +4,7 @@
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/xml.hpp"
+#include "game.hpp"
 #include "gameData.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -39,7 +40,28 @@ void CommandInterpreter::init()
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
 	mCommandsMap["fontd"] =						&CommandInterpreter::executeFontDebug;
+	mCommandsMap["nofocusupdate"] =				&CommandInterpreter::executeNoFocusUpdate;
 	mCommandsMap[""] =							&CommandInterpreter::executeInfoMessage;
+
+#ifndef PH_DISTRIBUTION
+
+	mCommandsMap["rguilive"] =					&CommandInterpreter::executeResetGuiLive;
+
+#endif
+
+}
+
+void CommandInterpreter::update(float dt)
+{
+#ifndef PH_DISTRIBUTION
+	if(mResetGuiLive.isActive) {
+		mResetGuiLive.timeFromReset += dt;
+		if(mResetGuiLive.timeFromReset > 0.2f) {
+			executeResetGui();
+			mResetGuiLive.timeFromReset = 0.f;
+		}
+	}
+#endif
 }
 
 void CommandInterpreter::handleCommand(const std::string& command)
@@ -63,12 +85,12 @@ int CommandInterpreter::getArgumentPositionInCommand() const
 	return argumentPosition == std::string::npos ? mCommand.size() : argumentPosition;
 }
 
-void CommandInterpreter::executeInfoMessage() const
+void CommandInterpreter::executeInfoMessage()
 {
 	executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
 }
 
-void CommandInterpreter::executeEcho() const
+void CommandInterpreter::executeEcho()
 {
 	const size_t spacePosition = mCommand.find(' ');
 	const size_t messageStartPos = spacePosition + 1;
@@ -77,7 +99,7 @@ void CommandInterpreter::executeEcho() const
 	executeMessage(message, MessageType::USER);
 }
 
-void CommandInterpreter::executeHistory() const
+void CommandInterpreter::executeHistory()
 {
 	auto& terminalData = mGameData->getTerminal();
 	auto& commandsHistory = mGameData->getTerminal().getSharedData()->lastCommands;
@@ -88,7 +110,7 @@ void CommandInterpreter::executeHistory() const
 	executeMessage("Ten last used commands: ", MessageType::INFO);
 }
 
-void CommandInterpreter::executeHelp() const
+void CommandInterpreter::executeHelp()
 {
 	const std::vector<std::string> commandsList1 {
 		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", 
@@ -110,14 +132,14 @@ void CommandInterpreter::executeHelp() const
 	}
 }
 
-void CommandInterpreter::executeGotoScene() const
+void CommandInterpreter::executeGotoScene()
 {
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
 	mGameData->getSceneManager().replaceScene(scenePath);
 }
 
-void CommandInterpreter::executeResetGui() const
+void CommandInterpreter::executeResetGui()
 {
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	Xml sceneFile;
@@ -130,18 +152,18 @@ void CommandInterpreter::executeResetGui() const
 	}
 }
 
-void CommandInterpreter::executeClear() const
+void CommandInterpreter::executeClear()
 {
 	for (int i = 0; i < 20; ++i)
 		executeMessage("", MessageType::BLANK);
 }
 
-void CommandInterpreter::executeExit() const
+void CommandInterpreter::executeExit()
 {
 	mGameData->getGameCloser().closeGame();
 }
 
-void CommandInterpreter::executeTeleport() const
+void CommandInterpreter::executeTeleport()
 {
 	const sf::Vector2f newPosition = getVector2Argument();
 	if(newPosition == mVector2ArgumentError)
@@ -154,7 +176,7 @@ void CommandInterpreter::executeTeleport() const
 	});
 }
 
-void CommandInterpreter::executeMove() const
+void CommandInterpreter::executeMove()
 {
 	sf::Vector2f moveOffset = getVector2Argument();
 	if (commandContains('x'))
@@ -169,7 +191,7 @@ void CommandInterpreter::executeMove() const
 	});
 }
 
-void CommandInterpreter::executeGive() const
+void CommandInterpreter::executeGive()
 {
 	if (commandContains("bullet"))
 	{
@@ -184,7 +206,7 @@ void CommandInterpreter::executeGive() const
 		executeMessage("Type of item is unknown!", MessageType::ERROR);
 }
 
-void CommandInterpreter::executeCurrentPos() const
+void CommandInterpreter::executeCurrentPos()
 {
 	auto view = mSceneRegistry->view<component::Player, component::BodyRect>();
 	view.each([this](const component::Player, const component::BodyRect& body) {
@@ -193,7 +215,7 @@ void CommandInterpreter::executeCurrentPos() const
 	});
 }
 
-void CommandInterpreter::executeCollisionDebug() const
+void CommandInterpreter::executeCollisionDebug()
 {
 	if(commandContains("on"))
 		system::AreasDebug::setIsCollisionDebugActive(true);
@@ -203,7 +225,7 @@ void CommandInterpreter::executeCollisionDebug() const
 		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
 }
 
-void CommandInterpreter::executeVelocityChangingAreaDebug() const
+void CommandInterpreter::executeVelocityChangingAreaDebug()
 {
 	if(commandContains("on"))
 		system::AreasDebug::setIsVelocityChangingAreaDebugActive(true);
@@ -213,7 +235,7 @@ void CommandInterpreter::executeVelocityChangingAreaDebug() const
 		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
 }
 
-void CommandInterpreter::executePushingAreaDebug() const
+void CommandInterpreter::executePushingAreaDebug()
 {
 	if(commandContains("on"))
 		system::AreasDebug::setIsPushingAreaDebugActive(true);
@@ -223,12 +245,12 @@ void CommandInterpreter::executePushingAreaDebug() const
 		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
 }
 
-void CommandInterpreter::executeMute() const
+void CommandInterpreter::executeMute()
 {
 	setAudioMuted(true);
 }
 
-void CommandInterpreter::executeUnmute() const
+void CommandInterpreter::executeUnmute()
 {
 	setAudioMuted(false);
 }
@@ -247,7 +269,7 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 		executeMessage("Incorrect second argument! You have to enter 'music', 'sound' or 'all'.", MessageType::ERROR);
 }
 
-void CommandInterpreter::executeSetVolume() const
+void CommandInterpreter::executeSetVolume()
 {
 	const float newVolume = getVolumeFromCommand();
 	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100){
@@ -274,7 +296,7 @@ float CommandInterpreter::getVolumeFromCommand() const
 	return std::strtof(volumeValue.c_str(), nullptr);
 }
 
-void CommandInterpreter::executeView() const
+void CommandInterpreter::executeView()
 {
 	auto view = mSceneRegistry->view<component::Player, component::Camera>();
 	view.each([this](const component::Player, component::Camera& playerCamera){
@@ -291,7 +313,7 @@ void CommandInterpreter::executeView() const
 
 }
 
-void CommandInterpreter::executeLight() const
+void CommandInterpreter::executeLight()
 {
 	bool on;
 	if(commandContains("on"))
@@ -311,7 +333,7 @@ void CommandInterpreter::executeLight() const
 		lightDebug.drawLight = on;
 }
 
-void CommandInterpreter::executeFontDebug() const
+void CommandInterpreter::executeFontDebug()
 {
 	// TODO: Add font filename command argument and font size command argument
 	if(commandContains("on") && !FontDebugRenderer::isActive()) {
@@ -321,6 +343,22 @@ void CommandInterpreter::executeFontDebug() const
 		FontDebugRenderer::shutDown();
 	}
 }
+
+void CommandInterpreter::executeNoFocusUpdate()
+{
+	Game::setNoFocusUpdate(!commandContains("off"));
+}
+
+#ifndef PH_DISTRIBUTION
+
+void CommandInterpreter::executeResetGuiLive()
+{
+	mResetGuiLive.isActive = !commandContains("off");
+	Game::setNoFocusUpdate(mResetGuiLive.isActive);
+}
+
+#endif 
+
 
 auto CommandInterpreter::getVector2Argument() const -> sf::Vector2f
 {

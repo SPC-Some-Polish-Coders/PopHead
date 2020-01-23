@@ -30,7 +30,7 @@ void Terminal::handleEvent(const ph::Event& phEvent)
 		mKeyboardInputHandler.handleEvent(*e);
 }
 
-void Terminal::update()
+void Terminal::update(float dt)
 {
 	if(mKeyboardInputHandler.isEnterClicked()) {
 		auto& content = mTerminalSharedData->content;
@@ -38,6 +38,7 @@ void Terminal::update()
 		content.clear();
 	}
 
+	mCommandInterpreter.update(dt);
 	mTerminalRenderer.update();
 
 	// TODO: Refactor this mess
