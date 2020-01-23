@@ -49,10 +49,12 @@ void ArcadeMode::update(float dt)
 
 		mMusicPlayer.playFromMusicState("break");
 
-		//auto* canvas = mGui.getInterface("nextWaveInfo")->getWidget("canvas");
-		//auto* timeToNextWave = dynamic_cast<TextWidget*>(canvas->getWidget("counters")->getWidget("timeToNextWave"));
-		//std::string timeLeft = std::to_string(static_cast<int>(mTimeBeforeStartingFirstWave + 1.f));
-		//timeToNextWave->setString("Start in " + timeLeft  + " seconds!");
+		auto* nextWaveInfo = mGui.getInterface("nextWaveInfo");
+		auto* counters = nextWaveInfo->getWidget("counters");
+		auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
+		char str[24];
+		std::sprintf(str, "Start in %d seconds!", static_cast<int>(mTimeBeforeStartingFirstWave + 1.f));
+		timeToNextWave->setText(str);
 
 		if(mTimeBeforeStartingFirstWave <= 0.f) {
 			mMusicPlayer.playFromMusicState("wave");
@@ -150,8 +152,8 @@ void ArcadeMode::startBreakTime()
 	mIsBreakTime = true;
 	mTimeFromBreakTimeStart = 0.f;
 
-	mGui.showInterface("nextWaveInfo");
 	mGui.hideInterface("arcadeCounters");
+	mGui.showInterface("nextWaveInfo");
 
 	mMusicPlayer.playFromMusicState("break");
 }
@@ -160,10 +162,8 @@ void ArcadeMode::endBreakTime()
 {
 	mIsBreakTime = false;
 
-	auto* nextWaveInfo = mGui.getInterface("nextWaveInfo");
-	nextWaveInfo->hide();
-	auto* arcadeInterface = mGui.getInterface("arcadeCounters");
-	arcadeInterface->show();
+	mGui.hideInterface("nextWaveInfo");
+	mGui.showInterface("arcadeCounters");
 
 	mMusicPlayer.playFromMusicState("wave");
 }
@@ -171,20 +171,17 @@ void ArcadeMode::endBreakTime()
 void ArcadeMode::updateGuiCounters()
 {
 	if(mIsBreakTime) {
-		//auto* arcadeInterface2 = mGui.getInterface("nextWaveInfo");
-		//auto* counters = arcadeInterface2->getWidget("canvas")->getWidget("counters");
-		//auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
-		//int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mTimeFromBreakTimeStart);
-		//timeToNextWave->setString("Time to next wave: " + addZero(secondsUntilTheEndOfBreak));
+		auto* counters = mGui.getInterface("nextWaveInfo")->getWidget("counters");
+		auto* timeToNextWave = static_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
+		int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mTimeFromBreakTimeStart);
+		timeToNextWave->setText("Time to next wave: " + addZero(secondsUntilTheEndOfBreak));
 	}
 	else {
-		//auto* arcadeInterface = mGui.getInterface("arcadeCounters");
-		//auto* counters = arcadeInterface->getWidget("canvas")->getWidget("counters");
-
-		//auto* waveCounter = dynamic_cast<TextWidget*>(counters->getWidget("waveCounter"));
-		//waveCounter->setString("Wave: " + addZero(mCurrentWave));
-		//auto* enemiesCounter = dynamic_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
-		//enemiesCounter->setString("Enemies: " + addZero(mEnemiesCounter));
+		auto* counters = mGui.getInterface("arcadeCounters")->getWidget("counters");
+		auto* waveCounter = static_cast<TextWidget*>(counters->getWidget("waveCounter"));
+		waveCounter->setText("Wave: " + addZero(mCurrentWave));
+		auto* enemiesCounter = static_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
+		enemiesCounter->setText("Enemies: " + addZero(mEnemiesCounter));
 	}
 }
 

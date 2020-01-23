@@ -15,15 +15,12 @@ TextWidget::TextWidget(const char* name)
 
 void TextWidget::updateCurrent(float dt, unsigned char z)
 {
-	if(mIsActive) 
-	{
-		for(const auto& behaviour : mBehaviors)
-			if(behaviour.first == BehaviorType::onUpdate)
-				behaviour.second(this);
+	for(const auto& behaviour : mBehaviors)
+		if(behaviour.first == BehaviorType::onUpdate)
+			behaviour.second(this);
 
-		Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
-			mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui);
-	}
+	Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
+		mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui);
 }
 
 void TextWidget::setText(const char* text)

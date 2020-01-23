@@ -90,7 +90,7 @@ Widget* Widget::addChildWidget(Widget* ptr)
 Widget* Widget::getWidget(const char* name)
 {
 	for(auto& widget : mWidgetChildren)
-		if(std::strcmp(widget->getName(), name))
+		if(std::strcmp(widget->getName(), name) == 0)
 			return widget.get();
 	return nullptr;
 }

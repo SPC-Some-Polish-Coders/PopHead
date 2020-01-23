@@ -10,18 +10,18 @@
   </interface>
   <interface name="gameplayCounters">
     <textWidget name="vitalityCounter"      size="0.05, 0.1" topRightPos="0.9, 0.01" texturePath="others/heart.png"         fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="100"/>
-    <textWidget name="pistolBulletCounter"  size="0.05, 0.1" topRightPos="0.9, 0.1"  texturePath="others/bullet.png"        fontName="joystixMonospace.ttf" textColor="black" fontSize="25" text="20"/>
-    <textWidget name="shotgunBulletCounter" size="0.05, 0.1" topRightPos="0.9, 0.2"  texturePath="others/shotgunShells.png" fontName="joystixMonospace.ttf" textColor="black" fontSize="25" text="20"/>
+    <textWidget name="pistolBulletCounter"  size="0.05, 0.1" topRightPos="0.9, 0.1"  texturePath="others/bullet.png"        fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
+    <textWidget name="shotgunBulletCounter" size="0.05, 0.1" topRightPos="0.9, 0.2"  texturePath="others/shotgunShells.png" fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
   </interface>
   <interface name="arcadeCounters" hide="true">
-    <widget name="counters" texturePath="gui/arcadeCountersBackground.png" size="0.2, 0.1" topLeftPos="0">
+    <widget name="counters" texturePath="gui/arcadeCountersBackground.png" size="0.4, 0.1" topLeftPos="0">
       <textWidget name="waveCounter"    centerPos="0.05, 0.2" size="1" color="transparent" fontName="consola.ttf" textColor="white" fontSize="14" textAligment="left" text="Wave: 0   "/>
       <textWidget name="enemiesCounter" centerPos="0.05, 0.6" size="1" color="transparent" fontName="consola.ttf" textColor="white" fontSize="14" textAligment="left" text="Enemies: 00"/>
     </widget>
   </interface>
   <interface name="nextWaveInfo">
-    <widget name="counters" texturePath="gui/arcadeCountersBackground.png" size="0.2, 0.1" topLeftPos="0">
-      <textWidget name="timeToNextWave" centerPos="0.5, 0.5" size="1" color="transparent" fontName="consola.ttf" textColor="white" fontSize="30" textAligment="left" text="Next wave in 0 seconds!"/>
+    <widget name="counters" texturePath="gui/arcadeCountersBackground.png" size="0.4, 0.1" topLeftPos="0">
+      <textWidget name="timeToNextWave" centerPos="0.5, 0.5" size="1" color="transparent" fontName="consola.ttf" textColor="white" fontSize="30" textAligment="left" text="Start in 0 seconds!"/>
     </widget>
   </interface>
 </gui>
