@@ -94,7 +94,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::PushingMovement>(); // physics
 	mSystemsQueue.appendSystem<system::Movement>(); // physics
 
-
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
 	mSystemsQueue.appendSystem<system::GunAttacks>();
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
