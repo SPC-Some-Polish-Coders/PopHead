@@ -4,7 +4,7 @@ namespace ph {
 
 MusicPlayer::MusicPlayer()
 	:mCurrentThemeFilePath("")
-	,mVolume(60.f)
+	,mVolume(50.f)
 	,mIsMuted(false)
 	,mIsPlayingFromMusicState(false)
 {

@@ -7,6 +7,7 @@
 #include "Audio/Sound/soundPlayer.hpp"
 #include "GUI/gui.hpp"
 #include "gameData.hpp"
+#include <string_view>
 
 namespace ph {
 
@@ -181,10 +182,29 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 	}
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
 		widget->setIconSize(iconSize->toVector2f());
-	if(auto sliderValue = widgetTag.getAttribute("sliderValue"))
-		widget->setSliderValue(sliderValue->toFloat());
-	if(auto maxSliderValue = widgetTag.getAttribute("maxSliderValue"))
-		widget->setSliderMaxValue(maxSliderValue->toFloat());
+
+	auto getSliderValue = [](const Xml& sliderValueNode)
+	{
+		const std::string sliderValueStr = sliderValueNode.toString();
+		if(sliderValueStr.find("get:") != std::string::npos) {
+			std::string_view varName(sliderValueStr);
+			varName.remove_prefix(4);
+			if(varName == "SoundVolume")
+				return soundPlayer->getVolume();
+			if(varName == "MusicVolume")
+				return musicPlayer->getVolume();
+			PH_EXIT_GAME("XmlGuiParser error: You're trying to get unknown variable \"var:" + std::string(varName.data()));
+		}
+		else {
+			return sliderValueNode.toFloat();
+		}
+	};
+	if(auto initValue = widgetTag.getAttribute("initValue"))
+		widget->setSliderValue(getSliderValue(*initValue));
+	if(auto minValue = widgetTag.getAttribute("minValue"))
+		widget->setSliderMinValue(getSliderValue(*minValue));
+	if(auto maxValue = widgetTag.getAttribute("maxValue"))
+		widget->setSliderMaxValue(getSliderValue(*maxValue));
 }
 
 std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actionStr) const
@@ -199,17 +219,11 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	else if(name == "loadLastSave") {
 		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentMapName()); };
 	}
-	else if(name == "changeMusicVolume") {
-		return [](Widget* widget) {
-			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			musicPlayer->setVolume(static_cast<float>(volume));
-		};
-	}
-	else if(name == "changeSoundVolume") {
-		return [](Widget* widget) {
-			auto volume = static_cast<SliderWidget*>(widget)->getSliderValue();
-			soundPlayer->setVolume(static_cast<float>(volume));
-		};
+	else if(name == "set") {
+		if(data == "MusicVolume")
+			return [](Widget* widget) { musicPlayer->setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
+		if(data == "SoundVolume")
+			return [](Widget* widget) { soundPlayer->setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
 	}
 	else if(name == "closeGame") {
 		return [](Widget*) {gameCloser->closeGame(); };

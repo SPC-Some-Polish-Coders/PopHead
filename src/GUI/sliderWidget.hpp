@@ -13,20 +13,21 @@ public:
 	void setIconSize(sf::Vector2f size);
 	void setIconTexture(const Texture*);
 	void setSliderValue(float value) { mSliderValue = value; }
+	void setSliderMinValue(float minValue) { mSliderMinValue = minValue; }
 	void setSliderMaxValue(float maxValue) { mSliderMaxValue = maxValue; }
 
 	float getSliderValue() const { return mSliderValue; }
+	float getSliderMinValue() const { return mSliderMinValue; }
 	float getSliderMaxValue() const { return mSliderMaxValue; }
 
 private:
 	void updateCurrent(float dt, unsigned char z) override;
-	bool isMouseOnSliderIcon(const sf::Vector2f& distanceFromCenter);
 
 private:
 	Widget* mIconWidget;
 	float mSliderValue;
+	float mSliderMinValue;
 	float mSliderMaxValue;
-	bool mIsIconChecked = false;
 };
 
 }
