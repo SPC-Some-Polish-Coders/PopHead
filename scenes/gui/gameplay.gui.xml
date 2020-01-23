@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
-    <interface name="pauseScreen" hide="true">
-        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-		        <textWidget name="resumeButton"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  onButtonPressed="setGamePause:false" text="Resume"></textWidget>
-            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
-        </widget>
-    </interface>
-    <interface name="gameOverScreen" hide="true">
-        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <textWidget name="loadLastSave"     contentPath="textures/gui/storyButton.png" origin="0.5" position="0.5, 0.4" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="loadLastSave:" text="Load last save"></textWidget>
-            <textWidget name="exitToMenuButton" contentPath="textures/gui/exitButton.png"  origin="0.5" position="0.5, 0.6" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Exit to menu"></textWidget>
-        </widget>
-    </interface>
-    <interface name="gameplayCounters">
-        <widget name="canvas" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <textWidget name="vitalityCounter" position="0.9, 0.01" contentPath="textures/others/heart.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1, 0.25" color="black" characterSize="15" text="100"/>
-            <textWidget name="pistolBulletCounter" position="0.9, 0.1" contentPath="textures/others/bullet.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
-            <textWidget name="shotgunBulletCounter" position="0.9, 0.2" contentPath="textures/others/shotgunShells.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.3, 0.37" color="black" characterSize="10" text="20"/>
-        </widget>
-    </interface>
+  <interface name="pauseScreen" hide="true">
+    <textWidget name="resumeButton"     size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" centerPos="0.5, 0.3" fontSize="50" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="setGamePause:false" text="Resume" />
+    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" centerPos="0.5, 0.7" fontSize="50" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
+  </interface>
+  <interface name="gameOverScreen" hide="true">
+    <textWidget name="restartButton"    size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" fontSize="50" centerPos="0.5, 0.3" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:arcadeModeChooseMenu.xml" text="Try Again" />
+    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" fontSize="50" centerPos="0.5, 0.7" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
+  </interface>
+  <interface name="gameplayCounters">
+    <textWidget name="vitalityCounter"      size="0.05, 0.1" topRightPos="0.9, 0.01" texturePath="others/heart.png"         fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="100"/>
+    <textWidget name="pistolBulletCounter"  size="0.05, 0.1" topRightPos="0.9, 0.1"  texturePath="others/bullet.png"        fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
+    <textWidget name="shotgunBulletCounter" size="0.05, 0.1" topRightPos="0.9, 0.2"  texturePath="others/shotgunShells.png" fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
+  </interface>
 </gui>

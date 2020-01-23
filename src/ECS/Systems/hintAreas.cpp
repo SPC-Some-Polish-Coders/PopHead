@@ -19,6 +19,9 @@ void HintAreas::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	// TODO: Make hint areas work
+	return;
+
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();
 	for (auto player : playerView)
