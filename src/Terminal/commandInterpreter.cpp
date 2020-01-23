@@ -3,6 +3,7 @@
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/cast.hpp"
+#include "Utilities/xml.hpp"
 #include "gameData.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -11,6 +12,7 @@
 #include "ECS/Systems/areasDebug.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include "Renderer/API/font.hpp"
+#include "GUI/xmlGuiParser.hpp"
 #include <entt/entt.hpp>
 
 namespace ph {
@@ -33,6 +35,7 @@ void CommandInterpreter::init()
 	mCommandsMap["clear"] =						&CommandInterpreter::executeClear;
 	mCommandsMap["view"] =						&CommandInterpreter::executeView;
 	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
+	mCommandsMap["rgui"] =						&CommandInterpreter::executeResetGui;
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
 	mCommandsMap["fontd"] =						&CommandInterpreter::executeFontDebug;
@@ -112,6 +115,19 @@ void CommandInterpreter::executeGotoScene() const
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
 	mGameData->getSceneManager().replaceScene(scenePath);
+}
+
+void CommandInterpreter::executeResetGui() const
+{
+	const int spacePosition = mCommand.find_first_of(' ') + 1;
+	Xml sceneFile;
+	sceneFile.loadFromFile(mGameData->getSceneManager().getCurrentSceneFilePath());
+	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
+		XmlGuiParser guiParser;
+		guiParser.parseGuiXml(filepath);
+	}
 }
 
 void CommandInterpreter::executeClear() const

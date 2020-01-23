@@ -34,6 +34,8 @@ void XmlGuiParser::parseGuiXml(const std::string& filepath)
 {
 	PH_LOG_INFO("Gui file (" + filepath + ") is being parsed.");
 
+	gui->clear();
+
 	Xml guiNode;
 	PH_ASSERT_CRITICAL(guiNode.loadFromFile(filepath), "Gui file \"" + filepath + "\" wasn't loaded correctly!");
 	guiNode = *guiNode.getChild("gui");
@@ -217,7 +219,7 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 		return [data](Widget*) { sceneManager->replaceScene("scenes/" + data); };
 	}
 	else if(name == "loadLastSave") {
-		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentMapName()); };
+		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath()); };
 	}
 	else if(name == "set") {
 		if(data == "MusicVolume")

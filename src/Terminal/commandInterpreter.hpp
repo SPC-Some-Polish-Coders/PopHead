@@ -30,6 +30,7 @@ private:
 	void executeEcho() const;
 	void executeExit() const;
 	void executeGotoScene() const;
+	void executeResetGui() const;
 	void executeTeleport() const;
 	void executeCurrentPos() const;
 	void executeMove() const;

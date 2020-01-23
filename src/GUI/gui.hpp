@@ -21,7 +21,7 @@ public:
 	void deleteInterface(const char* name);
 	void showInterface(const char* name);
 	void hideInterface(const char* name);
-	void clearGUI();
+	void clear();
 
 private:
 	std::vector<Interface> mInterfaces;

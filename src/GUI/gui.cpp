@@ -53,7 +53,7 @@ void GUI::update(float dt)
 			interface.update(dt);
 }
 
-void GUI::clearGUI()
+void GUI::clear()
 {
 	mInterfaces.clear();
 }
