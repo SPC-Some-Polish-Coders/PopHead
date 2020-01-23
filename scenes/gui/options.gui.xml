@@ -2,10 +2,10 @@
 <gui>
   <widgetTemplate name="slider" texturePath="others/bar.png" size="0.5, 0.1" startValue="50" minValue="0" maxValue="100" iconTexturePath="others/zombieHead.png" />
   <interface name="credits">
-    <textWidget name="Music" text="Music" bottomCenterPosition="0.4, 0.5"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
-    <sliderWidget name="musicSlider" template="slider" centerPosition="0.5, 0.5" onButtonPressed="changeMusicVolume:"/>
-    <textWidget name="Sound" text="Sound" bottomCenterPosition="0.4, 0.7"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
-    <sliderWidget name="SoundSlider" template="slider" centerPosition="0.5, 0.7" onButtonPressed="changeSoundVolume:"/>
-    <textWidget name="exitButton" text="Main menu" texturePath="gui/button.png" color="red" fontSize="50" centerPosition="0.5,0.9" size="0.3, 0.1" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" />
+    <textWidget name="Music" text="Music" bottomCenterPos="0.4, 0.5"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
+    <sliderWidget name="musicSlider" template="slider" centerPos="0.5, 0.5" onButtonPressed="changeMusicVolume:"/>
+    <textWidget name="Sound" text="Sound" bottomCenterPos="0.4, 0.7"  fontName="joystixMonospace.ttf" textColor="rgb(27, 74, 32)" fontSize="40" />
+    <sliderWidget name="SoundSlider" template="slider" centerPos="0.5, 0.7" onButtonPressed="changeSoundVolume:"/>
+    <textWidget name="exitButton" text="Main menu" texturePath="gui/button.png" color="red" fontSize="50" centerPos="0.5,0.9" size="0.3, 0.1" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" />
   </interface>
 </gui>

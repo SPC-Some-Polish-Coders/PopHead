@@ -117,23 +117,23 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 	}
 	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
-	if(auto pos = widgetNode.getAttribute("centerPosition"))
+	if(auto pos = widgetNode.getAttribute("centerPos"))
 		widget->setCenterPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("leftCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("leftCenterPos"))
 		widget->setLeftCenterPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("rightCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("rightCenterPos"))
 		widget->setRightCenterPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("topCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("topCenterPos"))
 		widget->setTopCenterPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("bottomCenterPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomCenterPos"))
 		widget->setBottomCenterPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("topLeftPosition"))
+	if(auto pos = widgetNode.getAttribute("topLeftPos"))
 		widget->setTopLeftPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("topRightPosition"))
+	if(auto pos = widgetNode.getAttribute("topRightPos"))
 		widget->setTopRightPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("bottomLeftPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomLeftPos"))
 		widget->setBottomLeftPosition(pos->toVector2f());
-	if(auto pos = widgetNode.getAttribute("bottomRightPosition"))
+	if(auto pos = widgetNode.getAttribute("bottomRightPos"))
 		widget->setBottomRightPosition(pos->toVector2f());
 	if(auto color = widgetNode.getAttribute("color"))
 		widget->setColor(color->toColor());
