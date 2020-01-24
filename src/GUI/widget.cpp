@@ -33,6 +33,8 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 			&& e->mouseButton.button == sf::Mouse::Left)
 		{
 			auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
+			mousePos.x *= 1920.f / sScreenSize.x;
+			mousePos.y *= 1080.f / sScreenSize.y;
 			if(FloatRect(getScreenPosition(), getScreenSize()).contains(mousePos))
 			{
 				if(e->type == sf::Event::MouseButtonPressed) {

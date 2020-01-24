@@ -1,6 +1,7 @@
 #include "globalKeyboardShortcuts.hpp"
 #include "gameData.hpp"
 #include "Renderer/renderer.hpp"
+#include "GUI/widget.hpp"
 
 namespace ph {
 
@@ -14,10 +15,13 @@ void handleGlobalKeyboardShortcuts(sf::Window& window, GameCloser& gameCloser, c
 			if(windowSize == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) {
 				window.create(sf::VideoMode(640, 360), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3));
 				Renderer::restart(640, 360);
+				Widget::setScreenSize({640, 360});
 			}
 			else {
 				window.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3));
-				Renderer::restart(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				sf::Vector2u fullScreenSize(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				Renderer::restart(fullScreenSize.x, fullScreenSize.y);
+				Widget::setScreenSize(static_cast<sf::Vector2f>(fullScreenSize));
 			}
 			window.setVerticalSyncEnabled(true);
 			window.setKeyRepeatEnabled(false);

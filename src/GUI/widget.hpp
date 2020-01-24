@@ -58,6 +58,7 @@ public:
 	sf::Vector2f getScreenSize() const;
 
 	static void setWindow(sf::Window* window) { sWindow = window; }
+	static void setScreenSize(sf::Vector2f size) { sScreenSize = size; }
 
 protected:
 	char mName[50];
@@ -74,6 +75,7 @@ protected:
 	bool mIsActive;
 
 	inline static sf::Window* sWindow;
+	inline static sf::Vector2f sScreenSize = sf::Vector2f(1920, 1080);
 };
 
 }

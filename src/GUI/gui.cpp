@@ -42,6 +42,10 @@ void GUI::hideInterface(const char* name)
 
 void GUI::handleEvent(const ph::Event& e)
 {
+	if(auto* sfEvent = std::get_if<sf::Event>(&e))
+		if(sfEvent->type == sf::Event::Resized)
+			Widget::setScreenSize(sf::Vector2f(float(sfEvent->size.width), float(sfEvent->size.height)));
+
 	for(auto& interface : mInterfaces)
 		interface.handleEvent(e);
 }
