@@ -30,15 +30,15 @@ private:
 
 private:
 	sf::RenderWindow               mWindow;
+	FPSCounter                     mFPSCounter;
 	std::unique_ptr<GameData>      mGameData;
 	std::unique_ptr<SoundPlayer>   mSoundPlayer;
 	std::unique_ptr<MusicPlayer>   mMusicPlayer;
 	std::unique_ptr<TextureHolder> mTextures;
-	std::unique_ptr<OldFontHolder>    mFonts;
+	std::unique_ptr<OldFontHolder> mFonts;
 	std::unique_ptr<AIManager>     mAIManager;
 	std::unique_ptr<SceneManager>  mSceneManager;
 	std::unique_ptr<Terminal>      mTerminal;
-	std::unique_ptr<FPSCounter>  mDebugCounter;
 	std::unique_ptr<GUI>           mGui;
 
 	inline static bool sNoFocusUpdate = false;

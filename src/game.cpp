@@ -21,7 +21,6 @@ Game::Game()
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 	,mTerminal(std::make_unique<Terminal>())
-	,mDebugCounter(std::make_unique<FPSCounter>())
 	,mGui(std::make_unique<GUI>())
 {
 	mGameData.reset(new GameData(
@@ -80,7 +79,7 @@ void Game::handleEvents()
 				mGameData->getGameCloser().closeGame();
 
 		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
-		mDebugCounter->handleEvent(phEvent);
+		mFPSCounter.handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
 		mGui->handleEvent(phEvent);
 		
@@ -93,15 +92,13 @@ void Game::handleEvents()
 
 void Game::update(float dt)
 {
-	mDebugCounter->sampleFrame();
-
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
 		mGui->update(dt);
 		mTerminal->update(dt);
-		mDebugCounter->update();
+		mFPSCounter.update();
 
 #if 0
 		static float width = 300.f;
