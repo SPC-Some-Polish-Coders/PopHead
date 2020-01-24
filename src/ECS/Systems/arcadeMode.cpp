@@ -49,8 +49,7 @@ void ArcadeMode::update(float dt)
 
 		mMusicPlayer.playFromMusicState("break");
 
-		auto* nextWaveInfo = mGui.getInterface("nextWaveInfo");
-		auto* counters = nextWaveInfo->getWidget("counters");
+		auto* counters = mGui.getInterface("nextWaveInfo")->getWidget("counters");
 		auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
 		char str[24];
 		std::sprintf(str, "Start in %d seconds!", static_cast<int>(mTimeBeforeStartingFirstWave + 1.f));
