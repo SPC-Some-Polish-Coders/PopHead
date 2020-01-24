@@ -21,7 +21,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 {
 }
 
-void RenderSystem::update(float dt)
+void RenderSystem::updateGraphics()
 {
 	PH_PROFILE_FUNCTION(0);
 

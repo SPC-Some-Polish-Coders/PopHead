@@ -27,6 +27,9 @@ void Widget::handleEvent(const ph::Event& phEvent)
 
 void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 {
+	if(!mIsActive)
+		return;
+
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
 		if(e->type == sf::Event::MouseButtonPressed || e->type == sf::Event::MouseButtonReleased

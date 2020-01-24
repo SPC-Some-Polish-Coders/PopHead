@@ -88,15 +88,14 @@ void Scene::handleEvent(const ActionEvent& event)
 
 void Scene::update(float dt)
 {
-	if(mPause)
-		return;
-
-	const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
- 	if(isCutsceneActive)
-		mCutSceneManager.updateCutScene(dt);
-
-	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
-		mSystemsQueue.update(dt);
+	mSystemsQueue.updateGraphics();
+	if(!mPause) {
+		const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
+		if(isCutsceneActive)
+			mCutSceneManager.updateCutScene(dt);
+		if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
+			mSystemsQueue.update(dt);
+	}
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)
