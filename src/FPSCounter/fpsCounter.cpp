@@ -1,4 +1,4 @@
-#include "debugCounter.hpp"
+#include "fpsCounter.hpp"
 #include "Renderer/renderer.hpp"
 #include <cstdio>
 

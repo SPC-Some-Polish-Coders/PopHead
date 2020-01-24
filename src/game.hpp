@@ -7,7 +7,7 @@
 #include "Scenes/sceneManager.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Terminal/terminal.hpp"
-#include "DebugCounter/debugCounter.hpp"
+#include "FPSCounter/fpsCounter.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 
