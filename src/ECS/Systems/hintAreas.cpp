@@ -21,43 +21,42 @@ void HintAreas::update(float dt)
 
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();
-	for (auto player : playerView)
+	for (auto hintArea : hintAreasView)
 	{
-		const auto& playerBody = playerView.get<component::BodyRect>(player);
-		for (auto hintArea : hintAreasView)
+		for (auto player : playerView)
 		{
 			const auto& hintAreaBody = hintAreasView.get<component::BodyRect>(hintArea);
-			auto& hintDetails = hintAreasView.get<component::Hint>(hintArea);
+			const auto& playerBody = playerView.get<component::BodyRect>(player);
+			auto& hint = hintAreasView.get<component::Hint>(hintArea);
 			if (hintAreaBody.rect.contains(playerBody.rect.getCenter()))
 			{
-				if (hintDetails.isShown)
-					break;
+				PH_ASSERT_UNEXPECTED_SITUATION(mGui.hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
 
-				mGui.getInterface("hints")->show();
-				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName)->show();
-				hintDetails.isShown = true;
+				hint.isShown = true;
+				mGui.showInterface("hints");
+				auto* hintBackground = mGui.getInterface("hints")->getWidget("hintBackground");
+				auto* hintContent = static_cast<TextWidget*>(hintBackground->getWidget("hintContent"));
+				hintContent->setText(hint.content);
 
-				// NOTE: This is temporary
-				if(hintDetails.hintName == "controlHint") {
+				if(hint.hintName == "controlHint") {
 					ActionEventManager::setActionEnabled("changeWeapon", false);
 					ActionEventManager::setActionEnabled("gunAttack", false);
 					ActionEventManager::setActionEnabled("meleeAttack", false);
 				}
-				else if(hintDetails.hintName == "shootingHint") {
+				else if(hint.hintName == "shootingHint") {
 					ActionEventManager::setActionEnabled("gunAttack", true);
 				}
-				else if(hintDetails.hintName == "meleeFightingHint") {
+				else if(hint.hintName == "meleeFightingHint") {
 					ActionEventManager::setActionEnabled("meleeAttack", true);
 				}
-				else if(hintDetails.hintName == "weaponChangingHint") {
+				else if(hint.hintName == "weaponChangingHint") {
 					ActionEventManager::setActionEnabled("changeWeapon", true);
 				}
 			}
-			else if (hintDetails.isShown)
+			else if(hint.isShown)
 			{
-				mGui.getInterface("hints")->getWidget("canvas")->getWidget(hintDetails.hintName)->hide();
-				mGui.getInterface("hints")->hide();
-				hintDetails.isShown = false;
+				mGui.hideInterface("hints");
+				hint.isShown = false;
 			}
 		}
 	}

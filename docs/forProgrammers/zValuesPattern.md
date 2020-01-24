@@ -6,4 +6,4 @@ We should stick to this pattern of layers when we assign Z component to entity. 
 - 200 and less - map layers 
 - 170 and less - dead characters
 - 100 and less - standing objects, characters
-- 10 and less - GUI
+- 20 and less - GUI

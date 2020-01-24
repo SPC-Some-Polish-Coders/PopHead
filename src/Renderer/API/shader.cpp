@@ -9,46 +9,11 @@
 
 namespace ph {
 
-Shader::Shader()
+void Shader::init(ShaderSource& ss)
 {
 	mID = glCreateProgram();
-}
-
-bool Shader::loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
-{
-	auto vertexShaderCode = getShaderCodeFromFile(vertexShaderFilename);
-	auto fragmentShaderCode = getShaderCodeFromFile(fragmentShaderFilename);
-	
-	if(vertexShaderCode == std::nullopt || fragmentShaderCode == std::nullopt)
-		return false;
-
-	loadFromString(vertexShaderCode->c_str(), fragmentShaderCode->c_str());
-	return true;
-}
-
-auto Shader::getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>
-{
-	std::string code;
-	std::ifstream file;
-	file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	try {
-		file.open(filename);
-		std::stringstream stream;
-		stream << file.rdbuf();
-		file.close();
-		code = stream.str();
-	}
-	catch(std::istream::failure) {
-		PH_LOG_ERROR("Shader file \"" + std::string(filename) + "\" was not succesfully read. (probably file doesn't exist)");
-		return std::nullopt;
-	}
-	return code;
-}
-
-void Shader::loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource)
-{
-	int vertexShaderId = compileShaderAndGetId(vertexShaderSource, GL_VERTEX_SHADER);
-	int fragmentShaderId = compileShaderAndGetId(fragmentShaderSource, GL_FRAGMENT_SHADER);
+	int vertexShaderId = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
+	int fragmentShaderId = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
 	linkProgram(vertexShaderId, fragmentShaderId);
 }
 
@@ -93,6 +58,11 @@ void Shader::checkLinkingErrors()
 	}
 }
 
+void Shader::remove()
+{
+	glDeleteProgram(mID);
+}
+
 void Shader::bind() const
 {
 	GLCheck( glUseProgram(mID) );
@@ -101,6 +71,13 @@ void Shader::bind() const
 void Shader::unbind() const
 {
 	GLCheck( glUseProgram(0) );
+}
+
+void Shader::initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding)
+{
+	bind();
+	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mID, uniformBlockName) );
+	GLCheck( glUniformBlockBinding(mID, uniformBlockIndex, uniformBlockBinding) );
 }
 
 void Shader::setUniformBool(const char* name, const bool value) const
@@ -186,36 +163,5 @@ int Shader::getUniformLocation(const char* name) const
 	return location;
 }
 
-bool ShaderLibrary::loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath)
-{
-	if(mShaders.find(name) != mShaders.end())
-		return true;
-	Shader shader;
-	if(shader.loadFromFile(vertexShaderFilepath, fragmentShaderFilepath)) {
-		mShaders[name] = shader;
-		return true;
-	}
-	else
-		return false;
 }
 
-void ShaderLibrary::loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode)
-{
-	if(mShaders.find(name) != mShaders.end())
-		return;
-	Shader shader;
-	shader.loadFromString(vertexShaderCode, fragmentShaderCode);
-	mShaders[name] = shader;
-}
-
-Shader* ShaderLibrary::get(const std::string& name)
-{
-	auto found = mShaders.find(name);
-	if(found == mShaders.end()) {
-		PH_EXIT_GAME("You try to get a shader that wasn't loaded: " + name);
-	}
-	return &found->second;
-}
-
-
-}

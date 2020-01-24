@@ -4,7 +4,7 @@
 namespace ph {
 
 SoundPlayer::SoundPlayer()
-	:mVolume(14.f)
+	:mVolume(15.f)
 {
 	setMuted(false);
 	loadEverySound();

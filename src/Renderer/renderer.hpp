@@ -1,6 +1,8 @@
 #pragma once
 
+#include "API/textAligment.hpp"
 #include "MinorRenderers/quadData.hpp"
+#include "Events/event.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -13,7 +15,6 @@ namespace sf {
 
 namespace ph {
 
-class DebugCounter;
 class Camera;
 class Texture;
 class Shader;
@@ -25,30 +26,36 @@ namespace Renderer
 	void shutDown();
 	
 	void beginScene(Camera&);
-	void endScene(sf::RenderWindow& window, DebugCounter&);
+	void endScene();
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
-	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin);
+	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld);
 
-	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, unsigned char z);
+	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*,
+	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
-	void submitLine(sf::Color colorA, sf::Color colorB,
-	                const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+	void submitLine(sf::Color colorA, sf::Color colorB, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
 	void submitPoint(sf::Vector2f position, sf::Color, unsigned char z, float size = 1.f);
 
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
-	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
+	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
+		            sf::Color, unsigned char z, ProjectionType);
 
-	void submitSFMLObject(const sf::Drawable&);
+	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color);
+
+	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType);
+
+	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
 	void setAmbientLightColor(sf::Color);
 
-	void onWindowResize(unsigned width, unsigned height);
-};
+	void handleEvent(Event&);
+}
 
 }

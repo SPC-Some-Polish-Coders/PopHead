@@ -1,9 +1,8 @@
-#include <GL/glew.h>
 #include "game.hpp"
-#include "Resources/loadFonts.hpp"
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
+#include "GUI/xmlGuiParser.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/System.hpp>
@@ -11,16 +10,14 @@
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3))
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mGameData()
 	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
 	,mTextures(std::make_unique<TextureHolder>())
-	,mFonts(std::make_unique<FontHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 	,mTerminal(std::make_unique<Terminal>())
-	,mDebugCounter(std::make_unique<DebugCounter>())
 	,mGui(std::make_unique<GUI>())
 {
 	mGameData.reset(new GameData(
@@ -28,7 +25,6 @@ Game::Game()
 		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
-		mFonts.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
 		mTerminal.get(),
@@ -39,15 +35,15 @@ Game::Game()
 	
 	GameData* gameData = mGameData.get();
 
-	loadFonts(gameData);
 	mTerminal->init(gameData);
-	mDebugCounter->init(*mFonts);
-	mGui->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
+
+	Widget::setWindow(&mWindow);
+	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser(), mMusicPlayer.get(), mSoundPlayer.get());
 
 	ActionEventManager::init();
 }
@@ -59,18 +55,13 @@ void Game::run()
 	{
 		mSceneManager->changingScenesProcess();
 		handleEvents();
-		const sf::Time dt = clock.restart();
-		update(correctDeltaTime(dt));
+		const float dt = clock.restart().asSeconds();
+		constexpr float maxDTConstrain = 1.f/20.f;
+		update(dt > maxDTConstrain ? maxDTConstrain : dt);
 	}
 
 	Renderer::shutDown();
 	mWindow.close();
-}
-
-sf::Time Game::correctDeltaTime(sf::Time dt)
-{
-	const sf::Time dtMinimalConstrain = sf::seconds(1.f/20.f);
-	return dt > dtMinimalConstrain ? dtMinimalConstrain : dt;
 }
 
 void Game::handleEvents()
@@ -83,32 +74,28 @@ void Game::handleEvents()
 				mGameData->getGameCloser().closeGame();
 
 		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
-		mDebugCounter->handleEvent(phEvent);
+		mFPSCounter.handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
 		mGui->handleEvent(phEvent);
 		
-		if(!mTerminal->getSharedData()->mIsVisible)
+		if(!mTerminal->getSharedData()->isVisible)
 			mSceneManager->handleEvent(phEvent);
 
-		if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
-			if(sfEvent->type == sf::Event::Resized)
-				Renderer::onWindowResize(sfEvent->size.width, sfEvent->size.height);
+		Renderer::handleEvent(phEvent);
 	}
 }
 
-void Game::update(sf::Time dt)
+void Game::update(float dt)
 {
-	mDebugCounter->update();
-
-	if(mWindow.hasFocus())
+	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
 		mGui->update(dt);
-		mDebugCounter->draw();
-		mTerminal->update();
+		mTerminal->update(dt);
+		mFPSCounter.update();
 
-		Renderer::endScene(mWindow, *mDebugCounter);
+		Renderer::endScene();
 		mWindow.display();
 	}
 }

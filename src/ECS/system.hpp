@@ -11,7 +11,8 @@ namespace ph::system {
 	public:
 		explicit System(entt::registry& registry);
 
-		virtual void update(float seconds) = 0;
+		virtual void update(float seconds) {};
+		virtual void updateGraphics() {};
 		virtual void onEvent(const ActionEvent& event);
 
 	protected:

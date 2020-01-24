@@ -10,7 +10,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 namespace {
-	ph::Camera defaultCamera;
+	ph::Camera defaultCamera = ph::Camera({320, 180}, {640, 360});
 }
 
 namespace ph::system {
@@ -21,7 +21,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 {
 }
 
-void RenderSystem::update(float dt)
+void RenderSystem::updateGraphics()
 {
 	PH_PROFILE_FUNCTION(0);
 

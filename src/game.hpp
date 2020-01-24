@@ -7,8 +7,8 @@
 #include "Scenes/sceneManager.hpp"
 #include "Resources/resourceHolder.hpp"
 #include "Terminal/terminal.hpp"
-#include "DebugCounter/debugCounter.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include "FPSCounter/fpsCounter.hpp"
+#include <SFML/Window/Window.hpp>
 #include <memory>
 
 namespace ph {
@@ -22,23 +22,25 @@ public:
 	inline auto getGameData() const -> const GameData & { return *(mGameData); };
 	Terminal* getTerminal() { return mTerminal.get(); }
 
-private:
-	sf::Time correctDeltaTime(sf::Time dt);
-	void handleEvents();
-	void update(sf::Time dt);
+	static void setNoFocusUpdate(bool flag) { sNoFocusUpdate = flag; }
 
 private:
-	sf::RenderWindow               mWindow;
+	void handleEvents();
+	void update(float dt);
+
+private:
+	sf::Window                     mWindow;
+	FPSCounter                     mFPSCounter;
 	std::unique_ptr<GameData>      mGameData;
 	std::unique_ptr<SoundPlayer>   mSoundPlayer;
 	std::unique_ptr<MusicPlayer>   mMusicPlayer;
 	std::unique_ptr<TextureHolder> mTextures;
-	std::unique_ptr<FontHolder>    mFonts;
 	std::unique_ptr<AIManager>     mAIManager;
 	std::unique_ptr<SceneManager>  mSceneManager;
 	std::unique_ptr<Terminal>      mTerminal;
-	std::unique_ptr<DebugCounter>  mDebugCounter;
 	std::unique_ptr<GUI>           mGui;
+
+	inline static bool sNoFocusUpdate = false;
 };
 
 }

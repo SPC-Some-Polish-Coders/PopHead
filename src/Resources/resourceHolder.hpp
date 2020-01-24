@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Renderer/API/texture.hpp"
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <memory>
 #include <string>
@@ -23,7 +22,6 @@ private:
 
 using SoundBufferHolder = ResourceHolder<sf::SoundBuffer>;
 using TextureHolder = ResourceHolder<ph::Texture>;
-using FontHolder = ResourceHolder<sf::Font>;
 
 }
 

@@ -4,9 +4,9 @@
 #include <string>
 #include <memory>
 #include "terminalSharedData.hpp"
-#include "Input/terminalInputHandler.hpp"
-#include "Commands/commandInterpreter.hpp"
-#include "Image/terminalImage.hpp"
+#include "terminalInputHandler.hpp"
+#include "commandInterpreter.hpp"
+#include "terminalRenderer.hpp"
 #include "Events/event.hpp"
 #include <entt/entt.hpp>
 
@@ -22,14 +22,14 @@ public:
 
 	void setSceneRegistry(entt::registry*);
 	void handleEvent(const ph::Event&);
-	void update();
+	void update(float dt);
 	void pushOutputLine(const OutputLine&);
 
 	auto getSharedData() -> TerminalSharedData & { return mTerminalSharedData; }
 
 private:
 	TerminalSharedData mTerminalSharedData;
-	TerminalImage mTerminalImage;
+	TerminalRenderer mTerminalRenderer;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
 	GameData* mGameData;

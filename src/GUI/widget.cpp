@@ -1,44 +1,24 @@
 #include "widget.hpp"
-#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
+#include <cstring>
 
 namespace ph {
 
-Widget::Widget()
-	:mAlpha(0)
-	,mRoot(nullptr)
-	,mPosition(0, 0)
-	,mSize(0, 0)
-	,mOrigin(0, 0)
-	,mScale(1, 1)
+Widget::Widget(const char* name)
+	:mParent(nullptr)
+	,mTexture(nullptr)
+	,mLocalNormalizedPosition(0.f, 0.f)
+	,mLocalNormalizedSize(0.f, 0.f)
+	,mVelocity(0.f, 0.f)
+	,mColor(sf::Color::White)
 	,mIsActive(true)
-	,mGameData(nullptr)
-	,mWindow(nullptr)
 {
-}
-
-void Widget::draw()
-{
-	if(mIsActive)
-	{
-		Renderer::submitSFMLObject(mSprite);
-
-		for(auto k = mWidgetList.rbegin(); k != mWidgetList.rend(); k++)
-			if(k->second->isActive())
-				k->second->draw();
-	}
-}
-
-void Widget::setAlpha(unsigned int alpha)
-{
-	mSprite.setColor(sf::Color(255, 255, 255, alpha));
+	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Widget name length can be max 50 characters long!");
+	std::strcpy(mName, name);
 }
 
 void Widget::handleEvent(const ph::Event& phEvent)
 {
-	if(!mIsActive)
-		return;
-	
 	handleEventOnCurrent(phEvent);
 	handleEventOnChildren(phEvent);
 }
@@ -50,14 +30,12 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 		if(e->type == sf::Event::MouseButtonPressed || e->type == sf::Event::MouseButtonReleased
 			&& e->mouseButton.button == sf::Mouse::Left)
 		{
-			auto c = sf::Mouse::getPosition(mGameData->getWindow());
-			auto k = mWindow->mapPixelToCoords(c);
-
-			// TODO: Maybe use Rect::doPositiveRectsIntersect()
-			if(k.x > mSprite.getPosition().x && k.x < mSprite.getPosition().x + mSize.x &&
-				k.y > mSprite.getPosition().y && k.y < mSprite.getPosition().y + mSize.y)
+			auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
+			mousePos.x *= 1920.f / sScreenSize.x;
+			mousePos.y *= 1080.f / sScreenSize.y;
+			if(FloatRect(getScreenPosition(), getScreenSize()).contains(mousePos))
 			{
-				if(e->type == sf::Event::MouseButtonPressed){
+				if(e->type == sf::Event::MouseButtonPressed) {
 					for(const auto& k : mBehaviors)
 						if(k.first == BehaviorType::onPressed)
 							k.second(this);
@@ -74,29 +52,52 @@ void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 
 void Widget::handleEventOnChildren(const ph::Event& phEvent)
 {
-	for(const auto& widget : mWidgetList)
-		widget.second->handleEvent(phEvent);
+	for(const auto& widget : mWidgetChildren)
+		widget->handleEvent(phEvent);
 }
 
-void Widget::update(sf::Time dt)
+void Widget::update(float dt, unsigned char z)
 {
-	if(mIsActive == false)
-		return;
+	for(const auto& behaviour : mBehaviors)
+		if(behaviour.first == BehaviorType::onUpdate)
+			behaviour.second(this);
 
-	for(const auto& k : mBehaviors)
-		if(k.first == BehaviorType::onUpdate)
-			k.second(this);
+	move(mVelocity * dt);
 
-	for(const auto& k : mWidgetList)
-		k.second->update(dt);
+	Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
+		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
+	
+	updateCurrent(dt, z - 2);
+	updateChildren(dt, z);
 }
 
-void Widget::addWidget(const std::string& name, Widget* ptr)
+void Widget::updateCurrent(float dt, unsigned char z)
 {
-	mWidgetList.insert({name,std::unique_ptr<Widget>(ptr)});
-	ptr->setGameData(mGameData);
-	ptr->setRoot(this);
-	ptr->rePosition();
+}
+
+void Widget::updateChildren(float dt, unsigned char z)
+{
+	for(const auto& widget : mWidgetChildren)
+		widget->update(dt, z);
+}
+
+Widget* Widget::addChildWidget(Widget* ptr)
+{
+	ptr->setParent(this);
+	return mWidgetChildren.emplace_back(ptr).get();
+}
+
+Widget* Widget::getWidget(const char* name)
+{
+	for(auto& widget : mWidgetChildren)
+		if(std::strcmp(widget->getName(), name) == 0)
+			return widget.get();
+	return nullptr;
+}
+
+void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
+{
+	mBehaviors.insert({type,func});
 }
 
 void Widget::hide()
@@ -109,142 +110,78 @@ void Widget::show()
 	mIsActive = true;
 }
 
-bool Widget::setContentPath(const std::string& path)
+void Widget::move(sf::Vector2f offset)
 {
-	sf::Texture& texture = mGameData->getGui().getTextures().get(path);
-	mSprite.setTexture(texture);
-	mSize = texture.getSize();
-
-	mDefaultSize = mSize;
-	scale(mScale);
-	rePosition();
-	return true;
+	mLocalNormalizedPosition += offset;
 }
 
-void Widget::setPosition(const sf::Vector2f& pos)
+void Widget::setCenterPosition(sf::Vector2f centerPos)
 {
-	mPosition = pos;
-	if(mRoot != nullptr)
-	{
-		auto localPosition = mRoot->getGlobalPosition();
-		auto size = mRoot->getSize();
-		mSprite.setOrigin(mOrigin);
+	mLocalNormalizedPosition = centerPos - mLocalNormalizedSize / 2.f;
+}
 
-		mSprite.setPosition(pos.x * size.x + localPosition.x - mSize.x * mOrigin.x, pos.y * size.y + localPosition.y - mSize.y * mOrigin.y);
+void Widget::setTopLeftPosition(sf::Vector2f topLeftPos)
+{
+	mLocalNormalizedPosition = topLeftPos;
+}
 
-		for(const auto& k : mWidgetList)
-			k.second->rePosition();
+void Widget::setTopRightPosition(sf::Vector2f topRightPos)
+{
+	mLocalNormalizedPosition = {topRightPos.x - mLocalNormalizedSize.x, topRightPos.y};
+}
+
+void Widget::setBottomLeftPosition(sf::Vector2f bottomLeftPos)
+{
+	mLocalNormalizedPosition = {bottomLeftPos.x, bottomLeftPos.y - mLocalNormalizedSize.y};
+}
+
+void Widget::setBottomRightPosition(sf::Vector2f bottomRightPos)
+{
+	mLocalNormalizedPosition = {bottomRightPos.x - mLocalNormalizedSize.x, bottomRightPos.y - mLocalNormalizedSize.y};
+}
+
+void Widget::setTopCenterPosition(sf::Vector2f pos)
+{
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x / 2.f, pos.y};
+}
+
+void Widget::setBottomCenterPosition(sf::Vector2f pos)
+{
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x / 2.f, pos.y - mLocalNormalizedSize.y};
+}
+
+void Widget::setRightCenterPosition(sf::Vector2f pos)
+{
+	mLocalNormalizedPosition = {pos.x - mLocalNormalizedSize.x, pos.y - mLocalNormalizedSize.y / 2.f};
+}
+
+void Widget::setLeftCenterPosition(sf::Vector2f pos)
+{
+	mLocalNormalizedPosition = {pos.x, pos.y - mLocalNormalizedSize.y / 2.f};
+}
+
+sf::Vector2f Widget::getScreenPosition() const
+{
+	if(mParent) {
+		const auto parentPos = mParent->getScreenPosition(); 
+		const auto parentSize = mParent->getScreenSize();
+		return parentPos + sf::Vector2f(mLocalNormalizedPosition.x * parentSize.x, mLocalNormalizedPosition.y * parentSize.y);
+	}
+	else {
+		return sf::Vector2f(mLocalNormalizedPosition.x * 1920.f, mLocalNormalizedPosition.y * 1080.f);
 	}
 }
 
-void Widget::move(const sf::Vector2f& delta)
+sf::Vector2f Widget::getScreenSize() const
 {
-	mSprite.move(delta);
+	if(mParent) {
+		const auto parentSize = mParent->getScreenSize();
+		return sf::Vector2f(parentSize.x * mLocalNormalizedSize.x, parentSize.y * mLocalNormalizedSize.y);
+	}
+	else {
+		return sf::Vector2f(mLocalNormalizedSize.x * 1920.f, mLocalNormalizedSize.y * 1080.f);
+	}
 }
 
-void Widget::moveAlongBranch(const sf::Vector2f& delta)
-{
-	this->move(delta);
-	for(const auto& k : mWidgetList)
-		k.second->moveAlongBranch(delta);
 }
 
-void Widget::scale(const sf::Vector2f& scale)
-{
-	mSize.x = unsigned int(scale.x * mSize.x);
-	mSize.y = unsigned int(scale.y * mSize.y);
-	mSprite.setOrigin(mOrigin);
-	mSprite.scale(scale);
-	rePosition();
-}
-
-void Widget::scaleAlongBranch(const sf::Vector2f& scale)
-{
-	this->scale(scale);
-	rePosition();
-	for(const auto& k : mWidgetList)
-		k.second->scaleAlongBranch(scale);
-}
-
-void Widget::setAlphaAlongBranch(unsigned int alpha)
-{
-	this->setAlpha(alpha);
-	for(const auto& k : mWidgetList)
-		k.second->setAlphaAlongBranch(alpha);
-}
-
-void Widget::setVirtualSize(const sf::Vector2f& size)
-{
-}
-
-sf::Vector2u Widget::getSize() const
-{
-	return mSize;
-}
-
-void Widget::addBehavior(BehaviorType type, const std::function<void(Widget*)>& func)
-{
-	mBehaviors.insert({type,func});
-}
-
-Widget* Widget::getWidget(const std::string& name)
-{
-	auto it = mWidgetList.find(name);
-
-	if(it != mWidgetList.end())
-		return it->second.get();
-
-	return nullptr;
-}
-
-void Widget::transform(const sf::Vector2f pos, const sf::Vector2f size)
-{
-}
-
-void Widget::setGameData(GameData* GameData)
-{
-	mGameData = GameData;
-	mWindow = dynamic_cast<sf::RenderWindow*>(&GameData->getWindow());
-}
-
-bool Widget::isActive()
-{
-	return mIsActive;
-}
-
-void Widget::setRoot(Widget* ptr)
-{
-	mRoot = ptr;
-}
-
-void Widget::setOrigin(const sf::Vector2f& origin)
-{
-	mOrigin = origin;
-	rePosition();
-	for(const auto& k : mWidgetList)
-		k.second->rePosition();
-}
-
-sf::Vector2f Widget::getOrigin() const
-{
-	return mOrigin;
-}
-
-sf::Vector2f Widget::getPosition() const
-{
-	return mPosition;
-}
-
-sf::Vector2f Widget::getGlobalPosition() const
-{
-	return mSprite.getPosition();
-}
-
-void Widget::rePosition()
-{
-	setPosition(mPosition);
-	for(const auto& k : mWidgetList)
-		k.second->rePosition();
-}
-	
-}

@@ -28,15 +28,13 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr,
-	          nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::Window* const window,
 		SoundPlayer* const soundPlayer,
 		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
-		FontHolder* const fonts,
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
 		Terminal* const Terminal,
@@ -46,7 +44,6 @@ public:
 		,mSoundPlayer{soundPlayer}
 		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
-		,mFonts{fonts}
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
 		,mTerminal{Terminal}
@@ -59,7 +56,6 @@ public:
 	auto getSoundPlayer() const -> SoundPlayer& { return *mSoundPlayer; }
 	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
-	auto getFonts()	const -> FontHolder& { return *mFonts; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
 	auto getTerminal() const -> Terminal& { return *mTerminal; }
@@ -71,7 +67,6 @@ private:
 	SoundPlayer* const mSoundPlayer;
 	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;
-	FontHolder* const mFonts;
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;
 	Terminal* const mTerminal;
@@ -80,3 +75,4 @@ private:
 };
 
 }
+

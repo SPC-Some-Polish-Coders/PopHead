@@ -12,9 +12,7 @@ namespace system {
 	{
 	public:
 		HintAreas(entt::registry&, GUI&);
-
 		void update(float dt) override;
-
 	private:
 		GUI& mGui;
 	};

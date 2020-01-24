@@ -26,7 +26,7 @@ public:
     Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
 
 	void handleEvent(const ActionEvent& event);
-    void update(sf::Time dt);
+    void update(float dt);
 
 	void setPause(bool pause) { mPause = pause; }
 	bool getPause() const { return mPause; }

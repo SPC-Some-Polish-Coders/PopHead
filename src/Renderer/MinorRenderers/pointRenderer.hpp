@@ -1,3 +1,4 @@
+#include "Renderer/API/shader.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -5,8 +6,6 @@
 #include <vector>
 
 namespace ph{
-
-class Shader;
 
 struct PointVertexData
 {
@@ -24,9 +23,10 @@ public:
 
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
+	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
+	void setDebugNumbersToZero();
 	unsigned getNrOfDrawnPoints() const { return mNrOfDrawnPoints; }
 	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
-	void setDebugNumbersToZero();
 
 	void submitPoint(sf::Vector2f position, const sf::Color&, float z, float size);
 
@@ -38,11 +38,13 @@ private:
 private:
 	std::vector<PointVertexData> mSubmitedPointsVertexData;
 	const FloatRect* mScreenBounds;
-	Shader* mPointsShader;
+	Shader mPointsShader;
 	unsigned mVAO;
 	unsigned mVBO;
 	unsigned mNrOfDrawnPoints;
 	unsigned mNrOfDrawCalls;
+	bool mIsDebugCountingActive = false;
 };
 
 }
+

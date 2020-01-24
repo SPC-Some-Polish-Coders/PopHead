@@ -31,19 +31,19 @@ private:
 
 public:
 	void handleEvent(const Event& event);
-    void update(sf::Time dt);
+    void update(float dt);
 
 	Scene& getScene() { return *mScene.get(); }
 	void setGameData(GameData* const);
 
-	std::string getCurrentMapName() const { return mCurrentSceneFile; }
+	std::string getCurrentSceneFilePath() const { return mCurrentSceneFilePath; }
 
 private:
 	EntitiesTemplateStorage mEntitiesTemplateStorage;
     std::unique_ptr<Scene> mScene;
 	PlayerStatus mLastPlayerStatus;
-	std::string mFileOfSceneToMake;
-	std::string mCurrentSceneFile;
+	std::string mFilePathOfSceneToMake;
+	std::string mCurrentSceneFilePath;
     GameData* mGameData;
 	Texture* mTilesetTexture;
 	sf::Vector2f mPlayerPositionForNextScene;

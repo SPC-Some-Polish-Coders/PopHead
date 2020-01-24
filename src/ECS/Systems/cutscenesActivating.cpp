@@ -46,14 +46,14 @@ void CutScenesActivating::update(float dt)
 
 void CutScenesActivating::activateCutscene(const std::string& name) const
 {
-	if(name == "subtitlesBeforeStartGameCutScene")
-		mCutSceneManager.activateCutscene(std::make_unique<SubtitlesBeforeStartGameCutscene>(mSceneManager, mGui));
-	else if(name == "startGameCutScene")
-		mCutSceneManager.activateCutscene(std::make_unique<StartGameCutScene>(mRegistry, mSoundPlayer, mMusicPlayer, mGui, mSceneManager));
-	else if(name == "gateGuardDialogue")
-		mCutSceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mRegistry, mGui));
-	else if(name == "endingDialogue")
-		mCutSceneManager.activateCutscene(std::make_unique<EndingCutScene>(mRegistry, mGui, mMusicPlayer, mAIManager, mSceneManager));
+	//if(name == "subtitlesBeforeStartGameCutScene")
+	//	mCutSceneManager.activateCutscene(std::make_unique<SubtitlesBeforeStartGameCutscene>(mSceneManager, mGui));
+	//else if(name == "startGameCutScene")
+	//	mCutSceneManager.activateCutscene(std::make_unique<StartGameCutScene>(mRegistry, mSoundPlayer, mMusicPlayer, mGui, mSceneManager));
+	//else if(name == "gateGuardDialogue")
+	//	mCutSceneManager.activateCutscene(std::make_unique<GateGuardDialogue>(mRegistry, mGui));
+	//else if(name == "endingDialogue")
+	//	mCutSceneManager.activateCutscene(std::make_unique<EndingCutScene>(mRegistry, mGui, mMusicPlayer, mAIManager, mSceneManager));
 }
 
 }

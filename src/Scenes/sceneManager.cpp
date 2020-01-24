@@ -46,7 +46,7 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		mGameData->getGui().clearGUI();
+		mGameData->getGui().clear();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
 	}
@@ -55,9 +55,9 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getGui().clearGUI();
+	mGameData->getGui().clear();
 
-	if(mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPositionForNextScene)
+	if(mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);
 	else {
 		bool thereIsPlayerStatus = mScene && mGameData->getAIManager().isPlayerOnScene();
@@ -67,7 +67,7 @@ void SceneManager::replaceAction()
 		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
 			                   mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
 
-		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake,
+		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
 		           mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getMusicPlayer(), mGameData->getAIManager());
 
 		if(mGameData->getAIManager().isPlayerOnScene()) {
@@ -77,9 +77,9 @@ void SceneManager::replaceAction()
 		}
 	}
 
-	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
+	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 	mIsReplacing = false;
-	mCurrentSceneFile = std::move(mFileOfSceneToMake);
+	mCurrentSceneFilePath = std::move(mFilePathOfSceneToMake);
 }
 
 void SceneManager::handleEvent(const Event& e)
@@ -88,7 +88,7 @@ void SceneManager::handleEvent(const Event& e)
 		mScene->handleEvent(*event);
 }
 
-void SceneManager::update(sf::Time dt)
+void SceneManager::update(float dt)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
 	mScene->update(dt);
@@ -103,14 +103,14 @@ void SceneManager::setGameData(GameData* const gameData)
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
-	mFileOfSceneToMake = sceneSourceCodeFilePath;
+	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = false;
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
 {
-	mFileOfSceneToMake = sceneSourceCodeFilePath;
+	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = true;
 	mPlayerPositionForNextScene = playerPosition;

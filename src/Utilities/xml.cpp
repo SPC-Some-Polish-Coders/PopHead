@@ -387,6 +387,8 @@ sf::Color Xml::toColor() const
 		return sf::Color::Cyan;
 	else if(mContent == "transparent")
 		return sf::Color::Transparent;
+	else if(mContent == "orange")
+		return sf::Color(255, 127, 80);
 	else
 		return sf::Color::Black;
 }

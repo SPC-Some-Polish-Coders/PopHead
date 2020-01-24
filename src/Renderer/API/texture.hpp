@@ -9,6 +9,7 @@ class Texture
 {
 public:
 	Texture();
+	Texture(unsigned existingID, sf::Vector2i size);
 	Texture(const std::string& filepath);
 
 	~Texture();
@@ -21,6 +22,7 @@ public:
 	sf::Vector2i getSize() const { return mSize; }
 	int getWidth() const { return mSize.x; }
 	int getHeight() const { return mSize.y; }
+	unsigned getID() const { return mID; }
 
 private:
 	sf::Vector2i mSize;
@@ -28,3 +30,4 @@ private:
 };
 
 }
+

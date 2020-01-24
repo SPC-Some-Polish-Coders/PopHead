@@ -8,16 +8,26 @@ namespace ph {
 class SliderWidget : public Widget
 {
 public:
-	SliderWidget();
+	SliderWidget(const char* name);
 
-	void createSlider(std::string path);
-	int getSliderValue();
+	void setIconSize(sf::Vector2f size);
+	void setIconTexture(const Texture*);
+	void setSliderValue(float value) { mSliderValue = value; }
+	void setSliderMinValue(float minValue) { mSliderMinValue = minValue; }
+	void setSliderMaxValue(float maxValue) { mSliderMaxValue = maxValue; }
+
+	float getSliderValue() const { return mSliderValue; }
+	float getSliderMinValue() const { return mSliderMinValue; }
+	float getSliderMaxValue() const { return mSliderMaxValue; }
+
 private:
-	void handleEventOnCurrent(const ph::Event&) override;
-	bool isMouseOnSliderIcon(const sf::Vector2f& distanceFromCenter);
+	void updateCurrent(float dt, unsigned char z) override;
 
-	std::unique_ptr<Widget> icon;
-	bool isIconChecked = false;
+private:
+	Widget* mIconWidget;
+	float mSliderValue;
+	float mSliderMinValue;
+	float mSliderMaxValue;
 };
 
 }

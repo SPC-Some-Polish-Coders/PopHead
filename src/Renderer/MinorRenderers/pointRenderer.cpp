@@ -2,20 +2,16 @@
 #include "Utilities/cast.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include <GL/glew.h>
 
 namespace ph {
 
 void PointRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("points", "resources/shaders/points.vs.glsl", "resources/shaders/points.fs.glsl");
-	mPointsShader = sl.get("points");
-
+	mPointsShader.init(shader::pointsSrc());
+	mPointsShader.initUniformBlock("SharedData", 0);
 	glEnable(GL_PROGRAM_POINT_SIZE);
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mPointsShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mPointsShader->getID(), uniformBlockIndex, 0) );
 
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
@@ -39,6 +35,7 @@ void PointRenderer::shutDown()
 {
 	glDeleteBuffers(1, &mVBO);
 	glDeleteVertexArrays(1, &mVAO);
+	mPointsShader.remove();
 }
 
 void PointRenderer::setDebugNumbersToZero()
@@ -58,7 +55,9 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 	point.size = size * (360.f / mScreenBounds->height);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
-	++mNrOfDrawnPoints;
+
+	if(mIsDebugCountingActive)
+		++mNrOfDrawnPoints;
 }
 
 void PointRenderer::flush()
@@ -66,7 +65,7 @@ void PointRenderer::flush()
 	if(mSubmitedPointsVertexData.empty())
 		return;
 
-	mPointsShader->bind();
+	mPointsShader.bind();
 	glBindVertexArray(mVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
@@ -75,7 +74,9 @@ void PointRenderer::flush()
 	glDrawArrays(GL_POINTS, 0, mSubmitedPointsVertexData.size());
 
 	mSubmitedPointsVertexData.clear();
-	++mNrOfDrawCalls;
+
+	if(mIsDebugCountingActive)
+		++mNrOfDrawCalls;
 }
 
 bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
