@@ -95,17 +95,6 @@ void Game::update(float dt)
 		mTerminal->update(dt);
 		mFPSCounter.update();
 
-#if 0
-		static float width = 300.f;
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-			width -= 10.f;
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-			width += 10.f;
-		Renderer::submitQuad(0, 0, &sf::Color::Red, 0, {100.f, 100.f}, {width, 10.f}, 0, 0.f, {}, ProjectionType::gui);
-		Renderer::submitTextArea("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis feugiat lorem. Donec at lorem sed lectus condimentum blandit. Maecenas finibus ante eu pretium pulvinar. Integer laoreet, erat vitae condimentum tempor, tortor urna suscipit leo, non luctus augue diam at urna. Etiam porta ele",
-			"consola.ttf", {100.f, 100.f}, width, TextAligment::center, 40.f, sf::Color::Red, 0, ProjectionType::gui);
-#endif
-
 		Renderer::endScene();
 		mWindow.display();
 	}

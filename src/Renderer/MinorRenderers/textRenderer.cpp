@@ -168,10 +168,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			}
 			lettersInCurrentWord = 0;
 		}
-
-		text++;
-
-		if(*(text) == '\0')
+		else if(*(text) == '\0')
 		{
 			if(!rowCharacters.empty())
 			{
@@ -184,6 +181,8 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			}
 			break;
 		}
+
+		text++;
 	}
 }
 
