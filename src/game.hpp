@@ -35,7 +35,6 @@ private:
 	std::unique_ptr<SoundPlayer>   mSoundPlayer;
 	std::unique_ptr<MusicPlayer>   mMusicPlayer;
 	std::unique_ptr<TextureHolder> mTextures;
-	std::unique_ptr<OldFontHolder> mFonts;
 	std::unique_ptr<AIManager>     mAIManager;
 	std::unique_ptr<SceneManager>  mSceneManager;
 	std::unique_ptr<Terminal>      mTerminal;

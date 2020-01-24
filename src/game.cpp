@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include "game.hpp"
-#include "Resources/loadFonts.hpp"
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
@@ -17,7 +16,6 @@ Game::Game()
 	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
 	,mTextures(std::make_unique<TextureHolder>())
-	,mFonts(std::make_unique<OldFontHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 	,mTerminal(std::make_unique<Terminal>())
@@ -28,7 +26,6 @@ Game::Game()
 		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
-		mFonts.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
 		mTerminal.get(),
@@ -39,7 +36,6 @@ Game::Game()
 	
 	GameData* gameData = mGameData.get();
 
-	loadFonts(gameData);
 	mTerminal->init(gameData);
 	mSceneManager->setGameData(gameData);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");

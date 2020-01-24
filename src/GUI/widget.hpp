@@ -4,6 +4,7 @@
 #include "Events/event.hpp"
 #include "Renderer/API/texture.hpp"
 #include "Resources/resourceHolder.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <map>
 #include <functional>
 
