@@ -180,8 +180,9 @@ namespace ph {
 		auto entity = mTemplatesStorage.createCopy("HintArea", mGameRegistry);
 		loadPosition(hintAreaNode, entity);
 		loadSize(hintAreaNode, entity);
-		auto& hintDetails = mGameRegistry.get<component::Hint>(entity);
-		hintDetails.hintName = getProperty(hintAreaNode, "hintName").toString();
+		auto& hint = mGameRegistry.get<component::Hint>(entity);
+		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
+		hint.content = getProperty(hintAreaNode, "hintContent").toString();
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const

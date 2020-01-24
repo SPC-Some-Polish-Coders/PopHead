@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
   <interface name="pauseScreen" hide="true">
-    <textWidget name="resumeButton"     size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" centerPos="0.5, 0.3" fontSize="50" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="setGamePause:false" text="Resume" />
-    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" centerPos="0.5, 0.7" fontSize="50" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
+    <textWidget name="resumeButton"     size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" centerPos="0.5, 0.3" fontSize="70" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="setGamePause:false" text="Resume" />
+    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" centerPos="0.5, 0.7" fontSize="70" fontName="joystixMonospace.ttf" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
   </interface>
   <interface name="gameOverScreen" hide="true">
-    <textWidget name="restartButton"    size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" fontSize="50" centerPos="0.5, 0.3" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:arcadeModeChooseMenu.xml" text="Try Again" />
-    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" fontSize="50" centerPos="0.5, 0.7" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
+    <textWidget name="restartButton"    size="0.4, 0.2" texturePath="gui/button.png" color="rgb(100, 200, 5)" fontSize="70" centerPos="0.5, 0.3" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:arcadeModeChooseMenu.xml" text="Try Again" />
+    <textWidget name="exitToMenuButton" size="0.4, 0.2" texturePath="gui/button.png" color="rgb(230, 30, 10)" fontSize="70" centerPos="0.5, 0.7" fontName="joystixMonospace.ttf"  textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Exit to menu" />
   </interface>
   <interface name="gameplayCounters">
     <textWidget name="vitalityCounter"      size="0.05, 0.1" topRightPos="0.9, 0.01" texturePath="others/heart.png"         fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="100"/>
     <textWidget name="pistolBulletCounter"  size="0.05, 0.1" topRightPos="0.9, 0.1"  texturePath="others/bullet.png"        fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
     <textWidget name="shotgunBulletCounter" size="0.05, 0.1" topRightPos="0.9, 0.2"  texturePath="others/shotgunShells.png" fontName="joystixMonospace.ttf" textColor="black" fontSize="40" text="20"/>
+  </interface>
+  <interface name="hints" hide="true">
+    <widget name="hintBackground" topLeftPos="0.01, 0.01" size="0.3, 0.2" color="rgba(10, 10, 10, 220)" >
+      <textWidget name="hintContent" centerPos="0.5" size="1" color="transparent" textColor="white" fontSize="40" fontName="joystixMonospace.ttf" text="" />
+    </widget>
   </interface>
 </gui>

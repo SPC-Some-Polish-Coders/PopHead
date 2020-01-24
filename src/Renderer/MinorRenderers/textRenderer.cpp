@@ -129,7 +129,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			rowCharacters.emplace_back(cq);
 			++lettersInCurrentWord;
 		}
-		else if(*text == ' ')
+		else if(*text == ' ' || localPos.x > textAreaWidth)
 		{
 			while(*(text + 1) == ' ') {
 				++text;

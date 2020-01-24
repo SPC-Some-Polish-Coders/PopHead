@@ -236,8 +236,7 @@ void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string hintName = entityComponentNode.getAttribute("hintName")->toString();
-	bool isShown = false;
-	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName, isShown);
+	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName);
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
