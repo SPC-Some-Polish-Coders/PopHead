@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gui>
 
-  <widgetTemplate name="scrollingText" fontName="joystixMonospace.ttf" velocity="0, -0.075" size="0.55, 0.2" color="transparent"/>
+  <widgetTemplate name="scrollingText" fontName="joystixMonospace.ttf" velocity="0, -0.075" size="0.65, 0.2" color="transparent"/>
   
   <widgetTemplate name="header" template="scrollingText" fontSize="60" textAligment="left" />
   <widgetTemplate name="name"   template="scrollingText" fontSize="48" textAligment="left"/>
@@ -18,41 +18,41 @@
   <widgetTemplate name="qa"                template="name"   textColor="rgb(135, 2, 75)" />
 
   <interface name="credits">
-    <textWidget name="Programers"            centerPos="0.3, 1"     text="Programmers:"                  template="progHeader"/>
-    <textWidget name="CzapaProg"             centerPos="0.35, 1.05" text="Grzegorz 'Czapa' Bednorz"      template="prog"/>
-    <textWidget name="Peter"                 centerPos="0.35, 1.1"  text="Piotr Gardocki"                template="prog"/>
-    <textWidget name="Simon"                 centerPos="0.35, 1.15" text="Szymon 'Whittler' Strugala"    template="prog"/>
-    <textWidget name="Hubert"                centerPos="0.35, 1.2"  text="Hubert Misiewicz"              template="prog"/>
-    <textWidget name="Kamil Lewan"           centerPos="0.35, 1.25" text="Kamil Lewan"                   template="prog"/>
-    <textWidget name="Kamil Sajko"           centerPos="0.35, 1.3"  text="Kamil 'Sajko'"                 template="prog"/>
-    <textWidget name="Adam"                  centerPos="0.35, 1.35" text="Adam 'Bobem' Zukowski"         template="prog"/>
-    <textWidget name="Graphffiti"            centerPos="0.35, 1.4"  text="Lorwin 'graphffiti'"           template="prog"/>
-    <textWidget name="Piotek"                centerPos="0.35, 1.45" text="Piotek 'Fave'"                 template="prog"/>
-    <textWidget name="Thief"                 centerPos="0.35, 1.5"  text="'Thief'"                       template="prog"/>
+    <textWidget name="Programers"            centerPos="0.4, 1"     text="Programmers:"                  template="progHeader"/>
+    <textWidget name="CzapaProg"             centerPos="0.45, 1.05" text="Grzegorz 'Czapa' Bednorz"      template="prog"/>
+    <textWidget name="Peter"                 centerPos="0.45, 1.1"  text="Piotr Gardocki"                template="prog"/>
+    <textWidget name="Simon"                 centerPos="0.45, 1.15" text="Szymon 'Whittler' Strugala"    template="prog"/>
+    <textWidget name="Hubert"                centerPos="0.45, 1.2"  text="Hubert Misiewicz"              template="prog"/>
+    <textWidget name="Kamil Lewan"           centerPos="0.45, 1.25" text="Kamil Lewan"                   template="prog"/>
+    <textWidget name="Kamil Sajko"           centerPos="0.45, 1.3"  text="Kamil 'Sajko'"                 template="prog"/>
+    <textWidget name="Adam"                  centerPos="0.45, 1.35" text="Adam 'Bobem' Zukowski"         template="prog"/>
+    <textWidget name="Graphffiti"            centerPos="0.45, 1.4"  text="Lorwin 'graphffiti'"           template="prog"/>
+    <textWidget name="Piotek"                centerPos="0.45, 1.45" text="Piotek 'Fave'"                 template="prog"/>
+    <textWidget name="Thief"                 centerPos="0.45, 1.5"  text="'Thief'"                       template="prog"/>
 
-    <textWidget name="GameLevelDesigners"    centerPos="0.3, 1.6"   text="Game/Level designers:"         template="gameLevDesHeader"/>
-    <textWidget name="Prezes"                centerPos="0.35, 1.65" text="Piotr 'Prezes' Brzostowski"    template="gameLevDes"/>
-    <textWidget name="Stephen"               centerPos="0.35, 1.7"  text="Stephen Smith"                 template="gameLevDes"/>
-    <textWidget name="Adrian"                centerPos="0.35, 1.75" text="Adrian Paulus"                 template="gameLevDes"/>
-    <textWidget name="CzapaGLD"              centerPos="0.35, 1.8"  text="Grzegorz 'Czapa' Bednorz"      template="gameLevDes"/>
+    <textWidget name="GameLevelDesigners"    centerPos="0.4, 1.6"   text="Game/Level designers:"         template="gameLevDesHeader"/>
+    <textWidget name="Prezes"                centerPos="0.45, 1.65" text="Piotr 'Prezes' Brzostowski"    template="gameLevDes"/>
+    <textWidget name="Stephen"               centerPos="0.45, 1.7"  text="Stephen Smith"                 template="gameLevDes"/>
+    <textWidget name="Adrian"                centerPos="0.45, 1.75" text="Adrian Paulus"                 template="gameLevDes"/>
+    <textWidget name="CzapaGLD"              centerPos="0.45, 1.8"  text="Grzegorz 'Czapa' Bednorz"      template="gameLevDes"/>
 
-    <textWidget name="MusicAndSoundCreator"  centerPos="0.3, 1.90"  text="Music and Sound creators:"     template="musicSoundHeader"/>
-    <textWidget name="'Mateusz Stepka'"      centerPos="0.35, 1.95" text="Mateusz Stepka"                template="musicSound"/>
-    <textWidget name="Jerzy Wujczyk"         centerPos="0.35, 2.00" text="Jerzy Wujczyk"                 template="musicSound"/>
+    <textWidget name="MusicAndSoundCreator"  centerPos="0.4, 1.90"  text="Music and Sound creators:"     template="musicSoundHeader"/>
+    <textWidget name="'Mateusz Stepka'"      centerPos="0.45, 1.95" text="Mateusz Stepka"                template="musicSound"/>
+    <textWidget name="Jerzy Wujczyk"         centerPos="0.45, 2.00" text="Jerzy Wujczyk"                 template="musicSound"/>
 
-    <textWidget name="GraphicsCreators"      centerPos="0.3, 2.10"  text="Graphics creators:"            template="graphicsDesHeader"/>
-    <textWidget name="Jumbocube"             centerPos="0.35, 2.15" text="Andrzej 'Jumbocube' Brol"      template="graphicsDes"/>
-    <textWidget name="SiwyKleszcz"           centerPos="0.35, 2.20" text="'SiwyKleszcz'"                 template="graphicsDes"/>
+    <textWidget name="GraphicsCreators"      centerPos="0.4, 2.10"  text="Graphics creators:"            template="graphicsDesHeader"/>
+    <textWidget name="Jumbocube"             centerPos="0.45, 2.15" text="Andrzej 'Jumbocube' Brol"      template="graphicsDes"/>
+    <textWidget name="SiwyKleszcz"           centerPos="0.45, 2.20" text="'SiwyKleszcz'"                 template="graphicsDes"/>
 
-    <textWidget name="Quality Assurance"     centerPos="0.3, 2.3"   text="Testers:"                      template="qaHeader"/>
-    <textWidget name="Pavko"                 centerPos="0.35, 2.35" text="'Pavko'"                       template="qa"/>
-    <textWidget name="Piotr Wielgorski"      centerPos="0.35, 2.4"  text="Piotr Wielgorski"              template="qa"/>
-    <textWidget name="Siwy Kleszcz"          centerPos="0.35, 2.45" text="'SiwyKleszcz'"                 template="qa"/>
+    <textWidget name="Quality Assurance"     centerPos="0.4, 2.3"   text="Testers:"                      template="qaHeader"/>
+    <textWidget name="Pavko"                 centerPos="0.45, 2.35" text="'Pavko'"                       template="qa"/>
+    <textWidget name="Piotr Wielgorski"      centerPos="0.45, 2.4"  text="Piotr Wielgorski"              template="qa"/>
+    <textWidget name="Siwy Kleszcz"          centerPos="0.45, 2.45" text="'SiwyKleszcz'"                 template="qa"/>
 
-    <textWidget name="Marketing"             fontName="joystixMonospace.ttf"  centerPos="0.3, 2.55"  textColor="black"  text="Marketing:"    template="header" />
-    <textWidget name="AdrianP"               fontName="joystixMonospace.ttf"  centerPos="0.35, 2.6"  textColor="black"  text="Adrian Paulus" template="name" />
+    <textWidget name="Marketing"             fontName="joystixMonospace.ttf"  centerPos="0.4, 2.55"  textColor="black"  text="Marketing:"    template="header" />
+    <textWidget name="AdrianP"               fontName="joystixMonospace.ttf"  centerPos="0.45, 2.6"  textColor="black"  text="Adrian Paulus" template="name" />
 
-    <textWidget name="exitButton" texturePath="gui/button.png" size="0.2, 0.05" color="rgb(230, 30, 10)" centerPos="0.8,0.9" fontName="joystixMonospace.ttf" fontSize="35" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Main menu" />
+    <textWidget name="exitButton" texturePath="gui/button.png" size="0.2, 0.1" color="rgb(230, 30, 10)" centerPos="0.9,0.9" fontName="joystixMonospace.ttf" fontSize="30" textColor="black" onButtonPressed="replaceScene:mainMenu.xml" text="Main menu" />
   </interface>
 
 </gui>

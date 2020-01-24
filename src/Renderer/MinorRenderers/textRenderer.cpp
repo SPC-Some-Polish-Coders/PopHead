@@ -55,7 +55,7 @@ void TextRenderer::beginDebugDisplay()
 	mDebugTextPosition = {1150.f, 0.f};
 
 	if(mWasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Black, nullptr, {1120.f, 0.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1120.f, 0.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
 	mWasDebugTextDrawnInLastFrame = false;
 }
 
