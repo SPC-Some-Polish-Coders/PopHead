@@ -203,7 +203,7 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 				return soundPlayer->getVolume();
 			if(varName == "MusicVolume")
 				return musicPlayer->getVolume();
-			PH_EXIT_GAME("XmlGuiParser error: You're trying to get unknown variable \"var:" + std::string(varName.data()));
+			PH_EXIT_GAME("XmlGuiParser error: You're trying to get unknown variable \"get:" + std::string(varName.data()));
 		}
 		else {
 			return sliderValueNode.toFloat();
