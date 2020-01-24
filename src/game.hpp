@@ -8,7 +8,7 @@
 #include "Resources/resourceHolder.hpp"
 #include "Terminal/terminal.hpp"
 #include "FPSCounter/fpsCounter.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Window.hpp>
 #include <memory>
 
 namespace ph {
@@ -29,7 +29,7 @@ private:
 	void update(float dt);
 
 private:
-	sf::RenderWindow               mWindow;
+	sf::Window                     mWindow;
 	FPSCounter                     mFPSCounter;
 	std::unique_ptr<GameData>      mGameData;
 	std::unique_ptr<SoundPlayer>   mSoundPlayer;

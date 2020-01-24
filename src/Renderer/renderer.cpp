@@ -151,7 +151,7 @@ void Renderer::beginScene(Camera& camera)
 	textRenderer.beginDebugDisplay();
 }
 
-void Renderer::endScene(sf::RenderWindow& window)
+void Renderer::endScene()
 {
 	PH_PROFILE_FUNCTION(0);
 

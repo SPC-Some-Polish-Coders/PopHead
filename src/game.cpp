@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include "game.hpp"
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
@@ -107,7 +106,7 @@ void Game::update(float dt)
 			"consola.ttf", {100.f, 100.f}, width, TextAligment::center, 40.f, sf::Color::Red, 0, ProjectionType::gui);
 #endif
 
-		Renderer::endScene(mWindow);
+		Renderer::endScene();
 		mWindow.display();
 	}
 }
