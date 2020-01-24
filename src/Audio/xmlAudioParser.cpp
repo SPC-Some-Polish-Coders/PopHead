@@ -1,46 +1,33 @@
 #include "xmlAudioParser.hpp"
-#include "Audio/Music/musicPlayer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
+#include "Music/musicPlayer.hpp"
+#include "Sound/soundPlayer.hpp"
+#include "Music/musicStateMachine.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
 
 namespace ph {
 
-void XmlAudioParser::parseFile(MusicPlayer& musicPlayer, const std::string& filePath)
+void parseAudioXmlFile(const std::string& filePath)
 {
 	PH_LOG_INFO("Music file (" + filePath + ") is being parsed.");
-
-	mMusicPlayer = &musicPlayer;
 
 	Xml audioFile;
 	PH_ASSERT_CRITICAL(audioFile.loadFromFile(filePath), "scene audio file \"" + filePath + "\" wasn't loaded correctly!");
 	const Xml audioNode = *audioFile.getChild("audio");
 
-	parseSoundMute(audioNode);
-	parseStartTheme(audioNode);
-	parseMusicStates(audioNode);
-}
-
-void XmlAudioParser::parseSoundMute(const Xml& audioNode)
-{
+	// parse sound mute
 	const auto volumeNode = audioNode.getChild("mute");
 	bool soundMute = volumeNode->getAttribute("soundmute")->toBool();
 	SoundPlayer::setSceneMute(soundMute);
-}
 
-void XmlAudioParser::parseStartTheme(const Xml& audioNode)
-{
-	//TODO: What should we do with volumeMultiplier parameter
-
+	// parse start theme
 	const auto startThemeNode = audioNode.getChild("starttheme");
 	const std::string filepath = "music/" + startThemeNode->getAttribute("filename")->toString();
-	mMusicPlayer->playFromFile(filepath);
-}
+	MusicPlayer::playFromFile(filepath);
 
-void XmlAudioParser::parseMusicStates(const Xml& audioNode)
-{
+	// parse music states
 	const auto musicStateNodes = audioNode.getChildren("musicstate");
-	auto& musicStateMachine = mMusicPlayer->getMusicStateMachine();
+	auto& musicStateMachine = MusicPlayer::getMusicStateMachine();
 
 	for(const auto& musicStateNode : musicStateNodes)
 	{

@@ -15,12 +15,11 @@
 
 namespace ph::system {
 
-ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, AIManager& aiManager, MusicPlayer& musicPlayer, EntitiesTemplateStorage& templateStorage)
+ArcadeMode::ArcadeMode(entt::registry& registry, GUI& gui, AIManager& aiManager, EntitiesTemplateStorage& templateStorage)
 	:System(registry)
 	,mGui(gui)
 	,mAIManager(aiManager)
 	,mTemplateStorage(templateStorage)
-	,mMusicPlayer(musicPlayer)
 {
 	sIsActive = true;
 	mAIManager.setAIMode(AIMode::zombieAlwaysLookForPlayer);
@@ -47,7 +46,7 @@ void ArcadeMode::update(float dt)
 	if(!mHasStartedFirstWave) {
 		mTimeBeforeStartingFirstWave -= dt;
 
-		mMusicPlayer.playFromMusicState("break");
+		MusicPlayer::playFromMusicState("break");
 
 		auto* counters = mGui.getInterface("nextWaveInfo")->getWidget("counters");
 		auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
@@ -56,7 +55,7 @@ void ArcadeMode::update(float dt)
 		timeToNextWave->setText(str);
 
 		if(mTimeBeforeStartingFirstWave <= 0.f) {
-			mMusicPlayer.playFromMusicState("wave");
+			MusicPlayer::playFromMusicState("wave");
 			mGui.getInterface("nextWaveInfo")->hide();
 			mGui.getInterface("arcadeCounters")->show();
 			createNextWave();
@@ -154,7 +153,7 @@ void ArcadeMode::startBreakTime()
 	mGui.hideInterface("arcadeCounters");
 	mGui.showInterface("nextWaveInfo");
 
-	mMusicPlayer.playFromMusicState("break");
+	MusicPlayer::playFromMusicState("break");
 }
 
 void ArcadeMode::endBreakTime()
@@ -164,7 +163,7 @@ void ArcadeMode::endBreakTime()
 	mGui.hideInterface("nextWaveInfo");
 	mGui.showInterface("arcadeCounters");
 
-	mMusicPlayer.playFromMusicState("wave");
+	MusicPlayer::playFromMusicState("wave");
 }
 
 void ArcadeMode::updateGuiCounters()

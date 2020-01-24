@@ -1,7 +1,6 @@
 #pragma once
 
 #include "gameData.hpp"
-#include "Audio/Music/musicPlayer.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Resources/resourceHolder.hpp"
@@ -31,7 +30,6 @@ private:
 	sf::Window                     mWindow;
 	FPSCounter                     mFPSCounter;
 	std::unique_ptr<GameData>      mGameData;
-	std::unique_ptr<MusicPlayer>   mMusicPlayer;
 	std::unique_ptr<TextureHolder> mTextures;
 	std::unique_ptr<AIManager>     mAIManager;
 	std::unique_ptr<SceneManager>  mSceneManager;

@@ -13,7 +13,6 @@ namespace ph {
 Game::Game()
 	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mGameData()
-	,mMusicPlayer(std::make_unique<MusicPlayer>())
 	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
@@ -22,7 +21,6 @@ Game::Game()
 {
 	mGameData.reset(new GameData(
 		&mWindow,
-		mMusicPlayer.get(),
 		mTextures.get(),
 		mAIManager.get(),
 		mSceneManager.get(),
@@ -43,7 +41,7 @@ Game::Game()
 	mWindow.setKeyRepeatEnabled(false);
 
 	Widget::setWindow(&mWindow);
-	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser(), mMusicPlayer.get());
+	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser());
 
 	ActionEventManager::init();
 }

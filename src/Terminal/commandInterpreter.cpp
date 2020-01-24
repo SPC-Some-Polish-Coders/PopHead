@@ -11,6 +11,8 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Systems/areasDebug.hpp"
+#include "Audio/Music/musicPlayer.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
 #include "Renderer/API/font.hpp"
 #include "GUI/xmlGuiParser.hpp"
@@ -259,11 +261,11 @@ void CommandInterpreter::executeUnmute()
 void CommandInterpreter::setAudioMuted(bool mute) const
 {
 	if(commandContains("music"))
-		mGameData->getMusicPlayer().setMuted(mute);
+		MusicPlayer::setMuted(mute);
 	else if(commandContains("sound"))
 		SoundPlayer::setMuted(mute);
 	else if(commandContains("all")) {
-		mGameData->getMusicPlayer().setMuted(mute);
+		MusicPlayer::setMuted(mute);
 		SoundPlayer::setMuted(mute);
 	}
 	else
@@ -279,11 +281,11 @@ void CommandInterpreter::executeSetVolume()
 	}
 
 	if (commandContains("music"))
-		mGameData->getMusicPlayer().setVolume(newVolume);
+		MusicPlayer::setVolume(newVolume);
 	else if (commandContains("sound"))
 		SoundPlayer::setVolume(newVolume);
 	else{
-		mGameData->getMusicPlayer().setVolume(newVolume);
+		MusicPlayer::setVolume(newVolume);
 		SoundPlayer::setVolume(newVolume);
 	}
 }

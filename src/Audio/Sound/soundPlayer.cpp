@@ -16,9 +16,9 @@ namespace {
 	SoundBufferHolder soundBuffers;
 	SoundDataHolder soundDataHolder;
 	SpatializationManager spatializationManager;
-	float soundVolume;
-	bool areSoundsMuted;
-	bool sceneMute;
+	float soundVolume = 15.f;
+	bool areSoundsMuted = false;
+	bool sceneMute = false;
 }
 
 static void removeStoppedSounds()
@@ -40,8 +40,6 @@ static void playSound(const std::string& filePath, float volume, bool loop)
 
 void init()
 {
-	soundVolume = 15.f;
-	
 	setMuted(false);
 
 	soundBuffers.load("sounds/swordAttack.wav");

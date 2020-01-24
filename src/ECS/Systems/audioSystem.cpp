@@ -11,9 +11,8 @@
 
 namespace ph::system {
 
-	AudioSystem::AudioSystem(entt::registry& registry, MusicPlayer& musicPlayer)
+	AudioSystem::AudioSystem(entt::registry& registry)
 		:System(registry)
-		,mMusicPlayer(musicPlayer)
 	{
 		mSoundDistancesFromPlayer.reserve(10);
 	}
@@ -23,7 +22,7 @@ namespace ph::system {
 		PH_PROFILE_FUNCTION(0);
 
 		// for scenes without music
-		if (!mMusicPlayer.hasMusicState("fight") || !mMusicPlayer.hasMusicState("exploration"))
+		if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
 			return;
 
 		// define constants
@@ -62,9 +61,9 @@ namespace ph::system {
 			if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
 				mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
 				if(mCurrentlyPlayerTheme == Theme::Fight)
-					mMusicPlayer.playFromMusicState("fight");
+					MusicPlayer::playFromMusicState("fight");
 				else
-					mMusicPlayer.playFromMusicState("exploration");
+					MusicPlayer::playFromMusicState("exploration");
 			}
 		}
 

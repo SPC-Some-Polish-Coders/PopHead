@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Audio/Music/musicPlayer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Resources/resourceHolder.hpp"
@@ -28,11 +26,10 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::Window* const window,
-		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
 		AIManager* const aiManager,
 		SceneManager* const sceneManager,
@@ -40,7 +37,6 @@ public:
 		GUI* const Gui
 	)
 		:mWindow(window)
-		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
 		,mAIMangager(aiManager)
 		,mSceneManager{sceneManager}
@@ -51,7 +47,6 @@ public:
 	}
 	
 	auto getWindow() const -> sf::Window& { return *mWindow; }
-	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
 	auto getSceneManager() const -> SceneManager& { return *mSceneManager; }
@@ -61,7 +56,6 @@ public:
 
 private:
 	sf::Window* const mWindow;
-	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;
 	AIManager* const mAIMangager;
 	SceneManager* const mSceneManager;

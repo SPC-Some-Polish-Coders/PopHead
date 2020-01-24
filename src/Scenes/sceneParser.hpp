@@ -14,7 +14,7 @@
 namespace ph{
 
 void parseScene(GameData* const, CutSceneManager&, EntitiesTemplateStorage&, entt::registry&,
-                const std::string& sceneFileName, TextureHolder&, SystemsQueue&, GUI&, MusicPlayer&, AIManager&);
+                const std::string& sceneFileName, TextureHolder&, SystemsQueue&, GUI&, AIManager&);
 
 }
 

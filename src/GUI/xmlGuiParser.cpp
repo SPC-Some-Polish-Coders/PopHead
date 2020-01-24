@@ -17,16 +17,14 @@ namespace {
 	TextureHolder* textureHolder = nullptr;
 	SceneManager* sceneManager = nullptr;
 	GameCloser* gameCloser = nullptr;
-	MusicPlayer* musicPlayer = nullptr;
 }
 
-void XmlGuiParser::init(GUI* g, TextureHolder* th, SceneManager* sm, GameCloser* gc, MusicPlayer* mp)
+void XmlGuiParser::init(GUI* g, TextureHolder* th, SceneManager* sm, GameCloser* gc)
 {
 	gui = g;
 	textureHolder = th;
 	sceneManager = sm;
 	gameCloser = gc;
-	musicPlayer = mp;
 }
 
 void XmlGuiParser::parseGuiXml(const std::string& filepath)
@@ -200,7 +198,7 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 			if(varName == "SoundVolume")
 				return SoundPlayer::getVolume();
 			if(varName == "MusicVolume")
-				return musicPlayer->getVolume();
+				return MusicPlayer::getVolume();
 			PH_EXIT_GAME("XmlGuiParser error: You're trying to get unknown variable \"get:" + std::string(varName.data()));
 		}
 		else {
@@ -229,7 +227,7 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	}
 	else if(name == "set") {
 		if(data == "MusicVolume")
-			return [](Widget* widget) { musicPlayer->setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
+			return [](Widget* widget) { MusicPlayer::setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
 		if(data == "SoundVolume")
 			return [](Widget* widget) { SoundPlayer::setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
 	}

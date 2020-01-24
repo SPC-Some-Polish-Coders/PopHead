@@ -17,7 +17,7 @@ namespace ph {
 
 void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
                 entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
-                GUI& gui, MusicPlayer& musicPlayer, AIManager& aiManager)
+                GUI& gui, AIManager& aiManager)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -42,8 +42,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	// parse audio
 	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
 		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
-		XmlAudioParser audioParser;
-		audioParser.parseFile(gameData->getMusicPlayer(), audioFilePath);
+		parseAudioXmlFile(audioFilePath);
 	}
 
 	// parse ambient light 
@@ -57,7 +56,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	// parse arcade mode
 	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();

@@ -11,12 +11,11 @@
 
 namespace ph::system {
 
-CutScenesActivating::CutScenesActivating(entt::registry& registry, CutSceneManager& csm, GUI& gui, MusicPlayer& mp,
+CutScenesActivating::CutScenesActivating(entt::registry& registry, CutSceneManager& csm, GUI& gui,
                                          AIManager& ai, SceneManager& sm)
 	:System(registry)
 	,mCutSceneManager(csm)
 	,mGui(gui)
-	,mMusicPlayer(mp)
 	,mAIManager(ai)
 	,mSceneManager(sm)
 {
