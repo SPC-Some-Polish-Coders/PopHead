@@ -9,6 +9,7 @@
 #include <cstring>
 #include <vector>
 #include <cmath>
+#include <cstring>
 
 namespace ph {
 
@@ -19,6 +20,7 @@ namespace {
 		sf::Vector2f pos;
 		sf::Vector2f size;
 		float advance;
+		sf::Color color;
 	};
 
 	CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
@@ -114,18 +116,51 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 		}
 	};
 
-	auto submitCharacterToQuadRenderer = [=](sf::Vector2f localPos, sf::Vector2f size, IntRect textureRect)
+	auto submitCharacterToQuadRenderer = [&](sf::Vector2f localPos, sf::Vector2f size, IntRect textureRect, sf::Color color)
 	{
-		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &textColor, &mTextShader,
+		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &color, &mTextShader,
 			localPos + worldPos, size, z, 0.f, {}, projectionType);
 	};
 
 	while(1)
 	{
-		if(*text >= '!' && *text <= '~') 
+		if(*text == '@')
+		{
+			++text;
+			switch(*text)
+			{
+				case 'C': { // change text color
+					auto getColorValue = [&text] 
+					{
+						// NOTE: stof() doesn't work in this case
+						++text;
+						float digit = 0;
+						if(*text == '1') digit = 1;
+						else if(*text == '2') digit = 2;
+						else if(*text == '3') digit = 3;
+						else if(*text == '4') digit = 4;
+						else if(*text == '5') digit = 5;
+						else if(*text == '6') digit = 6;
+						else if(*text == '7') digit = 7;
+						else if(*text == '8') digit = 8;
+						else if(*text == '9') digit = 9;
+						return static_cast<unsigned char>((digit / 9.f) * 255.f); 
+					};
+					textColor.r = getColorValue();
+					textColor.g = getColorValue();
+					textColor.b = getColorValue();
+					textColor.a = getColorValue();
+				} break;
+
+				default:
+					break;
+			}
+		}
+		else if(*text >= '!' && *text <= '~') 
 		{
 			auto cq = getCharacterQuad(data.charactersData, *text - 32, &localPos, data.textureAtlas->getWidth());
 			localPos.x += cq.advance;
+			cq.color = textColor;
 			rowCharacters.emplace_back(cq);
 			++lettersInCurrentWord;
 		}
@@ -144,7 +179,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 					const float xOffset = getXOffset(firstNotFittingLetterInTheRow->pos.x);
 					for(auto it = rowCharacters.begin(); it != firstNotFittingLetterInTheRow; ++it) {
 						it->pos.x += xOffset;
-						submitCharacterToQuadRenderer(it->pos, it->size, it->textureRect);
+						submitCharacterToQuadRenderer(it->pos, it->size, it->textureRect, it->color);
 					}
 					rowCharacters.clear();
 					text -= lettersInCurrentWord + 1;
@@ -154,7 +189,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 					const float xOffset = getXOffset(localPos.x);
 					for(auto& cq : rowCharacters) {
 						cq.pos.x += xOffset;
-						submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect);
+						submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 					}
 					rowCharacters.clear();
 				}
@@ -175,14 +210,14 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 				const float xOffset = getXOffset(localPos.x);
 				for(auto& cq : rowCharacters) {
 					cq.pos.x += xOffset;
-					submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect);
+					submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 				}
 				rowCharacters.clear();
 			}
 			break;
 		}
 
-		text++;
+		++text;
 	}
 }
 
