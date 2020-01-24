@@ -19,17 +19,12 @@ Widget::Widget(const char* name)
 
 void Widget::handleEvent(const ph::Event& phEvent)
 {
-	if(mIsActive) {
-		handleEventOnCurrent(phEvent);
-		handleEventOnChildren(phEvent);
-	}
+	handleEventOnCurrent(phEvent);
+	handleEventOnChildren(phEvent);
 }
 
 void Widget::handleEventOnCurrent(const ph::Event& phEvent)
 {
-	if(!mIsActive)
-		return;
-
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
 		if(e->type == sf::Event::MouseButtonPressed || e->type == sf::Event::MouseButtonReleased

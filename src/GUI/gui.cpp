@@ -47,7 +47,8 @@ void GUI::handleEvent(const ph::Event& e)
 			Widget::setScreenSize(sf::Vector2f(float(sfEvent->size.width), float(sfEvent->size.height)));
 
 	for(auto& interface : mInterfaces)
-		interface.handleEvent(e);
+		if(interface.isActive())
+			interface.handleEvent(e);
 }
 
 void GUI::update(float dt)
