@@ -64,7 +64,7 @@ void SceneManager::replaceAction()
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
-		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
+		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getAIManager(),
 			                   mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
 
 		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,

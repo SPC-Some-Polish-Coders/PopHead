@@ -43,7 +43,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
 		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
 		XmlAudioParser audioParser;
-		audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
+		audioParser.parseFile(gameData->getMusicPlayer(), audioFilePath);
 	}
 
 	// parse ambient light 

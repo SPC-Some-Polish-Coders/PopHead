@@ -261,10 +261,10 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 	if(commandContains("music"))
 		mGameData->getMusicPlayer().setMuted(mute);
 	else if(commandContains("sound"))
-		mGameData->getSoundPlayer().setMuted(mute);
+		SoundPlayer::setMuted(mute);
 	else if(commandContains("all")) {
 		mGameData->getMusicPlayer().setMuted(mute);
-		mGameData->getSoundPlayer().setMuted(mute);
+		SoundPlayer::setMuted(mute);
 	}
 	else
 		executeMessage("Incorrect second argument! You have to enter 'music', 'sound' or 'all'.", MessageType::ERROR);
@@ -281,10 +281,10 @@ void CommandInterpreter::executeSetVolume()
 	if (commandContains("music"))
 		mGameData->getMusicPlayer().setVolume(newVolume);
 	else if (commandContains("sound"))
-		mGameData->getSoundPlayer().setVolume(newVolume);
+		SoundPlayer::setVolume(newVolume);
 	else{
 		mGameData->getMusicPlayer().setVolume(newVolume);
-		mGameData->getSoundPlayer().setVolume(newVolume);
+		SoundPlayer::setVolume(newVolume);
 	}
 }
 

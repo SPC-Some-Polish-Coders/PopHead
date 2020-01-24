@@ -13,7 +13,6 @@ namespace ph{
 
 class CutScene;
 class MusicPlayer;
-class SoundPlayer;
 class AIManager;
 class Terminal;
 class SceneManager;
@@ -23,7 +22,7 @@ class Texture;
 class Scene
 {
 public:
-    Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
+    Scene(MusicPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
 
 	void handleEvent(const ActionEvent& event);
     void update(float dt);

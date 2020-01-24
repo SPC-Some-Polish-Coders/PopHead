@@ -12,7 +12,6 @@ class GUI;
 class SceneManager;
 class GameCloser;
 class MusicPlayer;
-class SoundPlayer;
 class WidgetParent;		
 class Widget;
 class TextWidget;
@@ -21,7 +20,7 @@ class SliderWidget;
 class XmlGuiParser
 {
 public:
-	static void init(GUI* gui, TextureHolder* th, SceneManager* sm, GameCloser* gc, MusicPlayer* mp, SoundPlayer* sp);
+	static void init(GUI* gui, TextureHolder* th, SceneManager* sm, GameCloser* gc, MusicPlayer* mp);
 
 	void parseGuiXml(const std::string& filepath);
 private:

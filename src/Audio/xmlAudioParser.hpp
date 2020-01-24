@@ -5,13 +5,12 @@
 namespace ph {
 
 class Xml;
-class SoundPlayer;
 class MusicPlayer;
 
 class XmlAudioParser
 {
 public:
-	void parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, const std::string& filePath);
+	void parseFile(MusicPlayer& musicPlayer, const std::string& filePath);
 
 private:
 	void parseSoundMute(const Xml& audioNode);
@@ -19,7 +18,6 @@ private:
 	void parseMusicStates(const Xml& audioNode);
 
 private:
-	SoundPlayer* mSoundPlayer;
 	MusicPlayer* mMusicPlayer;
 };
 

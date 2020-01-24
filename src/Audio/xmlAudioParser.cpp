@@ -6,11 +6,10 @@
 
 namespace ph {
 
-void XmlAudioParser::parseFile(SoundPlayer& soundPlayer, MusicPlayer& musicPlayer, const std::string& filePath)
+void XmlAudioParser::parseFile(MusicPlayer& musicPlayer, const std::string& filePath)
 {
 	PH_LOG_INFO("Music file (" + filePath + ") is being parsed.");
 
-	mSoundPlayer = &soundPlayer;
 	mMusicPlayer = &musicPlayer;
 
 	Xml audioFile;
@@ -26,7 +25,7 @@ void XmlAudioParser::parseSoundMute(const Xml& audioNode)
 {
 	const auto volumeNode = audioNode.getChild("mute");
 	bool soundMute = volumeNode->getAttribute("soundmute")->toBool();
-	mSoundPlayer->setSceneMute(soundMute);
+	SoundPlayer::setSceneMute(soundMute);
 }
 
 void XmlAudioParser::parseStartTheme(const Xml& audioNode)

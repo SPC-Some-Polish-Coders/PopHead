@@ -7,7 +7,6 @@ namespace ph {
 class CutSceneManager;
 class GUI;
 class MusicPlayer;
-class SoundPlayer;
 class AIManager;
 class SceneManager;
 
@@ -18,7 +17,7 @@ namespace ph::system {
 class CutScenesActivating : public System
 {
 public:
-	CutScenesActivating(entt::registry&, CutSceneManager&, GUI&, MusicPlayer&, SoundPlayer&, AIManager&, SceneManager&);
+	CutScenesActivating(entt::registry&, CutSceneManager&, GUI&, MusicPlayer&, AIManager&, SceneManager&);
 
 	void update(float dt) override;
 
@@ -29,7 +28,6 @@ private:
 	CutSceneManager& mCutSceneManager;
 	GUI& mGui;
 	MusicPlayer& mMusicPlayer;
-	SoundPlayer& mSoundPlayer;
 	AIManager& mAIManager;
 	SceneManager& mSceneManager;
 };

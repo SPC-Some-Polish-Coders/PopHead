@@ -5,6 +5,7 @@
 #include "GUI/xmlGuiParser.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
@@ -12,7 +13,6 @@ namespace ph {
 Game::Game()
 	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mGameData()
-	,mSoundPlayer(std::make_unique<SoundPlayer>())
 	,mMusicPlayer(std::make_unique<MusicPlayer>())
 	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
@@ -22,7 +22,6 @@ Game::Game()
 {
 	mGameData.reset(new GameData(
 		&mWindow,
-		mSoundPlayer.get(),
 		mMusicPlayer.get(),
 		mTextures.get(),
 		mAIManager.get(),
@@ -32,6 +31,7 @@ Game::Game()
 	));
 
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+	SoundPlayer::init();
 	
 	GameData* gameData = mGameData.get();
 
@@ -43,7 +43,7 @@ Game::Game()
 	mWindow.setKeyRepeatEnabled(false);
 
 	Widget::setWindow(&mWindow);
-	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser(), mMusicPlayer.get(), mSoundPlayer.get());
+	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser(), mMusicPlayer.get());
 
 	ActionEventManager::init();
 }

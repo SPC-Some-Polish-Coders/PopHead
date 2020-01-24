@@ -40,7 +40,7 @@
 
 namespace ph {
 
-Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal,
+Scene::Scene(MusicPlayer& musicPlayer, AIManager& aiManager, Terminal& terminal,
              SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
@@ -76,9 +76,9 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::VelocityClear>();
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
+	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer));
 	mSystemsQueue.appendSystem<system::Cars>();
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(aiManager), std::ref(sceneManager));
 }
 
 void Scene::handleEvent(const ActionEvent& event)

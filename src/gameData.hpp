@@ -28,11 +28,10 @@ class GameData
 {
 public:
 	GameData()
-	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
+	:GameData(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr) {}
 	
 	GameData(
 		sf::Window* const window,
-		SoundPlayer* const soundPlayer,
 		MusicPlayer* const musicPlayer,
 		TextureHolder* const textures,
 		AIManager* const aiManager,
@@ -41,7 +40,6 @@ public:
 		GUI* const Gui
 	)
 		:mWindow(window)
-		,mSoundPlayer{soundPlayer}
 		,mMusicPlayer{musicPlayer}
 		,mTextures{textures}
 		,mAIMangager(aiManager)
@@ -53,7 +51,6 @@ public:
 	}
 	
 	auto getWindow() const -> sf::Window& { return *mWindow; }
-	auto getSoundPlayer() const -> SoundPlayer& { return *mSoundPlayer; }
 	auto getMusicPlayer() const -> MusicPlayer& { return *mMusicPlayer; }
 	auto getTextures() const -> TextureHolder& { return *mTextures; }
 	auto getAIManager() const -> AIManager& { return *mAIMangager; }
@@ -64,7 +61,6 @@ public:
 
 private:
 	sf::Window* const mWindow;
-	SoundPlayer* const mSoundPlayer;
 	MusicPlayer* const mMusicPlayer;
 	TextureHolder* const mTextures;
 	AIManager* const mAIMangager;
