@@ -2,7 +2,6 @@
 #include "renderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
-#include "MinorRenderers/SFMLrenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
 #include "MinorRenderers/lightRenderer.hpp"
 #include "MinorRenderers/textRenderer.hpp"
@@ -40,7 +39,6 @@ namespace {
 	ph::QuadRenderer quadRenderer;
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
-	ph::SFMLRenderer sfmlRenderer;
 	ph::LightRenderer lightRenderer;
 	ph::TextRenderer textRenderer;
 
@@ -204,14 +202,12 @@ void Renderer::endScene(sf::RenderWindow& window)
 		};
 
 		submitDebugCounter("All draw calls per frame: ",
-			sfmlRenderer.getNumberOfSubmitedObjects() + quadRenderer.getNumberOfDrawCalls() +
-			lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+			quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
 		submitDebugCounter("Nr of instanced draw calls: ", quadRenderer.getNumberOfDrawCalls());
 		submitDebugCounter("Nr of render groups: ", quadRenderer.getNumberOfRenderGroups());
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRenderer.getNumberOfDrawnSprites());
 		submitDebugCounter("Nr of instanced textures: ", quadRenderer.getNumberOfDrawnTextures());
-		submitDebugCounter("Nr of SFML draw calls: ", sfmlRenderer.getNumberOfSubmitedObjects());
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
 		submitDebugCounter("Nr of drawn lines calls: ", lineRenderer.getNumberOfDrawnLines());
 		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
@@ -221,9 +217,6 @@ void Renderer::endScene(sf::RenderWindow& window)
 		lineRenderer.setDebugNumbersToZero();
 		pointRenderer.setDebugNumbersToZero();
 	}
-
-	// draw gui using sfml
-	sfmlRenderer.flush(window);
 }
 
 void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
@@ -281,11 +274,6 @@ void Renderer::submitTextArea(const char* text, const char* fontFilename, sf::Ve
 void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
 	lightRenderer.submitLightBlockingQuad(position, size);
-}
-
-void Renderer::submitSFMLObject(const sf::Drawable& object)
-{
-	sfmlRenderer.submit(&object);
 }
 
 void Renderer::handleEvent(Event& phEvent)

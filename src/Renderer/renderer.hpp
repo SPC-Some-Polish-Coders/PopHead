@@ -53,8 +53,6 @@ namespace Renderer
 
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
-	void submitSFMLObject(const sf::Drawable&);
-
 	void setAmbientLightColor(sf::Color);
 
 	void handleEvent(Event&);
