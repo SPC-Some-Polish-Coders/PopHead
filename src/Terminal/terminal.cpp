@@ -11,7 +11,7 @@ Terminal::Terminal(sf::Window& window)
 
 void Terminal::init(SceneManager* sceneManager)
 {
-	mCommandInterpreter.init(sceneManager, mTerminalSharedData);
+	mCommandInterpreter.init(sceneManager, mTerminalSharedData, &mTerminalRenderer);
 }
 
 void Terminal::handleEvent(Event& e)

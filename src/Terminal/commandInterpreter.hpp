@@ -9,6 +9,7 @@
 namespace ph {
 
 class SceneManager;
+class TerminalRenderer;
 
 enum class MessageType 
 { 
@@ -18,7 +19,7 @@ enum class MessageType
 class CommandInterpreter
 {
 public:
-	void init(SceneManager*, TerminalSharedData);
+	void init(SceneManager*, TerminalSharedData, TerminalRenderer*);
 
 	void update(float dt);
 
@@ -71,6 +72,7 @@ private:
 	std::unordered_map<std::string, void(CommandInterpreter::*)() > mCommandsMap;
 	std::string mCommand;
 	TerminalSharedData mTerminalSharedData;
+	TerminalRenderer* mTerminalRenderer;
 	SceneManager* mSceneManager;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
 	entt::registry* mSceneRegistry;

@@ -1,4 +1,5 @@
 #include "commandInterpreter.hpp"
+#include "terminalRenderer.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
@@ -20,9 +21,10 @@
 
 namespace ph {
 
-void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData terminalSharedData)
+void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData terminalSharedData, TerminalRenderer* terminalRenderer)
 {
 	mTerminalSharedData = terminalSharedData;
+	mTerminalRenderer = terminalRenderer;
 	mSceneManager = sceneManager;
 
 	mCommandsMap["echo"] =						&CommandInterpreter::executeEcho;
@@ -429,8 +431,7 @@ void CommandInterpreter::executeMessage(const std::string& message, const Messag
 		break;
 	}
 
-	// TODO_refactor
-	//mGameData->getTerminal().pushOutputLine(OutputLine{ message, color });
+	mTerminalRenderer->pushOutputLine(OutputLine{ message, color });
 }
 
 }
