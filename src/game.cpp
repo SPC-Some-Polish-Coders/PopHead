@@ -3,45 +3,35 @@
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
 #include "GUI/xmlGuiParser.hpp"
+#include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
+#include "Audio/Music/musicPlayer.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
 
 Game::Game()
 	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
-	,mGameData()
 	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
-	,mTerminal(std::make_unique<Terminal>())
-	,mGui(std::make_unique<GUI>())
+	,mTerminal(std::make_unique<Terminal>(mWindow))
 {
-	mGameData.reset(new GameData(
-		&mWindow,
-		mTextures.get(),
-		mAIManager.get(),
-		mSceneManager.get(),
-		mTerminal.get(),
-		mGui.get()
-	));
-
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 	SoundPlayer::init();
-	
-	GameData* gameData = mGameData.get();
+	MusicPlayer::init();
 
-	mTerminal->init(gameData);
-	mSceneManager->setGameData(gameData);
+	mTerminal->init(mSceneManager.get());
+	mSceneManager->init(mTextures.get(), mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
 
 	Widget::setWindow(&mWindow);
-	XmlGuiParser::init(mGui.get(), mTextures.get(), mSceneManager.get(), &mGameData->getGameCloser());
+	XmlGuiParser::init(mTextures.get(), mSceneManager.get());
 
 	ActionEventManager::init();
 }
@@ -49,7 +39,7 @@ Game::Game()
 void Game::run()
 {
 	sf::Clock clock;
-	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
+	while(sIsRunning)
 	{
 		mSceneManager->changingScenesProcess();
 		handleEvents();
@@ -69,12 +59,12 @@ void Game::handleEvents()
 	{
 		if (auto * event = std::get_if<sf::Event>(&phEvent))
 			if (event->type == sf::Event::Closed)
-				mGameData->getGameCloser().closeGame();
+				sIsRunning = false;
 
-		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
+		handleGlobalKeyboardShortcuts(mWindow, phEvent);
 		mFPSCounter.handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
-		mGui->handleEvent(phEvent);
+		GUI::handleEvent(phEvent);
 		
 		if(!mTerminal->getSharedData()->isVisible)
 			mSceneManager->handleEvent(phEvent);
@@ -89,7 +79,7 @@ void Game::update(float dt)
 	{
 		mSceneManager->update(dt);
 		mAIManager->update();
-		mGui->update(dt);
+		GUI::update(dt);
 		mTerminal->update(dt);
 		mFPSCounter.update();
 

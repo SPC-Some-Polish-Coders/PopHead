@@ -1,6 +1,5 @@
 #include "hintAreas.hpp"
 #include "GUI/gui.hpp"
-#include "GUI/widget.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
@@ -8,12 +7,6 @@
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
-
-HintAreas::HintAreas(entt::registry& registry, GUI& gui)
-:System(registry)
-,mGui(gui)
-{
-}
 
 void HintAreas::update(float dt)
 {
@@ -30,11 +23,12 @@ void HintAreas::update(float dt)
 			auto& hint = hintAreasView.get<component::Hint>(hintArea);
 			if (hintAreaBody.rect.contains(playerBody.rect.getCenter()))
 			{
-				PH_ASSERT_UNEXPECTED_SITUATION(mGui.hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
+				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
 
 				hint.isShown = true;
-				mGui.showInterface("hints");
-				auto* hintBackground = mGui.getInterface("hints")->getWidget("hintBackground");
+				auto* hints = GUI::getInterface("hints");
+				hints->show();
+				auto* hintBackground = hints->getWidget("hintBackground");
 				auto* hintContent = static_cast<TextWidget*>(hintBackground->getWidget("hintContent"));
 				hintContent->setText(hint.content);
 
@@ -55,7 +49,7 @@ void HintAreas::update(float dt)
 			}
 			else if(hint.isShown)
 			{
-				mGui.hideInterface("hints");
+				GUI::hideInterface("hints");
 				hint.isShown = false;
 			}
 		}

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
 #include "terminalSharedData.hpp"
@@ -9,19 +8,17 @@
 #include "terminalRenderer.hpp"
 #include "Events/event.hpp"
 #include <entt/entt.hpp>
+#include <SFML/Window/Window.hpp>
 
 namespace ph {
-
-class GameData;
 
 class Terminal
 {
 public:
-	Terminal();
-	void init(GameData*);
+	Terminal(sf::Window&);
+	void init(SceneManager*);
 
-	void setSceneRegistry(entt::registry*);
-	void handleEvent(const ph::Event&);
+	void handleEvent(Event&);
 	void update(float dt);
 	void pushOutputLine(const OutputLine&);
 
@@ -32,7 +29,6 @@ private:
 	TerminalRenderer mTerminalRenderer;
 	TerminalInputHandler mKeyboardInputHandler;
 	CommandInterpreter mCommandInterpreter;
-	GameData* mGameData;
 };
 
 }

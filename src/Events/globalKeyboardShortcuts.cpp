@@ -1,11 +1,11 @@
 #include "globalKeyboardShortcuts.hpp"
-#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
+#include "game.hpp"
 #include "GUI/widget.hpp"
 
 namespace ph {
 
-void handleGlobalKeyboardShortcuts(sf::Window& window, GameCloser& gameCloser, const ph::Event& phEvent)
+void handleGlobalKeyboardShortcuts(sf::Window& window, const ph::Event& phEvent)
 {
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
@@ -28,9 +28,11 @@ void handleGlobalKeyboardShortcuts(sf::Window& window, GameCloser& gameCloser, c
 		}
 	}
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::LSystem) 
-		&& sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-		gameCloser.closeGame();
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::LSystem)
+		&& sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) 
+	{
+		Game::close();
+	}
 }
 
 }

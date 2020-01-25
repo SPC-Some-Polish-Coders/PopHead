@@ -11,9 +11,8 @@
 
 namespace ph::system {
 
-	DamageAndDeath::DamageAndDeath(entt::registry& registry, GUI& gui, AIManager& aiManager)
+	DamageAndDeath::DamageAndDeath(entt::registry& registry, AIManager& aiManager)
 		:System(registry)
-		,mGui(gui)
 		,mAIManager(aiManager)
 	{
 	}
@@ -138,7 +137,7 @@ namespace ph::system {
 					camera.name = "death";
 					camera.currentCameraName = "death";
 					mRegistry.assign<component::Camera>(deathCameraEntity, camera);
-					mGui.showInterface("gameOverScreen");
+					GUI::showInterface("gameOverScreen");
 					mAIManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
 				}
 

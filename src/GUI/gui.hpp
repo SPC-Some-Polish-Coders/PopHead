@@ -5,14 +5,12 @@
 #include "textWidget.hpp"
 #include "sliderWidget.hpp"
 #include "Events/event.hpp"
-#include <vector>
 
 namespace ph {
 
-class GUI
+namespace GUI
 {
-public:
-	void handleEvent(const ph::Event&);
+	void handleEvent(Event&);
 	void update(float dt);
 
 	Interface* addInterface(const char* name);
@@ -22,9 +20,6 @@ public:
 	void showInterface(const char* name);
 	void hideInterface(const char* name);
 	void clear();
-
-private:
-	std::vector<Interface> mInterfaces;
-};
+}
 
 }

@@ -8,6 +8,8 @@ class MusicStateMachine;
 
 namespace MusicPlayer
 {
+	void init();
+
 	void playFromFile(const std::string& filePath);
 	void playFromMusicState(const std::string& musicStateName);
 	bool hasMusicState(const std::string& musicStateName);

@@ -2,10 +2,10 @@
 #include "Audio/Sound/soundData.hpp"
 #include "Terminal/terminal.hpp"
 #include "Logs/logs.hpp"
+#include "Scenes/sceneManager.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/xml.hpp"
 #include "game.hpp"
-#include "gameData.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
@@ -20,8 +20,11 @@
 
 namespace ph {
 
-void CommandInterpreter::init()
+void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData terminalSharedData)
 {
+	mTerminalSharedData = terminalSharedData;
+	mSceneManager = sceneManager;
+
 	mCommandsMap["echo"] =						&CommandInterpreter::executeEcho;
 	mCommandsMap["exit"] =						&CommandInterpreter::executeExit;
 	mCommandsMap["teleport"] =					&CommandInterpreter::executeTeleport;
@@ -104,8 +107,7 @@ void CommandInterpreter::executeEcho()
 
 void CommandInterpreter::executeHistory()
 {
-	auto& terminalData = mGameData->getTerminal();
-	auto& commandsHistory = mGameData->getTerminal().getSharedData()->lastCommands;
+	auto& commandsHistory = mTerminalSharedData->lastCommands;
 	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
 	for (; it != commandsHistory.rend(); ++it)
@@ -139,14 +141,14 @@ void CommandInterpreter::executeGotoScene()
 {
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
-	mGameData->getSceneManager().replaceScene(scenePath);
+	mSceneManager->replaceScene(scenePath);
 }
 
 void CommandInterpreter::executeResetGui()
 {
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	Xml sceneFile;
-	sceneFile.loadFromFile(mGameData->getSceneManager().getCurrentSceneFilePath());
+	sceneFile.loadFromFile(mSceneManager->getCurrentSceneFilePath());
 	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
 	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
 		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
@@ -163,7 +165,7 @@ void CommandInterpreter::executeClear()
 
 void CommandInterpreter::executeExit()
 {
-	mGameData->getGameCloser().closeGame();
+	Game::close();
 }
 
 void CommandInterpreter::executeTeleport()
@@ -427,7 +429,8 @@ void CommandInterpreter::executeMessage(const std::string& message, const Messag
 		break;
 	}
 
-	mGameData->getTerminal().pushOutputLine(OutputLine{ message, color });
+	// TODO_refactor
+	//mGameData->getTerminal().pushOutputLine(OutputLine{ message, color });
 }
 
 }

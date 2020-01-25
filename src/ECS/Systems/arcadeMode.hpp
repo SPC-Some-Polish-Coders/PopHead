@@ -3,7 +3,6 @@
 #include "ECS/system.hpp"
 
 namespace ph {
-	class GUI;
 	class AIManager;
 	class EntitiesTemplateStorage;
 }
@@ -13,7 +12,7 @@ namespace ph::system {
 class ArcadeMode : public System
 {
 public:
-	ArcadeMode(entt::registry&, GUI&, AIManager&, EntitiesTemplateStorage&);
+	ArcadeMode(entt::registry&, AIManager&, EntitiesTemplateStorage&);
 
 	void update(float dt) override;
 
@@ -29,7 +28,6 @@ private:
 	void createSlowZombie(sf::Vector2f position);
 
 private:
-	GUI& mGui;
 	AIManager& mAIManager;
 	EntitiesTemplateStorage& mTemplateStorage;
 	float mTimeFromStart = 0.f;

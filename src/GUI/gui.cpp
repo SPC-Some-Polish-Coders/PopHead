@@ -3,6 +3,10 @@
 
 namespace ph {
 
+namespace {
+	std::vector<Interface> mInterfaces;
+}
+
 Interface* GUI::addInterface(const char* name)
 {
 	return &mInterfaces.emplace_back(name);
@@ -40,7 +44,7 @@ void GUI::hideInterface(const char* name)
 		interface->hide();
 }
 
-void GUI::handleEvent(const ph::Event& e)
+void GUI::handleEvent(Event& e)
 {
 	if(auto* sfEvent = std::get_if<sf::Event>(&e))
 		if(sfEvent->type == sf::Event::Resized)
@@ -64,3 +68,4 @@ void GUI::clear()
 }
 
 }
+

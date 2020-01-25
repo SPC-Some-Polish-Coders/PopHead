@@ -13,10 +13,9 @@
 
 namespace ph::system {
 
-	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager, GUI& gui, Scene* scene)
+	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager, Scene* scene)
 		:System(registry)
 		,mScene(scene)
-		,mGui(gui)
 		,mAIManager(aiManager)
 	{
 	}
@@ -56,7 +55,7 @@ namespace ph::system {
 				auto players = mRegistry.view<component::Player, component::Health>();
 				players.each([this](component::Player, component::Health) {
 					const bool pause = mScene->getPause();
-					pause ? mGui.hideInterface("pauseScreen") : mGui.showInterface("pauseScreen");
+					pause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
 					mScene->setPause(!pause);
 				});
 			}

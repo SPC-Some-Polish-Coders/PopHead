@@ -1,13 +1,14 @@
 #pragma once
 
+#include "terminalSharedData.hpp"
 #include <string>
-#include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include <entt/entt.hpp>
+#include <SFML/System/Vector2.hpp>
 
 namespace ph {
 
-class GameData;
+class SceneManager;
 
 enum class MessageType 
 { 
@@ -17,9 +18,7 @@ enum class MessageType
 class CommandInterpreter
 {
 public:
-	void setGameData(GameData* const gameData) { mGameData = gameData; }
-	void setSceneRegistry(entt::registry* registry) { mSceneRegistry = registry; }
-	void init();
+	void init(SceneManager*, TerminalSharedData);
 
 	void update(float dt);
 
@@ -71,8 +70,9 @@ private:
 private:
 	std::unordered_map<std::string, void(CommandInterpreter::*)() > mCommandsMap;
 	std::string mCommand;
+	TerminalSharedData mTerminalSharedData;
+	SceneManager* mSceneManager;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
-	GameData* mGameData;
 	entt::registry* mSceneRegistry;
 
 #ifndef PH_DISTRIBUTION

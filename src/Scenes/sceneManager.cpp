@@ -5,7 +5,6 @@
 #include "ECS/xmlMapParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
 
@@ -13,7 +12,8 @@ namespace ph {
 
 SceneManager::SceneManager()
 	:mScene(nullptr)
-	,mGameData(nullptr)
+	,mAIManager(nullptr)
+	,mTextures(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPositionForNextScene(false)
@@ -46,7 +46,7 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		mGameData->getGui().clear();
+		GUI::clear();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
 	}
@@ -55,21 +55,21 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getGui().clear();
+	GUI::clear();
 
 	if(mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);
 	else {
-		bool thereIsPlayerStatus = mScene && mGameData->getAIManager().isPlayerOnScene();
+		bool thereIsPlayerStatus = mScene && mAIManager->isPlayerOnScene();
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
-		mScene.reset(new Scene(mGameData->getAIManager(), mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture));
+		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture));
 
-		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
-		           mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getAIManager());
+		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
+		           *mTextures, mScene->getSystemsQueue(), *mAIManager, *this);
 
-		if(mGameData->getAIManager().isPlayerOnScene()) {
+		if(mAIManager->isPlayerOnScene()) {
 			mScene->setPlayerStatus(mLastPlayerStatus);
 			if(mHasPlayerPositionForNextScene)
 				mScene->setPlayerPosition(mPlayerPositionForNextScene);
@@ -93,11 +93,12 @@ void SceneManager::update(float dt)
 	mScene->update(dt);
 }
 
-void SceneManager::setGameData(GameData* const gameData)
+void SceneManager::init(TextureHolder* textures, AIManager* aiManager)
 {
-	mGameData = gameData;
-	gameData->getTextures().load("textures/map/extrudedTileset.png");
-	mTilesetTexture = &gameData->getTextures().get("textures/map/extrudedTileset.png");
+	mAIManager = aiManager;
+	mTextures = textures;
+	textures->load("textures/map/extrudedTileset.png");
+	mTilesetTexture = &textures->get("textures/map/extrudedTileset.png");
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)

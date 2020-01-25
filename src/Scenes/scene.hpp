@@ -15,13 +15,12 @@ class CutScene;
 class AIManager;
 class Terminal;
 class SceneManager;
-class GUI;
 class Texture;
 
 class Scene
 {
 public:
-    Scene(AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
+    Scene(AIManager&, SceneManager&, Texture& tilesetTexture);
 
 	void handleEvent(const ActionEvent& event);
     void update(float dt);

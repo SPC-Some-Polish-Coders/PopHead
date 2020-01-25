@@ -3,12 +3,12 @@
 #include "scene.hpp"
 #include "Events/event.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
+#include "Resources/resourceHolder.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
 namespace ph {
 
-class GameData;
 class Texture;
 
 class SceneManager
@@ -34,7 +34,7 @@ public:
     void update(float dt);
 
 	Scene& getScene() { return *mScene.get(); }
-	void setGameData(GameData* const);
+	void init(TextureHolder*, AIManager*);
 
 	std::string getCurrentSceneFilePath() const { return mCurrentSceneFilePath; }
 
@@ -44,8 +44,9 @@ private:
 	PlayerStatus mLastPlayerStatus;
 	std::string mFilePathOfSceneToMake;
 	std::string mCurrentSceneFilePath;
-    GameData* mGameData;
 	Texture* mTilesetTexture;
+	AIManager* mAIManager;
+	TextureHolder* mTextures;
 	sf::Vector2f mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;

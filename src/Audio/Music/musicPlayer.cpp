@@ -2,6 +2,7 @@
 #include "musicData.hpp"
 #include "musicStateMachine.hpp"
 #include <SFML/Audio.hpp>
+#include <memory>
 
 namespace ph {
 
@@ -11,7 +12,7 @@ namespace MusicPlayer
 namespace {
 	MusicDataHolder musicDataHolder;
 	MusicStateMachine musicStateMachine;
-	sf::Music music;
+	std::unique_ptr<sf::Music> music;
 	std::string currentThemeFilePath;
 	float musicVolume = 50.f;
 	bool isMusicMuted = false;
@@ -21,7 +22,12 @@ namespace {
 static void adaptVolume(float volumeMultiplier = 1.f)
 {
 	auto volume = musicVolume * musicDataHolder.getMusicData(currentThemeFilePath).mVolumeMultiplier * volumeMultiplier;
-	music.setVolume(volume);
+	music->setVolume(volume);
+}
+
+void init()
+{
+	music = std::make_unique<sf::Music>();
 }
 
 void playFromFile(const std::string& filePath)
@@ -38,10 +44,10 @@ void playFromFile(const std::string& filePath)
 	const std::string fullFilePath = "resources/" + filePath;
 
 	adaptVolume();
-	music.openFromFile(fullFilePath);
-	music.setLoop(currentThemeData.mLoop);
+	music->openFromFile(fullFilePath);
+	music->setLoop(currentThemeData.mLoop);
 	setMuted(isMuted);
-	music.play();
+	music->play();
 }
 
 void playFromMusicState(const std::string& musicStateName)
@@ -59,10 +65,10 @@ void playFromMusicState(const std::string& musicStateName)
 	const std::string fullFilePath = "resources/" + filePath;
 
 	adaptVolume(volumeMultiplier);
-	music.openFromFile(fullFilePath);
-	music.setLoop(currentThemeData.mLoop);
+	music->openFromFile(fullFilePath);
+	music->setLoop(currentThemeData.mLoop);
 	setMuted(isMuted);
-	music.play();
+	music->play();
 }
 
 bool hasMusicState(const std::string& musicStateName)
@@ -72,17 +78,17 @@ bool hasMusicState(const std::string& musicStateName)
 
 void stop()
 {
-	music.stop();
+	music->stop();
 }
 
 void setPaused(bool pause)
 {
-	pause ? music.pause() : music.play();
+	pause ? music->pause() : music->play();
 }
 
 void setMuted(bool mute)
 {
-	mute ? music.setVolume(0.f) : setVolume(musicVolume);
+	mute ? music->setVolume(0.f) : setVolume(musicVolume);
 	isMusicMuted = mute;
 }
 
@@ -95,7 +101,7 @@ void setVolume(float volume)
 {
 	musicVolume = volume;
 	const float volumeMultiplier = musicDataHolder.getCurrentThemeData().mVolumeMultiplier;
-	music.setVolume(volume * volumeMultiplier);
+	music->setVolume(volume * volumeMultiplier);
 }
 
 float getVolume()

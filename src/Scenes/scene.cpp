@@ -1,6 +1,6 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
-#include "gameData.hpp"
+#include "Terminal/terminal.hpp"
 
 #include "ECS/Systems/playerMovementInput.hpp"
 #include "ECS/Systems/movement.hpp"
@@ -40,18 +40,15 @@
 
 namespace ph {
 
-Scene::Scene(AIManager& aiManager, Terminal& terminal,
-             SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture)
+Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
 {
-	terminal.setSceneRegistry(&mRegistry);
-
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
+	mSystemsQueue.appendSystem<system::GameplayUI>();
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), this);
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::HostileCollisions>();
 	mSystemsQueue.appendSystem<system::KinematicCollisions>();
@@ -62,11 +59,11 @@ Scene::Scene(AIManager& aiManager, Terminal& terminal,
 	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
-	mSystemsQueue.appendSystem<system::HintAreas>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
 	mSystemsQueue.appendSystem<system::GunAttacks>();
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui), std::ref(aiManager));
+	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager));
 	mSystemsQueue.appendSystem<system::Levers>();
 	mSystemsQueue.appendSystem<system::Movement>();
 	mSystemsQueue.appendSystem<system::PushingMovement>();
@@ -78,7 +75,7 @@ Scene::Scene(AIManager& aiManager, Terminal& terminal,
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::AudioSystem>();
 	mSystemsQueue.appendSystem<system::Cars>();
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(aiManager), std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
 }
 
 void Scene::handleEvent(const ActionEvent& event)

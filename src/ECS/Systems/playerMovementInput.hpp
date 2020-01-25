@@ -6,7 +6,6 @@
 namespace ph {
 
 class AIManager;
-class GUI;
 class Scene;
 
 namespace system {
@@ -14,7 +13,7 @@ namespace system {
 	class PlayerMovementInput : public System
 	{
 	public:
-		PlayerMovementInput(entt::registry&, AIManager&, GUI& gui, Scene*);
+		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
 		void update(float dt) override;
 		void onEvent(const ActionEvent& event) override;
@@ -29,7 +28,6 @@ namespace system {
 
 	private:
 		AIManager& mAIManager;
-		GUI& mGui;
 		Scene* mScene;
 		bool mUp    = false;
 		bool mDown  = false;

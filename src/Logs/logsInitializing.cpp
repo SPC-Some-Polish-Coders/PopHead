@@ -6,6 +6,7 @@
 
 #include "logger.hpp"
 
+#include "Terminal/terminal.hpp"
 #include "Utilities/xml.hpp"
 
 namespace ph {

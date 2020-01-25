@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Terminal/terminalSharedData.hpp"
+#include <SFML/Graphics/Color.hpp>
 
 namespace ph {
 

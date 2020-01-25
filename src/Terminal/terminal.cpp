@@ -1,33 +1,22 @@
 #include "terminal.hpp"
-#include "gameData.hpp"
 
 namespace ph {
 
-Terminal::Terminal()
+Terminal::Terminal(sf::Window& window)
 	:mTerminalSharedData(new TerminalData())
 	,mTerminalRenderer(mTerminalSharedData)
-	,mKeyboardInputHandler(mTerminalSharedData)
-	,mGameData(nullptr)
+	,mKeyboardInputHandler(mTerminalSharedData, window)
 {
 }
 
-void Terminal::init(GameData* gameData)
+void Terminal::init(SceneManager* sceneManager)
 {
-	mGameData = gameData;
-	mKeyboardInputHandler.setGameData(mGameData);
-	mCommandInterpreter.setGameData(mGameData);
-	mCommandInterpreter.init();
+	mCommandInterpreter.init(sceneManager, mTerminalSharedData);
 }
 
-void Terminal::setSceneRegistry(entt::registry* reg)
+void Terminal::handleEvent(Event& e)
 {
-	mCommandInterpreter.setSceneRegistry(reg);
-}
-
-void Terminal::handleEvent(const ph::Event& phEvent)
-{
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
-		mKeyboardInputHandler.handleEvent(*e);
+	mKeyboardInputHandler.handleEvent(e);
 }
 
 void Terminal::update(float dt)

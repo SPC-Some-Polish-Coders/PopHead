@@ -1,37 +1,33 @@
 #include "xmlGuiParser.hpp"
 #include "gui.hpp"
+#include "game.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/xml.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "GUI/gui.hpp"
-#include "gameData.hpp"
 #include <functional>
 #include <string_view>
 
 namespace ph {
 
 namespace {
-	GUI* gui = nullptr;
 	TextureHolder* textureHolder = nullptr;
 	SceneManager* sceneManager = nullptr;
-	GameCloser* gameCloser = nullptr;
 }
 
-void XmlGuiParser::init(GUI* g, TextureHolder* th, SceneManager* sm, GameCloser* gc)
+void XmlGuiParser::init(TextureHolder* th, SceneManager* sm)
 {
-	gui = g;
 	textureHolder = th;
 	sceneManager = sm;
-	gameCloser = gc;
 }
 
 void XmlGuiParser::parseGuiXml(const std::string& filepath)
 {
 	PH_LOG_INFO("Gui file (" + filepath + ") is being parsed.");
 
-	gui->clear();
+	GUI::clear();
 
 	Xml guiNode;
 	PH_ASSERT_CRITICAL(guiNode.loadFromFile(filepath), "Gui file \"" + filepath + "\" wasn't loaded correctly!");
@@ -43,7 +39,7 @@ void XmlGuiParser::parseGuiXml(const std::string& filepath)
 	for(auto& interfaceNode : interfaceNodes)
 	{
 		auto interfaceName = interfaceNode.getAttribute("name")->toString();
-		auto interface = gui->addInterface(interfaceName.c_str());
+		auto interface = GUI::addInterface(interfaceName.c_str());
 
 		if(auto hide = interfaceNode.getAttribute("hide"))
 			if(hide->toBool())
@@ -232,19 +228,19 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 			return [](Widget* widget) { SoundPlayer::setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
 	}
 	else if(name == "closeGame") {
-		return [](Widget*) {gameCloser->closeGame(); };
+		return [](Widget*) { Game::close(); };
 	}
 	else if(name == "hideGuiInterface") {
-		return [data](Widget*) {gui->hideInterface(data.c_str()); };
+		return [data](Widget*) {GUI::hideInterface(data.c_str()); };
 	}
 	else if(name == "showGuiInterface") {
-		return [data](Widget*) {gui->showInterface(data.c_str()); };
+		return [data](Widget*) {GUI::showInterface(data.c_str()); };
 	}
 	else if(name == "setGamePause") {
 		return [data](Widget*) {
 			bool pause = Cast::toBool(data);
 			sceneManager->getScene().setPause(pause);
-			pause ? gui->showInterface("pauseScreen") : gui->hideInterface("pauseScreen");
+			pause ? GUI::showInterface("pauseScreen") : GUI::hideInterface("pauseScreen");
 		};
 	}
 

@@ -1,7 +1,6 @@
 #include "sceneParser.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
 #include "ECS/Systems/arcadeMode.hpp"
 #include "Events/actionEventManager.hpp"
@@ -15,9 +14,9 @@
 
 namespace ph {
 
-void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
+void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
                 entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
-                GUI& gui, AIManager& aiManager)
+                AIManager& aiManager, SceneManager& sceneManager)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -56,7 +55,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 
 	// parse arcade mode
 	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(templateStorage));
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();
@@ -74,7 +73,7 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);
-		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, gameData->getSceneManager(), textureHolder);
+		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager, textureHolder);
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}

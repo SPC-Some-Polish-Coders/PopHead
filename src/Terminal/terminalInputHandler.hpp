@@ -1,32 +1,27 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <string>
-#include <memory>
 #include "Terminal/terminalSharedData.hpp"
+#include "Events/event.hpp"
+#include <SFML/Window/Window.hpp>
 
 namespace ph {
-
-class GameData;
-struct KeyboardManager;
 
 class TerminalInputHandler
 {
 public:
-	TerminalInputHandler(TerminalSharedData);
+	TerminalInputHandler(TerminalSharedData, sf::Window&);
 	
-	void setGameData(GameData* gameData) { mGameData = gameData; }
 	bool isEnterClicked() { return mIsEnterClicked; }
 
-	void handleEvent(const sf::Event&);
+	void handleEvent(Event&);
 	void update();
 private:
 	void updateLastCommands();
 	void showOrHideCommandPrompt();
 
 private:
-	GameData* mGameData;
 	TerminalSharedData mSharedData;
+	sf::Window& mWindow;
 	int mIndexOfCurrentLastCommand;
 	bool mIsEnterClicked;
 };

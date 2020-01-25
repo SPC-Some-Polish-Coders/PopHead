@@ -23,7 +23,7 @@ void TerminalRenderer::update() const
 		Renderer::submitText(mTerminalSharedData->content.c_str(), "consola.ttf", {5.f, 660.f}, 50.f, sf::Color::White, 0, ProjectionType::gui);
 
 		float posY = 723.f;
-		for(int i = 0; i < mOutputLines.size(); ++i, posY += 14.f)
+		for(size_t i = 0; i < mOutputLines.size(); ++i, posY += 14.f)
 			Renderer::submitText(mOutputLines[i].mText.c_str(), "consola.ttf", {5.f, posY}, 20.f, mOutputLines[i].mColor, 0, ProjectionType::gui);
 	}
 }

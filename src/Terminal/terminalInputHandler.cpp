@@ -1,32 +1,35 @@
 #include "TerminalInputHandler.hpp"
 #include "Events/actionEventManager.hpp"
-#include "gameData.hpp"
 
 namespace ph {
 
-TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData)
+TerminalInputHandler::TerminalInputHandler(TerminalSharedData terminalSharedData, sf::Window& window)
 	:mSharedData(terminalSharedData)
+	,mWindow(window)
 	,mIsEnterClicked(false)
 	,mIndexOfCurrentLastCommand(-1)
-	,mGameData(nullptr)
 {
 }
 
-void TerminalInputHandler::handleEvent(const sf::Event& e)
+void TerminalInputHandler::handleEvent(Event& phEvent)
 {
-	if(mSharedData->isVisible && e.type == sf::Event::TextEntered)
+	sf::Event* e = std::get_if<sf::Event>(&phEvent);
+	if(!e)
+		return;
+
+	if(mSharedData->isVisible && e->type == sf::Event::TextEntered)
 	{
-		char key = static_cast<char>(e.text.unicode);
+		char key = static_cast<char>(e->text.unicode);
 		if (!iscntrl(key))
 			mSharedData->content += key;
 	}
 
-	if (e.type == sf::Event::KeyPressed)
+	if (e->type == sf::Event::KeyPressed)
 	{
-		switch (e.key.code)
+		switch (e->key.code)
 		{
 		case sf::Keyboard::Tab: 
-			if(e.key.control)
+			if(e->key.control)
 				showOrHideCommandPrompt();
 			break;
 
@@ -83,8 +86,7 @@ void TerminalInputHandler::showOrHideCommandPrompt()
 	bool& isVisible = mSharedData->isVisible;
 	ActionEventManager::setEnabled(isVisible);
 	isVisible = !isVisible;
-	auto& window = mGameData->getWindow();
-	window.setKeyRepeatEnabled(isVisible);
+	mWindow.setKeyRepeatEnabled(isVisible);
 }
 
 }

@@ -16,7 +16,7 @@ namespace ph::system {
 class CutScenesActivating : public System
 {
 public:
-	CutScenesActivating(entt::registry&, CutSceneManager&, GUI&, AIManager&, SceneManager&);
+	CutScenesActivating(entt::registry&, CutSceneManager&, AIManager&, SceneManager&);
 
 	void update(float dt) override;
 
@@ -25,7 +25,6 @@ private:
 
 private:
 	CutSceneManager& mCutSceneManager;
-	GUI& mGui;
 	AIManager& mAIManager;
 	SceneManager& mSceneManager;
 };

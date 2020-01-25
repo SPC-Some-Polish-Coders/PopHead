@@ -8,9 +8,7 @@
 
 namespace ph {
 
-class GUI;
 class SceneManager;
-class GameCloser;
 class WidgetParent;		
 class Widget;
 class TextWidget;
@@ -19,7 +17,7 @@ class SliderWidget;
 class XmlGuiParser
 {
 public:
-	static void init(GUI* gui, TextureHolder* th, SceneManager* sm, GameCloser* gc);
+	static void init(TextureHolder* th, SceneManager* sm);
 
 	void parseGuiXml(const std::string& filepath);
 private:

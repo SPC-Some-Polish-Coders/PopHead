@@ -7,24 +7,18 @@
 
 namespace ph::system {
 
-GameplayUI::GameplayUI(entt::registry& registry, GUI& gui)
-	:System(registry)
-	,mGui(gui)
-{
-}
-
 void GameplayUI::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
 	auto view = mRegistry.view<component::Player, component::Bullets>();
 
-	if (!mGui.hasInterface("gameplayCounters"))
+	if (!GUI::hasInterface("gameplayCounters"))
 		return;
 
 	for(auto player : view)
 	{
-		auto* gameplayCounters = mGui.getInterface("gameplayCounters");
+		auto* gameplayCounters = GUI::getInterface("gameplayCounters");
 		char string[6];
 
 		// set bullets counter
