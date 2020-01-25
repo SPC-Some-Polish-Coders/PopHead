@@ -27,9 +27,8 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mTerminalRenderer = terminalRenderer;
 	mSceneManager = sceneManager;
 
-	mCommandsMap["echo"] =						&CommandInterpreter::executeEcho;
-	mCommandsMap["exit"] =						&CommandInterpreter::executeExit;
 	mCommandsMap["teleport"] =					&CommandInterpreter::executeTeleport;
+	mCommandsMap["tp"] =						&CommandInterpreter::executeTeleport;
 	mCommandsMap["give"] =	    				&CommandInterpreter::executeGive;
 	mCommandsMap["currentpos"] =				&CommandInterpreter::executeCurrentPos;
 	mCommandsMap["collisiondebug"] =			&CommandInterpreter::executeCollisionDebug;
@@ -43,6 +42,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["clear"] =						&CommandInterpreter::executeClear;
 	mCommandsMap["view"] =						&CommandInterpreter::executeView;
 	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
+	mCommandsMap["gts"] =						&CommandInterpreter::executeGotoScene;
 	mCommandsMap["rgui"] =						&CommandInterpreter::executeResetGui;
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
@@ -96,15 +96,6 @@ int CommandInterpreter::getArgumentPositionInCommand() const
 void CommandInterpreter::executeInfoMessage()
 {
 	executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
-}
-
-void CommandInterpreter::executeEcho()
-{
-	const size_t spacePosition = mCommand.find(' ');
-	const size_t messageStartPos = spacePosition + 1;
-	const size_t messageLength = mCommand.size() - messageStartPos;
-	const std::string message = mCommand.substr(messageStartPos, messageLength);
-	executeMessage(message, MessageType::USER);
 }
 
 void CommandInterpreter::executeHistory()
@@ -163,11 +154,6 @@ void CommandInterpreter::executeClear()
 {
 	for (int i = 0; i < 20; ++i)
 		executeMessage("", MessageType::BLANK);
-}
-
-void CommandInterpreter::executeExit()
-{
-	Game::close();
 }
 
 void CommandInterpreter::executeTeleport()

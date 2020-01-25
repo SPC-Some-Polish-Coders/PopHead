@@ -29,8 +29,6 @@ private:
 	int getArgumentPositionInCommand() const;
 
 	void executeInfoMessage();
-	void executeEcho();
-	void executeExit();
 	void executeGotoScene();
 	void executeResetGui();
 	void executeTeleport();
