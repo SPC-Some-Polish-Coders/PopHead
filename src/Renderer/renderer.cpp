@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include "renderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
@@ -17,6 +16,7 @@
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include <SFML/Graphics/Transform.hpp>
+#include <GL/glew.h>
 #include <vector>
 #include <algorithm>
 #include <cstdio>
@@ -45,12 +45,12 @@ namespace {
 	bool isDebugDisplayActive = false;
 }
 
-namespace ph {
+namespace ph::Renderer {
 
 static void setClearColor(sf::Color);
 static float getNormalizedZ(const unsigned char z);
 
-void Renderer::init(unsigned screenWidth, unsigned screenHeight)
+void init(unsigned screenWidth, unsigned screenHeight)
 {
 	// initialize glew
 	glewExperimental = GL_TRUE;
@@ -112,13 +112,13 @@ void Renderer::init(unsigned screenWidth, unsigned screenHeight)
 	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
 }
 
-void Renderer::restart(unsigned screenWidth, unsigned screenHeight)
+void restart(unsigned screenWidth, unsigned screenHeight)
 {
 	shutDown();
 	init(screenWidth, screenHeight);
 }
 
-void Renderer::shutDown()
+void shutDown()
 {
 	quadRenderer.shutDown();
 	lineRenderer.shutDown();
@@ -132,7 +132,7 @@ void Renderer::shutDown()
 	gaussianBlurFramebufferShader.remove();
 }
 
-void Renderer::beginScene(Camera& camera)
+void beginScene(Camera& camera)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -151,7 +151,7 @@ void Renderer::beginScene(Camera& camera)
 	textRenderer.beginDebugDisplay();
 }
 
-void Renderer::endScene()
+void endScene()
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -219,64 +219,64 @@ void Renderer::endScene()
 	}
 }
 
-void Renderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
+void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                           ProjectionType projectionType)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
 }
 
-void Renderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
+void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
                                                     unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
-void Renderer::submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);
 }
 
-void Renderer::submitLine(sf::Color colorA, sf::Color colorB,
+void submitLine(sf::Color colorA, sf::Color colorB,
                           const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
 }
 
-void Renderer::submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float size)
+void submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float size)
 {
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
-void Renderer::submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
+void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
                            float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
-void Renderer::submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
+void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
                           unsigned char z, ProjectionType projecitonType)
 {
 	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType);
 }
 
-void Renderer::submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
+void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
 {
 	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, color);
 }
 
-void Renderer::submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                               TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType)
 {
 	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType);
 }
 
-void Renderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
+void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 {
 	lightRenderer.submitLightBlockingQuad(position, size);
 }
 
-void Renderer::handleEvent(Event& phEvent)
+void handleEvent(Event& phEvent)
 {
 	if(auto* e = std::get_if<sf::Event>(&phEvent))
 	{
@@ -294,7 +294,7 @@ void Renderer::handleEvent(Event& phEvent)
 	}
 }
 
-void Renderer::setAmbientLightColor(sf::Color color)
+void setAmbientLightColor(sf::Color color)
 {
 	ambientLightColor = color;
 }

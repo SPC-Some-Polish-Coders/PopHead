@@ -8,11 +8,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
 
-namespace sf {
-	class Drawable;
-	class RenderWindow;
-}
-
 namespace ph {
 
 class Camera;

@@ -1,18 +1,18 @@
 #include "gui.hpp"
 #include <cstring>
 
-namespace ph {
+namespace ph::GUI {
 
 namespace {
 	std::vector<Interface> mInterfaces;
 }
 
-Interface* GUI::addInterface(const char* name)
+Interface* addInterface(const char* name)
 {
 	return &mInterfaces.emplace_back(name);
 }
 
-Interface* GUI::getInterface(const char* name)
+Interface* getInterface(const char* name)
 {
 	for(auto& interface : mInterfaces)
 		if(std::strcmp(interface.getName(), name) == 0)
@@ -20,31 +20,31 @@ Interface* GUI::getInterface(const char* name)
 	return nullptr;
 }
 
-bool GUI::hasInterface(const char* name)
+bool hasInterface(const char* name)
 {
 	return getInterface(name);
 }
 
-void GUI::deleteInterface(const char* name)
+void deleteInterface(const char* name)
 {
 	for(auto it = mInterfaces.begin(); it != mInterfaces.end(); ++it)
 		if(std::strcmp(it->getName(), name) == 0)
 			mInterfaces.erase(it);
 }
 
-void GUI::showInterface(const char* name)
+void showInterface(const char* name)
 {
 	if(auto* interface = getInterface(name))
 		interface->show();
 }
 
-void GUI::hideInterface(const char* name)
+void hideInterface(const char* name)
 {
 	if(auto* interface = getInterface(name))
 		interface->hide();
 }
 
-void GUI::handleEvent(Event& e)
+void handleEvent(Event& e)
 {
 	if(auto* sfEvent = std::get_if<sf::Event>(&e))
 		if(sfEvent->type == sf::Event::Resized)
@@ -55,14 +55,14 @@ void GUI::handleEvent(Event& e)
 			interface.handleEvent(e);
 }
 
-void GUI::update(float dt)
+void update(float dt)
 {
 	for(auto& interface : mInterfaces)
 		if(interface.isActive())
 			interface.update(dt);
 }
 
-void GUI::clear()
+void clear()
 {
 	mInterfaces.clear();
 }

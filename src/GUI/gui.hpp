@@ -6,9 +6,7 @@
 #include "sliderWidget.hpp"
 #include "Events/event.hpp"
 
-namespace ph {
-
-namespace GUI
+namespace ph::GUI
 {
 	void handleEvent(Event&);
 	void update(float dt);
@@ -22,4 +20,3 @@ namespace GUI
 	void clear();
 }
 
-}

@@ -4,10 +4,7 @@
 #include <SFML/Audio.hpp>
 #include <memory>
 
-namespace ph {
-
-namespace MusicPlayer
-{
+namespace ph::MusicPlayer {
 
 namespace {
 	MusicDataHolder musicDataHolder;
@@ -46,7 +43,7 @@ void playFromFile(const std::string& filePath)
 	adaptVolume();
 	music->openFromFile(fullFilePath);
 	music->setLoop(currentThemeData.mLoop);
-	setMuted(isMuted);
+	setMuted(isMusicMuted);
 	music->play();
 }
 
@@ -67,7 +64,7 @@ void playFromMusicState(const std::string& musicStateName)
 	adaptVolume(volumeMultiplier);
 	music->openFromFile(fullFilePath);
 	music->setLoop(currentThemeData.mLoop);
-	setMuted(isMuted);
+	setMuted(isMusicMuted);
 	music->play();
 }
 
@@ -114,5 +111,5 @@ auto getMusicStateMachine() -> MusicStateMachine &
 	return musicStateMachine;
 }
 
-}}
+}
 

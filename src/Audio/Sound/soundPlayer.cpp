@@ -6,9 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <list>
 
-namespace ph {
-
-namespace SoundPlayer
+namespace ph::SoundPlayer
 {
 
 namespace {
@@ -113,8 +111,6 @@ float getVolume()
 void removeEverySound()
 {
 	sounds.clear();
-}
-
 }
 
 }

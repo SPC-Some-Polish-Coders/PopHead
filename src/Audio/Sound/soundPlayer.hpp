@@ -3,9 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <string>
 
-namespace ph {
-
-namespace SoundPlayer
+namespace ph::SoundPlayer
 {
 	void init();
 
@@ -19,7 +17,5 @@ namespace SoundPlayer
 	void setVolume(float volume);
 	float getVolume();
 	void removeEverySound();
-}
-
 }
 
