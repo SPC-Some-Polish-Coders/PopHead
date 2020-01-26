@@ -19,12 +19,13 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	mTemplates = &templates;
 	mTextures = &textures;
 		
-	checkMapSupport(mapNode);
 
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
 	aiManager.registerMapSize(generalMapInfo.mapSize);
 
-	const std::vector<Xml> tilesetNodes = getTilesetNodes(mapNode);
+	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
+	PH_ASSERT_WARNING(tilesetNodes.size() != 0, "Map doesn't have any tilesets");
+
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
@@ -32,43 +33,17 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	createMapBorders(generalMapInfo);
 }
 
-void XmlMapParser::checkMapSupport(const Xml& mapNode) const
-{
-	const std::string orientation = mapNode.getAttribute("orientation")->toString();
-	if(orientation != "orthogonal")
-		PH_EXIT_GAME("Used unsupported map orientation: " + orientation);
-	const std::string infinite = mapNode.getAttribute("infinite")->toString();
-	if(infinite != "0")
-		PH_EXIT_GAME("Infinite maps are not supported");
-}
-
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
 {
-	return { getMapSize(mapNode), getTileSize(mapNode) };
-}
-
-sf::Vector2u XmlMapParser::getMapSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("width")->toUnsigned(),
-		mapNode.getAttribute("height")->toUnsigned()
-	);
-}
-
-sf::Vector2u XmlMapParser::getTileSize(const Xml& mapNode) const
-{
-	return sf::Vector2u(
-		mapNode.getAttribute("tilewidth")->toUnsigned(),
-		mapNode.getAttribute("tileheight")->toUnsigned()
-	);
-}
-
-std::vector<Xml> XmlMapParser::getTilesetNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
-	if(tilesetNodes.size() == 0)
-		PH_LOG_WARNING("Map doesn't have any tilesets");
-	return tilesetNodes;
+	GeneralMapInfo info;
+	info.mapSize.x = mapNode.getAttribute("width")->toUnsigned();
+	info.mapSize.y = mapNode.getAttribute("height")->toUnsigned();
+	info.tileSize.x = mapNode.getAttribute("tilewidth")->toUnsigned();
+	info.tileSize.y = mapNode.getAttribute("tileheight")->toUnsigned();
+	info.isInfinite = mapNode.getAttribute("infinite")->toBool();
+	const std::string orientation = mapNode.getAttribute("orientation")->toString();
+	PH_ASSERT_CRITICAL(orientation == "orthogonal", "Used unsupported map orientation: " + orientation);
+	return info;
 }
 
 auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData
