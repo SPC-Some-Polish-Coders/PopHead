@@ -48,39 +48,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 {
 	terminal.setSceneRegistry(&mRegistry);
 
-	/*
-	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
-	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
-	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
-	mSystemsQueue.appendSystem<system::HostileCollisions>();
-	mSystemsQueue.appendSystem<system::Movement>();
-	mSystemsQueue.appendSystem<system::KinematicCollisions>();
-	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::PickupItems>();
-	mSystemsQueue.appendSystem<system::StaticCollisions>();
-	mSystemsQueue.appendSystem<system::AreasDebug>();
-	mSystemsQueue.appendSystem<system::IsPlayerAlive>(); // is not used?
-	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
-	mSystemsQueue.appendSystem<system::PushingAreas>();
-	mSystemsQueue.appendSystem<system::HintAreas>(std::ref(gui));
-	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
-	mSystemsQueue.appendSystem<system::GunAttacks>();
-	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui), std::ref(aiManager));
-	mSystemsQueue.appendSystem<system::Levers>();
-	mSystemsQueue.appendSystem<system::PushingMovement>();
-	mSystemsQueue.appendSystem<system::Gates>();
-	mSystemsQueue.appendSystem<system::Lifetime>();
-	mSystemsQueue.appendSystem<system::AnimationSystem>();
-	mSystemsQueue.appendSystem<system::VelocityClear>();
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
-	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
-	mSystemsQueue.appendSystem<system::Cars>();
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
-	*/
 
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
