@@ -116,19 +116,13 @@ void XmlMapParser::parserMapLayers(const std::vector<Xml>& layerNodes, const Til
 	unsigned char z = sLowestLayerZ;
 	for (const Xml& layerNode : layerNodes)
 	{
-		const Xml dataNode = *layerNode.getChild("data");
-		const auto globalIds = toGlobalTileIds(dataNode);
+		Xml dataNode = *layerNode.getChild("data");
+		std::string encoding = dataNode.getAttribute("encoding")->toString();
+		PH_ASSERT_CRITICAL(encoding == "csv", "Used unsupported data encoding: " + encoding);
+		auto globalIds = Csv::toUnsigneds(dataNode.toString());
 		createLayer(globalIds, tilesets, info, z, aiManager);
 		--z;
 	}
-}
-
-std::vector<unsigned> XmlMapParser::toGlobalTileIds(const Xml& dataNode) const
-{
-	const std::string encoding = dataNode.getAttribute("encoding")->toString();
-	if(encoding == "csv")
-		return Csv::toUnsigneds(dataNode.toString());
-	PH_EXIT_GAME("Used unsupported data encoding: " + encoding);
 }
 
 void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,

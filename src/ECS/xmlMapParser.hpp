@@ -51,7 +51,6 @@ private:
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData&, const GeneralMapInfo&, AIManager&);
-	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
 	
 	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
