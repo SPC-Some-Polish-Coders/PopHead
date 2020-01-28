@@ -2,7 +2,6 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Resources/resourceHolder.hpp"
-
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -38,8 +37,7 @@ struct TilesetsData
 class XmlMapParser
 {
 public:
-	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry,
-	               EntitiesTemplateStorage& templates, TextureHolder& textures);
+	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates);
 private:
 	auto getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo;
 	
@@ -51,7 +49,6 @@ private:
 	
 	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
-	bool hasTile(unsigned globalTileId) const;
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 	void createMapBorders(const GeneralMapInfo& mapInfo);
@@ -59,7 +56,6 @@ private:
 private:
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
-	TextureHolder* mTextures;
 };
 
 }

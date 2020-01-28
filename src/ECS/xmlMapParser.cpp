@@ -13,12 +13,10 @@
 
 namespace ph {
 
-void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates, TextureHolder& textures)
+void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates)
 {
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
-	mTextures = &textures;
-		
 
 	GeneralMapInfo generalMapInfo = getGeneralMapInfo(mapNode);
 	aiManager.registerMapSize(generalMapInfo.mapSize);
@@ -174,7 +172,10 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 
 		const unsigned globalTileId = globalTileIds[tileIndexInMap] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
-		if (hasTile(globalTileId)) {
+
+		bool hasTile = globalTileId != 0;
+		if (hasTile) 
+		{
 			const std::size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) {
 				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
@@ -295,10 +296,6 @@ void XmlMapParser::createLayer(const std::vector<unsigned>& globalTileIds, const
 	}
 }
 
-bool XmlMapParser::hasTile(unsigned globalTileId) const
-{
-	return globalTileId != 0;
-}
 
 std::size_t XmlMapParser::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
 {

@@ -72,7 +72,7 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
-		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);
+		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
 		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager, textureHolder);
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
