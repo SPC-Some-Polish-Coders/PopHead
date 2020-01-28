@@ -2,8 +2,11 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Resources/resourceHolder.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include <string>
 
 namespace ph {
@@ -15,6 +18,9 @@ struct GeneralMapInfo
 {
 	sf::Vector2u mapSize;
 	sf::Vector2u tileSize;
+	float nrOfChunks;
+	float nrOfChunksInOneRow;
+	float nrOfChunksInOneColumn;
 	bool isInfinite;
 };
 
@@ -54,8 +60,12 @@ private:
 	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:
+	std::vector<component::RenderChunk> mRenderChunks;
+	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
+	inline static float sChunkSize = 12.f;
+	inline static unsigned char sLowestLayerZ = 200; 
 };
 
 }
