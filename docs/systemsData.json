@@ -10,16 +10,27 @@
         {
             "name" : "ArcadeMode",
             "componentsRead" : [
-                "LootSpawner",
-				"Player",
-				"Zombie",
-				"Health"
+				"Player"
             ],
             "componentsWrite" : [
+                "LootSpawner",
+				"BulletBox",
                 "Bullets",
-                "BodyRect",
                 "ArcadeSpawner",
-				"Velocity"
+				"Velocity",
+				"Health",
+				"RenderQuad",
+                "BodyRect",
+				"Zombie",
+				"KinematicCollisionBody",
+				"Damage",
+				"CollisionWithPlayer",
+				"CharacterSpeed",
+				"PushingForces",
+				"AnimationData",
+				"Killable",
+				"TextureRect",
+				"MultiParticleEmitter"
             ]
         },
         {
