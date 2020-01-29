@@ -32,7 +32,7 @@ void FPSCounter::update()
 	if(mIsActive) {
 		char outputText[16];
 		sprintf_s(outputText, "%s%u", "FPS: ", mFPS);
-		Renderer::submitDebugText(outputText, "consola.ttf", 50.f, 2.f, 2.f, sf::Color::Yellow);
+		Renderer::submitDebugText(outputText, "LiberationMono-Bold.ttf", 50.f, 2.f, 2.f, sf::Color::Yellow);
 	}
 }
 

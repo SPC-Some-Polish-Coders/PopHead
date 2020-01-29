@@ -205,7 +205,7 @@ void endScene()
 		char debugText[50];
 		auto submitDebugCounter = [&debugText](const char* text, unsigned number) {
 			sprintf_s(debugText, "%s%u", text, number);
-			submitDebugText(debugText, "consola.ttf", 20.f, 0.f, 0.f, sf::Color::White);
+			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
 		submitDebugCounter("All draw calls per frame: ",
