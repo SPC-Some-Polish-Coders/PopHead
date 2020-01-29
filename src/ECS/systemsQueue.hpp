@@ -13,7 +13,6 @@ namespace ph {
 		SystemsQueue(entt::registry& registry);
 
 		void update(float seconds);
-		void updateGraphics();
 		void handleEvents(const ActionEvent& event);
 	
 		template <typename SystemType, typename... Args>

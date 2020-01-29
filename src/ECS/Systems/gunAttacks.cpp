@@ -21,12 +21,18 @@ void GunAttacks::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	handlePendingGunAttacks();
 	handleLastingBullets();
 }
 
 void GunAttacks::onEvent(const ActionEvent& event)
 {
+	if(sPause)
+		return;
+
 	if (event.mType == ActionEvent::Type::Pressed)
 	{
 		if(event.mAction == "gunAttack") 

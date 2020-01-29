@@ -15,7 +15,7 @@ class RenderSystem : public System
 public:
 	RenderSystem(entt::registry& registry, Texture& tileset);
 
-	void updateGraphics() override;
+	void update(float dt) override;
 
 private:
 	Texture& mTilesetTexture;

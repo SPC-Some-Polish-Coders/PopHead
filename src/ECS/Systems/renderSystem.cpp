@@ -21,7 +21,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 {
 }
 
-void RenderSystem::updateGraphics()
+void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -33,8 +33,8 @@ void RenderSystem::updateGraphics()
 			currentCamera = &camera.camera;
 	});
 
-	// begin scene
-	Renderer::beginScene(*currentCamera);
+	// set camera
+	Renderer::setGameWorldCamera(*currentCamera);
 
 	// submit light sources
 	auto lightSources = mRegistry.view<component::LightSource, component::BodyRect>();

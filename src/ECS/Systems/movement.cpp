@@ -8,6 +8,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		auto bodiesWithVel = mRegistry.view<component::BodyRect, component::Velocity>(entt::exclude<component::PushingForces>);
 		bodiesWithVel.each([dt](component::BodyRect& body, const component::Velocity& vel) {
 			body.rect.left += vel.dx * dt;

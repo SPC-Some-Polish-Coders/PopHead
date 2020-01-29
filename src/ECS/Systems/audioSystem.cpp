@@ -21,6 +21,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		// for scenes without music
 		if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
 			return;

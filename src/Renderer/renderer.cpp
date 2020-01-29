@@ -42,6 +42,8 @@ namespace {
 	ph::LightRenderer lightRenderer;
 	ph::TextRenderer textRenderer;
 
+	ph::Camera gameWorldCamera; 
+
 	bool isDebugDisplayActive = false;
 }
 
@@ -132,7 +134,12 @@ void shutDown()
 	gaussianBlurFramebufferShader.remove();
 }
 
-void beginScene(Camera& camera)
+void setGameWorldCamera(Camera& camera)
+{
+	gameWorldCamera = camera;	
+}
+
+void beginScene()
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -140,12 +147,12 @@ void beginScene(Camera& camera)
 	GLCheck( glEnable(GL_DEPTH_TEST) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
-	const float* viewProjectionMatrix = camera.getViewProjectionMatrix4x4().getMatrix();
+	const float* viewProjectionMatrix = gameWorldCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
 	
-	const sf::Vector2f center = camera.getCenter();
-	const sf::Vector2f size = camera.getSize();
+	sf::Vector2f center = gameWorldCamera.getCenter();
+	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 
 	textRenderer.beginDebugDisplay();

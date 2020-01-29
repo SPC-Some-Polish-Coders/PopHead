@@ -13,12 +13,6 @@ namespace ph {
 			system->update(seconds);
 	}
 
-	void SystemsQueue::updateGraphics()
-	{
-		for(auto& system : mSystemsArray)
-			system->updateGraphics();
-	}
-
 	void SystemsQueue::handleEvents(const ActionEvent& event)
 	{
 		for (auto& system : mSystemsArray)

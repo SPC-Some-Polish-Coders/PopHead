@@ -1,11 +1,17 @@
 #include "cars.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void Cars::update(float dt)
 {
+	PH_PROFILE_FUNCTION(0);
+
+	if(sPause)
+		return;
+
 	auto cars = mRegistry.view<component::Car, component::BodyRect>();
 	cars.each([dt](component::Car& car, component::BodyRect& body) 
 	{

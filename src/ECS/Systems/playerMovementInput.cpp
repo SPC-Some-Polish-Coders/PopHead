@@ -24,7 +24,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
-		if(isPlayerWithoutControl())
+		if(sPause || isPlayerWithoutControl())
 			return;
 
 		updateInputFlags();
@@ -54,9 +54,8 @@ namespace ph::system {
 			{
 				auto players = mRegistry.view<component::Player, component::Health>();
 				players.each([this](component::Player, component::Health) {
-					const bool pause = mScene->getPause();
-					pause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
-					mScene->setPause(!pause);
+					sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
+					sPause = !sPause;
 				});
 			}
 		}

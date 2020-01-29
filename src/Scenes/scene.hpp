@@ -25,8 +25,6 @@ public:
 	void handleEvent(const ActionEvent& event);
     void update(float dt);
 
-	void setPause(bool pause) { mPause = pause; }
-	bool getPause() const { return mPause; }
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
 	SystemsQueue& getSystemsQueue() { return mSystemsQueue; }
 
@@ -40,7 +38,6 @@ private:
 	CutSceneManager mCutSceneManager;
 	entt::registry mRegistry;
 	SystemsQueue mSystemsQueue;
-    bool mPause;
 };
 
 }

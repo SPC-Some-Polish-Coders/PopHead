@@ -12,10 +12,12 @@ namespace ph::system {
 		explicit System(entt::registry& registry);
 
 		virtual void update(float seconds) {};
-		virtual void updateGraphics() {};
 		virtual void onEvent(const ActionEvent& event);
+
+		static void setPause(bool pause) { sPause = pause; }
 
 	protected:
 		entt::registry& mRegistry;
+		inline static bool sPause = false;
 	};
 }

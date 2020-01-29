@@ -50,68 +50,74 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 	if(!emi.isEmitting)
 		return;
 
-	// alocate particles
-	if(!emi.wasInitialized) {
-		emi.particles.reserve(emi.amountOfParticles);
-		emi.wasInitialized = true;
-	}
-
-	// erase particles
-	while(!emi.particles.empty() && emi.particles.front().lifetime >= emi.parWholeLifetime)
-		emi.particles.erase(emi.particles.begin());
-
-	// add particles
-	if(!emi.oneShot || emi.amountOfAlreadySpawnParticles < emi.amountOfParticles)
+	if(!sPause)
 	{
-		auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
-		{
-			Particle particle;
-
-			particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
-
-			if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f))
-				particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);
-
-			if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
-				particle.velocity = emi.parInitialVelocity;
-			else
-				particle.velocity = Random::generateVector(emi.parInitialVelocity, emi.parInitialVelocityRandom);
-				
-			emi.particles.emplace_back(particle);
-		};
-
-		if(emi.oneShot || static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
-		{
-			float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
-			unsigned nrOfParticlesAddedInThisFrame = 0;
-			while((emi.particles.size() < emi.amountOfParticles) && 
-				    (emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
-			{
-				++nrOfParticlesAddedInThisFrame;
-				addParticle(emi, body);
-			}
-			emi.amountOfAlreadySpawnParticles += nrOfParticlesAddedInThisFrame;
+		// alocate particles
+		if(!emi.wasInitialized) {
+			emi.particles.reserve(emi.amountOfParticles);
+			emi.wasInitialized = true;
 		}
-		else if((emi.particles.size() < emi.amountOfParticles) && 
-			(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+
+		// erase particles
+		while(!emi.particles.empty() && emi.particles.front().lifetime >= emi.parWholeLifetime)
+			emi.particles.erase(emi.particles.begin());
+
+		// add particles
+		if(!emi.oneShot || emi.amountOfAlreadySpawnParticles < emi.amountOfParticles)
 		{
-			addParticle(emi, body);
-			++emi.amountOfAlreadySpawnParticles;
+			auto addParticle = [](component::ParticleEmitter& emi, const component::BodyRect& body) 
+			{
+				Particle particle;
+
+				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+
+				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f))
+					particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);
+
+				if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
+					particle.velocity = emi.parInitialVelocity;
+				else
+					particle.velocity = Random::generateVector(emi.parInitialVelocity, emi.parInitialVelocityRandom);
+					
+				emi.particles.emplace_back(particle);
+			};
+
+			if(emi.oneShot || static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
+			{
+				float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
+				unsigned nrOfParticlesAddedInThisFrame = 0;
+				while((emi.particles.size() < emi.amountOfParticles) && 
+						(emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+				{
+					++nrOfParticlesAddedInThisFrame;
+					addParticle(emi, body);
+				}
+				emi.amountOfAlreadySpawnParticles += nrOfParticlesAddedInThisFrame;
+			}
+			else if((emi.particles.size() < emi.amountOfParticles) && 
+				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+			{
+				addParticle(emi, body);
+				++emi.amountOfAlreadySpawnParticles;
+			}
+		}
+
+		// update particles
+		for(auto& particle : emi.particles)
+		{
+			particle.lifetime += dt;
+			particle.velocity += emi.parAcceleration * dt;
+			particle.position += particle.velocity * dt;
 		}
 	}
 
 	for(auto& particle : emi.particles)
 	{
-		// update particle
-		particle.lifetime += dt;
-		particle.velocity += emi.parAcceleration * dt;
-		particle.position += particle.velocity * dt;
-
 		// compute current particle color
 		sf::Color color = emi.parStartColor;
 		if(emi.parStartColor != emi.parEndColor) {
-			const float startColorMultiplier = (emi.parWholeLifetime - particle.lifetime) / emi.parWholeLifetime;
-			const float endColorMultiplier = particle.lifetime / emi.parWholeLifetime;
+			float startColorMultiplier = (emi.parWholeLifetime - particle.lifetime) / emi.parWholeLifetime;
+			float endColorMultiplier = particle.lifetime / emi.parWholeLifetime;
 			color.r = unsigned char(float(emi.parStartColor.r) * startColorMultiplier + float(emi.parEndColor.r) * endColorMultiplier);
 			color.g = unsigned char(float(emi.parStartColor.g) * startColorMultiplier + float(emi.parEndColor.g) * endColorMultiplier);
 			color.b = unsigned char(float(emi.parStartColor.b) * startColorMultiplier + float(emi.parEndColor.b) * endColorMultiplier);

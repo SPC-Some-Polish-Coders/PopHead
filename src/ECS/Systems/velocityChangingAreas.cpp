@@ -9,6 +9,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		auto velocityChaningAreasView = mRegistry.view<component::BodyRect, component::AreaVelocityChangingEffect>();
 		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
 

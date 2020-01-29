@@ -12,6 +12,7 @@
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "Utilities/random.hpp"
+#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
@@ -26,6 +27,11 @@ ArcadeMode::ArcadeMode(entt::registry& registry, AIManager& aiManager, EntitiesT
 
 void ArcadeMode::update(float dt)
 {
+	PH_PROFILE_FUNCTION(0);
+
+	if(sPause)
+		return;
+
 	mTimeFromStart += dt;
 
 	updateGuiCounters();

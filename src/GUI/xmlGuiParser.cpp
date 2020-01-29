@@ -4,6 +4,7 @@
 #include "Logs/logs.hpp"
 #include "Utilities/xml.hpp"
 #include "Scenes/sceneManager.hpp"
+#include "ECS/system.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "GUI/gui.hpp"
@@ -239,7 +240,7 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	else if(name == "setGamePause") {
 		return [data](Widget*) {
 			bool pause = Cast::toBool(data);
-			sceneManager->getScene().setPause(pause);
+			system::System::setPause(pause);
 			pause ? GUI::showInterface("pauseScreen") : GUI::hideInterface("pauseScreen");
 		};
 	}

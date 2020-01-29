@@ -13,6 +13,9 @@ namespace ph::system {
 
 void MeleeAttacks::onEvent(const ActionEvent& e)
 {
+	if(sPause)
+		return;
+
 	if(e.mType == ActionEvent::Type::Pressed && e.mAction == "meleeAttack" && !mShouldWeaponBeRendered)
 		mIsAttackButtonPressed = true;
 }
@@ -20,6 +23,9 @@ void MeleeAttacks::onEvent(const ActionEvent& e)
 void MeleeAttacks::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
+
+	if(sPause)
+		return;
 
 	auto players = mRegistry.view<component::FaceDirection, component::BodyRect, component::Player>();
 	for(auto player : players)

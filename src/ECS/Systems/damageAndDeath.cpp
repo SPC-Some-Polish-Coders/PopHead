@@ -21,6 +21,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		dealDamage();
 		makeDamageJuice(dt);
 		makeCharactersDie();

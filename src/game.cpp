@@ -77,6 +77,8 @@ void Game::update(float dt)
 {
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
+		Renderer::beginScene();
+		
 		mSceneManager->update(dt);
 		mAIManager->update();
 		GUI::update(dt);

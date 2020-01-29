@@ -11,6 +11,9 @@ void GameplayUI::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	auto view = mRegistry.view<component::Player, component::Bullets>();
 
 	if (!GUI::hasInterface("gameplayCounters"))

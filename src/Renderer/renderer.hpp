@@ -20,7 +20,9 @@ namespace Renderer
 	void restart(unsigned screenWidth, unsigned screenHeight);
 	void shutDown();
 	
-	void beginScene(Camera&);
+	void setGameWorldCamera(Camera& camera);
+
+	void beginScene();
 	void endScene();
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,

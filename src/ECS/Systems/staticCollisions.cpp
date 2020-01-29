@@ -7,6 +7,10 @@ namespace ph::system {
 	void StaticCollisions::update(float dt)
 	{
 		PH_PROFILE_FUNCTION(0);
+
+		if(sPause)
+			return;
+
 		calculateStaticCollisions();
 		//calculateKinematicCollisions();
 	}
