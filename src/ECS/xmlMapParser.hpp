@@ -21,7 +21,7 @@ struct GeneralMapInfo
 	float nrOfChunks;
 	float nrOfChunksInOneRow;
 	float nrOfChunksInOneColumn;
-	bool isInfinite;
+	bool isMapInfinite;
 };
 
 struct TilesData
@@ -50,9 +50,11 @@ private:
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData&, const GeneralMapInfo&, AIManager&);
+	void parseMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData&, const GeneralMapInfo&, AIManager&);
 	
-	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	void createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	                 unsigned char z, AIManager&);
+	void createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
