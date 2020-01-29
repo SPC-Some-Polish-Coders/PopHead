@@ -17,9 +17,12 @@ namespace ph {
 		ThreadPool(size_t numOfThreads);
 		~ThreadPool();
 
+		std::future<void> addTask(std::function<void()> task);
+
 	private:
 		std::vector<std::thread> mThreads;
 		bool mShutdown = false;
 		std::mutex mDataMutex;
+		std::queue<std::packaged_task<void()>> mTasks;
 	};
 }

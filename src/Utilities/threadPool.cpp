@@ -1,6 +1,7 @@
 #include "threadPool.hpp"
 
 namespace ph {
+
 	ThreadPool::ThreadPool(size_t numOfThreads)
 	{
 		for (size_t i = 0; i < numOfThreads; ++i)
@@ -9,9 +10,16 @@ namespace ph {
 				{
 					while (true)
 					{
-						std::lock_guard<std::mutex> lock(mDataMutex);
+						std::unique_lock<std::mutex> lock(mDataMutex);
 						if (mShutdown)
 							return;
+						if (!mTasks.empty())
+						{
+							auto currentTask = std::move(mTasks.front());
+							mTasks.pop();
+							lock.unlock();
+							currentTask();
+						}
 					}
 				});
 		}
@@ -28,5 +36,13 @@ namespace ph {
 		{
 			thread.join();
 		}
+	}
+
+	std::future<void> ThreadPool::addTask(std::function<void()> task)
+	{
+		std::packaged_task<void()> packagedTask(task);
+		std::lock_guard<std::mutex> lock(mDataMutex);
+		mTasks.emplace(std::move(packagedTask));
+		return mTasks.back().get_future();
 	}
 }
