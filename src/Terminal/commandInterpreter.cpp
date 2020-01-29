@@ -49,6 +49,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
 	mCommandsMap["fontd"] =						&CommandInterpreter::executeFontDebug;
 	mCommandsMap["nofocusupdate"] =				&CommandInterpreter::executeNoFocusUpdate;
+	mCommandsMap["dc"] =						&CommandInterpreter::executeDebugCamera;
 	mCommandsMap[""] =							&CommandInterpreter::executeInfoMessage;
 
 #ifndef PH_DISTRIBUTION
@@ -342,6 +343,39 @@ void CommandInterpreter::executeFontDebug()
 void CommandInterpreter::executeNoFocusUpdate()
 {
 	Game::setNoFocusUpdate(!commandContains("off"));
+}
+
+void CommandInterpreter::executeDebugCamera()
+{
+	auto& registry = mSceneManager->getScene().getRegistry(); 
+
+	auto destroyExistingDebugCameras = [&registry]() {
+		auto debugCameras = registry.view<component::DebugCamera, component::Camera, component::BodyRect>();
+		registry.destroy(debugCameras.begin(), debugCameras.end());
+	};
+
+	component::Camera::currentCameraName = "default";
+	destroyExistingDebugCameras();
+	mTerminalSharedData->isVisible = true;
+
+	if(!commandContains("off"))	
+	{
+		// get player position
+		sf::Vector2f playerPos;
+		auto players = registry.view<component::Player, component::BodyRect>();
+		players.each([&playerPos](const component::Player, const component::BodyRect body) {
+			playerPos = body.rect.getCenter();
+		});
+
+		// create debug camera
+		auto entity = registry.create();
+		registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
+		registry.assign<component::DebugCamera>(entity);
+		registry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
+		component::Camera::currentCameraName = "debug";
+
+		mTerminalSharedData->isVisible = false;
+	}
 }
 
 #ifndef PH_DISTRIBUTION

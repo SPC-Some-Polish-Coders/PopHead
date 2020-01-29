@@ -42,6 +42,10 @@ namespace component {
 		inline static std::string currentCameraName;
 	};
 
+	struct DebugCamera
+	{
+	};
+
 	struct LightWall
 	{
 		FloatRect rect;

@@ -12,7 +12,7 @@ public:
 	using System::System;
 
 	void update(float dt) override;
-	void onEvent(const ActionEvent& event) override;
+	void onEvent(Event) override;
 
 private:
 	void handleUsedLevers() const;

@@ -22,7 +22,7 @@ class Scene
 public:
     Scene(AIManager&, SceneManager&, Texture& tilesetTexture);
 
-	void handleEvent(const ActionEvent& event);
+	void handleEvent(Event);
     void update(float dt);
 
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }

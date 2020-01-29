@@ -49,6 +49,7 @@ private:
 	void executeLight();
 	void executeFontDebug();
 	void executeNoFocusUpdate();
+	void executeDebugCamera();
 
 #ifndef PH_DISTRIBUTION
 

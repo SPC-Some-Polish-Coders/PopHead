@@ -45,13 +45,13 @@ namespace ph::system {
 		});
 	}
 
-	void PlayerMovementInput::onEvent(const ActionEvent& event)
+	void PlayerMovementInput::onEvent(Event event)
 	{
-		if(event.mType == ActionEvent::Type::Pressed)
+		if(auto* e = std::get_if<ActionEvent>(&event))
 		{
-			// TODO_states: Pause screen could be handled by states
-			if(event.mAction == "pauseScreen") 
+			if(e->mType == ActionEvent::Type::Pressed && e->mAction == "pauseScreen")
 			{
+				// TODO_states: Pause screen could be handled by states
 				auto players = mRegistry.view<component::Player, component::Health>();
 				players.each([this](component::Player, component::Health) {
 					sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");

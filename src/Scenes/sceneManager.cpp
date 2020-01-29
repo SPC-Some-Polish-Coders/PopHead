@@ -83,8 +83,7 @@ void SceneManager::replaceAction()
 
 void SceneManager::handleEvent(const Event& e)
 {
-	if (auto* event = std::get_if<ActionEvent>(&e))
-		mScene->handleEvent(*event);
+	mScene->handleEvent(e);
 }
 
 void SceneManager::update(float dt)

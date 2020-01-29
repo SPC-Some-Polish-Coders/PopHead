@@ -11,13 +11,14 @@
 
 namespace ph::system {
 
-void MeleeAttacks::onEvent(const ActionEvent& e)
+void MeleeAttacks::onEvent(Event event)
 {
 	if(sPause)
 		return;
 
-	if(e.mType == ActionEvent::Type::Pressed && e.mAction == "meleeAttack" && !mShouldWeaponBeRendered)
-		mIsAttackButtonPressed = true;
+	if(auto* e = std::get_if<ActionEvent>(&event))
+		if(e->mType == ActionEvent::Type::Pressed && e->mAction == "meleeAttack" && !mShouldWeaponBeRendered)
+			mIsAttackButtonPressed = true;
 }
 
 void MeleeAttacks::update(float dt)

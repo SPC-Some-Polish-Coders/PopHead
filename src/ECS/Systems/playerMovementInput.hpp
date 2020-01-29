@@ -16,7 +16,7 @@ namespace system {
 		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
 		void update(float dt) override;
-		void onEvent(const ActionEvent& event) override;
+		void onEvent(Event) override;
 
 	private:
 		bool isPlayerWithoutControl();
