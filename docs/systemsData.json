@@ -11,11 +11,15 @@
             "name" : "ArcadeMode",
             "componentsRead" : [
                 "LootSpawner",
-                "BodyRect"
+				"Player",
+				"Zombie",
+				"Health"
             ],
             "componentsWrite" : [
                 "Bullets",
-                "ArcadeSpawner"
+                "BodyRect",
+                "ArcadeSpawner",
+				"Velocity"
             ]
         },
         {

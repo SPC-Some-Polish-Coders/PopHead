@@ -22,11 +22,15 @@ TextureRect<br />
 <td>ArcadeMode</td>
 <td>
 LootSpawner<br />
-BodyRect<br />
+Player<br />
+Zombie<br />
+Health<br />
 </td>
 <td>
 Bullets<br />
+BodyRect<br />
 ArcadeSpawner<br />
+Velocity<br />
 </td>
 </tr>
 <tr>
