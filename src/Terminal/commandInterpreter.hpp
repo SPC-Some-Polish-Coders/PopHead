@@ -30,6 +30,7 @@ private:
 
 	void executeInfoMessage();
 	void executeGotoScene();
+	void executePause();
 	void executeResetGui();
 	void executeTeleport();
 	void executeCurrentPos();
@@ -73,7 +74,6 @@ private:
 	TerminalRenderer* mTerminalRenderer;
 	SceneManager* mSceneManager;
 	const sf::Vector2f mVector2ArgumentError = {-1, -1};
-	entt::registry* mSceneRegistry;
 
 #ifndef PH_DISTRIBUTION
 

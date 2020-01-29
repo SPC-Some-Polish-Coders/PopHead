@@ -43,6 +43,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["view"] =						&CommandInterpreter::executeView;
 	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
 	mCommandsMap["gts"] =						&CommandInterpreter::executeGotoScene;
+	mCommandsMap["pause"] =						&CommandInterpreter::executePause;
 	mCommandsMap["rgui"] =						&CommandInterpreter::executeResetGui;
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
 	mCommandsMap["m"] =							&CommandInterpreter::executeMove;
@@ -137,6 +138,11 @@ void CommandInterpreter::executeGotoScene()
 	mSceneManager->replaceScene(scenePath);
 }
 
+void CommandInterpreter::executePause()
+{
+	system::System::setPause(!commandContains("off"));
+}
+
 void CommandInterpreter::executeResetGui()
 {
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
@@ -162,7 +168,8 @@ void CommandInterpreter::executeTeleport()
 	if(newPosition == mVector2ArgumentError)
 		return;
 
-	auto view = mSceneRegistry->view<component::Player, component::BodyRect>();
+	auto& registry = mSceneManager->getScene().getRegistry(); 
+	auto view = registry.view<component::Player, component::BodyRect>();
 	view.each([newPosition](const component::Player player, component::BodyRect& body) {
 		body.rect.left = newPosition.x;
 		body.rect.top = newPosition.y;
@@ -177,7 +184,8 @@ void CommandInterpreter::executeMove()
 	else if (commandContains('y'))
 		moveOffset = sf::Vector2f(0.f , moveOffset.y);
 
-	auto view = mSceneRegistry->view<component::Player, component::BodyRect>();
+	auto& registry = mSceneManager->getScene().getRegistry(); 
+	auto view = registry.view<component::Player, component::BodyRect>();
 	view.each([moveOffset](const component::Player, component::BodyRect& body) {
 		body.rect.left += moveOffset.x;
 		body.rect.top += moveOffset.y;
@@ -189,7 +197,8 @@ void CommandInterpreter::executeGive()
 	if (commandContains("bullet"))
 	{
 		int numberOfItems = static_cast<int>(getSingleFloatArgument());
-		auto view = mSceneRegistry->view<component::Player, component::Bullets>();
+		auto& registry = mSceneManager->getScene().getRegistry(); 
+		auto view = registry.view<component::Player, component::Bullets>();
 		view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
 			bullets.numOfPistolBullets += numberOfItems;
 			bullets.numOfShotgunBullets += numberOfItems;
@@ -201,7 +210,8 @@ void CommandInterpreter::executeGive()
 
 void CommandInterpreter::executeCurrentPos()
 {
-	auto view = mSceneRegistry->view<component::Player, component::BodyRect>();
+	auto& registry = mSceneManager->getScene().getRegistry(); 
+	auto view = registry.view<component::Player, component::BodyRect>();
 	view.each([this](const component::Player, const component::BodyRect& body) {
 		const sf::Vector2f playerPos = body.rect.getCenter();
 		executeMessage("player position: " + Cast::toString(playerPos), MessageType::INFO);
@@ -282,7 +292,8 @@ void CommandInterpreter::executeSetVolume()
 
 void CommandInterpreter::executeView()
 {
-	auto view = mSceneRegistry->view<component::Player, component::Camera>();
+	auto& registry = mSceneManager->getScene().getRegistry(); 
+	auto view = registry.view<component::Player, component::Camera>();
 	view.each([this](const component::Player, component::Camera& playerCamera){
 		if(commandContains("normal"))
 			playerCamera.camera.setSize({640, 360});

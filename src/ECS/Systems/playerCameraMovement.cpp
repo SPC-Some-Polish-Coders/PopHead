@@ -15,9 +15,6 @@ void PlayerCameraMovement::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	if(sPause)
-		return;
-
 	auto view = mRegistry.view<component::Player, component::Camera, component::BodyRect>();
 	view.each([dt](const component::Player, component::Camera& camera, const component::BodyRect& bodyRect) {
 		camera.camera.setCenterSmoothly(bodyRect.rect.getCenter(), 4 * dt);

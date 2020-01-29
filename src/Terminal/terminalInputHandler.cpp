@@ -1,5 +1,6 @@
 #include "TerminalInputHandler.hpp"
 #include "Events/actionEventManager.hpp"
+#include "ECS/System.hpp"
 
 namespace ph {
 
@@ -87,6 +88,7 @@ void TerminalInputHandler::showOrHideCommandPrompt()
 	ActionEventManager::setEnabled(isVisible);
 	isVisible = !isVisible;
 	mWindow.setKeyRepeatEnabled(isVisible);
+	system::System::setPause(isVisible);
 }
 
 }
