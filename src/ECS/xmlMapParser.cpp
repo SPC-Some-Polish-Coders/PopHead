@@ -95,10 +95,10 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) 
 	{
-		tilesData.ids.push_back(tileNode.getAttribute("id")->toUnsigned());
 		const auto objectGroupNode = tileNode.getChild("objectgroup");
 		if(objectGroupNode)
 		{
+			tilesData.ids.push_back(tileNode.getAttribute("id")->toUnsigned());
 			const Xml objectNode = *objectGroupNode->getChild("object");
 			auto width = objectNode.getAttribute("width");
 			auto height = objectNode.getAttribute("height");
@@ -181,7 +181,6 @@ void XmlMapParser::createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vec
 
 		const unsigned globalTileId = globalTileIds[tileIndexInChunk] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
-
 		bool hasTile = globalTileId != 0;
 		if (hasTile) 
 		{
@@ -191,7 +190,7 @@ void XmlMapParser::createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vec
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, info.mapSize.x));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, sChunkSize));
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
 
 			// create quad data
@@ -258,18 +257,11 @@ void XmlMapParser::createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vec
 			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
 			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
-			// TODO: Optimize that
-			// find chunk index
-			size_t chunkIndex = 0;
-			for(size_t i = 0; i < mRenderChunks.size(); ++i)
-				if(mRenderChunks[i].bounds.containsIncludingBounds(positionInTiles))
-					chunkIndex = i;
-
 			// emplace quad data to chunk
-			mRenderChunks[chunkIndex].quads.emplace_back(qd);
+			renderChunk.quads.emplace_back(qd);
 
 			// load collision bodies
-			const std::size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
+			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
 
@@ -280,31 +272,27 @@ void XmlMapParser::createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vec
 					bounds.left += qd.position.x;
 					bounds.top += qd.position.y;
 					aiManager.registerObstacle({bounds.left, bounds.top});
-					mChunkCollisions[chunkIndex].rects.emplace_back(bounds);
+					chunkCollisions.rects.emplace_back(bounds);
 				}
 			}
 		}
 	}
 
-	for(size_t i = 0; i < mRenderChunks.size(); ++i)
-	{
-		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		mRenderChunks[i].bounds.left *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.top *= static_cast<float>(info.tileSize.y);
-		mRenderChunks[i].bounds.width *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.height *= static_cast<float>(info.tileSize.y);
+	// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
+	renderChunk.bounds.left *= static_cast<float>(info.tileSize.x);
+	renderChunk.bounds.top *= static_cast<float>(info.tileSize.y);
+	renderChunk.bounds.width *= static_cast<float>(info.tileSize.x);
+	renderChunk.bounds.height *= static_cast<float>(info.tileSize.y);
 
-		// put data for static collisions optimalization
-		mChunkCollisions[i].sharedBounds = mRenderChunks[i].bounds;
+	// put data for static collisions optimalization
+	chunkCollisions.sharedBounds = renderChunk.bounds;
 
-		// put data into registry
-		auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
-		auto& renderChunk = mGameRegistry->get<component::RenderChunk>(chunkEntity);
-		renderChunk = mRenderChunks[i];
-		auto& multiCollisionBody = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
-		multiCollisionBody = mChunkCollisions[i];
-	}
-
+	// put data into registry
+	auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
+	auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
+	rc = renderChunk;
+	auto& mcb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
+	mcb = chunkCollisions; 
 }
 
 void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
@@ -343,7 +331,6 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 		const bool isDiagonallyFlipped = globalTileIds[tileIndexInMap] & flippedDiagonally;
 
 		const unsigned globalTileId = globalTileIds[tileIndexInMap] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
-
 
 		bool hasTile = globalTileId != 0;
 		if (hasTile) 

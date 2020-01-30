@@ -29,13 +29,13 @@ void DebugCamera::update(float dt)
 			};
 			drawDebugCameraHintText("DebugCamera mode", true); 
 			drawDebugCameraHintText("Ctrl + Tab - Back to terminal");
+			drawDebugCameraHintText("H - Hide/Show hint");
 			drawDebugCameraHintText("AWSD - Movement");
+			drawDebugCameraHintText("Arrow keys - Zooming");
 			drawDebugCameraHintText("K - Slow movement");
 			drawDebugCameraHintText("K + L - Very slow movement");
 			drawDebugCameraHintText("J - Fast movement");
 			drawDebugCameraHintText("J + L - Very fast movement");
-			drawDebugCameraHintText("Arrow keys - Zooming");
-			drawDebugCameraHintText("H - Hide/Show hint");
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f}, 1, 0.f, {}, ProjectionType::gui); 
 		}
 
