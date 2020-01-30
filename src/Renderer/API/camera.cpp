@@ -9,12 +9,12 @@ Camera::Camera()
 {
 }
 
-Camera::Camera(const FloatRect& rect)
+Camera::Camera(FloatRect& rect)
 	:Camera(rect.getCenter(), {rect.width, rect.height})
 {
 }
 
-Camera::Camera(const sf::Vector2f center, const sf::Vector2f size)
+Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 	:mViewProjectionMatrix(sf::Transform::Identity)
 	,mCenter(center)
 	,mSize(size)
@@ -23,13 +23,13 @@ Camera::Camera(const sf::Vector2f center, const sf::Vector2f size)
 {
 }
 
-void Camera::setCenter(const sf::Vector2f center)
+void Camera::setCenter(sf::Vector2f center)
 {
 	mCenter = center;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::move(const sf::Vector2f offset)
+void Camera::move(sf::Vector2f offset)
 {
 	mCenter += offset;
 	mViewProjectionMatrixNeedsUpdate = true;
@@ -41,25 +41,25 @@ void Camera::setCenterSmoothly(sf::Vector2f center, float speed)
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::setRotation(const float rotation)
+void Camera::setRotation(float rotation)
 {
 	mRotation = rotation;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::rotate(const float rotation)
+void Camera::rotate(float rotation)
 {
 	mRotation += rotation;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::setSize(const sf::Vector2f size)
+void Camera::setSize(sf::Vector2f size)
 {
 	mSize = size;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::zoom(const float factor)
+void Camera::zoom(float factor)
 {
 	mSize *= factor;
 	mViewProjectionMatrixNeedsUpdate = true;
@@ -93,7 +93,7 @@ const sf::Transform& Camera::getViewProjectionMatrix4x4()
 	return mViewProjectionMatrix;
 }
 
-FloatRect Camera::getBounds() const
+FloatRect Camera::getBounds()
 {
 	return FloatRect(mCenter.x - mSize.x / 2, mCenter.y - mSize.y / 2, mSize.x, mSize.y);
 }

@@ -18,6 +18,7 @@ void DebugCamera::update(float dt)
 	auto view = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
 	view.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
 	{
+		// show hint
 		if(mIsHintActive)
 		{
 			float posY = 10.f;
@@ -38,36 +39,58 @@ void DebugCamera::update(float dt)
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f}, 1, 0.f, {}, ProjectionType::gui); 
 		}
 
+		// get modifier flags 
+		bool speedUp = sf::Keyboard::isKeyPressed(sf::Keyboard::J);
+		bool slowDown = sf::Keyboard::isKeyPressed(sf::Keyboard::K);
+		bool magnification = sf::Keyboard::isKeyPressed(sf::Keyboard::L);
+
 		// move camera
 		sf::Vector2f movement;
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
 			movement.x -= 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			movement.x += 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			movement.y -= 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			movement.y += 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)) { 
+		if(slowDown && magnification)
+			movement *= 0.1f;
+		else if(slowDown) 
 			movement *= 0.4f;
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-				movement *= 0.5f;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::J)) { 
+		else if(speedUp && magnification)
+			movement *= 6.f;
+		else if(speedUp)
 			movement *= 2.f;
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-				movement *= 3.f;
-		}
-
 		movement *= dt;
 		body.rect.move(movement);
 		camera.camera.setCenterSmoothly(body.rect.getCenter(), 10 * dt);
 
 		// zoom camera 
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			camera.camera.zoom(1.01f);
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			camera.camera.zoom(0.99f);
+		float zoom = 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			zoom = 1.01f;
+			if(slowDown && magnification)
+				zoom = 1.003f;
+			else if(slowDown)
+				zoom = 1.005f;
+			else if(speedUp && magnification)
+				zoom = 1.04f;
+			else if(speedUp)
+				zoom = 1.02f;
+		}	
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			zoom = 0.99f;
+			if(slowDown && magnification)
+				zoom = 0.996; 
+			else if(slowDown)
+				zoom = 0.993;
+			else if(speedUp && magnification)
+				zoom = 0.98f;
+			else if(speedUp)
+				zoom = 0.96f;
+		}
+		camera.camera.zoom(zoom);
 	});
 }
 
