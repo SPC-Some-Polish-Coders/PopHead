@@ -13,6 +13,7 @@ namespace ph {
 
 SceneManager::SceneManager()
 	:mScene(nullptr)
+	,mThreadPool(2)
 	,mGameData(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)

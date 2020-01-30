@@ -3,6 +3,7 @@
 #include "scene.hpp"
 #include "Events/event.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
+#include "Utilities/threadPool.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
@@ -40,6 +41,7 @@ public:
 
 private:
 	EntitiesTemplateStorage mEntitiesTemplateStorage;
+	ThreadPool mThreadPool;
     std::unique_ptr<Scene> mScene;
 	PlayerStatus mLastPlayerStatus;
 	std::string mFileOfSceneToMake;
