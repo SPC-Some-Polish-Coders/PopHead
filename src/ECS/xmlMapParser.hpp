@@ -28,7 +28,7 @@ struct TilesData
 {
 	unsigned firstGlobalTileId;
 	std::vector<unsigned> ids;
-	std::vector<sf::FloatRect> bounds;
+	std::vector<std::vector<FloatRect>> bounds;
 };
 
 struct TilesetsData

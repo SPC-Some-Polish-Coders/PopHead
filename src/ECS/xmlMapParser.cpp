@@ -145,8 +145,9 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 	tilesets.firstGlobalTileIds.reserve(tilesetNodes.size());
 	tilesets.tileCounts.reserve(tilesetNodes.size());
 	tilesets.columnsCounts.reserve(tilesetNodes.size());
-	
-	for(Xml tilesetNode : tilesetNodes) {
+
+	for(Xml tilesetNode : tilesetNodes) 
+	{
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid")->toUnsigned();
 		tilesets.firstGlobalTileIds.emplace_back(firstGlobalTileId);
 		if(auto source = tilesetNode.getAttribute("source")) {
@@ -178,20 +179,24 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	tilesData.bounds.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) 
 	{
-		const auto objectGroupNode = tileNode.getChild("objectgroup");
-		if(objectGroupNode)
+		if(auto objectGroupNode = tileNode.getChild("objectgroup"))
 		{
 			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
-			const Xml objectNode = *objectGroupNode->getChild("object");
-			auto width = objectNode.getAttribute("width");
-			auto height = objectNode.getAttribute("height");
-			const sf::FloatRect bounds(
-				objectNode.getAttribute("x")->toFloat(),
-				objectNode.getAttribute("y")->toFloat(),
-				width ? width->toFloat() : 0.f,
-				height ? height->toFloat() : 0.f
-			);
-			tilesData.bounds.emplace_back(bounds);
+			const auto objectNodes = objectGroupNode->getChildren("object");
+			std::vector<FloatRect> collisions;
+			for(auto& objectNode : objectNodes)
+			{
+				auto width = objectNode.getAttribute("width");
+				auto height = objectNode.getAttribute("height");
+				const sf::FloatRect bounds(
+					objectNode.getAttribute("x")->toFloat(),
+					objectNode.getAttribute("y")->toFloat(),
+					width ? width->toFloat() : 0.f,
+					height ? height->toFloat() : 0.f
+				);
+				collisions.emplace_back(bounds);
+			}
+			tilesData.bounds.emplace_back(collisions);
 		}
 	}
 	return tilesData;
@@ -315,15 +320,19 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			if (tilesDataIndex == std::string::npos)
 				continue;
 			auto& tilesData = tilesets.tilesData[tilesDataIndex];
-			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
-				if (tileId == tilesData.ids[i]) {
-					sf::FloatRect bounds = tilesData.bounds[i];
-					bounds.left += qd.position.x;
-					bounds.top += qd.position.y;
-					// TODO:
-					if(!info.isMapInfinite)
-						aiManager.registerObstacle({bounds.left, bounds.top});
-					chunkCollisions.rects.emplace_back(bounds);
+			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) 
+			{
+				if (tileId == tilesData.ids[i]) 
+				{
+					for(FloatRect collisionRect : tilesData.bounds[i])
+					{
+						collisionRect.left += qd.position.x;
+						collisionRect.top += qd.position.y;
+						chunkCollisions.rects.emplace_back(collisionRect);
+						// TODO:
+						if(!info.isMapInfinite)
+							aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+					}
 				}
 			}
 		}
@@ -474,13 +483,17 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 				continue;
 
 			auto& tilesData = tilesets.tilesData[tilesDataIndex];
-			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
-				if (tileId == tilesData.ids[i]) {
-					sf::FloatRect bounds = tilesData.bounds[i];
-					bounds.left += qd.position.x;
-					bounds.top += qd.position.y;
-					aiManager.registerObstacle({bounds.left, bounds.top});
-					mChunkCollisions[chunkIndex].rects.emplace_back(bounds);
+			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) 
+			{
+				if (tileId == tilesData.ids[i]) 
+				{
+					for(FloatRect collisionRect : tilesData.bounds[i])
+					{
+						collisionRect.left += qd.position.x;
+						collisionRect.top += qd.position.y;
+						mChunkCollisions[chunkIndex].rects.emplace_back(collisionRect);
+						aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+					}
 				}
 			}
 		}
