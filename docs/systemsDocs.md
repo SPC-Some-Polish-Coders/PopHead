@@ -21,27 +21,9 @@ TextureRect<br />
 <tr>
 <td>ArcadeMode</td>
 <td>
-Player<br />
 </td>
 <td>
-LootSpawner<br />
-BulletBox<br />
-Bullets<br />
-ArcadeSpawner<br />
-Velocity<br />
-Health<br />
-RenderQuad<br />
-BodyRect<br />
-Zombie<br />
-KinematicCollisionBody<br />
-Damage<br />
-CollisionWithPlayer<br />
-CharacterSpeed<br />
-PushingForces<br />
-AnimationData<br />
-Killable<br />
-TextureRect<br />
-MultiParticleEmitter<br />
+ALL<br />
 </td>
 </tr>
 <tr>
