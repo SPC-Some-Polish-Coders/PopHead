@@ -251,9 +251,12 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			// create quad data
 			QuadData qd;
 
-			qd.position = sf::Vector2f(
+			sf::Vector2f tileWorldPos( 
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
-				positionInTiles.y * static_cast<float>(info.tileSize.y));
+				positionInTiles.y * static_cast<float>(info.tileSize.y)
+			);
+
+			qd.position = tileWorldPos; 
 
 			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
 			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
@@ -326,15 +329,23 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 				{
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						collisionRect.left += qd.position.x;
-						collisionRect.top += qd.position.y;
+						if((isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
+						{
+							if(isHorizontallyFlipped)
+								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+							if(isVerticallyFlipped)
+								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+						}
+						collisionRect.left += tileWorldPos.x; 
+						collisionRect.top += tileWorldPos.y; 
 						chunkCollisions.rects.emplace_back(collisionRect);
-						// TODO:
-						if(!info.isMapInfinite)
-							aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+						// TODO
+						//aiManager.registerObstacle({collisionRect.left, collisionRect.top});
 					}
+
+					break;
 				}
-			}
+			}		
 		}
 	}
 
@@ -406,9 +417,12 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			// create quad data
 			QuadData qd;
 
-			qd.position = sf::Vector2f(
+			sf::Vector2f tileWorldPos(
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
-				positionInTiles.y * static_cast<float>(info.tileSize.y));
+				positionInTiles.y * static_cast<float>(info.tileSize.y)
+			);
+
+			qd.position = tileWorldPos;
 
 			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
 			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
@@ -489,11 +503,22 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 				{
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						collisionRect.left += qd.position.x;
-						collisionRect.top += qd.position.y;
+						if(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)
+						{
+							if(isHorizontallyFlipped) {
+								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+							}
+							if(isVerticallyFlipped) {
+								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+							}
+						}
+						collisionRect.left += tileWorldPos.x; 
+						collisionRect.top += tileWorldPos.y;
 						mChunkCollisions[chunkIndex].rects.emplace_back(collisionRect);
 						aiManager.registerObstacle({collisionRect.left, collisionRect.top});
 					}
+
+					break;
 				}
 			}
 		}

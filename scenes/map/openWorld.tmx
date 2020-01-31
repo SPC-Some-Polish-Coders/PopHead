@@ -3,9 +3,7 @@
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
- <tileset firstgid="1" source="tileset.tsx" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
- </tileset>
+ <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="1" width="2000" height="2000">
   <data encoding="csv">
    <chunk x="-36" y="-48" width="12" height="12">
