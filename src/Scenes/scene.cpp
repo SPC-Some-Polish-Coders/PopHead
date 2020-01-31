@@ -11,7 +11,6 @@
 #include "ECS/Systems/renderSystem.hpp"
 #include "ECS/Systems/damageAndDeath.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
-#include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/levers.hpp"
 #include "ECS/Systems/gates.hpp"
@@ -47,7 +46,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	,mPause(false)
 {
 	terminal.setSceneRegistry(&mRegistry);
-
 
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
@@ -101,8 +99,6 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 
 	// must be at the end
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
-
-	// mSystemsQueue.appendSystem<system::IsPlayerAlive>(); // not used for now
 }
 
 void Scene::handleEvent(const ActionEvent& event)
