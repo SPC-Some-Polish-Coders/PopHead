@@ -35,7 +35,10 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
 	parseMapLayers(layerNodes, tilesetsData, info, aiManager);
-	createMapBorders(info);
+
+	// TODO: Figure out how to make world bounds on infinite map 
+	if(!info.isMapInfinite)
+		createMapBorders(info);
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
