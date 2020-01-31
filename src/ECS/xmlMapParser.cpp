@@ -148,7 +148,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 	
 	for(Xml tilesetNode : tilesetNodes) {
 		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid")->toUnsigned();
-		tilesets.firstGlobalTileIds.push_back(firstGlobalTileId);
+		tilesets.firstGlobalTileIds.emplace_back(firstGlobalTileId);
 		if(auto source = tilesetNode.getAttribute("source")) {
 			std::string tilesetNodeSource = source->toString();
 			tilesetNodeSource = FilePath::toFilename(tilesetNodeSource, '/');
@@ -159,14 +159,14 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 			tilesetNode = *tilesetDocument.getChild("tileset");
 		}
 
-		tilesets.tileCounts.push_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
-		tilesets.columnsCounts.push_back(tilesetNode.getAttribute("columns")->toUnsigned());
+		tilesets.tileCounts.emplace_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
+		tilesets.columnsCounts.emplace_back(tilesetNode.getAttribute("columns")->toUnsigned());
 		const Xml imageNode = *tilesetNode.getChild("image");
 		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source")->toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
 		TilesData tilesData = getTilesData(tileNodes);
 		tilesData.firstGlobalTileId = firstGlobalTileId;
-		tilesets.tilesData.push_back(tilesData);
+		tilesets.tilesData.emplace_back(tilesData);
 	}
 
 	return tilesets;
@@ -182,7 +182,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 		const auto objectGroupNode = tileNode.getChild("objectgroup");
 		if(objectGroupNode)
 		{
-			tilesData.ids.push_back(tileNode.getAttribute("id")->toUnsigned());
+			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
 			const Xml objectNode = *objectGroupNode->getChild("object");
 			auto width = objectNode.getAttribute("width");
 			auto height = objectNode.getAttribute("height");
@@ -192,7 +192,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 				width ? width->toFloat() : 0.f,
 				height ? height->toFloat() : 0.f
 			);
-			tilesData.bounds.push_back(bounds);
+			tilesData.bounds.emplace_back(bounds);
 		}
 	}
 	return tilesData;
