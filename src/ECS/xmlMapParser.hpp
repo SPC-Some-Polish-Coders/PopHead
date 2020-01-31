@@ -16,8 +16,8 @@ class Xml;
 
 struct GeneralMapInfo
 {
-	sf::Vector2u mapSize;
-	sf::Vector2u tileSize;
+	sf::Vector2f mapSize;
+	sf::Vector2f tileSize;
 	float nrOfChunks;
 	float nrOfChunksInOneRow;
 	float nrOfChunksInOneColumn;
@@ -50,15 +50,12 @@ private:
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-	void parseMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData&, const GeneralMapInfo&, AIManager&);
-	
-	void createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	void createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
 	void createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
-	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:
 	std::vector<component::RenderChunk> mRenderChunks;

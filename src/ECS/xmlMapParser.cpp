@@ -6,6 +6,7 @@
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
 #include "Utilities/math.hpp"
+#include <cmath>
 
 namespace ph {
 
@@ -15,7 +16,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	mTemplates = &templates;
 
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
-	aiManager.registerMapSize(info.mapSize);
+	aiManager.registerMapSize(static_cast<sf::Vector2u>(info.mapSize));
 
 	if(info.isMapInfinite)
 	{
@@ -34,11 +35,91 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
-	parseMapLayers(layerNodes, tilesetsData, info, aiManager);
+	// parse map layers
+	FloatRect mapBounds;
+	unsigned char z = sLowestLayerZ;
+	bool isFirstChunk = true;
+	for (const Xml& layerNode : layerNodes)
+	{
+		Xml dataNode = *layerNode.getChild("data");
+		std::string encoding = dataNode.getAttribute("encoding")->toString();
+		PH_ASSERT_CRITICAL(encoding == "csv", "Used unsupported data encoding: " + encoding);
+		if(info.isMapInfinite)
+		{
+			for(Xml& chunkNode : dataNode.getChildren("chunk"))
+			{
+				sf::Vector2f chunkPos(chunkNode.getAttribute("x")->toFloat(), chunkNode.getAttribute("y")->toFloat());
+				sf::Vector2f chunkSize(chunkNode.getAttribute("width")->toFloat(), chunkNode.getAttribute("height")->toFloat());
 
-	// TODO: Figure out how to make world bounds on infinite map 
+				PH_ASSERT_CRITICAL(chunkSize.x == 12.f, "You have to set map parameter \"Output Chunk Width\" to 12!");
+				PH_ASSERT_CRITICAL(chunkSize.y == 12.f, "You have to set map parameter \"Output Chunk Height\" to 12!");
+
+				if(isFirstChunk) 
+				{
+					mapBounds.setPosition(chunkPos);
+					mapBounds.setSize(chunkSize);
+					isFirstChunk = false;
+				}
+				else
+				{
+					if(chunkPos.x < mapBounds.left)
+						mapBounds.left = chunkPos.x;
+					if(chunkPos.y < mapBounds.top)
+						mapBounds.top = chunkPos.y;
+
+					// TODO: Handle for chunk with negative position
+					
+					if(chunkPos.x > 0.f && chunkPos.y > 0.f) {
+						sf::Vector2i addition(-mapBounds.left, -mapBounds.top);
+						if(addition.x + chunkPos.x + chunkSize.x > mapBounds.width)
+							mapBounds.width = addition.x + chunkPos.x + chunkSize.x;
+						if(addition.y + chunkPos.y + chunkSize.y > mapBounds.height)
+							mapBounds.height = addition.y + chunkPos.y + chunkSize.y;
+					}
+				}	
+
+				auto globalIds = Csv::toUnsigneds(chunkNode.toString());
+				createInfiniteMapChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager);
+			}
+		}
+		else
+		{
+			auto globalIds = Csv::toUnsigneds(dataNode.toString());
+			createFinitMapLayer(globalIds, tilesetsData, info, z, aiManager);
+		}
+		--z;
+	}
+
 	if(!info.isMapInfinite)
-		createMapBorders(info);
+		mapBounds = {0.f, 0.f, info.mapSize.x, info.mapSize.y};
+
+	// translate map bounds to world space
+	mapBounds.left *= info.tileSize.x;
+	mapBounds.top *= info.tileSize.y;
+	mapBounds.width *= info.tileSize.x;
+	mapBounds.height *= info.tileSize.y;
+	
+	auto createBorderCollision = [this]() -> FloatRect& {
+		auto borderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+		auto& body = mGameRegistry->get<component::BodyRect>(borderEntity);
+		return body.rect;
+	};
+
+	// create top map border
+	auto& topBorderRect = createBorderCollision();
+	topBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
+
+	// create bottom map border
+	auto& bottomBorderRect = createBorderCollision();
+	bottomBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
+		
+	// create left map border
+	auto& leftBorderRect = createBorderCollision();
+	leftBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+
+	// create right map border
+	auto& rightBorderRect = createBorderCollision();
+	rightBorderRect = FloatRect(mapBounds.width + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
@@ -125,40 +206,7 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void XmlMapParser::parseMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData& tilesets, const GeneralMapInfo& info,
-                                   AIManager& aiManager)
-{
-	unsigned char z = sLowestLayerZ;
-
-	for (const Xml& layerNode : layerNodes)
-	{
-		Xml dataNode = *layerNode.getChild("data");
-		std::string encoding = dataNode.getAttribute("encoding")->toString();
-		PH_ASSERT_CRITICAL(encoding == "csv", "Used unsupported data encoding: " + encoding);
-		if(info.isMapInfinite)
-		{
-			for(Xml& chunkNode : dataNode.getChildren("chunk"))
-			{
-				PH_ASSERT_CRITICAL(chunkNode.getAttribute("width")->toInt() == 12, "You have to set map parameter \"Output Chunk Width\" to 12!");
-				PH_ASSERT_CRITICAL(chunkNode.getAttribute("height")->toInt() == 12, "You have to set map parameter \"Output Chunk Height\" to 12!");
-
-				sf::Vector2i chunkPos;
-				chunkPos.x = chunkNode.getAttribute("x")->toInt();	
-				chunkPos.y = chunkNode.getAttribute("y")->toInt();	
-				auto globalIds = Csv::toUnsigneds(chunkNode.toString());
-				createInifiniteMapChunk(chunkPos, globalIds, tilesets, info, z, aiManager);
-			}
-		}
-		else
-		{
-			auto globalIds = Csv::toUnsigneds(dataNode.toString());
-			createFinitMapLayer(globalIds, tilesets, info, z, aiManager);
-		}
-		--z;
-	}
-}
-
-void XmlMapParser::createInifiniteMapChunk(sf::Vector2i chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
+void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
                                            const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
 	PH_PROFILE_FUNCTION(0);
@@ -478,32 +526,5 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 	return std::string::npos;
 }
 
-void XmlMapParser::createMapBorders(const GeneralMapInfo& mapInfo)
-{
-	auto mapWidth = static_cast<float>(mapInfo.mapSize.x * mapInfo.tileSize.x);
-	auto mapHeight = static_cast<float>(mapInfo.mapSize.y * mapInfo.tileSize.y);
-
-	const sf::Vector2f tileSize(sf::Vector2u(mapInfo.tileSize.x, mapInfo.tileSize.y));
-	
-	// create top border
-	auto topBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-	auto& topBody = mGameRegistry->get<component::BodyRect>(topBorderEntity);
-	topBody.rect = FloatRect(-tileSize.x, -tileSize.y, mapWidth + 2 * tileSize.x, tileSize.y);
-
-	// create bottom border
-	auto bottomBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-	auto& bottomBody = mGameRegistry->get<component::BodyRect>(bottomBorderEntity);
-	bottomBody.rect = FloatRect(-tileSize.x, mapHeight, mapWidth + 2 * tileSize.x, tileSize.y);
-		
-	// left border
-	auto leftborderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-	auto& leftBody = mGameRegistry->get<component::BodyRect>(leftborderEntity);
-	leftBody.rect = FloatRect(-tileSize.x, -tileSize.y, tileSize.x, mapHeight + 2 * tileSize.y);
-
-	// right border
-	auto rightBorderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-	auto& rightBody = mGameRegistry->get<component::BodyRect>(rightBorderEntity);
-	rightBody.rect = FloatRect(mapWidth, -tileSize.y, tileSize.x, mapHeight + 2 * tileSize.y);
 }
 
-}
