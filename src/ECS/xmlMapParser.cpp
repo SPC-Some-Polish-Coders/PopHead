@@ -70,7 +70,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 			tilesetNodeSource = FilePath::toFilename(tilesetNodeSource, '/');
 			PH_LOG_INFO("Detected not embedded tileset in Map: " + tilesetNodeSource);
 			Xml tilesetDocument;
-			PH_ASSERT_CRITICAL(tilesetDocument.loadFromFile(tilesetNodeSource),
+			PH_ASSERT_CRITICAL(tilesetDocument.loadFromFile("scenes/map/" + tilesetNodeSource),
 				"Not embedded tileset file \"" + tilesetNodeSource + "\" wasn't loaded correctly!");
 			tilesetNode = *tilesetDocument.getChild("tileset");
 		}

@@ -43,6 +43,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["view"] =						&CommandInterpreter::executeView;
 	mCommandsMap["gotoscene"] =					&CommandInterpreter::executeGotoScene;
 	mCommandsMap["gts"] =						&CommandInterpreter::executeGotoScene;
+	mCommandsMap["r"] =							&CommandInterpreter::executeReset;
 	mCommandsMap["pause"] =						&CommandInterpreter::executePause;
 	mCommandsMap["rgui"] =						&CommandInterpreter::executeResetGui;
 	mCommandsMap["light"] =						&CommandInterpreter::executeLight;
@@ -137,6 +138,11 @@ void CommandInterpreter::executeGotoScene()
 	const int spacePosition = mCommand.find_first_of(' ') + 1;
 	const std::string scenePath = "scenes/" + mCommand.substr(spacePosition, mCommand.size()) + ".xml";
 	mSceneManager->replaceScene(scenePath);
+}
+
+void CommandInterpreter::executeReset()
+{
+	mSceneManager->replaceScene(mSceneManager->getCurrentSceneFilePath());	
 }
 
 void CommandInterpreter::executePause()

@@ -30,6 +30,7 @@ private:
 
 	void executeInfoMessage();
 	void executeGotoScene();
+	void executeReset();
 	void executePause();
 	void executeResetGui();
 	void executeTeleport();
