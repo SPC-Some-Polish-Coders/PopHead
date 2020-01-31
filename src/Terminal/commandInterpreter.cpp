@@ -35,6 +35,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["velocitychangingareadebug"] = &CommandInterpreter::executeVelocityChangingAreaDebug;
 	mCommandsMap["pushingareadebug"] =			&CommandInterpreter::executePushingAreaDebug;
 	mCommandsMap["mute"] =						&CommandInterpreter::executeMute;
+	mCommandsMap["ma"] =						&CommandInterpreter::executeMuteAll;
 	mCommandsMap["unmute"] =					&CommandInterpreter::executeUnmute;
 	mCommandsMap["setvolume"] =					&CommandInterpreter::executeSetVolume;
 	mCommandsMap["history"] =					&CommandInterpreter::executeHistory;
@@ -277,6 +278,12 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 	}
 	else
 		executeMessage("Incorrect second argument! You have to enter 'music', 'sound' or 'all'.", MessageType::ERROR);
+}
+
+void CommandInterpreter::executeMuteAll()
+{
+	MusicPlayer::setMuted(true);
+	SoundPlayer::setMuted(true);
 }
 
 void CommandInterpreter::executeSetVolume()

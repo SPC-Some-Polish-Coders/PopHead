@@ -45,6 +45,7 @@ private:
 	void executePushingAreaDebug();
 	void executeMute();
 	void executeUnmute();
+	void executeMuteAll();
 	void executeSetVolume();
 	void executeView();
 	void executeLight();
