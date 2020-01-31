@@ -70,7 +70,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 					// TODO: Handle for chunk with negative position
 					
 					if(chunkPos.x > 0.f && chunkPos.y > 0.f) {
-						sf::Vector2i addition(-mapBounds.left, -mapBounds.top);
+						sf::Vector2f addition(-mapBounds.left, -mapBounds.top);
 						if(addition.x + chunkPos.x + chunkSize.x > mapBounds.width)
 							mapBounds.width = addition.x + chunkPos.x + chunkSize.x;
 						if(addition.y + chunkPos.y + chunkSize.y > mapBounds.height)
@@ -128,10 +128,10 @@ auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
 	PH_ASSERT_CRITICAL(orientation == "orthogonal", "Used unsupported map orientation: " + orientation);
 
 	GeneralMapInfo info;
-	info.mapSize.x = mapNode.getAttribute("width")->toUnsigned();
-	info.mapSize.y = mapNode.getAttribute("height")->toUnsigned();
-	info.tileSize.x = mapNode.getAttribute("tilewidth")->toUnsigned();
-	info.tileSize.y = mapNode.getAttribute("tileheight")->toUnsigned();
+	info.mapSize.x = mapNode.getAttribute("width")->toFloat();
+	info.mapSize.y = mapNode.getAttribute("height")->toFloat();
+	info.tileSize.x = mapNode.getAttribute("tilewidth")->toFloat();
+	info.tileSize.y = mapNode.getAttribute("tileheight")->toFloat();
 	info.isMapInfinite = mapNode.getAttribute("infinite")->toBool();
 	info.nrOfChunksInOneRow = std::ceil(info.mapSize.x / sChunkSize);
 	info.nrOfChunksInOneColumn = std::ceil(info.mapSize.y / sChunkSize);
@@ -241,7 +241,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, sChunkSize));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, static_cast<unsigned>(sChunkSize)));
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
 
 			// create quad data
@@ -392,7 +392,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, info.mapSize.x));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, static_cast<unsigned>(info.mapSize.x)));
 
 			// create quad data
 			QuadData qd;
