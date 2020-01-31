@@ -158,7 +158,6 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 				"Not embedded tileset file \"" + tilesetNodeSource + "\" wasn't loaded correctly!");
 			tilesetNode = *tilesetDocument.getChild("tileset");
 		}
-
 		tilesets.tileCounts.emplace_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
 		tilesets.columnsCounts.emplace_back(tilesetNode.getAttribute("columns")->toUnsigned());
 		const Xml imageNode = *tilesetNode.getChild("image");
@@ -315,14 +314,15 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
-
 			auto& tilesData = tilesets.tilesData[tilesDataIndex];
 			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) {
 				if (tileId == tilesData.ids[i]) {
 					sf::FloatRect bounds = tilesData.bounds[i];
 					bounds.left += qd.position.x;
 					bounds.top += qd.position.y;
-					aiManager.registerObstacle({bounds.left, bounds.top});
+					// TODO:
+					if(!info.isMapInfinite)
+						aiManager.registerObstacle({bounds.left, bounds.top});
 					chunkCollisions.rects.emplace_back(bounds);
 				}
 			}
@@ -342,8 +342,8 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 	auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
 	auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 	rc = renderChunk;
-	auto& mcb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
-	mcb = chunkCollisions; 
+	auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
+	mscb = chunkCollisions; 
 }
 
 void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
@@ -509,7 +509,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 
 std::size_t XmlMapParser::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
 {
-	for (std::size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
+	for (size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
 		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
 		const unsigned lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
 		if (globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
@@ -520,7 +520,7 @@ std::size_t XmlMapParser::findTilesetIndex(const unsigned globalTileId, const Ti
 
 std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const
 {
-	for (std::size_t i = 0; i < tilesData.size(); ++i)
+	for (size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
 			return i;
 	return std::string::npos;
