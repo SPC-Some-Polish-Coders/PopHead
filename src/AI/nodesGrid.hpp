@@ -34,9 +34,9 @@ public:
 	};
 
 public:
-	NodesGrid(const ObstacleGrid& obstacleGrid, const sf::Vector2u& destinationPosition);
+	NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2u destinationPosition);
 
-	const Node& createStartNode(const sf::Vector2u& position);
+	const Node& createStartNode(sf::Vector2u position);
 	void changeDistanceFromStartInNode(Node& node, float newDistance);
 	const Node& getNodeWithLowestCost() const;
 	std::vector<std::reference_wrapper<Node>> getNodeNeighbours(const Node& node);
@@ -45,9 +45,9 @@ public:
 	bool hasAnyOpenedNode() const;
 
 private:
-	size_t internalIndex(const sf::Vector2u& position) const;
-	Node& createNode(const sf::Vector2u& position);
-	bool isInBoundaries(const sf::Vector2u& position) const;
+	size_t internalIndex(sf::Vector2u position) const;
+	Node& createNode(sf::Vector2u position);
+	bool isInBoundaries(sf::Vector2u position) const;
 
 	using nodesCostsCompare = std::function<bool(const Node*, const Node*)>;
 	static nodesCostsCompare createNodesCostsCompare();

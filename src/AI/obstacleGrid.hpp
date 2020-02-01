@@ -15,8 +15,8 @@ public:
 	void registerObstacle(size_t column, size_t row);
 	bool isObstacle(size_t column, size_t row) const;
 
-	size_t getColumnsCount() const;
-	size_t getRowsCount() const;
+	size_t getColumnsCount() const { return mColumns; } 
+	size_t getRowsCount() const { return mRows; }
 
 private:
 	size_t internalIndex(size_t column, size_t row) const;
@@ -26,4 +26,6 @@ private:
 	size_t mColumns = 0;
 	size_t mRows = 0;
 };
+
 }
+
