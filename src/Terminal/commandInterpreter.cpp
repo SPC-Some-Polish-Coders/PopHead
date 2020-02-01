@@ -18,6 +18,7 @@
 #include "Renderer/API/font.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include <entt/entt.hpp>
+#include <array>
 
 namespace ph {
 
@@ -32,10 +33,10 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["give"] =	    				&CommandInterpreter::executeGive;
 	mCommandsMap["currentpos"] =				&CommandInterpreter::executeCurrentPos;
 	mCommandsMap["collisiondebug"] =			&CommandInterpreter::executeCollisionDebug;
-	mCommandsMap["velocitychangingareadebug"] = &CommandInterpreter::executeVelocityChangingAreaDebug;
-	mCommandsMap["pushingareadebug"] =			&CommandInterpreter::executePushingAreaDebug;
+	mCommandsMap["cold"] =						&CommandInterpreter::executeCollisionDebug;
+	mCommandsMap["veld"] = 						&CommandInterpreter::executeVelocityChangingAreaDebug;
+	mCommandsMap["pushd"] =						&CommandInterpreter::executePushingAreaDebug;
 	mCommandsMap["mute"] =						&CommandInterpreter::executeMute;
-	mCommandsMap["ma"] =						&CommandInterpreter::executeMuteAll;
 	mCommandsMap["unmute"] =					&CommandInterpreter::executeUnmute;
 	mCommandsMap["setvolume"] =					&CommandInterpreter::executeSetVolume;
 	mCommandsMap["history"] =					&CommandInterpreter::executeHistory;
@@ -114,21 +115,30 @@ void CommandInterpreter::executeHistory()
 
 void CommandInterpreter::executeHelp()
 {
-	const std::vector<std::string> commandsList1 {
-		"EXIT", "ECHO", "HISTORY", "HELP", "MUTE", "UNMUTE", 
-		"SETVOLUME", "TELEPORT"
+	const std::array<std::string, 11> commandsList1 {
+		"VELD - enables(with no args) or disables(with 'off' arg) velocity changing areas debug",
+		"PUSHD - enables(with no args) or disables(with 'off' arg) pushing areas debug"
+		"COLLISION DEBUG / COLD - enables(with no args) or disables(with 'off' arg) collision debug",
+		"GIVE - adds certain amount of certain item to inventory, takes args (amount, item) items: bullet",
+		"TELEPORT / TP - teleports player to given position, takes args (x, y)",
+		"M - moves player for certain vector, takes args (x, y)",
+		"SETVOLUME - sets volume, you have to pass number from 0 to 100 as an arg",
+		"UNMUTE - unmutes audio, if you don't pass any args it will mute everything; But you can pass args: 'music' 'sound'", 
+		"MUTE - mutes audio, if you don't pass any args it will mute everything; But you can pass args: 'music' 'sound'",
+		"HISTORY - shows last commands",
+		"HELP - shows avaiable commends",
 	};
-	const std::vector<std::string> commandsList2{
-		"CURRENTPOS", "COLLISIONDEBUG", "SPAWN", "VIEW"
+	const std::array<std::string, 3> commandsList2{
+		"CURRENTPOS", "SPAWN", "VIEW"
 	};
 
 	if (commandContains('2')){
-		for (const auto& command : commandsList2)
+		for (auto& command : commandsList2)
 			executeMessage("- " + command, MessageType::INFO);
 		executeMessage("Available commands, PAGE 2 of 2.", MessageType::INFO);
 	}
 	else{
-		for (const auto& command : commandsList1)
+		for (auto& command : commandsList1)
 			executeMessage("- " + command, MessageType::INFO);
 		executeMessage("Available commands, PAGE 1 of 2.", MessageType::INFO);
 	}
@@ -187,10 +197,6 @@ void CommandInterpreter::executeTeleport()
 void CommandInterpreter::executeMove()
 {
 	sf::Vector2f moveOffset = getVector2Argument();
-	if (commandContains('x'))
-		moveOffset = sf::Vector2f(moveOffset.x, 0.f);
-	else if (commandContains('y'))
-		moveOffset = sf::Vector2f(0.f , moveOffset.y);
 
 	auto& registry = mSceneManager->getScene().getRegistry(); 
 	auto view = registry.view<component::Player, component::BodyRect>();
@@ -228,32 +234,17 @@ void CommandInterpreter::executeCurrentPos()
 
 void CommandInterpreter::executeCollisionDebug()
 {
-	if(commandContains("on"))
-		system::AreasDebug::setIsCollisionDebugActive(true);
-	if(commandContains("off"))
-		system::AreasDebug::setIsCollisionDebugActive(false);
-	else
-		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
+	system::AreasDebug::setIsCollisionDebugActive(!commandContains("off"));
 }
 
 void CommandInterpreter::executeVelocityChangingAreaDebug()
 {
-	if(commandContains("on"))
-		system::AreasDebug::setIsVelocityChangingAreaDebugActive(true);
-	if(commandContains("off"))
-		system::AreasDebug::setIsVelocityChangingAreaDebugActive(false);
-	else
-		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
+	system::AreasDebug::setIsVelocityChangingAreaDebugActive(!commandContains("off"));
 }
 
 void CommandInterpreter::executePushingAreaDebug()
 {
-	if(commandContains("on"))
-		system::AreasDebug::setIsPushingAreaDebugActive(true);
-	if(commandContains("off"))
-		system::AreasDebug::setIsPushingAreaDebugActive(false);
-	else
-		executeMessage("Incorrect argument! Argument has to be 'on' or 'off'", MessageType::ERROR);
+	system::AreasDebug::setIsPushingAreaDebugActive(!commandContains("off"));
 }
 
 void CommandInterpreter::executeMute()
@@ -272,18 +263,10 @@ void CommandInterpreter::setAudioMuted(bool mute) const
 		MusicPlayer::setMuted(mute);
 	else if(commandContains("sound"))
 		SoundPlayer::setMuted(mute);
-	else if(commandContains("all")) {
+	else { 
 		MusicPlayer::setMuted(mute);
 		SoundPlayer::setMuted(mute);
 	}
-	else
-		executeMessage("Incorrect second argument! You have to enter 'music', 'sound' or 'all'.", MessageType::ERROR);
-}
-
-void CommandInterpreter::executeMuteAll()
-{
-	MusicPlayer::setMuted(true);
-	SoundPlayer::setMuted(true);
 }
 
 void CommandInterpreter::executeSetVolume()
