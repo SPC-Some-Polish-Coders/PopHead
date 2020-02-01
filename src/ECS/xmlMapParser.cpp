@@ -16,7 +16,9 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	mTemplates = &templates;
 
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
+
 	aiManager.registerMapSize(static_cast<sf::Vector2u>(info.mapSize));
+	aiManager.registerTileSize(info.tileSize);
 
 	if(info.isMapInfinite)
 	{
@@ -515,7 +517,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 						collisionRect.left += tileWorldPos.x; 
 						collisionRect.top += tileWorldPos.y;
 						mChunkCollisions[chunkIndex].rects.emplace_back(collisionRect);
-						aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+						aiManager.registerObstacle(positionInTiles);
 					}
 
 					break;
