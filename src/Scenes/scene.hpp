@@ -19,11 +19,12 @@ class Terminal;
 class SceneManager;
 class GUI;
 class Texture;
+class ThreadPool;
 
 class Scene
 {
 public:
-    Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture);
+    Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture, ThreadPool&);
 
 	void handleEvent(const ActionEvent& event);
     void update(sf::Time dt);

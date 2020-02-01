@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
+#include "Utilities/threadPool.hpp"
 #include "gameData.hpp"
 
 #include "ECS/Systems/playerMovementInput.hpp"
@@ -40,7 +41,7 @@
 namespace ph {
 
 Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal,
-             SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture)
+             SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture, ThreadPool& threadPool)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 	,mPause(false)
