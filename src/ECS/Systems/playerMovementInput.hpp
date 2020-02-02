@@ -15,20 +15,20 @@ namespace system {
 	public:
 		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
-		void update(float dt) override;
 		void onEvent(Event) override;
-
-	private:
-		bool isPlayerWithoutControl();
-		sf::Vector2f getPlayerDirection() const;
-		void updateInputFlags();
-		void updateAnimationData();
-		void setPlayerFaceDirection(const sf::Vector2f faceDirection) const;
-		void setFlashLightDirection(const sf::Vector2f faceDirection) const;
+		void update(float dt) override;
 
 	private:
 		AIManager& mAIManager;
 		Scene* mScene;
+
+		float mTimeFromLastUp    = 1.f;
+		float mTimeFromLastDown  = 1.f;
+		float mTimeFromLastLeft  = 1.f;
+		float mTimeFromLastRight = 1.f;
+
+		float mTimeFromDashBegining= 1.f;
+
 		bool mUp    = false;
 		bool mDown  = false;
 		bool mLeft  = false;
