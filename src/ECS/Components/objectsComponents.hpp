@@ -32,6 +32,7 @@ namespace ph::component {
 	struct Hint
 	{
 		std::string hintName;
+		std::string content;
 		bool isShown;
 	};
 

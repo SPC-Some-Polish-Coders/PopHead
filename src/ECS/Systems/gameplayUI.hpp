@@ -4,19 +4,14 @@
 
 namespace ph {
 
-class GUI;
-
 namespace system {
 
 class GameplayUI : public System
 {
 public:
-	GameplayUI(entt::registry&, GUI&);
+	using System::System;
 
 	void update(float dt) override;
-
-private:
-	GUI& mGui;
 };
 
 }}

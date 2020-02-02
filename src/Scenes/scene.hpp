@@ -12,25 +12,20 @@
 namespace ph{
 
 class CutScene;
-class MusicPlayer;
-class SoundPlayer;
 class AIManager;
 class Terminal;
 class SceneManager;
-class GUI;
 class Texture;
 class ThreadPool;
 
 class Scene
 {
 public:
-    Scene(MusicPlayer&, SoundPlayer&, AIManager&, Terminal&, SceneManager&, GUI&, Texture& tilesetTexture, ThreadPool&);
+    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&);
 
-	void handleEvent(const ActionEvent& event);
-    void update(sf::Time dt);
+	void handleEvent(Event);
+    void update(float dt);
 
-	void setPause(bool pause) { mPause = pause; }
-	bool getPause() const { return mPause; }
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
 	SystemsQueue& getSystemsQueue() { return mSystemsQueue; }
 
@@ -44,7 +39,6 @@ private:
 	CutSceneManager mCutSceneManager;
 	entt::registry mRegistry;
 	SystemsQueue mSystemsQueue;
-    bool mPause;
 };
 
 }

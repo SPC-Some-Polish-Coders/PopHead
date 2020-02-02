@@ -11,6 +11,9 @@ void PushingAreas::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
 	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
 

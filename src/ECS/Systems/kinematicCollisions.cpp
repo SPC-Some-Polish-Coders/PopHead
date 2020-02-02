@@ -8,6 +8,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity, component::KinematicCollisionBody>();
 
 		for (auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)

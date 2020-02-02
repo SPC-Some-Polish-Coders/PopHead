@@ -1,94 +1,117 @@
 #include "soundPlayer.hpp"
 #include "Logs/logs.hpp"
+#include "Resources/resourceHolder.hpp"
+#include "Audio/Sound/soundData.hpp"
+#include "Audio/Sound/spatializationManager.hpp"
+#include <SFML/Audio.hpp>
+#include <list>
 
-namespace ph {
-
-SoundPlayer::SoundPlayer()
-	:mVolume(14.f)
+namespace ph::SoundPlayer
 {
-	setMuted(false);
-	loadEverySound();
+
+namespace {
+	std::list<sf::Sound> sounds;
+	SoundBufferHolder soundBuffers;
+	SoundDataHolder soundDataHolder;
+	SpatializationManager spatializationManager;
+	float soundVolume = 15.f;
+	bool areSoundsMuted = false;
+	bool sceneMute = false;
 }
 
-void SoundPlayer::loadEverySound()
+static void removeStoppedSounds()
 {
-	mSoundBuffers.load("sounds/swordAttack.wav");
-	mSoundBuffers.load("sounds/carTireScreech.ogg");
-	mSoundBuffers.load("sounds/zombieGrowl1.ogg");
-	mSoundBuffers.load("sounds/zombieGrowl2.ogg");
-	mSoundBuffers.load("sounds/zombieGrowl3.ogg");
-	mSoundBuffers.load("sounds/zombieGrowl4.ogg");
-	mSoundBuffers.load("sounds/reloadPistol.ogg");
-	mSoundBuffers.load("sounds/pistolShot.ogg");
-	mSoundBuffers.load("sounds/reloadShotgun.ogg");
-	mSoundBuffers.load("sounds/shotgunShot.ogg");
-}
-
-void SoundPlayer::playAmbientSound(const std::string& filePath)
-{
-	removeStoppedSounds();
-	if (mSceneMute)
-		return;
-
-	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	playSound(filePath, mVolume * soundData.mVolumeMultiplier, soundData.mLoop);
-}
-
-void SoundPlayer::playSpatialSound(const std::string& filePath, const sf::Vector2f soundPosition)
-{
-	removeStoppedSounds();
-	if (mSceneMute)
-		return;
-
-	SoundData soundData = mSoundDataHolder.getSoundData(filePath);
-	const float spatialVolume = mSpatializationManager.getSpatialVolume(soundData, soundPosition, mVolume);
-	playSound(filePath, spatialVolume, soundData.mLoop);
-}
-
-void SoundPlayer::playSound(const std::string& filePath, const float volume, const bool loop)
-{
-	sf::Sound sound;
-	sound.setBuffer(mSoundBuffers.get(filePath));
-	sound.setVolume(volume);
-	sound.setLoop(loop);
-	mSounds.emplace_back(std::move(sound));
-	mSounds.back().play();
-}
-
-void SoundPlayer::removeStoppedSounds()
-{
-	mSounds.remove_if([](const sf::Sound& sound) {
+	sounds.remove_if([](const sf::Sound& sound) {
 		return sound.getStatus() == sf::Sound::Status::Stopped;
 	});
 }
 
-void SoundPlayer::setSceneMute(const bool mute)
+static void playSound(const std::string& filePath, float volume, bool loop)
 {
-	mSceneMute = mute;
+	sf::Sound sound;
+	sound.setBuffer(soundBuffers.get(filePath));
+	sound.setVolume(volume);
+	sound.setLoop(loop);
+	sounds.emplace_back(std::move(sound));
+	sounds.back().play();
 }
 
-void SoundPlayer::setListenerPosition(const sf::Vector2f listenerPosition)
+void init()
 {
-	mSpatializationManager.setListenerPosition(listenerPosition);
+	setMuted(false);
+
+	soundBuffers.load("sounds/swordAttack.wav");
+	soundBuffers.load("sounds/carTireScreech.ogg");
+	soundBuffers.load("sounds/zombieGrowl1.ogg");
+	soundBuffers.load("sounds/zombieGrowl2.ogg");
+	soundBuffers.load("sounds/zombieGrowl3.ogg");
+	soundBuffers.load("sounds/zombieGrowl4.ogg");
+	soundBuffers.load("sounds/reloadPistol.ogg");
+	soundBuffers.load("sounds/pistolShot.ogg");
+	soundBuffers.load("sounds/reloadShotgun.ogg");
+	soundBuffers.load("sounds/shotgunShot.ogg");
 }
 
-void SoundPlayer::setMuted(const bool mute)
+void playAmbientSound(const std::string& filePath)
 {
-	static float previousVolume = mVolume;
+	removeStoppedSounds();
+	if(sceneMute)
+		return;
+
+	SoundData soundData = soundDataHolder.getSoundData(filePath);
+	playSound(filePath, soundVolume * soundData.mVolumeMultiplier, soundData.mLoop);
+}
+
+void playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition)
+{
+	removeStoppedSounds();
+	if(sceneMute)
+		return;
+
+	SoundData soundData = soundDataHolder.getSoundData(filePath);
+	float spatialVolume = spatializationManager.getSpatialVolume(soundData, soundPosition, soundVolume);
+	playSound(filePath, spatialVolume, soundData.mLoop);
+}
+
+void setSceneMute(bool mute)
+{
+	sceneMute = mute;
+}
+
+bool isMuted()
+{
+	return isMuted;
+}
+
+void setListenerPosition(sf::Vector2f listenerPosition)
+{
+	spatializationManager.setListenerPosition(listenerPosition);
+}
+
+void setMuted(bool mute)
+{
+	// TODO: Get rid of this static var
+	static float previousVolume = soundVolume;
 	setVolume(mute ? 0.f : previousVolume);
-	mIsMuted = mute;
+	areSoundsMuted = mute;
 }
 
-void SoundPlayer::setVolume(const float volume)
+void setVolume(float volume)
 {
-	mVolume = volume;
-	for(auto& sound : mSounds)
+	soundVolume = volume;
+	for(auto& sound : sounds)
 		sound.setVolume(volume);
 }
 
-void SoundPlayer::removeEverySound()
+float getVolume()
 {
-	mSounds.clear();
+	return soundVolume;
+}
+
+void removeEverySound()
+{
+	sounds.clear();
 }
 
 }
+

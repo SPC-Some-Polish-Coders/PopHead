@@ -20,6 +20,12 @@ Texture::Texture()
 	GLCheck( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) );
 }
 
+Texture::Texture(unsigned existingID, sf::Vector2i size)
+	:mSize(size)
+	,mID(existingID)
+{
+}
+
 Texture::Texture(const std::string& filepath)
 	:Texture()
 {
@@ -78,3 +84,4 @@ void Texture::bind(unsigned slot) const
 }
 
 }
+

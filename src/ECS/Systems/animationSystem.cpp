@@ -9,6 +9,9 @@ void AnimationSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	auto view = mRegistry.view<component::AnimationData, component::TextureRect>();
 
 	for(auto entity : view)

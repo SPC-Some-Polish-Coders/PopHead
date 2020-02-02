@@ -1,93 +1,115 @@
 #include "musicPlayer.hpp"
+#include "musicData.hpp"
+#include "musicStateMachine.hpp"
+#include <SFML/Audio.hpp>
+#include <memory>
 
-namespace ph {
+namespace ph::MusicPlayer {
 
-MusicPlayer::MusicPlayer()
-	:mCurrentThemeFilePath("")
-	,mVolume(60.f)
-	,mIsMuted(false)
-	,mIsPlayingFromMusicState(false)
-{
+namespace {
+	MusicDataHolder musicDataHolder;
+	MusicStateMachine musicStateMachine;
+	std::unique_ptr<sf::Music> music;
+	std::string currentThemeFilePath;
+	float musicVolume = 50.f;
+	bool isMusicMuted = false;
+	bool isPlayingFromMusicState = false;
 }
 
-MusicPlayer::~MusicPlayer()
+static void adaptVolume(float volumeMultiplier = 1.f)
 {
-	mMusic.stop();
+	auto volume = musicVolume * musicDataHolder.getMusicData(currentThemeFilePath).mVolumeMultiplier * volumeMultiplier;
+	music->setVolume(volume);
 }
 
-void MusicPlayer::playFromFile(const std::string& filePath)
+void init()
 {
-	if (filePath == mCurrentThemeFilePath)
+	music = std::make_unique<sf::Music>();
+}
+
+void playFromFile(const std::string& filePath)
+{
+	if (filePath == currentThemeFilePath)
 	{
 		adaptVolume();
 		return;
 	}
 
-	mCurrentThemeFilePath = filePath;
+	currentThemeFilePath = filePath;
 
-	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
+	const MusicData currentThemeData = musicDataHolder.getMusicData(filePath);
 	const std::string fullFilePath = "resources/" + filePath;
 
 	adaptVolume();
-	mMusic.openFromFile(fullFilePath);
-	mMusic.setLoop(currentThemeData.mLoop);
-	setMuted(mIsMuted);
-	mMusic.play();
+	music->openFromFile(fullFilePath);
+	music->setLoop(currentThemeData.mLoop);
+	setMuted(isMusicMuted);
+	music->play();
 }
 
-void MusicPlayer::playFromMusicState(const std::string& musicStateName)
+void playFromMusicState(const std::string& musicStateName)
 {
-	auto[filePath, volumeMultiplier] = mMusicStateMachine.getRandomThemeFromState(musicStateName);
+	auto[filePath, volumeMultiplier] = musicStateMachine.getRandomThemeFromState(musicStateName);
 
-	if(filePath == mCurrentThemeFilePath) {
+	if(filePath == currentThemeFilePath) {
 		adaptVolume(volumeMultiplier);
 		return;
 	}
 
-	mCurrentThemeFilePath = filePath;
+	currentThemeFilePath = filePath;
 
-	const MusicData currentThemeData = mMusicDataHolder.getMusicData(filePath);
+	const MusicData currentThemeData = musicDataHolder.getMusicData(filePath);
 	const std::string fullFilePath = "resources/" + filePath;
 
 	adaptVolume(volumeMultiplier);
-	mMusic.openFromFile(fullFilePath);
-	mMusic.setLoop(currentThemeData.mLoop);
-	setMuted(mIsMuted);
-	mMusic.play();
+	music->openFromFile(fullFilePath);
+	music->setLoop(currentThemeData.mLoop);
+	setMuted(isMusicMuted);
+	music->play();
 }
 
-bool MusicPlayer::hasMusicState(const std::string& musicStateName) const
+bool hasMusicState(const std::string& musicStateName)
 {
-	return mMusicStateMachine.hasMusicState(musicStateName);
+	return musicStateMachine.hasMusicState(musicStateName);
 }
 
-void MusicPlayer::stop()
+void stop()
 {
-	mMusic.stop();
+	music->stop();
 }
 
-void MusicPlayer::setPaused(const bool pause)
+void setPaused(bool pause)
 {
-	pause ? mMusic.pause() : mMusic.play();
+	pause ? music->pause() : music->play();
 }
 
-void MusicPlayer::setMuted(const bool mute)
+void setMuted(bool mute)
 {
-	mute ? mMusic.setVolume(0.f) : setVolume(mVolume);
-	mIsMuted = mute;
+	mute ? music->setVolume(0.f) : setVolume(musicVolume);
+	isMusicMuted = mute;
 }
 
-void MusicPlayer::setVolume(const float volume)
+bool isMuted()
 {
-	mVolume = volume;
-	const float volumeMultiplier = mMusicDataHolder.getCurrentThemeData().mVolumeMultiplier;
-	mMusic.setVolume(volume * volumeMultiplier);
+	return isMusicMuted;
 }
 
-void MusicPlayer::adaptVolume(const float volumeMultiplier)
+void setVolume(float volume)
 {
-	auto volume = mVolume * mMusicDataHolder.getMusicData(mCurrentThemeFilePath).mVolumeMultiplier * volumeMultiplier;
-	mMusic.setVolume(volume);
+	musicVolume = volume;
+	const float volumeMultiplier = musicDataHolder.getCurrentThemeData().mVolumeMultiplier;
+	music->setVolume(volume * volumeMultiplier);
+}
+
+float getVolume()
+{
+	return musicVolume;
+}
+
+auto getMusicStateMachine() -> MusicStateMachine &
+{
+	return musicStateMachine;
 }
 
 }
+

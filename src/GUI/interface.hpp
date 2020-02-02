@@ -1,31 +1,33 @@
 #pragma once
 
-#include "textWidget.hpp"
+#include "widget.hpp"
+#include "Events/event.hpp"
+#include <vector>
 
 namespace ph {
 
-class GameData;
-
-class Interface : public Widget
+class Interface 
 {
 public:
-	Interface();
+	Interface(const char* name);
 
-	Interface(GameData* data);
+	void handleEvent(const Event&);
+	void update(float dt);
 
-	void update(sf::Time delta) override;
+	void show();
+	void hide();
 
-	void draw() override;
+	Widget* addChildWidget(Widget* widget);
+	Widget* getWidget(const char* name);
 
-	bool setContentPath(const std::string& path) override;
+	bool isActive() { return mIsActive; }
+	const char* getName() { return mName; }
 
-	void setPosition(const sf::Vector2f& pos) override;
-
-	void addWidget(const std::string& name, Widget* ptr) override;
-
-	void move(const sf::Vector2f& delta) override;
-
-	sf::Vector2f getGlobalPosition() const override;
+private:
+	std::vector<std::unique_ptr<Widget>> mWidgetChildren;
+	char mName[50];
+	bool mIsActive = true;
 };
 
 }
+

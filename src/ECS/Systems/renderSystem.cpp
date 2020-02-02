@@ -10,7 +10,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 namespace {
-	ph::Camera defaultCamera;
+	ph::Camera defaultCamera = ph::Camera({320, 180}, {640, 360});
 }
 
 namespace ph::system {
@@ -33,8 +33,8 @@ void RenderSystem::update(float dt)
 			currentCamera = &camera.camera;
 	});
 
-	// begin scene
-	Renderer::beginScene(*currentCamera);
+	// set camera
+	Renderer::setGameWorldCamera(*currentCamera);
 
 	// submit light sources
 	auto lightSources = mRegistry.view<component::LightSource, component::BodyRect>();

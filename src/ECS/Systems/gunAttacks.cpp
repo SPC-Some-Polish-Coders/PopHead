@@ -21,44 +21,53 @@ void GunAttacks::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	handlePendingGunAttacks();
 	handleLastingBullets();
 }
 
-void GunAttacks::onEvent(const ActionEvent& event)
+void GunAttacks::onEvent(Event event)
 {
-	if (event.mType == ActionEvent::Type::Pressed)
+	if(sPause)
+		return;
+
+	if(auto* e = std::get_if<ActionEvent>(&event))
 	{
-		if(event.mAction == "gunAttack") 
+		if (e->mType == ActionEvent::Type::Pressed)
 		{
-			auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-			for (auto player : playerGunView) {
-				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-				playerGunAttack.isTryingToAttack = true;
-			}
-		}
-		else if(event.mAction == "changeWeapon")
-		{
-			auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
-			auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
-
-			for (auto currentGun : currentGunView)
+			if(e->mAction == "gunAttack") 
 			{
-				const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
-				mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
-				mRegistry.remove<component::CurrentGun>(currentGun);
-
-				for (auto otherGun : otherGunsView) {
-					const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
-					if (gunProperties.gunId != currentGunProperties.gunId)
-						mRegistry.assign<component::CurrentGun>(otherGun);
+				auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
+				for (auto player : playerGunView) {
+					auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+					playerGunAttack.isTryingToAttack = true;
 				}
 			}
+			else if(e->mAction == "changeWeapon")
+			{
+				auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
+				auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
 
-			auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
-			gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
-				gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
-			});
+				for (auto currentGun : currentGunView)
+				{
+					const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
+					mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
+					mRegistry.remove<component::CurrentGun>(currentGun);
+
+					for (auto otherGun : otherGunsView) {
+						const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
+						if (gunProperties.gunId != currentGunProperties.gunId)
+							mRegistry.assign<component::CurrentGun>(otherGun);
+					}
+				}
+
+				auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
+				gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
+					gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
+				});
+			}
 		}
 	}
 }

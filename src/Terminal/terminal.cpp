@@ -1,46 +1,34 @@
 #include "terminal.hpp"
 
-#include "gameData.hpp"
-
 namespace ph {
 
-Terminal::Terminal()
+Terminal::Terminal(sf::Window& window)
 	:mTerminalSharedData(new TerminalData())
-	,mTerminalImage(mTerminalSharedData)
-	,mKeyboardInputHandler(mTerminalSharedData)
-	,mGameData(nullptr)
+	,mTerminalRenderer(mTerminalSharedData)
+	,mKeyboardInputHandler(mTerminalSharedData, window)
 {
 }
 
-void Terminal::init(GameData* gameData)
+void Terminal::init(SceneManager* sceneManager)
 {
-	mGameData = gameData;
-	mKeyboardInputHandler.setGameData(mGameData);
-	mCommandInterpreter.setGameData(mGameData);
-	mCommandInterpreter.init();
-	mTerminalImage.init(gameData);
+	mCommandInterpreter.init(sceneManager, mTerminalSharedData, &mTerminalRenderer);
 }
 
-void Terminal::setSceneRegistry(entt::registry* reg)
+void Terminal::handleEvent(Event& e)
 {
-	mCommandInterpreter.setSceneRegistry(reg);
+	mKeyboardInputHandler.handleEvent(e);
 }
 
-void Terminal::handleEvent(const ph::Event& phEvent)
-{
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
-		mKeyboardInputHandler.handleEvent(*e);
-}
-
-void Terminal::update()
+void Terminal::update(float dt)
 {
 	if(mKeyboardInputHandler.isEnterClicked()) {
-		auto& content = mTerminalSharedData->mContent;
+		auto& content = mTerminalSharedData->content;
 		mCommandInterpreter.handleCommand(content);
 		content.clear();
 	}
 
-	mTerminalImage.draw();
+	mCommandInterpreter.update(dt);
+	mTerminalRenderer.update();
 
 	// TODO: Refactor this mess
 	mKeyboardInputHandler.update();
@@ -48,7 +36,7 @@ void Terminal::update()
 
 void Terminal::pushOutputLine(const OutputLine& line)
 {
-	mTerminalImage.getOutputArea().pushOutputLine(line);
+	mTerminalRenderer.pushOutputLine(line);
 }
 
 }

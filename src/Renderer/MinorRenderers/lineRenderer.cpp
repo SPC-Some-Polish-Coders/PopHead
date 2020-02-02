@@ -1,6 +1,7 @@
 #include "lineRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
@@ -10,12 +11,8 @@ namespace ph {
 
 void LineRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("line", "resources/shaders/line.vs.glsl", "resources/shaders/line.fs.glsl");
-	mLineShader = sl.get("line");
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mLineShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mLineShader->getID(), uniformBlockIndex, 0) );
+	mLineShader.init(shader::lineSrc());
+	mLineShader.initUniformBlock("SharedData", 0);
 
 	GLCheck( glEnable(GL_LINE_SMOOTH) );
 	GLCheck( glHint(GL_LINE_SMOOTH_HINT, GL_NICEST) );
@@ -57,12 +54,14 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * 6 * sizeof(float), vertexData) );
 
 	GLCheck( glBindVertexArray(mLineVAO) );
-	mLineShader->bind();
+	mLineShader.bind();
 	
 	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->height)) );
 
 	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
-	++mNumberOfDrawCalls;
+
+	if(mIsDebugCountingActive)
+		++mNumberOfDrawCalls;
 }
 
 }

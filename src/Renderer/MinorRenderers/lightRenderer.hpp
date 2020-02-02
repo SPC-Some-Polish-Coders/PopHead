@@ -1,13 +1,12 @@
 #pragma once 
  
+#include "Renderer/API/shader.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
 #include <vector>
 #include <optional>
 
 namespace ph { 
-
-class Shader;
 
 struct LightingDebug
 {
@@ -65,7 +64,7 @@ private:
 	std::vector<Light> mLights;
 	std::vector<sf::Vector2f> mLightPolygonVertexData;
 	const FloatRect* mScreenBounds;
-	Shader* mLightShader;
+	Shader mLightShader;
 	unsigned mVAO, mVBO;
 
 	inline static LightingDebug sDebug;

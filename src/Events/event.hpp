@@ -1,7 +1,7 @@
 #pragma once
 
 #include "actionEvent.hpp"
-#include <SFML/Window.hpp>
+#include <SFML/Window/Event.hpp>
 #include <variant>
 
 namespace ph {

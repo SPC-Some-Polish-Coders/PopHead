@@ -20,6 +20,9 @@ void Entrances::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 

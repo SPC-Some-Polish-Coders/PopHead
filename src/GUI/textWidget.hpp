@@ -1,46 +1,32 @@
 #pragma once
 
 #include "widget.hpp"
+#include "Renderer/API/textAligment.hpp"
+#include <SFML/Graphics/Color.hpp>
 
 namespace ph {
 
 class TextWidget : public Widget 
 {
 public:
-	TextWidget();
+	TextWidget(const char* name);
 
-	void setString(const std::string& text);
+	void updateCurrent(float dt, unsigned char z) override;
 
-	void setColor(const sf::Color& color);
-
-	void setTextPosition(const sf::Vector2f& pos);
-
-	void setAlpha(unsigned int alpha) override;
-
-	void setTextOrigin(const sf::Vector2f& origin);
-
-	void setTextAlpha(unsigned int alpha);
-
-	void scaleText(const sf::Vector2f& scale);
-
-	void setPosition(const sf::Vector2f& pos) override;
-
-	void move(const sf::Vector2f& delta) override;
-
-	void setCharacterSize(unsigned int size);
-
-	void setFontPath(const std::string& path);
-
-	void scale(const sf::Vector2f& scale) override;
-
-	void draw() override;
-
-	void setScrollingEffect(bool flag);
+	void setText(const char* text);
+	void setText(const std::string& text) { mText = text; }
+	void setTextAligment(TextAligment aligment) { mTextAligment = aligment; }
+	void setTextColor(sf::Color color) { mTextColor = color; }
+	void setFontSize(float size) { mFontSize = size; }
+	void setFontName(const char* fontName);
 
 private:
-	sf::Text mText;
-	sf::Vector2f mTextPosition;
-	bool scrollingEffect = false;
+	char mFontName[50];
+	std::string mText;
+	TextAligment mTextAligment;
+	float mFontSize;
+	sf::Color mTextColor;
 };
 
 }
+

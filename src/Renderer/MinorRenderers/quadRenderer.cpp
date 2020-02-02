@@ -1,7 +1,7 @@
 #include "quadRenderer.hpp"
 #include "Renderer/API/texture.hpp"
-#include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/math.hpp"
@@ -42,10 +42,10 @@ void RenderGroupsHashMap::sort()
 	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
 	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
 
-	std::sort(mRenderGroups.begin(), mRenderGroups.end(),
-		[](const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
-			return a.first.z > b.first.z;
-		});
+	std::sort(mRenderGroups.begin(), mRenderGroups.end(), []
+	(const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
+		return a.first.z > b.first.z;
+	});
 }
 
 void RenderGroupsHashMap::eraseUselessGroups()
@@ -70,12 +70,8 @@ bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 
 void QuadRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("instancedSprite", "resources/shaders/instancedSprite.vs.glsl", "resources/shaders/instancedSprite.fs.glsl");
-	mDefaultInstanedSpriteShader = sl.get("instancedSprite");
-
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mDefaultInstanedSpriteShader->getID(), "SharedData") );
-	GLCheck( glUniformBlockBinding(mDefaultInstanedSpriteShader->getID(), uniformBlockIndex, 0) );
+	mDefaultQuadShader.init(shader::quadSrc());
+	mDefaultQuadShader.initUniformBlock("SharedData", 0);
 
 	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
 	mQuadIBO.init();
@@ -113,6 +109,7 @@ void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
 	mQuadIBO.remove();
+	mDefaultQuadShader.remove();
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
@@ -126,14 +123,14 @@ void QuadRenderer::setDebugNumbersToZero()
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
-                                                        const Shader* shader, float z)
+                                                        const Shader* shader, float z, ProjectionType projectionType)
 {
 	// NOTE: this function doesn't do any culling
 
 	if(!shader)
-		shader = mDefaultInstanedSpriteShader;
+		shader = &mDefaultQuadShader;
 
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z});
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup({shader, z, projectionType});
 	
 	if(!texture)
 		texture = mWhiteTexture;
@@ -153,18 +150,19 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 }
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                              sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin)
+                              sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
+                              ProjectionType projectionType)
 {
 	// culling
-	if(!isInsideScreen(position, size, rotation))
+	if(!isInsideScreen(position, size, rotation, projectionType))
 		return;
 
 	// if shader is not specified use default shader 
 	if(!shader)
-		shader = mDefaultInstanedSpriteShader;
+		shader = &mDefaultQuadShader;
 
 	// find or add draw call group
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z});
+	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
 
 	// submit data
 	QuadData quadData;
@@ -190,12 +188,13 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	renderGroup.quadsData.emplace_back(quadData);
 }
 
-bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation)
+bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation, ProjectionType projectionType)
 {
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
 	if(rotation == 0.f)
-		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x, pos.y, size.x, size.y));
+		return bounds.doPositiveRectsIntersect(FloatRect(pos.x, pos.y, size.x, size.y));
 	else
-		return mScreenBounds->doPositiveRectsIntersect(sf::FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
+		return bounds.doPositiveRectsIntersect(FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
 }
 
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup& rg) -> std::optional<float>
@@ -225,8 +224,10 @@ void QuadRenderer::flush()
 	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
-		mNumberOfDrawnSprites += rg.quadsData.size();
-		mNumberOfDrawnTextures += rg.textures.size();
+		if(mIsDebugCountingActive) {
+			mNumberOfDrawnSprites += rg.quadsData.size();
+			mNumberOfDrawnTextures += rg.textures.size();
+		}
 
 		// set up shader
 		if(key.shader != mCurrentlyBoundQuadShader) 
@@ -240,6 +241,7 @@ void QuadRenderer::flush()
 			key.shader->setUniformIntArray("textures", 32, textures);
 		}
 		key.shader->setUniformFloat("z", key.z);
+		key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
 
 		// sort quads by texture slot ref
 		std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) {
@@ -292,7 +294,8 @@ void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quads
 	GLCheck( glBindVertexArray(mVAO) );
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
 
-	++mNumberOfDrawCalls;
+	if(mIsDebugCountingActive)
+		++mNumberOfDrawCalls;
 }
 
 }

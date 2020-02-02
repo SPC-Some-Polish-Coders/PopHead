@@ -767,6 +767,7 @@
   </object>
   <object id="249" name="Movement tutorial popup" type="HintArea" x="894.58" y="1336.59" width="319" height="326">
    <properties>
+    <property name="hintContent" value="Use @C9909[AWSD]@C9999 to walk"/>
     <property name="hintName" value="controlHint"/>
    </properties>
   </object>
@@ -1004,16 +1005,19 @@
   </object>
   <object id="506" name="Shooting Tutorial" type="HintArea" x="893.337" y="852.833" width="161.667" height="372.833">
    <properties>
+    <property name="hintContent" value="Use @C9909[Enter]@C9999 to shoot"/>
     <property name="hintName" value="shootingHint"/>
    </properties>
   </object>
   <object id="507" name="Melee Fighting Tutorial" type="HintArea" x="1060.86" y="819.993" width="366" height="233.5">
    <properties>
+    <property name="hintContent" value="Use @C9909[\]@C9999 (backslash) to hit"/>
     <property name="hintName" value="meleeFightingHint"/>
    </properties>
   </object>
   <object id="508" name="Interaction Tutorial" type="HintArea" x="1844.83" y="965.75" width="100" height="128.5">
    <properties>
+    <property name="hintContent" value="Use @C9909[E]@C9999 to interact with levers and other objects"/>
     <property name="hintName" value="interactionHint"/>
    </properties>
   </object>
@@ -1043,8 +1047,9 @@
    </properties>
    <point/>
   </object>
-  <object id="520" name="Weapon changing tutorial" type="HintArea" x="1730.08" y="455.167" width="338.667" height="222.333">
+  <object id="520" name="Weapon changing tutorial" type="HintArea" x="1729.08" y="455.167" width="338.667" height="222.333">
    <properties>
+    <property name="hintContent" value="You just got a new weapon Use @C9909[Q]@C9999 to change weapon"/>
     <property name="hintName" value="weaponChangingHint"/>
    </properties>
   </object>

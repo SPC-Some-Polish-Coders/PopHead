@@ -5,7 +5,6 @@
 #include "ECS/xmlMapParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
 
@@ -14,7 +13,8 @@ namespace ph {
 SceneManager::SceneManager()
 	:mScene(nullptr)
 	,mThreadPool(2)
-	,mGameData(nullptr)
+	,mAIManager(nullptr)
+	,mTextures(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPositionForNextScene(false)
@@ -47,7 +47,7 @@ void SceneManager::popAction()
 	if (mScene == nullptr)
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
 	else {
-		mGameData->getGui().clearGUI();
+		GUI::clear();
 		mScene = nullptr;
 		PH_LOG_INFO("The scene was popped.");
 	}
@@ -56,62 +56,61 @@ void SceneManager::popAction()
 
 void SceneManager::replaceAction()
 {
-	mGameData->getGui().clearGUI();
+	GUI::clear();
 
-	if(mCurrentSceneFile == mFileOfSceneToMake && mHasPlayerPositionForNextScene)
+	if(mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);
 	else {
-		bool thereIsPlayerStatus = mScene && mGameData->getAIManager().isPlayerOnScene();
+		bool thereIsPlayerStatus = mScene && mAIManager->isPlayerOnScene();
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
-		mScene.reset(new Scene(mGameData->getMusicPlayer(), mGameData->getSoundPlayer(), mGameData->getAIManager(),
-			                   mGameData->getTerminal(), *this, mGameData->getGui(), *mTilesetTexture, mThreadPool));
+		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
 
-		parseScene(mGameData, mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFileOfSceneToMake,
-		           mGameData->getTextures(), mScene->getSystemsQueue(), mGameData->getGui(), mGameData->getMusicPlayer(), mGameData->getAIManager());
+		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
+		           *mTextures, mScene->getSystemsQueue(), *mAIManager, *this);
 
-		if(mGameData->getAIManager().isPlayerOnScene()) {
+		if(mAIManager->isPlayerOnScene()) {
 			mScene->setPlayerStatus(mLastPlayerStatus);
 			if(mHasPlayerPositionForNextScene)
 				mScene->setPlayerPosition(mPlayerPositionForNextScene);
 		}
 	}
 
-	PH_LOG_INFO("The scene was replaced by new scene (" + mFileOfSceneToMake + ").");
+	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 	mIsReplacing = false;
-	mCurrentSceneFile = std::move(mFileOfSceneToMake);
+	mCurrentSceneFilePath = std::move(mFilePathOfSceneToMake);
 }
 
 void SceneManager::handleEvent(const Event& e)
 {
-	if (auto* event = std::get_if<ActionEvent>(&e))
-		mScene->handleEvent(*event);
+	mScene->handleEvent(e);
 }
 
-void SceneManager::update(sf::Time dt)
+void SceneManager::update(float dt)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
 	mScene->update(dt);
 }
 
-void SceneManager::setGameData(GameData* const gameData)
+void SceneManager::init(TextureHolder* textures, AIManager* aiManager)
 {
-	mGameData = gameData;
-	gameData->getTextures().load("textures/map/extrudedTileset.png");
-	mTilesetTexture = &gameData->getTextures().get("textures/map/extrudedTileset.png");
+	mAIManager = aiManager;
+	mTextures = textures;
+	textures->load("textures/map/extrudedTileset.png");
+	mTilesetTexture = &textures->get("textures/map/extrudedTileset.png");
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
-	mFileOfSceneToMake = sceneSourceCodeFilePath;
+	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = false;
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
 {
-	mFileOfSceneToMake = sceneSourceCodeFilePath;
+	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = true;
 	mPlayerPositionForNextScene = playerPosition;

@@ -12,12 +12,15 @@ void Levers::update(float dt)
 {
 }
 
-void Levers::onEvent(const ActionEvent& event)
+void Levers::onEvent(Event event)
 {
-	if (event.mType == ActionEvent::Pressed)
+	if(auto* e = std::get_if<ActionEvent>(&event))
 	{
-		if (event.mAction == "use")
-			handleUsedLevers();
+		if (e->mType == ActionEvent::Pressed)
+		{
+			if (e->mAction == "use")
+				handleUsedLevers();
+		}
 	}
 }
 

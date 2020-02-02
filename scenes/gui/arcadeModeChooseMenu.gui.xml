@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui>
-    <interface name="arcadeChooseMenu">
-        <widget name="menuBorder" contentPath="textures/gui/menuBorder.png" origin="0.5">
-            <widget name="bunkerButton" contentPath="textures/gui/bunker.jpg" scale="0.22, 0.19 " origin="0.5" position="0.27, 0.55" onButtonPressed="replaceScene:scenes/arcadeTheBunker.xml"/>
-            <textWidget name="bunkerText" origin="0.5" position="0.15, 0.72" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  text="Bunker"/>
-            <widget name="sewageButton" contentPath="textures/gui/sewage.jpg" scale="0.22, 0.19" origin="0.5" position="0.73, 0.55" onButtonPressed="replaceScene:scenes/arcadeSewage.xml"/>
-            <textWidget name="sewageText" origin="0.5" position="0.6, 0.72" fontPath="fonts/joystixMonospace.ttf" textPosition="0.1" color="black"  text="Sewage"/>
-
-            <textWidget name="exitToMenuButton" origin="0.5" position="0.5, 0.85" scale="0.5" contentPath="textures/gui/exitButton.png" fontPath="fonts/joystixMonospace.ttf" textPosition="0.2, 0.1" color="black" onButtonPressed="replaceScene:scenes/mainMenu.xml" text="Main Menu"></textWidget>
-            </widget>
-    </interface>
+  <interface name="arcadeChooseMenu">
+    <widget     name="bunkerButton"     bottomCenterPos="0.27, 0.70" size="0.4, 0.3" texturePath="gui/bunker.jpg" onButtonPressed="replaceScene:arcadeTheBunker.xml"/>
+    <textWidget name="bunkerText"       topCenterPos="0.27, 0.70" size="0.4, 0.1" fontName="joystixMonospace.ttf" color="transparent" textColor="black" fontSize="50" text="Bunker"/>
+    <widget     name="sewageButton"     bottomCenterPos="0.74, 0.70" size="0.4, 0.3" texturePath="gui/sewage.jpg"  onButtonPressed="replaceScene:arcadeSewage.xml"/>
+    <textWidget name="sewageText"       topCenterPos="0.74, 0.70"  size="0.4, 0.1" fontName="joystixMonospace.ttf" color="transparent" textColor="black" fontSize="50" text="Sewage"/>
+    <textWidget name="exitToMenuButton" centerPos="0.5, 0.85"  size="0.3, 0.07" color="rgb(230, 30, 10)" texturePath="gui/button.png" fontName="joystixMonospace.ttf" textColor="black" fontSize="50" onButtonPressed="replaceScene:mainMenu.xml" text="Main Menu"/>
+  </interface>
 </gui>

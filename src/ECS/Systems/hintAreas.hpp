@@ -4,19 +4,14 @@
 
 namespace ph {
 
-class GUI;
-
 namespace system {
 
 	class HintAreas : public System
 	{
 	public:
-		HintAreas(entt::registry&, GUI&);
+		using System::System;
 
 		void update(float dt) override;
-
-	private:
-		GUI& mGui;
 	};
 
 }}

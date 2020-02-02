@@ -1,12 +1,10 @@
 #pragma once
 
 #include "event.hpp"
-#include <SFML/Graphics.hpp>
+#include <SFML/Window/Window.hpp>
 
 namespace ph {
 
-class GameCloser;
-
-void handleGlobalKeyboardShortcuts(sf::Window&, GameCloser&, const ph::Event&);
+void handleGlobalKeyboardShortcuts(sf::Window&, const ph::Event&);
 
 }

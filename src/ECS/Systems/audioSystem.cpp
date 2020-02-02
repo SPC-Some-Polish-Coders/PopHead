@@ -11,10 +11,8 @@
 
 namespace ph::system {
 
-	AudioSystem::AudioSystem(entt::registry& registry, MusicPlayer& musicPlayer, SoundPlayer& soundPlayer)
+	AudioSystem::AudioSystem(entt::registry& registry)
 		:System(registry)
-		,mMusicPlayer(musicPlayer)
-		,mSoundPlayer(soundPlayer)
 	{
 		mSoundDistancesFromPlayer.reserve(10);
 	}
@@ -23,8 +21,11 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		// for scenes without music
-		if (!mMusicPlayer.hasMusicState("fight") || !mMusicPlayer.hasMusicState("exploration"))
+		if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
 			return;
 
 		// define constants
@@ -63,9 +64,9 @@ namespace ph::system {
 			if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
 				mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
 				if(mCurrentlyPlayerTheme == Theme::Fight)
-					mMusicPlayer.playFromMusicState("fight");
+					MusicPlayer::playFromMusicState("fight");
 				else
-					mMusicPlayer.playFromMusicState("exploration");
+					MusicPlayer::playFromMusicState("exploration");
 			}
 		}
 
@@ -74,17 +75,17 @@ namespace ph::system {
 		for(auto& entity : ambientSoundsView)
 		{
 			const auto& ambientSound = ambientSoundsView.get<component::AmbientSound>(entity);
-			mSoundPlayer.playAmbientSound(ambientSound.filepath);
+			SoundPlayer::playAmbientSound(ambientSound.filepath);
 			mRegistry.remove<component::AmbientSound>(entity);
 		}
 
 		// play and destroy spatial sounds
-		mSoundPlayer.setListenerPosition(playerPos);
+		SoundPlayer::setListenerPosition(playerPos);
 		auto spatialSoundsView = mRegistry.view<component::SpatialSound, component::BodyRect>();
 		for(auto& entity : spatialSoundsView)
 		{
 			const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
-			mSoundPlayer.playSpatialSound(spatialSound.filepath, body.rect.getCenter());
+			SoundPlayer::playSpatialSound(spatialSound.filepath, body.rect.getCenter());
 			mRegistry.remove<component::SpatialSound>(entity);
 		}
 	}

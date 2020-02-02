@@ -63,6 +63,7 @@
  <objecttype name="Gate" color="#a48096"/>
  <objecttype name="GateGuardNpc" color="#7ca40d"/>
  <objecttype name="HintArea" color="#2fa477">
+  <property name="hintContent" type="string"/>
   <property name="hintName" type="string"/>
  </objecttype>
  <objecttype name="Lever" color="#aa00ff"/>

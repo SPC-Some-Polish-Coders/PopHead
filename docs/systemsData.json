@@ -1,0 +1,362 @@
+{
+    "systems": [
+        {
+            "name" : "AnimationSystem",
+            "componentsWrite" : [
+                "AnimationData",
+                "TextureRect"
+            ]
+        },
+        {
+            "name" : "ArcadeMode",
+            "componentsWrite" : [
+				"ALL"
+			]
+        },
+        {
+            "name" : "AreasDebug",
+            "componentsRead":[
+                "BodyRect",
+                "StaticCollisionBody",
+                "MultiStaticCollisionBody",
+                "KinematicCollisionBody",
+                "AreaVelocityChangingEffect",
+                "PushingArea"
+            ]
+        },
+        {
+            "name" : "AudioSystem",
+            "componentsRead" : [
+                "Player",
+                "BodyRect",
+                "Damage"
+            ],
+            "componentsWrite" : [
+                "AmbientSound",
+                "SpatialSound"
+            ]
+        },
+        {
+            "name" : "Cars",
+            "componentsWrite" :[
+                "BodyRect",
+                "Car"
+            ]
+        },
+        {
+            "name" : "CutScenesActivating",
+            "componentsRead" : [
+                "BodyRect",
+                "Player"
+            ],
+            "componentsWrite" : [
+                "CutScene"
+            ]
+        },
+        {
+            "name" : "DamageAndDeath",
+            "componentsRead" : [
+                "Player"
+            ],
+            "componentsWrite" : [
+                "DamageTag",
+                "Health",
+                "DamageAnimation",
+                "RenderQuad",
+                "MultiParticleEmitter",
+                "DeadCharacter",
+                "Killable",
+                "KinematicCollisionBody",
+                "Damage",
+                "PushingForces",
+                "GunAttacker",
+                "FaceDirection",
+                "Camera",
+                "AnimationData",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "EntityDestroying",
+            "componentsWrite" : [
+                "ALL"
+            ]
+        },
+        {
+            "name" : "Entrances",
+            "componentsRead" : [
+                "Player",
+                "Entrance",
+                "BodyRect"
+            ]
+        },
+		{
+            "name" : "GameplayUI",
+            "componentsRead" : [
+                "Player",
+                "Bullets",
+                "Health"
+            ]
+        },
+        {
+            "name" : "Gates",
+            "componentsWrite" : [
+                "Gate",
+                "LeverListener",
+                "StaticCollisionBody",
+                "LightWall",
+                "HiddenForRenderer"
+            ]
+        },
+		{
+            "name" : "GunAttacks",
+            "componentsRead" : [
+                "GunProperties",
+                "Player",
+                "FaceDirection",
+                "BodyRect",
+                "Killable"
+            ],
+            "componentsWrite" : [
+                "CurrentGun",
+                "HiddenForRenderer",
+                "GunAttacker",
+                "Bullets",
+                "InPlayerGunAttackArea",
+                "DamageTag",
+                "LastingShot",
+                "Lifetime",
+                "AmbientSound"
+            ]
+        },
+        {
+            "name" : "GunPositioningAndTexture",
+            "componentsRead" : [
+                "Player",
+                "CurrentGun",
+                "Bullets",
+                "FaceDirection"
+            ],
+            "componentsWrite" : [
+                "TextureRect",
+                "HiddenForRenderer",
+                "BodyRect",
+                "GunAttacker"
+            ]
+        },
+        {
+            "name" : "HintAreas",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Hint"
+            ]
+            
+        },
+        {
+            "name" : "HostileCollisions",
+            "componentsRead" : [
+                "Player",
+                "BodyRect",
+                "Damage",
+                "Health"
+            ],
+            "componentsWrite" : [
+                "CollisionWithPlayer",
+                "DamageTag",
+                "PushingForces"
+            ]
+        },
+        {
+            "name" : "IsPlayerAlive",
+            "componentsRead" : [
+                "Player",
+                "Health"
+            ]
+        },
+        {
+            "name" : "KinematicCollisions",
+            "componentsRead" : [
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect",
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "Levers",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Lever",
+                "TextureRect",
+                "LeverListener"
+            ]
+        },
+        {
+            "name" : "Lifetime",
+            "componentsWrite" : [
+                "TaggedToDestroy",
+                "Lifetime"
+            ]
+        },
+		{
+            "name" : "MeleeAttacks",
+            "componentsRead" : [
+                "Player",
+                "FaceDirection",
+                "MeleeProperties",
+                "CurrentMeleeWeapon",
+                "Killable"
+            ],
+            "componentsWrite" : [
+                "BodyRect",
+                "DamageTag",
+                "RenderQuad",
+                "HiddenForRenderer"
+            ]
+        },
+        {
+            "name" : "Movement",
+            "componentsRead" : [
+                "Velocity",
+                "PushingForces"
+            ],
+            "componentsWrite" : [
+                "BodyRect"
+            ]
+        },
+        {
+            "name" : "ParticleSystem",
+            "componentsRead" : [
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "ParticleEmitter",
+                "MultiParticleEmitter"
+            ]
+        },
+        {
+            "name" : "PickupItems",
+            "componentsRead" : [
+                "BodyRect",
+                "Medkit",
+                "Player",
+                "BulletBox"
+            ],
+            "componentsWrite" : [
+                "Health",
+                "Bullets",
+                "TaggedToDestroy"
+            ]
+        },
+        {
+            "name" : "PlayerCameraMovement",
+            "componentsRead" : [
+                "Player",
+                "BodyRect"
+            ],
+            "componentsWrite" : [
+                "Camera"
+            ]
+        },
+        {
+            "name" : "PlayerMovementInput",
+            "componentsRead" : [
+                "Player",
+                "DeadCharacter",
+                "CharacterSpeed",
+                "BodyRect",
+                "Health"
+            ],
+            "componentsWrite" : [
+                "AnimationData",
+                "FaceDirection",
+                "LightSource",
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "PushingAreas",
+            "componentsRead" : [
+                "PushingArea",
+                "BodyRect",
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "PushingMovement",
+            "componentsRead" : [
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect",
+                "PushingForces"
+            ]
+        },
+        {
+            "name" : "RenderSystem",
+            "componentsRead" : [
+                "BodyRect",
+                "LightSource",
+                "LightWall",
+                "RenderQuad",
+                "TextureRect"
+            ],
+            "componentsWrite" : [
+                "Camera",
+                "RenderChunk"
+            ]
+        },
+        {
+            "name" : "StaticCollisions",
+            "componentsRead" : [
+                "StaticCollisionBody",
+                "MultiStaticCollisionBody"
+            ],
+            "componentsWrite" : [
+                "BodyRect",
+                "KinematicCollisionBody"
+            ]
+        },
+        {
+            "name" : "VelocityChangingAreas",
+            "componentsRead" : [
+                "BodyRect",
+                "AreaVelocityChangingEffect",
+                "KinematicCollisionBody"
+            ],
+            "componentsWrite" : [
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "VelocityClear",
+            "componentsWrite" : [
+                "Velocity"
+            ]
+        },
+        {
+            "name" : "ZombieSystem",
+            "componentsRead" : [
+                "BodyRect",
+                "CharacterSpeed",
+                "DeadCharacter"
+            ],
+            "componentsWrite" : [
+                "Zombie",
+                "Velocity",
+                "SpatialSound",
+                "AnimationData"
+            ]
+        }
+    ]
+}

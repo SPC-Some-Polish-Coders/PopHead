@@ -1,7 +1,6 @@
 #include "sceneParser.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
-#include "gameData.hpp"
 #include "Renderer/renderer.hpp"
 #include "ECS/Systems/arcadeMode.hpp"
 #include "Events/actionEventManager.hpp"
@@ -15,16 +14,13 @@
 
 namespace ph {
 
-void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
+void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
                 entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
-                GUI& gui, MusicPlayer& musicPlayer, AIManager& aiManager)
+                AIManager& aiManager, SceneManager& sceneManager)
 {
 	PH_PROFILE_FUNCTION(0);
 
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
-
-	// TODO: place it somewhere else
-	textureHolder.load("textures/map/FULL_DESERT_TILESET_WIP.png");
 
 	// TODO: We don't want to exit game if we misspelled something in gotoscene terminal command
 	Xml sceneFile;
@@ -35,35 +31,31 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 	aiManager.setIsPlayerOnScene(false);
 	ActionEventManager::setAllActionsEnabled(true);
 
-	std::thread workerThread([&]() {
-		PH_PROFILE_SCOPE("working thread", 1);
-		// parse gui
-		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
-			const std::string categoryFilePath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
-			XmlGuiParser categoryParser;
-			categoryParser.parseFile(gameData, categoryFilePath);
-		}
+	// parse gui
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
+		XmlGuiParser guiParser;
+		guiParser.parseGuiXml(filepath);
+	}
 
-		// parse audio
-		if(const auto audioNode = sceneLinksNode.getChild("audio")) {
-			const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
-			XmlAudioParser audioParser;
-			audioParser.parseFile(gameData->getSoundPlayer(), gameData->getMusicPlayer(), audioFilePath);
-		}
+	// parse audio
+	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
+		parseAudioXmlFile(audioFilePath);
+	}
 
-		// parse ambient light 
-		const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
-		if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
-			sf::Color color = ambientLightNode->getAttribute("color")->toColor();
-			Renderer::setAmbientLightColor(color);
-		}
-		else
-			Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
+	// parse ambient light 
+	const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
+	if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
+		sf::Color color = ambientLightNode->getAttribute("color")->toColor();
+		Renderer::setAmbientLightColor(color);
+	}
+	else
+		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
-		// parse arcade mode
-		if(!sceneLinksNode.getChildren("arcadeMode").empty())
-			systemsQueue.appendSystem<system::ArcadeMode>(std::ref(gui), std::ref(aiManager), std::ref(musicPlayer), std::ref(templateStorage));
-	});
+	// parse arcade mode
+	if(!sceneLinksNode.getChildren("arcadeMode").empty())
+		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();
@@ -80,14 +72,11 @@ void parseScene(GameData* const gameData, CutSceneManager& cutSceneManager, Enti
 		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
-		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, textureHolder);
-		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, gameData->getSceneManager(), textureHolder);
+		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
+		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager, textureHolder);
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}
-	
-	// join worker thread
-	workerThread.join();
 }
 
 }

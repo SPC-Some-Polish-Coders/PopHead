@@ -12,7 +12,7 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void onEvent(const ActionEvent&)override;
+		void onEvent(Event)override;
 		void update(float dt) override;
 
 	private:

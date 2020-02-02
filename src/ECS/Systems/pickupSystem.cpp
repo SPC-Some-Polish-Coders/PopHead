@@ -10,6 +10,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		auto players = mRegistry.view<component::Player, component::BodyRect, component::Health, component::Bullets>();
 		auto medkits = mRegistry.view<component::Medkit, component::BodyRect>();
 		auto bulletBoxes = mRegistry.view<component::BulletBox, component::Bullets, component::BodyRect>();

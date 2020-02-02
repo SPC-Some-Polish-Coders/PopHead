@@ -11,16 +11,22 @@
 
 namespace ph {
 
+struct ShaderSource
+{
+	const char* vertexShader;
+	const char* fragmentShader;
+};
+
 class Shader
 {
 public:
-	Shader();
-
-	bool loadFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
-	void loadFromString(const char* vertexShaderSource, const char* fragmentShaderSource);
+	void init(ShaderSource&);
+	void remove();
 
 	void bind() const;
 	void unbind() const;
+
+	void initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding);
 
 	void setUniformBool(const char* name, const bool value) const;
 	void setUniformInt(const char* name, const int value) const;
@@ -40,7 +46,6 @@ public:
 	unsigned getID() const { return mID; }
 
 private:
-	auto getShaderCodeFromFile(const char* filename) -> const std::optional<std::string>;
 	int compileShaderAndGetId(const char* sourceCode, const unsigned shaderType);
 	void checkCompilationErrors(const unsigned shaderId, const unsigned shaderType);
 	void linkProgram(const int vertexShaderId, const int fragmentShaderId);
@@ -53,25 +58,5 @@ private:
 	unsigned mID;
 };
 
-class ShaderLibrary
-{
-	ShaderLibrary() {};
-public:
-	ShaderLibrary(ShaderLibrary&) = delete;
-	void operator=(ShaderLibrary const&) = delete;
-
-	static ShaderLibrary& getInstance()
-	{
-		static ShaderLibrary shaderLibary;
-		return shaderLibary;
-	}
-
-	bool loadFromFile(const std::string& name, const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
-	void loadFromString(const std::string& name, const char* vertexShaderCode, const char* fragmentShaderCode);
-	Shader* get(const std::string& name);
-
-private:
-	std::map<std::string, Shader> mShaders;
-};
-
 }
+

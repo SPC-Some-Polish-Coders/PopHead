@@ -1,53 +1,37 @@
-#include <GL/glew.h>
 #include "game.hpp"
-#include "Resources/loadFonts.hpp"
 #include "Events/globalKeyboardShortcuts.hpp"
 #include "Events/eventDispatcher.hpp"
 #include "Events/actionEventManager.hpp"
+#include "GUI/xmlGuiParser.hpp"
+#include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
+#include "Audio/Sound/soundPlayer.hpp"
+#include "Audio/Music/musicPlayer.hpp"
 #include <SFML/System.hpp>
 
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3))
-	,mGameData()
-	,mSoundPlayer(std::make_unique<SoundPlayer>())
-	,mMusicPlayer(std::make_unique<MusicPlayer>())
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
 	,mTextures(std::make_unique<TextureHolder>())
-	,mFonts(std::make_unique<FontHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
-	,mTerminal(std::make_unique<Terminal>())
-	,mDebugCounter(std::make_unique<DebugCounter>())
-	,mGui(std::make_unique<GUI>())
+	,mTerminal(std::make_unique<Terminal>(mWindow))
 {
-	mGameData.reset(new GameData(
-		&mWindow,
-		mSoundPlayer.get(),
-		mMusicPlayer.get(),
-		mTextures.get(),
-		mFonts.get(),
-		mAIManager.get(),
-		mSceneManager.get(),
-		mTerminal.get(),
-		mGui.get()
-	));
-
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
-	
-	GameData* gameData = mGameData.get();
+	SoundPlayer::init();
+	MusicPlayer::init();
 
-	loadFonts(gameData);
-	mTerminal->init(gameData);
-	mDebugCounter->init(*mFonts);
-	mGui->init(gameData);
-	mSceneManager->setGameData(gameData);
+	mTerminal->init(mSceneManager.get());
+	mSceneManager->init(mTextures.get(), mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
+
+	Widget::setWindow(&mWindow);
+	XmlGuiParser::init(mTextures.get(), mSceneManager.get());
 
 	ActionEventManager::init();
 }
@@ -55,22 +39,17 @@ Game::Game()
 void Game::run()
 {
 	sf::Clock clock;
-	while(mGameData->getGameCloser().shouldGameBeClosed() == false)
+	while(sIsRunning)
 	{
 		mSceneManager->changingScenesProcess();
 		handleEvents();
-		const sf::Time dt = clock.restart();
-		update(correctDeltaTime(dt));
+		const float dt = clock.restart().asSeconds();
+		constexpr float maxDTConstrain = 1.f/20.f;
+		update(dt > maxDTConstrain ? maxDTConstrain : dt);
 	}
 
 	Renderer::shutDown();
 	mWindow.close();
-}
-
-sf::Time Game::correctDeltaTime(sf::Time dt)
-{
-	const sf::Time dtMinimalConstrain = sf::seconds(1.f/20.f);
-	return dt > dtMinimalConstrain ? dtMinimalConstrain : dt;
 }
 
 void Game::handleEvents()
@@ -80,35 +59,32 @@ void Game::handleEvents()
 	{
 		if (auto * event = std::get_if<sf::Event>(&phEvent))
 			if (event->type == sf::Event::Closed)
-				mGameData->getGameCloser().closeGame();
+				sIsRunning = false;
 
-		handleGlobalKeyboardShortcuts(mGameData->getWindow(), mGameData->getGameCloser(), phEvent);
-		mDebugCounter->handleEvent(phEvent);
+		handleGlobalKeyboardShortcuts(mWindow, phEvent);
+		mFPSCounter.handleEvent(phEvent);
 		mTerminal->handleEvent(phEvent);
-		mGui->handleEvent(phEvent);
+		GUI::handleEvent(phEvent);
 		
-		if(!mTerminal->getSharedData()->mIsVisible)
-			mSceneManager->handleEvent(phEvent);
+		mSceneManager->handleEvent(phEvent);
 
-		if(auto* sfEvent = std::get_if<sf::Event>(&phEvent))
-			if(sfEvent->type == sf::Event::Resized)
-				Renderer::onWindowResize(sfEvent->size.width, sfEvent->size.height);
+		Renderer::handleEvent(phEvent);
 	}
 }
 
-void Game::update(sf::Time dt)
+void Game::update(float dt)
 {
-	mDebugCounter->update();
-
-	if(mWindow.hasFocus())
+	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
+		Renderer::beginScene();
+		
 		mSceneManager->update(dt);
 		mAIManager->update();
-		mGui->update(dt);
-		mDebugCounter->draw();
-		mTerminal->update();
+		GUI::update(dt);
+		mTerminal->update(dt);
+		mFPSCounter.update();
 
-		Renderer::endScene(mWindow, *mDebugCounter);
+		Renderer::endScene();
 		mWindow.display();
 	}
 }

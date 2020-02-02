@@ -180,8 +180,9 @@ namespace ph {
 		auto entity = mTemplatesStorage.createCopy("HintArea", mGameRegistry);
 		loadPosition(hintAreaNode, entity);
 		loadSize(hintAreaNode, entity);
-		auto& hintDetails = mGameRegistry.get<component::Hint>(entity);
-		hintDetails.hintName = getProperty(hintAreaNode, "hintName").toString();
+		auto& hint = mGameRegistry.get<component::Hint>(entity);
+		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
+		hint.content = getProperty(hintAreaNode, "hintContent").toString();
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
@@ -337,7 +338,9 @@ namespace ph {
 			mGameRegistry.assign_or_replace<component::HiddenForRenderer>(spriteEntity);
 
 		// load shader
-		const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
+		rq.shader = nullptr;
+		// TODO: Enable custom shaders
+		/*const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
 		if(shaderName != "none") {
 			const std::string vertexShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
 			PH_ASSERT_CRITICAL(vertexShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'vertexShaderFilepath'!");
@@ -349,9 +352,7 @@ namespace ph {
 				rq.shader = sl.get(shaderName);
 			else
 				PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
-		}
-		else
-			rq.shader = nullptr;
+		}*/
 
 		// load rotation and rotation origin
 		rq.rotation = getProperty(spriteNode, "rotation").toFloat();

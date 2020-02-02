@@ -13,78 +13,100 @@
 
 namespace ph::system {
 
-	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager, GUI& gui, Scene* scene)
+	PlayerMovementInput::PlayerMovementInput(entt::registry& registry, AIManager& aiManager, Scene* scene)
 		:System(registry)
 		,mScene(scene)
-		,mGui(gui)
 		,mAIManager(aiManager)
 	{
+	}
+
+	void PlayerMovementInput::onEvent(Event event)
+	{
+		if(auto* e = std::get_if<ActionEvent>(&event))
+		{
+			if(e->mType == ActionEvent::Type::Pressed)
+			{
+				if(e->mAction == "pauseScreen")
+				{
+					// TODO_states: Pause screen could be handled by states
+					auto playerView = mRegistry.view<component::Player, component::Health>();
+					playerView.each([this](component::Player, component::Health) {
+						sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
+						sPause = !sPause;
+					});
+				}
+
+				constexpr float maxPressTimeDifferenceForDash = 0.3f;
+				constexpr float minTimeFromLastDashToDoNextDash = 0.5f;
+				
+				if(e->mAction == "movingUp") {
+					mUp = true;
+					if(mTimeFromLastUp < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
+						mTimeFromDashBegining = 0.f;
+					mTimeFromLastUp = 0.f;
+				}
+				if(e->mAction == "movingDown") {
+					mDown = true;
+					if(mTimeFromLastDown < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
+						mTimeFromDashBegining = 0.f;
+					mTimeFromLastDown = 0.f;
+				}
+				if(e->mAction == "movingRight") {
+					mRight = true;
+					if(mTimeFromLastRight < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
+						mTimeFromDashBegining = 0.f;
+					mTimeFromLastRight = 0.f;
+				}
+				if(e->mAction == "movingLeft") {
+					mLeft = true;
+					if(mTimeFromLastLeft < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
+						mTimeFromDashBegining = 0.f;
+					mTimeFromLastLeft = 0.f;
+				}
+			}
+			else if(e->mType == ActionEvent::Type::Released)
+			{
+				if(e->mAction == "movingUp")
+					mUp = false;
+				if(e->mAction == "movingDown")
+					mDown = false;
+				if(e->mAction == "movingRight")
+					mRight = false;
+				if(e->mAction == "movingLeft")
+					mLeft = false;
+			}
+		}
 	}
 
 	void PlayerMovementInput::update(float dt)
 	{
 		PH_PROFILE_FUNCTION(0);
 
-		if(isPlayerWithoutControl())
+		if(sPause)
 			return;
 
-		updateInputFlags();
-		updateAnimationData();
-		const auto playerDirection = getPlayerDirection();
-		setPlayerFaceDirection(playerDirection);
-		setFlashLightDirection(playerDirection);
+		auto playerView = mRegistry.view<component::Player, component::AnimationData, component::FaceDirection>();
 
-		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
-		movementView.each([this, playerDirection]
-		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
+		// return if player is without control
+		for(auto player : playerView)
+			if(mRegistry.has<component::DeadCharacter>(player))
+				return;
+
+		// get player direction
+		sf::Vector2f playerDirection;
+		if(mUp && mLeft)  playerDirection = PH_NORTH_WEST;
+		else if(mUp && mRight) playerDirection = PH_NORTH_EAST;
+		else if(mDown && mLeft) playerDirection = PH_SOUTH_WEST;
+		else if(mDown && mRight) playerDirection = PH_SOUTH_EAST;
+		else if(mUp) playerDirection = PH_NORTH;
+		else if(mDown) playerDirection = PH_SOUTH;
+		else if(mLeft) playerDirection = PH_WEST;
+		else if(mRight) playerDirection = PH_EAST;
+
+		for(auto& player : playerView)
 		{
-			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-
-			const auto vel = playerDirection * speed.speed;
-			velocity.dx = vel.x;
-			velocity.dy = vel.y;
-		});
-	}
-
-	void PlayerMovementInput::onEvent(const ActionEvent& event)
-	{
-		if(event.mType == ActionEvent::Type::Pressed)
-		{
-			// TODO_states: Pause screen could be handled by states
-			if(event.mAction == "pauseScreen") 
-			{
-				auto players = mRegistry.view<component::Player, component::Health>();
-				players.each([this](component::Player, component::Health) {
-					const bool pause = mScene->getPause();
-					pause ? mGui.hideInterface("pauseScreen") : mGui.showInterface("pauseScreen");
-					mScene->setPause(!pause);
-				});
-			}
-		}
-	}
-
-	bool PlayerMovementInput::isPlayerWithoutControl()
-	{
-		auto view = mRegistry.view<component::Player>();
-		for(auto entity : view)
-			return mRegistry.has<component::DeadCharacter>(entity);
-		return false;
-	}
-
-	void PlayerMovementInput::updateInputFlags()
-	{
-		mUp    = ActionEventManager::isActionPressed("movingUp");
-		mDown  = ActionEventManager::isActionPressed("movingDown");
-		mLeft  = ActionEventManager::isActionPressed("movingLeft");
-		mRight = ActionEventManager::isActionPressed("movingRight");
-	}
-
-	void PlayerMovementInput::updateAnimationData()
-	{
-		auto view = mRegistry.view<component::Player, component::AnimationData>();
-		for(auto& entity : view)
-		{
-			auto& animationData = view.get<component::AnimationData>(entity);
+			// update animation data
+			auto& animationData = playerView.get<component::AnimationData>(player);
 
 			if(mUp && mLeft) {
 				animationData.currentStateName = "leftUp";
@@ -113,41 +135,16 @@ namespace ph::system {
 			else {
 				animationData.isPlaying = false;
 			}
-		}
-	}
 
-	sf::Vector2f PlayerMovementInput::getPlayerDirection() const
-	{
-		constexpr float diagonal = 0.7f;
-
-		if (mUp   && mLeft)  return PH_NORTH_WEST;
-		if (mUp   && mRight) return PH_NORTH_EAST;
-		if (mDown && mLeft)  return PH_SOUTH_WEST;
-		if (mDown && mRight) return PH_SOUTH_EAST;
-
-		if (mUp)    return PH_NORTH;
-		if (mDown)  return PH_SOUTH;
-		if (mLeft)  return PH_WEST;
-		if (mRight) return PH_EAST;
-
-		return sf::Vector2f(0.f, 0.f);
-	}
-
-	void PlayerMovementInput::setPlayerFaceDirection(const sf::Vector2f faceDirection) const
-	{
-		auto playerView = mRegistry.view<component::Player, component::FaceDirection>();
-		for (auto player : playerView)
-		{
-			if (faceDirection != sf::Vector2f(0.f, 0.f))
+			// set face direction
+			if (playerDirection != sf::Vector2f(0.f, 0.f))
 			{
-				auto& prevFaceDirection = playerView.get<component::FaceDirection>(player);
-				prevFaceDirection.direction = faceDirection;
+				auto& faceDirection = playerView.get<component::FaceDirection>(player);
+				faceDirection.direction = playerDirection;
 			}
 		}
-	}
 
-	void PlayerMovementInput::setFlashLightDirection(const sf::Vector2f faceDirection) const
-	{
+		// set flash light direction
 		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
 		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
 		{
@@ -167,6 +164,28 @@ namespace ph::system {
 			lightSource.startAngle = middleAngle - 35.f;
 			lightSource.endAngle = middleAngle + 35.f;
 		});
+
+		// move player
+		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
+		movementView.each([this, playerDirection]
+		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
+		{
+			mAIManager.setPlayerPosition(body.rect.getTopLeft());
+
+			auto vel = playerDirection * speed.speed;
+			if(mTimeFromDashBegining < 0.15f)
+				vel *= 2.5f;
+
+			velocity.dx = vel.x;
+			velocity.dy = vel.y;
+		});
+
+		// increment time variables 
+		mTimeFromLastUp += dt;
+		mTimeFromLastDown += dt;
+		mTimeFromLastRight += dt;
+		mTimeFromLastLeft += dt;
+		mTimeFromDashBegining += dt;
 	}
 }
 

@@ -8,6 +8,9 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION(0);
 
+		if(sPause)
+			return;
+
 		auto entitiesView = mRegistry.view<component::Lifetime>();
 		for (auto entity : entitiesView)
 		{

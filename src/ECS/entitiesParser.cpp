@@ -161,22 +161,23 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 		quad.texture = nullptr;
 
 	// parse shader
-	if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) {
-		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
-		const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath")->toString();
+	quad.shader = nullptr;
+	// TODO: Enable custom shaders
+	//if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) {
+	//	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
+	//	const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath")->toString();
 
-		PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("fragmentShaderFilepath").has_value(), "Not specified fragmentShaderFilepath attribute!");
-		const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath")->toString();
+	//	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("fragmentShaderFilepath").has_value(), "Not specified fragmentShaderFilepath attribute!");
+	//	const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath")->toString();
 
-		auto& sl = ShaderLibrary::getInstance();
-		const std::string shaderName = shaderNameXml->toString();
-		if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
-			quad.shader = sl.get(shaderName);
-		else
-			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
-	}
-	else
-		quad.shader = nullptr;
+	//	auto& sl = ShaderLibrary::getInstance();
+	//	const std::string shaderName = shaderNameXml->toString();
+	//	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
+	//		quad.shader = sl.get(shaderName);
+	//	else
+	//		PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
+	//}
+	//else
 
 	// Color parsing
 	auto color = entityComponentNode.getAttribute("color");
@@ -234,8 +235,7 @@ void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string hintName = entityComponentNode.getAttribute("hintName")->toString();
-	bool isShown = false;
-	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName, isShown);
+	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName);
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)

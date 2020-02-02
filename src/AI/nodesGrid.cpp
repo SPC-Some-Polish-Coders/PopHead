@@ -6,17 +6,17 @@
 
 namespace ph {
 	
-	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, const sf::Vector2u& destinationPosition)
-		: mObstacleGrid(obstacleGrid)
-		, mNodes(createNodesPosCompare())
-		, mNodesByCost(createNodesCostsCompare())
-		, mGeneratedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
-		, mClosedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
-		, mDestinationPosition(destinationPosition)
+	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2u destinationPosition)
+		:mObstacleGrid(obstacleGrid)
+		,mNodes(createNodesPosCompare())
+		,mNodesByCost(createNodesCostsCompare())
+		,mGeneratedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
+		,mClosedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
+		,mDestinationPosition(destinationPosition)
 	{
 	}
 
-	const NodesGrid::Node& NodesGrid::createStartNode(const sf::Vector2u& position)
+	const NodesGrid::Node& NodesGrid::createStartNode(sf::Vector2u position)
 	{
 		return createNode(position);
 	}
@@ -108,12 +108,12 @@ namespace ph {
 		return !mNodesByCost.empty();
 	}
 
-	size_t NodesGrid::internalIndex(const sf::Vector2u& position) const
+	size_t NodesGrid::internalIndex(sf::Vector2u position) const
 	{
 		return static_cast<size_t>(position.x + position.y * mObstacleGrid.getColumnsCount());
 	}
 
-	NodesGrid::Node& NodesGrid::createNode(const sf::Vector2u& position)
+	NodesGrid::Node& NodesGrid::createNode(sf::Vector2u position)
 	{
 		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
 		auto& ref = *pointer.get();
@@ -123,7 +123,7 @@ namespace ph {
 		return ref;
 	}
 
-	bool NodesGrid::isInBoundaries(const sf::Vector2u& position) const
+	bool NodesGrid::isInBoundaries(sf::Vector2u position) const
 	{
 		return position.x < mObstacleGrid.getColumnsCount() 
 			&& position.y < mObstacleGrid.getRowsCount();

@@ -6,7 +6,7 @@
 
 namespace ph {
 
-PathMode AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
+PathMode AIManager::getZombiePath(sf::Vector2f zombiePosition) const
 {
 	if (!mIsPlayerOnScene || mAIMode == AIMode::zombieAlwaysWalkRandomly)
 		return { getRandomPath(zombiePosition) };
@@ -24,40 +24,26 @@ PathMode AIManager::getZombiePath(const sf::Vector2f zombiePosition) const
 	return { Path() };
 }
 
-bool AIManager::shouldZombiePlayAttackAnimation(const sf::Vector2f zombiePosition) const
+bool AIManager::shouldZombiePlayAttackAnimation(sf::Vector2f zombiePosition) const
 {
 	float distanceBetweenZombieAndPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	return distanceBetweenZombieAndPlayer < 25;
 }
 
-void AIManager::setAIMode(const AIMode aiMode)
-{
-	mAIMode = aiMode;
-}
-
-void AIManager::setIsPlayerOnScene(bool isPlayerOnScene)
-{
-	mIsPlayerOnScene = isPlayerOnScene;
-}
-
-void AIManager::setPlayerPosition(const sf::Vector2f playerPosition) 
+void AIManager::setPlayerPosition(sf::Vector2f playerPosition) 
 { 
 	this->mPlayerPosition = playerPosition; 
 	mHasPlayerMovedSinceLastUpdate = true;
 }
 
-void AIManager::registerMapSize(const sf::Vector2u mapSizeInTiles)
+void AIManager::registerMapSize(sf::Vector2u mapSizeInTiles)
 {
 	mObstacleGrid = ObstacleGrid(mapSizeInTiles.x, mapSizeInTiles.y);
 }
 
-void AIManager::registerObstacle(const sf::Vector2f collisionBodyPosition)
+void AIManager::registerObstacle(sf::Vector2f gridPosition)
 {
-	// TODO: It should be checked if collision body is on multiple grids (tiles)
-	const auto spotSide = static_cast<float>(mSpotSideLength);
-	const auto gridPositionX = static_cast<size_t>(collisionBodyPosition.x / mSpotSideLength);
-	const auto gridPositionY = static_cast<size_t>(collisionBodyPosition.y / mSpotSideLength);
-	mObstacleGrid.registerObstacle(gridPositionX, gridPositionY);
+	mObstacleGrid.registerObstacle(static_cast<size_t>(gridPosition.x), static_cast<size_t>(gridPosition.y));
 }
 
 void AIManager::update()
@@ -65,7 +51,7 @@ void AIManager::update()
 	mHasPlayerMovedSinceLastUpdate = false;
 }
 
-float AIManager::getDistanceBetweenZombieAndPlayer(const sf::Vector2f zombiePosition) const
+float AIManager::getDistanceBetweenZombieAndPlayer(sf::Vector2f zombiePosition) const
 {
 	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
 	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
@@ -73,7 +59,7 @@ float AIManager::getDistanceBetweenZombieAndPlayer(const sf::Vector2f zombiePosi
 	return distance;
 }
 
-Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f destinationPosition) const
+Path AIManager::getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosition) const
 {
 	auto dest = toNodePosition(destinationPosition);
 	if (mObstacleGrid.isObstacle(dest.x, dest.y))
@@ -88,11 +74,10 @@ Path AIManager::getPath(const sf::Vector2f startPosition, const sf::Vector2f des
 
 sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
 {
-	// TODO: Support other tile size then 16x16
-	return static_cast<sf::Vector2u>(position) / 16u;
+	return static_cast<sf::Vector2u>(sf::Vector2f(position.x / mTileSize.x, position.y / mTileSize.y));
 }
 
-Path AIManager::getRandomPath(const sf::Vector2f startPosition) const
+Path AIManager::getRandomPath(sf::Vector2f startPosition) const
 {
 	RandomPathAlgorithm rpa(mObstacleGrid, toNodePosition(startPosition));
 	return rpa.getRandomPath();

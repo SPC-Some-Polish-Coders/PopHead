@@ -21,10 +21,13 @@ struct QuadData
 	float textureSlotRef;
 };
 
+enum class ProjectionType{ gameWorld, gui };
+
 struct RenderGroupKey
 {
 	const Shader* shader;
 	float z;
+	ProjectionType projectionType;
 };
 
 struct QuadRenderGroup

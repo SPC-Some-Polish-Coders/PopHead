@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenelinks>
+  <ecsObjects filename="ecsTemplates.xml"/>
+  <neededResources filename="desert.res.xml"/>
+  <map filename="openWorld.tmx"/>
+  <gui filename="gameplay.gui.xml"/>
+  <audio filename="canyon.audio.xml"/>
+  <ambientLight color="rgb(255, 245, 225)"/>
+</scenelinks>

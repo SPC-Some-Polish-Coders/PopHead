@@ -1,18 +1,15 @@
 #pragma once
 
-#include "guiActionsParser.hpp"
-#include "sliderWidget.hpp"
 #include "Resources/resourceHolder.hpp"
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <memory>
+#include "Utilities/xml.hpp"
 #include <string>
+#include <vector>
+#include <functional>
 
 namespace ph {
 
-class GameData;
-class Xml;
-class GUI;
+class SceneManager;
+class WidgetParent;		
 class Widget;
 class TextWidget;
 class SliderWidget;
@@ -20,21 +17,21 @@ class SliderWidget;
 class XmlGuiParser
 {
 public:
-	static void setActionsParser(std::unique_ptr<GuiActionsParser> actionsParser);
+	static void init(TextureHolder* th, SceneManager* sm);
 
-	void parseFile(GameData* const gameData, const std::string& fileName);
-	void parseInterface(const Xml& interfaceTag, GUI& gui);
-	void handleInterfaceHideAttribute(const std::string& interfaceName, const Xml& interfaceTag, GUI& gui);
-	void parseWidgetAttributes(const Xml& widgetTag, Widget& widget);
-	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget& widget);
-	void parseSliderWidgetAttributes(const Xml& textWidgetTag, SliderWidget& widget);
-	void parseWidgetChildren(const Xml& widgetTag, Widget& widget);
+	void parseGuiXml(const std::string& filepath);
+private:
+	template<typename WidgetParent>
+	void parseChildren(const Xml& widgetNode, WidgetParent* widgetParent) const;
+
+	void parseWidgetAttributes(const Xml& widgetNode, Widget* widget) const;
+	void parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget) const;
+	void parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const;
+	std::function<void(Widget*)> getGuiAction(const std::string& actionStr) const;
 
 private:
-	GameData* mGameData;
-	GUI* mGui;
-	FontHolder* mFontHolder;
-	inline static std::unique_ptr<GuiActionsParser> mActionsParser = nullptr;
+	std::vector<Xml> mWidgetTemplates;
 };
 
 }
+

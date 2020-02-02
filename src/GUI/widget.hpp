@@ -2,92 +2,82 @@
 
 #include "behaviorType.hpp"
 #include "Events/event.hpp"
-#include <SFML/Graphics.hpp>
+#include "Renderer/API/texture.hpp"
+#include "Resources/resourceHolder.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <map>
 #include <functional>
-#include <memory>
 
 namespace ph {
 
-class GameData;
-
-class Widget 
+class Widget
 {
 public:
-	Widget();
+	Widget(const char* name);
 
-	virtual void draw();
-
-	virtual void setAlpha(unsigned int alpha);
-
-	void handleEvent(const ph::Event&);
-
-	virtual void update(sf::Time delta);
-
-	virtual void addWidget(const std::string& name, Widget* ptr);
-
-	virtual void hide();
-
-	virtual void show();
-
-	virtual bool setContentPath(const std::string& path);
-
-	virtual void setPosition(const sf::Vector2f& pos);
-
-	virtual void move(const sf::Vector2f& delta);
-
-	virtual void moveAlongBranch(const sf::Vector2f& delta);
-
-	virtual void scale(const sf::Vector2f& scale);
-
-	virtual void scaleAlongBranch(const sf::Vector2f& scale);
-
-	virtual void setAlphaAlongBranch(unsigned int alpha);
-
-	virtual sf::Vector2u getSize() const;
-
-	virtual void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
-
-	virtual Widget* getWidget(const std::string& name);
-
-	virtual void setGameData(GameData* GameData);
-
-	virtual bool isActive();
-
-	virtual void setRoot(Widget* ptr);
-
-	virtual void setOrigin(const sf::Vector2f& origin);
-	virtual sf::Vector2f getOrigin() const;
-
-	virtual sf::Vector2f getPosition() const;
-	virtual sf::Vector2f getGlobalPosition() const;
-
-	virtual void rePosition();
-
+	void handleEvent(const Event&);
+	void update(float dt, unsigned char z);
 private:
 	virtual void handleEventOnCurrent(const ph::Event&);
-	virtual void handleEventOnChildren(const ph::Event&);
-	virtual void transform(const sf::Vector2f pos, const sf::Vector2f size);
-	void setVirtualSize(const sf::Vector2f& size);
+	virtual void updateCurrent(float dt, unsigned char z);
+	void handleEventOnChildren(const ph::Event&);
+	void updateChildren(float dt, unsigned char z);
+
+public:
+	Widget* addChildWidget(Widget* ptr);
+	Widget* getWidget(const char* name);
+
+	void addBehavior(BehaviorType type, const std::function<void(Widget*)>& func);
+
+	void hide();
+	void show();
+
+	void setParent(Widget* parent) { mParent = parent; };
+	void setTexture(const Texture* texture) { mTexture = texture; }
+	void setColor(sf::Color color) { mColor = color; }
+	void setSize(sf::Vector2f size) { mLocalNormalizedSize = size; }
+	void setVelocity(sf::Vector2f vel) { mVelocity = vel; }
+	void move(sf::Vector2f offset);
+
+	void setCenterPosition(sf::Vector2f pos);
+	void setTopLeftPosition(sf::Vector2f pos);
+	void setTopRightPosition(sf::Vector2f pos);
+	void setBottomLeftPosition(sf::Vector2f pos);
+	void setBottomRightPosition(sf::Vector2f pos);
+	void setTopCenterPosition(sf::Vector2f pos);
+	void setBottomCenterPosition(sf::Vector2f pos);
+	void setRightCenterPosition(sf::Vector2f pos);
+	void setLeftCenterPosition(sf::Vector2f pos);
+
+	const char* getName() { return mName; }
+	bool isActive() { return mIsActive; }
+
+	sf::Vector2f getLocalVirtualPosition() const { return mLocalNormalizedPosition; }
+	sf::Vector2f getLocalVirtualSize() const { return mLocalNormalizedSize; }
+
+	sf::Vector2f getScreenPosition() const;
+	sf::Vector2f getScreenSize() const;
+
+	static void setWindow(sf::Window* window) { sWindow = window; }
+	static void setScreenSize(sf::Vector2f size) { sScreenSize = size; }
 
 protected:
-	std::multimap<std::string, std::unique_ptr<Widget>> mWidgetList;
-	std::multimap < BehaviorType, std::function<void(Widget*)>> mBehaviors;
-	GameData* mGameData;
-	sf::RenderWindow* mWindow;
-	sf::Vector2f mPosition;
-	sf::Vector2u mSize;
-	sf::Vector2i mVirtualSize;
-	sf::Vector2f mOrigin;
-	sf::Vector2f mScale;
-	sf::Vector2u mDefaultSize;
-	unsigned int mAlpha;
+	char mName[50];
+
+	std::multimap<BehaviorType, std::function<void(Widget*)>> mBehaviors;
+	std::vector<std::unique_ptr<Widget>> mWidgetChildren;
+
+	Widget* mParent;
+	const Texture* mTexture;
+	sf::Vector2f mLocalNormalizedPosition;
+	sf::Vector2f mLocalNormalizedSize;
+	sf::Vector2f mVelocity;
+	sf::Color mColor;
 	bool mIsActive;
 
-private:
-	sf::Sprite mSprite;
-	Widget* mRoot;
+	inline static sf::Window* sWindow;
+	inline static sf::Vector2f sScreenSize = sf::Vector2f(1920, 1080);
 };
 
-
 }
+

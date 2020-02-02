@@ -3,6 +3,7 @@
 #include "Renderer/API/shader.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/profiling.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Logs/logs.hpp"
 #include <optional>
 #include <cmath>
@@ -13,12 +14,8 @@ namespace ph {
 
 void LightRenderer::init()
 {
-	auto& sl = ShaderLibrary::getInstance();
-	sl.loadFromFile("light", "resources/shaders/light.vs.glsl", "resources/shaders/light.fs.glsl");
-	mLightShader = sl.get("light");
-
-	unsigned uniformBlockIndex = glGetUniformBlockIndex(mLightShader->getID(), "SharedData");
-	glUniformBlockBinding(mLightShader->getID(), uniformBlockIndex, 0);
+	mLightShader.init(shader::lightSrc());
+	mLightShader.initUniformBlock("SharedData", 0);
 	
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
@@ -27,7 +24,7 @@ void LightRenderer::init()
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), ( void*) 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
 	mLightPolygonVertexData.reserve(361);
 }
@@ -36,6 +33,7 @@ void LightRenderer::shutDown()
 {
 	glDeleteBuffers(1, &mVBO);
 	glDeleteVertexArrays(1, &mVAO);
+	mLightShader.remove();
 }
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
@@ -106,13 +104,13 @@ void LightRenderer::flush()
 		{
 			PH_PROFILE_SCOPE("draw light triangle fan", 0);
 
-			mLightShader->bind();
-			mLightShader->setUniformVector2("lightPos", light.pos);
-			mLightShader->setUniformVector4Color("color", light.color);
-			mLightShader->setUniformFloat("cameraZoom", mScreenBounds->height / 480);
-			mLightShader->setUniformFloat("a", light.attenuationAddition);
-			mLightShader->setUniformFloat("b", light.attenuationFactor);
-			mLightShader->setUniformFloat("c", light.attenuationSquareFactor);
+			mLightShader.bind();
+			mLightShader.setUniformVector2("lightPos", light.pos);
+			mLightShader.setUniformVector4Color("color", light.color);
+			mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
+			mLightShader.setUniformFloat("a", light.attenuationAddition);
+			mLightShader.setUniformFloat("b", light.attenuationFactor);
+			mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
 			glBindVertexArray(mVAO);
 			glBindBuffer(GL_ARRAY_BUFFER ,mVBO); // TODO: Do I have to bind it?
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightPolygonVertexData.size(), mLightPolygonVertexData.data(), GL_STATIC_DRAW);
@@ -167,3 +165,4 @@ auto LightRenderer::getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f
 }
 
 }
+

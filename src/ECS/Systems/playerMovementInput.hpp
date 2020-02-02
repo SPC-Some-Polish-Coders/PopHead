@@ -6,7 +6,6 @@
 namespace ph {
 
 class AIManager;
-class GUI;
 class Scene;
 
 namespace system {
@@ -14,23 +13,22 @@ namespace system {
 	class PlayerMovementInput : public System
 	{
 	public:
-		PlayerMovementInput(entt::registry&, AIManager&, GUI& gui, Scene*);
+		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
+		void onEvent(Event) override;
 		void update(float dt) override;
-		void onEvent(const ActionEvent& event) override;
-
-	private:
-		bool isPlayerWithoutControl();
-		sf::Vector2f getPlayerDirection() const;
-		void updateInputFlags();
-		void updateAnimationData();
-		void setPlayerFaceDirection(const sf::Vector2f faceDirection) const;
-		void setFlashLightDirection(const sf::Vector2f faceDirection) const;
 
 	private:
 		AIManager& mAIManager;
-		GUI& mGui;
 		Scene* mScene;
+
+		float mTimeFromLastUp    = 1.f;
+		float mTimeFromLastDown  = 1.f;
+		float mTimeFromLastLeft  = 1.f;
+		float mTimeFromLastRight = 1.f;
+
+		float mTimeFromDashBegining= 1.f;
+
 		bool mUp    = false;
 		bool mDown  = false;
 		bool mLeft  = false;

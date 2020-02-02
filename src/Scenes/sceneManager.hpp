@@ -4,12 +4,12 @@
 #include "Events/event.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Utilities/threadPool.hpp"
+#include "Resources/resourceHolder.hpp"
 #include <SFML/System.hpp>
 #include <memory>
 
 namespace ph {
 
-class GameData;
 class Texture;
 
 class SceneManager
@@ -32,22 +32,23 @@ private:
 
 public:
 	void handleEvent(const Event& event);
-    void update(sf::Time dt);
+    void update(float dt);
 
 	Scene& getScene() { return *mScene.get(); }
-	void setGameData(GameData* const);
+	void init(TextureHolder*, AIManager*);
 
-	std::string getCurrentMapName() const { return mCurrentSceneFile; }
+	std::string getCurrentSceneFilePath() const { return mCurrentSceneFilePath; }
 
 private:
 	EntitiesTemplateStorage mEntitiesTemplateStorage;
 	ThreadPool mThreadPool;
     std::unique_ptr<Scene> mScene;
 	PlayerStatus mLastPlayerStatus;
-	std::string mFileOfSceneToMake;
-	std::string mCurrentSceneFile;
-    GameData* mGameData;
+	std::string mFilePathOfSceneToMake;
+	std::string mCurrentSceneFilePath;
 	Texture* mTilesetTexture;
+	AIManager* mAIManager;
+	TextureHolder* mTextures;
 	sf::Vector2f mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;

@@ -2,9 +2,11 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Resources/resourceHolder.hpp"
-
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include <string>
 
 namespace ph {
@@ -14,15 +16,19 @@ class Xml;
 
 struct GeneralMapInfo
 {
-	const sf::Vector2u mapSize;
-	const sf::Vector2u tileSize;
+	sf::Vector2f mapSize;
+	sf::Vector2f tileSize;
+	float nrOfChunks;
+	float nrOfChunksInOneRow;
+	float nrOfChunksInOneColumn;
+	bool isMapInfinite;
 };
 
 struct TilesData
 {
 	unsigned firstGlobalTileId;
 	std::vector<unsigned> ids;
-	std::vector<sf::FloatRect> bounds;
+	std::vector<std::vector<FloatRect>> bounds;
 };
 
 struct TilesetsData
@@ -37,32 +43,27 @@ struct TilesetsData
 class XmlMapParser
 {
 public:
-	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry,
-	               EntitiesTemplateStorage& templates, TextureHolder& textures);
+	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates);
 private:
-	void checkMapSupport(const Xml& mapNode) const;
 	auto getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo;
-	sf::Vector2u getMapSize(const Xml& mapNode) const;
-	sf::Vector2u getTileSize(const Xml& mapNode) const;
 	
-	std::vector<Xml> getTilesetNodes(const Xml& mapNode) const;
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-	void parserMapLayers(const std::vector<Xml>& layerNodes, const TilesetsData&, const GeneralMapInfo&, AIManager&);
-	std::vector<unsigned> toGlobalTileIds(const Xml& dataNode) const;
-	
-	void createLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	void createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
-	bool hasTile(unsigned globalTileId) const;
+	void createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	                 unsigned char z, AIManager&);
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
-	void createMapBorders(const GeneralMapInfo& mapInfo);
 
 private:
+	std::vector<component::RenderChunk> mRenderChunks;
+	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
-	TextureHolder* mTextures;
+	inline static float sChunkSize = 12.f;
+	inline static unsigned char sLowestLayerZ = 200; 
 };
 
 }

@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
 #include "Utilities/threadPool.hpp"
-#include "gameData.hpp"
+#include "Terminal/terminal.hpp"
 
 #include "ECS/Systems/playerMovementInput.hpp"
 #include "ECS/Systems/movement.hpp"
@@ -33,6 +33,7 @@
 #include "ECS/Systems/areasDebug.hpp"
 #include "ECS/Systems/cars.hpp"
 #include "ECS/Systems/cutscenesActivating.hpp"
+#include "ECS/Systems/debugCamera.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -40,19 +41,15 @@
 
 namespace ph {
 
-Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiManager, Terminal& terminal,
-             SceneManager& sceneManager, GUI& gui, Texture& tilesetTexture, ThreadPool& threadPool)
+Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool & threadPool)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
-	,mPause(false)
 {
-	terminal.setSceneRegistry(&mRegistry);
-
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
 
 	// must be before Movement
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), std::ref(gui), this);
+	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), this);
 	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
@@ -66,10 +63,10 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 
 	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
 
-	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(gui), std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
+	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
 	
 	// must be after DamageAndDeath
-	mSystemsQueue.appendSystem<system::GameplayUI>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::GameplayUI>();
 	mSystemsQueue.appendSystem<system::PatricleSystem>();
 
 	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
@@ -84,15 +81,15 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
 
 	// should be after StaticCollisions
-	mSystemsQueue.appendSystem<system::AudioSystem>(std::ref(musicPlayer), std::ref(soundPlayer));
+	mSystemsQueue.appendSystem<system::AudioSystem>();
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
 	mSystemsQueue.appendSystem<system::AreasDebug>();
 
 	// must be after StaticCollisions
 	mSystemsQueue.appendSystem<system::PickupItems>();
-	mSystemsQueue.appendSystem<system::HintAreas>(std::ref(gui));
+	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(gui), std::ref(musicPlayer), std::ref(soundPlayer), std::ref(aiManager), std::ref(sceneManager));
+	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
 
 	// must be after GunAttacks and before EntityDestroying
@@ -102,22 +99,18 @@ Scene::Scene(MusicPlayer& musicPlayer, SoundPlayer& soundPlayer, AIManager& aiMa
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
 }
 
-void Scene::handleEvent(const ActionEvent& event)
+void Scene::handleEvent(Event e)
 {
-	mSystemsQueue.handleEvents(event);
+	mSystemsQueue.handleEvents(e);
 }
 
-void Scene::update(sf::Time dt)
+void Scene::update(float dt)
 {
-	if(mPause)
-		return;
-
 	const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
- 	if(isCutsceneActive)
+	if(isCutsceneActive)
 		mCutSceneManager.updateCutScene(dt);
-
 	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
-		mSystemsQueue.update(dt.asSeconds());
+		mSystemsQueue.update(dt);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

@@ -44,6 +44,9 @@ void ZombieSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
+	if(sPause)
+		return;
+
 	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Velocity, component::AnimationData>
 		(entt::exclude<component::DeadCharacter>);
 	
