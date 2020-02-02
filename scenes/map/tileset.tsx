@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
+ <terraintypes>
+  <terrain name="dirtRoad" tile="-1"/>
+ </terraintypes>
+ <tile id="0" terrain=",,,0"/>
+ <tile id="1" terrain=",,0,0"/>
+ <tile id="2" terrain=",,0,0"/>
+ <tile id="3" terrain=",,0,"/>
+ <tile id="4" terrain="0,0,0,"/>
+ <tile id="5" terrain="0,0,,0"/>
  <tile id="6">
   <objectgroup draworder="index">
    <object id="5" x="0" y="0" width="16" height="16"/>
@@ -31,6 +40,16 @@
    <object id="1" x="-0.181818" y="9" width="16" height="6.81818"/>
   </objectgroup>
  </tile>
+ <tile id="32" terrain=",0,,0"/>
+ <tile id="33" terrain="0,0,0,0"/>
+ <tile id="34" terrain="0,0,0,0"/>
+ <tile id="35" terrain="0,,0,"/>
+ <tile id="36" terrain="0,,0,0"/>
+ <tile id="37" terrain=",0,0,0"/>
+ <tile id="64" terrain=",0,,0"/>
+ <tile id="65" terrain="0,0,0,0"/>
+ <tile id="66" terrain="0,0,0,0"/>
+ <tile id="67" terrain="0,,0,"/>
  <tile id="70">
   <objectgroup draworder="index" id="2">
    <object id="1" x="2.18182" y="7.72727" width="13.8182" height="8.27273"/>
@@ -61,6 +80,10 @@
    <object id="1" x="0" y="6" width="16" height="10"/>
   </objectgroup>
  </tile>
+ <tile id="96" terrain=",0,,"/>
+ <tile id="97" terrain="0,0,,"/>
+ <tile id="98" terrain="0,0,,"/>
+ <tile id="99" terrain="0,,,"/>
  <tile id="105">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="3.81818"/>
