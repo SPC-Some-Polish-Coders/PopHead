@@ -82,9 +82,9 @@ void DebugCamera::update(float dt)
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 			zoom = 0.99f;
 			if(slowDown && magnification)
-				zoom = 0.996; 
+				zoom = 0.996f; 
 			else if(slowDown)
-				zoom = 0.993;
+				zoom = 0.993f;
 			else if(speedUp && magnification)
 				zoom = 0.98f;
 			else if(speedUp)
