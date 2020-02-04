@@ -41,7 +41,7 @@
 
 namespace ph {
 
-Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool & threadPool)
+Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
 	:mCutSceneManager()
 	,mSystemsQueue(mRegistry)
 {
@@ -50,7 +50,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	// must be before Movement
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), this);
-	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
+	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager, std::ref(threadPool));
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
 
