@@ -13,7 +13,7 @@
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core))
 	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
