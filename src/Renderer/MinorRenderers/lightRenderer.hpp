@@ -28,6 +28,13 @@ struct Light
 	float attenuationSquareFactor;
 };
 
+struct LocalIllumination
+{
+	sf::Vector2f pos;
+	sf::Vector2f size;
+	sf::Color color;
+};
+
 struct Ray
 {
 	sf::Vector2f direction;
@@ -50,6 +57,8 @@ public:
 
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
+	void submitLocalIllumination(LocalIllumination);
+
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
@@ -62,10 +71,13 @@ private:
 private:
 	std::vector<Wall> mWalls;
 	std::vector<Light> mLights;
-	std::vector<sf::Vector2f> mLightPolygonVertexData;
+	std::vector<sf::Vector2f> mLightTriangleFanVertexData;
+	std::vector<LocalIllumination> mLocalIlluminations;
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
-	unsigned mVAO, mVBO;
+	Shader mLocalIlluminationShader;
+	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
+	unsigned mLocalIlluminationQuadVAO, mLocalIlluminationQuadVBO, mLocalIlluminationQuadIBO;
 
 	inline static LightingDebug sDebug;
 };

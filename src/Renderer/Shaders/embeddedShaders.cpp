@@ -38,6 +38,19 @@ ShaderSource lightSrc()
 }
 
 
+// local illumination
+static const char* sLocalIlluminationVS =
+	#include "localIllumination.vs.glsl"
+;
+static const char* sLocalIlluminationFS =
+	#include "localIllumination.fs.glsl"
+;
+ShaderSource localIlluminationSrc()
+{
+	return ShaderSource{sLocalIlluminationVS, sLocalIlluminationFS};
+}
+
+
 // quad 
 static const char* sInstancedSpriteVS = 
 	#include "quad.vs.glsl"

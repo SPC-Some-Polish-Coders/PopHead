@@ -16,23 +16,44 @@ void LightRenderer::init()
 {
 	mLightShader.init(shader::lightSrc());
 	mLightShader.initUniformBlock("SharedData", 0);
-	
-	glGenVertexArrays(1, &mVAO);
-	glBindVertexArray(mVAO);
 
-	glGenBuffers(1, &mVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	mLocalIlluminationShader.init(shader::localIlluminationSrc());
+	mLocalIlluminationShader.initUniformBlock("SharedData", 0);
+
+	glGenVertexArrays(1, &mLightTriangleFanVAO);
+	glBindVertexArray(mLightTriangleFanVAO);
+
+	glGenBuffers(1, &mLightTriangleFanVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mLightTriangleFanVBO);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
-	mLightPolygonVertexData.reserve(361);
+	mLightTriangleFanVertexData.reserve(361);
+
+	glGenVertexArrays(1, &mLocalIlluminationQuadVAO);
+	glBindVertexArray(mLocalIlluminationQuadVAO);
+
+	unsigned iboData[6] = {0, 1, 2, 2, 3, 0};
+	glGenBuffers(1, &mLocalIlluminationQuadIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mLocalIlluminationQuadIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(iboData), iboData, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &mLocalIlluminationQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 }
 
 void LightRenderer::shutDown()
 {
-	glDeleteBuffers(1, &mVBO);
-	glDeleteVertexArrays(1, &mVAO);
+	glDeleteBuffers(1, &mLightTriangleFanVBO);
+	glDeleteVertexArrays(1, &mLightTriangleFanVAO);
+	glDeleteBuffers(1, &mLocalIlluminationQuadVBO);
+	glDeleteBuffers(1, &mLocalIlluminationQuadIBO);
+	glDeleteVertexArrays(1, &mLocalIlluminationQuadVAO);
 	mLightShader.remove();
 }
 
@@ -55,9 +76,12 @@ void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f 
 void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
-	FloatRect lightRangeRect;
-
 	mLights.emplace_back(light);
+}
+
+void LightRenderer::submitLocalIllumination(LocalIllumination li)
+{
+	mLocalIlluminations.emplace_back(li);	
 }
 
 void LightRenderer::flush()
@@ -72,7 +96,7 @@ void LightRenderer::flush()
 	for(auto& light : mLights)
 	{
 		// make light position be first vertex of triangle fan
-		mLightPolygonVertexData.emplace_back(light.pos);
+		mLightTriangleFanVertexData.emplace_back(light.pos);
 
 		// create vertex data
 		{
@@ -95,7 +119,7 @@ void LightRenderer::flush()
 						nearestIntersectionDistance = intersectionDistance;
 					}
 				}
-				mLightPolygonVertexData.emplace_back(nearestIntersectionPoint);
+				mLightTriangleFanVertexData.emplace_back(nearestIntersectionPoint);
 			}
 		}
 
@@ -111,11 +135,29 @@ void LightRenderer::flush()
 			mLightShader.setUniformFloat("a", light.attenuationAddition);
 			mLightShader.setUniformFloat("b", light.attenuationFactor);
 			mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
-			glBindVertexArray(mVAO);
-			glBindBuffer(GL_ARRAY_BUFFER ,mVBO); // TODO: Do I have to bind it?
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightPolygonVertexData.size(), mLightPolygonVertexData.data(), GL_STATIC_DRAW);
-			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightPolygonVertexData.size());
+			glBindVertexArray(mLightTriangleFanVAO);
+			glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
 		}
+
+		// draw local illumination
+		glBindVertexArray(mLocalIlluminationQuadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
+		mLocalIlluminationShader.bind();
+		for(auto& li : mLocalIlluminations)
+		{
+			float vertexData[8] = {
+				li.pos.x, li.pos.y, 
+				li.pos.x + li.size.x, li.pos.y, 
+				li.pos.x + li.size.x, li.pos.y + li.size.y,
+				li.pos.x, li.pos.y + li.size.y
+			};
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+			mLocalIlluminationShader.setUniformVector4Color("color", li.color);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
+		mLocalIlluminations.clear();
 
 		// draw debug 
 		if(sDebug.drawWalls)
@@ -124,7 +166,7 @@ void LightRenderer::flush()
 
 		if(sDebug.drawRays)
 		{
-			for(auto& point : mLightPolygonVertexData) {
+			for(auto& point : mLightTriangleFanVertexData) {
 				Renderer::submitPoint(point, light.color, 0, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
@@ -132,7 +174,7 @@ void LightRenderer::flush()
 				Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 		}
 
-		mLightPolygonVertexData.clear();
+		mLightTriangleFanVertexData.clear();
 	}
 
 	mWalls.clear();

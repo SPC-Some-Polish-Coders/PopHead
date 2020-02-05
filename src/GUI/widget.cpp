@@ -65,7 +65,7 @@ void Widget::update(float dt, unsigned char z)
 	move(mVelocity * dt);
 
 	Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
-		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
+		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui, &sf::Color::White);
 	
 	updateCurrent(dt, z - 2);
 	updateChildren(dt, z);

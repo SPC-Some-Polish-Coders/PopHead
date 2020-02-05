@@ -228,9 +228,13 @@ void endScene()
 
 void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
-                          ProjectionType projectionType)
+                          ProjectionType projectionType, const sf::Color* localIlluminationColor)
 {
+	// TODO_ren: Move culling from QuadRenderer to here
+
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
+	if(localIlluminationColor)
+		lightRenderer.submitLocalIllumination(LocalIllumination{position, size, *localIlluminationColor});	
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
@@ -256,26 +260,28 @@ void submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float 
 }
 
 void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
-                           float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
+                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
-                          unsigned char z, ProjectionType projecitonType)
+                unsigned char z, ProjectionType projecitonType, const sf::Color* localIlluminationColor)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType);
+	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, localIlluminationColor);
 }
 
-void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
+void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
+                     sf::Color textColor, const sf::Color* localIlluminationColor)
 {
-	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, color);
+	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor, localIlluminationColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                              TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType)
+                    TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType,
+                    const sf::Color* localIlluminationColor)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType);
+	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, localIlluminationColor);
 }
 
 void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
@@ -291,7 +297,8 @@ void handleEvent(Event& phEvent)
 			isDebugDisplayActive = !isDebugDisplayActive;
 			lineRenderer.setDebugCountingActive(isDebugDisplayActive);
 			pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-			quadRenderer.setDebugCountingActive(isDebugDisplayActive);
+			quadRenderer.
+			setDebugCountingActive(isDebugDisplayActive);
 		}
 		if(e->type == sf::Event::Resized) {
 			GLCheck( glViewport(0, 0, e->size.width, e->size.height) );
