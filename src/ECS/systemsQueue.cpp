@@ -1,9 +1,11 @@
 #include "systemsQueue.hpp"
+#include "Utilities/threadPool.hpp"
 
 namespace ph {
 	
-	SystemsQueue::SystemsQueue(entt::registry& registry)
+	SystemsQueue::SystemsQueue(entt::registry& registry, ThreadPool& threadPool)
 		: mRegistry(registry)
+		, mThreadPool(threadPool)
 	{
 	}
 

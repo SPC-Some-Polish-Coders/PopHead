@@ -43,7 +43,7 @@ namespace ph {
 
 Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
 	:mCutSceneManager()
-	,mSystemsQueue(mRegistry)
+	,mSystemsQueue(mRegistry, threadPool)
 {
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
