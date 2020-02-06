@@ -217,13 +217,15 @@ void endScene()
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRenderer.getNumberOfDrawnSprites());
 		submitDebugCounter("Nr of instanced textures: ", quadRenderer.getNumberOfDrawnTextures());
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
-		submitDebugCounter("Nr of drawn lines calls: ", lineRenderer.getNumberOfDrawnLines());
 		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of drawn points calls: ", pointRenderer.getNrOfDrawnPoints());
+		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
+		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		quadRenderer.setDebugNumbersToZero();
-		lineRenderer.setDebugNumbersToZero();
-		pointRenderer.setDebugNumbersToZero();
+		quadRenderer.resetDebugNumbers();
+		lineRenderer.resetDebugNumbers();
+		pointRenderer.resetDebugNumbers();
+		lightRenderer.resetDebugNumbers();
 	}
 }
 

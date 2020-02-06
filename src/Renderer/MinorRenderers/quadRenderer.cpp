@@ -114,7 +114,7 @@ void QuadRenderer::shutDown()
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
 
-void QuadRenderer::setDebugNumbersToZero()
+void QuadRenderer::resetDebugNumbers()
 {
 	mNumberOfDrawCalls = 0;
 	mNumberOfDrawnSprites = 0;

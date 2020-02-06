@@ -52,6 +52,10 @@ public:
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 	void submitLight(Light);
 
+	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
+	unsigned getNrOfRays() { return mNrOfRays; }
+	void resetDebugNumbers();
+
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
@@ -68,6 +72,7 @@ private:
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
 	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
+	unsigned mNrOfDrawCalls, mNrOfRays;
 
 	inline static LightingDebug sDebug;
 };

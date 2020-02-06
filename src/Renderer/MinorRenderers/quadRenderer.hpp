@@ -48,7 +48,7 @@ public:
 
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void setDebugNumbersToZero();
+	void resetDebugNumbers();
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, float z, ProjectionType projectionType);
 

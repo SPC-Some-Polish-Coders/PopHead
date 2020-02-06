@@ -38,7 +38,7 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::setDebugNumbersToZero()
+void PointRenderer::resetDebugNumbers()
 {
 	mNrOfDrawnPoints = 0;
 	mNrOfDrawCalls = 0;

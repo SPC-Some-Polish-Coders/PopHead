@@ -66,6 +66,8 @@ void LightRenderer::flush()
 		{mScreenBounds->left -2000.f, mScreenBounds->top -2000.f},
 		{mScreenBounds->width + 4000.f, mScreenBounds->height + 4000.f});
 
+	mNrOfDrawCalls = mLights.size();
+
 	for(auto& light : mLights)
 	{
 		// make light position be first vertex of triangle fan
@@ -78,6 +80,8 @@ void LightRenderer::flush()
 			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
+				++mNrOfRays;
+
 				float rad = Math::degreesToRadians(angle);
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
 				sf::Vector2f nearestIntersectionPoint;
@@ -161,6 +165,12 @@ auto LightRenderer::getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f
 		return sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
 		return std::nullopt;
+}
+
+void LightRenderer::resetDebugNumbers()
+{
+	mNrOfDrawCalls = 0;
+	mNrOfRays = 0;
 }
 
 }

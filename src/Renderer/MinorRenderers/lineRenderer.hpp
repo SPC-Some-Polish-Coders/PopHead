@@ -16,10 +16,9 @@ public:
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
-	unsigned getNumberOfDrawnLines() const { return mNumberOfDrawCalls; }
 
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void setDebugNumbersToZero();
+	void resetDebugNumbers();
 
 	void drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
