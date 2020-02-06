@@ -11,14 +11,14 @@ namespace ph {
 
 	void SystemsQueue::update(float seconds)
 	{
-		for (auto& system : mSystemsArray)
-			system->update(seconds);
+		for (auto& item : mSystemsArray)
+			item.system->update(seconds);
 	}
 
 	void SystemsQueue::handleEvents(Event e)
 	{
-		for (auto& system : mSystemsArray)
-			system->onEvent(e);
+		for (auto& item : mSystemsArray)
+			item.system->onEvent(e);
 	}
 
 }

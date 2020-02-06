@@ -21,9 +21,20 @@ namespace ph {
 		void appendSystem(Args... arguments);
 
 	private:
+		struct QueueItem
+		{
+			QueueItem(std::unique_ptr<system::System>&& s, size_t o)
+				: order(o)
+			{
+				system.swap(s);
+			}
+			std::unique_ptr<system::System> system;
+			size_t order;
+		};
+
 		entt::registry& mRegistry;
 		ThreadPool& mThreadPool;
-		std::vector<std::unique_ptr<system::System>> mSystemsArray;
+		std::vector<QueueItem> mSystemsArray;
 	};
 }
 
