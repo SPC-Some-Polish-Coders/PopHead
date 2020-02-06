@@ -19,6 +19,11 @@ namespace ph {
 	
 		template <typename SystemType, typename... Args>
 		void appendSystem(Args... arguments);
+		template <typename SystemType, typename... Args>
+		void appendSystemWithLastOrder(Args... arguments);
+
+		template <typename SystemType, typename... Args>
+		void insertSystem(size_t order, Args... arguments);
 
 	private:
 		struct QueueItem
