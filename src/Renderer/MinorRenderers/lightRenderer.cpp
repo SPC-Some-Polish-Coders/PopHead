@@ -140,29 +140,7 @@ void LightRenderer::flush()
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
 		}
-
-		// draw local illumination
-		glBindVertexArray(mLocalIlluminationQuadVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
-		mLocalIlluminationShader.bind();
-		for(auto& li : mLocalIlluminations)
-		{
-			float vertexData[8] = {
-				li.pos.x, li.pos.y, 
-				li.pos.x + li.size.x, li.pos.y, 
-				li.pos.x + li.size.x, li.pos.y + li.size.y,
-				li.pos.x, li.pos.y + li.size.y
-			};
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-			mLocalIlluminationShader.setUniformVector4Color("color", li.color);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		}
-		mLocalIlluminations.clear();
-
-		// draw debug 
-		if(sDebug.drawWalls)
-			for(Wall& wall : mWalls)
-				Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 5);
+		mLightTriangleFanVertexData.clear();
 
 		if(sDebug.drawRays)
 		{
@@ -170,12 +148,43 @@ void LightRenderer::flush()
 				Renderer::submitPoint(point, light.color, 0, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
-			for(const auto& light : mLights)
-				Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 		}
-
-		mLightTriangleFanVertexData.clear();
 	}
+
+	// draw local illumination
+	glBindVertexArray(mLocalIlluminationQuadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
+	mLocalIlluminationShader.bind();
+	for(auto& li : mLocalIlluminations)
+	{
+		float vertexData[8] = {
+			li.pos.x, li.pos.y, 
+			li.pos.x + li.size.x, li.pos.y, 
+			li.pos.x + li.size.x, li.pos.y + li.size.y,
+			li.pos.x, li.pos.y + li.size.y
+		};
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
+		mLocalIlluminationShader.setUniformVector4Color("color", li.color);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+
+	char text[100];
+	sprintf_s(text, "local illumination size: %u", mLocalIlluminations.size());
+	Renderer::submitDebugText(text, "LiberationMono.ttf", 30.f, 0.f, 0.f, sf::Color::Green);
+	sprintf_s(text, "local illumination capacity: %u", mLocalIlluminations.capacity());
+	Renderer::submitDebugText(text, "LiberationMono.ttf", 30.f, 0.f, 0.f, sf::Color::Green);
+
+	mLocalIlluminations.clear();
+
+	// draw light walls debug 
+	if(sDebug.drawWalls)
+		for(Wall& wall : mWalls)
+			Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 5);
+
+	// draw light sources as points
+	if(sDebug.drawRays)
+		for(const auto& light : mLights)
+			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 
 	mWalls.clear();
 	mLights.clear();
