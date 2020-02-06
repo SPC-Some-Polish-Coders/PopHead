@@ -38,7 +38,7 @@ void DebugCamera::update(float dt)
 			drawDebugCameraHintText("J - Fast movement");
 			drawDebugCameraHintText("J + L - Very fast movement");
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f},
-				1, 0.f, {}, ProjectionType::gui, &sf::Color::White); 
+				1, 0.f, {}, ProjectionType::gui, false); 
 		}
 
 		// get modifier flags 
@@ -84,9 +84,9 @@ void DebugCamera::update(float dt)
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 			zoom = 0.99f;
 			if(slowDown && magnification)
-				zoom = 0.996; 
+				zoom = 0.996f; 
 			else if(slowDown)
-				zoom = 0.993;
+				zoom = 0.993f;
 			else if(speedUp && magnification)
 				zoom = 0.98f;
 			else if(speedUp)

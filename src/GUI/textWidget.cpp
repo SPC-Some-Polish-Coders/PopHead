@@ -20,7 +20,7 @@ void TextWidget::updateCurrent(float dt, unsigned char z)
 			behaviour.second(this);
 
 	Renderer::submitTextArea(mText.c_str(), mFontName, getScreenPosition(), getScreenSize().x,
-		mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui, &sf::Color::White);
+		mTextAligment, mFontSize, mTextColor, --z, ProjectionType::gui, false);
 }
 
 void TextWidget::setText(const char* text)

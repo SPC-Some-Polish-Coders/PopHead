@@ -17,7 +17,7 @@ void AreasDebug::update(float dt)
 		staticBodies.each([](const component::StaticCollisionBody, const component::BodyRect body) 
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 0, 140), nullptr,
-				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, &sf::Color(200, 150, 150, 200));
+				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
 		// render multi static collision bodies as bright red rectangle
@@ -27,7 +27,7 @@ void AreasDebug::update(float dt)
 			for(auto& bodyRect : multiCollisionBody.rects)
 			{
 				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
-					bodyRect.getTopLeft(), bodyRect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, &sf::Color(255, 150, 150, 200));
+					bodyRect.getTopLeft(), bodyRect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});
 
@@ -36,7 +36,7 @@ void AreasDebug::update(float dt)
 		kinematicBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body)
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 140), nullptr,
-				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, &sf::Color(150, 150, 200, 200));
+				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
@@ -46,7 +46,7 @@ void AreasDebug::update(float dt)
 		auto velocityChangingAreas = mRegistry.view<component::AreaVelocityChangingEffect, component::BodyRect>();
 		velocityChangingAreas.each([](const component::AreaVelocityChangingEffect, const component::BodyRect& body) {
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 165, 0, 140), nullptr,
-				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, &sf::Color(255, 200, 150, 200));
+				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
@@ -56,7 +56,7 @@ void AreasDebug::update(float dt)
 		auto velocityChangingAreas = mRegistry.view<component::PushingArea, component::BodyRect>();
 		velocityChangingAreas.each([](const component::PushingArea, const component::BodyRect& body) {
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 255, 0, 140), nullptr,
-				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, &sf::Color(255, 255, 200, 200));
+				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 }

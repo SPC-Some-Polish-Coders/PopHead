@@ -149,14 +149,23 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
-                              ProjectionType projectionType)
+                              ProjectionType projectionType, bool isAffectedByLight)
 {
+	// culling
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
+	if(rotation == 0.f)
+		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+			return;
+	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
+		return;
+
 	// if shader is not specified use default shader 
 	if(!shader)
 		shader = &mDefaultQuadShader;
 
 	// find or add draw call group
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
+	auto& renderGroupsHashMap = isAffectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
+	auto& renderGroup = renderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
 
 	// submit data
 	QuadData quadData;
@@ -199,14 +208,15 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 	);
 }
 
-void QuadRenderer::flush()
+void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
+
 	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
-
 	mCurrentlyBoundQuadShader = nullptr;
+	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
-	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
+	for(auto& [key, rg] : renderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
 		if(mIsDebugCountingActive) {

@@ -27,7 +27,7 @@ namespace Renderer
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
 	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld,
-					const sf::Color* localIlluminationColor = nullptr);
+					bool isAffectedByLight = true);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*,
 	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
@@ -42,13 +42,13 @@ namespace Renderer
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
-		            sf::Color textColor, unsigned char z, ProjectionType, const sf::Color* localIlluminationColor = nullptr);
+		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
 	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
-                         sf::Color textColor, const sf::Color* localIlluminationColor = nullptr);
+                         sf::Color textColor);
 
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType, const sf::Color* localIlluminationColor = nullptr);
+                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
 	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 

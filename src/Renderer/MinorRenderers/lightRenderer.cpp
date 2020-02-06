@@ -17,9 +17,6 @@ void LightRenderer::init()
 	mLightShader.init(shader::lightSrc());
 	mLightShader.initUniformBlock("SharedData", 0);
 
-	mLocalIlluminationShader.init(shader::localIlluminationSrc());
-	mLocalIlluminationShader.initUniformBlock("SharedData", 0);
-
 	glGenVertexArrays(1, &mLightTriangleFanVAO);
 	glBindVertexArray(mLightTriangleFanVAO);
 
@@ -30,31 +27,12 @@ void LightRenderer::init()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
 	mLightTriangleFanVertexData.reserve(361);
-
-	glGenVertexArrays(1, &mLocalIlluminationQuadVAO);
-	glBindVertexArray(mLocalIlluminationQuadVAO);
-
-	unsigned iboData[6] = {0, 1, 2, 2, 3, 0};
-	glGenBuffers(1, &mLocalIlluminationQuadIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mLocalIlluminationQuadIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(iboData), iboData, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &mLocalIlluminationQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 }
 
 void LightRenderer::shutDown()
 {
 	glDeleteBuffers(1, &mLightTriangleFanVBO);
 	glDeleteVertexArrays(1, &mLightTriangleFanVAO);
-	glDeleteBuffers(1, &mLocalIlluminationQuadVBO);
-	glDeleteBuffers(1, &mLocalIlluminationQuadIBO);
-	glDeleteVertexArrays(1, &mLocalIlluminationQuadVAO);
-	mLightShader.remove();
 }
 
 void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
@@ -77,11 +55,6 @@ void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
 	mLights.emplace_back(light);
-}
-
-void LightRenderer::submitLocalIllumination(LocalIllumination li)
-{
-	mLocalIlluminations.emplace_back(li);	
 }
 
 void LightRenderer::flush()
@@ -150,25 +123,6 @@ void LightRenderer::flush()
 			}
 		}
 	}
-
-	// draw local illumination
-	glBindVertexArray(mLocalIlluminationQuadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, mLocalIlluminationQuadVBO);
-	mLocalIlluminationShader.bind();
-	for(auto& li : mLocalIlluminations)
-	{
-		float vertexData[8] = {
-			li.pos.x, li.pos.y, 
-			li.pos.x + li.size.x, li.pos.y, 
-			li.pos.x + li.size.x, li.pos.y + li.size.y,
-			li.pos.x, li.pos.y + li.size.y
-		};
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
-		mLocalIlluminationShader.setUniformVector4Color("color", li.color);
-		mLocalIlluminationShader.setUniformBool("isGameWorldProjection", li.projectionType == ProjectionType::gameWorld);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
-	mLocalIlluminations.clear();
 
 	// draw light walls debug 
 	if(sDebug.drawWalls)

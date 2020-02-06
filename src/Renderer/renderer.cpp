@@ -65,6 +65,7 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	pointRenderer.init();
 	lightRenderer.init();
 	textRenderer.init();
+	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
@@ -162,7 +163,7 @@ void endScene()
 	PH_PROFILE_FUNCTION(0);
 
 	// render scene
-	quadRenderer.flush();
+	quadRenderer.flush(true);
 	pointRenderer.flush();
 
 	// disable depth test for performance purposes
@@ -197,6 +198,7 @@ void endScene()
 	defaultFramebufferShader.setUniformInt("lightingTexture", 1);
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	quadRenderer.flush(false);
 
 	// display renderer debug info 
 	if(isDebugDisplayActive)
@@ -227,20 +229,10 @@ void endScene()
 
 void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
-                          ProjectionType projectionType, const sf::Color* localIlluminationColor)
+                          ProjectionType projectionType, bool isAffectedByLight)
 {
-	// culling
-	FloatRect bounds = projectionType == ProjectionType::gameWorld ? screenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
-	if(rotation == 0.f)
-		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
-			return;
-	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
-		return;
-
-	// submition
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
-	if(localIlluminationColor)
-		lightRenderer.submitLocalIllumination(LocalIllumination{position, size, projectionType, *localIlluminationColor});	
+	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size,
+		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
@@ -272,22 +264,21 @@ void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float
 }
 
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
-                unsigned char z, ProjectionType projecitonType, const sf::Color* localIlluminationColor)
+                unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, localIlluminationColor);
+	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
 }
 
 void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
-                     sf::Color textColor, const sf::Color* localIlluminationColor)
+                     sf::Color textColor)
 {
-	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor, localIlluminationColor);
+	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                    TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType,
-                    const sf::Color* localIlluminationColor)
+                    TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, localIlluminationColor);
+	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
 void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
