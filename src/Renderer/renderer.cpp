@@ -234,7 +234,7 @@ void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Co
 
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
 	if(localIlluminationColor)
-		lightRenderer.submitLocalIllumination(LocalIllumination{position, size, *localIlluminationColor});	
+		lightRenderer.submitLocalIllumination(LocalIllumination{position, size, projectionType, *localIlluminationColor});	
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,

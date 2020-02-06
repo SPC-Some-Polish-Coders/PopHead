@@ -1,6 +1,7 @@
 #pragma once 
  
 #include "Renderer/API/shader.hpp"
+#include "quadData.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
 #include <vector>
@@ -32,6 +33,7 @@ struct LocalIllumination
 {
 	sf::Vector2f pos;
 	sf::Vector2f size;
+	ProjectionType projectionType;
 	sf::Color color;
 };
 

@@ -165,6 +165,7 @@ void LightRenderer::flush()
 		};
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData);
 		mLocalIlluminationShader.setUniformVector4Color("color", li.color);
+		mLocalIlluminationShader.setUniformBool("isGameWorldProjection", li.projectionType == ProjectionType::gameWorld);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 
