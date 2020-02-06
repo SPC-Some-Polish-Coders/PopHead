@@ -41,8 +41,6 @@ public:
 	void init();
 	void shutDown();
 
-	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
-
 	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
 	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }
 	unsigned getNumberOfDrawnTextures() const { return mNumberOfDrawnTextures; }
@@ -67,7 +65,6 @@ private:
 private:
 	RenderGroupsHashMap mRenderGroupsHashMap;
 	Shader mDefaultQuadShader;
-	const FloatRect* mScreenBounds;
 	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;
 	IndexBuffer mQuadIBO;

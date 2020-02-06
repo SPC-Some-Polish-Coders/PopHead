@@ -168,13 +168,6 @@ void LightRenderer::flush()
 		mLocalIlluminationShader.setUniformBool("isGameWorldProjection", li.projectionType == ProjectionType::gameWorld);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-
-	char text[100];
-	sprintf_s(text, "local illumination size: %u", mLocalIlluminations.size());
-	Renderer::submitDebugText(text, "LiberationMono.ttf", 30.f, 0.f, 0.f, sf::Color::Green);
-	sprintf_s(text, "local illumination capacity: %u", mLocalIlluminations.capacity());
-	Renderer::submitDebugText(text, "LiberationMono.ttf", 30.f, 0.f, 0.f, sf::Color::Green);
-
 	mLocalIlluminations.clear();
 
 	// draw light walls debug 

@@ -65,7 +65,6 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	pointRenderer.init();
 	lightRenderer.init();
 	textRenderer.init();
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
@@ -230,8 +229,15 @@ void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Co
                           sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                           ProjectionType projectionType, const sf::Color* localIlluminationColor)
 {
-	// TODO_ren: Move culling from QuadRenderer to here
+	// culling
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? screenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
+	if(rotation == 0.f)
+		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+			return;
+	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
+		return;
 
+	// submition
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
 	if(localIlluminationColor)
 		lightRenderer.submitLocalIllumination(LocalIllumination{position, size, projectionType, *localIlluminationColor});	
