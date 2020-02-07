@@ -103,4 +103,8 @@ namespace ph::component {
 		float range;
 		int damage;
 	};
+
+	struct Weather
+	{
+	};
 }

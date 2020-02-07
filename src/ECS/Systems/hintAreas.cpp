@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Systems/weather.hpp"
 #include "Events/actionEventManager.hpp"
 #include "Utilities/profiling.hpp"
 
@@ -39,15 +40,20 @@ void HintAreas::update(float dt)
 					ActionEventManager::setActionEnabled("changeWeapon", false);
 					ActionEventManager::setActionEnabled("gunAttack", false);
 					ActionEventManager::setActionEnabled("meleeAttack", false);
-				}
-				else if(hint.hintName == "shootingHint") {
-					ActionEventManager::setActionEnabled("gunAttack", true);
+					Weather::setRainType(Rain::Heavy);
+					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "meleeFightingHint") {
 					ActionEventManager::setActionEnabled("meleeAttack", true);
+					Weather::setRainType(Rain::Normal);
+				}
+				else if(hint.hintName == "shootingHint") {
+					ActionEventManager::setActionEnabled("gunAttack", true);
+					Weather::setRainType(Rain::Drizzle);
 				}
 				else if(hint.hintName == "weaponChangingHint") {
 					ActionEventManager::setActionEnabled("changeWeapon", true);
+					Weather::setMode(Weather::Sunny);	
 				}
 			}
 			else if(hint.isShown)

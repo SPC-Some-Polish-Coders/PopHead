@@ -34,6 +34,7 @@
 #include "ECS/Systems/cars.hpp"
 #include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
+#include "ECS/Systems/weather.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -77,6 +78,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::Cars>();
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::DebugCamera>();
+	mSystemsQueue.appendSystem<system::Weather>();
 }
 
 void Scene::handleEvent(Event e)
