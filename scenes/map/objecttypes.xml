@@ -42,6 +42,7 @@
   <property name="slowingDown" type="float" default="2"/>
   <property name="velocity" type="float" default="5"/>
  </objecttype>
+ <objecttype name="Collision" color="#a40c0c"/>
  <objecttype name="CrawlingNpc" color="#f4ef5f">
   <property name="isAlreadyDead" type="bool" default="true"/>
  </objecttype>
@@ -67,7 +68,7 @@
   <property name="hintName" type="string"/>
  </objecttype>
  <objecttype name="Lever" color="#aa00ff"/>
- <objecttype name="LightWall" color="#616167"/>
+ <objecttype name="LightWall" color="#129f70"/>
  <objecttype name="LootSpawner" color="#0cff7d">
   <property name="lootType" type="string" default="bullets"/>
  </objecttype>

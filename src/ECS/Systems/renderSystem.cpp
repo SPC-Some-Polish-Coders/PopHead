@@ -47,12 +47,12 @@ void RenderSystem::update(float dt)
 
 	//submit light walls
 	auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
-	lightWalls.each([](const component::LightWall& bl, const component::BodyRect& body) 
+	lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
 	{
-		if(bl.rect.top == -1.f)
+		if(lw.rect.top == -1.f)
 			Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
 		else
-			Renderer::submitLightBlockingQuad(body.rect.getTopLeft() + bl.rect.getTopLeft(), bl.rect.getSize());
+			Renderer::submitLightBlockingQuad(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize());
 	});
 
 	// submit map chunks

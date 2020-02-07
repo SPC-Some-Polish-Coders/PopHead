@@ -1,6 +1,7 @@
 #include "xmlMapParser.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
+#include "Components/physicsComponents.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
@@ -186,19 +187,31 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
 			const auto objectNodes = objectGroupNode->getChildren("object");
 			std::vector<FloatRect> collisions;
+			std::vector<FloatRect> lightWalls;
 			for(auto& objectNode : objectNodes)
 			{
-				auto width = objectNode.getAttribute("width");
-				auto height = objectNode.getAttribute("height");
-				const sf::FloatRect bounds(
-					objectNode.getAttribute("x")->toFloat(),
-					objectNode.getAttribute("y")->toFloat(),
-					width ? width->toFloat() : 0.f,
-					height ? height->toFloat() : 0.f
-				);
-				collisions.emplace_back(bounds);
+				if(auto type = objectNode.getAttribute("type"))
+				{
+					auto getBounds = [&objectNode] {
+						auto width = objectNode.getAttribute("width");
+						auto height = objectNode.getAttribute("height");
+						return sf::FloatRect(
+							objectNode.getAttribute("x")->toFloat(),
+							objectNode.getAttribute("y")->toFloat(),
+							width ? width->toFloat() : 0.f,
+							height ? height->toFloat() : 0.f
+						);
+					};
+
+					std::string typeStr = type->toString();
+					if(typeStr == "Collision")
+						collisions.emplace_back(getBounds());
+					else if(typeStr == "LightWall")
+						lightWalls.emplace_back(getBounds());	
+				}
 			}
 			tilesData.bounds.emplace_back(collisions);
+			tilesData.lightWalls.emplace_back(lightWalls);
 		}
 	}
 	return tilesData;
@@ -320,7 +333,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			// emplace quad data to chunk
 			renderChunk.quads.emplace_back(qd);
 
-			// load collision bodies
+			// load collision bodies and light walls
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
@@ -329,20 +342,36 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			{
 				if (tileId == tilesData.ids[i]) 
 				{
+					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						if((isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
-						{
-							if(isHorizontallyFlipped)
-								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
-							if(isVerticallyFlipped)
-								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
-						}
+						if(isHorizontallyFlipped)
+							collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+						if(isVerticallyFlipped)
+							collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+
 						collisionRect.left += tileWorldPos.x; 
 						collisionRect.top += tileWorldPos.y; 
 						chunkCollisions.rects.emplace_back(collisionRect);
 						// TODO
 						//aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+						
+					}
+
+					// light walls
+					for(FloatRect lightWallRect : tilesData.lightWalls[i])
+					{
+						if(isHorizontallyFlipped)
+							lightWallRect.left = info.tileSize.x - lightWallRect.left - lightWallRect.width;
+						if(isVerticallyFlipped)
+							lightWallRect.top = info.tileSize.y - lightWallRect.top - lightWallRect.height;
+
+						lightWallRect.left += tileWorldPos.x; 
+						lightWallRect.top += tileWorldPos.y; 
+
+						auto entity = mTemplates->createCopy("LightWall", *mGameRegistry);
+						auto& body = mGameRegistry->get<component::BodyRect>(entity);
+						body.rect = lightWallRect;
 					}
 
 					break;
