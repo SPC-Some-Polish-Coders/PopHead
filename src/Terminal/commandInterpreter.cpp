@@ -36,6 +36,7 @@ void CommandInterpreter::init(SceneManager* sceneManager, TerminalSharedData ter
 	mCommandsMap["cold"] =						&CommandInterpreter::executeCollisionDebug;
 	mCommandsMap["veld"] = 						&CommandInterpreter::executeVelocityChangingAreaDebug;
 	mCommandsMap["pushd"] =						&CommandInterpreter::executePushingAreaDebug;
+	mCommandsMap["lwd"] =						&CommandInterpreter::executeLightWallsAreaDebug;
 	mCommandsMap["mute"] =						&CommandInterpreter::executeMute;
 	mCommandsMap["unmute"] =					&CommandInterpreter::executeUnmute;
 	mCommandsMap["setvolume"] =					&CommandInterpreter::executeSetVolume;
@@ -247,6 +248,11 @@ void CommandInterpreter::executePushingAreaDebug()
 	system::AreasDebug::setIsPushingAreaDebugActive(!commandContains("off"));
 }
 
+void CommandInterpreter::executeLightWallsAreaDebug()
+{
+	system::AreasDebug::setIsLightWallsAreaDebugActive(!commandContains("off"));
+}
+
 void CommandInterpreter::executeMute()
 {
 	setAudioMuted(true);
@@ -317,9 +323,7 @@ void CommandInterpreter::executeLight()
 
 	auto& lightDebug = LightRenderer::getDebug();
 
-	if(commandContains("walls"))
-		lightDebug.drawWalls = on;
-	else if(commandContains("rays"))
+	if(commandContains("rays"))
 		lightDebug.drawRays = on;
 	else
 		lightDebug.drawLight = on;

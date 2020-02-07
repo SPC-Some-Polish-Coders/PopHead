@@ -43,6 +43,7 @@ private:
 	void executeCollisionDebug();
 	void executeVelocityChangingAreaDebug();
 	void executePushingAreaDebug();
+	void executeLightWallsAreaDebug();
 	void executeMute();
 	void executeUnmute();
 	void executeMuteAll();

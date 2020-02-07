@@ -128,11 +128,6 @@ void LightRenderer::flush()
 		}
 	}
 
-	// draw light walls debug 
-	if(sDebug.drawWalls)
-		for(Wall& wall : mWalls)
-			Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 5);
-
 	// draw light sources as points
 	if(sDebug.drawRays)
 		for(const auto& light : mLights)

@@ -1,6 +1,7 @@
 #include "areasDebug.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/profiling.hpp"
 
@@ -56,6 +57,16 @@ void AreasDebug::update(float dt)
 		auto velocityChangingAreas = mRegistry.view<component::PushingArea, component::BodyRect>();
 		velocityChangingAreas.each([](const component::PushingArea, const component::BodyRect& body) {
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 255, 0, 140), nullptr,
+				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
+		});
+	}
+
+	if(sIsLightWallsAreaDebugActive)
+	{
+		// render light walls as blue rectangle
+		auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
+		lightWalls.each([](const component::LightWall, const component::BodyRect body) {
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(40, 40, 255, 140), nullptr,
 				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}

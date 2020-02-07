@@ -12,7 +12,6 @@ namespace ph {
 struct LightingDebug
 {
 	bool drawLight = true;
-	bool drawWalls = false;
 	bool drawRays = false;
 };
 
