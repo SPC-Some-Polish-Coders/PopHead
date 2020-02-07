@@ -345,6 +345,17 @@
             ]
         },
         {
+            "name" : "Weather",
+            "componentsRead" : [
+				"Player"
+			],
+            "componentsWrite" : [
+                "Weather",
+                "BodyRect",
+                "ParticleEmitter"
+            ]
+        },
+        {
             "name" : "ZombieSystem",
             "componentsRead" : [
                 "BodyRect",

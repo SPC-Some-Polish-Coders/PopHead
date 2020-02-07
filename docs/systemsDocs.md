@@ -375,6 +375,17 @@ Velocity<br />
 </td>
 </tr>
 <tr>
+<td>Weather</td>
+<td>
+Player<br />
+</td>
+<td>
+Weather<br />
+BodyRect<br />
+ParticleEmitter<br />
+</td>
+</tr>
+<tr>
 <td>ZombieSystem</td>
 <td>
 BodyRect<br />
