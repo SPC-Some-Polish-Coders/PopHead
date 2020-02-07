@@ -8,6 +8,13 @@
 
 namespace ph::system {
 
+Weather::Weather(entt::registry& registry)
+	:System(registry)
+{
+	sMode = Sunny;
+	sRain = Rain();
+}
+
 void Weather::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);

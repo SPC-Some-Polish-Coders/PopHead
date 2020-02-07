@@ -21,7 +21,7 @@ namespace system {
 class Weather : public System
 {
 public:
-	using System::System;
+	Weather(entt::registry&);	
 
 	void update(float dt) override;
 
