@@ -22,12 +22,7 @@ namespace system {
 		AIManager& mAIManager;
 		Scene* mScene;
 
-		float mTimeFromLastUp    = 1.f;
-		float mTimeFromLastDown  = 1.f;
-		float mTimeFromLastLeft  = 1.f;
-		float mTimeFromLastRight = 1.f;
-
-		float mTimeFromDashBegining= 1.f;
+		float mTimeFromDashPressed; 
 
 		bool mUp    = false;
 		bool mDown  = false;

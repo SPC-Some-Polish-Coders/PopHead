@@ -322,97 +322,98 @@
  <tile id="672">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="13" y="13" width="3" height="3"/>
-   <object id="2" type="LightWall" x="12.9545" y="12.3182" width="2.81818" height="3.54546"/>
+   <object id="2" type="LightWall" x="12" y="11.6818" width="4" height="4.18182"/>
   </objectgroup>
  </tile>
  <tile id="673">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="13" width="16" height="3"/>
-   <object id="2" type="LightWall" x="0.318159" y="13.1364" width="15.5455" height="0.818191"/>
+   <object id="2" type="LightWall" x="0" y="11.0455" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
  <tile id="674">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="13" width="16" height="3"/>
-   <object id="3" type="LightWall" x="0.409091" y="13.0454" width="15.5455" height="0.818191"/>
+   <object id="3" type="LightWall" x="0" y="10.6818" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
  <tile id="675">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="13" width="3" height="3"/>
-   <object id="2" type="LightWall" x="0.227274" y="12.3182" width="2.81818" height="3.54546"/>
+   <object id="2" type="LightWall" x="0" y="12.3182" width="2.81818" height="3.54546"/>
   </objectgroup>
  </tile>
  <tile id="704">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="9.125" y="0" width="6.75" height="16"/>
-   <object id="2" type="LightWall" x="14.9545" y="0.04545" width="0.818182" height="15.9091"/>
+   <object id="2" type="LightWall" x="12.6818" y="0.136359" width="1.54545" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="707">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="6.75" height="16"/>
-   <object id="2" type="LightWall" x="0.227273" y="0.136359" width="0.818182" height="15.9091"/>
+   <object id="2" type="LightWall" x="0.227273" y="0.136359" width="2.27273" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="708">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="8.90909" y="0" width="7.09091" height="16"/>
    <object id="2" type="Collision" x="-4.54545e-07" y="10" width="8.90909" height="6.18182"/>
-   <object id="3" type="LightWall" x="0.454564" y="14.6364" width="14.3636" height="1.27273"/>
-   <object id="4" type="LightWall" x="14.5455" y="0.272718" width="1.27273" height="15.8182"/>
+   <object id="3" type="LightWall" x="-0.0908905" y="11.8182" width="11.6363" height="1.27273"/>
+   <object id="4" type="LightWall" x="12.7273" y="-0.272737" width="1.27273" height="8.8182"/>
+   <object id="5" type="LightWall" x="9.27276" y="8.27273" width="4.09085" height="3.54546"/>
   </objectgroup>
  </tile>
  <tile id="736">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="8.625" y="0.125" width="6.75" height="16"/>
-   <object id="2" type="LightWall" x="14.7727" y="0.136359" width="0.818182" height="15.9091"/>
+   <object id="2" type="LightWall" x="13.3182" y="0.136359" width="1.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="739">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="6.75" height="16"/>
-   <object id="2" type="LightWall" x="0.0909091" y="0" width="0.818182" height="15.9091"/>
+   <object id="2" type="LightWall" x="0.0909091" y="0" width="2.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="740">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="-0.0909091" y="-0.0909091" width="7.18182" height="16"/>
    <object id="2" type="Collision" x="7.18182" y="12.8182" width="8.72727" height="3"/>
-   <object id="3" type="LightWall" x="-0.18182" y="-9.09091e-06" width="1.27273" height="15.8182"/>
-   <object id="4" type="LightWall" x="0.909109" y="14.4545" width="14.3636" height="1.27273"/>
+   <object id="3" type="LightWall" x="1.81818" y="-0.181827" width="1.27273" height="13.4546"/>
+   <object id="4" type="LightWall" x="1.8182" y="12" width="14" height="1.27273"/>
   </objectgroup>
  </tile>
  <tile id="768">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="9" y="-0.125" width="6.75" height="4"/>
-   <object id="2" type="LightWall" x="13.8636" y="0.136359" width="1.90909" height="2.45455"/>
+   <object id="2" type="LightWall" x="13.1363" y="0.0454499" width="2.63636" height="2.54546"/>
   </objectgroup>
  </tile>
  <tile id="769">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="16" height="4"/>
-   <object id="2" type="LightWall" x="0.22725" y="0.499995" width="15.5455" height="0.818191"/>
+   <object id="2" type="LightWall" x="0" y="0.499995" width="16" height="1.36365"/>
   </objectgroup>
  </tile>
  <tile id="770">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="16" height="4"/>
-   <object id="2" type="LightWall" x="0.22725" y="0.499995" width="15.5455" height="0.818191"/>
+   <object id="2" type="LightWall" x="0" y="0.499995" width="16" height="1.27274"/>
   </objectgroup>
  </tile>
  <tile id="771">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="6.75" height="4"/>
-   <object id="2" type="LightWall" x="0.409091" y="0.136359" width="1.90909" height="3.9091"/>
+   <object id="2" type="LightWall" x="0.409091" y="0.136359" width="3" height="3.9091"/>
   </objectgroup>
  </tile>
  <tile id="772">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="6.75" height="16"/>
    <object id="2" type="Collision" x="6.90909" y="0" width="9.09091" height="4"/>
-   <object id="3" type="LightWall" x="0.136365" y="0.136361" width="1.27273" height="15.8182"/>
-   <object id="4" type="LightWall" x="1.5" y="0.136361" width="14.3636" height="1.27273"/>
+   <object id="3" type="LightWall" x="1.68182" y="1.22727" width="1.27273" height="14.8182"/>
+   <object id="4" type="LightWall" x="1.5" y="1.13636" width="14.3636" height="1.27273"/>
   </objectgroup>
  </tile>
 </tileset>

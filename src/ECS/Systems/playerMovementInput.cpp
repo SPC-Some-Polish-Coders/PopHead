@@ -35,45 +35,10 @@ namespace ph::system {
 						sPause = !sPause;
 					});
 				}
-
-				constexpr float maxPressTimeDifferenceForDash = 0.3f;
-				constexpr float minTimeFromLastDashToDoNextDash = 0.5f;
-				
-				if(e->mAction == "movingUp") {
-					mUp = true;
-					if(mTimeFromLastUp < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastUp = 0.f;
+				else if(e->mAction == "dash")
+				{
+					mTimeFromDashPressed = 0.f;
 				}
-				if(e->mAction == "movingDown") {
-					mDown = true;
-					if(mTimeFromLastDown < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastDown = 0.f;
-				}
-				if(e->mAction == "movingRight") {
-					mRight = true;
-					if(mTimeFromLastRight < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastRight = 0.f;
-				}
-				if(e->mAction == "movingLeft") {
-					mLeft = true;
-					if(mTimeFromLastLeft < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastLeft = 0.f;
-				}
-			}
-			else if(e->mType == ActionEvent::Type::Released)
-			{
-				if(e->mAction == "movingUp")
-					mUp = false;
-				if(e->mAction == "movingDown")
-					mDown = false;
-				if(e->mAction == "movingRight")
-					mRight = false;
-				if(e->mAction == "movingLeft")
-					mLeft = false;
 			}
 		}
 	}
@@ -91,6 +56,12 @@ namespace ph::system {
 		for(auto player : playerView)
 			if(mRegistry.has<component::DeadCharacter>(player))
 				return;
+
+		// set input variables
+		mUp = ActionEventManager::isActionPressed("movingUp");
+		mDown = ActionEventManager::isActionPressed("movingDown");
+		mLeft = ActionEventManager::isActionPressed("movingLeft");
+		mRight = ActionEventManager::isActionPressed("movingRight");
 
 		// get player direction
 		sf::Vector2f playerDirection;
@@ -171,21 +142,14 @@ namespace ph::system {
 		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
 			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-
 			auto vel = playerDirection * speed.speed;
-			if(mTimeFromDashBegining < 0.15f)
-				vel *= 2.5f;
-
+			if(mTimeFromDashPressed < 0.1f)
+				vel *= 2.f;
 			velocity.dx = vel.x;
 			velocity.dy = vel.y;
 		});
 
-		// increment time variables 
-		mTimeFromLastUp += dt;
-		mTimeFromLastDown += dt;
-		mTimeFromLastRight += dt;
-		mTimeFromLastLeft += dt;
-		mTimeFromDashBegining += dt;
+		mTimeFromDashPressed += dt;
 	}
 }
 
