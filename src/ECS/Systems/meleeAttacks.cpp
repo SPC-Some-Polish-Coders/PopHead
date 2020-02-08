@@ -49,7 +49,7 @@ void MeleeAttacks::update(float dt)
 				// set melee weapon ahead or behind player 
 				renderQuad.z = faceDirection.direction.y >= 0.f ? 93 : 96;
 
-				// deal damage and push enemy
+				// deal damage, push enemy and shake camera
 				FloatRect attackArea(
 					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
 					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
@@ -69,6 +69,12 @@ void MeleeAttacks::update(float dt)
 							enemyPushingForces.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 3.f;
 							enemyPushingForces.friction = 1.8f;
 						}
+						
+						component::CameraShake shake;
+						shake.duration = 0.5f;
+						shake.magnitude = 0.5f;
+						shake.smooth = false;
+						mRegistry.assign_or_replace<component::CameraShake>(player, shake);
 					}
 				};
 

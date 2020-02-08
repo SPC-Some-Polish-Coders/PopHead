@@ -42,6 +42,14 @@ namespace component {
 		inline static std::string currentCameraName;
 	};
 
+	struct CameraShake
+	{
+		float duration;
+		float elapsedTime = 0.f;
+		float magnitude;
+		bool smooth = false;
+	};
+
 	struct DebugCamera
 	{
 	};

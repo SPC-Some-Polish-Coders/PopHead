@@ -1,5 +1,6 @@
 #include "hostileCollisions.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/profiling.hpp"
@@ -38,6 +39,12 @@ namespace ph::system {
 
 					playerPushingForces.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());
 					playerPushingForces.friction = 1.f;
+
+					component::CameraShake shake;
+					shake.duration = 1.f;
+					shake.magnitude = playerCollision.pushForce / 2.f;
+					shake.smooth = false;
+					mRegistry.assign_or_replace<component::CameraShake>(player, shake);
 				}
 				else
 					playerCollision.isCollision = false;

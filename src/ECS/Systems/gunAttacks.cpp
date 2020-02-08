@@ -95,21 +95,29 @@ void GunAttacks::handlePendingGunAttacks() const
 
 				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getBulletStartingPosition(playerFaceDirection.direction);
 
-				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(), gunProperties.range, gunProperties.deflectionAngle);
-				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition, gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
+				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(),
+					gunProperties.range, gunProperties.deflectionAngle);
+
+				std::vector<sf::Vector2f> shotsEndingPositions = performShoot(playerFaceDirection.direction, startingBulletPosition,
+					gunProperties.range, gunProperties.deflectionAngle, gunProperties.damage, gunProperties.numberOfBullets);
+
 				createShotImage(startingBulletPosition, shotsEndingPositions, gunProperties.shotSoundFilepath);
 				clearInGunAttackAreaTags();
 
-				if(gunProperties.type == component::GunProperties::Type::Pistol)
+				if(gunProperties.type == component::GunProperties::Type::Pistol) {
 					--playerBullets.numOfPistolBullets;
-				else if(gunProperties.type == component::GunProperties::Type::Shotgun)
+					shakeCamera(0.3f);
+				}
+				else if(gunProperties.type == component::GunProperties::Type::Shotgun) {
 					--playerBullets.numOfShotgunBullets;
+					shakeCamera(0.4f);
+				}
 			}
 		}
 	});
 }
 
-sf::Vector2f GunAttacks::getBulletStartingPosition(const sf::Vector2f& playerFaceDirection) const
+sf::Vector2f GunAttacks::getBulletStartingPosition(sf::Vector2f playerFaceDirection) const
 {
 	if (playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
 		return sf::Vector2f(25.f * playerFaceDirection.x, 25.f);
@@ -123,7 +131,8 @@ sf::Vector2f GunAttacks::getBulletStartingPosition(const sf::Vector2f& playerFac
 		return sf::Vector2f(0.f, 0.f);
 }
 
-void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, const FloatRect& playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const
+void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, FloatRect playerBody, sf::Vector2f gunSize,
+                                           float range, float deflectionAngle) const
 {
 	FloatRect attackArea(playerBody.getCenter(), sf::Vector2f(0.f, 0.f));
 	if (playerFaceDirection == PH_WEST)
@@ -169,7 +178,8 @@ void GunAttacks::tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, con
 	}
 }
 
-std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFaceDirection, const sf::Vector2f& startingBulletPos, float range, float deflectionAngle, int damage, int numberOfBullets) const
+std::vector<sf::Vector2f> GunAttacks::performShoot(sf::Vector2f playerFaceDirection, sf::Vector2f startingBulletPos,
+                                                   float range, float deflectionAngle, int damage, int numberOfBullets) const
 {
 	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
 	auto enemies = mRegistry.view<component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
@@ -214,7 +224,7 @@ std::vector<sf::Vector2f> GunAttacks::performShoot(const sf::Vector2f& playerFac
 	return shotsEndingPositions;
 }
 
-sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirection, float deflection) const
+sf::Vector2f GunAttacks::getBulletDirection(sf::Vector2f playerFaceDirection, float deflection) const
 {
 	deflection = Random::generateNumber(-deflection, deflection);
 	const float deflectionFactor = deflection / -90.f;
@@ -301,7 +311,7 @@ sf::Vector2f GunAttacks::getBulletDirection(const sf::Vector2f& playerFaceDirect
 	return deflectedBulletDirection;
 }
 
-sf::Vector2f GunAttacks::getCurrentPosition(const sf::Vector2f& bulletDirection, const sf::Vector2f& startingPos, const int bulletDistance) const
+sf::Vector2f GunAttacks::getCurrentPosition(sf::Vector2f bulletDirection, sf::Vector2f startingPos, int bulletDistance) const
 {
 	sf::Vector2f newPosition;
 	newPosition.x = startingPos.x + bulletDirection.x * bulletDistance;
@@ -316,9 +326,10 @@ void GunAttacks::clearInGunAttackAreaTags() const
 		mRegistry.remove<component::InPlayerGunAttackArea>(enemy);
 }
 
-void GunAttacks::createShotImage(const sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEngingPosition, const std::string& soundFilename) const
+void GunAttacks::createShotImage(sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shotsEndingPosition,
+                                 const std::string& soundFilename) const
 {
-	for (auto shot : shotsEngingPosition)
+	for (auto shot : shotsEndingPosition)
 	{
 		auto entity = mRegistry.create();
 		mRegistry.assign<component::LastingShot>(entity, shotsStartingPosition, shot);
@@ -339,6 +350,19 @@ void GunAttacks::handleLastingBullets() const
 		Renderer::submitLine(sf::Color(230, 160, 0), sf::Color(250, 250, 200),
 			lastingShotDetails.startingShotPos, lastingShotDetails.endingShotPos, 1.f);
 	});
+}
+
+void GunAttacks::shakeCamera(float power) const
+{
+	auto playerCameraView = mRegistry.view<component::Player>();
+	for(auto player : playerCameraView)
+	{
+		component::CameraShake shake;
+		shake.duration = 0.5f;
+		shake.magnitude = power;
+		shake.smooth = false;
+		mRegistry.assign_or_replace<component::CameraShake>(player, shake);
+	}
 }
 
 }

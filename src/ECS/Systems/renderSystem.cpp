@@ -6,6 +6,7 @@
 #include "Renderer/API/camera.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/random.hpp"
 #include <entt/entity/utility.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
@@ -25,12 +26,35 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	// get current camera
+	// shake camera
+	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();
+	for(auto cameraEntity : shakingCameras)
+	{
+		auto& [shake, camera] = shakingCameras.get<component::CameraShake, component::Camera>(cameraEntity);
+		if(shake.elapsedTime < shake.duration) {
+			sf::Vector2f cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
+			cameraOffset *= shake.magnitude;
+			cameraOffset *= (shake.duration - shake.elapsedTime) / shake.duration;
+			sf::Vector2f cameraPos = camera.camera.getCenter();
+			sf::Vector2f newCameraPos = cameraPos + cameraOffset;
+			if(shake.smooth)
+				camera.camera.setCenterSmoothly(newCameraPos , 2.f);
+			else
+				camera.camera.setCenter(newCameraPos);
+			shake.elapsedTime += dt;
+		}
+		else {
+			mRegistry.remove<component::CameraShake>(cameraEntity);
+		}
+	}
+
+	// get current camera and update shake
 	auto cameras = mRegistry.view<component::Camera>();
 	Camera* currentCamera = &defaultCamera;
 	cameras.each([&currentCamera](component::Camera& camera) {
-		if(camera.name == component::Camera::currentCameraName)
+		if(camera.name == component::Camera::currentCameraName) {
 			currentCamera = &camera.camera;
+		}
 	});
 
 	// set camera
