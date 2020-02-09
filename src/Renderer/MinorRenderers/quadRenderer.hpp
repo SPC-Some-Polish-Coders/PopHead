@@ -35,16 +35,21 @@ private:
 	bool mShouldSort;
 };
 
+struct QuadRendererDebugNumbers
+{
+	unsigned drawCalls = 0;
+	unsigned drawnSprites = 0;
+	unsigned drawnTextures = 0;
+	unsigned renderGroups = 0;
+};
+
 class QuadRenderer
 {
 public:
 	void init();
 	void shutDown();
 
-	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
-	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }
-	unsigned getNumberOfDrawnTextures() const { return mNumberOfDrawnTextures; }
-	unsigned getNumberOfRenderGroups() const { return mNumberOfRenderGroups; }
+	QuadRendererDebugNumbers getDebugNumbers() { return mDebugNumbers; }
 
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
@@ -66,16 +71,13 @@ private:
 	RenderGroupsHashMap mRenderGroupsHashMap;
 	RenderGroupsHashMap mNotAffectedByLightRenderGroupsHashMap;
 	Shader mDefaultQuadShader;
+	QuadRendererDebugNumbers mDebugNumbers;
 	const FloatRect* mScreenBounds; 
 	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;
 	IndexBuffer mQuadIBO;
 	unsigned mQuadsDataVBO;
 	unsigned mVAO;
-	unsigned mNumberOfDrawCalls = 0;
-	unsigned mNumberOfDrawnSprites = 0;
-	unsigned mNumberOfDrawnTextures = 0;
-	unsigned mNumberOfRenderGroups = 0;
 	bool mIsDebugCountingActive = false;
 };
 

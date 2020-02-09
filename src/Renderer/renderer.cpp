@@ -209,13 +209,15 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		submitDebugCounter("All draw calls per frame: ",
-			quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+		auto quadRendererNumbers = quadRenderer.getDebugNumbers();
 
-		submitDebugCounter("Nr of instanced draw calls: ", quadRenderer.getNumberOfDrawCalls());
-		submitDebugCounter("Nr of render groups: ", quadRenderer.getNumberOfRenderGroups());
-		submitDebugCounter("Nr of drawn instanced sprites: ", quadRenderer.getNumberOfDrawnSprites());
-		submitDebugCounter("Nr of instanced textures: ", quadRenderer.getNumberOfDrawnTextures());
+		submitDebugCounter("All draw calls per frame: ",
+			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+
+		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
+		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
+		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
+		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
 		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of drawn points: ", pointRenderer.getNrOfDrawnPoints());

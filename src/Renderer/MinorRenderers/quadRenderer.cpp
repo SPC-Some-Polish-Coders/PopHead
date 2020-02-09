@@ -116,10 +116,7 @@ void QuadRenderer::shutDown()
 
 void QuadRenderer::resetDebugNumbers()
 {
-	mNumberOfDrawCalls = 0;
-	mNumberOfDrawnSprites = 0;
-	mNumberOfDrawnTextures = 0;
-	mNumberOfRenderGroups = 0;
+	mDebugNumbers = {};
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
@@ -212,7 +209,7 @@ void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
+	mDebugNumbers.renderGroups = mRenderGroupsHashMap.size();
 	mCurrentlyBoundQuadShader = nullptr;
 	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
@@ -220,8 +217,8 @@ void QuadRenderer::flush(bool affectedByLight)
 	{
 		// update debug info
 		if(mIsDebugCountingActive) {
-			mNumberOfDrawnSprites += rg.quadsData.size();
-			mNumberOfDrawnTextures += rg.textures.size();
+			mDebugNumbers.drawnSprites += rg.quadsData.size();
+			mDebugNumbers.drawnTextures += rg.textures.size();
 		}
 
 		// set up shader
@@ -290,7 +287,7 @@ void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quads
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
 
 	if(mIsDebugCountingActive)
-		++mNumberOfDrawCalls;
+		++mDebugNumbers.drawCalls;
 }
 
 }
