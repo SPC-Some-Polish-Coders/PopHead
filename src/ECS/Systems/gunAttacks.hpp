@@ -18,7 +18,8 @@ namespace ph::system {
 	private:
 		void handlePendingGunAttacks() const;
 		sf::Vector2f getBulletStartingPosition(sf::Vector2f playerFaceDirection) const;
-		void tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, FloatRect playerBody, sf::Vector2f gunSize, float range, float deflectionAngle) const;
+		void tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, FloatRect playerBody, sf::Vector2f gunSize,
+		                               float range, float deflectionAngle, bool* wasOpponentHitOut) const;
 		std::vector<sf::Vector2f> performShoot(sf::Vector2f playerFaceDirection, sf::Vector2f startingBulletPos, float range,
 		                                       float deflectionAngle, int damage, int numberOfBullets) const;
 		sf::Vector2f getBulletDirection(sf::Vector2f playerFaceDirection, float deflection) const;
@@ -27,6 +28,6 @@ namespace ph::system {
 
 		void createShotImage(sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
 		void handleLastingBullets() const;
-		void shakeCamera(float power) const; 
+		void shakeCamera(float magnitude, bool smooth) const; 
 	};
 }

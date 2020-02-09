@@ -16,7 +16,7 @@ namespace ph::system {
 		void update(float dt) override;
 
 	private:
-		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
+		float getStartAttackRotation(sf::Vector2f playerFaceDirection) const;
 
 	private:
 		float mStartWeaponRotation;

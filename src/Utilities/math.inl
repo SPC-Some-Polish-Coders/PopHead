@@ -34,12 +34,12 @@ namespace ph::Math {
 
 	float degreesToRadians(float angle)
 	{
-		return angle * 3.14159f / 180.f;
+		return angle * pi / 180.f;
 	}
 
 	float radiansToDegrees(float angle)
 	{
-		return angle * 180.f / 3.14159f;
+		return angle * 180.f / pi;
 	}
 
 	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns)

@@ -7,6 +7,7 @@
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/random.hpp"
+#include "Utilities/math.hpp"
 #include <entt/entity/utility.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
@@ -38,7 +39,7 @@ void RenderSystem::update(float dt)
 			sf::Vector2f cameraPos = camera.camera.getCenter();
 			sf::Vector2f newCameraPos = cameraPos + cameraOffset;
 			if(shake.smooth)
-				camera.camera.setCenterSmoothly(newCameraPos , 2.f);
+				camera.camera.setCenter(Math::lerp(cameraPos, newCameraPos, 2.f));
 			else
 				camera.camera.setCenter(newCameraPos);
 			shake.elapsedTime += dt;

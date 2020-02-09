@@ -1,6 +1,7 @@
 #include "debugCamera.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/math.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
@@ -66,7 +67,7 @@ void DebugCamera::update(float dt)
 			movement *= 2.f;
 		movement *= dt;
 		body.rect.move(movement);
-		camera.camera.setCenterSmoothly(body.rect.getCenter(), 10 * dt);
+		camera.camera.setCenter(body.rect.getCenter());
 
 		// zoom camera 
 		float zoom = 1.f;

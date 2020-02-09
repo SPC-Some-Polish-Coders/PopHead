@@ -54,6 +54,7 @@ void MeleeAttacks::update(float dt)
 					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
 					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
 				);
+				bool wasEnemyHit = false;
 				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::PushingForces>(entt::exclude<component::Player>);
 				for(auto enemy : enemies)
 				{
@@ -69,19 +70,22 @@ void MeleeAttacks::update(float dt)
 							enemyPushingForces.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 3.f;
 							enemyPushingForces.friction = 1.8f;
 						}
-						
-						component::CameraShake shake;
-						shake.duration = 0.5f;
-						shake.magnitude = 0.5f;
-						shake.smooth = false;
-						mRegistry.assign_or_replace<component::CameraShake>(player, shake);
+						wasEnemyHit = true;
 					}
 				};
+
+				// shake camera
+				component::CameraShake shake;
+				shake.duration = 0.35f;
+				shake.magnitude = wasEnemyHit ? 2.f : 0.15f;
+				shake.smooth = !wasEnemyHit;
+				mRegistry.assign_or_replace<component::CameraShake>(player, shake);
 
 				// initialize weapon rendering
 				mShouldWeaponBeRendered = true;
 				renderQuad.rotation = mStartWeaponRotation;
-				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::HiddenForRenderer>(meleeWeapon), "Melee weapon doesn't have HiddenForRenderer component!");
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<component::HiddenForRenderer>(meleeWeapon),
+					"Melee weapon doesn't have HiddenForRenderer component!");
 				mRegistry.remove<component::HiddenForRenderer>(meleeWeapon);
 			}
 
@@ -104,7 +108,7 @@ void MeleeAttacks::update(float dt)
 	}
 }
 
-float MeleeAttacks::getStartAttackRotation(const sf::Vector2f& faceDirection) const
+float MeleeAttacks::getStartAttackRotation(sf::Vector2f faceDirection) const
 {
 	if(faceDirection == PH_EAST)
 		return 90.f;
