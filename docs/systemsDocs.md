@@ -152,6 +152,7 @@ DamageTag<br />
 LastingShot<br />
 Lifetime<br />
 AmbientSound<br />
+CameraShake<br />
 </td>
 </tr>
 <tr>
@@ -190,6 +191,7 @@ Health<br />
 <td>
 CollisionWithPlayer<br />
 DamageTag<br />
+CameraShake<br />
 PushingForces<br />
 </td>
 </tr>
@@ -246,6 +248,7 @@ Killable<br />
 BodyRect<br />
 DamageTag<br />
 RenderQuad<br />
+CameraShake<br />
 HiddenForRenderer<br />
 </td>
 </tr>
@@ -287,6 +290,7 @@ TaggedToDestroy<br />
 <td>PlayerCameraMovement</td>
 <td>
 Player<br />
+FaceDirection<br />
 BodyRect<br />
 </td>
 <td>
@@ -341,6 +345,7 @@ TextureRect<br />
 </td>
 <td>
 Camera<br />
+CameraShake<br />
 RenderChunk<br />
 </td>
 </tr>
