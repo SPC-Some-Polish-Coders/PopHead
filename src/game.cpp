@@ -5,6 +5,7 @@
 #include "GUI/xmlGuiParser.hpp"
 #include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
+#include "Terminal/terminal.hpp"
 #include "Renderer/renderer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
@@ -17,13 +18,12 @@ Game::Game()
 	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
-	,mTerminal(std::make_unique<Terminal>(mWindow))
 {
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 	SoundPlayer::init();
 	MusicPlayer::init();
 
-	mTerminal->init(mSceneManager.get());
+	Terminal::init(&mWindow, mSceneManager.get());
 	mSceneManager->init(mTextures.get(), mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
@@ -63,7 +63,7 @@ void Game::handleEvents()
 
 		handleGlobalKeyboardShortcuts(mWindow, phEvent);
 		mFPSCounter.handleEvent(phEvent);
-		mTerminal->handleEvent(phEvent);
+		Terminal::handleEvent(phEvent);
 		GUI::handleEvent(phEvent);
 		
 		mSceneManager->handleEvent(phEvent);
@@ -81,7 +81,7 @@ void Game::update(float dt)
 		mSceneManager->update(dt);
 		mAIManager->update();
 		GUI::update(dt);
-		mTerminal->update(dt);
+		Terminal::update(dt);
 		mFPSCounter.update();
 
 		Renderer::endScene();

@@ -11,7 +11,7 @@
 
 namespace ph {
 
-	void initializeLogsModule(const std::string& configFileName, Terminal* terminal)
+	void initializeLogsModule(const std::string& configFileName)
 	{
 		Xml document;
 		PH_ASSERT_CRITICAL(document.loadFromFile(configFileName), "gui config file \"" + configFileName + "\" wasn't loaded correctly!");
@@ -29,7 +29,7 @@ namespace ph {
 			else if (type == "consoleHandler")
 				handler.reset(new ConsoleHandler());
 			else if (type == "terminalHandler")
-				handler.reset(new TerminalHandler(terminal));
+				handler.reset(new TerminalHandler());
 
 			if (!handler)
 				continue;

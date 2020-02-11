@@ -13,7 +13,6 @@ namespace ph{
 
 class CutScene;
 class AIManager;
-class Terminal;
 class SceneManager;
 class Texture;
 
