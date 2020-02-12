@@ -7,7 +7,9 @@
 #include "Scenes/scene.hpp"
 #include "GUI/gui.hpp"
 #include "Utilities/direction.hpp"
+#include "Utilities/joystickMacros.hpp"
 #include "Utilities/profiling.hpp"
+#include <SFML/Window/Joystick.hpp>
 #include <cmath>
 
 namespace ph::system {
@@ -21,21 +23,27 @@ namespace ph::system {
 
 	void PlayerMovementInput::onEvent(sf::Event e)
 	{
-		if(e.type == sf::Event::KeyPressed)
+		auto doPause = [this]()
 		{
+			// TODO_states: Pause screen could be handled by states
+			auto playerView = mRegistry.view<component::Player, component::Health>();
+			playerView.each([this](component::Player, component::Health) {
+				sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
+				sPause = !sPause;
+			});
+		};
+
+		if(e.type == sf::Event::KeyPressed) {
 			if(e.key.code == sf::Keyboard::Escape)
-			{
-				// TODO_states: Pause screen could be handled by states
-				auto playerView = mRegistry.view<component::Player, component::Health>();
-				playerView.each([this](component::Player, component::Health) {
-					sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
-					sPause = !sPause;
-				});
-			}
+				doPause();
 			else if(e.key.code == sf::Keyboard::LShift)
-			{
 				mTimeFromDashPressed = 0.f;
-			}
+		}
+		else if(e.type == sf::Event::JoystickButtonPressed){
+			if(e.joystickButton.button == PH_JOYSTICK_MENU)
+				doPause();
+			else if(e.joystickButton.button == PH_JOYSTICK_X)
+				mTimeFromDashPressed = 0.f;
 		}
 	}
 
@@ -54,48 +62,62 @@ namespace ph::system {
 				return;
 
 		// set input variables
-		mUp = sf::Keyboard::isKeyPressed(sf::Keyboard::W); 
-		mDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S); 
-		mLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A); 
-		mRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D); 
+		float x = 0.f;
+		float y = 0.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			x -= 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			x += 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			y -= 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			y += 1.f;
+		if(sf::Joystick::isConnected(0) && x == 0.f && y == 0.f)
+		{
+			constexpr float deadZoneThreshold = 65.f;
+			float leftThumbX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_X);
+			float leftThumbY = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_Y);
+			x = (leftThumbX > deadZoneThreshold || leftThumbX < -deadZoneThreshold) ? leftThumbX / 100.f : 0.f;
+			y = (leftThumbY > deadZoneThreshold || leftThumbY < -deadZoneThreshold) ? leftThumbY / 100.f : 0.f;
+		}
 
 		// get player direction
 		sf::Vector2f playerDirection;
-		if(mUp && mLeft)  playerDirection = PH_NORTH_WEST;
-		else if(mUp && mRight) playerDirection = PH_NORTH_EAST;
-		else if(mDown && mLeft) playerDirection = PH_SOUTH_WEST;
-		else if(mDown && mRight) playerDirection = PH_SOUTH_EAST;
-		else if(mUp) playerDirection = PH_NORTH;
-		else if(mDown) playerDirection = PH_SOUTH;
-		else if(mLeft) playerDirection = PH_WEST;
-		else if(mRight) playerDirection = PH_EAST;
+		if(x < 0.f && y < 0.f)  playerDirection = PH_NORTH_WEST;
+		else if(x > 0.f && y < 0.f) playerDirection = PH_NORTH_EAST;
+		else if(x < 0.f && y > 0.f) playerDirection = PH_SOUTH_WEST;
+		else if(x > 0.f && y > 0.f) playerDirection = PH_SOUTH_EAST;
+		else if(y < 0.f) playerDirection = PH_NORTH;
+		else if(y > 0.f) playerDirection = PH_SOUTH;
+		else if(x < 0.f) playerDirection = PH_WEST;
+		else if(x > 0.f) playerDirection = PH_EAST;
 
 		for(auto& player : playerView)
 		{
 			// update animation data
 			auto& animationData = playerView.get<component::AnimationData>(player);
 
-			if(mUp && mLeft) {
+			if(x < 0.f && y < 0.f) {
 				animationData.currentStateName = "leftUp";
 				animationData.isPlaying = true;
 			}
-			else if(mUp && mRight) {
+			else if(x > 0.f && y < 0.f) {
 				animationData.currentStateName = "rightUp";
 				animationData.isPlaying = true;
 			}
-			else if(mLeft) {
+			else if(x < 0.f) {
 				animationData.currentStateName = "left";
 				animationData.isPlaying = true;
 			}
-			else if(mRight) {
+			else if(x > 0.f) {
 				animationData.currentStateName = "right";
 				animationData.isPlaying = true;
 			}
-			else if(mUp) {
+			else if(y < 0.f) {
 				animationData.currentStateName = "up";
 				animationData.isPlaying = true;
 			}
-			else if(mDown) {
+			else if(y > 0.f) {
 				animationData.currentStateName = "down";
 				animationData.isPlaying = true;
 			}
@@ -104,7 +126,7 @@ namespace ph::system {
 			}
 
 			// set face direction
-			if (playerDirection != sf::Vector2f(0.f, 0.f))
+			if(playerDirection != sf::Vector2f(0.f, 0.f))
 			{
 				auto& faceDirection = playerView.get<component::FaceDirection>(player);
 				faceDirection.direction = playerDirection;
@@ -134,15 +156,13 @@ namespace ph::system {
 
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
-		movementView.each([this, playerDirection]
+		movementView.each([this, x, y, playerDirection]
 		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
 			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-			auto vel = playerDirection * speed.speed;
-			if(mTimeFromDashPressed < 0.1f)
-				vel *= 2.f;
-			velocity.dx = vel.x;
-			velocity.dy = vel.y;
+			float dashFactor = mTimeFromDashPressed < 0.1f ? 2.f : 1.f;
+			velocity.dx = x * dashFactor * speed.speed;
+			velocity.dy = y * dashFactor * speed.speed;
 		});
 
 		mTimeFromDashPressed += dt;

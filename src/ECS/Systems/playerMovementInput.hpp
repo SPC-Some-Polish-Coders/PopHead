@@ -23,11 +23,6 @@ namespace system {
 		Scene* mScene;
 
 		float mTimeFromDashPressed = 0.f; 
-
-		bool mUp = false;
-		bool mDown = false;
-		bool mRight = false;
-		bool mLeft = false;
 	};
 }
 
