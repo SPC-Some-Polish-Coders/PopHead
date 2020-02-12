@@ -92,22 +92,47 @@ namespace ph::system {
 			}
 		}
 
-		// get player direction
+		// get player direction and correct diagonal input
 		sf::Vector2f playerDirection;
-		if(x < 0.f && y < 0.f)  playerDirection = PH_NORTH_WEST;
-		else if(x > 0.f && y < 0.f) playerDirection = PH_NORTH_EAST;
-		else if(x < 0.f && y > 0.f) playerDirection = PH_SOUTH_WEST;
-		else if(x > 0.f && y > 0.f) playerDirection = PH_SOUTH_EAST;
-		else if(y < 0.f) playerDirection = PH_NORTH;
-		else if(y > 0.f) playerDirection = PH_SOUTH;
-		else if(x < 0.f) playerDirection = PH_WEST;
-		else if(x > 0.f) playerDirection = PH_EAST;
+		if(x < 0.f && y < 0.f) { 
+			playerDirection = PH_NORTH_WEST;
+			x = y = (x + y) / 2.f;			
+		}
+		else if(x > 0.f && y < 0.f) {
+			playerDirection = PH_NORTH_EAST;
+			float offset = (x + (-y)) / 2.f;
+			x = offset;
+			y = -offset;
+		}
+		else if(x < 0.f && y > 0.f) {
+			playerDirection = PH_SOUTH_WEST;
+			float offset = ((-x) + y) / 2.f;
+			x = -offset;
+			y = offset;
+		}
+		else if(x > 0.f && y > 0.f) {
+			playerDirection = PH_SOUTH_EAST;
+			x = y = (x + y) / 2.f;			
+		}
+		else if(y < 0.f) {
+			playerDirection = PH_NORTH;
+		}
+		else if(y > 0.f) {
+			playerDirection = PH_SOUTH;
+		}
+		else if(x < 0.f) {
+			playerDirection = PH_WEST;
+		}
+		else if(x > 0.f) {
+			playerDirection = PH_EAST;
+		}
 
 		for(auto& player : playerView)
 		{
 			// update animation data
 			auto& animationData = playerView.get<component::AnimationData>(player);
 
+			// TODO:
 			if(x < 0.f && y < 0.f) {
 				animationData.currentStateName = "leftUp";
 				animationData.isPlaying = true;
