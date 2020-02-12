@@ -18,7 +18,7 @@ void MeleeAttacks::onEvent(sf::Event e)
 
 	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Backslash && !mShouldWeaponBeRendered)
 		mIsAttackButtonPressed = true;
-	if(e.type == sf::Event::JoystickButtonPressed && e.joystickButton.button == 1)
+	if(e.type == sf::Event::JoystickButtonPressed && e.joystickButton.button == 1 && !mShouldWeaponBeRendered)
 		mIsAttackButtonPressed = true;
 }
 
