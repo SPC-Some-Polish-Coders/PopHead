@@ -3,7 +3,6 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
@@ -12,16 +11,10 @@ void Levers::update(float dt)
 {
 }
 
-void Levers::onEvent(Event event)
+void Levers::onEvent(sf::Event e)
 {
-	if(auto* e = std::get_if<ActionEvent>(&event))
-	{
-		if (e->mType == ActionEvent::Pressed)
-		{
-			if (e->mAction == "use")
-				handleUsedLevers();
-		}
-	}
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::E)
+		handleUsedLevers();
 }
 
 void Levers::handleUsedLevers() const

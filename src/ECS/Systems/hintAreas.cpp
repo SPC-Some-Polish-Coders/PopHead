@@ -4,7 +4,6 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Systems/weather.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Utilities/profiling.hpp"
 
 namespace ph::system {
@@ -37,22 +36,22 @@ void HintAreas::update(float dt)
 				hintContent->setText(hint.content);
 
 				if(hint.hintName == "controlHint") {
-					ActionEventManager::setActionEnabled("changeWeapon", false);
-					ActionEventManager::setActionEnabled("gunAttack", false);
-					ActionEventManager::setActionEnabled("meleeAttack", false);
+					//ActionEventManager::setActionEnabled("changeWeapon", false);
+					//ActionEventManager::setActionEnabled("gunAttack", false);
+					//ActionEventManager::setActionEnabled("meleeAttack", false);
 					Weather::setRainType(Rain::Heavy);
 					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "meleeFightingHint") {
-					ActionEventManager::setActionEnabled("meleeAttack", true);
+					//ActionEventManager::setActionEnabled("meleeAttack", true);
 					Weather::setRainType(Rain::Normal);
 				}
 				else if(hint.hintName == "shootingHint") {
-					ActionEventManager::setActionEnabled("gunAttack", true);
+					//ActionEventManager::setActionEnabled("gunAttack", true);
 					Weather::setRainType(Rain::Drizzle);
 				}
 				else if(hint.hintName == "weaponChangingHint") {
-					ActionEventManager::setActionEnabled("changeWeapon", true);
+					//ActionEventManager::setActionEnabled("changeWeapon", true);
 					Weather::setMode(Weather::Sunny);	
 				}
 			}

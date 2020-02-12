@@ -1,10 +1,10 @@
 #pragma once
 
 #include "behaviorType.hpp"
-#include "Events/event.hpp"
 #include "Renderer/API/texture.hpp"
 #include "Resources/resourceHolder.hpp"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/Event.hpp>
 #include <map>
 #include <functional>
 
@@ -15,12 +15,12 @@ class Widget
 public:
 	Widget(const char* name);
 
-	void handleEvent(const Event&);
+	void handleEvent(sf::Event);
 	void update(float dt, unsigned char z);
 private:
-	virtual void handleEventOnCurrent(const ph::Event&);
+	virtual void handleEventOnCurrent(sf::Event);
 	virtual void updateCurrent(float dt, unsigned char z);
-	void handleEventOnChildren(const ph::Event&);
+	void handleEventOnChildren(sf::Event);
 	void updateChildren(float dt, unsigned char z);
 
 public:

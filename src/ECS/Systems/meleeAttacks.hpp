@@ -2,7 +2,6 @@
 
 #include "ECS/system.hpp"
 #include "Utilities/rect.hpp"
-
 #include <SFML/System/Vector2.hpp>
 
 namespace ph::system {
@@ -12,7 +11,7 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void onEvent(Event)override;
+		void onEvent(sf::Event)override;
 		void update(float dt) override;
 
 	private:

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Events/event.hpp"
-
 #include <entt/entity/registry.hpp>
+#include <SFML/Window/Event.hpp>
 
 namespace ph::system {
 
@@ -12,7 +11,7 @@ namespace ph::system {
 		explicit System(entt::registry& registry) : mRegistry(registry) {}
 
 		virtual void update(float dt) {};
-		virtual void onEvent(Event) {};
+		virtual void onEvent(sf::Event) {};
 
 		static void setPause(bool pause) { sPause = pause; }
 

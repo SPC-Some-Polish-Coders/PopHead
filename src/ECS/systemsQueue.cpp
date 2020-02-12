@@ -13,7 +13,7 @@ namespace ph {
 			system->update(seconds);
 	}
 
-	void SystemsQueue::handleEvents(Event e)
+	void SystemsQueue::handleEvents(sf::Event e)
 	{
 		for (auto& system : mSystemsArray)
 			system->onEvent(e);

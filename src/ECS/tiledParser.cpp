@@ -13,7 +13,6 @@
 #include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Renderer/API/shader.hpp"
 
 namespace ph {
@@ -37,8 +36,6 @@ namespace ph {
 			return;
 
 		loadObjects(gameObjects);
-
-		ActionEventManager::setEnabled(true);
 	}
 
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const

@@ -81,7 +81,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::Weather>();
 }
 
-void Scene::handleEvent(Event e)
+void Scene::handleEvent(sf::Event e)
 {
 	mSystemsQueue.handleEvents(e);
 }

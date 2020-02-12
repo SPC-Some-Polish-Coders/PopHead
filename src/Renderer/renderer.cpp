@@ -290,22 +290,19 @@ void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
 	lightRenderer.submitLightBlockingQuad(position, size);
 }
 
-void handleEvent(Event& phEvent)
+void handleEvent(sf::Event e)
 {
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
-	{
-		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F3) {
-			isDebugDisplayActive = !isDebugDisplayActive;
-			lineRenderer.setDebugCountingActive(isDebugDisplayActive);
-			pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-			quadRenderer.
-			setDebugCountingActive(isDebugDisplayActive);
-		}
-		if(e->type == sf::Event::Resized) {
-			GLCheck( glViewport(0, 0, e->size.width, e->size.height) );
-			gameObjectsFramebuffer.onWindowResize(e->size.width, e->size.height);
-			lightingFramebuffer.onWindowResize(e->size.width, e->size.height);
-		}
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F3) {
+		isDebugDisplayActive = !isDebugDisplayActive;
+		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
+		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
+		quadRenderer.
+		setDebugCountingActive(isDebugDisplayActive);
+	}
+	if(e.type == sf::Event::Resized) {
+		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
+		gameObjectsFramebuffer.onWindowResize(e.size.width, e.size.height);
+		lightingFramebuffer.onWindowResize(e.size.width, e.size.height);
 	}
 }
 

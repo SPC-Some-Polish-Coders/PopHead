@@ -1,7 +1,4 @@
 #include "game.hpp"
-#include "Events/globalKeyboardShortcuts.hpp"
-#include "Events/eventDispatcher.hpp"
-#include "Events/actionEventManager.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
@@ -32,8 +29,6 @@ Game::Game()
 
 	Widget::setWindow(&mWindow);
 	XmlGuiParser::init(mTextures.get(), mSceneManager.get());
-
-	ActionEventManager::init();
 }
 
 void Game::run()
@@ -54,21 +49,35 @@ void Game::run()
 
 void Game::handleEvents()
 {
-	ph::Event phEvent;
-	while(EventDispatcher::dispatchEvent(phEvent, mWindow))
+	sf::Event e;
+	while(mWindow.pollEvent(e))
 	{
-		if (auto * event = std::get_if<sf::Event>(&phEvent))
-			if (event->type == sf::Event::Closed)
-				sIsRunning = false;
+		if(e.type == sf::Event::Closed)
+		{
+			sIsRunning = false;
+		}
+		if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F11)
+		{
+			if(mWindow.getSize() == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) {
+				mWindow.create(sf::VideoMode(640, 360), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3));
+				Renderer::restart(640, 360);
+				Widget::setScreenSize({640, 360});
+			}
+			else {
+				mWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3));
+				sf::Vector2u fullScreenSize(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				Renderer::restart(fullScreenSize.x, fullScreenSize.y);
+				Widget::setScreenSize(static_cast<sf::Vector2f>(fullScreenSize));
+			}
+			mWindow.setVerticalSyncEnabled(true);
+			mWindow.setKeyRepeatEnabled(false);
+		}
 
-		handleGlobalKeyboardShortcuts(mWindow, phEvent);
-		mFPSCounter.handleEvent(phEvent);
-		Terminal::handleEvent(phEvent);
-		GUI::handleEvent(phEvent);
-		
-		mSceneManager->handleEvent(phEvent);
-
-		Renderer::handleEvent(phEvent);
+		mFPSCounter.handleEvent(e);
+		Terminal::handleEvent(e);
+		GUI::handleEvent(e);
+		mSceneManager->handleEvent(e);
+		Renderer::handleEvent(e);
 	}
 }
 

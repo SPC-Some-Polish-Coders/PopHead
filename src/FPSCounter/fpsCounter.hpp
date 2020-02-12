@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/event.hpp"
+#include <SFML/Window/Event.hpp>
 #include <SFML/System/Clock.hpp>
 
 namespace ph {
@@ -10,7 +10,7 @@ class FPSCounter
 public:
 	FPSCounter();
 
-	void handleEvent(Event);
+	void handleEvent(sf::Event);
 	void update();
 
 private:

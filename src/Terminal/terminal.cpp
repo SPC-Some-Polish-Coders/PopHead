@@ -1,6 +1,5 @@
 #include "terminal.hpp"
 #include "game.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Logs/logs.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "ECS/System.hpp"
@@ -457,73 +456,68 @@ static void updateCommands(float dt)
 
 namespace Terminal {
 
-void handleEvent(Event& phEvent)
+void handleEvent(sf::Event e)
 {
-	sf::Event* e = std::get_if<sf::Event>(&phEvent);
-	if(!e)
-		return;
-
-	if(isVisible && e->type == sf::Event::TextEntered)
+	if(isVisible && e.type == sf::Event::TextEntered)
 	{
-		char key = static_cast<char>(e->text.unicode);
+		char key = static_cast<char>(e.text.unicode);
 		if(!iscntrl(key))
 			content += key;
 	}
 
-	if(e->type == sf::Event::KeyPressed)
+	if(e.type == sf::Event::KeyPressed)
 	{
-		switch(e->key.code)
+		switch(e.key.code)
 		{
-		case sf::Keyboard::Tab: {
-			if(e->key.control) {
-				// show or hide command prompt
-				ActionEventManager::setEnabled(isVisible);
-				isVisible = !isVisible;
-				window->setKeyRepeatEnabled(isVisible);
-				system::System::setPause(isVisible);
-			}
-		} break;
+			case sf::Keyboard::Tab: {
+				if(e.key.control) {
+					// show or hide command prompt
+					isVisible = !isVisible;
+					window->setKeyRepeatEnabled(isVisible);
+					system::System::setPause(isVisible);
+				}
+			} break;
 
-		case sf::Keyboard::BackSpace: {
-			if(content.size() > 0)
-				content.pop_back();
-		} break;
+			case sf::Keyboard::BackSpace: {
+				if(content.size() > 0)
+					content.pop_back();
+			} break;
 
-		case sf::Keyboard::Enter: {
-			// execute command
-			executeCommand();
+			case sf::Keyboard::Enter: {
+				// execute command
+				executeCommand();
 
-			// clear input area content
-			content.clear();
+				// clear input area content
+				content.clear();
 
-			// update last commands
-			indexOfCurrentLastCommand = -1;
-			if(content.size() != 0) {
-				lastCommands.emplace_front(content);
-				if(lastCommands.size() > 10)
-					lastCommands.pop_back();
-			}
-		} break;
+				// update last commands
+				indexOfCurrentLastCommand = -1;
+				if(content.size() != 0) {
+					lastCommands.emplace_front(content);
+					if(lastCommands.size() > 10)
+						lastCommands.pop_back();
+				}
+			} break;
 
-		case sf::Keyboard::Up: {
-			if(indexOfCurrentLastCommand + 1 < static_cast<int>(lastCommands.size()))
-			{
-				++indexOfCurrentLastCommand;
-				if(indexOfCurrentLastCommand >= 0)
-					content = lastCommands[indexOfCurrentLastCommand];
-			}
-		} break;
+			case sf::Keyboard::Up: {
+				if(indexOfCurrentLastCommand + 1 < static_cast<int>(lastCommands.size()))
+				{
+					++indexOfCurrentLastCommand;
+					if(indexOfCurrentLastCommand >= 0)
+						content = lastCommands[indexOfCurrentLastCommand];
+				}
+			} break;
 
-		case sf::Keyboard::Down: {
-			if(indexOfCurrentLastCommand > -1)
-			{
-				--indexOfCurrentLastCommand;
-				if(indexOfCurrentLastCommand == -1)
-					content.clear();
-				else
-					content = lastCommands[indexOfCurrentLastCommand];
-			}
-		} break;
+			case sf::Keyboard::Down: {
+				if(indexOfCurrentLastCommand > -1)
+				{
+					--indexOfCurrentLastCommand;
+					if(indexOfCurrentLastCommand == -1)
+						content.clear();
+					else
+						content = lastCommands[indexOfCurrentLastCommand];
+				}
+			} break;
 		}
 	}
 }

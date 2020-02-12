@@ -7,11 +7,10 @@
 
 namespace ph::system {
 
-void DebugCamera::onEvent(Event event)
+void DebugCamera::onEvent(sf::Event e)
 {
-	if(auto* e = std::get_if<sf::Event>(&event))
-		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::H)
-			mIsHintActive = !mIsHintActive;
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::H)
+		mIsHintActive = !mIsHintActive;
 }
 
 void DebugCamera::update(float dt)

@@ -81,7 +81,7 @@ void SceneManager::replaceAction()
 	mCurrentSceneFilePath = std::move(mFilePathOfSceneToMake);
 }
 
-void SceneManager::handleEvent(const Event& e)
+void SceneManager::handleEvent(sf::Event e)
 {
 	mScene->handleEvent(e);
 }

@@ -3,7 +3,6 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/scene.hpp"
 #include "GUI/gui.hpp"
@@ -20,25 +19,22 @@ namespace ph::system {
 	{
 	}
 
-	void PlayerMovementInput::onEvent(Event event)
+	void PlayerMovementInput::onEvent(sf::Event e)
 	{
-		if(auto* e = std::get_if<ActionEvent>(&event))
+		if(e.type == sf::Event::KeyPressed)
 		{
-			if(e->mType == ActionEvent::Type::Pressed)
+			if(e.key.code == sf::Keyboard::Escape)
 			{
-				if(e->mAction == "pauseScreen")
-				{
-					// TODO_states: Pause screen could be handled by states
-					auto playerView = mRegistry.view<component::Player, component::Health>();
-					playerView.each([this](component::Player, component::Health) {
-						sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
-						sPause = !sPause;
-					});
-				}
-				else if(e->mAction == "dash")
-				{
-					mTimeFromDashPressed = 0.f;
-				}
+				// TODO_states: Pause screen could be handled by states
+				auto playerView = mRegistry.view<component::Player, component::Health>();
+				playerView.each([this](component::Player, component::Health) {
+					sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
+					sPause = !sPause;
+				});
+			}
+			else if(e.key.code == sf::Keyboard::LShift)
+			{
+				mTimeFromDashPressed = 0.f;
 			}
 		}
 	}
@@ -58,10 +54,10 @@ namespace ph::system {
 				return;
 
 		// set input variables
-		mUp = ActionEventManager::isActionPressed("movingUp");
-		mDown = ActionEventManager::isActionPressed("movingDown");
-		mLeft = ActionEventManager::isActionPressed("movingLeft");
-		mRight = ActionEventManager::isActionPressed("movingRight");
+		mUp = sf::Keyboard::isKeyPressed(sf::Keyboard::W); 
+		mDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S); 
+		mLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A); 
+		mRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D); 
 
 		// get player direction
 		sf::Vector2f playerDirection;

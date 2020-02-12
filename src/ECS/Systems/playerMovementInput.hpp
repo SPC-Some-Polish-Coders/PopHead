@@ -15,19 +15,19 @@ namespace system {
 	public:
 		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
-		void onEvent(Event) override;
+		void onEvent(sf::Event) override;
 		void update(float dt) override;
 
 	private:
 		AIManager& mAIManager;
 		Scene* mScene;
 
-		float mTimeFromDashPressed; 
+		float mTimeFromDashPressed = 0.f; 
 
-		bool mUp    = false;
-		bool mDown  = false;
-		bool mLeft  = false;
+		bool mUp = false;
+		bool mDown = false;
 		bool mRight = false;
+		bool mLeft = false;
 	};
 }
 

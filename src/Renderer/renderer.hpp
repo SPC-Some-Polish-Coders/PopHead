@@ -2,10 +2,10 @@
 
 #include "API/textAligment.hpp"
 #include "MinorRenderers/quadData.hpp"
-#include "Events/event.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/Event.hpp>
 #include <vector>
 
 namespace ph {
@@ -54,7 +54,7 @@ namespace Renderer
 
 	void setAmbientLightColor(sf::Color);
 
-	void handleEvent(Event&);
+	void handleEvent(sf::Event);
 }
 
 }

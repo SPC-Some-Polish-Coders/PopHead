@@ -1,7 +1,7 @@
 #pragma once
 
 #include "widget.hpp"
-#include "Events/event.hpp"
+#include <SFML/Window/Event.hpp>
 #include <vector>
 
 namespace ph {
@@ -11,7 +11,7 @@ class Interface
 public:
 	Interface(const char* name);
 
-	void handleEvent(const Event&);
+	void handleEvent(sf::Event);
 	void update(float dt);
 
 	void show();
