@@ -74,11 +74,22 @@ namespace ph::system {
 			y += 1.f;
 		if(sf::Joystick::isConnected(0) && x == 0.f && y == 0.f)
 		{
-			constexpr float deadZoneThreshold = 65.f;
+			auto processThumbInput = [&x, &y](float inX, float inY)
+			{
+				constexpr float deadZoneThreshold = 65.f;
+				x = (inX > deadZoneThreshold || inX < -deadZoneThreshold) ? inX / 100.f : 0.f;
+				y = (inY > deadZoneThreshold || inY < -deadZoneThreshold) ? inY / 100.f : 0.f;
+			};
 			float leftThumbX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_X);
 			float leftThumbY = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_Y);
-			x = (leftThumbX > deadZoneThreshold || leftThumbX < -deadZoneThreshold) ? leftThumbX / 100.f : 0.f;
-			y = (leftThumbY > deadZoneThreshold || leftThumbY < -deadZoneThreshold) ? leftThumbY / 100.f : 0.f;
+			processThumbInput(leftThumbX, leftThumbY);
+
+			if(x == 0.f && y == 0.f)
+			{
+				float dPadX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_X);
+				float dPadY = -sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_Y);
+				processThumbInput(dPadX, dPadY);
+			}
 		}
 
 		// get player direction
