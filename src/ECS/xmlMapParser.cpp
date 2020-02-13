@@ -532,26 +532,40 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			{
 				if (tileId == tilesData.ids[i]) 
 				{
+					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						if(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)
-						{
-							if(isHorizontallyFlipped) {
-								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
-							}
-							if(isVerticallyFlipped) {
-								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
-							}
-						}
+						if(isHorizontallyFlipped)
+							collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+						if(isVerticallyFlipped)
+							collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+
 						collisionRect.left += tileWorldPos.x; 
-						collisionRect.top += tileWorldPos.y;
+						collisionRect.top += tileWorldPos.y; 
 						mChunkCollisions[chunkIndex].rects.emplace_back(collisionRect);
 						aiManager.registerObstacle(positionInTiles);
+						
+					}
+
+					// light walls
+					for(FloatRect lightWallRect : tilesData.lightWalls[i])
+					{
+						if(isHorizontallyFlipped)
+							lightWallRect.left = info.tileSize.x - lightWallRect.left - lightWallRect.width;
+						if(isVerticallyFlipped)
+							lightWallRect.top = info.tileSize.y - lightWallRect.top - lightWallRect.height;
+
+						lightWallRect.left += tileWorldPos.x; 
+						lightWallRect.top += tileWorldPos.y; 
+
+						auto entity = mTemplates->createCopy("LightWall", *mGameRegistry);
+						auto& body = mGameRegistry->get<component::BodyRect>(entity);
+						body.rect = lightWallRect;
 					}
 
 					break;
 				}
-			}
+			}		
 		}
 	}
 
