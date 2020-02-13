@@ -16474,7 +16474,8 @@
   </object>
   <object id="8" name="Movement tutorial popup" type="HintArea" x="-241.934" y="6149.97" width="452.333" height="362">
    <properties>
-    <property name="hintContent" value="Use @C9909[AWSD]@C9999 to walk"/>
+    <property name="hintJoystickContent" value="Use @C9909[Left thumb]@C9999 to walk"/>
+    <property name="hintKeyboardContent" value="Use @C9909[AWSD]@C9999 to walk"/>
     <property name="hintName" value="controlHint"/>
    </properties>
   </object>
@@ -16488,15 +16489,17 @@
    </properties>
    <point/>
   </object>
-  <object id="10" name="Shooting Tutorial" type="HintArea" x="536.095" y="5672.57" width="693.728" height="248.833">
+  <object id="10" name="Shooting Tutorial" type="HintArea" x="536.095" y="5675.9" width="693.728" height="248.833">
    <properties>
-    <property name="hintContent" value="Use @C9909[Enter]@C9999 to shoot"/>
+    <property name="hintJoystickContent" value="Use @C9909[A]@C9999 to shoot"/>
+    <property name="hintKeyboardContent" value="Use @C9909[Enter]@C9999 to shoot"/>
     <property name="hintName" value="shootingHint"/>
    </properties>
   </object>
   <object id="11" name="Melee Fighting Tutorial" type="HintArea" x="-153.987" y="5261.55" width="246" height="613.167">
    <properties>
-    <property name="hintContent" value="Use @C9909[\]@C9999 (backslash) to hit"/>
+    <property name="hintJoystickContent" value="Use @C9909[B]@C9999 to hit"/>
+    <property name="hintKeyboardContent" value="Use @C9909[\]@C9999 (backslash) to hit"/>
     <property name="hintName" value="meleeFightingHint"/>
    </properties>
   </object>
@@ -16505,7 +16508,8 @@
   </object>
   <object id="18" name="Dashing Tutorial" type="HintArea" x="270.5" y="5278.58" width="533" height="282.833">
    <properties>
-    <property name="hintContent" value="Use @C9909[Left Shift] @C9999to dash"/>
+    <property name="hintJoystickContent" value="Use @C9909[X] @C9999to dash"/>
+    <property name="hintKeyboardContent" value="Use @C9909[Left Shift] @C9999to dash"/>
     <property name="hintName" value="dashingHint"/>
    </properties>
   </object>
@@ -16520,7 +16524,8 @@
   </object>
   <object id="23" name="Interaction Tutorial" type="HintArea" x="1529.17" y="5749.17" width="238.5" height="214.5">
    <properties>
-    <property name="hintContent" value="Use @C9909[E]@C9999 to interact with levers and other objects"/>
+    <property name="hintJoystickContent" value="Use @C9909[Y]@C9999 to interact with levers and other objects"/>
+    <property name="hintKeyboardContent" value="Use @C9909[E]@C9999 to interact with levers and other objects"/>
     <property name="hintName" value="interactionHint"/>
    </properties>
   </object>
@@ -16547,7 +16552,9 @@
   </object>
   <object id="27" name="Weapon changing tutorial" type="HintArea" x="1497.83" y="5424.83" width="338.667" height="222.333">
    <properties>
-    <property name="hintContent" value="You just got a new weapon Use @C9909[Q]@C9999 to change weapon"/>
+    <property name="hintContentJoystick" value=""/>
+    <property name="hintJoystickContent" value="You just got a new weapon Use @C9909[lb] and [rb]@C9999 to change weapon"/>
+    <property name="hintKeyboardContent" value="You just got a new weapon Use @C9909[Q]@C9999 to change weapon"/>
     <property name="hintName" value="weaponChangingHint"/>
    </properties>
   </object>

@@ -32,7 +32,8 @@ namespace ph::component {
 	struct Hint
 	{
 		std::string hintName;
-		std::string content;
+		std::string keyboardContent;
+		std::string joystickContent;
 		bool isShown;
 	};
 

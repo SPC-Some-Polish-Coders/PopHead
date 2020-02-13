@@ -5,6 +5,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Systems/weather.hpp"
 #include "Utilities/profiling.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 namespace ph::system {
 
@@ -33,7 +34,10 @@ void HintAreas::update(float dt)
 				hints->show();
 				auto* hintBackground = hints->getWidget("hintBackground");
 				auto* hintContent = static_cast<TextWidget*>(hintBackground->getWidget("hintContent"));
-				hintContent->setText(hint.content);
+				if(sf::Joystick::isConnected(0))
+					hintContent->setText(hint.joystickContent);
+				else	
+					hintContent->setText(hint.keyboardContent);
 
 				if(hint.hintName == "controlHint") {
 					//ActionEventManager::setActionEnabled("changeWeapon", false);
