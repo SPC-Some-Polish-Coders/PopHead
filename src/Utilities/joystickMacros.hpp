@@ -4,8 +4,8 @@
 #define PH_JOYSTICK_Y 3
 #define PH_JOYSTICK_RB 4
 #define PH_JOYSTICK_LB 5
-#define PH_JOYSTICK_MENU 6
-#define PH_JOYSTICK_VIEW 7
+#define PH_JOYSTICK_VIEW 6 
+#define PH_JOYSTICK_MENU 7
 
 #define PH_JOYSTICK_LEFT_THUMB_X sf::Joystick::X
 #define PH_JOYSTICK_LEFT_THUMB_Y sf::Joystick::Y

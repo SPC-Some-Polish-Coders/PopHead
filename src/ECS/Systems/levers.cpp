@@ -4,6 +4,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/joystickMacros.hpp"
 
 namespace ph::system {
 
@@ -14,6 +15,8 @@ void Levers::update(float dt)
 void Levers::onEvent(sf::Event e)
 {
 	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::E)
+		handleUsedLevers();
+	else if(e.type == sf::Event::JoystickButtonPressed && e.joystickButton.button == PH_JOYSTICK_Y)
 		handleUsedLevers();
 }
 
