@@ -3,7 +3,6 @@ This document has been created to contain information about ECS model in our pro
 The main theme is creating and managing systems.
 
 #### Table of contents
-- [Game objects](#game-objects)
 - [Source code](#source-code)
   - [Entity](#entity)
   - [Components](#components)
@@ -11,10 +10,6 @@ The main theme is creating and managing systems.
   - [Systems queue](#systems-queue)
 - [Systems documentation](#systems-documentation)
 - [Useful links](#useful-links)
-
-## Game objects
-Currently as a game objects architecture we use inheritance model, but we are transforming into ECS (Entity-Component-System). We use Entt library.
-Tutorials and documentation to both ECS and Entt will be linked at the end of this document.
 
 ## Source code
 #### Entity
@@ -47,117 +42,6 @@ For now it only supports basic features:
   queue.appendSystem<system::Movement>();
   ```
   You can give the rest of arguments for constructor of system, but remember to omit first argument, which is given by SystemsQueue! In example above constructor is defined as: ```Movement(entt::registry&)```
-
-## Systems documentation
-
-This is the most important part of the document.
-It holds an information about which components system is working on.
-It also tells which components are only read and which are modified.
-This table is very important for multithreading of systems, so it **must be always up to date**.
-
-<table>
-    <tr>
-        <th>System name (class)</th>
-        <th>Component name</th>
-        <th>R/W (Read/Write)</th>
-    </tr>
-    <tr>
-        <td rowspan=3>PlayerInput</td>
-        <td>Velocity</td>
-        <td>W</td>
-    </tr>
-    <tr>
-        <td>CharacterSpeed</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td>Player</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td rowspan=2>Movement</td>
-        <td>Velocity</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td>BodyRect</td>
-        <td>W</td>
-    </tr>
-    <tr>
-        <td rowspan=5>RenderSystem</td>
-        <td>BodyRect</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td>TexturePtr</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td>TextureRect</td>
-        <td>R</td>
-    </tr>
-    <tr>
-        <td>ShaderPtr</td>
-        <td>R</td>
-    </tr>        
-    <tr>
-        <td>Color</td>
-        <td>R</td>
-    </tr>
-    <tr>
-      <td rowspan=2>DyingCharacters</td>
-      <td>Health</td>
-      <td>R</td>
-    </tr>
-    <tr>
-      <td>TaggedToDestroy</td>
-      <td>W</td>
-    <tr>
-      <td>EntityDestroying</td>
-      <td>TaggedToDestroy</td>
-      <td>R</td>
-    </tr>
-  <tr>
-      <td rowspan=5>PickupMedkit</td>
-      <td>Health</td>
-      <td>W</td>
-  </tr>
-      <td>TaggedToDestroy</td>
-      <td>W</td>
-      </tr>
-    <td>BodyRect</td>
-    <td>R</td>    
-  </tr>
-      <td>Medkit</td>
-      <td>R</td>
-  </tr>
-      <td>Player</td>
-      <td>R</td>
-        <tr>
-      <td rowspan=4>PickupBullet</td>
-    <td>BodyRect</td>
-  <td>R</td>
-  </tr>
-      <td>GunAttacker</td>
-      <td>W</td>
-  </tr>
-      <td>Player</td>
-      <td>R</td>
-       </tr>
-      <td>Bullet</td>
-    <td>R</td>    
-  </tr>
-  <td rowspan=3>PlayerAttackType</td>
-    <td>MelleAtacker</td>
-  <td>W</td>
-  </tr>
-      <td>GunAttacker</td>
-      <td>W</td>
-  </tr>
-      <td>Player</td>
-      <td>R</td>
-       </tr>
-</table>
     
 ### Useful links:
 - ECS introduction
