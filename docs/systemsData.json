@@ -21,7 +21,8 @@
                 "MultiStaticCollisionBody",
                 "KinematicCollisionBody",
                 "AreaVelocityChangingEffect",
-                "PushingArea"
+                "PushingArea",
+                "RenderChunk"
             ]
         },
         {
