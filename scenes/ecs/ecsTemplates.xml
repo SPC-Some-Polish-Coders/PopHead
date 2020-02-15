@@ -34,7 +34,7 @@
     <component name="Player" />
     <component name="FaceDirection" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="100" />
+    <component name="CharacterSpeed" speed="123" />
     <component name="Velocity" dx="0" dy="0" />
     <component name="PushingForces" vel="0, 0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
