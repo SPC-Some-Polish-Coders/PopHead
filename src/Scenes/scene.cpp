@@ -65,20 +65,20 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
 	
-	// must be after DamageAndDeath
-	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::GameplayUI>();
+	mSystemsQueue.appendSystem<system::PatricleSystem>(); // must be after DamageAndDeath
 
-	mSystemsQueue.appendSystemWithLastOrder<system::KinematicCollisions>(); // physics
+	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
+
+	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
 
 	mSystemsQueue.appendSystem<system::Cars>(); // better before StaticCollisions, but for now it's actually not important
 
 	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
 	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
 
-	mSystemsQueue.appendSystem<system::AnimationSystem>(); // must be after Levers and DamageAndDeath
+	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
 
-	mSystemsQueue.appendSystemWithLastOrder<system::StaticCollisions>(); // physics
+	mSystemsQueue.appendSystemWithLastOrder<system::AnimationSystem>(); // must be after Levers and DamageAndDeath
 
 	// should be after StaticCollisions
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
