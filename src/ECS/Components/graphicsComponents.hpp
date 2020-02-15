@@ -30,8 +30,26 @@ namespace component {
 	struct RenderChunk
 	{
 		std::vector<QuadData> quads;
-		FloatRect bounds;
+		std::vector<FloatRect> lightWalls;
+		FloatRect quadsBounds;
+		FloatRect lightWallsBounds;
 		unsigned char z;
+	};
+
+	struct LightWall
+	{
+		FloatRect rect;
+	};
+
+	struct LightSource
+	{
+		sf::Vector2f offset;
+		sf::Color color;
+		float attenuationAddition;
+		float attenuationFactor;
+		float attenuationSquareFactor;
+		float startAngle;
+		float endAngle;
 	};
 
 	struct Camera
@@ -52,22 +70,6 @@ namespace component {
 
 	struct DebugCamera
 	{
-	};
-
-	struct LightWall
-	{
-		FloatRect rect;
-	};
-
-	struct LightSource
-	{
-		sf::Vector2f offset;
-		sf::Color color;
-		float attenuationAddition;
-		float attenuationFactor;
-		float attenuationSquareFactor;
-		float startAngle;
-		float endAngle;
 	};
 
 	struct HiddenForRenderer

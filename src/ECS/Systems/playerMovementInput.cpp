@@ -97,30 +97,30 @@ namespace ph::system {
 		if(x < 0.f && y < 0.f) { 
 			playerDirection = PH_NORTH_WEST;
 			x = y = (x + y) / 2.f;			
-			x *= 0.7;
-			y *= 0.7;
+			x *= 0.7f;
+			y *= 0.7f;
 		}
 		else if(x > 0.f && y < 0.f) {
 			playerDirection = PH_NORTH_EAST;
 			float offset = (x + (-y)) / 2.f;
 			x = offset;
 			y = -offset;
-			x *= 0.7;
-			y *= 0.7;
+			x *= 0.7f;
+			y *= 0.7f;
 		}
 		else if(x < 0.f && y > 0.f) {
 			playerDirection = PH_SOUTH_WEST;
 			float offset = ((-x) + y) / 2.f;
 			x = -offset;
 			y = offset;
-			x *= 0.7;
-			y *= 0.7;
+			x *= 0.7f;
+			y *= 0.7f;
 		}
 		else if(x > 0.f && y > 0.f) {
 			playerDirection = PH_SOUTH_EAST;
 			x = y = (x + y) / 2.f;			
-			x *= 0.7;
-			y *= 0.7;
+			x *= 0.7f;
+			y *= 0.7f;
 		}
 		else if(y < 0.f) {
 			playerDirection = PH_NORTH;

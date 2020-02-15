@@ -66,9 +66,17 @@ void AreasDebug::update(float dt)
 		// render light walls as blue rectangle
 		auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
 		lightWalls.each([](const component::LightWall, const component::BodyRect body) {
-			Renderer::submitQuad(nullptr, nullptr, &sf::Color(40, 40, 255, 140), nullptr,
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(40, 40, 225, 140), nullptr,
 				body.rect.getTopLeft(), body.rect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
+
+		// render chunk light walls as light blue rectangle
+		auto chunks = mRegistry.view<component::RenderChunk>();
+		chunks.each([](const component::RenderChunk& chunk) {
+			for(const auto wall : chunk.lightWalls)
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(60, 60, 255, 140), nullptr,
+				wall.getTopLeft(), wall.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
+		});	
 	}
 }
 

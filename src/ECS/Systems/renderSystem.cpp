@@ -70,22 +70,24 @@ void RenderSystem::update(float dt)
 			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
 
-	//submit light walls
+	//submit single light walls
 	auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
 	lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
 	{
 		if(lw.rect.top == -1.f)
-			Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
+			Renderer::submitLightWall(body.rect);
 		else
-			Renderer::submitLightBlockingQuad(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize());
+			Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
 	});
 
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();
 	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
 			Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
+		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
+			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
 	// submit render quads
@@ -98,7 +100,8 @@ void RenderSystem::update(float dt)
 	});
 	
 	// submit render quads with texture rect
-	auto renderQuadsWithTextureRect = mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
+	auto renderQuadsWithTextureRect = 
+		mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
 	renderQuadsWithTextureRect.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(

@@ -60,15 +60,15 @@ void init(unsigned screenWidth, unsigned screenHeight)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
+	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	pointRenderer.setScreenBoundsPtr(&screenBounds);
+	lineRenderer.setScreenBoundsPtr(&screenBounds);
+	lightRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.init();
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
 	textRenderer.init();
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
-	pointRenderer.setScreenBoundsPtr(&screenBounds);
-	lineRenderer.setScreenBoundsPtr(&screenBounds);
-	lightRenderer.setScreenBoundsPtr(&screenBounds);
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -267,6 +267,16 @@ void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
+void submitLightWall(FloatRect wall)
+{
+	lightRenderer.submitLightWall(wall);
+}
+
+void submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
+{
+	lightRenderer.submitBunchOfLightWalls(walls);
+}
+
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
@@ -283,11 +293,6 @@ void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f pos
                     TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
-}
-
-void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
-{
-	lightRenderer.submitLightBlockingQuad(position, size);
 }
 
 void handleEvent(sf::Event e)

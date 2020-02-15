@@ -41,6 +41,9 @@ namespace Renderer
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
+	void submitLightWall(FloatRect wall);
+	void submitBunchOfLightWalls(const std::vector<FloatRect>& walls);
+
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
 		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
@@ -49,8 +52,6 @@ namespace Renderer
 
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                         TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
-
-	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
 
 	void setAmbientLightColor(sf::Color);
 

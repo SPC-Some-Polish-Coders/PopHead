@@ -240,7 +240,7 @@ static void executeTeleport()
 	view.each([newPosition](const component::Player player, component::BodyRect& body) {
 		body.rect.left = newPosition.x;
 		body.rect.top = newPosition.y;
-		});
+	});
 }
 
 static void executeMove()
@@ -252,7 +252,7 @@ static void executeMove()
 	view.each([moveOffset](const component::Player, component::BodyRect& body) {
 		body.rect.left += moveOffset.x;
 		body.rect.top += moveOffset.y;
-		});
+	});
 }
 
 static void executeGive()
@@ -265,7 +265,7 @@ static void executeGive()
 		view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
 			bullets.numOfPistolBullets += numberOfItems;
 			bullets.numOfShotgunBullets += numberOfItems;
-			});
+		});
 	}
 	else
 		executeMessage("Type of item is unknown!", MessageType::ERROR);
@@ -361,13 +361,7 @@ static void executeView()
 
 static void executeLight()
 {
-	bool on;
-	if(commandContains("on"))
-		on = true;
-	else if(commandContains("off"))
-		on = false;
-	else
-		return; // TODO: Display error message
+	bool on = !commandContains("off");
 
 	auto& lightDebug = LightRenderer::getDebug();
 

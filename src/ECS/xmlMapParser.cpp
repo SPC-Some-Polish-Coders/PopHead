@@ -2,6 +2,7 @@
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include "Components/physicsComponents.hpp"
+#include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
@@ -236,7 +237,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 
 	// fill chunk with z and bounds
 	renderChunk.z = z;
-	renderChunk.bounds = sf::FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize); 
+	renderChunk.quadsBounds = sf::FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize); 
 
 	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
@@ -369,9 +370,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 						lightWallRect.left += tileWorldPos.x; 
 						lightWallRect.top += tileWorldPos.y; 
 
-						auto entity = mTemplates->createCopy("LightWall", *mGameRegistry);
-						auto& body = mGameRegistry->get<component::BodyRect>(entity);
-						body.rect = lightWallRect;
+						renderChunk.lightWalls.emplace_back(lightWallRect);
 					}
 
 					break;
@@ -381,13 +380,19 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 	}
 
 	// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-	renderChunk.bounds.left *= static_cast<float>(info.tileSize.x);
-	renderChunk.bounds.top *= static_cast<float>(info.tileSize.y);
-	renderChunk.bounds.width *= static_cast<float>(info.tileSize.x);
-	renderChunk.bounds.height *= static_cast<float>(info.tileSize.y);
+	renderChunk.quadsBounds.left *= static_cast<float>(info.tileSize.x);
+	renderChunk.quadsBounds.top *= static_cast<float>(info.tileSize.y);
+	renderChunk.quadsBounds.width *= static_cast<float>(info.tileSize.x);
+	renderChunk.quadsBounds.height *= static_cast<float>(info.tileSize.y);
+
+	// set light walls bounds so we can do culling in RenderSystem
+	renderChunk.lightWallsBounds.left = renderChunk.quadsBounds.left - 400.f;
+	renderChunk.lightWallsBounds.top = renderChunk.quadsBounds.top - 400.f;
+	renderChunk.lightWallsBounds.width = renderChunk.quadsBounds.width + 800.f;
+	renderChunk.lightWallsBounds.height = renderChunk.quadsBounds.height + 800.f;
 
 	// put data for static collisions optimalization
-	chunkCollisions.sharedBounds = renderChunk.bounds;
+	chunkCollisions.sharedBounds = renderChunk.quadsBounds;
 
 	// put data into registry
 	auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
@@ -418,7 +423,8 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 		mRenderChunks[i].z = z;
 
 		float row = std::floor(i / info.nrOfChunksInOneRow);
-		mRenderChunks[i].bounds = sf::FloatRect((sChunkSize * i) - (row * sChunkSize * info.nrOfChunksInOneRow), row * sChunkSize, sChunkSize, sChunkSize);
+		mRenderChunks[i].quadsBounds = sf::FloatRect((sChunkSize * i) - (row * sChunkSize * info.nrOfChunksInOneRow),
+		                                             row * sChunkSize, sChunkSize, sChunkSize);
 	}
 
 	for (size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) 
@@ -516,7 +522,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			// find chunk index
 			size_t chunkIndex = 0;
 			for(size_t i = 0; i < mRenderChunks.size(); ++i)
-				if(mRenderChunks[i].bounds.containsIncludingBounds(positionInTiles))
+				if(mRenderChunks[i].quadsBounds.containsIncludingBounds(positionInTiles))
 					chunkIndex = i;
 
 			// emplace quad data to chunk
@@ -558,9 +564,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 						lightWallRect.left += tileWorldPos.x; 
 						lightWallRect.top += tileWorldPos.y; 
 
-						auto entity = mTemplates->createCopy("LightWall", *mGameRegistry);
-						auto& body = mGameRegistry->get<component::BodyRect>(entity);
-						body.rect = lightWallRect;
+						mRenderChunks[chunkIndex].lightWalls.emplace_back(lightWallRect);
 					}
 
 					break;
@@ -572,13 +576,19 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 	for(size_t i = 0; i < mRenderChunks.size(); ++i)
 	{
 		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		mRenderChunks[i].bounds.left *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.top *= static_cast<float>(info.tileSize.y);
-		mRenderChunks[i].bounds.width *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.height *= static_cast<float>(info.tileSize.y);
+		mRenderChunks[i].quadsBounds.left *= static_cast<float>(info.tileSize.x);
+		mRenderChunks[i].quadsBounds.top *= static_cast<float>(info.tileSize.y);
+		mRenderChunks[i].quadsBounds.width *= static_cast<float>(info.tileSize.x);
+		mRenderChunks[i].quadsBounds.height *= static_cast<float>(info.tileSize.y);
+
+		// set light walls bounds so we can do culling in RenderSystem
+		mRenderChunks[i].lightWallsBounds.left = mRenderChunks[i].quadsBounds.left - 400.f;
+		mRenderChunks[i].lightWallsBounds.top = mRenderChunks[i].quadsBounds.top - 400.f;
+		mRenderChunks[i].lightWallsBounds.width = mRenderChunks[i].quadsBounds.width + 800.f;
+		mRenderChunks[i].lightWallsBounds.height = mRenderChunks[i].quadsBounds.height + 800.f;
 
 		// put data for static collisions optimalization
-		mChunkCollisions[i].sharedBounds = mRenderChunks[i].bounds;
+		mChunkCollisions[i].sharedBounds = mRenderChunks[i].quadsBounds;
 
 		// put data into registry
 		auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);

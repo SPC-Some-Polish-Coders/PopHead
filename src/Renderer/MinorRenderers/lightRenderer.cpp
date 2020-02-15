@@ -27,6 +27,7 @@ void LightRenderer::init()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
 	mLightTriangleFanVertexData.reserve(361);
+
 }
 
 void LightRenderer::shutDown()
@@ -35,20 +36,36 @@ void LightRenderer::shutDown()
 	glDeleteVertexArrays(1, &mLightTriangleFanVAO);
 }
 
-void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
+void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
-	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x - 200.f, position.y - 200.f, size.x + 400.f, size.y + 400.f)))
-		return;
-	
-	sf::Vector2f upLeftPoint = position;
-	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
-	sf::Vector2f downRightPoint = position + size;
-	sf::Vector2f downLeftPoint = sf::Vector2f(position.x, position.y + size.y);
+	for(FloatRect wall : walls)	
+	{
+		sf::Vector2f topLeftPoint = wall.getTopLeft();
+		sf::Vector2f topRightPoint = wall.getTopRight(); 
+		sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
+		sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
 
-	mWalls.emplace_back(Wall{upLeftPoint, upRightPoint});
-	mWalls.emplace_back(Wall{upRightPoint, downRightPoint});
-	mWalls.emplace_back(Wall{downRightPoint, downLeftPoint});
-	mWalls.emplace_back(Wall{downLeftPoint, upLeftPoint});
+		mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
+		mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
+		mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
+		mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
+	}
+}
+
+void LightRenderer::submitLightWall(FloatRect wall)
+{
+	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(wall.left - 200.f, wall.top - 200.f, wall.width + 400.f, wall.height + 400.f)))
+		return;
+
+	sf::Vector2f topLeftPoint = wall.getTopLeft();
+	sf::Vector2f topRightPoint = wall.getTopRight(); 
+	sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
+	sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
+
+	mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
+	mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
+	mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
+	mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
 }
 
 void LightRenderer::submitLight(Light light)
@@ -62,11 +79,12 @@ void LightRenderer::flush()
 	PH_PROFILE_FUNCTION(0);
 
 	// submit quad which rays will hit if they won't hit anything in the scene
-	submitLightBlockingQuad(
-		{mScreenBounds->left -2000.f, mScreenBounds->top -2000.f},
-		{mScreenBounds->width + 4000.f, mScreenBounds->height + 4000.f});
+	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
+	                          mScreenBounds->width + 200000.f, mScreenBounds->height + 200000.f));
 
 	mNrOfDrawCalls = mLights.size();
+
+	FloatRect expandedScreenSize(mScreenBounds->left - 400.f, mScreenBounds->top - 400.f, 800.f, 800.f);
 
 	for(auto& light : mLights)
 	{
@@ -86,7 +104,7 @@ void LightRenderer::flush()
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
 				sf::Vector2f nearestIntersectionPoint;
 				float nearestIntersectionDistance = INFINITY;
-				for(Wall& wall : mWalls)
+				for(Wall& wall : mLightWalls)
 				{
 					auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
 					float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
@@ -101,11 +119,10 @@ void LightRenderer::flush()
 		}
 
 		// draw light using triangle fan
+		mLightShader.bind();
 		if(sDebug.drawLight)
 		{
 			PH_PROFILE_SCOPE("draw light triangle fan", 0);
-
-			mLightShader.bind();
 			mLightShader.setUniformVector2("lightPos", light.pos);
 			mLightShader.setUniformVector4Color("color", light.color);
 			mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
@@ -130,10 +147,10 @@ void LightRenderer::flush()
 
 	// draw light sources as points
 	if(sDebug.drawRays)
-		for(const auto& light : mLights)
+		for(auto& light : mLights)
 			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 
-	mWalls.clear();
+	mLightWalls.clear();
 	mLights.clear();
 }
 
