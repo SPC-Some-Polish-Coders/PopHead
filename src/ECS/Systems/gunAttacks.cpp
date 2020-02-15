@@ -350,7 +350,7 @@ void GunAttacks::createShotImage(sf::Vector2f shotsStartingPosition, const std::
 	}
 
 	auto soundEntity = mRegistry.create();
-	mRegistry.assign<component::AmbientSound>(soundEntity, soundFilename.c_str());
+	mRegistry.assign<component::AmbientSound>(soundEntity, soundFilename);
 	mRegistry.assign<component::Lifetime>(soundEntity, .05f);
 }
 

@@ -1,15 +1,17 @@
 #pragma once
 
+#include <string>
+
 namespace ph::component {
 
 	struct AmbientSound
 	{
-		const char* filepath;
+		std::string filepath;	
 	};
 
 	struct SpatialSound
 	{
-		const char* filepath;
+		std::string filepath;	
 	};
 
 }
