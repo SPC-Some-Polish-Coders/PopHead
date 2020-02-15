@@ -27,21 +27,19 @@
 
 namespace ph {
 
-namespace {
+static std::string content;
+static std::deque<std::string> lastCommands;
+static bool isVisible = false;
 
-std::string content;
-std::deque<std::string> lastCommands;
-bool isVisible = false;
+static sf::Window* window;
+static ph::SceneManager* sceneManager;
 
-sf::Window* window;
-ph::SceneManager* sceneManager;
-
-int indexOfCurrentLastCommand = -1;
-std::deque<ph::OutputLine> outputLines;
-const sf::Vector2f vector2ArgumentError = {-1, -1};
+static int indexOfCurrentLastCommand = -1;
+static std::deque<ph::OutputLine> outputLines;
+static const sf::Vector2f vector2ArgumentError = {-1, -1};
 
 typedef void (*ExecuteCommandFunction)(void);
-std::unordered_map<std::string, ExecuteCommandFunction> commandsMap;
+static std::unordered_map<std::string, ExecuteCommandFunction> commandsMap;
 
 enum class MessageType
 {
@@ -55,10 +53,8 @@ struct ResetGuiLive
 	float resetFrequency = 0.2f;
 	bool isActive = false;
 };
-ResetGuiLive resetGuiLive;
+static ResetGuiLive resetGuiLive;
 #endif 
-
-}
 
 static void executeMessage(const std::string& message, const MessageType colorType)
 {
@@ -481,9 +477,6 @@ void handleEvent(sf::Event e)
 				// execute command
 				executeCommand();
 
-				// clear input area content
-				content.clear();
-
 				// update last commands
 				indexOfCurrentLastCommand = -1;
 				if(content.size() != 0) {
@@ -491,6 +484,9 @@ void handleEvent(sf::Event e)
 					if(lastCommands.size() > 10)
 						lastCommands.pop_back();
 				}
+
+				// clear input area content
+				content.clear();
 			} break;
 
 			case sf::Keyboard::Up: {
