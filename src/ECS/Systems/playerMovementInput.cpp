@@ -3,12 +3,13 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Events/actionEventManager.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/scene.hpp"
 #include "GUI/gui.hpp"
 #include "Utilities/direction.hpp"
+#include "Utilities/joystickMacros.hpp"
 #include "Utilities/profiling.hpp"
+#include <SFML/Window/Joystick.hpp>
 #include <cmath>
 
 namespace ph::system {
@@ -20,61 +21,29 @@ namespace ph::system {
 	{
 	}
 
-	void PlayerMovementInput::onEvent(Event event)
+	void PlayerMovementInput::onEvent(sf::Event e)
 	{
-		if(auto* e = std::get_if<ActionEvent>(&event))
+		auto doPause = [this]()
 		{
-			if(e->mType == ActionEvent::Type::Pressed)
-			{
-				if(e->mAction == "pauseScreen")
-				{
-					// TODO_states: Pause screen could be handled by states
-					auto playerView = mRegistry.view<component::Player, component::Health>();
-					playerView.each([this](component::Player, component::Health) {
-						sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
-						sPause = !sPause;
-					});
-				}
+			// TODO_states: Pause screen could be handled by states
+			auto playerView = mRegistry.view<component::Player, component::Health>();
+			playerView.each([this](component::Player, component::Health) {
+				sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
+				sPause = !sPause;
+			});
+		};
 
-				constexpr float maxPressTimeDifferenceForDash = 0.3f;
-				constexpr float minTimeFromLastDashToDoNextDash = 0.5f;
-				
-				if(e->mAction == "movingUp") {
-					mUp = true;
-					if(mTimeFromLastUp < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastUp = 0.f;
-				}
-				if(e->mAction == "movingDown") {
-					mDown = true;
-					if(mTimeFromLastDown < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastDown = 0.f;
-				}
-				if(e->mAction == "movingRight") {
-					mRight = true;
-					if(mTimeFromLastRight < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastRight = 0.f;
-				}
-				if(e->mAction == "movingLeft") {
-					mLeft = true;
-					if(mTimeFromLastLeft < maxPressTimeDifferenceForDash && mTimeFromDashBegining > minTimeFromLastDashToDoNextDash)
-						mTimeFromDashBegining = 0.f;
-					mTimeFromLastLeft = 0.f;
-				}
-			}
-			else if(e->mType == ActionEvent::Type::Released)
-			{
-				if(e->mAction == "movingUp")
-					mUp = false;
-				if(e->mAction == "movingDown")
-					mDown = false;
-				if(e->mAction == "movingRight")
-					mRight = false;
-				if(e->mAction == "movingLeft")
-					mLeft = false;
-			}
+		if(e.type == sf::Event::KeyPressed) {
+			if(e.key.code == sf::Keyboard::Escape)
+				doPause();
+			else if(e.key.code == sf::Keyboard::LShift)
+				mTimeFromDashPressed = 0.f;
+		}
+		else if(e.type == sf::Event::JoystickButtonPressed){
+			if(e.joystickButton.button == PH_JOYSTICK_MENU)
+				doPause();
+			else if(e.joystickButton.button == PH_JOYSTICK_X)
+				mTimeFromDashPressed = 0.f;
 		}
 	}
 
@@ -92,43 +61,107 @@ namespace ph::system {
 			if(mRegistry.has<component::DeadCharacter>(player))
 				return;
 
-		// get player direction
+		// set input variables
+		float x = 0.f;
+		float y = 0.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			x -= 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			x += 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			y -= 1.f;
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			y += 1.f;
+		if(sf::Joystick::isConnected(0) && x == 0.f && y == 0.f)
+		{
+			auto processThumbInput = [&x, &y](float inX, float inY)
+			{
+				constexpr float deadZoneThreshold = 65.f;
+				x = (inX > deadZoneThreshold || inX < -deadZoneThreshold) ? inX / 100.f : 0.f;
+				y = (inY > deadZoneThreshold || inY < -deadZoneThreshold) ? inY / 100.f : 0.f;
+			};
+			float leftThumbX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_X);
+			float leftThumbY = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_Y);
+			processThumbInput(leftThumbX, leftThumbY);
+
+			if(x == 0.f && y == 0.f)
+			{
+				float dPadX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_X);
+				float dPadY = -sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_Y);
+				processThumbInput(dPadX, dPadY);
+			}
+		}
+
+		// get player direction and correct diagonal input
 		sf::Vector2f playerDirection;
-		if(mUp && mLeft)  playerDirection = PH_NORTH_WEST;
-		else if(mUp && mRight) playerDirection = PH_NORTH_EAST;
-		else if(mDown && mLeft) playerDirection = PH_SOUTH_WEST;
-		else if(mDown && mRight) playerDirection = PH_SOUTH_EAST;
-		else if(mUp) playerDirection = PH_NORTH;
-		else if(mDown) playerDirection = PH_SOUTH;
-		else if(mLeft) playerDirection = PH_WEST;
-		else if(mRight) playerDirection = PH_EAST;
+		if(x < 0.f && y < 0.f) { 
+			playerDirection = PH_NORTH_WEST;
+			x = y = (x + y) / 2.f;			
+			x *= 0.7f;
+			y *= 0.7f;
+		}
+		else if(x > 0.f && y < 0.f) {
+			playerDirection = PH_NORTH_EAST;
+			float offset = (x + (-y)) / 2.f;
+			x = offset;
+			y = -offset;
+			x *= 0.7f;
+			y *= 0.7f;
+		}
+		else if(x < 0.f && y > 0.f) {
+			playerDirection = PH_SOUTH_WEST;
+			float offset = ((-x) + y) / 2.f;
+			x = -offset;
+			y = offset;
+			x *= 0.7f;
+			y *= 0.7f;
+		}
+		else if(x > 0.f && y > 0.f) {
+			playerDirection = PH_SOUTH_EAST;
+			x = y = (x + y) / 2.f;			
+			x *= 0.7f;
+			y *= 0.7f;
+		}
+		else if(y < 0.f) {
+			playerDirection = PH_NORTH;
+		}
+		else if(y > 0.f) {
+			playerDirection = PH_SOUTH;
+		}
+		else if(x < 0.f) {
+			playerDirection = PH_WEST;
+		}
+		else if(x > 0.f) {
+			playerDirection = PH_EAST;
+		}
 
 		for(auto& player : playerView)
 		{
 			// update animation data
 			auto& animationData = playerView.get<component::AnimationData>(player);
 
-			if(mUp && mLeft) {
+			// TODO:
+			if(x < 0.f && y < 0.f) {
 				animationData.currentStateName = "leftUp";
 				animationData.isPlaying = true;
 			}
-			else if(mUp && mRight) {
+			else if(x > 0.f && y < 0.f) {
 				animationData.currentStateName = "rightUp";
 				animationData.isPlaying = true;
 			}
-			else if(mLeft) {
+			else if(x < 0.f) {
 				animationData.currentStateName = "left";
 				animationData.isPlaying = true;
 			}
-			else if(mRight) {
+			else if(x > 0.f) {
 				animationData.currentStateName = "right";
 				animationData.isPlaying = true;
 			}
-			else if(mUp) {
+			else if(y < 0.f) {
 				animationData.currentStateName = "up";
 				animationData.isPlaying = true;
 			}
-			else if(mDown) {
+			else if(y > 0.f) {
 				animationData.currentStateName = "down";
 				animationData.isPlaying = true;
 			}
@@ -137,7 +170,7 @@ namespace ph::system {
 			}
 
 			// set face direction
-			if (playerDirection != sf::Vector2f(0.f, 0.f))
+			if(playerDirection != sf::Vector2f(0.f, 0.f))
 			{
 				auto& faceDirection = playerView.get<component::FaceDirection>(player);
 				faceDirection.direction = playerDirection;
@@ -167,25 +200,16 @@ namespace ph::system {
 
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
-		movementView.each([this, playerDirection]
+		movementView.each([this, x, y, playerDirection]
 		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
 			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-
-			auto vel = playerDirection * speed.speed;
-			if(mTimeFromDashBegining < 0.15f)
-				vel *= 2.5f;
-
-			velocity.dx = vel.x;
-			velocity.dy = vel.y;
+			float dashFactor = mTimeFromDashPressed < 0.1f ? 2.f : 1.f;
+			velocity.dx = x * dashFactor * speed.speed;
+			velocity.dy = y * dashFactor * speed.speed;
 		});
 
-		// increment time variables 
-		mTimeFromLastUp += dt;
-		mTimeFromLastDown += dt;
-		mTimeFromLastRight += dt;
-		mTimeFromLastLeft += dt;
-		mTimeFromDashBegining += dt;
+		mTimeFromDashPressed += dt;
 	}
 }
 

@@ -1,6 +1,7 @@
 #pragma once 
  
 #include "Renderer/API/shader.hpp"
+#include "quadData.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
 #include <vector>
@@ -11,7 +12,6 @@ namespace ph {
 struct LightingDebug
 {
 	bool drawLight = true;
-	bool drawWalls = false;
 	bool drawRays = false;
 };
 
@@ -40,16 +40,21 @@ struct Wall
 	sf::Vector2f point2;
 };
 
-// TODO_ren: Add submit light blocking line
-
 class LightRenderer
 {
 public:
 	void init();
 	void shutDown();
 
-	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
+	void clearStaticLightWalls();
+	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
+	void submitLightWall(FloatRect);
 	void submitLight(Light);
+
+	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
+	unsigned getNrOfRays() { return mNrOfRays; }
+	void resetDebugNumbers();
+
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
@@ -60,12 +65,13 @@ private:
 	auto getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f lightPos, const Wall& wall) -> std::optional<sf::Vector2f>;
 
 private:
-	std::vector<Wall> mWalls;
+	std::vector<Wall> mLightWalls;
 	std::vector<Light> mLights;
-	std::vector<sf::Vector2f> mLightPolygonVertexData;
+	std::vector<sf::Vector2f> mLightTriangleFanVertexData;
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
-	unsigned mVAO, mVBO;
+	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
+	unsigned mNrOfDrawCalls, mNrOfRays;
 
 	inline static LightingDebug sDebug;
 };

@@ -12,11 +12,10 @@ FPSCounter::FPSCounter()
 {
 }
 
-void FPSCounter::handleEvent(Event phEvent)
+void FPSCounter::handleEvent(sf::Event e)
 {
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
-		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F2)
-			mIsActive = !mIsActive;
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F2)
+		mIsActive = !mIsActive;
 }
 
 void FPSCounter::update()

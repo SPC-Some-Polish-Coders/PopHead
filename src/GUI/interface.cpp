@@ -9,7 +9,7 @@ Interface::Interface(const char* name)
 	std::strcpy(mName, name);
 }
 
-void Interface::handleEvent(const Event& e)
+void Interface::handleEvent(sf::Event e)
 {
 	for(auto& widget : mWidgetChildren)
 		if(widget->isActive())

@@ -14,7 +14,6 @@ public:
 	Camera(sf::Vector2f center, sf::Vector2f size);
 
 	void setCenter(sf::Vector2f center);
-	void setCenterSmoothly(sf::Vector2f center, float speed);
 	void move(sf::Vector2f offset);
 	sf::Vector2f getCenter() { return mCenter; }
 

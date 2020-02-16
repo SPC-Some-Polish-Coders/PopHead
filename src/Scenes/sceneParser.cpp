@@ -3,7 +3,6 @@
 #include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include "ECS/Systems/arcadeMode.hpp"
-#include "Events/actionEventManager.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
 #include "ECS/xmlMapParser.hpp"
@@ -29,7 +28,6 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 
 	aiManager.setAIMode(AIMode::normal);
 	aiManager.setIsPlayerOnScene(false);
-	ActionEventManager::setAllActionsEnabled(true);
 
 	// parse gui
 	if(const auto guiNode = sceneLinksNode.getChild("gui")) {

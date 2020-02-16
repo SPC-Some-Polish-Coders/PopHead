@@ -6,6 +6,8 @@
 #include "Renderer/API/camera.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/random.hpp"
+#include "Utilities/math.hpp"
 #include <entt/entity/utility.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
@@ -25,12 +27,35 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	// get current camera
+	// shake camera
+	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();
+	for(auto cameraEntity : shakingCameras)
+	{
+		auto& [shake, camera] = shakingCameras.get<component::CameraShake, component::Camera>(cameraEntity);
+		if(shake.elapsedTime < shake.duration) {
+			sf::Vector2f cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
+			cameraOffset *= shake.magnitude;
+			cameraOffset *= (shake.duration - shake.elapsedTime) / shake.duration;
+			sf::Vector2f cameraPos = camera.camera.getCenter();
+			sf::Vector2f newCameraPos = cameraPos + cameraOffset;
+			if(shake.smooth)
+				camera.camera.setCenter(Math::lerp(cameraPos, newCameraPos, 2.f));
+			else
+				camera.camera.setCenter(newCameraPos);
+			shake.elapsedTime += dt;
+		}
+		else {
+			mRegistry.remove<component::CameraShake>(cameraEntity);
+		}
+	}
+
+	// get current camera and update shake
 	auto cameras = mRegistry.view<component::Camera>();
 	Camera* currentCamera = &defaultCamera;
 	cameras.each([&currentCamera](component::Camera& camera) {
-		if(camera.name == component::Camera::currentCameraName)
+		if(camera.name == component::Camera::currentCameraName) {
 			currentCamera = &camera.camera;
+		}
 	});
 
 	// set camera
@@ -45,22 +70,24 @@ void RenderSystem::update(float dt)
 			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
 
-	//submit light walls
+	//submit single light walls
 	auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
-	lightWalls.each([](const component::LightWall& bl, const component::BodyRect& body) 
+	lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
 	{
-		if(bl.rect.top == -1.f)
-			Renderer::submitLightBlockingQuad(body.rect.getTopLeft(), body.rect.getSize());
+		if(lw.rect.top == -1.f)
+			Renderer::submitLightWall(body.rect);
 		else
-			Renderer::submitLightBlockingQuad(body.rect.getTopLeft() + bl.rect.getTopLeft(), bl.rect.getSize());
+			Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
 	});
 
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();
 	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
 			Renderer::submitBunchOfQuadsWithTheSameTexture(chunk.quads, &mTilesetTexture, nullptr, chunk.z);
+		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
+			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
 	// submit render quads
@@ -73,7 +100,8 @@ void RenderSystem::update(float dt)
 	});
 	
 	// submit render quads with texture rect
-	auto renderQuadsWithTextureRect = mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
+	auto renderQuadsWithTextureRect = 
+		mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
 	renderQuadsWithTextureRect.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(

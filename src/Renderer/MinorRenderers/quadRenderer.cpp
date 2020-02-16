@@ -114,19 +114,14 @@ void QuadRenderer::shutDown()
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
 
-void QuadRenderer::setDebugNumbersToZero()
+void QuadRenderer::resetDebugNumbers()
 {
-	mNumberOfDrawCalls = 0;
-	mNumberOfDrawnSprites = 0;
-	mNumberOfDrawnTextures = 0;
-	mNumberOfRenderGroups = 0;
+	mDebugNumbers = {};
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
                                                         const Shader* shader, float z, ProjectionType projectionType)
 {
-	// NOTE: this function doesn't do any culling
-
 	if(!shader)
 		shader = &mDefaultQuadShader;
 
@@ -151,10 +146,14 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
-                              ProjectionType projectionType)
+                              ProjectionType projectionType, bool isAffectedByLight)
 {
 	// culling
-	if(!isInsideScreen(position, size, rotation, projectionType))
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
+	if(rotation == 0.f)
+		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+			return;
+	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
 		return;
 
 	// if shader is not specified use default shader 
@@ -162,7 +161,8 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 		shader = &mDefaultQuadShader;
 
 	// find or add draw call group
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
+	auto& renderGroupsHashMap = isAffectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
+	auto& renderGroup = renderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
 
 	// submit data
 	QuadData quadData;
@@ -188,15 +188,6 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	renderGroup.quadsData.emplace_back(quadData);
 }
 
-bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation, ProjectionType projectionType)
-{
-	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
-	if(rotation == 0.f)
-		return bounds.doPositiveRectsIntersect(FloatRect(pos.x, pos.y, size.x, size.y));
-	else
-		return bounds.doPositiveRectsIntersect(FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
-}
-
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup& rg) -> std::optional<float>
 {
 	for(size_t i = 0; i < rg.textures.size(); ++i)
@@ -214,19 +205,20 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 	);
 }
 
-void QuadRenderer::flush()
+void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
-	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
+	mDebugNumbers.renderGroups = mRenderGroupsHashMap.size();
 	mCurrentlyBoundQuadShader = nullptr;
+	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
-	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
+	for(auto& [key, rg] : renderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
 		if(mIsDebugCountingActive) {
-			mNumberOfDrawnSprites += rg.quadsData.size();
-			mNumberOfDrawnTextures += rg.textures.size();
+			mDebugNumbers.drawnSprites += rg.quadsData.size();
+			mDebugNumbers.drawnTextures += rg.textures.size();
 		}
 
 		// set up shader
@@ -295,7 +287,7 @@ void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quads
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
 
 	if(mIsDebugCountingActive)
-		++mNumberOfDrawCalls;
+		++mDebugNumbers.drawCalls;
 }
 
 }

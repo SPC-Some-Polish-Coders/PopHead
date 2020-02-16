@@ -17,43 +17,40 @@ Widget::Widget(const char* name)
 	std::strcpy(mName, name);
 }
 
-void Widget::handleEvent(const ph::Event& phEvent)
+void Widget::handleEvent(sf::Event e)
 {
-	handleEventOnCurrent(phEvent);
-	handleEventOnChildren(phEvent);
+	handleEventOnCurrent(e);
+	handleEventOnChildren(e);
 }
 
-void Widget::handleEventOnCurrent(const ph::Event& phEvent)
+void Widget::handleEventOnCurrent(sf::Event e)
 {
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
+	if(e.type == sf::Event::MouseButtonPressed || e.type == sf::Event::MouseButtonReleased
+		&& e.mouseButton.button == sf::Mouse::Left)
 	{
-		if(e->type == sf::Event::MouseButtonPressed || e->type == sf::Event::MouseButtonReleased
-			&& e->mouseButton.button == sf::Mouse::Left)
+		auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
+		mousePos.x *= 1920.f / sScreenSize.x;
+		mousePos.y *= 1080.f / sScreenSize.y;
+		if(FloatRect(getScreenPosition(), getScreenSize()).contains(mousePos))
 		{
-			auto mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sWindow));
-			mousePos.x *= 1920.f / sScreenSize.x;
-			mousePos.y *= 1080.f / sScreenSize.y;
-			if(FloatRect(getScreenPosition(), getScreenSize()).contains(mousePos))
-			{
-				if(e->type == sf::Event::MouseButtonPressed) {
-					for(const auto& k : mBehaviors)
-						if(k.first == BehaviorType::onPressed)
-							k.second(this);
-				}
-				else if(e->type == sf::Event::MouseButtonReleased) {
-					for(const auto& k : mBehaviors)
-						if(k.first == BehaviorType::onReleased)
-							k.second(this);
-				}
+			if(e.type == sf::Event::MouseButtonPressed) {
+				for(const auto& k : mBehaviors)
+					if(k.first == BehaviorType::onPressed)
+						k.second(this);
+			}
+			else if(e.type == sf::Event::MouseButtonReleased) {
+				for(const auto& k : mBehaviors)
+					if(k.first == BehaviorType::onReleased)
+						k.second(this);
 			}
 		}
 	}
 }
 
-void Widget::handleEventOnChildren(const ph::Event& phEvent)
+void Widget::handleEventOnChildren(sf::Event e)
 {
 	for(const auto& widget : mWidgetChildren)
-		widget->handleEvent(phEvent);
+		widget->handleEvent(e);
 }
 
 void Widget::update(float dt, unsigned char z)
@@ -65,7 +62,7 @@ void Widget::update(float dt, unsigned char z)
 	move(mVelocity * dt);
 
 	Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
-		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui);
+		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui, false);
 	
 	updateCurrent(dt, z - 2);
 	updateChildren(dt, z);

@@ -44,11 +44,10 @@ void hideInterface(const char* name)
 		interface->hide();
 }
 
-void handleEvent(Event& e)
+void handleEvent(sf::Event e)
 {
-	if(auto* sfEvent = std::get_if<sf::Event>(&e))
-		if(sfEvent->type == sf::Event::Resized)
-			Widget::setScreenSize(sf::Vector2f(float(sfEvent->size.width), float(sfEvent->size.height)));
+	if(e.type == sf::Event::Resized)
+		Widget::setScreenSize(sf::Vector2f(float(e.size.width), float(e.size.height)));
 
 	for(auto& interface : mInterfaces)
 		if(interface.isActive())

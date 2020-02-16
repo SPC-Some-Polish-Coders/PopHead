@@ -16,47 +16,61 @@ void LightRenderer::init()
 {
 	mLightShader.init(shader::lightSrc());
 	mLightShader.initUniformBlock("SharedData", 0);
-	
-	glGenVertexArrays(1, &mVAO);
-	glBindVertexArray(mVAO);
 
-	glGenBuffers(1, &mVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	glGenVertexArrays(1, &mLightTriangleFanVAO);
+	glBindVertexArray(mLightTriangleFanVAO);
+
+	glGenBuffers(1, &mLightTriangleFanVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mLightTriangleFanVBO);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
-	mLightPolygonVertexData.reserve(361);
+	mLightTriangleFanVertexData.reserve(361);
+
 }
 
 void LightRenderer::shutDown()
 {
-	glDeleteBuffers(1, &mVBO);
-	glDeleteVertexArrays(1, &mVAO);
-	mLightShader.remove();
+	glDeleteBuffers(1, &mLightTriangleFanVBO);
+	glDeleteVertexArrays(1, &mLightTriangleFanVAO);
 }
 
-void LightRenderer::submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
+void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
-	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(position.x - 200.f, position.y - 200.f, size.x + 400.f, size.y + 400.f)))
-		return;
-	
-	sf::Vector2f upLeftPoint = position;
-	sf::Vector2f upRightPoint = sf::Vector2f(position.x + size.x, position.y);
-	sf::Vector2f downRightPoint = position + size;
-	sf::Vector2f downLeftPoint = sf::Vector2f(position.x, position.y + size.y);
+	for(FloatRect wall : walls)	
+	{
+		sf::Vector2f topLeftPoint = wall.getTopLeft();
+		sf::Vector2f topRightPoint = wall.getTopRight(); 
+		sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
+		sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
 
-	mWalls.emplace_back(Wall{upLeftPoint, upRightPoint});
-	mWalls.emplace_back(Wall{upRightPoint, downRightPoint});
-	mWalls.emplace_back(Wall{downRightPoint, downLeftPoint});
-	mWalls.emplace_back(Wall{downLeftPoint, upLeftPoint});
+		mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
+		mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
+		mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
+		mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
+	}
+}
+
+void LightRenderer::submitLightWall(FloatRect wall)
+{
+	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(wall.left - 200.f, wall.top - 200.f, wall.width + 400.f, wall.height + 400.f)))
+		return;
+
+	sf::Vector2f topLeftPoint = wall.getTopLeft();
+	sf::Vector2f topRightPoint = wall.getTopRight(); 
+	sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
+	sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
+
+	mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
+	mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
+	mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
+	mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
 }
 
 void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
-	FloatRect lightRangeRect;
-
 	mLights.emplace_back(light);
 }
 
@@ -65,14 +79,17 @@ void LightRenderer::flush()
 	PH_PROFILE_FUNCTION(0);
 
 	// submit quad which rays will hit if they won't hit anything in the scene
-	submitLightBlockingQuad(
-		{mScreenBounds->left -2000.f, mScreenBounds->top -2000.f},
-		{mScreenBounds->width + 4000.f, mScreenBounds->height + 4000.f});
+	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
+	                          mScreenBounds->width + 200000.f, mScreenBounds->height + 200000.f));
+
+	mNrOfDrawCalls = mLights.size();
+
+	FloatRect expandedScreenSize(mScreenBounds->left - 400.f, mScreenBounds->top - 400.f, 800.f, 800.f);
 
 	for(auto& light : mLights)
 	{
 		// make light position be first vertex of triangle fan
-		mLightPolygonVertexData.emplace_back(light.pos);
+		mLightTriangleFanVertexData.emplace_back(light.pos);
 
 		// create vertex data
 		{
@@ -81,11 +98,13 @@ void LightRenderer::flush()
 			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
+				++mNrOfRays;
+
 				float rad = Math::degreesToRadians(angle);
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
 				sf::Vector2f nearestIntersectionPoint;
 				float nearestIntersectionDistance = INFINITY;
-				for(Wall& wall : mWalls)
+				for(Wall& wall : mLightWalls)
 				{
 					auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
 					float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
@@ -95,47 +114,43 @@ void LightRenderer::flush()
 						nearestIntersectionDistance = intersectionDistance;
 					}
 				}
-				mLightPolygonVertexData.emplace_back(nearestIntersectionPoint);
+				mLightTriangleFanVertexData.emplace_back(nearestIntersectionPoint);
 			}
 		}
 
 		// draw light using triangle fan
+		mLightShader.bind();
 		if(sDebug.drawLight)
 		{
 			PH_PROFILE_SCOPE("draw light triangle fan", 0);
-
-			mLightShader.bind();
 			mLightShader.setUniformVector2("lightPos", light.pos);
 			mLightShader.setUniformVector4Color("color", light.color);
 			mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
 			mLightShader.setUniformFloat("a", light.attenuationAddition);
 			mLightShader.setUniformFloat("b", light.attenuationFactor);
 			mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
-			glBindVertexArray(mVAO);
-			glBindBuffer(GL_ARRAY_BUFFER ,mVBO); // TODO: Do I have to bind it?
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightPolygonVertexData.size(), mLightPolygonVertexData.data(), GL_STATIC_DRAW);
-			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightPolygonVertexData.size());
+			glBindVertexArray(mLightTriangleFanVAO);
+			glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
+			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
 		}
-
-		// draw debug 
-		if(sDebug.drawWalls)
-			for(Wall& wall : mWalls)
-				Renderer::submitLine(sf::Color::Red, wall.point1, wall.point2, 5);
+		mLightTriangleFanVertexData.clear();
 
 		if(sDebug.drawRays)
 		{
-			for(auto& point : mLightPolygonVertexData) {
+			for(auto& point : mLightTriangleFanVertexData) {
 				Renderer::submitPoint(point, light.color, 0, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
-			for(const auto& light : mLights)
-				Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 		}
-
-		mLightPolygonVertexData.clear();
 	}
 
-	mWalls.clear();
+	// draw light sources as points
+	if(sDebug.drawRays)
+		for(auto& light : mLights)
+			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
+
+	mLightWalls.clear();
 	mLights.clear();
 }
 
@@ -162,6 +177,12 @@ auto LightRenderer::getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f
 		return sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
 		return std::nullopt;
+}
+
+void LightRenderer::resetDebugNumbers()
+{
+	mNrOfDrawCalls = 0;
+	mNrOfRays = 0;
 }
 
 }

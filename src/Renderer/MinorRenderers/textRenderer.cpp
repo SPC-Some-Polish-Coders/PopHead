@@ -55,26 +55,28 @@ void TextRenderer::beginDebugDisplay()
 	mDebugTextPosition = {1150.f, 0.f};
 
 	if(mWasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1120.f, 0.f}, {500.f, 300.f}, 5, 0.f, {}, ProjectionType::gui);
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1120.f, 0.f}, {500.f, 300.f},
+			5, 0.f, {}, ProjectionType::gui, false);
 	mWasDebugTextDrawnInLastFrame = false;
 }
 
 void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
-                            unsigned char z, ProjectionType projectionType)
+                            unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	drawTextInternal(text, fontFilename, position, size, color, z, projectionType);
+	drawTextInternal(text, fontFilename, position, size, color, z, projectionType, isAffectedByLight);
 }
 
-void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin, sf::Color color)
+void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin,
+                                 sf::Color color)
 {
 	mWasDebugTextDrawnInLastFrame = true;
 	mDebugTextPosition.y += upMargin;
-	drawTextInternal(text, fontFilename, mDebugTextPosition, size, color, 0, ProjectionType::gui);
+	drawTextInternal(text, fontFilename, mDebugTextPosition, size, color, 0, ProjectionType::gui, false);
 	mDebugTextPosition.y += downMargin + size;
 }
 
 void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize,
-                                    sf::Color color, unsigned char z, ProjectionType projectionType)
+                                    sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
@@ -83,7 +85,8 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 	while(*text) {
 		if(*text >= '!' && *text <= '~') {
 			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
-			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, z, 0.f, {}, projectionType);
+			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, z, 0.f, {}, projectionType,
+				isAffectedByLight);
 			position.x += cq.advance;
 		}
 		else {
@@ -94,7 +97,8 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 }
 
 void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, const float textAreaWidth,
-                                TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType)
+                                TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
+								bool isAffectedByLight)
 {
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
@@ -119,7 +123,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 	auto submitCharacterToQuadRenderer = [&](sf::Vector2f localPos, sf::Vector2f size, IntRect textureRect, sf::Color color)
 	{
 		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &color, &mTextShader,
-			localPos + worldPos, size, z, 0.f, {}, projectionType);
+			localPos + worldPos, size, z, 0.f, {}, projectionType, isAffectedByLight);
 	};
 
 	while(1)

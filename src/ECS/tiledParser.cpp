@@ -13,7 +13,6 @@
 #include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
 #include "Logs/logs.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Renderer/API/shader.hpp"
 
 namespace ph {
@@ -37,8 +36,6 @@ namespace ph {
 			return;
 
 		loadObjects(gameObjects);
-
-		ActionEventManager::setEnabled(true);
 	}
 
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const
@@ -182,7 +179,8 @@ namespace ph {
 		loadSize(hintAreaNode, entity);
 		auto& hint = mGameRegistry.get<component::Hint>(entity);
 		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
-		hint.content = getProperty(hintAreaNode, "hintContent").toString();
+		hint.keyboardContent = getProperty(hintAreaNode, "hintKeyboardContent").toString();
+		hint.joystickContent = getProperty(hintAreaNode, "hintJoystickContent").toString();
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const

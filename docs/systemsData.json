@@ -21,7 +21,8 @@
                 "MultiStaticCollisionBody",
                 "KinematicCollisionBody",
                 "AreaVelocityChangingEffect",
-                "PushingArea"
+                "PushingArea",
+                "RenderChunk"
             ]
         },
         {
@@ -126,7 +127,8 @@
                 "DamageTag",
                 "LastingShot",
                 "Lifetime",
-                "AmbientSound"
+                "AmbientSound",
+				"CameraShake"
             ]
         },
         {
@@ -166,6 +168,7 @@
             "componentsWrite" : [
                 "CollisionWithPlayer",
                 "DamageTag",
+                "CameraShake",
                 "PushingForces"
             ]
         },
@@ -218,6 +221,7 @@
                 "BodyRect",
                 "DamageTag",
                 "RenderQuad",
+                "CameraShake",
                 "HiddenForRenderer"
             ]
         },
@@ -259,6 +263,7 @@
             "name" : "PlayerCameraMovement",
             "componentsRead" : [
                 "Player",
+                "FaceDirection",
                 "BodyRect"
             ],
             "componentsWrite" : [
@@ -313,6 +318,7 @@
             ],
             "componentsWrite" : [
                 "Camera",
+                "CameraShake",
                 "RenderChunk"
             ]
         },
@@ -342,6 +348,17 @@
             "name" : "VelocityClear",
             "componentsWrite" : [
                 "Velocity"
+            ]
+        },
+        {
+            "name" : "Weather",
+            "componentsRead" : [
+				"Player"
+			],
+            "componentsWrite" : [
+                "Weather",
+                "BodyRect",
+                "ParticleEmitter"
             ]
         },
         {

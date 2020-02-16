@@ -2,7 +2,6 @@
 
 #include "ECS/system.hpp"
 #include "Utilities/rect.hpp"
-
 #include <SFML/System/Vector2.hpp>
 
 namespace ph::system {
@@ -12,11 +11,11 @@ namespace ph::system {
 	public:
 		using System::System;
 
-		void onEvent(Event)override;
+		void onEvent(sf::Event)override;
 		void update(float dt) override;
 
 	private:
-		float getStartAttackRotation(const sf::Vector2f& playerFaceDirection) const;
+		float getStartAttackRotation(sf::Vector2f playerFaceDirection) const;
 
 	private:
 		float mStartWeaponRotation;
