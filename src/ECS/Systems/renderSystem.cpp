@@ -98,7 +98,7 @@ void RenderSystem::update(float dt)
 			quad.texture, nullptr, &quad.color, quad.shader,
 			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
 	});
-	
+
 	// submit render quads with texture rect
 	auto renderQuadsWithTextureRect = 
 		mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);

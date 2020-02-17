@@ -38,34 +38,13 @@ void LightRenderer::shutDown()
 
 void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
-	for(FloatRect wall : walls)	
-	{
-		sf::Vector2f topLeftPoint = wall.getTopLeft();
-		sf::Vector2f topRightPoint = wall.getTopRight(); 
-		sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
-		sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
-
-		mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
-		mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
-		mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
-		mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
-	}
+	mLightWalls.insert(mLightWalls.end(), walls.begin(), walls.end());
 }
 
 void LightRenderer::submitLightWall(FloatRect wall)
 {
-	if(!mScreenBounds->doPositiveRectsIntersect(FloatRect(wall.left - 200.f, wall.top - 200.f, wall.width + 400.f, wall.height + 400.f)))
-		return;
-
-	sf::Vector2f topLeftPoint = wall.getTopLeft();
-	sf::Vector2f topRightPoint = wall.getTopRight(); 
-	sf::Vector2f bottomRightPoint = wall.getBottomRight(); 
-	sf::Vector2f bottomLeftPoint = wall.getBottomLeft(); 
-
-	mLightWalls.emplace_back(Wall{topLeftPoint, topRightPoint});
-	mLightWalls.emplace_back(Wall{topRightPoint, bottomRightPoint});
-	mLightWalls.emplace_back(Wall{bottomRightPoint, bottomLeftPoint});
-	mLightWalls.emplace_back(Wall{bottomLeftPoint, topLeftPoint});
+	if(mScreenBounds->doPositiveRectsIntersect(FloatRect(wall.left - 200.f, wall.top - 200.f, wall.width + 400.f, wall.height + 400.f)))
+		mLightWalls.emplace_back(wall);
 }
 
 void LightRenderer::submitLight(Light light)
@@ -104,14 +83,13 @@ void LightRenderer::flush()
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
 				sf::Vector2f nearestIntersectionPoint;
 				float nearestIntersectionDistance = INFINITY;
-				for(Wall& wall : mLightWalls)
+				for(FloatRect& wall : mLightWalls)
 				{
-					auto intersectionPoint = getIntersectionPoint(rayDir, light.pos, wall);
-					float intersectionDistance = Math::distanceBetweenPoints(light.pos, *intersectionPoint);
-					if(intersectionPoint && intersectionDistance < nearestIntersectionDistance)
+					auto wallIntersection = getRayWallClosestIntersection(rayDir, light.pos, wall);
+					if(wallIntersection.valid && wallIntersection.distance < nearestIntersectionDistance)
 					{
-						nearestIntersectionPoint = *intersectionPoint;
-						nearestIntersectionDistance = intersectionDistance;
+						nearestIntersectionPoint = wallIntersection.point;
+						nearestIntersectionDistance = wallIntersection.distance;
 					}
 				}
 				mLightTriangleFanVertexData.emplace_back(nearestIntersectionPoint);
@@ -154,29 +132,62 @@ void LightRenderer::flush()
 	mLights.clear();
 }
 
-auto LightRenderer::getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f lightPos, const Wall& wall) -> std::optional<sf::Vector2f>
+RayWallIntersection LightRenderer::getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall)
 {
-	const float x1 = wall.point1.x;
-	const float y1 = wall.point1.y;
-	const float x2 = wall.point2.x;
-	const float y2 = wall.point2.y;
+	sf::Vector2f results[4];
+	results[0] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopLeft(), wall.getTopRight());
+	results[1] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getBottomLeft(), wall.getBottomRight());
+	results[2] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopLeft(), wall.getBottomLeft());
+	results[3] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopRight(), wall.getBottomRight());
 
-	const float x3 = lightPos.x;
-	const float y3 = lightPos.y;
-	const float x4 = lightPos.x + rayDir.x;
-	const float y4 = lightPos.y + rayDir.y;
+	RayWallIntersection closestIntersection;
+	for(unsigned i = 0; i < 4; ++i) 
+	{
+		if(results[i] == Math::nullVector)
+			continue;
 
-	const float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+		if(closestIntersection.valid) 
+		{
+			float distance = Math::distanceBetweenPoints(lightPos, results[i]);
+			if(distance < closestIntersection.distance) {
+				closestIntersection.distance = distance;
+				closestIntersection.point = results[i];
+			}
+		}
+		else
+		{
+			closestIntersection.distance = Math::distanceBetweenPoints(lightPos, results[i]);
+			closestIntersection.point = results[i];
+			closestIntersection.valid = true;
+		}
+	}
+
+	return closestIntersection;
+}
+
+sf::Vector2f LightRenderer::getVectorLineIntersectionPoint(sf::Vector2f rayDir, sf::Vector2f lightPos, sf::Vector2f lineP1, sf::Vector2f lineP2)
+{
+	float x1 = lineP1.x;
+	float y1 = lineP1.y;
+	float x2 = lineP2.x;
+	float y2 = lineP2.y;
+
+	float x3 = lightPos.x;
+	float y3 = lightPos.y;
+	float x4 = lightPos.x + rayDir.x;
+	float y4 = lightPos.y + rayDir.y;
+
+	float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	if(den == 0.f)
-		return std::nullopt;
+		return Math::nullVector; 
 
-	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
-	const float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+	float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+	float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
 	
 	if(t > 0 && t < 1 && u > 0)
 		return sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
-		return std::nullopt;
+		return Math::nullVector; 
 }
 
 void LightRenderer::resetDebugNumbers()
