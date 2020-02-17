@@ -35,6 +35,10 @@
             "componentsWrite" : [
                 "AmbientSound",
                 "SpatialSound"
+            ],
+            "anotherStuff" : [
+                "MusicPlayer",
+                "SoundPlayer"
             ]
         },
         {
@@ -52,6 +56,14 @@
             ],
             "componentsWrite" : [
                 "CutScene"
+            ],
+            "anotherStuff" : [
+                "CutSceneManager",
+                "GUI",
+                "MusicPlayer",
+                "SoundPlayer",
+                "AIManager",
+                "SceneManager"
             ]
         },
         {
@@ -75,6 +87,10 @@
                 "Camera",
                 "AnimationData",
                 "TaggedToDestroy"
+            ],
+            "anotherStuff" : [
+                "GUI",
+                "AIManager"
             ]
         },
         {
@@ -89,6 +105,9 @@
                 "Player",
                 "Entrance",
                 "BodyRect"
+            ],
+            "anotherStuff" : [
+                "SceneManager"
             ]
         },
 		{
@@ -97,6 +116,9 @@
                 "Player",
                 "Bullets",
                 "Health"
+            ],
+            "anotherStuff" : [
+                "GUI"
             ]
         },
         {
@@ -154,8 +176,10 @@
             ],
             "componentsWrite" : [
                 "Hint"
+            ],
+            "anotherStuff" : [
+                "GUI"
             ]
-            
         },
         {
             "name" : "HostileCollisions",
@@ -284,6 +308,11 @@
                 "FaceDirection",
                 "LightSource",
                 "Velocity"
+            ],
+            "anotherStuff" : [
+                "AIManager",
+                "GUI",
+                "SceneManager"
             ]
         },
         {
@@ -320,6 +349,9 @@
                 "Camera",
                 "CameraShake",
                 "RenderChunk"
+            ],
+            "anotherStuff" : [
+                "reference to textures/map/extrudedTileset.png from Game::mTextures"
             ]
         },
         {
@@ -373,6 +405,9 @@
                 "Velocity",
                 "SpatialSound",
                 "AnimationData"
+            ],
+            "anotherStuff" : [
+                "AIManager"
             ]
         }
     ]

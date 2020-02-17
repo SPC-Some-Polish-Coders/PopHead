@@ -59,6 +59,8 @@ AmbientSound<br />
 SpatialSound<br />
 </td>
 <td>
+MusicPlayer<br />
+SoundPlayer<br />
 </td>
 </tr>
 <tr>
@@ -82,6 +84,12 @@ Player<br />
 CutScene<br />
 </td>
 <td>
+CutSceneManager<br />
+GUI<br />
+MusicPlayer<br />
+SoundPlayer<br />
+AIManager<br />
+SceneManager<br />
 </td>
 </tr>
 <tr>
@@ -107,6 +115,8 @@ AnimationData<br />
 TaggedToDestroy<br />
 </td>
 <td>
+GUI<br />
+AIManager<br />
 </td>
 </tr>
 <tr>
@@ -129,6 +139,7 @@ BodyRect<br />
 <td>
 </td>
 <td>
+SceneManager<br />
 </td>
 </tr>
 <tr>
@@ -141,6 +152,7 @@ Health<br />
 <td>
 </td>
 <td>
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -208,6 +220,7 @@ BodyRect<br />
 Hint<br />
 </td>
 <td>
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -363,6 +376,9 @@ LightSource<br />
 Velocity<br />
 </td>
 <td>
+AIManager<br />
+GUI<br />
+SceneManager<br />
 </td>
 </tr>
 <tr>
@@ -405,6 +421,7 @@ CameraShake<br />
 RenderChunk<br />
 </td>
 <td>
+reference to textures/map/extrudedTileset.png from Game::mTextures<br />
 </td>
 </tr>
 <tr>
@@ -470,6 +487,7 @@ SpatialSound<br />
 AnimationData<br />
 </td>
 <td>
+AIManager<br />
 </td>
 </tr>
 </table>
