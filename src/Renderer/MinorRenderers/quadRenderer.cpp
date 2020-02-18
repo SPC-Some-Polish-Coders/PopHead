@@ -73,14 +73,13 @@ void QuadRenderer::init()
 	mDefaultQuadShader.init(shader::quadSrc());
 	mDefaultQuadShader.initUniformBlock("SharedData", 0);
 
-	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
-	mQuadIBO.init();
-	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
-
 	GLCheck( glGenVertexArrays(1, &mVAO) );
 	GLCheck( glBindVertexArray(mVAO) );
 
-	mQuadIBO.bind();
+	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
+	GLCheck( glGenBuffers(1, &mQuadIBO) );
+	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mQuadIBO) );
+	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) ); 
 
 	GLCheck( glGenBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
@@ -108,8 +107,8 @@ void QuadRenderer::init()
 void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
-	mQuadIBO.remove();
 	mDefaultQuadShader.remove();
+	GLCheck( glDeleteBuffers(1, &mQuadIBO) );
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }

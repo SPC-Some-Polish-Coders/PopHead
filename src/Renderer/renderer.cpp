@@ -5,7 +5,6 @@
 #include "MinorRenderers/lightRenderer.hpp"
 #include "MinorRenderers/textRenderer.hpp"
 #include "API/shader.hpp"
-#include "API/vertexArray.hpp"
 #include "API/camera.hpp"
 #include "API/font.hpp"
 #include "API/openglErrors.hpp"
@@ -27,10 +26,12 @@ namespace {
 	ph::Shader defaultFramebufferShader;
 	ph::Shader gaussianBlurFramebufferShader;
 	
-	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer gameObjectsFramebuffer;
 	ph::Framebuffer lightingFramebuffer;
 	ph::Framebuffer lightingGaussianBlurFramebuffer;
+	unsigned screenVBO;
+	unsigned screenIBO;
+	unsigned screenVAO;
 	 
 	sf::Color ambientLightColor;
 
@@ -86,9 +87,12 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
 	
-	// set up framebuffer
+	// set up framebuffers
 	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
 	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
+
+	glGenVertexArrays(1, &screenVAO);
+	glBindVertexArray(screenVAO);
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
@@ -96,18 +100,18 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	   -1.f, 1.f, 0.f, 1.f,
 	   -1.f,-1.f, 0.f, 0.f
 	};
+	glGenBuffers(1, &screenVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, screenVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(framebufferQuad), framebufferQuad, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0); 
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))); 
 
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
-	IndexBuffer quadIBO;
-	quadIBO.init();
-	quadIBO.setData(quadIndices, sizeof(quadIndices));
-
-	VertexBuffer framebufferVBO;
-	framebufferVBO.init();
-	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), GL_STATIC_DRAW);
-	framebufferVertexArray.init();
-	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
-	framebufferVertexArray.setIndexBuffer(quadIBO);
+	glGenBuffers(1, &screenIBO); 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, screenIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
 	gameObjectsFramebuffer.init(screenWidth, screenHeight);
 	lightingFramebuffer.init(screenWidth, screenHeight);
@@ -126,12 +130,14 @@ void shutDown()
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
 	textRenderer.shutDown();
-	framebufferVertexArray.remove();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
 	lightingGaussianBlurFramebuffer.remove();
 	defaultFramebufferShader.remove();
 	gaussianBlurFramebufferShader.remove();
+	glDeleteBuffers(1, &screenVBO);
+	glDeleteBuffers(1, &screenIBO);
+	glDeleteVertexArrays(1, &screenVAO);
 }
 
 void setGameWorldCamera(Camera& camera)
@@ -180,7 +186,7 @@ void endScene()
 	lightRenderer.flush();
 
 	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
-	framebufferVertexArray.bind();
+	glBindVertexArray(screenVAO);
 
 	// apply gaussian blur for lighting
 	lightingGaussianBlurFramebuffer.bind();
