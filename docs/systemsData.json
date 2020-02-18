@@ -11,7 +11,13 @@
             "name" : "ArcadeMode",
             "componentsWrite" : [
 				"ALL"
-			]
+            ],
+            "anotherStuff" : [
+                "EntitiesTemplateStorage",
+                "AIManager",
+                "MusicPlayer",
+                "GUI"
+            ]
         },
         {
             "name" : "AreasDebug",
@@ -23,6 +29,9 @@
                 "AreaVelocityChangingEffect",
                 "PushingArea",
                 "RenderChunk"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -94,6 +103,19 @@
             ]
         },
         {
+            "name" : "DebugCamera",
+            "componentsRead" : [
+                "DebugCamera"
+            ],
+            "componentsWrite" : [
+                "Camera",
+                "BodyRect"
+            ],
+            "anotherStuff" : [
+                "Renderer"
+            ]
+        },
+        {
             "name" : "EntityDestroying",
             "componentsWrite" : [
                 "ALL"
@@ -151,6 +173,9 @@
                 "Lifetime",
                 "AmbientSound",
 				"CameraShake"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -267,6 +292,9 @@
             "componentsWrite" : [
                 "ParticleEmitter",
                 "MultiParticleEmitter"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -351,7 +379,8 @@
                 "RenderChunk"
             ],
             "anotherStuff" : [
-                "reference to textures/map/extrudedTileset.png from Game::mTextures"
+                "reference to textures/map/extrudedTileset.png from Game::mTextures",
+                "Renderer"
             ]
         },
         {
@@ -391,6 +420,9 @@
                 "Weather",
                 "BodyRect",
                 "ParticleEmitter"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {

@@ -29,6 +29,10 @@ TextureRect<br />
 ALL<br />
 </td>
 <td>
+EntitiesTemplateStorage<br />
+AIManager<br />
+MusicPlayer<br />
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -45,6 +49,7 @@ RenderChunk<br />
 <td>
 </td>
 <td>
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -120,6 +125,19 @@ AIManager<br />
 </td>
 </tr>
 <tr>
+<td>DebugCamera</td>
+<td>
+DebugCamera<br />
+</td>
+<td>
+Camera<br />
+BodyRect<br />
+</td>
+<td>
+Renderer<br />
+</td>
+</tr>
+<tr>
 <td>EntityDestroying</td>
 <td>
 </td>
@@ -191,6 +209,7 @@ AmbientSound<br />
 CameraShake<br />
 </td>
 <td>
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -329,6 +348,7 @@ ParticleEmitter<br />
 MultiParticleEmitter<br />
 </td>
 <td>
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -422,6 +442,7 @@ RenderChunk<br />
 </td>
 <td>
 reference to textures/map/extrudedTileset.png from Game::mTextures<br />
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -471,6 +492,7 @@ BodyRect<br />
 ParticleEmitter<br />
 </td>
 <td>
+Renderer<br />
 </td>
 </tr>
 <tr>
