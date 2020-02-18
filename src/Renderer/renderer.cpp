@@ -91,6 +91,10 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
 	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
 
+	gameObjectsFramebuffer.init(screenWidth, screenHeight);
+	lightingFramebuffer.init(screenWidth, screenHeight);
+	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
+
 	glGenVertexArrays(1, &screenVAO);
 	glBindVertexArray(screenVAO);
 
@@ -112,10 +116,6 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	glGenBuffers(1, &screenIBO); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, screenIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
-
-	gameObjectsFramebuffer.init(screenWidth, screenHeight);
-	lightingFramebuffer.init(screenWidth, screenHeight);
-	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
 }
 
 void restart(unsigned screenWidth, unsigned screenHeight)
@@ -198,12 +198,14 @@ void endScene()
 	// render everything onto quad in default framebuffer
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	GLCheck( glEnable(GL_FRAMEBUFFER_SRGB) );
 	defaultFramebufferShader.bind();
 	defaultFramebufferShader.setUniformInt("gameObjectsTexture", 0);
 	gameObjectsFramebuffer.bindTextureColorBuffer(0);
 	defaultFramebufferShader.setUniformInt("lightingTexture", 1);
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
 	quadRenderer.flush(false);
 
 	// display renderer debug info 
@@ -246,7 +248,7 @@ void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Co
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
-                                                    unsigned char z, ProjectionType projectionType)
+                                          unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
@@ -307,13 +309,13 @@ void handleEvent(sf::Event e)
 		isDebugDisplayActive = !isDebugDisplayActive;
 		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
 		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-		quadRenderer.
-		setDebugCountingActive(isDebugDisplayActive);
+		quadRenderer.setDebugCountingActive(isDebugDisplayActive);
 	}
 	if(e.type == sf::Event::Resized) {
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
 		gameObjectsFramebuffer.onWindowResize(e.size.width, e.size.height);
 		lightingFramebuffer.onWindowResize(e.size.width, e.size.height);
+		lightingGaussianBlurFramebuffer.onWindowResize(e.size.width, e.size.height);
 	}
 }
 
@@ -333,3 +335,4 @@ float getNormalizedZ(const unsigned char z)
 }
 
 }
+

@@ -49,12 +49,12 @@ bool Texture::loadFromFile(const std::string& filepath)
 
 	GLenum dataFormat = 0, internalDataFormat = 0;
 	if(numberOfChanels == 3) {
-		internalDataFormat = GL_RGB8;
+		internalDataFormat = GL_SRGB8;
 		dataFormat = GL_RGB;
 		GLCheck( glPixelStorei(GL_UNPACK_ALIGNMENT, 1) );
 	}
 	else if(numberOfChanels == 4) {
-		internalDataFormat = GL_RGBA8;
+		internalDataFormat = GL_SRGB8_ALPHA8;
 		dataFormat = GL_RGBA;
 		GLCheck( glPixelStorei(GL_UNPACK_ALIGNMENT, 4) );
 	}
@@ -74,7 +74,7 @@ void Texture::setData(void* rgbaData, unsigned arraySize, sf::Vector2i textureSi
 	// TODO_ren: Make possible setting data for different formats rgb, rgba (now it's only rgba)
 	
 	PH_ASSERT_CRITICAL(arraySize == 4 * textureSize.x * textureSize.y, "Data must be for entire texture!");
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureSize.x, textureSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, textureSize.x, textureSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
 }
 
 void Texture::bind(unsigned slot) const

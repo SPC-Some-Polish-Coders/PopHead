@@ -267,7 +267,7 @@ namespace ph {
 			flashlight.startAngle = 40.f;
 			flashlight.endAngle = 40.f;
 			flashlight.attenuationAddition = 0.1f;
-			flashlight.attenuationFactor = 1.f;
+			flashlight.attenuationFactor = 3.f;
 			flashlight.attenuationSquareFactor = 1.5f;
 			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
 		}	
