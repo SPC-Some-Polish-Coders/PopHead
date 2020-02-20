@@ -136,6 +136,7 @@ static void executeHistory()
 
 static void executeHelp()
 {
+	Terminal::pushOutputLine({});
 	Terminal::pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
 	Terminal::pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
 	Terminal::pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});
@@ -396,9 +397,9 @@ static void executeMute()
 	if(commandContains('?'))
 	{
 		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@c9609mute sound @CO mutes only sound"});
-		Terminal::pushOutputLine({"@c9609mute music @CO mutes only music"});
-		Terminal::pushOutputLine({"@c9609mute @CO mutes audio"});
+		Terminal::pushOutputLine({"@C9609mute sound @CO mutes only sound"});
+		Terminal::pushOutputLine({"@C9609mute music @CO mutes only music"});
+		Terminal::pushOutputLine({"@C9609mute @CO mutes audio"});
 	}
 	else
 	{
@@ -411,9 +412,9 @@ static void executeUnmute()
 	if(commandContains('?'))
 	{
 		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@c9609unmute sound @CO unmutes only sound"});
-		Terminal::pushOutputLine({"@c9609unmute music @CO unmutes only music"});
-		Terminal::pushOutputLine({"@c9609unmute @CO unmutes audio"});
+		Terminal::pushOutputLine({"@C9609unmute sound @CO unmutes only sound"});
+		Terminal::pushOutputLine({"@C9609unmute music @CO unmutes only music"});
+		Terminal::pushOutputLine({"@C9609unmute @CO unmutes audio"});
 	}
 	else
 	{
@@ -426,9 +427,9 @@ static void executeSetVolume()
 	if(commandContains('?'))
 	{
 		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@c9609 setvolume sound @CO sets sound volume"});
-		Terminal::pushOutputLine({"@c9609 setvolume music @CO sets music volume"});
-		Terminal::pushOutputLine({"@c9609 setvolume @CO sets audio volume"});
+		Terminal::pushOutputLine({"@C9609 setvolume sound @CO sets sound volume"});
+		Terminal::pushOutputLine({"@C9609 setvolume music @CO sets music volume"});
+		Terminal::pushOutputLine({"@C9609 setvolume @CO sets audio volume"});
 	}
 	else
 	{
@@ -453,62 +454,99 @@ static void executeSetVolume()
 
 static void executeLight()
 {
-	bool on = !commandContains("off");
-
-	auto& lightDebug = LightRenderer::getDebug();
-
-	if(commandContains("rays"))
-		lightDebug.drawRays = on;
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 light rays off @CO disables rays debug"});
+		Terminal::pushOutputLine({"@C9609 light rays @CO enables rays debug"});
+		Terminal::pushOutputLine({"@C9609 light off @CO disables lighting"});
+		Terminal::pushOutputLine({"@C9609 light @CO enables lighting"});
+	}
 	else
-		lightDebug.drawLight = on;
+	{
+		bool on = !commandContains("off");
+
+		auto& lightDebug = LightRenderer::getDebug();
+
+		if(commandContains("rays"))
+			lightDebug.drawRays = on;
+		else
+			lightDebug.drawLight = on;
+	}
 }
 
 static void executeFontDebug()
 {
-	// TODO: Add font filename command argument and font size command argument
-	if(commandContains("on") && !FontDebugRenderer::isActive()) {
-		FontDebugRenderer::init("joystixMonospace.ttf", 50);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 fontd off @CO disables font debug"});
+		Terminal::pushOutputLine({"@C9609 fontd @CO enables font debug"});
 	}
-	if(commandContains("off") && FontDebugRenderer::isActive()) {
-		FontDebugRenderer::shutDown();
+	else
+	{
+		if(commandContains("off") && FontDebugRenderer::isActive()) {
+			FontDebugRenderer::shutDown();
+		}
+		else if(!FontDebugRenderer::isActive()) {
+			FontDebugRenderer::init("joystixMonospace.ttf", 50);
+		}
 	}
 }
 
 static void executeNoFocusUpdate()
 {
-	Game::setNoFocusUpdate(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 nofocusupdate off@CO disables updating game if game's window doesn't have focus"});
+		Terminal::pushOutputLine({"@C9609 nofocusupdate@CO enables updating game if game's window doesn't have focus"});
+	}
+	else
+	{
+		Game::setNoFocusUpdate(!commandContains("off"));
+	}
 }
 
 static void executeDebugCamera()
 {
-	auto& registry = sceneManager->getScene().getRegistry();
-
-	auto destroyExistingDebugCameras = [&registry]() {
-		auto debugCameras = registry.view<component::DebugCamera, component::Camera, component::BodyRect>();
-		registry.destroy(debugCameras.begin(), debugCameras.end());
-	};
-
-	component::Camera::currentCameraName = "default";
-	destroyExistingDebugCameras();
-	isVisible = true;
-
-	if(!commandContains("off"))
+	if(commandContains('?'))
 	{
-		// get player position
-		sf::Vector2f playerPos;
-		auto players = registry.view<component::Player, component::BodyRect>();
-		players.each([&playerPos](const component::Player, const component::BodyRect body) {
-			playerPos = body.rect.getCenter();
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 dc off@CO disables debug camera"});
+		Terminal::pushOutputLine({"@C9609 dc@CO enables debug camera"});
+	}
+	else
+	{
+		auto& registry = sceneManager->getScene().getRegistry();
+
+		auto destroyExistingDebugCameras = [&registry]() {
+			auto debugCameras = registry.view<component::DebugCamera, component::Camera, component::BodyRect>();
+			registry.destroy(debugCameras.begin(), debugCameras.end());
+		};
+
+		component::Camera::currentCameraName = "default";
+		destroyExistingDebugCameras();
+		isVisible = true;
+
+		if(!commandContains("off"))
+		{
+			// get player position
+			sf::Vector2f playerPos;
+			auto players = registry.view<component::Player, component::BodyRect>();
+			players.each([&playerPos](const component::Player, const component::BodyRect body) {
+				playerPos = body.rect.getCenter();
 			});
 
-		// create debug camera
-		auto entity = registry.create();
-		registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
-		registry.assign<component::DebugCamera>(entity);
-		registry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
-		component::Camera::currentCameraName = "debug";
+			// create debug camera
+			auto entity = registry.create();
+			registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
+			registry.assign<component::DebugCamera>(entity);
+			registry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
+			component::Camera::currentCameraName = "debug";
 
-		isVisible = false;
+			isVisible = false;
+		}
 	}
 }
 
@@ -516,13 +554,32 @@ static void executeDebugCamera()
 
 static void executeResetGuiLive()
 {
-	resetGuiLive.isActive = !commandContains("off");
-	Game::setNoFocusUpdate(resetGuiLive.isActive);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"you can change rguilivefreq with @C9609 rguilivefreq @CO command"});
+		Terminal::pushOutputLine({"@C9609 rguilive off@CO disables loading gui from file once for rguilivefreq seconds"});
+		Terminal::pushOutputLine({"@C9609 rguilive@CO enables loading gui from file once for rguilivefreq seconds"});
+	}
+	else
+	{
+		resetGuiLive.isActive = !commandContains("off");
+		Game::setNoFocusUpdate(resetGuiLive.isActive);
+	}
 }
 
 static void executeResetGuiLiveFrequency()
 {
-	resetGuiLive.resetFrequency = getSingleFloatArgument();
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609 rguilivefreq 0.5@CO sets rguilive freq to 0.5 seconds"});
+		Terminal::pushOutputLine({"@C9609 rguilivefreq@CO takes one floating point argument and sets rguilivefreq"});
+	}
+	else
+	{
+		resetGuiLive.resetFrequency = getSingleFloatArgument();
+	}
 }
 
 #endif 
