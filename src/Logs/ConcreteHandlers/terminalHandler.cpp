@@ -8,8 +8,7 @@ namespace ph {
 
 	void TerminalHandler::utilizeLog(const LogRecord& logRecord)
 	{
-		std::string message = logRecordToString(logRecord);
-		OutputLine line{ message, sf::Color::White };
+		OutputLine line{ logRecordToString(logRecord), sf::Color::White };
 		
 		switch (logRecord.level)
 		{

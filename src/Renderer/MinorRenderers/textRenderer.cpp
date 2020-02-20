@@ -3,9 +3,11 @@
 #include "quadRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
+#include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <stb_truetype.h>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <vector>
 #include <cmath>
@@ -100,6 +102,8 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
                                 TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
 								bool isAffectedByLight)
 {
+	sf::Color initialTextColor = textColor;
+
 	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
 	worldPos.y += fontSize;
@@ -130,30 +134,59 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 	{
 		if(*text == '@')
 		{
+			auto getDigit = [](char c) -> float
+			{
+				// NOTE: stof() doesn't work in this case
+				switch(c)
+				{
+					default:  return 0.f;
+					case '1': return 1.f;
+					case '2': return 2.f;
+					case '3': return 3.f;
+					case '4': return 4.f;
+					case '5': return 5.f;
+					case '6': return 6.f;
+					case '7': return 7.f;
+					case '8': return 8.f;
+					case '9': return 9.f;
+				}
+			};
+
 			++text;
 			switch(*text)
 			{
 				case 'C': { // change text color
-					auto getColorValue = [&text] 
+					++text;
+					if(*text == 'O')
 					{
-						// NOTE: stof() doesn't work in this case
-						++text;
-						float digit = 0;
-						if(*text == '1') digit = 1;
-						else if(*text == '2') digit = 2;
-						else if(*text == '3') digit = 3;
-						else if(*text == '4') digit = 4;
-						else if(*text == '5') digit = 5;
-						else if(*text == '6') digit = 6;
-						else if(*text == '7') digit = 7;
-						else if(*text == '8') digit = 8;
-						else if(*text == '9') digit = 9;
-						return static_cast<unsigned char>((digit / 9.f) * 255.f); 
-					};
-					textColor.r = getColorValue();
-					textColor.g = getColorValue();
-					textColor.b = getColorValue();
-					textColor.a = getColorValue();
+						textColor = initialTextColor;
+					}
+					else
+					{
+						auto getColorValue = [&getDigit, &text] 
+						{
+							float digit = getDigit(*text);
+							++text;
+							return static_cast<unsigned char>((digit / 9.f) * 255.f); 
+						};
+						textColor.r = getColorValue();
+						textColor.g = getColorValue();
+						textColor.b = getColorValue();
+						textColor.a = getColorValue();
+					}
+				} break;
+
+				case 'S': { // separate text into 2 columns 
+					++text;
+					float columnCount = getDigit(*text); 
+					++text;
+					float currentColumn = getDigit(*text); 
+					float textColumnWidth = textAreaWidth / columnCount;
+					float currentColumnLeftBound = textColumnWidth * currentColumn;
+					if(localPos.x < currentColumnLeftBound)
+						localPos.x = currentColumnLeftBound + textColumnWidth / textColumnWidth / 2.f;
+					else
+						PH_LOG_INFO("Text didn't fit into 2 columns!");
 				} break;
 
 				default:

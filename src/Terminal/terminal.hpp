@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <entt/entt.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Event.hpp>
@@ -13,7 +12,7 @@ namespace ph {
 	struct OutputLine
 	{
 		std::string text;
-		sf::Color color;
+		sf::Color color = sf::Color::White;
 	};
 }
 
