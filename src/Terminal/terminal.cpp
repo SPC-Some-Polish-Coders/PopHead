@@ -54,6 +54,17 @@ struct ResetGuiLive
 static ResetGuiLive resetGuiLive;
 #endif 
 
+static sf::Vector2f getPlayerPosition()
+{
+	sf::Vector2f playerPos = vector2ArgumentError;
+	auto& registry = sceneManager->getScene().getRegistry();
+	auto players = registry.view<component::Player, component::BodyRect>();
+	players.each([&playerPos](const component::Player, const component::BodyRect body) {
+		playerPos = body.rect.getCenter();
+	});
+	return playerPos;
+}
+
 static sf::Vector2f handleGetVector2ArgumentError()
 {
 	Terminal::pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
@@ -169,11 +180,19 @@ static void executeReset()
 	if(commandContains('?'))
 	{
 		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609 r@CO doesn't take any arguments and reloads the current scene."});
+		Terminal::pushOutputLine({"@C9609 r stay@CO reloads the current scene and spawns player in his current position."});
+		Terminal::pushOutputLine({"@C9609 r@CO reloads the current scene."});
 	}
 	else
 	{
-		sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
+		if(commandContains("stay"))
+		{
+			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath(), getPlayerPosition());
+		}
+		else
+		{
+			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
+		}
 	}
 }
 
@@ -313,12 +332,7 @@ static void executeCurrentPos()
 	}
 	else
 	{
-		auto& registry = sceneManager->getScene().getRegistry();
-		auto view = registry.view<component::Player, component::BodyRect>();
-		view.each([](const component::Player, const component::BodyRect& body) {
-			const sf::Vector2f playerPos = body.rect.getCenter();
-			Terminal::pushOutputLine({"player position: " + Cast::toString(playerPos), infoLimeColor});
-		});
+		Terminal::pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
 	}
 }
 
@@ -531,14 +545,8 @@ static void executeDebugCamera()
 
 		if(!commandContains("off"))
 		{
-			// get player position
-			sf::Vector2f playerPos;
-			auto players = registry.view<component::Player, component::BodyRect>();
-			players.each([&playerPos](const component::Player, const component::BodyRect body) {
-				playerPos = body.rect.getCenter();
-			});
-
 			// create debug camera
+			sf::Vector2f playerPos = getPlayerPosition();
 			auto entity = registry.create();
 			registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
 			registry.assign<component::DebugCamera>(entity);
