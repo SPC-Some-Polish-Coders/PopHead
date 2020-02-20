@@ -6,7 +6,6 @@
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <stb_truetype.h>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <vector>
@@ -98,7 +97,7 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 	}
 }
 
-void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, const float textAreaWidth,
+void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,
                                 TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
 								bool isAffectedByLight)
 {
@@ -108,6 +107,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 
 	worldPos.y += fontSize;
 
+	// TODO: Move this vector to class
 	std::vector<CharacterQuad> rowCharacters;
 	sf::Vector2f localPos;
 	unsigned wordsInCurrentRow = 0;
@@ -201,14 +201,14 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			rowCharacters.emplace_back(cq);
 			++lettersInCurrentWord;
 		}
-		else if(*text == ' ' || localPos.x > textAreaWidth)
+		else if(*text == ' ' || localPos.x > textAreaWidth) 
 		{
 			while(*(text + 1) == ' ') {
 				++text;
 				localPos.x += fontSize;
 			}
 			localPos.x += fontSize;
-			if(localPos.x > textAreaWidth) 
+			if(localPos.x > textAreaWidth) // TODO: Cut duplicated check
 			{
 				if(wordsInCurrentRow > 0)
 				{
@@ -219,6 +219,8 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 						submitCharacterToQuadRenderer(it->pos, it->size, it->textureRect, it->color);
 					}
 					rowCharacters.clear();
+					if(*text == 0)
+						break;
 					text -= lettersInCurrentWord + 1;
 				}
 				else
@@ -229,6 +231,8 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 						submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 					}
 					rowCharacters.clear();
+					if(*text == 0)
+						break;
 				}
 				localPos.x = 0;
 				localPos.y += fontSize;
@@ -240,7 +244,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			}
 			lettersInCurrentWord = 0;
 		}
-		else if(*(text) == '\0')
+		else if(*text == 0)
 		{
 			if(!rowCharacters.empty())
 			{
