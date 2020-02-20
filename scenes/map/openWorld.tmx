@@ -16492,7 +16492,7 @@
   <object id="10" name="Shooting Tutorial" type="HintArea" x="536.095" y="5675.9" width="693.728" height="248.833">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[A]@C9999 to shoot"/>
-    <property name="hintKeyboardContent" value="Use @C9909[Enter]@C9999 to shoot"/>
+    <property name="hintKeyboardContent" value="Use @C9909[Enter] @C9999to shoot"/>
     <property name="hintName" value="shootingHint"/>
    </properties>
   </object>

@@ -13,6 +13,8 @@ namespace ph {
 class TextRenderer
 {
 public:
+	TextRenderer();
+	
 	void init();
 	void shutDown();
 

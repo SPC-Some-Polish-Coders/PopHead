@@ -37,6 +37,13 @@ namespace {
 		q.advance = bc->xadvance;
 		return q;
 	}
+
+	std::vector<CharacterQuad> rowCharacters;
+}
+
+TextRenderer::TextRenderer()
+{
+	rowCharacters.reserve(100);
 }
 
 void TextRenderer::init()
@@ -107,8 +114,6 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 
 	worldPos.y += fontSize;
 
-	// TODO: Move this vector to class
-	std::vector<CharacterQuad> rowCharacters;
 	sf::Vector2f localPos;
 	unsigned wordsInCurrentRow = 0;
 	unsigned lettersInCurrentWord = 0;
@@ -166,12 +171,14 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 						auto getColorValue = [&getDigit, &text] 
 						{
 							float digit = getDigit(*text);
-							++text;
 							return static_cast<unsigned char>((digit / 9.f) * 255.f); 
 						};
 						textColor.r = getColorValue();
+						++text;
 						textColor.g = getColorValue();
+						++text;
 						textColor.b = getColorValue();
+						++text;
 						textColor.a = getColorValue();
 					}
 				} break;
@@ -208,7 +215,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 				localPos.x += fontSize;
 			}
 			localPos.x += fontSize;
-			if(localPos.x > textAreaWidth) // TODO: Cut duplicated check
+			if(localPos.x > textAreaWidth)
 			{
 				if(wordsInCurrentRow > 0)
 				{
@@ -219,8 +226,6 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 						submitCharacterToQuadRenderer(it->pos, it->size, it->textureRect, it->color);
 					}
 					rowCharacters.clear();
-					if(*text == 0)
-						break;
 					text -= lettersInCurrentWord + 1;
 				}
 				else
@@ -231,8 +236,6 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 						submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 					}
 					rowCharacters.clear();
-					if(*text == 0)
-						break;
 				}
 				localPos.x = 0;
 				localPos.y += fontSize;
@@ -244,7 +247,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			}
 			lettersInCurrentWord = 0;
 		}
-		else if(*text == 0)
+		if(*text == 0)
 		{
 			if(!rowCharacters.empty())
 			{
