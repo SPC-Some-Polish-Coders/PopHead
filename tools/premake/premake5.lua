@@ -4,16 +4,27 @@ exe_dir = root_dir .. "bin/" .. config_dir .. "/%{prj.name}"
 obj_dir = root_dir .. "bin-obj/" .. config_dir .. "/%{prj.name}"
 
 workspace "PopHead"
-    architecture "x86"
     location (root_dir)
     startproject "PopHead"
-    
+
     configurations{
-        "Debug",
-        "Release",
-        "Distribution",
-        "Tests"
+        "Debug_32bit",
+        "Release_32bit",
+        "Distribution_32bit",
+        "Tests_32bit",
+        "Debug_64bit",
+        "Release_64bit",
+        "Distribution_64bit",
+        "Tests_64bit"
     }
+
+	filter "configurations:*32bit"
+		architecture "x86"
+
+	filter "configurations:*64bit"	
+		architecture "x64"
+
+	filter {}
 
 project "PopHead"
     location (root_dir)
@@ -25,7 +36,7 @@ project "PopHead"
 	objdir (obj_dir)
     
     debugdir "%{wks.location}"
-    
+
     includedirs{
         root_dir .. "src",
         root_dir .. "vendor/SFML_2.5.1/include",
@@ -34,10 +45,17 @@ project "PopHead"
         root_dir .. "vendor/entt-3.2.0/src"
     }
 
-    libdirs{
-		root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio",
-		root_dir .. "vendor/glew-2.1.0/lib"
-	}
+	filter "configurations:*32bit"
+		libdirs{
+			root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio-32bit",
+			root_dir .. "vendor/glew-2.1.0/lib/32bit"
+		}
+	filter "configurations:*64bit"
+		libdirs{
+			root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio-64bit",
+			root_dir .. "vendor/glew-2.1.0/lib/64bit"
+		}
+	filter{}
 
     files{
         root_dir .. "src/**.hpp",
@@ -67,33 +85,31 @@ project "PopHead"
 		"GLEW_STATIC"
 	}
 	
-    filter "configurations:Debug"
+    filter "configurations:Debug*"
         symbols "On"
 
         links{
             "sfml-graphics-s-d",
             "sfml-audio-s-d",
-            "sfml-network-s-d",
             "sfml-window-s-d",
             "sfml-system-s-d"
         }
 
-	filter {"configurations:Debug", "action:vs*"}
+	filter {"configurations:Debug*", "action:vs*"}
 		inlining "Explicit"
 
-    filter "configurations:Release or Distribution"
+    filter "configurations:Release* or Distribution*"
         optimize "On"
 
         links{
             "sfml-graphics-s",
             "sfml-audio-s", 
-            "sfml-network-s",
             "sfml-window-s",
             "sfml-system-s",
             "sfml-main"
         }
 
-    filter "configurations:Distribution"
+    filter "configurations:Distribution*"
         defines "PH_DISTRIBUTION" 
         kind "WindowedApp"
 
@@ -130,10 +146,17 @@ project "Tests"
         root_dir .. "vendor/catch2"
     }
    
-    libdirs{
-		root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio",
-		root_dir .. "vendor/glew-2.1.0/lib"
-	}
+	filter "configurations:*32bit"
+		libdirs{
+			root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio-32bit",
+			root_dir .. "vendor/glew-2.1.0/lib/32bit"
+		}
+	filter "configurations:*64bit"
+		libdirs{
+			root_dir .. "vendor/SFML_2.5.1/lib-VisualStudio-64bit",
+			root_dir .. "vendor/glew-2.1.0/lib/64bit"
+		}
+	filter{}
 
     files{
         root_dir .. "src/**.hpp",
@@ -170,35 +193,33 @@ project "Tests"
 		"GLEW_STATIC"
 	}
 	
-    filter "configurations:Debug or Tests"
+    filter "configurations:Debug* or Tests*"
         symbols "On"
 
         links{
             "sfml-graphics-s-d",
             "sfml-audio-s-d",
-            "sfml-network-s-d",
             "sfml-window-s-d",
             "sfml-system-s-d"
         }
 
-	filter {"configurations:Debug", "action:vs*"}
+	filter {"configurations:Debug*", "action:vs*"}
 		inlining "Explicit"
 
-    filter "configurations:Release or Distribution"
+    filter "configurations:Release* or Distribution*"
         optimize "On"
 
         links{
             "sfml-graphics-s",
             "sfml-audio-s", 
-            "sfml-network-s",
             "sfml-window-s",
             "sfml-system-s",
         }
 
-	filter "configurations:Tests"
+	filter "configurations:Tests*"
 		defines "PH_TESTS"
 
-    filter "configurations:Distribution"
+    filter "configurations:Distribution*"
         defines "PH_DISTRIBUTION"
 
     filter "system:Windows"
