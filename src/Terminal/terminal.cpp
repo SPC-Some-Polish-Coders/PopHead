@@ -24,6 +24,7 @@
 #include <deque>
 #include <unordered_map>
 #include <string>
+#include <fstream>
 
 namespace ph {
 
@@ -711,6 +712,19 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["rguilive"] = &executeResetGuiLive;
 	commandsMap["rguilivefreq"] = &executeResetGuiLiveFrequency;
 #endif
+
+	// read terminalInit.txt file
+	std::ifstream file;
+	file.open("terminalInit.txt");
+	if(file.is_open())
+	{
+		while(!file.eof())
+		{
+			getline(file, content);
+			executeCommand();
+		}
+		file.close();
+	}
 }
 
 void update(float dt)
