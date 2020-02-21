@@ -8,7 +8,7 @@ namespace ph::system {
 
 	void PickupItems::update(float dt)
 	{
-		PH_PROFILE_FUNCTION(0);
+		PH_PROFILE_FUNCTION(1);
 
 		if(sPause)
 			return;
