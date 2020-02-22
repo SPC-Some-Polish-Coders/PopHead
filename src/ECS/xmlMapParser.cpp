@@ -66,21 +66,22 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 				}
 				else
 				{
-					if(chunkPos.x < mapBounds.left)
+					if(chunkPos.x < mapBounds.left) {
 						mapBounds.left = chunkPos.x;
-					if(chunkPos.y < mapBounds.top)
-						mapBounds.top = chunkPos.y;
-
-					// TODO: Handle for chunk with negative position
-					
-					if(chunkPos.x > 0.f && chunkPos.y > 0.f) {
-						sf::Vector2f addition(-mapBounds.left, -mapBounds.top);
-						if(addition.x + chunkPos.x + chunkSize.x > mapBounds.width)
-							mapBounds.width = addition.x + chunkPos.x + chunkSize.x;
-						if(addition.y + chunkPos.y + chunkSize.y > mapBounds.height)
-							mapBounds.height = addition.y + chunkPos.y + chunkSize.y;
 					}
-				}	
+					if(chunkPos.y < mapBounds.top) {
+						mapBounds.top = chunkPos.y;
+					}
+					
+					float mapWidthToThisChunk = chunkPos.x - mapBounds.left + chunkSize.x;
+					if(mapWidthToThisChunk > mapBounds.width) {
+						mapBounds.width = mapWidthToThisChunk; 
+					}
+					float mapHeightToThisChunk = chunkPos.y - mapBounds.top + chunkSize.y;
+					if(mapHeightToThisChunk > mapBounds.height) {
+						mapBounds.height = mapHeightToThisChunk;
+					}
+				}
 
 				auto globalIds = Csv::toUnsigneds(chunkNode.toString());
 				createInfiniteMapChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager);
@@ -109,21 +110,21 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		return body.rect;
 	};
 
-	// create top map border
-	auto& topBorderRect = createBorderCollision();
-	topBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
-
-	// create bottom map border
-	auto& bottomBorderRect = createBorderCollision();
-	bottomBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
-		
 	// create left map border
 	auto& leftBorderRect = createBorderCollision();
-	leftBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+	leftBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.top - info.tileSize.y, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+
+	// create top map border
+	auto& topBorderRect = createBorderCollision();
+	topBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.top - info.tileSize.y, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
 
 	// create right map border
 	auto& rightBorderRect = createBorderCollision();
 	rightBorderRect = FloatRect(mapBounds.width + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+
+	// create bottom map border
+	auto& bottomBorderRect = createBorderCollision();
+	bottomBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
