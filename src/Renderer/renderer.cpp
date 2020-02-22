@@ -285,6 +285,11 @@ void submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 	lightRenderer.submitBunchOfLightWalls(walls);
 }
 
+unsigned getNrOfLights()
+{
+	return lightRenderer.getNrOfLights();
+}
+
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {

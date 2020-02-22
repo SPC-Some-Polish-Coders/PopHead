@@ -27,7 +27,6 @@ void LightRenderer::init()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
 
 	mLightTriangleFanVertexData.reserve(361);
-
 }
 
 void LightRenderer::shutDown()
@@ -50,12 +49,20 @@ void LightRenderer::submitLightWall(FloatRect wall)
 void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
-	mLights.emplace_back(light);
+
+	if(sDebug.drawLight)
+	{
+		mLights.emplace_back(light);
+		++mNrOfLights;
+	}	
 }
 
 void LightRenderer::flush()
 {
 	PH_PROFILE_FUNCTION(0);
+
+	if(mLights.empty())
+		return;
 
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
@@ -98,20 +105,17 @@ void LightRenderer::flush()
 
 		// draw light using triangle fan
 		mLightShader.bind();
-		if(sDebug.drawLight)
-		{
-			PH_PROFILE_SCOPE("draw light triangle fan", 0);
-			mLightShader.setUniformVector2("lightPos", light.pos);
-			mLightShader.setUniformVector4Color("color", light.color);
-			mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
-			mLightShader.setUniformFloat("a", light.attenuationAddition);
-			mLightShader.setUniformFloat("b", light.attenuationFactor);
-			mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
-			glBindVertexArray(mLightTriangleFanVAO);
-			glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
-			glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
-		}
+		PH_PROFILE_SCOPE("draw light triangle fan", 0);
+		mLightShader.setUniformVector2("lightPos", light.pos);
+		mLightShader.setUniformVector4Color("color", light.color);
+		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
+		mLightShader.setUniformFloat("a", light.attenuationAddition);
+		mLightShader.setUniformFloat("b", light.attenuationFactor);
+		mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
+		glBindVertexArray(mLightTriangleFanVAO);
+		glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
+		glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
 		mLightTriangleFanVertexData.clear();
 
 		if(sDebug.drawRays)
@@ -194,6 +198,7 @@ void LightRenderer::resetDebugNumbers()
 {
 	mNrOfDrawCalls = 0;
 	mNrOfRays = 0;
+	mNrOfLights = 0;
 }
 
 }

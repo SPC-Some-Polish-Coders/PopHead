@@ -57,6 +57,7 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
+	unsigned getNrOfLights() { return mNrOfLights; }
 
 	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
 	unsigned getNrOfRays() { return mNrOfRays; }
@@ -80,6 +81,7 @@ private:
 	Shader mLightShader;
 	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
 	unsigned mNrOfDrawCalls, mNrOfRays;
+	unsigned mNrOfLights;
 
 	inline static LightingDebug sDebug;
 };
