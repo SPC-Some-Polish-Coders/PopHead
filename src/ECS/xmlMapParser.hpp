@@ -41,6 +41,13 @@ struct TilesetsData
 	std::string tilesetFileName;
 };
 
+struct DenialAreas
+{
+	std::vector<FloatRect> collisions;
+	std::vector<FloatRect> lightWalls;
+	std::vector<FloatRect> collisionsAndLightWalls;
+};
+
 class XmlMapParser
 {
 public:
@@ -61,6 +68,7 @@ private:
 private:
 	std::vector<component::RenderChunk> mRenderChunks;
 	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
+	DenialAreas mDenialAreas;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
 	inline static float sChunkSize = 12.f;

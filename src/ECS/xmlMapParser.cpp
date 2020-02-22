@@ -17,6 +17,32 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
 
+	//load denial areas
+	auto objectGroups = mapNode.getChildren("objectgroup");
+	for(auto& objectGroup : objectGroups)
+	{
+		if(objectGroup.getAttribute("name")->toString() == "denialAreas")
+		{
+			auto objects = objectGroup.getChildren("object");
+			for(auto& object : objects)
+			{
+				auto getBounds = [&object]
+				{
+					return FloatRect(object.getAttribute("x")->toFloat(), object.getAttribute("y")->toFloat(),
+					                 object.getAttribute("width")->toFloat(), object.getAttribute("height")->toFloat());
+				};
+
+				if(object.getAttribute("type")->toString() == "CollisionAndLightWallDenialArea")
+					mDenialAreas.collisionsAndLightWalls.emplace_back(getBounds());
+				else if(object.getAttribute("type")->toString() == "CollisionDenialArea")
+					mDenialAreas.collisions.emplace_back(getBounds());
+				else if(object.getAttribute("type")->toString() == "LightWallDenialArea")
+					mDenialAreas.lightWalls.emplace_back(getBounds());
+			}
+		}
+	}
+
+
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
 
 	aiManager.registerMapSize(static_cast<sf::Vector2u>(info.mapSize));
@@ -194,10 +220,11 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			{
 				if(auto type = objectNode.getAttribute("type"))
 				{
-					auto getBounds = [&objectNode] {
+					auto getBounds = [&objectNode] 
+					{
 						auto width = objectNode.getAttribute("width");
 						auto height = objectNode.getAttribute("height");
-						return sf::FloatRect(
+						return FloatRect(
 							objectNode.getAttribute("x")->toFloat(),
 							objectNode.getAttribute("y")->toFloat(),
 							width ? width->toFloat() : 0.f,
@@ -209,7 +236,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 					if(typeStr == "Collision")
 						collisions.emplace_back(getBounds());
 					else if(typeStr == "LightWall")
-						lightWalls.emplace_back(getBounds());	
+						lightWalls.emplace_back(getBounds());
 				}
 			}
 			tilesData.bounds.emplace_back(collisions);
@@ -354,10 +381,24 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 
 						collisionRect.left += tileWorldPos.x; 
 						collisionRect.top += tileWorldPos.y; 
-						chunkCollisions.rects.emplace_back(collisionRect);
-						// TODO
-						//aiManager.registerObstacle({collisionRect.left, collisionRect.top});
-						
+
+						bool shouldBeAdded = true;
+
+						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+							if(collisionDenialArea.doPositiveRectsIntersect(collisionRect)) {
+								shouldBeAdded = false;
+								break;
+							}
+
+						if(shouldBeAdded)
+							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+								if(collisionDenialArea.doPositiveRectsIntersect(collisionRect)) {
+									shouldBeAdded = false;
+									break;
+								}
+
+						if(shouldBeAdded)
+							chunkCollisions.rects.emplace_back(collisionRect);
 					}
 
 					// light walls
@@ -371,7 +412,21 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 						lightWallRect.left += tileWorldPos.x; 
 						lightWallRect.top += tileWorldPos.y; 
 
-						renderChunk.lightWalls.emplace_back(lightWallRect);
+						bool shouldBeAdded = true;
+						for(FloatRect lightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
+							if(lightWallDenialArea.doPositiveRectsIntersect(lightWallRect)) {
+								shouldBeAdded = false;
+								break;
+							}
+
+						if(shouldBeAdded)
+							for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
+								if(lightWallDenialArea.doPositiveRectsIntersect(lightWallRect)) {
+									shouldBeAdded = false;
+								}
+
+						if(shouldBeAdded)
+							renderChunk.lightWalls.emplace_back(lightWallRect);
 					}
 
 					break;
@@ -539,6 +594,8 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			{
 				if (tileId == tilesData.ids[i]) 
 				{
+					// TODO: Add support for denial areas
+
 					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{

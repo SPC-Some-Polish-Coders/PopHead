@@ -43,6 +43,8 @@
   <property name="velocity" type="float" default="5"/>
  </objecttype>
  <objecttype name="Collision" color="#a40c0c"/>
+ <objecttype name="CollisionAndLightWallDenialArea" color="#0c081e"/>
+ <objecttype name="CollisionDenialArea" color="#6a0001"/>
  <objecttype name="CrawlingNpc" color="#f4ef5f">
   <property name="isAlreadyDead" type="bool" default="true"/>
  </objecttype>
@@ -70,6 +72,7 @@
  </objecttype>
  <objecttype name="Lever" color="#aa00ff"/>
  <objecttype name="LightWall" color="#129f70"/>
+ <objecttype name="LightWallDenialArea" color="#0b2c04"/>
  <objecttype name="LootSpawner" color="#0cff7d">
   <property name="lootType" type="string" default="bullets"/>
  </objecttype>
