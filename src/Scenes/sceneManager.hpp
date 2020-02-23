@@ -2,7 +2,6 @@
 
 #include "scene.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
-#include "Resources/resourceHolder.hpp"
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
 #include <memory>
@@ -34,7 +33,7 @@ public:
     void update(float dt);
 
 	Scene& getScene() { return *mScene.get(); }
-	void init(TextureHolder*, AIManager*);
+	void init(AIManager*);
 
 	std::string getCurrentSceneFilePath() const { return mCurrentSceneFilePath; }
 
@@ -46,7 +45,6 @@ private:
 	std::string mCurrentSceneFilePath;
 	Texture* mTilesetTexture;
 	AIManager* mAIManager;
-	TextureHolder* mTextures;
 	sf::Vector2f mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;

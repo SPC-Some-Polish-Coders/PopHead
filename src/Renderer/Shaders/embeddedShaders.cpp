@@ -39,16 +39,26 @@ ShaderSource lightSrc()
 
 
 // quad 
-static const char* sInstancedSpriteVS = 
+static const char* sQuadVS = 
 	#include "quad.vs.glsl"
 ;
-static const char* sInstancedSpriteFS =
+static const char* sQuadFS =
 	#include "quad.fs.glsl"
 ;
 ShaderSource quadSrc()
 {
-	return ShaderSource{sInstancedSpriteVS, sInstancedSpriteFS};
+	return ShaderSource{sQuadVS, sQuadFS};
 }
+
+// gui
+static const char* sGuiFS =
+	#include "gui.fs.glsl"
+;
+ShaderSource guiSrc()
+{
+	return ShaderSource{sQuadVS, sGuiFS};
+}
+
 
 
 // line

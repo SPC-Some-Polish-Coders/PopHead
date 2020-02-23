@@ -8,6 +8,9 @@
 
 namespace ph::GUI
 {
+	void init();
+	void shutDown();
+
 	void handleEvent(sf::Event);
 	void update(float dt);
 

@@ -12,18 +12,18 @@
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
+#include "Resources/textureHolder.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/API/shader.hpp"
 
 namespace ph {
 
 	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
-	                         SceneManager& sceneManager, TextureHolder& textureHolder)
+	                         SceneManager& sceneManager)
 		:mCutSceneManager(cutSceneManager)
 		,mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
 		,mSceneManager(sceneManager)
-		,mTextureHolder(textureHolder)
 	{
 	}
 
@@ -312,8 +312,8 @@ namespace ph {
 		// load texture
 		const std::string texturePath = getProperty(spriteNode, "texturePath").toString();
 		if(texturePath != "none") {
-			if(mTextureHolder.load(texturePath))
-				rq.texture = &mTextureHolder.get(texturePath);
+			if(loadTexture(texturePath))
+				rq.texture = &getTexture(texturePath);
 			else
 				PH_EXIT_GAME("TiledParser::loadSprite() wasn't able to load texture \"" + texturePath + "\"");
 		}

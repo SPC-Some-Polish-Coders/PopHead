@@ -2,7 +2,6 @@
 
 #include "behaviorType.hpp"
 #include "Renderer/API/texture.hpp"
-#include "Resources/resourceHolder.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Event.hpp>
 #include <map>
@@ -58,6 +57,8 @@ public:
 	sf::Vector2f getScreenPosition() const;
 	sf::Vector2f getScreenSize() const;
 
+	static void initShader();
+	static void deleteShader();
 	static void setWindow(sf::Window* window) { sWindow = window; }
 	static void setScreenSize(sf::Vector2f size) { sScreenSize = size; }
 

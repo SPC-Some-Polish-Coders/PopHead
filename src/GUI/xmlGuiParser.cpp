@@ -7,6 +7,7 @@
 #include "ECS/system.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
+#include "Resources/textureHolder.hpp"
 #include "GUI/gui.hpp"
 #include <functional>
 #include <string_view>
@@ -14,13 +15,11 @@
 namespace ph {
 
 namespace {
-	TextureHolder* textureHolder = nullptr;
 	SceneManager* sceneManager = nullptr;
 }
 
-void XmlGuiParser::init(TextureHolder* th, SceneManager* sm)
+void XmlGuiParser::init(SceneManager* sm)
 {
-	textureHolder = th;
 	sceneManager = sm;
 }
 
@@ -116,8 +115,8 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 {	
 	if(auto texturePath = widgetNode.getAttribute("texturePath")) {
 		const std::string path = "textures/" + texturePath->toString();
-		PH_ASSERT_CRITICAL(textureHolder->load(path), "XmlGuiParser error: Texture path wasn't properly loaded " + path)
-		widget->setTexture(&textureHolder->get(path));
+		PH_ASSERT_CRITICAL(loadTexture(path, false), "XmlGuiParser error: Texture path wasn't properly loaded " + path)
+		widget->setTexture(&getTexture(path));
 	}
 	if(auto size = widgetNode.getAttribute("size"))
 		widget->setSize(size->toVector2f());
@@ -180,8 +179,8 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 {
 	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) {
 		const std::string path = "textures/" + iconTexturePath->toString();
-		PH_ASSERT_CRITICAL(textureHolder->load(path), "XmlGuiParser error: Icon texture path wasn't properly loaded " + path)
-		widget->setIconTexture(&textureHolder->get(path));
+		PH_ASSERT_CRITICAL(loadTexture(path, false), "XmlGuiParser error: Icon texture path wasn't properly loaded " + path)
+		widget->setIconTexture(&getTexture(path));
 	}
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
 		widget->setIconSize(iconSize->toVector2f());

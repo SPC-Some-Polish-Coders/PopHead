@@ -12,7 +12,6 @@ namespace ph {
 
 Game::Game()
 	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core))
-	,mTextures(std::make_unique<TextureHolder>())
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
 {
@@ -20,7 +19,7 @@ Game::Game()
 	SoundPlayer::init();
 	MusicPlayer::init();
 
-	mSceneManager->init(mTextures.get(), mAIManager.get());
+	mSceneManager->init(mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	Terminal::init(&mWindow, mSceneManager.get());
@@ -28,8 +27,9 @@ Game::Game()
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
 
+	GUI::init();
 	Widget::setWindow(&mWindow);
-	XmlGuiParser::init(mTextures.get(), mSceneManager.get());
+	XmlGuiParser::init(mSceneManager.get());
 }
 
 void Game::run()
@@ -45,6 +45,7 @@ void Game::run()
 	}
 
 	Renderer::shutDown();
+	GUI::shutDown();
 	mWindow.close();
 }
 

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "entitiesTemplateStorage.hpp"
-#include "Resources/resourceHolder.hpp"
+#include "Resources/textureHolder.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include <entt/entity/registry.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <vector>
 #include <string>
 

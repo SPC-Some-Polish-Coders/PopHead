@@ -10,11 +10,10 @@ class Texture
 public:
 	Texture();
 	Texture(unsigned existingID, sf::Vector2i size);
-	Texture(const std::string& filepath);
 
 	~Texture();
 
-	bool loadFromFile(const std::string& filepath);
+	bool loadFromFile(const std::string& filepath, bool srgb);
 	void setData(void* rgbaData, unsigned arraySize, sf::Vector2i textureSize);
 
 	void bind(unsigned slot = 0) const;

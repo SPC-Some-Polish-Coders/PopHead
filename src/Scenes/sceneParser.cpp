@@ -14,7 +14,7 @@
 namespace ph {
 
 void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
-                entt::registry& gameRegistry, const std::string& sceneFileName, TextureHolder& textureHolder, SystemsQueue& systemsQueue,
+                entt::registry& gameRegistry, const std::string& sceneFileName, SystemsQueue& systemsQueue,
                 AIManager& aiManager, SceneManager& sceneManager)
 {
 	PH_PROFILE_FUNCTION(0);
@@ -60,7 +60,7 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
 		EntitiesParser parser;
-		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry, textureHolder);
+		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry);
 	}
 
 	// parse map
@@ -71,7 +71,7 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
-		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager, textureHolder);
+		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager);
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}

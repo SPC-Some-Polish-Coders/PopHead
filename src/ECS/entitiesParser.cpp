@@ -9,6 +9,7 @@
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/API/shader.hpp"
+#include "Resources/textureHolder.hpp"
 #include "Resources/animationStatesResources.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/random.hpp"
@@ -18,15 +19,11 @@ namespace ph {
 EntitiesParser::EntitiesParser()
 	:mTemplateStorage(nullptr)
 	,mUsedRegistry(nullptr)
-	,mTextureHolder(nullptr)
 {
 }
 
-void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry,
-                               TextureHolder& textureHolder)
+void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
 {
-	mTextureHolder = &textureHolder;
-
 	mTemplateStorage = &templateStorage;
 	Xml entitiesFile;
 	PH_ASSERT_CRITICAL(entitiesFile.loadFromFile(filePath), "entities file \"" + filePath + "\"wasn't loaded correctly!");
@@ -152,8 +149,8 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	// parse texture
 	if(auto textureFilepathXml = entityComponentNode.getAttribute("textureFilepath")) {
 		const std::string filepath = textureFilepathXml->toString();
-		if(mTextureHolder->load(filepath))
-			quad.texture = &mTextureHolder->get(filepath);
+		if(loadTexture(filepath))
+			quad.texture = &getTexture(filepath);
 		else
 			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load texture \"" + filepath + "\"");
 	}
@@ -379,8 +376,8 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 		else if(name == "texture") {
 			const std::string filepath = attrib.getAttribute("filepath")->toString();
-			if(mTextureHolder->load(filepath))
-				emitter.parTexture = &mTextureHolder->get(filepath);
+			if(loadTexture(filepath))
+				emitter.parTexture = &getTexture(filepath);
 			else
 				PH_EXIT_GAME("EntitiesParser::parseParticleEmitter() wasn't able to load texture!");
 		}

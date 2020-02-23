@@ -1,8 +1,22 @@
 #include "widget.hpp"
 #include "Renderer/renderer.hpp"
+#include "Renderer/Shaders/embeddedShaders.hpp"
+#include "Logs/logs.hpp"
 #include <cstring>
 
 namespace ph {
+
+static Shader guiShader;
+
+void Widget::initShader()
+{
+	guiShader.init(shader::guiSrc());
+}
+
+void Widget::deleteShader()
+{
+	guiShader.remove();
+}
 
 Widget::Widget(const char* name)
 	:mParent(nullptr)
@@ -61,7 +75,7 @@ void Widget::update(float dt, unsigned char z)
 
 	move(mVelocity * dt);
 
-	Renderer::submitQuad(mTexture, nullptr, &mColor, nullptr,
+	Renderer::submitQuad(mTexture, nullptr, &mColor, &guiShader,
 		getScreenPosition(), getScreenSize(), z--, 0.f, {}, ProjectionType::gui, false);
 	
 	updateCurrent(dt, z - 2);

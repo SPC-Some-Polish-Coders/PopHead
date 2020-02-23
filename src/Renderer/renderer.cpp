@@ -240,8 +240,8 @@ void endScene()
 }
 
 void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
-                          ProjectionType projectionType, bool isAffectedByLight)
+                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
+                ProjectionType projectionType, bool isAffectedByLight)
 {
 	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size,
 		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);

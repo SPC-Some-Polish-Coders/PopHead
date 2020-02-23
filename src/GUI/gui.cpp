@@ -7,6 +7,16 @@ namespace {
 	std::vector<Interface> mInterfaces;
 }
 
+void init()
+{
+	Widget::initShader();
+}
+
+void shutDown()
+{
+	Widget::deleteShader();
+}
+
 Interface* addInterface(const char* name)
 {
 	return &mInterfaces.emplace_back(name);

@@ -5,6 +5,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Systems/weather.hpp"
 #include "Utilities/profiling.hpp"
+#include "Logs/logs.hpp"
 #include "SFML/Window/Joystick.hpp"
 
 namespace ph::system {

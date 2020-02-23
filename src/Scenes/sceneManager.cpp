@@ -13,7 +13,6 @@ namespace ph {
 SceneManager::SceneManager()
 	:mScene(nullptr)
 	,mAIManager(nullptr)
-	,mTextures(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPositionForNextScene(false)
@@ -67,7 +66,7 @@ void SceneManager::replaceAction()
 		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture));
 
 		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
-		           *mTextures, mScene->getSystemsQueue(), *mAIManager, *this);
+		           mScene->getSystemsQueue(), *mAIManager, *this);
 
 		if(mAIManager->isPlayerOnScene()) {
 			mScene->setPlayerStatus(mLastPlayerStatus);
@@ -92,12 +91,11 @@ void SceneManager::update(float dt)
 	mScene->update(dt);
 }
 
-void SceneManager::init(TextureHolder* textures, AIManager* aiManager)
+void SceneManager::init(AIManager* aiManager)
 {
 	mAIManager = aiManager;
-	mTextures = textures;
-	textures->load("textures/map/extrudedTileset.png");
-	mTilesetTexture = &textures->get("textures/map/extrudedTileset.png");
+	loadTexture("textures/map/extrudedTileset.png", true);
+	mTilesetTexture = &getTexture("textures/map/extrudedTileset.png");
 }
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
