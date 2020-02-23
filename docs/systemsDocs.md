@@ -8,6 +8,7 @@
 <th>System name</th>
 <th>Components Read</th>
 <th>Components Modified</th>
+<th>Another classes/variables</th>
 </tr>
 <tr>
 <td>AnimationSystem</td>
@@ -17,6 +18,8 @@
 AnimationData<br />
 TextureRect<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>ArcadeMode</td>
@@ -24,6 +27,12 @@ TextureRect<br />
 </td>
 <td>
 ALL<br />
+</td>
+<td>
+EntitiesTemplateStorage<br />
+AIManager<br />
+MusicPlayer<br />
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -39,6 +48,9 @@ RenderChunk<br />
 </td>
 <td>
 </td>
+<td>
+Renderer<br />
+</td>
 </tr>
 <tr>
 <td>AudioSystem</td>
@@ -51,6 +63,10 @@ Damage<br />
 AmbientSound<br />
 SpatialSound<br />
 </td>
+<td>
+MusicPlayer<br />
+SoundPlayer<br />
+</td>
 </tr>
 <tr>
 <td>Cars</td>
@@ -59,6 +75,8 @@ SpatialSound<br />
 <td>
 BodyRect<br />
 Car<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -69,6 +87,14 @@ Player<br />
 </td>
 <td>
 CutScene<br />
+</td>
+<td>
+CutSceneManager<br />
+GUI<br />
+MusicPlayer<br />
+SoundPlayer<br />
+AIManager<br />
+SceneManager<br />
 </td>
 </tr>
 <tr>
@@ -93,6 +119,23 @@ Camera<br />
 AnimationData<br />
 TaggedToDestroy<br />
 </td>
+<td>
+GUI<br />
+AIManager<br />
+</td>
+</tr>
+<tr>
+<td>DebugCamera</td>
+<td>
+DebugCamera<br />
+</td>
+<td>
+Camera<br />
+BodyRect<br />
+</td>
+<td>
+Renderer<br />
+</td>
 </tr>
 <tr>
 <td>EntityDestroying</td>
@@ -100,6 +143,8 @@ TaggedToDestroy<br />
 </td>
 <td>
 ALL<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -111,6 +156,9 @@ BodyRect<br />
 </td>
 <td>
 </td>
+<td>
+SceneManager<br />
+</td>
 </tr>
 <tr>
 <td>GameplayUI</td>
@@ -120,6 +168,9 @@ Bullets<br />
 Health<br />
 </td>
 <td>
+</td>
+<td>
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -132,6 +183,8 @@ LeverListener<br />
 StaticCollisionBody<br />
 LightWall<br />
 HiddenForRenderer<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -155,6 +208,9 @@ Lifetime<br />
 AmbientSound<br />
 CameraShake<br />
 </td>
+<td>
+Renderer<br />
+</td>
 </tr>
 <tr>
 <td>GunPositioningAndTexture</td>
@@ -170,6 +226,8 @@ HiddenForRenderer<br />
 BodyRect<br />
 GunAttacker<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>HintAreas</td>
@@ -179,6 +237,9 @@ BodyRect<br />
 </td>
 <td>
 Hint<br />
+</td>
+<td>
+GUI<br />
 </td>
 </tr>
 <tr>
@@ -195,12 +256,16 @@ DamageTag<br />
 CameraShake<br />
 PushingForces<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>IsPlayerAlive</td>
 <td>
 Player<br />
 Health<br />
+</td>
+<td>
 </td>
 <td>
 </td>
@@ -214,6 +279,8 @@ KinematicCollisionBody<br />
 BodyRect<br />
 Velocity<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>Levers</td>
@@ -226,6 +293,8 @@ Lever<br />
 TextureRect<br />
 LeverListener<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>Lifetime</td>
@@ -234,6 +303,8 @@ LeverListener<br />
 <td>
 TaggedToDestroy<br />
 Lifetime<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -252,6 +323,8 @@ RenderQuad<br />
 CameraShake<br />
 HiddenForRenderer<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>Movement</td>
@@ -262,6 +335,8 @@ PushingForces<br />
 <td>
 BodyRect<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>ParticleSystem</td>
@@ -271,6 +346,9 @@ BodyRect<br />
 <td>
 ParticleEmitter<br />
 MultiParticleEmitter<br />
+</td>
+<td>
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -286,6 +364,8 @@ Health<br />
 Bullets<br />
 TaggedToDestroy<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>PlayerCameraMovement</td>
@@ -296,6 +376,8 @@ BodyRect<br />
 </td>
 <td>
 Camera<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -313,6 +395,11 @@ FaceDirection<br />
 LightSource<br />
 Velocity<br />
 </td>
+<td>
+AIManager<br />
+GUI<br />
+SceneManager<br />
+</td>
 </tr>
 <tr>
 <td>PushingAreas</td>
@@ -324,6 +411,8 @@ KinematicCollisionBody<br />
 <td>
 Velocity<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>PushingMovement</td>
@@ -333,6 +422,8 @@ KinematicCollisionBody<br />
 <td>
 BodyRect<br />
 PushingForces<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -349,6 +440,10 @@ Camera<br />
 CameraShake<br />
 RenderChunk<br />
 </td>
+<td>
+reference to textures/map/extrudedTileset.png from Game::mTextures<br />
+Renderer<br />
+</td>
 </tr>
 <tr>
 <td>StaticCollisions</td>
@@ -359,6 +454,8 @@ MultiStaticCollisionBody<br />
 <td>
 BodyRect<br />
 KinematicCollisionBody<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -371,6 +468,8 @@ KinematicCollisionBody<br />
 <td>
 Velocity<br />
 </td>
+<td>
+</td>
 </tr>
 <tr>
 <td>VelocityClear</td>
@@ -378,6 +477,8 @@ Velocity<br />
 </td>
 <td>
 Velocity<br />
+</td>
+<td>
 </td>
 </tr>
 <tr>
@@ -389,6 +490,9 @@ Player<br />
 Weather<br />
 BodyRect<br />
 ParticleEmitter<br />
+</td>
+<td>
+Renderer<br />
 </td>
 </tr>
 <tr>
@@ -403,6 +507,9 @@ Zombie<br />
 Velocity<br />
 SpatialSound<br />
 AnimationData<br />
+</td>
+<td>
+AIManager<br />
 </td>
 </tr>
 </table>

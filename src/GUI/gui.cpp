@@ -22,7 +22,7 @@ Interface* getInterface(const char* name)
 
 bool hasInterface(const char* name)
 {
-	return getInterface(name);
+	return getInterface(name) != nullptr;
 }
 
 void deleteInterface(const char* name)

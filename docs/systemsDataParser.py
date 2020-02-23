@@ -20,6 +20,13 @@ def create_system_row(system_data, html_file):
             html_file.write(component + '<br />\n')
     html_file.write('</td>\n')
 
+    html_file.write('<td>\n')
+    if 'anotherStuff' in system_data:
+        another_stuff = system_data['anotherStuff']
+        for name in another_stuff:
+            html_file.write(name + '<br />\n')
+    html_file.write('</td>\n')
+
     html_file.write('</tr>\n')
 
 
@@ -36,6 +43,7 @@ def convert_to_html(json_data):
     html_file.write('<th>System name</th>\n')
     html_file.write('<th>Components Read</th>\n')
     html_file.write('<th>Components Modified</th>\n')
+    html_file.write('<th>Another classes/variables</th>\n')
 
     html_file.write('</tr>\n')
 
