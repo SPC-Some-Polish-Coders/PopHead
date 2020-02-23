@@ -144,7 +144,7 @@
   <entityTemplate name="Torch">
     <component name="BodyRect" x="0" y="0" width="8" height="8"/>
     <component name="RenderQuad" z="99" textureFilepath="textures/others/torch.png" />
-    <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 150, 0, 150)" attenuationAddition="0.24" attenuationFactor="2.0" attenuationSquareFactor="0.5"/>
+    <component name="LightSource" offsetX="10" offsetY="10" color="rgba(255, 120, 0, 150)" attenuationAddition="0.24" attenuationFactor="2.0" attenuationSquareFactor="1.5"/>
     <component name="ParticleEmitter">
       <particleAttrib name="startColor" r="255" g="255" b="255" a="255" />
       <particleAttrib name="endColor" r="255" g="150" b="0" a="100" />

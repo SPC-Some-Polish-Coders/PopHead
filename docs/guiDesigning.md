@@ -117,3 +117,6 @@ It is equivalent to:
   </interface>
 </gui>
 ```
+
+### Live gui editing
+To edit gui efficently you should use terminal command ``rguilive`` and maybe ``rguilivefreq``

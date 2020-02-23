@@ -24,6 +24,7 @@
 #include <deque>
 #include <unordered_map>
 #include <string>
+#include <fstream>
 
 namespace ph {
 
@@ -41,10 +42,8 @@ static const sf::Vector2f vector2ArgumentError = {-1, -1};
 typedef void (*ExecuteCommandFunction)(void);
 static std::unordered_map<std::string, ExecuteCommandFunction> commandsMap;
 
-enum class MessageType
-{
-	ERROR, INFO, USER, BLANK
-};
+static sf::Color errorRedColor = {255, 25, 33};
+static sf::Color infoLimeColor = {127, 244, 44};
 
 #ifndef PH_DISTRIBUTION
 struct ResetGuiLive
@@ -56,31 +55,20 @@ struct ResetGuiLive
 static ResetGuiLive resetGuiLive;
 #endif 
 
-static void executeMessage(const std::string& message, const MessageType colorType)
+static sf::Vector2f getPlayerPosition()
 {
-	sf::Color color;
-	switch(colorType)
-	{
-	case MessageType::ERROR:
-		color = {255, 25, 33};
-		break;
-	case MessageType::INFO:
-		color = {127, 244, 44};
-		break;
-	case MessageType::USER:
-		color = sf::Color(79, 202, 255);
-		break;
-	case MessageType::BLANK:
-		color = sf::Color::Transparent;
-		break;
-	}
-
-	Terminal::pushOutputLine(OutputLine{message, color});
+	sf::Vector2f playerPos = vector2ArgumentError;
+	auto& registry = sceneManager->getScene().getRegistry();
+	auto players = registry.view<component::Player, component::BodyRect>();
+	players.each([&playerPos](const component::Player, const component::BodyRect body) {
+		playerPos = body.rect.getCenter();
+	});
+	return playerPos;
 }
 
 static sf::Vector2f handleGetVector2ArgumentError()
 {
-	executeMessage("Incorrect argument! Argument has to be a number.", MessageType::ERROR);
+	Terminal::pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
 	return vector2ArgumentError;
 }
 
@@ -140,12 +128,12 @@ static void executeCommand()
 	if(found != commandsMap.end())
 		(*found->second)();
 	else
-		executeMessage("Entered command wasn't recognised. Enter 'help' to see available commands.", MessageType::ERROR);
+		Terminal::pushOutputLine({"Entered command wasn't recognised. Enter 'help' to see available commands.", sf::Color::Red});
 }
 
 static void executeInfoMessage()
 {
-	executeMessage("This is terminal. Enter 'help' to see available commands.", MessageType::INFO);
+	Terminal::pushOutputLine({"This is terminal. Enter 'help' to see available commands.", sf::Color(50, 50, 255)});
 }
 
 static void executeHistory()
@@ -154,155 +142,265 @@ static void executeHistory()
 	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
 	for(; it != commandsHistory.rend(); ++it)
-		executeMessage("- " + *it, MessageType::INFO);
-	executeMessage("Ten last used commands: ", MessageType::INFO);
+		Terminal::pushOutputLine({"- " + *it, infoLimeColor});
+	Terminal::pushOutputLine({"Ten last used commands: ", sf::Color::White});
 }
 
 static void executeHelp()
 {
-	const std::array<std::string, 11> commandsList1{
-		"VELD - enables(with no args) or disables(with 'off' arg) velocity changing areas debug",
-		"PUSHD - enables(with no args) or disables(with 'off' arg) pushing areas debug"
-		"COLLISION DEBUG / COLD - enables(with no args) or disables(with 'off' arg) collision debug",
-		"GIVE - adds certain amount of certain item to inventory, takes args (amount, item) items: bullet",
-		"TELEPORT / TP - teleports player to given position, takes args (x, y)",
-		"M - moves player for certain vector, takes args (x, y)",
-		"SETVOLUME - sets volume, you have to pass number from 0 to 100 as an arg",
-		"UNMUTE - unmutes audio, if you don't pass any args it will mute everything; But you can pass args: 'music' 'sound'",
-		"MUTE - mutes audio, if you don't pass any args it will mute everything; But you can pass args: 'music' 'sound'",
-		"HISTORY - shows last commands",
-		"HELP - shows avaiable commends",
-	};
-	const std::array<std::string, 3> commandsList2{
-		"CURRENTPOS", "SPAWN", "VIEW"
-	};
-
-	if(commandContains('2')) {
-		for(auto& command : commandsList2)
-			executeMessage("- " + command, MessageType::INFO);
-		executeMessage("Available commands, PAGE 2 of 2.", MessageType::INFO);
-	}
-	else {
-		for(auto& command : commandsList1)
-			executeMessage("- " + command, MessageType::INFO);
-		executeMessage("Available commands, PAGE 1 of 2.", MessageType::INFO);
-	}
+	Terminal::pushOutputLine({});
+	Terminal::pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
+	Terminal::pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
+	Terminal::pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});
+	Terminal::pushOutputLine({"setvolume @S31 mute @C9999 mute audio @CO @S32 unmute @C9999 unmute audio", infoLimeColor});
+	Terminal::pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
+	Terminal::pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
+	Terminal::pushOutputLine({"rguilivefreq @C9999 set gui reset frequency @CO @S31 lwd @C9999 light walls debug @CO @S32 light @C9999 light debug", infoLimeColor});
+	Terminal::pushOutputLine({"fontd @C9999 font debug @CO @S31 nofocusupdate @S32 dc @C9999 debug camera", infoLimeColor});
+	Terminal::pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
 }
 
 static void executeGotoScene()
 {
-	const int spacePosition = content.find_first_of(' ') + 1;
-	const std::string scenePath = "scenes/" + content.substr(spacePosition, content.size()) + ".xml";
-	sceneManager->replaceScene(scenePath);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609 gts sewage@CO goes to sewage scene of file sewage.xml"});
+		Terminal::pushOutputLine({"@C9609 gts@CO takes one argument which is name of the scene file without extension."});
+	}
+	else
+	{
+		const int spacePosition = content.find_first_of(' ') + 1;
+		const std::string scenePath = "scenes/" + content.substr(spacePosition, content.size()) + ".xml";
+		sceneManager->replaceScene(scenePath);
+	}
 }
 
 static void executeReset()
 {
-	sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609 r stay@CO reloads the current scene and spawns player in his current position."});
+		Terminal::pushOutputLine({"@C9609 r@CO reloads the current scene."});
+	}
+	else
+	{
+		if(commandContains("stay"))
+		{
+			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath(), getPlayerPosition());
+		}
+		else
+		{
+			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
+		}
+	}
 }
 
 static void executePause()
 {
-	system::System::setPause(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"More precisly it calls system::System::setPause(!commandContains(\"off\"))"});
+		Terminal::pushOutputLine({"@C9609 pause off@CO Unpauses the game"});
+		Terminal::pushOutputLine({"@C9609 pause@CO Pauses the game"});
+	}
+	else
+	{
+		system::System::setPause(!commandContains("off"));
+	}
 }
 
 static void executeResetGui()
 {
-	const int spacePosition = content.find_first_of(' ') + 1;
-	Xml sceneFile;
-	sceneFile.loadFromFile(sceneManager->getCurrentSceneFilePath());
-	const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
-	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
-		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
-		XmlGuiParser guiParser;
-		guiParser.parseGuiXml(filepath);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609 rgui@CO reloads current scene gui from file, doesn't take arguments"});
+	}
+	else
+	{
+		const int spacePosition = content.find_first_of(' ') + 1;
+		Xml sceneFile;
+		sceneFile.loadFromFile(sceneManager->getCurrentSceneFilePath());
+		const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
+		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+			const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
+			XmlGuiParser guiParser;
+			guiParser.parseGuiXml(filepath);
+		}
 	}
 }
 
 static void executeClear()
 {
-	for(int i = 0; i < 20; ++i)
-		executeMessage("", MessageType::BLANK);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609clear@CO clears terminal output area, doesn't take arguments"});
+	}
+	else
+	{
+		for(int i = 0; i < 20; ++i)
+			Terminal::pushOutputLine({""});
+	}
 }
 
 static void executeTeleport()
 {
-	const sf::Vector2f newPosition = getVector2Argument();
-	if(newPosition == vector2ArgumentError)
-		return;
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609tp 100"});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609tp -100 2000"});
+		Terminal::pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
+		Terminal::pushOutputLine({"If player is not on the scene it doesn't do anything"});
+		Terminal::pushOutputLine({"@C9609tp@CO teleports player to absolute coordinate"});
+	}
+	else
+	{
+		const sf::Vector2f newPosition = getVector2Argument();
+		if(newPosition == vector2ArgumentError)
+			return;
 
-	auto& registry = sceneManager->getScene().getRegistry();
-	auto view = registry.view<component::Player, component::BodyRect>();
-	view.each([newPosition](const component::Player player, component::BodyRect& body) {
-		body.rect.left = newPosition.x;
-		body.rect.top = newPosition.y;
-	});
+		auto& registry = sceneManager->getScene().getRegistry();
+		auto view = registry.view<component::Player, component::BodyRect>();
+		view.each([newPosition](const component::Player player, component::BodyRect& body) {
+			body.rect.left = newPosition.x;
+			body.rect.top = newPosition.y;
+		});
+	}
 }
 
 static void executeMove()
 {
-	sf::Vector2f moveOffset = getVector2Argument();
-
-	auto& registry = sceneManager->getScene().getRegistry();
-	auto view = registry.view<component::Player, component::BodyRect>();
-	view.each([moveOffset](const component::Player, component::BodyRect& body) {
-		body.rect.left += moveOffset.x;
-		body.rect.top += moveOffset.y;
-	});
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609m 100"});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609m -100 2000"});
+		Terminal::pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
+		Terminal::pushOutputLine({"If player is not on the scene it doesn't do anything"});
+		Terminal::pushOutputLine({"@C9609m@CO teleports player to relative coordinate"});
+	}
+	else
+	{
+		sf::Vector2f moveOffset = getVector2Argument();
+		auto& registry = sceneManager->getScene().getRegistry();
+		auto view = registry.view<component::Player, component::BodyRect>();
+		view.each([moveOffset](const component::Player, component::BodyRect& body) {
+			body.rect.left += moveOffset.x;
+			body.rect.top += moveOffset.y;
+		});
+	}
 }
 
 static void executeGive()
 {
-	if(commandContains("bullet"))
+	if(commandContains('?'))
 	{
-		int numberOfItems = static_cast<int>(getSingleFloatArgument());
-		auto& registry = sceneManager->getScene().getRegistry();
-		auto view = registry.view<component::Player, component::Bullets>();
-		view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
-			bullets.numOfPistolBullets += numberOfItems;
-			bullets.numOfShotgunBullets += numberOfItems;
-		});
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609give bullet 100"});
+		Terminal::pushOutputLine({"It takes 2 parameters (number of items, item name)"});
+		Terminal::pushOutputLine({"@C9609give@CO puts given number of given item in player's inventory"});
 	}
 	else
-		executeMessage("Type of item is unknown!", MessageType::ERROR);
+	{
+		if(commandContains("bullet"))
+		{
+			int numberOfItems = static_cast<int>(getSingleFloatArgument());
+			auto& registry = sceneManager->getScene().getRegistry();
+			auto view = registry.view<component::Player, component::Bullets>();
+			view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
+				bullets.numOfPistolBullets += numberOfItems;
+				bullets.numOfShotgunBullets += numberOfItems;
+			});
+		}
+		else
+		{
+			Terminal::pushOutputLine({"Type of item is unknown!", errorRedColor});
+		}
+	}
 }
 
 static void executeCurrentPos()
 {
-	auto& registry = sceneManager->getScene().getRegistry();
-	auto view = registry.view<component::Player, component::BodyRect>();
-	view.each([](const component::Player, const component::BodyRect& body) {
-		const sf::Vector2f playerPos = body.rect.getCenter();
-		executeMessage("player position: " + Cast::toString(playerPos), MessageType::INFO);
-		});
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609currentpos@CO Outputs player's position to terminal"});
+	}
+	else
+	{
+		Terminal::pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
+	}
 }
 
 static void executeCollisionDebug()
 {
-	system::AreasDebug::setIsCollisionDebugActive(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609cold off@CO turns off collision rects debug"});
+		Terminal::pushOutputLine({"@C9609cold@CO turns on collision rects debug"});
+	}
+	else
+	{
+		system::AreasDebug::setIsCollisionDebugActive(!commandContains("off"));
+	}
 }
 
 static void executeVelocityChangingAreaDebug()
 {
-	system::AreasDebug::setIsVelocityChangingAreaDebugActive(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609veld off@CO turns off velocity changing areas debug"});
+		Terminal::pushOutputLine({"@C9609veld@CO turns on velocity changing areas debug"});
+	}
+	else
+	{
+		system::AreasDebug::setIsVelocityChangingAreaDebugActive(!commandContains("off"));
+	}
 }
 
 static void executePushingAreaDebug()
 {
-	system::AreasDebug::setIsPushingAreaDebugActive(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609pushd off@CO turns off pushing areas debug"});
+		Terminal::pushOutputLine({"@C9609pushd@CO turns on pushing areas debug"});
+	}
+	else
+	{
+		system::AreasDebug::setIsPushingAreaDebugActive(!commandContains("off"));
+	}
 }
 
 static void executeLightWallsAreaDebug()
 {
-	system::AreasDebug::setIsLightWallsAreaDebugActive(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({""});
+		Terminal::pushOutputLine({"@C9609lwd off@CO turns off light walls debug"});
+		Terminal::pushOutputLine({"@C9609lwd@CO turns on light walls debug"});
+	}
+	else
+	{
+		system::AreasDebug::setIsLightWallsAreaDebugActive(!commandContains("off"));
+	}
 }
 
 static void setAudioMuted(bool mute)
 {
-	if(commandContains("music"))
+	if(commandContains("music")) {
 		MusicPlayer::setMuted(mute);
-	else if(commandContains("sound"))
+	}
+	else if(commandContains("sound")) {
 		SoundPlayer::setMuted(mute);
+	}
 	else {
 		MusicPlayer::setMuted(mute);
 		SoundPlayer::setMuted(mute);
@@ -311,108 +409,153 @@ static void setAudioMuted(bool mute)
 
 static void executeMute()
 {
-	setAudioMuted(true);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609mute sound @CO mutes only sound"});
+		Terminal::pushOutputLine({"@C9609mute music @CO mutes only music"});
+		Terminal::pushOutputLine({"@C9609mute @CO mutes audio"});
+	}
+	else
+	{
+		setAudioMuted(true);
+	}
 }
 
 static void executeUnmute()
 {
-	setAudioMuted(false);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609unmute sound @CO unmutes only sound"});
+		Terminal::pushOutputLine({"@C9609unmute music @CO unmutes only music"});
+		Terminal::pushOutputLine({"@C9609unmute @CO unmutes audio"});
+	}
+	else
+	{
+		setAudioMuted(false);
+	}
 }
 
 static void executeSetVolume()
 {
-	const float newVolume = getSingleFloatArgument();
-	if(!(commandContains('0')) && newVolume == 0 || newVolume > 100) {
-		executeMessage("Incorrect volume value! Enter value from 0 to 100", MessageType::ERROR);
-		return;
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 setvolume sound @CO sets sound volume"});
+		Terminal::pushOutputLine({"@C9609 setvolume music @CO sets music volume"});
+		Terminal::pushOutputLine({"@C9609 setvolume @CO sets audio volume"});
 	}
-
-	if(commandContains("music"))
-		MusicPlayer::setVolume(newVolume);
-	else if(commandContains("sound"))
-		SoundPlayer::setVolume(newVolume);
-	else {
-		MusicPlayer::setVolume(newVolume);
-		SoundPlayer::setVolume(newVolume);
-	}
-}
-
-static void executeView()
-{
-	auto& registry = sceneManager->getScene().getRegistry();
-	auto view = registry.view<component::Player, component::Camera>();
-	view.each([](const component::Player, component::Camera& playerCamera) {
-		if(commandContains("normal"))
-			playerCamera.camera.setSize({640, 360});
-		else {
-			sf::Vector2f viewSize = getVector2Argument();
-			if(viewSize == vector2ArgumentError)
-				return;
-			else
-				playerCamera.camera.setSize(viewSize);
+	else
+	{
+		const float newVolume = getSingleFloatArgument();
+		if(!(commandContains('0')) && newVolume == 0 || newVolume > 100) {
+			Terminal::pushOutputLine({"Incorrect volume value! Enter value from 0 to 100", sf::Color::Red});
+			return;
 		}
-		});
 
+		if(commandContains("music")) {
+			MusicPlayer::setVolume(newVolume);
+		}
+		else if(commandContains("sound")) {
+			SoundPlayer::setVolume(newVolume);
+		}
+		else {
+			MusicPlayer::setVolume(newVolume);
+			SoundPlayer::setVolume(newVolume);
+		}
+	}
 }
 
 static void executeLight()
 {
-	bool on = !commandContains("off");
-
-	auto& lightDebug = LightRenderer::getDebug();
-
-	if(commandContains("rays"))
-		lightDebug.drawRays = on;
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 light rays off @CO disables rays debug"});
+		Terminal::pushOutputLine({"@C9609 light rays @CO enables rays debug"});
+		Terminal::pushOutputLine({"@C9609 light off @CO disables lighting"});
+		Terminal::pushOutputLine({"@C9609 light @CO enables lighting"});
+	}
 	else
-		lightDebug.drawLight = on;
+	{
+		bool on = !commandContains("off");
+
+		auto& lightDebug = LightRenderer::getDebug();
+
+		if(commandContains("rays"))
+			lightDebug.drawRays = on;
+		else
+			lightDebug.drawLight = on;
+	}
 }
 
 static void executeFontDebug()
 {
-	// TODO: Add font filename command argument and font size command argument
-	if(commandContains("on") && !FontDebugRenderer::isActive()) {
-		FontDebugRenderer::init("joystixMonospace.ttf", 50);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 fontd off @CO disables font debug"});
+		Terminal::pushOutputLine({"@C9609 fontd @CO enables font debug"});
 	}
-	if(commandContains("off") && FontDebugRenderer::isActive()) {
-		FontDebugRenderer::shutDown();
+	else
+	{
+		if(commandContains("off") && FontDebugRenderer::isActive()) {
+			FontDebugRenderer::shutDown();
+		}
+		else if(!FontDebugRenderer::isActive()) {
+			FontDebugRenderer::init("joystixMonospace.ttf", 50);
+		}
 	}
 }
 
 static void executeNoFocusUpdate()
 {
-	Game::setNoFocusUpdate(!commandContains("off"));
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 nofocusupdate off@CO disables updating game if game's window doesn't have focus"});
+		Terminal::pushOutputLine({"@C9609 nofocusupdate@CO enables updating game if game's window doesn't have focus"});
+	}
+	else
+	{
+		Game::setNoFocusUpdate(!commandContains("off"));
+	}
 }
 
 static void executeDebugCamera()
 {
-	auto& registry = sceneManager->getScene().getRegistry();
-
-	auto destroyExistingDebugCameras = [&registry]() {
-		auto debugCameras = registry.view<component::DebugCamera, component::Camera, component::BodyRect>();
-		registry.destroy(debugCameras.begin(), debugCameras.end());
-	};
-
-	component::Camera::currentCameraName = "default";
-	destroyExistingDebugCameras();
-	isVisible = true;
-
-	if(!commandContains("off"))
+	if(commandContains('?'))
 	{
-		// get player position
-		sf::Vector2f playerPos;
-		auto players = registry.view<component::Player, component::BodyRect>();
-		players.each([&playerPos](const component::Player, const component::BodyRect body) {
-			playerPos = body.rect.getCenter();
-			});
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C9609 dc off@CO disables debug camera"});
+		Terminal::pushOutputLine({"@C9609 dc@CO enables debug camera"});
+	}
+	else
+	{
+		auto& registry = sceneManager->getScene().getRegistry();
 
-		// create debug camera
-		auto entity = registry.create();
-		registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
-		registry.assign<component::DebugCamera>(entity);
-		registry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
-		component::Camera::currentCameraName = "debug";
+		auto destroyExistingDebugCameras = [&registry]() {
+			auto debugCameras = registry.view<component::DebugCamera, component::Camera, component::BodyRect>();
+			registry.destroy(debugCameras.begin(), debugCameras.end());
+		};
 
-		isVisible = false;
+		component::Camera::currentCameraName = "default";
+		destroyExistingDebugCameras();
+		isVisible = true;
+
+		if(!commandContains("off"))
+		{
+			// create debug camera
+			sf::Vector2f playerPos = getPlayerPosition();
+			auto entity = registry.create();
+			registry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
+			registry.assign<component::DebugCamera>(entity);
+			registry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
+			component::Camera::currentCameraName = "debug";
+
+			isVisible = false;
+		}
 	}
 }
 
@@ -420,13 +563,32 @@ static void executeDebugCamera()
 
 static void executeResetGuiLive()
 {
-	resetGuiLive.isActive = !commandContains("off");
-	Game::setNoFocusUpdate(resetGuiLive.isActive);
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"you can change rguilivefreq with @C9609 rguilivefreq @CO command"});
+		Terminal::pushOutputLine({"@C9609 rguilive off@CO disables loading gui from file once for rguilivefreq seconds"});
+		Terminal::pushOutputLine({"@C9609 rguilive@CO enables loading gui from file once for rguilivefreq seconds"});
+	}
+	else
+	{
+		resetGuiLive.isActive = !commandContains("off");
+		Game::setNoFocusUpdate(resetGuiLive.isActive);
+	}
 }
 
 static void executeResetGuiLiveFrequency()
 {
-	resetGuiLive.resetFrequency = getSingleFloatArgument();
+	if(commandContains('?'))
+	{
+		Terminal::pushOutputLine({});
+		Terminal::pushOutputLine({"@C2919 Example: @C9609 rguilivefreq 0.5@CO sets rguilive freq to 0.5 seconds"});
+		Terminal::pushOutputLine({"@C9609 rguilivefreq@CO takes one floating point argument and sets rguilivefreq"});
+	}
+	else
+	{
+		resetGuiLive.resetFrequency = getSingleFloatArgument();
+	}
 }
 
 #endif 
@@ -457,27 +619,26 @@ void handleEvent(sf::Event e)
 
 	if(e.type == sf::Event::KeyPressed)
 	{
+		if(e.key.code == sf::Keyboard::Tab && e.key.control)
+		{	
+			isVisible = !isVisible;
+			window->setKeyRepeatEnabled(isVisible);
+			system::System::setPause(isVisible);
+		}
+
+		if(!isVisible)
+			return;
+
 		switch(e.key.code)
 		{
-			case sf::Keyboard::Tab: {
-				if(e.key.control) {
-					// show or hide command prompt
-					isVisible = !isVisible;
-					window->setKeyRepeatEnabled(isVisible);
-					system::System::setPause(isVisible);
-				}
-			} break;
-
 			case sf::Keyboard::BackSpace: {
 				if(content.size() > 0)
 					content.pop_back();
 			} break;
 
 			case sf::Keyboard::Enter: {
-				// execute command
 				executeCommand();
 
-				// update last commands
 				indexOfCurrentLastCommand = -1;
 				if(content.size() != 0) {
 					lastCommands.emplace_front(content);
@@ -485,7 +646,6 @@ void handleEvent(sf::Event e)
 						lastCommands.pop_back();
 				}
 
-				// clear input area content
 				content.clear();
 			} break;
 
@@ -524,11 +684,9 @@ void init(sf::Window* w, SceneManager* sm)
 	window = w;
 	sceneManager = sm;
 
-	commandsMap["teleport"] = &executeTeleport;
 	commandsMap["tp"] = &executeTeleport;
 	commandsMap["give"] = &executeGive;
 	commandsMap["currentpos"] = &executeCurrentPos;
-	commandsMap["collisiondebug"] = &executeCollisionDebug;
 	commandsMap["cold"] = &executeCollisionDebug;
 	commandsMap["veld"] = &executeVelocityChangingAreaDebug;
 	commandsMap["pushd"] = &executePushingAreaDebug;
@@ -539,8 +697,6 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["history"] = &executeHistory;
 	commandsMap["help"] = &executeHelp;
 	commandsMap["clear"] = &executeClear;
-	commandsMap["view"] = &executeView;
-	commandsMap["gotoscene"] = &executeGotoScene;
 	commandsMap["gts"] = &executeGotoScene;
 	commandsMap["r"] = &executeReset;
 	commandsMap["pause"] = &executePause;
@@ -556,6 +712,19 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["rguilive"] = &executeResetGuiLive;
 	commandsMap["rguilivefreq"] = &executeResetGuiLiveFrequency;
 #endif
+
+	// read terminalInit.txt file
+	std::ifstream file;
+	file.open("terminalInit.txt");
+	if(file.is_open())
+	{
+		while(!file.eof())
+		{
+			getline(file, content);
+			executeCommand();
+		}
+		file.close();
+	}
 }
 
 void update(float dt)
@@ -575,7 +744,8 @@ void update(float dt)
 
 		float posY = 723.f;
 		for(size_t i = 0; i < outputLines.size(); ++i, posY += 25.f)
-			Renderer::submitText(outputLines[i].text.c_str(), "LiberationMono.ttf", {5.f, posY}, 25.f, outputLines[i].color, 0, ProjectionType::gui, false);
+			Renderer::submitTextArea(outputLines[i].text.c_str(), "LiberationMono.ttf", {5.f, posY}, 1920.f, TextAligment::left,
+			                         25.f, outputLines[i].color, 0, ProjectionType::gui, false);
 	}
 }
 

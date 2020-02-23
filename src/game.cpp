@@ -20,9 +20,10 @@ Game::Game()
 	SoundPlayer::init();
 	MusicPlayer::init();
 
-	Terminal::init(&mWindow, mSceneManager.get());
 	mSceneManager->init(mTextures.get(), mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
+
+	Terminal::init(&mWindow, mSceneManager.get());
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);

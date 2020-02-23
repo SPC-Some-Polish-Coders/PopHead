@@ -40,6 +40,13 @@ struct Wall
 	sf::Vector2f point2;
 };
 
+struct RayWallIntersection
+{
+	sf::Vector2f point;
+	float distance;
+	bool valid = false;
+};
+
 class LightRenderer
 {
 public:
@@ -50,6 +57,7 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
+	unsigned getNrOfLights() { return mNrOfLights; }
 
 	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
 	unsigned getNrOfRays() { return mNrOfRays; }
@@ -62,16 +70,18 @@ public:
 	static LightingDebug& getDebug() { return sDebug; }
 
 private:
-	auto getIntersectionPoint(const sf::Vector2f rayDir, sf::Vector2f lightPos, const Wall& wall) -> std::optional<sf::Vector2f>;
+	RayWallIntersection getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall);
+	sf::Vector2f getVectorLineIntersectionPoint(sf::Vector2f rayDir, sf::Vector2f lightPos, sf::Vector2f lineP1, sf::Vector2f lineP2);
 
 private:
-	std::vector<Wall> mLightWalls;
+	std::vector<FloatRect> mLightWalls;
 	std::vector<Light> mLights;
 	std::vector<sf::Vector2f> mLightTriangleFanVertexData;
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
 	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
 	unsigned mNrOfDrawCalls, mNrOfRays;
+	unsigned mNrOfLights;
 
 	inline static LightingDebug sDebug;
 };

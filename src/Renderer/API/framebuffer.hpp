@@ -5,10 +5,10 @@ namespace ph {
 class Framebuffer
 {
 public:
-	void init(const unsigned width, const unsigned height);
+	void init(unsigned width, unsigned height);
 	void remove();
 
-	void onWindowResize(const unsigned width, const unsigned height);
+	void onWindowResize(unsigned width, unsigned height);
 
 	void bind();
 	void bindTextureColorBuffer(unsigned slot);

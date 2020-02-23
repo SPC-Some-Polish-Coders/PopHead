@@ -71,14 +71,17 @@ void RenderSystem::update(float dt)
 	});
 
 	//submit single light walls
-	auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
-	lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
+	if(Renderer::getNrOfLights() > 0)
 	{
-		if(lw.rect.top == -1.f)
-			Renderer::submitLightWall(body.rect);
-		else
-			Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
-	});
+		auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
+		lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
+		{
+			if(lw.rect.top == -1.f)
+				Renderer::submitLightWall(body.rect);
+			else
+				Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
+		});
+	}
 
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();
@@ -98,7 +101,7 @@ void RenderSystem::update(float dt)
 			quad.texture, nullptr, &quad.color, quad.shader,
 			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
 	});
-	
+
 	// submit render quads with texture rect
 	auto renderQuadsWithTextureRect = 
 		mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
