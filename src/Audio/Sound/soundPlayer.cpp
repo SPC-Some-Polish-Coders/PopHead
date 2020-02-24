@@ -79,7 +79,7 @@ void setSceneMute(bool mute)
 
 bool isMuted()
 {
-	return isMuted;
+	return sceneMute;
 }
 
 void setListenerPosition(sf::Vector2f listenerPosition)
