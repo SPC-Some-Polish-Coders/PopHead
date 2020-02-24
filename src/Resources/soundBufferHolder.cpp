@@ -1,21 +1,20 @@
 #include "soundBufferHolder.hpp"
 #include "Logs/logs.hpp"
-#include <memory>
 #include <unordered_map>
 
 namespace ph {
 
-static std::unordered_map<std::string, std::unique_ptr<sf::SoundBuffer>> soundBuffers;
+static std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
 
 bool loadSoundBuffer(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
 	if(soundBuffers.find(fullFilePath) != soundBuffers.end())
 		return true;
-	auto soundBuffer = std::make_unique<sf::SoundBuffer>();
-	if(soundBuffer->loadFromFile(fullFilePath))
+	sf::SoundBuffer soundBuffer;
+	if(soundBuffer.loadFromFile(fullFilePath))
 	{
-		soundBuffers.insert(std::make_pair(fullFilePath, std::move(soundBuffer)));
+		soundBuffers.insert(std::make_pair(fullFilePath, soundBuffer));
 		return true;
 	}
 	else
@@ -29,8 +28,8 @@ sf::SoundBuffer& getSoundBuffer(const std::string& filePath)
 {
 	std::string fullFilePath = "resources/" + filePath;
 	auto found = soundBuffers.find(fullFilePath);
-	PH_ASSERT_CRITICAL(found == soundBuffers.end(), "You try to get a sound buffer that wasn't loaded: " + fullFilePath);
-	return *found->second;
+	PH_ASSERT_CRITICAL(found != soundBuffers.end(), "You try to get a sound buffer that wasn't loaded: " + fullFilePath);
+	return found->second;
 }
 
 }
