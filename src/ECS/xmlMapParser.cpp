@@ -289,7 +289,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, static_cast<unsigned>(sChunkSize)));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize));
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
 
 			// create quad data
@@ -505,7 +505,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, static_cast<unsigned>(info.mapSize.x)));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInMap, (unsigned)info.mapSize.x));
 
 			// create quad data
 			QuadData qd;

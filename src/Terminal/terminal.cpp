@@ -170,7 +170,7 @@ static void executeGotoScene()
 	}
 	else
 	{
-		const int spacePosition = content.find_first_of(' ') + 1;
+		size_t spacePosition = content.find_first_of(' ') + 1;
 		const std::string scenePath = "scenes/" + content.substr(spacePosition, content.size()) + ".xml";
 		sceneManager->replaceScene(scenePath);
 	}
@@ -221,7 +221,7 @@ static void executeResetGui()
 	}
 	else
 	{
-		const int spacePosition = content.find_first_of(' ') + 1;
+		size_t spacePosition = content.find_first_of(' ') + 1;
 		Xml sceneFile;
 		sceneFile.loadFromFile(sceneManager->getCurrentSceneFilePath());
 		const auto sceneLinksNode = *sceneFile.getChild("scenelinks");

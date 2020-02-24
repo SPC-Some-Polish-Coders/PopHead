@@ -68,7 +68,7 @@ void LightRenderer::flush()
 	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
 	                          mScreenBounds->width + 200000.f, mScreenBounds->height + 200000.f));
 
-	mNrOfDrawCalls = mLights.size();
+	mNrOfDrawCalls = static_cast<unsigned>(mLights.size());
 
 	FloatRect expandedScreenSize(mScreenBounds->left - 400.f, mScreenBounds->top - 400.f, 800.f, 800.f);
 
@@ -115,7 +115,7 @@ void LightRenderer::flush()
 		glBindVertexArray(mLightTriangleFanVAO);
 		glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, mLightTriangleFanVertexData.size());
+		glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<unsigned>(mLightTriangleFanVertexData.size()));
 		mLightTriangleFanVertexData.clear();
 
 		if(sDebug.drawRays)

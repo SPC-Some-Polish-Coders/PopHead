@@ -208,7 +208,7 @@ void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	mDebugNumbers.renderGroups = mRenderGroupsHashMap.size();
+	mDebugNumbers.renderGroups = static_cast<unsigned>(mRenderGroupsHashMap.size());
 	mCurrentlyBoundQuadShader = nullptr;
 	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
@@ -216,8 +216,8 @@ void QuadRenderer::flush(bool affectedByLight)
 	{
 		// update debug info
 		if(mIsDebugCountingActive) {
-			mDebugNumbers.drawnSprites += rg.quadsData.size();
-			mDebugNumbers.drawnTextures += rg.textures.size();
+			mDebugNumbers.drawnSprites += static_cast<unsigned>(rg.quadsData.size());
+			mDebugNumbers.drawnTextures += static_cast<unsigned>(rg.textures.size());
 		}
 
 		// set up shader
@@ -240,9 +240,9 @@ void QuadRenderer::flush(bool affectedByLight)
 		});
 
 		// draw render group
-		for(size_t i = 0; i < rg.quadsData.size(); ++i)
+		for(unsigned i = 0; i < static_cast<unsigned>(rg.quadsData.size()); ++i)
 		{
-			if(i == rg.quadsData.size() - 1)
+			if(i == static_cast<unsigned>(rg.quadsData.size()) - 1)
 			{
 				bindTexturesForNextDrawCall(rg.textures);
 				drawCall(i + 1, rg.quadsData);
@@ -274,7 +274,7 @@ void QuadRenderer::flush(bool affectedByLight)
 void QuadRenderer::bindTexturesForNextDrawCall(std::vector<const Texture*>& textures)
 {
 	for(size_t i = 0; i < (textures.size() > 32 ? 32 : textures.size()); ++i)
-		textures[i]->bind(i);
+		textures[i]->bind(static_cast<unsigned>(i));
 }
 
 void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData)
