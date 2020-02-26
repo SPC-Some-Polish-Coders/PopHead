@@ -11,10 +11,12 @@ workspace "PopHead"
         "Debug_32bit",
         "Release_32bit",
         "Distribution_32bit",
+        "Profiling_32bit",
         "Tests_32bit",
         "Debug_64bit",
         "Release_64bit",
         "Distribution_64bit",
+        "Profiling_64bit",
         "Tests_64bit"
     }
 
@@ -98,7 +100,7 @@ project "PopHead"
 	filter {"configurations:Debug*", "action:vs*"}
 		inlining "Explicit"
 
-    filter "configurations:Release* or Distribution*"
+    filter "configurations:Release* or Distribution* or Profiling*"
         optimize "On"
 
         links{
@@ -109,9 +111,12 @@ project "PopHead"
             "sfml-main"
         }
 
-    filter "configurations:Distribution*"
+    filter "configurations:Distribution* or Profiling*"
         defines "PH_DISTRIBUTION" 
         kind "WindowedApp"
+
+	filter "configurations:Profiling*"
+		defines "PH_PROFILING"
 
     filter "system:Windows"
         defines "PH_WINDOWS"
@@ -206,7 +211,7 @@ project "Tests"
 	filter {"configurations:Debug*", "action:vs*"}
 		inlining "Explicit"
 
-    filter "configurations:Release* or Distribution*"
+    filter "configurations:Release* or Distribution* or Profiling*"
         optimize "On"
 
         links{
@@ -219,8 +224,12 @@ project "Tests"
 	filter "configurations:Tests*"
 		defines "PH_TESTS"
 
-    filter "configurations:Distribution*"
+    filter "configurations:Distribution* or Profiling*"
         defines "PH_DISTRIBUTION"
+
+	filter "configurations:Profiling*"
+		defines "PH_PROFILING"
+        kind "WindowedApp"
 
     filter "system:Windows"
         defines "PH_WINDOWS" 
@@ -233,5 +242,5 @@ project "Tests"
 
     filter{}
     
-printf("For now PopHead supports only new Visual Studio versions and Codeblocks.")
+printf("For now PopHead supports only new Visual Studio versions.")
 printf("If you have any problems with Premake or compiling PopHead contact Grzegorz \"Czapa\" Bednorz.")

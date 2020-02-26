@@ -50,11 +50,7 @@ private:
 
 }
 
-#define PH_PROFILING 0 
-#if PH_PROFILING
-	#if _MSC_VER 
-		#pragma message ("POPHEAD WARNING: Make sure to disable PH_PROFILING before making commit!")
-	#endif
+#ifdef PH_PROFILING
 	#define PH_BEGIN_PROFILING_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
 	#define PH_END_PROFILING_SESSION() ph::ProfilingManager::getInstance().endSession()
 	#define PH_PROFILE_SCOPE(name, threadID) ph::ProfilingTimer profTimer##__LINE__(name, threadID);
