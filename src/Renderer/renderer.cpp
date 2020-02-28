@@ -211,10 +211,23 @@ void endScene()
 	// display renderer debug info 
 	if(isDebugDisplayActive)
 	{
-		char debugText[50];
-		auto submitDebugCounter = [&debugText](const char* text, unsigned number) {
+		char debugText[128];
+
+		auto submitDebugCounter = [&debugText](const char* text, unsigned number) 
+		{
 			sprintf_s(debugText, "%s%u", text, number);
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
+		};
+
+		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n) 
+		{
+			std::string str;
+			for(size_t i = 0; i < n; ++i)
+			{
+				str += std::to_string(arr.data[i]);
+				str += " ";
+			}
+			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
 		};
 
 		auto quadRendererNumbers = quadRenderer.getDebugNumbers();
@@ -224,6 +237,9 @@ void endScene()
 
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
+		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12);
+		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12);
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
 		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());

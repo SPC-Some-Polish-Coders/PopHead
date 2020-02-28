@@ -208,7 +208,12 @@ void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
 
-	mDebugNumbers.renderGroups = static_cast<unsigned>(mRenderGroupsHashMap.size());
+	if(affectedByLight)
+		mDebugNumbers.renderGroups = static_cast<unsigned>(mRenderGroupsHashMap.size());
+	else
+		mDebugNumbers.renderGroupsNotAffectedByLight = static_cast<unsigned>(mNotAffectedByLightRenderGroupsHashMap.size());
+		
+
 	mCurrentlyBoundQuadShader = nullptr;
 	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
@@ -218,6 +223,10 @@ void QuadRenderer::flush(bool affectedByLight)
 		if(mIsDebugCountingActive) {
 			mDebugNumbers.drawnSprites += static_cast<unsigned>(rg.quadsData.size());
 			mDebugNumbers.drawnTextures += static_cast<unsigned>(rg.textures.size());
+			if(affectedByLight)
+				mDebugNumbers.renderGroupsSizes.data[mDebugNumbers.renderGroupsSizes.marker++] = (unsigned)rg.quadsData.size();
+			else
+				mDebugNumbers.notAffectedByLightRenderGroupsSizes.data[mDebugNumbers.notAffectedByLightRenderGroupsSizes.marker++] = (unsigned)rg.quadsData.size();
 		}
 
 		// set up shader

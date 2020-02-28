@@ -34,12 +34,21 @@ private:
 	bool mShouldSort;
 };
 
+struct QuadRendererDebugArray
+{
+	unsigned data[100] = {};
+	unsigned marker = 0;
+};
+
 struct QuadRendererDebugNumbers
 {
+	QuadRendererDebugArray renderGroupsSizes = {}; 
+	QuadRendererDebugArray notAffectedByLightRenderGroupsSizes = {}; 
+	unsigned renderGroups = 0;
+	unsigned renderGroupsNotAffectedByLight = 0;
 	unsigned drawCalls = 0;
 	unsigned drawnSprites = 0;
 	unsigned drawnTextures = 0;
-	unsigned renderGroups = 0;
 };
 
 class QuadRenderer
