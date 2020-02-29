@@ -5,12 +5,11 @@
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/memory.hpp"
 #include <GL/glew.h>
 #include <algorithm>
 
 namespace ph {
-
-// TODO_ren: Use custom allocators in RenderGroupsHashMap
 
 RenderGroupsHashMap::RenderGroupsHashMap()
 	:mShouldSort(false)
