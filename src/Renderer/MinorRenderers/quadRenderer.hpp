@@ -6,15 +6,13 @@
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <vector>
 #include <optional>
-#include <map>
-#include <utility>
 
 namespace ph {
 
 class Texture;
 
+/*
 bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
 
 class RenderGroupsHashMap
@@ -34,6 +32,62 @@ private:
 	bool mShouldSort;
 };
 
+RenderGroupsHashMap::RenderGroupsHashMap()
+	:mShouldSort(false)
+{
+	mRenderGroups.reserve(10);
+}
+
+QuadRenderGroup& RenderGroupsHashMap::insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey key) 
+{
+	if(auto renderGroup = getRenderGroup(key))
+		return *renderGroup;
+	mRenderGroups.emplace_back(std::pair(key, QuadRenderGroup()));
+	mShouldSort = true;
+	return *getRenderGroup(key);
+}
+
+auto RenderGroupsHashMap::getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&
+{
+	eraseUselessGroups();
+	sort();
+	return mRenderGroups;
+}
+
+void RenderGroupsHashMap::sort()
+{
+	if(!mShouldSort)
+		return;
+
+	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
+	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
+
+	std::sort(mRenderGroups.begin(), mRenderGroups.end(), []
+	(const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
+		return a.first.z > b.first.z;
+	});
+}
+
+void RenderGroupsHashMap::eraseUselessGroups()
+{
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].second.quadsData.empty())
+			mRenderGroups.erase(mRenderGroups.begin() + i);
+}
+
+QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
+{
+	for(size_t i = 0; i < mRenderGroups.size(); ++i)
+		if(mRenderGroups[i].first == key)
+			return &mRenderGroups[i].second;
+	return nullptr;
+}
+
+bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
+{
+	return lhs.shader == rhs.shader && lhs.z == rhs.z;
+}*/
+
 struct QuadRendererDebugArray
 {
 	unsigned data[100] = {};
@@ -43,7 +97,12 @@ struct QuadRendererDebugArray
 struct QuadRendererDebugNumbers
 {
 	QuadRendererDebugArray renderGroupsSizes = {}; 
+	QuadRendererDebugArray renderGroupsZ = {}; 
+	QuadRendererDebugArray renderGroupsIndices = {}; 
 	QuadRendererDebugArray notAffectedByLightRenderGroupsSizes = {}; 
+	QuadRendererDebugArray notAffectedByLightRenderGroupsZ = {}; 
+	QuadRendererDebugArray notAffectedByLightRenderGroupsIndices = {}; 
+	unsigned allocations = 0;
 	unsigned renderGroups = 0;
 	unsigned renderGroupsNotAffectedByLight = 0;
 	unsigned drawCalls = 0;
@@ -51,35 +110,26 @@ struct QuadRendererDebugNumbers
 	unsigned drawnTextures = 0;
 };
 
+QuadRendererDebugNumbers getQuadRendererDebugNumbers();
+void resetQuadRendererDebugNumbers();
+
 class QuadRenderer
 {
 public:
 	void init();
 	void shutDown();
 
-	QuadRendererDebugNumbers getDebugNumbers() { return mDebugNumbers; }
-
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void resetDebugNumbers();
 
-	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, float z, ProjectionType projectionType);
+	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 
-	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
+	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
 	                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
 	void flush(bool affectedByLight);
 
 private:
-	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup&) -> std::optional<float>;
-	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
-	void bindTexturesForNextDrawCall(std::vector<const Texture*>& textures);
-	void drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData);
-
-private:
-	RenderGroupsHashMap mRenderGroupsHashMap;
-	RenderGroupsHashMap mNotAffectedByLightRenderGroupsHashMap;
 	Shader mDefaultQuadShader;
-	QuadRendererDebugNumbers mDebugNumbers;
 	const FloatRect* mScreenBounds; 
 	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;

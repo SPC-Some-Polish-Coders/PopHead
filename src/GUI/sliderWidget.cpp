@@ -19,7 +19,7 @@ void SliderWidget::setIconSize(sf::Vector2f size)
 	mIconWidget->setSize(size);
 }
 
-void SliderWidget::setIconTexture(const Texture* texture)
+void SliderWidget::setIconTexture(Texture* texture)
 {
 	mIconWidget->setTexture(texture);
 }

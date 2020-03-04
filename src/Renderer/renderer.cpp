@@ -219,10 +219,12 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n) 
+		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n, char* name) 
 		{
 			std::string str;
-			for(size_t i = 0; i < n; ++i)
+			str += name;
+			str += ": ";
+			for(size_t i = 0; i < n && i < arr.marker; ++i)
 			{
 				str += std::to_string(arr.data[i]);
 				str += " ";
@@ -230,16 +232,21 @@ void endScene()
 			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
 		};
 
-		auto quadRendererNumbers = quadRenderer.getDebugNumbers();
+		auto quadRendererNumbers = getQuadRendererDebugNumbers();
 
 		submitDebugCounter("All draw calls per frame: ",
 			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
-		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12);
+		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
+		submitDebugArray(quadRendererNumbers.renderGroupsZ, 12, "z");
+		submitDebugArray(quadRendererNumbers.renderGroupsIndices, 12, "indices");
 		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12);
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
+		submitDebugCounter("Nr of quad renderer allocations: ", quadRendererNumbers.allocations);
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
 		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
@@ -248,14 +255,14 @@ void endScene()
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		quadRenderer.resetDebugNumbers();
+		resetQuadRendererDebugNumbers();
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
 	}
 }
 
-void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
+void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                 sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
@@ -263,7 +270,7 @@ void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Co
 		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
-void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
+void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
                                           unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);

@@ -125,7 +125,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			case ph::TextAligment::left: return 0.f;
 			case ph::TextAligment::center: return (textAreaWidth - mostRightCharacterPosX) / 2.f;
 			case ph::TextAligment::right: return textAreaWidth - mostRightCharacterPosX + fontSize;
-			default: break;
+			default: PH_UNEXPECTED_SITUATION(""); return -1.f;
 		}
 	};
 
