@@ -73,14 +73,13 @@ void QuadRenderer::init()
 	mDefaultQuadShader.init(shader::quadSrc());
 	mDefaultQuadShader.initUniformBlock("SharedData", 0);
 
-	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
-	mQuadIBO.init();
-	mQuadIBO.setData(quadIndices, sizeof(quadIndices));
-
 	GLCheck( glGenVertexArrays(1, &mVAO) );
 	GLCheck( glBindVertexArray(mVAO) );
 
-	mQuadIBO.bind();
+	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
+	GLCheck( glGenBuffers(1, &mQuadIBO) );
+	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mQuadIBO) );
+	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) ); 
 
 	GLCheck( glGenBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
@@ -108,25 +107,20 @@ void QuadRenderer::init()
 void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
-	mQuadIBO.remove();
 	mDefaultQuadShader.remove();
+	GLCheck( glDeleteBuffers(1, &mQuadIBO) );
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 }
 
-void QuadRenderer::setDebugNumbersToZero()
+void QuadRenderer::resetDebugNumbers()
 {
-	mNumberOfDrawCalls = 0;
-	mNumberOfDrawnSprites = 0;
-	mNumberOfDrawnTextures = 0;
-	mNumberOfRenderGroups = 0;
+	mDebugNumbers = {};
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, const Texture* texture,
                                                         const Shader* shader, float z, ProjectionType projectionType)
 {
-	// NOTE: this function doesn't do any culling
-
 	if(!shader)
 		shader = &mDefaultQuadShader;
 
@@ -151,10 +145,14 @@ void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& q
 
 void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                               sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
-                              ProjectionType projectionType)
+                              ProjectionType projectionType, bool isAffectedByLight)
 {
 	// culling
-	if(!isInsideScreen(position, size, rotation, projectionType))
+	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
+	if(rotation == 0.f)
+		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+			return;
+	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
 		return;
 
 	// if shader is not specified use default shader 
@@ -162,7 +160,8 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 		shader = &mDefaultQuadShader;
 
 	// find or add draw call group
-	auto& renderGroup = mRenderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
+	auto& renderGroupsHashMap = isAffectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
+	auto& renderGroup = renderGroupsHashMap.insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey{shader, z, projectionType});
 
 	// submit data
 	QuadData quadData;
@@ -188,15 +187,6 @@ void QuadRenderer::submitQuad(const Texture* texture, const IntRect* textureRect
 	renderGroup.quadsData.emplace_back(quadData);
 }
 
-bool QuadRenderer::isInsideScreen(sf::Vector2f pos, sf::Vector2f size, float rotation, ProjectionType projectionType)
-{
-	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *mScreenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
-	if(rotation == 0.f)
-		return bounds.doPositiveRectsIntersect(FloatRect(pos.x, pos.y, size.x, size.y));
-	else
-		return bounds.doPositiveRectsIntersect(FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4));
-}
-
 auto QuadRenderer::getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup& rg) -> std::optional<float>
 {
 	for(size_t i = 0; i < rg.textures.size(); ++i)
@@ -214,19 +204,20 @@ auto QuadRenderer::getNormalizedTextureRect(const IntRect* pixelTextureRect, sf:
 	);
 }
 
-void QuadRenderer::flush()
+void QuadRenderer::flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION(0);
-	mNumberOfRenderGroups = mRenderGroupsHashMap.size();
 
+	mDebugNumbers.renderGroups = static_cast<unsigned>(mRenderGroupsHashMap.size());
 	mCurrentlyBoundQuadShader = nullptr;
+	auto& renderGroupsHashMap = affectedByLight ? mRenderGroupsHashMap : mNotAffectedByLightRenderGroupsHashMap;
 
-	for(auto& [key, rg] : mRenderGroupsHashMap.getUnderlyingVector())
+	for(auto& [key, rg] : renderGroupsHashMap.getUnderlyingVector())
 	{
 		// update debug info
 		if(mIsDebugCountingActive) {
-			mNumberOfDrawnSprites += rg.quadsData.size();
-			mNumberOfDrawnTextures += rg.textures.size();
+			mDebugNumbers.drawnSprites += static_cast<unsigned>(rg.quadsData.size());
+			mDebugNumbers.drawnTextures += static_cast<unsigned>(rg.textures.size());
 		}
 
 		// set up shader
@@ -249,9 +240,9 @@ void QuadRenderer::flush()
 		});
 
 		// draw render group
-		for(size_t i = 0; i < rg.quadsData.size(); ++i)
+		for(unsigned i = 0; i < static_cast<unsigned>(rg.quadsData.size()); ++i)
 		{
-			if(i == rg.quadsData.size() - 1)
+			if(i == static_cast<unsigned>(rg.quadsData.size()) - 1)
 			{
 				bindTexturesForNextDrawCall(rg.textures);
 				drawCall(i + 1, rg.quadsData);
@@ -283,7 +274,7 @@ void QuadRenderer::flush()
 void QuadRenderer::bindTexturesForNextDrawCall(std::vector<const Texture*>& textures)
 {
 	for(size_t i = 0; i < (textures.size() > 32 ? 32 : textures.size()); ++i)
-		textures[i]->bind(i);
+		textures[i]->bind(static_cast<unsigned>(i));
 }
 
 void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quadsData)
@@ -295,7 +286,7 @@ void QuadRenderer::drawCall(unsigned nrOfInstances, std::vector<QuadData>& quads
 	GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, nrOfInstances) );
 
 	if(mIsDebugCountingActive)
-		++mNumberOfDrawCalls;
+		++mDebugNumbers.drawCalls;
 }
 
 }

@@ -1,34 +1,25 @@
 #pragma once
 
 #include <string>
-#include <memory>
-#include "terminalSharedData.hpp"
-#include "terminalInputHandler.hpp"
-#include "commandInterpreter.hpp"
-#include "terminalRenderer.hpp"
-#include "Events/event.hpp"
 #include <entt/entt.hpp>
 #include <SFML/Window/Window.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 namespace ph {
+	class SceneManager;
 
-class Terminal
+	struct OutputLine
+	{
+		std::string text;
+		sf::Color color = sf::Color::White;
+	};
+}
+
+namespace ph::Terminal
 {
-public:
-	Terminal(sf::Window&);
-	void init(SceneManager*);
-
-	void handleEvent(Event&);
+	void init(sf::Window*, SceneManager*);
+	void handleEvent(sf::Event);
 	void update(float dt);
 	void pushOutputLine(const OutputLine&);
-
-	auto getSharedData() -> TerminalSharedData & { return mTerminalSharedData; }
-
-private:
-	TerminalSharedData mTerminalSharedData;
-	TerminalRenderer mTerminalRenderer;
-	TerminalInputHandler mKeyboardInputHandler;
-	CommandInterpreter mCommandInterpreter;
-};
-
 }

@@ -1,39 +1,31 @@
 #include "terminalHandler.hpp"
 #include "Terminal/terminal.hpp"
-
+#include <SFML/Graphics/Color.hpp>
 #include <sstream>
 #include <iomanip>
 
-#include <SFML/Graphics/Color.hpp>
-
 namespace ph {
-
-	TerminalHandler::TerminalHandler(Terminal* terminal)
-		: mTerminal(terminal)
-	{
-	}
 
 	void TerminalHandler::utilizeLog(const LogRecord& logRecord)
 	{
-		std::string message = logRecordToString(logRecord);
-		OutputLine line{ message, sf::Color::White };
+		OutputLine line{ logRecordToString(logRecord), sf::Color::White };
 		
 		switch (logRecord.level)
 		{
 		case LogLevel::Info:
-			line.mColor = sf::Color(127, 244, 44);
+			line.color = sf::Color(127, 244, 44);
 			break;
 		case LogLevel::Error:
-			line.mColor = sf::Color(255, 25, 33);
+			line.color = sf::Color(255, 25, 33);
 			break;
 		case LogLevel::Warning:
-			line.mColor = sf::Color(235, 135, 30);
+			line.color = sf::Color(235, 135, 30);
 			break;
 		case LogLevel::Critical:
-			line.mColor = sf::Color(255, 25, 33);
+			line.color = sf::Color(255, 25, 33);
 			break;
 		}
-		mTerminal->pushOutputLine(line);
+		Terminal::pushOutputLine(line);
 	}
 
 	std::string TerminalHandler::logRecordToString(const LogRecord& logRecord)

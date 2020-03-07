@@ -1,10 +1,8 @@
 #include "game.hpp"
-#include "Events/globalKeyboardShortcuts.hpp"
-#include "Events/eventDispatcher.hpp"
-#include "Events/actionEventManager.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "GUI/gui.hpp"
 #include "Logs/logs.hpp"
+#include "Terminal/terminal.hpp"
 #include "Renderer/renderer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
@@ -13,27 +11,25 @@
 namespace ph {
 
 Game::Game()
-	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3))
-	,mTextures(std::make_unique<TextureHolder>())
+	:mWindow(sf::VideoMode::getDesktopMode(), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3, sf::ContextSettings::Core))
 	,mAIManager(std::make_unique<AIManager>())
 	,mSceneManager(std::make_unique<SceneManager>())
-	,mTerminal(std::make_unique<Terminal>(mWindow))
 {
 	Renderer::init(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 	SoundPlayer::init();
 	MusicPlayer::init();
 
-	mTerminal->init(mSceneManager.get());
-	mSceneManager->init(mTextures.get(), mAIManager.get());
+	mSceneManager->init(mAIManager.get());
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
+
+	Terminal::init(&mWindow, mSceneManager.get());
 
 	mWindow.setVerticalSyncEnabled(true);
 	mWindow.setKeyRepeatEnabled(false);
 
+	GUI::init();
 	Widget::setWindow(&mWindow);
-	XmlGuiParser::init(mTextures.get(), mSceneManager.get());
-
-	ActionEventManager::init();
+	XmlGuiParser::init(mSceneManager.get());
 }
 
 void Game::run()
@@ -49,26 +45,41 @@ void Game::run()
 	}
 
 	Renderer::shutDown();
+	GUI::shutDown();
 	mWindow.close();
 }
 
 void Game::handleEvents()
 {
-	ph::Event phEvent;
-	while(EventDispatcher::dispatchEvent(phEvent, mWindow))
+	sf::Event e;
+	while(mWindow.pollEvent(e))
 	{
-		if (auto * event = std::get_if<sf::Event>(&phEvent))
-			if (event->type == sf::Event::Closed)
-				sIsRunning = false;
+		if(e.type == sf::Event::Closed)
+		{
+			sIsRunning = false;
+		}
+		if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F11)
+		{
+			if(mWindow.getSize() == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) {
+				mWindow.create(sf::VideoMode(640, 360), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3));
+				Renderer::restart(640, 360);
+				Widget::setScreenSize({640, 360});
+			}
+			else {
+				mWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3));
+				sf::Vector2u fullScreenSize(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				Renderer::restart(fullScreenSize.x, fullScreenSize.y);
+				Widget::setScreenSize(static_cast<sf::Vector2f>(fullScreenSize));
+			}
+			mWindow.setVerticalSyncEnabled(true);
+			mWindow.setKeyRepeatEnabled(false);
+		}
 
-		handleGlobalKeyboardShortcuts(mWindow, phEvent);
-		mFPSCounter.handleEvent(phEvent);
-		mTerminal->handleEvent(phEvent);
-		GUI::handleEvent(phEvent);
-		
-		mSceneManager->handleEvent(phEvent);
-
-		Renderer::handleEvent(phEvent);
+		mFPSCounter.handleEvent(e);
+		Terminal::handleEvent(e);
+		GUI::handleEvent(e);
+		mSceneManager->handleEvent(e);
+		Renderer::handleEvent(e);
 	}
 }
 
@@ -81,7 +92,7 @@ void Game::update(float dt)
 		mSceneManager->update(dt);
 		mAIManager->update();
 		GUI::update(dt);
-		mTerminal->update(dt);
+		Terminal::update(dt);
 		mFPSCounter.update();
 
 		Renderer::endScene();

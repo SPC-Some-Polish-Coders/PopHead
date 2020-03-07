@@ -2,7 +2,6 @@
 
 #include "quadData.hpp"
 #include "Renderer/API/shader.hpp"
-#include "Renderer/API/indexBuffer.hpp"
 #include "Utilities/rect.hpp"
 #include "Utilities/vector4.hpp"
 #include <SFML/System/Vector2.hpp>
@@ -35,30 +34,33 @@ private:
 	bool mShouldSort;
 };
 
+struct QuadRendererDebugNumbers
+{
+	unsigned drawCalls = 0;
+	unsigned drawnSprites = 0;
+	unsigned drawnTextures = 0;
+	unsigned renderGroups = 0;
+};
+
 class QuadRenderer
 {
 public:
 	void init();
 	void shutDown();
 
-	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+	QuadRendererDebugNumbers getDebugNumbers() { return mDebugNumbers; }
 
-	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
-	unsigned getNumberOfDrawnSprites() const { return mNumberOfDrawnSprites; }
-	unsigned getNumberOfDrawnTextures() const { return mNumberOfDrawnTextures; }
-	unsigned getNumberOfRenderGroups() const { return mNumberOfRenderGroups; }
-
+	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void setDebugNumbersToZero();
+	void resetDebugNumbers();
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*, float z, ProjectionType projectionType);
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-	                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType);
-	void flush();
+	                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
+	void flush(bool affectedByLight);
 
 private:
-	bool isInsideScreen(sf::Vector2f position, sf::Vector2f size, float rotation, ProjectionType);
 	auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, const QuadRenderGroup&) -> std::optional<float>;
 	auto getNormalizedTextureRect(const IntRect* pixelTextureRect, sf::Vector2i textureSize) -> FloatRect;
 	void bindTexturesForNextDrawCall(std::vector<const Texture*>& textures);
@@ -66,17 +68,15 @@ private:
 
 private:
 	RenderGroupsHashMap mRenderGroupsHashMap;
+	RenderGroupsHashMap mNotAffectedByLightRenderGroupsHashMap;
 	Shader mDefaultQuadShader;
-	const FloatRect* mScreenBounds;
+	QuadRendererDebugNumbers mDebugNumbers;
+	const FloatRect* mScreenBounds; 
 	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;
-	IndexBuffer mQuadIBO;
+	unsigned mQuadIBO;
 	unsigned mQuadsDataVBO;
 	unsigned mVAO;
-	unsigned mNumberOfDrawCalls = 0;
-	unsigned mNumberOfDrawnSprites = 0;
-	unsigned mNumberOfDrawnTextures = 0;
-	unsigned mNumberOfRenderGroups = 0;
 	bool mIsDebugCountingActive = false;
 };
 

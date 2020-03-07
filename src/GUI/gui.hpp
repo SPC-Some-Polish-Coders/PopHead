@@ -4,11 +4,14 @@
 #include "widget.hpp"
 #include "textWidget.hpp"
 #include "sliderWidget.hpp"
-#include "Events/event.hpp"
+#include <SFML/Window/Event.hpp>
 
 namespace ph::GUI
 {
-	void handleEvent(Event&);
+	void init();
+	void shutDown();
+
+	void handleEvent(sf::Event);
 	void update(float dt);
 
 	Interface* addInterface(const char* name);

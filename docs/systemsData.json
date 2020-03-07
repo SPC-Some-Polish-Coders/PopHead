@@ -11,7 +11,13 @@
             "name" : "ArcadeMode",
             "componentsWrite" : [
 				"ALL"
-			]
+            ],
+            "anotherStuff" : [
+                "EntitiesTemplateStorage",
+                "AIManager",
+                "MusicPlayer",
+                "GUI"
+            ]
         },
         {
             "name" : "AreasDebug",
@@ -21,7 +27,11 @@
                 "MultiStaticCollisionBody",
                 "KinematicCollisionBody",
                 "AreaVelocityChangingEffect",
-                "PushingArea"
+                "PushingArea",
+                "RenderChunk"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -34,6 +44,10 @@
             "componentsWrite" : [
                 "AmbientSound",
                 "SpatialSound"
+            ],
+            "anotherStuff" : [
+                "MusicPlayer",
+                "SoundPlayer"
             ]
         },
         {
@@ -51,6 +65,14 @@
             ],
             "componentsWrite" : [
                 "CutScene"
+            ],
+            "anotherStuff" : [
+                "CutSceneManager",
+                "GUI",
+                "MusicPlayer",
+                "SoundPlayer",
+                "AIManager",
+                "SceneManager"
             ]
         },
         {
@@ -74,6 +96,23 @@
                 "Camera",
                 "AnimationData",
                 "TaggedToDestroy"
+            ],
+            "anotherStuff" : [
+                "GUI",
+                "AIManager"
+            ]
+        },
+        {
+            "name" : "DebugCamera",
+            "componentsRead" : [
+                "DebugCamera"
+            ],
+            "componentsWrite" : [
+                "Camera",
+                "BodyRect"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -88,6 +127,9 @@
                 "Player",
                 "Entrance",
                 "BodyRect"
+            ],
+            "anotherStuff" : [
+                "SceneManager"
             ]
         },
 		{
@@ -96,6 +138,9 @@
                 "Player",
                 "Bullets",
                 "Health"
+            ],
+            "anotherStuff" : [
+                "GUI"
             ]
         },
         {
@@ -126,7 +171,11 @@
                 "DamageTag",
                 "LastingShot",
                 "Lifetime",
-                "AmbientSound"
+                "AmbientSound",
+				"CameraShake"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -152,8 +201,10 @@
             ],
             "componentsWrite" : [
                 "Hint"
+            ],
+            "anotherStuff" : [
+                "GUI"
             ]
-            
         },
         {
             "name" : "HostileCollisions",
@@ -166,6 +217,7 @@
             "componentsWrite" : [
                 "CollisionWithPlayer",
                 "DamageTag",
+                "CameraShake",
                 "PushingForces"
             ]
         },
@@ -218,6 +270,7 @@
                 "BodyRect",
                 "DamageTag",
                 "RenderQuad",
+                "CameraShake",
                 "HiddenForRenderer"
             ]
         },
@@ -239,6 +292,9 @@
             "componentsWrite" : [
                 "ParticleEmitter",
                 "MultiParticleEmitter"
+            ],
+            "anotherStuff" : [
+                "Renderer"
             ]
         },
         {
@@ -259,6 +315,7 @@
             "name" : "PlayerCameraMovement",
             "componentsRead" : [
                 "Player",
+                "FaceDirection",
                 "BodyRect"
             ],
             "componentsWrite" : [
@@ -279,6 +336,11 @@
                 "FaceDirection",
                 "LightSource",
                 "Velocity"
+            ],
+            "anotherStuff" : [
+                "AIManager",
+                "GUI",
+                "SceneManager"
             ]
         },
         {
@@ -313,7 +375,12 @@
             ],
             "componentsWrite" : [
                 "Camera",
+                "CameraShake",
                 "RenderChunk"
+            ],
+            "anotherStuff" : [
+                "reference to textures/map/extrudedTileset.png from Game::mTextures",
+                "Renderer"
             ]
         },
         {
@@ -345,6 +412,20 @@
             ]
         },
         {
+            "name" : "Weather",
+            "componentsRead" : [
+				"Player"
+			],
+            "componentsWrite" : [
+                "Weather",
+                "BodyRect",
+                "ParticleEmitter"
+            ],
+            "anotherStuff" : [
+                "Renderer"
+            ]
+        },
+        {
             "name" : "ZombieSystem",
             "componentsRead" : [
                 "BodyRect",
@@ -356,6 +437,9 @@
                 "Velocity",
                 "SpatialSound",
                 "AnimationData"
+            ],
+            "anotherStuff" : [
+                "AIManager"
             ]
         }
     ]

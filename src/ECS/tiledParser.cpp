@@ -12,19 +12,18 @@
 #include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
 #include "Scenes/CutScenes/endingCutscene.hpp"
 #include "Utilities/xml.hpp"
+#include "Resources/textureHolder.hpp"
 #include "Logs/logs.hpp"
-#include "Events/actionEventManager.hpp"
 #include "Renderer/API/shader.hpp"
 
 namespace ph {
 
 	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
-	                         SceneManager& sceneManager, TextureHolder& textureHolder)
+	                         SceneManager& sceneManager)
 		:mCutSceneManager(cutSceneManager)
 		,mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
 		,mSceneManager(sceneManager)
-		,mTextureHolder(textureHolder)
 	{
 	}
 
@@ -37,8 +36,6 @@ namespace ph {
 			return;
 
 		loadObjects(gameObjects);
-
-		ActionEventManager::setEnabled(true);
 	}
 
 	Xml TiledParser::findGameObjects(const Xml& mapNode) const
@@ -182,7 +179,8 @@ namespace ph {
 		loadSize(hintAreaNode, entity);
 		auto& hint = mGameRegistry.get<component::Hint>(entity);
 		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
-		hint.content = getProperty(hintAreaNode, "hintContent").toString();
+		hint.keyboardContent = getProperty(hintAreaNode, "hintKeyboardContent").toString();
+		hint.joystickContent = getProperty(hintAreaNode, "hintJoystickContent").toString();
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
@@ -269,7 +267,7 @@ namespace ph {
 			flashlight.startAngle = 40.f;
 			flashlight.endAngle = 40.f;
 			flashlight.attenuationAddition = 0.1f;
-			flashlight.attenuationFactor = 1.f;
+			flashlight.attenuationFactor = 3.f;
 			flashlight.attenuationSquareFactor = 1.5f;
 			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
 		}	
@@ -314,8 +312,8 @@ namespace ph {
 		// load texture
 		const std::string texturePath = getProperty(spriteNode, "texturePath").toString();
 		if(texturePath != "none") {
-			if(mTextureHolder.load(texturePath))
-				rq.texture = &mTextureHolder.get(texturePath);
+			if(loadTexture(texturePath))
+				rq.texture = &getTexture(texturePath);
 			else
 				PH_EXIT_GAME("TiledParser::loadSprite() wasn't able to load texture \"" + texturePath + "\"");
 		}

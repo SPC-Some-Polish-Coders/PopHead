@@ -1,6 +1,8 @@
 #include "xmlMapParser.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
+#include "Components/physicsComponents.hpp"
+#include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
@@ -14,6 +16,32 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 {
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
+
+	//load denial areas
+	auto objectGroups = mapNode.getChildren("objectgroup");
+	for(auto& objectGroup : objectGroups)
+	{
+		if(objectGroup.getAttribute("name")->toString() == "denialAreas")
+		{
+			auto objects = objectGroup.getChildren("object");
+			for(auto& object : objects)
+			{
+				auto getBounds = [&object]
+				{
+					return FloatRect(object.getAttribute("x")->toFloat(), object.getAttribute("y")->toFloat(),
+					                 object.getAttribute("width")->toFloat(), object.getAttribute("height")->toFloat());
+				};
+
+				if(object.getAttribute("type")->toString() == "CollisionAndLightWallDenialArea")
+					mDenialAreas.collisionsAndLightWalls.emplace_back(getBounds());
+				else if(object.getAttribute("type")->toString() == "CollisionDenialArea")
+					mDenialAreas.collisions.emplace_back(getBounds());
+				else if(object.getAttribute("type")->toString() == "LightWallDenialArea")
+					mDenialAreas.lightWalls.emplace_back(getBounds());
+			}
+		}
+	}
+
 
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
 
@@ -64,21 +92,22 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 				}
 				else
 				{
-					if(chunkPos.x < mapBounds.left)
+					if(chunkPos.x < mapBounds.left) {
 						mapBounds.left = chunkPos.x;
-					if(chunkPos.y < mapBounds.top)
-						mapBounds.top = chunkPos.y;
-
-					// TODO: Handle for chunk with negative position
-					
-					if(chunkPos.x > 0.f && chunkPos.y > 0.f) {
-						sf::Vector2f addition(-mapBounds.left, -mapBounds.top);
-						if(addition.x + chunkPos.x + chunkSize.x > mapBounds.width)
-							mapBounds.width = addition.x + chunkPos.x + chunkSize.x;
-						if(addition.y + chunkPos.y + chunkSize.y > mapBounds.height)
-							mapBounds.height = addition.y + chunkPos.y + chunkSize.y;
 					}
-				}	
+					if(chunkPos.y < mapBounds.top) {
+						mapBounds.top = chunkPos.y;
+					}
+					
+					float mapWidthToThisChunk = chunkPos.x - mapBounds.left + chunkSize.x;
+					if(mapWidthToThisChunk > mapBounds.width) {
+						mapBounds.width = mapWidthToThisChunk; 
+					}
+					float mapHeightToThisChunk = chunkPos.y - mapBounds.top + chunkSize.y;
+					if(mapHeightToThisChunk > mapBounds.height) {
+						mapBounds.height = mapHeightToThisChunk;
+					}
+				}
 
 				auto globalIds = Csv::toUnsigneds(chunkNode.toString());
 				createInfiniteMapChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager);
@@ -107,21 +136,21 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		return body.rect;
 	};
 
-	// create top map border
-	auto& topBorderRect = createBorderCollision();
-	topBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
-
-	// create bottom map border
-	auto& bottomBorderRect = createBorderCollision();
-	bottomBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
-		
 	// create left map border
 	auto& leftBorderRect = createBorderCollision();
-	leftBorderRect = FloatRect(-info.tileSize.x + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+	leftBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.top - info.tileSize.y, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+
+	// create top map border
+	auto& topBorderRect = createBorderCollision();
+	topBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.top - info.tileSize.y, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
 
 	// create right map border
 	auto& rightBorderRect = createBorderCollision();
 	rightBorderRect = FloatRect(mapBounds.width + mapBounds.left, -info.tileSize.y + mapBounds.top, info.tileSize.x, mapBounds.height + 2 * info.tileSize.y);
+
+	// create bottom map border
+	auto& bottomBorderRect = createBorderCollision();
+	bottomBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
@@ -186,19 +215,32 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
 			const auto objectNodes = objectGroupNode->getChildren("object");
 			std::vector<FloatRect> collisions;
+			std::vector<FloatRect> lightWalls;
 			for(auto& objectNode : objectNodes)
 			{
-				auto width = objectNode.getAttribute("width");
-				auto height = objectNode.getAttribute("height");
-				const sf::FloatRect bounds(
-					objectNode.getAttribute("x")->toFloat(),
-					objectNode.getAttribute("y")->toFloat(),
-					width ? width->toFloat() : 0.f,
-					height ? height->toFloat() : 0.f
-				);
-				collisions.emplace_back(bounds);
+				if(auto type = objectNode.getAttribute("type"))
+				{
+					auto getBounds = [&objectNode] 
+					{
+						auto width = objectNode.getAttribute("width");
+						auto height = objectNode.getAttribute("height");
+						return FloatRect(
+							objectNode.getAttribute("x")->toFloat(),
+							objectNode.getAttribute("y")->toFloat(),
+							width ? width->toFloat() : 0.f,
+							height ? height->toFloat() : 0.f
+						);
+					};
+
+					std::string typeStr = type->toString();
+					if(typeStr == "Collision")
+						collisions.emplace_back(getBounds());
+					else if(typeStr == "LightWall")
+						lightWalls.emplace_back(getBounds());
+				}
 			}
 			tilesData.bounds.emplace_back(collisions);
+			tilesData.lightWalls.emplace_back(lightWalls);
 		}
 	}
 	return tilesData;
@@ -223,7 +265,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 
 	// fill chunk with z and bounds
 	renderChunk.z = z;
-	renderChunk.bounds = sf::FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize); 
+	renderChunk.quadsBounds = sf::FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize); 
 
 	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
@@ -247,7 +289,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInChunk, static_cast<unsigned>(sChunkSize)));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize));
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
 
 			// create quad data
@@ -320,7 +362,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			// emplace quad data to chunk
 			renderChunk.quads.emplace_back(qd);
 
-			// load collision bodies
+			// load collision bodies and light walls
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
 			if (tilesDataIndex == std::string::npos)
 				continue;
@@ -329,20 +371,62 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			{
 				if (tileId == tilesData.ids[i]) 
 				{
+					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						if((isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
-						{
-							if(isHorizontallyFlipped)
-								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
-							if(isVerticallyFlipped)
-								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
-						}
+						if(isHorizontallyFlipped)
+							collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+						if(isVerticallyFlipped)
+							collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+
 						collisionRect.left += tileWorldPos.x; 
 						collisionRect.top += tileWorldPos.y; 
-						chunkCollisions.rects.emplace_back(collisionRect);
-						// TODO
-						//aiManager.registerObstacle({collisionRect.left, collisionRect.top});
+
+						bool shouldBeAdded = true;
+
+						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+							if(collisionDenialArea.doPositiveRectsIntersect(collisionRect)) {
+								shouldBeAdded = false;
+								break;
+							}
+
+						if(shouldBeAdded)
+							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+								if(collisionDenialArea.doPositiveRectsIntersect(collisionRect)) {
+									shouldBeAdded = false;
+									break;
+								}
+
+						if(shouldBeAdded)
+							chunkCollisions.rects.emplace_back(collisionRect);
+					}
+
+					// light walls
+					for(FloatRect lightWallRect : tilesData.lightWalls[i])
+					{
+						if(isHorizontallyFlipped)
+							lightWallRect.left = info.tileSize.x - lightWallRect.left - lightWallRect.width;
+						if(isVerticallyFlipped)
+							lightWallRect.top = info.tileSize.y - lightWallRect.top - lightWallRect.height;
+
+						lightWallRect.left += tileWorldPos.x; 
+						lightWallRect.top += tileWorldPos.y; 
+
+						bool shouldBeAdded = true;
+						for(FloatRect lightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
+							if(lightWallDenialArea.doPositiveRectsIntersect(lightWallRect)) {
+								shouldBeAdded = false;
+								break;
+							}
+
+						if(shouldBeAdded)
+							for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
+								if(lightWallDenialArea.doPositiveRectsIntersect(lightWallRect)) {
+									shouldBeAdded = false;
+								}
+
+						if(shouldBeAdded)
+							renderChunk.lightWalls.emplace_back(lightWallRect);
 					}
 
 					break;
@@ -352,13 +436,19 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 	}
 
 	// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-	renderChunk.bounds.left *= static_cast<float>(info.tileSize.x);
-	renderChunk.bounds.top *= static_cast<float>(info.tileSize.y);
-	renderChunk.bounds.width *= static_cast<float>(info.tileSize.x);
-	renderChunk.bounds.height *= static_cast<float>(info.tileSize.y);
+	renderChunk.quadsBounds.left *= static_cast<float>(info.tileSize.x);
+	renderChunk.quadsBounds.top *= static_cast<float>(info.tileSize.y);
+	renderChunk.quadsBounds.width *= static_cast<float>(info.tileSize.x);
+	renderChunk.quadsBounds.height *= static_cast<float>(info.tileSize.y);
+
+	// set light walls bounds so we can do culling in RenderSystem
+	renderChunk.lightWallsBounds.left = renderChunk.quadsBounds.left - 400.f;
+	renderChunk.lightWallsBounds.top = renderChunk.quadsBounds.top - 400.f;
+	renderChunk.lightWallsBounds.width = renderChunk.quadsBounds.width + 800.f;
+	renderChunk.lightWallsBounds.height = renderChunk.quadsBounds.height + 800.f;
 
 	// put data for static collisions optimalization
-	chunkCollisions.sharedBounds = renderChunk.bounds;
+	chunkCollisions.sharedBounds = renderChunk.quadsBounds;
 
 	// put data into registry
 	auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
@@ -389,7 +479,8 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 		mRenderChunks[i].z = z;
 
 		float row = std::floor(i / info.nrOfChunksInOneRow);
-		mRenderChunks[i].bounds = sf::FloatRect((sChunkSize * i) - (row * sChunkSize * info.nrOfChunksInOneRow), row * sChunkSize, sChunkSize, sChunkSize);
+		mRenderChunks[i].quadsBounds = sf::FloatRect((sChunkSize * i) - (row * sChunkSize * info.nrOfChunksInOneRow),
+		                                             row * sChunkSize, sChunkSize, sChunkSize);
 	}
 
 	for (size_t tileIndexInMap = 0; tileIndexInMap < globalTileIds.size(); ++tileIndexInMap) 
@@ -414,7 +505,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileIndexInMap, static_cast<unsigned>(info.mapSize.x)));
+			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInMap, (unsigned)info.mapSize.x));
 
 			// create quad data
 			QuadData qd;
@@ -487,7 +578,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			// find chunk index
 			size_t chunkIndex = 0;
 			for(size_t i = 0; i < mRenderChunks.size(); ++i)
-				if(mRenderChunks[i].bounds.containsIncludingBounds(positionInTiles))
+				if(mRenderChunks[i].quadsBounds.containsIncludingBounds(positionInTiles))
 					chunkIndex = i;
 
 			// emplace quad data to chunk
@@ -503,39 +594,59 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			{
 				if (tileId == tilesData.ids[i]) 
 				{
+					// TODO: Add support for denial areas
+
+					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
 					{
-						if(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)
-						{
-							if(isHorizontallyFlipped) {
-								collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
-							}
-							if(isVerticallyFlipped) {
-								collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
-							}
-						}
+						if(isHorizontallyFlipped)
+							collisionRect.left = info.tileSize.x - collisionRect.left - collisionRect.width;
+						if(isVerticallyFlipped)
+							collisionRect.top = info.tileSize.y - collisionRect.top - collisionRect.height;
+
 						collisionRect.left += tileWorldPos.x; 
-						collisionRect.top += tileWorldPos.y;
+						collisionRect.top += tileWorldPos.y; 
 						mChunkCollisions[chunkIndex].rects.emplace_back(collisionRect);
 						aiManager.registerObstacle(positionInTiles);
+						
+					}
+
+					// light walls
+					for(FloatRect lightWallRect : tilesData.lightWalls[i])
+					{
+						if(isHorizontallyFlipped)
+							lightWallRect.left = info.tileSize.x - lightWallRect.left - lightWallRect.width;
+						if(isVerticallyFlipped)
+							lightWallRect.top = info.tileSize.y - lightWallRect.top - lightWallRect.height;
+
+						lightWallRect.left += tileWorldPos.x; 
+						lightWallRect.top += tileWorldPos.y; 
+
+						mRenderChunks[chunkIndex].lightWalls.emplace_back(lightWallRect);
 					}
 
 					break;
 				}
-			}
+			}		
 		}
 	}
 
 	for(size_t i = 0; i < mRenderChunks.size(); ++i)
 	{
 		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		mRenderChunks[i].bounds.left *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.top *= static_cast<float>(info.tileSize.y);
-		mRenderChunks[i].bounds.width *= static_cast<float>(info.tileSize.x);
-		mRenderChunks[i].bounds.height *= static_cast<float>(info.tileSize.y);
+		mRenderChunks[i].quadsBounds.left *= static_cast<float>(info.tileSize.x);
+		mRenderChunks[i].quadsBounds.top *= static_cast<float>(info.tileSize.y);
+		mRenderChunks[i].quadsBounds.width *= static_cast<float>(info.tileSize.x);
+		mRenderChunks[i].quadsBounds.height *= static_cast<float>(info.tileSize.y);
+
+		// set light walls bounds so we can do culling in RenderSystem
+		mRenderChunks[i].lightWallsBounds.left = mRenderChunks[i].quadsBounds.left - 400.f;
+		mRenderChunks[i].lightWallsBounds.top = mRenderChunks[i].quadsBounds.top - 400.f;
+		mRenderChunks[i].lightWallsBounds.width = mRenderChunks[i].quadsBounds.width + 800.f;
+		mRenderChunks[i].lightWallsBounds.height = mRenderChunks[i].quadsBounds.height + 800.f;
 
 		// put data for static collisions optimalization
-		mChunkCollisions[i].sharedBounds = mRenderChunks[i].bounds;
+		mChunkCollisions[i].sharedBounds = mRenderChunks[i].quadsBounds;
 
 		// put data into registry
 		auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);

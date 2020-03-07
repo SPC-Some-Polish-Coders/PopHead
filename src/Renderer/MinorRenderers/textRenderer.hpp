@@ -13,22 +13,24 @@ namespace ph {
 class TextRenderer
 {
 public:
+	TextRenderer();
+	
 	void init();
 	void shutDown();
 
 	void beginDebugDisplay();
 
 	void drawText(const char* text, const char* fontFilename, sf::Vector2f position,
-		          float fontSize, sf::Color textColor, unsigned char z, ProjectionType);
+		          float fontSize, sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight);
 
 	void drawDebugText(const char* text, const char* fontFilename, float fontSize,
 		               float upMargin, float downMargin, sf::Color textColor);
 
-	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, const float textAreaWidth,
-                      TextAligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType);
+	void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
+                      TextAligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight);
 private:
 	void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position,
-		                  float fontSize, sf::Color, unsigned char z, ProjectionType);
+		                  float fontSize, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight);
 private:
 	FontHolder mFontHolder;
 	Shader mTextShader;

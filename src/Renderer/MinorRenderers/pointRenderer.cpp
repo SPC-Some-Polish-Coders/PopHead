@@ -38,7 +38,7 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::setDebugNumbersToZero()
+void PointRenderer::resetDebugNumbers()
 {
 	mNrOfDrawnPoints = 0;
 	mNrOfDrawCalls = 0;
@@ -71,7 +71,7 @@ void PointRenderer::flush()
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PointVertexData) * mSubmitedPointsVertexData.size(), mSubmitedPointsVertexData.data(), GL_STATIC_DRAW);
 
-	glDrawArrays(GL_POINTS, 0, mSubmitedPointsVertexData.size());
+	glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(mSubmitedPointsVertexData.size()));
 
 	mSubmitedPointsVertexData.clear();
 

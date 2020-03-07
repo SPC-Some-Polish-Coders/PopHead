@@ -2,10 +2,10 @@
 
 #include "API/textAligment.hpp"
 #include "MinorRenderers/quadData.hpp"
-#include "Events/event.hpp"
 #include "Utilities/rect.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Window/Event.hpp>
 #include <vector>
 
 namespace ph {
@@ -26,7 +26,8 @@ namespace Renderer
 	void endScene();
 
 	void submitQuad(const Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
-	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld);
+	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld,
+					bool isAffectedByLight = true);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, const Texture*, const Shader*,
 	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
@@ -40,19 +41,23 @@ namespace Renderer
 	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
-	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
-		            sf::Color, unsigned char z, ProjectionType);
+	void submitLightWall(FloatRect wall);
+	void submitBunchOfLightWalls(const std::vector<FloatRect>& walls);
 
-	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color);
+	unsigned getNrOfLights();
+
+	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
+		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
+
+	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
+                         sf::Color textColor);
 
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType);
-
-	void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size);
+                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
 	void setAmbientLightColor(sf::Color);
 
-	void handleEvent(Event&);
+	void handleEvent(sf::Event);
 }
 
 }

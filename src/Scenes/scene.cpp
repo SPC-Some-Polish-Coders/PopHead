@@ -34,6 +34,7 @@
 #include "ECS/Systems/cars.hpp"
 #include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
+#include "ECS/Systems/weather.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -90,6 +91,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
+
 	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
 
 	// must be after GunAttacks and before EntityDestroying
@@ -97,9 +99,14 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	// must be at the end
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
+
+	// not specified yet
+	mSystemsQueue.appendSystem<system::DebugCamera>();
+	mSystemsQueue.appendSystem<system::Weather>();
+
 }
 
-void Scene::handleEvent(Event e)
+void Scene::handleEvent(sf::Event e)
 {
 	mSystemsQueue.handleEvents(e);
 }

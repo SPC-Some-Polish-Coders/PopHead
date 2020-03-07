@@ -2,7 +2,6 @@
 
 #include "entitiesTemplateStorage.hpp"
 #include "Scenes/sceneManager.hpp"
-#include "Resources/resourceHolder.hpp"
 #include "Utilities/rect.hpp"
 #include <entt/entity/registry.hpp>
 #include <SFML/Graphics.hpp>
@@ -18,7 +17,7 @@ namespace ph {
 	{
 	public:
 		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
-		            SceneManager& sceneManager, TextureHolder& textureHolder);
+		            SceneManager& sceneManager);
 
 		void parseFile(const Xml& mapNode) const;
 		bool hasLoadedPlayer() const { return mHasLoadedPlayer; }
@@ -71,7 +70,6 @@ namespace ph {
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;
-		TextureHolder& mTextureHolder;
 		mutable bool mHasLoadedPlayer = false;
 	};
 

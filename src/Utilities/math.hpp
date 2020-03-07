@@ -7,6 +7,11 @@
 
 namespace ph::Math {
 
+	constexpr float pi = 3.14159265359f;
+
+	constexpr float nullFloat = -99999999.99f;
+	const sf::Vector2f nullVector = sf::Vector2f(nullFloat, nullFloat);
+
 	template <typename T>
 	FORCE_INLINE sf::Vector2<T> getUnitVector(const sf::Vector2<T>);
 

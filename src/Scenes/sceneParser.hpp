@@ -2,7 +2,6 @@
 
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "ECS/systemsQueue.hpp"
-#include "Resources/resourceHolder.hpp"
 #include "cutSceneManager.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "GUI/gui.hpp"
@@ -14,7 +13,7 @@
 namespace ph{
 
 void parseScene(CutSceneManager&, EntitiesTemplateStorage&, entt::registry&,
-                const std::string& sceneFileName, TextureHolder&, SystemsQueue&, AIManager&, SceneManager&);
+                const std::string& sceneFileName, SystemsQueue&, AIManager&, SceneManager&);
 
 }
 

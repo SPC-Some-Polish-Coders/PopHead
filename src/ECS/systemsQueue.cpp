@@ -44,7 +44,7 @@ namespace ph {
 		}
 	}
 
-	void SystemsQueue::handleEvents(Event e)
+	void SystemsQueue::handleEvents(sf::Event e)
 	{
 		for (auto& item : mSystemsArray)
 			item.system->onEvent(e);

@@ -5,7 +5,7 @@
 
 namespace ph {
 
-void Framebuffer::init(const unsigned width, const unsigned height)
+void Framebuffer::init(unsigned width, unsigned height)
 {
 	GLCheck( glGenFramebuffers(1, &mFramebufferID) );
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID) );
@@ -36,7 +36,7 @@ void Framebuffer::remove()
 	GLCheck( glDeleteRenderbuffers(1, &mRenderBufferID) );
 }
 
-void Framebuffer::onWindowResize(const unsigned width, const unsigned height)
+void Framebuffer::onWindowResize(unsigned width, unsigned height)
 {
 	GLCheck( glBindTexture(GL_TEXTURE_2D, mColorBufferTextureID) );
 	GLCheck( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr) );

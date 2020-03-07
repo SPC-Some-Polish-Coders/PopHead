@@ -1,16 +1,16 @@
 #include "debugCamera.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "Utilities/math.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
 namespace ph::system {
 
-void DebugCamera::onEvent(Event event)
+void DebugCamera::onEvent(sf::Event e)
 {
-	if(auto* e = std::get_if<sf::Event>(&event))
-		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::H)
-			mIsHintActive = !mIsHintActive;
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::H)
+		mIsHintActive = !mIsHintActive;
 }
 
 void DebugCamera::update(float dt)
@@ -24,7 +24,8 @@ void DebugCamera::update(float dt)
 			float posY = 10.f;
 			auto drawDebugCameraHintText = [&posY](const char* text, bool bold = false) {
 				float size = bold ? 50.f : 30.f;
-				Renderer::submitText(text, bold ? "LiberationMono-Bold.ttf" : "LiberationMono.ttf", {10.f, posY}, size, sf::Color::White, 0, ProjectionType::gui);
+				Renderer::submitText(text, bold ? "LiberationMono-Bold.ttf" : "LiberationMono.ttf", {10.f, posY}, size,
+					sf::Color::White, 0, ProjectionType::gui);
 				posY += bold ? 75.f : 30.f;
 			};
 			drawDebugCameraHintText("DebugCamera mode", true); 
@@ -36,7 +37,8 @@ void DebugCamera::update(float dt)
 			drawDebugCameraHintText("K + L - Very slow movement");
 			drawDebugCameraHintText("J - Fast movement");
 			drawDebugCameraHintText("J + L - Very fast movement");
-			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f}, 1, 0.f, {}, ProjectionType::gui); 
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f},
+				1, 0.f, {}, ProjectionType::gui, false); 
 		}
 
 		// get modifier flags 
@@ -64,7 +66,7 @@ void DebugCamera::update(float dt)
 			movement *= 2.f;
 		movement *= dt;
 		body.rect.move(movement);
-		camera.camera.setCenterSmoothly(body.rect.getCenter(), 10 * dt);
+		camera.camera.setCenter(body.rect.getCenter());
 
 		// zoom camera 
 		float zoom = 1.f;

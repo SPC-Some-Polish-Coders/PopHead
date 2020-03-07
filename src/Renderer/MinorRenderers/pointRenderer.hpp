@@ -24,7 +24,7 @@ public:
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void setDebugNumbersToZero();
+	void resetDebugNumbers();
 	unsigned getNrOfDrawnPoints() const { return mNrOfDrawnPoints; }
 	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
 

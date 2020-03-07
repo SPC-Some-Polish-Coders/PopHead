@@ -1,19 +1,17 @@
 #pragma once
 
 #include "cutSceneManager.hpp"
-#include "Events/event.hpp"
 #include "playerStatus.hpp"
 #include <entt/entity/registry.hpp>
 #include "ECS/systemsQueue.hpp"
 #include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Window/Event.hpp>
 #include <memory>
 
 namespace ph{
 
 class CutScene;
 class AIManager;
-class Terminal;
 class SceneManager;
 class Texture;
 class ThreadPool;
@@ -23,7 +21,7 @@ class Scene
 public:
     Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&);
 
-	void handleEvent(Event);
+	void handleEvent(sf::Event);
     void update(float dt);
 
 	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }

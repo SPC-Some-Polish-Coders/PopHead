@@ -5,7 +5,6 @@
 #include "MinorRenderers/lightRenderer.hpp"
 #include "MinorRenderers/textRenderer.hpp"
 #include "API/shader.hpp"
-#include "API/vertexArray.hpp"
 #include "API/camera.hpp"
 #include "API/font.hpp"
 #include "API/openglErrors.hpp"
@@ -27,10 +26,12 @@ namespace {
 	ph::Shader defaultFramebufferShader;
 	ph::Shader gaussianBlurFramebufferShader;
 	
-	ph::VertexArray framebufferVertexArray;
 	ph::Framebuffer gameObjectsFramebuffer;
 	ph::Framebuffer lightingFramebuffer;
 	ph::Framebuffer lightingGaussianBlurFramebuffer;
+	unsigned screenVBO;
+	unsigned screenIBO;
+	unsigned screenVAO;
 	 
 	sf::Color ambientLightColor;
 
@@ -60,15 +61,15 @@ void init(unsigned screenWidth, unsigned screenHeight)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
+	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	pointRenderer.setScreenBoundsPtr(&screenBounds);
+	lineRenderer.setScreenBoundsPtr(&screenBounds);
+	lightRenderer.setScreenBoundsPtr(&screenBounds);
 	quadRenderer.init();
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
 	textRenderer.init();
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
-	pointRenderer.setScreenBoundsPtr(&screenBounds);
-	lineRenderer.setScreenBoundsPtr(&screenBounds);
-	lightRenderer.setScreenBoundsPtr(&screenBounds);
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -86,9 +87,16 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
 	
-	// set up framebuffer
+	// set up framebuffers
 	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
 	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
+
+	gameObjectsFramebuffer.init(screenWidth, screenHeight);
+	lightingFramebuffer.init(screenWidth, screenHeight);
+	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
+
+	glGenVertexArrays(1, &screenVAO);
+	glBindVertexArray(screenVAO);
 
 	float framebufferQuad[] = {
 		1.f,-1.f, 1.f, 0.f,
@@ -96,22 +104,18 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	   -1.f, 1.f, 0.f, 1.f,
 	   -1.f,-1.f, 0.f, 0.f
 	};
+	glGenBuffers(1, &screenVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, screenVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(framebufferQuad), framebufferQuad, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0); 
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))); 
 
 	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
-	IndexBuffer quadIBO;
-	quadIBO.init();
-	quadIBO.setData(quadIndices, sizeof(quadIndices));
-
-	VertexBuffer framebufferVBO;
-	framebufferVBO.init();
-	framebufferVBO.setData(framebufferQuad, sizeof(framebufferQuad), GL_STATIC_DRAW);
-	framebufferVertexArray.init();
-	framebufferVertexArray.setVertexBuffer(framebufferVBO, VertexBufferLayout::position2_texCoords2);
-	framebufferVertexArray.setIndexBuffer(quadIBO);
-
-	gameObjectsFramebuffer.init(screenWidth, screenHeight);
-	lightingFramebuffer.init(screenWidth, screenHeight);
-	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
+	glGenBuffers(1, &screenIBO); 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, screenIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 }
 
 void restart(unsigned screenWidth, unsigned screenHeight)
@@ -126,12 +130,14 @@ void shutDown()
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
 	textRenderer.shutDown();
-	framebufferVertexArray.remove();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
 	lightingGaussianBlurFramebuffer.remove();
 	defaultFramebufferShader.remove();
 	gaussianBlurFramebufferShader.remove();
+	glDeleteBuffers(1, &screenVBO);
+	glDeleteBuffers(1, &screenIBO);
+	glDeleteVertexArrays(1, &screenVAO);
 }
 
 void setGameWorldCamera(Camera& camera)
@@ -163,7 +169,7 @@ void endScene()
 	PH_PROFILE_FUNCTION(0);
 
 	// render scene
-	quadRenderer.flush();
+	quadRenderer.flush(true);
 	pointRenderer.flush();
 
 	// disable depth test for performance purposes
@@ -180,7 +186,7 @@ void endScene()
 	lightRenderer.flush();
 
 	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
-	framebufferVertexArray.bind();
+	glBindVertexArray(screenVAO);
 
 	// apply gaussian blur for lighting
 	lightingGaussianBlurFramebuffer.bind();
@@ -192,12 +198,15 @@ void endScene()
 	// render everything onto quad in default framebuffer
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
+	GLCheck( glEnable(GL_FRAMEBUFFER_SRGB) );
 	defaultFramebufferShader.bind();
 	defaultFramebufferShader.setUniformInt("gameObjectsTexture", 0);
 	gameObjectsFramebuffer.bindTextureColorBuffer(0);
 	defaultFramebufferShader.setUniformInt("lightingTexture", 1);
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
+	quadRenderer.flush(false);
 
 	// display renderer debug info 
 	if(isDebugDisplayActive)
@@ -208,33 +217,38 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		submitDebugCounter("All draw calls per frame: ",
-			quadRenderer.getNumberOfDrawCalls() + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+		auto quadRendererNumbers = quadRenderer.getDebugNumbers();
 
-		submitDebugCounter("Nr of instanced draw calls: ", quadRenderer.getNumberOfDrawCalls());
-		submitDebugCounter("Nr of render groups: ", quadRenderer.getNumberOfRenderGroups());
-		submitDebugCounter("Nr of drawn instanced sprites: ", quadRenderer.getNumberOfDrawnSprites());
-		submitDebugCounter("Nr of instanced textures: ", quadRenderer.getNumberOfDrawnTextures());
+		submitDebugCounter("All draw calls per frame: ",
+			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+
+		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
+		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
+		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
+		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
-		submitDebugCounter("Nr of drawn lines calls: ", lineRenderer.getNumberOfDrawnLines());
 		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
-		submitDebugCounter("Nr of drawn points calls: ", pointRenderer.getNrOfDrawnPoints());
+		submitDebugCounter("Nr of drawn points: ", pointRenderer.getNrOfDrawnPoints());
+		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
+		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		quadRenderer.setDebugNumbersToZero();
-		lineRenderer.setDebugNumbersToZero();
-		pointRenderer.setDebugNumbersToZero();
+		quadRenderer.resetDebugNumbers();
+		lineRenderer.resetDebugNumbers();
+		pointRenderer.resetDebugNumbers();
+		lightRenderer.resetDebugNumbers();
 	}
 }
 
 void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                          sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
-                          ProjectionType projectionType)
+                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
+                ProjectionType projectionType, bool isAffectedByLight)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size, getNormalizedZ(z), rotation, rotationOrigin, projectionType);
+	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size,
+		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
-                                                    unsigned char z, ProjectionType projectionType)
+                                          unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
@@ -256,48 +270,57 @@ void submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float 
 }
 
 void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
-                           float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
+                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
 }
 
-void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
-                          unsigned char z, ProjectionType projecitonType)
+void submitLightWall(FloatRect wall)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType);
+	lightRenderer.submitLightWall(wall);
 }
 
-void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin, sf::Color color)
+void submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
-	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, color);
+	lightRenderer.submitBunchOfLightWalls(walls);
+}
+
+unsigned getNrOfLights()
+{
+	return lightRenderer.getNrOfLights();
+}
+
+void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
+                unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
+{
+	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
+}
+
+void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
+                     sf::Color textColor)
+{
+	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                              TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType)
+                    TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType);
+	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
-void submitLightBlockingQuad(sf::Vector2f position, sf::Vector2f size)
+void handleEvent(sf::Event e)
 {
-	lightRenderer.submitLightBlockingQuad(position, size);
-}
-
-void handleEvent(Event& phEvent)
-{
-	if(auto* e = std::get_if<sf::Event>(&phEvent))
-	{
-		if(e->type == sf::Event::KeyPressed && e->key.code == sf::Keyboard::F3) {
-			isDebugDisplayActive = !isDebugDisplayActive;
-			lineRenderer.setDebugCountingActive(isDebugDisplayActive);
-			pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-			quadRenderer.setDebugCountingActive(isDebugDisplayActive);
-		}
-		if(e->type == sf::Event::Resized) {
-			GLCheck( glViewport(0, 0, e->size.width, e->size.height) );
-			gameObjectsFramebuffer.onWindowResize(e->size.width, e->size.height);
-			lightingFramebuffer.onWindowResize(e->size.width, e->size.height);
-		}
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F3) {
+		isDebugDisplayActive = !isDebugDisplayActive;
+		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
+		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
+		quadRenderer.setDebugCountingActive(isDebugDisplayActive);
+	}
+	if(e.type == sf::Event::Resized) {
+		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
+		gameObjectsFramebuffer.onWindowResize(e.size.width, e.size.height);
+		lightingFramebuffer.onWindowResize(e.size.width, e.size.height);
+		lightingGaussianBlurFramebuffer.onWindowResize(e.size.width, e.size.height);
 	}
 }
 
@@ -317,3 +340,4 @@ float getNormalizedZ(const unsigned char z)
 }
 
 }
+

@@ -36,7 +36,7 @@ void LineRenderer::shutDown()
 	GLCheck( glDeleteBuffers(1, &mLineVBO) );
 }
 
-void LineRenderer::setDebugNumbersToZero()
+void LineRenderer::resetDebugNumbers()
 {
 	mNumberOfDrawCalls = 0;
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Resources/resourceHolder.hpp"
 #include "Utilities/xml.hpp"
 #include <string>
 #include <vector>
@@ -17,7 +16,7 @@ class SliderWidget;
 class XmlGuiParser
 {
 public:
-	static void init(TextureHolder* th, SceneManager* sm);
+	static void init(SceneManager* sm);
 
 	void parseGuiXml(const std::string& filepath);
 private:

@@ -15,7 +15,7 @@ namespace ph {
 		SystemsQueue(entt::registry& registry, ThreadPool&);
 
 		void update(float seconds);
-		void handleEvents(Event);
+		void handleEvents(sf::Event);
 	
 		template <typename SystemType, typename... Args>
 		void appendSystem(Args... arguments);

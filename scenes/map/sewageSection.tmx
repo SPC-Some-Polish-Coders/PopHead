@@ -1,368 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="75" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="17" nextobjectid="484">
- <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
-  <tile id="6">
-   <objectgroup draworder="index">
-    <object id="5" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="8">
-   <objectgroup draworder="index">
-    <object id="3" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="9">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="38">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="39">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="40">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="41">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="14" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="42">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="43">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="57">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="79">
-   <objectgroup draworder="index">
-    <object id="3" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="80">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="88">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="89">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="90">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="102">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="103">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="105">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="110">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="111">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="112">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="113">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="119">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="120">
-   <objectgroup draworder="index">
-    <object id="3" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="121">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="122">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="123">
-   <objectgroup draworder="index">
-    <object id="2" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="124">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="142">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="143">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="144">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="145">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="151">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="156">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="166">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="167">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="174">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="175">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="176">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="177">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="179">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="10" width="16" height="6"/>
-   </objectgroup>
-  </tile>
-  <tile id="180">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="10" width="16" height="6"/>
-   </objectgroup>
-  </tile>
-  <tile id="181">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="10" width="16" height="6"/>
-   </objectgroup>
-  </tile>
-  <tile id="183">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="188">
-   <objectgroup draworder="index">
-    <object id="1" x="11" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="195">
-   <objectgroup draworder="index">
-    <object id="1" x="4" y="12" width="8" height="4"/>
-   </objectgroup>
-  </tile>
-  <tile id="206">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="207">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="208">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="209">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="211">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="212">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="213">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="215">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="5" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="216">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="217">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="219">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="220">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="227">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="230">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="231">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="247">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="248">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="249">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="250">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="6" width="16" height="10"/>
-   </objectgroup>
-  </tile>
-  <tile id="294">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="295">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="312">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="3" width="16" height="13"/>
-   </objectgroup>
-  </tile>
-  <tile id="344">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="2" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="355">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="358">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="359">
-   <objectgroup draworder="index">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
- </tileset>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="75" height="160" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#262626" nextlayerid="17" nextobjectid="486">
+ <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="15" name="Floor, background and sewage" width="75" height="160">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,407,407,407,407,407,407,407,407,407,407,407,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -659,7 +297,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,152,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,184,0,0,0,0,0,0,184,189,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,0,189,90,90,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,184,0,191,192,0,184,0,0,0,0,0,0,184,189,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,0,189,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,152,0,0,0,0,0,0,0,0,0,0,184,157,223,224,184,184,0,0,0,0,0,0,184,189,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,0,189,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,184,157,255,256,248,184,0,0,0,0,0,0,248,251,0,0,0,0,0,0,248,220,220,220,220,220,220,220,220,220,220,220,221,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,184,157,255,256,248,2147483803,0,0,0,0,0,0,248,251,0,0,0,0,0,0,248,220,220,220,220,220,220,220,220,220,220,220,221,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,216,0,0,0,0,0,0,0,0,0,0,184,157,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,345,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,152,0,0,0,0,0,0,0,0,0,0,184,157,0,0,288,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,345,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,184,155,220,220,220,2147483867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,345,0,0,0,0,0,0,0,0,0,
@@ -691,7 +329,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="14" name="gameObjects" visible="0">
+ <objectgroup id="14" name="gameObjects">
   <object id="1" type="Player" x="549" y="2156">
    <properties>
     <property name="hasFlashlight" type="bool" value="true"/>
@@ -725,7 +363,7 @@
   <object id="21" type="Lever" x="641.5" y="485">
    <point/>
   </object>
-  <object id="34" type="FlowingRiver" x="231.667" y="1230.16" width="165.334" height="1012.97">
+  <object id="34" type="FlowingRiver" x="231.667" y="1270.16" width="165.334" height="972.97">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-115"/>
@@ -798,66 +436,24 @@
   <object id="220" type="Torch" x="607.25" y="2086.67">
    <point/>
   </object>
-  <object id="222" type="LightWall" x="204.333" y="527" width="20" height="1718.75"/>
-  <object id="223" type="LightWall" x="402.333" y="521.5" width="66.6667" height="779.417"/>
-  <object id="224" type="LightWall" x="402.083" y="6" width="20" height="269.583"/>
-  <object id="225" type="LightWall" x="422.75" y="247.333" width="41.75" height="29.75"/>
-  <object id="226" type="LightWall" x="514.833" y="407" width="26" height="80.9167"/>
-  <object id="228" type="LightWall" x="589.583" y="96.25" width="16.5" height="259.5"/>
-  <object id="229" type="LightWall" x="604.917" y="78.25" width="37.1667" height="17.5"/>
-  <object id="230" type="LightWall" x="641.25" y="94.5833" width="28.8333" height="102.5"/>
-  <object id="231" type="LightWall" x="670.917" y="110.25" width="238.167" height="39.8333"/>
-  <object id="232" type="LightWall" x="705.917" y="198.75" width="238.167" height="78.5833"/>
-  <object id="233" type="LightWall" x="641.917" y="247.25" width="63.1667" height="30.5"/>
-  <object id="234" type="LightWall" x="945.417" y="111.833" width="14.4167" height="95.75"/>
-  <object id="235" type="LightWall" x="909.167" y="96.0833" width="38.1667" height="15"/>
-  <object id="236" type="LightWall" x="644.417" y="277.25" width="320.667" height="79.0833"/>
-  <object id="238" type="LightWall" x="583.75" y="455.25" width="276.834" height="13.25"/>
-  <object id="240" type="LightWall" x="963.917" y="340.25" width="175.667" height="474.583"/>
-  <object id="242" type="LightWall" x="784.753" y="470.917" width="76.3334" height="221.583"/>
-  <object id="244" type="LightWall" x="602.75" y="806.75" width="362.167" height="28.5833"/>
-  <object id="245" type="LightWall" x="579.917" y="631.083" width="25.6667" height="711.75"/>
-  <object id="248" type="LightWall" x="422.667" y="1706.5" width="269.25" height="10.5833"/>
-  <object id="259" type="LightWall" x="594.833" y="1800.33" width="26.75" height="283.75"/>
-  <object id="278" type="LightWall" x="448.625" y="1844.88" width="33.4167" height="207.833"/>
-  <object id="280" type="LightWall" x="402.125" y="1845.04" width="77.25" height="23.0833"/>
-  <object id="282" type="LightWall" x="432.625" y="2053.71" width="33.4167" height="10.583"/>
-  <object id="283" type="LightWall" x="403.292" y="1868.38" width="28.9167" height="367.916"/>
-  <object id="284" type="LightWall" x="432.792" y="2133.21" width="49" height="106.583"/>
-  <object id="286" type="LightWall" x="482.292" y="2229.21" width="112.417" height="11.583"/>
-  <object id="287" type="LightWall" x="593.958" y="2149.13" width="26.75" height="297.084"/>
-  <object id="288" type="LightWall" x="723.292" y="2151.79" width="26.75" height="408.417"/>
-  <object id="289" type="LightWall" x="722.958" y="1746.79" width="26.75" height="337.75"/>
-  <object id="290" type="LightWall" x="751.958" y="2059.12" width="174.083" height="27.417"/>
-  <object id="291" type="LightWall" x="750.958" y="2152.12" width="172.75" height="25.7503"/>
-  <object id="292" type="LightWall" x="897.292" y="2152.12" width="28.4167" height="86.7503"/>
-  <object id="293" type="LightWall" x="925.792" y="2229.62" width="118.417" height="17.7503"/>
-  <object id="294" type="LightWall" x="1041.46" y="2159.46" width="28.0837" height="78.0836"/>
-  <object id="295" type="LightWall" x="1040.96" y="1983.96" width="29.7504" height="111.417"/>
-  <object id="296" type="LightWall" x="897.958" y="1999.79" width="28.0837" height="58.7502"/>
-  <object id="297" type="LightWall" x="927.291" y="1980.96" width="80.0837" height="24.0835"/>
-  <object id="298" type="LightWall" x="989.625" y="1964.96" width="94.0837" height="18.7502"/>
-  <object id="299" type="LightWall" x="1071.46" y="2077.46" width="221.084" height="17.7503"/>
-  <object id="300" type="LightWall" x="1070.29" y="2159.79" width="223.084" height="17.7503"/>
   <object id="303" type="FlowingRiver" x="231" y="743.65" width="165.334" height="333.405">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-105"/>
    </properties>
   </object>
-  <object id="305" type="FlowingRiver" x="368.334" y="1077.24" width="28.167" height="151.762">
+  <object id="305" type="FlowingRiver" x="368.334" y="1077.24" width="28.167" height="193.429">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-120"/>
    </properties>
   </object>
-  <object id="306" type="FlowingRiver" x="233" y="1078.16" width="25.0003" height="151.823">
+  <object id="306" type="FlowingRiver" x="233" y="1078.16" width="25.0003" height="190.823">
    <properties>
     <property name="pushForceX" type="float" value="0"/>
     <property name="pushForceY" type="float" value="-120"/>
    </properties>
   </object>
-  <object id="320" type="LightWall" x="259.667" y="1079.98" width="102.667" height="141.128"/>
   <object id="321" type="Medkit" x="243.5" y="1233.17">
    <point/>
   </object>
@@ -895,8 +491,6 @@
    </properties>
    <point/>
   </object>
-  <object id="335" type="LightWall" x="287.999" y="1243.54" width="44.667" height="10.583"/>
-  <object id="336" type="LightWall" x="275.06" y="1222.95" width="75.3337" height="15.9163"/>
   <object id="353" type="VelocityChangingArea" x="593.666" y="1763.34" width="25.6667" height="29.8333"/>
   <object id="354" type="BulletBox" x="248.5" y="897">
    <properties>
@@ -919,17 +513,6 @@
    </properties>
    <point/>
   </object>
-  <object id="357" type="LightWall" x="689.167" y="1710" width="18.5" height="23.5833"/>
-  <object id="358" type="LightWall" x="705.917" y="1725.5" width="18.5" height="23.5833"/>
-  <object id="359" type="LightWall" x="467.416" y="270" width="46.4167" height="54.4167"/>
-  <object id="360" type="LightWall" x="514.75" y="300.667" width="73.0833" height="54.4167"/>
-  <object id="361" type="LightWall" x="468.833" y="477" width="71.5" height="823.765"/>
-  <object id="363" type="LightWall" x="150.5" y="519" width="71.5" height="80.9167"/>
-  <object id="364" type="LightWall" x="83.4997" y="473" width="71.5" height="80.9167"/>
-  <object id="365" type="LightWall" x="35.4997" y="321" width="71.5" height="158.917"/>
-  <object id="366" type="LightWall" x="85.4997" y="244" width="71.5" height="80.9167"/>
-  <object id="367" type="LightWall" x="152.5" y="194" width="71.5" height="80.9167"/>
-  <object id="368" type="LightWall" x="201.083" y="5" width="20" height="269.583"/>
   <object id="369" type="SlowZombie" x="230.833" y="335.833">
    <point/>
   </object>
@@ -1080,14 +663,6 @@
     <property name="pushForceY" type="float" value="-150"/>
    </properties>
   </object>
-  <object id="432" type="LightWall" x="578.833" y="409" width="26" height="187.417"/>
-  <object id="433" type="LightWall" x="403.292" y="1417.71" width="19.9167" height="298.583"/>
-  <object id="434" type="LightWall" x="401.894" y="1298.33" width="28.4242" height="20.3561"/>
-  <object id="435" type="LightWall" x="434.5" y="1383.67" width="25.3333" height="19.0833"/>
-  <object id="436" type="LightWall" x="418.5" y="1401" width="25.3333" height="19.0833"/>
-  <object id="437" type="LightWall" x="452.5" y="1369" width="25.3333" height="19.0833"/>
-  <object id="438" type="LightWall" x="467.833" y="1353" width="25.3333" height="19.0833"/>
-  <object id="439" type="LightWall" x="483.166" y="1337" width="99.3333" height="19.0833"/>
   <object id="440" type="Gate" x="542.333" y="1200">
    <point/>
   </object>
@@ -1164,6 +739,18 @@
     <property name="numOfShotgunBullets" type="int" value="5"/>
    </properties>
    <point/>
+  </object>
+  <object id="484" type="FlowingRiver" x="259.167" y="1251.26" width="25.0003" height="18.4897">
+   <properties>
+    <property name="pushForceX" type="float" value="0"/>
+    <property name="pushForceY" type="float" value="-120"/>
+   </properties>
+  </object>
+  <object id="485" type="FlowingRiver" x="342.167" y="1252.09" width="25.0003" height="18.4897">
+   <properties>
+    <property name="pushForceX" type="float" value="0"/>
+    <property name="pushForceY" type="float" value="-120"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

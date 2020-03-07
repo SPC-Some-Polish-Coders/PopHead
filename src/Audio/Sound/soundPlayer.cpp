@@ -1,6 +1,6 @@
 #include "soundPlayer.hpp"
 #include "Logs/logs.hpp"
-#include "Resources/resourceHolder.hpp"
+#include "Resources/soundBufferHolder.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Audio/Sound/spatializationManager.hpp"
 #include <SFML/Audio.hpp>
@@ -11,7 +11,6 @@ namespace ph::SoundPlayer
 
 namespace {
 	std::list<sf::Sound> sounds;
-	SoundBufferHolder soundBuffers;
 	SoundDataHolder soundDataHolder;
 	SpatializationManager spatializationManager;
 	float soundVolume = 15.f;
@@ -29,7 +28,7 @@ static void removeStoppedSounds()
 static void playSound(const std::string& filePath, float volume, bool loop)
 {
 	sf::Sound sound;
-	sound.setBuffer(soundBuffers.get(filePath));
+	sound.setBuffer(getSoundBuffer(filePath));
 	sound.setVolume(volume);
 	sound.setLoop(loop);
 	sounds.emplace_back(std::move(sound));
@@ -40,16 +39,16 @@ void init()
 {
 	setMuted(false);
 
-	soundBuffers.load("sounds/swordAttack.wav");
-	soundBuffers.load("sounds/carTireScreech.ogg");
-	soundBuffers.load("sounds/zombieGrowl1.ogg");
-	soundBuffers.load("sounds/zombieGrowl2.ogg");
-	soundBuffers.load("sounds/zombieGrowl3.ogg");
-	soundBuffers.load("sounds/zombieGrowl4.ogg");
-	soundBuffers.load("sounds/reloadPistol.ogg");
-	soundBuffers.load("sounds/pistolShot.ogg");
-	soundBuffers.load("sounds/reloadShotgun.ogg");
-	soundBuffers.load("sounds/shotgunShot.ogg");
+	loadSoundBuffer("sounds/swordAttack.wav");
+	loadSoundBuffer("sounds/carTireScreech.ogg");
+	loadSoundBuffer("sounds/zombieGrowl1.ogg");
+	loadSoundBuffer("sounds/zombieGrowl2.ogg");
+	loadSoundBuffer("sounds/zombieGrowl3.ogg");
+	loadSoundBuffer("sounds/zombieGrowl4.ogg");
+	loadSoundBuffer("sounds/reloadPistol.ogg");
+	loadSoundBuffer("sounds/pistolShot.ogg");
+	loadSoundBuffer("sounds/reloadShotgun.ogg");
+	loadSoundBuffer("sounds/shotgunShot.ogg");
 }
 
 void playAmbientSound(const std::string& filePath)
@@ -80,7 +79,7 @@ void setSceneMute(bool mute)
 
 bool isMuted()
 {
-	return isMuted;
+	return sceneMute;
 }
 
 void setListenerPosition(sf::Vector2f listenerPosition)

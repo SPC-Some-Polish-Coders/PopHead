@@ -1,11 +1,11 @@
 #pragma once
 
 #include "entitiesTemplateStorage.hpp"
-#include "Resources/resourceHolder.hpp"
+#include "Resources/textureHolder.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include <entt/entity/registry.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <vector>
 #include <string>
 
@@ -29,6 +29,7 @@ struct TilesData
 	unsigned firstGlobalTileId;
 	std::vector<unsigned> ids;
 	std::vector<std::vector<FloatRect>> bounds;
+	std::vector<std::vector<FloatRect>> lightWalls;
 };
 
 struct TilesetsData
@@ -38,6 +39,13 @@ struct TilesetsData
 	std::vector<unsigned> columnsCounts;
 	std::vector<TilesData> tilesData;
 	std::string tilesetFileName;
+};
+
+struct DenialAreas
+{
+	std::vector<FloatRect> collisions;
+	std::vector<FloatRect> lightWalls;
+	std::vector<FloatRect> collisionsAndLightWalls;
 };
 
 class XmlMapParser
@@ -60,6 +68,7 @@ private:
 private:
 	std::vector<component::RenderChunk> mRenderChunks;
 	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
+	DenialAreas mDenialAreas;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
 	inline static float sChunkSize = 12.f;
