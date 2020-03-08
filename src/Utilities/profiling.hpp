@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <fstream>
+#include <mutex>
 
 namespace ph {
 
@@ -31,6 +32,7 @@ private:
 	std::ofstream mOutputStream;
 	int mProfileCount;
 	bool mIsThereActiveSession;
+	std::mutex mDataMutex;
 };
 
 class ProfilingTimer

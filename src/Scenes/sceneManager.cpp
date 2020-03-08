@@ -12,6 +12,7 @@ namespace ph {
 
 SceneManager::SceneManager()
 	:mScene(nullptr)
+	,mThreadPool(2)
 	,mAIManager(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
@@ -63,7 +64,7 @@ void SceneManager::replaceAction()
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
-		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture));
+		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
 
 		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
 		           mScene->getSystemsQueue(), *mAIManager, *this);

@@ -14,11 +14,12 @@ class CutScene;
 class AIManager;
 class SceneManager;
 class Texture;
+class ThreadPool;
 
 class Scene
 {
 public:
-    Scene(AIManager&, SceneManager&, Texture& tilesetTexture);
+    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&);
 
 	void handleEvent(sf::Event);
     void update(float dt);

@@ -27,6 +27,8 @@ void ProfilingManager::endSession()
 
 void ProfilingManager::writeProfile(std::string&& name, long long start, long long end, unsigned threadID)
 {
+	std::lock_guard<std::mutex> lock(mDataMutex);
+
 	if(!mIsThereActiveSession)
 		return;
 

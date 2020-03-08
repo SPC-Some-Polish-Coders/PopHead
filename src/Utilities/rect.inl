@@ -115,3 +115,46 @@ bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<
 		&& a.top < b.top + b.height
 		&& a.top + a.height > b.top;
 }
+
+template<typename T>
+FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf::Vector2<short>& direction) const
+{
+	bool collideOnX = left < rect.right() && right() > rect.left;
+	bool collideOnY = top < rect.bottom() && bottom() > rect.top;
+
+	if (!(collideOnX ^ collideOnY))
+	{
+		direction = { 0, 0 };
+		return false;
+	}
+
+	if (collideOnX)
+	{
+		if (top == rect.bottom())
+		{
+			direction = { 0, 1 };
+			return true;
+		}
+		if (bottom() == rect.top)
+		{
+			direction = { 0, -1 };
+			return true;
+		}
+	}
+	if (collideOnY)
+	{
+		if (left == rect.right())
+		{
+			direction = { 1, 0 };
+			return true;
+		}
+		if (right() == rect.left)
+		{
+			direction = { -1, 0 };
+			return true;
+		}
+	}
+
+	direction = { 0, 0 };
+	return false;
+}

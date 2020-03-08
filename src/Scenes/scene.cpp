@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "cutScene.hpp"
+#include "Utilities/threadPool.hpp"
 #include "Terminal/terminal.hpp"
 
 #include "ECS/Systems/playerMovementInput.hpp"
@@ -11,7 +12,6 @@
 #include "ECS/Systems/renderSystem.hpp"
 #include "ECS/Systems/damageAndDeath.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
-#include "ECS/Systems/isPlayerAlive.hpp"
 #include "ECS/Systems/staticCollisions.hpp"
 #include "ECS/Systems/levers.hpp"
 #include "ECS/Systems/gates.hpp"
@@ -42,43 +42,68 @@
 
 namespace ph {
 
-Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture)
+Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
 	:mCutSceneManager()
-	,mSystemsQueue(mRegistry)
+	,mSystemsQueue(mRegistry, threadPool)
 {
+	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
-	mSystemsQueue.appendSystem<system::PatricleSystem>();
-	mSystemsQueue.appendSystem<system::GameplayUI>();
+
+	// must be before Movement
 	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), this);
-	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager);
-	mSystemsQueue.appendSystem<system::HostileCollisions>();
-	mSystemsQueue.appendSystem<system::KinematicCollisions>();
-	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::PickupItems>();
-	mSystemsQueue.appendSystem<system::StaticCollisions>();
-	mSystemsQueue.appendSystem<system::AreasDebug>();
-	mSystemsQueue.appendSystem<system::IsPlayerAlive>();
+	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager, std::ref(threadPool));
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
-	mSystemsQueue.appendSystem<system::HintAreas>();
-	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>();
+
+	mSystemsQueue.appendSystem<system::PushingMovement>(); // physics
+	mSystemsQueue.appendSystem<system::Movement>(); // physics
+
+	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
 	mSystemsQueue.appendSystem<system::GunAttacks>();
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
-	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager));
-	mSystemsQueue.appendSystem<system::Levers>();
-	mSystemsQueue.appendSystem<system::Movement>();
-	mSystemsQueue.appendSystem<system::PushingMovement>();
-	mSystemsQueue.appendSystem<system::Gates>();
-	mSystemsQueue.appendSystem<system::Lifetime>();
-	mSystemsQueue.appendSystem<system::AnimationSystem>();
-	mSystemsQueue.appendSystem<system::VelocityClear>();
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
-	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
+
+	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
+
+	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
+	
+	mSystemsQueue.appendSystem<system::PatricleSystem>(); // must be after DamageAndDeath
+
+	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
+
+	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
+
+	mSystemsQueue.appendSystem<system::Cars>(); // better before StaticCollisions, but for now it's actually not important
+
+	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
+	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
+
+	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
+
+	mSystemsQueue.appendSystemWithLastOrder<system::AnimationSystem>(); // must be after Levers and DamageAndDeath
+
+	// should be after StaticCollisions
+	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
+	mSystemsQueue.appendSystem<system::AreasDebug>();
 	mSystemsQueue.appendSystem<system::AudioSystem>();
-	mSystemsQueue.appendSystem<system::Cars>();
+
+	// must be after StaticCollisions
+	mSystemsQueue.appendSystemWithLastOrder<system::PickupItems>();
+	mSystemsQueue.appendSystem<system::HintAreas>();
+	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
+
+	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
+
+	// must be after GunAttacks and before EntityDestroying
+	mSystemsQueue.appendSystem<system::Lifetime>();
+
+	// must be at the end
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
+
+	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
+
 }
 
 void Scene::handleEvent(sf::Event e)

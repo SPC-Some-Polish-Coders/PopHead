@@ -2,6 +2,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/math.hpp"
+#include "Utilities/profiling.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
@@ -15,6 +16,8 @@ void DebugCamera::onEvent(sf::Event e)
 
 void DebugCamera::update(float dt)
 {
+	PH_PROFILE_FUNCTION(0);
+
 	auto view = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
 	view.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
 	{
