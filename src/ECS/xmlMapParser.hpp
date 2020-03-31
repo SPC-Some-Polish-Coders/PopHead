@@ -64,6 +64,8 @@ private:
 	                 unsigned char z, AIManager&);
 	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
+	QuadData createQuadData(sf::Vector2f tileWorldPos, sf::Vector2f tileSize, const bool isHorizontallyFlipped, const bool isVerticallyFlipped,
+					const bool isDiagonallyFlipped, const unsigned tileId, const TilesetsData& tilesets, size_t tilesetIndex);
 
 private:
 	std::vector<component::RenderChunk> mRenderChunks;
