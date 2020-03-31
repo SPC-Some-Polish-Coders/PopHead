@@ -66,7 +66,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
 	
 	// parse map layers
-	FloatRect mapBounds;
+	//FloatRect mapBounds;
 	unsigned char z = sLowestLayerZ;
 	bool isFirstChunk = true;
 	for (const Xml& layerNode : layerNodes)
@@ -84,6 +84,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 				PH_ASSERT_CRITICAL(chunkSize.x == 12.f, "You have to set map parameter \"Output Chunk Width\" to 12!");
 				PH_ASSERT_CRITICAL(chunkSize.y == 12.f, "You have to set map parameter \"Output Chunk Height\" to 12!");
 
+				/*
 				if(isFirstChunk) 
 				{
 					mapBounds.setPosition(chunkPos);
@@ -108,6 +109,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 						mapBounds.height = mapHeightToThisChunk;
 					}
 				}
+				*/
 
 				auto globalIds = Csv::toUnsigneds(chunkNode.toString());
 				createInfiniteMapChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager);
@@ -121,6 +123,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		--z;
 	}
 
+	/*
 	if(!info.isMapInfinite)
 		mapBounds = {0.f, 0.f, info.mapSize.x, info.mapSize.y};
 
@@ -151,6 +154,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	// create bottom map border
 	auto& bottomBorderRect = createBorderCollision();
 	bottomBorderRect = FloatRect(mapBounds.left - info.tileSize.x, mapBounds.height + mapBounds.top, mapBounds.width + 2 * info.tileSize.x, info.tileSize.y);
+	*/
 }
 
 auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
