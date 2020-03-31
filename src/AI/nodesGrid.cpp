@@ -11,7 +11,6 @@ namespace ph {
 		,mNodes(createNodesPosCompare())
 		,mNodesByCost(createNodesCostsCompare())
 		,mGeneratedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
-		,mClosedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
 		,mDestinationPosition(destinationPosition)
 	{
 	}
@@ -96,7 +95,6 @@ namespace ph {
 
 	void NodesGrid::closeNode(const NodesGrid::Node& node)
 	{
-		mClosedNodes.at(internalIndex(node.mPosition)) = true;
 		Node* pointer = const_cast<Node*>(&node);
 		auto count = mNodesByCost.erase(pointer);
 

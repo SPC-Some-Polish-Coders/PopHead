@@ -62,7 +62,6 @@ private:
 	std::set<Node*, nodesCostsCompare> mNodesByCost;
 
 	std::vector<bool> mGeneratedNodes;
-	std::vector<bool> mClosedNodes;
 
 	const sf::Vector2u mDestinationPosition;
 };
