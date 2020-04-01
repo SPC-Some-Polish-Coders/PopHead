@@ -5,7 +5,6 @@
 #include "Utilities/cast.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/math.hpp"
-#include "Utilities/memory.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <algorithm>
@@ -110,7 +109,7 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 	qrg.textures = (unsigned*)malloc(sizeof(unsigned) * 32);
 	qrg.quadsDataSize = 0; 
 	qrg.quadsDataCapacity = quadDataCount; 
-	qrg.quadsData = (QuadData*)allocateArena(arenaSize);
+	qrg.quadsData = (QuadData*)malloc(arenaSize);
 	debugNumbers.allocations += 2;
 
 	++hashMap->size;
@@ -139,9 +138,9 @@ static void insertQuadDataToQuadRenderGroup(QuadData* quadData, unsigned count, 
 		size_t newArenaSize = newQuadsDataCapacity * sizeof(QuadData); 
 		quadRenderGroup->quadsDataArenaSize = newArenaSize;
 		quadRenderGroup->quadsDataCapacity = newQuadsDataCapacity; 
-		quadRenderGroup->quadsData = (QuadData*)allocateArena(newArenaSize);
+		quadRenderGroup->quadsData = (QuadData*)malloc(newArenaSize);
 		memcpy(quadRenderGroup->quadsData, oldArena, oldArenaSize);
-		deallocateArena(oldArena);
+		free(oldArena);
 
 		++debugNumbers.allocations;
 	}
