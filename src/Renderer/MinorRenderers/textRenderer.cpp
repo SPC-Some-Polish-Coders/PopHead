@@ -60,10 +60,10 @@ void TextRenderer::shutDown()
 
 void TextRenderer::beginDebugDisplay()
 {
-	mDebugTextPosition = {1150.f, 0.f};
+	mDebugTextPosition = {1030.f, 0.f};
 
 	if(mWasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1120.f, 0.f}, {500.f, 300.f},
+		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1020.f, 0.f}, {600.f, 340.f},
 			5, 0.f, {}, ProjectionType::gui, false);
 	mWasDebugTextDrawnInLastFrame = false;
 }
@@ -125,7 +125,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 			case ph::TextAligment::left: return 0.f;
 			case ph::TextAligment::center: return (textAreaWidth - mostRightCharacterPosX) / 2.f;
 			case ph::TextAligment::right: return textAreaWidth - mostRightCharacterPosX + fontSize;
-			default: break;
+			default: PH_UNEXPECTED_SITUATION(""); return -1.f;
 		}
 	};
 

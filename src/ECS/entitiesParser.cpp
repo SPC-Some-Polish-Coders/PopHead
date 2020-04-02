@@ -76,7 +76,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	if (entityComponents.empty())
 		return;
 
-	std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> mComponentsMap = {
+	static std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> componentsMap = {
 		{"BodyRect",			        &EntitiesParser::parseBodyRect},
 		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
@@ -116,6 +116,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"ParticleEmitter",             &EntitiesParser::parseParticleEmitter},
 		{"MultiParticleEmitter",        &EntitiesParser::parseMultiParticleEmitter},
 		{"RenderChunk",                 &EntitiesParser::parseRenderChunk},
+		{"GroundRenderChunk",           &EntitiesParser::parseGroundRenderChunk},
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
@@ -126,7 +127,13 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	for (auto& entityComponent : entityComponents)
 	{
 		const std::string& componentName = entityComponent.getAttribute("name")->toString();
-		(this->*mComponentsMap.at(componentName))(entityComponent, entity);
+		try{
+			// TODO: Use std::map::find here instead of std::map::at and get rid of this ugly try catch block
+			(this->*componentsMap.at(componentName))(entityComponent, entity);
+		} 
+		catch(const std::out_of_range&) {
+			PH_EXIT_GAME("Component " + componentName + " wasn't found in Entities Parser");
+		}
 	}
 }
 
@@ -445,6 +452,11 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
+}
+
+void EntitiesParser::parseGroundRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::GroundRenderChunk>(entity);
 }
 
 void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)

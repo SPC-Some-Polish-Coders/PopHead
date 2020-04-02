@@ -158,3 +158,4 @@ FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf:
 	direction = { 0, 0 };
 	return false;
 }
+

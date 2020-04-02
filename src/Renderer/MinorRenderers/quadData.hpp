@@ -32,8 +32,16 @@ struct RenderGroupKey
 
 struct QuadRenderGroup
 {
-	std::vector<QuadData> quadsData;
-	std::vector<const Texture*> textures;
+	unsigned* textures;
+
+	QuadData* quadsData;
+
+	unsigned texturesSize;
+	unsigned texturesCapacity;
+
+	unsigned quadsDataArenaSize;
+	unsigned quadsDataSize;
+	unsigned quadsDataCapacity;
 };
 
 }

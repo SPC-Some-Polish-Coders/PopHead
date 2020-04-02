@@ -11,7 +11,7 @@ public:
 	SliderWidget(const char* name);
 
 	void setIconSize(sf::Vector2f size);
-	void setIconTexture(const Texture*);
+	void setIconTexture(Texture*);
 	void setSliderValue(float value) { mSliderValue = value; }
 	void setSliderMinValue(float minValue) { mSliderMinValue = minValue; }
 	void setSliderMaxValue(float maxValue) { mSliderMaxValue = maxValue; }

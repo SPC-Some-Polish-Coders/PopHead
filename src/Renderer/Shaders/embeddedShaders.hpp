@@ -8,6 +8,7 @@ ShaderSource defaultFramebufferSrc();
 ShaderSource gaussianBlurFramebufferSrc();
 ShaderSource lightSrc();
 ShaderSource quadSrc();
+ShaderSource groundChunkSrc();
 ShaderSource guiSrc();
 ShaderSource lineSrc();
 ShaderSource pointsSrc();
