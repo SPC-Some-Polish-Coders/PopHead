@@ -6,7 +6,7 @@
 
 namespace ph {
 
-AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2u& startNodePosition, const sf::Vector2u& destinationNodePosition)
+AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2i& startNodePosition, const sf::Vector2i& destinationNodePosition)
 	: mNodesGrid(obstacleGrid, destinationNodePosition)
 	, mStartNodePosition(startNodePosition)
 	, mDestinationNodePosition(destinationNodePosition)

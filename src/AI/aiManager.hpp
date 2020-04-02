@@ -39,7 +39,7 @@ public:
 private:
 	float getDistanceBetweenZombieAndPlayer(sf::Vector2f zombiePosition) const;
 	Path getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosition) const;
-	sf::Vector2u toNodePosition(sf::Vector2f) const;
+	sf::Vector2i toNodePosition(sf::Vector2f) const;
 	Path getRandomPath(sf::Vector2f startPosition) const;
 
 private:

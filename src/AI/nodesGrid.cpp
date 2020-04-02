@@ -6,7 +6,7 @@
 
 namespace ph {
 	
-	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2u destinationPosition)
+	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2i destinationPosition)
 		:mObstacleGrid(obstacleGrid)
 		,mNodes(createNodesPosCompare())
 		,mNodesByCost(createNodesCostsCompare())
@@ -14,7 +14,7 @@ namespace ph {
 	{
 	}
 
-	const NodesGrid::Node& NodesGrid::createStartNode(sf::Vector2u position)
+	const NodesGrid::Node& NodesGrid::createStartNode(sf::Vector2i position)
 	{
 		return createNode(position);
 	}
@@ -35,7 +35,7 @@ namespace ph {
 	{
 		auto& position = node.mPosition;
 
-		std::vector<sf::Vector2u> neighboursPositions = {
+		std::vector<sf::Vector2i> neighboursPositions = {
 			{position.x, position.y - 1},
 			{position.x + 1, position.y - 1},
 			{position.x + 1, position.y},
@@ -47,14 +47,14 @@ namespace ph {
 		};
 
 		// is given position inside map and not an obstacle?
-		bool north		= isInBoundaries(neighboursPositions[0]) && !mObstacleGrid.isObstacle(neighboursPositions[0].x, neighboursPositions[0].y);
-		bool north_east = isInBoundaries(neighboursPositions[1]) && !mObstacleGrid.isObstacle(neighboursPositions[1].x, neighboursPositions[1].y);
-		bool east		= isInBoundaries(neighboursPositions[2]) && !mObstacleGrid.isObstacle(neighboursPositions[2].x, neighboursPositions[2].y);
-		bool south_east = isInBoundaries(neighboursPositions[3]) && !mObstacleGrid.isObstacle(neighboursPositions[3].x, neighboursPositions[3].y);
-		bool south		= isInBoundaries(neighboursPositions[4]) && !mObstacleGrid.isObstacle(neighboursPositions[4].x, neighboursPositions[4].y);
-		bool south_west = isInBoundaries(neighboursPositions[5]) && !mObstacleGrid.isObstacle(neighboursPositions[5].x, neighboursPositions[5].y);
-		bool west		= isInBoundaries(neighboursPositions[6]) && !mObstacleGrid.isObstacle(neighboursPositions[6].x, neighboursPositions[6].y);
-		bool north_west = isInBoundaries(neighboursPositions[7]) && !mObstacleGrid.isObstacle(neighboursPositions[7].x, neighboursPositions[7].y);
+		bool north		= !mObstacleGrid.isObstacle(neighboursPositions[0].x, neighboursPositions[0].y);
+		bool north_east = !mObstacleGrid.isObstacle(neighboursPositions[1].x, neighboursPositions[1].y);
+		bool east		= !mObstacleGrid.isObstacle(neighboursPositions[2].x, neighboursPositions[2].y);
+		bool south_east = !mObstacleGrid.isObstacle(neighboursPositions[3].x, neighboursPositions[3].y);
+		bool south		= !mObstacleGrid.isObstacle(neighboursPositions[4].x, neighboursPositions[4].y);
+		bool south_west = !mObstacleGrid.isObstacle(neighboursPositions[5].x, neighboursPositions[5].y);
+		bool west		= !mObstacleGrid.isObstacle(neighboursPositions[6].x, neighboursPositions[6].y);
+		bool north_west = !mObstacleGrid.isObstacle(neighboursPositions[7].x, neighboursPositions[7].y);
 
 		std::vector<size_t> neighboursIndexes;
 		if (north)
@@ -98,12 +98,7 @@ namespace ph {
 		return !mNodesByCost.empty();
 	}
 
-	size_t NodesGrid::internalIndex(sf::Vector2u position) const
-	{
-		return static_cast<size_t>(position.x + position.y * mObstacleGrid.getColumnsCount());
-	}
-
-	NodesGrid::Node& NodesGrid::createNode(sf::Vector2u position)
+	NodesGrid::Node& NodesGrid::createNode(sf::Vector2i position)
 	{
 		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
 		auto& ref = *pointer.get();
@@ -113,12 +108,6 @@ namespace ph {
 			mNodesByCost.insert(&ref);
 
 		return **(returnPair.first);
-	}
-
-	bool NodesGrid::isInBoundaries(sf::Vector2u position) const
-	{
-		return position.x < mObstacleGrid.getColumnsCount() 
-			&& position.y < mObstacleGrid.getRowsCount();
 	}
 
 	NodesGrid::nodesCostsCompare NodesGrid::createNodesCostsCompare()
@@ -145,7 +134,7 @@ namespace ph {
 		);
 	}
 
-	NodesGrid::Node::Node(const sf::Vector2u& position, const float distanceToDestination)
+	NodesGrid::Node::Node(const sf::Vector2i& position, const float distanceToDestination)
 		: mPosition(position)
 		, mDistanceToDestination(distanceToDestination)
 	{
