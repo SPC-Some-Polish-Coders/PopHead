@@ -115,3 +115,4 @@ bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<
 		&& a.top < b.top + b.height
 		&& a.top + a.height > b.top;
 }
+

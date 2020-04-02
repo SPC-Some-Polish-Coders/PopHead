@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <algorithm>
 #include <cstdlib>
+#include <vector>
 
 namespace ph {
 
@@ -16,12 +17,21 @@ struct RenderGroupsHashMap
 {
 	unsigned capacity;
 	unsigned size;
-	unsigned* indices = nullptr;             // NOTE: an dynamic array of indices which are //TODO 
-	RenderGroupKey* keys = nullptr;          // NOTE: an dynamic array of keys
-	QuadRenderGroup* renderGroups = nullptr; // NOTE: an dynamic array of render groups 
+	unsigned* indices = nullptr;
+	RenderGroupKey* keys = nullptr;
+	QuadRenderGroup* renderGroups = nullptr;
 	bool needsToBeSorted = false;
 };
 
+struct GroundChunk
+{
+	FloatRect textureRect;
+	sf::Vector2f pos;
+	unsigned texture;
+	float z;
+};
+
+static std::vector<GroundChunk> groundChunks;
 static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
 static QuadRendererDebugNumbers debugNumbers;
@@ -171,8 +181,13 @@ void QuadRenderer::init()
 		shouldInitializeRenderGroups = false;
 	}
 
+	groundChunks.reserve(20);
+
 	mDefaultQuadShader.init(shader::quadSrc());
 	mDefaultQuadShader.initUniformBlock("SharedData", 0);
+
+	mGroundChunkShader.init(shader::groundChunkSrc());
+	mGroundChunkShader.initUniformBlock("SharedData", 0);
 
 	GLCheck( glGenVertexArrays(1, &mVAO) );
 	GLCheck( glBindVertexArray(mVAO) );
@@ -212,6 +227,11 @@ void QuadRenderer::shutDown()
 	GLCheck( glDeleteBuffers(1, &mQuadIBO) );
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
+}
+
+void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, float z)
+{
+	groundChunks.push_back(GroundChunk{textureRect, pos, texture.getID(), z});
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Texture* texture,
@@ -343,117 +363,171 @@ void QuadRenderer::flush(bool affectedByLight)
 		}
 	}
 
-	for(unsigned i = 0; i < hashMap.size; ++i)
+	for(unsigned hashMapIndex = 0, groundChunkIndex = 0;
+	    hashMapIndex + groundChunkIndex < hashMap.size + groundChunks.size();)
 	{
-
-		unsigned renderGroupIndex = hashMap.indices[i];
-		auto& key = hashMap.keys[renderGroupIndex];
-		auto& rg = hashMap.renderGroups[renderGroupIndex];
-
-		// update debug info
-		if(mIsDebugCountingActive) {
-			debugNumbers.drawnSprites += rg.quadsDataSize;
-			debugNumbers.drawnTextures += rg.texturesSize;
-			if(affectedByLight)
-				debugNumbers.renderGroupsSizes.data[debugNumbers.renderGroupsSizes.marker++] = rg.quadsDataSize;
-			else
-				debugNumbers.notAffectedByLightRenderGroupsSizes.data[debugNumbers.notAffectedByLightRenderGroupsSizes.marker++] = rg.quadsDataSize;
-		}
-
-		// set up shader
-		if(key.shader != mCurrentlyBoundQuadShader) 
+		// decide whether draw from hash map or ground chunk
+		bool drawFromHashMap = true;
+		if(affectedByLight)
 		{
-			key.shader->bind();
-			mCurrentlyBoundQuadShader = key.shader;
-
-			int textures[32];
-			for(int i = 0; i < 32; ++i)
-				textures[i] = i;
-			key.shader->setUniformIntArray("textures", 32, textures);
-		}
-		key.shader->setUniformFloat("z", key.z);
-		key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
-
-		// TODO: sort quads by texture slot ref if there are more then 32 
-		// std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
-
-		// draw render group
-		unsigned quadsDataSize = rg.quadsDataSize;
-		unsigned texturesSize = rg.texturesSize;
-		QuadData* quadsData = rg.quadsData;
-		unsigned* textures = rg.textures;
-
-		auto bindTexturesForNextDrawCall = [textures, texturesSize]
-		{
-			for(unsigned textureSlot = 0; textureSlot < (texturesSize > 32 ? 32 : texturesSize); ++textureSlot)
+			if(hashMap.size > hashMapIndex)
 			{
-				glActiveTexture(GL_TEXTURE0 + textureSlot);
-				glBindTexture(GL_TEXTURE_2D, *(textures + textureSlot));
-			}
-		};
-
-		auto drawCall = [this, quadsData](size_t nrOfInstances)
-		{
-			char log[50];
-			sprintf(log, "draw call instances: %zu", nrOfInstances);
-			PH_PROFILE_SCOPE(log, 0);
-
-			GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
-			GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), quadsData, GL_STATIC_DRAW) );
-
-			GLCheck( glBindVertexArray(mVAO) );
-			GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (GLsizei)nrOfInstances) );
-
-			if(mIsDebugCountingActive)
-				++debugNumbers.drawCalls;
-		};
-
-		#define OLD 1 
-		#if OLD
-		for(size_t i = 0; i < rg.quadsDataSize; ++i)
-		{
-			if(i == rg.quadsDataSize - 1)
-			{
-				bindTexturesForNextDrawCall();
-				drawCall(i + 1);
-				break;
-			}
-			else if(rg.quadsData[i + 1].textureSlotRef == 32)
-			{
-				bindTexturesForNextDrawCall();
-				drawCall(i + 1);
-
-				quadsData += i;
-
-				QuadData* ptr = quadsData;
-				for(unsigned i = 0; i < quadsDataSize; ++i)
+				if(groundChunks.size() > groundChunkIndex)
 				{
-					ptr->textureSlotRef -= 32;
-					++ptr;
-				}
-
-				if(texturesSize > 32)
-				{
-					textures += 32;
-					texturesSize -= 32;
+					drawFromHashMap = hashMap.keys[hashMapIndex].z > groundChunks[groundChunkIndex].z;
 				}
 				else
 				{
-					texturesSize = 0;
+					drawFromHashMap = true;
 				}
-
-				i = 0;
+			}
+			else
+			{
+				drawFromHashMap = false;
 			}
 		}
-		#else
-		bindTexturesForNextDrawCall();
-		drawCall(quadsDataSize);
-		#endif
 
-		rg.quadsDataSize = 0;
-		rg.texturesSize = 0;
+		if(drawFromHashMap)
+		{
+			PH_PROFILE_SCOPE("draw hash map", 0);
+
+			unsigned renderGroupIndex = hashMap.indices[hashMapIndex];
+			auto& key = hashMap.keys[renderGroupIndex];
+			auto& rg = hashMap.renderGroups[renderGroupIndex];
+
+			// update debug info
+			if(mIsDebugCountingActive) {
+				debugNumbers.drawnSprites += rg.quadsDataSize;
+				debugNumbers.drawnTextures += rg.texturesSize;
+				if(affectedByLight)
+					debugNumbers.renderGroupsSizes.data[debugNumbers.renderGroupsSizes.marker++] = rg.quadsDataSize;
+				else
+					debugNumbers.notAffectedByLightRenderGroupsSizes.data[debugNumbers.notAffectedByLightRenderGroupsSizes.marker++] = rg.quadsDataSize;
+			}
+
+			// set up shader
+			if(key.shader != mCurrentlyBoundQuadShader) 
+			{
+				key.shader->bind();
+				mCurrentlyBoundQuadShader = key.shader;
+
+				int textures[32];
+				for(int i = 0; i < 32; ++i)
+					textures[i] = i;
+				key.shader->setUniformIntArray("textures", 32, textures);
+			}
+			key.shader->setUniformFloat("z", key.z);
+			key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
+
+			// TODO: sort quads by texture slot ref if there are more then 32 
+			// std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
+
+			// draw render group
+			unsigned quadsDataSize = rg.quadsDataSize;
+			unsigned texturesSize = rg.texturesSize;
+			QuadData* quadsData = rg.quadsData;
+			unsigned* textures = rg.textures;
+
+			auto bindTexturesForNextDrawCall = [textures, texturesSize]
+			{
+				for(unsigned textureSlot = 0; textureSlot < (texturesSize > 32 ? 32 : texturesSize); ++textureSlot)
+				{
+					glActiveTexture(GL_TEXTURE0 + textureSlot);
+					glBindTexture(GL_TEXTURE_2D, *(textures + textureSlot));
+				}
+			};
+
+			auto drawCall = [this, quadsData](size_t nrOfInstances)
+			{
+				char log[50];
+				sprintf(log, "draw call instances: %zu", nrOfInstances);
+				PH_PROFILE_SCOPE(log, 0);
+
+				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
+				GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), quadsData, GL_STATIC_DRAW) );
+
+				GLCheck( glBindVertexArray(mVAO) );
+				GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (GLsizei)nrOfInstances) );
+
+				if(mIsDebugCountingActive)
+					++debugNumbers.drawCalls;
+			};
+
+			for(size_t i = 0; i < rg.quadsDataSize; ++i)
+			{
+				if(i == rg.quadsDataSize - 1)
+				{
+					bindTexturesForNextDrawCall();
+					drawCall(i + 1);
+					break;
+				}
+				else if(rg.quadsData[i + 1].textureSlotRef == 32)
+				{
+					bindTexturesForNextDrawCall();
+					drawCall(i + 1);
+
+					quadsData += i;
+
+					QuadData* ptr = quadsData;
+					for(unsigned i = 0; i < quadsDataSize; ++i)
+					{
+						ptr->textureSlotRef -= 32;
+						++ptr;
+					}
+
+					if(texturesSize > 32)
+					{
+						textures += 32;
+						texturesSize -= 32;
+					}
+					else
+					{
+						texturesSize = 0;
+					}
+
+					i = 0;
+				}
+			}
+
+			rg.quadsDataSize = 0;
+			rg.texturesSize = 0;
+
+			++hashMapIndex;
+		}
+		else
+		{ 
+			// draw ground chunk
+
+			PH_PROFILE_SCOPE("draw ground chunk", 0);
+
+			auto& gc = groundChunks[groundChunkIndex];
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, gc.texture);
+
+			if(mCurrentlyBoundQuadShader != &mGroundChunkShader)
+			{
+				mCurrentlyBoundQuadShader = &mGroundChunkShader;
+				mGroundChunkShader.bind();
+			}
+			mGroundChunkShader.setUniformVector2("chunkPos", gc.pos);
+			mGroundChunkShader.setUniformFloat("z", gc.z);
+			mGroundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.getTopLeft());
+			mGroundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.getTopRight());
+			mGroundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
+			mGroundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.getBottomRight());
+
+			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144);
+
+			++groundChunkIndex;
+			
+			if(mIsDebugCountingActive)
+				++debugNumbers.drawCalls;
+		}
 	}
+		
+	if(affectedByLight)
+		groundChunks.clear();
 }
-
 
 }

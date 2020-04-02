@@ -12,82 +12,6 @@ namespace ph {
 
 class Texture;
 
-/*
-bool operator == (const RenderGroupKey& lhs, const RenderGroupKey& rhs);
-
-class RenderGroupsHashMap
-{
-public:
-	RenderGroupsHashMap();
-	QuadRenderGroup& insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey);
-	auto getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&;
-	size_t size() const { return mRenderGroups.size(); }
-private:
-	QuadRenderGroup* getRenderGroup(RenderGroupKey);
-	void sort();
-	void eraseUselessGroups();
-
-private:
-	std::vector<std::pair<RenderGroupKey, QuadRenderGroup>> mRenderGroups;
-	bool mShouldSort;
-};
-
-RenderGroupsHashMap::RenderGroupsHashMap()
-	:mShouldSort(false)
-{
-	mRenderGroups.reserve(10);
-}
-
-QuadRenderGroup& RenderGroupsHashMap::insertIfDoesNotExistAndGetRenderGroup(RenderGroupKey key) 
-{
-	if(auto renderGroup = getRenderGroup(key))
-		return *renderGroup;
-	mRenderGroups.emplace_back(std::pair(key, QuadRenderGroup()));
-	mShouldSort = true;
-	return *getRenderGroup(key);
-}
-
-auto RenderGroupsHashMap::getUnderlyingVector() -> std::vector<std::pair<RenderGroupKey, QuadRenderGroup>>&
-{
-	eraseUselessGroups();
-	sort();
-	return mRenderGroups;
-}
-
-void RenderGroupsHashMap::sort()
-{
-	if(!mShouldSort)
-		return;
-
-	// TODO_ren: Make more smart sorting so we don't need to rebind shaders that often
-	//           Use the fact that we don't need to sort everything by z because not every quad is transparent
-
-	std::sort(mRenderGroups.begin(), mRenderGroups.end(), []
-	(const std::pair<RenderGroupKey, QuadRenderGroup>& a, std::pair<RenderGroupKey, QuadRenderGroup>& b) {
-		return a.first.z > b.first.z;
-	});
-}
-
-void RenderGroupsHashMap::eraseUselessGroups()
-{
-	for(size_t i = 0; i < mRenderGroups.size(); ++i)
-		if(mRenderGroups[i].second.quadsData.empty())
-			mRenderGroups.erase(mRenderGroups.begin() + i);
-}
-
-QuadRenderGroup* RenderGroupsHashMap::getRenderGroup(RenderGroupKey key)
-{
-	for(size_t i = 0; i < mRenderGroups.size(); ++i)
-		if(mRenderGroups[i].first == key)
-			return &mRenderGroups[i].second;
-	return nullptr;
-}
-
-bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
-{
-	return lhs.shader == rhs.shader && lhs.z == rhs.z;
-}*/
-
 struct QuadRendererDebugArray
 {
 	unsigned data[100] = {};
@@ -122,6 +46,8 @@ public:
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 
+	void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, float z);
+
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 
 	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
@@ -130,6 +56,7 @@ public:
 
 private:
 	Shader mDefaultQuadShader;
+	Shader mGroundChunkShader;
 	const FloatRect* mScreenBounds; 
 	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;

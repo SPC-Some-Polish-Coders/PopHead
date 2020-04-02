@@ -83,6 +83,14 @@ void RenderSystem::update(float dt)
 		});
 	}
 
+	// submit map ground chunks
+	auto groundChunks = mRegistry.view<component::GroundRenderChunk>();
+	groundChunks.each([this, currentCamera](component::GroundRenderChunk& chunk)
+	{
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
+			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), mTilesetTexture, chunk.textureRect, chunk.z);
+	});
+
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();
 	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)

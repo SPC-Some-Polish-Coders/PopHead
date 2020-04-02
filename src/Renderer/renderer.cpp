@@ -276,6 +276,11 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t,
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
+void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z)  
+{
+	quadRenderer.submitGroundChunk(pos, texture, textureRect, getNormalizedZ(z));
+}
+
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);
