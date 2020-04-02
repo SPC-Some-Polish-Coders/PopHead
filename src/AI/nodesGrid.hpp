@@ -61,8 +61,6 @@ private:
 	std::set<std::unique_ptr<Node>, nodesPosCompare> mNodes;
 	std::set<Node*, nodesCostsCompare> mNodesByCost;
 
-	std::vector<bool> mGeneratedNodes;
-
 	const sf::Vector2u mDestinationPosition;
 };
 }

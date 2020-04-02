@@ -10,7 +10,6 @@ namespace ph {
 		:mObstacleGrid(obstacleGrid)
 		,mNodes(createNodesPosCompare())
 		,mNodesByCost(createNodesCostsCompare())
-		,mGeneratedNodes(obstacleGrid.getColumnsCount() * obstacleGrid.getRowsCount(), false)
 		,mDestinationPosition(destinationPosition)
 	{
 	}
@@ -47,6 +46,7 @@ namespace ph {
 			{position.x - 1, position.y - 1}
 		};
 
+		// is given position inside map and not an obstacle?
 		bool north		= isInBoundaries(neighboursPositions[0]) && !mObstacleGrid.isObstacle(neighboursPositions[0].x, neighboursPositions[0].y);
 		bool north_east = isInBoundaries(neighboursPositions[1]) && !mObstacleGrid.isObstacle(neighboursPositions[1].x, neighboursPositions[1].y);
 		bool east		= isInBoundaries(neighboursPositions[2]) && !mObstacleGrid.isObstacle(neighboursPositions[2].x, neighboursPositions[2].y);
@@ -79,15 +79,7 @@ namespace ph {
 		for (const auto index : neighboursIndexes)
 		{
 			const auto& pos = neighboursPositions.at(index);
-			if (mGeneratedNodes.at(internalIndex(pos)))
-			{
-				// TODO: optimize this
-				auto iter = std::find_if(mNodes.begin(), mNodes.end(), [pos](const std::unique_ptr<Node>& node) { return node->mPosition == pos; });
-				auto& ref = *iter->get();
-				neighbours.emplace_back(std::ref(ref));
-			}
-			else
-				neighbours.emplace_back(std::ref(createNode(pos)));
+			neighbours.emplace_back(std::ref(createNode(pos)));
 		}
 
 		return neighbours;
@@ -115,10 +107,12 @@ namespace ph {
 	{
 		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
 		auto& ref = *pointer.get();
-		mNodes.emplace(std::move(pointer));
-		mNodesByCost.insert(&ref);
-		mGeneratedNodes.at(internalIndex(position)) = true;
-		return ref;
+		auto returnPair = mNodes.emplace(std::move(pointer));
+		
+		if (returnPair.second)
+			mNodesByCost.insert(&ref);
+
+		return **(returnPair.first);
 	}
 
 	bool NodesGrid::isInBoundaries(sf::Vector2u position) const
