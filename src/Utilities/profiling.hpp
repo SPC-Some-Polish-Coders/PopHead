@@ -4,69 +4,88 @@
 #include <chrono>
 #include <fstream>
 #include <mutex>
+#include <vector>
 
 namespace ph {
 
-class ProfilingManager
+struct ProfilingResult
 {
-private:
-	ProfilingManager();
-	ProfilingManager(const ProfilingManager&) = delete;
-	ProfilingManager& operator=(const ProfilingManager&) = delete;
+	using id = unsigned long;
 
+	id resultId;
+	std::string name;
+	long long startTime;
+	unsigned int duration;
+	std::vector<std::pair<std::string, std::string>> args;
+	bool isFinished = false;
+};
+
+class ThreadProfilingManager
+{
 public:
-	static ProfilingManager& getInstance()
-	{
-		static ProfilingManager instance;
-		return instance;
-	}
+	ThreadProfilingManager() = default; // construction of an invalid object
+	//bool isValid() const;
+	//void setValidId(size_t threadId);
 
-	void beginSession(const std::string& name, const std::string& filepath = "results.json");
-	void endSession();
+	ProfilingResult::id commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args);
+	void commitResultEnd(ProfilingResult::id id);
 
-	void writeProfile(std::string&& profilingScopeName, long long start, long long end, unsigned threadID);
-	void writeHeader();
-	void writeFooter();
+	bool hasCommitedResults() const;
+	std::vector<ProfilingResult> getCommitedResults();
 
 private:
-	std::ofstream mOutputStream;
-	int mProfileCount;
-	bool mIsThereActiveSession;
-	std::mutex mDataMutex;
+	int mThreadId = -1;
+	ProfilingResult::id mNextResultId = 0;
+	std::vector<ProfilingResult> mResults;
+};
+
+class MainProfilingManager
+{
+	MainProfilingManager() = delete;
+public:
+	static ProfilingResult::id commitResultStart(std::string name, std::vector<std::pair<std::string, std::string>> args);
+	static void commitResultEnd(ProfilingResult::id id);
+
+	static void beginSession(const std::string& filepath = "results.json");
+	static void endSession();
+
+private:
+	static thread_local ThreadProfilingManager mThreadManager;
+	static std::ofstream mOutputFile;
+	static std::mutex mFileMutex;
+	static bool mIsActive;
 };
 
 class ProfilingTimer
 {
 public:
-	ProfilingTimer(const char* name, unsigned threadID);
+	ProfilingTimer(const char* name, std::vector<std::pair<std::string, std::string>> args);
 	~ProfilingTimer();
 
-	void stop();
-
 private:
-	std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint;
-	const char* mName;
-	unsigned mThreadID;
-	bool mStopped;
+	ProfilingResult::id resultId;
 };
 
 }
 
+#define LOG(name, ...) f(name, __VA_ARGS__)
+
 #ifdef PH_PROFILING
-	#define PH_BEGIN_PROFILING_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
-	#define PH_END_PROFILING_SESSION() ph::ProfilingManager::getInstance().endSession()
-	#define PH_PROFILE_SCOPE(name, threadID) ph::ProfilingTimer profTimer##__LINE__(name, threadID);
-	#define PH_PROFILE_FUNCTION(threadID) PH_PROFILE_SCOPE(__FUNCTION__, threadID);
+	#define PH_BEGIN_PROFILING_SESSION(filepath) ph::MainProfilingManager::beginSession(filepath);
+	#define PH_END_PROFILING_SESSION() ph::MainProfilingManager::endSession();
+
+	#define PH_PROFILE_SCOPE(name) ph::ProfilingTimer profTimer##__LINE__(name, {});
+	#define PH_PROFILE_SCOPE_ARGS(name, ...) ph::ProfilingTimer profTimer##__LINE__(name, __VA_ARGS__);
+
+	#define PH_PROFILE_FUNCTION() PH_PROFILE_SCOPE(__FUNCTION__);
+	#define PH_PROFILE_FUNCTION_ARGS(...) PH_PROFILE_SCOPE_ARGS(__FUNCTION__, __VA_ARGS__);
 #else
-	#define PH_BEGIN_PROFILING_SESSION(name, filepath)
+	#define PH_BEGIN_PROFILING_SESSION(filepath)
 	#define PH_END_PROFILING_SESSION()
-	#define PH_PROFILE_SCOPE(name, threadID)
-	#define PH_PROFILE_FUNCTION(threadID)
+
+	#define PH_PROFILE_SCOPE(name)
+	#define PH_PROFILE_SCOPE_ARGS(name, ...)
+
+	#define PH_PROFILE_FUNCTION()
+	#define PH_PROFILE_FUNCTION_ARGS(...)
 #endif
-
-// Make sure to not commit calls of these macros! They should be used to measure performance of some small piece of code.
-#define PH_BEGIN_PROFILING_LOCAL_SESSION(name, filepath) ph::ProfilingManager::getInstance().beginSession(name, filepath)
-#define PH_END_PROFILING_LOCAL_SESSION() ph::ProfilingManager::getInstance().endSession()
-#define PH_PROFILE_SCOPE_LOCAL_SESSION(name, threadID) ph::ProfilingTimer profLocalTimer##__LINE__(name, threadID);
-#define PH_PROFILE_FUNCTION_LOCAL_SESSION(threadID) PH_PROFILE_SCOPE(__FUNCTION__, threadID);
-
