@@ -8,20 +8,8 @@ namespace ph {
 
 using clock = std::chrono::steady_clock;
 
-//bool ThreadProfilingManager::isValid() const
-//{
-//	return mThreadId == -1;
-//}
-//
-//void ThreadProfilingManager::setValidId(size_t threadId)
-//{
-//	mThreadId = static_cast<int>(threadId);
-//}
-
 ProfilingResult::id ThreadProfilingManager::commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args)
 {
-	if (mThreadId == -1)
-		mThreadId = ThreadId::getCurrentThreadId();
 	auto& result = mResults.emplace_back();
 	result.name = std::move(name);
 	result.args = std::move(args);

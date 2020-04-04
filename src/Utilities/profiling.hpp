@@ -23,9 +23,7 @@ struct ProfilingResult
 class ThreadProfilingManager
 {
 public:
-	ThreadProfilingManager() = default; // construction of an invalid object
-	//bool isValid() const;
-	//void setValidId(size_t threadId);
+	ThreadProfilingManager() = default;
 
 	ProfilingResult::id commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args);
 	void commitResultEnd(ProfilingResult::id id);
@@ -34,7 +32,6 @@ public:
 	std::vector<ProfilingResult> getCommitedResults();
 
 private:
-	int mThreadId = -1;
 	ProfilingResult::id mNextResultId = 0;
 	std::vector<ProfilingResult> mResults;
 };
