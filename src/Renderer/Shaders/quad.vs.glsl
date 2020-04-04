@@ -65,8 +65,11 @@ void main()
 	mat4 VPM = isGameWorldProjection ? gameWorldVPM : guiVPM;
     
     if(aRotation == 0)
+	{
         gl_Position = VPM * vec4(modelVertexPos + aPosition, z, 1);
-	else {
+	}
+	else 
+	{
 		vec2 rotatedVertexPos = (modelVertexPos - aRotationOrigin) * getRotationMatrix(aRotation) + aPosition + aRotationOrigin;
 		gl_Position = VPM * vec4(rotatedVertexPos, z, 1);
 	}

@@ -36,11 +36,12 @@ namespace component {
 
 	struct RenderChunk
 	{
-		std::vector<QuadData> quads;
+		std::vector<ChunkQuadData> quads;
 		std::vector<FloatRect> lightWalls;
 		FloatRect quadsBounds;
 		FloatRect lightWallsBounds;
 		unsigned char z;
+		unsigned rendererID = 0;
 	};
 
 	struct LightWall

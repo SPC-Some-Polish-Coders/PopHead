@@ -51,6 +51,20 @@ ShaderSource quadSrc()
 }
 
 
+
+// ground chunk 
+static const char* sChunkVS = 
+	#include "chunk.vs.glsl"
+;
+static const char* sChunkFS =
+	#include "chunk.fs.glsl"
+;
+ShaderSource chunkSrc()
+{
+	return ShaderSource{sChunkVS, sChunkFS};
+}
+
+
 // ground chunk 
 static const char* sGroundChunkVS = 
 	#include "groundChunk.vs.glsl"

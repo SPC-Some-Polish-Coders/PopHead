@@ -27,6 +27,8 @@ struct QuadRendererDebugNumbers
 	QuadRendererDebugArray notAffectedByLightRenderGroupsZ = {}; 
 	QuadRendererDebugArray notAffectedByLightRenderGroupsIndices = {}; 
 	unsigned allocations = 0;
+	unsigned chunks = 0;
+	unsigned cachedChunks = 0;
 	unsigned renderGroups = 0;
 	unsigned renderGroupsNotAffectedByLight = 0;
 	unsigned drawCalls = 0;
@@ -46,7 +48,10 @@ public:
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 
-	void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, float z);
+	void submitGroundChunk(sf::Vector2f pos, const Texture&, const FloatRect& textureRect, float z);
+
+	void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,
+	                 const FloatRect& bounds, float z, unsigned* rendererID);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 
@@ -57,8 +62,8 @@ public:
 private:
 	Shader mDefaultQuadShader;
 	Shader mGroundChunkShader;
+	Shader mChunkShader;
 	const FloatRect* mScreenBounds; 
-	const Shader* mCurrentlyBoundQuadShader;
 	Texture* mWhiteTexture;
 	unsigned mQuadIBO;
 	unsigned mQuadsDataVBO;

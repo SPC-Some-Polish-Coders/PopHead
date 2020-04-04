@@ -32,6 +32,9 @@ namespace Renderer
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*,
 	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
 
+	void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,
+	                 const FloatRect& bounds, unsigned char z, unsigned* rendererID);
+
 	void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z); 
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);

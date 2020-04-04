@@ -259,7 +259,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 {
 	PH_PROFILE_FUNCTION(0);
 
-	std::vector<QuadData> quads;
+	std::vector<ChunkQuadData> quads;
 	std::vector<FloatRect> lightWalls;
 	std::vector<FloatRect> chunkCollisionRects;
 	FloatRect quadsBounds = sf::FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize);
@@ -291,58 +291,54 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
 
 			// create quad data
-			QuadData qd;
+			ChunkQuadData cqd;
 
 			sf::Vector2f tileWorldPos( 
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
 				positionInTiles.y * static_cast<float>(info.tileSize.y)
 			);
 
-			qd.position = tileWorldPos; 
+			cqd.position = tileWorldPos; 
 
 			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
-			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
 			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
-				qd.size = tileSize;
-				qd.rotation = 0.f;
+				cqd.size = tileSize;
+				cqd.rotation = 0.f;
 			}
 			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-				qd.size = {tileSize.x, -tileSize.y};
-				qd.position.x += tileSize.x;
-				qd.rotation = 270.f;
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 270.f;
 			}
 			else if(isHorizontallyFlipped && isVerticallyFlipped) {
-				qd.size = -tileSize;
-				qd.position += tileSize;
-				qd.rotation = 0.f;
+				cqd.size = -tileSize;
+				cqd.position += tileSize;
+				cqd.rotation = 0.f;
 			}
 			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
-				qd.size = tileSize;
-				qd.rotation = 90.f;
+				cqd.size = tileSize;
+				cqd.rotation = 90.f;
 			}
 			else if(isVerticallyFlipped && isDiagonallyFlipped) {
-				qd.size = tileSize;
-				qd.rotation = 270.f;
+				cqd.size = tileSize;
+				cqd.rotation = 270.f;
 			}
 			else if(isHorizontallyFlipped) {
-				qd.size = {-tileSize.x, tileSize.y};
-				qd.position.x += tileSize.x;
-				qd.rotation = 0.f;
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 0.f;
 			}
 			else if(isVerticallyFlipped) {
-				qd.size = {tileSize.x, -tileSize.y};
-				qd.position.y += tileSize.y;
-				qd.rotation = 0.f;
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.y += tileSize.y;
+				cqd.rotation = 0.f;
 			}
 			else if(isDiagonallyFlipped) {
-				qd.size = {-tileSize.x, tileSize.y};
-				qd.position.y -= tileSize.x;
-				qd.rotation = 270.f;
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.y -= tileSize.x;
+				cqd.rotation = 270.f;
 			}
-			qd.rotation = Math::degreesToRadians(qd.rotation);
-
-			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
-			qd.textureSlotRef = 0.f;
+			cqd.rotation = Math::degreesToRadians(cqd.rotation);
 
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
 			auto tileRectPosition = static_cast<sf::Vector2f>(
@@ -352,13 +348,13 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			tileRectPosition.x += 1;
 			tileRectPosition.y += 1;
 			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
-			qd.textureRect.left = tileRectPosition.x / textureSize.x;
-			qd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
-			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
-			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
+			cqd.textureRect.left = tileRectPosition.x / textureSize.x;
+			cqd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
+			cqd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
+			cqd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
 			// emplace quad data to chunk
-			quads.emplace_back(qd);
+			quads.emplace_back(cqd);
 
 			// load collision bodies and light walls
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
@@ -493,7 +489,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 }
 
 void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
+                                       const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
 	PH_PROFILE_FUNCTION(0);
 
@@ -542,58 +538,54 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInMap, (unsigned)info.mapSize.x));
 
 			// create quad data
-			QuadData qd;
+			ChunkQuadData cqd;
 
 			sf::Vector2f tileWorldPos(
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
 				positionInTiles.y * static_cast<float>(info.tileSize.y)
 			);
 
-			qd.position = tileWorldPos;
+			cqd.position = tileWorldPos;
 
 			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
-			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
 			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
-				qd.size = tileSize;
-				qd.rotation = 0.f;
+				cqd.size = tileSize;
+				cqd.rotation = 0.f;
 			}
 			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-				qd.size = {tileSize.x, -tileSize.y};
-				qd.position.x += tileSize.x;
-				qd.rotation = 270.f;
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 270.f;
 			}
 			else if(isHorizontallyFlipped && isVerticallyFlipped) {
-				qd.size = -tileSize;
-				qd.position += tileSize;
-				qd.rotation = 0.f;
+				cqd.size = -tileSize;
+				cqd.position += tileSize;
+				cqd.rotation = 0.f;
 			}
 			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
-				qd.size = tileSize;
-				qd.rotation = 90.f;
+				cqd.size = tileSize;
+				cqd.rotation = 90.f;
 			}
 			else if(isVerticallyFlipped && isDiagonallyFlipped) {
-				qd.size = tileSize;
-				qd.rotation = 270.f;
+				cqd.size = tileSize;
+				cqd.rotation = 270.f;
 			}
 			else if(isHorizontallyFlipped) {
-				qd.size = {-tileSize.x, tileSize.y};
-				qd.position.x += tileSize.x;
-				qd.rotation = 0.f;
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 0.f;
 			}
 			else if(isVerticallyFlipped) {
-				qd.size = {tileSize.x, -tileSize.y};
-				qd.position.y += tileSize.y;
-				qd.rotation = 0.f;
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.y += tileSize.y;
+				cqd.rotation = 0.f;
 			}
 			else if(isDiagonallyFlipped) {
-				qd.size = {-tileSize.x, tileSize.y};
-				qd.position.y -= tileSize.x;
-				qd.rotation = 270.f;
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.y -= tileSize.x;
+				cqd.rotation = 270.f;
 			}
-			qd.rotation = Math::degreesToRadians(qd.rotation);
-
-			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
-			qd.textureSlotRef = 0.f;
+			cqd.rotation = Math::degreesToRadians(cqd.rotation);
 
 			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
 			auto tileRectPosition = static_cast<sf::Vector2f>(
@@ -603,10 +595,10 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 			tileRectPosition.x += 1;
 			tileRectPosition.y += 1;
 			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
-			qd.textureRect.left = tileRectPosition.x / textureSize.x;
-			qd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
-			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
-			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
+			cqd.textureRect.left = tileRectPosition.x / textureSize.x;
+			cqd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
+			cqd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
+			cqd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
 			// TODO: Optimize that
 			// find chunk index
@@ -616,7 +608,7 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 					chunkIndex = i;
 
 			// emplace quad data to chunk
-			mRenderChunks[chunkIndex].quads.emplace_back(qd);
+			mRenderChunks[chunkIndex].quads.emplace_back(cqd);
 
 			// load collision bodies
 			const size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);

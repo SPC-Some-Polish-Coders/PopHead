@@ -21,6 +21,14 @@ struct QuadData
 	float textureSlotRef;
 };
 
+struct ChunkQuadData
+{
+	FloatRect textureRect;
+	sf::Vector2f position;
+	sf::Vector2f size;
+	float rotation;
+};
+
 enum class ProjectionType{ gameWorld, gui };
 
 struct RenderGroupKey
