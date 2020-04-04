@@ -24,7 +24,7 @@ void MeleeAttacks::onEvent(sf::Event e)
 
 void MeleeAttacks::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	if(sPause)
 		return;

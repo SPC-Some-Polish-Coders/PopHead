@@ -257,7 +257,7 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
                                           const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	std::vector<QuadData> quads;
 	std::vector<FloatRect> lightWalls;
@@ -495,7 +495,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
                                const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	// clear chunks 
 	bool isFirstLayer = z == sLowestLayerZ;

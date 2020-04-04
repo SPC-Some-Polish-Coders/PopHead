@@ -16,7 +16,7 @@ void DebugCamera::onEvent(sf::Event e)
 
 void DebugCamera::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	auto view = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
 	view.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)

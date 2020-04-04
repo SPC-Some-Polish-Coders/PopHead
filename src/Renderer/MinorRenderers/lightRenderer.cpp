@@ -59,7 +59,7 @@ void LightRenderer::submitLight(Light light)
 
 void LightRenderer::flush()
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	if(mLights.empty())
 		return;
@@ -79,7 +79,7 @@ void LightRenderer::flush()
 
 		// create vertex data
 		{
-			PH_PROFILE_SCOPE("create vertex data", 0);
+			PH_PROFILE_SCOPE("create vertex data");
 
 			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
@@ -105,7 +105,7 @@ void LightRenderer::flush()
 
 		// draw light using triangle fan
 		mLightShader.bind();
-		PH_PROFILE_SCOPE("draw light triangle fan", 0);
+		PH_PROFILE_SCOPE("draw light triangle fan");
 		mLightShader.setUniformVector2("lightPos", light.pos);
 		mLightShader.setUniformVector4Color("color", light.color);
 		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);

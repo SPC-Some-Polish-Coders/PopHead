@@ -17,7 +17,7 @@ Weather::Weather(entt::registry& registry)
 
 void Weather::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	auto destroyWeatherEntity = [this] {
 		auto view = mRegistry.view<component::Weather>();

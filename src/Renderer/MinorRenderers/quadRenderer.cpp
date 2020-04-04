@@ -329,7 +329,7 @@ void QuadRenderer::submitQuad(Texture* texture, const IntRect* textureRect, cons
 
 void QuadRenderer::flush(bool affectedByLight)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	mCurrentlyBoundQuadShader = nullptr;
 	auto& hashMap = affectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
@@ -337,7 +337,7 @@ void QuadRenderer::flush(bool affectedByLight)
 	// sort hash map indices
 	if(hashMap.needsToBeSorted)
 	{
-		PH_PROFILE_SCOPE("sorting indices", 0);
+		PH_PROFILE_SCOPE("sorting indices");
 		hashMap.needsToBeSorted = false;
 		for(unsigned i = 0; i < hashMap.size - 1; ++i)
 		{
@@ -389,7 +389,7 @@ void QuadRenderer::flush(bool affectedByLight)
 
 		if(drawFromHashMap)
 		{
-			PH_PROFILE_SCOPE("draw hash map", 0);
+			PH_PROFILE_SCOPE("draw hash map");
 
 			unsigned renderGroupIndex = hashMap.indices[hashMapIndex];
 			auto& key = hashMap.keys[renderGroupIndex];
@@ -441,7 +441,7 @@ void QuadRenderer::flush(bool affectedByLight)
 			{
 				char log[50];
 				sprintf(log, "draw call instances: %zu", nrOfInstances);
-				PH_PROFILE_SCOPE(log, 0);
+				PH_PROFILE_SCOPE(log);
 
 				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
 				GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), quadsData, GL_STATIC_DRAW) );
@@ -498,7 +498,7 @@ void QuadRenderer::flush(bool affectedByLight)
 		{ 
 			// draw ground chunk
 
-			PH_PROFILE_SCOPE("draw ground chunk", 0);
+			PH_PROFILE_SCOPE("draw ground chunk");
 
 			auto& gc = groundChunks[groundChunkIndex];
 
