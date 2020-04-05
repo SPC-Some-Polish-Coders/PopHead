@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <memory>
+#include <mutex>
 
 namespace ph {
 
@@ -28,6 +29,7 @@ namespace ph {
 
 	private:
 		std::vector<std::unique_ptr<Handler>> mHandlers;
+		std::mutex mHandlersMutex;
 		sf::Clock mClock;
 	};
 }
