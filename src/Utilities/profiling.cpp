@@ -8,7 +8,7 @@ namespace ph {
 
 using clock = std::chrono::steady_clock;
 
-ProfilingResult::id ThreadProfilingManager::commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args)
+ProfilingResult::id MainProfilingManager::ThreadProfilingManager::commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args)
 {
 	auto& result = mResults.emplace_back();
 	result.name = std::move(name);
@@ -18,7 +18,7 @@ ProfilingResult::id ThreadProfilingManager::commitResultStart(std::string&& name
 	return result.resultId;
 }
 
-void ThreadProfilingManager::commitResultEnd(ProfilingResult::id id)
+void MainProfilingManager::ThreadProfilingManager::commitResultEnd(ProfilingResult::id id)
 {
 	for (auto& result : mResults)
 	{
@@ -34,19 +34,19 @@ void ThreadProfilingManager::commitResultEnd(ProfilingResult::id id)
 	// PH_UNEXPECTED...
 }
 
-bool ThreadProfilingManager::hasCommitedResults() const
+bool MainProfilingManager::ThreadProfilingManager::hasCommitedResults() const
 {
 	return (mResults.empty()) ? false : mResults.front().isFinished;
 }
 
-std::vector<ProfilingResult> ThreadProfilingManager::getCommitedResults()
+std::vector<ProfilingResult> MainProfilingManager::ThreadProfilingManager::getCommitedResults()
 {
 	if (hasCommitedResults())
 		return std::move(mResults);
 	return {};
 }
 
-thread_local ThreadProfilingManager MainProfilingManager::mThreadManager;
+thread_local MainProfilingManager::ThreadProfilingManager MainProfilingManager::mThreadManager;
 std::ofstream MainProfilingManager::mOutputFile;
 std::mutex MainProfilingManager::mFileMutex;
 bool MainProfilingManager::mIsActive = false;

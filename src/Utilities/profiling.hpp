@@ -20,24 +20,9 @@ struct ProfilingResult
 	bool isFinished = false;
 };
 
-class ThreadProfilingManager
-{
-public:
-	ThreadProfilingManager() = default;
-
-	ProfilingResult::id commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args);
-	void commitResultEnd(ProfilingResult::id id);
-
-	bool hasCommitedResults() const;
-	std::vector<ProfilingResult> getCommitedResults();
-
-private:
-	ProfilingResult::id mNextResultId = 0;
-	std::vector<ProfilingResult> mResults;
-};
-
 class MainProfilingManager
 {
+	class ThreadProfilingManager;
 	MainProfilingManager() = delete;
 public:
 	static ProfilingResult::id commitResultStart(std::string name, std::vector<std::pair<std::string, std::string>> args);
@@ -51,6 +36,22 @@ private:
 	static std::ofstream mOutputFile;
 	static std::mutex mFileMutex;
 	static bool mIsActive;
+};
+
+class MainProfilingManager::ThreadProfilingManager
+{
+public:
+	ThreadProfilingManager() = default;
+
+	ProfilingResult::id commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args);
+	void commitResultEnd(ProfilingResult::id id);
+
+	bool hasCommitedResults() const;
+	std::vector<ProfilingResult> getCommitedResults();
+
+private:
+	ProfilingResult::id mNextResultId = 0;
+	std::vector<ProfilingResult> mResults;
 };
 
 class ProfilingTimer
