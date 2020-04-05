@@ -17,7 +17,6 @@ struct ProfilingResult
 	long long startTime;
 	unsigned int duration;
 	std::vector<std::pair<std::string, std::string>> args;
-	bool isFinished = false;
 };
 
 class MainProfilingManager
@@ -52,6 +51,7 @@ public:
 private:
 	ProfilingResult::id mNextResultId = 0;
 	std::vector<ProfilingResult> mResults;
+	bool mIsFirstResultFinished = false;
 };
 
 class ProfilingTimer

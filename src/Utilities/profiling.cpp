@@ -24,25 +24,27 @@ void MainProfilingManager::ThreadProfilingManager::commitResultEnd(ProfilingResu
 	{
 		if (result.resultId == id)
 		{
-			result.isFinished = true;
 			auto endTime = std::chrono::time_point_cast<std::chrono::microseconds>(clock::now()).time_since_epoch().count();
 			result.duration = static_cast<unsigned int>(endTime - result.startTime);
+			if (mResults[0].resultId == id)
+				mIsFirstResultFinished = true;
 			return;
 		}
 	}
-
-	// PH_UNEXPECTED...
 }
 
 bool MainProfilingManager::ThreadProfilingManager::hasCommitedResults() const
 {
-	return (mResults.empty()) ? false : mResults.front().isFinished;
+	return mIsFirstResultFinished;
 }
 
 std::vector<ProfilingResult> MainProfilingManager::ThreadProfilingManager::getCommitedResults()
 {
 	if (hasCommitedResults())
+	{
+		mIsFirstResultFinished = false;
 		return std::move(mResults);
+	}
 	return {};
 }
 
@@ -59,10 +61,7 @@ ProfilingResult::id MainProfilingManager::commitResultStart(std::string name, st
 void MainProfilingManager::commitResultEnd(ProfilingResult::id id)
 {
 	if (!mIsActive)
-	{
-		//PH_WARNING...
 		return;
-	}
 
 	mThreadManager.commitResultEnd(id);
 	auto results = mThreadManager.getCommitedResults();
