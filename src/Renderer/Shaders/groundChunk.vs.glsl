@@ -17,8 +17,6 @@ layout (std140) uniform SharedData
 	mat4 guiVPM;
 };
 
-// TODO: Add pixel art texture filtering
-
 void main()
 {
 	vec2 vertexOffset;
@@ -44,6 +42,8 @@ void main()
 			uv = uvBottomRight;
 		} break;
 	}
+
+	uv *= 576;
 
 	vec2 chunkRelPos;
 	chunkRelPos.x = (gl_InstanceID * 16) % (16 * 12);

@@ -16,8 +16,6 @@ uniform float z;
 
 out vec2 texCoords;
 
-// TODO: Add pixel art texture sampling
-
 void main()
 {	
 	vec2 vertexOffset;
@@ -43,6 +41,8 @@ void main()
             texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
         } break;
 	}
+	
+	texCoords *= 576;
 
 	if(aRotation != 0)
 	{
