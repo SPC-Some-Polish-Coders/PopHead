@@ -25,7 +25,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 
 void RenderSystem::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	// shake camera
 	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();
@@ -82,6 +82,14 @@ void RenderSystem::update(float dt)
 				Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
 		});
 	}
+
+	// submit map ground chunks
+	auto groundChunks = mRegistry.view<component::GroundRenderChunk>();
+	groundChunks.each([this, currentCamera](component::GroundRenderChunk& chunk)
+	{
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
+			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), mTilesetTexture, chunk.textureRect, chunk.z);
+	});
 
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();

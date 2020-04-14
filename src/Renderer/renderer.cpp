@@ -147,7 +147,7 @@ void setGameWorldCamera(Camera& camera)
 
 void beginScene()
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
@@ -166,7 +166,7 @@ void beginScene()
 
 void endScene()
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	// render scene
 	quadRenderer.flush(true);
@@ -211,19 +211,42 @@ void endScene()
 	// display renderer debug info 
 	if(isDebugDisplayActive)
 	{
-		char debugText[50];
-		auto submitDebugCounter = [&debugText](const char* text, unsigned number) {
+		char debugText[128];
+
+		auto submitDebugCounter = [&debugText](const char* text, unsigned number) 
+		{
 			sprintf_s(debugText, "%s%u", text, number);
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		auto quadRendererNumbers = quadRenderer.getDebugNumbers();
+		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n, char* name) 
+		{
+			std::string str;
+			str += name;
+			str += ": ";
+			for(size_t i = 0; i < n && i < arr.marker; ++i)
+			{
+				str += std::to_string(arr.data[i]);
+				str += " ";
+			}
+			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
+		};
+
+		auto quadRendererNumbers = getQuadRendererDebugNumbers();
 
 		submitDebugCounter("All draw calls per frame: ",
 			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
+		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
+		submitDebugArray(quadRendererNumbers.renderGroupsZ, 12, "z");
+		submitDebugArray(quadRendererNumbers.renderGroupsIndices, 12, "indices");
+		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
+		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
+		submitDebugCounter("Nr of quad renderer allocations: ", quadRendererNumbers.allocations);
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
 		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
@@ -232,14 +255,14 @@ void endScene()
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		quadRenderer.resetDebugNumbers();
+		resetQuadRendererDebugNumbers();
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
 	}
 }
 
-void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
+void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
                 sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
@@ -247,10 +270,15 @@ void submitQuad(const Texture* texture, const IntRect* textureRect, const sf::Co
 		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
-void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, const Texture* t, const Shader* s,
+void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
                                           unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
+}
+
+void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z)  
+{
+	quadRenderer.submitGroundChunk(pos, texture, textureRect, getNormalizedZ(z));
 }
 
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)

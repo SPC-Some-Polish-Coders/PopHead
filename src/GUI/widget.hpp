@@ -32,7 +32,7 @@ public:
 	void show();
 
 	void setParent(Widget* parent) { mParent = parent; };
-	void setTexture(const Texture* texture) { mTexture = texture; }
+	void setTexture(Texture* texture) { mTexture = texture; }
 	void setColor(sf::Color color) { mColor = color; }
 	void setSize(sf::Vector2f size) { mLocalNormalizedSize = size; }
 	void setVelocity(sf::Vector2f vel) { mVelocity = vel; }
@@ -69,7 +69,7 @@ protected:
 	std::vector<std::unique_ptr<Widget>> mWidgetChildren;
 
 	Widget* mParent;
-	const Texture* mTexture;
+	Texture* mTexture;
 	sf::Vector2f mLocalNormalizedPosition;
 	sf::Vector2f mLocalNormalizedSize;
 	sf::Vector2f mVelocity;

@@ -7,7 +7,7 @@ namespace ph::system {
 
 void AnimationSystem::update(float dt)
 {
-	PH_PROFILE_FUNCTION(1);
+	PH_PROFILE_FUNCTION();
 
 	if(sPause)
 		return;

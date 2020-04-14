@@ -3,6 +3,7 @@
 #include "ConcreteHandlers/consoleHandler.hpp"
 #include "ConcreteHandlers/fileHandler.hpp"
 #include "ConcreteHandlers/terminalHandler.hpp"
+#include "ConcreteHandlers/WindowsDebugApi.hpp"
 
 #include "logger.hpp"
 
@@ -30,6 +31,8 @@ namespace ph {
 				handler.reset(new ConsoleHandler());
 			else if (type == "terminalHandler")
 				handler.reset(new TerminalHandler());
+			else if (type == "winApiHandler")
+				handler.reset(new WindowsDebugApiHandler());
 
 			if (!handler)
 				continue;

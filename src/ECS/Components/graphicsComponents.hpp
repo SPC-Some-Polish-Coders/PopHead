@@ -27,6 +27,13 @@ namespace component {
 		IntRect rect;
 	};
 
+	struct GroundRenderChunk
+	{
+		FloatRect bounds;
+		FloatRect textureRect;
+		unsigned char z;
+	};
+
 	struct RenderChunk
 	{
 		std::vector<QuadData> quads;

@@ -10,7 +10,7 @@ namespace ph::system {
 
 	void HostileCollisions::update(float dt)
 	{
-		PH_PROFILE_FUNCTION(0);
+		PH_PROFILE_FUNCTION();
 
 		if(sPause)
 			return;

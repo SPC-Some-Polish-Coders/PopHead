@@ -20,7 +20,7 @@ struct ParticleEmitter
 {
 	std::vector<Particle> particles;
 
-	const Texture* parTexture = nullptr;
+	Texture* parTexture = nullptr;
 	sf::Vector2f spawnPositionOffset = {0.f, 0.f};
 	sf::Vector2f randomSpawnAreaSize = {0.f, 0.f};
 	sf::Vector2f parInitialVelocity = {0.f, 1.f};

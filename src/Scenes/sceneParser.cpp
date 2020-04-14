@@ -17,7 +17,7 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
                 entt::registry& gameRegistry, const std::string& sceneFileName, SystemsQueue& systemsQueue,
                 AIManager& aiManager, SceneManager& sceneManager)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	PH_LOG_INFO("Scene linking file (" + sceneFileName + ") is being parsed.");
 

@@ -21,6 +21,10 @@
     <component name="MultiStaticCollisionBody" />
   </entityTemplate>
 
+  <entityTemplate name="GroundMapChunk">
+    <component name="GroundRenderChunk" />
+  </entityTemplate>
+
   <entityTemplate name="BorderCollision">
     <component name="StaticCollisionBody" />
     <component name="BodyRect" x="0" y="0" width="0" height="0"/>

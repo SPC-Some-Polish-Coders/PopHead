@@ -62,8 +62,8 @@ private:
 	                 unsigned char z, AIManager&);
 	void createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
-	std::size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
-	std::size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
+	size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
+	size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 
 private:
 	std::vector<component::RenderChunk> mRenderChunks;

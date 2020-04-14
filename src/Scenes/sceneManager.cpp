@@ -48,7 +48,7 @@ void SceneManager::popAction()
 	else {
 		GUI::clear();
 		mScene = nullptr;
-		PH_LOG_INFO("The scene was popped.");
+		PH_LOG_INFO("The scene was popped, scene file: " + mCurrentSceneFilePath);
 	}
 	mIsPopping = false;
 }
@@ -57,14 +57,18 @@ void SceneManager::replaceAction()
 {
 	GUI::clear();
 
-	if(mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
+	if (mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
+	{
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);
+		PH_LOG_INFO("Player position changed, new position: " + std::to_string(mPlayerPositionForNextScene.x) + ',' + std::to_string(mPlayerPositionForNextScene.y));
+	}
 	else {
 		bool thereIsPlayerStatus = mScene && mAIManager->isPlayerOnScene();
 		if (thereIsPlayerStatus)
 			mLastPlayerStatus = mScene->getPlayerStatus();
 		
 		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
+		PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 
 		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
 		           mScene->getSystemsQueue(), *mAIManager, *this);
@@ -76,7 +80,6 @@ void SceneManager::replaceAction()
 		}
 	}
 
-	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 	mIsReplacing = false;
 	mCurrentSceneFilePath = std::move(mFilePathOfSceneToMake);
 }
@@ -88,7 +91,7 @@ void SceneManager::handleEvent(sf::Event e)
 
 void SceneManager::update(float dt)
 {
-	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene");
+	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene.");
 	mScene->update(dt);
 }
 
@@ -101,6 +104,7 @@ void SceneManager::init(AIManager* aiManager)
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 {
+	PH_LOG_INFO("Scene replacement requested, scene file: " + sceneSourceCodeFilePath);
 	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = false;
@@ -108,6 +112,8 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 
 void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
 {
+	PH_LOG_INFO("Scene replacement requested, scene file: " + sceneSourceCodeFilePath + 
+				", player position: " + std::to_string(playerPosition.x) + ',' + std::to_string(playerPosition.y));
 	mFilePathOfSceneToMake = sceneSourceCodeFilePath;
 	mIsReplacing = true;
 	mHasPlayerPositionForNextScene = true;
@@ -116,6 +122,7 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, cons
 
 void SceneManager::popScene()
 {
+	PH_LOG_INFO("Scene popping requested.");
     mIsPopping = true;
 }
 
