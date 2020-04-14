@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="62">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="63">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -12393,7 +12393,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,673,674,675,675,
 0,0,0,0,0,0,0,0,705,673,674,675,
-0,0,0,0,0,0,0,0,737,705,706,707,
+0,0,0,0,0,0,0,0,737,705,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0
@@ -12407,7 +12407,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 675,675,676,0,0,0,0,0,0,0,0,0,
 675,676,708,0,0,0,0,0,0,0,0,0,
-707,708,740,0,0,0,0,0,0,0,0,0,
+0,708,740,0,0,0,0,0,0,0,0,0,
 0,740,740,0,0,0,0,0,0,0,0,0,
 0,740,741,674,675,676,0,0,0,0,0,0,
 0,740,0,0,0,708,0,0,0,0,0,0
@@ -15987,11 +15987,11 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="denialAreas" visible="0">
-  <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5096" width="667" height="1157"/>
-  <object id="32" type="CollisionAndLightWallDenialArea" x="595.167" y="4624.5" width="449.333" height="543.667"/>
-  <object id="33" type="CollisionAndLightWallDenialArea" x="-164.333" y="3347.83" width="749.333" height="1909"/>
-  <object id="34" type="CollisionAndLightWallDenialArea" x="-193.5" y="5498.5" width="88" height="599"/>
+ <objectgroup id="10" name="denialAreas">
+  <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5096" width="642.5" height="1346.5"/>
+  <object id="32" type="CollisionAndLightWallDenialArea" x="577.667" y="4625" width="477.833" height="543.667"/>
+  <object id="33" type="CollisionAndLightWallDenialArea" x="-196.833" y="3347.83" width="781.833" height="1906.5"/>
+  <object id="34" type="CollisionAndLightWallDenialArea" x="-193.5" y="5498.5" width="88" height="630.5"/>
   <object id="35" type="CollisionAndLightWallDenialArea" x="35.3335" y="2472.17" width="449.333" height="873"/>
   <object id="36" type="CollisionAndLightWallDenialArea" x="484.667" y="2446.17" width="1485.33" height="334.333"/>
   <object id="37" type="CollisionAndLightWallDenialArea" x="2504" y="2522.17" width="409.33" height="945"/>
@@ -15999,5 +15999,6 @@
   <object id="39" type="CollisionAndLightWallDenialArea" x="427.335" y="5934.16" width="803.997" height="281.003"/>
   <object id="40" type="CollisionAndLightWallDenialArea" x="-757.999" y="6444.83" width="3028" height="281.003"/>
   <object id="41" type="CollisionAndLightWallDenialArea" x="1799.33" y="5216.83" width="350.663" height="1031.67"/>
+  <object id="62" type="CollisionAndLightWallDenialArea" x="103.833" y="5494.83" width="216" height="618.336"/>
  </objectgroup>
 </map>
