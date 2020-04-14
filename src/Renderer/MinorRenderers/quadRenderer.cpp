@@ -608,9 +608,9 @@ void QuadRenderer::flush(bool affectedByLight)
 	// NOTE: We assume that quads it hash map are always at top of ground chunks and chunks
 
 	// draw from hash map
-	PH_PROFILE_SCOPE("draw hash map");
 	for(unsigned pairIndex = 0; pairIndex < hashMap.size; ++pairIndex)
 	{
+		PH_PROFILE_SCOPE("draw hash map pair");
 		unsigned renderGroupIndex = hashMap.indices[pairIndex];
 		auto& key = hashMap.keys[renderGroupIndex];
 		auto& rg = hashMap.renderGroups[renderGroupIndex];
