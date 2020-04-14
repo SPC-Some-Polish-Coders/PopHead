@@ -116,7 +116,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		else
 		{
 			auto globalIds = Csv::toUnsigneds(dataNode.toString());
-			createFinitMapLayer(globalIds, tilesetsData, info, z, aiManager);
+			createFiniteMapLayer(globalIds, tilesetsData, info, z, aiManager);
 		}
 		--z;
 	}
@@ -300,6 +300,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 
 			cqd.position = tileWorldPos; 
 
+			// TODO: Replace rotate/size-textureRect stuff with texture coords
 			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
 			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
 				cqd.size = tileSize;
@@ -488,8 +489,8 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 	}
 }
 
-void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                                       const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
+void XmlMapParser::createFiniteMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
+                                        const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
 {
 	PH_PROFILE_FUNCTION();
 

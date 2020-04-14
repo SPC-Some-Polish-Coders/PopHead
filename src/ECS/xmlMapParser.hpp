@@ -60,7 +60,7 @@ private:
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 	void createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
-	void createFinitMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	void createFiniteMapLayer(const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
 	                 unsigned char z, AIManager&);
 	size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;

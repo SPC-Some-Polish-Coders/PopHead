@@ -23,10 +23,10 @@ void main()
 {
 	switch(gl_VertexID)
 	{
-		case 0: uv = uvTopLeft; break;
-		case 1: uv = uvTopRight; break;
-		case 2: uv = uvBottomLeft; break;
-		case 3: uv = uvBottomRight; break;
+		case 0: uv = uvTopRight; break;
+		case 1: uv = uvTopLeft; break;
+		case 2: uv = uvBottomRight; break;
+		case 3: uv = uvBottomLeft; break;
 	}
 	uv *= 576;
 
