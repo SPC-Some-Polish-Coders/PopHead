@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="42">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="62">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -19954,7 +19954,7 @@
   <object id="3" type="Camera" x="270" y="6980" width="640" height="360"/>
   <object id="4" name="Player" type="Player" x="26.7033" y="6349.37">
    <properties>
-    <property name="hasFlashlight" type="bool" value="true"/>
+    <property name="hasFlashlight" type="bool" value="false"/>
    </properties>
    <point/>
   </object>
@@ -20051,6 +20051,24 @@
     <property name="gotoY" type="float" value="2105"/>
     <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
+  </object>
+  <object id="56" type="SlowZombie" x="-10" y="5431">
+   <point/>
+  </object>
+  <object id="57" type="SlowZombie" x="688.5" y="5371.5">
+   <point/>
+  </object>
+  <object id="58" type="SlowZombie" x="676" y="5439">
+   <point/>
+  </object>
+  <object id="59" type="SlowZombie" x="430" y="5787">
+   <point/>
+  </object>
+  <object id="60" type="SlowZombie" x="477.5" y="5852.5">
+   <point/>
+  </object>
+  <object id="61" type="SlowZombie" x="594" y="5818">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="10" name="denialAreas">
