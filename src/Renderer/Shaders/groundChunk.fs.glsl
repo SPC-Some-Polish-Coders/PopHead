@@ -4,6 +4,7 @@ R"(
 in vec2 uv;
 out vec4 fragColor;
 uniform sampler2D sampler;
+uniform bool debugVisualization;
 
 void main()
 {
@@ -14,6 +15,12 @@ void main()
 	vec2 interpolation = clamp(posWithinTexel / alpha, 0.0, 0.5) + clamp((posWithinTexel - 1.0) / alpha + 0.5, 0.0, 0.5);
 	vec2 finalTexCoords = (floor(uv) + interpolation) / texSideSize; 
 	fragColor = texture(sampler, finalTexCoords);
+
+	if(debugVisualization)
+	{
+		//fragColor *= vec4(5, 0.2, 0.2, 1);
+		fragColor = vec4(1, 0, 0, 1);
+	}
 }
 
 // TODO: Make alpha be set in the smart way

@@ -13,6 +13,8 @@
 
 namespace ph {
 
+static constexpr unsigned deleteVBOsDelay = 100;
+
 struct RenderGroupsHashMap
 {
 	unsigned capacity;
@@ -42,10 +44,11 @@ struct Chunk
 
 struct ChunksData
 {
-	std::vector<Chunk> cachedChunks;
+	std::vector<unsigned> cachedChunksRendererIDs;
 	std::vector<Chunk> thisFrameChunks;
 	unsigned dummyVAO;
-	unsigned framesFromClearingCachedChunks;
+	unsigned framesToDeleteChunkVBOs = deleteVBOsDelay;
+	bool allChunkVBOsWereJustDeleted = true;
 };
 
 static std::vector<GroundChunk> groundChunks;
@@ -53,7 +56,12 @@ static ChunksData chunks;
 
 static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
+
 static QuadRendererDebugNumbers debugNumbers;
+
+static Shader defaultQuadShader;
+static Shader groundChunkShader;
+static Shader chunkShader;
 
 QuadRendererDebugNumbers getQuadRendererDebugNumbers()
 {
@@ -71,6 +79,18 @@ void resetQuadRendererDebugNumbers()
 	debugNumbers.drawnTextures = 0;
 }
 
+void setQuadRendererDebug(bool flag)
+{
+	defaultQuadShader.bind();
+	defaultQuadShader.setUniformBool("debugVisualization", flag);
+
+	chunkShader.bind();
+	chunkShader.setUniformBool("debugVisualization", flag);
+
+	groundChunkShader.bind();
+	groundChunkShader.setUniformBool("debugVisualization", flag);
+}
+
 static unsigned bumpToNext4000(unsigned size)
 {
 	unsigned temp = size;
@@ -79,7 +99,7 @@ static unsigned bumpToNext4000(unsigned size)
 	return size + 4000 - temp;	
 }
 
-bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
+static bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 {
 	return lhs.shader == rhs.shader && lhs.z == rhs.z;
 }
@@ -194,6 +214,7 @@ static void initRenderGroupsHashMap(RenderGroupsHashMap& hashMap)
 
 void QuadRenderer::init()
 {
+	// allocate memory
 	static bool shouldInitializeRenderGroups = true;
 	if(shouldInitializeRenderGroups)
 	{
@@ -201,18 +222,18 @@ void QuadRenderer::init()
 		initRenderGroupsHashMap(notAffectedByLightRenderGroupsHashMap);
 		shouldInitializeRenderGroups = false;
 	}
-
 	groundChunks.reserve(20);
+	chunks.thisFrameChunks.reserve(50);
 
 	// init shaders
-	mDefaultQuadShader.init(shader::quadSrc());
-	mDefaultQuadShader.initUniformBlock("SharedData", 0);
+	defaultQuadShader.init(shader::quadSrc());
+	defaultQuadShader.initUniformBlock("SharedData", 0);
 
-	mGroundChunkShader.init(shader::groundChunkSrc());
-	mGroundChunkShader.initUniformBlock("SharedData", 0);
+	groundChunkShader.init(shader::groundChunkSrc());
+	groundChunkShader.initUniformBlock("SharedData", 0);
 
-	mChunkShader.init(shader::chunkSrc());
-	mChunkShader.initUniformBlock("SharedData", 0);
+	chunkShader.init(shader::chunkSrc());
+	chunkShader.initUniformBlock("SharedData", 0);
 
 	// create vao and ibo for quads from hash map 
 	GLCheck( glGenVertexArrays(1, &mVAO) );
@@ -253,18 +274,13 @@ void QuadRenderer::init()
 void QuadRenderer::shutDown()
 {
 	delete mWhiteTexture;
-	mDefaultQuadShader.remove();
-	mGroundChunkShader.remove();
-	mChunkShader.remove();
+	defaultQuadShader.remove();
+	groundChunkShader.remove();
+	chunkShader.remove();
 	GLCheck( glDeleteBuffers(1, &mQuadIBO) );
 	GLCheck( glDeleteBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glDeleteVertexArrays(1, &mVAO) );
 	glDeleteVertexArrays(1, &chunks.dummyVAO);
-	for(auto& chunk : chunks.cachedChunks)
-	{
-		glDeleteBuffers(1, &chunk.rendererID);
-	}
-	chunks.cachedChunks.clear();
 }
 
 void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, float z)
@@ -275,39 +291,43 @@ void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const Texture& texture, c
 void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture, const FloatRect& bounds,
                                float z, unsigned* rendererID)
 {
-	if(*rendererID != 0)
+	// check is the vbo of this chunk in VRam
+	bool vboOfThisChunkIsInVRam = false;
+	if(!chunks.allChunkVBOsWereJustDeleted || *rendererID != 0)
 	{
-		for(auto& chunk : chunks.cachedChunks)
+		for(unsigned vbo : chunks.cachedChunksRendererIDs)
 		{
-			if(*rendererID == chunk.rendererID)
+			if(*rendererID == vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(chunk);
-				return;
+				vboOfThisChunkIsInVRam = true;
+				break;
 			}
 		}
 	}
 
-	glBindVertexArray(0);
-	glGenBuffers(1, rendererID);
-	glBindBuffer(GL_ARRAY_BUFFER, *rendererID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(ChunkQuadData) * quadsData.size(), quadsData.data(), GL_STATIC_DRAW);
-	
-	Chunk newChunk = {bounds, *rendererID, texture.getID(), (unsigned)quadsData.size(), z};
-	chunks.cachedChunks.emplace_back(newChunk);
-	chunks.thisFrameChunks.emplace_back(newChunk);
+	if(!vboOfThisChunkIsInVRam)
+	{
+		// create the new vbo
+		glBindVertexArray(0);
+		glGenBuffers(1, rendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, *rendererID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(ChunkQuadData) * quadsData.size(), quadsData.data(), GL_STATIC_DRAW);
+		chunks.cachedChunksRendererIDs.emplace_back(*rendererID);
+	}
+
+	chunks.thisFrameChunks.emplace_back(Chunk{bounds, *rendererID, texture.getID(), (unsigned)quadsData.size(), z});
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Texture* texture,
                                                         const Shader* shader, float z, ProjectionType projectionType)
 {
 	if(!shader)
-		shader = &mDefaultQuadShader;
+		shader = &defaultQuadShader;
 
 	// insert if does not exitst and get render group
 	bool isAffectedByLight = true; // TODO
 	RenderGroupsHashMap& hashMap = isAffectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
 	QuadRenderGroup* renderGroup = insertIfDoesNotExitstAndGetRenderGroup(&hashMap, {shader, z, projectionType}, (unsigned)quadsData.size());
-
 
 	if(!texture)
 		texture = mWhiteTexture;
@@ -342,7 +362,7 @@ void QuadRenderer::submitQuad(Texture* texture, const IntRect* textureRect, cons
 
 	// if shader is not specified use default shader 
 	if(!shader)
-		shader = &mDefaultQuadShader;
+		shader = &defaultQuadShader;
 
 	// find or add draw call group
 	auto& hashMap = isAffectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
@@ -397,28 +417,6 @@ void QuadRenderer::flush(bool affectedByLight)
 	const Shader* currentlyBoundShader = nullptr;
 	auto& hashMap = affectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
 
-	// TODO: clear cached chunks without camera once per 300 frames
-	/*
-	++chunks.framesFromClearingCachedChunks;
-	if(chunks.framesFromClearingCachedChunks == 300)
-	{
-		chunks.framesFromClearingCachedChunks = 0;
-		for(unsigned i = 0; i < chunks.cachedChunks.size();)
-		{
-			auto& chunk = chunks.cachedChunks[i];
-			if(mScreenBounds->doPositiveRectsIntersect(chunk.bounds))
-			{
-				glDeleteBuffers(1, &chunk.rendererID);
-				chunks.cachedChunks.erase(chunks.cachedChunks.begin() + i);
-			}
-			else
-			{
-				++i;
-			}
-		}
-	}
-	*/
-
 	// sort hash map indices
 	if(hashMap.needsToBeSorted)
 	{
@@ -448,16 +446,24 @@ void QuadRenderer::flush(bool affectedByLight)
 		}
 	}
 
-	// sort chunks
-	std::sort(chunks.thisFrameChunks.begin(), chunks.thisFrameChunks.end(), []
-	(const Chunk& lhs, const Chunk& rhs)
-	{
-		return lhs.z > rhs.z;
-	});
-
 	if(affectedByLight)
 	{
-		debugNumbers.cachedChunks = (unsigned)chunks.cachedChunks.size();
+		// sort ground chunks
+		std::sort(groundChunks.begin(), groundChunks.end(), []
+		(const GroundChunk& lhs, const GroundChunk& rhs)
+		{
+			return lhs.z > rhs.z;
+		});
+
+		// sort chunks
+		std::sort(chunks.thisFrameChunks.begin(), chunks.thisFrameChunks.end(), []
+		(const Chunk& lhs, const Chunk& rhs)
+		{
+			return lhs.z > rhs.z;
+		});
+
+		// debug info
+		debugNumbers.framesToDeleteChunkVBOs = chunks.framesToDeleteChunkVBOs; 
 	}
 
 	for(unsigned hashMapIndex = 0, chunkIndex = 0, groundChunkIndex = 0;
@@ -469,9 +475,8 @@ void QuadRenderer::flush(bool affectedByLight)
 
 		float hashMapZ = hashMapIndex < hashMap.size ? hashMap.keys[hashMapIndex].z : -1.f;
 		float chunkZ = chunkIndex < chunks.thisFrameChunks.size() ? chunks.thisFrameChunks[chunkIndex].z : -1.f;
-		float groundChunkZ = groundChunkIndex < groundChunks.size() ? chunks.thisFrameChunks[groundChunkIndex].z : -1.f;
+		float groundChunkZ = groundChunkIndex < groundChunks.size() ? groundChunks[groundChunkIndex].z : -1.f;
 
-		// TODO: Probably there is bug here
 		if((groundChunkZ != -1.f) &&
 		   (groundChunkZ >= chunkZ && groundChunkZ >= hashMapZ)) 
 		{
@@ -604,20 +609,22 @@ void QuadRenderer::flush(bool affectedByLight)
 
 				auto& gc = groundChunks[groundChunkIndex];
 
+				glBindVertexArray(0);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, gc.texture);
 
-				if(currentlyBoundShader != &mGroundChunkShader)
+				if(currentlyBoundShader != &groundChunkShader)
 				{
-					currentlyBoundShader = &mGroundChunkShader;
-					mGroundChunkShader.bind();
+					currentlyBoundShader = &groundChunkShader;
+					groundChunkShader.bind();
 				}
-				mGroundChunkShader.setUniformVector2("chunkPos", gc.pos);
-				mGroundChunkShader.setUniformFloat("z", gc.z);
-				mGroundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.getTopLeft());
-				mGroundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.getTopRight());
-				mGroundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
-				mGroundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.getBottomRight());
+				groundChunkShader.setUniformVector2("chunkPos", gc.pos);
+				groundChunkShader.setUniformFloat("z", gc.z);
+				groundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.getTopLeft());
+				groundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.getTopRight());
+				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
+				groundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.getBottomRight());
 
 				glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144);
 
@@ -636,12 +643,12 @@ void QuadRenderer::flush(bool affectedByLight)
 				GLCheck( glActiveTexture(GL_TEXTURE0) );
 				GLCheck( glBindTexture(GL_TEXTURE_2D, chunk.texture) );
 
-				if(currentlyBoundShader != &mChunkShader)
+				if(currentlyBoundShader != &chunkShader)
 				{
-					currentlyBoundShader = &mChunkShader;
-					mChunkShader.bind();
+					currentlyBoundShader = &chunkShader;
+					chunkShader.bind();
 				}
-				mChunkShader.setUniformFloat("z", chunk.z);
+				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
 				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, chunk.rendererID) );
@@ -672,8 +679,26 @@ void QuadRenderer::flush(bool affectedByLight)
 		
 	if(affectedByLight)
 	{
-		groundChunks.clear();
+		if(--chunks.framesToDeleteChunkVBOs == 0)
+		{
+			// clear cached chunks
+			chunks.framesToDeleteChunkVBOs = deleteVBOsDelay;
+			for(unsigned id : chunks.cachedChunksRendererIDs)
+			{
+				glDeleteBuffers(1, &id); 
+			}
+			chunks.cachedChunksRendererIDs.clear();
+			chunks.allChunkVBOsWereJustDeleted = true;
+		}
+		else
+		{
+			chunks.allChunkVBOsWereJustDeleted = false;
+		}
+
 		chunks.thisFrameChunks.clear();
+		groundChunks.clear();
+
+		debugNumbers.cachedChunks = (unsigned)chunks.cachedChunksRendererIDs.size();
 	}
 }
 

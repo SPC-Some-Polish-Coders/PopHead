@@ -28,6 +28,7 @@ struct QuadRendererDebugNumbers
 	QuadRendererDebugArray notAffectedByLightRenderGroupsIndices = {}; 
 	unsigned allocations = 0;
 	unsigned chunks = 0;
+	unsigned framesToDeleteChunkVBOs = 0;
 	unsigned cachedChunks = 0;
 	unsigned renderGroups = 0;
 	unsigned renderGroupsNotAffectedByLight = 0;
@@ -38,6 +39,7 @@ struct QuadRendererDebugNumbers
 
 QuadRendererDebugNumbers getQuadRendererDebugNumbers();
 void resetQuadRendererDebugNumbers();
+void setQuadRendererDebug(bool);
 
 class QuadRenderer
 {
@@ -60,9 +62,6 @@ public:
 	void flush(bool affectedByLight);
 
 private:
-	Shader mDefaultQuadShader;
-	Shader mGroundChunkShader;
-	Shader mChunkShader;
 	const FloatRect* mScreenBounds; 
 	Texture* mWhiteTexture;
 	unsigned mQuadIBO;

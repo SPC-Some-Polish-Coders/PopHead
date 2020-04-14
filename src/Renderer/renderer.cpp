@@ -239,6 +239,7 @@ void endScene()
 
 		submitDebugCounter("Nr of chunks: ", quadRendererNumbers.chunks);
 		submitDebugCounter("Nr of cached chunks: ", quadRendererNumbers.cachedChunks);
+		submitDebugCounter("Frames to delete chunk VBOs", quadRendererNumbers.framesToDeleteChunkVBOs);
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
 		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12, "sizes");

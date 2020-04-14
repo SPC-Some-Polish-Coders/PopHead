@@ -13,6 +13,7 @@
 #include "Audio/Sound/soundData.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/MinorRenderers/lightRenderer.hpp"
+#include "Renderer/MinorRenderers/quadRenderer.hpp"
 #include "Renderer/API/font.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "Utilities/cast.hpp"
@@ -591,6 +592,11 @@ static void executeResetGuiLiveFrequency()
 	}
 }
 
+static void executeQuadRendererDebug()
+{
+	setQuadRendererDebug(!commandContains("off"));
+}
+
 #endif 
 
 static void updateCommands(float dt)
@@ -711,6 +717,7 @@ void init(sf::Window* w, SceneManager* sm)
 #ifndef PH_DISTRIBUTION
 	commandsMap["rguilive"] = &executeResetGuiLive;
 	commandsMap["rguilivefreq"] = &executeResetGuiLiveFrequency;
+	commandsMap["qrdebug"] = &executeQuadRendererDebug;
 #endif
 
 	// read terminalInit.txt file
