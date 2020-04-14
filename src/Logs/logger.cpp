@@ -40,6 +40,9 @@ void Logger::createLog(LogLevel level, const std::string& message, const std::st
 	logRecord.secondsFromStart = getInstance().mClock.getElapsedTime().asSeconds();
 	logRecord.time = getCurrentTimeAsString();
 
+	auto& mutex = getInstance().mHandlersMutex;
+	std::lock_guard lock(mutex);
+
 	auto& handlers = getInstance().mHandlers;
 
 	for (auto& handler : handlers)

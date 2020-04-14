@@ -16,6 +16,8 @@ namespace ph::system {
 
 		void update(float dt) override;
 
+		inline static bool freezeZombies = false;
+
 	private:
 		const AIManager* mAIManager;
 		ThreadPool& mThreadPool;

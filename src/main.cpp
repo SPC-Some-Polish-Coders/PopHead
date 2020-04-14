@@ -10,7 +10,7 @@
 int main()
 {
 	try {
-		PH_BEGIN_PROFILING_SESSION("PopHead initializing", "initProfilingResults.json");
+		PH_BEGIN_PROFILING_SESSION("initProfilingResults.json");
 
 		PH_LOG_INFO("start initializing PopHead");
 		ph::Game game;
@@ -20,7 +20,7 @@ int main()
 
 		PH_END_PROFILING_SESSION();
 		
-		PH_BEGIN_PROFILING_SESSION("PopHead runtime", "runtimeProfilingResults.json");
+		PH_BEGIN_PROFILING_SESSION("runtimeProfilingResults.json");
 
 		PH_LOG_INFO("start executing PopHead");
 		game.run();

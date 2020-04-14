@@ -6,7 +6,7 @@ namespace ph::system {
 
 	void PushingMovement::update(float dt)
 	{
-		PH_PROFILE_FUNCTION(0);
+		PH_PROFILE_FUNCTION();
 
 		if(sPause)
 			return;

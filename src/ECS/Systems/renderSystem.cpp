@@ -25,7 +25,7 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 
 void RenderSystem::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	// shake camera
 	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();

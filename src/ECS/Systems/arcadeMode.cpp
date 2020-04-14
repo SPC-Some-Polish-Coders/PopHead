@@ -27,7 +27,7 @@ ArcadeMode::ArcadeMode(entt::registry& registry, AIManager& aiManager, EntitiesT
 
 void ArcadeMode::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	if(sPause)
 		return;

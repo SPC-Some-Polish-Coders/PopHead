@@ -147,7 +147,7 @@ void setGameWorldCamera(Camera& camera)
 
 void beginScene()
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
@@ -166,7 +166,7 @@ void beginScene()
 
 void endScene()
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	// render scene
 	quadRenderer.flush(true);

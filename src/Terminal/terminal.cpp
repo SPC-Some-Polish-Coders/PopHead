@@ -8,6 +8,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Systems/areasDebug.hpp"
+#include "ECS/Systems/zombieSystem.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Sound/soundData.hpp"
@@ -27,7 +28,7 @@
 #include <string>
 #include <fstream>
 
-namespace ph {
+namespace ph::Terminal {
 
 static std::string content;
 static std::deque<std::string> lastCommands;
@@ -69,7 +70,7 @@ static sf::Vector2f getPlayerPosition()
 
 static sf::Vector2f handleGetVector2ArgumentError()
 {
-	Terminal::pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
+	pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
 	return vector2ArgumentError;
 }
 
@@ -129,12 +130,12 @@ static void executeCommand()
 	if(found != commandsMap.end())
 		(*found->second)();
 	else
-		Terminal::pushOutputLine({"Entered command wasn't recognised. Enter 'help' to see available commands.", sf::Color::Red});
+		pushOutputLine({"Entered command wasn't recognised. Enter 'help' to see available commands.", sf::Color::Red});
 }
 
 static void executeInfoMessage()
 {
-	Terminal::pushOutputLine({"This is terminal. Enter 'help' to see available commands.", sf::Color(50, 50, 255)});
+	pushOutputLine({"This is terminal. Enter 'help' to see available commands.", sf::Color(50, 50, 255)});
 }
 
 static void executeHistory()
@@ -143,31 +144,32 @@ static void executeHistory()
 	std::deque<std::string>::reverse_iterator it = commandsHistory.rbegin();
 
 	for(; it != commandsHistory.rend(); ++it)
-		Terminal::pushOutputLine({"- " + *it, infoLimeColor});
-	Terminal::pushOutputLine({"Ten last used commands: ", sf::Color::White});
+		pushOutputLine({"- " + *it, infoLimeColor});
+	pushOutputLine({"Ten last used commands: ", sf::Color::White});
 }
 
 static void executeHelp()
 {
-	Terminal::pushOutputLine({});
-	Terminal::pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
-	Terminal::pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
-	Terminal::pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});
-	Terminal::pushOutputLine({"setvolume @S31 mute @C9999 mute audio @CO @S32 unmute @C9999 unmute audio", infoLimeColor});
-	Terminal::pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
-	Terminal::pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
-	Terminal::pushOutputLine({"rguilivefreq @C9999 set gui reset frequency @CO @S31 lwd @C9999 light walls debug @CO @S32 light @C9999 light debug", infoLimeColor});
-	Terminal::pushOutputLine({"fontd @C9999 font debug @CO @S31 nofocusupdate @S32 dc @C9999 debug camera", infoLimeColor});
-	Terminal::pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
+	pushOutputLine({});
+	pushOutputLine({"fz @C9999 freeze zombies", infoLimeColor});
+	pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
+	pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
+	pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});
+	pushOutputLine({"setvolume @S31 mute @C9999 mute audio @CO @S32 unmute @C9999 unmute audio", infoLimeColor});
+	pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
+	pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
+	pushOutputLine({"rguilivefreq @C9999 set gui reset frequency @CO @S31 lwd @C9999 light walls debug @CO @S32 light @C9999 light debug", infoLimeColor});
+	pushOutputLine({"fontd @C9999 font debug @CO @S31 nofocusupdate @S32 dc @C9999 debug camera", infoLimeColor});
+	pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
 }
 
 static void executeGotoScene()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609 gts sewage@CO goes to sewage scene of file sewage.xml"});
-		Terminal::pushOutputLine({"@C9609 gts@CO takes one argument which is name of the scene file without extension."});
+		pushOutputLine({""});
+		pushOutputLine({"@C2919 Example: @C9609 gts sewage@CO goes to sewage scene of file sewage.xml"});
+		pushOutputLine({"@C9609 gts@CO takes one argument which is name of the scene file without extension."});
 	}
 	else
 	{
@@ -181,9 +183,9 @@ static void executeReset()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609 r stay@CO reloads the current scene and spawns player in his current position."});
-		Terminal::pushOutputLine({"@C9609 r@CO reloads the current scene."});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609 r stay@CO reloads the current scene and spawns player in his current position."});
+		pushOutputLine({"@C9609 r@CO reloads the current scene."});
 	}
 	else
 	{
@@ -202,10 +204,10 @@ static void executePause()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"More precisly it calls system::System::setPause(!commandContains(\"off\"))"});
-		Terminal::pushOutputLine({"@C9609 pause off@CO Unpauses the game"});
-		Terminal::pushOutputLine({"@C9609 pause@CO Pauses the game"});
+		pushOutputLine({""});
+		pushOutputLine({"More precisly it calls system::System::setPause(!commandContains(\"off\"))"});
+		pushOutputLine({"@C9609 pause off@CO Unpauses the game"});
+		pushOutputLine({"@C9609 pause@CO Pauses the game"});
 	}
 	else
 	{
@@ -217,8 +219,8 @@ static void executeResetGui()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609 rgui@CO reloads current scene gui from file, doesn't take arguments"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609 rgui@CO reloads current scene gui from file, doesn't take arguments"});
 	}
 	else
 	{
@@ -238,13 +240,13 @@ static void executeClear()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609clear@CO clears terminal output area, doesn't take arguments"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609clear@CO clears terminal output area, doesn't take arguments"});
 	}
 	else
 	{
 		for(int i = 0; i < 20; ++i)
-			Terminal::pushOutputLine({""});
+			pushOutputLine({""});
 	}
 }
 
@@ -252,12 +254,12 @@ static void executeTeleport()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609tp 100"});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609tp -100 2000"});
-		Terminal::pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
-		Terminal::pushOutputLine({"If player is not on the scene it doesn't do anything"});
-		Terminal::pushOutputLine({"@C9609tp@CO teleports player to absolute coordinate"});
+		pushOutputLine({""});
+		pushOutputLine({"@C2919 Example: @C9609tp 100"});
+		pushOutputLine({"@C2919 Example: @C9609tp -100 2000"});
+		pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
+		pushOutputLine({"If player is not on the scene it doesn't do anything"});
+		pushOutputLine({"@C9609tp@CO teleports player to absolute coordinate"});
 	}
 	else
 	{
@@ -278,12 +280,12 @@ static void executeMove()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609m 100"});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609m -100 2000"});
-		Terminal::pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
-		Terminal::pushOutputLine({"If player is not on the scene it doesn't do anything"});
-		Terminal::pushOutputLine({"@C9609m@CO teleports player to relative coordinate"});
+		pushOutputLine({""});
+		pushOutputLine({"@C2919 Example: @C9609m 100"});
+		pushOutputLine({"@C2919 Example: @C9609m -100 2000"});
+		pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
+		pushOutputLine({"If player is not on the scene it doesn't do anything"});
+		pushOutputLine({"@C9609m@CO teleports player to relative coordinate"});
 	}
 	else
 	{
@@ -301,10 +303,10 @@ static void executeGive()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609give bullet 100"});
-		Terminal::pushOutputLine({"It takes 2 parameters (number of items, item name)"});
-		Terminal::pushOutputLine({"@C9609give@CO puts given number of given item in player's inventory"});
+		pushOutputLine({""});
+		pushOutputLine({"@C2919 Example: @C9609give bullet 100"});
+		pushOutputLine({"It takes 2 parameters (number of items, item name)"});
+		pushOutputLine({"@C9609give@CO puts given number of given item in player's inventory"});
 	}
 	else
 	{
@@ -320,7 +322,7 @@ static void executeGive()
 		}
 		else
 		{
-			Terminal::pushOutputLine({"Type of item is unknown!", errorRedColor});
+			pushOutputLine({"Type of item is unknown!", errorRedColor});
 		}
 	}
 }
@@ -329,12 +331,12 @@ static void executeCurrentPos()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609currentpos@CO Outputs player's position to terminal"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609currentpos@CO Outputs player's position to terminal"});
 	}
 	else
 	{
-		Terminal::pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
+		pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
 	}
 }
 
@@ -342,9 +344,9 @@ static void executeCollisionDebug()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609cold off@CO turns off collision rects debug"});
-		Terminal::pushOutputLine({"@C9609cold@CO turns on collision rects debug"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609cold off@CO turns off collision rects debug"});
+		pushOutputLine({"@C9609cold@CO turns on collision rects debug"});
 	}
 	else
 	{
@@ -356,9 +358,9 @@ static void executeVelocityChangingAreaDebug()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609veld off@CO turns off velocity changing areas debug"});
-		Terminal::pushOutputLine({"@C9609veld@CO turns on velocity changing areas debug"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609veld off@CO turns off velocity changing areas debug"});
+		pushOutputLine({"@C9609veld@CO turns on velocity changing areas debug"});
 	}
 	else
 	{
@@ -370,9 +372,9 @@ static void executePushingAreaDebug()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609pushd off@CO turns off pushing areas debug"});
-		Terminal::pushOutputLine({"@C9609pushd@CO turns on pushing areas debug"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609pushd off@CO turns off pushing areas debug"});
+		pushOutputLine({"@C9609pushd@CO turns on pushing areas debug"});
 	}
 	else
 	{
@@ -384,9 +386,9 @@ static void executeLightWallsAreaDebug()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({""});
-		Terminal::pushOutputLine({"@C9609lwd off@CO turns off light walls debug"});
-		Terminal::pushOutputLine({"@C9609lwd@CO turns on light walls debug"});
+		pushOutputLine({""});
+		pushOutputLine({"@C9609lwd off@CO turns off light walls debug"});
+		pushOutputLine({"@C9609lwd@CO turns on light walls debug"});
 	}
 	else
 	{
@@ -412,10 +414,10 @@ static void executeMute()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609mute sound @CO mutes only sound"});
-		Terminal::pushOutputLine({"@C9609mute music @CO mutes only music"});
-		Terminal::pushOutputLine({"@C9609mute @CO mutes audio"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609mute sound @CO mutes only sound"});
+		pushOutputLine({"@C9609mute music @CO mutes only music"});
+		pushOutputLine({"@C9609mute @CO mutes audio"});
 	}
 	else
 	{
@@ -427,10 +429,10 @@ static void executeUnmute()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609unmute sound @CO unmutes only sound"});
-		Terminal::pushOutputLine({"@C9609unmute music @CO unmutes only music"});
-		Terminal::pushOutputLine({"@C9609unmute @CO unmutes audio"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609unmute sound @CO unmutes only sound"});
+		pushOutputLine({"@C9609unmute music @CO unmutes only music"});
+		pushOutputLine({"@C9609unmute @CO unmutes audio"});
 	}
 	else
 	{
@@ -442,16 +444,16 @@ static void executeSetVolume()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609 setvolume sound @CO sets sound volume"});
-		Terminal::pushOutputLine({"@C9609 setvolume music @CO sets music volume"});
-		Terminal::pushOutputLine({"@C9609 setvolume @CO sets audio volume"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609 setvolume sound @CO sets sound volume"});
+		pushOutputLine({"@C9609 setvolume music @CO sets music volume"});
+		pushOutputLine({"@C9609 setvolume @CO sets audio volume"});
 	}
 	else
 	{
 		const float newVolume = getSingleFloatArgument();
 		if(!(commandContains('0')) && newVolume == 0 || newVolume > 100) {
-			Terminal::pushOutputLine({"Incorrect volume value! Enter value from 0 to 100", sf::Color::Red});
+			pushOutputLine({"Incorrect volume value! Enter value from 0 to 100", sf::Color::Red});
 			return;
 		}
 
@@ -472,11 +474,11 @@ static void executeLight()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609 light rays off @CO disables rays debug"});
-		Terminal::pushOutputLine({"@C9609 light rays @CO enables rays debug"});
-		Terminal::pushOutputLine({"@C9609 light off @CO disables lighting"});
-		Terminal::pushOutputLine({"@C9609 light @CO enables lighting"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609 light rays off @CO disables rays debug"});
+		pushOutputLine({"@C9609 light rays @CO enables rays debug"});
+		pushOutputLine({"@C9609 light off @CO disables lighting"});
+		pushOutputLine({"@C9609 light @CO enables lighting"});
 	}
 	else
 	{
@@ -495,9 +497,9 @@ static void executeFontDebug()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609 fontd off @CO disables font debug"});
-		Terminal::pushOutputLine({"@C9609 fontd @CO enables font debug"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609 fontd off @CO disables font debug"});
+		pushOutputLine({"@C9609 fontd @CO enables font debug"});
 	}
 	else
 	{
@@ -514,9 +516,9 @@ static void executeNoFocusUpdate()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609 nofocusupdate off@CO disables updating game if game's window doesn't have focus"});
-		Terminal::pushOutputLine({"@C9609 nofocusupdate@CO enables updating game if game's window doesn't have focus"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609 nofocusupdate off@CO disables updating game if game's window doesn't have focus"});
+		pushOutputLine({"@C9609 nofocusupdate@CO enables updating game if game's window doesn't have focus"});
 	}
 	else
 	{
@@ -528,9 +530,9 @@ static void executeDebugCamera()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C9609 dc off@CO disables debug camera"});
-		Terminal::pushOutputLine({"@C9609 dc@CO enables debug camera"});
+		pushOutputLine({});
+		pushOutputLine({"@C9609 dc off@CO disables debug camera"});
+		pushOutputLine({"@C9609 dc@CO enables debug camera"});
 	}
 	else
 	{
@@ -560,16 +562,21 @@ static void executeDebugCamera()
 	}
 }
 
+static void executeFreezeZombies()
+{
+	system::ZombieSystem::freezeZombies = !commandContains("off");
+}
+
 #ifndef PH_DISTRIBUTION
 
 static void executeResetGuiLive()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"you can change rguilivefreq with @C9609 rguilivefreq @CO command"});
-		Terminal::pushOutputLine({"@C9609 rguilive off@CO disables loading gui from file once for rguilivefreq seconds"});
-		Terminal::pushOutputLine({"@C9609 rguilive@CO enables loading gui from file once for rguilivefreq seconds"});
+		pushOutputLine({});
+		pushOutputLine({"you can change rguilivefreq with @C9609 rguilivefreq @CO command"});
+		pushOutputLine({"@C9609 rguilive off@CO disables loading gui from file once for rguilivefreq seconds"});
+		pushOutputLine({"@C9609 rguilive@CO enables loading gui from file once for rguilivefreq seconds"});
 	}
 	else
 	{
@@ -582,9 +589,9 @@ static void executeResetGuiLiveFrequency()
 {
 	if(commandContains('?'))
 	{
-		Terminal::pushOutputLine({});
-		Terminal::pushOutputLine({"@C2919 Example: @C9609 rguilivefreq 0.5@CO sets rguilive freq to 0.5 seconds"});
-		Terminal::pushOutputLine({"@C9609 rguilivefreq@CO takes one floating point argument and sets rguilivefreq"});
+		pushOutputLine({});
+		pushOutputLine({"@C2919 Example: @C9609 rguilivefreq 0.5@CO sets rguilive freq to 0.5 seconds"});
+		pushOutputLine({"@C9609 rguilivefreq@CO takes one floating point argument and sets rguilivefreq"});
 	}
 	else
 	{
@@ -611,8 +618,6 @@ static void updateCommands(float dt)
 	}
 #endif
 }
-
-namespace Terminal {
 
 void handleEvent(sf::Event e)
 {
@@ -712,6 +717,7 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["fontd"] = &executeFontDebug;
 	commandsMap["nofocusupdate"] = &executeNoFocusUpdate;
 	commandsMap["dc"] = &executeDebugCamera;
+	commandsMap["fz"] = &executeFreezeZombies;
 	commandsMap[""] = &executeInfoMessage;
 
 #ifndef PH_DISTRIBUTION
@@ -756,4 +762,4 @@ void update(float dt)
 	}
 }
 
-}}
+}

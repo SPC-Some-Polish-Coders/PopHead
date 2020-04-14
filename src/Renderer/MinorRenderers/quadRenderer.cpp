@@ -412,7 +412,7 @@ void QuadRenderer::submitQuad(Texture* texture, const IntRect* textureRect, cons
 
 void QuadRenderer::flush(bool affectedByLight)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	const Shader* currentlyBoundShader = nullptr;
 	auto& hashMap = affectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
@@ -420,7 +420,7 @@ void QuadRenderer::flush(bool affectedByLight)
 	// sort hash map indices
 	if(hashMap.needsToBeSorted)
 	{
-		PH_PROFILE_SCOPE("sorting indices", 0);
+		PH_PROFILE_SCOPE("sorting indices");
 		hashMap.needsToBeSorted = false;
 		for(unsigned i = 0; i < hashMap.size - 1; ++i)
 		{

@@ -14,7 +14,7 @@ PlayerCameraMovement::PlayerCameraMovement(entt::registry& registry)
 
 void PlayerCameraMovement::update(float dt)
 {
-	PH_PROFILE_FUNCTION(0);
+	PH_PROFILE_FUNCTION();
 
 	auto view = mRegistry.view<component::Player, component::Camera, component::BodyRect, component::FaceDirection>();
 	view.each([dt](const component::Player, component::Camera& camera, const component::BodyRect& body, const component::FaceDirection face) {

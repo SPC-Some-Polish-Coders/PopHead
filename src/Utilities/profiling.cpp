@@ -1,86 +1,127 @@
 #include "profiling.hpp"
+#include "Utilities/threadId.hpp"
+
 #include <algorithm>
 #include <thread>
 
 namespace ph {
 
-ProfilingManager::ProfilingManager()
-	:mIsThereActiveSession(false)
-	,mProfileCount(0)
+using clock = std::chrono::steady_clock;
+
+ProfilingResult::id MainProfilingManager::ThreadProfilingManager::commitResultStart(std::string&& name, std::vector<std::pair<std::string, std::string>>&& args)
 {
+	auto& result = mResults.emplace_back();
+	result.name = std::move(name);
+	result.args = std::move(args);
+	result.resultId = mNextResultId++;
+	result.startTime = std::chrono::time_point_cast<std::chrono::microseconds>(clock::now()).time_since_epoch().count();
+	return result.resultId;
 }
 
-void ProfilingManager::beginSession(const std::string& name, const std::string& filepath)
+void MainProfilingManager::ThreadProfilingManager::commitResultEnd(ProfilingResult::id id)
 {
-	mOutputStream.open(filepath);
-	writeHeader();
-	mIsThereActiveSession = true;
+	for (auto& result : mResults)
+	{
+		if (result.resultId == id)
+		{
+			auto endTime = std::chrono::time_point_cast<std::chrono::microseconds>(clock::now()).time_since_epoch().count();
+			result.duration = static_cast<unsigned int>(endTime - result.startTime);
+			if (mResults[0].resultId == id)
+				mIsFirstResultFinished = true;
+			return;
+		}
+	}
 }
 
-void ProfilingManager::endSession()
+bool MainProfilingManager::ThreadProfilingManager::hasCommitedResults() const
 {
-	writeFooter();
-	mOutputStream.close();
-	mIsThereActiveSession = false;
-	mProfileCount = 0;
+	return mIsFirstResultFinished;
 }
 
-void ProfilingManager::writeProfile(std::string&& name, long long start, long long end, unsigned threadID)
+std::vector<ProfilingResult> MainProfilingManager::ThreadProfilingManager::getCommitedResults()
 {
-	std::lock_guard<std::mutex> lock(mDataMutex);
+	if (hasCommitedResults())
+	{
+		mIsFirstResultFinished = false;
+		return std::move(mResults);
+	}
+	return {};
+}
 
-	if(!mIsThereActiveSession)
+thread_local MainProfilingManager::ThreadProfilingManager MainProfilingManager::mThreadManager;
+std::ofstream MainProfilingManager::mOutputFile;
+std::mutex MainProfilingManager::mFileMutex;
+bool MainProfilingManager::mIsActive = false;
+
+ProfilingResult::id MainProfilingManager::commitResultStart(std::string name, std::vector<std::pair<std::string, std::string>> args)
+{
+	return mThreadManager.commitResultStart(std::move(name), std::move(args));
+}
+
+void MainProfilingManager::commitResultEnd(ProfilingResult::id id)
+{
+	if (!mIsActive)
 		return;
 
-	if(mProfileCount++ > 0)
-		mOutputStream << ",";
+	mThreadManager.commitResultEnd(id);
+	auto results = mThreadManager.getCommitedResults();
+	if (!results.empty())
+	{
+		std::lock_guard lock(mFileMutex);
 
-	std::replace(name.begin(), name.end(), '"', '\'');
+		for (const auto& result : results)
+		{
+			mOutputFile << ",{\"dur\":" << result.duration
+						<< ",\"name\":\"" << result.name
+						<< "\",\"ph\":\"X\",\"pid\":0,\"tid\":" << ThreadId::getCurrentThreadId()
+						<< ",\"ts\":" << result.startTime;
 
-	mOutputStream << "{";
-	mOutputStream << "\"cat\":\"function\",";
-	mOutputStream << "\"dur\":" << (end - start) << ',';
-	mOutputStream << "\"name\":\"" << name << "\",";
-	mOutputStream << "\"ph\":\"X\",";
-	mOutputStream << "\"pid\":0,";
-	mOutputStream << "\"tid\":" << threadID << ",";
-	mOutputStream << "\"ts\":" << start;
-	mOutputStream << "}";
+			if (!result.args.empty())
+			{
+				mOutputFile << ",\"args\":{";
+				bool firstPair = true;
+				for (const auto& pair : result.args)
+				{
+					if (!firstPair)
+						mOutputFile << ',';
+					firstPair = false;
+					mOutputFile << "\"" << pair.first
+								<< "\":\"" << pair.second
+								<< "\"";
+				}
+				mOutputFile << '}';
+			}
+
+			mOutputFile << '}';
+		}
+		// {"dur":118502,"name":"ph::parseScene","ph":"X","pid":0,"tid":1,"ts":0,"args":{"arg":"value"}}
+	}
 }
 
-void ProfilingManager::writeHeader()
+void MainProfilingManager::beginSession(const std::string& filepath)
 {
-	mOutputStream << "{\"otherData\": {},\"traceEvents\":[";
+	std::lock_guard lock(mFileMutex);
+	mOutputFile.open(filepath);
+	mOutputFile << "{\"otherData\": {},\"traceEvents\":[{\"args\":{\"name\":\"PopHead\"},\"cat\":\"__metadata\",\"name\":\"process_name\",\"ph\":\"M\",\"pid\":0}";
+	mIsActive = true;
 }
 
-void ProfilingManager::writeFooter()
+void MainProfilingManager::endSession()
 {
-	mOutputStream << "]}";
-	mOutputStream.flush();
+	std::lock_guard lock(mFileMutex);
+	mOutputFile << "]}" << std::flush;
+	mOutputFile.close();
+	mIsActive = false;
 }
 
-ProfilingTimer::ProfilingTimer(const char* name, unsigned threadID)
-	:mName(name)
-	,mThreadID(threadID)
-	,mStopped(false)
+ProfilingTimer::ProfilingTimer(const char* name, std::vector<std::pair<std::string, std::string>> args)
 {
-	mStartTimepoint = std::chrono::high_resolution_clock::now();
+	resultId = MainProfilingManager::commitResultStart(name, std::move(args));
 }
 
 ProfilingTimer::~ProfilingTimer()
 {
-	if(!mStopped)
-		stop();
-}
-
-void ProfilingTimer::stop()
-{
-	auto endTimepoint = std::chrono::high_resolution_clock::now();
-	long long start = std::chrono::time_point_cast<std::chrono::microseconds>(mStartTimepoint).time_since_epoch().count();
-	long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
-	ProfilingManager::getInstance().writeProfile(std::move(mName), start, end, mThreadID);
-	mStopped = true;
+	MainProfilingManager::commitResultEnd(resultId);
 }
 
 }
-
