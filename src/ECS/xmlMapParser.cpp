@@ -295,16 +295,73 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 
 			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize));
 			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
-			
-			sf::Vector2f tileWorldPos(
+
+			// create quad data
+			QuadData qd;
+
+			sf::Vector2f tileWorldPos( 
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
 				positionInTiles.y * static_cast<float>(info.tileSize.y)
 			);
 
-			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			qd.position = tileWorldPos; 
 
-			// create quad data
-			auto qd = createQuadData(tileWorldPos, info.tileSize, isHorizontallyFlipped, isVerticallyFlipped, isDiagonallyFlipped, tileId, tilesets, tilesetIndex);
+			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
+			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
+			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
+				qd.size = tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped) {
+				qd.size = -tileSize;
+				qd.position += tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 90.f;
+			}
+			else if(isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 0.f;
+			}
+			else if(isVerticallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.y += tileSize.y;
+				qd.rotation = 0.f;
+			}
+			else if(isDiagonallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.y -= tileSize.x;
+				qd.rotation = 270.f;
+			}
+			qd.rotation = Math::degreesToRadians(qd.rotation);
+
+			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
+			qd.textureSlotRef = 0.f;
+
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			auto tileRectPosition = static_cast<sf::Vector2f>(
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
+			tileRectPosition.x *= (info.tileSize.x + 2);
+			tileRectPosition.y *= (info.tileSize.y + 2);
+			tileRectPosition.x += 1;
+			tileRectPosition.y += 1;
+			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
+			qd.textureRect.left = tileRectPosition.x / textureSize.x;
+			qd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
+			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
+			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
 			// emplace quad data to chunk
 			renderChunk.quads.emplace_back(qd);
@@ -454,15 +511,72 @@ void XmlMapParser::createFinitMapLayer(const std::vector<unsigned>& globalTileId
 
 			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInMap, (unsigned)info.mapSize.x));
 
+			// create quad data
+			QuadData qd;
+
 			sf::Vector2f tileWorldPos(
 				positionInTiles.x * static_cast<float>(info.tileSize.x),
 				positionInTiles.y * static_cast<float>(info.tileSize.y)
 			);
 
-			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			qd.position = tileWorldPos;
 
-			// create quad data
-			auto qd = createQuadData(tileWorldPos, info.tileSize, isHorizontallyFlipped, isVerticallyFlipped, isDiagonallyFlipped, tileId, tilesets, tilesetIndex);
+			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
+			qd.rotationOrigin = {tileSize.x / 2.f, tileSize.y / 2.f};
+			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
+				qd.size = tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped) {
+				qd.size = -tileSize;
+				qd.position += tileSize;
+				qd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 90.f;
+			}
+			else if(isVerticallyFlipped && isDiagonallyFlipped) {
+				qd.size = tileSize;
+				qd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.x += tileSize.x;
+				qd.rotation = 0.f;
+			}
+			else if(isVerticallyFlipped) {
+				qd.size = {tileSize.x, -tileSize.y};
+				qd.position.y += tileSize.y;
+				qd.rotation = 0.f;
+			}
+			else if(isDiagonallyFlipped) {
+				qd.size = {-tileSize.x, tileSize.y};
+				qd.position.y -= tileSize.x;
+				qd.rotation = 270.f;
+			}
+			qd.rotation = Math::degreesToRadians(qd.rotation);
+
+			qd.color = Vector4f{1.f, 1.f, 1.f, 1.f};
+			qd.textureSlotRef = 0.f;
+
+			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			auto tileRectPosition = static_cast<sf::Vector2f>(
+				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
+			tileRectPosition.x *= (info.tileSize.x + 2);
+			tileRectPosition.y *= (info.tileSize.y + 2);
+			tileRectPosition.x += 1;
+			tileRectPosition.y += 1;
+			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
+			qd.textureRect.left = tileRectPosition.x / textureSize.x;
+			qd.textureRect.top = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
+			qd.textureRect.width = static_cast<float>(info.tileSize.x) / textureSize.x;
+			qd.textureRect.height = static_cast<float>(info.tileSize.y) / textureSize.y;
 
 			// TODO: Optimize that
 			// find chunk index
@@ -565,71 +679,6 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
 			return i;
 	return std::string::npos;
-}
-
-QuadData XmlMapParser::createQuadData(sf::Vector2f tileWorldPos, sf::Vector2f tileSize, const bool isHorizontallyFlipped,
-									  const bool isVerticallyFlipped, const bool isDiagonallyFlipped, const unsigned tileId,
-									  const TilesetsData& tilesets, size_t tilesetIndex)
-{
-	QuadData qd;
-	qd.position = tileWorldPos;
-
-	qd.rotationOrigin = { tileSize.x / 2.f, tileSize.y / 2.f };
-	if (!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
-		qd.size = tileSize;
-		qd.rotation = 0.f;
-	}
-	else if (isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
-		qd.size = { tileSize.x, -tileSize.y };
-		qd.position.x += tileSize.x;
-		qd.rotation = 270.f;
-	}
-	else if (isHorizontallyFlipped && isVerticallyFlipped) {
-		qd.size = -tileSize;
-		qd.position += tileSize;
-		qd.rotation = 0.f;
-	}
-	else if (isHorizontallyFlipped && isDiagonallyFlipped) {
-		qd.size = tileSize;
-		qd.rotation = 90.f;
-	}
-	else if (isVerticallyFlipped && isDiagonallyFlipped) {
-		qd.size = tileSize;
-		qd.rotation = 270.f;
-	}
-	else if (isHorizontallyFlipped) {
-		qd.size = { -tileSize.x, tileSize.y };
-		qd.position.x += tileSize.x;
-		qd.rotation = 0.f;
-	}
-	else if (isVerticallyFlipped) {
-		qd.size = { tileSize.x, -tileSize.y };
-		qd.position.y += tileSize.y;
-		qd.rotation = 0.f;
-	}
-	else if (isDiagonallyFlipped) {
-		qd.size = { -tileSize.x, tileSize.y };
-		qd.position.y -= tileSize.x;
-		qd.rotation = 270.f;
-	}
-	qd.rotation = Math::degreesToRadians(qd.rotation);
-
-	qd.color = Vector4f{ 1.f, 1.f, 1.f, 1.f };
-	qd.textureSlotRef = 0.f;
-
-	auto tileRectPosition = static_cast<sf::Vector2f>(
-		Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
-	tileRectPosition.x *= (tileSize.x + 2);
-	tileRectPosition.y *= (tileSize.y + 2);
-	tileRectPosition.x += 1;
-	tileRectPosition.y += 1;
-	const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
-	qd.textureRect.left = tileRectPosition.x / textureSize.x;
-	qd.textureRect.top = (textureSize.y - tileRectPosition.y - tileSize.y) / textureSize.y;
-	qd.textureRect.width = static_cast<float>(tileSize.x) / textureSize.x;
-	qd.textureRect.height = static_cast<float>(tileSize.y) / textureSize.y;
-
-	return qd;
 }
 
 }
