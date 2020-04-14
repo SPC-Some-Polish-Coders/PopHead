@@ -151,7 +151,7 @@ static void executeHistory()
 static void executeHelp()
 {
 	pushOutputLine({});
-	pushOutputLine({"fz @C9999 freeze zombies @CO @S31 qrg @C9999 quad renderer debug", infoLimeColor});
+	pushOutputLine({"fz @C9999 freeze zombies @CO @S31 qrd @C9999 quad renderer debug", infoLimeColor});
 	pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
 	pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
 	pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});

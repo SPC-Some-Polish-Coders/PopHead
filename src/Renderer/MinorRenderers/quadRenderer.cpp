@@ -56,8 +56,10 @@ struct ChunksData
 	unsigned framesToDeleteChunkVBOs = deleteVBOsDelay;
 };
 
-static std::vector<GroundChunk> groundChunks;
 static ChunksData chunks;
+
+static std::vector<GroundChunk> groundChunks;
+static unsigned groundChunkVAO; 
 
 static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
@@ -267,8 +269,26 @@ void QuadRenderer::init()
 		GLCheck( glVertexAttribDivisor(i, 1) );
 	}
 
-	// create vao for chunks
+	// create dummy vao for chunks
 	glGenVertexArrays(1, &chunks.dummyVAO);
+
+	// create vao and vbo for ground chunks
+	glGenVertexArrays(1, &groundChunkVAO);
+	glBindVertexArray(groundChunkVAO);
+
+	float groundChunkVertices[] = {
+		0.f, 0.f,
+		16.f, 0.f,
+		0.f, 16.f,
+		16.f, 16.f
+	};
+	unsigned groundChunkVBO;
+	glGenBuffers(1, &groundChunkVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, groundChunkVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(groundChunkVertices), groundChunkVertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
 	// create white texture
 	mWhiteTexture = new Texture;
@@ -486,10 +506,9 @@ void QuadRenderer::flush(bool affectedByLight)
 
 				auto& gc = groundChunks[groundChunkIndex];
 
-				glBindVertexArray(0);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gc.texture);
+				GLCheck( glBindVertexArray(groundChunkVAO) );
+				GLCheck( glActiveTexture(GL_TEXTURE0) );
+				GLCheck( glBindTexture(GL_TEXTURE_2D, gc.texture) );
 
 				if(currentlyBoundShader != &groundChunkShader)
 				{
@@ -503,7 +522,7 @@ void QuadRenderer::flush(bool affectedByLight)
 				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
 				groundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.getBottomRight());
 
-				glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144);
+				GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144) );
 
 				++groundChunkIndex;
 				
@@ -554,7 +573,9 @@ void QuadRenderer::flush(bool affectedByLight)
 				drawFrom = Chunks;
 			}
 		}
-		
+
+		// TODO: delete cached chunk vbos 
+		/*	
 		if(--chunks.framesToDeleteChunkVBOs == 0)
 		{
 			// clear cached chunks outside camera
@@ -575,6 +596,7 @@ void QuadRenderer::flush(bool affectedByLight)
 				}
 			}
 		}
+		*/
 
 		chunks.thisFrameChunks.clear();
 		groundChunks.clear();

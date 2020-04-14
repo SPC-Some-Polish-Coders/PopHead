@@ -18,8 +18,7 @@ void main()
 
 	if(debugVisualization)
 	{
-		//fragColor *= vec4(5, 0.2, 0.2, 1);
-		fragColor = vec4(1, 0, 0, 1);
+		fragColor *= vec4(5, 0.2, 0.2, 1);
 	}
 }
 

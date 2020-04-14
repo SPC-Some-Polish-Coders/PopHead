@@ -1,6 +1,8 @@
 R"(
 #version 330 core
 
+layout (location = 0) in vec2 aVertexOffset;
+
 uniform vec2 chunkPos;
 uniform float z;
 
@@ -19,36 +21,19 @@ layout (std140) uniform SharedData
 
 void main()
 {
-	vec2 vertexOffset;
 	switch(gl_VertexID)
 	{
-		case 0: {
-			vertexOffset = vec2(0, 0);
-			uv = uvTopLeft;
-		} break;
-
-		case 1: {
-			vertexOffset = vec2(16, 0);
-			uv = uvTopRight;
-		} break;
-
-		case 2: {
-			vertexOffset = vec2(0, 16);
-			uv = uvBottomLeft;
-		} break;
-
-		case 3: {
-			vertexOffset = vec2(16, 16);
-			uv = uvBottomRight;
-		} break;
+		case 0: uv = uvTopLeft; break;
+		case 1: uv = uvTopRight; break;
+		case 2: uv = uvBottomLeft; break;
+		case 3: uv = uvBottomRight; break;
 	}
-
 	uv *= 576;
 
 	vec2 chunkRelPos;
 	chunkRelPos.x = (gl_InstanceID * 16) % (16 * 12);
 	chunkRelPos.y = floor(gl_InstanceID / 12) * 16;
-	gl_Position = gameWorldVPM * vec4(chunkPos + chunkRelPos + vertexOffset, z, 1); 
+	gl_Position = gameWorldVPM * vec4(chunkPos + chunkRelPos + aVertexOffset, z, 1); 
 }
 
 )"
