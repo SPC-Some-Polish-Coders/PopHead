@@ -219,14 +219,14 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n, char* name) 
+		auto submitVector = [](std::vector<unsigned>& v, size_t n, char* name) 
 		{
 			std::string str;
 			str += name;
 			str += ": ";
-			for(size_t i = 0; i < n && i < arr.marker; ++i)
+			for(size_t i = 0; i < n && i < v.size(); ++i)
 			{
-				str += std::to_string(arr.data[i]);
+				str += std::to_string(v[i]);
 				str += " ";
 			}
 			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
@@ -242,13 +242,13 @@ void endScene()
 		submitDebugCounter("Frames to delete chunk VBOs", quadRendererNumbers.framesToDeleteChunkVBOs);
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
-		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
-		submitDebugArray(quadRendererNumbers.renderGroupsZ, 12, "z");
-		submitDebugArray(quadRendererNumbers.renderGroupsIndices, 12, "indices");
+		submitVector(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
+		submitVector(quadRendererNumbers.renderGroupsZ, 12, "z");
+		submitVector(quadRendererNumbers.renderGroupsIndices, 12, "indices");
 		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
 		submitDebugCounter("Nr of quad renderer allocations: ", quadRendererNumbers.allocations);
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
 		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);

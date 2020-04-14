@@ -7,25 +7,20 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <optional>
+#include <vector>
 
 namespace ph {
 
 class Texture;
 
-struct QuadRendererDebugArray
-{
-	unsigned data[100] = {};
-	unsigned marker = 0;
-};
-
 struct QuadRendererDebugNumbers
 {
-	QuadRendererDebugArray renderGroupsSizes = {}; 
-	QuadRendererDebugArray renderGroupsZ = {}; 
-	QuadRendererDebugArray renderGroupsIndices = {}; 
-	QuadRendererDebugArray notAffectedByLightRenderGroupsSizes = {}; 
-	QuadRendererDebugArray notAffectedByLightRenderGroupsZ = {}; 
-	QuadRendererDebugArray notAffectedByLightRenderGroupsIndices = {}; 
+	std::vector<unsigned> renderGroupsSizes; 
+	std::vector<unsigned> renderGroupsZ; 
+	std::vector<unsigned> renderGroupsIndices; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsSizes; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsZ; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsIndices; 
 	unsigned allocations = 0;
 	unsigned chunks = 0;
 	unsigned framesToDeleteChunkVBOs = 0;

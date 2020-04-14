@@ -9,7 +9,6 @@
 #include <GL/glew.h>
 #include <algorithm>
 #include <cstdlib>
-#include <vector>
 
 namespace ph {
 
@@ -77,8 +76,8 @@ QuadRendererDebugNumbers getQuadRendererDebugNumbers()
 
 void resetQuadRendererDebugNumbers()
 {
-	debugNumbers.renderGroupsSizes = {}; 
-	debugNumbers.notAffectedByLightRenderGroupsSizes = {}; 
+	debugNumbers.renderGroupsSizes.clear(); 
+	debugNumbers.notAffectedByLightRenderGroupsSizes.clear(); 
 	debugNumbers.drawCalls = 0;
 	debugNumbers.chunks = 0;
 	debugNumbers.cachedChunks = 0;
@@ -122,12 +121,12 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 	if(hashMap == &renderGroupsHashMap)
 	{
 		debugNumbers.renderGroups = hashMap->size;
-		debugNumbers.renderGroupsZ.data[debugNumbers.renderGroupsZ.marker++] = (unsigned)(key.z * 255);
+		debugNumbers.renderGroupsZ.emplace_back((unsigned)(key.z * 255));
 	}
 	else if(hashMap == &notAffectedByLightRenderGroupsHashMap)
 	{
 		debugNumbers.renderGroupsNotAffectedByLight = hashMap->size; 
-		debugNumbers.notAffectedByLightRenderGroupsZ.data[debugNumbers.notAffectedByLightRenderGroupsZ.marker++] = (unsigned)(key.z * 255);
+		debugNumbers.notAffectedByLightRenderGroupsZ.emplace_back((unsigned)(key.z * 255));
 	}
 
 	// reallocate if there is no more space
@@ -231,6 +230,9 @@ void QuadRenderer::init()
 	}
 	groundChunks.reserve(20);
 	chunks.thisFrameChunks.reserve(50);
+
+	debugNumbers.renderGroupsIndices.resize(100);
+	debugNumbers.notAffectedByLightRenderGroupsIndices.resize(100);
 
 	// init shaders
 	defaultQuadShader.init(shader::quadSrc());
@@ -462,12 +464,11 @@ void QuadRenderer::flush(bool affectedByLight)
 			}
 		}
 		
-		debugNumbers.renderGroupsIndices.marker = 0;
+		debugNumbers.renderGroupsIndices.clear();
 		auto& debugIndices = affectedByLight ? debugNumbers.renderGroupsIndices : debugNumbers.notAffectedByLightRenderGroupsIndices;
 		for(unsigned i = 0; i < hashMap.size; ++i)
 		{
-			debugNumbers.renderGroupsIndices.data[i] = hashMap.indices[i];
-			++debugNumbers.renderGroupsIndices.marker;
+			debugNumbers.renderGroupsIndices[i] = hashMap.indices[i];
 		}
 	}
 
@@ -620,9 +621,9 @@ void QuadRenderer::flush(bool affectedByLight)
 			debugNumbers.drawnSprites += rg.quadsDataSize;
 			debugNumbers.drawnTextures += rg.texturesSize;
 			if(affectedByLight)
-				debugNumbers.renderGroupsSizes.data[debugNumbers.renderGroupsSizes.marker++] = rg.quadsDataSize;
+				debugNumbers.renderGroupsSizes.emplace_back(rg.quadsDataSize);
 			else
-				debugNumbers.notAffectedByLightRenderGroupsSizes.data[debugNumbers.notAffectedByLightRenderGroupsSizes.marker++] = rg.quadsDataSize;
+				debugNumbers.notAffectedByLightRenderGroupsSizes.emplace_back(rg.quadsDataSize);
 		}
 
 		// set up shader
