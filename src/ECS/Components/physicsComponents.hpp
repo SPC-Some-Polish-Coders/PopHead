@@ -10,6 +10,12 @@ namespace ph::component {
 		ph::FloatRect rect;
 	};
 
+	struct BodyCircle
+	{
+		sf::Vector2f center;
+		float radius;
+	};
+
 	struct Velocity
 	{
 		float dx, dy;
