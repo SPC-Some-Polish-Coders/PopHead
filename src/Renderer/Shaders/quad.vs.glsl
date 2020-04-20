@@ -49,13 +49,13 @@ void main()
         } break;
 
         case 2: {
-            modelVertexPos = vec2(aSize.x, aSize.y);
-            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
+            modelVertexPos = vec2(0, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
         } break;
 
         case 3: {
-            modelVertexPos = vec2(0, aSize.y);
-            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
+            modelVertexPos = vec2(aSize.x, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
         } break;
     }
 

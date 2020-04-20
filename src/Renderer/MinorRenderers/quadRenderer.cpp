@@ -254,11 +254,6 @@ void QuadRenderer::init()
 	GLCheck( glGenVertexArrays(1, &mVAO) );
 	GLCheck( glBindVertexArray(mVAO) );
 
-	unsigned quadIndices[] = {0, 1, 3, 1, 2, 3};
-	GLCheck( glGenBuffers(1, &mQuadIBO) );
-	GLCheck( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mQuadIBO) );
-	GLCheck( glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW) ); 
-
 	GLCheck( glGenBuffers(1, &mQuadsDataVBO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
 
@@ -669,7 +664,7 @@ void QuadRenderer::flush(bool affectedByLight)
 			GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mQuadsDataVBO) );
 			GLCheck( glBufferData(GL_ARRAY_BUFFER, nrOfInstances * sizeof(QuadData), quadsData, GL_STATIC_DRAW) );
 
-			GLCheck( glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (GLsizei)nrOfInstances) );
+			GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, (GLsizei)nrOfInstances) );
 
 			if(mIsDebugCountingActive)
 				++debugNumbers.drawCalls;
