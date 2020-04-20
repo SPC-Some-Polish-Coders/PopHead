@@ -35,22 +35,24 @@ struct GroundChunk
 struct Chunk
 {
 	FloatRect bounds;
-	unsigned rendererID;
+	unsigned vbo;
 	unsigned texture;
 	unsigned quadsCount;
 	float z;
 };
 
-struct CachedChunk
+struct RegisteredChunk
 {
 	FloatRect bounds;
-	unsigned rendererID;
+	unsigned id;
+	unsigned vbo;
 };
 
 struct ChunksData
 {
-	std::vector<CachedChunk> cachedChunks;
+	std::vector<RegisteredChunk> registerChunks;
 	std::vector<Chunk> thisFrameChunks;
+	unsigned nextRegisteredChunkID = 0;
 	unsigned dummyVAO;
 	unsigned framesToDeleteChunkVBOs = deleteVBOsDelay;
 };
@@ -80,7 +82,6 @@ void resetQuadRendererDebugNumbers()
 	debugNumbers.notAffectedByLightRenderGroupsSizes.clear(); 
 	debugNumbers.drawCalls = 0;
 	debugNumbers.chunks = 0;
-	debugNumbers.cachedChunks = 0;
 	debugNumbers.drawnSprites = 0;
 	debugNumbers.drawnTextures = 0;
 }
@@ -315,34 +316,36 @@ void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const Texture& texture, c
 	groundChunks.push_back(GroundChunk{textureRect, pos, texture.getID(), z});
 }
 
-void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture, const FloatRect& bounds,
-                               float z, unsigned* rendererID)
+unsigned QuadRenderer::registerNewChunk(const FloatRect& bounds)
 {
-	// check is the vbo of this chunk in VRam
-	bool vboOfThisChunkIsInVRam = false;
-	if(*rendererID != 0)
+	chunks.registerChunks.emplace_back(RegisteredChunk{bounds, chunks.nextRegisteredChunkID, 0});
+	++chunks.nextRegisteredChunkID;
+	return chunks.nextRegisteredChunkID - 1;
+}
+
+void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture, const FloatRect& bounds,
+                               float z, unsigned* id)
+{
+	for(auto& cached : chunks.registerChunks)
 	{
-		for(auto& cached : chunks.cachedChunks)
+		if(*id == cached.id) 
 		{
-			if(*rendererID == cached.rendererID)
+			if(cached.vbo)
 			{
-				vboOfThisChunkIsInVRam = true;
-				break;
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, texture.getID(), (unsigned)quadsData.size(), z});
 			}
+			else
+			{
+				// create the new vbo
+				glBindVertexArray(0);
+				glGenBuffers(1, &cached.vbo);
+				glBindBuffer(GL_ARRAY_BUFFER, cached.vbo);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(ChunkQuadData) * quadsData.size(), quadsData.data(), GL_STATIC_DRAW);
+			}
+			return;
 		}
 	}
-
-	if(!vboOfThisChunkIsInVRam)
-	{
-		// create the new vbo
-		glBindVertexArray(0);
-		glGenBuffers(1, rendererID);
-		glBindBuffer(GL_ARRAY_BUFFER, *rendererID);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(ChunkQuadData) * quadsData.size(), quadsData.data(), GL_STATIC_DRAW);
-		chunks.cachedChunks.emplace_back(CachedChunk{bounds, *rendererID});
-	}
-
-	chunks.thisFrameChunks.emplace_back(Chunk{bounds, *rendererID, texture.getID(), (unsigned)quadsData.size(), z});
+	PH_UNEXPECTED_SITUATION("chunk of this ID isn't cached in quad renderer");
 }
 
 void QuadRenderer::submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Texture* texture,
@@ -466,10 +469,13 @@ void QuadRenderer::flush(bool affectedByLight)
 		
 		debugNumbers.renderGroupsIndices.clear();
 		auto& debugIndices = affectedByLight ? debugNumbers.renderGroupsIndices : debugNumbers.notAffectedByLightRenderGroupsIndices;
+
+		/* TODO
 		for(unsigned i = 0; i < hashMap.size; ++i)
 		{
 			debugNumbers.renderGroupsIndices[i] = hashMap.indices[i];
 		}
+		*/
 	}
 
 	if(affectedByLight)
@@ -548,7 +554,7 @@ void QuadRenderer::flush(bool affectedByLight)
 				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
-				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, chunk.rendererID) );
+				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, chunk.vbo) );
 
 				GLCheck( glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, textureRect)) );
 				GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, position)) );
@@ -575,34 +581,24 @@ void QuadRenderer::flush(bool affectedByLight)
 			}
 		}
 
-		// TODO: delete cached chunk vbos 
-		/*	
 		if(--chunks.framesToDeleteChunkVBOs == 0)
 		{
-			// clear cached chunks outside camera
+			// delete vbos of chunks outside camera 
 
 			chunks.framesToDeleteChunkVBOs = deleteVBOsDelay;
 
-			for(unsigned i = 0; i < chunks.cachedChunks.size(); ++i)
+			for(auto& cached : chunks.registerChunks)
 			{
-				auto& cached = chunks.cachedChunks[i];
-				if(!mScreenBounds->doPositiveRectsIntersect(cached.bounds))
+				if(cached.vbo && !mScreenBounds->doPositiveRectsIntersect(cached.bounds))
 				{
-					glDeleteBuffers(1, &cached.rendererID);
-					chunks.cachedChunks.erase(chunks.cachedChunks.begin() + i);
-				}
-				else
-				{
-					++i;
+					glDeleteBuffers(1, &cached.vbo);
+					cached.vbo = 0;
 				}
 			}
 		}
-		*/
 
 		chunks.thisFrameChunks.clear();
 		groundChunks.clear();
-
-		debugNumbers.cachedChunks = (unsigned)chunks.cachedChunks.size();
 	}
 
 	// NOTE: We assume that quads it hash map are always at top of ground chunks and chunks

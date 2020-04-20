@@ -41,7 +41,7 @@ namespace component {
 		FloatRect quadsBounds;
 		FloatRect lightWallsBounds;
 		unsigned char z;
-		unsigned rendererID = 0;
+		unsigned rendererID;
 	};
 
 	struct LightWall

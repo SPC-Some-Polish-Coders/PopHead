@@ -481,6 +481,7 @@ void XmlMapParser::createInfiniteMapChunk(sf::Vector2f chunkPos, const std::vect
 			rc.quadsBounds = quadsBounds;
 			rc.lightWallsBounds = lightWallsBounds;
 			rc.z = z;
+			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
 
 			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
 			mscb.rects = chunkCollisionRects;

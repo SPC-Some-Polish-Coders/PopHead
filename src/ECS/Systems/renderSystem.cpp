@@ -97,6 +97,7 @@ void RenderSystem::update(float dt)
 	{
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, mTilesetTexture, chunk.quadsBounds, chunk.z, &chunk.rendererID);
+
 		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});

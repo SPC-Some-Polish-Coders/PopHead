@@ -238,7 +238,6 @@ void endScene()
 			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
 		submitDebugCounter("Nr of chunks: ", quadRendererNumbers.chunks);
-		submitDebugCounter("Nr of cached chunks: ", quadRendererNumbers.cachedChunks);
 		submitDebugCounter("Frames to delete chunk VBOs", quadRendererNumbers.framesToDeleteChunkVBOs);
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
@@ -277,6 +276,11 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t,
                                           unsigned char z, ProjectionType projectionType)
 {
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
+}
+
+unsigned registerNewChunk(const FloatRect& bounds)
+{
+	return quadRenderer.registerNewChunk(bounds);
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,

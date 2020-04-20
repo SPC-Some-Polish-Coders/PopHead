@@ -24,7 +24,6 @@ struct QuadRendererDebugNumbers
 	unsigned allocations = 0;
 	unsigned chunks = 0;
 	unsigned framesToDeleteChunkVBOs = 0;
-	unsigned cachedChunks = 0;
 	unsigned renderGroups = 0;
 	unsigned renderGroupsNotAffectedByLight = 0;
 	unsigned drawCalls = 0;
@@ -46,6 +45,8 @@ public:
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 
 	void submitGroundChunk(sf::Vector2f pos, const Texture&, const FloatRect& textureRect, float z);
+
+	unsigned registerNewChunk(const FloatRect& bounds);
 
 	void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,
 	                 const FloatRect& bounds, float z, unsigned* rendererID);
