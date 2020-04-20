@@ -278,20 +278,25 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t,
 	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
+void setChunksTexture(const Texture& texture)
+{
+	quadRenderer.setChunksTexture(texture.getID());	
+}
+
 unsigned registerNewChunk(const FloatRect& bounds)
 {
 	return quadRenderer.registerNewChunk(bounds);
 }
 
-void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,
+void submitChunk(std::vector<ChunkQuadData>& quadsData,
                  const FloatRect& bounds, unsigned char z, unsigned* rendererID)
 {
-	quadRenderer.submitChunk(quadsData, texture, bounds, getNormalizedZ(z), rendererID);
+	quadRenderer.submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z)  
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z)  
 {
-	quadRenderer.submitGroundChunk(pos, texture, textureRect, getNormalizedZ(z));
+	quadRenderer.submitGroundChunk(pos, textureRect, getNormalizedZ(z));
 }
 
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)

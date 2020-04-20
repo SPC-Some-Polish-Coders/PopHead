@@ -12,7 +12,7 @@
 
 namespace ph {
 
-static constexpr unsigned deleteVBOsDelay = 50;
+static constexpr unsigned deleteVBOsDelay = 500;
 
 struct RenderGroupsHashMap
 {
@@ -28,7 +28,6 @@ struct GroundChunk
 {
 	FloatRect textureRect;
 	sf::Vector2f pos;
-	unsigned texture;
 	float z;
 };
 
@@ -36,7 +35,6 @@ struct Chunk
 {
 	FloatRect bounds;
 	unsigned vbo;
-	unsigned texture;
 	unsigned quadsCount;
 	float z;
 };
@@ -62,6 +60,8 @@ static ChunksData chunks;
 static std::vector<GroundChunk> groundChunks;
 static unsigned groundChunkVAO; 
 
+static unsigned chunksTexture; // for chunks and ground chunks
+
 static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
 
@@ -70,6 +70,11 @@ static QuadRendererDebugNumbers debugNumbers;
 static Shader defaultQuadShader;
 static Shader groundChunkShader;
 static Shader chunkShader;
+
+void QuadRenderer::setChunksTexture(unsigned texture)
+{
+	chunksTexture = texture;
+}
 
 QuadRendererDebugNumbers getQuadRendererDebugNumbers()
 {
@@ -311,9 +316,9 @@ void QuadRenderer::shutDown()
 	glDeleteVertexArrays(1, &chunks.dummyVAO);
 }
 
-void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, float z)
+void QuadRenderer::submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z)
 {
-	groundChunks.push_back(GroundChunk{textureRect, pos, texture.getID(), z});
+	groundChunks.push_back(GroundChunk{textureRect, pos, z});
 }
 
 unsigned QuadRenderer::registerNewChunk(const FloatRect& bounds)
@@ -323,7 +328,7 @@ unsigned QuadRenderer::registerNewChunk(const FloatRect& bounds)
 	return chunks.nextRegisteredChunkID - 1;
 }
 
-void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture, const FloatRect& bounds,
+void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
                                float z, unsigned* id)
 {
 	for(auto& cached : chunks.registerChunks)
@@ -332,7 +337,7 @@ void QuadRenderer::submitChunk(std::vector<ChunkQuadData>& quadsData, const Text
 		{
 			if(cached.vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, texture.getID(), (unsigned)quadsData.size(), z});
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), z});
 			}
 			else
 			{
@@ -515,7 +520,7 @@ void QuadRenderer::flush(bool affectedByLight)
 
 				GLCheck( glBindVertexArray(groundChunkVAO) );
 				GLCheck( glActiveTexture(GL_TEXTURE0) );
-				GLCheck( glBindTexture(GL_TEXTURE_2D, gc.texture) );
+				GLCheck( glBindTexture(GL_TEXTURE_2D, chunksTexture) );
 
 				if(currentlyBoundShader != &groundChunkShader)
 				{
@@ -544,7 +549,7 @@ void QuadRenderer::flush(bool affectedByLight)
 				auto& chunk = chunks.thisFrameChunks[chunkIndex];
 
 				GLCheck( glActiveTexture(GL_TEXTURE0) );
-				GLCheck( glBindTexture(GL_TEXTURE_2D, chunk.texture) );
+				GLCheck( glBindTexture(GL_TEXTURE_2D, chunksTexture) );
 
 				if(currentlyBoundShader != &chunkShader)
 				{

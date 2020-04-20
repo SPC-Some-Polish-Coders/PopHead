@@ -44,11 +44,13 @@ public:
 	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 
-	void submitGroundChunk(sf::Vector2f pos, const Texture&, const FloatRect& textureRect, float z);
+	void setChunksTexture(unsigned texture);
+
+	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z);
 
 	unsigned registerNewChunk(const FloatRect& bounds);
 
-	void submitChunk(std::vector<ChunkQuadData>& quadsData, const Texture& texture,
+	void submitChunk(std::vector<ChunkQuadData>& quadsData,
 	                 const FloatRect& bounds, float z, unsigned* rendererID);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);

@@ -19,8 +19,8 @@ namespace ph::system {
 
 RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 	:System(registry)
-	,mTilesetTexture(tileset)
 {
+	Renderer::setChunksTexture(tileset);
 }
 
 void RenderSystem::update(float dt)
@@ -88,7 +88,7 @@ void RenderSystem::update(float dt)
 	groundChunks.each([this, currentCamera](component::GroundRenderChunk& chunk)
 	{
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), mTilesetTexture, chunk.textureRect, chunk.z);
+			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z);
 	});
 
 	// submit map chunks
@@ -96,7 +96,7 @@ void RenderSystem::update(float dt)
 	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
 	{
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
-			Renderer::submitChunk(chunk.quads, mTilesetTexture, chunk.quadsBounds, chunk.z, &chunk.rendererID);
+			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID);
 
 		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
