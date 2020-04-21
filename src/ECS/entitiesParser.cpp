@@ -90,6 +90,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Medkit",	              	    &EntitiesParser::parseMedkit},
 		{"Player",                	    &EntitiesParser::parsePlayer},
 		{"Zombie",                	    &EntitiesParser::parseZombie},
+		{"SlowZombieBehavior",			&EntitiesParser::parseSlowZombieBehavior},
 		{"Bullets",                	    &EntitiesParser::parseBullets},
 		{"Velocity",              	    &EntitiesParser::parseVelocity},
 		{"PushingForces",               &EntitiesParser::parsePushingForces},
@@ -447,6 +448,11 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
 	zombie.timeToMoveToAnotherTile = entityComponentNode.getAttribute("timeToMoveToAnotherTile")->toFloat();
 	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
+}
+
+void EntitiesParser::parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::SlowZombieBehavior>(entity);
 }
 
 void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)

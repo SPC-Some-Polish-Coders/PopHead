@@ -57,6 +57,7 @@ private:
 	void parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseZombie(const Xml& entityComponentNode, entt::entity& entity);
+	void parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGroundRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 	void parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity);
