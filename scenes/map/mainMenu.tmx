@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="-1" width="1" height="1" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="1" height="1" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="9">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -449,8 +449,8 @@
 3,2,3,4,0,0,0,0,0,0,0,0,
 34,34,34,3221225537,0,0,0,0,0,0,0,0,
 5,6,34,3221225537,0,0,0,0,0,0,0,0,
-3221225478,2684354566,34,3221225537,0,0,0,0,1610612740,3221225570,3221225570,4,
-34,34,34,3221225537,0,0,0,0,2684354658,5,6,1610612834,
+3221225478,2684354566,34,3221225537,7,2147483655,536870919,2684354567,1610612740,3221225570,3221225570,4,
+34,34,34,3221225537,1073741831,3221225479,1610612743,3758096391,2684354658,5,6,1610612834,
 5,1610612801,1610612801,2684354564,1610612740,2,2,4,2684354658,37,38,1610612834,
 3221225505,0,0,0,65,5,6,36,2684354658,5,98,2684354564,
 36,0,0,0,65,37,38,36,2684354658,68,0,0,

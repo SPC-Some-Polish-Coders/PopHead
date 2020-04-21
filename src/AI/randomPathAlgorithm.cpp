@@ -5,7 +5,7 @@
 
 namespace ph {
 
-RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2u startNodePosition)
+RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2i startNodePosition)
 	:mObstacleGrid(obstacleGrid)
 	,mStartNodePosition(startNodePosition)
 	,mMaximalWalkableDistance(5)

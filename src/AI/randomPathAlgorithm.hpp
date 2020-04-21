@@ -10,7 +10,7 @@ namespace ph {
 class RandomPathAlgorithm
 {
 public:
-	RandomPathAlgorithm(const ObstacleGrid&, const sf::Vector2u startNodePosition);
+	RandomPathAlgorithm(const ObstacleGrid&, const sf::Vector2i startNodePosition);
 	Path getRandomPath();
 
 private:

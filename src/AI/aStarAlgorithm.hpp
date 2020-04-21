@@ -13,7 +13,7 @@ namespace ph {
 class AStarAlgorithm
 {
 public:
-	AStarAlgorithm(const ObstacleGrid& grid, const sf::Vector2u& startNodePosition, const sf::Vector2u& destinationNodePosition);
+	AStarAlgorithm(const ObstacleGrid& grid, const sf::Vector2i& startNodePosition, const sf::Vector2i& destinationNodePosition);
 	Path getPath();
 
 private:
@@ -24,8 +24,8 @@ private:
 
 private:
 	NodesGrid mNodesGrid;
-	const sf::Vector2u mStartNodePosition;
-	const sf::Vector2u mDestinationNodePosition;
+	const sf::Vector2i mStartNodePosition;
+	const sf::Vector2i mDestinationNodePosition;
 };
 
 } 

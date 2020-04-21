@@ -63,7 +63,7 @@ Path AIManager::getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosi
 {
 	auto dest = toNodePosition(destinationPosition);
 	if (mObstacleGrid.isObstacle(dest.x, dest.y))
-		dest += sf::Vector2u(1, 1);
+		dest += sf::Vector2i(1, 1);
 
 	AStarAlgorithm a(mObstacleGrid, toNodePosition(startPosition), dest);
 	auto path = a.getPath();
@@ -72,9 +72,9 @@ Path AIManager::getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosi
 	return path;
 }
 
-sf::Vector2u AIManager::toNodePosition(sf::Vector2f position) const
+sf::Vector2i AIManager::toNodePosition(sf::Vector2f position) const
 {
-	return static_cast<sf::Vector2u>(sf::Vector2f(position.x / mTileSize.x, position.y / mTileSize.y));
+	return static_cast<sf::Vector2i>(sf::Vector2f(position.x / mTileSize.x, position.y / mTileSize.y));
 }
 
 Path AIManager::getRandomPath(sf::Vector2f startPosition) const

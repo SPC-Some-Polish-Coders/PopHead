@@ -44,18 +44,19 @@ void main()
 	
 	texCoords *= 576;
 
-	if(aRotation != 0)
+	if(aRotation == 0)
+	{
+		gl_Position = gameWorldVPM * vec4(aWorldPos + vertexOffset, z, 1);
+	}
+	else
 	{
 		mat2 rotationMatrix = mat2(
 			cos(aRotation), -sin(aRotation),
 			sin(aRotation), cos(aRotation)
 		);
-		vec2 rotationOrigin = vec2(8, 8);
-		vertexOffset = (vertexOffset - rotationOrigin) * rotationMatrix; 
+		vec2 rotatedVertexPos = (vertexOffset - vec2(8, 8)) * rotationMatrix + aWorldPos + vec2(8, 8);
+		gl_Position = gameWorldVPM * vec4(rotatedVertexPos, z, 1);
 	}
-
-	gl_Position = gameWorldVPM * vec4(aWorldPos + vertexOffset, z, 1);
 }
-
 
 )"

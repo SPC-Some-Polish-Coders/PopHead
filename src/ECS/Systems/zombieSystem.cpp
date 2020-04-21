@@ -80,7 +80,7 @@ void ZombieSystem::update(float dt)
 
 	auto begin = zombies.begin();
 	auto secondBegin = begin;
-	for (size_t i = 0; i < numOfZombies; ++i)
+	for (size_t i = 0; i < numOfZombies && secondBegin != zombies.end(); ++i)
 		++secondBegin;
 
 	auto task = [&zombies, dt, this](decltype(zombies)::iterator_type begin, decltype(zombies)::iterator_type end) {
