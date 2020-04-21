@@ -37,7 +37,6 @@ namespace {
 
 	unsigned sharedDataUBO;
 
-	ph::QuadRenderer quadRenderer;
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
 	ph::LightRenderer lightRenderer;
@@ -61,11 +60,11 @@ void init(unsigned screenWidth, unsigned screenHeight)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	QuadRenderer::setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
-	quadRenderer.init();
+	QuadRenderer::init();
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
@@ -126,7 +125,7 @@ void restart(unsigned screenWidth, unsigned screenHeight)
 
 void shutDown()
 {
-	quadRenderer.shutDown();
+	QuadRenderer::shutDown();
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
 	textRenderer.shutDown();
@@ -169,7 +168,7 @@ void endScene()
 	PH_PROFILE_FUNCTION();
 
 	// render scene
-	quadRenderer.flush(true);
+	QuadRenderer::flush(true);
 	pointRenderer.flush();
 
 	// disable depth test for performance purposes
@@ -206,7 +205,7 @@ void endScene()
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
-	quadRenderer.flush(false);
+	QuadRenderer::flush(false);
 
 	// display renderer debug info 
 	if(isDebugDisplayActive)
@@ -232,7 +231,7 @@ void endScene()
 			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
 		};
 
-		auto quadRendererNumbers = getQuadRendererDebugNumbers();
+		auto quadRendererNumbers = QuadRenderer::getDebugNumbers();
 
 		submitDebugCounter("All draw calls per frame: ",
 			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
@@ -257,7 +256,7 @@ void endScene()
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		resetQuadRendererDebugNumbers();
+		QuadRenderer::resetDebugNumbers();
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
@@ -268,35 +267,35 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
                 sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size,
+	QuadRenderer::submitQuad(texture, textureRect, color, shader, position, size,
 		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
                                           unsigned char z, ProjectionType projectionType)
 {
-	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
+	QuadRenderer::submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
 void setChunksTexture(const Texture& texture)
 {
-	quadRenderer.setChunksTexture(texture.getID());	
+	QuadRenderer::setChunksTexture(texture.getID());	
 }
 
 unsigned registerNewChunk(const FloatRect& bounds)
 {
-	return quadRenderer.registerNewChunk(bounds);
+	return QuadRenderer::registerNewChunk(bounds);
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData,
                  const FloatRect& bounds, unsigned char z, unsigned* rendererID)
 {
-	quadRenderer.submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID);
+	QuadRenderer::submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID);
 }
 
 void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z)  
 {
-	quadRenderer.submitGroundChunk(pos, textureRect, getNormalizedZ(z));
+	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z));
 }
 
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
@@ -360,7 +359,7 @@ void handleEvent(sf::Event e)
 		isDebugDisplayActive = !isDebugDisplayActive;
 		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
 		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-		quadRenderer.setDebugCountingActive(isDebugDisplayActive);
+		QuadRenderer::setDebugCountingActive(isDebugDisplayActive);
 	}
 	if(e.type == sf::Event::Resized) {
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );

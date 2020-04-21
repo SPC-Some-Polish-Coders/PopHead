@@ -601,7 +601,7 @@ static void executeResetGuiLiveFrequency()
 
 static void executeQuadRendererDebug()
 {
-	setQuadRendererDebug(!commandContains("off"));
+	QuadRenderer::setDebug(!commandContains("off"));
 }
 
 #endif 

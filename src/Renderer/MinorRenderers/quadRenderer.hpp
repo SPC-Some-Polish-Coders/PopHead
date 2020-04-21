@@ -10,10 +10,12 @@
 #include <vector>
 
 namespace ph {
+	class Texture;
+}
 
-class Texture;
+namespace ph::QuadRenderer {
 
-struct QuadRendererDebugNumbers
+struct DebugNumbers
 {
 	std::vector<unsigned> renderGroupsSizes; 
 	std::vector<unsigned> renderGroupsZ; 
@@ -31,41 +33,30 @@ struct QuadRendererDebugNumbers
 	unsigned drawnTextures = 0;
 };
 
-QuadRendererDebugNumbers getQuadRendererDebugNumbers();
-void resetQuadRendererDebugNumbers();
-void setQuadRendererDebug(bool);
+DebugNumbers getDebugNumbers();
+void resetDebugNumbers();
+void setDebug(bool);
 
-class QuadRenderer
-{
-public:
-	void init();
-	void shutDown();
+void init();
+void shutDown();
 
-	void setScreenBoundsPtr(const FloatRect* bounds) { mScreenBounds = bounds; }
-	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
+void setScreenBoundsPtr(const FloatRect* bounds);
+void setDebugCountingActive(bool active);
 
-	void setChunksTexture(unsigned texture);
+void setChunksTexture(unsigned texture);
 
-	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z);
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z);
 
-	unsigned registerNewChunk(const FloatRect& bounds);
+unsigned registerNewChunk(const FloatRect& bounds);
 
-	void submitChunk(std::vector<ChunkQuadData>& quadsData,
-	                 const FloatRect& bounds, float z, unsigned* rendererID);
+void submitChunk(std::vector<ChunkQuadData>& quadsData,
+				 const FloatRect& bounds, float z, unsigned* rendererID);
 
-	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
+void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 
-	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-	                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
-	void flush(bool affectedByLight);
-
-private:
-	const FloatRect* mScreenBounds; 
-	Texture* mWhiteTexture;
-	unsigned mQuadIBO;
-	unsigned mQuadsDataVBO;
-	unsigned mVAO;
-	bool mIsDebugCountingActive = false;
-};
+void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
+				sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
+void flush(bool affectedByLight);
 
 }
+
