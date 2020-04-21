@@ -9,6 +9,7 @@
 #include "Utilities/random.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/threadPool.hpp"
+#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 
 namespace {
@@ -148,5 +149,40 @@ void ZombieSystem::update(float dt)
 	future.get();
 }
 
+void SlowZombieSystem::update(float dt)
+{
+	auto slowZombies = mRegistry.view<component::SlowZombieBehavior, component::CharacterSpeed, component::BodyRect, component::CollisionWithPlayer>();
+	const auto player = mRegistry.view<component::Player, component::BodyRect>();
+	const auto& playerRect = player.get<component::BodyRect>(*player.begin()).rect;
+
+	for (auto& zombie : slowZombies)
+	{
+		auto& slowZombieBehavior = slowZombies.get<component::SlowZombieBehavior>(zombie);
+		auto& zombieSpeed = slowZombies.get<component::CharacterSpeed>(zombie).speed;
+
+		if (slowZombies.get<component::CollisionWithPlayer>(zombie).isCollision)
+		{
+			slowZombieBehavior.coolDownTimer = component::SlowZombieBehavior::coolDownTime;
+			zombieSpeed = component::SlowZombieBehavior::afterAttackSpeed;
+			continue;
+		}
+
+		if (slowZombieBehavior.coolDownTimer > 0.f)
+		{
+			slowZombieBehavior.coolDownTimer -= dt;
+			continue;
+		}
+
+		const auto& zombieRect = slowZombies.get<component::BodyRect>(zombie).rect;
+		const auto distance = Math::distanceBetweenPoints(playerRect.getCenter(), zombieRect.getCenter());
+
+		if (distance > component::SlowZombieBehavior::farDistance)
+			zombieSpeed = component::SlowZombieBehavior::farFromPlayerSpeed;
+		if (distance > component::SlowZombieBehavior::closeDistance)
+			zombieSpeed = component::SlowZombieBehavior::sneakingSpeed;
+		else
+			zombieSpeed = component::SlowZombieBehavior::attackingSpeed;
+	}
 }
 
+}

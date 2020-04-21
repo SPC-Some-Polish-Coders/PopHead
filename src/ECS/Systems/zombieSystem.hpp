@@ -22,4 +22,12 @@ namespace ph::system {
 		const AIManager* mAIManager;
 		ThreadPool& mThreadPool;
 	};
+
+	class SlowZombieSystem : public System
+	{
+	public:
+		using System::System;
+
+		void update(float dt) override;
+	};
 }
