@@ -16,14 +16,16 @@ namespace ph::component {
 
 	struct SlowZombieBehavior
 	{
-		constexpr static float farFromPlayerSpeed = 50.f;
-		constexpr static float sneakingSpeed = 50.f;
-		constexpr static float attackingSpeed = 50.f;
-		constexpr static float afterAttackSpeed = 50.f;
+		constexpr static float farFromPlayerSpeed = 40.f;
+		constexpr static float sneakingSpeed = 10.f;
+		constexpr static float attackingSpeed = 70.f;
+		constexpr static float afterAttackSpeed = 10.f;
 
 		constexpr static float farDistance = 60.f;
 		constexpr static float closeDistance = 30.f;
 
-		float timeFromLastAttack = 0.f;
+		constexpr static float coolDownTime = 2.f;
+
+		float coolDownTimer = 0.f;
 	};
 }
