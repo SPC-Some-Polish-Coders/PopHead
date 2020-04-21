@@ -3,7 +3,7 @@
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
 #include "MinorRenderers/lightRenderer.hpp"
-#include "MinorRenderers/textRenderer.hpp"
+#include "MinorRenderers/TextRenderer.hpp"
 #include "API/shader.hpp"
 #include "API/camera.hpp"
 #include "API/font.hpp"
@@ -40,7 +40,6 @@ namespace {
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
 	ph::LightRenderer lightRenderer;
-	ph::TextRenderer textRenderer;
 
 	ph::Camera gameWorldCamera; 
 
@@ -49,8 +48,15 @@ namespace {
 
 namespace ph::Renderer {
 
-static void setClearColor(sf::Color);
-static float getNormalizedZ(const unsigned char z);
+static void setClearColor(sf::Color color)
+{
+	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
+}
+
+static float getNormalizedZ(const unsigned char z)
+{
+	return z / 255.f;
+}
 
 void init(unsigned screenWidth, unsigned screenHeight)
 {
@@ -68,7 +74,7 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
-	textRenderer.init();
+	TextRenderer::init();
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -128,7 +134,7 @@ void shutDown()
 	QuadRenderer::shutDown();
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
-	textRenderer.shutDown();
+	TextRenderer::shutDown();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
 	lightingGaussianBlurFramebuffer.remove();
@@ -160,7 +166,7 @@ void beginScene()
 	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 
-	textRenderer.beginDebugDisplay();
+	TextRenderer::beginDebugDisplay();
 }
 
 void endScene()
@@ -268,7 +274,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
                 ProjectionType projectionType, bool isAffectedByLight)
 {
 	QuadRenderer::submitQuad(texture, textureRect, color, shader, position, size,
-		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
+	                         getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
@@ -338,19 +344,19 @@ unsigned getNrOfLights()
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
+	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
 }
 
 void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
                      sf::Color textColor)
 {
-	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
+	TextRenderer::drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                     TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
+	TextRenderer::drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
 void handleEvent(sf::Event e)
@@ -372,16 +378,6 @@ void handleEvent(sf::Event e)
 void setAmbientLightColor(sf::Color color)
 {
 	ambientLightColor = color;
-}
-
-void setClearColor(sf::Color color)
-{
-	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
-}
-
-float getNormalizedZ(const unsigned char z)
-{
-	return z / 255.f;
 }
 
 }
