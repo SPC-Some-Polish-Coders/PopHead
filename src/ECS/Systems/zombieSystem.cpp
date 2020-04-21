@@ -13,7 +13,7 @@
 #include "Logs/logs.hpp"
 
 namespace {
-
+	
 sf::Vector2f toDirectionVector(ph::Direction direction)
 {
 	switch(direction)
@@ -153,6 +153,9 @@ void SlowZombieSystem::update(float dt)
 {
 	auto slowZombies = mRegistry.view<component::SlowZombieBehavior, component::CharacterSpeed, component::BodyRect, component::CollisionWithPlayer>();
 	const auto player = mRegistry.view<component::Player, component::BodyRect>();
+	if (player.size() == 0)
+		return;
+
 	const auto& playerRect = player.get<component::BodyRect>(*player.begin()).rect;
 
 	for (auto& zombie : slowZombies)
