@@ -1,6 +1,7 @@
 #include "musicPlayer.hpp"
 #include "musicData.hpp"
 #include "musicStateMachine.hpp"
+#include "Utilities/profiling.hpp"
 #include <SFML/Audio.hpp>
 #include <memory>
 
@@ -62,8 +63,14 @@ void playFromMusicState(const std::string& musicStateName)
 	const std::string fullFilePath = "resources/" + filePath;
 
 	adaptVolume(volumeMultiplier);
-	music->openFromFile(fullFilePath);
-	music->setLoop(currentThemeData.mLoop);
+	{
+		PH_PROFILE_SCOPE_ARGS("Loading music from file", { {"exists", std::to_string(music.operator bool())} });
+		music->openFromFile(fullFilePath);
+	}
+	{
+		PH_PROFILE_SCOPE("Setting loop");
+		music->setLoop(currentThemeData.mLoop);
+	}
 	setMuted(isMusicMuted);
 	music->play();
 }

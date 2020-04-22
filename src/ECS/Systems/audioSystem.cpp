@@ -31,41 +31,52 @@ namespace ph::system {
 			playerPos = body.rect.getCenter();
 		});
 
-		// play and destroy spatial sounds
-		SoundPlayer::setListenerPosition(playerPos);
-		auto spatialSoundsView = mRegistry.view<component::SpatialSound, component::BodyRect>();
-		for(auto& entity : spatialSoundsView)
 		{
-			const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
-			SoundPlayer::playSpatialSound(spatialSound.filepath, body.rect.getCenter());
-			mRegistry.remove<component::SpatialSound>(entity);
+			// play and destroy spatial sounds
+			PH_PROFILE_SCOPE("Spatial sound");
+			SoundPlayer::setListenerPosition(playerPos);
+			auto spatialSoundsView = mRegistry.view<component::SpatialSound, component::BodyRect>();
+			for (auto& entity : spatialSoundsView)
+			{
+				const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
+				SoundPlayer::playSpatialSound(spatialSound.filepath, body.rect.getCenter());
+				mRegistry.remove<component::SpatialSound>(entity);
+			}
 		}
 
-		// play and destroy ambient sounds
-		auto ambientSoundsView = mRegistry.view<component::AmbientSound>();
-		for(auto& entity : ambientSoundsView)
 		{
-			const auto& ambientSound = ambientSoundsView.get<component::AmbientSound>(entity);
-			SoundPlayer::playAmbientSound(ambientSound.filepath);
-			mRegistry.remove<component::AmbientSound>(entity);
+			// play and destroy ambient sounds
+			PH_PROFILE_SCOPE("Ambient sound");
+			auto ambientSoundsView = mRegistry.view<component::AmbientSound>();
+			for (auto& entity : ambientSoundsView)
+			{
+				const auto& ambientSound = ambientSoundsView.get<component::AmbientSound>(entity);
+				SoundPlayer::playAmbientSound(ambientSound.filepath);
+				mRegistry.remove<component::AmbientSound>(entity);
+			}
 		}
 
 		if(!ArcadeMode::isActive())
 		{
 			// for scenes without music
+			PH_PROFILE_SCOPE("Arcade mode")
 			if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
 				return;
 
 			// get the closest enemy distance from player
 			float theClosestEnemyDistanceFromPlayer = 1000;
-			auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
-			enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body) 
+			
 			{
-				const sf::Vector2f enemyPos = body.rect.getCenter();
-				const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
-				if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
-					theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
-			});
+				auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
+				PH_PROFILE_SCOPE_ARGS("Calculating the closest enemy", { {"count", std::to_string(enemiesView.size())} });
+				enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body)
+					{
+						const sf::Vector2f enemyPos = body.rect.getCenter();
+						const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
+						if (theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
+							theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
+					});
+			}
 
 			// switch themes if they should be switched
 			constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
@@ -79,12 +90,15 @@ namespace ph::system {
 			else
 				themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
 			
-			if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
-				mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
-				if(mCurrentlyPlayerTheme == Theme::Fight)
-					MusicPlayer::playFromMusicState("fight");
-				else
-					MusicPlayer::playFromMusicState("exploration");
+			{
+				PH_PROFILE_SCOPE("Playing music");
+				if (themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
+					mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
+					if (mCurrentlyPlayerTheme == Theme::Fight)
+						MusicPlayer::playFromMusicState("fight");
+					else
+						MusicPlayer::playFromMusicState("exploration");
+				}
 			}
 		}
 	}
