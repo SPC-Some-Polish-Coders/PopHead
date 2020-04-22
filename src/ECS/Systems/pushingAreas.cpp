@@ -27,8 +27,7 @@ void PushingAreas::update(float dt)
 			const auto& kinematicObjectBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
 			if (areaBody.rect.contains(kinematicObjectBody.rect.getCenter()))
 			{
-				objectVelocity.dx += pushingAreaDetails.pushForce.x;
-				objectVelocity.dy += pushingAreaDetails.pushForce.y;
+				objectVelocity.d += pushingAreaDetails.pushForce;
 			}
 		}
 	}

@@ -106,8 +106,7 @@ void ZombieSystem::update(float dt)
 				zombie.currentDirectionVector = toDirectionVector(currentDirection);
 			}
 
-			velocity.dx = zombie.currentDirectionVector.x * speed.speed;
-			velocity.dy = zombie.currentDirectionVector.y * speed.speed;
+			velocity.d = zombie.currentDirectionVector * speed.speed;
 
 			// update animation
 			if (zombie.currentDirectionVector == PH_NORTH_WEST) {

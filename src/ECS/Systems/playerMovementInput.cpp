@@ -205,8 +205,7 @@ namespace ph::system {
 		{
 			mAIManager.setPlayerPosition(body.rect.getTopLeft());
 			float dashFactor = mTimeFromDashPressed < 0.1f ? 2.f : 1.f;
-			velocity.dx = x * dashFactor * speed.speed;
-			velocity.dy = y * dashFactor * speed.speed;
+			velocity.d = sf::Vector2f(x, y) * dashFactor * speed.speed;
 		});
 
 		mTimeFromDashPressed += dt;

@@ -7,12 +7,27 @@ namespace ph::component {
 
 	struct BodyRect
 	{
-		ph::FloatRect rect;
+		union
+		{
+			ph::FloatRect rect;
+
+			struct
+			{
+				sf::Vector2f pos;
+				sf::Vector2f size;
+			};
+
+			struct
+			{
+				float x, y;
+				float width, height;
+			};
+		};
 	};
 
 	struct Velocity
 	{
-		float dx, dy;
+		sf::Vector2f d;
 	};
 
 	struct PushingForces

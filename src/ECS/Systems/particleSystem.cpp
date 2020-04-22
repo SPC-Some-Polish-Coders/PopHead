@@ -69,7 +69,7 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 			{
 				Particle particle;
 
-				particle.position = body.rect.getTopLeft() + emi.spawnPositionOffset;
+				particle.position = body.pos + emi.spawnPositionOffset;
 
 				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f))
 					particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);

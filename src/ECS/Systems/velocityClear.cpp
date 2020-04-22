@@ -13,8 +13,7 @@ namespace ph::system {
 
 		auto view = mRegistry.view<component::Velocity>();
 		view.each([dt](component::Velocity& vel) {
-			vel.dx = 0.f;
-			vel.dy = 0.f;
+			vel.d = sf::Vector2f(0, 0);
 		});
 	}
 }

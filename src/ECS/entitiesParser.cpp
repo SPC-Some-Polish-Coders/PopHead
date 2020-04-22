@@ -258,7 +258,7 @@ void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity&
 {
 	float dx = entityComponentNode.getAttribute("dx")->toFloat();
 	float dy = entityComponentNode.getAttribute("dy")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Velocity>(entity, dx, dy);
+	mUsedRegistry->assign_or_replace<component::Velocity>(entity, sf::Vector2f(dx, dy));
 }
 
 void EntitiesParser::parsePushingForces(const Xml& entityComponentNode, entt::entity& entity)

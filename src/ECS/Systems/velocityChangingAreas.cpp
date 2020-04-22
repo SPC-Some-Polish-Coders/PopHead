@@ -26,8 +26,7 @@ namespace ph::system {
 
 				if (areaBody.rect.contains(objectBody.rect.getCenter()))
 				{
-					objectVelocity.dx *= velocityChangeEffect.areaSpeedMultiplier;
-					objectVelocity.dy *= velocityChangeEffect.areaSpeedMultiplier;
+					objectVelocity.d *= velocityChangeEffect.areaSpeedMultiplier;
 				}
 			}
 		}
