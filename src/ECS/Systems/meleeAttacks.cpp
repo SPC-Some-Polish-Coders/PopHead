@@ -70,8 +70,8 @@ void MeleeAttacks::update(float dt)
 							mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
 							enemyPushingForces.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 3.f;
 							enemyPushingForces.friction = 1.8f;
+							wasEnemyHit = true;
 						}
-						wasEnemyHit = true;
 					}
 				};
 
