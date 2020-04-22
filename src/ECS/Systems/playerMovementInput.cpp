@@ -36,14 +36,14 @@ namespace ph::system {
 		if(e.type == sf::Event::KeyPressed) {
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift)
-				mTimeFromDashPressed = 0.f;
+			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled)
+				mTimeFromDodgePressed = 0.f;
 		}
 		else if(e.type == sf::Event::JoystickButtonPressed){
 			if(e.joystickButton.button == PH_JOYSTICK_MENU)
 				doPause();
-			else if(e.joystickButton.button == PH_JOYSTICK_X)
-				mTimeFromDashPressed = 0.f;
+			else if(e.joystickButton.button == PH_JOYSTICK_X && !dodgeInputDisabled)
+				mTimeFromDodgePressed = 0.f;
 		}
 	}
 
@@ -204,11 +204,11 @@ namespace ph::system {
 		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
 			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-			float dashFactor = mTimeFromDashPressed < 0.1f ? 2.f : 1.f;
-			velocity.d = sf::Vector2f(x, y) * dashFactor * speed.speed;
+			float dodgeFactor = mTimeFromDodgePressed < 0.1f ? 2.f : 1.f;
+			velocity.d = sf::Vector2f(x, y) * dodgeFactor * speed.speed;
 		});
 
-		mTimeFromDashPressed += dt;
+		mTimeFromDodgePressed += dt;
 	}
 }
 

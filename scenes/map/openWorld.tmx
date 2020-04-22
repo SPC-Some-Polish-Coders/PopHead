@@ -15908,11 +15908,11 @@
   <object id="16" type="CrawlingNpc" x="19.3333" y="5928.33">
    <point/>
   </object>
-  <object id="18" name="Dashing Tutorial" type="HintArea" x="205.167" y="5278.58" width="632.333" height="282.833">
+  <object id="18" name="Dodging Tutorial" type="HintArea" x="205.167" y="5278.58" width="632.333" height="282.833">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[X] @C9999to dash"/>
     <property name="hintKeyboardContent" value="Use @C9909[Left Shift] @C9999to dash"/>
-    <property name="hintName" value="dashingHint"/>
+    <property name="hintName" value="dodgingHint"/>
    </properties>
   </object>
   <object id="19" name="Gate" type="Gate" x="1637.34" y="5793.33">

@@ -13,7 +13,7 @@ namespace ph::system {
 
 void MeleeAttacks::onEvent(sf::Event e)
 {
-	if(sPause)
+	if(sPause || inputDisabled)
 		return;
 
 	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Backslash && !mShouldWeaponBeRendered)
