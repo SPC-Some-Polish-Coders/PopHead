@@ -77,8 +77,8 @@ namespace ph::system {
 				auto& anotherBody = kinematicCircObjects.get<component::BodyCircle>(anotherC);
 				//auto& anotherVel = kinematicCircObjects.get<component::Velocity>(anotherC);
 
-				auto nx = std::fmaxf(currentBody.rect.left, std::fminf(anotherBody.center.x, currentBody.rect.right));
-				auto ny = std::fmaxf(currentBody.rect.top, std::fminf(anotherBody.center.y, currentBody.rect.bottom));
+				auto nx = std::fmaxf(currentBody.rect.left, std::fminf(anotherBody.center.x, currentBody.rect.right()));
+				auto ny = std::fmaxf(currentBody.rect.top, std::fminf(anotherBody.center.y, currentBody.rect.bottom()));
 				auto dx = anotherBody.center.x - nx;
 				auto dy = anotherBody.center.y - ny;
 				auto dd = dx * dx + dy * dy;
