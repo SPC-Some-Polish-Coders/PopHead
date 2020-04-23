@@ -109,7 +109,7 @@ void GunAttacks::handlePendingGunAttacks() const
 					return;
 				}
 
-				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getBulletStartingPosition(playerFaceDirection.direction);
+				sf::Vector2f startingBulletPosition = gunBody.pos + getBulletStartingPosition(playerFaceDirection.direction);
 
 				bool wasOpponentHit = false;
 				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(),

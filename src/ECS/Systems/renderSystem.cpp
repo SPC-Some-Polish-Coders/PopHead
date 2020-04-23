@@ -66,7 +66,7 @@ void RenderSystem::update(float dt)
 	lightSources.each([](const component::LightSource& pointLight, const component::BodyRect& body)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
-		Renderer::submitLight(pointLight.color, body.rect.getTopLeft() + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
+		Renderer::submitLight(pointLight.color, body.pos + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
 			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
 	});
 
@@ -79,7 +79,7 @@ void RenderSystem::update(float dt)
 			if(lw.rect.top == -1.f)
 				Renderer::submitLightWall(body.rect);
 			else
-				Renderer::submitLightWall(FloatRect(body.rect.getTopLeft() + lw.rect.getTopLeft(), lw.rect.getSize()));
+				Renderer::submitLightWall(FloatRect(body.pos + lw.pos, lw.size));
 		});
 	}
 
@@ -108,7 +108,7 @@ void RenderSystem::update(float dt)
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
+			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
 	// submit render quads with texture rect
@@ -118,7 +118,7 @@ void RenderSystem::update(float dt)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
-			body.rect.getTopLeft(), body.rect.getSize(), quad.z, quad.rotation, quad.rotationOrigin);
+			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 }
 

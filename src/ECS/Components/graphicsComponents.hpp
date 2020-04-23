@@ -46,7 +46,16 @@ namespace component {
 
 	struct LightWall
 	{
-		FloatRect rect;
+		union
+		{
+			FloatRect rect;
+
+			struct
+			{
+				sf::Vector2f pos;
+				sf::Vector2f size;
+			};
+		};
 	};
 
 	struct LightSource

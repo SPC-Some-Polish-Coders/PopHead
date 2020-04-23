@@ -94,7 +94,7 @@ void ZombieSystem::update(float dt)
 			zombie.timeFromStartingThisMove += dt;
 			if (zombie.pathMode.path.empty())
 			{
-				zombie.pathMode = mAIManager->getZombiePath(body.rect.getTopLeft());
+				zombie.pathMode = mAIManager->getZombiePath(body.pos);
 				zombie.timeFromStartingThisMove = 0.f;
 			}
 
