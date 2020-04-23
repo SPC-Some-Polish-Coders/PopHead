@@ -25,15 +25,13 @@ namespace ph::component {
 		};
 	};
 
-	struct Velocity
-	{
-		sf::Vector2f d;
-	};
-
-	struct PushingForces
+	struct Kinematics
 	{
 		sf::Vector2f vel;
-		float friction = 1.5f;
+		sf::Vector2f acceleration;
+		float friction;
+		float defaultFriction;
+		float frictionLerpSpeed;
 	};
 
 	struct CharacterSpeed

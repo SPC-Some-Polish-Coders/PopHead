@@ -1,3 +1,10 @@
+
+// NOTE: 
+// For now we don't have arcade mode in the game
+// Probably it will stay that way
+
+/*
+
 #pragma once
 
 #include "ECS/system.hpp"
@@ -49,3 +56,4 @@ private:
 
 }
 
+*/

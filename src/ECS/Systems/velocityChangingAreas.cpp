@@ -13,7 +13,7 @@ namespace ph::system {
 			return;
 
 		auto velocityChaningAreasView = mRegistry.view<component::BodyRect, component::AreaVelocityChangingEffect>();
-		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
+		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Kinematics>();
 
 		for (auto velocityChangingArea : velocityChaningAreasView)
 		{
@@ -21,12 +21,12 @@ namespace ph::system {
 			
 			for (auto kinematicObject : kinematicObjectsView)
 			{
-				auto& objectVelocity = kinematicObjectsView.get<component::Velocity>(kinematicObject);
+				auto& objectKinematics = kinematicObjectsView.get<component::Kinematics>(kinematicObject);
 				const auto& objectBody = kinematicObjectsView.get<component::BodyRect>(kinematicObject);
 
 				if (areaBody.rect.contains(objectBody.rect.getCenter()))
 				{
-					objectVelocity.d *= velocityChangeEffect.areaSpeedMultiplier;
+					objectKinematics.vel *= velocityChangeEffect.areaSpeedMultiplier;
 				}
 			}
 		}

@@ -32,6 +32,11 @@ namespace ph::Math {
 		return sf::Vector2f(std::cosf(radians), std::sinf(radians));
 	}
 
+	float getMagnitude(sf::Vector2f v)
+	{
+		return std::hypotf(v.x, v.y);	
+	}
+
 	float degreesToRadians(float angle)
 	{
 		return angle * pi / 180.f;
@@ -53,7 +58,13 @@ namespace ph::Math {
 		return (distanceBetweenPoints(point, circlePos) < radius);
 	}
 
-	sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed)
+	sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed)
+	{
+		PH_ASSERT_UNEXPECTED_SITUATION(speed >= 0.f, "Speed cannot be less than 0");
+		return source + (destination - source) * speed;
+	}
+
+	float lerp(float source, float destination, float speed)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;

@@ -11,12 +11,12 @@ namespace ph::system {
 		if(sPause)
 			return;
 
-		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity, component::KinematicCollisionBody>();
+		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Kinematics, component::KinematicCollisionBody>();
 
 		for (auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)
 		{
 			auto& currentBody = kinematicObjects.get<component::BodyRect>(*current);
-			auto& currentVel = kinematicObjects.get<component::Velocity>(*current);
+			auto& currentKin = kinematicObjects.get<component::Kinematics>(*current);
 
 			auto another = current;
 			++another;
@@ -26,7 +26,7 @@ namespace ph::system {
 			for (; another != kinematicObjects.end(); ++another)
 			{
 				auto& anotherBody = kinematicObjects.get<component::BodyRect>(*another);
-				auto& anotherVel = kinematicObjects.get<component::Velocity>(*another);
+				auto& anotherKin = kinematicObjects.get<component::Kinematics>(*another);
 
 				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
 				{

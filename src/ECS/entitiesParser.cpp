@@ -91,8 +91,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Player",                	    &EntitiesParser::parsePlayer},
 		{"Zombie",                	    &EntitiesParser::parseZombie},
 		{"Bullets",                	    &EntitiesParser::parseBullets},
-		{"Velocity",              	    &EntitiesParser::parseVelocity},
-		{"PushingForces",               &EntitiesParser::parsePushingForces},
+		{"Kinematics",              	&EntitiesParser::parseKinematics},
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
@@ -254,17 +253,10 @@ void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, en
 	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, pushForce, false);
 }
 
-void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseKinematics(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float dx = entityComponentNode.getAttribute("dx")->toFloat();
-	float dy = entityComponentNode.getAttribute("dy")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Velocity>(entity, sf::Vector2f(dx, dy));
-}
-
-void EntitiesParser::parsePushingForces(const Xml& entityComponentNode, entt::entity& entity)
-{
-	sf::Vector2f vel = entityComponentNode.getAttribute("vel")->toVector2f();
-	mUsedRegistry->assign_or_replace<component::PushingForces>(entity, vel);
+	float friction = entityComponentNode.getAttribute("friction")->toFloat();
+	mUsedRegistry->assign_or_replace<component::Kinematics>(entity, sf::Vector2f(), sf::Vector2f(), friction, friction, 0.5f);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
@@ -461,7 +453,7 @@ void EntitiesParser::parseGroundRenderChunk(const Xml& entityComponentNode, entt
 
 void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
+	//mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
 }
 
 void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity)

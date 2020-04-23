@@ -22,7 +22,7 @@ namespace system {
 		AIManager& mAIManager;
 		Scene* mScene;
 
-		float mTimeFromDodgePressed = 0.f; 
+		float mTimeFromDodgePressed = 1.f; 
 
 	public:
 		inline static bool dodgeInputDisabled = false;

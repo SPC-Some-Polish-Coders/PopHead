@@ -5,7 +5,6 @@
 
 #include "ECS/Systems/playerMovementInput.hpp"
 #include "ECS/Systems/movement.hpp"
-#include "ECS/Systems/pushingMovement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
@@ -25,7 +24,6 @@
 #include "ECS/Systems/pushingAreas.hpp"
 #include "ECS/Systems/hintAreas.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
-#include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/audioSystem.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
@@ -55,7 +53,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
 
-	mSystemsQueue.appendSystem<system::PushingMovement>(); // physics
 	mSystemsQueue.appendSystem<system::Movement>(); // physics
 
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
@@ -91,8 +88,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
-
-	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
 
 	// must be after GunAttacks and before EntityDestroying
 	mSystemsQueue.appendSystem<system::Lifetime>();
