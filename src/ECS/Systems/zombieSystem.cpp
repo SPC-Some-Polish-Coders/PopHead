@@ -183,7 +183,7 @@ void SlowZombieSystem::update(float dt)
 
 		if (distance > component::SlowZombieBehavior::farDistance)
 			zombieSpeed = component::SlowZombieBehavior::farFromPlayerSpeed;
-		if (distance > component::SlowZombieBehavior::closeDistance)
+		else if (distance > component::SlowZombieBehavior::closeDistance)
 			zombieSpeed = component::SlowZombieBehavior::sneakingSpeed;
 		else
 			zombieSpeed = component::SlowZombieBehavior::attackingSpeed;
