@@ -21,6 +21,8 @@ namespace MusicPlayer
 	void setVolume(float volume);
 	float getVolume();
 	auto getMusicStateMachine() -> MusicStateMachine&;
+
+	void clearMusicPlayer();
 }
 
 }

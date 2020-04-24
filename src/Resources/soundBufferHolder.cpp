@@ -32,5 +32,10 @@ sf::SoundBuffer& getSoundBuffer(const std::string& filePath)
 	return found->second;
 }
 
+void clearSoundBufferHolder()
+{
+	soundBuffers.clear();
+}
+
 }
 

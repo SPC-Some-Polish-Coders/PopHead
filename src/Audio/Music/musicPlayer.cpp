@@ -111,5 +111,10 @@ auto getMusicStateMachine() -> MusicStateMachine &
 	return musicStateMachine;
 }
 
+void clearMusicPlayer()
+{
+	music.reset(nullptr);
+}
+
 }
 
