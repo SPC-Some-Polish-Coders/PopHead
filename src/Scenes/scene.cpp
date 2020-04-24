@@ -35,6 +35,7 @@
 #include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
+#include "ECS/Systems/slowZombieSystem.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
