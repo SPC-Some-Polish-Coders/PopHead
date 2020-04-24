@@ -151,6 +151,8 @@ void ZombieSystem::update(float dt)
 
 void SlowZombieSystem::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	auto slowZombies = mRegistry.view<component::SlowZombieBehavior, component::CharacterSpeed, component::BodyRect, component::CollisionWithPlayer>();
 	const auto player = mRegistry.view<component::Player, component::BodyRect>();
 	if (player.size() == 0)
