@@ -87,6 +87,8 @@ void ZombieSystem::update(float dt)
 
 		for (; begin != end; ++begin)
 		{
+			PH_PROFILE_SCOPE("zombie loop");
+
 			auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(*begin);
 			const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(*begin);
 			
@@ -94,12 +96,14 @@ void ZombieSystem::update(float dt)
 			zombie.timeFromStartingThisMove += dt;
 			if (zombie.pathMode.path.empty())
 			{
+				PH_PROFILE_SCOPE("zombie gets path from AIManager");
 				zombie.pathMode = mAIManager->getZombiePath(body.pos);
 				zombie.timeFromStartingThisMove = 0.f;
 			}
 
 			if (zombie.timeFromStartingThisMove > zombie.timeToMoveToAnotherTile)
 			{
+				PH_PROFILE_SCOPE("zombie is starting new move");
 				zombie.timeFromStartingThisMove = 0.f;
 				Direction currentDirection = zombie.pathMode.path.front();
 				zombie.pathMode.path.pop_front();

@@ -27,6 +27,9 @@ void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
+	Camera* currentCamera = &defaultCamera;
+	{
+	PH_PROFILE_SCOPE("camera stuff");
 	// shake camera
 	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();
 	for(auto cameraEntity : shakingCameras)
@@ -51,7 +54,6 @@ void RenderSystem::update(float dt)
 
 	// get current camera and update shake
 	auto cameras = mRegistry.view<component::Camera>();
-	Camera* currentCamera = &defaultCamera;
 	cameras.each([&currentCamera](component::Camera& camera) {
 		if(camera.name == component::Camera::currentCameraName) {
 			currentCamera = &camera.camera;
@@ -60,7 +62,10 @@ void RenderSystem::update(float dt)
 
 	// set camera
 	Renderer::setGameWorldCamera(*currentCamera);
+	}
 
+	{
+	PH_PROFILE_SCOPE("light stuff");
 	// submit light sources
 	auto lightSources = mRegistry.view<component::LightSource, component::BodyRect>();
 	lightSources.each([](const component::LightSource& pointLight, const component::BodyRect& body)
@@ -82,15 +87,22 @@ void RenderSystem::update(float dt)
 				Renderer::submitLightWall(FloatRect(body.pos + lw.pos, lw.size));
 		});
 	}
+	}
 
+	{
+	PH_PROFILE_SCOPE("ground chunks");
 	// submit map ground chunks
 	auto groundChunks = mRegistry.view<component::GroundRenderChunk>();
 	groundChunks.each([this, currentCamera](component::GroundRenderChunk& chunk)
 	{
+		PH_PROFILE_SCOPE("single ground chunk");
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
 			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z);
 	});
+	}
 
+	{
+	PH_PROFILE_SCOPE("chunks");
 	// submit map chunks
 	auto renderChunks = mRegistry.view<component::RenderChunk>();
 	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
@@ -101,7 +113,10 @@ void RenderSystem::update(float dt)
 		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
+	}
 
+	{
+	PH_PROFILE_SCOPE("quads stuff");
 	// submit render quads
 	auto renderQuads = mRegistry.view<component::RenderQuad, component::BodyRect>(entt::exclude<component::HiddenForRenderer, component::TextureRect>);
 	renderQuads.each([](const component::RenderQuad& quad, const component::BodyRect& body)
@@ -120,6 +135,7 @@ void RenderSystem::update(float dt)
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
+	}
 }
 
 }

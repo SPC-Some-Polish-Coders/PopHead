@@ -343,6 +343,7 @@ unsigned registerNewChunk(const FloatRect& bounds)
 void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
                  float z, unsigned* id)
 {
+	PH_PROFILE_FUNCTION();
 	for(auto& cached : chunks.registerChunks)
 	{
 		if(*id == cached.id) 
@@ -353,6 +354,7 @@ void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
 			}
 			else
 			{
+				PH_PROFILE_SCOPE("create the new vbo");
 				// create the new vbo
 				glBindVertexArray(0);
 				glGenBuffers(1, &cached.vbo);
@@ -517,9 +519,6 @@ void flush(bool affectedByLight)
 		for(unsigned chunkIndex = 0, groundChunkIndex = 0;
 			chunkIndex + groundChunkIndex < chunks.thisFrameChunks.size() + groundChunks.size();)
 		{
-			enum DrawFrom{Chunks, GroundChunks};
-			DrawFrom drawFrom = Chunks;
-
 			float chunkZ = chunkIndex < chunks.thisFrameChunks.size() ? chunks.thisFrameChunks[chunkIndex].z : -1.f;
 			float groundChunkZ = groundChunkIndex < groundChunks.size() ? groundChunks[groundChunkIndex].z : -1.f;
 
@@ -556,36 +555,55 @@ void flush(bool affectedByLight)
 			else
 			{
 				// draw chunk
-				PH_PROFILE_SCOPE("draw chunk");
-
 				auto& chunk = chunks.thisFrameChunks[chunkIndex];
+				PH_PROFILE_SCOPE_ARGS("draw chunk", {{"quadsCount", std::to_string(chunk.quadsCount)}});
 
+				{
+				PH_PROFILE_SCOPE("bind texture");
 				GLCheck( glActiveTexture(GL_TEXTURE0) );
 				GLCheck( glBindTexture(GL_TEXTURE_2D, chunksTexture) );
+				}
 
+				{
+				PH_PROFILE_SCOPE("bind shader");
 				if(currentlyBoundShader != &chunkShader)
 				{
 					currentlyBoundShader = &chunkShader;
 					chunkShader.bind();
 				}
 				chunkShader.setUniformFloat("z", chunk.z);
+				}
 
+				{
+				PH_PROFILE_SCOPE("bind vbo and vao");
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
 				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, chunk.vbo) );
+				}
 
+				{
+				PH_PROFILE_SCOPE("calls to glVertexAttribPointer");
 				GLCheck( glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, textureRect)) );
 				GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, position)) );
 				GLCheck( glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, size)) );
 				GLCheck( glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, rotation)) );
+				}
 
+				{
+				PH_PROFILE_SCOPE("calls to glVertexAttribArray and glVertexAttribDivisor");
 				for(int i = 0; i < 4; ++i)
 					glEnableVertexAttribArray(i);
 
 				for(int i = 0; i < 4; ++i)
 					glVertexAttribDivisor(i, 1);
+				}
 
+				{
+				PH_PROFILE_SCOPE("draw call");
 				GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, chunk.quadsCount) );
+				}
 
+				{
+				PH_PROFILE_SCOPE("debug");
 				++chunkIndex;
 
 				if(isDebugCountingActive)
@@ -593,8 +611,7 @@ void flush(bool affectedByLight)
 					++debugNumbers.chunks; 
 					++debugNumbers.drawCalls;
 				}
-
-				drawFrom = Chunks;
+				}
 			}
 		}
 

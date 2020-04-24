@@ -1,5 +1,6 @@
 #include "pointRenderer.hpp"
 #include "Utilities/cast.hpp"
+#include "Utilities/profiling.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
@@ -62,6 +63,8 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 
 void PointRenderer::flush()
 {
+	PH_PROFILE_FUNCTION();
+
 	if(mSubmitedPointsVertexData.empty())
 		return;
 

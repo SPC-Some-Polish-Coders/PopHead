@@ -1,5 +1,6 @@
 #include "shader.hpp"
 #include "openglErrors.hpp"
+#include "Utilities/profiling.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
 #include <fstream>
@@ -68,6 +69,7 @@ void Shader::remove()
 
 void Shader::bind() const
 {
+	PH_PROFILE_FUNCTION();
 	GLCheck( glUseProgram(mID) );
 }
 

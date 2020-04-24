@@ -37,6 +37,7 @@ void LightRenderer::shutDown()
 
 void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
+	PH_PROFILE_FUNCTION_ARGS({{"walls.size()", std::to_string(walls.size())}});
 	mLightWalls.insert(mLightWalls.end(), walls.begin(), walls.end());
 }
 

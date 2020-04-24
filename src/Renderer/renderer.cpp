@@ -154,29 +154,43 @@ void beginScene()
 {
 	PH_PROFILE_FUNCTION();
 
+	{
+	PH_PROFILE_SCOPE("begin scene 1");
 	gameObjectsFramebuffer.bind();
 	GLCheck( glEnable(GL_DEPTH_TEST) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
+	}
 
+	{
+	PH_PROFILE_SCOPE("begin scene 2");
 	const float* viewProjectionMatrix = gameWorldCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
+	}
 	
+	{
+	PH_PROFILE_SCOPE("begin scene 3");
 	sf::Vector2f center = gameWorldCamera.getCenter();
 	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 
 	TextRenderer::beginDebugDisplay();
+	}
 }
 
 void endScene()
 {
 	PH_PROFILE_FUNCTION();
 
+	{
+	PH_PROFILE_SCOPE("end scene 1");
 	// render scene
 	QuadRenderer::flush(true);
 	pointRenderer.flush();
+	}
 
+	{
+	PH_PROFILE_SCOPE("end scene 2");
 	// disable depth test for performance purposes
 	GLCheck( glDisable(GL_DEPTH_TEST) );
 
@@ -192,14 +206,20 @@ void endScene()
 
 	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
 	glBindVertexArray(screenVAO);
+	}
 
+	{
+	PH_PROFILE_SCOPE("end scene 3");
 	// apply gaussian blur for lighting
 	lightingGaussianBlurFramebuffer.bind();
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	lightingFramebuffer.bindTextureColorBuffer(0);
 	gaussianBlurFramebufferShader.bind();
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
+	}
 
+	{
+	PH_PROFILE_SCOPE("end scene 4");
 	// render everything onto quad in default framebuffer
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
@@ -212,7 +232,10 @@ void endScene()
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
 	QuadRenderer::flush(false);
+	}
 
+	{
+	PH_PROFILE_SCOPE("end scene 5 - debug stuff");
 	// display renderer debug info 
 	if(isDebugDisplayActive)
 	{
@@ -266,6 +289,7 @@ void endScene()
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
+	}
 	}
 }
 

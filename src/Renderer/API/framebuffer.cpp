@@ -1,6 +1,7 @@
 #include "framebuffer.hpp"
 #include "openglErrors.hpp"
 #include "Logs/logs.hpp"
+#include "Utilities/profiling.hpp"
 #include <GL/glew.h>
 
 namespace ph {
@@ -49,6 +50,7 @@ void Framebuffer::onWindowResize(unsigned width, unsigned height)
 
 void Framebuffer::bind()
 {
+	PH_PROFILE_FUNCTION();
 	GLCheck( glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID) );
 }
 
