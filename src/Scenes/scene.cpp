@@ -63,6 +63,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
 
 	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
+	mSystemsQueue.appendSystem<system::SlowZombieSystem>(); // must be after HostileCollisions and before ZombieSystem (in next iteration)
 
 	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
 	
