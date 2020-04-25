@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="62">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="63">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -12218,7 +12218,7 @@
 </chunk>
    <chunk x="0" y="324" width="12" height="12">
 0,0,0,0,0,737,0,0,0,769,770,770,
-770,771,770,0,0,769,770,771,2147484421,0,0,0,
+770,771,2147484421,0,0,769,770,771,2147484421,0,0,0,
 0,0,737,0,0,0,0,0,769,770,770,770,
 0,0,769,770,771,770,770,771,770,771,770,771,
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -12393,7 +12393,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,673,674,675,675,
 0,0,0,0,0,0,0,0,705,673,674,675,
-0,0,0,0,0,0,0,0,737,705,706,707,
+0,0,0,0,0,0,0,0,737,705,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0,
 0,0,0,0,0,0,0,0,737,737,0,0
@@ -12407,7 +12407,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 675,675,676,0,0,0,0,0,0,0,0,0,
 675,676,708,0,0,0,0,0,0,0,0,0,
-707,708,740,0,0,0,0,0,0,0,0,0,
+0,708,740,0,0,0,0,0,0,0,0,0,
 0,740,740,0,0,0,0,0,0,0,0,0,
 0,740,741,674,675,676,0,0,0,0,0,0,
 0,740,0,0,0,708,0,0,0,0,0,0
@@ -15884,21 +15884,21 @@
    </properties>
    <point/>
   </object>
-  <object id="8" name="Movement tutorial popup" type="HintArea" x="-424.601" y="6126.64" width="452.333" height="362">
+  <object id="8" name="Movement tutorial popup" type="HintArea" x="-254.601" y="6051.31" width="452.333" height="362">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[Left thumb]@C9999 to walk"/>
     <property name="hintKeyboardContent" value="Use @C9909[AWSD]@C9999 to walk"/>
     <property name="hintName" value="controlHint"/>
    </properties>
   </object>
-  <object id="10" name="Shooting Tutorial" type="HintArea" x="536.095" y="5675.9" width="693.728" height="248.833">
+  <object id="10" name="Shooting Tutorial" type="HintArea" x="419.428" y="5675.9" width="810.395" height="252.833">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[A]@C9999 to shoot"/>
     <property name="hintKeyboardContent" value="Use @C9909[Enter] @C9999to shoot"/>
     <property name="hintName" value="shootingHint"/>
    </properties>
   </object>
-  <object id="11" name="Melee Fighting Tutorial" type="HintArea" x="-153.987" y="5261.55" width="246" height="613.167">
+  <object id="11" name="Melee Fighting Tutorial" type="HintArea" x="-153.987" y="5261.55" width="256.667" height="660.5">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[B]@C9999 to hit"/>
     <property name="hintKeyboardContent" value="Use @C9909[\]@C9999 (backslash) to hit"/>
@@ -15908,11 +15908,11 @@
   <object id="16" type="CrawlingNpc" x="19.3333" y="5928.33">
    <point/>
   </object>
-  <object id="18" name="Dashing Tutorial" type="HintArea" x="270.5" y="5278.58" width="533" height="282.833">
+  <object id="18" name="Dodging Tutorial" type="HintArea" x="205.167" y="5278.58" width="632.333" height="282.833">
    <properties>
     <property name="hintJoystickContent" value="Use @C9909[X] @C9999to dash"/>
     <property name="hintKeyboardContent" value="Use @C9909[Left Shift] @C9999to dash"/>
-    <property name="hintName" value="dashingHint"/>
+    <property name="hintName" value="dodgingHint"/>
    </properties>
   </object>
   <object id="19" name="Gate" type="Gate" x="1637.34" y="5793.33">
@@ -15971,10 +15971,10 @@
   <object id="56" type="SlowZombie" x="-10" y="5431">
    <point/>
   </object>
-  <object id="57" type="SlowZombie" x="688.5" y="5371.5">
+  <object id="57" type="SlowZombie" x="739.167" y="5350.17">
    <point/>
   </object>
-  <object id="58" type="SlowZombie" x="676" y="5439">
+  <object id="58" type="SlowZombie" x="743.333" y="5445">
    <point/>
   </object>
   <object id="59" type="SlowZombie" x="430" y="5787">
@@ -15987,17 +15987,18 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="denialAreas" visible="0">
-  <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5096" width="667" height="1157"/>
-  <object id="32" type="CollisionAndLightWallDenialArea" x="595.167" y="4624.5" width="449.333" height="543.667"/>
-  <object id="33" type="CollisionAndLightWallDenialArea" x="-164.333" y="3347.83" width="749.333" height="1909"/>
-  <object id="34" type="CollisionAndLightWallDenialArea" x="-193.5" y="5498.5" width="88" height="599"/>
+ <objectgroup id="10" name="denialAreas">
+  <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5096" width="642.5" height="1346.5"/>
+  <object id="32" type="CollisionAndLightWallDenialArea" x="577.667" y="4625" width="477.833" height="543.667"/>
+  <object id="33" type="CollisionAndLightWallDenialArea" x="-196.833" y="3347.83" width="781.833" height="1906.5"/>
+  <object id="34" type="CollisionAndLightWallDenialArea" x="-193.5" y="5498.5" width="88" height="630.5"/>
   <object id="35" type="CollisionAndLightWallDenialArea" x="35.3335" y="2472.17" width="449.333" height="873"/>
   <object id="36" type="CollisionAndLightWallDenialArea" x="484.667" y="2446.17" width="1485.33" height="334.333"/>
   <object id="37" type="CollisionAndLightWallDenialArea" x="2504" y="2522.17" width="409.33" height="945"/>
   <object id="38" type="CollisionAndLightWallDenialArea" x="1236.67" y="4992.83" width="257.33" height="1203.67"/>
-  <object id="39" type="CollisionAndLightWallDenialArea" x="427.335" y="5934.16" width="803.997" height="281.003"/>
+  <object id="39" type="CollisionAndLightWallDenialArea" x="503.335" y="5934.16" width="727.997" height="281.003"/>
   <object id="40" type="CollisionAndLightWallDenialArea" x="-757.999" y="6444.83" width="3028" height="281.003"/>
   <object id="41" type="CollisionAndLightWallDenialArea" x="1799.33" y="5216.83" width="350.663" height="1031.67"/>
+  <object id="62" type="CollisionAndLightWallDenialArea" x="103.833" y="5494.83" width="216" height="618.336"/>
  </objectgroup>
 </map>

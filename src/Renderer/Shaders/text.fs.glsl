@@ -18,7 +18,5 @@ void main()
     fragColor = vec4(fs_in.color.rgb, texture(textures[fs_in.textureSlotRef], fs_in.texCoords).r * fs_in.color.a);
 }
 
-// TODO: Make alpha be set in the smart way
-
 )"
 

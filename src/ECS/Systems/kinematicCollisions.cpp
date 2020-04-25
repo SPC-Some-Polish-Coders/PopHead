@@ -11,12 +11,12 @@ namespace ph::system {
 		if(sPause)
 			return;
 
-		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Velocity, component::KinematicCollisionBody>();
+		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Kinematics, component::KinematicCollisionBody>();
 
 		for (auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)
 		{
 			auto& currentBody = kinematicObjects.get<component::BodyRect>(*current);
-			auto& currentVel = kinematicObjects.get<component::Velocity>(*current);
+			auto& currentKin = kinematicObjects.get<component::Kinematics>(*current);
 
 			auto another = current;
 			++another;
@@ -26,45 +26,39 @@ namespace ph::system {
 			for (; another != kinematicObjects.end(); ++another)
 			{
 				auto& anotherBody = kinematicObjects.get<component::BodyRect>(*another);
-				auto& anotherVel = kinematicObjects.get<component::Velocity>(*another);
+				auto& anotherKin = kinematicObjects.get<component::Kinematics>(*another);
 
 				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
 				{
-					component::Velocity newVel = { currentVel.dx + anotherVel.dx, currentVel.dy + anotherVel.dy };
-
 					sf::FloatRect intersection;
 					currentBody.rect.intersects(anotherBody.rect, intersection);
 
 					if (intersection.width < intersection.height)
 					{
-						//currentVel.dx = newVel.dx;
-						//anotherVel.dx = newVel.dx;
 						auto halfWidth = intersection.width / 2.f;
-						if (currentBody.rect.left < anotherBody.rect.left)
+						if (currentBody.x < anotherBody.x)
 						{
-							currentBody.rect.left -= halfWidth;
-							anotherBody.rect.left += halfWidth;
+							currentBody.x -= halfWidth;
+							anotherBody.x += halfWidth;
 						}
 						else
 						{
-							currentBody.rect.left += halfWidth;
-							anotherBody.rect.left -= halfWidth;
+							currentBody.x += halfWidth;
+							anotherBody.x -= halfWidth;
 						}
 					}
 					else
 					{
-						//currentVel.dy = newVel.dy;
-						//anotherVel.dy = newVel.dy;
 						auto halfHeight = intersection.height / 2.f;
-						if (currentBody.rect.top < anotherBody.rect.top)
+						if (currentBody.y < anotherBody.y)
 						{
-							currentBody.rect.top -= halfHeight;
-							anotherBody.rect.top += halfHeight;
+							currentBody.y -= halfHeight;
+							anotherBody.y += halfHeight;
 						}
 						else
 						{
-							currentBody.rect.top += halfHeight;
-							anotherBody.rect.top -= halfHeight;
+							currentBody.y += halfHeight;
+							anotherBody.y -= halfHeight;
 						}
 					}
 				}

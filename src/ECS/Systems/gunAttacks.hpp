@@ -28,5 +28,9 @@ namespace ph::system {
 		void createShotImage(sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
 		void handleLastingBullets() const;
 		void shakeCamera(float magnitude, bool smooth) const; 
+
+	public:
+		inline static bool shootInputDisabled = false;
+		inline static bool changeWeaponInputDisabled = false;
 	};
 }

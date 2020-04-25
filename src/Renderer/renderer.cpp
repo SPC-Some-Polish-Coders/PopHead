@@ -3,7 +3,7 @@
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
 #include "MinorRenderers/lightRenderer.hpp"
-#include "MinorRenderers/textRenderer.hpp"
+#include "MinorRenderers/TextRenderer.hpp"
 #include "API/shader.hpp"
 #include "API/camera.hpp"
 #include "API/font.hpp"
@@ -37,11 +37,9 @@ namespace {
 
 	unsigned sharedDataUBO;
 
-	ph::QuadRenderer quadRenderer;
 	ph::PointRenderer pointRenderer;
 	ph::LineRenderer lineRenderer;
 	ph::LightRenderer lightRenderer;
-	ph::TextRenderer textRenderer;
 
 	ph::Camera gameWorldCamera; 
 
@@ -50,8 +48,15 @@ namespace {
 
 namespace ph::Renderer {
 
-static void setClearColor(sf::Color);
-static float getNormalizedZ(const unsigned char z);
+static void setClearColor(sf::Color color)
+{
+	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
+}
+
+static float getNormalizedZ(const unsigned char z)
+{
+	return z / 255.f;
+}
 
 void init(unsigned screenWidth, unsigned screenHeight)
 {
@@ -61,15 +66,15 @@ void init(unsigned screenWidth, unsigned screenHeight)
 		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
-	quadRenderer.setScreenBoundsPtr(&screenBounds);
+	QuadRenderer::setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
 	lineRenderer.setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
-	quadRenderer.init();
+	QuadRenderer::init();
 	lineRenderer.init();
 	pointRenderer.init();
 	lightRenderer.init();
-	textRenderer.init();
+	TextRenderer::init();
 
 	// set up blending
 	GLCheck( glEnable(GL_BLEND) );
@@ -126,10 +131,10 @@ void restart(unsigned screenWidth, unsigned screenHeight)
 
 void shutDown()
 {
-	quadRenderer.shutDown();
+	QuadRenderer::shutDown();
 	lineRenderer.shutDown();
 	lightRenderer.shutDown();
-	textRenderer.shutDown();
+	TextRenderer::shutDown();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
 	lightingGaussianBlurFramebuffer.remove();
@@ -161,7 +166,7 @@ void beginScene()
 	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 
-	textRenderer.beginDebugDisplay();
+	TextRenderer::beginDebugDisplay();
 }
 
 void endScene()
@@ -169,7 +174,7 @@ void endScene()
 	PH_PROFILE_FUNCTION();
 
 	// render scene
-	quadRenderer.flush(true);
+	QuadRenderer::flush(true);
 	pointRenderer.flush();
 
 	// disable depth test for performance purposes
@@ -206,7 +211,7 @@ void endScene()
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
-	quadRenderer.flush(false);
+	QuadRenderer::flush(false);
 
 	// display renderer debug info 
 	if(isDebugDisplayActive)
@@ -219,33 +224,35 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		auto submitDebugArray = [](QuadRendererDebugArray& arr, size_t n, char* name) 
+		auto submitVector = [](std::vector<unsigned>& v, size_t n, char* name) 
 		{
 			std::string str;
 			str += name;
 			str += ": ";
-			for(size_t i = 0; i < n && i < arr.marker; ++i)
+			for(size_t i = 0; i < n && i < v.size(); ++i)
 			{
-				str += std::to_string(arr.data[i]);
+				str += std::to_string(v[i]);
 				str += " ";
 			}
 			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
 		};
 
-		auto quadRendererNumbers = getQuadRendererDebugNumbers();
+		auto quadRendererNumbers = QuadRenderer::getDebugNumbers();
 
 		submitDebugCounter("All draw calls per frame: ",
 			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
+		submitDebugCounter("Nr of chunks: ", quadRendererNumbers.chunks);
+		submitDebugCounter("Frames to delete chunk VBOs", quadRendererNumbers.framesToDeleteChunkVBOs);
 		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
 		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
-		submitDebugArray(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
-		submitDebugArray(quadRendererNumbers.renderGroupsZ, 12, "z");
-		submitDebugArray(quadRendererNumbers.renderGroupsIndices, 12, "indices");
+		submitVector(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
+		submitVector(quadRendererNumbers.renderGroupsZ, 12, "z");
+		submitVector(quadRendererNumbers.renderGroupsIndices, 12, "indices");
 		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
-		submitDebugArray(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
+		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
 		submitDebugCounter("Nr of quad renderer allocations: ", quadRendererNumbers.allocations);
 		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
 		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
@@ -255,7 +262,7 @@ void endScene()
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		resetQuadRendererDebugNumbers();
+		QuadRenderer::resetDebugNumbers();
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
@@ -266,19 +273,35 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
                 sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
-	quadRenderer.submitQuad(texture, textureRect, color, shader, position, size,
-		getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
+	QuadRenderer::submitQuad(texture, textureRect, color, shader, position, size,
+	                         getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
                                           unsigned char z, ProjectionType projectionType)
 {
-	quadRenderer.submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
+	QuadRenderer::submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z)  
+void setChunksTexture(const Texture& texture)
 {
-	quadRenderer.submitGroundChunk(pos, texture, textureRect, getNormalizedZ(z));
+	QuadRenderer::setChunksTexture(texture.getID());	
+}
+
+unsigned registerNewChunk(const FloatRect& bounds)
+{
+	return QuadRenderer::registerNewChunk(bounds);
+}
+
+void submitChunk(std::vector<ChunkQuadData>& quadsData,
+                 const FloatRect& bounds, unsigned char z, unsigned* rendererID)
+{
+	QuadRenderer::submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID);
+}
+
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z)  
+{
+	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z));
 }
 
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
@@ -321,19 +344,19 @@ unsigned getNrOfLights()
 void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
-	textRenderer.drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
+	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
 }
 
 void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
                      sf::Color textColor)
 {
-	textRenderer.drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
+	TextRenderer::drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                     TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	textRenderer.drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
+	TextRenderer::drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
 void handleEvent(sf::Event e)
@@ -342,7 +365,7 @@ void handleEvent(sf::Event e)
 		isDebugDisplayActive = !isDebugDisplayActive;
 		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
 		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-		quadRenderer.setDebugCountingActive(isDebugDisplayActive);
+		QuadRenderer::setDebugCountingActive(isDebugDisplayActive);
 	}
 	if(e.type == sf::Event::Resized) {
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
@@ -355,16 +378,6 @@ void handleEvent(sf::Event e)
 void setAmbientLightColor(sf::Color color)
 {
 	ambientLightColor = color;
-}
-
-void setClearColor(sf::Color color)
-{
-	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
-}
-
-float getNormalizedZ(const unsigned char z)
-{
-	return z / 255.f;
 }
 
 }

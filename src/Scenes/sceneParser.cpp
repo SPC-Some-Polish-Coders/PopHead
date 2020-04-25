@@ -52,8 +52,8 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
 	// parse arcade mode
-	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
+	//if(!sceneLinksNode.getChildren("arcadeMode").empty())
+	//	systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();

@@ -36,14 +36,14 @@ namespace ph::system {
 		if(e.type == sf::Event::KeyPressed) {
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift)
-				mTimeFromDashPressed = 0.f;
+			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled)
+				mTimeFromDodgePressed = 0.f;
 		}
 		else if(e.type == sf::Event::JoystickButtonPressed){
 			if(e.joystickButton.button == PH_JOYSTICK_MENU)
 				doPause();
-			else if(e.joystickButton.button == PH_JOYSTICK_X)
-				mTimeFromDashPressed = 0.f;
+			else if(e.joystickButton.button == PH_JOYSTICK_X && !dodgeInputDisabled)
+				mTimeFromDodgePressed = 0.f;
 		}
 	}
 
@@ -62,29 +62,28 @@ namespace ph::system {
 				return;
 
 		// set input variables
-		float x = 0.f;
-		float y = 0.f;
+		sf::Vector2f d;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			x -= 1.f;
+			d.x -= 1.f;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			x += 1.f;
+			d.x += 1.f;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			y -= 1.f;
+			d.y -= 1.f;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			y += 1.f;
-		if(sf::Joystick::isConnected(0) && x == 0.f && y == 0.f)
+			d.y += 1.f;
+		if(sf::Joystick::isConnected(0) && d.x == 0.f && d.y == 0.f)
 		{
-			auto processThumbInput = [&x, &y](float inX, float inY)
+			auto processThumbInput = [&d](float inX, float inY)
 			{
 				constexpr float deadZoneThreshold = 65.f;
-				x = (inX > deadZoneThreshold || inX < -deadZoneThreshold) ? inX / 100.f : 0.f;
-				y = (inY > deadZoneThreshold || inY < -deadZoneThreshold) ? inY / 100.f : 0.f;
+				d.x = (inX > deadZoneThreshold || inX < -deadZoneThreshold) ? inX / 100.f : 0.f;
+				d.y = (inY > deadZoneThreshold || inY < -deadZoneThreshold) ? inY / 100.f : 0.f;
 			};
 			float leftThumbX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_X);
 			float leftThumbY = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_LEFT_THUMB_Y);
 			processThumbInput(leftThumbX, leftThumbY);
 
-			if(x == 0.f && y == 0.f)
+			if(d.x == 0.f && d.y == 0.f)
 			{
 				float dPadX = sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_X);
 				float dPadY = -sf::Joystick::getAxisPosition(0, PH_JOYSTICK_DPAD_Y);
@@ -94,45 +93,42 @@ namespace ph::system {
 
 		// get player direction and correct diagonal input
 		sf::Vector2f playerDirection;
-		if(x < 0.f && y < 0.f) { 
+		if(d.x < 0.f && d.y < 0.f) { 
 			playerDirection = PH_NORTH_WEST;
-			x = y = (x + y) / 2.f;			
-			x *= 0.7f;
-			y *= 0.7f;
+			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
-		else if(x > 0.f && y < 0.f) {
+		else if(d.x > 0.f && d.y < 0.f) {
 			playerDirection = PH_NORTH_EAST;
-			float offset = (x + (-y)) / 2.f;
-			x = offset;
-			y = -offset;
-			x *= 0.7f;
-			y *= 0.7f;
+			float offset = (d.x + (-d.y)) / 2.f;
+			d.x = offset;
+			d.y = -offset;
 		}
-		else if(x < 0.f && y > 0.f) {
+		else if(d.x < 0.f && d.y > 0.f) {
 			playerDirection = PH_SOUTH_WEST;
-			float offset = ((-x) + y) / 2.f;
-			x = -offset;
-			y = offset;
-			x *= 0.7f;
-			y *= 0.7f;
+			float offset = ((-d.x) + d.y) / 2.f;
+			d.x = -offset;
+			d.y = offset;
 		}
-		else if(x > 0.f && y > 0.f) {
+		else if(d.x > 0.f && d.y > 0.f) {
 			playerDirection = PH_SOUTH_EAST;
-			x = y = (x + y) / 2.f;			
-			x *= 0.7f;
-			y *= 0.7f;
+			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
-		else if(y < 0.f) {
+		else if(d.y < 0.f) {
 			playerDirection = PH_NORTH;
 		}
-		else if(y > 0.f) {
+		else if(d.y > 0.f) {
 			playerDirection = PH_SOUTH;
 		}
-		else if(x < 0.f) {
+		else if(d.x < 0.f) {
 			playerDirection = PH_WEST;
 		}
-		else if(x > 0.f) {
+		else if(d.x > 0.f) {
 			playerDirection = PH_EAST;
+		}
+
+		if((d.x != 0.f) && (d.y != 0.f))
+		{
+			d *= 0.707106781187f;
 		}
 
 		for(auto& player : playerView)
@@ -140,30 +136,24 @@ namespace ph::system {
 			// update animation data
 			auto& animationData = playerView.get<component::AnimationData>(player);
 
-			// TODO:
-			if(x < 0.f && y < 0.f) {
+			animationData.isPlaying = true;
+			if(d.x < 0.f && d.y < 0.f) {
 				animationData.currentStateName = "leftUp";
-				animationData.isPlaying = true;
 			}
-			else if(x > 0.f && y < 0.f) {
+			else if(d.x > 0.f && d.y < 0.f) {
 				animationData.currentStateName = "rightUp";
-				animationData.isPlaying = true;
 			}
-			else if(x < 0.f) {
+			else if(d.x < 0.f) {
 				animationData.currentStateName = "left";
-				animationData.isPlaying = true;
 			}
-			else if(x > 0.f) {
+			else if(d.x > 0.f) {
 				animationData.currentStateName = "right";
-				animationData.isPlaying = true;
 			}
-			else if(y < 0.f) {
+			else if(d.y < 0.f) {
 				animationData.currentStateName = "up";
-				animationData.isPlaying = true;
 			}
-			else if(y > 0.f) {
+			else if(d.y > 0.f) {
 				animationData.currentStateName = "down";
-				animationData.isPlaying = true;
 			}
 			else {
 				animationData.isPlaying = false;
@@ -181,8 +171,6 @@ namespace ph::system {
 		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
 		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
 		{
-			// TODO: Try to do that with std::atan2f() function instead of if statements
-
 			float middleAngle;
 			if(face.direction == PH_EAST)            middleAngle = 0.f;
 			else if(face.direction == PH_WEST)       middleAngle = 180.f;
@@ -199,17 +187,16 @@ namespace ph::system {
 		});
 
 		// move player
-		auto movementView = mRegistry.view<component::Player, component::Velocity, component::CharacterSpeed, component::BodyRect>();
-		movementView.each([this, x, y, playerDirection]
-		(const component::Player, component::Velocity& velocity, const component::CharacterSpeed& speed, const component::BodyRect& body) 
+		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>();
+		movementView.each([this, d, playerDirection]
+		(const component::Player, component::Kinematics& kinematics, const component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
-			mAIManager.setPlayerPosition(body.rect.getTopLeft());
-			float dashFactor = mTimeFromDashPressed < 0.1f ? 2.f : 1.f;
-			velocity.dx = x * dashFactor * speed.speed;
-			velocity.dy = y * dashFactor * speed.speed;
+			mAIManager.setPlayerPosition(body.pos);
+			float dodgeFactor = mTimeFromDodgePressed < 0.1f ? 2.f : 1.f;
+			kinematics.acceleration = d * dodgeFactor * speed.speed;
 		});
 
-		mTimeFromDashPressed += dt;
+		mTimeFromDodgePressed += dt;
 	}
 }
 

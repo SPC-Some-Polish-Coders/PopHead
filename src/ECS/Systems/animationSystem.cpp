@@ -26,7 +26,9 @@ void AnimationSystem::update(float dt)
 				animationData.elapsedTime -= animationData.delay;
 				StateData& state = animationData.states->at(animationData.currentStateName);
 				if(++animationData.currentFrameIndex >= state.frameCount)
+				{
 					animationData.currentFrameIndex = 0;
+				}
 				textureRect.rect = IntRect(
 					state.startFrame.left + state.startFrame.width * animationData.currentFrameIndex,
 					state.startFrame.top,
@@ -39,12 +41,7 @@ void AnimationSystem::update(float dt)
 		{
 			StateData& state = animationData.states->at(animationData.currentStateName);
 			animationData.currentFrameIndex = 0;
-			textureRect.rect = IntRect(
-				state.startFrame.left,
-				state.startFrame.top,
-				state.startFrame.width,
-				state.startFrame.height
-			);
+			textureRect.rect = state.startFrame;
 		}
 	}
 }

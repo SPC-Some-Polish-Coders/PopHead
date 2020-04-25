@@ -2,7 +2,7 @@
 <scenelinks>
   <ecsObjects filename="ecsTemplates.xml"/>
   <gui filename="mainMenu.gui.xml"/>
-  <map filename="mainMenuMap.tmx"/>
+  <map filename="mainMenu.tmx"/>
   <neededResources filename="menu.res.xml"/>
   <audio filename="menu.audio.xml"/>
   <ambientLight color="rgb(255, 245, 225)"/>

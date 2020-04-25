@@ -12,9 +12,16 @@ namespace ph {
 void Shader::init(ShaderSource& ss)
 {
 	mID = glCreateProgram();
-	int vertexShaderId = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
-	int fragmentShaderId = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
-	linkProgram(vertexShaderId, fragmentShaderId);
+	int vertexShader = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
+	int fragmentShader = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
+
+	GLCheck( glAttachShader(mID, vertexShader) );
+	GLCheck( glAttachShader(mID, fragmentShader) );
+	GLCheck( glLinkProgram(mID) );
+	checkLinkingErrors();
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 }
 
 int Shader::compileShaderAndGetId(const char* sourceCode, const unsigned shaderType)
@@ -28,6 +35,7 @@ int Shader::compileShaderAndGetId(const char* sourceCode, const unsigned shaderT
 
 void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shaderType)
 {
+	#ifndef PH_DISTRIBUTION
 	int success;
 	char infoLog[200];
 	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
@@ -37,18 +45,12 @@ void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shad
 		std::cout << type + " shader compilation failed:\n" + infoLog << std::endl;
 		PH_EXIT_GAME(type + " shader compilation failed:\n" + infoLog);
 	}
-}
-
-void Shader::linkProgram(const int vertexShaderId, const int fragmentShaderId)
-{
-	GLCheck( glAttachShader(mID, vertexShaderId) );
-	GLCheck( glAttachShader(mID, fragmentShaderId) );
-	GLCheck( glLinkProgram(mID) );
-	checkLinkingErrors();
+	#endif
 }
 
 void Shader::checkLinkingErrors()
 {
+	#ifndef PH_DISTRIBUTION
 	int success;
 	char infoLog[200];
 	glGetProgramiv(mID, GL_LINK_STATUS, &success);
@@ -56,6 +58,7 @@ void Shader::checkLinkingErrors()
 		glGetProgramInfoLog(mID, sizeof(infoLog), NULL, infoLog);
 		PH_EXIT_GAME("Shader linking error:\n" + std::string(infoLog));
 	}
+	#endif
 }
 
 void Shader::remove()
@@ -66,11 +69,6 @@ void Shader::remove()
 void Shader::bind() const
 {
 	GLCheck( glUseProgram(mID) );
-}
-
-void Shader::unbind() const
-{
-	GLCheck( glUseProgram(0) );
 }
 
 void Shader::initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding)

@@ -1,6 +1,7 @@
 #include "movement.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/profiling.hpp"
+#include "Utilities/math.hpp"
 
 namespace ph::system {
 	
@@ -11,18 +12,20 @@ namespace ph::system {
 		if(sPause)
 			return;
 
-		auto bodiesWithVel = mRegistry.view<component::BodyRect, component::Velocity>(entt::exclude<component::PushingForces>);
-		bodiesWithVel.each([dt](component::BodyRect& body, const component::Velocity& vel) {
-			body.rect.left += vel.dx * dt;
-			body.rect.top  += vel.dy * dt;
-		});
-
-		auto bodiesWithVelAndPushingVel = mRegistry.view<component::BodyRect, component::Velocity, component::PushingForces>();
-		bodiesWithVelAndPushingVel.each([dt](component::BodyRect& body, const component::Velocity& vel, const component::PushingForces& pushingVel) {
-			if(pushingVel.vel == sf::Vector2f(0, 0)) {
-				body.rect.left += vel.dx * dt;
-				body.rect.top  += vel.dy * dt;
+		auto bodiesWithVel = mRegistry.view<component::BodyRect, component::Kinematics>();
+		bodiesWithVel.each([dt](component::BodyRect& body, component::Kinematics& kin) 
+		{
+			if(kin.defaultFriction != kin.friction) 
+			{
+				kin.friction = Math::lerp(kin.friction, kin.defaultFriction, kin.frictionLerpSpeed);	
+				if(Math::areApproximatelyEqual(kin.defaultFriction, kin.friction, 0.2f))
+				{
+					kin.friction = kin.defaultFriction;
+				}
 			}
+			kin.vel += kin.acceleration * dt;
+			body.pos += kin.vel * dt;
+			kin.vel -= kin.vel * kin.friction * dt;
 		});
 	}
 }

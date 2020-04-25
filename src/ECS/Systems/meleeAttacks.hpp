@@ -21,6 +21,9 @@ namespace ph::system {
 		float mStartWeaponRotation;
 		bool mIsAttackButtonPressed = false;
 		bool mShouldWeaponBeRendered = false;
+
+	public:
+		inline static bool inputDisabled = false;
 	};
 }
 

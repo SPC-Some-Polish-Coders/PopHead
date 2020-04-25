@@ -4,7 +4,7 @@
   <interface name="mainMenu">
     <widget name="buttons" topCenterPos="0.5, 0.45" size="0.30, 0.5" color="transparent" >
       <textWidget name="storyButton"   template="button" text="Story"   color="rgb(100, 200, 5)"   topCenterPos="0.5, 0.0" onButtonPressed="replaceScene:openWorld.xml" />
-      <textWidget name="arcadeButton"  template="button" text="Arcade"  color="rgb(255, 40, 100)"  topCenterPos="0.5, 0.2" onButtonPressed="replaceScene:arcadeModeChooseMenu.xml" />
+      <textWidget name="arcadeButton"  template="button" text="Arcade"  color="rgb(255, 40, 100)"  topCenterPos="0.5, 0.2" />
       <textWidget name="cretitsButton" template="button" text="Credits" color="rgb(250, 150, 10)"  topCenterPos="0.5, 0.4" onButtonPressed="replaceScene:credits.xml" />
       <textWidget name="optionsButton" template="button" text="Options" color="rgb(10, 100, 255)"  topCenterPos="0.5, 0.6" onButtonPressed="replaceScene:options.xml" />
       <textWidget name="exitButton"    template="button" text="Exit"    color="rgb(230, 30, 10)"   topCenterPos="0.5, 0.8" onButtonPressed="closeGame" />

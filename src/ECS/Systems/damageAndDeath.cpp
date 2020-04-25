@@ -120,9 +120,10 @@ namespace ph::system {
 				mRegistry.reset<component::Killable>(entity);
 				mRegistry.reset<component::KinematicCollisionBody>(entity);
 				mRegistry.reset<component::Damage>(entity);
-				if(mRegistry.has<component::PushingForces>(entity)) {
-					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
-					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
+				if(mRegistry.has<component::Kinematics>(entity)) {
+					auto& kin = mRegistry.get<component::Kinematics>(entity);
+					kin.acceleration = sf::Vector2f();
+					kin.vel *= 0.35f;
 				}
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);

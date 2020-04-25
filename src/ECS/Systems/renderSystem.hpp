@@ -16,9 +16,6 @@ public:
 	RenderSystem(entt::registry& registry, Texture& tileset);
 
 	void update(float dt) override;
-
-private:
-	Texture& mTilesetTexture;
 };
 
 }
