@@ -12,7 +12,7 @@ namespace ph {
 
 SceneManager::SceneManager()
 	:mScene(nullptr)
-	,mThreadPool(2)
+	,mThreadPool(0)
 	,mAIManager(nullptr)
 	,mIsReplacing(false)
 	,mIsPopping(false)
