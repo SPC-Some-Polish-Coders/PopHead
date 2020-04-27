@@ -41,8 +41,17 @@ namespace ph {
 	std::future<void> ThreadPool::addTask(std::function<void()> task)
 	{
 		std::packaged_task<void()> packagedTask(task);
-		std::lock_guard<std::mutex> lock(mDataMutex);
-		mTasks.emplace(std::move(packagedTask));
-		return mTasks.back().get_future();
+		if (mThreads.empty())
+		{
+			auto future = packagedTask.get_future();
+			packagedTask();
+			return future;
+		}
+		else
+		{
+			std::lock_guard<std::mutex> lock(mDataMutex);
+			mTasks.emplace(std::move(packagedTask));
+			return mTasks.back().get_future();
+		}
 	}
 }
