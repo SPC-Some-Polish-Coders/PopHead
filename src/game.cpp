@@ -94,10 +94,6 @@ void Game::update(float dt)
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
 		startImGuiFrame(mWindow, dt);
-
-		ImGui::Begin("test");
-		ImGui::Button("!");
-		ImGui::End();
 		
 		Renderer::beginScene();
 		

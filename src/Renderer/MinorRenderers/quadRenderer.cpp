@@ -7,12 +7,32 @@
 #include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 #include <GL/glew.h>
+#include <imgui.h>
 #include <algorithm>
 #include <cstdlib>
+#include <vector>
 
 namespace ph::QuadRenderer {
 
 static constexpr unsigned deleteVBOsDelay = 500;
+
+struct DebugNumbers
+{
+	std::vector<unsigned> renderGroupsSizes; 
+	std::vector<unsigned> renderGroupsZ; 
+	std::vector<unsigned> renderGroupsIndices; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsSizes; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsZ; 
+	std::vector<unsigned> notAffectedByLightRenderGroupsIndices; 
+	unsigned allocations = 0;
+	unsigned chunks = 0;
+	unsigned framesToDeleteChunkVBOs = 0;
+	unsigned renderGroups = 0;
+	unsigned renderGroupsNotAffectedByLight = 0;
+	unsigned drawCalls = 0;
+	unsigned drawnSprites = 0;
+	unsigned drawnTextures = 0;
+};
 
 struct RenderGroupsHashMap
 {
@@ -91,11 +111,6 @@ DebugNumbers getDebugNumbers()
 void setScreenBoundsPtr(const FloatRect* bounds)
 {
 	screenBounds = bounds;		
-}
-
-void setDebugCountingActive(bool active)
-{
-	isDebugCountingActive = active;
 }
 
 void resetDebugNumbers()
@@ -720,6 +735,41 @@ void flush(bool affectedByLight)
 
 		rg.quadsDataSize = 0;
 		rg.texturesSize = 0;
+	}
+
+	if(affectedByLight)
+	{
+		// display debug numbers
+		ImGui::Begin("Quad Renderer debug info");
+
+		ImGui::Text("allocations: %u", debugNumbers.allocations);
+		ImGui::Text("chunks: %u", debugNumbers.chunks);
+		ImGui::Text("frames to delete chunk VBOs: %u", debugNumbers.framesToDeleteChunkVBOs);
+		ImGui::Text("render groups: %u", debugNumbers.renderGroups);
+		ImGui::Text("render groups not affected by light: %u", debugNumbers.renderGroupsNotAffectedByLight);
+		ImGui::Text("draw calls: %u", debugNumbers.drawCalls);
+		ImGui::Text("drawn sprites: %u", debugNumbers.drawnSprites);
+		ImGui::Text("drawn textures: %u", debugNumbers.drawnTextures);
+		
+		auto submitDebugArray = [](const char* name, const std::vector<unsigned>& v)
+		{
+			std::string str(name);
+			str += ":";
+			for(auto e : v)
+			{
+				str += " ";
+				str += std::to_string(e);
+			}
+			ImGui::Text(str.c_str());
+		};
+		submitDebugArray("render groups sizes", debugNumbers.renderGroupsSizes);
+		submitDebugArray("render groups z", debugNumbers.renderGroupsZ);
+		submitDebugArray("render groups indices", debugNumbers.renderGroupsIndices);
+		submitDebugArray("no light render groups sizes", debugNumbers.notAffectedByLightRenderGroupsSizes);
+		submitDebugArray("no light render groups z", debugNumbers.notAffectedByLightRenderGroupsZ);
+		submitDebugArray("no light render groups indices", debugNumbers.notAffectedByLightRenderGroupsIndices);
+
+		ImGui::End();
 	}
 }
 

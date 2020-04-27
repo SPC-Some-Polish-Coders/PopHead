@@ -15,26 +15,6 @@ namespace ph {
 
 namespace ph::QuadRenderer {
 
-struct DebugNumbers
-{
-	std::vector<unsigned> renderGroupsSizes; 
-	std::vector<unsigned> renderGroupsZ; 
-	std::vector<unsigned> renderGroupsIndices; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsSizes; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsZ; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsIndices; 
-	unsigned allocations = 0;
-	unsigned chunks = 0;
-	unsigned framesToDeleteChunkVBOs = 0;
-	unsigned renderGroups = 0;
-	unsigned renderGroupsNotAffectedByLight = 0;
-	unsigned drawCalls = 0;
-	unsigned drawnSprites = 0;
-	unsigned drawnTextures = 0;
-};
-
-DebugNumbers getDebugNumbers();
-void resetDebugNumbers();
 void setDebug(bool);
 
 void init();

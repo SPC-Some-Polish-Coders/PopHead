@@ -237,32 +237,15 @@ void endScene()
 			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
 		};
 
-		auto quadRendererNumbers = QuadRenderer::getDebugNumbers();
-
 		submitDebugCounter("All draw calls per frame: ",
-			quadRendererNumbers.drawCalls + lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
+			lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
 
-		submitDebugCounter("Nr of chunks: ", quadRendererNumbers.chunks);
-		submitDebugCounter("Frames to delete chunk VBOs", quadRendererNumbers.framesToDeleteChunkVBOs);
-		submitDebugCounter("Nr of instanced draw calls: ", quadRendererNumbers.drawCalls);
-		submitDebugCounter("Nr of render groups: ", quadRendererNumbers.renderGroups);
-		submitVector(quadRendererNumbers.renderGroupsSizes, 12, "sizes");
-		submitVector(quadRendererNumbers.renderGroupsZ, 12, "z");
-		submitVector(quadRendererNumbers.renderGroupsIndices, 12, "indices");
-		submitDebugCounter("Nr of no light render groups: ", quadRendererNumbers.renderGroupsNotAffectedByLight);
-		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsSizes, 12, "sizes");
-		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsZ, 12, "z");
-		submitVector(quadRendererNumbers.notAffectedByLightRenderGroupsIndices, 12, "indices");
-		submitDebugCounter("Nr of quad renderer allocations: ", quadRendererNumbers.allocations);
-		submitDebugCounter("Nr of drawn instanced sprites: ", quadRendererNumbers.drawnSprites);
-		submitDebugCounter("Nr of instanced textures: ", quadRendererNumbers.drawnTextures);
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
 		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of drawn points: ", pointRenderer.getNrOfDrawnPoints());
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		QuadRenderer::resetDebugNumbers();
 		lineRenderer.resetDebugNumbers();
 		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
@@ -365,7 +348,6 @@ void handleEvent(sf::Event e)
 		isDebugDisplayActive = !isDebugDisplayActive;
 		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
 		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
-		QuadRenderer::setDebugCountingActive(isDebugDisplayActive);
 	}
 	if(e.type == sf::Event::Resized) {
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
