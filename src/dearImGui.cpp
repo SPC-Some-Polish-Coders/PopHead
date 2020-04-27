@@ -90,11 +90,11 @@ static void startImGuiFrame(sf::Window& window, float dt)
 	if(io.WantSetMousePos)
 	{	
 		sf::Vector2i mousePos(static_cast<int>(io.MousePos.x), static_cast<int>(io.MousePos.y));
-		sf::Mouse::setPosition(mousePos);
+		sf::Mouse::setPosition(mousePos, window);
 	}
 	else
 	{
-		sf::Vector2i mousePos = sf::Mouse::getPosition();
+		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		io.MousePos = ImVec2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 	}
 
