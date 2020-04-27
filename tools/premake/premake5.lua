@@ -44,7 +44,8 @@ project "PopHead"
         root_dir .. "vendor/SFML_2.5.1/include",
 		root_dir .. "vendor/glew-2.1.0/include",
 		root_dir .. "vendor/stb",
-        root_dir .. "vendor/entt-3.2.0/src"
+        root_dir .. "vendor/entt-3.2.0/src",
+        root_dir .. "vendor/imgui"
     }
 
 	filter "configurations:*32bit"
@@ -62,8 +63,14 @@ project "PopHead"
     files{
         root_dir .. "src/**.hpp",
         root_dir .. "src/**.cpp",
-        root_dir .. "src/**.inl"
+        root_dir .. "src/**.inl",
+		root_dir .. "vendor/imgui/**.h",
+		root_dir .. "vendor/imgui/**.cpp"
     }
+
+	removefiles{
+		root_dir .. "src/dearImGui.cpp"
+	}
 
     links{
         "opengl32.lib",

@@ -8,6 +8,8 @@
 #include "Audio/Music/musicPlayer.hpp"
 #include <SFML/System.hpp>
 
+#include "dearImGui.cpp"
+
 namespace ph {
 
 Game::Game()
@@ -30,6 +32,7 @@ Game::Game()
 	GUI::init();
 	Widget::setWindow(&mWindow);
 	XmlGuiParser::init(mSceneManager.get());
+	initImGui(mWindow);
 }
 
 void Game::run()
@@ -81,6 +84,7 @@ void Game::handleEvents()
 		GUI::handleEvent(e);
 		mSceneManager->handleEvent(e);
 		Renderer::handleEvent(e);
+		imGuiHandleEvents(e);
 	}
 }
 
@@ -88,6 +92,8 @@ void Game::update(float dt)
 {
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
+		startImGuiFrame(mWindow, dt);
+		
 		Renderer::beginScene();
 		
 		mSceneManager->update(dt);
