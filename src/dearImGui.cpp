@@ -1,4 +1,5 @@
-#include "imgui.h"
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
 #include <SFML/Window/Clipboard.hpp>
 
 namespace ph {
@@ -54,12 +55,22 @@ static void initImGui(sf::Window& window)
     io.ImeWindowHandle = (void*)window.getSystemHandle();
 
 	// TODO: Cursors
+
+	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui::StyleColorsDark();
+}
+
+static void shutdownImGui()
+{
+	ImGui_ImplOpenGL3_Shutdown();
 }
 
 static void startImGuiFrame(sf::Window& window, float dt)
 {
+	ImGui_ImplOpenGL3_NewFrame();
+
 	ImGuiIO& io = ImGui::GetIO();
-	//IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
+	IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 
 	io.DeltaTime = dt;
 
@@ -86,6 +97,14 @@ static void startImGuiFrame(sf::Window& window, float dt)
 		sf::Vector2i mousePos = sf::Mouse::getPosition();
 		io.MousePos = ImVec2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 	}
+
+	ImGui::NewFrame();
+}
+
+static void endImGuiFrame()
+{
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 static void imGuiHandleEvents(sf::Event e)

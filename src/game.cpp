@@ -51,6 +51,7 @@ void Game::run()
 	GUI::shutDown();
 	mWindow.close();
 	SoundPlayer::shutdown();
+	shutdownImGui();
 }
 
 void Game::handleEvents()
@@ -93,6 +94,10 @@ void Game::update(float dt)
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
 		startImGuiFrame(mWindow, dt);
+
+		ImGui::Begin("test");
+		ImGui::Button("!");
+		ImGui::End();
 		
 		Renderer::beginScene();
 		
@@ -103,6 +108,9 @@ void Game::update(float dt)
 		mFPSCounter.update();
 
 		Renderer::endScene();
+
+		endImGuiFrame();
+
 		mWindow.display();
 	}
 }
