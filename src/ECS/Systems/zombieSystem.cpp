@@ -9,10 +9,11 @@
 #include "Utilities/random.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/threadPool.hpp"
+#include "Utilities/math.hpp"
 #include "Logs/logs.hpp"
 
 namespace {
-
+	
 sf::Vector2f toDirectionVector(ph::Direction direction)
 {
 	switch(direction)
@@ -143,4 +144,3 @@ void ZombieSystem::update(float dt)
 }
 
 }
-

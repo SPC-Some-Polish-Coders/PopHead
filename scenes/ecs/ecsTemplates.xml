@@ -73,6 +73,7 @@
     <component name="CharacterSpeed" speed="250" />
     <component name="Kinematics" friction="8.0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.15" />
+    <component name="SlowZombieBehavior" />
     <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" />
