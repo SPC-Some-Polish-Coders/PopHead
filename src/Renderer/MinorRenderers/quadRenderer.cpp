@@ -517,8 +517,10 @@ void flush(bool affectedByLight)
 		for(unsigned chunkIndex = 0, groundChunkIndex = 0;
 			chunkIndex + groundChunkIndex < chunks.thisFrameChunks.size() + groundChunks.size();)
 		{
-			if(groundChunkIndex < groundChunks.size() &&
-			   groundChunks[groundChunkIndex].z >= chunks.thisFrameChunks[chunkIndex].z)
+			float chunkZ = chunkIndex < chunks.thisFrameChunks.size() ? chunks.thisFrameChunks[chunkIndex].z : -1.f;
+			float groundChunkZ = groundChunkIndex < groundChunks.size() ? groundChunks[groundChunkIndex].z : -1.f;
+
+			if((groundChunkZ != -1.f) && (groundChunkZ >= chunkZ)) 
 			{
 				// draw ground chunk
 				PH_PROFILE_SCOPE("draw ground chunk");
