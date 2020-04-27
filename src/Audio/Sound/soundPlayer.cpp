@@ -51,6 +51,11 @@ void init()
 	loadSoundBuffer("sounds/shotgunShot.ogg");
 }
 
+void shutdown()
+{
+	sounds.clear();
+}
+
 void playAmbientSound(const std::string& filePath)
 {
 	removeStoppedSounds();

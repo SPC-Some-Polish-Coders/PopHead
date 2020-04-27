@@ -47,6 +47,7 @@ void Game::run()
 	Renderer::shutDown();
 	GUI::shutDown();
 	mWindow.close();
+	SoundPlayer::shutdown();
 }
 
 void Game::handleEvents()

@@ -6,6 +6,7 @@
 namespace ph::SoundPlayer
 {
 	void init();
+	void shutdown();
 
 	void playAmbientSound(const std::string& filePath);
 	void playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition);
