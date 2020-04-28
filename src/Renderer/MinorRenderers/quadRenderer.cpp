@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include <vector>
 
+extern bool debugWindowOpen;
+
 namespace ph::QuadRenderer {
 
 static constexpr unsigned deleteVBOsDelay = 500;
@@ -737,11 +739,8 @@ void flush(bool affectedByLight)
 		rg.texturesSize = 0;
 	}
 
-	if(affectedByLight)
+	if(affectedByLight && debugWindowOpen && ImGui::BeginTabItem("quad renderer debug"))
 	{
-		// display debug numbers
-		ImGui::Begin("Quad Renderer debug info");
-
 		ImGui::Text("allocations: %u", debugNumbers.allocations);
 		ImGui::Text("chunks: %u", debugNumbers.chunks);
 		ImGui::Text("frames to delete chunk VBOs: %u", debugNumbers.framesToDeleteChunkVBOs);
@@ -769,7 +768,7 @@ void flush(bool affectedByLight)
 		submitDebugArray("no light render groups z", debugNumbers.notAffectedByLightRenderGroupsZ);
 		submitDebugArray("no light render groups indices", debugNumbers.notAffectedByLightRenderGroupsIndices);
 
-		ImGui::End();
+		ImGui::EndTabItem();
 	}
 }
 

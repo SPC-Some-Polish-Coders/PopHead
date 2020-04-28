@@ -93,7 +93,7 @@ void Game::update(float dt)
 {
 	if(mWindow.hasFocus() || sNoFocusUpdate)
 	{
-		startImGuiFrame(mWindow, dt);
+		beginImGui(mWindow, dt);
 		
 		Renderer::beginScene();
 		
@@ -105,7 +105,7 @@ void Game::update(float dt)
 
 		Renderer::endScene();
 
-		endImGuiFrame();
+		endImGui();
 
 		mWindow.display();
 	}

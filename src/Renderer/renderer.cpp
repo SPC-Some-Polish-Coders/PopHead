@@ -16,9 +16,12 @@
 #include "Utilities/profiling.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <GL/glew.h>
+#include <imgui.h>
 #include <vector>
 #include <algorithm>
 #include <cstdio>
+
+extern bool debugWindowOpen;
 
 namespace {
 	ph::FloatRect screenBounds;
@@ -173,6 +176,12 @@ void endScene()
 {
 	PH_PROFILE_FUNCTION();
 
+	if(debugWindowOpen)
+	{
+		ImGui::BeginTabItem("renderer debug");
+		ImGui::BeginTabBar("renderer debug tabs");
+	}
+
 	// render scene
 	QuadRenderer::flush(true);
 	pointRenderer.flush();
@@ -224,31 +233,18 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		auto submitVector = [](std::vector<unsigned>& v, size_t n, char* name) 
-		{
-			std::string str;
-			str += name;
-			str += ": ";
-			for(size_t i = 0; i < n && i < v.size(); ++i)
-			{
-				str += std::to_string(v[i]);
-				str += " ";
-			}
-			submitDebugText(str.c_str(), "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::Yellow);
-		};
-
-		submitDebugCounter("All draw calls per frame: ",
-			lineRenderer.getNumberOfDrawCalls() + pointRenderer.getNrOfDrawCalls());
-
 		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
-		submitDebugCounter("Nr of point draw calls: ", pointRenderer.getNrOfDrawCalls());
-		submitDebugCounter("Nr of drawn points: ", pointRenderer.getNrOfDrawnPoints());
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
 		lineRenderer.resetDebugNumbers();
-		pointRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
+	}
+
+	if(debugWindowOpen)
+	{
+		ImGui::EndTabBar();
+		ImGui::EndTabItem();
 	}
 }
 

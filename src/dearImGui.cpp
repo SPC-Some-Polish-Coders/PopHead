@@ -2,6 +2,9 @@
 #include <imgui_impl_opengl3.h>
 #include <SFML/Window/Clipboard.hpp>
 
+bool debugWindowOpen = false; 
+// NOTE: It isn't static for purpose. We access it through extern specifier in other translation units.
+
 namespace ph {
 
 static bool mouseJustPressed[5];
@@ -65,7 +68,7 @@ static void shutdownImGui()
 	ImGui_ImplOpenGL3_Shutdown();
 }
 
-static void startImGuiFrame(sf::Window& window, float dt)
+static void beginImGui(sf::Window& window, float dt)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 
@@ -99,10 +102,22 @@ static void startImGuiFrame(sf::Window& window, float dt)
 	}
 
 	ImGui::NewFrame();
+
+	if(debugWindowOpen)
+	{
+		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+		ImGui::Begin("Debug & Editor");
+		ImGui::BeginTabBar("tab bar");
+	}
 }
 
-static void endImGuiFrame()
+static void endImGui()
 {
+	if(debugWindowOpen)
+	{
+		ImGui::EndTabBar();
+		ImGui::End();
+	}
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -128,6 +143,12 @@ static void imGuiHandleEvents(sf::Event e)
 		} break;
 
 		case sf::Event::KeyPressed:
+		{
+			if(e.key.code == sf::Keyboard::F5)
+			{
+				debugWindowOpen = !debugWindowOpen;
+			}
+		}
 		case sf::Event::KeyReleased:
 		{
 			io.KeysDown[e.key.code] = e.type == sf::Event::KeyPressed;
