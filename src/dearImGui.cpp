@@ -1,12 +1,21 @@
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <SFML/Window/Clipboard.hpp>
+#include <SFML/System/Clock.hpp>
 
 bool debugWindowOpen = false; 
 // NOTE: It isn't static for purpose. We access it through extern specifier in other translation units.
 
 namespace ph {
 
+struct FPSCounter
+{
+	sf::Clock clock;
+	unsigned fps;
+	unsigned framesFromLastSecond;
+};
+
+static FPSCounter fpsCounter;
 static bool mouseJustPressed[5];
 
 static const char* getClipboardText(void* user_data)
@@ -107,6 +116,19 @@ static void beginImGui(sf::Window& window, float dt)
 	{
 		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Debug & Editor");
+
+		if(fpsCounter.clock.getElapsedTime().asSeconds() >= 1.f)
+		{
+			fpsCounter.fps = fpsCounter.framesFromLastSecond;
+			fpsCounter.clock.restart();
+			fpsCounter.framesFromLastSecond = 0;
+		}
+		else
+		{	
+			++fpsCounter.framesFromLastSecond;
+		}
+		ImGui::Text("FPS: %u", fpsCounter.fps);
+	
 		ImGui::BeginTabBar("tab bar");
 	}
 }

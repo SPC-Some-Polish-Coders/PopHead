@@ -80,7 +80,6 @@ void Game::handleEvents()
 			mWindow.setKeyRepeatEnabled(false);
 		}
 
-		mFPSCounter.handleEvent(e);
 		Terminal::handleEvent(e);
 		GUI::handleEvent(e);
 		mSceneManager->handleEvent(e);
@@ -101,7 +100,6 @@ void Game::update(float dt)
 		mAIManager->update();
 		GUI::update(dt);
 		Terminal::update(dt);
-		mFPSCounter.update();
 
 		Renderer::endScene();
 
