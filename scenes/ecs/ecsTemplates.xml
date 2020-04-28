@@ -54,9 +54,9 @@
     <component name="Damage" damageDealt="25" />
     <component name="CollisionWithPlayer" pushForce="2"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="500" />
-    <component name="Kinematics" friction="3.0" />
-    <component name="Zombie" timeToMoveToAnotherTile="0.2" />
+    <component name="CharacterSpeed" speed="700" />
+    <component name="Kinematics" friction="8.0" />
+    <component name="Zombie" timeToMoveToAnotherTile="0.1" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />

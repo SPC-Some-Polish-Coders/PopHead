@@ -11,6 +11,9 @@
 #include "Utilities/profiling.hpp"
 #include <SFML/Window/Joystick.hpp>
 #include <cmath>
+#include <imgui.h>
+
+extern bool debugWindowOpen;
 
 namespace ph::system {
 
@@ -189,11 +192,20 @@ namespace ph::system {
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>();
 		movementView.each([this, d, playerDirection]
-		(const component::Player, component::Kinematics& kinematics, const component::CharacterSpeed& speed, const component::BodyRect& body) 
+		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
 			mAIManager.setPlayerPosition(body.pos);
 			float dodgeFactor = mTimeFromDodgePressed < 0.1f ? 2.f : 1.f;
 			kinematics.acceleration = d * dodgeFactor * speed.speed;
+
+			if(debugWindowOpen && ImGui::BeginTabItem("tunning"))
+			{
+				ImGui::SliderFloat("player movement speed", &speed.speed, 500.f, 3000.f);
+				ImGui::SliderFloat("player default friction", &kinematics.defaultFriction, 1.f, 30.f);
+				ImGui::Text("Player velocity: %f %f", kinematics.vel.x, kinematics.vel.y);
+				ImGui::Text("Player friction: %f", kinematics.friction);
+				ImGui::EndTabItem();
+			}
 		});
 
 		mTimeFromDodgePressed += dt;
