@@ -26,8 +26,6 @@ struct CharacterQuad
 static std::vector<CharacterQuad> rowCharacters;
 static FontHolder fontHolder;
 static Shader textShader;
-static sf::Vector2f debugTextPosition;
-static bool wasDebugTextDrawnInLastFrame;
 
 static CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
 {
@@ -77,29 +75,10 @@ void shutDown()
 	fontHolder.clear();
 }
 
-void beginDebugDisplay()
-{
-	debugTextPosition = {1030.f, 0.f};
-
-	if(wasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1020.f, 0.f}, {600.f, 340.f},
-			5, 0.f, {}, ProjectionType::gui, false);
-	wasDebugTextDrawnInLastFrame = false;
-}
-
 void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
               unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	drawTextInternal(text, fontFilename, position, size, color, z, projectionType, isAffectedByLight);
-}
-
-void drawDebugText(const char* text, const char* fontFilename, float size,
-                   float upMargin, float downMargin, sf::Color color)
-{
-	wasDebugTextDrawnInLastFrame = true;
-	debugTextPosition.y += upMargin;
-	drawTextInternal(text, fontFilename, debugTextPosition, size, color, 0, ProjectionType::gui, false);
-	debugTextPosition.y += downMargin + size;
 }
 
 void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,

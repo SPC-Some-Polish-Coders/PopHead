@@ -58,9 +58,6 @@ namespace Renderer
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
 		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
-	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
-                         sf::Color textColor);
-
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                         TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 

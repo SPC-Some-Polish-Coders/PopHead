@@ -168,8 +168,6 @@ void beginScene()
 	sf::Vector2f center = gameWorldCamera.getCenter();
 	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
-
-	TextRenderer::beginDebugDisplay();
 }
 
 void endScene()
@@ -306,12 +304,6 @@ void submitText(const char* text, const char* fontFilename, sf::Vector2f positio
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
 	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
-}
-
-void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
-                     sf::Color textColor)
-{
-	TextRenderer::drawDebugText(text, fontFilename, characterSize, upMargin, downMargin, textColor);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
