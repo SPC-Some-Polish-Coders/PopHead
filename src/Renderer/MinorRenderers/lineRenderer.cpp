@@ -6,8 +6,11 @@
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
 #include <GL/glew.h>
+#include <imgui.h>
 
 namespace ph {
+
+static unsigned drawCalls;
 
 void LineRenderer::init()
 {
@@ -36,11 +39,6 @@ void LineRenderer::shutDown()
 	GLCheck( glDeleteBuffers(1, &mLineVBO) );
 }
 
-void LineRenderer::resetDebugNumbers()
-{
-	mNumberOfDrawCalls = 0;
-}
-
 void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
                             const sf::Vector2f posA, const sf::Vector2f posB, float thickness)
 {
@@ -60,8 +58,17 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 
 	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
 
-	if(mIsDebugCountingActive)
-		++mNumberOfDrawCalls;
+	++drawCalls;
+}
+
+void LineRenderer::displayDebugNumbers()
+{
+	if(ImGui::BeginTabItem("line renderer"))
+	{
+		ImGui::Text("draw calls: %u", drawCalls);
+		ImGui::EndTabItem();
+	}
+	drawCalls = 0;
 }
 
 }

@@ -233,16 +233,15 @@ void endScene()
 			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
 		};
 
-		submitDebugCounter("Nr of line draw calls: ", lineRenderer.getNumberOfDrawCalls());
 		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
 		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
 		
-		lineRenderer.resetDebugNumbers();
 		lightRenderer.resetDebugNumbers();
 	}
 
 	if(debugWindowOpen)
 	{
+		lineRenderer.displayDebugNumbers();
 		ImGui::EndTabBar();
 		ImGui::EndTabItem();
 	}
@@ -342,8 +341,6 @@ void handleEvent(sf::Event e)
 {
 	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F3) {
 		isDebugDisplayActive = !isDebugDisplayActive;
-		lineRenderer.setDebugCountingActive(isDebugDisplayActive);
-		pointRenderer.setDebugCountingActive(isDebugDisplayActive);
 	}
 	if(e.type == sf::Event::Resized) {
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
