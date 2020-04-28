@@ -1,55 +1,79 @@
 #include "debugCamera.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
 #include "Utilities/math.hpp"
 #include "Utilities/profiling.hpp"
 #include "Renderer/renderer.hpp"
 #include <SFML/Window/Keyboard.hpp>
+#include <imgui.h>
+
+extern bool debugWindowOpen; 
 
 namespace ph::system {
-
-void DebugCamera::onEvent(sf::Event e)
-{
-	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::H)
-		mIsHintActive = !mIsHintActive;
-}
 
 void DebugCamera::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto view = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
-	view.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
+	auto debugCameraView = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
+
+	if(debugWindowOpen && ImGui::BeginTabItem("camera"))
 	{
-		// show hint
-		if(mIsHintActive)
+		if(ImGui::Checkbox("debug camera", &mDebugCameraEnabled))
 		{
-			float posY = 10.f;
-			auto drawDebugCameraHintText = [&posY](const char* text, bool bold = false) {
-				float size = bold ? 50.f : 30.f;
-				Renderer::submitText(text, bold ? "LiberationMono-Bold.ttf" : "LiberationMono.ttf", {10.f, posY}, size,
-					sf::Color::White, 0, ProjectionType::gui);
-				posY += bold ? 75.f : 30.f;
-			};
-			drawDebugCameraHintText("DebugCamera mode", true); 
-			drawDebugCameraHintText("Ctrl + Tab - Back to terminal");
-			drawDebugCameraHintText("H - Hide/Show hint");
-			drawDebugCameraHintText("AWSD - Movement");
-			drawDebugCameraHintText("Arrow keys - Zooming");
-			drawDebugCameraHintText("K - Slow movement");
-			drawDebugCameraHintText("K + L - Very slow movement");
-			drawDebugCameraHintText("J - Fast movement");
-			drawDebugCameraHintText("J + L - Very fast movement");
-			Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 150), nullptr, {}, {650.f, 350.f},
-				1, 0.f, {}, ProjectionType::gui, false); 
+			component::Camera::currentCameraName = "default";
+
+			auto debugCameras = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
+			mRegistry.destroy(debugCameras.begin(), debugCameras.end());
+
+			if(mDebugCameraEnabled)
+			{
+				// get player pos
+				sf::Vector2f playerPos;
+				auto players = mRegistry.view<component::Player, component::BodyRect>();
+				players.each([&playerPos](const component::Player, const component::BodyRect& body) {
+					playerPos = body.rect.getCenter();
+				});
+
+				// create debug camera
+				auto entity = mRegistry.create();
+				mRegistry.assign<component::Camera>(entity, Camera(playerPos, {640, 360}), "debug");
+				mRegistry.assign<component::DebugCamera>(entity);
+				mRegistry.assign<component::BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
+				component::Camera::currentCameraName = "debug";
+			}
+
+			sPause = mDebugCameraEnabled;
 		}
+		
+		if(mDebugCameraEnabled)
+		{
+			ImGui::Separator();
+			ImGui::Text("AWSD - Move camera");
 
-		// get modifier flags 
-		bool speedUp = sf::Keyboard::isKeyPressed(sf::Keyboard::J);
-		bool slowDown = sf::Keyboard::isKeyPressed(sf::Keyboard::K);
-		bool magnification = sf::Keyboard::isKeyPressed(sf::Keyboard::L);
+			debugCameraView.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
+			{
+				if(ImGui::SliderFloat("zoom", &mZoom, 0.01f, 20.f))
+				{
+					camera.camera.setSize(sf::Vector2f(640.f, 360.f) * mZoom);
+				}
+				
+				ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
 
-		// move camera
+				if(ImGui::Button("normal zoom"))
+				{
+					mZoom = 1.f;
+					camera.camera.setSize(sf::Vector2f(640.f, 360.f));
+				}
+			});
+		}
+		ImGui::EndTabItem();
+	}
+
+	// move camera
+	debugCameraView.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
+	{
 		sf::Vector2f movement;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
 			movement.x -= 500.f;	
@@ -59,43 +83,10 @@ void DebugCamera::update(float dt)
 			movement.y -= 500.f;	
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			movement.y += 500.f;	
-		if(slowDown && magnification)
-			movement *= 0.1f;
-		else if(slowDown) 
-			movement *= 0.4f;
-		else if(speedUp && magnification)
-			movement *= 6.f;
-		else if(speedUp)
-			movement *= 2.f;
 		movement *= dt;
+		movement *= mMovementSpeed;
 		body.rect.move(movement);
 		camera.camera.setCenter(body.rect.getCenter());
-
-		// zoom camera 
-		float zoom = 1.f;
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-			zoom = 1.01f;
-			if(slowDown && magnification)
-				zoom = 1.003f;
-			else if(slowDown)
-				zoom = 1.005f;
-			else if(speedUp && magnification)
-				zoom = 1.04f;
-			else if(speedUp)
-				zoom = 1.02f;
-		}	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-			zoom = 0.99f;
-			if(slowDown && magnification)
-				zoom = 0.996f; 
-			else if(slowDown)
-				zoom = 0.993f;
-			else if(speedUp && magnification)
-				zoom = 0.98f;
-			else if(speedUp)
-				zoom = 0.96f;
-		}
-		camera.camera.zoom(zoom);
 	});
 }
 
