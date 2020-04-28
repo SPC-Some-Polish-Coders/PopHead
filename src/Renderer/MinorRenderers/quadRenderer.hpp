@@ -15,8 +15,6 @@ namespace ph {
 
 namespace ph::QuadRenderer {
 
-void setDebug(bool);
-
 void init();
 void shutDown();
 

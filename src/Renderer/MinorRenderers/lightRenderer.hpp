@@ -9,12 +9,6 @@
 
 namespace ph { 
 
-struct LightingDebug
-{
-	bool drawLight = true;
-	bool drawRays = false;
-};
-
 // TODO: Add Z to Light
 
 struct Light
@@ -57,17 +51,11 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
-	unsigned getNrOfLights() { return mNrOfLights; }
-
-	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
-	unsigned getNrOfRays() { return mNrOfRays; }
-	void resetDebugNumbers();
+	unsigned getNrOfLights(); 
 
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
-
-	static LightingDebug& getDebug() { return sDebug; }
 
 private:
 	RayWallIntersection getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall);
@@ -80,10 +68,6 @@ private:
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
 	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
-	unsigned mNrOfDrawCalls, mNrOfRays;
-	unsigned mNrOfLights;
-
-	inline static LightingDebug sDebug;
 };
 
 } 

@@ -88,6 +88,7 @@ static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
 
 static DebugNumbers debugNumbers;
+static bool debugColors = false;
 
 static Shader defaultQuadShader;
 static Shader groundChunkShader;
@@ -98,7 +99,6 @@ static Texture* whiteTexture;
 static unsigned quadIBO;
 static unsigned quadsDataVBO;
 static unsigned quadVao;
-static bool isDebugCountingActive = false;
 
 void setChunksTexture(unsigned texture)
 {
@@ -113,28 +113,6 @@ DebugNumbers getDebugNumbers()
 void setScreenBoundsPtr(const FloatRect* bounds)
 {
 	screenBounds = bounds;		
-}
-
-void resetDebugNumbers()
-{
-	debugNumbers.renderGroupsSizes.clear(); 
-	debugNumbers.notAffectedByLightRenderGroupsSizes.clear(); 
-	debugNumbers.drawCalls = 0;
-	debugNumbers.chunks = 0;
-	debugNumbers.drawnSprites = 0;
-	debugNumbers.drawnTextures = 0;
-}
-
-void setDebug(bool flag)
-{
-	defaultQuadShader.bind();
-	defaultQuadShader.setUniformBool("debugVisualization", flag);
-
-	chunkShader.bind();
-	chunkShader.setUniformBool("debugVisualization", flag);
-
-	groundChunkShader.bind();
-	groundChunkShader.setUniformBool("debugVisualization", flag);
 }
 
 static unsigned bumpToNext4000(unsigned size)
@@ -564,8 +542,7 @@ void flush(bool affectedByLight)
 
 				++groundChunkIndex;
 				
-				if(isDebugCountingActive)
-					++debugNumbers.drawCalls;
+				++debugNumbers.drawCalls;
 			}
 			else
 			{
@@ -602,11 +579,8 @@ void flush(bool affectedByLight)
 
 				++chunkIndex;
 
-				if(isDebugCountingActive)
-				{
-					++debugNumbers.chunks; 
-					++debugNumbers.drawCalls;
-				}
+				++debugNumbers.chunks; 
+				++debugNumbers.drawCalls;
 			}
 		}
 
@@ -641,15 +615,12 @@ void flush(bool affectedByLight)
 		auto& rg = hashMap.renderGroups[renderGroupIndex];
 
 		// update debug info
-		if(isDebugCountingActive) 
-		{
-			debugNumbers.drawnSprites += rg.quadsDataSize;
-			debugNumbers.drawnTextures += rg.texturesSize;
-			if(affectedByLight)
-				debugNumbers.renderGroupsSizes.emplace_back(rg.quadsDataSize);
-			else
-				debugNumbers.notAffectedByLightRenderGroupsSizes.emplace_back(rg.quadsDataSize);
-		}
+		debugNumbers.drawnSprites += rg.quadsDataSize;
+		debugNumbers.drawnTextures += rg.texturesSize;
+		if(affectedByLight)
+			debugNumbers.renderGroupsSizes.emplace_back(rg.quadsDataSize);
+		else
+			debugNumbers.notAffectedByLightRenderGroupsSizes.emplace_back(rg.quadsDataSize);
 
 		// set up shader
 		if(key.shader != currentlyBoundShader) 
@@ -695,8 +666,7 @@ void flush(bool affectedByLight)
 
 			GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, (GLsizei)nrOfInstances) );
 
-			if(isDebugCountingActive)
-				++debugNumbers.drawCalls;
+			++debugNumbers.drawCalls;
 		};
 
 		for(size_t quadIndex = 0; quadIndex < rg.quadsDataSize; ++quadIndex)
@@ -739,8 +709,28 @@ void flush(bool affectedByLight)
 		rg.texturesSize = 0;
 	}
 
-	if(affectedByLight && debugWindowOpen && ImGui::BeginTabItem("quad renderer debug"))
+	// debug stuff
+	if(affectedByLight && debugWindowOpen && ImGui::BeginTabItem("quad renderer"))
 	{
+		if(ImGui::Checkbox("colorful debug", &debugColors))
+		{
+			defaultQuadShader.bind();
+			defaultQuadShader.setUniformBool("debugVisualization", debugColors);
+
+			chunkShader.bind();
+			chunkShader.setUniformBool("debugVisualization", debugColors);
+
+			groundChunkShader.bind();
+			groundChunkShader.setUniformBool("debugVisualization", debugColors);
+		}
+		if(debugColors)
+		{
+			ImGui::Text("red - ground chunk");
+			ImGui::Text("green - chunk");
+			ImGui::Text("blue - hash map");
+			ImGui::Separator();
+		}
+
 		ImGui::Text("allocations: %u", debugNumbers.allocations);
 		ImGui::Text("chunks: %u", debugNumbers.chunks);
 		ImGui::Text("frames to delete chunk VBOs: %u", debugNumbers.framesToDeleteChunkVBOs);
@@ -770,6 +760,12 @@ void flush(bool affectedByLight)
 
 		ImGui::EndTabItem();
 	}
+	debugNumbers.renderGroupsSizes.clear(); 
+	debugNumbers.notAffectedByLightRenderGroupsSizes.clear(); 
+	debugNumbers.drawCalls = 0;
+	debugNumbers.chunks = 0;
+	debugNumbers.drawnSprites = 0;
+	debugNumbers.drawnTextures = 0;
 }
 
 }

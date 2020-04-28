@@ -222,23 +222,6 @@ void endScene()
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
 	QuadRenderer::flush(false);
 
-	// display renderer debug info 
-	if(isDebugDisplayActive)
-	{
-		char debugText[128];
-
-		auto submitDebugCounter = [&debugText](const char* text, unsigned number) 
-		{
-			sprintf_s(debugText, "%s%u", text, number);
-			submitDebugText(debugText, "LiberationMono.ttf", 20.f, 0.f, 0.f, sf::Color::White);
-		};
-
-		submitDebugCounter("Nr of light draw calls: ", lightRenderer.getNrOfDrawCalls());
-		submitDebugCounter("Nr of light rays: ", lightRenderer.getNrOfRays());
-		
-		lightRenderer.resetDebugNumbers();
-	}
-
 	if(debugWindowOpen)
 	{
 		lineRenderer.displayDebugNumbers();

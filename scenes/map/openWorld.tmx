@@ -17168,7 +17168,7 @@
   <object id="3" type="Camera" x="270" y="6980" width="640" height="360"/>
   <object id="4" name="Player" type="Player" x="-32.2967" y="6292.87">
    <properties>
-    <property name="hasFlashlight" type="bool" value="false"/>
+    <property name="hasFlashlight" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

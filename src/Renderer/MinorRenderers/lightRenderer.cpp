@@ -9,8 +9,22 @@
 #include <cmath>
 #include <algorithm>
 #include <GL/glew.h>
+#include <imgui.h>
+
+extern bool debugWindowOpen;
 
 namespace ph {
+
+static unsigned rays; // debug info
+
+static unsigned lights;
+static bool lightingEnabled = true;
+static bool drawRays = false;
+
+unsigned LightRenderer::getNrOfLights()
+{
+	return lights;
+}
 
 void LightRenderer::init()
 {
@@ -50,10 +64,9 @@ void LightRenderer::submitLight(Light light)
 {
 	// TODO: Culling
 
-	if(sDebug.drawLight)
+	if(lightingEnabled)
 	{
 		mLights.emplace_back(light);
-		++mNrOfLights;
 	}	
 }
 
@@ -61,14 +74,24 @@ void LightRenderer::flush()
 {
 	PH_PROFILE_FUNCTION();
 
+	if(debugWindowOpen && ImGui::BeginTabItem("light renderer"))
+	{
+		ImGui::Checkbox("lighting", &lightingEnabled);
+		ImGui::Checkbox("rays debug", &drawRays);
+		ImGui::Text("light sources (draw calls): %u", mLights.size());
+		ImGui::Text("light rays: %u", rays);
+		ImGui::EndTabItem();
+	}
+	rays = 0;
+
 	if(mLights.empty())
 		return;
+
+	lights = mLights.size();
 
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
 	                          mScreenBounds->width + 200000.f, mScreenBounds->height + 200000.f));
-
-	mNrOfDrawCalls = static_cast<unsigned>(mLights.size());
 
 	FloatRect expandedScreenSize(mScreenBounds->left - 400.f, mScreenBounds->top - 400.f, 800.f, 800.f);
 
@@ -84,7 +107,7 @@ void LightRenderer::flush()
 			// TODO_ren: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
-				++mNrOfRays;
+				++rays;
 
 				float rad = Math::degreesToRadians(angle);
 				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
@@ -118,7 +141,7 @@ void LightRenderer::flush()
 		glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<unsigned>(mLightTriangleFanVertexData.size()));
 		mLightTriangleFanVertexData.clear();
 
-		if(sDebug.drawRays)
+		if(drawRays)
 		{
 			for(auto& point : mLightTriangleFanVertexData) {
 				Renderer::submitPoint(point, light.color, 0, 7.f);
@@ -128,7 +151,7 @@ void LightRenderer::flush()
 	}
 
 	// draw light sources as points
-	if(sDebug.drawRays)
+	if(drawRays)
 		for(auto& light : mLights)
 			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 
@@ -192,13 +215,6 @@ sf::Vector2f LightRenderer::getVectorLineIntersectionPoint(sf::Vector2f rayDir, 
 		return sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
 		return Math::nullVector; 
-}
-
-void LightRenderer::resetDebugNumbers()
-{
-	mNrOfDrawCalls = 0;
-	mNrOfRays = 0;
-	mNrOfLights = 0;
 }
 
 }
