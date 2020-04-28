@@ -174,10 +174,14 @@ void endScene()
 {
 	PH_PROFILE_FUNCTION();
 
+	bool rendererDebugTabActive = false; 
 	if(debugWindowOpen)
 	{
-		ImGui::BeginTabItem("renderer debug");
-		ImGui::BeginTabBar("renderer debug tabs");
+		rendererDebugTabActive = ImGui::BeginTabItem("renderer debug");
+		if(rendererDebugTabActive)
+		{
+			ImGui::BeginTabBar("renderer debug tabs");
+		}
 	}
 
 	// render scene
@@ -220,9 +224,12 @@ void endScene()
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
 	QuadRenderer::flush(false);
 
-	if(debugWindowOpen)
+	if(rendererDebugTabActive)
 	{
-		lineRenderer.displayDebugNumbers();
+		QuadRenderer::submitDebug();
+		lightRenderer.submitDebug();
+		pointRenderer.submitDebug();
+		lineRenderer.submitDebug();
 		ImGui::EndTabBar();
 		ImGui::EndTabItem();
 	}

@@ -61,7 +61,7 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	++drawCalls;
 }
 
-void LineRenderer::displayDebugNumbers()
+void LineRenderer::submitDebug()
 {
 	if(ImGui::BeginTabItem("line renderer"))
 	{

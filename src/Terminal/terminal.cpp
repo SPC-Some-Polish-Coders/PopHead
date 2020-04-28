@@ -151,12 +151,11 @@ static void executeHelp()
 	pushOutputLine({});
 	pushOutputLine({"fz @C9999 freeze zombies @CO @S31", infoLimeColor});
 	pushOutputLine({"history @C9999 show last commands @CO @S31 currentpos @C9999 output player's position @CO @S32 view @C9999 change player's camera size", infoLimeColor});
-	pushOutputLine({"veld @C9999 velocity areas debug @CO @S31 pushd @C9999 push areas debug @CO @S32 cold @C9999 collision rects debug", infoLimeColor});
 	pushOutputLine({"give @C9999 player gets an item @CO @S31 tp @C9999 teleport @CO @S32 m @C9999 move player", infoLimeColor});
 	pushOutputLine({"setvolume @S31 mute @C9999 mute audio @CO @S32 unmute @C9999 unmute audio", infoLimeColor});
 	pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
 	pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
-	pushOutputLine({"rguilivefreq @C9999 set gui reset frequency @CO @S31 lwd @C9999 light walls debug @CO @S32 light @C9999 light debug", infoLimeColor});
+	pushOutputLine({"rguilivefreq @C9999 set gui reset frequency", infoLimeColor});
 	pushOutputLine({"@CO @S31 nofocusupdate @S32 dc @C9999 debug camera", infoLimeColor});
 	pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
 }
@@ -335,62 +334,6 @@ static void executeCurrentPos()
 	else
 	{
 		pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
-	}
-}
-
-static void executeCollisionDebug()
-{
-	if(commandContains('?'))
-	{
-		pushOutputLine({""});
-		pushOutputLine({"@C9609cold off@CO turns off collision rects debug"});
-		pushOutputLine({"@C9609cold@CO turns on collision rects debug"});
-	}
-	else
-	{
-		system::AreasDebug::setIsCollisionDebugActive(!commandContains("off"));
-	}
-}
-
-static void executeVelocityChangingAreaDebug()
-{
-	if(commandContains('?'))
-	{
-		pushOutputLine({""});
-		pushOutputLine({"@C9609veld off@CO turns off velocity changing areas debug"});
-		pushOutputLine({"@C9609veld@CO turns on velocity changing areas debug"});
-	}
-	else
-	{
-		system::AreasDebug::setIsVelocityChangingAreaDebugActive(!commandContains("off"));
-	}
-}
-
-static void executePushingAreaDebug()
-{
-	if(commandContains('?'))
-	{
-		pushOutputLine({""});
-		pushOutputLine({"@C9609pushd off@CO turns off pushing areas debug"});
-		pushOutputLine({"@C9609pushd@CO turns on pushing areas debug"});
-	}
-	else
-	{
-		system::AreasDebug::setIsPushingAreaDebugActive(!commandContains("off"));
-	}
-}
-
-static void executeLightWallsAreaDebug()
-{
-	if(commandContains('?'))
-	{
-		pushOutputLine({""});
-		pushOutputLine({"@C9609lwd off@CO turns off light walls debug"});
-		pushOutputLine({"@C9609lwd@CO turns on light walls debug"});
-	}
-	else
-	{
-		system::AreasDebug::setIsLightWallsAreaDebugActive(!commandContains("off"));
 	}
 }
 
@@ -668,10 +611,6 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["tp"] = &executeTeleport;
 	commandsMap["give"] = &executeGive;
 	commandsMap["currentpos"] = &executeCurrentPos;
-	commandsMap["cold"] = &executeCollisionDebug;
-	commandsMap["veld"] = &executeVelocityChangingAreaDebug;
-	commandsMap["pushd"] = &executePushingAreaDebug;
-	commandsMap["lwd"] = &executeLightWallsAreaDebug;
 	commandsMap["mute"] = &executeMute;
 	commandsMap["unmute"] = &executeUnmute;
 	commandsMap["setvolume"] = &executeSetVolume;

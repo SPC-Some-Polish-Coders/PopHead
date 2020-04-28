@@ -4,14 +4,31 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/profiling.hpp"
+#include <imgui.h>
+
+extern bool debugWindowOpen;
 
 namespace ph::system {
+
+static bool collisionDebug = false;
+static bool velocityChangingAreaDebug = false;
+static bool pushingAreaDebug = false;
+static bool lightWallsDebug = false;
 
 void AreasDebug::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sIsCollisionDebugActive)
+	if(debugWindowOpen && ImGui::BeginTabItem("game debug visualization"))
+	{
+		ImGui::Checkbox("collisions", &collisionDebug);
+		ImGui::Checkbox("velocity changing areas", &velocityChangingAreaDebug);
+		ImGui::Checkbox("pushing areas", &pushingAreaDebug);
+		ImGui::Checkbox("light walls", &lightWallsDebug);
+		ImGui::EndTabItem();
+	}
+
+	if(collisionDebug)
 	{
 		// render static collision bodies as dark red rectangle
 		auto staticBodies = mRegistry.view<component::StaticCollisionBody, component::BodyRect>();
@@ -41,7 +58,7 @@ void AreasDebug::update(float dt)
 		});
 	}
 
-	if(sIsVelocityChangingAreaDebugActive)
+	if(velocityChangingAreaDebug)
 	{
 		// render velocity changing areas as orange rectangle
 		auto velocityChangingAreas = mRegistry.view<component::AreaVelocityChangingEffect, component::BodyRect>();
@@ -51,7 +68,7 @@ void AreasDebug::update(float dt)
 		});
 	}
 
-	if(sIsPushingAreaDebugActive)
+	if(pushingAreaDebug)
 	{
 		// render pushing areas as yellow rectangle
 		auto velocityChangingAreas = mRegistry.view<component::PushingArea, component::BodyRect>();
@@ -61,7 +78,7 @@ void AreasDebug::update(float dt)
 		});
 	}
 
-	if(sIsLightWallsAreaDebugActive)
+	if(lightWallsDebug)
 	{
 		// render light walls as blue rectangle
 		auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();

@@ -18,7 +18,7 @@ public:
 	void drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
-	void displayDebugNumbers();
+	void submitDebug();
 
 private:
 	Shader mLineShader;

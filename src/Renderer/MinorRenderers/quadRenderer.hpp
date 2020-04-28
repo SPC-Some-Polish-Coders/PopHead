@@ -36,5 +36,7 @@ void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Sh
 				sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
 void flush(bool affectedByLight);
 
+void submitDebug();
+
 }
 

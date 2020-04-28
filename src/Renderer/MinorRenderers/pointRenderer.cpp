@@ -6,8 +6,6 @@
 #include <GL/glew.h>
 #include <imgui.h>
 
-extern bool debugWindowOpen;
-
 namespace ph {
 
 void PointRenderer::init()
@@ -56,13 +54,6 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 
 void PointRenderer::flush()
 {
-	if(debugWindowOpen && ImGui::BeginTabItem("point renderer"))
-	{
-		ImGui::Text("drawn points %u", mSubmitedPointsVertexData.size());
-		ImGui::Text("draw calls: 1 (it is always 1)");
-		ImGui::EndTabItem();
-	}
-
 	if(mSubmitedPointsVertexData.empty())
 		return;
 
@@ -85,6 +76,16 @@ bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
 		const float halfSize = size / 2;
 		FloatRect pointRect(position.x - halfSize, position.y - halfSize, size, size);
 		return mScreenBounds->doPositiveRectsIntersect(pointRect);
+	}
+}
+
+void PointRenderer::submitDebug()
+{
+	if(ImGui::BeginTabItem("point renderer"))
+	{
+		ImGui::Text("drawn points %u", mSubmitedPointsVertexData.size());
+		ImGui::Text("draw calls: 1 (it is always 1)");
+		ImGui::EndTabItem();
 	}
 }
 

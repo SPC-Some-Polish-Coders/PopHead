@@ -11,8 +11,6 @@
 #include <GL/glew.h>
 #include <imgui.h>
 
-extern bool debugWindowOpen;
-
 namespace ph {
 
 static unsigned rays; // debug info
@@ -70,11 +68,9 @@ void LightRenderer::submitLight(Light light)
 	}	
 }
 
-void LightRenderer::flush()
+void LightRenderer::submitDebug()
 {
-	PH_PROFILE_FUNCTION();
-
-	if(debugWindowOpen && ImGui::BeginTabItem("light renderer"))
+	if(ImGui::BeginTabItem("light renderer"))
 	{
 		ImGui::Checkbox("lighting", &lightingEnabled);
 		ImGui::Checkbox("rays debug", &drawRays);
@@ -83,6 +79,12 @@ void LightRenderer::flush()
 		ImGui::EndTabItem();
 	}
 	rays = 0;
+
+}
+
+void LightRenderer::flush()
+{
+	PH_PROFILE_FUNCTION();
 
 	if(mLights.empty())
 		return;

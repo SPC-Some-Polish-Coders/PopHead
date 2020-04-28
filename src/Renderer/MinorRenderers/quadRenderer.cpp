@@ -708,9 +708,11 @@ void flush(bool affectedByLight)
 		rg.quadsDataSize = 0;
 		rg.texturesSize = 0;
 	}
+}
 
-	// debug stuff
-	if(affectedByLight && debugWindowOpen && ImGui::BeginTabItem("quad renderer"))
+void submitDebug()
+{
+	if(ImGui::BeginTabItem("quad renderer"))
 	{
 		if(ImGui::Checkbox("colorful debug", &debugColors))
 		{

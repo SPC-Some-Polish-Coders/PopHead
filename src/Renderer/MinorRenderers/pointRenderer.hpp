@@ -30,6 +30,8 @@ public:
 
 	void flush();
 
+	void submitDebug();
+
 private:
 	bool isInsideScreen(sf::Vector2f position, float size);
 

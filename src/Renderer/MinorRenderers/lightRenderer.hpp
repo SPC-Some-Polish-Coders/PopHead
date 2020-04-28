@@ -53,6 +53,8 @@ public:
 	void submitLight(Light);
 	unsigned getNrOfLights(); 
 
+	void submitDebug();
+
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
