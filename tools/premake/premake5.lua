@@ -119,8 +119,10 @@ project "PopHead"
         }
 
     filter "configurations:Distribution* or Profiling*"
-        defines "PH_DISTRIBUTION" 
         kind "WindowedApp"
+
+	filter "configurations:Distribution*"
+        defines "PH_DISTRIBUTION" 
 
 	filter "configurations:Profiling*"
 		defines "PH_PROFILING"
@@ -232,11 +234,13 @@ project "Tests"
 		defines "PH_TESTS"
 
     filter "configurations:Distribution* or Profiling*"
+        kind "WindowedApp"
+
+	filter "configurations:Distribution*"
         defines "PH_DISTRIBUTION"
 
 	filter "configurations:Profiling*"
 		defines "PH_PROFILING"
-        kind "WindowedApp"
 
     filter "system:Windows"
         defines "PH_WINDOWS" 
