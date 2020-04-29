@@ -1,3 +1,4 @@
+#include "Utilities/profiling.hpp"
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <SFML/Window/Clipboard.hpp>
@@ -135,6 +136,7 @@ static void beginImGui(sf::Window& window, float dt)
 
 static void endImGui()
 {
+	ImGuiProfiling::flush();
 	if(debugWindowOpen)
 	{
 		ImGui::EndTabBar();

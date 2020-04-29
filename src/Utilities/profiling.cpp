@@ -1,8 +1,10 @@
 #include "profiling.hpp"
 #include "Utilities/threadId.hpp"
-
+#include <imgui.h>
 #include <algorithm>
 #include <thread>
+
+extern bool debugWindowOpen;
 
 namespace ph {
 
@@ -122,6 +124,73 @@ ProfilingTimer::ProfilingTimer(const char* name, std::vector<std::pair<std::stri
 ProfilingTimer::~ProfilingTimer()
 {
 	MainProfilingManager::commitResultEnd(resultId);
+}
+
+ImGuiProfilingTimer::ImGuiProfilingTimer(const char* name)
+{
+	mResult.name = name;
+	clock.restart();
+}
+
+ImGuiProfilingTimer::~ImGuiProfilingTimer()
+{
+	mResult.duration = clock.getElapsedTime().asSeconds();
+	ImGuiProfiling::commitResult(mResult);
+}
+
+namespace ImGuiProfiling {
+
+	static std::vector<ImGuiProfilingResult> results;
+
+	void commitResult(const ImGuiProfilingResult& result)
+	{
+		for(auto& res : results)
+		{
+			if(res.name == result.name)
+			{
+				res.duration += result.duration;
+				return;
+			}
+		}
+		
+		results.emplace_back(result);
+	}
+
+	void flush()
+	{
+		if(debugWindowOpen && ImGui::BeginTabItem("profiling"))
+		{
+			std::sort(results.begin(), results.end(), 
+			[](const ImGuiProfilingResult& a, const ImGuiProfilingResult& b)
+			{
+				return a.duration > b.duration;
+			});
+
+			ImGui::Columns(3, nullptr);
+			ImGui::BulletText("Time of all calls in seconds");
+			ImGui::NextColumn();
+			ImGui::BulletText("Percent of time of all calls relative to 60Hz");
+			ImGui::NextColumn();
+			ImGui::BulletText("Function name");
+			ImGui::NextColumn();
+
+			for(auto& res : results)
+			{	
+				ImGui::Text("%f", res.duration);
+				ImGui::NextColumn();
+
+				ImGui::Text("%f", res.duration * 6000.f);
+				ImGui::NextColumn();
+
+				ImGui::Text(res.name.c_str());
+				ImGui::NextColumn();
+			}
+			ImGui::Columns(1);
+
+			ImGui::EndTabItem();
+		}
+		results.clear();
+	}
 }
 
 }
