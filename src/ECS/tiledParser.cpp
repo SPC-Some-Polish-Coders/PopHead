@@ -69,7 +69,6 @@ namespace ph {
 			else if (objectType == "HintArea") loadHintArea(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
-			else if (objectType == "Car") loadCar(gameObjectNode);
 			else if (objectType == "Gate") loadGate(gameObjectNode);
 			else if (objectType == "Lever") loadLever(gameObjectNode);
 			else if (objectType == "CutScene") loadCutScene(gameObjectNode);
@@ -235,21 +234,6 @@ namespace ph {
 		auto lever = mTemplatesStorage.createCopy("Lever", mGameRegistry);
 		loadPosition(leverNode, lever);
 		createDebugName(lever, "lever");
-	}
-
-	void TiledParser::loadCar(const Xml& carNode) const
-	{
-		auto entityCar = mTemplatesStorage.createCopy("Car", mGameRegistry);
-		loadPosition(carNode, entityCar);
-		auto& car = mGameRegistry.get<component::Car>(entityCar);
-		car.acceleration = getProperty(carNode, "acceleration").toFloat();
-		car.slowingDown = getProperty(carNode, "slowingDown").toFloat();
-		car.velocity = getProperty(carNode, "velocity").toFloat();
-		car.direction.x = getProperty(carNode, "directionX").toFloat();
-		car.direction.y = getProperty(carNode, "directionY").toFloat();
-		car.shouldSlowDown = getProperty(carNode, "shouldSlowDown").toBool();
-		car.shouldSpeedUp = getProperty(carNode, "shouldSpeedUp").toBool();
-		car.velocity = getProperty(carNode, "velocity").toFloat();
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const

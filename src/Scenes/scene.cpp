@@ -29,7 +29,6 @@
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/areasDebug.hpp"
-#include "ECS/Systems/cars.hpp"
 #include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
@@ -71,8 +70,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
 
 	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
-
-	mSystemsQueue.appendSystem<system::Cars>(); // better before StaticCollisions, but for now it's actually not important
 
 	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
 	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions

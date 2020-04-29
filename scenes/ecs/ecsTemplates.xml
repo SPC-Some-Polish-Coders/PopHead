@@ -173,13 +173,6 @@
     <component name="Lever" id="0" minActivationInterval="0.25" turnOffAfterSwitch="false" />
   </entityTemplate>
 
-  <entityTemplate name="Car">
-    <component name="StaticCollisionBody" />
-    <component name="BodyRect" x="0" y="0" width="38" height="18" />
-    <component name="RenderQuad" textureFilepath="textures/vehicles/car.png" z="99" />
-    <component name="Car" />
-  </entityTemplate>
-
   <entityTemplate name="BulletBox">
     <component name="BulletBox" />
     <component name="Bullets" numOfPistolBullets="10" numOfShotgunBullets="0" />

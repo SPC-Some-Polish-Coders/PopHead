@@ -120,7 +120,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"Car",                         &EntitiesParser::parseCar},
 		{"CutScene",                    &EntitiesParser::parseCutScene}
 	};
 
@@ -470,11 +469,6 @@ void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
-}
-
-void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<component::Car>(entity);
 }
 
 void EntitiesParser::parseCutScene(const Xml& entityComponentNode, entt::entity& entity)

@@ -73,16 +73,6 @@ namespace ph::component {
 		bool isOpened;
 	};
 
-	struct Car
-	{
-		sf::Vector2f direction;
-		float velocity;
-		float acceleration;
-		float slowingDown;
-		bool shouldSpeedUp = false;
-		bool shouldSlowDown = false;
-	};
-
 	struct GunProperties
 	{
 		std::string shotSoundFilepath;

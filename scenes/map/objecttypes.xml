@@ -33,15 +33,6 @@
   <property name="isValid" type="bool" default="false"/>
   <property name="name" type="string" default="default"/>
  </objecttype>
- <objecttype name="Car" color="#aa0000">
-  <property name="acceleration" type="float" default="1"/>
-  <property name="directionX" type="float" default="0"/>
-  <property name="directionY" type="float" default="0"/>
-  <property name="shouldSlowDown" type="bool" default="false"/>
-  <property name="shouldSpeedUp" type="bool" default="true"/>
-  <property name="slowingDown" type="float" default="2"/>
-  <property name="velocity" type="float" default="5"/>
- </objecttype>
  <objecttype name="Collision" color="#a40c0c"/>
  <objecttype name="CollisionAndLightWallDenialArea" color="#0c081e"/>
  <objecttype name="CollisionDenialArea" color="#6a0001"/>
