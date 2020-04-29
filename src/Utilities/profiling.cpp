@@ -141,30 +141,50 @@ ImGuiProfilingTimer::~ImGuiProfilingTimer()
 namespace ImGuiProfiling {
 
 	static std::vector<ImGuiProfilingResult> results;
+	static float timeFromLastDisplay;
+	static float displayDelay = 0.01f;
+	static bool clear; 
+	static bool pause;
 
 	void commitResult(const ImGuiProfilingResult& result)
 	{
-		for(auto& res : results)
+		if(timeFromLastDisplay > displayDelay)
 		{
-			if(res.name == result.name)
+			if(clear)
 			{
-				res.duration += result.duration;
-				return;
+				results.clear();
+				clear = false;
 			}
+
+			for(auto& res : results)
+			{
+				if(res.name == result.name)
+				{
+					res.duration += result.duration;
+					return;
+				}
+			}
+			
+			results.emplace_back(result);
 		}
-		
-		results.emplace_back(result);
 	}
 
-	void flush()
+	void flush(float dt)
 	{
 		if(debugWindowOpen && ImGui::BeginTabItem("profiling"))
 		{
-			std::sort(results.begin(), results.end(), 
-			[](const ImGuiProfilingResult& a, const ImGuiProfilingResult& b)
+			ImGui::SliderFloat("display delay", &displayDelay, 0.01f, 2.f);
+			ImGui::Checkbox("pause display", &pause);
+			ImGui::Separator();
+			
+			if(timeFromLastDisplay > displayDelay)
 			{
-				return a.duration > b.duration;
-			});
+				std::sort(results.begin(), results.end(), 
+				[](const ImGuiProfilingResult& a, const ImGuiProfilingResult& b)
+				{
+					return a.duration > b.duration;
+				});
+			}
 
 			ImGui::Columns(3, nullptr);
 			ImGui::BulletText("Time of all calls in seconds");
@@ -189,7 +209,17 @@ namespace ImGuiProfiling {
 
 			ImGui::EndTabItem();
 		}
-		results.clear();
+
+		if(timeFromLastDisplay > displayDelay)
+		{
+			clear = true;
+			timeFromLastDisplay = 0.f;
+		}
+
+		if(!pause)
+		{
+			timeFromLastDisplay += dt;
+		}
 	}
 }
 

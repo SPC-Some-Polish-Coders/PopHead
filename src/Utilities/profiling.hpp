@@ -85,7 +85,7 @@ private:
 namespace ImGuiProfiling
 {
 	void commitResult(const ImGuiProfilingResult&);
-	void flush();
+	void flush(float dt);
 }
 
 }

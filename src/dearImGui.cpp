@@ -134,16 +134,24 @@ static void beginImGui(sf::Window& window, float dt)
 	}
 }
 
-static void endImGui()
+static void endImGui(float dt)
 {
-	ImGuiProfiling::flush();
+	ImGuiProfiling::flush(dt);
 	if(debugWindowOpen)
 	{
 		ImGui::EndTabBar();
+
+		PH_PROFILE_SCOPE("ImGui::End");
 		ImGui::End();
 	}
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	{
+		PH_PROFILE_SCOPE("ImGui::Render");
+		ImGui::Render();
+	}
+	{
+		PH_PROFILE_SCOPE("ImGui_ImplOpenGL3_RenderDrawData");
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
 }
 
 static void imGuiHandleEvents(sf::Event e)

@@ -103,7 +103,7 @@ void Game::update(float dt)
 
 		Renderer::endScene();
 
-		endImGui();
+		endImGui(dt);
 
 		mWindow.display();
 	}
