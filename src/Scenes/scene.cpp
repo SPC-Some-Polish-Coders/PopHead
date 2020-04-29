@@ -34,6 +34,7 @@
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
+#include "ECS/Systems/entitiesDebugger.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -100,7 +101,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
-
+	mSystemsQueue.appendSystem<system::EntitiesDebugger>();
 }
 
 void Scene::handleEvent(sf::Event e)

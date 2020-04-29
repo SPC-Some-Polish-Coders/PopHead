@@ -61,6 +61,7 @@ private:
 	                 unsigned char z, AIManager&);
 	size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
+	void createDebugName(entt::entity entity, const char* name) const;
 
 private:
 	std::vector<component::RenderChunk> mRenderChunks;

@@ -6,6 +6,7 @@
 #include "Components/objectsComponents.hpp"
 #include "Components/itemComponents.hpp"
 #include "Components/particleComponents.hpp"
+#include "Components/debugComponents.hpp"
 
 #include "Scenes/cutSceneManager.hpp"
 #include "Scenes/CutScenes/startGameCutscene.hpp"
@@ -15,6 +16,7 @@
 #include "Resources/textureHolder.hpp"
 #include "Logs/logs.hpp"
 #include "Renderer/API/shader.hpp"
+#include <cstring>
 
 namespace ph {
 
@@ -81,11 +83,23 @@ namespace ph {
 		}
 	}
 
+	// TODO: This function is repeated in XmlMapParser
+	void TiledParser::createDebugName(entt::entity entity, const char* name) const
+	{
+		#ifndef PH_DISTRIBUTION
+		
+		auto& debugName = mGameRegistry.assign<component::DebugName>(entity);	
+		memcpy(debugName.name, name, strlen(name));
+
+		#endif
+	}
+
 	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
 	{
 		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
 		loadPosition(zombieNode, zombie);
 		loadHealthComponent(zombieNode, zombie);
+		createDebugName(zombie, zombieTypeName.c_str());
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
@@ -100,6 +114,7 @@ namespace ph {
 			lootSpawner.type = component::LootSpawner::Bullets;
 		else
 			PH_UNEXPECTED_SITUATION("We don't support this loot type");
+		createDebugName(lootSpawnerEntity, "loot spawner");
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
@@ -151,6 +166,8 @@ namespace ph {
 				getProperty(entranceNode, "gotoY").toFloat()
 			);
 		}
+
+		createDebugName(entrance, "entrance");
 	}
 
 	void TiledParser::loadVelocityChangingArea(const Xml& velocityChanginAreaNode) const
@@ -160,6 +177,7 @@ namespace ph {
 		loadSize(velocityChanginAreaNode, entity);
 		float& areaSpeedMultiplier = mGameRegistry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty(velocityChanginAreaNode, "velocityMultiplier").toFloat();
+		createDebugName(entity, "velocity changing area");
 	}
 
 	void TiledParser::loadPushingArea(const Xml& pushingAreaNode) const
@@ -170,6 +188,7 @@ namespace ph {
 		auto& pushDirection = mGameRegistry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty(pushingAreaNode, "pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty(pushingAreaNode, "pushForceY").toFloat();
+		createDebugName(entity, "pushing area");
 	}
 
 	void TiledParser::loadHintArea(const Xml& hintAreaNode) const
@@ -181,6 +200,7 @@ namespace ph {
 		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
 		hint.keyboardContent = getProperty(hintAreaNode, "hintKeyboardContent").toString();
 		hint.joystickContent = getProperty(hintAreaNode, "hintJoystickContent").toString();
+		createDebugName(entity, "hint area");
 	}
 
 	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
@@ -191,6 +211,7 @@ namespace ph {
 		auto& cutscene = mGameRegistry.get<component::CutScene>(cutSceneEntity);
 		cutscene.name = getProperty(cutSceneNode, "name").toString();
 		cutscene.isStartingCutSceneOnThisMap = getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool();
+		createDebugName(cutSceneEntity, "cutscene");
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
@@ -206,12 +227,14 @@ namespace ph {
 		auto gate = mTemplatesStorage.createCopy("Gate", mGameRegistry);
 		loadPosition(gateNode, gate);
 		//loadSize(gateNode, gate);
+		createDebugName(gate, "gate");
 	}
 
 	void TiledParser::loadLever(const Xml& leverNode) const
 	{
 		auto lever = mTemplatesStorage.createCopy("Lever", mGameRegistry);
 		loadPosition(leverNode, lever);
+		createDebugName(lever, "lever");
 	}
 
 	void TiledParser::loadCar(const Xml& carNode) const
@@ -239,6 +262,7 @@ namespace ph {
 			const sf::Vector2f center(pos + (size / 2.f));
 			camera.camera = Camera(center, size);
 			camera.name = getProperty(cameraNode, "name").toString();
+			createDebugName(cameraEntity, "camera");
 		}
 	}
 
@@ -271,6 +295,8 @@ namespace ph {
 			flashlight.attenuationSquareFactor = 1.5f;
 			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
 		}	
+
+		createDebugName(player, "player");
 	}
 
 	void TiledParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
@@ -286,6 +312,7 @@ namespace ph {
 	{
 		auto gateGuard = mTemplatesStorage.createCopy("GateGuardNpc", mGameRegistry);
 		loadPosition(gateGuardNpcNode, gateGuard);
+		createDebugName(gateGuard, "gate guard");
 	}
 
 	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const
@@ -295,12 +322,14 @@ namespace ph {
 		auto& bullets= mGameRegistry.get<component::Bullets>(bulletBoxEntity);
 		bullets.numOfPistolBullets = getProperty(bulletItemNode, "numOfPistolBullets").toInt();
 		bullets.numOfShotgunBullets = getProperty(bulletItemNode, "numOfShotgunBullets").toInt();
+		createDebugName(bulletBoxEntity, "bullet box");
 	}
 
 	void TiledParser::loadMedkit(const Xml& medkitItemNode) const
 	{
 		auto medkit = mTemplatesStorage.createCopy("Medkit", mGameRegistry);
 		loadPosition(medkitItemNode, medkit);
+		createDebugName(medkit, "medkit");
 	}
 
 	void TiledParser::loadSprite(const Xml& spriteNode) const
@@ -365,18 +394,23 @@ namespace ph {
 
 		// load body rect
 		loadPositionAndSize(spriteNode, spriteEntity);
+
+		createDebugName(spriteEntity, "sprite");
 	}
 
 	void TiledParser::loadTorch(const Xml& torchNode) const
 	{
 		auto entity = mTemplatesStorage.createCopy("Torch", mGameRegistry);
 		loadPosition(torchNode, entity);
+		createDebugName(entity, "torch");
 	}
 
 	void TiledParser::loadLightWall(const Xml& wallNode) const
 	{
+		// TODO: Do we still have this entity in the game?
 		auto entity = mTemplatesStorage.createCopy("LightWall", mGameRegistry);
 		loadPositionAndSize(wallNode, entity);
+		createDebugName(entity, "light wall");
 	}
 
 	void TiledParser::loadFlowingRiver(const Xml& flowingRiverNode) const
@@ -410,6 +444,7 @@ namespace ph {
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
+		createDebugName(entity, "flowing river");
 	}
 
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const

@@ -25,6 +25,8 @@ namespace ph {
 	private:
 		Xml findGameObjects(const Xml& mapFile) const;
 		void loadObjects(const Xml& gameObjects) const;
+
+		void createDebugName(entt::entity, const char* name) const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadLootSpawner(const Xml& lootSpawnerNode) const;

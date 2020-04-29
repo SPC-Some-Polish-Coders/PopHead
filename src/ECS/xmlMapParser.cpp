@@ -2,6 +2,7 @@
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include "Components/physicsComponents.hpp"
+#include "Components/debugComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/xml.hpp"
@@ -112,6 +113,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	
 	auto createBorderCollision = [this]() -> FloatRect& {
 		auto borderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
+		createDebugName(borderEntity, "map border");
 		auto& body = mGameRegistry->get<component::BodyRect>(borderEntity);
 		return body.rect;
 	};
@@ -447,6 +449,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 		if(groundChunkShouldBeConstructed)
 		{
 			auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
+			createDebugName(groundChunkEntity, "ground chunk");
 			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
 			grc.bounds = quadsBounds;
 			grc.textureRect = groundTextureRect;
@@ -455,6 +458,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 		else
 		{
 			auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
+			createDebugName(chunkEntity, "chunk");
 			auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 			rc.quads = quads;
 			rc.lightWalls = lightWalls;
@@ -488,6 +492,19 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 			return i;
 	return std::string::npos;
 }
+
+// TODO: This function is repeated in TiledParser
+void XmlMapParser::createDebugName(entt::entity entity, const char* name) const
+{
+	#ifndef PH_DISTRIBUTION
+	
+	auto& debugName = mGameRegistry->assign<component::DebugName>(entity);	
+	memcpy(debugName.name, name, strlen(name));
+
+	#endif
+}
+
+
 
 }
 
