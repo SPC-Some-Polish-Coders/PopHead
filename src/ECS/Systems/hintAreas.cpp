@@ -43,7 +43,8 @@ void HintAreas::update(float dt)
 				else	
 					hintContent->setText(hint.keyboardContent);
 
-				if(hint.hintName == "controlHint") {
+				if(hint.hintName == "controlHint" && !mWasPlayerInControlHint) {
+					mWasPlayerInControlHint = true;
 					GunAttacks::shootInputDisabled = true;
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = true;

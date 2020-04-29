@@ -12,6 +12,9 @@ namespace system {
 		using System::System;
 
 		void update(float dt) override;
+
+	private: 
+		bool mWasPlayerInControlHint = false;
 	};
 
 }}
