@@ -190,7 +190,7 @@ namespace ph::system {
 		});
 
 		// move player
-		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>();
+		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>(entt::exclude<component::DeadCharacter>);
 		movementView.each([this, d, playerDirection]
 		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, const component::BodyRect& body) 
 		{
