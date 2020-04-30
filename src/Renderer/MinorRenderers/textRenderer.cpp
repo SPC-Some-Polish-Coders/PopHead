@@ -1,16 +1,10 @@
+#include "pch.hpp"
 #include "textRenderer.hpp"
 #include "Renderer/renderer.hpp"
 #include "quadRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
 #include <stb_truetype.h>
-#include <cstdlib>
-#include <cstring>
-#include <vector>
-#include <cmath>
-#include <cstring>
 
 namespace ph::TextRenderer {
 

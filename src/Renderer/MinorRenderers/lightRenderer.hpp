@@ -2,8 +2,8 @@
  
 #include "Renderer/API/shader.hpp"
 #include "quadData.hpp"
-#include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <vector>
 #include <optional>
 

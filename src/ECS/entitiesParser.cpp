@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
@@ -11,7 +12,6 @@
 #include "Renderer/API/shader.hpp"
 #include "Resources/textureHolder.hpp"
 #include "Resources/animationStatesResources.hpp"
-#include "Utilities/xml.hpp"
 #include "Utilities/random.hpp"
 
 namespace ph {
@@ -119,8 +119,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GroundRenderChunk",           &EntitiesParser::parseGroundRenderChunk},
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
-		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"CutScene",                    &EntitiesParser::parseCutScene}
+		{"BulletBox",                   &EntitiesParser::parseBulletBox}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -469,11 +468,6 @@ void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
-}
-
-void EntitiesParser::parseCutScene(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign<component::CutScene>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

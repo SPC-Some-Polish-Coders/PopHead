@@ -1,7 +1,6 @@
+#include "pch.hpp"
 #include "RandomPathAlgorithm.hpp"
 #include "Utilities/random.hpp"
-#include "Logs/logs.hpp"
-#include <algorithm>
 
 namespace ph {
 

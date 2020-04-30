@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "terminal.hpp"
 #include "game.hpp"
-#include "Logs/logs.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "ECS/System.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -16,15 +16,6 @@
 #include "Renderer/API/font.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "Utilities/cast.hpp"
-#include "Utilities/xml.hpp"
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Window.hpp>
-#include <entt/entt.hpp>
-#include <array>
-#include <deque>
-#include <unordered_map>
-#include <string>
-#include <fstream>
 
 namespace ph::Terminal {
 

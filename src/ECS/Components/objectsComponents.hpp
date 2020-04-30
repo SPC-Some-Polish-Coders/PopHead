@@ -42,13 +42,6 @@ namespace ph::component {
 		sf::Vector2f pushForce;
 	};
 
-	struct CutScene
-	{
-		std::string name;
-		bool isStartingCutSceneOnThisMap;
-		bool wasActivated = false;
-	};
-
 	struct Entrance
 	{
 		std::string entranceDestination;

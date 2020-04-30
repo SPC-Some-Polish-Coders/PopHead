@@ -1,13 +1,10 @@
-#pragma once
-
+#include "pch.hpp"
 #include "meleeAttacks.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Utilities/math.hpp"
 #include "Utilities/direction.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

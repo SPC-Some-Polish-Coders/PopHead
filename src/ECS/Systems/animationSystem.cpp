@@ -1,7 +1,7 @@
+#include "pch.hpp"
 #include "animationSystem.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

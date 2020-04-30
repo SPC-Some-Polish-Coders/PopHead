@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "entityDestroying.hpp"
 #include "ECS/Components/charactersComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

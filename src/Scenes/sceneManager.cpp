@@ -1,10 +1,10 @@
+#include "pch.hpp"
 #include "sceneManager.hpp"
 #include "sceneParser.hpp"
 #include "scene.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "ECS/xmlMapParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
-#include "Logs/logs.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
 
@@ -70,7 +70,7 @@ void SceneManager::replaceAction()
 		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
 		PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 
-		parseScene(mScene->getCutSceneManager(), mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
+		parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
 		           mScene->getSystemsQueue(), *mAIManager, *this);
 
 		if(mAIManager->isPlayerOnScene()) {

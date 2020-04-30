@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "messageBox.hpp"
 
 #ifdef PH_WINDOWS

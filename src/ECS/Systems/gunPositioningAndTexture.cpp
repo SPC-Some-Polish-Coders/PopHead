@@ -1,10 +1,10 @@
+#include "pch.hpp"
 #include "gunPositioningAndTexture.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/direction.hpp"
 
 namespace ph::system {

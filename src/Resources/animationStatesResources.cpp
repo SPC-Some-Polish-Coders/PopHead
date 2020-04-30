@@ -1,7 +1,5 @@
+#include "pch.hpp"
 #include "animationStatesResources.hpp"
-#include "Utilities/xml.hpp"
-#include "Logs/logs.hpp"
-#include <algorithm>
 
 namespace ph {
 

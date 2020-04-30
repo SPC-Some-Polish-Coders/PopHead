@@ -1,7 +1,5 @@
+#include "pch.hpp"
 #include "random.hpp"
-#include "Logs/logs.hpp"
-#include <random>
-#include <ctime>
 
 namespace ph::Random {
 

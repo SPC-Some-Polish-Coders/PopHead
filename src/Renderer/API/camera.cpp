@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "camera.hpp"
-#include "Utilities/math.hpp"
-#include <cmath>
 
 namespace ph {
 

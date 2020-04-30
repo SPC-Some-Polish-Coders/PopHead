@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "zombieSystem.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
@@ -7,10 +8,7 @@
 #include "AI/aiManager.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/random.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/threadPool.hpp"
-#include "Utilities/math.hpp"
-#include "Logs/logs.hpp"
 
 namespace {
 	

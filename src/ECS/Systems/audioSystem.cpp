@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "audioSystem.hpp"
 #include "arcadeMode.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -5,9 +6,6 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
-#include "Utilities/math.hpp"
-#include "Utilities/profiling.hpp"
-#include <SFML/System/Vector2.hpp>
 
 namespace ph::system {
 

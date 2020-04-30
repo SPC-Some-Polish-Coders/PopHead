@@ -1,7 +1,6 @@
+#include "pch.hpp"
 #include "movement.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
 
 namespace ph::system {
 	

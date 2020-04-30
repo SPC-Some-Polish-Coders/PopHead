@@ -1,10 +1,6 @@
 #pragma once
 
-#include "Utilities/rect.hpp"
-#include <string>
-#include <vector>
-#include <map>
-#include <utility>
+#include "pch.hpp"
 
 namespace ph {
 

@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "gui.hpp"
-#include <cstring>
 
 namespace ph::GUI {
 

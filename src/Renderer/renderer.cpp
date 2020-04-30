@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "renderer.hpp"
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
@@ -10,16 +11,8 @@
 #include "API/openglErrors.hpp"
 #include "API/framebuffer.hpp"
 #include "Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
-#include "Utilities/profiling.hpp"
-#include <SFML/Graphics/Transform.hpp>
-#include <GL/glew.h>
-#include <imgui.h>
-#include <vector>
-#include <algorithm>
-#include <cstdio>
 
 extern bool debugWindowOpen;
 

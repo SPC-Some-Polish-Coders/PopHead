@@ -1,16 +1,9 @@
+#include "pch.hpp"
 #include "quadRenderer.hpp"
 #include "Renderer/API/texture.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
 #include "Utilities/cast.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
-#include <imgui.h>
-#include <algorithm>
-#include <cstdlib>
-#include <vector>
 
 extern bool debugWindowOpen;
 

@@ -1,8 +1,5 @@
+#include "pch.hpp"
 #include "nodesGrid.hpp"
-#include "Utilities/math.hpp"
-#include "Logs/logs.hpp"
-
-#include <algorithm>
 
 namespace ph {
 	

@@ -1,12 +1,9 @@
+#include "pch.hpp"
 #include "debugCamera.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
-#include "Utilities/math.hpp"
-#include "Utilities/profiling.hpp"
 #include "Renderer/renderer.hpp"
-#include <SFML/Window/Keyboard.hpp>
-#include <imgui.h>
 
 extern bool debugWindowOpen; 
 

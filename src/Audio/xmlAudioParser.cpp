@@ -1,9 +1,8 @@
+#include "pch.hpp"
 #include "xmlAudioParser.hpp"
 #include "Music/musicPlayer.hpp"
 #include "Sound/soundPlayer.hpp"
 #include "Music/musicStateMachine.hpp"
-#include "Utilities/xml.hpp"
-#include "Logs/logs.hpp"
 
 namespace ph {
 

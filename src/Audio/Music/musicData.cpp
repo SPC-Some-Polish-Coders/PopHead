@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "musicData.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/xml.hpp"
 
 namespace ph{
 

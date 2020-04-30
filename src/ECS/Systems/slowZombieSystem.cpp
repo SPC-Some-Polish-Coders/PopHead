@@ -1,9 +1,8 @@
+#include "pch.hpp"
 #include "slowZombieSystem.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
 
 namespace ph::system {
 

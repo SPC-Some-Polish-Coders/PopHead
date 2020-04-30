@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "handler.hpp"
-
-#include <algorithm>
 
 namespace ph {
 	

@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "scene.hpp"
-#include "cutScene.hpp"
 #include "Utilities/threadPool.hpp"
 #include "Terminal/terminal.hpp"
 
@@ -29,7 +29,6 @@
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/areasDebug.hpp"
-#include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
@@ -42,8 +41,7 @@
 namespace ph {
 
 Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
-	:mCutSceneManager()
-	,mSystemsQueue(mRegistry, threadPool)
+	:mSystemsQueue(mRegistry, threadPool)
 {
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
@@ -87,7 +85,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystemWithLastOrder<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
 
 	// must be after GunAttacks and before EntityDestroying
 	mSystemsQueue.appendSystem<system::Lifetime>();
@@ -108,11 +105,7 @@ void Scene::handleEvent(sf::Event e)
 
 void Scene::update(float dt)
 {
-	const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
-	if(isCutsceneActive)
-		mCutSceneManager.updateCutScene(dt);
-	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
-		mSystemsQueue.update(dt);
+	mSystemsQueue.update(dt);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

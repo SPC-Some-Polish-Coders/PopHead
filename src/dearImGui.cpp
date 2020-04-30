@@ -1,8 +1,4 @@
-#include "Utilities/profiling.hpp"
-#include <imgui.h>
 #include <imgui_impl_opengl3.h>
-#include <SFML/Window/Clipboard.hpp>
-#include <SFML/System/Clock.hpp>
 
 bool debugWindowOpen = false; 
 // NOTE: It isn't static for purpose. We access it through extern specifier in other translation units.

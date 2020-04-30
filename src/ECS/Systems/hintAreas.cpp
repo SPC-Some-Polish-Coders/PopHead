@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "hintAreas.hpp"
 #include "GUI/gui.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -7,9 +8,6 @@
 #include "ECS/Systems/gunAttacks.hpp"
 #include "ECS/Systems/meleeAttacks.hpp"
 #include "ECS/Systems/playerMovementInput.hpp"
-#include "Utilities/profiling.hpp"
-#include "Logs/logs.hpp"
-#include "SFML/Window/Joystick.hpp"
 
 namespace ph::system {
 

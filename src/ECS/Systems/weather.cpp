@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "weather.hpp"
-#include "Utilities/profiling.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"

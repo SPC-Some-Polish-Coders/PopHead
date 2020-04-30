@@ -1,15 +1,11 @@
+#include "pch.hpp"
 #include "renderSystem.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/API/camera.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/random.hpp"
-#include "Utilities/math.hpp"
-#include <entt/entity/utility.hpp>
-#include <SFML/Window/Keyboard.hpp>
 
 namespace {
 	ph::Camera defaultCamera = ph::Camera({320, 180}, {640, 360});

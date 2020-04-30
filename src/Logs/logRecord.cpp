@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "logRecord.hpp"
 
 std::string ph::logLevelToString(LogLevel level)

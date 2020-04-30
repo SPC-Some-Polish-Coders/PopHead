@@ -1,10 +1,9 @@
+#include "pch.hpp"
 #include "particleSystem.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "Utilities/random.hpp"
-#include "Utilities/profiling.hpp"
 #include "Renderer/renderer.hpp"
-#include <cmath>
 
 namespace ph::system {
 

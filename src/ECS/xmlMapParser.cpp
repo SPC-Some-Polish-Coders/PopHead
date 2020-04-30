@@ -1,15 +1,11 @@
+#include "pch.hpp"
 #include "xmlMapParser.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/profiling.hpp"
 #include "Components/physicsComponents.hpp"
 #include "Components/debugComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
-#include "Utilities/xml.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
-#include "Utilities/math.hpp"
-#include <cmath>
 
 namespace ph {
 

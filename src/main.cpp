@@ -1,13 +1,10 @@
+#include "pch.hpp"
 #include "game.hpp"
-#include "Logs/logs.hpp"
 #include "Logs/logger.hpp"
 #include "Logs/logsInitializing.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/messageBox.hpp"
 #include "Resources/soundBufferHolder.hpp"
 #include "Audio/Music/musicPlayer.hpp"
-#include <stdexcept>
-#include <string>
 
 int main()
 {

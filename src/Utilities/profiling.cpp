@@ -1,8 +1,5 @@
-#include "profiling.hpp"
+#include "pch.hpp"
 #include "Utilities/threadId.hpp"
-#include <imgui.h>
-#include <algorithm>
-#include <thread>
 
 extern bool debugWindowOpen;
 

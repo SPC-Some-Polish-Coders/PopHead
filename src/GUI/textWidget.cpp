@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "textWidget.hpp"
 #include "Renderer/renderer.hpp"
-#include <cstring>
 
 namespace ph {
 

@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "damageAndDeath.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
@@ -6,8 +7,6 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "GUI/gui.hpp"
 #include "AI/aiManager.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

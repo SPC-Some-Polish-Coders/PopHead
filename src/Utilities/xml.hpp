@@ -34,7 +34,6 @@ private:
 	std::size_t findEndOfTagAttributes(std::size_t offset = 0) const;
 
 private:
-	inline static const std::string whitespaceCharacters = " \n\t\v\f\r";
 	std::string mContent;
 };
 

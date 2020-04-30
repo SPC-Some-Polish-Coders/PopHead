@@ -1,8 +1,5 @@
+#include "pch.hpp"
 #include "WindowsDebugApi.hpp"
-
-#include <string>
-#include <sstream>
-#include <iomanip>
 
 #ifdef PH_WINDOWS
 #include <Windows.h>

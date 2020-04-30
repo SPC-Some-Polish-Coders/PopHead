@@ -1,13 +1,8 @@
+#include "pch.hpp"
 #include "font.hpp"
-#include "Logs/logs.hpp"
 #include "openglErrors.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
-#include <cstdio>
-#include <cstring>
-#include <optional>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>

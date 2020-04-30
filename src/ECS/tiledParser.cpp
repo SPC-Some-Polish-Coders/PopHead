@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "tiledParser.hpp"
 
 #include "Components/physicsComponents.hpp"
@@ -8,22 +9,14 @@
 #include "Components/particleComponents.hpp"
 #include "Components/debugComponents.hpp"
 
-#include "Scenes/cutSceneManager.hpp"
-#include "Scenes/CutScenes/startGameCutscene.hpp"
-#include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
-#include "Scenes/CutScenes/endingCutscene.hpp"
-#include "Utilities/xml.hpp"
 #include "Resources/textureHolder.hpp"
-#include "Logs/logs.hpp"
 #include "Renderer/API/shader.hpp"
-#include <cstring>
 
 namespace ph {
 
-	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
+	TiledParser::TiledParser(EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
 	                         SceneManager& sceneManager)
-		:mCutSceneManager(cutSceneManager)
-		,mTemplatesStorage(templatesStorage)
+		:mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
 		,mSceneManager(sceneManager)
 	{
@@ -71,9 +64,6 @@ namespace ph {
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
 			else if (objectType == "Gate") loadGate(gameObjectNode);
 			else if (objectType == "Lever") loadLever(gameObjectNode);
-			else if (objectType == "CutScene") loadCutScene(gameObjectNode);
-			else if (objectType == "CrawlingNpc") loadCrawlingNpc(gameObjectNode);
-			else if (objectType == "GateGuardNpc") loadGateGuardNpc(gameObjectNode);
 			else if (objectType == "Sprite") loadSprite(gameObjectNode);
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
@@ -202,17 +192,6 @@ namespace ph {
 		createDebugName(entity, "hint area");
 	}
 
-	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
-	{
-		const std::string cutSceneName = getProperty(cutSceneNode, "cutSceneName").toString();
-		auto cutSceneEntity = mTemplatesStorage.createCopy("CutScene", mGameRegistry);
-		loadPositionAndOptionalSize(cutSceneNode, cutSceneEntity);
-		auto& cutscene = mGameRegistry.get<component::CutScene>(cutSceneEntity);
-		cutscene.name = getProperty(cutSceneNode, "name").toString();
-		cutscene.isStartingCutSceneOnThisMap = getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool();
-		createDebugName(cutSceneEntity, "cutscene");
-	}
-
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
 	{
 		std::size_t beginOfFileName = scenePathRelativeToMapFile.find_last_of('/');
@@ -281,22 +260,6 @@ namespace ph {
 		}	
 
 		createDebugName(player, "player");
-	}
-
-	void TiledParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
-	{/*
-		if (getProperty(crawlingNpcNode, "isAlreadyDead").toBool())
-			crawlingNpc->die();*/
-
-		auto crawlingNpc = mTemplatesStorage.createCopy("CrawlingNpc", mGameRegistry);
-		loadPosition(crawlingNpcNode, crawlingNpc);
-	}
-
-	void TiledParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
-	{
-		auto gateGuard = mTemplatesStorage.createCopy("GateGuardNpc", mGameRegistry);
-		loadPosition(gateGuardNpcNode, gateGuard);
-		createDebugName(gateGuard, "gate guard");
 	}
 
 	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const

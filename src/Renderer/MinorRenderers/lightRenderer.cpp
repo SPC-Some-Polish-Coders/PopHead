@@ -1,15 +1,8 @@
+#include "pch.hpp"
 #include "lightRenderer.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/API/shader.hpp"
-#include "Utilities/math.hpp"
-#include "Utilities/profiling.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
-#include <optional>
-#include <cmath>
-#include <algorithm>
-#include <GL/glew.h>
-#include <imgui.h>
 
 namespace ph {
 
@@ -89,7 +82,7 @@ void LightRenderer::flush()
 	if(mLights.empty())
 		return;
 
-	lights = mLights.size();
+	lights = static_cast<unsigned>(mLights.size());
 
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,

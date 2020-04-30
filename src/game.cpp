@@ -1,12 +1,11 @@
+#include "pch.hpp"
 #include "game.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "GUI/gui.hpp"
-#include "Logs/logs.hpp"
 #include "Terminal/terminal.hpp"
 #include "Renderer/renderer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Music/musicPlayer.hpp"
-#include <SFML/System.hpp>
 
 #include "dearImGui.cpp"
 

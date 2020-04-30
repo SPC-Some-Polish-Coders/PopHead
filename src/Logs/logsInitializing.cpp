@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "logsInitializing.hpp"
 
 #include "ConcreteHandlers/consoleHandler.hpp"
@@ -6,9 +7,7 @@
 #include "ConcreteHandlers/WindowsDebugApi.hpp"
 
 #include "logger.hpp"
-
 #include "Terminal/terminal.hpp"
-#include "Utilities/xml.hpp"
 
 namespace ph {
 

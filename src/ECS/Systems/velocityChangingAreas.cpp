@@ -1,7 +1,7 @@
+#include "pch.hpp"
 #include "velocityChangingAreas.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

@@ -1,9 +1,7 @@
+#include "pch.hpp"
 #include "pushingAreas.hpp"
-
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

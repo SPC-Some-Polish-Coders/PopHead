@@ -1,5 +1,4 @@
-#pragma once
-
+#include "pch.hpp"
 #include "gunAttacks.hpp"
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -8,12 +7,9 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "Renderer/renderer.hpp"
-
 #include "Utilities/random.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/joystickMacros.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
 
 namespace ph::system {
 

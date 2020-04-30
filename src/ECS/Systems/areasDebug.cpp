@@ -1,10 +1,9 @@
+#include "pch.hpp"
 #include "areasDebug.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "Renderer/renderer.hpp"
-#include "Utilities/profiling.hpp"
-#include <imgui.h>
 
 extern bool debugWindowOpen;
 

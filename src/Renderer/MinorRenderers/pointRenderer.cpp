@@ -1,10 +1,9 @@
+#include "pch.hpp"
 #include "pointRenderer.hpp"
 #include "Utilities/cast.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include <GL/glew.h>
-#include <imgui.h>
 
 namespace ph {
 

@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "playerMovementInput.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -8,10 +9,6 @@
 #include "GUI/gui.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/joystickMacros.hpp"
-#include "Utilities/profiling.hpp"
-#include <SFML/Window/Joystick.hpp>
-#include <cmath>
-#include <imgui.h>
 
 extern bool debugWindowOpen;
 

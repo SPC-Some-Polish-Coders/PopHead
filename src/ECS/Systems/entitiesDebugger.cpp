@@ -1,10 +1,10 @@
+#include "pch.hpp"
 #include "entitiesDebugger.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
-#include <imgui.h>
 
 // NOTE:
 // This code is strictly exploratory and it lacks most of components

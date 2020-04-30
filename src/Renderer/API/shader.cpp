@@ -1,11 +1,6 @@
+#include "pch.hpp"
 #include "shader.hpp"
 #include "openglErrors.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <iostream>
 
 namespace ph {
 

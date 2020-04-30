@@ -36,6 +36,9 @@ project "PopHead"
     
     targetdir (exe_dir)
 	objdir (obj_dir)
+
+	pchheader "pch.hpp"
+	pchsource "../../src/pch.cpp"
     
     debugdir "%{wks.location}"
 
@@ -148,6 +151,9 @@ project "Tests"
     
     targetdir (exe_dir)	
     objdir (obj_dir)
+
+	pchheader "pch.hpp"
+	pchsource "../../src/pch.cpp"
     
     debugdir "%{wks.location}"
     

@@ -36,13 +36,6 @@
  <objecttype name="Collision" color="#a40c0c"/>
  <objecttype name="CollisionAndLightWallDenialArea" color="#0c081e"/>
  <objecttype name="CollisionDenialArea" color="#6a0001"/>
- <objecttype name="CrawlingNpc" color="#f4ef5f">
-  <property name="isAlreadyDead" type="bool" default="true"/>
- </objecttype>
- <objecttype name="CutScene" color="#ffff00">
-  <property name="isStartingCutSceneOnThisMap" type="bool" default="false"/>
-  <property name="name" type="string"/>
- </objecttype>
  <objecttype name="Entrance" color="#000000">
   <property name="gotoScene" type="file" default=""/>
   <property name="gotoX" type="float" default="0"/>
@@ -55,7 +48,6 @@
   <property name="pushForceY" type="float" default="0"/>
  </objecttype>
  <objecttype name="Gate" color="#a48096"/>
- <objecttype name="GateGuardNpc" color="#7ca40d"/>
  <objecttype name="HintArea" color="#2fa477">
   <property name="hintJoystickContent" type="string"/>
   <property name="hintKeyboardContent" type="string"/>

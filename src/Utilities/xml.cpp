@@ -1,6 +1,4 @@
-#include "xml.hpp"
-#include "Logs/logs.hpp"
-#include <fstream>
+#include "pch.hpp"
 
 namespace ph {
 
@@ -37,6 +35,7 @@ std::optional<Xml> Xml::getChild(const std::string& name) const
 		if(begin == std::string::npos)
 			return std::nullopt;
 		++begin;
+		static const std::string whitespaceCharacters = " \n\t\v\f\r";
 		std::size_t end = mContent.find_first_of(whitespaceCharacters + ">", begin + 1);
 		if(end == std::string::npos)
 			PH_EXIT_GAME("missing angle bracket in child opening tag");
@@ -138,6 +137,7 @@ std::vector<Xml> Xml::getChildren(const std::string& name) const
 	std::vector<Xml> children;
 	while((begin = mContent.find('<', begin + 1)) != std::string::npos) {
 		++begin;
+		static const std::string whitespaceCharacters = " \n\t\v\f\r";
 		std::size_t end = mContent.find_first_of(whitespaceCharacters + " >", begin + 1);
 		if(end == std::string::npos)
 			PH_EXIT_GAME("missing angle bracket in child opening tag");
@@ -243,6 +243,7 @@ std::optional<Xml> Xml::getAttribute(const std::string& name) const
 		PH_EXIT_GAME("missing closing angle bracket in opening tag");
 	if(isSelfClosingTag(endOfTagAttributes))
 		--endOfTagAttributes;
+	static const std::string whitespaceCharacters = " \n\t\v\f\r";
 	std::size_t begin = mContent.find_first_of(whitespaceCharacters, 1);
 	if(begin > endOfTagAttributes)
 		return std::nullopt;
