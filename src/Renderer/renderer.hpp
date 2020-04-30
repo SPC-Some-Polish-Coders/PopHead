@@ -25,6 +25,9 @@ namespace Renderer
 	void beginScene();
 	void endScene();
 
+	void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
+	                  ProjectionType = ProjectionType::gameWorld, bool isAffectedByLight = true);
+
 	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
 	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld,
 					bool isAffectedByLight = true);

@@ -38,6 +38,18 @@ ShaderSource lightSrc()
 }
 
 
+// circle 
+static const char* sCircleVS = 
+	#include "circle.vs.glsl"
+;
+static const char* sCircleFS =
+	#include "circle.fs.glsl"
+;
+ShaderSource circleSrc()
+{
+	return ShaderSource{sCircleVS, sCircleFS};
+}
+
 // quad 
 static const char* sQuadVS = 
 	#include "quad.vs.glsl"

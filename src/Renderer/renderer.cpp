@@ -28,6 +28,7 @@ namespace {
 
 	ph::Shader defaultFramebufferShader;
 	ph::Shader gaussianBlurFramebufferShader;
+	ph::Shader circleShader;
 	
 	ph::Framebuffer gameObjectsFramebuffer;
 	ph::Framebuffer lightingFramebuffer;
@@ -94,11 +95,13 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	const float* guiViewProjectionMatrix = guiCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
-	
-	// set up framebuffers
+
+	// init shaders
+	circleShader.init(shader::circleSrc());
 	defaultFramebufferShader.init(shader::defaultFramebufferSrc());
 	gaussianBlurFramebufferShader.init(shader::gaussianBlurFramebufferSrc());
 
+	// set up framebuffers
 	gameObjectsFramebuffer.init(screenWidth, screenHeight);
 	lightingFramebuffer.init(screenWidth, screenHeight);
 	lightingGaussianBlurFramebuffer.init(screenWidth, screenHeight);
@@ -233,6 +236,12 @@ void endScene()
 		ImGui::EndTabBar();
 		ImGui::EndTabItem();
 	}
+}
+
+void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
+				  ProjectionType projectionType, bool isAffectedByLight)
+{
+	submitQuad(nullptr, nullptr, &color, &circleShader, position, {radius, radius}, z, 0.f, {}, projectionType, isAffectedByLight);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
