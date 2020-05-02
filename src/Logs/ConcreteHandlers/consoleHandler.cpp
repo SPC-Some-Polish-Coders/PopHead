@@ -1,7 +1,5 @@
+#include "pch.hpp"
 #include "consoleHandler.hpp"
-
-#include <iostream>
-#include <iomanip>
 
 namespace ph {
 

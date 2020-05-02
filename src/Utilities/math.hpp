@@ -16,6 +16,8 @@ namespace ph::Math {
 	FORCE_INLINE sf::Vector2<T> getUnitVector(const sf::Vector2<T>);
 
 	FORCE_INLINE sf::Vector2f getUnitVector(float angle);
+
+	FORCE_INLINE float getMagnitude(sf::Vector2f); 
 	
 	FORCE_INLINE float degreesToRadians(float angle);
 	FORCE_INLINE float radiansToDegrees(float angle);
@@ -24,7 +26,8 @@ namespace ph::Math {
 
 	FORCE_INLINE bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius);
 
-	FORCE_INLINE sf::Vector2f lerp(const sf::Vector2f source, const sf::Vector2f destination, const float speed);
+	FORCE_INLINE sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed);
+	FORCE_INLINE float lerp(float source, float destination, float speed);
 
 	template <typename T>
 	FORCE_INLINE float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2);

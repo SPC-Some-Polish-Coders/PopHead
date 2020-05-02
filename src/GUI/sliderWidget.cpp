@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "sliderWidget.hpp"
 #include "Renderer/renderer.hpp"
-#include <cmath>
 
 namespace ph {
 

@@ -1,12 +1,13 @@
+#include "pch.hpp"
 #include "hintAreas.hpp"
 #include "GUI/gui.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Systems/weather.hpp"
-#include "Utilities/profiling.hpp"
-#include "Logs/logs.hpp"
-#include "SFML/Window/Joystick.hpp"
+#include "ECS/Systems/gunAttacks.hpp"
+#include "ECS/Systems/meleeAttacks.hpp"
+#include "ECS/Systems/playerMovementInput.hpp"
 
 namespace ph::system {
 
@@ -40,24 +41,26 @@ void HintAreas::update(float dt)
 				else	
 					hintContent->setText(hint.keyboardContent);
 
-				if(hint.hintName == "controlHint") {
-					//ActionEventManager::setActionEnabled("changeWeapon", false);
-					//ActionEventManager::setActionEnabled("gunAttack", false);
-					//ActionEventManager::setActionEnabled("meleeAttack", false);
+				if(hint.hintName == "controlHint" && !mWasPlayerInControlHint) {
+					mWasPlayerInControlHint = true;
+					GunAttacks::shootInputDisabled = true;
+					GunAttacks::changeWeaponInputDisabled = true;
+					MeleeAttacks::inputDisabled = true;
+					PlayerMovementInput::dodgeInputDisabled = true;
 					Weather::setRainType(Rain::Heavy);
 					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "meleeFightingHint") {
-					//ActionEventManager::setActionEnabled("meleeAttack", true);
-					Weather::setRainType(Rain::Normal);
+					MeleeAttacks::inputDisabled = false;
 				}
 				else if(hint.hintName == "shootingHint") {
-					//ActionEventManager::setActionEnabled("gunAttack", true);
-					Weather::setRainType(Rain::Drizzle);
+					GunAttacks::shootInputDisabled = false;
 				}
 				else if(hint.hintName == "weaponChangingHint") {
-					//ActionEventManager::setActionEnabled("changeWeapon", true);
-					Weather::setMode(Weather::Sunny);	
+					GunAttacks::changeWeaponInputDisabled = false;
+				}
+				else if(hint.hintName == "dodgingHint") {
+					PlayerMovementInput::dodgeInputDisabled = false;
 				}
 			}
 			else if(hint.isShown)

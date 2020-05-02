@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "tiledParser.hpp"
 
 #include "Components/physicsComponents.hpp"
@@ -6,22 +7,16 @@
 #include "Components/objectsComponents.hpp"
 #include "Components/itemComponents.hpp"
 #include "Components/particleComponents.hpp"
+#include "Components/debugComponents.hpp"
 
-#include "Scenes/cutSceneManager.hpp"
-#include "Scenes/CutScenes/startGameCutscene.hpp"
-#include "Scenes/CutScenes/subtitlesBeforeStartGameCutscene.hpp"
-#include "Scenes/CutScenes/endingCutscene.hpp"
-#include "Utilities/xml.hpp"
 #include "Resources/textureHolder.hpp"
-#include "Logs/logs.hpp"
 #include "Renderer/API/shader.hpp"
 
 namespace ph {
 
-	TiledParser::TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
+	TiledParser::TiledParser(EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
 	                         SceneManager& sceneManager)
-		:mCutSceneManager(cutSceneManager)
-		,mTemplatesStorage(templatesStorage)
+		:mTemplatesStorage(templatesStorage)
 		,mGameRegistry(gameRegistry)
 		,mSceneManager(sceneManager)
 	{
@@ -67,12 +62,8 @@ namespace ph {
 			else if (objectType == "HintArea") loadHintArea(gameObjectNode);
 			else if (objectType == "LootSpawner") loadLootSpawner(gameObjectNode);
 			else if (objectType == "ArcadeSpawner") loadArcadeSpawner(gameObjectNode);
-			else if (objectType == "Car") loadCar(gameObjectNode);
 			else if (objectType == "Gate") loadGate(gameObjectNode);
 			else if (objectType == "Lever") loadLever(gameObjectNode);
-			else if (objectType == "CutScene") loadCutScene(gameObjectNode);
-			else if (objectType == "CrawlingNpc") loadCrawlingNpc(gameObjectNode);
-			else if (objectType == "GateGuardNpc") loadGateGuardNpc(gameObjectNode);
 			else if (objectType == "Sprite") loadSprite(gameObjectNode);
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
@@ -81,11 +72,23 @@ namespace ph {
 		}
 	}
 
+	// TODO: This function is repeated in XmlMapParser
+	void TiledParser::createDebugName(entt::entity entity, const char* name) const
+	{
+		#ifndef PH_DISTRIBUTION
+		
+		auto& debugName = mGameRegistry.assign<component::DebugName>(entity);	
+		memcpy(debugName.name, name, strlen(name));
+
+		#endif
+	}
+
 	void TiledParser::loadZombie(const Xml& zombieNode, std::string zombieTypeName) const
 	{
 		auto zombie = mTemplatesStorage.createCopy(zombieTypeName, mGameRegistry);
 		loadPosition(zombieNode, zombie);
 		loadHealthComponent(zombieNode, zombie);
+		createDebugName(zombie, zombieTypeName.c_str());
 	}
 
 	void TiledParser::loadLootSpawner(const Xml& lootSpawnerNode) const
@@ -100,6 +103,7 @@ namespace ph {
 			lootSpawner.type = component::LootSpawner::Bullets;
 		else
 			PH_UNEXPECTED_SITUATION("We don't support this loot type");
+		createDebugName(lootSpawnerEntity, "loot spawner");
 	}
 
 	void TiledParser::loadArcadeSpawner(const Xml& arcadeSpawnerNode) const
@@ -151,6 +155,8 @@ namespace ph {
 				getProperty(entranceNode, "gotoY").toFloat()
 			);
 		}
+
+		createDebugName(entrance, "entrance");
 	}
 
 	void TiledParser::loadVelocityChangingArea(const Xml& velocityChanginAreaNode) const
@@ -160,6 +166,7 @@ namespace ph {
 		loadSize(velocityChanginAreaNode, entity);
 		float& areaSpeedMultiplier = mGameRegistry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty(velocityChanginAreaNode, "velocityMultiplier").toFloat();
+		createDebugName(entity, "velocity changing area");
 	}
 
 	void TiledParser::loadPushingArea(const Xml& pushingAreaNode) const
@@ -170,6 +177,7 @@ namespace ph {
 		auto& pushDirection = mGameRegistry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty(pushingAreaNode, "pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty(pushingAreaNode, "pushForceY").toFloat();
+		createDebugName(entity, "pushing area");
 	}
 
 	void TiledParser::loadHintArea(const Xml& hintAreaNode) const
@@ -181,16 +189,7 @@ namespace ph {
 		hint.hintName = getProperty(hintAreaNode, "hintName").toString();
 		hint.keyboardContent = getProperty(hintAreaNode, "hintKeyboardContent").toString();
 		hint.joystickContent = getProperty(hintAreaNode, "hintJoystickContent").toString();
-	}
-
-	void TiledParser::loadCutScene(const Xml& cutSceneNode) const
-	{
-		const std::string cutSceneName = getProperty(cutSceneNode, "cutSceneName").toString();
-		auto cutSceneEntity = mTemplatesStorage.createCopy("CutScene", mGameRegistry);
-		loadPositionAndOptionalSize(cutSceneNode, cutSceneEntity);
-		auto& cutscene = mGameRegistry.get<component::CutScene>(cutSceneEntity);
-		cutscene.name = getProperty(cutSceneNode, "name").toString();
-		cutscene.isStartingCutSceneOnThisMap = getProperty(cutSceneNode, "isStartingCutSceneOnThisMap").toBool();
+		createDebugName(entity, "hint area");
 	}
 
 	std::optional<std::string> TiledParser::getSceneFileName(const std::string& scenePathRelativeToMapFile) const
@@ -206,27 +205,14 @@ namespace ph {
 		auto gate = mTemplatesStorage.createCopy("Gate", mGameRegistry);
 		loadPosition(gateNode, gate);
 		//loadSize(gateNode, gate);
+		createDebugName(gate, "gate");
 	}
 
 	void TiledParser::loadLever(const Xml& leverNode) const
 	{
 		auto lever = mTemplatesStorage.createCopy("Lever", mGameRegistry);
 		loadPosition(leverNode, lever);
-	}
-
-	void TiledParser::loadCar(const Xml& carNode) const
-	{
-		auto entityCar = mTemplatesStorage.createCopy("Car", mGameRegistry);
-		loadPosition(carNode, entityCar);
-		auto& car = mGameRegistry.get<component::Car>(entityCar);
-		car.acceleration = getProperty(carNode, "acceleration").toFloat();
-		car.slowingDown = getProperty(carNode, "slowingDown").toFloat();
-		car.velocity = getProperty(carNode, "velocity").toFloat();
-		car.direction.x = getProperty(carNode, "directionX").toFloat();
-		car.direction.y = getProperty(carNode, "directionY").toFloat();
-		car.shouldSlowDown = getProperty(carNode, "shouldSlowDown").toBool();
-		car.shouldSpeedUp = getProperty(carNode, "shouldSpeedUp").toBool();
-		car.velocity = getProperty(carNode, "velocity").toFloat();
+		createDebugName(lever, "lever");
 	}
 
 	void TiledParser::loadCamera(const Xml& cameraNode) const
@@ -239,6 +225,7 @@ namespace ph {
 			const sf::Vector2f center(pos + (size / 2.f));
 			camera.camera = Camera(center, size);
 			camera.name = getProperty(cameraNode, "name").toString();
+			createDebugName(cameraEntity, "camera");
 		}
 	}
 
@@ -271,21 +258,8 @@ namespace ph {
 			flashlight.attenuationSquareFactor = 1.5f;
 			mGameRegistry.assign_or_replace<component::LightSource>(player, flashlight);
 		}	
-	}
 
-	void TiledParser::loadCrawlingNpc(const Xml& crawlingNpcNode) const
-	{/*
-		if (getProperty(crawlingNpcNode, "isAlreadyDead").toBool())
-			crawlingNpc->die();*/
-
-		auto crawlingNpc = mTemplatesStorage.createCopy("CrawlingNpc", mGameRegistry);
-		loadPosition(crawlingNpcNode, crawlingNpc);
-	}
-
-	void TiledParser::loadGateGuardNpc(const Xml& gateGuardNpcNode) const
-	{
-		auto gateGuard = mTemplatesStorage.createCopy("GateGuardNpc", mGameRegistry);
-		loadPosition(gateGuardNpcNode, gateGuard);
+		createDebugName(player, "player");
 	}
 
 	void TiledParser::loadBulletBox(const Xml& bulletItemNode) const
@@ -295,12 +269,14 @@ namespace ph {
 		auto& bullets= mGameRegistry.get<component::Bullets>(bulletBoxEntity);
 		bullets.numOfPistolBullets = getProperty(bulletItemNode, "numOfPistolBullets").toInt();
 		bullets.numOfShotgunBullets = getProperty(bulletItemNode, "numOfShotgunBullets").toInt();
+		createDebugName(bulletBoxEntity, "bullet box");
 	}
 
 	void TiledParser::loadMedkit(const Xml& medkitItemNode) const
 	{
 		auto medkit = mTemplatesStorage.createCopy("Medkit", mGameRegistry);
 		loadPosition(medkitItemNode, medkit);
+		createDebugName(medkit, "medkit");
 	}
 
 	void TiledParser::loadSprite(const Xml& spriteNode) const
@@ -365,18 +341,23 @@ namespace ph {
 
 		// load body rect
 		loadPositionAndSize(spriteNode, spriteEntity);
+
+		createDebugName(spriteEntity, "sprite");
 	}
 
 	void TiledParser::loadTorch(const Xml& torchNode) const
 	{
 		auto entity = mTemplatesStorage.createCopy("Torch", mGameRegistry);
 		loadPosition(torchNode, entity);
+		createDebugName(entity, "torch");
 	}
 
 	void TiledParser::loadLightWall(const Xml& wallNode) const
 	{
+		// TODO: Do we still have this entity in the game?
 		auto entity = mTemplatesStorage.createCopy("LightWall", mGameRegistry);
 		loadPositionAndSize(wallNode, entity);
+		createDebugName(entity, "light wall");
 	}
 
 	void TiledParser::loadFlowingRiver(const Xml& flowingRiverNode) const
@@ -410,6 +391,7 @@ namespace ph {
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
+		createDebugName(entity, "flowing river");
 	}
 
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const

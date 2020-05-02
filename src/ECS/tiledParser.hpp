@@ -10,13 +10,12 @@
 
 namespace ph {
 
-	class CutSceneManager;
 	class Xml;
 
 	class TiledParser
 	{
 	public:
-		TiledParser(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
+		TiledParser(EntitiesTemplateStorage& templatesStorage, entt::registry& gameRegistry,
 		            SceneManager& sceneManager);
 
 		void parseFile(const Xml& mapNode) const;
@@ -25,6 +24,8 @@ namespace ph {
 	private:
 		Xml findGameObjects(const Xml& mapFile) const;
 		void loadObjects(const Xml& gameObjects) const;
+
+		void createDebugName(entt::entity, const char* name) const;
 		
 		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
 		void loadLootSpawner(const Xml& lootSpawnerNode) const;
@@ -33,15 +34,12 @@ namespace ph {
 		void loadVelocityChangingArea(const Xml& velocityChangingAreaNode) const;
 		void loadPushingArea(const Xml& velocityChangingAreaNode) const;
 		void loadHintArea(const Xml& velocityChangingAreaNode) const;
-		void loadCutScene(const Xml& cutSceneAreaNode) const;
 		std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
 		void loadGate(const Xml& gateNode) const;
 		void loadLever(const Xml& leverNode) const;
 		void loadCar(const Xml& carNode) const;
 		void loadCamera(const Xml& cameraNode) const;
 		void loadPlayer(const Xml& playerNode) const;
-		void loadCrawlingNpc(const Xml& crawlingNpcNode) const;
-		void loadGateGuardNpc(const Xml& gateGuardNpcNode) const;
 		void loadBulletBox(const Xml& bulletItemNode) const;
 		void loadMedkit(const Xml& medkitItemNode) const;
 		void loadSprite(const Xml& spriteNodeNode) const;
@@ -66,7 +64,6 @@ namespace ph {
 		std::optional<sf::Vector2f> getOptionalSizeAttribute(const Xml& gameObjectNode) const;
 
 	private:
-		CutSceneManager& mCutSceneManager;
 		EntitiesTemplateStorage& mTemplatesStorage;
 		entt::registry& mGameRegistry;
 		SceneManager& mSceneManager;

@@ -1,3 +1,10 @@
+#include "pch.hpp"
+
+// NOTE: 
+// For now we don't have arcade mode in the game
+// Probably it will stay that way
+
+/*
 #include "arcadeMode.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "GUI/gui.hpp"
@@ -211,4 +218,5 @@ std::string ArcadeMode::addZero(int number)
 }
 
 }
+*/
 

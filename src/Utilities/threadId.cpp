@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "threadId.hpp"
 
 namespace ph {
@@ -10,7 +11,7 @@ size_t ThreadId::getCurrentThreadId()
 {
 	// friendly id will be created only for threads that ask for it
 	if (mCurrentFriendlyId == -1)
-		mCurrentFriendlyId = createFriendlyId();
+		mCurrentFriendlyId = static_cast<int>(createFriendlyId());
 	return mCurrentFriendlyId;
 }
 
@@ -21,4 +22,5 @@ size_t ThreadId::createFriendlyId()
 	auto pair = ThreadId::mHardwareToFriendlyId.emplace(std::this_thread::get_id(), newFriendlyId);
 	return pair.first->second;
 }
+
 }

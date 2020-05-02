@@ -1,9 +1,9 @@
+#include "pch.hpp"
 #include "pointRenderer.hpp"
 #include "Utilities/cast.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/API/openglErrors.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include <GL/glew.h>
 
 namespace ph {
 
@@ -38,12 +38,6 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::resetDebugNumbers()
-{
-	mNrOfDrawnPoints = 0;
-	mNrOfDrawCalls = 0;
-}
-
 void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, float z, float size)
 {
 	if(!isInsideScreen(position, size))
@@ -55,9 +49,6 @@ void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, f
 	point.size = size * (360.f / mScreenBounds->height);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
-
-	if(mIsDebugCountingActive)
-		++mNrOfDrawnPoints;
 }
 
 void PointRenderer::flush()
@@ -74,9 +65,6 @@ void PointRenderer::flush()
 	glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(mSubmitedPointsVertexData.size()));
 
 	mSubmitedPointsVertexData.clear();
-
-	if(mIsDebugCountingActive)
-		++mNrOfDrawCalls;
 }
 
 bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
@@ -87,6 +75,16 @@ bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
 		const float halfSize = size / 2;
 		FloatRect pointRect(position.x - halfSize, position.y - halfSize, size, size);
 		return mScreenBounds->doPositiveRectsIntersect(pointRect);
+	}
+}
+
+void PointRenderer::submitDebug()
+{
+	if(ImGui::BeginTabItem("point renderer"))
+	{
+		ImGui::Text("drawn points %u", mSubmitedPointsVertexData.size());
+		ImGui::Text("draw calls: 1 (it is always 1)");
+		ImGui::EndTabItem();
 	}
 }
 

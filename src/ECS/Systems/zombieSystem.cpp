@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "zombieSystem.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
@@ -7,12 +8,10 @@
 #include "AI/aiManager.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/random.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/threadPool.hpp"
-#include "Logs/logs.hpp"
 
 namespace {
-
+	
 sf::Vector2f toDirectionVector(ph::Direction direction)
 {
 	switch(direction)
@@ -49,12 +48,12 @@ void ZombieSystem::update(float dt)
 	if(sPause || freezeZombies)
 		return;
 
-	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Velocity, component::AnimationData>
+	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Kinematics, component::AnimationData>
 		(entt::exclude<component::DeadCharacter>);
 
 	for (auto zombieEntity : zombies)
 	{
-		auto& [zombie, velocity, animationData] = zombies.get<component::Zombie, component::Velocity, component::AnimationData>(zombieEntity);
+		auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(zombieEntity);
 		const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(zombieEntity);
 
 		// make sounds
@@ -87,14 +86,14 @@ void ZombieSystem::update(float dt)
 
 		for (; begin != end; ++begin)
 		{
-			auto& [zombie, velocity, animationData] = zombies.get<component::Zombie, component::Velocity, component::AnimationData>(*begin);
+			auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(*begin);
 			const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(*begin);
 			
 			// move body 
 			zombie.timeFromStartingThisMove += dt;
 			if (zombie.pathMode.path.empty())
 			{
-				zombie.pathMode = mAIManager->getZombiePath(body.rect.getTopLeft());
+				zombie.pathMode = mAIManager->getZombiePath(body.pos);
 				zombie.timeFromStartingThisMove = 0.f;
 			}
 
@@ -106,33 +105,27 @@ void ZombieSystem::update(float dt)
 				zombie.currentDirectionVector = toDirectionVector(currentDirection);
 			}
 
-			velocity.dx = zombie.currentDirectionVector.x * speed.speed;
-			velocity.dy = zombie.currentDirectionVector.y * speed.speed;
+			kinematics.acceleration = zombie.currentDirectionVector * speed.speed;
 
 			// update animation
+			animationData.isPlaying = true;
 			if (zombie.currentDirectionVector == PH_NORTH_WEST) {
 				animationData.currentStateName = "leftUp";
-				animationData.isPlaying = true;
 			}
 			else if (zombie.currentDirectionVector == PH_NORTH_EAST) {
 				animationData.currentStateName = "rightUp";
-				animationData.isPlaying = true;
 			}
 			else if (zombie.currentDirectionVector == PH_WEST || zombie.currentDirectionVector == PH_SOUTH_WEST) {
 				animationData.currentStateName = "left";
-				animationData.isPlaying = true;
 			}
 			else if (zombie.currentDirectionVector == PH_EAST || zombie.currentDirectionVector == PH_SOUTH_EAST) {
 				animationData.currentStateName = "right";
-				animationData.isPlaying = true;
 			}
 			else if (zombie.currentDirectionVector == PH_NORTH) {
 				animationData.currentStateName = "up";
-				animationData.isPlaying = true;
 			}
 			else if (zombie.currentDirectionVector == PH_SOUTH) {
 				animationData.currentStateName = "down";
-				animationData.isPlaying = true;
 			}
 			else {
 				animationData.isPlaying = false;
@@ -142,11 +135,10 @@ void ZombieSystem::update(float dt)
 
 	auto future = mThreadPool.addTask([task, begin, secondBegin]() {
 		task(begin, secondBegin);
-		});
+	});
 	task(secondBegin, zombies.end());
 
 	future.get();
 }
 
 }
-

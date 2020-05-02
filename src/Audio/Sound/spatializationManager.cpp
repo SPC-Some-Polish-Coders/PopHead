@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "SpatializationManager.hpp"
 
 namespace ph {

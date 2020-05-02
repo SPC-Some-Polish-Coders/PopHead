@@ -42,13 +42,6 @@ namespace ph::component {
 		sf::Vector2f pushForce;
 	};
 
-	struct CutScene
-	{
-		std::string name;
-		bool isStartingCutSceneOnThisMap;
-		bool wasActivated = false;
-	};
-
 	struct Entrance
 	{
 		std::string entranceDestination;
@@ -71,16 +64,6 @@ namespace ph::component {
 	struct Gate
 	{
 		bool isOpened;
-	};
-
-	struct Car
-	{
-		sf::Vector2f direction;
-		float velocity;
-		float acceleration;
-		float slowingDown;
-		bool shouldSpeedUp = false;
-		bool shouldSlowDown = false;
 	};
 
 	struct GunProperties

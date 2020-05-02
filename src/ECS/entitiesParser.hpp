@@ -28,8 +28,7 @@ private:
 	void parseHint(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity);
-	void parseVelocity(const Xml& entityComponentNode, entt::entity& entity);
-	void parsePushingForces(const Xml& entityComponentNode, entt::entity& entity);
+	void parseKinematics(const Xml& entityComponentNode, entt::entity& entity);
 	void parseHealth(const Xml& entityComponentNode, entt::entity& entity);
 	void parseDamage(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMedkit(const Xml& entityComponentNode, entt::entity& entity);
@@ -58,6 +57,7 @@ private:
 	void parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity);
 	void parseZombie(const Xml& entityComponentNode, entt::entity& entity);
+	void parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGroundRenderChunk(const Xml& entityComponentNode, entt::entity& entity);
 	void parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity);

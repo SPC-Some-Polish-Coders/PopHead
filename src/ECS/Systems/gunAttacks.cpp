@@ -1,5 +1,4 @@
-#pragma once
-
+#include "pch.hpp"
 #include "gunAttacks.hpp"
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -8,12 +7,9 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "Renderer/renderer.hpp"
-
 #include "Utilities/random.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/joystickMacros.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
 
 namespace ph::system {
 
@@ -35,35 +31,41 @@ void GunAttacks::onEvent(sf::Event e)
 
 	auto shoot = [this]()
 	{
-		auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-		for (auto player : playerGunView) {
-			auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-			playerGunAttack.isTryingToAttack = true;
-		}	
+		if(!shootInputDisabled)
+		{
+			auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
+			for (auto player : playerGunView) {
+				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
+				playerGunAttack.isTryingToAttack = true;
+			}	
+		}
 	};
 
 	auto changeWeapon = [this]()
 	{
-		auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
-		auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
-
-		for (auto currentGun : currentGunView)
+		if(!changeWeaponInputDisabled)
 		{
-			const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
-			mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
-			mRegistry.remove<component::CurrentGun>(currentGun);
+			auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
+			auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
 
-			for (auto otherGun : otherGunsView) {
-				const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
-				if (gunProperties.gunId != currentGunProperties.gunId)
-					mRegistry.assign<component::CurrentGun>(otherGun);
+			for (auto currentGun : currentGunView)
+			{
+				const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
+				mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
+				mRegistry.remove<component::CurrentGun>(currentGun);
+
+				for (auto otherGun : otherGunsView) {
+					const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
+					if (gunProperties.gunId != currentGunProperties.gunId)
+						mRegistry.assign<component::CurrentGun>(otherGun);
+				}
 			}
-		}
 
-		auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
-		gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
-			gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
-		});
+			auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
+			gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
+				gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
+			});
+		}
 	};
 
 	if(e.type == sf::Event::KeyPressed)
@@ -103,7 +105,7 @@ void GunAttacks::handlePendingGunAttacks() const
 					return;
 				}
 
-				sf::Vector2f startingBulletPosition = gunBody.rect.getTopLeft() + getBulletStartingPosition(playerFaceDirection.direction);
+				sf::Vector2f startingBulletPosition = gunBody.pos + getBulletStartingPosition(playerFaceDirection.direction);
 
 				bool wasOpponentHit = false;
 				tagEnemiesInGunAttackArea(playerFaceDirection.direction, playerBody.rect, gunBody.rect.getSize(),

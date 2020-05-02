@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "obstacleGrid.hpp"
-#include "Logs/logs.hpp"
 
 namespace ph {
 

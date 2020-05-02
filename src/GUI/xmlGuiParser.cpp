@@ -1,16 +1,13 @@
+#include "pch.hpp"
 #include "xmlGuiParser.hpp"
 #include "gui.hpp"
 #include "game.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/xml.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "ECS/system.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Resources/textureHolder.hpp"
 #include "GUI/gui.hpp"
-#include <functional>
-#include <string_view>
 
 namespace ph {
 

@@ -1,7 +1,5 @@
+#include "pch.hpp"
 #include "Utilities/filePath.hpp"
-#include "Logs/logs.hpp"
-
-#include <string>
 
 namespace ph {
 

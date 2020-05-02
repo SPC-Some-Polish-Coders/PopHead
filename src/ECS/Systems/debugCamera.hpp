@@ -7,11 +7,12 @@ class DebugCamera : public System
 public:
 	using System::System;
 
-	void onEvent(sf::Event) override;
 	void update(float dt) override;
 
 private:
-	bool mIsHintActive = true;
+	float mZoom = 1.f;
+	float mMovementSpeed = 1.f;
+	bool mDebugCameraEnabled = false;
 };
 
 }

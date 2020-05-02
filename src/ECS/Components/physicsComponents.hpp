@@ -7,7 +7,22 @@ namespace ph::component {
 
 	struct BodyRect
 	{
-		ph::FloatRect rect;
+		union
+		{
+			ph::FloatRect rect;
+
+			struct
+			{
+				sf::Vector2f pos;
+				sf::Vector2f size;
+			};
+
+			struct
+			{
+				float x, y;
+				float width, height;
+			};
+		};
 	};
 
 	struct BodyCircle
@@ -16,15 +31,13 @@ namespace ph::component {
 		float radius;
 	};
 
-	struct Velocity
-	{
-		float dx, dy;
-	};
-
-	struct PushingForces
+	struct Kinematics
 	{
 		sf::Vector2f vel;
-		float friction = 1.5f;
+		sf::Vector2f acceleration;
+		float friction;
+		float defaultFriction;
+		float frictionLerpSpeed;
 	};
 
 	struct CharacterSpeed

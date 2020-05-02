@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "damageAndDeath.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
@@ -6,8 +7,6 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "GUI/gui.hpp"
 #include "AI/aiManager.hpp"
-#include "Logs/logs.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
@@ -120,9 +119,10 @@ namespace ph::system {
 				mRegistry.reset<component::Killable>(entity);
 				mRegistry.reset<component::KinematicCollisionBody>(entity);
 				mRegistry.reset<component::Damage>(entity);
-				if(mRegistry.has<component::PushingForces>(entity)) {
-					auto& pushingVelocity = mRegistry.get<component::PushingForces>(entity);
-					pushingVelocity.vel = pushingVelocity.vel * 0.35f;
+				if(mRegistry.has<component::Kinematics>(entity)) {
+					auto& kin = mRegistry.get<component::Kinematics>(entity);
+					kin.acceleration = sf::Vector2f();
+					kin.vel *= 0.35f;
 				}
 
 				bool isPlayer = mRegistry.has<component::Player>(entity);

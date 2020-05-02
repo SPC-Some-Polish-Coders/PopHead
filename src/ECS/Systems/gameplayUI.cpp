@@ -1,9 +1,8 @@
+#include "pch.hpp"
 #include "gameplayUI.hpp"
 #include "GUI/gui.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
-#include "Utilities/profiling.hpp"
-#include <cstdio>
 
 namespace ph::system {
 

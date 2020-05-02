@@ -25,6 +25,9 @@ namespace Renderer
 	void beginScene();
 	void endScene();
 
+	void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
+	                  ProjectionType = ProjectionType::gameWorld, bool isAffectedByLight = true);
+
 	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
 	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld,
 					bool isAffectedByLight = true);
@@ -32,7 +35,14 @@ namespace Renderer
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*,
 	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
 
-	void submitGroundChunk(sf::Vector2f pos, const Texture& texture, const FloatRect& textureRect, unsigned char z); 
+	void setChunksTexture(const Texture& texture);
+
+	unsigned registerNewChunk(const FloatRect& bounds);
+
+	void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
+	                 unsigned char z, unsigned* rendererID);
+
+	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z); 
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 
@@ -50,9 +60,6 @@ namespace Renderer
 
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
 		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
-
-	void submitDebugText(const char* text, const char* fontFilename, float characterSize, float upMargin, float downMargin,
-                         sf::Color textColor);
 
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                         TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);

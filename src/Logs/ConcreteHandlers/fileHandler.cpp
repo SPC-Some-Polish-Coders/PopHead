@@ -1,8 +1,5 @@
+#include "pch.hpp"
 #include "fileHandler.hpp"
-
-#include <chrono>
-#include <ctime>
-#include <iomanip>
 
 namespace {
 

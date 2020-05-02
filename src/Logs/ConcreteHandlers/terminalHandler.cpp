@@ -1,8 +1,6 @@
+#include "pch.hpp"
 #include "terminalHandler.hpp"
 #include "Terminal/terminal.hpp"
-#include <SFML/Graphics/Color.hpp>
-#include <sstream>
-#include <iomanip>
 
 namespace ph {
 

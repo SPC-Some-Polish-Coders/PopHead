@@ -25,12 +25,12 @@ public:
 
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 	void resetDebugNumbers();
-	unsigned getNrOfDrawnPoints() const { return mNrOfDrawnPoints; }
-	unsigned getNrOfDrawCalls() const { return mNrOfDrawCalls; }
 
 	void submitPoint(sf::Vector2f position, const sf::Color&, float z, float size);
 
 	void flush();
+
+	void submitDebug();
 
 private:
 	bool isInsideScreen(sf::Vector2f position, float size);
@@ -41,8 +41,6 @@ private:
 	Shader mPointsShader;
 	unsigned mVAO;
 	unsigned mVBO;
-	unsigned mNrOfDrawnPoints;
-	unsigned mNrOfDrawCalls;
 	bool mIsDebugCountingActive = false;
 };
 

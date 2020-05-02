@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "entitiesTemplateStorage.hpp"
 
 namespace ph {

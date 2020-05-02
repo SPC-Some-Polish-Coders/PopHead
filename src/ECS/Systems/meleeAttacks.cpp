@@ -1,19 +1,16 @@
-#pragma once
-
+#include "pch.hpp"
 #include "meleeAttacks.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
-#include "Utilities/math.hpp"
 #include "Utilities/direction.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
 void MeleeAttacks::onEvent(sf::Event e)
 {
-	if(sPause)
+	if(sPause || inputDisabled)
 		return;
 
 	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Backslash && !mShouldWeaponBeRendered)
@@ -56,22 +53,23 @@ void MeleeAttacks::update(float dt)
 					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
 				);
 				bool wasEnemyHit = false;
-				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::PushingForces>(entt::exclude<component::Player>);
+				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::Kinematics>(entt::exclude<component::Player>);
 				for(auto enemy : enemies)
 				{
-					const auto& enemyBody = enemies.get<component::BodyRect>(enemy);
-					auto& enemyPushingForces = enemies.get<component::PushingForces>(enemy);
+					const auto& [enemyBody, kinematics] = enemies.get<component::BodyRect, component::Kinematics>(enemy);
 					const sf::Vector2f enemyBodyCenter = enemyBody.rect.getCenter();
 					if(attackArea.doPositiveRectsIntersect(enemyBody.rect))
 					{
 						float enemyAngle = std::atan2f(enemyBodyCenter.y - playerBodyCenter.y, enemyBodyCenter.x - playerBodyCenter.x);
 						enemyAngle = Math::radiansToDegrees(enemyAngle);
-						if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10.f && enemyAngle <= mStartWeaponRotation + 10.f) {
+						if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10.f && enemyAngle <= mStartWeaponRotation + 10.f) 
+						{
 							mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
-							enemyPushingForces.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 3.f;
-							enemyPushingForces.friction = 1.8f;
+							kinematics.vel = sf::Vector2f(faceDirection.direction.x, faceDirection.direction.y) * 300.f;
+							kinematics.friction = 0.005f;
+							kinematics.frictionLerpSpeed = 0.033f;
+							wasEnemyHit = true;
 						}
-						wasEnemyHit = true;
 					}
 				};
 

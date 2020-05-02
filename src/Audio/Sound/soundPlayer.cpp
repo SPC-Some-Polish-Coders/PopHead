@@ -1,10 +1,8 @@
+#include "pch.hpp"
 #include "soundPlayer.hpp"
-#include "Logs/logs.hpp"
 #include "Resources/soundBufferHolder.hpp"
 #include "Audio/Sound/soundData.hpp"
 #include "Audio/Sound/spatializationManager.hpp"
-#include <SFML/Audio.hpp>
-#include <list>
 
 namespace ph::SoundPlayer
 {
@@ -40,7 +38,6 @@ void init()
 	setMuted(false);
 
 	loadSoundBuffer("sounds/swordAttack.wav");
-	loadSoundBuffer("sounds/carTireScreech.ogg");
 	loadSoundBuffer("sounds/zombieGrowl1.ogg");
 	loadSoundBuffer("sounds/zombieGrowl2.ogg");
 	loadSoundBuffer("sounds/zombieGrowl3.ogg");
@@ -49,6 +46,11 @@ void init()
 	loadSoundBuffer("sounds/pistolShot.ogg");
 	loadSoundBuffer("sounds/reloadShotgun.ogg");
 	loadSoundBuffer("sounds/shotgunShot.ogg");
+}
+
+void shutdown()
+{
+	sounds.clear();
 }
 
 void playAmbientSound(const std::string& filePath)

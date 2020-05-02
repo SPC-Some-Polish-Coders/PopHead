@@ -1,16 +1,13 @@
 #pragma once
 
-#include "cutSceneManager.hpp"
 #include "playerStatus.hpp"
 #include <entt/entity/registry.hpp>
 #include "ECS/systemsQueue.hpp"
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
-#include <memory>
 
 namespace ph{
 
-class CutScene;
 class AIManager;
 class SceneManager;
 class Texture;
@@ -24,7 +21,6 @@ public:
 	void handleEvent(sf::Event);
     void update(float dt);
 
-	CutSceneManager& getCutSceneManager() { return mCutSceneManager; }
 	SystemsQueue& getSystemsQueue() { return mSystemsQueue; }
 
 	void setPlayerStatus(const PlayerStatus& status);
@@ -34,7 +30,6 @@ public:
 	entt::registry& getRegistry();
 
 private:
-	CutSceneManager mCutSceneManager;
 	entt::registry mRegistry;
 	SystemsQueue mSystemsQueue;
 };

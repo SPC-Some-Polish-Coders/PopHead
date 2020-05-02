@@ -2,18 +2,12 @@
  
 #include "Renderer/API/shader.hpp"
 #include "quadData.hpp"
-#include <SFML/Graphics/Color.hpp>
 #include "Utilities/rect.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <vector>
 #include <optional>
 
 namespace ph { 
-
-struct LightingDebug
-{
-	bool drawLight = true;
-	bool drawRays = false;
-};
 
 // TODO: Add Z to Light
 
@@ -57,17 +51,13 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
-	unsigned getNrOfLights() { return mNrOfLights; }
+	unsigned getNrOfLights(); 
 
-	unsigned getNrOfDrawCalls() { return mNrOfDrawCalls; }
-	unsigned getNrOfRays() { return mNrOfRays; }
-	void resetDebugNumbers();
+	void submitDebug();
 
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
-
-	static LightingDebug& getDebug() { return sDebug; }
 
 private:
 	RayWallIntersection getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall);
@@ -80,10 +70,6 @@ private:
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
 	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
-	unsigned mNrOfDrawCalls, mNrOfRays;
-	unsigned mNrOfLights;
-
-	inline static LightingDebug sDebug;
 };
 
 } 

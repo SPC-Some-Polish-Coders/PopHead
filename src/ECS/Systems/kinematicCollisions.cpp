@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "kinematicCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
@@ -11,13 +11,13 @@ namespace ph::system {
 		if (sPause)
 			return;
 
-		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::Velocity, component::BodyRect>();
-		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::Velocity, component::BodyCircle>();
+		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyRect>();
+		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyCircle>();
 
 		for (auto current = kinematicRectObjects.begin(); current != kinematicRectObjects.end(); ++current)
 		{
 			auto& currentBody = kinematicRectObjects.get<component::BodyRect>(*current);
-			auto& currentVel = kinematicRectObjects.get<component::Velocity>(*current);
+			auto& currentKin = kinematicRectObjects.get<component::Kinematics>(*current);
 
 			auto another = current;
 			++another;
@@ -28,45 +28,38 @@ namespace ph::system {
 			for (; another != kinematicRectObjects.end(); ++another)
 			{
 				auto& anotherBody = kinematicRectObjects.get<component::BodyRect>(*another);
-				//auto& anotherVel = kinematicRectObjects.get<component::Velocity>(*another);
 
 				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
 				{
-					//component::Velocity newVel = { currentVel.dx + anotherVel.dx, currentVel.dy + anotherVel.dy };
-
 					sf::FloatRect intersection;
 					currentBody.rect.intersects(anotherBody.rect, intersection);
 
 					if (intersection.width < intersection.height)
 					{
-						//currentVel.dx = newVel.dx;
-						//anotherVel.dx = newVel.dx;
 						auto halfWidth = intersection.width / 2.f;
-						if (currentBody.rect.left < anotherBody.rect.left)
+						if (currentBody.x < anotherBody.x)
 						{
-							currentBody.rect.left -= halfWidth;
-							anotherBody.rect.left += halfWidth;
+							currentBody.x -= halfWidth;
+							anotherBody.x += halfWidth;
 						}
 						else
 						{
-							currentBody.rect.left += halfWidth;
-							anotherBody.rect.left -= halfWidth;
+							currentBody.x += halfWidth;
+							anotherBody.x -= halfWidth;
 						}
 					}
 					else
 					{
-						//currentVel.dy = newVel.dy;
-						//anotherVel.dy = newVel.dy;
 						auto halfHeight = intersection.height / 2.f;
-						if (currentBody.rect.top < anotherBody.rect.top)
+						if (currentBody.y < anotherBody.y)
 						{
-							currentBody.rect.top -= halfHeight;
-							anotherBody.rect.top += halfHeight;
+							currentBody.y -= halfHeight;
+							anotherBody.y += halfHeight;
 						}
 						else
 						{
-							currentBody.rect.top += halfHeight;
-							anotherBody.rect.top -= halfHeight;
+							currentBody.y += halfHeight;
+							anotherBody.y -= halfHeight;
 						}
 					}
 				}
@@ -75,7 +68,6 @@ namespace ph::system {
 			for (auto anotherC : kinematicCircObjects)
 			{
 				auto& anotherBody = kinematicCircObjects.get<component::BodyCircle>(anotherC);
-				//auto& anotherVel = kinematicCircObjects.get<component::Velocity>(anotherC);
 
 				auto nx = std::fmaxf(currentBody.rect.left, std::fminf(anotherBody.center.x, currentBody.rect.right()));
 				auto ny = std::fmaxf(currentBody.rect.top, std::fminf(anotherBody.center.y, currentBody.rect.bottom()));
@@ -138,12 +130,12 @@ namespace ph::system {
 				{
 					if (dx * dx < dy * dy) 
 					{
-						auto hdx = dx / 2.;
+						auto hdx = dx / 2.f;
 						currentBody.center.x -= hdx;
 						anotherBody.center.x += hdx;
 					}
 					else {
-						auto hdy = dy / 2.;
+						auto hdy = dy / 2.f;
 						currentBody.center.y -= hdy;
 						anotherBody.center.y += hdy;
 					}

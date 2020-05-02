@@ -49,13 +49,13 @@ void main()
         } break;
 
         case 2: {
-            modelVertexPos = vec2(aSize.x, aSize.y);
-            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
+            modelVertexPos = vec2(0, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
         } break;
 
         case 3: {
-            modelVertexPos = vec2(0, aSize.y);
-            vs_out.texCoords = vec2(aTextureRect.x, aTextureRect.y);
+            modelVertexPos = vec2(aSize.x, aSize.y);
+            vs_out.texCoords = vec2(aTextureRect.x + aTextureRect.z, aTextureRect.y);
         } break;
     }
 
@@ -65,8 +65,11 @@ void main()
 	mat4 VPM = isGameWorldProjection ? gameWorldVPM : guiVPM;
     
     if(aRotation == 0)
+	{
         gl_Position = VPM * vec4(modelVertexPos + aPosition, z, 1);
-	else {
+	}
+	else 
+	{
 		vec2 rotatedVertexPos = (modelVertexPos - aRotationOrigin) * getRotationMatrix(aRotation) + aPosition + aRotationOrigin;
 		gl_Position = VPM * vec4(rotatedVertexPos, z, 1);
 	}

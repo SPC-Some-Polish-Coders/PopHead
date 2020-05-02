@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "criticalError.hpp"
 
 namespace ph {

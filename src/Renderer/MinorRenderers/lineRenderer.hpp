@@ -15,20 +15,16 @@ public:
 
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
-	unsigned getNumberOfDrawCalls() const { return mNumberOfDrawCalls; }
-
-	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
-	void resetDebugNumbers();
-
 	void drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+
+	void submitDebug();
+
 private:
 	Shader mLineShader;
 	const FloatRect* mScreenBounds;
 	unsigned mLineVAO;
 	unsigned mLineVBO;
-	unsigned mNumberOfDrawCalls;
-	bool mIsDebugCountingActive = false;
 };
 
 }

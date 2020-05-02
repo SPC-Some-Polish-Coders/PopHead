@@ -1,10 +1,8 @@
+#include "pch.hpp"
 #include "hostileCollisions.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/rect.hpp"
-#include "Utilities/profiling.hpp"
-#include "Utilities/math.hpp"
 
 namespace ph::system {
 
@@ -15,13 +13,12 @@ namespace ph::system {
 		if(sPause)
 			return;
 
-		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health, component::PushingForces>();
+		auto playerView = mRegistry.view<component::Player, component::BodyRect, component::Health, component::Kinematics>();
 		auto enemiesView = mRegistry.view<component::BodyRect, component::Damage, component::CollisionWithPlayer>();
 
 		for (auto player : playerView)
 		{
-			const auto& playerBody = playerView.get<component::BodyRect>(player);
-			auto& playerPushingForces = playerView.get<component::PushingForces>(player);
+			const auto& [playerBody, playerKinematics] = playerView.get<component::BodyRect, component::Kinematics>(player);
 
 			for (auto damageDealingEntitiy : enemiesView)
 			{
@@ -37,17 +34,20 @@ namespace ph::system {
 					const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
 					mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
 
-					playerPushingForces.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());
-					playerPushingForces.friction = 1.f;
+					playerKinematics.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());
+					playerKinematics.friction = 0.01f;
+					playerKinematics.frictionLerpSpeed = 0.04f;
 
 					component::CameraShake shake;
 					shake.duration = 1.f;
-					shake.magnitude = playerCollision.pushForce / 2.f;
+					shake.magnitude = playerCollision.pushForce / 200.f;
 					shake.smooth = false;
 					mRegistry.assign_or_replace<component::CameraShake>(player, shake);
 				}
 				else
+				{
 					playerCollision.isCollision = false;
+				}
 			}
 		}
 	}

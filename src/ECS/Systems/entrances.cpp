@@ -1,12 +1,9 @@
+#include "pch.hpp"
 #include "entrances.hpp"
-
 #include "Scenes/sceneManager.hpp"
-
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

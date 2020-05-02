@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "audioSystem.hpp"
 #include "arcadeMode.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -5,9 +6,6 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
-#include "Utilities/math.hpp"
-#include "Utilities/profiling.hpp"
-#include <SFML/System/Vector2.hpp>
 
 namespace ph::system {
 
@@ -50,42 +48,39 @@ namespace ph::system {
 			mRegistry.remove<component::AmbientSound>(entity);
 		}
 
-		if(!ArcadeMode::isActive())
+		// for scenes without music
+		if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
+			return;
+
+		// get the closest enemy distance from player
+		float theClosestEnemyDistanceFromPlayer = 1000;
+		auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
+		enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body) 
 		{
-			// for scenes without music
-			if (!MusicPlayer::hasMusicState("fight") || !MusicPlayer::hasMusicState("exploration"))
-				return;
+			const sf::Vector2f enemyPos = body.rect.getCenter();
+			const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
+			if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
+				theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
+		});
 
-			// get the closest enemy distance from player
-			float theClosestEnemyDistanceFromPlayer = 1000;
-			auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
-			enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body) 
-			{
-				const sf::Vector2f enemyPos = body.rect.getCenter();
-				const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
-				if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
-					theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
-			});
+		// switch themes if they should be switched
+		constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
+		constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
 
-			// switch themes if they should be switched
-			constexpr float distanceToEnemyToSwitchToAttackTheme = 270.f;
-			constexpr float distanceToEnemyToSwitchToExplorationTheme = 350.f;
-
-			Theme themeTypeWhichShouldBePlayed;
-			if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAttackTheme)
-				themeTypeWhichShouldBePlayed = Theme::Fight;
-			else if(theClosestEnemyDistanceFromPlayer > distanceToEnemyToSwitchToExplorationTheme)
-				themeTypeWhichShouldBePlayed = Theme::Exploration;
+		Theme themeTypeWhichShouldBePlayed;
+		if(theClosestEnemyDistanceFromPlayer < distanceToEnemyToSwitchToAttackTheme)
+			themeTypeWhichShouldBePlayed = Theme::Fight;
+		else if(theClosestEnemyDistanceFromPlayer > distanceToEnemyToSwitchToExplorationTheme)
+			themeTypeWhichShouldBePlayed = Theme::Exploration;
+		else
+			themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
+		
+		if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
+			mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
+			if(mCurrentlyPlayerTheme == Theme::Fight)
+				MusicPlayer::playFromMusicState("fight");
 			else
-				themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
-			
-			if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
-				mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
-				if(mCurrentlyPlayerTheme == Theme::Fight)
-					MusicPlayer::playFromMusicState("fight");
-				else
-					MusicPlayer::playFromMusicState("exploration");
-			}
+				MusicPlayer::playFromMusicState("exploration");
 		}
 	}
 }

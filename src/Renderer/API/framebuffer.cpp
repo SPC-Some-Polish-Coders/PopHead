@@ -1,7 +1,6 @@
+#include "pch.hpp"
 #include "framebuffer.hpp"
 #include "openglErrors.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
 
 namespace ph {
 

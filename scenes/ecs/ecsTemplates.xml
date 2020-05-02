@@ -38,9 +38,8 @@
     <component name="Player" />
     <component name="FaceDirection" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="123" />
-    <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingForces" vel="0, 0" />
+    <component name="CharacterSpeed" speed="1000" />
+    <component name="Kinematics" friction="9.0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
@@ -55,10 +54,9 @@
     <component name="Damage" damageDealt="25" />
     <component name="CollisionWithPlayer" pushForce="2"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="50" />
-    <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingForces" vel="0, 0" />
-    <component name="Zombie" timeToMoveToAnotherTile="0.2" />
+    <component name="CharacterSpeed" speed="700" />
+    <component name="Kinematics" friction="8.0" />
+    <component name="Zombie" timeToMoveToAnotherTile="0.1" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />
@@ -70,32 +68,17 @@
     <component name="Health" healthPoints="100" maxHealthPoints="100" />
     <component name="KinematicCollisionBody" mass="10" />
     <component name="Damage" damageDealt="25" />
-    <component name="CollisionWithPlayer" pushForce="4"/>
+    <component name="CollisionWithPlayer" pushForce="300"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="20" />
-    <component name="Velocity" dx="0" dy="0" />
-    <component name="PushingForces" vel="0, 0" />
+    <component name="CharacterSpeed" speed="250" />
+    <component name="Kinematics" friction="8.0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.15" />
+    <component name="SlowZombieBehavior" />
     <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />
     <component name="MultiParticleEmitter" />
-  </entityTemplate>
-
-  <entityTemplate name="GateGuardNpc">
-    <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="StaticCollisionBody" />
-    <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/npc.animstates.xml" isPlaying="true"/>
-    <component name="TextureRect" x="0" y="0" width="0" height="0" />
-    <component name="RenderQuad" textureFilepath="textures/characters/negroDudeWalkingAnimation.png" z="95" />
-  </entityTemplate>
-
-  <entityTemplate name="CrawlingNpc">
-    <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="AnimationData" firstStateName="dead" delay="0.1" animationStatesFile="animations/npc.animstates.xml" isPlaying="false" />
-    <component name="TextureRect" x="0" y="0" width="0" height="0" />
-    <component name="RenderQuad" textureFilepath="textures/characters/negroDudeWalkingAnimation.png" z="95" />
   </entityTemplate>
 
   <entityTemplate sourceTemplate="Zombie" name="HurtZombie">
@@ -105,11 +88,6 @@
   <entityTemplate name="Entrance">
     <component name="BodyRect" x="0" y="0" width="0" height="0" />
     <component name="Entrance" entranceDestination="scenes/entranceTest.xml" playerSpawnPositionX="200.0" playerSpawnPositionY="100.0" />
-  </entityTemplate>
-
-  <entityTemplate name="CutScene">
-    <component name="BodyRect" x="0" y="0" width="0" height="0" />
-    <component name="CutScene" />
   </entityTemplate>
 
   <entityTemplate name="Gate">
@@ -123,13 +101,8 @@
   </entityTemplate>
 
   <entityTemplate name="ActivateArea">
-
   </entityTemplate>
 
-  <entityTemplate name="CutSceneArea">
-
-  </entityTemplate>
-  
   <entityTemplate name="HintArea">
     <component name="BodyRect" x="0" y="0" width="0" height="0" />
     <component name="Hint" hintName="hint"/>
@@ -173,13 +146,6 @@
     <component name="RenderQuad" textureFilepath="textures/others/lever.png" z="99" />
     <component name="TextureRect" x="0" y="0" width="7" height="15" />
     <component name="Lever" id="0" minActivationInterval="0.25" turnOffAfterSwitch="false" />
-  </entityTemplate>
-
-  <entityTemplate name="Car">
-    <component name="StaticCollisionBody" />
-    <component name="BodyRect" x="0" y="0" width="38" height="18" />
-    <component name="RenderQuad" textureFilepath="textures/vehicles/car.png" z="99" />
-    <component name="Car" />
   </entityTemplate>
 
   <entityTemplate name="BulletBox">

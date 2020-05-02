@@ -1,11 +1,10 @@
+#include "pch.hpp"
 #include "scene.hpp"
-#include "cutScene.hpp"
 #include "Utilities/threadPool.hpp"
 #include "Terminal/terminal.hpp"
 
 #include "ECS/Systems/playerMovementInput.hpp"
 #include "ECS/Systems/movement.hpp"
-#include "ECS/Systems/pushingMovement.hpp"
 #include "ECS/Systems/playerCameraMovement.hpp"
 #include "ECS/Systems/entityDestroying.hpp"
 #include "ECS/Systems/pickupSystem.hpp"
@@ -25,16 +24,15 @@
 #include "ECS/Systems/pushingAreas.hpp"
 #include "ECS/Systems/hintAreas.hpp"
 #include "ECS/Systems/kinematicCollisions.hpp"
-#include "ECS/Systems/velocityClear.hpp"
 #include "ECS/Systems/audioSystem.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/areasDebug.hpp"
-#include "ECS/Systems/cars.hpp"
-#include "ECS/Systems/cutscenesActivating.hpp"
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
+#include "ECS/Systems/slowZombieSystem.hpp"
+#include "ECS/Systems/entitiesDebugger.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -43,8 +41,7 @@
 namespace ph {
 
 Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
-	:mCutSceneManager()
-	,mSystemsQueue(mRegistry, threadPool)
+	:mSystemsQueue(mRegistry, threadPool)
 {
 	// should be at the start
 	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
@@ -55,7 +52,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
 	mSystemsQueue.appendSystem<system::PushingAreas>();
 
-	mSystemsQueue.appendSystem<system::PushingMovement>(); // physics
 	mSystemsQueue.appendSystem<system::Movement>(); // physics
 
 	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
@@ -63,6 +59,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::MeleeAttacks>();
 
 	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
+	mSystemsQueue.appendSystem<system::SlowZombieSystem>(); // must be after HostileCollisions and before ZombieSystem (in next iteration)
 
 	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
 	
@@ -71,8 +68,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
 
 	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
-
-	mSystemsQueue.appendSystem<system::Cars>(); // better before StaticCollisions, but for now it's actually not important
 
 	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
 	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
@@ -90,9 +85,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystemWithLastOrder<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::HintAreas>();
 	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
-	mSystemsQueue.appendSystem<system::CutScenesActivating>(std::ref(mCutSceneManager), std::ref(aiManager), std::ref(sceneManager));
-
-	mSystemsQueue.appendSystem<system::VelocityClear>(); // physics
 
 	// must be after GunAttacks and before EntityDestroying
 	mSystemsQueue.appendSystem<system::Lifetime>();
@@ -103,7 +95,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
-
+	mSystemsQueue.appendSystem<system::EntitiesDebugger>();
 }
 
 void Scene::handleEvent(sf::Event e)
@@ -113,11 +105,7 @@ void Scene::handleEvent(sf::Event e)
 
 void Scene::update(float dt)
 {
-	const bool isCutsceneActive = mCutSceneManager.isCutSceneActive();
-	if(isCutsceneActive)
-		mCutSceneManager.updateCutScene(dt);
-	if(!isCutsceneActive || (isCutsceneActive && !mCutSceneManager.pausesSystems()))
-		mSystemsQueue.update(dt);
+	mSystemsQueue.update(dt);
 }
 
 void Scene::setPlayerStatus(const PlayerStatus& status)

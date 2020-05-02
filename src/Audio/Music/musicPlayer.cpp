@@ -1,8 +1,7 @@
+#include "pch.hpp"
 #include "musicPlayer.hpp"
 #include "musicData.hpp"
 #include "musicStateMachine.hpp"
-#include <SFML/Audio.hpp>
-#include <memory>
 
 namespace ph::MusicPlayer {
 
@@ -109,6 +108,11 @@ float getVolume()
 auto getMusicStateMachine() -> MusicStateMachine &
 {
 	return musicStateMachine;
+}
+
+void clearMusicPlayer()
+{
+	music.reset(nullptr);
 }
 
 }

@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "weather.hpp"
-#include "Utilities/profiling.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -102,13 +102,13 @@ void Weather::update(float dt)
 			sf::Vector2f playerPos;
 			auto players = mRegistry.view<component::Player, component::BodyRect>();
 			players.each([&playerPos](const component::Player, const component::BodyRect& body) {
-				playerPos = body.rect.getTopLeft();
+				playerPos = body.pos;
 			});
 
 			// set weather position to player position
 			auto weatherView = mRegistry.view<component::Weather, component::BodyRect>();
 			weatherView.each([playerPos](const component::Weather, component::BodyRect& weatherBody) {
-				weatherBody.rect.setPosition(playerPos);
+				weatherBody.pos = playerPos;
 			});	
 
 		} break;

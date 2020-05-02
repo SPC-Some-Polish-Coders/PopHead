@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
@@ -11,7 +12,6 @@
 #include "Renderer/API/shader.hpp"
 #include "Resources/textureHolder.hpp"
 #include "Resources/animationStatesResources.hpp"
-#include "Utilities/xml.hpp"
 #include "Utilities/random.hpp"
 
 namespace ph {
@@ -91,9 +91,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Medkit",	              	    &EntitiesParser::parseMedkit},
 		{"Player",                	    &EntitiesParser::parsePlayer},
 		{"Zombie",                	    &EntitiesParser::parseZombie},
+		{"SlowZombieBehavior",			&EntitiesParser::parseSlowZombieBehavior},
 		{"Bullets",                	    &EntitiesParser::parseBullets},
-		{"Velocity",              	    &EntitiesParser::parseVelocity},
-		{"PushingForces",               &EntitiesParser::parsePushingForces},
+		{"Kinematics",              	&EntitiesParser::parseKinematics},
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
@@ -120,9 +120,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GroundRenderChunk",           &EntitiesParser::parseGroundRenderChunk},
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
-		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"Car",                         &EntitiesParser::parseCar},
-		{"CutScene",                    &EntitiesParser::parseCutScene}
+		{"BulletBox",                   &EntitiesParser::parseBulletBox}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -263,17 +261,10 @@ void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, en
 	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, pushForce, false);
 }
 
-void EntitiesParser::parseVelocity(const Xml& entityComponentNode, entt::entity& entity)
+void EntitiesParser::parseKinematics(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float dx = entityComponentNode.getAttribute("dx")->toFloat();
-	float dy = entityComponentNode.getAttribute("dy")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Velocity>(entity, dx, dy);
-}
-
-void EntitiesParser::parsePushingForces(const Xml& entityComponentNode, entt::entity& entity)
-{
-	sf::Vector2f vel = entityComponentNode.getAttribute("vel")->toVector2f();
-	mUsedRegistry->assign_or_replace<component::PushingForces>(entity, vel);
+	float friction = entityComponentNode.getAttribute("friction")->toFloat();
+	mUsedRegistry->assign_or_replace<component::Kinematics>(entity, sf::Vector2f(), sf::Vector2f(), friction, friction, 0.5f);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
@@ -458,6 +449,11 @@ void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& e
 	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
 }
 
+void EntitiesParser::parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::SlowZombieBehavior>(entity);
+}
+
 void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
@@ -470,7 +466,7 @@ void EntitiesParser::parseGroundRenderChunk(const Xml& entityComponentNode, entt
 
 void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
+	//mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
 }
 
 void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity)
@@ -481,16 +477,6 @@ void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
-}
-
-void EntitiesParser::parseCar(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<component::Car>(entity);
-}
-
-void EntitiesParser::parseCutScene(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign<component::CutScene>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

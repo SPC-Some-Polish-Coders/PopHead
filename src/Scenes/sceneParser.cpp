@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "sceneParser.hpp"
-#include "Utilities/xml.hpp"
-#include "Logs/logs.hpp"
 #include "Renderer/renderer.hpp"
 #include "ECS/Systems/arcadeMode.hpp"
 #include "ECS/entitiesParser.hpp"
@@ -8,12 +7,10 @@
 #include "ECS/xmlMapParser.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
-#include <thread>
-#include "Utilities/profiling.hpp"
 
 namespace ph {
 
-void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templateStorage,
+void parseScene(EntitiesTemplateStorage& templateStorage,
                 entt::registry& gameRegistry, const std::string& sceneFileName, SystemsQueue& systemsQueue,
                 AIManager& aiManager, SceneManager& sceneManager)
 {
@@ -52,8 +49,8 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
 
 	// parse arcade mode
-	if(!sceneLinksNode.getChildren("arcadeMode").empty())
-		systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
+	//if(!sceneLinksNode.getChildren("arcadeMode").empty())
+	//	systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
 
 	// parse ecs entities
 	templateStorage.clearStorage();
@@ -71,7 +68,7 @@ void parseScene(CutSceneManager& cutSceneManager, EntitiesTemplateStorage& templ
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
-		TiledParser tiledParser(cutSceneManager, templateStorage, gameRegistry, sceneManager);
+		TiledParser tiledParser(templateStorage, gameRegistry, sceneManager);
 		tiledParser.parseFile(map);
 		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
 	}

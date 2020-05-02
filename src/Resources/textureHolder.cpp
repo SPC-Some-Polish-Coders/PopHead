@@ -1,8 +1,6 @@
+#include "pch.hpp"
 #include "textureHolder.hpp"
 #include "Renderer/API/texture.hpp"
-#include "Logs/logs.hpp"
-#include <memory>
-#include <unordered_map>
 
 namespace ph {
 

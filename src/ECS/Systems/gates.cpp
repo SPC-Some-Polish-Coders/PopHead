@@ -1,11 +1,8 @@
+#include "pch.hpp"
 #include "gates.hpp"
-#include "gates.hpp"
-
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

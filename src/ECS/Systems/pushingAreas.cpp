@@ -1,9 +1,7 @@
+#include "pch.hpp"
 #include "pushingAreas.hpp"
-
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 
@@ -15,7 +13,7 @@ void PushingAreas::update(float dt)
 		return;
 
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
-	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Velocity>();
+	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Kinematics>();
 
 	for (auto pushingArea : pushingAreasView)
 	{
@@ -23,12 +21,11 @@ void PushingAreas::update(float dt)
 
 		for (auto kinematicObject : kinematicObjects)
 		{
-			auto& objectVelocity = kinematicObjects.get<component::Velocity>(kinematicObject);
+			auto& objectKinematics = kinematicObjects.get<component::Kinematics>(kinematicObject);
 			const auto& kinematicObjectBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
 			if (areaBody.rect.contains(kinematicObjectBody.rect.getCenter()))
 			{
-				objectVelocity.dx += pushingAreaDetails.pushForce.x;
-				objectVelocity.dy += pushingAreaDetails.pushForce.y;
+				objectKinematics.vel += pushingAreaDetails.pushForce;
 			}
 		}
 	}

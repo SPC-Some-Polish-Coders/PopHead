@@ -1,8 +1,5 @@
+#include "pch.hpp"
 #include "AStarAlgorithm.hpp"
-#include "Utilities/math.hpp"
-#include "Logs/logs.hpp"
-
-#include <cmath>
 
 namespace ph {
 

@@ -4,12 +4,15 @@
 
 namespace ph::system {
 
-class Cars : public System
+class EntitiesDebugger : public System
 {
 public:
 	using System::System;
 
 	void update(float dt) override;
+
+private:
+	entt::entity mSelected = entt::null;
 };
 
 }

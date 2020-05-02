@@ -1,8 +1,7 @@
-#include "profiling.hpp"
+#include "pch.hpp"
 #include "Utilities/threadId.hpp"
 
-#include <algorithm>
-#include <thread>
+extern bool debugWindowOpen;
 
 namespace ph {
 
@@ -122,6 +121,103 @@ ProfilingTimer::ProfilingTimer(const char* name, std::vector<std::pair<std::stri
 ProfilingTimer::~ProfilingTimer()
 {
 	MainProfilingManager::commitResultEnd(resultId);
+}
+
+ImGuiProfilingTimer::ImGuiProfilingTimer(const char* name)
+{
+	mResult.name = name;
+	clock.restart();
+}
+
+ImGuiProfilingTimer::~ImGuiProfilingTimer()
+{
+	mResult.duration = clock.getElapsedTime().asSeconds();
+	ImGuiProfiling::commitResult(mResult);
+}
+
+namespace ImGuiProfiling {
+
+	static std::vector<ImGuiProfilingResult> results;
+	static float timeFromLastDisplay;
+	static float displayDelay = 0.01f;
+	static bool clear; 
+	static bool pause;
+
+	void commitResult(const ImGuiProfilingResult& result)
+	{
+		if(timeFromLastDisplay > displayDelay)
+		{
+			if(clear)
+			{
+				results.clear();
+				clear = false;
+			}
+
+			for(auto& res : results)
+			{
+				if(res.name == result.name)
+				{
+					res.duration += result.duration;
+					return;
+				}
+			}
+			
+			results.emplace_back(result);
+		}
+	}
+
+	void flush(float dt)
+	{
+		if(debugWindowOpen && ImGui::BeginTabItem("profiling"))
+		{
+			ImGui::SliderFloat("display delay", &displayDelay, 0.01f, 2.f);
+			ImGui::Checkbox("pause display", &pause);
+			ImGui::Separator();
+			
+			if(timeFromLastDisplay > displayDelay)
+			{
+				std::sort(results.begin(), results.end(), 
+				[](const ImGuiProfilingResult& a, const ImGuiProfilingResult& b)
+				{
+					return a.duration > b.duration;
+				});
+			}
+
+			ImGui::Columns(3, nullptr);
+			ImGui::BulletText("Time of all calls in seconds");
+			ImGui::NextColumn();
+			ImGui::BulletText("Percent of time of all calls relative to 60Hz");
+			ImGui::NextColumn();
+			ImGui::BulletText("Function name");
+			ImGui::NextColumn();
+
+			for(auto& res : results)
+			{	
+				ImGui::Text("%f", res.duration);
+				ImGui::NextColumn();
+
+				ImGui::Text("%f", res.duration * 6000.f);
+				ImGui::NextColumn();
+
+				ImGui::Text(res.name.c_str());
+				ImGui::NextColumn();
+			}
+			ImGui::Columns(1);
+
+			ImGui::EndTabItem();
+		}
+
+		if(timeFromLastDisplay > displayDelay)
+		{
+			clear = true;
+			timeFromLastDisplay = 0.f;
+		}
+
+		if(!pause)
+		{
+			timeFromLastDisplay += dt;
+		}
+	}
 }
 
 }

@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "soundBufferHolder.hpp"
-#include "Logs/logs.hpp"
-#include <unordered_map>
 
 namespace ph {
 
@@ -30,6 +29,11 @@ sf::SoundBuffer& getSoundBuffer(const std::string& filePath)
 	auto found = soundBuffers.find(fullFilePath);
 	PH_ASSERT_CRITICAL(found != soundBuffers.end(), "You try to get a sound buffer that wasn't loaded: " + fullFilePath);
 	return found->second;
+}
+
+void clearSoundBufferHolder()
+{
+	soundBuffers.clear();
 }
 
 }

@@ -36,6 +36,9 @@ project "PopHead"
     
     targetdir (exe_dir)
 	objdir (obj_dir)
+
+	pchheader "pch.hpp"
+	pchsource "../../src/pch.cpp"
     
     debugdir "%{wks.location}"
 
@@ -44,7 +47,8 @@ project "PopHead"
         root_dir .. "vendor/SFML_2.5.1/include",
 		root_dir .. "vendor/glew-2.1.0/include",
 		root_dir .. "vendor/stb",
-        root_dir .. "vendor/entt-3.2.0/src"
+        root_dir .. "vendor/entt-3.2.0/src",
+        root_dir .. "vendor/imgui"
     }
 
 	filter "configurations:*32bit"
@@ -62,8 +66,14 @@ project "PopHead"
     files{
         root_dir .. "src/**.hpp",
         root_dir .. "src/**.cpp",
-        root_dir .. "src/**.inl"
+        root_dir .. "src/**.inl",
+		root_dir .. "vendor/imgui/**.h",
+		root_dir .. "vendor/imgui/**.cpp"
     }
+
+	removefiles{
+		root_dir .. "src/dearImGui.cpp"
+	}
 
     links{
         "opengl32.lib",
@@ -112,8 +122,10 @@ project "PopHead"
         }
 
     filter "configurations:Distribution* or Profiling*"
-        defines "PH_DISTRIBUTION" 
         kind "WindowedApp"
+
+	filter "configurations:Distribution*"
+        defines "PH_DISTRIBUTION" 
 
 	filter "configurations:Profiling*"
 		defines "PH_PROFILING"
@@ -139,6 +151,9 @@ project "Tests"
     
     targetdir (exe_dir)	
     objdir (obj_dir)
+
+	pchheader "pch.hpp"
+	pchsource "../../src/pch.cpp"
     
     debugdir "%{wks.location}"
     
@@ -225,11 +240,13 @@ project "Tests"
 		defines "PH_TESTS"
 
     filter "configurations:Distribution* or Profiling*"
+        kind "WindowedApp"
+
+	filter "configurations:Distribution*"
         defines "PH_DISTRIBUTION"
 
 	filter "configurations:Profiling*"
 		defines "PH_PROFILING"
-        kind "WindowedApp"
 
     filter "system:Windows"
         defines "PH_WINDOWS" 

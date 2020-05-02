@@ -1,10 +1,6 @@
+#include "pch.hpp"
 #include "logger.hpp"
 #include "Utilities/filePath.hpp"
-
-#include <chrono>
-#include <ctime>
-#include <string>
-#include <algorithm>
 
 namespace ph {
 

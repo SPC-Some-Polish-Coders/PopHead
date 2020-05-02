@@ -1,6 +1,6 @@
+#include "pch.hpp"
 #include "staticCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

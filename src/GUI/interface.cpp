@@ -1,6 +1,5 @@
+#include "pch.hpp"
 #include "interface.hpp"
-#include "Logs/logs.hpp"
-#include <cstring>
 
 namespace ph {
 

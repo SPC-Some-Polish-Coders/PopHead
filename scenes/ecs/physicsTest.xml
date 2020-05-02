@@ -9,15 +9,15 @@
         <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="RenderQuad"/>
         <component name="KinematicCollisionBody" mass="3" />
-        <component name="Velocity" dx="0" dy="0" />
+        <component name="Kinematics" friction="8.0" />
     </entityTemplate>
   
   <entityTemplate name="Player" sourceTemplate="ColorRect">
     <component name="KinematicCollisionBody" mass="3" />
     <component name="Player" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
-    <component name="CharacterSpeed" speed="100" />
-    <component name="Velocity" dx="0" dy="0" />
+    <component name="CharacterSpeed" speed="500" />
+    <component name="Kinematics" friction="8.0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
     <component name="RenderQuad" color="rgb(0,0,255)" z="90" />
   </entityTemplate>

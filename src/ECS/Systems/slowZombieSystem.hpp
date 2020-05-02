@@ -4,13 +4,11 @@
 
 namespace ph::system {
 
-	class PushingMovement : public System
+	class SlowZombieSystem : public System
 	{
 	public:
 		using System::System;
 
 		void update(float dt) override;
 	};
-
 }
-

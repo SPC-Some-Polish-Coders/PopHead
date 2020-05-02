@@ -1,99 +1,51 @@
+#include "pch.hpp"
 #include "textRenderer.hpp"
 #include "Renderer/renderer.hpp"
 #include "quadRenderer.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
-#include <GL/glew.h>
 #include <stb_truetype.h>
-#include <cstdlib>
-#include <cstring>
-#include <vector>
-#include <cmath>
-#include <cstring>
 
-namespace ph {
+namespace ph::TextRenderer {
 
-namespace {
-	struct CharacterQuad
-	{
-		IntRect textureRect;
-		sf::Vector2f pos;
-		sf::Vector2f size;
-		float advance;
-		sf::Color color;
-	};
+struct CharacterQuad
+{
+	IntRect textureRect;
+	sf::Vector2f pos;
+	sf::Vector2f size;
+	float advance;
+	sf::Color color;
+};
 
-	CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
-	{
-		const stbtt_bakedchar* bc = chardata + charIndex;
-		CharacterQuad q;
-		q.pos.x = std::floorf(pos->x + bc->xoff + 0.5f);
-		q.pos.y = std::floorf(pos->y + bc->yoff + 0.5f);
-		unsigned short width = bc->x1 - bc->x0;
-		unsigned short height = bc->y1 - bc->y0;
-		q.size = {float(width), float(height)};
-		q.textureRect = {bc->x0, textureWidth - bc->y0 - height, width, height};
-		q.advance = bc->xadvance;
-		return q;
-	}
+static std::vector<CharacterQuad> rowCharacters;
+static FontHolder fontHolder;
+static Shader textShader;
 
-	std::vector<CharacterQuad> rowCharacters;
+static CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
+{
+	const stbtt_bakedchar* bc = chardata + charIndex;
+	CharacterQuad q;
+	q.pos.x = std::floorf(pos->x + bc->xoff + 0.5f);
+	q.pos.y = std::floorf(pos->y + bc->yoff + 0.5f);
+	unsigned short width = bc->x1 - bc->x0;
+	unsigned short height = bc->y1 - bc->y0;
+	q.size = {float(width), float(height)};
+	q.textureRect = {bc->x0, textureWidth - bc->y0 - height, width, height};
+	q.advance = bc->xadvance;
+	return q;
 }
 
-TextRenderer::TextRenderer()
+static void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize,
+                             sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	rowCharacters.reserve(100);
-}
-
-void TextRenderer::init()
-{
-	mTextShader.init(shader::textSrc());
-	mTextShader.initUniformBlock("SharedData", 0);
-}
-
-void TextRenderer::shutDown()
-{
-	mTextShader.remove();
-	mFontHolder.clear();
-}
-
-void TextRenderer::beginDebugDisplay()
-{
-	mDebugTextPosition = {1030.f, 0.f};
-
-	if(mWasDebugTextDrawnInLastFrame)
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 140), nullptr, {1020.f, 0.f}, {600.f, 340.f},
-			5, 0.f, {}, ProjectionType::gui, false);
-	mWasDebugTextDrawnInLastFrame = false;
-}
-
-void TextRenderer::drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
-                            unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
-{
-	drawTextInternal(text, fontFilename, position, size, color, z, projectionType, isAffectedByLight);
-}
-
-void TextRenderer::drawDebugText(const char* text, const char* fontFilename, float size, float upMargin, float downMargin,
-                                 sf::Color color)
-{
-	mWasDebugTextDrawnInLastFrame = true;
-	mDebugTextPosition.y += upMargin;
-	drawTextInternal(text, fontFilename, mDebugTextPosition, size, color, 0, ProjectionType::gui, false);
-	mDebugTextPosition.y += downMargin + size;
-}
-
-void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize,
-                                    sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
-{
-	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
+	SizeSpecificFontData& data = fontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
 	position.y += fontSize;
 
 	while(*text) {
 		if(*text >= '!' && *text <= '~') {
 			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
-			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &mTextShader, cq.pos, cq.size, z, 0.f, {}, projectionType,
+			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &textShader, cq.pos, cq.size, z, 0.f, {}, projectionType,
 				isAffectedByLight);
 			position.x += cq.advance;
 		}
@@ -104,13 +56,32 @@ void TextRenderer::drawTextInternal(const char* text, const char* fontFilename, 
 	}
 }
 
-void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,
-                                TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
-								bool isAffectedByLight)
+void init()
+{
+	textShader.init(shader::textSrc());
+	textShader.initUniformBlock("SharedData", 0);
+	rowCharacters.reserve(100);
+}
+
+void shutDown()
+{
+	textShader.remove();
+	fontHolder.clear();
+}
+
+void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
+              unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
+{
+	drawTextInternal(text, fontFilename, position, size, color, z, projectionType, isAffectedByLight);
+}
+
+void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,
+                  TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
+			 	  bool isAffectedByLight)
 {
 	sf::Color initialTextColor = textColor;
 
-	SizeSpecificFontData& data = mFontHolder.getSizeSpecificFontData(fontFilename, fontSize);
+	SizeSpecificFontData& data = fontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
 	worldPos.y += fontSize;
 
@@ -131,7 +102,7 @@ void TextRenderer::drawTextArea(const char* text, const char* fontFilename, sf::
 
 	auto submitCharacterToQuadRenderer = [&](sf::Vector2f localPos, sf::Vector2f size, IntRect textureRect, sf::Color color)
 	{
-		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &color, &mTextShader,
+		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &color, &textShader,
 			localPos + worldPos, size, z, 0.f, {}, projectionType, isAffectedByLight);
 	};
 

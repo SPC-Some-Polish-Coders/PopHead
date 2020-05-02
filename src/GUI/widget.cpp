@@ -1,8 +1,7 @@
+#include "pch.hpp"
 #include "widget.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
-#include "Logs/logs.hpp"
-#include <cstring>
 
 namespace ph {
 

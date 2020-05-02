@@ -1,8 +1,8 @@
+#include "pch.hpp"
 #include "pickupSystem.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
-#include "Utilities/profiling.hpp"
 
 namespace ph::system {
 

@@ -1,11 +1,10 @@
+#include "pch.hpp"
 #include "game.hpp"
-#include "Logs/logs.hpp"
 #include "Logs/logger.hpp"
 #include "Logs/logsInitializing.hpp"
-#include "Utilities/profiling.hpp"
 #include "Utilities/messageBox.hpp"
-#include <stdexcept>
-#include <string>
+#include "Resources/soundBufferHolder.hpp"
+#include "Audio/Music/musicPlayer.hpp"
 
 int main()
 {
@@ -26,6 +25,9 @@ int main()
 		game.run();
 
 		PH_END_PROFILING_SESSION();
+
+		ph::clearSoundBufferHolder();
+		ph::MusicPlayer::clearMusicPlayer();
 	}
 	catch (const ph::CriticalError& criticalError) {
 		ph::showErrorMessageBox("Critical Error: ", criticalError.what());

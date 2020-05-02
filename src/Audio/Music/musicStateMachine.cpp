@@ -1,5 +1,5 @@
+#include "pch.hpp"
 #include "musicStateMachine.hpp"
-#include "Logs/logs.hpp"
 #include "Utilities/random.hpp"
 
 namespace ph {
