@@ -31,8 +31,11 @@ namespace ph::system {
 						continue;
 					playerCollision.isCollision = true;
 
-					const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
-					mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
+					if(!godMode)
+					{
+						const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
+						mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
+					}
 
 					playerKinematics.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());
 					playerKinematics.friction = 0.01f;

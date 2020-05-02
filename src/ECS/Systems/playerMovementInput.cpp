@@ -33,17 +33,20 @@ namespace ph::system {
 			});
 		};
 
-		if(e.type == sf::Event::KeyPressed) {
+		if(e.type == sf::Event::KeyPressed) 
+		{
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled)
-				mTimeFromDodgePressed = 0.f;
+			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled) 
+				mDashJustPressed = true; 
 		}
-		else if(e.type == sf::Event::JoystickButtonPressed){
+		else if(e.type == sf::Event::JoystickButtonPressed)
+		{
+			// TODO: Don't forget to update joystick controls
 			if(e.joystickButton.button == PH_JOYSTICK_MENU)
 				doPause();
 			else if(e.joystickButton.button == PH_JOYSTICK_X && !dodgeInputDisabled)
-				mTimeFromDodgePressed = 0.f;
+				mDashJustPressed = true;
 		}
 	}
 
@@ -186,17 +189,31 @@ namespace ph::system {
 			lightSource.endAngle = middleAngle + 35.f;
 		});
 
+		static float maxDash = 85.f;
+
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>(entt::exclude<component::DeadCharacter>);
 		movementView.each([this, d, playerDirection]
-		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, const component::BodyRect& body) 
+		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
 		{
+			dodgeInputDisabled = false;
+			if(mDashJustPressed) 
+			{
+				body.pos += d * mDashMomentum; 
+				mDashMomentum = 0.f;
+				mDashJustPressed = false;
+			}
+			else
+			{
+				kinematics.acceleration = d * speed.speed;
+			}
+
 			mAIManager.setPlayerPosition(body.pos);
-			float dodgeFactor = mTimeFromDodgePressed < 0.1f ? 2.f : 1.f;
-			kinematics.acceleration = d * dodgeFactor * speed.speed;
 
 			if(debugWindowOpen && ImGui::BeginTabItem("tunning"))
 			{
+				ImGui::Text("dash momentum: %f", mDashMomentum);
+				ImGui::SliderFloat("max dash", &maxDash, 50.f, 350.f);
 				ImGui::SliderFloat("player movement speed", &speed.speed, 500.f, 3000.f);
 				ImGui::SliderFloat("player default friction", &kinematics.defaultFriction, 1.f, 30.f);
 				ImGui::Text("Player velocity: %f %f", kinematics.vel.x, kinematics.vel.y);
@@ -205,7 +222,13 @@ namespace ph::system {
 			}
 		});
 
-		mTimeFromDodgePressed += dt;
+		if(mDashMomentum < maxDash)
+		{
+			float toCenterDash = abs(maxDash / 2.f - mDashMomentum); 
+			if(toCenterDash < maxDash / 10.f)
+				mDashMomentum += maxDash / 20.f * dt;
+			mDashMomentum += dt * toCenterDash;
+		}
 	}
 }
 

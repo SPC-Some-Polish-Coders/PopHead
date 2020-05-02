@@ -10,5 +10,7 @@ namespace ph::system {
 		using System::System;
 
 		void update(float dt) override;
+
+		inline static bool godMode = false;
 	};
 }

@@ -9,6 +9,7 @@
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Systems/areasDebug.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
+#include "ECS/Systems/hostileCollisions.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Sound/soundData.hpp"
@@ -147,7 +148,7 @@ static void executeHelp()
 	pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
 	pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
 	pushOutputLine({"rguilivefreq @C9999 set gui reset frequency", infoLimeColor});
-	pushOutputLine({"@CO @S31 nofocusupdate", infoLimeColor});
+	pushOutputLine({"@CO @S31 nofocusupdate @CO @S32 gm @C9999 god mode", infoLimeColor});
 	pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
 }
 
@@ -440,6 +441,11 @@ static void executeFreezeZombies()
 	system::ZombieSystem::freezeZombies = !commandContains("off");
 }
 
+static void executeGodMode()
+{
+	system::HostileCollisions::godMode = !commandContains("off");
+}
+
 #ifndef PH_DISTRIBUTION
 
 static void executeResetGuiLive()
@@ -580,6 +586,7 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["fontd"] = &executeFontDebug;
 	commandsMap["nofocusupdate"] = &executeNoFocusUpdate;
 	commandsMap["fz"] = &executeFreezeZombies;
+	commandsMap["gm"] = &executeGodMode;
 	commandsMap[""] = &executeInfoMessage;
 
 #ifndef PH_DISTRIBUTION
