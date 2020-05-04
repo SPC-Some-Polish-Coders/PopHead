@@ -196,7 +196,6 @@ namespace ph::system {
 		movementView.each([this, d, playerDirection]
 		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
 		{
-			dashInputDisabled = false;
 			if(mDashJustPressed) 
 			{
 				body.pos += d * mDashMomentum; 

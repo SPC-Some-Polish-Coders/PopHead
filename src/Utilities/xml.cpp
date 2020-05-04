@@ -300,6 +300,11 @@ std::string Xml::toString() const
 	return mContent.substr(begin, mContent.size() - begin);
 }
 
+const char* Xml::toCstring() const
+{
+	return toString().c_str();
+}
+
 bool Xml::toBool() const
 {
 	return Cast::toBool(toString());

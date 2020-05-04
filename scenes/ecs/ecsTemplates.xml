@@ -202,5 +202,12 @@
     </component>
   </entityTemplate >
 
+  <entityTemplate name="PuzzleBoulder" >
+    <component name="BodyRect" x="0" y="0" width="16" height="21" />
+    <component name="RenderQuad" textureFilepath="textures/others/puzzleBoulder.png" z="99" />
+    <component name="KinematicCollisionBody" mass="10" />
+    <component name="Kinematics" friction="15.0" />
+  </entityTemplate >
+
 </entityTemplates>
 </root>

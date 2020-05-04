@@ -668,4 +668,11 @@
    <object id="4" type="LightWall" x="1.5" y="0.931807" width="14.3636" height="1.27273"/>
   </objectgroup>
  </tile>
+ <tile id="938">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="SokobondBoulder" x="6.875" y="9.125">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
 </tileset>
