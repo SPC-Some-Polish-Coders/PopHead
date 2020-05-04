@@ -33,6 +33,7 @@
 #include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
 #include "ECS/Systems/entitiesDebugger.hpp"
+#include "ECS/Systems/indoorOutdoorBlend.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -96,6 +97,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
 	mSystemsQueue.appendSystem<system::EntitiesDebugger>();
+	mSystemsQueue.appendSystem<system::IndoorOutdoorBlend>();
 }
 
 void Scene::handleEvent(sf::Event e)

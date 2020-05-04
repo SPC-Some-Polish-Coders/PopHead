@@ -39,6 +39,30 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		}
 	}
 
+	#ifndef PH_DISTRIBUTION
+	{
+		// load denial areas to registry for debug visualization purposes
+
+		using component::DenialArea;
+
+		auto createDenialArea = [this](FloatRect area, DenialArea::Type type)
+		{
+			auto entity = mGameRegistry->create();
+			mGameRegistry->assign<component::BodyRect>(entity, area);
+			mGameRegistry->assign<component::DenialArea>(entity, DenialArea{type});
+		};
+
+		for(auto& area : mDenialAreas.collisions)
+			createDenialArea(area, DenialArea::Collision);
+
+		for(auto& area : mDenialAreas.lightWalls)
+			createDenialArea(area, DenialArea::LightWall);
+
+		for(auto& area : mDenialAreas.collisionsAndLightWalls)
+			createDenialArea(area, DenialArea::All);
+		#endif
+	}
+
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
 
 	aiManager.registerMapSize(static_cast<sf::Vector2u>(info.mapSize));
@@ -62,6 +86,8 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		Xml dataNode = *layerNode.getChild("data");
 		std::string encoding = dataNode.getAttribute("encoding")->toString();
 		PH_ASSERT_CRITICAL(encoding == "csv", "Used unsupported data encoding: " + encoding);
+		auto layerName = layerNode.getAttribute("name")->toString();
+		bool outdoor = layerName.find("indoor") == std::string::npos;
 		for(Xml& chunkNode : dataNode.getChildren("chunk"))
 		{
 			sf::Vector2f chunkPos(chunkNode.getAttribute("x")->toFloat(), chunkNode.getAttribute("y")->toFloat());
@@ -96,7 +122,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 			}
 
 			auto globalIds = Csv::toUnsigneds(chunkNode.toString());
-			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager);
+			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor);
 		}
 		--z;
 	}
@@ -233,7 +259,7 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 }
 
 void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, unsigned char z, AIManager& aiManager)
+                               const GeneralMapInfo& info, unsigned char z, AIManager& aiManager, bool outdoor)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -450,6 +476,8 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			grc.bounds = quadsBounds;
 			grc.textureRect = groundTextureRect;
 			grc.z = z;
+			grc.outdoor = outdoor;
+			grc.color = outdoor ? sf::Color::White : sf::Color(255, 255, 255, 0);
 		}
 		else
 		{
@@ -462,6 +490,8 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			rc.lightWallsBounds = lightWallsBounds;
 			rc.z = z;
 			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
+			rc.outdoor = outdoor; 
+			rc.color = outdoor ? sf::Color::White : sf::Color(255, 255, 255, 0);
 
 			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
 			mscb.rects = chunkCollisionRects;

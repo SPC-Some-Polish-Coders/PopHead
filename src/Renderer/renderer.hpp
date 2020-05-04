@@ -40,9 +40,9 @@ namespace Renderer
 	unsigned registerNewChunk(const FloatRect& bounds);
 
 	void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
-	                 unsigned char z, unsigned* rendererID);
+	                 unsigned char z, unsigned* rendererID, sf::Color color);
 
-	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z); 
+	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z, sf::Color color); 
 
 	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
 

@@ -68,6 +68,7 @@ namespace ph {
 			else if (objectType == "Torch") loadTorch(gameObjectNode);
 			else if (objectType == "LightWall") loadLightWall(gameObjectNode);
 			else if (objectType == "FlowingRiver") loadFlowingRiver(gameObjectNode);
+			else if (objectType == "IndoorOutdoorBlendArea") loadIndoorOutdoorBlendArea(gameObjectNode);
 			else PH_LOG_ERROR("The type of object in map file (" + gameObjectNode.getAttribute("type")->toString() + ") is unknown!");
 		}
 	}
@@ -392,6 +393,34 @@ namespace ph {
 		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
 		createDebugName(entity, "flowing river");
+	}
+
+	void TiledParser::loadIndoorOutdoorBlendArea(const Xml& entityNode) const
+	{
+		using component::IndoorOutdoorBlendArea;
+		IndoorOutdoorBlendArea area;
+		if(getProperty(entityNode, "exit_left").toBool())
+		{
+			area.exit = IndoorOutdoorBlendArea::Left;
+		}
+		else if(getProperty(entityNode, "exit_right").toBool())
+		{
+			area.exit = IndoorOutdoorBlendArea::Right;
+		}
+		else if(getProperty(entityNode, "exit_top").toBool())
+		{
+			area.exit = IndoorOutdoorBlendArea::Top;
+		}
+		else if(getProperty(entityNode, "exit_down").toBool())
+		{
+			area.exit = IndoorOutdoorBlendArea::Down;
+		}
+
+		auto entity = mGameRegistry.create();
+		mGameRegistry.assign<component::IndoorOutdoorBlendArea>(entity, area);
+		mGameRegistry.assign<component::BodyRect>(entity);
+		loadPositionAndSize(entityNode, entity);
+		createDebugName(entity, "indoor outdoor blend area");
 	}
 
 	void TiledParser::loadHealthComponent(const Xml& entityNode, entt::entity entity) const

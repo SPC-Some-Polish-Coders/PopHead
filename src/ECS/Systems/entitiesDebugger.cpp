@@ -102,7 +102,9 @@ void EntitiesDebugger::update(float dt)
 				ImGui::BulletText("GroundRenderChunk");
 				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.left, grc->bounds.top, grc->bounds.width, grc->bounds.height);
 				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.left, grc->textureRect.top, grc->textureRect.width, grc->textureRect.height);
+				ImGui::Text("color: %u, %u, %u, %u", grc->color);
 				ImGui::Text("z: %u", grc->z);
+				ImGui::Text("outdoor: %u", static_cast<unsigned>(grc->outdoor));
 			}
 
 			if(const auto* rc = mRegistry.try_get<component::RenderChunk>(mSelected))
@@ -115,6 +117,8 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.left, rc->lightWallsBounds.top, rc->lightWallsBounds.width, rc->lightWallsBounds.height);
 				ImGui::Text("z: %u", rc->z);
 				ImGui::Text("rendererID: %u", rc->rendererID);
+				ImGui::Text("color: %u, %u, %u, %u", rc->color);
+				ImGui::Text("outdoor: %u", static_cast<unsigned>(rc->outdoor));
 			}
 
 			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
@@ -166,6 +170,21 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("staticallyMovedDown: %i", kcb->staticallyMovedDown);
 				ImGui::Text("staticallyMovedLeft: %i", kcb->staticallyMovedLeft);
 				ImGui::Text("staticallyMovedRight: %i", kcb->staticallyMovedRight);
+			}
+
+			if(const auto* ioba = mRegistry.try_get<component::IndoorOutdoorBlendArea>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("IndoorOutdoorBlendArea");
+				using component::IndoorOutdoorBlendArea;
+				switch(ioba->exit)
+				{
+					case IndoorOutdoorBlendArea::Left: ImGui::Text("exit: Left"); break;
+					case IndoorOutdoorBlendArea::Right: ImGui::Text("exit: Right"); break;
+					case IndoorOutdoorBlendArea::Top: ImGui::Text("exit: Top"); break;
+					case IndoorOutdoorBlendArea::Down: ImGui::Text("exit: Down"); break;
+					default: ImGui::Text("exit: Error!!! (you probably just didn't click checkbox in tiled)");
+				}
 			}
 		}
 

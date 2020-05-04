@@ -53,6 +53,12 @@
   <property name="hintKeyboardContent" type="string"/>
   <property name="hintName" type="string"/>
  </objecttype>
+ <objecttype name="IndoorOutdoorBlendArea" color="#a4a41b">
+  <property name="exit_down" type="bool" default="false"/>
+  <property name="exit_left" type="bool" default="false"/>
+  <property name="exit_right" type="bool" default="false"/>
+  <property name="exit_top" type="bool" default="false"/>
+ </objecttype>
  <objecttype name="Lever" color="#aa00ff"/>
  <objecttype name="LightWall" color="#129f70"/>
  <objecttype name="LightWallDenialArea" color="#0b2c04"/>

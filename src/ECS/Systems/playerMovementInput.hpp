@@ -26,7 +26,7 @@ namespace system {
 		bool mDashJustPressed = false;
 
 	public:
-		inline static bool dodgeInputDisabled = false;
+		inline static bool dashInputDisabled = false;
 	};
 }
 

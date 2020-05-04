@@ -4,17 +4,19 @@ R"(
 in vec2 uv;
 out vec4 fragColor;
 uniform sampler2D sampler;
+uniform vec4 color;
 uniform bool debugVisualization;
 
 void main()
 {
 	const float texSideSize = 576;
-	const float alpha = 0.1;
+	const float a = 0.1;
 
 	vec2 posWithinTexel = fract(uv);
-	vec2 interpolation = clamp(posWithinTexel / alpha, 0.0, 0.5) + clamp((posWithinTexel - 1.0) / alpha + 0.5, 0.0, 0.5);
+	vec2 interpolation = clamp(posWithinTexel / a, 0.0, 0.5) + clamp((posWithinTexel - 1.0) / a + 0.5, 0.0, 0.5);
 	vec2 finalTexCoords = (floor(uv) + interpolation) / texSideSize; 
 	fragColor = texture(sampler, finalTexCoords);
+	fragColor *= color;
 
 	if(debugVisualization)
 	{
@@ -22,6 +24,6 @@ void main()
 	}
 }
 
-// TODO: Make alpha be set in the smart way
+// TODO: Make a (alpha) be set in the smart way
 
 )"

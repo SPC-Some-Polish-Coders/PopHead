@@ -37,7 +37,7 @@ namespace ph::system {
 		{
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled) 
+			else if(e.key.code == sf::Keyboard::LShift && !dashInputDisabled) 
 				mDashJustPressed = true; 
 		}
 		else if(e.type == sf::Event::JoystickButtonPressed)
@@ -45,7 +45,7 @@ namespace ph::system {
 			// TODO: Don't forget to update joystick controls
 			if(e.joystickButton.button == PH_JOYSTICK_MENU)
 				doPause();
-			else if(e.joystickButton.button == PH_JOYSTICK_X && !dodgeInputDisabled)
+			else if(e.joystickButton.button == PH_JOYSTICK_X && !dashInputDisabled)
 				mDashJustPressed = true;
 		}
 	}
@@ -196,7 +196,7 @@ namespace ph::system {
 		movementView.each([this, d, playerDirection]
 		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
 		{
-			dodgeInputDisabled = false;
+			dashInputDisabled = false;
 			if(mDashJustPressed) 
 			{
 				body.pos += d * mDashMomentum; 

@@ -154,6 +154,7 @@ void beginScene()
 	PH_PROFILE_FUNCTION();
 
 	gameObjectsFramebuffer.bind();
+	setClearColor(sf::Color::Black);
 	GLCheck( glEnable(GL_DEPTH_TEST) );
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
 
@@ -262,14 +263,14 @@ unsigned registerNewChunk(const FloatRect& bounds)
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData,
-                 const FloatRect& bounds, unsigned char z, unsigned* rendererID)
+                 const FloatRect& bounds, unsigned char z, unsigned* rendererID, sf::Color color)
 {
-	QuadRenderer::submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID);
+	QuadRenderer::submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID, color);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z)  
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z, sf::Color color)  
 {
-	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z));
+	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z), color);
 }
 
 void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)

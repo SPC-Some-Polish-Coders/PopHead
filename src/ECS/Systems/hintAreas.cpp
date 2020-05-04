@@ -46,7 +46,7 @@ void HintAreas::update(float dt)
 					GunAttacks::shootInputDisabled = true;
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = true;
-					PlayerMovementInput::dodgeInputDisabled = true;
+					PlayerMovementInput::dashInputDisabled = true;
 					Weather::setRainType(Rain::Heavy);
 					Weather::setMode(Weather::Rainy);	
 				}
@@ -59,8 +59,8 @@ void HintAreas::update(float dt)
 				else if(hint.hintName == "weaponChangingHint") {
 					GunAttacks::changeWeaponInputDisabled = false;
 				}
-				else if(hint.hintName == "dodgingHint") {
-					PlayerMovementInput::dodgeInputDisabled = false;
+				else if(hint.hintName == "dashingHint") {
+					PlayerMovementInput::dashInputDisabled = false;
 				}
 			}
 			else if(hint.isShown)

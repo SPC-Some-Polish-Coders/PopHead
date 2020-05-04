@@ -43,6 +43,7 @@ struct GroundChunk
 {
 	FloatRect textureRect;
 	sf::Vector2f pos;
+	sf::Color color;
 	float z;
 };
 
@@ -51,6 +52,7 @@ struct Chunk
 	FloatRect bounds;
 	unsigned vbo;
 	unsigned quadsCount;
+	sf::Color color;
 	float z;
 };
 
@@ -316,9 +318,9 @@ void shutDown()
 	glDeleteVertexArrays(1, &chunks.dummyVAO);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z)
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z, sf::Color color)
 {
-	groundChunks.push_back(GroundChunk{textureRect, pos, z});
+	groundChunks.push_back(GroundChunk{textureRect, pos, color, z});
 }
 
 unsigned registerNewChunk(const FloatRect& bounds)
@@ -329,7 +331,7 @@ unsigned registerNewChunk(const FloatRect& bounds)
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
-                 float z, unsigned* id)
+                 float z, unsigned* id, sf::Color color)
 {
 	for(auto& cached : chunks.registerChunks)
 	{
@@ -337,7 +339,7 @@ void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
 		{
 			if(cached.vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), z});
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), color, z});
 			}
 			else
 			{
@@ -526,6 +528,7 @@ void flush(bool affectedByLight)
 				}
 				groundChunkShader.setUniformVector2("chunkPos", gc.pos);
 				groundChunkShader.setUniformFloat("z", gc.z);
+				groundChunkShader.setUniformVector4Color("color", gc.color);
 				groundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.getTopLeft());
 				groundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.getTopRight());
 				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
@@ -552,6 +555,7 @@ void flush(bool affectedByLight)
 					currentlyBoundShader = &chunkShader;
 					chunkShader.bind();
 				}
+				chunkShader.setUniformVector4Color("color", chunk.color);
 				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );

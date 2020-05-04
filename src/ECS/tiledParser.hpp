@@ -27,25 +27,26 @@ namespace ph {
 
 		void createDebugName(entt::entity, const char* name) const;
 		
-		void loadZombie(const Xml& zombieNode, std::string zombieTypeName = "Zombie") const;
-		void loadLootSpawner(const Xml& lootSpawnerNode) const;
-		void loadArcadeSpawner(const Xml& arcadeSpawnerNode) const;
-		void loadEntrance(const Xml& entranceNode) const;
-		void loadVelocityChangingArea(const Xml& velocityChangingAreaNode) const;
-		void loadPushingArea(const Xml& velocityChangingAreaNode) const;
+		void loadZombie(const Xml& entityNode, std::string zombieTypeName = "Zombie") const;
+		void loadLootSpawner(const Xml& entityNode) const;
+		void loadArcadeSpawner(const Xml& entityNode) const;
+		void loadEntrance(const Xml& entityNode) const;
+		void loadVelocityChangingArea(const Xml& entityNode) const;
+		void loadPushingArea(const Xml& entityNode) const;
 		void loadHintArea(const Xml& velocityChangingAreaNode) const;
 		std::optional<std::string> getSceneFileName(const std::string& scenePathRelativeToMapFile) const;
-		void loadGate(const Xml& gateNode) const;
-		void loadLever(const Xml& leverNode) const;
-		void loadCar(const Xml& carNode) const;
-		void loadCamera(const Xml& cameraNode) const;
-		void loadPlayer(const Xml& playerNode) const;
-		void loadBulletBox(const Xml& bulletItemNode) const;
-		void loadMedkit(const Xml& medkitItemNode) const;
-		void loadSprite(const Xml& spriteNodeNode) const;
-		void loadTorch(const Xml& torchNode) const;
-		void loadLightWall(const Xml& wallNode) const;
-		void loadFlowingRiver(const Xml& flowingRiverNode) const;
+		void loadGate(const Xml& entityNode) const;
+		void loadLever(const Xml& entityNode) const;
+		void loadCar(const Xml& entityNode) const;
+		void loadCamera(const Xml& entityNode) const;
+		void loadPlayer(const Xml& entityNode) const;
+		void loadBulletBox(const Xml& entityNode) const;
+		void loadMedkit(const Xml& entityNode) const;
+		void loadSprite(const Xml& entityNode) const;
+		void loadTorch(const Xml& entityNode) const;
+		void loadLightWall(const Xml& entityNode) const;
+		void loadFlowingRiver(const Xml& entityNode) const;
+		void loadIndoorOutdoorBlendArea(const Xml& entityNode) const;
 
 		void loadHealthComponent(const Xml& entityNode, entt::entity entity) const;
 		void loadPosition(const Xml& entityNode, entt::entity entity) const;

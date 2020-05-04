@@ -31,7 +31,9 @@ namespace component {
 	{
 		FloatRect bounds;
 		FloatRect textureRect;
+		sf::Color color;
 		unsigned char z;
+		bool outdoor;
 	};
 
 	struct RenderChunk
@@ -42,6 +44,14 @@ namespace component {
 		FloatRect lightWallsBounds;
 		unsigned char z;
 		unsigned rendererID;
+		sf::Color color;
+		bool outdoor;
+	};
+
+	struct IndoorOutdoorBlendArea
+	{
+		enum ExitSide {Left, Right, Top, Down};
+		ExitSide exit;
 	};
 
 	struct LightWall
