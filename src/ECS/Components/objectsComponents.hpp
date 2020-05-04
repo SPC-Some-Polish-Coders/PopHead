@@ -61,9 +61,23 @@ namespace ph::component {
 		bool isActivated;
 	};
 
+	struct PressurePlate
+	{
+		unsigned puzzleId;
+		unsigned id;
+		bool isPressed = false;
+	};
+
+	struct Puzzle
+	{	
+		unsigned id;
+	};
+
 	struct Gate
 	{
-		bool isOpened;
+		unsigned id;
+		bool previouslyOpen = false; 
+		bool open = false;
 	};
 
 	struct GunProperties

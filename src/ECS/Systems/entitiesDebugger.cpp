@@ -5,6 +5,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
 
 // NOTE:
 // This code is strictly exploratory and it lacks most of components
@@ -19,7 +20,7 @@ void EntitiesDebugger::update(float dt)
 {
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
-		ImGui::BeginChild("entities:", ImVec2(150, 0), true);
+		ImGui::BeginChild("entities:", ImVec2(300, 0), true);
 		mRegistry.each([this](auto entity)
 		{
 			char label[50];
@@ -185,6 +186,31 @@ void EntitiesDebugger::update(float dt)
 					case IndoorOutdoorBlendArea::Down: ImGui::Text("exit: Down"); break;
 					default: ImGui::Text("exit: Error!!! (you probably just didn't click checkbox in tiled)");
 				}
+			}
+
+			if(const auto* gate = mRegistry.try_get<component::Gate>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("Gate");
+				ImGui::Text("id: %u", gate->id);
+				ImGui::Text("previouslyOpen: %u", gate->previouslyOpen);
+				ImGui::Text("open: %u", gate->open);
+			}
+
+			if(const auto* pressurePlate = mRegistry.try_get<component::PressurePlate>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("PressurePlate");
+				ImGui::Text("puzzleId: %u", pressurePlate->puzzleId);
+				ImGui::Text("id: %u", pressurePlate->id);
+				ImGui::Text("isPressed: %u", pressurePlate->isPressed);
+			}
+
+			if(const auto* p = mRegistry.try_get<component::Puzzle>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("Puzzle");
+				ImGui::Text("id: %u", p->id); 
 			}
 		}
 

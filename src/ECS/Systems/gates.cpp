@@ -13,29 +13,23 @@ void Gates::update(float dt)
 	if(sPause)
 		return;
 
-	auto gatesView = mRegistry.view<component::Gate, component::LeverListener>();
-	for (auto gate : gatesView)
+	mRegistry.view<component::Gate>().each([&]
+	(auto entity, component::Gate& gate)
 	{
-		auto& [gateDetails, leverListener] = gatesView.get<component::Gate, component::LeverListener>(gate);
-
-		if (leverListener.isActivated)
+		if(gate.open && !gate.previouslyOpen)
 		{
-			leverListener.isActivated = false;
-			gateDetails.isOpened = !gateDetails.isOpened;
-			if (gateDetails.isOpened)
-			{
-				mRegistry.remove<component::StaticCollisionBody>(gate);
-				mRegistry.remove<component::LightWall>(gate);
-				mRegistry.assign_or_replace<component::HiddenForRenderer>(gate);
-			}
-			else
-			{
-				mRegistry.assign_or_replace<component::StaticCollisionBody>(gate);
-				mRegistry.assign_or_replace<component::LightWall>(gate);
-				mRegistry.remove<component::HiddenForRenderer>(gate);
-			}
+			mRegistry.remove<component::StaticCollisionBody>(entity);
+			mRegistry.remove<component::LightWall>(entity);
+			mRegistry.assign_or_replace<component::HiddenForRenderer>(entity);
 		}
-	}
+		else if(!gate.open && gate.previouslyOpen)
+		{
+			mRegistry.assign_or_replace<component::StaticCollisionBody>(entity);
+			mRegistry.assign_or_replace<component::LightWall>(entity);
+			mRegistry.remove<component::HiddenForRenderer>(entity);
+		}
+		gate.previouslyOpen = gate.open;
+	});
 }
 
 }

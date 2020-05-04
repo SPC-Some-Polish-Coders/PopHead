@@ -119,7 +119,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"GroundRenderChunk",           &EntitiesParser::parseGroundRenderChunk},
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
-		{"BulletBox",                   &EntitiesParser::parseBulletBox}
+		{"BulletBox",                   &EntitiesParser::parseBulletBox},
+		{"PressurePlate",               &EntitiesParser::parsePressurePlate}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -292,8 +293,7 @@ void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity&
 
 void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
 {
-	bool isOpened = entityComponentNode.getAttribute("isOpened")->toBool();
-	mUsedRegistry->assign_or_replace<component::Gate>(entity, isOpened);
+	mUsedRegistry->assign_or_replace<component::Gate>(entity);
 }
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
@@ -468,6 +468,11 @@ void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::enti
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
+}
+
+void EntitiesParser::parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PressurePlate>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

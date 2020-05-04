@@ -235,6 +235,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		entity = templates.createCopy("Gate", registry);
 		loadPosition();
+		auto& gate = registry.get<component::Gate>(entity);
+		gate.id = getProperty("id").toUnsigned();
 		createDebugName();
 	}
 	else if(type == "Lever") 
@@ -385,6 +387,22 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		entity = templates.createCopy("PuzzleBoulder", registry);
 		loadPosition();
+		createDebugName();
+	}
+	else if(type == "PressurePlate")
+	{
+		entity = templates.createCopy("PressurePlate", registry);
+		loadPosition();
+		auto& plate = registry.get<component::PressurePlate>(entity);
+		plate.puzzleId = getProperty("puzzleId").toUnsigned();
+		plate.id = getProperty("id").toUnsigned();
+		createDebugName();
+	}
+	else if(type == "Puzzle")
+	{
+		entity = registry.create();
+		unsigned id = getProperty("id").toUnsigned(); 
+		registry.assign<component::Puzzle>(entity, id);
 		createDebugName();
 	}
 	else 

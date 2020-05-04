@@ -95,7 +95,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />
     <component name="TextureRect" x="0" y="4" width="32" height="12" />
     <component name="LightWall" x="0" y="0" width="40" height="1"/>
-    <component name="Gate" isOpened="false" />
+    <component name="Gate" />
     <component name="StaticCollisionBody" />
     <component name="LeverListener" observedLeverId="0"/>
   </entityTemplate>
@@ -207,6 +207,12 @@
     <component name="RenderQuad" textureFilepath="textures/others/puzzleBoulder.png" z="99" />
     <component name="KinematicCollisionBody" mass="10" />
     <component name="Kinematics" friction="15.0" />
+  </entityTemplate >
+
+  <entityTemplate name="PressurePlate" >
+    <component name="BodyRect" x="0" y="0" width="16" height="16" />
+    <component name="RenderQuad" textureFilepath="textures/others/pressurePlate.png" z="100" />
+	<component name="PressurePlate" />
   </entityTemplate >
 
 </entityTemplates>

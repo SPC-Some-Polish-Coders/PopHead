@@ -47,7 +47,9 @@
   <property name="pushForceX" type="float" default="0"/>
   <property name="pushForceY" type="float" default="0"/>
  </objecttype>
- <objecttype name="Gate" color="#a48096"/>
+ <objecttype name="Gate" color="#a48096">
+  <property name="id" type="int" default="0"/>
+ </objecttype>
  <objecttype name="HintArea" color="#2fa477">
   <property name="hintJoystickContent" type="string"/>
   <property name="hintKeyboardContent" type="string"/>
@@ -69,15 +71,22 @@
  <objecttype name="Player" color="#55ffff">
   <property name="hasFlashlight" type="bool" default="false"/>
  </objecttype>
+ <objecttype name="PressurePlate" color="#a0a0a4">
+  <property name="id" type="int" default="0"/>
+  <property name="puzzleId" type="int" default="0"/>
+ </objecttype>
  <objecttype name="PushingArea" color="#76a450">
   <property name="pushForceX" type="float" default="0"/>
   <property name="pushForceY" type="float" default="0"/>
  </objecttype>
+ <objecttype name="Puzzle" color="#07a48d">
+  <property name="id" type="int" default="0"/>
+ </objecttype>
+ <objecttype name="PuzzleBoulder" color="#727578"/>
  <objecttype name="SlowZombie" color="#b8ff45">
   <property name="hp" type="string" default="150"/>
   <property name="maxHp" type="string" default="150"/>
  </objecttype>
- <objecttype name="PuzzleBoulder" color="#727578"/>
  <objecttype name="Spawner" color="#aa0000">
   <property name="spawnFrequency" type="float" default="3"/>
   <property name="spawnType" type="string" default="zombie"/>
