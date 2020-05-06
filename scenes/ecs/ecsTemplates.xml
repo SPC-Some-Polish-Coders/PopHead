@@ -218,6 +218,7 @@
   <entityTemplate name="PressurePlate" >
     <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/pressurePlate.png" z="100" />
+    <component name="TextureRect" x="0" y="0" width="16" height="16" />
 	<component name="IndoorOutdoor" />
 	<component name="PressurePlate" />
   </entityTemplate >
