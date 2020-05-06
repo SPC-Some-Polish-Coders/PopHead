@@ -19,24 +19,20 @@ void Puzzles::update(float dt)
 		{
 			case 1:
 			{
-				unsigned pressedPlates = 0;
-
 				pressurePlates.each([&]
 				(component::PressurePlate plate)
 				{
 					if(plate.puzzleId == puzzle.id && plate.isPressed)
-						++pressedPlates;
+					{
+						gates.each([=]
+						(component::Gate& gate)
+						{
+							if(gate.id == 1)
+								gate.open = plate.isPressed;
+						});	
+					}
 				});
 
-				if(pressedPlates == 2)
-				{
-					gates.each([]
-					(component::Gate& gate)
-					{
-						if(gate.id == 1)
-							gate.open = true;
-					});	
-				}
 			} break;
 		}
 	});
