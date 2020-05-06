@@ -4,117 +4,116 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
+extern bool debugWindowOpen;
+
 namespace ph::system {
+
+using component::IndoorOutdoorBlendArea;
+
+struct BlendColor { float outdoorDarkness, indoorAlpha; };
+
+static BlendColor getIndoorOutdoorBlendColor(const FloatRect& blendArea, sf::Vector2f objectPos, IndoorOutdoorBlendArea::ExitSide exit)
+{
+	BlendColor res;
+
+	float playerFromLeft = objectPos.x - blendArea.left;
+	float playerFromRight = blendArea.left + blendArea.width - objectPos.x;
+	float playerFromTop = objectPos.y - blendArea.top;
+	float playerFromBottom = blendArea.top + blendArea.height - objectPos.y;
+	switch(exit)
+	{
+		case IndoorOutdoorBlendArea::Left:
+		{
+			res.indoorAlpha = playerFromLeft / blendArea.width;
+			res.outdoorDarkness = playerFromRight / blendArea.width;
+		} break;
+
+		case IndoorOutdoorBlendArea::Right:
+		{
+			res.indoorAlpha = playerFromRight / blendArea.width;
+			res.outdoorDarkness = playerFromLeft / blendArea.width; 
+		} break;
+
+		case IndoorOutdoorBlendArea::Top:
+		{
+			res.indoorAlpha = playerFromTop / blendArea.height; 
+			res.outdoorDarkness = playerFromBottom / blendArea.height;
+		} break;
+
+		case IndoorOutdoorBlendArea::Down:
+		{
+			res.indoorAlpha = playerFromBottom / blendArea.height;
+			res.outdoorDarkness = playerFromTop / blendArea.height;
+		} break;
+	}
+
+	if(res.indoorAlpha < 0.05f) res.indoorAlpha = 0.f;
+	else if(res.indoorAlpha > 0.95f) res.indoorAlpha = 1.f;
+
+	if(res.outdoorDarkness < 0.05f) res.outdoorDarkness = 0.05f;
+	else if(res.outdoorDarkness > 0.95f) res.outdoorDarkness = 1.f;
+
+	return res;
+}
 
 void IndoorOutdoorBlend::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
+	if(debugWindowOpen && ImGui::BeginTabItem("IndoorOutdoorBlend"))
+	{
+		ImGui::Text("mPlayerOutdoor: %f", mPlayerOutdoor);
+		ImGui::EndTabItem();		
+	}
+
 	if(sPause)
 		return;
 
-	auto players = mRegistry.view<component::Player, component::BodyRect>();
 	auto blendAreas = mRegistry.view<component::IndoorOutdoorBlendArea, component::BodyRect>();
-	players.each([this, &blendAreas]
+
+	mRegistry.view<component::Player, component::BodyRect>().each([&]
 	(const component::Player, const component::BodyRect& playerBody)
 	{
 		blendAreas.each([this, &playerBody]
-		(const component::IndoorOutdoorBlendArea& blendArea, const component::BodyRect& blendAreaBody)
+		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
 		{
 			if(playerBody.rect.doPositiveRectsIntersect(blendAreaBody.rect))
 			{
-				float indoorAlpha, outdoorDarkness;
+				auto bc = getIndoorOutdoorBlendColor(blendAreaBody.rect, playerBody.rect.getCenter(), blendArea.exit); 
 
-				float playerFromLeft = playerBody.x - blendAreaBody.x;
-				float playerFromRight = blendAreaBody.x + blendAreaBody.width - playerBody.x;
-				float playerFromTop = playerBody.y - blendAreaBody.y;
-				float playerFromBottom = blendAreaBody.y + blendAreaBody.height - playerBody.y;
-				switch(blendArea.exit)
+				mPlayerOutdoor = bc.outdoorDarkness;
+
+				mRegistry.view<component::OutdoorBlend>().each([=]
+				(component::OutdoorBlend& ob)
 				{
-					using component::IndoorOutdoorBlendArea;
-
-					case IndoorOutdoorBlendArea::Left:
-					{
-						indoorAlpha = playerFromLeft / blendAreaBody.width;
-						outdoorDarkness = playerFromRight / blendAreaBody.width;
-					} break;
-
-					case IndoorOutdoorBlendArea::Right:
-					{
-						indoorAlpha = playerFromRight / blendAreaBody.width;
-						outdoorDarkness = playerFromLeft / blendAreaBody.width; 
-					} break;
-
-					case IndoorOutdoorBlendArea::Top:
-					{
-						indoorAlpha = playerFromTop / blendAreaBody.height; 
-						outdoorDarkness = playerFromBottom / blendAreaBody.height;
-					} break;
-
-					case IndoorOutdoorBlendArea::Down:
-					{
-						indoorAlpha = playerFromBottom / blendAreaBody.height;
-						outdoorDarkness = playerFromTop / blendAreaBody.height;
-					} break;
-				}
-
-				if(indoorAlpha < 0.05f)
-				{
-					indoorAlpha = 0.f;
-				}
-				else if(indoorAlpha > 0.95f)
-				{
-					indoorAlpha = 1.f;
-				}
-
-				if(outdoorDarkness < 0.05f)
-				{
-					outdoorDarkness = 0.05f;
-				}
-				else if(outdoorDarkness > 0.95f)
-				{
-					outdoorDarkness = 1.f;
-				}
-
-				/*
-				if(ImGui::BeginTabItem("indoor outdoor"))
-				{
-					ImGui::SliderFloat("outdoor darkness", &outdoorDarkness, 0.f, 1.f);
-					ImGui::EndTabItem();
-				}*/
-
-				auto toColorVal = [](float c) { return static_cast<unsigned char>(c * 255.f); };
-				
-				auto chunks = mRegistry.view<component::RenderChunk>();
-				chunks.each([&](component::RenderChunk& chunk)
-				{
-					if(chunk.outdoor)
-					{
-						unsigned char c = toColorVal(outdoorDarkness); 
-						chunk.color = sf::Color(c, c, c, 255);
-					}
-					else
-					{
-						chunk.color.a = toColorVal(indoorAlpha);
-					}
+					ob.darkness = bc.outdoorDarkness;
 				});
 
-				auto groundChunks = mRegistry.view<component::GroundRenderChunk>(); 
-				groundChunks.each([&](component::GroundRenderChunk& groundChunk)
+				mRegistry.view<component::IndoorBlend>().each([=]
+				(component::IndoorBlend& ib)
 				{
-					if(groundChunk.outdoor)
-					{
-						unsigned char c = toColorVal(outdoorDarkness); 
-						groundChunk.color = sf::Color(c, c, c, 255);
-					}
-					else
-					{
-						groundChunk.color.a = toColorVal(indoorAlpha);
-					}
-				});
+					ib.alpha = bc.indoorAlpha;
+				});	
 			}
 		});
+	});
+
+	mRegistry.view<component::IndoorOutdoorBlend, component::BodyRect>().each([&]
+	(component::IndoorOutdoorBlend& objectBlend, component::BodyRect objectBody)
+	{
+		blendAreas.each([&]
+		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
+		{
+			if(FloatRect::doPositiveRectsIntersect(objectBody.rect, blendAreaBody.rect))
+			{
+				auto bc = getIndoorOutdoorBlendColor(blendAreaBody.rect, objectBody.rect.getCenter(), blendArea.exit);
+				objectBlend.outdoor = bc.outdoorDarkness;
+			}
+		});
+
+		objectBlend.outdoorDarkness = mPlayerOutdoor * objectBlend.outdoor;
 	});
 }
 
 }
+

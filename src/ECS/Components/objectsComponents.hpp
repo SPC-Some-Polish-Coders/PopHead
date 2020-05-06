@@ -80,6 +80,10 @@ namespace ph::component {
 		bool open = false;
 	};
 
+	struct Spikes
+	{
+	};
+
 	struct GunProperties
 	{
 		std::string shotSoundFilepath;

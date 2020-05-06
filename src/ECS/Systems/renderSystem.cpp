@@ -79,38 +79,99 @@ void RenderSystem::update(float dt)
 		});
 	}
 
-	// submit map ground chunks
-	auto groundChunks = mRegistry.view<component::GroundRenderChunk>();
-	groundChunks.each([this, currentCamera](component::GroundRenderChunk& chunk)
+	auto getIndoorBlendColor = [](component::IndoorBlend ib)
+	{
+		auto alpha = static_cast<unsigned char>(ib.alpha * 255.f);
+		return sf::Color(255, 255, 255, alpha);
+	};
+
+	// submit ground chunks with indoor blend
+	mRegistry.view<component::GroundRenderChunk, component::IndoorBlend>().each([&]
+	(component::GroundRenderChunk& chunk, const component::IndoorBlend ib)
 	{
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z, chunk.color);
+			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z, getIndoorBlendColor(ib));
 	});
 
-	// submit map chunks
-	auto renderChunks = mRegistry.view<component::RenderChunk>();
-	renderChunks.each([this, currentCamera](component::RenderChunk& chunk)
+	// submit chunks with indoor blend
+	mRegistry.view<component::RenderChunk, component::IndoorBlend>().each([&]
+	(component::RenderChunk& chunk, const component::IndoorBlend ib)
 	{
 		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
-			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, chunk.color);
+			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(ib));
 
 		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
+	auto getOutdoorBlendColor = [](component::OutdoorBlend ob)
+	{
+		auto d = static_cast<unsigned char>(ob.darkness * 255.f);
+		return sf::Color(d, d, d, 255);
+	};
+
+	// submit ground chunks with outdoor blend
+	mRegistry.view<component::GroundRenderChunk, component::OutdoorBlend>().each([&]
+	(component::GroundRenderChunk& chunk, const component::OutdoorBlend ob)
+	{
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
+			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z, getOutdoorBlendColor(ob));
+	});
+
+	// submit chunks with outdoor blend
+	mRegistry.view<component::RenderChunk, component::OutdoorBlend>().each([&]
+	(component::RenderChunk& chunk, const component::OutdoorBlend ob)
+	{
+		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
+			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(ob));
+
+		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
+			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
+	});
+
+	auto getIndoorOutdoorColor = [](component::IndoorOutdoorBlend io)
+	{
+		auto dark = static_cast<unsigned char>(io.outdoorDarkness * 255.f);
+		auto alpha = static_cast<unsigned char>(io.indoorAlpha * 255.f);
+		return sf::Color(dark, dark, dark, alpha);
+	};
+
 	// submit render quads
-	auto renderQuads = mRegistry.view<component::RenderQuad, component::BodyRect>(entt::exclude<component::HiddenForRenderer, component::TextureRect>);
-	renderQuads.each([](const component::RenderQuad& quad, const component::BodyRect& body)
+	mRegistry.view<component::RenderQuad, component::IndoorOutdoorBlend, component::BodyRect>
+	(entt::exclude<component::HiddenForRenderer, component::TextureRect>).each([&]
+	(const component::RenderQuad& quad, const component::IndoorOutdoorBlend io, const component::BodyRect& body)
+	{
+		sf::Color color = quad.color * getIndoorOutdoorColor(io);
+		Renderer::submitQuad(
+			quad.texture, nullptr, &color, quad.shader,
+			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+	});
+
+	// submit render quads with texture rect
+	mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect, component::IndoorOutdoorBlend>
+	(entt::exclude<component::HiddenForRenderer>).each([&]
+	(const component::RenderQuad& quad, const component::TextureRect& textureRect, 
+	 const component::BodyRect& body, const component::IndoorOutdoorBlend io)
+	{
+		Renderer::submitQuad(
+			quad.texture, &textureRect.rect, &getIndoorOutdoorColor(io), quad.shader,
+			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+	});
+
+	// submit render quads with no indoor outdoor component
+	mRegistry.view<component::RenderQuad, component::BodyRect>
+	(entt::exclude<component::HiddenForRenderer, component::TextureRect, component::IndoorOutdoorBlend>).each([&]
+	(const component::RenderQuad& quad, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(
 			quad.texture, nullptr, &quad.color, quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
-	// submit render quads with texture rect
-	auto renderQuadsWithTextureRect = 
-		mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>(entt::exclude<component::HiddenForRenderer>);
-	renderQuadsWithTextureRect.each([](const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
+	// submit render quads with texture rect and no indoor outdoor component
+	mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>
+	(entt::exclude<component::HiddenForRenderer, component::IndoorOutdoorBlend>).each([&]
+	(const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect.rect, &quad.color, quad.shader,

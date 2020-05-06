@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="90">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="91">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -17388,7 +17388,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="12" name="1-indoor" width="2000" height="2000" visible="0">
+ <layer id="12" name="1-indoor" width="2000" height="2000">
   <data encoding="csv">
    <chunk x="0" y="288" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -17616,7 +17616,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="13" name="2-indoor" width="2000" height="2000" visible="0">
+ <layer id="13" name="2-indoor" width="2000" height="2000">
   <data encoding="csv">
    <chunk x="0" y="288" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -18027,8 +18027,13 @@
    </properties>
    <point/>
   </object>
+  <object id="90" type="Spikes" x="224.792" y="4768.83" width="77.9167" height="78.8333">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="10" name="denialAreas">
+ <objectgroup id="10" name="denialAreas" visible="0">
   <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5222" width="642.5" height="1220.5"/>
   <object id="32" type="CollisionAndLightWallDenialArea" x="577.667" y="4625" width="477.833" height="543.667"/>
   <object id="33" type="CollisionAndLightWallDenialArea" x="-196.833" y="3347.83" width="781.833" height="1307.83"/>
@@ -18044,7 +18049,7 @@
   <object id="71" type="CollisionAndLightWallDenialArea" x="-46.9771" y="4998.22" width="67.333" height="264.652"/>
   <object id="72" type="CollisionDenialArea" x="333.25" y="5196.83" width="38.9997" height="107.584"/>
   <object id="73" type="CollisionAndLightWallDenialArea" x="331.75" y="4774.96" width="70.2497" height="438.334"/>
-  <object id="80" type="CollisionAndLightWallDenialArea" x="118.5" y="4770.21" width="281" height="70.084"/>
+  <object id="80" type="CollisionAndLightWallDenialArea" x="118.5" y="4757.21" width="281" height="83.084"/>
   <object id="81" type="CollisionDenialArea" x="-33.4165" y="5261.83" width="33.833" height="15.6673"/>
   <object id="82" type="CollisionAndLightWallDenialArea" x="-194.333" y="5080.34" width="86.6663" height="108.652"/>
   <object id="83" type="CollisionAndLightWallDenialArea" x="-103.333" y="5111.67" width="50.6663" height="39.9853"/>

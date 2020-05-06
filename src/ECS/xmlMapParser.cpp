@@ -472,17 +472,28 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 		{
 			auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
 			createDebugName(groundChunkEntity, "ground chunk");
+
 			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
 			grc.bounds = quadsBounds;
 			grc.textureRect = groundTextureRect;
 			grc.z = z;
-			grc.outdoor = outdoor;
-			grc.color = outdoor ? sf::Color::White : sf::Color(255, 255, 255, 0);
+
+			if(outdoor)
+			{
+				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(groundChunkEntity);
+				ob.darkness = 1.f;
+			}
+			else
+			{
+				auto& ib = mGameRegistry->assign<component::IndoorBlend>(groundChunkEntity);
+				ib.alpha = 0.f;
+			}
 		}
 		else
 		{
 			auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
 			createDebugName(chunkEntity, "chunk");
+
 			auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 			rc.quads = quads;
 			rc.lightWalls = lightWalls;
@@ -490,8 +501,17 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			rc.lightWallsBounds = lightWallsBounds;
 			rc.z = z;
 			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
-			rc.outdoor = outdoor; 
-			rc.color = outdoor ? sf::Color::White : sf::Color(255, 255, 255, 0);
+
+			if(outdoor)
+			{
+				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(chunkEntity);
+				ob.darkness = 1.f;
+			}
+			else
+			{
+				auto& ib = mGameRegistry->assign<component::IndoorBlend>(chunkEntity);
+				ib.alpha = 0.f;
+			}
 
 			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
 			mscb.rects = chunkCollisionRects;

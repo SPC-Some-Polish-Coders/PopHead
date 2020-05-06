@@ -79,6 +79,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	static std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> componentsMap = {
 		{"BodyRect",			        &EntitiesParser::parseBodyRect},
 		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
+		{"IndoorOutdoor",			  	&EntitiesParser::parseIndoorOutdoor},
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
 		{"LightWall",			  	    &EntitiesParser::parseLightWall},
 		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
@@ -120,6 +121,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
+		{"Spikes",                      &EntitiesParser::parseSpikes},
 		{"PressurePlate",               &EntitiesParser::parsePressurePlate}
 	};
 
@@ -200,6 +202,11 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 	// assign component
 	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
+}
+
+void EntitiesParser::parseIndoorOutdoor(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::IndoorOutdoorBlend>(entity);
 }
 
 void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
@@ -473,6 +480,11 @@ void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity
 void EntitiesParser::parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::PressurePlate>(entity);
+}
+
+void EntitiesParser::parseSpikes(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::Spikes>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)

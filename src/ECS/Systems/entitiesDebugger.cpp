@@ -103,9 +103,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::BulletText("GroundRenderChunk");
 				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.left, grc->bounds.top, grc->bounds.width, grc->bounds.height);
 				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.left, grc->textureRect.top, grc->textureRect.width, grc->textureRect.height);
-				ImGui::Text("color: %u, %u, %u, %u", grc->color);
 				ImGui::Text("z: %u", grc->z);
-				ImGui::Text("outdoor: %u", static_cast<unsigned>(grc->outdoor));
 			}
 
 			if(const auto* rc = mRegistry.try_get<component::RenderChunk>(mSelected))
@@ -118,8 +116,29 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.left, rc->lightWallsBounds.top, rc->lightWallsBounds.width, rc->lightWallsBounds.height);
 				ImGui::Text("z: %u", rc->z);
 				ImGui::Text("rendererID: %u", rc->rendererID);
-				ImGui::Text("color: %u, %u, %u, %u", rc->color);
-				ImGui::Text("outdoor: %u", static_cast<unsigned>(rc->outdoor));
+			}
+
+			if(const auto* io = mRegistry.try_get<component::IndoorOutdoorBlend>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("IndoorOutdoorBlend");
+				ImGui::Text("outdoor: %f", io->outdoor);
+				ImGui::Text("outdoorDarkness: %f", io->outdoorDarkness);
+				ImGui::Text("indoorAlpha: %f", io->indoorAlpha);
+			}
+
+			if(const auto* ob = mRegistry.try_get<component::OutdoorBlend>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("OutdoorBlend");
+				ImGui::Text("darkness: %f", ob->darkness);
+			}
+
+			if(const auto* ib = mRegistry.try_get<component::IndoorBlend>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("IndoorBlend");
+				ImGui::Text("alpha: %f", ib->alpha);
 			}
 
 			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))

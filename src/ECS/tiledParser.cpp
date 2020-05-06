@@ -132,18 +132,43 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		healthComponent.maxHealthPoints = getProperty("maxHp").toUnsigned();
 	};
 
+	auto loadIndoorOutdoorBlendComponent = [&]()
+	{
+		auto& io = registry.get<component::IndoorOutdoorBlend>(entity);
+		bool outdoor = getProperty("outdoor").toBool();
+		io.outdoor = outdoor ? 1.f : 0.f;
+		if(outdoor == 1.f)
+		{
+			io.outdoor = 1.f;
+			io.outdoorDarkness = 1.f; 
+			io.indoorAlpha = 1.f; 
+		}
+		else
+		{
+			io.outdoor = 0.f;
+			io.outdoorDarkness = 1.f; 
+			io.indoorAlpha = 0.f; 
+		}
+	};
+
+	auto createCopy = [&](const std::string& templateName)
+	{
+		entity = templates.createCopy(templateName, registry);
+	};
+
 	if(type == "Zombie" || type == "SlowZombie")
 	{
-		entity = templates.createCopy(type, registry);
+		createCopy(type);
 		loadPosition();
 		loadHealthComponent();
+		loadIndoorOutdoorBlendComponent();
 		createDebugName();
 	}
 	else if(type == "Player") 
 	{
 		*isPlayerOnScene = true;
 
-		entity = templates.createCopy("Player", registry);
+		createCopy("Player");
 		auto& playerBody = registry.get<component::BodyRect>(entity);
 		auto& playerCamera = registry.get<component::Camera>(entity);
 		
@@ -176,7 +201,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		if(getProperty("isValid").toBool()) 
 		{
-			entity = templates.createCopy("Camera", registry);
+			createCopy("Camera");
 			auto& camera = registry.get<component::Camera>(entity);
 			sf::Vector2f pos = getPositionAttribute();
 			sf::Vector2f size = getSizeAttribute();
@@ -188,8 +213,9 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "BulletBox") 
 	{
-		entity = templates.createCopy("BulletBox", registry);
+		createCopy("BulletBox");
 		loadPosition();
+		loadIndoorOutdoorBlendComponent();
 		auto& bullets = registry.get<component::Bullets>(entity);
 		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toInt();
 		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toInt();
@@ -197,13 +223,14 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "Medkit") 
 	{
-		entity = templates.createCopy("Medkit", registry);
+		createCopy("Medkit");
 		loadPosition();
+		loadIndoorOutdoorBlendComponent();
 		createDebugName();
 	}
 	else if(type == "VelocityChangingArea")
 	{
-		entity = templates.createCopy("VelocityChangingArea", registry);
+		createCopy("VelocityChangingArea");
 		loadPosition();
 		loadSize();
 		float& areaSpeedMultiplier = registry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
@@ -212,7 +239,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "PushingArea")
 	{
-		entity = templates.createCopy("PushingArea", registry);
+		createCopy("PushingArea");
 		loadPosition();
 		loadSize();
 		auto& pushDirection = registry.get<component::PushingArea>(entity);
@@ -222,7 +249,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "HintArea")
 	{
-		entity = templates.createCopy("HintArea", registry);
+		createCopy("HintArea");
 		loadPosition();
 		loadSize();
 		auto& hint = registry.get<component::Hint>(entity);
@@ -233,7 +260,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "Gate")
 	{
-		entity = templates.createCopy("Gate", registry);
+		createCopy("Gate");
 		loadPosition();
 		auto& gate = registry.get<component::Gate>(entity);
 		gate.id = getProperty("id").toUnsigned();
@@ -241,14 +268,15 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "Lever") 
 	{
-		entity = templates.createCopy("Lever", registry);
+		createCopy("Lever");
 		loadPosition();
+		loadIndoorOutdoorBlendComponent();
 		createDebugName();
 	}
 	else if(type == "Sprite")
 	{
 		// create sprite entity
-		entity = templates.createCopy("Sprite", registry);
+		createCopy("Sprite");
 		auto& [rq, body] = registry.get<component::RenderQuad, component::BodyRect>(entity);
 
 		// load texture
@@ -312,20 +340,20 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "Torch") 
 	{
-		entity = templates.createCopy("Torch", registry);
+		createCopy("Torch");
 		loadPosition();
 		createDebugName();
 	}
 	else if(type == "LightWall")
 	{
 		// TODO: Delete this one
-		entity = templates.createCopy("LightWall", registry);
+		createCopy("LightWall");
 		loadPositionAndSize();
 		createDebugName();
 	}
 	else if(type == "FlowingRiver")
 	{
-		entity = templates.createCopy("FlowingRiver", registry);
+		createCopy("FlowingRiver");
 		auto& [pushingArea, particleEmitter, body] = registry.get<component::PushingArea, component::ParticleEmitter, component::BodyRect>(entity);
 		body.rect.setPosition(getPositionAttribute());
 		const sf::Vector2f size = getSizeAttribute();
@@ -385,14 +413,16 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "PuzzleBoulder")
 	{
-		entity = templates.createCopy("PuzzleBoulder", registry);
+		createCopy("PuzzleBoulder");
 		loadPosition();
+		loadIndoorOutdoorBlendComponent();
 		createDebugName();
 	}
 	else if(type == "PressurePlate")
 	{
-		entity = templates.createCopy("PressurePlate", registry);
+		createCopy("PressurePlate");
 		loadPosition();
+		loadIndoorOutdoorBlendComponent();
 		auto& plate = registry.get<component::PressurePlate>(entity);
 		plate.puzzleId = getProperty("puzzleId").toUnsigned();
 		plate.id = getProperty("id").toUnsigned();
@@ -403,6 +433,26 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		entity = registry.create();
 		unsigned id = getProperty("id").toUnsigned(); 
 		registry.assign<component::Puzzle>(entity, id);
+		createDebugName();
+	}
+	else if(type == "Spikes")
+	{
+		createCopy("Spikes");
+		loadIndoorOutdoorBlendComponent();
+
+		auto pos = getPositionAttribute();
+		auto size = getSizeAttribute();
+		pos.x -= static_cast<float>(static_cast<int>(pos.x) % 16); 
+		pos.y -= static_cast<float>(static_cast<int>(pos.y) % 16); 
+		size.x = static_cast<float>(size.x + 16 - static_cast<int>(size.x + 16) % 16);
+		size.y = static_cast<float>(size.y + 16 - static_cast<int>(size.y + 16) % 16);
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = pos;
+		body.size = size;
+
+		auto& textureRect = registry.get<component::TextureRect>(entity);
+		textureRect.size = static_cast<sf::Vector2i>(size);
+
 		createDebugName();
 	}
 	else 

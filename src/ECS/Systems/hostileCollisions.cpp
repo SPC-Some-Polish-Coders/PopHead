@@ -34,7 +34,7 @@ namespace ph::system {
 					if(!godMode)
 					{
 						const auto& damage = enemiesView.get<component::Damage>(damageDealingEntitiy);
-						mRegistry.assign<component::DamageTag>(player, damage.damageDealt);
+						mRegistry.assign_or_replace<component::DamageTag>(player, damage.damageDealt);
 					}
 
 					playerKinematics.vel = playerCollision.pushForce * Math::getUnitVector(playerBody.rect.getCenter() - enemyBody.rect.getCenter());

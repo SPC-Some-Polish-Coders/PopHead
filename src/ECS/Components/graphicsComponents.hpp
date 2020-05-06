@@ -12,6 +12,42 @@ class Shader;
 
 namespace component {
 
+	union TextureRect
+	{
+		IntRect rect;
+
+		struct{
+			sf::Vector2i pos;
+			sf::Vector2i size;
+		};
+		struct {
+			int x, y, width, height;
+		};
+	};
+
+	struct IndoorOutdoorBlendArea
+	{
+		enum ExitSide {Left, Right, Top, Down};
+		ExitSide exit;
+	};
+
+	struct IndoorOutdoorBlend
+	{
+		float outdoor;
+		float outdoorDarkness;
+		float indoorAlpha;
+	};
+
+	struct OutdoorBlend
+	{
+		float darkness;
+	};
+
+	struct IndoorBlend
+	{
+		float alpha;
+	};
+
 	struct RenderQuad
 	{
 		Texture* texture;
@@ -22,16 +58,10 @@ namespace component {
 		unsigned char z;
 	};
 
-	struct TextureRect
-	{
-		IntRect rect;
-	};
-
 	struct GroundRenderChunk
 	{
 		FloatRect bounds;
 		FloatRect textureRect;
-		sf::Color color;
 		unsigned char z;
 		bool outdoor;
 	};
@@ -44,14 +74,7 @@ namespace component {
 		FloatRect lightWallsBounds;
 		unsigned char z;
 		unsigned rendererID;
-		sf::Color color;
 		bool outdoor;
-	};
-
-	struct IndoorOutdoorBlendArea
-	{
-		enum ExitSide {Left, Right, Top, Down};
-		ExitSide exit;
 	};
 
 	struct LightWall

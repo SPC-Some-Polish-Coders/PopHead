@@ -4,15 +4,12 @@
 
 namespace ph::system {
 
-class IndoorOutdoorBlend : public System
+class Spikes : public System
 {
 public:
 	using System::System;
 
 	void update(float dt) override;
-
-private:
-	float mPlayerOutdoor = 1.f;
 };
 
 }

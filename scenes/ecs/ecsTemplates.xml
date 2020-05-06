@@ -60,6 +60,7 @@
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />
+	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />
     <component name="MultiParticleEmitter" />
   </entityTemplate>
@@ -77,6 +78,7 @@
     <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
     <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" />
+	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" width="0" height="0" />
     <component name="MultiParticleEmitter" />
   </entityTemplate>
@@ -144,6 +146,7 @@
   <entityTemplate name="Lever">
     <component name="BodyRect" x="0.0" y="2.0" width="8" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/lever.png" z="99" />
+	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" width="7" height="15" />
     <component name="Lever" id="0" minActivationInterval="0.25" turnOffAfterSwitch="false" />
   </entityTemplate>
@@ -153,12 +156,14 @@
     <component name="Bullets" numOfPistolBullets="10" numOfShotgunBullets="0" />
     <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/bulletBox.png" z="99" />
+	<component name="IndoorOutdoor" />
   </entityTemplate>
 
   <entityTemplate name="Medkit">
     <component name="Medkit" addHealthPoints="25" />
     <component name="BodyRect" x="0" y="0" width="15" height="15" />
     <component name="RenderQuad" textureFilepath="textures/others/medkit.png" z="99" />
+	<component name="IndoorOutdoor" />
   </entityTemplate>
 
   <entityTemplate name="Pistol">
@@ -205,6 +210,7 @@
   <entityTemplate name="PuzzleBoulder" >
     <component name="BodyRect" x="0" y="0" width="16" height="21" />
     <component name="RenderQuad" textureFilepath="textures/others/puzzleBoulder.png" z="99" />
+	<component name="IndoorOutdoor" />
     <component name="KinematicCollisionBody" mass="10" />
     <component name="Kinematics" friction="15.0" />
   </entityTemplate >
@@ -212,7 +218,16 @@
   <entityTemplate name="PressurePlate" >
     <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/pressurePlate.png" z="100" />
+	<component name="IndoorOutdoor" />
 	<component name="PressurePlate" />
+  </entityTemplate >
+
+  <entityTemplate name="Spikes" >
+    <component name="BodyRect" x="0" y="0" width="16" height="16" outdoor="false" />
+    <component name="RenderQuad" textureFilepath="textures/others/spike.png" z="100" />
+	<component name="IndoorOutdoor" />
+    <component name="TextureRect" x="0" y="0" width="16" height="16" />
+	<component name="Spikes" />
   </entityTemplate >
 
 </entityTemplates>
