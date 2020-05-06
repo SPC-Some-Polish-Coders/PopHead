@@ -52,7 +52,7 @@ void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
 	GLCheck( glBindVertexArray(mLineVAO) );
 	mLineShader.bind();
 	
-	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->height)) );
+	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->h)) );
 
 	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
 

@@ -15,15 +15,15 @@ void PushingAreas::update(float dt)
 	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
 	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Kinematics>();
 
-	for (auto pushingArea : pushingAreasView)
+	for(auto pushingArea : pushingAreasView)
 	{
 		const auto& [pushingAreaDetails, areaBody] = pushingAreasView.get<component::PushingArea, component::BodyRect>(pushingArea);
 
-		for (auto kinematicObject : kinematicObjects)
+		for(auto kinematicObject : kinematicObjects)
 		{
 			auto& objectKinematics = kinematicObjects.get<component::Kinematics>(kinematicObject);
 			const auto& kinematicObjectBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
-			if (areaBody.rect.contains(kinematicObjectBody.rect.getCenter()))
+			if(areaBody.contains(kinematicObjectBody.center()))
 			{
 				objectKinematics.vel += pushingAreaDetails.pushForce;
 			}

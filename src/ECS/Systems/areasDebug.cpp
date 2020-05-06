@@ -65,7 +65,7 @@ void AreasDebug::update(float dt)
 			for(auto& bodyRect : multiCollisionBody.rects)
 			{
 				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
-					bodyRect.getTopLeft(), bodyRect.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
+					bodyRect.pos, bodyRect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});
 
@@ -112,7 +112,7 @@ void AreasDebug::update(float dt)
 		chunks.each([](const component::RenderChunk& chunk) {
 			for(const auto wall : chunk.lightWalls) {
 				Renderer::submitQuad(nullptr, nullptr, &sf::Color(60, 60, 255, 140), nullptr,
-					wall.getTopLeft(), wall.getSize(), 50, 0.f, {}, ProjectionType::gameWorld, false);
+					wall.pos, wall.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});	
 	}

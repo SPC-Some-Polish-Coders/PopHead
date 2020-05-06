@@ -4,8 +4,6 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
-extern bool debugWindowOpen;
-
 namespace ph::system {
 
 using component::IndoorOutdoorBlendArea;
@@ -16,34 +14,34 @@ static BlendColor getIndoorOutdoorBlendColor(const FloatRect& blendArea, sf::Vec
 {
 	BlendColor res;
 
-	float playerFromLeft = objectPos.x - blendArea.left;
-	float playerFromRight = blendArea.left + blendArea.width - objectPos.x;
-	float playerFromTop = objectPos.y - blendArea.top;
-	float playerFromBottom = blendArea.top + blendArea.height - objectPos.y;
+	float playerFromLeft = objectPos.x - blendArea.x;
+	float playerFromRight = blendArea.x + blendArea.w - objectPos.x;
+	float playerFromTop = objectPos.y - blendArea.y;
+	float playerFromBottom = blendArea.y + blendArea.h - objectPos.y;
 	switch(exit)
 	{
 		case IndoorOutdoorBlendArea::Left:
 		{
-			res.indoorAlpha = playerFromLeft / blendArea.width;
-			res.outdoorDarkness = playerFromRight / blendArea.width;
+			res.indoorAlpha = playerFromLeft / blendArea.w;
+			res.outdoorDarkness = playerFromRight / blendArea.w;
 		} break;
 
 		case IndoorOutdoorBlendArea::Right:
 		{
-			res.indoorAlpha = playerFromRight / blendArea.width;
-			res.outdoorDarkness = playerFromLeft / blendArea.width; 
+			res.indoorAlpha = playerFromRight / blendArea.w;
+			res.outdoorDarkness = playerFromLeft / blendArea.w; 
 		} break;
 
 		case IndoorOutdoorBlendArea::Top:
 		{
-			res.indoorAlpha = playerFromTop / blendArea.height; 
-			res.outdoorDarkness = playerFromBottom / blendArea.height;
+			res.indoorAlpha = playerFromTop / blendArea.h; 
+			res.outdoorDarkness = playerFromBottom / blendArea.h;
 		} break;
 
 		case IndoorOutdoorBlendArea::Down:
 		{
-			res.indoorAlpha = playerFromBottom / blendArea.height;
-			res.outdoorDarkness = playerFromTop / blendArea.height;
+			res.indoorAlpha = playerFromBottom / blendArea.h;
+			res.outdoorDarkness = playerFromTop / blendArea.h;
 		} break;
 	}
 
@@ -60,12 +58,6 @@ void IndoorOutdoorBlend::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(debugWindowOpen && ImGui::BeginTabItem("IndoorOutdoorBlend"))
-	{
-		ImGui::Text("mPlayerOutdoor: %f", mPlayerOutdoor);
-		ImGui::EndTabItem();		
-	}
-
 	if(sPause)
 		return;
 
@@ -77,9 +69,9 @@ void IndoorOutdoorBlend::update(float dt)
 		blendAreas.each([this, &playerBody]
 		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
 		{
-			if(playerBody.rect.doPositiveRectsIntersect(blendAreaBody.rect))
+			if(intersect(playerBody, blendAreaBody))
 			{
-				auto bc = getIndoorOutdoorBlendColor(blendAreaBody.rect, playerBody.rect.getCenter(), blendArea.exit); 
+				auto bc = getIndoorOutdoorBlendColor(blendAreaBody, playerBody.center(), blendArea.exit); 
 
 				mPlayerOutdoor = bc.outdoorDarkness;
 
@@ -104,9 +96,9 @@ void IndoorOutdoorBlend::update(float dt)
 		blendAreas.each([&]
 		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
 		{
-			if(FloatRect::doPositiveRectsIntersect(objectBody.rect, blendAreaBody.rect))
+			if(intersect(objectBody, blendAreaBody))
 			{
-				auto bc = getIndoorOutdoorBlendColor(blendAreaBody.rect, objectBody.rect.getCenter(), blendArea.exit);
+				auto bc = getIndoorOutdoorBlendColor(blendAreaBody, objectBody.center(), blendArea.exit);
 				objectBlend.outdoor = bc.outdoorDarkness;
 			}
 		});

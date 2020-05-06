@@ -53,7 +53,7 @@ static sf::Vector2f getPlayerPosition()
 	auto& registry = sceneManager->getScene().getRegistry();
 	auto players = registry.view<component::Player, component::BodyRect>();
 	players.each([&playerPos](const component::Player, const component::BodyRect body) {
-		playerPos = body.rect.getCenter();
+		playerPos = body.center();
 	});
 	return playerPos;
 }
@@ -259,8 +259,8 @@ static void executeTeleport()
 		auto& registry = sceneManager->getScene().getRegistry();
 		auto view = registry.view<component::Player, component::BodyRect>();
 		view.each([newPosition](const component::Player player, component::BodyRect& body) {
-			body.rect.left = newPosition.x;
-			body.rect.top = newPosition.y;
+			body.x = newPosition.x;
+			body.y = newPosition.y;
 		});
 	}
 }
@@ -282,8 +282,8 @@ static void executeMove()
 		auto& registry = sceneManager->getScene().getRegistry();
 		auto view = registry.view<component::Player, component::BodyRect>();
 		view.each([moveOffset](const component::Player, component::BodyRect& body) {
-			body.rect.left += moveOffset.x;
-			body.rect.top += moveOffset.y;
+			body.x += moveOffset.x;
+			body.y += moveOffset.y;
 		});
 	}
 }

@@ -17,17 +17,18 @@ namespace ph::system {
 		auto medkits = mRegistry.view<component::Medkit, component::BodyRect>();
 		auto bulletBoxes = mRegistry.view<component::BulletBox, component::Bullets, component::BodyRect>();
 
-		for (auto player : players)
+		for(auto player : players)
 		{
 			const auto& playerBody  = players.get<component::BodyRect>(player);
 			auto& [playerHealth, playerBullets] = players.get<component::Health, component::Bullets>(player);
 			
-			for (auto medkitEntity : medkits)
+			for(auto medkitEntity : medkits)
 			{
 				const auto& [medkit, medkitBody] = medkits.get<component::Medkit, component::BodyRect>(medkitEntity);
 
-				if (playerBody.rect.doPositiveRectsIntersect(medkitBody.rect)) {
-					if (playerHealth.healthPoints + medkit.addHealthPoints < playerHealth.maxHealthPoints)
+				if(intersect(playerBody, medkitBody))
+				{
+					if(playerHealth.healthPoints + medkit.addHealthPoints < playerHealth.maxHealthPoints)
 						playerHealth.healthPoints += medkit.addHealthPoints;
 					else
 						playerHealth.healthPoints = playerHealth.maxHealthPoints;
@@ -35,11 +36,12 @@ namespace ph::system {
 				}
 			}
 
-			for (auto bulletBoxEntity : bulletBoxes)
+			for(auto bulletBoxEntity : bulletBoxes)
 			{
 				const auto& [bulletBoxBullets, bulletBoxBody] = bulletBoxes.get<component::Bullets, component::BodyRect>(bulletBoxEntity);
 
-				if (playerBody.rect.doPositiveRectsIntersect(bulletBoxBody.rect)) {
+				if(intersect(playerBody, bulletBoxBody))
+				{
 					playerBullets.numOfPistolBullets += bulletBoxBullets.numOfPistolBullets;
 					playerBullets.numOfShotgunBullets += bulletBoxBullets.numOfShotgunBullets;
 					mRegistry.assign<component::TaggedToDestroy>(bulletBoxEntity);

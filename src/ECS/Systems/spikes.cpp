@@ -15,7 +15,7 @@ void Spikes::update(float dt)
 		mRegistry.view<component::Player, component::BodyRect>().each([&]
 		(auto playerEntity, component::Player, const component::BodyRect& playerBody)
 		{
-			if(FloatRect::doPositiveRectsIntersect(playerBody.rect, spikesBody.rect))
+			if(intersect(playerBody, spikesBody))
 			{
 				mRegistry.assign_or_replace<component::DamageTag>(playerEntity, 1);
 			}

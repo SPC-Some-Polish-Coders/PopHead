@@ -32,7 +32,7 @@ void RenderSystem::update(float dt)
 			sf::Vector2f cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
 			cameraOffset *= shake.magnitude;
 			cameraOffset *= (shake.duration - shake.elapsedTime) / shake.duration;
-			sf::Vector2f cameraPos = camera.camera.getCenter();
+			sf::Vector2f cameraPos = camera.camera.center();
 			sf::Vector2f newCameraPos = cameraPos + cameraOffset;
 			if(shake.smooth)
 				camera.camera.setCenter(Math::lerp(cameraPos, newCameraPos, 2.f));
@@ -72,8 +72,8 @@ void RenderSystem::update(float dt)
 		auto lightWalls = mRegistry.view<component::LightWall, component::BodyRect>();
 		lightWalls.each([](const component::LightWall& lw, const component::BodyRect& body) 
 		{
-			if(lw.rect.top == -1.f)
-				Renderer::submitLightWall(body.rect);
+			if(lw.y == -1.f)
+				Renderer::submitLightWall(body);
 			else
 				Renderer::submitLightWall(FloatRect(body.pos + lw.pos, lw.size));
 		});
@@ -89,18 +89,18 @@ void RenderSystem::update(float dt)
 	mRegistry.view<component::GroundRenderChunk, component::IndoorBlend>().each([&]
 	(component::GroundRenderChunk& chunk, const component::IndoorBlend ib)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z, getIndoorBlendColor(ib));
+		if(intersect(currentCamera->getBounds(), chunk.bounds))
+			Renderer::submitGroundChunk(chunk.bounds.pos, chunk.textureRect, chunk.z, getIndoorBlendColor(ib));
 	});
 
 	// submit chunks with indoor blend
 	mRegistry.view<component::RenderChunk, component::IndoorBlend>().each([&]
 	(component::RenderChunk& chunk, const component::IndoorBlend ib)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
+		if(intersect(currentCamera->getBounds(), chunk.quadsBounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(ib));
 
-		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
+		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), chunk.lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
@@ -114,18 +114,18 @@ void RenderSystem::update(float dt)
 	mRegistry.view<component::GroundRenderChunk, component::OutdoorBlend>().each([&]
 	(component::GroundRenderChunk& chunk, const component::OutdoorBlend ob)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.getTopLeft(), chunk.textureRect, chunk.z, getOutdoorBlendColor(ob));
+		if(intersect(currentCamera->getBounds(), chunk.bounds))
+			Renderer::submitGroundChunk(chunk.bounds.pos, chunk.textureRect, chunk.z, getOutdoorBlendColor(ob));
 	});
 
 	// submit chunks with outdoor blend
 	mRegistry.view<component::RenderChunk, component::OutdoorBlend>().each([&]
 	(component::RenderChunk& chunk, const component::OutdoorBlend ob)
 	{
-		if(currentCamera->getBounds().doPositiveRectsIntersect(chunk.quadsBounds) && !chunk.quads.empty())
+		if(intersect(currentCamera->getBounds(), chunk.quadsBounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(ob));
 
-		if(!chunk.lightWalls.empty() && currentCamera->getBounds().doPositiveRectsIntersect(chunk.lightWallsBounds))
+		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), chunk.lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
@@ -154,7 +154,7 @@ void RenderSystem::update(float dt)
 	 const component::BodyRect& body, const component::IndoorOutdoorBlend io)
 	{
 		Renderer::submitQuad(
-			quad.texture, &textureRect.rect, &getIndoorOutdoorColor(io), quad.shader,
+			quad.texture, &textureRect, &getIndoorOutdoorColor(io), quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
@@ -174,7 +174,7 @@ void RenderSystem::update(float dt)
 	(const component::RenderQuad& quad, const component::TextureRect& textureRect, const component::BodyRect& body)
 	{
 		Renderer::submitQuad(
-			quad.texture, &textureRect.rect, &quad.color, quad.shader,
+			quad.texture, &textureRect, &quad.color, quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 }

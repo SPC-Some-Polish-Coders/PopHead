@@ -80,9 +80,7 @@ namespace ph::component {
 		bool open = false;
 	};
 
-	struct Spikes
-	{
-	};
+	struct Spikes {};
 
 	struct GunProperties
 	{
@@ -106,7 +104,6 @@ namespace ph::component {
 		int damage;
 	};
 
-	struct Weather
-	{
-	};
+	struct Weather {};
+
 }

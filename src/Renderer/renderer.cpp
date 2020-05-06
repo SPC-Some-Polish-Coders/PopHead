@@ -162,7 +162,7 @@ void beginScene()
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
 	
-	sf::Vector2f center = gameWorldCamera.getCenter();
+	sf::Vector2f center = gameWorldCamera.center();
 	sf::Vector2f size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }

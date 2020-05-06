@@ -23,14 +23,14 @@ void Entrances::update(float dt)
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
 
-	for (auto player : playerView)
+	for(auto player : playerView)
 	{
 		const auto& playerBody = playerView.get<component::BodyRect>(player);
 
-		for (auto entrance : entrancesView)
+		for(auto entrance : entrancesView)
 		{
 			const auto& entranceBody = entrancesView.get<component::BodyRect>(entrance);
-			if (entranceBody.rect.contains(playerBody.rect.getCenter()))
+			if(entranceBody.contains(playerBody.center()))
 			{
 				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
 				std::string sceneFilepath = "scenes/" + entranceDetails.entranceDestination.substr(2);

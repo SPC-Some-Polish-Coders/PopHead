@@ -13,30 +13,30 @@ namespace ph::system {
 
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::Kinematics, component::KinematicCollisionBody>();
 
-		for (auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)
+		for(auto current = kinematicObjects.begin(); current != kinematicObjects.end(); ++current)
 		{
 			auto& currentBody = kinematicObjects.get<component::BodyRect>(*current);
 			auto& currentKin = kinematicObjects.get<component::Kinematics>(*current);
 
 			auto another = current;
 			++another;
-			if (another == kinematicObjects.end())
+			if(another == kinematicObjects.end())
 				break;
 
-			for (; another != kinematicObjects.end(); ++another)
+			for(; another != kinematicObjects.end(); ++another)
 			{
 				auto& anotherBody = kinematicObjects.get<component::BodyRect>(*another);
 				auto& anotherKin = kinematicObjects.get<component::Kinematics>(*another);
 
-				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
+				if(intersect(currentBody, anotherBody))
 				{
-					sf::FloatRect intersection;
-					currentBody.rect.intersects(anotherBody.rect, intersection);
+					FloatRect intersection;
+					currentBody.intersects(anotherBody, intersection);
 
-					if (intersection.width < intersection.height)
+					if(intersection.w < intersection.h)
 					{
-						auto halfWidth = intersection.width / 2.f;
-						if (currentBody.x < anotherBody.x)
+						auto halfWidth = intersection.w / 2.f;
+						if(currentBody.x < anotherBody.x)
 						{
 							currentBody.x -= halfWidth;
 							anotherBody.x += halfWidth;
@@ -49,8 +49,8 @@ namespace ph::system {
 					}
 					else
 					{
-						auto halfHeight = intersection.height / 2.f;
-						if (currentBody.y < anotherBody.y)
+						auto halfHeight = intersection.h / 2.f;
+						if(currentBody.y < anotherBody.y)
 						{
 							currentBody.y -= halfHeight;
 							anotherBody.y += halfHeight;

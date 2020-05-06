@@ -25,22 +25,22 @@ void Levers::handleUsedLevers() const
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
 
-	for (auto player : playerView)
+	for(auto player : playerView)
 	{
 		const auto& playerBody = playerView.get<component::BodyRect>(player);
-		for (auto lever : leverView)
+		for(auto lever : leverView)
 		{
 			const auto& leverBody = leverView.get<component::BodyRect>(lever);
-			auto& leverTexture = leverView.get<component::TextureRect>(lever);
+			auto& leverTextureRect = leverView.get<component::TextureRect>(lever);
 			auto& leverDetails = leverView.get<component::Lever>(lever);
 
-			if (leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
+			if(leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
 				continue;
 
-			if (leverBody.rect.doPositiveRectsIntersect(playerBody.rect))
+			if(intersect(leverBody, playerBody))
 			{
 				leverDetails.isActivated = !leverDetails.isActivated;
-				leverTexture.rect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
+				leverTextureRect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
 				handleListeners(leverDetails.isActivated, leverDetails.id);
 			}
 		}
@@ -50,10 +50,10 @@ void Levers::handleUsedLevers() const
 void Levers::handleListeners(bool isActivated, unsigned leverId) const
 {
 	auto listenersView = mRegistry.view<component::LeverListener>();
-	for (auto leverListener : listenersView)
+	for(auto leverListener : listenersView)
 	{
 		auto& listenerDetails = listenersView.get<component::LeverListener>(leverListener);
-		if (listenerDetails.observedLeverId == leverId)
+		if(listenerDetails.observedLeverId == leverId)
 			listenerDetails.isActivated = true;
 	}
 }

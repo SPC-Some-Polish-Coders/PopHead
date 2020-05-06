@@ -29,19 +29,15 @@ void AnimationSystem::update(float dt)
 				{
 					animationData.currentFrameIndex = 0;
 				}
-				textureRect.rect = IntRect(
-					state.startFrame.left + state.startFrame.width * animationData.currentFrameIndex,
-					state.startFrame.top,
-					state.startFrame.width,
-					state.startFrame.height
-				);
+				textureRect = state.startFrame;
+				textureRect.x = state.startFrame.x + state.startFrame.w * animationData.currentFrameIndex;
 			}
 		}
 		else 
 		{
 			StateData& state = animationData.states->at(animationData.currentStateName);
 			animationData.currentFrameIndex = 0;
-			textureRect.rect = state.startFrame;
+			textureRect = state.startFrame;
 		}
 	}
 }

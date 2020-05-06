@@ -20,7 +20,7 @@ void PressurePlates::update(float dt)
 		kinematicBodies.each([&]
 		(const component::KinematicCollisionBody, const component::BodyRect& kinBody)	
 		{
-			if(FloatRect::doPositiveRectsIntersect(plateBody.rect, kinBody.rect))
+			if(intersect(plateBody, kinBody))
 			{
 				plate.isPressed = true;
 			}

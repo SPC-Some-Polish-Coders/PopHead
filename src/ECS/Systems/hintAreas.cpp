@@ -20,14 +20,14 @@ void HintAreas::update(float dt)
 
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();
-	for (auto hintArea : hintAreasView)
+	for(auto hintArea : hintAreasView)
 	{
-		for (auto player : playerView)
+		for(auto player : playerView)
 		{
 			const auto& hintAreaBody = hintAreasView.get<component::BodyRect>(hintArea);
 			const auto& playerBody = playerView.get<component::BodyRect>(player);
 			auto& hint = hintAreasView.get<component::Hint>(hintArea);
-			if (hintAreaBody.rect.contains(playerBody.rect.getCenter()))
+			if(hintAreaBody.contains(playerBody.center()))
 			{
 				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
 

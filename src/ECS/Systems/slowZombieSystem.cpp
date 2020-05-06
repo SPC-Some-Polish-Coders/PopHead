@@ -12,35 +12,35 @@ namespace ph::system {
 
 		auto slowZombies = mRegistry.view<component::SlowZombieBehavior, component::CharacterSpeed, component::BodyRect, component::CollisionWithPlayer>();
 		const auto player = mRegistry.view<component::Player, component::BodyRect>();
-		if (player.size() == 0)
+		if(player.size() == 0)
 			return;
 
-		const auto& playerRect = player.get<component::BodyRect>(*player.begin()).rect;
+		const auto& playerBody = player.get<component::BodyRect>(*player.begin());
 
-		for (auto& zombie : slowZombies)
+		for(auto& zombie : slowZombies)
 		{
 			auto& slowZombieBehavior = slowZombies.get<component::SlowZombieBehavior>(zombie);
 			auto& zombieSpeed = slowZombies.get<component::CharacterSpeed>(zombie).speed;
 
-			if (slowZombies.get<component::CollisionWithPlayer>(zombie).isCollision)
+			if(slowZombies.get<component::CollisionWithPlayer>(zombie).isCollision)
 			{
 				slowZombieBehavior.coolDownTimer = component::SlowZombieBehavior::coolDownTime;
 				zombieSpeed = component::SlowZombieBehavior::afterAttackSpeed;
 				continue;
 			}
 
-			if (slowZombieBehavior.coolDownTimer > 0.f)
+			if(slowZombieBehavior.coolDownTimer > 0.f)
 			{
 				slowZombieBehavior.coolDownTimer -= dt;
 				continue;
 			}
 
-			const auto& zombieRect = slowZombies.get<component::BodyRect>(zombie).rect;
-			const auto distance = Math::distanceBetweenPoints(playerRect.getCenter(), zombieRect.getCenter());
+			const auto& zombieBody = slowZombies.get<component::BodyRect>(zombie);
+			const auto distance = Math::distanceBetweenPoints(playerBody.center(), zombieBody.center());
 
-			if (distance > component::SlowZombieBehavior::farDistance)
+			if(distance > component::SlowZombieBehavior::farDistance)
 				zombieSpeed = component::SlowZombieBehavior::farFromPlayerSpeed;
-			else if (distance > component::SlowZombieBehavior::closeDistance)
+			else if(distance > component::SlowZombieBehavior::closeDistance)
 				zombieSpeed = component::SlowZombieBehavior::sneakingSpeed;
 			else
 				zombieSpeed = component::SlowZombieBehavior::attackingSpeed;

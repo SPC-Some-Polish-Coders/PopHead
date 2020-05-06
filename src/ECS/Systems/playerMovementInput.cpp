@@ -95,38 +95,38 @@ namespace ph::system {
 		}
 
 		// get player direction and correct diagonal input
-		sf::Vector2f playerDirection;
+		sf::Vector2f playerDir;
 		if(d.x < 0.f && d.y < 0.f) { 
-			playerDirection = PH_NORTH_WEST;
+			playerDir = PH_NORTH_WEST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
 		else if(d.x > 0.f && d.y < 0.f) {
-			playerDirection = PH_NORTH_EAST;
+			playerDir = PH_NORTH_EAST;
 			float offset = (d.x + (-d.y)) / 2.f;
 			d.x = offset;
 			d.y = -offset;
 		}
 		else if(d.x < 0.f && d.y > 0.f) {
-			playerDirection = PH_SOUTH_WEST;
+			playerDir = PH_SOUTH_WEST;
 			float offset = ((-d.x) + d.y) / 2.f;
 			d.x = -offset;
 			d.y = offset;
 		}
 		else if(d.x > 0.f && d.y > 0.f) {
-			playerDirection = PH_SOUTH_EAST;
+			playerDir = PH_SOUTH_EAST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
 		else if(d.y < 0.f) {
-			playerDirection = PH_NORTH;
+			playerDir = PH_NORTH;
 		}
 		else if(d.y > 0.f) {
-			playerDirection = PH_SOUTH;
+			playerDir = PH_SOUTH;
 		}
 		else if(d.x < 0.f) {
-			playerDirection = PH_WEST;
+			playerDir = PH_WEST;
 		}
 		else if(d.x > 0.f) {
-			playerDirection = PH_EAST;
+			playerDir = PH_EAST;
 		}
 
 		if((d.x != 0.f) && (d.y != 0.f))
@@ -162,27 +162,27 @@ namespace ph::system {
 				animationData.isPlaying = false;
 			}
 
-			// set face direction
-			if(playerDirection != sf::Vector2f(0.f, 0.f))
+			// set faceDir
+			if(playerDir != sf::Vector2f(0.f, 0.f))
 			{
-				auto& faceDirection = playerView.get<component::FaceDirection>(player);
-				faceDirection.direction = playerDirection;
+				auto& faceDir = playerView.get<component::FaceDirection>(player);
+				faceDir = playerDir;
 			}
 		}
 
 		// set flash light direction
 		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
-		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
+		view.each([this](const component::Player, const component::FaceDirection faceDir, component::LightSource& lightSource) 
 		{
 			float middleAngle;
-			if(face.direction == PH_EAST)            middleAngle = 0.f;
-			else if(face.direction == PH_WEST)       middleAngle = 180.f;
-			else if(face.direction == PH_SOUTH)      middleAngle = 90.f;
-			else if(face.direction == PH_NORTH)      middleAngle = -90.f;
-			else if(face.direction == PH_SOUTH_EAST) middleAngle = 45.f;
-			else if(face.direction == PH_NORTH_EAST) middleAngle = -45.f;
-			else if(face.direction == PH_SOUTH_WEST) middleAngle = 135.f;
-			else if(face.direction == PH_NORTH_WEST) middleAngle = -135.f;
+			if(faceDir == PH_EAST)            middleAngle = 0.f;
+			else if(faceDir == PH_WEST)       middleAngle = 180.f;
+			else if(faceDir == PH_SOUTH)      middleAngle = 90.f;
+			else if(faceDir == PH_NORTH)      middleAngle = -90.f;
+			else if(faceDir == PH_SOUTH_EAST) middleAngle = 45.f;
+			else if(faceDir == PH_NORTH_EAST) middleAngle = -45.f;
+			else if(faceDir == PH_SOUTH_WEST) middleAngle = 135.f;
+			else if(faceDir == PH_NORTH_WEST) middleAngle = -135.f;
 			else middleAngle = 0.f;
 
 			lightSource.startAngle = middleAngle - 35.f;
@@ -193,7 +193,7 @@ namespace ph::system {
 
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>(entt::exclude<component::DeadCharacter>);
-		movementView.each([this, d, playerDirection]
+		movementView.each([this, d, playerDir]
 		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
 		{
 			if(mDashJustPressed) 

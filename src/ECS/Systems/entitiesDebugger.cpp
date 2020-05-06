@@ -93,16 +93,15 @@ void EntitiesDebugger::update(float dt)
 			if(const auto* tr = mRegistry.try_get<component::TextureRect>(mSelected))
 			{
 				ImGui::Separator();
-				ImGui::BulletText("TextureRect");
-				ImGui::Text("rect: %i, %i, %i, %i", tr->rect.left, tr->rect.top, tr->rect.width, tr->rect.height);
+				ImGui::BulletText("TextureRect %i, %i, %i, %i", tr->x, tr->y, tr->w, tr->h);
 			}
 
 			if(const auto* grc = mRegistry.try_get<component::GroundRenderChunk>(mSelected))
 			{
 				ImGui::Separator();
 				ImGui::BulletText("GroundRenderChunk");
-				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.left, grc->bounds.top, grc->bounds.width, grc->bounds.height);
-				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.left, grc->textureRect.top, grc->textureRect.width, grc->textureRect.height);
+				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.x, grc->bounds.y, grc->bounds.w, grc->bounds.h);
+				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.x, grc->textureRect.y, grc->textureRect.w, grc->textureRect.h);
 				ImGui::Text("z: %u", grc->z);
 			}
 
@@ -112,8 +111,8 @@ void EntitiesDebugger::update(float dt)
 				ImGui::BulletText("RenderChunk");
 				ImGui::Text("quads: (view is not supported)");
 				ImGui::Text("lightWalls: (view is not supported)");
-				ImGui::Text("quadsBounds: %f, %f, %f, %f", rc->quadsBounds.left, rc->quadsBounds.top, rc->quadsBounds.width, rc->quadsBounds.height);
-				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.left, rc->lightWallsBounds.top, rc->lightWallsBounds.width, rc->lightWallsBounds.height);
+				ImGui::Text("quadsBounds: %f, %f, %f, %f", rc->quadsBounds.x, rc->quadsBounds.y, rc->quadsBounds.w, rc->quadsBounds.h);
+				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.x, rc->lightWallsBounds.y, rc->lightWallsBounds.w, rc->lightWallsBounds.h);
 				ImGui::Text("z: %u", rc->z);
 				ImGui::Text("rendererID: %u", rc->rendererID);
 			}
@@ -146,7 +145,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("BodyRecy");
 				ImGui::Text("pos: %f, %f", br->x, br->y);
-				ImGui::Text("size: %f, %f", br->width, br->height);
+				ImGui::Text("size: %f, %f", br->w, br->h);
 			}
 
 			if(const auto* kin = mRegistry.try_get<component::Kinematics>(mSelected))
@@ -178,7 +177,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("MultiStaticCollisionBody");
 				ImGui::Text("rects: (view is not supprted)");
-				ImGui::Text("sharedBounds: %f, %f, %f, %f", mscb->sharedBounds.left, mscb->sharedBounds.top, mscb->sharedBounds.width, mscb->sharedBounds.height);
+				ImGui::Text("sharedBounds: %f, %f, %f, %f", mscb->sharedBounds.x, mscb->sharedBounds.y, mscb->sharedBounds.w, mscb->sharedBounds.h);
 			}
 
 			if(const auto* kcb = mRegistry.try_get<component::KinematicCollisionBody>(mSelected))

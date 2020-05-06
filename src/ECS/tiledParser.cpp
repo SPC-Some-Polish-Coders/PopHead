@@ -34,7 +34,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		#endif
 	};
 
-	auto getPositionAttribute = [&]()
+	auto getPosAttribute = [&]()
 	{
 		auto x = entityNode.getAttribute("x");
 		auto y = entityNode.getAttribute("y");
@@ -52,10 +52,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto getOptionalSizeAttribute = [&]() -> std::optional<sf::Vector2f>
 	{
-		auto width = entityNode.getAttribute("width");
-		auto height = entityNode.getAttribute("height");
-		if(width && height)
-			return sf::Vector2f(width->toFloat(), height->toFloat());
+		auto w = entityNode.getAttribute("width");
+		auto h = entityNode.getAttribute("height");
+		if(w && h)
+			return sf::Vector2f(w->toFloat(), h->toFloat());
 		else
 			return std::nullopt;
 	};
@@ -63,28 +63,28 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	auto loadPosition = [&]()
 	{
 		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.rect.setPosition(getPositionAttribute());
+		bodyRect.pos = getPosAttribute();
 	};
 
 	auto loadSize = [&]()
 	{
 		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.rect.setSize(getSizeAttribute());
+		bodyRect.size = getSizeAttribute();
 	};
 
 	auto loadPositionAndSize = [&]()
 	{
 		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.rect.setPosition(getPositionAttribute());
-		bodyRect.rect.setSize(getSizeAttribute());
+		bodyRect.pos = getPosAttribute();
+		bodyRect.size = getSizeAttribute();
 	};
 
 	auto loadPositionAndOptionalSize = [&]()
 	{
 		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.rect.setPosition(getPositionAttribute());
+		bodyRect.pos = getPosAttribute();
 		if(auto size = getOptionalSizeAttribute())
-			bodyRect.rect.setSize(*size);
+			bodyRect.size = *size;
 	};
 
 	auto getProperty = [&](const std::string& propertyName)
@@ -172,10 +172,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& playerBody = registry.get<component::BodyRect>(entity);
 		auto& playerCamera = registry.get<component::Camera>(entity);
 		
-		playerBody.rect.setPosition(sceneManager.hasPlayerPositionForNextScene() ?
-			sceneManager.getPlayerPositionForNextScene() : getPositionAttribute());
+		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
+			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera.camera = Camera(playerBody.rect.getCenter(), sf::Vector2f(640, 360));
+		playerCamera.camera = Camera(playerBody.center(), sf::Vector2f(640, 360));
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
@@ -203,7 +203,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		{
 			createCopy("Camera");
 			auto& camera = registry.get<component::Camera>(entity);
-			sf::Vector2f pos = getPositionAttribute();
+			sf::Vector2f pos = getPosAttribute();
 			sf::Vector2f size = getSizeAttribute();
 			sf::Vector2f center(pos + (size / 2.f));
 			camera.camera = Camera(center, size);
@@ -355,9 +355,9 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		createCopy("FlowingRiver");
 		auto& [pushingArea, particleEmitter, body] = registry.get<component::PushingArea, component::ParticleEmitter, component::BodyRect>(entity);
-		body.rect.setPosition(getPositionAttribute());
-		const sf::Vector2f size = getSizeAttribute();
-		body.rect.setSize(size);
+		body.pos = getPosAttribute();
+		auto size = getSizeAttribute();
+		body.size = size;
 		const sf::Vector2f pushForce(getProperty("pushForceX").toFloat(), getProperty("pushForceY").toFloat());
 		PH_ASSERT_CRITICAL(pushForce.x == 0.f || pushForce.y == 0.f, "We don't support diagonal flowing rivers! - Either pushForceX or pushForceY must be zero.");
 		pushingArea.pushForce = pushForce;
@@ -440,7 +440,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("Spikes");
 		loadIndoorOutdoorBlendComponent();
 
-		auto pos = getPositionAttribute();
+		auto pos = getPosAttribute();
 		auto size = getSizeAttribute();
 		pos.x -= static_cast<float>(static_cast<int>(pos.x) % 16); 
 		pos.y -= static_cast<float>(static_cast<int>(pos.y) % 16); 

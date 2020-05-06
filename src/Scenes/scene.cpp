@@ -133,11 +133,11 @@ PlayerStatus Scene::getPlayerStatus()
 	return PlayerStatus{};
 }
 
-void Scene::setPlayerPosition(sf::Vector2f newPosition)
+void Scene::setPlayerPosition(sf::Vector2f newPos)
 {
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto& bodyRect = playerView.get<component::BodyRect>(*playerView.begin());
-	bodyRect.rect.setPosition(newPosition);
+	bodyRect.pos = newPos;
 }
 
 entt::registry& Scene::getRegistry()

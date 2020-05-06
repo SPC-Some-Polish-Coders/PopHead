@@ -9,7 +9,7 @@ Camera::Camera()
 }
 
 Camera::Camera(FloatRect& rect)
-	:Camera(rect.getCenter(), {rect.width, rect.height})
+	:Camera(rect.center(), {rect.w, rect.h})
 {
 }
 
