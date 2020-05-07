@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include "Renderer/API/camera.hpp"
 #include "Renderer/MinorRenderers/quadData.hpp"
+#include "Utilities/rect.hpp"
 #include <vector>
 
 namespace ph{
@@ -11,6 +12,35 @@ class Texture;
 class Shader;
 
 namespace component {
+
+	struct TextureRect : public IntRect 
+	{
+		operator IntRect&() { return *this; }
+		TextureRect& operator=(const IntRect& r) { pos = r.pos; size = r.size; return *this; }
+	};
+
+	struct IndoorOutdoorBlendArea
+	{
+		enum ExitSide {Left, Right, Top, Down};
+		ExitSide exit;
+	};
+
+	struct IndoorOutdoorBlend
+	{
+		float outdoor;
+		float outdoorDarkness;
+		float indoorAlpha;
+	};
+
+	struct OutdoorBlend
+	{
+		float darkness;
+	};
+
+	struct IndoorBlend
+	{
+		float alpha;
+	};
 
 	struct RenderQuad
 	{
@@ -22,16 +52,12 @@ namespace component {
 		unsigned char z;
 	};
 
-	struct TextureRect
-	{
-		IntRect rect;
-	};
-
 	struct GroundRenderChunk
 	{
 		FloatRect bounds;
 		FloatRect textureRect;
 		unsigned char z;
+		bool outdoor;
 	};
 
 	struct RenderChunk
@@ -42,20 +68,12 @@ namespace component {
 		FloatRect lightWallsBounds;
 		unsigned char z;
 		unsigned rendererID;
+		bool outdoor;
 	};
 
-	struct LightWall
+	struct LightWall : public FloatRect 
 	{
-		union
-		{
-			FloatRect rect;
-
-			struct
-			{
-				sf::Vector2f pos;
-				sf::Vector2f size;
-			};
-		};
+		operator FloatRect&() { return *this; }
 	};
 
 	struct LightSource
@@ -85,12 +103,8 @@ namespace component {
 		bool smooth = false;
 	};
 
-	struct DebugCamera
-	{
-	};
+	struct DebugCamera {};
 
-	struct HiddenForRenderer
-	{
-	};
+	struct HiddenForRenderer {};
 
 }}

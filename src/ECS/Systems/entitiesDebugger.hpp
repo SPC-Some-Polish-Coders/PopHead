@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECS/system.hpp"
+#include <SFML/Graphics/Color.hpp>
 
 namespace ph::system {
 

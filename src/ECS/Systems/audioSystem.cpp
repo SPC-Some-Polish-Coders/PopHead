@@ -26,7 +26,7 @@ namespace ph::system {
 		sf::Vector2f playerPos(-10000, -10000);
 		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 		playerView.each([&playerPos](const component::Player, const component::BodyRect& body) {
-			playerPos = body.rect.getCenter();
+			playerPos = body.center();
 		});
 
 		// play and destroy spatial sounds
@@ -35,7 +35,7 @@ namespace ph::system {
 		for(auto& entity : spatialSoundsView)
 		{
 			const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
-			SoundPlayer::playSpatialSound(spatialSound.filepath, body.rect.getCenter());
+			SoundPlayer::playSpatialSound(spatialSound.filepath, body.center());
 			mRegistry.remove<component::SpatialSound>(entity);
 		}
 
@@ -57,7 +57,7 @@ namespace ph::system {
 		auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
 		enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body) 
 		{
-			const sf::Vector2f enemyPos = body.rect.getCenter();
+			const sf::Vector2f enemyPos = body.center();
 			const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
 			if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
 				theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;

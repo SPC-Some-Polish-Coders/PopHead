@@ -1,10 +1,6 @@
 #pragma once
 
-#include "Utilities/rect.hpp"
-#include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <set>
-#include <vector>
 
 namespace ph::component {
 	
@@ -19,21 +15,16 @@ namespace ph::component {
 		int damageDealt;
 	};
 	
-	struct Player
-	{
-	};
+	struct Player {};
 
-	struct Killable
-	{
-	};
+	struct Killable {};
 
-	struct InPlayerGunAttackArea
-	{
-	};
+	struct InPlayerGunAttackArea {};
 
-	struct FaceDirection
+	struct FaceDirection : public sf::Vector2f 
 	{
-		sf::Vector2f direction;
+		operator sf::Vector2f&() { return *this; }
+		FaceDirection& operator=(sf::Vector2f v) { x = v.x; y = v.y; return *this; }
 	};
 
 	struct GunAttacker
@@ -49,9 +40,7 @@ namespace ph::component {
 		float timeFromDeath = 0.f;
 	};
 
-	struct TaggedToDestroy
-	{
-	};
+	struct TaggedToDestroy {};
 
 	struct DamageTag
 	{
@@ -75,13 +64,9 @@ namespace ph::component {
 		sf::Vector2f endingShotPos;
 	};
 
-	struct CurrentGun
-	{
-	};
+	struct CurrentGun {};
 
-	struct CurrentMeleeWeapon
-	{
-	};
+	struct CurrentMeleeWeapon {};
 
 	struct DamageAnimation
 	{

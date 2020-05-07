@@ -22,6 +22,7 @@ private:
 	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity);
+	void parseIndoorOutdoor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLightWall(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePushingArea(const Xml& entityComponentNode, entt::entity& entity);
@@ -63,8 +64,10 @@ private:
 	void parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBulletBox(const Xml& entityComponentNode, entt::entity& entity);
-	void parseCar(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCutScene(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity);
+	void parseSpikes(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePuzzleColor(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

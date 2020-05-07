@@ -68,9 +68,10 @@ void parseScene(EntitiesTemplateStorage& templateStorage,
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
-		TiledParser tiledParser(templateStorage, gameRegistry, sceneManager);
-		tiledParser.parseFile(map);
-		aiManager.setIsPlayerOnScene(tiledParser.hasLoadedPlayer());
+
+		bool isPlayerOnScene;
+		loadEntitiesFromMapFile(map, templateStorage, gameRegistry, sceneManager, &isPlayerOnScene);
+		aiManager.setIsPlayerOnScene(isPlayerOnScene);
 	}
 }
 

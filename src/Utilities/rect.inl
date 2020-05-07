@@ -1,126 +1,131 @@
 #include "rect.hpp"
 
 template<typename T>
-ph::Rect<T>::Rect(const sf::Rect<T>& rect)
-	: sf::Rect<T>(rect)
+FORCE_INLINE Rect<T>::Rect() :x(0), y(0), w(0), h(0) {}
+
+template<typename T>
+FORCE_INLINE Rect<T>::Rect(T x, T y, T w, T h) :x(x), y(y), w(w), h(h) {}
+
+template<typename T>
+FORCE_INLINE Rect<T>::Rect(sf::Vector2<T> pos, sf::Vector2<T> size) :pos(pos), size(size) {}
+
+template <typename T>
+template <typename U>
+FORCE_INLINE Rect<T>::Rect(const Rect<U>& rectangle) :
+	x(static_cast<T>(rectangle.x)),
+	y(static_cast<T>(rectangle.y)),
+	w(static_cast<T>(rectangle.w)),
+	h(static_cast<T>(rectangle.h)) 
+{}
+
+template<typename T>
+FORCE_INLINE T Rect<T>::right() const
 {
+	return x + w;
 }
 
 template<typename T>
-ph::Rect<T>& ph::Rect<T>::operator=(const sf::Rect<T>& rect)
+FORCE_INLINE T Rect<T>::bottom() const
 {
-	sf::Rect<T>::operator=(rect);
-	return *this;
+	return y + h;
 }
 
 template<typename T>
-void ph::Rect<T>::setPosition(sf::Vector2<T> pos)
+FORCE_INLINE sf::Vector2<T> Rect<T>::center() const
 {
-	left = pos.x;
-	top = pos.y;
+	return { x + w / 2, y + h / 2};
 }
 
 template<typename T>
-void ph::Rect<T>::move(sf::Vector2<T> offset)
+FORCE_INLINE sf::Vector2<T> Rect<T>::topRight() const
 {
-	left += offset.x;
-	top += offset.y;
+	return { right(), y };
 }
 
 template<typename T>
-void ph::Rect<T>::setSize(sf::Vector2<T> size)
+FORCE_INLINE sf::Vector2<T> Rect<T>::bottomLeft() const
 {
-	width = size.x;
-	height = size.y;
+	return { x, bottom() };
 }
 
 template<typename T>
-T ph::Rect<T>::right() const
-{
-	return left + width;
-}
-
-template<typename T>
-T ph::Rect<T>::bottom() const
-{
-	return top + height;
-}
-
-template<typename T>
-sf::Vector2<T> ph::Rect<T>::getCenter() const
-{
-	return { left + width / 2, top + height / 2};
-}
-
-template<typename T>
-sf::Vector2<T> ph::Rect<T>::getTopLeft() const
-{
-	return { left, top };
-}
-
-template<typename T>
-sf::Vector2<T> ph::Rect<T>::getTopRight() const
-{
-	return { right(), top };
-}
-
-template<typename T>
-sf::Vector2<T> ph::Rect<T>::getBottomLeft() const
-{
-	return { left, bottom() };
-}
-
-template<typename T>
-sf::Vector2<T> ph::Rect<T>::getBottomRight() const
+FORCE_INLINE sf::Vector2<T> Rect<T>::bottomRight() const
 {
 	return { right(), bottom() };
 }
 
 template<typename T>
-sf::Vector2<T> ph::Rect<T>::getSize() const
-{
-	return { width, height };
-}
-
-template<typename T>
-bool ph::Rect<T>::containsIncludingBounds(const sf::Vector2<T>& point) const
+FORCE_INLINE bool Rect<T>::contains(const sf::Vector2<T>& point) const
 {
 	auto r = right();
 	auto b = bottom();
 
-	T minX = std::min(left, r);
-	T maxX = std::max(left, r);
-	T minY = std::min(top, b);
-	T maxY = std::max(top, b);
+	T minX = std::min(x, r);
+	T maxX = std::max(x, r);
+	T minY = std::min(y, b);
+	T maxY = std::max(y, b);
 
 	return (point.x >= minX) && (point.x <= maxX) && (point.y >= minY) && (point.y <= maxY);
 }
 
 template<typename T>
-bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& rect) const
+FORCE_INLINE bool intersect(const Rect<T>& a, const Rect<T>& b)
 {
-	// this function only works properly for rects with positive width and height
-	return left < rect.left + rect.width
-		&& right() > rect.left
-		&& top < rect.top + rect.height
-		&& bottom() > rect.top;
+	// this function only works properly for rects with positive w and h
+	return a.x < b.x + b.w
+		&& a.x + a.w > b.x
+		&& a.y < b.y + b.h
+		&& a.y + a.h > b.y;
 }
 
 template<typename T>
-bool ph::Rect<T>::doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b)
+FORCE_INLINE bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b)
 {
-	// this function only works properly for rects with positive width and height
-	return a.left < b.left + b.width
-		&& a.left + a.width > b.left
-		&& a.top < b.top + b.height
-		&& a.top + a.height > b.top;
+    Rect<T> intersection;
+    return a.intersects(b, intersection);
 }
 
 template<typename T>
-FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf::Vector2<short>& direction) const
+FORCE_INLINE bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& intersection) const
 {
-	bool collideOnX = left < rect.right() && right() > rect.left;
-	bool collideOnY = top < rect.bottom() && bottom() > rect.top;
+    // Rectangles with negative (fliped) dimensions are allowed, so we must handle them correctly
+
+    // Compute the min and max of the first rectangle on both axes
+    T r1MinX = std::min(x, static_cast<T>(x + w));
+    T r1MaxX = std::max(x, static_cast<T>(x + w));
+    T r1MinY = std::min(y, static_cast<T>(y + h));
+    T r1MaxY = std::max(y, static_cast<T>(y + h));
+
+    // Compute the min and max of the second rectangle on both axes
+    T r2MinX = std::min(rectangle.x, static_cast<T>(rectangle.x + rectangle.w));
+    T r2MaxX = std::max(rectangle.x, static_cast<T>(rectangle.x + rectangle.w));
+    T r2MinY = std::min(rectangle.y, static_cast<T>(rectangle.y + rectangle.h));
+    T r2MaxY = std::max(rectangle.y, static_cast<T>(rectangle.y + rectangle.h));
+
+    // Compute the intersection boundaries
+    T interLeft   = std::max(r1MinX, r2MinX);
+    T interTop    = std::max(r1MinY, r2MinY);
+    T interRight  = std::min(r1MaxX, r2MaxX);
+    T interBottom = std::min(r1MaxY, r2MaxY);
+
+    // If the intersection is valid (positive non zero area), then there is an intersection
+    if ((interLeft < interRight) && (interTop < interBottom))
+    {
+        intersection = Rect<T>(interLeft, interTop, interRight - interLeft, interBottom - interTop);
+        return true;
+    }
+    else
+    {
+        intersection = Rect<T>(0, 0, 0, 0);
+        return false;
+    }
+}
+
+template<typename T>
+FORCE_INLINE bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<short>& direction) const
+{
+	bool collideOnX = x < rect.right() && right() > rect.x;
+	bool collideOnY = y < rect.bottom() && bottom() > rect.y;
 
 	if (!(collideOnX ^ collideOnY))
 	{
@@ -130,12 +135,12 @@ FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf:
 
 	if (collideOnX)
 	{
-		if (top == rect.bottom())
+		if (y == rect.bottom())
 		{
 			direction = { 0, 1 };
 			return true;
 		}
-		if (bottom() == rect.top)
+		if (bottom() == rect.y)
 		{
 			direction = { 0, -1 };
 			return true;
@@ -143,12 +148,12 @@ FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf:
 	}
 	if (collideOnY)
 	{
-		if (left == rect.right())
+		if (x == rect.right())
 		{
 			direction = { 1, 0 };
 			return true;
 		}
-		if (right() == rect.left)
+		if (right() == rect.x)
 		{
 			direction = { -1, 0 };
 			return true;
@@ -157,5 +162,17 @@ FORCE_INLINE bool ph::Rect<T>::doPositiveRectsTouch(const ph::Rect<T>& rect, sf:
 
 	direction = { 0, 0 };
 	return false;
+}
+
+template <typename T>
+FORCE_INLINE bool operator ==(const Rect<T>& a, const Rect<T>& b)
+{
+	return a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h;
+}
+
+template <typename T>
+FORCE_INLINE bool operator !=(const Rect<T>& a, const Rect<T>& b)
+{
+	return !(a == b); 
 }
 

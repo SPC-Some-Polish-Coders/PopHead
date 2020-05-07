@@ -33,17 +33,20 @@ namespace ph::system {
 			});
 		};
 
-		if(e.type == sf::Event::KeyPressed) {
+		if(e.type == sf::Event::KeyPressed) 
+		{
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift && !dodgeInputDisabled)
-				mTimeFromDodgePressed = 0.f;
+			else if(e.key.code == sf::Keyboard::LShift && !dashInputDisabled) 
+				mDashJustPressed = true; 
 		}
-		else if(e.type == sf::Event::JoystickButtonPressed){
+		else if(e.type == sf::Event::JoystickButtonPressed)
+		{
+			// TODO: Don't forget to update joystick controls
 			if(e.joystickButton.button == PH_JOYSTICK_MENU)
 				doPause();
-			else if(e.joystickButton.button == PH_JOYSTICK_X && !dodgeInputDisabled)
-				mTimeFromDodgePressed = 0.f;
+			else if(e.joystickButton.button == PH_JOYSTICK_X && !dashInputDisabled)
+				mDashJustPressed = true;
 		}
 	}
 
@@ -92,38 +95,38 @@ namespace ph::system {
 		}
 
 		// get player direction and correct diagonal input
-		sf::Vector2f playerDirection;
+		sf::Vector2f playerDir;
 		if(d.x < 0.f && d.y < 0.f) { 
-			playerDirection = PH_NORTH_WEST;
+			playerDir = PH_NORTH_WEST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
 		else if(d.x > 0.f && d.y < 0.f) {
-			playerDirection = PH_NORTH_EAST;
+			playerDir = PH_NORTH_EAST;
 			float offset = (d.x + (-d.y)) / 2.f;
 			d.x = offset;
 			d.y = -offset;
 		}
 		else if(d.x < 0.f && d.y > 0.f) {
-			playerDirection = PH_SOUTH_WEST;
+			playerDir = PH_SOUTH_WEST;
 			float offset = ((-d.x) + d.y) / 2.f;
 			d.x = -offset;
 			d.y = offset;
 		}
 		else if(d.x > 0.f && d.y > 0.f) {
-			playerDirection = PH_SOUTH_EAST;
+			playerDir = PH_SOUTH_EAST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
 		else if(d.y < 0.f) {
-			playerDirection = PH_NORTH;
+			playerDir = PH_NORTH;
 		}
 		else if(d.y > 0.f) {
-			playerDirection = PH_SOUTH;
+			playerDir = PH_SOUTH;
 		}
 		else if(d.x < 0.f) {
-			playerDirection = PH_WEST;
+			playerDir = PH_WEST;
 		}
 		else if(d.x > 0.f) {
-			playerDirection = PH_EAST;
+			playerDir = PH_EAST;
 		}
 
 		if((d.x != 0.f) && (d.y != 0.f))
@@ -159,44 +162,57 @@ namespace ph::system {
 				animationData.isPlaying = false;
 			}
 
-			// set face direction
-			if(playerDirection != sf::Vector2f(0.f, 0.f))
+			// set faceDir
+			if(playerDir != sf::Vector2f(0.f, 0.f))
 			{
-				auto& faceDirection = playerView.get<component::FaceDirection>(player);
-				faceDirection.direction = playerDirection;
+				auto& faceDir = playerView.get<component::FaceDirection>(player);
+				faceDir = playerDir;
 			}
 		}
 
 		// set flash light direction
 		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
-		view.each([this](const component::Player, const component::FaceDirection face, component::LightSource& lightSource) 
+		view.each([this](const component::Player, const component::FaceDirection faceDir, component::LightSource& lightSource) 
 		{
 			float middleAngle;
-			if(face.direction == PH_EAST)            middleAngle = 0.f;
-			else if(face.direction == PH_WEST)       middleAngle = 180.f;
-			else if(face.direction == PH_SOUTH)      middleAngle = 90.f;
-			else if(face.direction == PH_NORTH)      middleAngle = -90.f;
-			else if(face.direction == PH_SOUTH_EAST) middleAngle = 45.f;
-			else if(face.direction == PH_NORTH_EAST) middleAngle = -45.f;
-			else if(face.direction == PH_SOUTH_WEST) middleAngle = 135.f;
-			else if(face.direction == PH_NORTH_WEST) middleAngle = -135.f;
+			if(faceDir == PH_EAST)            middleAngle = 0.f;
+			else if(faceDir == PH_WEST)       middleAngle = 180.f;
+			else if(faceDir == PH_SOUTH)      middleAngle = 90.f;
+			else if(faceDir == PH_NORTH)      middleAngle = -90.f;
+			else if(faceDir == PH_SOUTH_EAST) middleAngle = 45.f;
+			else if(faceDir == PH_NORTH_EAST) middleAngle = -45.f;
+			else if(faceDir == PH_SOUTH_WEST) middleAngle = 135.f;
+			else if(faceDir == PH_NORTH_WEST) middleAngle = -135.f;
 			else middleAngle = 0.f;
 
 			lightSource.startAngle = middleAngle - 35.f;
 			lightSource.endAngle = middleAngle + 35.f;
 		});
 
+		static float maxDash = 85.f;
+
 		// move player
 		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>(entt::exclude<component::DeadCharacter>);
-		movementView.each([this, d, playerDirection]
-		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, const component::BodyRect& body) 
+		movementView.each([this, d, playerDir]
+		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
 		{
+			if(mDashJustPressed) 
+			{
+				body.pos += d * mDashMomentum; 
+				mDashMomentum = 0.f;
+				mDashJustPressed = false;
+			}
+			else
+			{
+				kinematics.acceleration = d * speed.speed;
+			}
+
 			mAIManager.setPlayerPosition(body.pos);
-			float dodgeFactor = mTimeFromDodgePressed < 0.1f ? 2.f : 1.f;
-			kinematics.acceleration = d * dodgeFactor * speed.speed;
 
 			if(debugWindowOpen && ImGui::BeginTabItem("tunning"))
 			{
+				ImGui::Text("dash momentum: %f", mDashMomentum);
+				ImGui::SliderFloat("max dash", &maxDash, 50.f, 350.f);
 				ImGui::SliderFloat("player movement speed", &speed.speed, 500.f, 3000.f);
 				ImGui::SliderFloat("player default friction", &kinematics.defaultFriction, 1.f, 30.f);
 				ImGui::Text("Player velocity: %f %f", kinematics.vel.x, kinematics.vel.y);
@@ -205,7 +221,13 @@ namespace ph::system {
 			}
 		});
 
-		mTimeFromDodgePressed += dt;
+		if(mDashMomentum < maxDash)
+		{
+			float toCenterDash = abs(maxDash / 2.f - mDashMomentum); 
+			if(toCenterDash < maxDash / 10.f)
+				mDashMomentum += maxDash / 20.f * dt;
+			mDashMomentum += dt * toCenterDash;
+		}
 	}
 }
 

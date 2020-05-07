@@ -58,7 +58,7 @@ private:
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
 	void createChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
-	                 unsigned char z, AIManager&);
+	                 unsigned char z, AIManager&, bool outdoor);
 	size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
 	size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 	void createDebugName(entt::entity entity, const char* name) const;

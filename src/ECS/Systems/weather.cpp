@@ -88,7 +88,7 @@ void Weather::update(float dt)
 					} break;
 
 					case Rain::Heavy: {
-						Renderer::setAmbientLightColor(sf::Color(50, 40, 40));
+						Renderer::setAmbientLightColor(sf::Color(30, 30, 40));
 						rainInitVel = {0.f, 400.f};
 						rainInitVelRandom = {0.f, 500.f};
 						rainAcceleration = {0.f, 2.f};

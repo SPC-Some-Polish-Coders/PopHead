@@ -22,10 +22,11 @@ namespace system {
 		AIManager& mAIManager;
 		Scene* mScene;
 
-		float mTimeFromDodgePressed = 1.f; 
+		float mDashMomentum = 0.f; 
+		bool mDashJustPressed = false;
 
 	public:
-		inline static bool dodgeInputDisabled = false;
+		inline static bool dashInputDisabled = false;
 	};
 }
 

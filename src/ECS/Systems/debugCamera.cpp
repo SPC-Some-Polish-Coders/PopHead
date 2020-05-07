@@ -30,7 +30,7 @@ void DebugCamera::update(float dt)
 				sf::Vector2f playerPos;
 				auto players = mRegistry.view<component::Player, component::BodyRect>();
 				players.each([&playerPos](const component::Player, const component::BodyRect& body) {
-					playerPos = body.rect.getCenter();
+					playerPos = body.center();
 				});
 
 				// create debug camera
@@ -82,8 +82,8 @@ void DebugCamera::update(float dt)
 			movement.y += 500.f;	
 		movement *= dt;
 		movement *= mMovementSpeed;
-		body.rect.move(movement);
-		camera.camera.setCenter(body.rect.getCenter());
+		body.pos += movement;
+		camera.camera.setCenter(body.center());
 	});
 }
 

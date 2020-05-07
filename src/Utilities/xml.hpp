@@ -18,6 +18,7 @@ public:
 	std::optional<Xml> getAttribute(const std::string& name) const;
 
 	std::string toString() const;
+	const char* toCstring() const;
 	bool toBool() const;
 	int toInt() const;
 	unsigned toUnsigned() const;

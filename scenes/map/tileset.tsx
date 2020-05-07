@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1296" columns="32">
  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  <terraintypes>
   <terrain name="dirtRoad" tile="-1"/>
@@ -569,6 +569,110 @@
    <object id="2" type="Collision" x="6.90909" y="0" width="9.09091" height="4"/>
    <object id="3" type="LightWall" x="1.68182" y="1.22727" width="1.27273" height="14.8182"/>
    <object id="4" type="LightWall" x="1.5" y="1.13636" width="14.3636" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="834">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="12.75" y="13.2216" width="3" height="3"/>
+   <object id="2" type="LightWall" x="11.75" y="11.9034" width="4" height="4.18182"/>
+  </objectgroup>
+ </tile>
+ <tile id="835">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="-0.272727" y="12.75" width="16" height="3"/>
+   <object id="2" type="LightWall" x="-0.272727" y="10.7955" width="16" height="2.18183"/>
+  </objectgroup>
+ </tile>
+ <tile id="836">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="-0.272727" y="12.8409" width="16" height="3"/>
+   <object id="2" type="LightWall" x="-0.272727" y="10.8864" width="16" height="2.18183"/>
+  </objectgroup>
+ </tile>
+ <tile id="837">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="0.0454545" y="12.8409" width="3" height="3"/>
+   <object id="2" type="LightWall" x="0.0454545" y="12.1591" width="2.81818" height="3.54546"/>
+  </objectgroup>
+ </tile>
+ <tile id="866">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="9.0625" y="-0.0227295" width="6.75" height="16"/>
+   <object id="2" type="LightWall" x="12.6193" y="0.113629" width="1.54545" height="15.9091"/>
+  </objectgroup>
+ </tile>
+ <tile id="869">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="0.261364" y="-0.0227295" width="6.75" height="16"/>
+   <object id="2" type="LightWall" x="0.488637" y="0.113629" width="2.27273" height="15.9091"/>
+  </objectgroup>
+ </tile>
+ <tile id="870">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="8.86363" y="-0.0454506" width="7.09091" height="16"/>
+   <object id="2" type="Collision" x="-0.0454643" y="9.95455" width="8.90909" height="6.18182"/>
+   <object id="3" type="LightWall" x="-0.136354" y="11.7727" width="11.6363" height="1.27273"/>
+   <object id="4" type="LightWall" x="12.6818" y="-0.318188" width="1.27273" height="8.8182"/>
+   <object id="5" type="LightWall" x="9.2273" y="8.22728" width="4.09085" height="3.54546"/>
+  </objectgroup>
+ </tile>
+ <tile id="898">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="9.25" y="0.125" width="6.75" height="16"/>
+   <object id="2" type="LightWall" x="13.9432" y="0.136359" width="1.36364" height="15.9091"/>
+  </objectgroup>
+ </tile>
+ <tile id="901">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="-0.0113636" y="0" width="6.75" height="16"/>
+   <object id="2" type="LightWall" x="0.0795455" y="0" width="2.36364" height="15.9091"/>
+  </objectgroup>
+ </tile>
+ <tile id="902">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="-0.181818" y="0.227277" width="7.18182" height="16"/>
+   <object id="2" type="Collision" x="7.09091" y="13.1364" width="8.72727" height="3"/>
+   <object id="3" type="LightWall" x="1.72727" y="0.136359" width="1.27273" height="13.4546"/>
+   <object id="4" type="LightWall" x="1.72729" y="12.3182" width="14" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="930">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="9.17617" y="0.125" width="6.75" height="4"/>
+   <object id="2" type="LightWall" x="13.3125" y="0.29545" width="2.63636" height="2.54546"/>
+  </objectgroup>
+ </tile>
+ <tile id="931">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="-0.181818" y="0.545455" width="16" height="4"/>
+   <object id="2" type="LightWall" x="-0.181818" y="1.04545" width="16" height="1.27274"/>
+  </objectgroup>
+ </tile>
+ <tile id="932">
+  <objectgroup draworder="index" id="3">
+   <object id="3" type="Collision" x="-0.206522" y="0.315217" width="16" height="4"/>
+   <object id="4" type="LightWall" x="-0.206522" y="0.815212" width="16" height="1.27274"/>
+  </objectgroup>
+ </tile>
+ <tile id="933">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="0.0795455" y="0.340907" width="6.75" height="4"/>
+   <object id="2" type="LightWall" x="0.488636" y="0.477266" width="3" height="3.9091"/>
+  </objectgroup>
+ </tile>
+ <tile id="934">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="4.44089e-16" y="-0.204553" width="6.75" height="16"/>
+   <object id="2" type="Collision" x="6.90909" y="-0.204553" width="9.09091" height="4"/>
+   <object id="3" type="LightWall" x="1.68182" y="1.02272" width="1.27273" height="14.8182"/>
+   <object id="4" type="LightWall" x="1.5" y="0.931807" width="14.3636" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="938">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="SokobondBoulder" x="6.875" y="9.125">
+    <point/>
+   </object>
   </objectgroup>
  </tile>
 </tileset>

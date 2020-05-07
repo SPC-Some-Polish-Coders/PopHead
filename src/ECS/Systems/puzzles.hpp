@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-class PushingAreas : public System
+class Puzzles : public System
 {
 public:
 	using System::System;

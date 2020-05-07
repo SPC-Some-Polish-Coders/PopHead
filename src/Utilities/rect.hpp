@@ -1,46 +1,57 @@
 #pragma once
 
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include "Utilities/forceInline.hpp"
+#include <algorithm>
 
 namespace ph {
 
 template<typename T>
-class Rect : public sf::Rect<T>
+struct Rect
 {
-public:
-	// use all constructors from sf::Rect
-	using sf::Rect<T>::Rect;
+	FORCE_INLINE Rect();
+	FORCE_INLINE Rect(T x, T y, T w, T h);
+	FORCE_INLINE Rect(sf::Vector2<T> pos, sf::Vector2<T> size);
 
-	Rect(const sf::Rect<T>& rect);
-	Rect& operator=(const sf::Rect<T>& rect);
-
-	FORCE_INLINE void setPosition(sf::Vector2<T>);
-	FORCE_INLINE void move(sf::Vector2<T>);
-	FORCE_INLINE void setSize(sf::Vector2<T>);
+    template <typename U>
+    FORCE_INLINE explicit Rect(const Rect<U>& rectangle);
 
 	FORCE_INLINE T right() const;
 	FORCE_INLINE T bottom() const;
 
-	FORCE_INLINE sf::Vector2<T> getCenter() const;
-	FORCE_INLINE sf::Vector2<T> getTopLeft() const;
-	FORCE_INLINE sf::Vector2<T> getTopRight() const;
-	FORCE_INLINE sf::Vector2<T> getBottomLeft() const;
-	FORCE_INLINE sf::Vector2<T> getBottomRight() const;
-	
-	FORCE_INLINE sf::Vector2<T> getSize() const;
+	FORCE_INLINE sf::Vector2<T> center() const;
+	FORCE_INLINE sf::Vector2<T> topRight() const;
+	FORCE_INLINE sf::Vector2<T> bottomLeft() const;
+	FORCE_INLINE sf::Vector2<T> bottomRight() const;
 
-	FORCE_INLINE bool containsIncludingBounds(const sf::Vector2<T>& point) const;
+	FORCE_INLINE bool contains(const sf::Vector2<T>& point) const;
+    FORCE_INLINE bool intersects(const Rect<T>& rectangle, Rect<T>& intersection) const;
+	FORCE_INLINE bool touch(const Rect<T>& rect, sf::Vector2<short>& direction) const;
 
-	FORCE_INLINE bool doPositiveRectsIntersect(const sf::Rect<T>& rect) const;
-	FORCE_INLINE static bool doPositiveRectsIntersect(const sf::Rect<T>& a, const sf::Rect<T>& b);
-
-	FORCE_INLINE bool doPositiveRectsTouch(const Rect<T>& rect, sf::Vector2<short>& direction) const;
+	union
+	{
+		struct { T x, y, w, h; };
+		struct { sf::Vector2<T> pos, size; };
+	};
 };
+
+template<typename T>
+FORCE_INLINE bool intersect(const Rect<T>& a, const Rect<T>& b);
+
+template<typename T>
+FORCE_INLINE bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b);
+
+template <typename T>
+FORCE_INLINE bool operator ==(const Rect<T>& a, const Rect<T>& b);
+
+template <typename T>
+FORCE_INLINE bool operator !=(const Rect<T>& a, const Rect<T>& b);
+
+#include "rect.inl"
 
 using IntRect = Rect<int>;
 using FloatRect = Rect<float>;
 
 }
 
-#include "rect.inl"

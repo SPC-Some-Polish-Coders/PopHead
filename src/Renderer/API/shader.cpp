@@ -128,7 +128,7 @@ void Shader::setUniformVector4(const char* name, const float x, const float y, c
 
 void Shader::setUniformVector4Rect(const char* name, const FloatRect& r) const
 {
-	setUniformVector4(name, r.left, r.top, r.width, r.height);
+	setUniformVector4(name, r.x, r.y, r.w, r.h);
 }
 
 void Shader::setUniformMatrix4x4(const char* name, const float* transform) const

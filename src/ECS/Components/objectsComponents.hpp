@@ -61,10 +61,33 @@ namespace ph::component {
 		bool isActivated;
 	};
 
+	enum class PuzzleColor
+	{
+		Grey, Red, Green, Blue 
+	};
+
+	struct PressurePlate
+	{
+		unsigned puzzleId;
+		unsigned id;
+		PuzzleColor pressedByColor;
+		bool isPressed = false;
+		bool isPressIrreversible;
+	};
+
+	struct Puzzle
+	{	
+		unsigned id;
+	};
+
 	struct Gate
 	{
-		bool isOpened;
+		unsigned id;
+		bool previouslyOpen = false; 
+		bool open = false;
 	};
+
+	struct Spikes {};
 
 	struct GunProperties
 	{
@@ -88,7 +111,6 @@ namespace ph::component {
 		int damage;
 	};
 
-	struct Weather
-	{
-	};
+	struct Weather {};
+
 }

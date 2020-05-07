@@ -15,7 +15,7 @@ public:
 
 	void setCenter(sf::Vector2f center);
 	void move(sf::Vector2f offset);
-	sf::Vector2f getCenter() { return mCenter; }
+	sf::Vector2f center() { return mCenter; }
 
 	void setRotation(float rotation);
 	void rotate(float rotation);

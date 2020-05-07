@@ -5,24 +5,9 @@
 
 namespace ph::component {
 
-	struct BodyRect
+	struct BodyRect : public FloatRect 
 	{
-		union
-		{
-			ph::FloatRect rect;
-
-			struct
-			{
-				sf::Vector2f pos;
-				sf::Vector2f size;
-			};
-
-			struct
-			{
-				float x, y;
-				float width, height;
-			};
-		};
+		operator FloatRect&() { return *this; }
 	};
 
 	struct BodyCircle
@@ -45,9 +30,7 @@ namespace ph::component {
 		float speed;
 	};
 
-	struct StaticCollisionBody
-	{
-	};
+	struct StaticCollisionBody {};
 
 	struct MultiStaticCollisionBody
 	{

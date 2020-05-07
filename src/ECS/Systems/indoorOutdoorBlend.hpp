@@ -4,12 +4,15 @@
 
 namespace ph::system {
 
-class PushingAreas : public System
+class IndoorOutdoorBlend : public System
 {
 public:
 	using System::System;
 
 	void update(float dt) override;
+
+private:
+	float mPlayerOutdoor = 1.f;
 };
 
 }

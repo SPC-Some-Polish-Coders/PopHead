@@ -20,14 +20,14 @@ void HintAreas::update(float dt)
 
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();
-	for (auto hintArea : hintAreasView)
+	for(auto hintArea : hintAreasView)
 	{
-		for (auto player : playerView)
+		for(auto player : playerView)
 		{
 			const auto& hintAreaBody = hintAreasView.get<component::BodyRect>(hintArea);
 			const auto& playerBody = playerView.get<component::BodyRect>(player);
 			auto& hint = hintAreasView.get<component::Hint>(hintArea);
-			if (hintAreaBody.rect.contains(playerBody.rect.getCenter()))
+			if(hintAreaBody.contains(playerBody.center()))
 			{
 				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
 
@@ -46,7 +46,7 @@ void HintAreas::update(float dt)
 					GunAttacks::shootInputDisabled = true;
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = true;
-					PlayerMovementInput::dodgeInputDisabled = true;
+					PlayerMovementInput::dashInputDisabled = true;
 					Weather::setRainType(Rain::Heavy);
 					Weather::setMode(Weather::Rainy);	
 				}
@@ -59,8 +59,8 @@ void HintAreas::update(float dt)
 				else if(hint.hintName == "weaponChangingHint") {
 					GunAttacks::changeWeaponInputDisabled = false;
 				}
-				else if(hint.hintName == "dodgingHint") {
-					PlayerMovementInput::dodgeInputDisabled = false;
+				else if(hint.hintName == "dashingHint") {
+					PlayerMovementInput::dashInputDisabled = false;
 				}
 			}
 			else if(hint.isShown)

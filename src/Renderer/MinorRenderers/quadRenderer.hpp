@@ -23,12 +23,12 @@ void setDebugCountingActive(bool active);
 
 void setChunksTexture(unsigned texture);
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z);
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z, sf::Color color);
 
 unsigned registerNewChunk(const FloatRect& bounds);
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData,
-				 const FloatRect& bounds, float z, unsigned* rendererID);
+				 const FloatRect& bounds, float z, unsigned* rendererID, sf::Color color);
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 

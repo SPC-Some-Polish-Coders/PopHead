@@ -47,7 +47,7 @@ void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 
 void LightRenderer::submitLightWall(FloatRect wall)
 {
-	if(mScreenBounds->doPositiveRectsIntersect(FloatRect(wall.left - 200.f, wall.top - 200.f, wall.width + 400.f, wall.height + 400.f)))
+	if(intersect(*mScreenBounds, FloatRect(wall.x - 200.f, wall.y - 200.f, wall.w + 400.f, wall.h + 400.f)))
 		mLightWalls.emplace_back(wall);
 }
 
@@ -85,10 +85,10 @@ void LightRenderer::flush()
 	lights = static_cast<unsigned>(mLights.size());
 
 	// submit quad which rays will hit if they won't hit anything in the scene
-	submitLightWall(FloatRect(mScreenBounds->left - 100000.f, mScreenBounds->top - 100000.f,
-	                          mScreenBounds->width + 200000.f, mScreenBounds->height + 200000.f));
+	submitLightWall(FloatRect(mScreenBounds->x - 100000.f, mScreenBounds->y - 100000.f,
+	                          mScreenBounds->w + 200000.f, mScreenBounds->h + 200000.f));
 
-	FloatRect expandedScreenSize(mScreenBounds->left - 400.f, mScreenBounds->top - 400.f, 800.f, 800.f);
+	FloatRect expandedScreenSize(mScreenBounds->x - 400.f, mScreenBounds->y - 400.f, 800.f, 800.f);
 
 	for(auto& light : mLights)
 	{
@@ -126,7 +126,7 @@ void LightRenderer::flush()
 		PH_PROFILE_SCOPE("draw light triangle fan");
 		mLightShader.setUniformVector2("lightPos", light.pos);
 		mLightShader.setUniformVector4Color("color", light.color);
-		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->height / 480);
+		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
 		mLightShader.setUniformFloat("a", light.attenuationAddition);
 		mLightShader.setUniformFloat("b", light.attenuationFactor);
 		mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
@@ -157,10 +157,10 @@ void LightRenderer::flush()
 RayWallIntersection LightRenderer::getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall)
 {
 	sf::Vector2f results[4];
-	results[0] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopLeft(), wall.getTopRight());
-	results[1] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getBottomLeft(), wall.getBottomRight());
-	results[2] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopLeft(), wall.getBottomLeft());
-	results[3] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.getTopRight(), wall.getBottomRight());
+	results[0] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.pos, wall.topRight());
+	results[1] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.bottomLeft(), wall.bottomRight());
+	results[2] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.pos, wall.bottomLeft());
+	results[3] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.topRight(), wall.bottomRight());
 
 	RayWallIntersection closestIntersection;
 	for(unsigned i = 0; i < 4; ++i) 

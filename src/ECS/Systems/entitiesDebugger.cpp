@@ -1,10 +1,12 @@
 #include "pch.hpp"
 #include "entitiesDebugger.hpp"
+#include "Renderer/renderer.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
 
 // NOTE:
 // This code is strictly exploratory and it lacks most of components
@@ -15,24 +17,70 @@ extern bool debugWindowOpen;
 
 namespace ph::system {
 
+constexpr unsigned lookForSize = 255;
+static char lookFor[lookForSize];
+
+static unsigned getCharCount(char* str, size_t size)
+{
+	for(unsigned charCount = 0; charCount < static_cast<unsigned>(size); ++charCount)
+		if(str[charCount] == 0)
+			return charCount;
+	return static_cast<unsigned>(size);
+}
+
 void EntitiesDebugger::update(float dt)
 {
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
-		ImGui::BeginChild("entities:", ImVec2(150, 0), true);
-		mRegistry.each([this](auto entity)
+		ImGui::BeginChild("entities", ImVec2(380, 0), true);
+		ImGui::InputText("debug name", lookFor, lookForSize);
+
+		unsigned lookForCharCount = getCharCount(lookFor, lookForSize);
+
+		mRegistry.each([=](auto entity)
 		{
+			bool displayThisEntity = true;
 			char label[50];
-			if(const auto* debugName = mRegistry.try_get<component::DebugName>(entity))
+			if(auto* debugName = mRegistry.try_get<component::DebugName>(entity))
 			{
-				sprintf(label, "%u - %s", entity, debugName->name);
+				char* name = debugName->name;
+				unsigned nameCharCount = getCharCount(name, strlen(name));
+				sprintf(label, "%u - %s", entity, name);
+				if(lookForCharCount != 0 && lookFor[0] != ' ')
+				{
+					for(unsigned i = 0; i <= nameCharCount && i < lookForCharCount; ++i)
+					{
+						char nameChar = name[i];
+						char lookForChar = lookFor[i]; 
+						if(nameChar != lookForChar)
+						{
+							if(lookForChar > 96 && lookForChar < 123)
+							{
+								if(lookForChar - 32 != nameChar)
+								{
+									displayThisEntity = false;
+									break;
+								}
+							}
+							else
+							{
+								displayThisEntity = false;
+								break;
+							}
+						}
+					}
+				}
 			}
-			else
+			else if(lookFor[0] == ' ')
 			{
 				sprintf(label, "%u", entity);
 			}
+			else
+			{
+				displayThisEntity = false;
+			}
 
-			if(ImGui::Selectable(label, mSelected == entity))
+			if(displayThisEntity && ImGui::Selectable(label, mSelected == entity))
 			{
 				mSelected = entity;
 			}
@@ -45,6 +93,18 @@ void EntitiesDebugger::update(float dt)
 
 		if(mRegistry.valid(mSelected))
 		{
+			bool bodyValid = false;
+			component::BodyRect body;	
+			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("BodyRecy");
+				ImGui::Text("pos: %f, %f", br->x, br->y);
+				ImGui::Text("size: %f, %f", br->w, br->h);
+				body = *br;
+				bodyValid = true;
+			}
+
 			if(const auto* zombie = mRegistry.try_get<component::Zombie>(mSelected))
 			{
 				ImGui::Separator();
@@ -87,21 +147,26 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("color: %u, %u, %u, %u", rq->color.r, rq->color.g, rq->color.b, rq->color.a);
 				ImGui::Text("rotation: %f", rq->rotation);
 				ImGui::Text("z: %u", rq->z);
+
+				if(bodyValid)
+				{
+					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
+					                     10, 0.f, {}, ProjectionType::gameWorld, false);
+				}
 			}
 
 			if(const auto* tr = mRegistry.try_get<component::TextureRect>(mSelected))
 			{
 				ImGui::Separator();
-				ImGui::BulletText("TextureRect");
-				ImGui::Text("rect: %i, %i, %i, %i", tr->rect.left, tr->rect.top, tr->rect.width, tr->rect.height);
+				ImGui::BulletText("TextureRect %i, %i, %i, %i", tr->x, tr->y, tr->w, tr->h);
 			}
 
 			if(const auto* grc = mRegistry.try_get<component::GroundRenderChunk>(mSelected))
 			{
 				ImGui::Separator();
 				ImGui::BulletText("GroundRenderChunk");
-				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.left, grc->bounds.top, grc->bounds.width, grc->bounds.height);
-				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.left, grc->textureRect.top, grc->textureRect.width, grc->textureRect.height);
+				ImGui::Text("bounds: %f, %f, %f, %f", grc->bounds.x, grc->bounds.y, grc->bounds.w, grc->bounds.h);
+				ImGui::Text("textureRect: %f, %f, %f, %f", grc->textureRect.x, grc->textureRect.y, grc->textureRect.w, grc->textureRect.h);
 				ImGui::Text("z: %u", grc->z);
 			}
 
@@ -111,18 +176,33 @@ void EntitiesDebugger::update(float dt)
 				ImGui::BulletText("RenderChunk");
 				ImGui::Text("quads: (view is not supported)");
 				ImGui::Text("lightWalls: (view is not supported)");
-				ImGui::Text("quadsBounds: %f, %f, %f, %f", rc->quadsBounds.left, rc->quadsBounds.top, rc->quadsBounds.width, rc->quadsBounds.height);
-				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.left, rc->lightWallsBounds.top, rc->lightWallsBounds.width, rc->lightWallsBounds.height);
+				ImGui::Text("quadsBounds: %f, %f, %f, %f", rc->quadsBounds.x, rc->quadsBounds.y, rc->quadsBounds.w, rc->quadsBounds.h);
+				ImGui::Text("lightWallsBounds: %f, %f, %f, %f", rc->lightWallsBounds.x, rc->lightWallsBounds.y, rc->lightWallsBounds.w, rc->lightWallsBounds.h);
 				ImGui::Text("z: %u", rc->z);
 				ImGui::Text("rendererID: %u", rc->rendererID);
 			}
 
-			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
+			if(const auto* io = mRegistry.try_get<component::IndoorOutdoorBlend>(mSelected))
 			{
 				ImGui::Separator();
-				ImGui::BulletText("BodyRecy");
-				ImGui::Text("pos: %f, %f", br->x, br->y);
-				ImGui::Text("size: %f, %f", br->width, br->height);
+				ImGui::BulletText("IndoorOutdoorBlend");
+				ImGui::Text("outdoor: %f", io->outdoor);
+				ImGui::Text("outdoorDarkness: %f", io->outdoorDarkness);
+				ImGui::Text("indoorAlpha: %f", io->indoorAlpha);
+			}
+
+			if(const auto* ob = mRegistry.try_get<component::OutdoorBlend>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("OutdoorBlend");
+				ImGui::Text("darkness: %f", ob->darkness);
+			}
+
+			if(const auto* ib = mRegistry.try_get<component::IndoorBlend>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("IndoorBlend");
+				ImGui::Text("alpha: %f", ib->alpha);
 			}
 
 			if(const auto* kin = mRegistry.try_get<component::Kinematics>(mSelected))
@@ -154,7 +234,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("MultiStaticCollisionBody");
 				ImGui::Text("rects: (view is not supprted)");
-				ImGui::Text("sharedBounds: %f, %f, %f, %f", mscb->sharedBounds.left, mscb->sharedBounds.top, mscb->sharedBounds.width, mscb->sharedBounds.height);
+				ImGui::Text("sharedBounds: %f, %f, %f, %f", mscb->sharedBounds.x, mscb->sharedBounds.y, mscb->sharedBounds.w, mscb->sharedBounds.h);
 			}
 
 			if(const auto* kcb = mRegistry.try_get<component::KinematicCollisionBody>(mSelected))
@@ -166,6 +246,47 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("staticallyMovedDown: %i", kcb->staticallyMovedDown);
 				ImGui::Text("staticallyMovedLeft: %i", kcb->staticallyMovedLeft);
 				ImGui::Text("staticallyMovedRight: %i", kcb->staticallyMovedRight);
+			}
+
+			if(const auto* ioba = mRegistry.try_get<component::IndoorOutdoorBlendArea>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("IndoorOutdoorBlendArea");
+				using component::IndoorOutdoorBlendArea;
+				switch(ioba->exit)
+				{
+					case IndoorOutdoorBlendArea::Left: ImGui::Text("exit: Left"); break;
+					case IndoorOutdoorBlendArea::Right: ImGui::Text("exit: Right"); break;
+					case IndoorOutdoorBlendArea::Top: ImGui::Text("exit: Top"); break;
+					case IndoorOutdoorBlendArea::Down: ImGui::Text("exit: Down"); break;
+					default: ImGui::Text("exit: Error!!! (you probably just didn't click checkbox in tiled)");
+				}
+			}
+
+			if(const auto* gate = mRegistry.try_get<component::Gate>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("Gate");
+				ImGui::Text("id: %u", gate->id);
+				ImGui::Text("previouslyOpen: %u", gate->previouslyOpen);
+				ImGui::Text("open: %u", gate->open);
+			}
+
+			if(const auto* pressurePlate = mRegistry.try_get<component::PressurePlate>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("PressurePlate");
+				ImGui::Text("puzzleId: %u", pressurePlate->puzzleId);
+				ImGui::Text("id: %u", pressurePlate->id);
+				ImGui::Text("isPressed: %u", pressurePlate->isPressed);
+				ImGui::Text("isPressIrreversible: %u", pressurePlate->isPressIrreversible);
+			}
+
+			if(const auto* p = mRegistry.try_get<component::Puzzle>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("Puzzle");
+				ImGui::Text("id: %u", p->id); 
 			}
 		}
 

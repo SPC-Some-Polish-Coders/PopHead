@@ -6,4 +6,10 @@ namespace ph::component {
 	{
 		char name[50];
 	};
+
+	struct DenialArea
+	{
+		enum Type {Collision, LightWall, All};
+		Type type;
+	};
 }

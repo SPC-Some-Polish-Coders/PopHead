@@ -38,15 +38,15 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::submitPoint(sf::Vector2f position, const sf::Color& color, float z, float size)
+void PointRenderer::submitPoint(sf::Vector2f pos, const sf::Color& color, float z, float size)
 {
-	if(!isInsideScreen(position, size))
+	if(!isInsideScreen(pos, size))
 		return;
 
 	PointVertexData point;
 	point.color = Cast::toNormalizedColorVector4f(color);
-	point.position = position;
-	point.size = size * (360.f / mScreenBounds->height);
+	point.position = pos;
+	point.size = size * (360.f / mScreenBounds->h);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
 }
@@ -67,14 +67,17 @@ void PointRenderer::flush()
 	mSubmitedPointsVertexData.clear();
 }
 
-bool PointRenderer::isInsideScreen(sf::Vector2f position, float size)
+bool PointRenderer::isInsideScreen(sf::Vector2f pos, float size)
 {
 	if(size == 1.f)
-		return mScreenBounds->contains(position);
-	else {
+	{
+		return mScreenBounds->contains(pos);
+	}
+	else 
+	{
 		const float halfSize = size / 2;
-		FloatRect pointRect(position.x - halfSize, position.y - halfSize, size, size);
-		return mScreenBounds->doPositiveRectsIntersect(pointRect);
+		FloatRect pointRect(pos.x - halfSize, pos.y - halfSize, size, size);
+		return intersect(*mScreenBounds, pointRect);
 	}
 }
 

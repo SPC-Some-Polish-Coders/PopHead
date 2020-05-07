@@ -21,6 +21,7 @@ namespace ph::system {
 
 			auto another = current;
 			++another;
+
 			if (another == kinematicRectObjects.end())
 				break;
 
@@ -29,15 +30,15 @@ namespace ph::system {
 			{
 				auto& anotherBody = kinematicRectObjects.get<component::BodyRect>(*another);
 
-				if (currentBody.rect.doPositiveRectsIntersect(anotherBody.rect))
+				if(intersect(currentBody, anotherBody))
 				{
-					sf::FloatRect intersection;
-					currentBody.rect.intersects(anotherBody.rect, intersection);
+					FloatRect intersection;
+					currentBody.intersects(anotherBody, intersection);
 
-					if (intersection.width < intersection.height)
+					if(intersection.w < intersection.h)
 					{
-						auto halfWidth = intersection.width / 2.f;
-						if (currentBody.x < anotherBody.x)
+						auto halfWidth = intersection.w / 2.f;
+						if(currentBody.x < anotherBody.x)
 						{
 							currentBody.x -= halfWidth;
 							anotherBody.x += halfWidth;
@@ -50,8 +51,8 @@ namespace ph::system {
 					}
 					else
 					{
-						auto halfHeight = intersection.height / 2.f;
-						if (currentBody.y < anotherBody.y)
+						auto halfHeight = intersection.h / 2.f;
+						if(currentBody.y < anotherBody.y)
 						{
 							currentBody.y -= halfHeight;
 							anotherBody.y += halfHeight;

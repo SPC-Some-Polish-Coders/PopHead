@@ -84,7 +84,7 @@ void ArcadeMode::update(float dt)
 			if(arcadeModeSpawner.timeFromLastSpawn > 0.5f) 
 			{
 				arcadeModeSpawner.timeFromLastSpawn = 0.f;
-				const sf::Vector2f spawnPos = Random::generateVector(spawnerBody.rect.getTopLeft(), spawnerBody.rect.getBottomRight());
+				const sf::Vector2f spawnPos = Random::generateVector(spawnerBody.rect.getTopLeft(), spawnerBody.rect.bottomRight());
 				auto& wave = arcadeModeSpawner.waves[mCurrentWave - 1];
 				if(wave.normalZombiesToSpawn > 0 && wave.slowZombiesToSpawn > 0) {
 					int ran = Random::generateNumber(0, 5);

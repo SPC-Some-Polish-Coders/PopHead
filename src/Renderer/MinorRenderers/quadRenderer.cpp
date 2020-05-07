@@ -43,6 +43,7 @@ struct GroundChunk
 {
 	FloatRect textureRect;
 	sf::Vector2f pos;
+	sf::Color color;
 	float z;
 };
 
@@ -51,6 +52,7 @@ struct Chunk
 	FloatRect bounds;
 	unsigned vbo;
 	unsigned quadsCount;
+	sf::Color color;
 	float z;
 };
 
@@ -316,9 +318,9 @@ void shutDown()
 	glDeleteVertexArrays(1, &chunks.dummyVAO);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z)
+void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z, sf::Color color)
 {
-	groundChunks.push_back(GroundChunk{textureRect, pos, z});
+	groundChunks.push_back(GroundChunk{textureRect, pos, color, z});
 }
 
 unsigned registerNewChunk(const FloatRect& bounds)
@@ -329,7 +331,7 @@ unsigned registerNewChunk(const FloatRect& bounds)
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
-                 float z, unsigned* id)
+                 float z, unsigned* id, sf::Color color)
 {
 	for(auto& cached : chunks.registerChunks)
 	{
@@ -337,7 +339,7 @@ void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
 		{
 			if(cached.vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), z});
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), color, z});
 			}
 			else
 			{
@@ -384,15 +386,15 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Text
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
+                sf::Vector2f pos, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
 	// culling
 	FloatRect bounds = projectionType == ProjectionType::gameWorld ? *screenBounds : FloatRect(0.f, 0.f, 1920.f, 1080.f);
 	if(rotation == 0.f)
-		if(!bounds.doPositiveRectsIntersect(FloatRect(position.x, position.y, size.x, size.y)))
+		if(!intersect(bounds, FloatRect(pos.x, pos.y, size.x, size.y)))
 			return;
-	else if(!bounds.doPositiveRectsIntersect(FloatRect(position.x - size.x * 2, position.y - size.y * 2, size.x * 4, size.y * 4)))
+	else if(!intersect(bounds, FloatRect(pos.x - size.x * 2, pos.y - size.y * 2, size.x * 4, size.y * 4)))
 		return;
 
 	// if shader is not specified use default shader 
@@ -409,8 +411,8 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	{
 		auto ts = static_cast<sf::Vector2f>(texture->getSize());
 		finalTextureRect = FloatRect(
-			textureRect->left / ts.x, (ts.y - textureRect->top - textureRect->height) / ts.y,
-			textureRect->width / ts.x, textureRect->height / ts.y
+			textureRect->x / ts.x, (ts.y - textureRect->y - textureRect->h) / ts.y,
+			textureRect->w / ts.x, textureRect->h / ts.y
 		);
 	}
 	else
@@ -423,7 +425,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	
 	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
 	quadData.textureRect = finalTextureRect; 
-	quadData.position = position;
+	quadData.position = pos;
 	quadData.size = size;
 	quadData.rotationOrigin = rotationOrigin;
 	quadData.rotation = Math::degreesToRadians(rotation);
@@ -526,10 +528,11 @@ void flush(bool affectedByLight)
 				}
 				groundChunkShader.setUniformVector2("chunkPos", gc.pos);
 				groundChunkShader.setUniformFloat("z", gc.z);
-				groundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.getTopLeft());
-				groundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.getTopRight());
-				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.getBottomLeft());
-				groundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.getBottomRight());
+				groundChunkShader.setUniformVector4Color("color", gc.color);
+				groundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.pos);
+				groundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.topRight());
+				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.bottomLeft());
+				groundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.bottomRight());
 
 				GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144) );
 
@@ -552,6 +555,7 @@ void flush(bool affectedByLight)
 					currentlyBoundShader = &chunkShader;
 					chunkShader.bind();
 				}
+				chunkShader.setUniformVector4Color("color", chunk.color);
 				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
@@ -585,7 +589,7 @@ void flush(bool affectedByLight)
 
 			for(auto& cached : chunks.registerChunks)
 			{
-				if(cached.vbo && !screenBounds->doPositiveRectsIntersect(cached.bounds))
+				if(cached.vbo && !intersect(*screenBounds, cached.bounds))
 				{
 					glDeleteBuffers(1, &cached.vbo);
 					cached.vbo = 0;

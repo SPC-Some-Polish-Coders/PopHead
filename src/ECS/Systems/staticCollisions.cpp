@@ -21,28 +21,33 @@ namespace ph::system {
 		auto multiStaticCollisionObjects = mRegistry.view<component::MultiStaticCollisionBody>();
 		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
 
-		for (auto& kinematicObject : kinematicObjects)
+		for(auto& kinematicObject : kinematicObjects)
 		{
 			auto& kinematicBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
 			auto& kinematicCollision = kinematicObjects.get<component::KinematicCollisionBody>(kinematicObject);
-			resetKinematicBody(kinematicCollision);
+
+			// reset kinematic body
+			kinematicCollision.staticallyMovedDown = false;
+			kinematicCollision.staticallyMovedLeft = false;
+			kinematicCollision.staticallyMovedRight = false;
+			kinematicCollision.staticallyMovedUp = false;
 
 			// compute single static collisions
-			for (const auto& staticObject : staticObjects)
+			for(const auto& staticObject : staticObjects)
 			{
 				const auto& staticBody = staticObjects.get<component::BodyRect>(staticObject);
-				handleStaticCollision(staticBody.rect, kinematicBody.rect, kinematicCollision);
+				handleStaticCollision(staticBody, kinematicBody, kinematicCollision);
 			}
 
 			// compute multi static collisions
-			for (const auto& multiStaticObject : multiStaticCollisionObjects)
+			for(const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
 				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
-				if (multiStaticCollisionBody.sharedBounds.doPositiveRectsIntersect(kinematicBody.rect))
+				if(intersect(multiStaticCollisionBody.sharedBounds, kinematicBody))
 				{
-					for (const FloatRect& staticCollisionBodyRect : multiStaticCollisionBody.rects)
+					for(const FloatRect& staticCollisionBodyRect : multiStaticCollisionBody.rects)
 					{
-						handleStaticCollision(staticCollisionBodyRect, kinematicBody.rect, kinematicCollision);
+						handleStaticCollision(staticCollisionBodyRect, kinematicBody, kinematicCollision);
 					}
 				}
 			}
@@ -53,47 +58,47 @@ namespace ph::system {
 	{
 		sf::Vector2<short> collisionDirection;
 
-		if (staticBody.doPositiveRectsIntersect(kinematicBody))
+		if(intersect(staticBody, kinematicBody))
 		{
-			sf::FloatRect intersection;
+			FloatRect intersection;
 			kinematicBody.intersects(staticBody, intersection);
 
-			if (intersection.width < intersection.height)
+			if(intersection.w < intersection.h)
 			{
-				if (kinematicBody.left < staticBody.left)
+				if(kinematicBody.x < staticBody.x)
 				{
-					kinematicBody.left -= intersection.width;
+					kinematicBody.x -= intersection.w;
 					collision.staticallyMovedLeft = true;
 				}
 				else
 				{
-					kinematicBody.left += intersection.width;
+					kinematicBody.x += intersection.w;
 					collision.staticallyMovedRight = true;
 				}
 			}
 			else
 			{
-				if (kinematicBody.top < staticBody.top)
+				if(kinematicBody.y < staticBody.y)
 				{
-					kinematicBody.top -= intersection.height;
+					kinematicBody.y -= intersection.h;
 					collision.staticallyMovedUp = true;
 				}
 				else
 				{
-					kinematicBody.top += intersection.height;
+					kinematicBody.y += intersection.h;
 					collision.staticallyMovedDown = true;
 				}
 			}
 		}
-		else if (kinematicBody.doPositiveRectsTouch(staticBody, collisionDirection))
+		else if(kinematicBody.touch(staticBody, collisionDirection))
 		{
-			if (collisionDirection.x == -1)
+			if(collisionDirection.x == -1)
 				collision.staticallyMovedLeft = true;
-			else if (collisionDirection.x == 1)
+			else if(collisionDirection.x == 1)
 				collision.staticallyMovedRight = true;
-			else if (collisionDirection.y == -1)
+			else if(collisionDirection.y == -1)
 				collision.staticallyMovedUp = true;
-			else if (collisionDirection.y == 1)
+			else if(collisionDirection.y == 1)
 				collision.staticallyMovedDown = true;
 		}
 	}
@@ -107,42 +112,42 @@ namespace ph::system {
 		std::vector<entt::entity> pushedUp;
 		std::vector<entt::entity> pushedDown;
 
-		for (auto object : kinematicObjects)
+		for(auto object : kinematicObjects)
 		{
 			const auto& collision = kinematicObjects.get<component::KinematicCollisionBody>(object);
-			if (collision.staticallyMovedLeft)
+			if(collision.staticallyMovedLeft)
 				pushedLeft.emplace_back(object);
-			if (collision.staticallyMovedRight)
+			if(collision.staticallyMovedRight)
 				pushedRight.emplace_back(object);
-			if (collision.staticallyMovedUp)
+			if(collision.staticallyMovedUp)
 				pushedUp.emplace_back(object);
-			if (collision.staticallyMovedDown)
+			if(collision.staticallyMovedDown)
 				pushedDown.emplace_back(object);
 		}
 
 		size_t index = 0;
-		while (index != pushedLeft.size())
+		while(index != pushedLeft.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]).rect;
-			for (auto object : kinematicObjects)
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]);
+			for(auto object : kinematicObjects)
 			{
-				if (object == pushedLeft[index])
+				if(object == pushedLeft[index])
 					continue;
 
 				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if (anotherCollisionBody.staticallyMovedLeft) continue;
+				if(anotherCollisionBody.staticallyMovedLeft) continue;
 				
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
 				
-				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				if(intersect(firstRect, anotherRect))
 				{
-					sf::FloatRect intersection;
+					FloatRect intersection;
 					firstRect.intersects(anotherRect, intersection);
 
-					if (intersection.width < intersection.height && anotherRect.left < firstRect.left)
+					if(intersection.w < intersection.h && anotherRect.x < firstRect.x)
 					{
 						anotherCollisionBody.staticallyMovedLeft = true;
-						anotherRect.left -= intersection.width;
+						anotherRect.x -= intersection.w;
 						pushedLeft.emplace_back(object);
 					}
 				}
@@ -152,28 +157,28 @@ namespace ph::system {
 		}
 		
 		index = 0;
-		while (index != pushedRight.size())
+		while(index != pushedRight.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedRight[index]).rect;
-			for (auto object : kinematicObjects)
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedRight[index]);
+			for(auto object : kinematicObjects)
 			{
-				if (object == pushedRight[index])
+				if(object == pushedRight[index])
 					continue;
 
 				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if (anotherCollisionBody.staticallyMovedRight) continue;
+				if(anotherCollisionBody.staticallyMovedRight) continue;
 
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
 
-				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				if(intersect(firstRect, anotherRect))
 				{
-					sf::FloatRect intersection;
+					FloatRect intersection;
 					firstRect.intersects(anotherRect, intersection);
 
-					if (intersection.width < intersection.height && firstRect.left < anotherRect.left)
+					if(intersection.w < intersection.h && firstRect.x < anotherRect.x)
 					{
 						anotherCollisionBody.staticallyMovedRight = true;
-						anotherRect.left += intersection.width;
+						anotherRect.x += intersection.w;
 						pushedRight.emplace_back(object);
 					}
 				}
@@ -183,28 +188,28 @@ namespace ph::system {
 		}
 
 		index = 0;
-		while (index != pushedUp.size())
+		while(index != pushedUp.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedUp[index]).rect;
-			for (auto object : kinematicObjects)
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedUp[index]);
+			for(auto object : kinematicObjects)
 			{
-				if (object == pushedUp[index])
+				if(object == pushedUp[index])
 					continue;
 
 				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if (anotherCollisionBody.staticallyMovedUp) continue;
+				if(anotherCollisionBody.staticallyMovedUp) continue;
 
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
 
-				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				if(intersect(firstRect, anotherRect))
 				{
-					sf::FloatRect intersection;
+					FloatRect intersection;
 					firstRect.intersects(anotherRect, intersection);
 
-					if (intersection.height < intersection.width && anotherRect.top < firstRect.top)
+					if(intersection.h < intersection.w && anotherRect.y < firstRect.y)
 					{
 						anotherCollisionBody.staticallyMovedUp = true;
-						anotherRect.top -= intersection.height;
+						anotherRect.y -= intersection.h;
 						pushedUp.emplace_back(object);
 					}
 				}
@@ -214,28 +219,28 @@ namespace ph::system {
 		}
 
 		index = 0;
-		while (index != pushedDown.size())
+		while(index != pushedDown.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedDown[index]).rect;
-			for (auto object : kinematicObjects)
+			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedDown[index]);
+			for(auto object : kinematicObjects)
 			{
-				if (object == pushedDown[index])
+				if(object == pushedDown[index])
 					continue;
 
 				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if (anotherCollisionBody.staticallyMovedDown) continue;
+				if(anotherCollisionBody.staticallyMovedDown) continue;
 
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object).rect;
+				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
 
-				if (firstRect.doPositiveRectsIntersect(anotherRect))
+				if(intersect(firstRect, anotherRect))
 				{
-					sf::FloatRect intersection;
+					FloatRect intersection;
 					firstRect.intersects(anotherRect, intersection);
 
-					if (intersection.height < intersection.width && firstRect.top < anotherRect.top)
+					if(intersection.h < intersection.w && firstRect.y < anotherRect.y)
 					{
 						anotherCollisionBody.staticallyMovedDown = true;
-						anotherRect.top += intersection.height;
+						anotherRect.y += intersection.h;
 						pushedDown.emplace_back(object);
 					}
 				}
@@ -243,13 +248,5 @@ namespace ph::system {
 
 			++index;
 		}
-	}
-
-	void StaticCollisions::resetKinematicBody(component::KinematicCollisionBody& kinematicBody)
-	{
-		kinematicBody.staticallyMovedDown = false;
-		kinematicBody.staticallyMovedLeft = false;
-		kinematicBody.staticallyMovedRight = false;
-		kinematicBody.staticallyMovedUp = false;
 	}
 }

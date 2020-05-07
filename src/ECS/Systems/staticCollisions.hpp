@@ -21,7 +21,5 @@ namespace ph::system {
 		void handleStaticCollision(const ph::FloatRect& staticBody, ph::FloatRect& kinematicBody, component::KinematicCollisionBody& collision);
 
 		void calculateKinematicCollisions();
-		
-		void resetKinematicBody(component::KinematicCollisionBody& kinematicBody);
 	};
 }
