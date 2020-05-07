@@ -79,6 +79,7 @@
  <objecttype name="PressurePlate" color="#a0a0a4">
   <property name="color" type="string" default="grey"/>
   <property name="id" type="int" default="0"/>
+  <property name="isPressIrreversible" type="bool" default="false"/>
   <property name="outdoor" type="bool" default="true"/>
   <property name="puzzleId" type="int" default="0"/>
  </objecttype>

@@ -55,6 +55,25 @@ void Puzzles::update(float dt)
 						gate.open = pressedPlates == 3;
 				});
 			} break;
+
+			case 3:
+			{
+				unsigned pressedPlates = 0;
+
+				mRegistry.view<component::PressurePlate>().each([&]
+				(component::PressurePlate plate)
+				{
+					if(plate.puzzleId == puzzle.id && plate.isPressed)
+						++pressedPlates;
+				});
+
+				gates.each([=]
+				(component::Gate& gate)
+				{
+					if(gate.id == 3)
+						gate.open = pressedPlates == 4;
+				});
+			} break;
 		}
 	});
 }

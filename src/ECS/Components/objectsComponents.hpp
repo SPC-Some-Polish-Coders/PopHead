@@ -72,6 +72,7 @@ namespace ph::component {
 		unsigned id;
 		PuzzleColor pressedByColor;
 		bool isPressed = false;
+		bool isPressIrreversible;
 	};
 
 	struct Puzzle

@@ -456,6 +456,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& plate = registry.get<component::PressurePlate>(entity);
 		plate.puzzleId = getProperty("puzzleId").toUnsigned();
 		plate.id = getProperty("id").toUnsigned();
+		plate.isPressIrreversible = getProperty("isPressIrreversible").toBool();
+		if(plate.isPressIrreversible)
+		{
+			auto& textureRect = registry.get<component::TextureRect>(entity);
+			textureRect.x = 72;
+		}
 		createDebugName();
 	}
 	else if(type == "Puzzle")

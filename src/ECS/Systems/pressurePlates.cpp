@@ -17,6 +17,9 @@ void PressurePlates::update(float dt)
 	(component::PressurePlate& plate, component::PuzzleColor plateColor,
 	 const component::BodyRect& plateBody, component::TextureRect& textureRect)
 	{
+		if(plate.isPressIrreversible && plate.isPressed)
+			return;
+
 		plate.isPressed = false;
 
 		kinematicBodies.each([&]
@@ -31,7 +34,7 @@ void PressurePlates::update(float dt)
 				{
 					if(const auto* pressedByColor = mRegistry.try_get<component::PuzzleColor>(pressedByEntity))
 						plate.pressedByColor = *pressedByColor;
-					else
+					else if(!plate.isPressed)
 						plate.pressedByColor = PuzzleColor::Grey;
 				}
 			}

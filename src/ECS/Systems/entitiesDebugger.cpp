@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "entitiesDebugger.hpp"
+#include "Renderer/renderer.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
@@ -16,24 +17,70 @@ extern bool debugWindowOpen;
 
 namespace ph::system {
 
+constexpr unsigned lookForSize = 255;
+static char lookFor[lookForSize];
+
+static unsigned getCharCount(char* str, size_t size)
+{
+	for(unsigned charCount = 0; charCount < static_cast<unsigned>(size); ++charCount)
+		if(str[charCount] == 0)
+			return charCount;
+	return static_cast<unsigned>(size);
+}
+
 void EntitiesDebugger::update(float dt)
 {
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
-		ImGui::BeginChild("entities:", ImVec2(300, 0), true);
-		mRegistry.each([this](auto entity)
+		ImGui::BeginChild("entities", ImVec2(380, 0), true);
+		ImGui::InputText("debug name", lookFor, lookForSize);
+
+		unsigned lookForCharCount = getCharCount(lookFor, lookForSize);
+
+		mRegistry.each([=](auto entity)
 		{
+			bool displayThisEntity = true;
 			char label[50];
-			if(const auto* debugName = mRegistry.try_get<component::DebugName>(entity))
+			if(auto* debugName = mRegistry.try_get<component::DebugName>(entity))
 			{
-				sprintf(label, "%u - %s", entity, debugName->name);
+				char* name = debugName->name;
+				unsigned nameCharCount = getCharCount(name, strlen(name));
+				sprintf(label, "%u - %s", entity, name);
+				if(lookForCharCount != 0 && lookFor[0] != ' ')
+				{
+					for(unsigned i = 0; i <= nameCharCount && i < lookForCharCount; ++i)
+					{
+						char nameChar = name[i];
+						char lookForChar = lookFor[i]; 
+						if(nameChar != lookForChar)
+						{
+							if(lookForChar > 96 && lookForChar < 123)
+							{
+								if(lookForChar - 32 != nameChar)
+								{
+									displayThisEntity = false;
+									break;
+								}
+							}
+							else
+							{
+								displayThisEntity = false;
+								break;
+							}
+						}
+					}
+				}
 			}
-			else
+			else if(lookFor[0] == ' ')
 			{
 				sprintf(label, "%u", entity);
 			}
+			else
+			{
+				displayThisEntity = false;
+			}
 
-			if(ImGui::Selectable(label, mSelected == entity))
+			if(displayThisEntity && ImGui::Selectable(label, mSelected == entity))
 			{
 				mSelected = entity;
 			}
@@ -46,6 +93,18 @@ void EntitiesDebugger::update(float dt)
 
 		if(mRegistry.valid(mSelected))
 		{
+			bool bodyValid = false;
+			component::BodyRect body;	
+			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("BodyRecy");
+				ImGui::Text("pos: %f, %f", br->x, br->y);
+				ImGui::Text("size: %f, %f", br->w, br->h);
+				body = *br;
+				bodyValid = true;
+			}
+
 			if(const auto* zombie = mRegistry.try_get<component::Zombie>(mSelected))
 			{
 				ImGui::Separator();
@@ -88,6 +147,12 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("color: %u, %u, %u, %u", rq->color.r, rq->color.g, rq->color.b, rq->color.a);
 				ImGui::Text("rotation: %f", rq->rotation);
 				ImGui::Text("z: %u", rq->z);
+
+				if(bodyValid)
+				{
+					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
+					                     10, 0.f, {}, ProjectionType::gameWorld, false);
+				}
 			}
 
 			if(const auto* tr = mRegistry.try_get<component::TextureRect>(mSelected))
@@ -138,14 +203,6 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("IndoorBlend");
 				ImGui::Text("alpha: %f", ib->alpha);
-			}
-
-			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
-			{
-				ImGui::Separator();
-				ImGui::BulletText("BodyRecy");
-				ImGui::Text("pos: %f, %f", br->x, br->y);
-				ImGui::Text("size: %f, %f", br->w, br->h);
 			}
 
 			if(const auto* kin = mRegistry.try_get<component::Kinematics>(mSelected))
@@ -222,6 +279,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("puzzleId: %u", pressurePlate->puzzleId);
 				ImGui::Text("id: %u", pressurePlate->id);
 				ImGui::Text("isPressed: %u", pressurePlate->isPressed);
+				ImGui::Text("isPressIrreversible: %u", pressurePlate->isPressIrreversible);
 			}
 
 			if(const auto* p = mRegistry.try_get<component::Puzzle>(mSelected))
