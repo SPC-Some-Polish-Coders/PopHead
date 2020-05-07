@@ -122,7 +122,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
 		{"Spikes",                      &EntitiesParser::parseSpikes},
-		{"PressurePlate",               &EntitiesParser::parsePressurePlate}
+		{"PressurePlate",               &EntitiesParser::parsePressurePlate},
+		{"PuzzleColor",                 &EntitiesParser::parsePuzzleColor}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -480,6 +481,11 @@ void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity
 void EntitiesParser::parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::PressurePlate>(entity);
+}
+
+void EntitiesParser::parsePuzzleColor(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PuzzleColor>(entity);
 }
 
 void EntitiesParser::parseSpikes(const Xml& entityComponentNode, entt::entity& entity)

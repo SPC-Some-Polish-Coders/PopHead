@@ -9,7 +9,6 @@ void Puzzles::update(float dt)
 	if(sPause)
 		return;
 
-	auto pressurePlates = mRegistry.view<component::PressurePlate>();
 	auto gates = mRegistry.view<component::Gate>();
 
 	mRegistry.view<component::Puzzle>().each([&]
@@ -19,10 +18,10 @@ void Puzzles::update(float dt)
 		{
 			case 1:
 			{
-				pressurePlates.each([&]
+				mRegistry.view<component::PressurePlate>().each([&]
 				(component::PressurePlate plate)
 				{
-					if(plate.puzzleId == puzzle.id && plate.isPressed)
+					if(plate.puzzleId == puzzle.id)
 					{
 						gates.each([=]
 						(component::Gate& gate)
@@ -33,6 +32,28 @@ void Puzzles::update(float dt)
 					}
 				});
 
+			} break;
+
+			case 2:
+			{
+				unsigned pressedPlates = 0;
+
+				mRegistry.view<component::PressurePlate, component::PuzzleColor>().each([&]
+				(component::PressurePlate plate, component::PuzzleColor plateColor)
+				{
+					if(plate.puzzleId == puzzle.id)
+					{
+						if(plate.pressedByColor == plateColor)
+							++pressedPlates;
+					}
+				});
+
+				gates.each([=]
+				(component::Gate& gate)
+				{
+					if(gate.id == 2)
+						gate.open = pressedPlates == 3;
+				});
 			} break;
 		}
 	});

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="105">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="107">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -18346,7 +18346,7 @@
    </properties>
    <point/>
   </object>
-  <object id="93" type="Puzzle" x="-23.5" y="5663.5">
+  <object id="93" type="Puzzle" x="6.5" y="5697.17">
    <properties>
     <property name="id" type="int" value="2"/>
    </properties>
@@ -18358,16 +18358,18 @@
    </properties>
    <point/>
   </object>
-  <object id="95" type="PressurePlate" x="49" y="5661.33">
+  <object id="95" type="PressurePlate" x="62.6667" y="5643.66">
    <properties>
-    <property name="id" type="int" value="1"/>
+    <property name="color" value="red"/>
+    <property name="id" type="int" value="3"/>
     <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="96" type="PressurePlate" x="-100.333" y="5651.33">
+  <object id="96" type="PressurePlate" x="-102.333" y="5639.66">
    <properties>
-    <property name="id" type="int" value="2"/>
+    <property name="color" value="blue"/>
+    <property name="id" type="int" value="1"/>
     <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
@@ -18386,9 +18388,15 @@
    <point/>
   </object>
   <object id="100" type="PuzzleBoulder" x="-107.5" y="5715.5">
+   <properties>
+    <property name="color" value="red"/>
+   </properties>
    <point/>
   </object>
-  <object id="101" type="PuzzleBoulder" x="64" y="5728.5">
+  <object id="101" type="PuzzleBoulder" x="61.6667" y="5719.5">
+   <properties>
+    <property name="color" value="blue"/>
+   </properties>
    <point/>
   </object>
   <object id="102" type="PuzzleBoulder" x="-83" y="5922.33">
@@ -18398,6 +18406,20 @@
    <properties>
     <property name="id" type="int" value="1"/>
     <property name="puzzleId" type="int" value="0"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="105" type="PuzzleBoulder" x="-24.3333" y="5720.33">
+   <properties>
+    <property name="color" value="green"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="106" type="PressurePlate" x="-18.6667" y="5643.67">
+   <properties>
+    <property name="color" value="green"/>
+    <property name="id" type="int" value="2"/>
+    <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
   </object>

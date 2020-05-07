@@ -61,10 +61,16 @@ namespace ph::component {
 		bool isActivated;
 	};
 
+	enum class PuzzleColor
+	{
+		Grey, Red, Green, Blue 
+	};
+
 	struct PressurePlate
 	{
 		unsigned puzzleId;
 		unsigned id;
+		PuzzleColor pressedByColor;
 		bool isPressed = false;
 	};
 

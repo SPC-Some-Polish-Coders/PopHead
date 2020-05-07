@@ -13,18 +13,27 @@ void PressurePlates::update(float dt)
 
 	auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(); 
 
-	mRegistry.view<component::PressurePlate, component::BodyRect, component::TextureRect>().each([&]
-	(component::PressurePlate& plate, const component::BodyRect& plateBody, component::TextureRect& textureRect)
+	mRegistry.view<component::PressurePlate, component::PuzzleColor, component::BodyRect, component::TextureRect>().each([&]
+	(component::PressurePlate& plate, component::PuzzleColor plateColor,
+	 const component::BodyRect& plateBody, component::TextureRect& textureRect)
 	{
 		plate.isPressed = false;
 
 		kinematicBodies.each([&]
-		(const component::KinematicCollisionBody, const component::BodyRect& kinBody)	
+		(auto pressedByEntity, const component::KinematicCollisionBody, const component::BodyRect& kinBody)	
 		{
 			if(intersect(plateBody, kinBody))
 			{
 				plate.isPressed = true;
-				return;
+
+				using component::PuzzleColor;
+				if(plateColor != PuzzleColor::Grey)
+				{
+					if(const auto* pressedByColor = mRegistry.try_get<component::PuzzleColor>(pressedByEntity))
+						plate.pressedByColor = *pressedByColor;
+					else
+						plate.pressedByColor = PuzzleColor::Grey;
+				}
 			}
 		});
 

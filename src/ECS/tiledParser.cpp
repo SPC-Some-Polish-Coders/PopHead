@@ -151,6 +151,34 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		}
 	};
 
+	auto loadPuzzleColorAndTextureRect = [&]()
+	{
+		auto& puzzleColor = registry.get<component::PuzzleColor>(entity);
+		auto& textureRect = registry.get<component::TextureRect>(entity);
+		auto color = getProperty("color").toString();
+		using component::PuzzleColor;
+		if(color == "red")
+		{
+			puzzleColor = PuzzleColor::Red;
+			textureRect.x = 18;
+		}
+		else if(color == "green")
+		{
+			puzzleColor = PuzzleColor::Green;
+			textureRect.x = 36;
+		}
+		else if(color == "blue")
+		{
+			puzzleColor = PuzzleColor::Blue;
+			textureRect.x = 54;
+		}
+		else 
+		{
+			puzzleColor = PuzzleColor::Grey;
+			textureRect.x = 0;
+		}
+	};
+
 	auto createCopy = [&](const std::string& templateName)
 	{
 		entity = templates.createCopy(templateName, registry);
@@ -416,6 +444,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("PuzzleBoulder");
 		loadPosition();
 		loadIndoorOutdoorBlendComponent();
+		loadPuzzleColorAndTextureRect();
 		createDebugName();
 	}
 	else if(type == "PressurePlate")
@@ -423,6 +452,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("PressurePlate");
 		loadPosition();
 		loadIndoorOutdoorBlendComponent();
+		loadPuzzleColorAndTextureRect();
 		auto& plate = registry.get<component::PressurePlate>(entity);
 		plate.puzzleId = getProperty("puzzleId").toUnsigned();
 		plate.id = getProperty("id").toUnsigned();
