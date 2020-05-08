@@ -57,27 +57,26 @@ void SceneManager::replaceAction()
 {
 	GUI::clear();
 
-	if (mCurrentSceneFilePath == mFilePathOfSceneToMake && mHasPlayerPositionForNextScene)
+	bool thereIsPlayerStatus = mScene && mAIManager->isPlayerOnScene();
+	if (thereIsPlayerStatus)
+		mLastPlayerStatus = mScene->getPlayerStatus();
+	
+	mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
+	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
+
+	parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
+			   mScene->getSystemsQueue(), *mAIManager, *this);
+
+	if(mAIManager->isPlayerOnScene()) 
+	{
+		mScene->setPlayerStatus(mLastPlayerStatus);
+		if(mHasPlayerPositionForNextScene)
+			mScene->setPlayerPosition(mPlayerPositionForNextScene);
+	}
+
+	if (mHasPlayerPositionForNextScene)
 	{
 		mScene->setPlayerPosition(mPlayerPositionForNextScene);
-		PH_LOG_INFO("Player position changed, new position: " + std::to_string(mPlayerPositionForNextScene.x) + ',' + std::to_string(mPlayerPositionForNextScene.y));
-	}
-	else {
-		bool thereIsPlayerStatus = mScene && mAIManager->isPlayerOnScene();
-		if (thereIsPlayerStatus)
-			mLastPlayerStatus = mScene->getPlayerStatus();
-		
-		mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
-		PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
-
-		parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
-		           mScene->getSystemsQueue(), *mAIManager, *this);
-
-		if(mAIManager->isPlayerOnScene()) {
-			mScene->setPlayerStatus(mLastPlayerStatus);
-			if(mHasPlayerPositionForNextScene)
-				mScene->setPlayerPosition(mPlayerPositionForNextScene);
-		}
 	}
 
 	mIsReplacing = false;

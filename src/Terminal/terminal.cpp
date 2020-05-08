@@ -7,6 +7,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/debugComponents.hpp"
 #include "ECS/Systems/areasDebug.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
@@ -239,6 +240,45 @@ static void executeClear()
 	}
 }
 
+static void executeTeleportPoint()
+{
+	if(commandContains('?'))
+	{
+		pushOutputLine({""});
+		pushOutputLine({"@C2919 Example: @C9609tp cave1"});
+		pushOutputLine({"@C2919 Example: @C9609tp start"});
+		pushOutputLine({"@C9609tp@CO teleports player to specified teleport point"});
+	}
+	else
+	{
+		size_t spacePosition = content.find_first_of(' ') + 1;
+		const std::string teleportPointName = content.substr(spacePosition, content.size());
+
+		auto& registry = sceneManager->getScene().getRegistry();
+
+		sf::Vector2f newPos; 
+		bool tpExists = false;
+		registry.view<component::TeleportPoint, component::BodyRect>().each([&]
+		(component::TeleportPoint tp, component::BodyRect body)
+		{
+			if(tp.name == teleportPointName)
+			{
+				newPos = body.pos;
+				tpExists = true;
+			}
+		});
+
+		if(tpExists)
+		{
+			registry.view<component::Player, component::BodyRect>().each([newPos]
+			(const component::Player player, component::BodyRect& body) 
+			{
+				body.pos = newPos;
+			});
+		}
+	}
+}
+
 static void executeTeleport()
 {
 	if(commandContains('?'))
@@ -252,7 +292,7 @@ static void executeTeleport()
 	}
 	else
 	{
-		const sf::Vector2f newPosition = getVector2Argument();
+		sf::Vector2f newPosition = getVector2Argument();
 		if(newPosition == vector2ArgumentError)
 			return;
 
@@ -570,6 +610,7 @@ void init(sf::Window* w, SceneManager* sm)
 	sceneManager = sm;
 
 	commandsMap["tp"] = &executeTeleport;
+	commandsMap["tpp"] = &executeTeleportPoint;
 	commandsMap["give"] = &executeGive;
 	commandsMap["currentpos"] = &executeCurrentPos;
 	commandsMap["mute"] = &executeMute;

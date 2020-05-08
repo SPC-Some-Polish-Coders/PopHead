@@ -479,7 +479,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			if(outdoor)
 			{
 				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(groundChunkEntity);
-				ob.darkness = 1.f;
+				ob.brightness = 1.f;
 			}
 			else
 			{
@@ -503,7 +503,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			if(outdoor)
 			{
 				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(chunkEntity);
-				ob.darkness = 1.f;
+				ob.brightness = 1.f;
 			}
 			else
 			{

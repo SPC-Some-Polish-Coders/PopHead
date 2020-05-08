@@ -41,7 +41,11 @@ void HintAreas::update(float dt)
 				else	
 					hintContent->setText(hint.keyboardContent);
 
-				if(hint.hintName == "controlHint" && !mWasPlayerInControlHint) {
+				// NOTE: all controls hints enable and disable everything
+				//       to avoid weird stuff when you're for example teleporting
+
+				if(hint.hintName == "controlHint" && !mWasPlayerInControlHint) 
+				{
 					mWasPlayerInControlHint = true;
 					GunAttacks::shootInputDisabled = true;
 					GunAttacks::changeWeaponInputDisabled = true;
@@ -50,17 +54,45 @@ void HintAreas::update(float dt)
 					Weather::setRainType(Rain::Heavy);
 					Weather::setMode(Weather::Rainy);	
 				}
-				else if(hint.hintName == "meleeFightingHint") {
+				else if(hint.hintName == "meleeFightingHint") 
+				{
+					mWasPlayerInControlHint = true;
+					GunAttacks::shootInputDisabled = true;
+					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = false;
+					PlayerMovementInput::dashInputDisabled = true;
+					Weather::setRainType(Rain::Heavy);
+					Weather::setMode(Weather::Rainy);	
 				}
-				else if(hint.hintName == "shootingHint") {
+				else if(hint.hintName == "shootingHint") 
+				{
+					mWasPlayerInControlHint = true;
 					GunAttacks::shootInputDisabled = false;
-				}
-				else if(hint.hintName == "weaponChangingHint") {
-					GunAttacks::changeWeaponInputDisabled = false;
-				}
-				else if(hint.hintName == "dashingHint") {
+					GunAttacks::changeWeaponInputDisabled = true;
+					MeleeAttacks::inputDisabled = false;
 					PlayerMovementInput::dashInputDisabled = false;
+					Weather::setRainType(Rain::Heavy);
+					Weather::setMode(Weather::Rainy);	
+				}
+				else if(hint.hintName == "weaponChangingHint") 
+				{
+					mWasPlayerInControlHint = true;
+					GunAttacks::shootInputDisabled = false;
+					GunAttacks::changeWeaponInputDisabled = false;
+					MeleeAttacks::inputDisabled = false;
+					PlayerMovementInput::dashInputDisabled = false;
+					Weather::setRainType(Rain::Heavy);
+					Weather::setMode(Weather::Rainy);	
+				}
+				else if(hint.hintName == "dashingHint") 
+				{
+					mWasPlayerInControlHint = true;
+					GunAttacks::shootInputDisabled = true;
+					GunAttacks::changeWeaponInputDisabled = true;
+					MeleeAttacks::inputDisabled = false;
+					PlayerMovementInput::dashInputDisabled = false;
+					Weather::setRainType(Rain::Heavy);
+					Weather::setMode(Weather::Rainy);	
 				}
 			}
 			else if(hint.isShown)

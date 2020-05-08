@@ -28,13 +28,13 @@ namespace component {
 	struct IndoorOutdoorBlend
 	{
 		float outdoor;
-		float outdoorDarkness;
-		float indoorAlpha;
+		float brightness;
+		float alpha;
 	};
 
 	struct OutdoorBlend
 	{
-		float darkness;
+		float brightness;
 	};
 
 	struct IndoorBlend

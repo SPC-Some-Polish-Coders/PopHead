@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="109">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="122">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -8738,28 +8738,28 @@
 </chunk>
    <chunk x="-12" y="348" width="12" height="12">
 738,738,738,740,0,0,0,0,0,0,0,0,
-738,738,738,740,0,0,1,3,2,2,3,3,
-707,738,738,740,0,0,65,34,34,67,67,34,
-739,739,738,740,0,0,33,34,34,5,98,99,
-706,707,738,740,0,0,33,35,66,36,0,0,
-738,739,738,740,0,0,65,67,34,37,3,2,
-707,707,738,740,0,0,65,66,66,35,34,34,
-739,739,738,740,0,0,97,98,98,98,98,98,
-707,706,738,740,0,0,0,0,0,0,0,0,
+738,738,738,740,0,1,2,3,2,2,3,3,
+707,738,738,740,0,65,66,34,34,67,67,34,
+739,739,738,740,0,33,35,34,34,66,67,35,
+706,707,738,740,0,65,66,35,66,67,34,34,
+738,739,738,740,0,33,66,67,34,66,34,34,
+707,707,738,740,0,65,66,66,66,35,34,34,
+739,739,738,740,0,65,67,67,66,35,67,66,
+707,706,738,740,0,97,98,98,99,99,98,99,
 739,738,738,740,0,0,0,0,0,0,0,0,
 738,738,738,740,0,0,0,0,0,0,0,0,
 739,738,738,740,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="0" y="348" width="12" height="12">
 0,0,0,0,0,0,737,738,738,738,738,738,
-3,2,3,4,0,0,737,739,739,738,738,738,
-35,67,35,68,0,0,737,739,739,738,738,738,
-6,66,35,68,0,0,737,739,739,738,738,738,
-33,34,34,36,0,0,737,739,739,738,738,738,
-38,66,34,68,0,0,737,739,739,738,738,738,
-34,34,35,68,0,0,737,739,739,738,738,738,
-99,99,98,100,0,0,737,738,738,738,738,738,
-0,0,0,0,0,0,737,738,738,738,738,738,
+3,2,3,2,4,0,737,739,739,738,738,738,
+35,67,35,34,36,0,737,739,739,738,738,738,
+34,66,35,67,36,0,737,739,739,738,738,738,
+67,34,34,67,68,0,737,739,739,738,738,738,
+34,66,34,35,68,0,737,739,739,738,738,738,
+34,34,35,67,36,0,737,739,739,738,738,738,
+34,66,67,34,68,0,737,738,738,738,738,738,
+99,98,99,98,100,0,737,738,738,738,738,738,
 0,0,0,0,0,0,737,706,706,706,706,706,
 0,0,0,0,0,0,737,738,738,738,738,738,
 0,0,0,0,0,0,737,706,706,706,706,706
@@ -18360,7 +18360,7 @@
    </properties>
    <point/>
   </object>
-  <object id="95" type="PressurePlate" x="28.9167" y="5602.66">
+  <object id="95" type="PressurePlate" x="34.5834" y="5599.99">
    <properties>
     <property name="color" value="red"/>
     <property name="id" type="int" value="3"/>
@@ -18368,7 +18368,7 @@
    </properties>
    <point/>
   </object>
-  <object id="96" type="PressurePlate" x="-67.333" y="5604.66">
+  <object id="96" type="PressurePlate" x="-86.333" y="5602.33">
    <properties>
     <property name="color" value="blue"/>
     <property name="id" type="int" value="1"/>
@@ -18383,19 +18383,19 @@
    </properties>
    <point/>
   </object>
-  <object id="98" type="PuzzleBoulder" x="15.1667" y="5400">
+  <object id="98" type="PuzzleBoulder" x="15.8334" y="5387.33">
    <point/>
   </object>
-  <object id="99" type="PuzzleBoulder" x="-58.8333" y="5397.33">
+  <object id="99" type="PuzzleBoulder" x="-63.1666" y="5384">
    <point/>
   </object>
-  <object id="100" type="PuzzleBoulder" x="-63.1667" y="5649">
+  <object id="100" type="PuzzleBoulder" x="-61.1667" y="5662">
    <properties>
     <property name="color" value="red"/>
    </properties>
    <point/>
   </object>
-  <object id="101" type="PuzzleBoulder" x="29.1667" y="5644.17">
+  <object id="101" type="PuzzleBoulder" x="18.5" y="5670.17">
    <properties>
     <property name="color" value="blue"/>
    </properties>
@@ -18411,13 +18411,13 @@
    </properties>
    <point/>
   </object>
-  <object id="105" type="PuzzleBoulder" x="-24.75" y="5659.25">
+  <object id="105" type="PuzzleBoulder" x="-23.4167" y="5653.58">
    <properties>
     <property name="color" value="green"/>
    </properties>
    <point/>
   </object>
-  <object id="106" type="PressurePlate" x="-19.5" y="5601.75">
+  <object id="106" type="PressurePlate" x="-28.1667" y="5600.42">
    <properties>
     <property name="color" value="green"/>
     <property name="id" type="int" value="2"/>
@@ -18439,8 +18439,50 @@
    </properties>
    <point/>
   </object>
+  <object id="113" type="SavePoint" x="-160" y="5120">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="114" type="SlowZombie" x="-59" y="4746">
+   <point/>
+  </object>
+  <object id="115" type="TeleportPoint" x="-17.5" y="5233">
+   <properties>
+    <property name="name" value="cave1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="116" type="TeleportPoint" x="-21" y="5416.33">
+   <properties>
+    <property name="name" value="puzzle3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="117" type="TeleportPoint" x="-20" y="5712">
+   <properties>
+    <property name="name" value="puzzle2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="118" type="TeleportPoint" x="-18.3333" y="6546.33">
+   <properties>
+    <property name="name" value="start"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="120" type="PuzzleBoulder" x="33.5" y="4808.5">
+   <point/>
+  </object>
+  <object id="121" type="TeleportPoint" x="-57.5" y="4852.5">
+   <properties>
+    <property name="name" value="dashtutorial"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
- <objectgroup id="10" name="denialAreas">
+ <objectgroup id="10" name="denialAreas" visible="0">
   <object id="31" type="CollisionAndLightWallDenialArea" x="-828" y="5222" width="642.5" height="1220.5"/>
   <object id="32" type="CollisionAndLightWallDenialArea" x="577.667" y="4625" width="477.833" height="543.667"/>
   <object id="33" type="CollisionAndLightWallDenialArea" x="-196.833" y="3347.83" width="781.833" height="1307.83"/>
@@ -18457,7 +18499,7 @@
   <object id="73" type="CollisionAndLightWallDenialArea" x="331.75" y="4774.96" width="70.2497" height="438.334"/>
   <object id="80" type="CollisionAndLightWallDenialArea" x="118.5" y="4757.21" width="281" height="83.084"/>
   <object id="81" type="CollisionDenialArea" x="-33.4165" y="5261.83" width="33.833" height="15.6673"/>
-  <object id="82" type="CollisionAndLightWallDenialArea" x="-194.333" y="5080.34" width="86.6663" height="108.652"/>
+  <object id="82" type="CollisionAndLightWallDenialArea" x="-195.204" y="5082.86" width="86.6663" height="108.652"/>
   <object id="83" type="CollisionAndLightWallDenialArea" x="-103.333" y="5111.67" width="50.6663" height="39.9853"/>
  </objectgroup>
 </map>

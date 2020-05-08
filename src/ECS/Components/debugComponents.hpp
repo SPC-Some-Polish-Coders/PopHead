@@ -12,4 +12,9 @@ namespace ph::component {
 		enum Type {Collision, LightWall, All};
 		Type type;
 	};
+
+	struct TeleportPoint
+	{
+		std::string name;
+	};
 }
