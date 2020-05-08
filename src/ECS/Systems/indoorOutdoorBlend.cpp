@@ -126,11 +126,11 @@ void IndoorOutdoorBlend::update(float dt)
 		else if(isObjectInsideBlendArea && mPlayerOutdoor == 0.f)
 		{
 			object.brightness = 1.f - object.outdoor;
-			object.alpha = 1.f - object.outdoor; 
+			object.alpha = 1.f;
 		}
 		else if(isObjectInsideBlendArea && mPlayerOutdoor == 1.f)
 		{
-			object.brightness = object.outdoor;
+			object.brightness = 1.f; 
 			object.alpha = object.outdoor;
 		}
 		else if(object.outdoor == 0.f && isPlayerInsideBlendArea)

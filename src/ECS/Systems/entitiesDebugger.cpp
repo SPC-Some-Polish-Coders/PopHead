@@ -35,7 +35,7 @@ void EntitiesDebugger::update(float dt)
 
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
-		ImGui::BeginChild("entities", ImVec2(380, 0), true);
+		ImGui::BeginChild("entities", ImVec2(360, 0), true);
 		ImGui::Checkbox("hightlight selected", &highlightSelected);
 		ImGui::InputText("debug name", lookFor, lookForSize);
 
