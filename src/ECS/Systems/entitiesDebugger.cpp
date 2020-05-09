@@ -102,7 +102,7 @@ void EntitiesDebugger::update(float dt)
 			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
 			{
 				ImGui::Separator();
-				ImGui::BulletText("BodyRecy");
+				ImGui::BulletText("BodyRect");
 				ImGui::Text("pos: %f, %f", br->x, br->y);
 				ImGui::Text("size: %f, %f", br->w, br->h);
 				body = *br;
