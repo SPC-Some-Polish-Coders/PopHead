@@ -12,7 +12,7 @@ namespace ph::component {
 
 	struct BodyCircle
 	{
-		sf::Vector2f center;
+		sf::Vector2f offset;
 		float radius;
 	};
 

@@ -70,7 +70,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render kinematic bodies as blue rectangle
-		auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>();
+		auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>);
 		kinematicBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body)
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 140), nullptr,
@@ -81,16 +81,18 @@ void AreasDebug::update(float dt)
 		auto staticCircleBodies = mRegistry.view<component::StaticCollisionBody, component::BodyCircle>();
 		staticCircleBodies.each([](const component::StaticCollisionBody, const component::BodyCircle& body)
 		{
-			Renderer::submitCircle(sf::Color(130, 0, 0, 140), body.center - sf::Vector2f(body.radius, body.radius), 
-				body.radius, 50, ProjectionType::gameWorld, false);
+			/*Renderer::submitCircle(sf::Color(130, 0, 0, 140), body.center - sf::Vector2f(body.radius, body.radius), 
+				body.radius, 50, ProjectionType::gameWorld, false);*/
 		});
 
 		// render kinematic circle bodies as blue circle
-		auto kinematicCircleBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyCircle>();
-		kinematicCircleBodies.each([](const component::KinematicCollisionBody, const component::BodyCircle& body)
+		auto kinematicCircleBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::BodyCircle>();
+		kinematicCircleBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body, const component::BodyCircle& circle)
 		{
-			Renderer::submitCircle(sf::Color(45, 100, 150, 140), body.center - sf::Vector2f(body.radius, body.radius),
-				body.radius, 50, ProjectionType::gameWorld, false);
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 40), nullptr,
+				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			Renderer::submitCircle(sf::Color(45, 100, 150, 140), body.pos + circle.offset - sf::Vector2f(circle.radius, circle.radius),
+				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
 	}
 
