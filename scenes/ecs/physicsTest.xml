@@ -12,6 +12,7 @@
         <component name="Kinematics" friction="8.0" />
     </entityTemplate>
     <entityTemplate name="ColorCircle">
+        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
         <component name="BodyCircle" x="0.0" y="0.0" radius="10.0" />
         <component name="KinematicCollisionBody" mass="3" />
         <component name="Kinematics" friction="8.0" />
@@ -42,7 +43,8 @@
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
     <entity sourceTemplate="ColorCircle">
-        <component name="BodyCircle" x="100.0" y="30.0" radius="15.0" />
+        <component name="BodyRect" x="100.0" y="30.0" width="20.0" height="20.0" />
+        <component name="BodyCircle" x="10.0" y="20.0" radius="10.0" />
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
     
