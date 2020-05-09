@@ -15,8 +15,7 @@ namespace component {
 
 	struct TextureRect : public IntRect 
 	{
-		operator IntRect&() { return *this; }
-		TextureRect& operator=(const IntRect& r) { pos = r.pos; size = r.size; return *this; }
+		using IntRect::operator=;
 	};
 
 	struct IndoorOutdoorBlendArea
@@ -28,13 +27,13 @@ namespace component {
 	struct IndoorOutdoorBlend
 	{
 		float outdoor;
-		float outdoorDarkness;
-		float indoorAlpha;
+		float brightness;
+		float alpha;
 	};
 
 	struct OutdoorBlend
 	{
-		float darkness;
+		float brightness;
 	};
 
 	struct IndoorBlend
@@ -73,7 +72,7 @@ namespace component {
 
 	struct LightWall : public FloatRect 
 	{
-		operator FloatRect&() { return *this; }
+		using FloatRect::operator=;
 	};
 
 	struct LightSource

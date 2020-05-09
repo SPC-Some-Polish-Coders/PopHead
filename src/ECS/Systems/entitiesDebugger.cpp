@@ -19,6 +19,7 @@ namespace ph::system {
 
 constexpr unsigned lookForSize = 255;
 static char lookFor[lookForSize];
+static bool highlightSelected = true;
 
 static unsigned getCharCount(char* str, size_t size)
 {
@@ -30,9 +31,12 @@ static unsigned getCharCount(char* str, size_t size)
 
 void EntitiesDebugger::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
-		ImGui::BeginChild("entities", ImVec2(380, 0), true);
+		ImGui::BeginChild("entities", ImVec2(360, 0), true);
+		ImGui::Checkbox("hightlight selected", &highlightSelected);
 		ImGui::InputText("debug name", lookFor, lookForSize);
 
 		unsigned lookForCharCount = getCharCount(lookFor, lookForSize);
@@ -98,7 +102,7 @@ void EntitiesDebugger::update(float dt)
 			if(const auto* br = mRegistry.try_get<component::BodyRect>(mSelected))
 			{
 				ImGui::Separator();
-				ImGui::BulletText("BodyRecy");
+				ImGui::BulletText("BodyRect");
 				ImGui::Text("pos: %f, %f", br->x, br->y);
 				ImGui::Text("size: %f, %f", br->w, br->h);
 				body = *br;
@@ -148,7 +152,7 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("rotation: %f", rq->rotation);
 				ImGui::Text("z: %u", rq->z);
 
-				if(bodyValid)
+				if(highlightSelected && bodyValid)
 				{
 					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
 					                     10, 0.f, {}, ProjectionType::gameWorld, false);
@@ -187,15 +191,15 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("IndoorOutdoorBlend");
 				ImGui::Text("outdoor: %f", io->outdoor);
-				ImGui::Text("outdoorDarkness: %f", io->outdoorDarkness);
-				ImGui::Text("indoorAlpha: %f", io->indoorAlpha);
+				ImGui::Text("brightness: %f", io->brightness);
+				ImGui::Text("alpha: %f", io->alpha);
 			}
 
 			if(const auto* ob = mRegistry.try_get<component::OutdoorBlend>(mSelected))
 			{
 				ImGui::Separator();
 				ImGui::BulletText("OutdoorBlend");
-				ImGui::Text("darkness: %f", ob->darkness);
+				ImGui::Text("brightness: %f", ob->brightness);
 			}
 
 			if(const auto* ib = mRegistry.try_get<component::IndoorBlend>(mSelected))
@@ -287,6 +291,13 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("Puzzle");
 				ImGui::Text("id: %u", p->id); 
+			}
+
+			if(const auto* tp = mRegistry.try_get<component::TeleportPoint>(mSelected))
+			{
+				ImGui::Separator();
+				ImGui::BulletText("TeleportPoint");
+				ImGui::Text("name: %s", tp->name.c_str());
 			}
 		}
 

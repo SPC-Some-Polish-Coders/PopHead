@@ -94,6 +94,9 @@
   <property name="color" type="string" default="grey"/>
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
+ <objecttype name="SavePoint" color="#18c3c6">
+  <property name="outdoor" type="bool" default="true"/>
+ </objecttype>
  <objecttype name="SlowZombie" color="#b8ff45">
   <property name="hp" type="string" default="150"/>
   <property name="maxHp" type="string" default="150"/>
@@ -121,6 +124,9 @@
   <property name="textureRectWidth" type="int" default="0"/>
   <property name="vertexShaderFilepath" type="string" default="none"/>
   <property name="z" type="float" default="0"/>
+ </objecttype>
+ <objecttype name="TeleportPoint" color="#a42b9a">
+  <property name="name" type="string"/>
  </objecttype>
  <objecttype name="Torch" color="#ffff00"/>
  <objecttype name="VelocityChangingArea" color="#5eb825">

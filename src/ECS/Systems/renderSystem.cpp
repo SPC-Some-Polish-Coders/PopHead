@@ -106,7 +106,7 @@ void RenderSystem::update(float dt)
 
 	auto getOutdoorBlendColor = [](component::OutdoorBlend ob)
 	{
-		auto d = static_cast<unsigned char>(ob.darkness * 255.f);
+		auto d = static_cast<unsigned char>(ob.brightness * 255.f);
 		return sf::Color(d, d, d, 255);
 	};
 
@@ -131,9 +131,9 @@ void RenderSystem::update(float dt)
 
 	auto getIndoorOutdoorColor = [](component::IndoorOutdoorBlend io)
 	{
-		auto dark = static_cast<unsigned char>(io.outdoorDarkness * 255.f);
-		auto alpha = static_cast<unsigned char>(io.indoorAlpha * 255.f);
-		return sf::Color(dark, dark, dark, alpha);
+		auto bright = static_cast<unsigned char>(io.brightness * 255.f);
+		auto alpha = static_cast<unsigned char>(io.alpha * 255.f);
+		return sf::Color(bright, bright, bright, alpha);
 	};
 
 	// submit render quads

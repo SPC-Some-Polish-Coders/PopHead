@@ -234,5 +234,11 @@
 	<component name="Spikes" />
   </entityTemplate >
 
+  <entityTemplate name="SavePoint" >
+    <component name="BodyRect" x="0" y="0" width="32" height="32" outdoor="false" />
+    <component name="RenderQuad" textureFilepath="textures/others/saveDisc.png" z="100" />
+	<component name="IndoorOutdoor" />
+  </entityTemplate >
+
 </entityTemplates>
 </root>

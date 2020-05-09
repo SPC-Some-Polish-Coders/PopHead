@@ -8,50 +8,52 @@ namespace ph::system {
 
 using component::IndoorOutdoorBlendArea;
 
-struct BlendColor { float outdoorDarkness, indoorAlpha; };
-
-static BlendColor getIndoorOutdoorBlendColor(const FloatRect& blendArea, sf::Vector2f objectPos, IndoorOutdoorBlendArea::ExitSide exit)
+static float getOutdoorFactor(const FloatRect& blendArea, sf::Vector2f objectPos, IndoorOutdoorBlendArea::ExitSide exit)
 {
-	BlendColor res;
+	float res;
 
-	float playerFromLeft = objectPos.x - blendArea.x;
-	float playerFromRight = blendArea.x + blendArea.w - objectPos.x;
-	float playerFromTop = objectPos.y - blendArea.y;
-	float playerFromBottom = blendArea.y + blendArea.h - objectPos.y;
 	switch(exit)
 	{
 		case IndoorOutdoorBlendArea::Left:
 		{
-			res.indoorAlpha = playerFromLeft / blendArea.w;
-			res.outdoorDarkness = playerFromRight / blendArea.w;
+			float playerFromRight = blendArea.x + blendArea.w - objectPos.x;
+			res = playerFromRight / blendArea.w;
 		} break;
 
 		case IndoorOutdoorBlendArea::Right:
 		{
-			res.indoorAlpha = playerFromRight / blendArea.w;
-			res.outdoorDarkness = playerFromLeft / blendArea.w; 
+			float playerFromLeft = objectPos.x - blendArea.x;
+			res = playerFromLeft / blendArea.w; 
 		} break;
 
 		case IndoorOutdoorBlendArea::Top:
 		{
-			res.indoorAlpha = playerFromTop / blendArea.h; 
-			res.outdoorDarkness = playerFromBottom / blendArea.h;
+			float playerFromBottom = blendArea.y + blendArea.h - objectPos.y;
+			res = playerFromBottom / blendArea.h;
 		} break;
 
 		case IndoorOutdoorBlendArea::Down:
 		{
-			res.indoorAlpha = playerFromBottom / blendArea.h;
-			res.outdoorDarkness = playerFromTop / blendArea.h;
+			float playerFromTop = objectPos.y - blendArea.y;
+			res = playerFromTop / blendArea.h;
 		} break;
 	}
 
-	if(res.indoorAlpha < 0.05f) res.indoorAlpha = 0.f;
-	else if(res.indoorAlpha > 0.95f) res.indoorAlpha = 1.f;
-
-	if(res.outdoorDarkness < 0.05f) res.outdoorDarkness = 0.05f;
-	else if(res.outdoorDarkness > 0.95f) res.outdoorDarkness = 1.f;
-
 	return res;
+}
+
+float correctDarkness(float brightness)
+{
+	if(brightness < 0.05f) brightness = 0.05f;
+	else if(brightness > 0.95f) brightness = 1.f;
+	return brightness;
+}
+
+float correctAlpha(float alpha)
+{
+	if(alpha < 0.05f) alpha = 0.f;
+	else if(alpha > 0.95f) alpha = 1.f;
+	return alpha;
 }
 
 void IndoorOutdoorBlend::update(float dt)
@@ -71,39 +73,93 @@ void IndoorOutdoorBlend::update(float dt)
 		{
 			if(intersect(playerBody, blendAreaBody))
 			{
-				auto bc = getIndoorOutdoorBlendColor(blendAreaBody, playerBody.center(), blendArea.exit); 
+				auto outdoor = getOutdoorFactor(blendAreaBody, playerBody.center(), blendArea.exit); 
 
-				mPlayerOutdoor = bc.outdoorDarkness;
+				mPlayerOutdoor = correctAlpha(outdoor); 
 
 				mRegistry.view<component::OutdoorBlend>().each([=]
 				(component::OutdoorBlend& ob)
 				{
-					ob.darkness = bc.outdoorDarkness;
+					ob.brightness = correctDarkness(outdoor); 
 				});
 
 				mRegistry.view<component::IndoorBlend>().each([=]
 				(component::IndoorBlend& ib)
 				{
-					ib.alpha = bc.indoorAlpha;
+					ib.alpha = correctAlpha(1.f - outdoor); 
 				});	
 			}
 		});
 	});
 
 	mRegistry.view<component::IndoorOutdoorBlend, component::BodyRect>().each([&]
-	(component::IndoorOutdoorBlend& objectBlend, component::BodyRect objectBody)
+	(component::IndoorOutdoorBlend& object, component::BodyRect objectBody)
 	{
 		blendAreas.each([&]
 		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
 		{
 			if(intersect(objectBody, blendAreaBody))
 			{
-				auto bc = getIndoorOutdoorBlendColor(blendAreaBody, objectBody.center(), blendArea.exit);
-				objectBlend.outdoor = bc.outdoorDarkness;
+				object.outdoor = correctAlpha(getOutdoorFactor(blendAreaBody, objectBody.center(), blendArea.exit));
 			}
 		});
 
-		objectBlend.outdoorDarkness = mPlayerOutdoor * objectBlend.outdoor;
+		bool isPlayerInsideBlendArea = mPlayerOutdoor > 0.f && mPlayerOutdoor < 1.f;
+		bool isObjectInsideBlendArea = object.outdoor > 0.f && object.outdoor < 1.f;
+
+		if((object.outdoor == 0.f && mPlayerOutdoor == 0.f) ||
+		   (object.outdoor == 1.f && mPlayerOutdoor == 1.f))
+		{
+			object.brightness = 1.f;
+			object.alpha = 1.f; 
+		}
+		else if(object.outdoor == 1.f && mPlayerOutdoor == 0.f) 
+		{
+			object.brightness = 0.05f;
+			object.alpha = 1.f;
+		}
+		else if(object.outdoor == 0.f && mPlayerOutdoor == 1.f)
+		{
+			object.brightness = 1.f;
+			object.alpha = 0.f;
+		}
+		else if(isObjectInsideBlendArea && mPlayerOutdoor == 0.f)
+		{
+			object.brightness = 1.f - object.outdoor;
+			object.alpha = 1.f;
+		}
+		else if(isObjectInsideBlendArea && mPlayerOutdoor == 1.f)
+		{
+			object.brightness = 1.f; 
+			object.alpha = object.outdoor;
+		}
+		else if(object.outdoor == 0.f && isPlayerInsideBlendArea)
+		{
+			object.brightness = 1.f; 
+			object.alpha = 1.f - mPlayerOutdoor;
+		}
+		else if(object.outdoor == 1.f && isPlayerInsideBlendArea)
+		{
+			object.brightness = mPlayerOutdoor;
+			object.alpha = 1.f;
+		}
+		else if(isObjectInsideBlendArea && isPlayerInsideBlendArea)
+		{
+			if(object.outdoor > mPlayerOutdoor)
+			{
+				object.brightness = object.outdoor;
+				object.alpha = 1.f;
+			}
+			else
+			{
+				object.brightness = 1.f;
+				object.alpha = 1.f - object.outdoor;
+			}
+		}
+		else
+		{
+			PH_BREAKPOINT();	
+		}
 	});
 }
 
