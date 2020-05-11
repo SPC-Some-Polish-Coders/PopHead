@@ -11,8 +11,8 @@ namespace ph::system {
 		if (sPause)
 			return;
 
-		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyRect>();
-		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyCircle>();
+		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyRect>(entt::exclude<component::BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyCircle, component::BodyRect>();
 
 		for (auto current = kinematicRectObjects.begin(); current != kinematicRectObjects.end(); ++current)
 		{
@@ -22,23 +22,20 @@ namespace ph::system {
 			auto another = current;
 			++another;
 
-			if (another == kinematicRectObjects.end())
-				break;
-
 			// rect-on-rect collisions
 			for (; another != kinematicRectObjects.end(); ++another)
 			{
 				auto& anotherBody = kinematicRectObjects.get<component::BodyRect>(*another);
 
-				if(intersect(currentBody, anotherBody))
+				if (intersect(currentBody, anotherBody))
 				{
 					FloatRect intersection;
 					currentBody.intersects(anotherBody, intersection);
 
-					if(intersection.w < intersection.h)
+					if (intersection.w < intersection.h)
 					{
 						auto halfWidth = intersection.w / 2.f;
-						if(currentBody.x < anotherBody.x)
+						if (currentBody.x < anotherBody.x)
 						{
 							currentBody.x -= halfWidth;
 							anotherBody.x += halfWidth;
@@ -52,7 +49,7 @@ namespace ph::system {
 					else
 					{
 						auto halfHeight = intersection.h / 2.f;
-						if(currentBody.y < anotherBody.y)
+						if (currentBody.y < anotherBody.y)
 						{
 							currentBody.y -= halfHeight;
 							anotherBody.y += halfHeight;
@@ -63,6 +60,55 @@ namespace ph::system {
 							anotherBody.y -= halfHeight;
 						}
 					}
+				}
+			}
+		
+			// rect-on-circle collisions
+			for (auto& circObject : kinematicCircObjects)
+			{
+				auto& circRect = kinematicCircObjects.get<component::BodyRect>(circObject);
+				auto& circCircle = kinematicCircObjects.get<component::BodyCircle>(circObject);
+				auto circleCenter = circRect.pos + circCircle.offset;
+
+				if (!(circleCenter.x < currentBody.x || circleCenter.x > currentBody.right()))
+				{
+					if (circleCenter.y + circCircle.radius > currentBody.y && circleCenter.y + circCircle.radius < currentBody.bottom())
+					{
+						auto offset = circleCenter.y + circCircle.radius - currentBody.y;
+						offset /= 2.f;
+						circRect.y -= offset;
+						currentBody.y += offset;
+						continue;
+					}
+					if (circleCenter.y - circCircle.radius > currentBody.y && circleCenter.y - circCircle.radius < currentBody.bottom())
+					{
+						auto offset = currentBody.bottom() - (circleCenter.y - circCircle.radius);
+						offset /= 2.f;
+						circRect.y += offset;
+						currentBody.y -= offset;
+						continue;
+					}
+					continue;
+				}
+				if (!(circleCenter.y < currentBody.y || circleCenter.y > currentBody.bottom()))
+				{
+					if (circleCenter.x + circCircle.radius > currentBody.x && circleCenter.x + circCircle.radius < currentBody.right())
+					{
+						auto offset = circleCenter.x + circCircle.radius - currentBody.x;
+						offset /= 2.f;
+						circRect.x -= offset;
+						currentBody.x += offset;
+						continue;
+					}
+					if (circleCenter.x - circCircle.radius > currentBody.x && circleCenter.x - circCircle.radius < currentBody.right())
+					{
+						auto offset = currentBody.right() - (circleCenter.x - circCircle.radius);
+						offset /= 2.f;
+						circRect.x += offset;
+						currentBody.x -= offset;
+						continue;
+					}
+					continue;
 				}
 			}
 		}
