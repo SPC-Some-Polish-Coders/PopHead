@@ -90,8 +90,6 @@ namespace ImGuiProfiling
 
 }
 
-#define LOG(name, ...) f(name, __VA_ARGS__)
-
 #if defined(PH_PROFILING)
 	#define PH_BEGIN_PROFILING_SESSION(filepath) ph::MainProfilingManager::beginSession(filepath);
 	#define PH_END_PROFILING_SESSION() ph::MainProfilingManager::endSession();

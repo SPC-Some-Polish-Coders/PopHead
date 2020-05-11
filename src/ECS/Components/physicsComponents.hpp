@@ -7,7 +7,7 @@ namespace ph::component {
 
 	struct BodyRect : public FloatRect 
 	{
-		operator FloatRect&() { return *this; }
+		using FloatRect::operator=;
 	};
 
 	struct Kinematics

@@ -23,8 +23,7 @@ namespace ph::component {
 
 	struct FaceDirection : public sf::Vector2f 
 	{
-		operator sf::Vector2f&() { return *this; }
-		FaceDirection& operator=(sf::Vector2f v) { x = v.x; y = v.y; return *this; }
+		using sf::Vector2f::operator=;
 	};
 
 	struct GunAttacker
