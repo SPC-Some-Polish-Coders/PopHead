@@ -110,6 +110,34 @@ namespace ph::system {
 					}
 					continue;
 				}
+
+				auto bottomRightOfRect = currentBody.bottomRight();
+				sf::Vector2f rectCorners[4] = { currentBody.pos, {currentBody.x, bottomRightOfRect.y}, {bottomRightOfRect.x, currentBody.y}, bottomRightOfRect };
+				float closestDistance = circCircle.radius;
+				size_t closestCornerIndex = 0;
+
+				for (size_t i = 0; i < 4; ++i)
+				{
+					auto distance = Math::distanceBetweenPoints(circleCenter, rectCorners[i]);
+					if (distance < closestDistance)
+					{
+						closestDistance = distance;
+						closestCornerIndex = i;
+					}
+				}
+
+				if (closestDistance < circCircle.radius)
+				{
+					auto intersectionDistance = circCircle.radius - closestDistance;
+					intersectionDistance /= 2.f;
+
+					auto distanceVector = rectCorners[closestCornerIndex] - circleCenter;
+					distanceVector /= closestDistance;
+					distanceVector *= intersectionDistance;
+
+					currentBody.pos += distanceVector;
+					circRect.pos -= distanceVector;
+				}
 			}
 		}
 	}
