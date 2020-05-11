@@ -21,6 +21,11 @@ constexpr unsigned lookForSize = 255;
 static char lookFor[lookForSize];
 static bool highlightSelected = true;
 
+static char* components[] = {
+	"Health", "Damage", "Player", "Killable", "InPlayerGunAttackArea"
+};
+static bool selectedComponents[IM_ARRAYSIZE(components)];
+
 static unsigned getCharCount(char* str, size_t size)
 {
 	for(unsigned charCount = 0; charCount < static_cast<unsigned>(size); ++charCount)
@@ -37,11 +42,25 @@ void EntitiesDebugger::update(float dt)
 	{
 		ImGui::BeginChild("entities", ImVec2(360, 0), true);
 		ImGui::Checkbox("hightlight selected", &highlightSelected);
+
+		if(ImGui::TreeNode("choose components"))
+		{
+			if(ImGui::ListBoxHeader("comListBox"))
+			{	
+				for(int i = 0; i < IM_ARRAYSIZE(components); ++i)			
+				{
+					ImGui::Selectable(components[i], selectedComponents + i);
+				}
+				ImGui::ListBoxFooter();
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::InputText("debug name", lookFor, lookForSize);
 
 		unsigned lookForCharCount = getCharCount(lookFor, lookForSize);
 
-		mRegistry.each([=](auto entity)
+		auto selectableEntity = [=](entt::entity entity)
 		{
 			bool displayThisEntity = true;
 			char label[50];
@@ -88,7 +107,29 @@ void EntitiesDebugger::update(float dt)
 			{
 				mSelected = entity;
 			}
-		});
+		};
+
+		std::vector<entt::component> types;
+		if(selectedComponents[0]) types.emplace_back(mRegistry.type<component::Health>());
+		if(selectedComponents[1]) types.emplace_back(mRegistry.type<component::Damage>());
+		if(selectedComponents[2]) types.emplace_back(mRegistry.type<component::Player>());
+		if(selectedComponents[3]) types.emplace_back(mRegistry.type<component::Killable>());
+		if(selectedComponents[4]) types.emplace_back(mRegistry.type<component::InPlayerGunAttackArea>());
+
+		if(types.empty() || types.size() == IM_ARRAYSIZE(components))
+		{
+			mRegistry.each([=](auto entity)
+			{
+				selectableEntity(entity);
+			});
+		}
+		else
+		{
+			mRegistry.runtime_view(types.cbegin(), types.cend()).each([=](auto entity)
+			{
+				selectableEntity(entity);
+			});	
+		}
 		ImGui::EndChild();
 		ImGui::SameLine();
 
