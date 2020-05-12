@@ -59,8 +59,9 @@
         <component name="StaticCollisionBody" />
     </entity>
     <entity>
-        <component name="BodyCircle" x="150.0" y="170.0" radius="30.0" />
-        <component name="RenderQuad" z="94" color="rgb(0,0,0)"/>
+        <component name="BodyRect" x="120.0" y="140.0" width="60.0" height="60.0" />
+        <component name="BodyCircle" x="30.0" y="30.0" radius="30.0" />
+        <component name="RenderQuad" z="94" color="rgb(0,0,100)"/>
         <component name="StaticCollisionBody" />
     </entity>
 </entities>
