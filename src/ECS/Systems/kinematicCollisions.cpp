@@ -11,13 +11,12 @@ namespace ph::system {
 		if (sPause)
 			return;
 
-		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyRect>(entt::exclude<component::BodyCircle>);
-		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::Kinematics, component::BodyCircle, component::BodyRect>();
+		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyCircle, component::BodyRect>();
 
 		for (auto current = kinematicRectObjects.begin(); current != kinematicRectObjects.end(); ++current)
 		{
 			auto& currentBody = kinematicRectObjects.get<component::BodyRect>(*current);
-			auto& currentKin = kinematicRectObjects.get<component::Kinematics>(*current);
 
 			auto another = current;
 			++another;
@@ -137,6 +136,40 @@ namespace ph::system {
 
 					currentBody.pos += distanceVector;
 					circRect.pos -= distanceVector;
+				}
+			}
+		}
+
+		// circle-on-circle collisions
+		for (auto current = kinematicCircObjects.begin(); current != kinematicCircObjects.end(); ++current)
+		{
+			auto& currentRect = kinematicCircObjects.get<component::BodyRect>(*current);
+			auto& currentCirc = kinematicCircObjects.get<component::BodyCircle>(*current);
+			auto currentCenter = currentRect.pos + currentCirc.offset;
+
+			auto another = current;
+			++another;
+
+			for (; another != kinematicCircObjects.end(); ++another)
+			{
+				auto& anotherRect = kinematicCircObjects.get<component::BodyRect>(*another);
+				auto& anotherCirc = kinematicCircObjects.get<component::BodyCircle>(*another);
+				auto anotherCenter = anotherRect.pos + anotherCirc.offset;
+
+				auto distance = Math::distanceBetweenPoints(currentCenter, anotherCenter);
+				float radiusSum = currentCirc.radius + anotherCirc.radius;
+
+				if (distance < radiusSum)
+				{
+					auto intersectionDistance = radiusSum - distance;
+					intersectionDistance /= 2.f;
+
+					auto distanceVector = currentCenter - anotherCenter;
+					distanceVector /= distance;
+					distanceVector *= intersectionDistance;
+
+					currentRect.pos += distanceVector;
+					anotherRect.pos -= distanceVector;
 				}
 			}
 		}

@@ -47,6 +47,11 @@
         <component name="BodyCircle" x="10.0" y="20.0" radius="10.0" />
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
+    <entity sourceTemplate="ColorCircle">
+        <component name="BodyRect" x="140.0" y="35.0" width="20.0" height="20.0" />
+        <component name="BodyCircle" x="10.0" y="20.0" radius="10.0" />
+        <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
+    </entity>
     
     <entity>
         <component name="BodyRect" x="50.0" y="70.0" width="40.0" height="40.0" />
