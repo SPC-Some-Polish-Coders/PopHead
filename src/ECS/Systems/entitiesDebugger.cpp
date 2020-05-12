@@ -192,12 +192,6 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Text("color: %u, %u, %u, %u", rq->color.r, rq->color.g, rq->color.b, rq->color.a);
 				ImGui::Text("rotation: %f", rq->rotation);
 				ImGui::Text("z: %u", rq->z);
-
-				if(highlightSelected && bodyValid)
-				{
-					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
-					                     10, 0.f, {}, ProjectionType::gameWorld, false);
-				}
 			}
 
 			if(const auto* tr = mRegistry.try_get<component::TextureRect>(mSelected))
@@ -339,6 +333,12 @@ void EntitiesDebugger::update(float dt)
 				ImGui::Separator();
 				ImGui::BulletText("TeleportPoint");
 				ImGui::Text("name: %s", tp->name.c_str());
+			}
+
+			if(highlightSelected && bodyValid)
+			{
+				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
+									 10, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		}
 
