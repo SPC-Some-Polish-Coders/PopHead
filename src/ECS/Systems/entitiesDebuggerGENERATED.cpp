@@ -279,6 +279,7 @@ switch(c->type) {
 case component::DenialArea::Collision: ImGui::Text("type: Collision"); break;
 case component::DenialArea::LightWall: ImGui::Text("type: LightWall"); break;
 case component::DenialArea::All: ImGui::Text("type: All"); break;
+default: ImGui::Text("DenialArea: unknown enumeration!!!");
 }
 }
 if(auto* c = mRegistry.try_get<component::TeleportPoint>(mSelected)) 
@@ -301,6 +302,7 @@ case component::IndoorOutdoorBlendArea::Left: ImGui::Text("exit: Left"); break;
 case component::IndoorOutdoorBlendArea::Right: ImGui::Text("exit: Right"); break;
 case component::IndoorOutdoorBlendArea::Top: ImGui::Text("exit: Top"); break;
 case component::IndoorOutdoorBlendArea::Down: ImGui::Text("exit: Down"); break;
+default: ImGui::Text("IndoorOutdoorBlendArea: unknown enumeration!!!");
 }
 }
 if(auto* c = mRegistry.try_get<component::IndoorOutdoorBlend>(mSelected)) 
@@ -430,6 +432,7 @@ ImGui::BulletText("LootSpawner");
 switch(c->type) {
 case component::LootSpawner::Bullets: ImGui::Text("type: Bullets"); break;
 case component::LootSpawner::Medkit: ImGui::Text("type: Medkit"); break;
+default: ImGui::Text("LootSpawner: unknown enumeration!!!");
 }
 }
 if(auto* c = mRegistry.try_get<component::AreaVelocityChangingEffect>(mSelected)) 
@@ -480,9 +483,10 @@ if(auto* c = mRegistry.try_get<component::PuzzleColor>(mSelected))
 ImGui::Separator();
 switch(c)
 {
-Red
-Green
-Blue
+case component::PuzzleColor::Red: ImGui::BulletText("PuzzleColor: Red"); break;
+case component::PuzzleColor::Green: ImGui::BulletText("PuzzleColor: Green"); break;
+case component::PuzzleColor::Blue: ImGui::BulletText("PuzzleColor: Blue"); break;
+default: ImGui::BulletText("PuzzleColor: unknown enumeration!!!");
 }
 if(auto* c = mRegistry.try_get<component::PressurePlate>(mSelected)) 
 {
@@ -526,6 +530,7 @@ ImGui::Text("gunId: %u", c->gunId);
 switch(c->type) {
 case component::GunProperties::Pistol: ImGui::Text("type: Pistol"); break;
 case component::GunProperties::Shotgun: ImGui::Text("type: Shotgun"); break;
+default: ImGui::Text("GunProperties: unknown enumeration!!!");
 }
 }
 if(auto* c = mRegistry.try_get<component::MeleeProperties>(mSelected)) 
@@ -574,6 +579,8 @@ ImGui::Text("particleEmitters: std::vector view is not supported!");
 if(auto* c = mRegistry.try_get<component::BodyRect>(mSelected)) 
 {
 ImGui::Separator();
+body = *br;
+bodyValid = true;
 ImGui::BulletText("BodyRect: %f, %f, %f, %f", c->x, c->y, c->w, c->h);
 }
 if(auto* c = mRegistry.try_get<component::Kinematics>(mSelected)) 

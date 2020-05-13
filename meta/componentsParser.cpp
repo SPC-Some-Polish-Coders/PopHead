@@ -348,6 +348,10 @@ void parseComponentsFile(char* filename, FILE* genFile)
 							if(match(code, "FloatRect"))
 							{
 								code += 9;
+								if(match(componentName, "BodyRect"))
+								{
+									fprintf(genFile, "body = *br;\nbodyValid = true;\n");
+								}
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f, %%f, %%f\", c->x, c->y, c->w, c->h);\n}\n", componentName);
 								while(*code++ != '}');
 								while(*code++ != ';');
@@ -391,8 +395,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 				if(isAlpha(*code))
 				{
 					// TODO: What to do with PressurePlate which includes other component? 
-					// TODO: What to do with GunProperties and DenialArea which include its own enum?
-					// TODO: Add support for body highlighting 
 
 					if(match(code, "ph::"))
 					{
@@ -530,7 +532,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = code;
 						while(isAlpha(*code)) ++code;
 						u32 nameSize = cast<u32>(code - name);
-						// TODO: Fix this!
 						while(*code)
 						{
 							if(*code == ';')
@@ -625,7 +626,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 									char* enumeration = e.enumerations[enumerationIndex];
 									fprintf(genFile, "case component::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, enumeration, varName, enumeration);
 								}
-								fprintf(genFile, "}\n");
+								fprintf(genFile, "default: ImGui::Text(\"%s: unknown enumeration!!!\");\n}\n", componentName);
 								itWasEnum = true;
 								break;
 							}
@@ -671,14 +672,13 @@ void parseComponentsFile(char* filename, FILE* genFile)
 
 				++code;
 			}
-			
+
 			fprintf(genFile, "}\n");
 		}
 		else if(match(code, "enum class"))
 		{
-			// TODO: Rethink that code!
 			code += 10;
-			while(*code == ' ') ++code;
+			while(!isAlpha(*code)) ++code;
 			char* componentName = code;
 			while(isAlpha(*code)) ++code;
 			*code = 0;
@@ -698,19 +698,14 @@ void parseComponentsFile(char* filename, FILE* genFile)
 				if(isAlpha(*code))
 				{	
 					char* enumeration = code;
-					u32 enumerationLength = 0;
-					while(isAlpha(*code)) 
-					{ 
-						++code;
-						++enumerationLength; 
-					}
+					while(isAlpha(*code)) ++code; 
 					*code = 0;
 					++code;
-					fprintf(genFile, "%s\n", enumeration);
+					fprintf(genFile, "case component::%s::%s: ImGui::BulletText(\"%s: %s\"); break;\n", componentName, enumeration, componentName, enumeration);
 				}
 			}
 
-			fprintf(genFile, "}\n");
+			fprintf(genFile, "default: ImGui::BulletText(\"%s: unknown enumeration!!!\");\n}\n", componentName);
 		}
 	}
 	
