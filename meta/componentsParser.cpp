@@ -162,6 +162,7 @@ const char* genFileFooter = R"(
 #include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
+#include <windows.h>
 
 #define cast static_cast
 
@@ -252,23 +253,15 @@ bool isDigit(char c)
 	return c >= '0' && c <= '9';
 }
 
-int main()
+void parseComponentsFile(char* filename, FILE* genFile)
 {
-	FILE* genFile = fopen("../src/ECS/Systems/entitiesDebuggerGENERATED.cpp", "w");
-
-	if(!genFile)
-	{
-		printf("Failed to open entitiesDebugger.cpp");
-		return 0;
-	}
-
-	fprintf(genFile, "%s", genFileHeader);
-
-	FILE* componentsFile = fopen("../src/ECS/Components/physicsComponents.hpp", "r");
+	char filepath[255];
+	sprintf(filepath, "../src/ECS/Components/%s", filename);
+	FILE* componentsFile = fopen(filepath, "r");
 	if(!componentsFile)
 	{
 		printf("Failed to open components file"); 
-		return 0;
+		return;
 	}
 
 	fseek(componentsFile, 0, SEEK_END);	
@@ -295,7 +288,7 @@ int main()
 			else
 			{
 				printf("Failed to find namespace ph::component and namespace component");
-				return 0;
+				return;
 			}
 		}
 		while(*code++ != '{');
@@ -311,6 +304,21 @@ int main()
 			while(isAlpha(*code)) ++code;
 			*code = 0;
 			++code;
+
+			if(match(componentName, "DebugName"))
+			{
+				// skip debug name component
+				while(*code++)
+				{
+					if(match(code, "};"))
+					{
+						code += 2;
+						break;
+					}
+				}
+				continue;
+			}
+
 			fprintf(genFile, "if(auto* c = mRegistry.try_get<component::%s>(mSelected)) \n{\n", componentName);
 			fprintf(genFile, "ImGui::Separator();\n");
 
@@ -544,7 +552,7 @@ int main()
 								printf("Parsing error! (%u)", __LINE__);
 								printf("Press enter!");
 								getchar();
-								return 0;
+								return;
 							}
 							++code;
 						}
@@ -706,9 +714,42 @@ int main()
 		}
 	}
 	
-	fprintf(genFile, "%s", genFileFooter);
-
-	fclose(genFile);
 	fclose(componentsFile);
+}
+
+int main()
+{
+	FILE* genFile = fopen("../src/ECS/Systems/entitiesDebuggerGENERATED.cpp", "w");
+
+	if(!genFile)
+	{
+		printf("Failed to open entitiesDebugger.cpp");
+		return 0;
+	}
+
+	fprintf(genFile, "%s", genFileHeader);
+
+	WIN32_FIND_DATA findResult;
+	HANDLE findHandle = FindFirstFile("../src/ECS/Components/*", &findResult);
+	if(findHandle == INVALID_HANDLE_VALUE)
+	{
+		printf("Failed to find first component file in ECS/Components directory!");
+		return 0;
+	}
+
+	do
+	{
+		if(strlen(findResult.cFileName) > 3)
+		{
+			parseComponentsFile(findResult.cFileName, genFile);
+		}
+	}
+	while(FindNextFile(findHandle, &findResult));
+	FindClose(findHandle);
+
+	fprintf(genFile, "%s", genFileFooter);
+	fclose(genFile);
+
+	return 0;
 }
 
