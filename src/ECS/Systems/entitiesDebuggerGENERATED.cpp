@@ -4,7 +4,18 @@
 #include "pch.hpp"
 #include "entitiesDebugger.hpp"
 #include "Renderer/renderer.hpp"
-#include "ECS/components.hpp"
+
+#include "ECS/Components/aiComponents.hpp"
+#include "ECS/Components/animationComponents.hpp"
+#include "ECS/Components/audioComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/debugComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/particleComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
+
 
 extern bool debugWindowOpen;
 
@@ -134,24 +145,14 @@ void EntitiesDebugger::update(float dt)
 			bool bodyValid = false;
 			component::BodyRect body;	
 
+			// NOTE: Change value to 0 if this code doesn't compile
+			//       because of bug in components parser!
+			//       If that happens you can make a commit with #if value set to 0
+			//       Make sure to inform Czapa about bug in parser. 
+			#if 1
+
 			// HEADER ENDS
 
-if(auto* c = mRegistry.try_get<component::Zombie>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Zombie");
-ImGui::Text("pathMode: PathMode view is not supported!");
-ImGui::Text("currentDirectionVector: %f, %f", c->currentDirectionVector.x, c->currentDirectionVector.y);
-ImGui::Text("timeFromStartingThisMove: %f", c->timeFromStartingThisMove);
-ImGui::Text("timeFromLastGrowl: %f", c->timeFromLastGrowl);
-ImGui::Text("timeToMoveToAnotherTile: %f", c->timeToMoveToAnotherTile);
-}
-if(auto* c = mRegistry.try_get<component::SlowZombieBehavior>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("SlowZombieBehavior");
-ImGui::Text("coolDownTimer: %f", c->coolDownTimer);
-}
 if(auto* c = mRegistry.try_get<component::AnimationData>(mSelected)) 
 {
 ImGui::Separator();
@@ -162,114 +163,6 @@ ImGui::Text("delay: %f", c->delay);
 ImGui::Text("elapsedTime: %f", c->elapsedTime);
 ImGui::Text("currentFrameIndex: %u", c->currentFrameIndex);
 if(c->isPlaying) ImGui::Text("isPlaying: true"); else ImGui::Text("isPlaying: false");
-}
-if(auto* c = mRegistry.try_get<component::AmbientSound>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("AmbientSound");
-ImGui::Text("filepath: %s", c->filepath.c_str());
-}
-if(auto* c = mRegistry.try_get<component::SpatialSound>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("SpatialSound");
-ImGui::Text("filepath: %s", c->filepath.c_str());
-}
-if(auto* c = mRegistry.try_get<component::Health>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Health");
-ImGui::Text("healthPoints: %i", c->healthPoints);
-ImGui::Text("maxHealthPoints: %i", c->maxHealthPoints);
-}
-if(auto* c = mRegistry.try_get<component::Damage>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Damage");
-ImGui::Text("damageDealt: %i", c->damageDealt);
-}
-if(auto* c = mRegistry.try_get<component::Player>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Player");
-}
-if(auto* c = mRegistry.try_get<component::Killable>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Killable");
-}
-if(auto* c = mRegistry.try_get<component::InPlayerGunAttackArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("InPlayerGunAttackArea");
-}
-if(auto* c = mRegistry.try_get<component::FaceDirection>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("FaceDirection: %f, %f", c->x, c->y);
-}
-if(auto* c = mRegistry.try_get<component::GunAttacker>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("GunAttacker");
-if(c->isTryingToAttack) ImGui::Text("isTryingToAttack: true"); else ImGui::Text("isTryingToAttack: false");
-ImGui::Text("timeBeforeHiding: %f", c->timeBeforeHiding);
-ImGui::Text("timeToHide: %f", c->timeToHide);
-}
-if(auto* c = mRegistry.try_get<component::DeadCharacter>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("DeadCharacter");
-ImGui::Text("timeToFadeOut: %f", c->timeToFadeOut);
-ImGui::Text("timeFromDeath: %f", c->timeFromDeath);
-}
-if(auto* c = mRegistry.try_get<component::TaggedToDestroy>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("TaggedToDestroy");
-}
-if(auto* c = mRegistry.try_get<component::DamageTag>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("DamageTag");
-ImGui::Text("amountOfDamage: %i", c->amountOfDamage);
-}
-if(auto* c = mRegistry.try_get<component::CollisionWithPlayer>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("CollisionWithPlayer");
-ImGui::Text("pushForce: %f", c->pushForce);
-if(c->isCollision) ImGui::Text("isCollision: true"); else ImGui::Text("isCollision: false");
-}
-if(auto* c = mRegistry.try_get<component::Lifetime>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Lifetime");
-ImGui::Text("lifetime: %f", c->lifetime);
-}
-if(auto* c = mRegistry.try_get<component::LastingShot>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LastingShot");
-ImGui::Text("startingShotPos: %f, %f", c->startingShotPos.x, c->startingShotPos.y);
-ImGui::Text("endingShotPos: %f, %f", c->endingShotPos.x, c->endingShotPos.y);
-}
-if(auto* c = mRegistry.try_get<component::CurrentGun>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("CurrentGun");
-}
-if(auto* c = mRegistry.try_get<component::CurrentMeleeWeapon>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("CurrentMeleeWeapon");
-}
-if(auto* c = mRegistry.try_get<component::DamageAnimation>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("DamageAnimation");
-ImGui::Text("timeToEndColorChange: %f", c->timeToEndColorChange);
-if(c->animationStarted) ImGui::Text("animationStarted: true"); else ImGui::Text("animationStarted: false");
 }
 if(auto* c = mRegistry.try_get<component::DenialArea>(mSelected)) 
 {
@@ -390,12 +283,12 @@ ImGui::Text("elapsedTime: %f", c->elapsedTime);
 ImGui::Text("magnitude: %f", c->magnitude);
 if(c->smooth) ImGui::Text("smooth: true"); else ImGui::Text("smooth: false");
 }
-if(auto* c = mRegistry.try_get<component::DebugCamera>(mSelected)) 
+if(mRegistry.has<component::DebugCamera>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("DebugCamera");
 }
-if(auto* c = mRegistry.try_get<component::HiddenForRenderer>(mSelected)) 
+if(mRegistry.has<component::HiddenForRenderer>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("HiddenForRenderer");
@@ -406,7 +299,7 @@ ImGui::Separator();
 ImGui::BulletText("Medkit");
 ImGui::Text("addHealthPoints: %i", c->addHealthPoints);
 }
-if(auto* c = mRegistry.try_get<component::BulletBox>(mSelected)) 
+if(mRegistry.has<component::BulletBox>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("BulletBox");
@@ -417,136 +310,6 @@ ImGui::Separator();
 ImGui::BulletText("Bullets");
 ImGui::Text("numOfPistolBullets: %i", c->numOfPistolBullets);
 ImGui::Text("numOfShotgunBullets: %i", c->numOfShotgunBullets);
-}
-if(auto* c = mRegistry.try_get<component::ArcadeSpawner>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("ArcadeSpawner");
-ImGui::Text("waves: std::array view is not supported!");
-ImGui::Text("timeFromLastSpawn: %f", c->timeFromLastSpawn);
-}
-if(auto* c = mRegistry.try_get<component::LootSpawner>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LootSpawner");
-switch(c->type) {
-case component::LootSpawner::Bullets: ImGui::Text("type: Bullets"); break;
-case component::LootSpawner::Medkit: ImGui::Text("type: Medkit"); break;
-default: ImGui::Text("LootSpawner: unknown enumeration!!!");
-}
-}
-if(auto* c = mRegistry.try_get<component::AreaVelocityChangingEffect>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("AreaVelocityChangingEffect");
-ImGui::Text("areaSpeedMultiplier: %f", c->areaSpeedMultiplier);
-}
-if(auto* c = mRegistry.try_get<component::Hint>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Hint");
-ImGui::Text("hintName: %s", c->hintName.c_str());
-ImGui::Text("keyboardContent: %s", c->keyboardContent.c_str());
-ImGui::Text("joystickContent: %s", c->joystickContent.c_str());
-if(c->isShown) ImGui::Text("isShown: true"); else ImGui::Text("isShown: false");
-}
-if(auto* c = mRegistry.try_get<component::PushingArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PushingArea");
-ImGui::Text("pushForce: %f, %f", c->pushForce.x, c->pushForce.y);
-}
-if(auto* c = mRegistry.try_get<component::Entrance>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Entrance");
-ImGui::Text("entranceDestination: %s", c->entranceDestination.c_str());
-ImGui::Text("playerSpawnPosition: %f, %f", c->playerSpawnPosition.x, c->playerSpawnPosition.y);
-}
-if(auto* c = mRegistry.try_get<component::Lever>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Lever");
-ImGui::Text("id: %u", c->id);
-if(c->isActivated) ImGui::Text("isActivated: true"); else ImGui::Text("isActivated: false");
-if(c->turnOffAfterSwitch) ImGui::Text("turnOffAfterSwitch: true"); else ImGui::Text("turnOffAfterSwitch: false");
-}
-if(auto* c = mRegistry.try_get<component::LeverListener>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LeverListener");
-ImGui::Text("observedLeverId: %u", c->observedLeverId);
-if(c->isActivated) ImGui::Text("isActivated: true"); else ImGui::Text("isActivated: false");
-}
-if(auto* c = mRegistry.try_get<component::PuzzleColor>(mSelected))
-{
-ImGui::Separator();
-switch(c)
-{
-case component::PuzzleColor::Red: ImGui::BulletText("PuzzleColor: Red"); break;
-case component::PuzzleColor::Green: ImGui::BulletText("PuzzleColor: Green"); break;
-case component::PuzzleColor::Blue: ImGui::BulletText("PuzzleColor: Blue"); break;
-default: ImGui::BulletText("PuzzleColor: unknown enumeration!!!");
-}
-if(auto* c = mRegistry.try_get<component::PressurePlate>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PressurePlate");
-ImGui::Text("puzzleId: %u", c->puzzleId);
-ImGui::Text("id: %u", c->id);
-ImGui::Text("pressedByColor: PuzzleColor view is not supported!");
-if(c->isPressed) ImGui::Text("isPressed: true"); else ImGui::Text("isPressed: false");
-if(c->isPressIrreversible) ImGui::Text("isPressIrreversible: true"); else ImGui::Text("isPressIrreversible: false");
-}
-if(auto* c = mRegistry.try_get<component::Puzzle>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Puzzle");
-ImGui::Text("id: %u", c->id);
-}
-if(auto* c = mRegistry.try_get<component::Gate>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Gate");
-ImGui::Text("id: %u", c->id);
-if(c->previouslyOpen) ImGui::Text("previouslyOpen: true"); else ImGui::Text("previouslyOpen: false");
-if(c->open) ImGui::Text("open: true"); else ImGui::Text("open: false");
-}
-if(auto* c = mRegistry.try_get<component::Spikes>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Spikes");
-}
-if(auto* c = mRegistry.try_get<component::GunProperties>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("GunProperties");
-ImGui::Text("shotSoundFilepath: %s", c->shotSoundFilepath.c_str());
-ImGui::Text("range: %f", c->range);
-ImGui::Text("deflectionAngle: %f", c->deflectionAngle);
-ImGui::Text("damage: %i", c->damage);
-ImGui::Text("numberOfBullets: %i", c->numberOfBullets);
-ImGui::Text("gunId: %u", c->gunId);
-switch(c->type) {
-case component::GunProperties::Pistol: ImGui::Text("type: Pistol"); break;
-case component::GunProperties::Shotgun: ImGui::Text("type: Shotgun"); break;
-default: ImGui::Text("GunProperties: unknown enumeration!!!");
-}
-}
-if(auto* c = mRegistry.try_get<component::MeleeProperties>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("MeleeProperties");
-ImGui::Text("minHitInterval: %f", c->minHitInterval);
-ImGui::Text("rotationRange: %f", c->rotationRange);
-ImGui::Text("rotationSpeed: %f", c->rotationSpeed);
-ImGui::Text("range: %f", c->range);
-ImGui::Text("damage: %i", c->damage);
-}
-if(auto* c = mRegistry.try_get<component::Weather>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Weather");
 }
 if(auto* c = mRegistry.try_get<component::ParticleEmitter>(mSelected)) 
 {
@@ -579,7 +342,7 @@ ImGui::Text("particleEmitters: std::vector view is not supported!");
 if(auto* c = mRegistry.try_get<component::BodyRect>(mSelected)) 
 {
 ImGui::Separator();
-body = *br;
+body = *c;
 bodyValid = true;
 ImGui::BulletText("BodyRect: %f, %f, %f, %f", c->x, c->y, c->w, c->h);
 }
@@ -599,7 +362,7 @@ ImGui::Separator();
 ImGui::BulletText("CharacterSpeed");
 ImGui::Text("speed: %f", c->speed);
 }
-if(auto* c = mRegistry.try_get<component::StaticCollisionBody>(mSelected)) 
+if(mRegistry.has<component::StaticCollisionBody>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("StaticCollisionBody");
@@ -624,6 +387,8 @@ if(c->staticallyMovedRight) ImGui::Text("staticallyMovedRight: true"); else ImGu
 
 
 			// FOOTER STARTS
+
+			#endif // !COMPONENTS_PARSER_MESSED_UP
 
 			if(highlightSelected && bodyValid)
 			{
