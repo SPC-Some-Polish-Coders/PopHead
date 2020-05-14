@@ -107,7 +107,11 @@
   <property name="spawnType" type="string" default="zombie"/>
  </objecttype>
  <objecttype name="Spikes" color="#7e0002">
+  <property name="active" type="bool" default="true"/>
+  <property name="changeFrequency" type="float" default="0"/>
+  <property name="changes" type="bool" default="false"/>
   <property name="outdoor" type="bool" default="true"/>
+  <property name="timeToChange" type="float" default="0"/>
  </objecttype>
  <objecttype name="Sprite" color="#454fa4">
   <property name="activeTextureRect" type="bool" default="false"/>

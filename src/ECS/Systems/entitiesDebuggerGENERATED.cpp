@@ -426,6 +426,50 @@ ImGui::Text("id: %u", c->id);
 if(c->previouslyOpen) ImGui::Text("previouslyOpen: true"); else ImGui::Text("previouslyOpen: false");
 if(c->open) ImGui::Text("open: true"); else ImGui::Text("open: false");
 }
+if(auto* c = mRegistry.try_get<component::Spikes>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Spikes");
+ImGui::Text("timeToChange: %f", c->timeToChange);
+ImGui::Text("changeFrequency: %f", c->changeFrequency);
+if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+}
+if(auto* c = mRegistry.try_get<component::SavePoint>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("SavePoint");
+if(c->isIntersectingPlayer) ImGui::Text("isIntersectingPlayer: true"); else ImGui::Text("isIntersectingPlayer: false");
+ImGui::Text("timeSincePlayerSteppedOnIt: %f", c->timeSincePlayerSteppedOnIt);
+}
+if(auto* c = mRegistry.try_get<component::ParticleEmitter>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("ParticleEmitter");
+ImGui::Text("particles: std::vector view is not supported!");
+ImGui::Text("parTexture: %p", c->parTexture);
+ImGui::Text("spawnPositionOffset: %f, %f", c->spawnPositionOffset.x, c->spawnPositionOffset.y);
+ImGui::Text("randomSpawnAreaSize: %f, %f", c->randomSpawnAreaSize.x, c->randomSpawnAreaSize.y);
+ImGui::Text("parInitialVelocity: %f, %f", c->parInitialVelocity.x, c->parInitialVelocity.y);
+ImGui::Text("parInitialVelocityRandom: %f, %f", c->parInitialVelocityRandom.x, c->parInitialVelocityRandom.y);
+ImGui::Text("parAcceleration: %f, %f", c->parAcceleration.x, c->parAcceleration.y);
+ImGui::Text("parSize: %f, %f", c->parSize.x, c->parSize.y);
+ImGui::Text("parStartColor: %u, %u, %u, %u", c->parStartColor.r, c->parStartColor.g, c->parStartColor.b, c->parStartColor.a);
+ImGui::Text("parEndColor: %u, %u, %u, %u", c->parEndColor.r, c->parEndColor.g, c->parEndColor.b, c->parEndColor.a);
+ImGui::Text("amountOfParticles: %u", c->amountOfParticles);
+ImGui::Text("amountOfAlreadySpawnParticles: %u", c->amountOfAlreadySpawnParticles);
+ImGui::Text("parWholeLifetime: %f", c->parWholeLifetime);
+ImGui::Text("parZ: %u", c->parZ);
+if(c->oneShot) ImGui::Text("oneShot: true"); else ImGui::Text("oneShot: false");
+if(c->isEmitting) ImGui::Text("isEmitting: true"); else ImGui::Text("isEmitting: false");
+if(c->wasInitialized) ImGui::Text("wasInitialized: true"); else ImGui::Text("wasInitialized: false");
+}
+if(auto* c = mRegistry.try_get<component::MultiParticleEmitter>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("MultiParticleEmitter");
+ImGui::Text("particleEmitters: std::vector view is not supported!");
+}
 if(auto* c = mRegistry.try_get<component::BodyRect>(mSelected)) 
 {
 ImGui::Separator();

@@ -124,7 +124,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 			auto globalIds = Csv::toUnsigneds(chunkNode.toString());
 			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor);
 		}
-		--z;
+		z -= 2;
 	}
 
 	// translate map bounds to world space

@@ -554,7 +554,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					}
 					else if(match(code, "char"))
 					{
-						// TODO: Refactor: Do that without nameSize
 						code += 4;
 						while(!isAlpha(*code)) ++code;
 						char* name = code;

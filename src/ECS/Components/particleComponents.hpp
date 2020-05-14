@@ -16,7 +16,7 @@ struct Particle
 
 namespace component {
 
-struct ParticleEmitter // @no-debugger
+struct ParticleEmitter
 {
 	std::vector<Particle> particles;
 
@@ -38,7 +38,7 @@ struct ParticleEmitter // @no-debugger
 	bool wasInitialized = false;
 };
 
-struct MultiParticleEmitter // @no-debugger
+struct MultiParticleEmitter
 {
 	std::vector<ParticleEmitter> particleEmitters;
 };

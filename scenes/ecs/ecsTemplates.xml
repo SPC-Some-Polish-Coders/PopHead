@@ -228,9 +228,9 @@
 
   <entityTemplate name="Spikes" >
     <component name="BodyRect" x="0" y="0" width="16" height="16" outdoor="false" />
-    <component name="RenderQuad" textureFilepath="textures/others/spike.png" z="100" />
-	<component name="IndoorOutdoor" />
+    <component name="RenderQuad" textureFilepath="textures/others/spike.png" z="186" />
     <component name="TextureRect" x="0" y="0" width="16" height="16" />
+	<component name="IndoorOutdoor" />
 	<component name="Spikes" />
   </entityTemplate >
 
@@ -238,6 +238,17 @@
     <component name="BodyRect" x="0" y="0" width="32" height="32" outdoor="false" />
     <component name="RenderQuad" textureFilepath="textures/others/saveDisc.png" z="100" />
 	<component name="IndoorOutdoor" />
+	<component name="SavePoint" />
+    <component name="ParticleEmitter">
+      <particleAttrib name="startColor" r="50" g="50" b="255" a="255" />
+      <particleAttrib name="endColor" r="50" g="50" b="255" a="255" />
+      <particleAttrib name="size" x="2" y="2" />
+      <particleAttrib name="z" v="100"/>
+      <particleAttrib name="isEmitting" v="true" />
+      <particleAttrib name="amount" v="10" />
+      <particleAttrib name="lifetime" v="3" />
+      <particleAttrib name="randomSpawnAreaSize" width="20" height="3" />
+    </component>
   </entityTemplate >
 
 </entityTemplates>

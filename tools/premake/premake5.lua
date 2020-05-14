@@ -37,11 +37,6 @@ project "PopHead"
     targetdir (exe_dir)
 	objdir (obj_dir)
 
-	prebuildcommands {
-		"cd meta",
-		"componentsParser.exe"
-	}
-
 	pchheader "pch.hpp"
 	pchsource "../../src/pch.cpp"
     

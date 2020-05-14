@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="184">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="195">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -24275,7 +24275,7 @@
 898,898,898,898,0,0,0,898,898,898,898,898,
 898,898,898,898,0,0,0,898,898,898,898,898,
 898,898,898,898,0,0,0,898,898,898,898,898,
-898,898,898,898,0,0,0,898,898,898,898,898,
+898,898,898,898,0,0,0,898,898,898,898,0,
 898,898,898,898,0,0,0,898,898,898,898,0
 </chunk>
    <chunk x="36" y="372" width="12" height="12">
@@ -24289,7 +24289,7 @@
 898,898,898,898,898,898,0,0,0,0,0,0,
 898,898,898,898,898,898,0,0,0,0,0,0,
 898,898,898,898,898,898,0,0,0,0,0,0,
-898,898,898,898,898,898,0,0,0,0,0,0,
+0,0,898,898,898,898,0,0,0,0,0,0,
 0,0,898,898,898,898,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="384" width="12" height="12">
@@ -24516,9 +24516,9 @@
 0,0,0,0,0,0,0,935,933,933,933,933,
 902,0,0,899,0,0,0,902,0,0,0,0,
 902,0,0,899,0,0,0,902,0,0,0,0,
-902,0,0,899,0,0,0,902,0,0,0,0,
 902,0,0,899,0,0,0,902,0,0,835,836,
-902,0,0,899,0,0,0,902,0,0,867,0
+902,0,0,899,0,0,0,902,0,0,867,0,
+902,0,0,899,0,0,0,902,0,0,899,0
 </chunk>
    <chunk x="36" y="372" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24530,9 +24530,9 @@
 933,933,933,933,933,2147484583,0,0,0,0,0,0,
 0,0,0,0,0,899,0,0,0,0,0,0,
 0,0,0,0,0,899,0,0,0,0,0,0,
-0,0,0,0,0,899,0,0,0,0,0,0,
 837,837,838,0,0,899,0,0,0,0,0,0,
-0,0,870,0,0,899,0,0,0,0,0,0
+0,0,870,0,0,899,0,0,0,0,0,0,
+0,0,902,0,0,899,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="384" width="12" height="12">
 902,0,0,899,0,0,0,902,0,0,899,0,
@@ -24689,12 +24689,6 @@
   <object id="126" type="SavePoint" x="-684.625" y="3153.3">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="128" type="TeleportPoint" x="-542.125" y="3266.3">
-   <properties>
-    <property name="name" value="cave1"/>
    </properties>
    <point/>
   </object>
@@ -24898,10 +24892,10 @@
    </properties>
    <point/>
   </object>
-  <object id="175" type="SlowZombie" x="858.5" y="6283.5">
+  <object id="175" type="SlowZombie" x="907.5" y="6244.5">
    <point/>
   </object>
-  <object id="176" type="SlowZombie" x="942" y="6292">
+  <object id="176" type="SlowZombie" x="964" y="6266">
    <point/>
   </object>
   <object id="177" type="SavePoint" x="527.5" y="5103.75">
@@ -24912,19 +24906,80 @@
     <property name="exit_right" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="181" type="Spikes" x="613.667" y="6186.33" width="53" height="100.667">
+  <object id="181" type="Spikes" x="642.697" y="6260.3" width="15" height="24.667">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="182" type="Spikes" x="501.833" y="6134.67" width="53" height="144.334">
+  <object id="182" type="Spikes" x="513.333" y="6134.67" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="1.2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="184" type="SavePoint" x="672.5" y="6288.5">
+   <point/>
+  </object>
+  <object id="185" type="Spikes" x="513.25" y="6182.08" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="1.2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="timeToChange" type="float" value="0.4"/>
+   </properties>
+  </object>
+  <object id="186" type="Spikes" x="512.75" y="6228.58" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="1.2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="timeToChange" type="float" value="0.8"/>
+   </properties>
+  </object>
+  <object id="189" type="Spikes" x="625.75" y="6195.17" width="11.5" height="25.917">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="183" type="Spikes" x="390.167" y="6129.83" width="53" height="144.334">
+  <object id="190" type="Spikes" x="625" y="6113.92" width="33.75" height="33.917">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="191" type="TeleportPoint" x="700.667" y="6292">
+   <properties>
+    <property name="name" value="cave1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="192" type="Spikes" x="401.875" y="6132.79" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="193" type="Spikes" x="401.792" y="6180.2" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="timeToChange" type="float" value="0.3"/>
+   </properties>
+  </object>
+  <object id="194" type="Spikes" x="401.292" y="6226.7" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="true"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="timeToChange" type="float" value="0.6"/>
    </properties>
   </object>
  </objectgroup>
@@ -24939,7 +24994,7 @@
   <object id="41" type="CollisionAndLightWallDenialArea" x="1607.33" y="2632.83" width="350.663" height="1031.67"/>
   <object id="72" type="CollisionDenialArea" x="141.25" y="2612.83" width="38.9997" height="107.584"/>
   <object id="73" type="CollisionAndLightWallDenialArea" x="139.75" y="2190.96" width="70.2497" height="438.334"/>
-  <object id="137" type="CollisionAndLightWallDenialArea" x="-585.72" y="3005.51" width="85.6663" height="295.235"/>
+  <object id="137" type="CollisionAndLightWallDenialArea" x="-389.053" y="2959.51" width="85.6663" height="295.235"/>
   <object id="138" type="CollisionAndLightWallDenialArea" x="-715.947" y="3109.49" width="86.6663" height="108.652"/>
   <object id="139" type="CollisionAndLightWallDenialArea" x="-628.076" y="3133.96" width="50.6663" height="39.9853"/>
   <object id="178" type="CollisionAndLightWallDenialArea" x="732.5" y="6278.88" width="15.625" height="36.5"/>

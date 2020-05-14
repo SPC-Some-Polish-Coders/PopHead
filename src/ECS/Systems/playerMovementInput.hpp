@@ -22,7 +22,8 @@ namespace system {
 		AIManager& mAIManager;
 		Scene* mScene;
 
-		float mDashMomentum = 0.f; 
+		float mTimeToHaveNextDash = 0.f; 
+		unsigned mDashes = 2;
 		bool mDashJustPressed = false;
 
 	public:

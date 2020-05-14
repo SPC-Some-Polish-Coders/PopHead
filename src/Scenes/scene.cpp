@@ -36,6 +36,9 @@
 #include "ECS/Systems/indoorOutdoorBlend.hpp"
 #include "ECS/Systems/pressurePlates.hpp"
 #include "ECS/Systems/puzzles.hpp"
+#include "ECS/Systems/spikes.hpp"
+#include "ECS/Systems/save.hpp"
+#include "ECS/Systems/teleport.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -102,6 +105,9 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlend>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
 	mSystemsQueue.appendSystem<system::Puzzles>();
+	mSystemsQueue.appendSystem<system::Spikes>();
+	mSystemsQueue.appendSystem<system::Save>();
+	mSystemsQueue.appendSystem<system::Teleport>();
 }
 
 void Scene::handleEvent(sf::Event e)

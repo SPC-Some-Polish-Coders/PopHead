@@ -87,7 +87,13 @@ namespace ph::component {
 		bool open = false;
 	};
 
-	struct Spikes {};
+	struct Spikes 
+	{
+		float timeToChange; 
+		float changeFrequency;
+		bool changes;
+		bool active;
+	};
 
 	struct GunProperties // @no-debugger
 	{
@@ -112,5 +118,11 @@ namespace ph::component {
 	};
 
 	struct Weather {}; // @no-debugger
+
+	struct SavePoint 
+	{
+		bool isIntersectingPlayer = false;
+		float timeSincePlayerSteppedOnIt = 2.f;
+	};
 
 }

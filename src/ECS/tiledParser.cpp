@@ -486,7 +486,14 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		body.pos = pos;
 		body.size = size;
 
+		auto& spikes = registry.get<component::Spikes>(entity);
+		spikes.timeToChange = getProperty("timeToChange").toFloat();
+		spikes.changeFrequency = getProperty("changeFrequency").toFloat();
+		spikes.changes = getProperty("changes").toBool();
+		spikes.active = getProperty("active").toBool();
+
 		auto& textureRect = registry.get<component::TextureRect>(entity);
+		textureRect.x = spikes.active ? 0 : 16;
 		textureRect.size = static_cast<sf::Vector2i>(size);
 
 		createDebugName();
