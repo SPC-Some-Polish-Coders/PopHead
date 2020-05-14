@@ -666,7 +666,28 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						}
 						if(itWasEnum) continue;
 
-						// TODO: Check for pointers
+						{
+							// check for pointers
+							char* code2 = code;	
+							while(isAlpha(*code2)) ++code2;
+							bool itWasPointer = false; 
+							while(!isAlpha(*code2))
+							{
+								if(*code2 == '*')
+								{
+									itWasPointer = true;
+									while(!isAlpha(*code2)) ++code2;
+									char* name = code2;
+									while(isAlpha(*code2)) ++code2;
+									*code2 = 0;
+									fprintf(genFile, "ImGui::Text(\"%s: %%p\", c->%s);\n", name, name);
+									code = code2 + 1;
+									break;
+								}
+								++code2;
+							}
+							if(itWasPointer) continue;
+						}
 
 						// assume that it's unknown type
 						char* typeName = code;

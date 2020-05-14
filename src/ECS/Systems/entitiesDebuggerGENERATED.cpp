@@ -273,8 +273,8 @@ if(auto* c = mRegistry.try_get<component::RenderQuad>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("RenderQuad");
-ImGui::Text("texture: Texture view is not supported!");
-ImGui::Text("shader: Shader view is not supported!");
+ImGui::Text("texture: %p", c->texture);
+ImGui::Text("shader: %p", c->shader);
 ImGui::Text("rotationOrigin: %f, %f", c->rotationOrigin.x, c->rotationOrigin.y);
 ImGui::Text("color: %u, %u, %u, %u", c->color.r, c->color.g, c->color.b, c->color.a);
 ImGui::Text("rotation: %f", c->rotation);
