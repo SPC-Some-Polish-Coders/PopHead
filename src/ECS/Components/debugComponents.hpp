@@ -2,12 +2,12 @@
 
 namespace ph::component {
 	
-	struct DebugName
+	struct DebugName // @no-debugger
 	{
 		char name[50];
 	};
 
-	struct DenialArea
+	struct DenialArea // @no-debugger
 	{
 		enum Type {Collision, LightWall, All};
 		Type type;

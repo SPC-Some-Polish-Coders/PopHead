@@ -40,6 +40,7 @@ void EntitiesDebugger::update(float dt)
 		ImGui::BeginChild("entities", ImVec2(360, 0), true);
 		ImGui::Checkbox("hightlight selected", &highlightSelected);
 
+		/* TODO: Add support for components choosing
 		if(ImGui::TreeNode("choose components"))
 		{
 			if(ImGui::ListBoxHeader("comListBox"))
@@ -52,6 +53,7 @@ void EntitiesDebugger::update(float dt)
 			}
 			ImGui::TreePop();
 		}
+		*/
 
 		ImGui::InputText("debug name", lookFor, lookForSize);
 
@@ -107,6 +109,8 @@ void EntitiesDebugger::update(float dt)
 		};
 
 		std::vector<entt::component> types;
+
+		/* TODO: Add support for components choosing
 		if(selectedComponents[0]) types.emplace_back(mRegistry.type<component::Health>());
 		if(selectedComponents[1]) types.emplace_back(mRegistry.type<component::Damage>());
 		if(selectedComponents[2]) types.emplace_back(mRegistry.type<component::Player>());
@@ -127,6 +131,13 @@ void EntitiesDebugger::update(float dt)
 				selectableEntity(entity);
 			});	
 		}
+		*/
+
+		mRegistry.each([=](auto entity)
+		{
+			selectableEntity(entity);
+		});
+
 		ImGui::EndChild();
 		ImGui::SameLine();
 
@@ -319,18 +330,21 @@ void parseComponentsFile(char* filename, FILE* genFile)
 			*code = 0;
 			++code;
 
-			if(match(componentName, "DebugName"))
 			{
-				// skip debug name component
-				while(*code++)
+				// handle @no-debugger
+				bool noDebugger = false;
+				char* code2 = code;
+				while(*code2++)
 				{
-					if(match(code, "};"))
+					if(*code2 == '{') break;
+					if(match(code2, "@no-debugger"))
 					{
-						code += 2;
+						noDebugger = true;
+						while(!match(code, "};")) ++code;
 						break;
 					}
 				}
-				continue;
+				if(noDebugger) continue;
 			}
 
 			{

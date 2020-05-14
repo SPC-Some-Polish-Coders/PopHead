@@ -94,7 +94,7 @@ namespace component {
 		inline static std::string currentCameraName;
 	};
 
-	struct CameraShake
+	struct CameraShake // @no-debugger
 	{
 		float duration;
 		float elapsedTime = 0.f;
@@ -102,7 +102,7 @@ namespace component {
 		bool smooth = false;
 	};
 
-	struct DebugCamera {};
+	struct DebugCamera {}; // @no-debugger
 
 	struct HiddenForRenderer {};
 

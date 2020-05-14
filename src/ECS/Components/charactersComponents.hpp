@@ -26,14 +26,14 @@ namespace ph::component {
 		using sf::Vector2f::operator=;
 	};
 
-	struct GunAttacker
+	struct GunAttacker // @no-debugger
 	{
 		bool isTryingToAttack;
 		float timeBeforeHiding;
 		float timeToHide;
 	};
 
-	struct DeadCharacter
+	struct DeadCharacter // @no-debugger
 	{
 		float timeToFadeOut = 0.f;
 		float timeFromDeath = 0.f;
@@ -41,7 +41,7 @@ namespace ph::component {
 
 	struct TaggedToDestroy {};
 
-	struct DamageTag
+	struct DamageTag // @no-debugger
 	{
 		int amountOfDamage;
 	};
@@ -57,17 +57,17 @@ namespace ph::component {
 		float lifetime;
 	};
 
-	struct LastingShot
+	struct LastingShot // @no-debugger
 	{
 		sf::Vector2f startingShotPos;
 		sf::Vector2f endingShotPos;
 	};
 
-	struct CurrentGun {};
+	struct CurrentGun {}; // @no-debugger
 
-	struct CurrentMeleeWeapon {};
+	struct CurrentMeleeWeapon {}; // @no-debugger
 
-	struct DamageAnimation
+	struct DamageAnimation // @no-debugger
 	{
 		float timeToEndColorChange;
 		bool animationStarted = false;

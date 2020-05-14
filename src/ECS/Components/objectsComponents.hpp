@@ -7,7 +7,7 @@
 
 namespace ph::component {
 
-	struct ArcadeSpawner
+	struct ArcadeSpawner // @no-debugger
 	{
 		struct Wave
 		{
@@ -18,7 +18,7 @@ namespace ph::component {
 		float timeFromLastSpawn = 0.5f;
 	};
 
-	struct LootSpawner
+	struct LootSpawner // @no-debugger
 	{
 		enum LootType { Bullets, Medkit };
 		LootType type;
@@ -89,7 +89,7 @@ namespace ph::component {
 
 	struct Spikes {};
 
-	struct GunProperties
+	struct GunProperties // @no-debugger
 	{
 		std::string shotSoundFilepath;
 		float range;
@@ -102,7 +102,7 @@ namespace ph::component {
 		Type type;
 	};
 
-	struct MeleeProperties
+	struct MeleeProperties // @no-debugger
 	{
 		float minHitInterval;
 		float rotationRange;
@@ -111,6 +111,6 @@ namespace ph::component {
 		int damage;
 	};
 
-	struct Weather {};
+	struct Weather {}; // @no-debugger
 
 }
