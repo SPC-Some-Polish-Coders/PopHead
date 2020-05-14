@@ -442,6 +442,42 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					++code;
 				}
 
+				auto parseEnum = [&](bool isEnumClass)
+				{
+					code += isEnumClass ? 10 : 4;
+					while(!isAlpha(*code)) ++code;
+					char* name = code;
+					while(isAlpha(*code)) ++code;
+					*code = 0;
+					++code;
+					auto* e = addEnum(&enums, name, isEnumClass);
+					while(*code++)
+					{
+						if(isAlpha(*code))
+						{	
+							char* enumeration = code;
+							while(isAlpha(*code)) ++code;
+							*code = 0;
+							++code;
+							addEnumeration(e, enumeration);	
+						}
+						if(*code == ';')
+						{
+							++code;
+							break;
+						}
+					}
+				};
+
+				auto parseVariableName = [&]()
+				{
+					while(!isAlpha(*code)) ++code;
+					char* name = code;
+					while(isAlpha(*code)) ++code;
+					*code = 0;
+					return name;
+				};
+
 				if(isAlpha(*code))
 				{
 					// TODO: What to do with PressurePlate which includes other component? 
@@ -480,75 +516,22 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					}
 					else if(match(code, "enum class"))
 					{
-						// TODO: Repeated code
-						code += 10;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
-						++code;
-						auto* e = addEnum(&enums, name, true);
-						while(*code++)
-						{
-							if(isAlpha(*code))
-							{	
-								char* enumeration = code;
-								while(isAlpha(*code)) ++code;
-								*code = 0;
-								++code;
-								addEnumeration(e, enumeration);	
-							}
-							if(*code == ';')
-							{
-								++code;
-								break;
-							}
-						}
+						parseEnum(true);
 					}
 					else if(match(code, "enum"))
 					{
-						// TODO: Repeated code
-						code += 4;
-						while(!isAlpha(*code)) ++code;
-						u32 nameSize = 0;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
-						++code;
-						auto* e = addEnum(&enums, name, false);
-						while(*code++)
-						{
-							if(isAlpha(*code))
-							{	
-								char* enumeration = code;
-								while(isAlpha(*code)) ++code;
-								*code = 0;
-								++code;
-								addEnumeration(e, enumeration);	
-							}
-							if(*code == ';')
-							{
-								++code;
-								break;
-							}
-						}
+						parseEnum(false);
 					}
 					else if(match(code, "float"))
 					{
 						code += 5;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f\", c->%s);\n", name, name);
 					}
 					else if(match(code, "int"))
 					{
 						code += 3;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%i\", c->%s);\n", name, name);
 					}
 					else if(match(code, "unsigned"))
@@ -560,19 +543,13 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						else if(match(code, "int")) code += 3;
 						else if(match(code, "short")) code += 5;
 						else if(match(code, "char")) code += 4;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%u\", c->%s);\n", name, name);
 					}
 					else if(match(code, "bool"))
 					{
 						code += 4;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "if(c->%s) ImGui::Text(\"%s: true\"); else ImGui::Text(\"%s: false\");\n", name, name, name);
 					}
 					else if(match(code, "char"))
@@ -581,19 +558,17 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						while(!isAlpha(*code)) ++code;
 						char* name = code;
 						while(isAlpha(*code)) ++code;
-						u32 nameSize = cast<u32>(code - name);
+						char* nameEnd = code;
 						while(*code)
 						{
 							if(*code == ';')
 							{
-								char* nameEnd = name + nameSize;
 								*nameEnd = 0;
 								fprintf(genFile, "ImGui::Text(\"%s: %%c\", c->%s);\n", name, name);	
 								break;
 							}
 							if(*code == '[')
 							{
-								char* nameEnd = name + nameSize;
 								*nameEnd = 0;
 								fprintf(genFile, "ImGui::Text(\"%s: %%s\", c->%s);\n", name, name);
 								break;
@@ -611,47 +586,48 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					else if(match(code, "FloatRect"))
 					{
 						code += 9;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f, %%f, %%f, %%f\", c->%s.x,  c->%s.y, c->%s.w, c->%s.h);\n", name, name, name, name, name);
 					}
 					else if(match(code, "IntRect"))
 					{
 						code += 7;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%i, %%i, %%i, %%i\", c->%s.x,  c->%s.y, c->%s.w, c->%s.h);\n", name, name, name, name, name);
 					}
 					else if(match(code, "std::string"))
 					{
 						code += 11;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%s\", c->%s.c_str());\n", name, name);
 					}
 					else if(match(code, "sf::Vector2f"))
 					{
 						code += 12;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f, %%f\", c->%s.x, c->%s.y);\n", name, name, name);
 					}
 					else if(match(code, "sf::Color"))
 					{
 						code += 9;
+						char* name = parseVariableName();
+						fprintf(genFile, "ImGui::Text(\"%s: %%u, %%u, %%u, %%u\", c->%s.r, c->%s.g, c->%s.b, c->%s.a);\n", name, name, name, name, name);
+					}
+					else if(match(code, "std::"))
+					{
+						// handle not supported types from c++ std libary
+						code += 5;
+						char* typeName = code;
+						while(isAlpha(*code)) ++code;
+						char* typeNameEnd = code;
+						while(*code != ' ') ++code;
 						while(!isAlpha(*code)) ++code;
 						char* name = code;
 						while(isAlpha(*code)) ++code;
+						*typeNameEnd = 0;
 						*code = 0;
-						fprintf(genFile, "ImGui::Text(\"%s: %%u, %%u, %%u, %%u\", c->%s.r, c->%s.g, c->%s.b, c->%s.a);\n", name, name, name, name, name);
+						fprintf(genFile, "ImGui::Text(\"%s: std::%s view is not supported!\");\n", name, typeName);
+						++code;
 					}
 					else
 					{
@@ -690,34 +666,13 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						}
 						if(itWasEnum) continue;
 
-						// handle not supported types from c++ std libary
-						if(match(code, "std::"))
-						{
-							code += 5;
-							char* typeName = code;
-							while(isAlpha(*code)) ++code;
-							char* typeNameEnd = code;
-							while(*code != ' ') ++code;
-							while(!isAlpha(*code)) ++code;
-							char* name = code;
-							while(isAlpha(*code)) ++code;
-							*typeNameEnd = 0;
-							*code = 0;
-							fprintf(genFile, "ImGui::Text(\"%s: std::%s view is not supported!\");\n", name, typeName);
-							++code;
-							continue;
-						}
-
 						// TODO: Check for pointers
 
 						// assume that it's unknown type
 						char* typeName = code;
 						while(isAlpha(*code)) ++code; 
 						*code = 0;
-						while(!isAlpha(*code)) ++code;
-						char* name = code;
-						while(isAlpha(*code)) ++code;
-						*code = 0;
+						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %s view is not supported!\");\n", name, typeName);
 					}
 				}
