@@ -222,6 +222,7 @@ struct Enum
 	u32 nrOfEnumerations = 0;
 	char enumerations[50][50] = {};
 	char name[50] = {};
+	bool isEnumClass;
 };
 
 struct Enums
@@ -237,13 +238,14 @@ void addEnumeration(Enum* e, char* str)
 	e->nrOfEnumerations++;
 }
 
-Enum* addEnum(Enums* enums, char* name)
+Enum* addEnum(Enums* enums, char* name, bool isEnumClass)
 {
 	auto& e = enums->enums[enums->enumsUsed];
 	enums->enumsUsed++;
 	u32 nameLength = strlen(name);
 	memcpy(e.name, name, nameLength);
 	e.name[nameLength] = 0;
+	e.isEnumClass = isEnumClass;
 	return &e; 
 }
 
@@ -272,7 +274,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 	FILE* componentsFile = fopen(filepath, "r");
 	if(!componentsFile)
 	{
-		printf("Failed to open components file"); 
+		printf("Failed to open components file \"%s\"\n", filepath); 
 		return;
 	}
 
@@ -471,7 +473,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						while(isAlpha(*code)) ++code;
 						*code = 0;
 						++code;
-						auto* e = addEnum(&enums, name);
+						auto* e = addEnum(&enums, name, true);
 						while(*code++)
 						{
 							if(isAlpha(*code))
@@ -499,7 +501,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						while(isAlpha(*code)) ++code;
 						*code = 0;
 						++code;
-						auto* e = addEnum(&enums, name);
+						auto* e = addEnum(&enums, name, false);
 						while(*code++)
 						{
 							if(isAlpha(*code))
@@ -658,7 +660,14 @@ void parseComponentsFile(char* filename, FILE* genFile)
 									++enumerationIndex)
 								{
 									char* enumeration = e.enumerations[enumerationIndex];
-									fprintf(genFile, "case component::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, enumeration, varName, enumeration);
+									if(e.isEnumClass)
+									{
+										fprintf(genFile, "case component::%s::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, e.name, enumeration, varName, enumeration);
+									}
+									else
+									{
+										fprintf(genFile, "case component::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, enumeration, varName, enumeration);
+									}
 								}
 								fprintf(genFile, "default: ImGui::Text(\"%s: unknown enumeration!!!\");\n}\n", componentName);
 								itWasEnum = true;
@@ -719,7 +728,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 			++code;
 			fprintf(genFile, "if(auto* c = mRegistry.try_get<component::%s>(mSelected))\n{\n", componentName);
 			fprintf(genFile, "ImGui::Separator();\n");
-			fprintf(genFile, "switch(c)\n{\n");
+			fprintf(genFile, "switch(*c)\n{\n");
 
 			code += 10;
 			while(*code++)
@@ -739,7 +748,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 				}
 			}
 
-			fprintf(genFile, "default: ImGui::BulletText(\"%s: unknown enumeration!!!\");\n}\n", componentName);
+			fprintf(genFile, "default: ImGui::BulletText(\"%s: unknown enumeration!!!\");\n}\n}\n", componentName);
 		}
 	}
 	
@@ -748,6 +757,8 @@ void parseComponentsFile(char* filename, FILE* genFile)
 
 int main()
 {
+	printf("components parser starts generating entities debugger!\n");
+
 	FILE* genFile = fopen("../src/ECS/Systems/entitiesDebuggerGENERATED.cpp", "w");
 
 	if(!genFile)
@@ -774,7 +785,7 @@ int main()
 		if(strlen(findResult.cFileName) > 3)
 		{
 			fprintf(genFile, "#include \"ECS/Components/%s\"\n", findResult.cFileName);
-			memcpy(componentFiles[nrOfComponentFiles], findResult.cFileName, strlen(findResult.cFileName));
+			memcpy(componentFiles[nrOfComponentFiles], findResult.cFileName, strlen(findResult.cFileName) + 1);
 			++nrOfComponentFiles;
 		}
 	}
@@ -790,6 +801,8 @@ int main()
 
 	fprintf(genFile, "%s", genFileFooter);
 	fclose(genFile);
+
+	printf("components parser finished generating entities debugger!\n");
 
 	return 0;
 }
