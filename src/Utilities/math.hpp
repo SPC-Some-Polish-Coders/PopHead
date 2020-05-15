@@ -13,6 +13,11 @@ namespace ph::Math {
 	const sf::Vector2f nullVector = sf::Vector2f(nullFloat, nullFloat);
 
 	template <typename T>
+	FORCE_INLINE sf::Vector2<T> hadamardMul(sf::Vector2<T>, sf::Vector2<T>);
+	template <typename T>
+	FORCE_INLINE sf::Vector2<T> hadamardDiv(sf::Vector2<T>, sf::Vector2<T>);
+
+	template <typename T>
 	FORCE_INLINE sf::Vector2<T> getUnitVector(const sf::Vector2<T>);
 
 	FORCE_INLINE sf::Vector2f getUnitVector(float angle);

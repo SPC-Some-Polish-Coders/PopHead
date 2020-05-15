@@ -10,5 +10,8 @@ namespace ph::system {
 		using System::System;
 
 		void update(float dt) override;
+
+	private:
+		float mTimeSincePlayerIsPushingBoulder = 1.f;
 	};
 }

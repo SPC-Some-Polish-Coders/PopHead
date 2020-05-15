@@ -407,10 +407,34 @@ void parseComponentsFile(char* filename, FILE* genFile)
 								while(*code++ != ';');
 								break;
 							}
+							if(match(code, "IntRect"))
+							{
+								code += 7;
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i, %%i, %%i\", c->x, c->y, c->w, c->h);\n}\n", componentName);
+								while(*code++ != '}');
+								while(*code++ != ';');
+								break;
+							}
 							if(match(code, "sf::Vector2f"))
 							{
 								code += 12;
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n}\n", componentName);
+								while(*code++ != '}');
+								while(*code++ != ';');
+								break;
+							}
+							if(match(code, "sf::Vector2i"))
+							{
+								code += 12;
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i\", c->x, c->y);\n}\n", componentName);
+								while(*code++ != '}');
+								while(*code++ != ';');
+								break;
+							}
+							if(match(code, "sf::Vector2u"))
+							{
+								code += 12;
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%u, %%u\", c->x, c->y);\n}\n", componentName);
 								while(*code++ != '}');
 								while(*code++ != ';');
 								break;

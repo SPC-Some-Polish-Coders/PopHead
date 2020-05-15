@@ -235,7 +235,7 @@ ImGui::Text("name: %s", c->name.c_str());
 if(auto* c = mRegistry.try_get<component::TextureRect>(mSelected)) 
 {
 ImGui::Separator();
-ImGui::BulletText("TextureRect"); // unknown parent type!
+ImGui::BulletText("TextureRect: %i, %i, %i, %i", c->x, c->y, c->w, c->h);
 }
 if(auto* c = mRegistry.try_get<component::IndoorOutdoorBlendArea>(mSelected)) 
 {
@@ -426,10 +426,16 @@ ImGui::Text("pushedLeftSince: %f", c->pushedLeftSince);
 ImGui::Text("pushedRightSince: %f", c->pushedRightSince);
 ImGui::Text("pushedUpSince: %f", c->pushedUpSince);
 ImGui::Text("pushedDownSince: %f", c->pushedDownSince);
-if(c->isMovingLeft) ImGui::Text("isMovingLeft: true"); else ImGui::Text("isMovingLeft: false");
-if(c->isMovingRight) ImGui::Text("isMovingRight: true"); else ImGui::Text("isMovingRight: false");
-if(c->isMovingUp) ImGui::Text("isMovingUp: true"); else ImGui::Text("isMovingUp: false");
-if(c->isMovingDown) ImGui::Text("isMovingDown: true"); else ImGui::Text("isMovingDown: false");
+ImGui::Text("movingLeft: %f", c->movingLeft);
+ImGui::Text("movingRight: %f", c->movingRight);
+ImGui::Text("movingUp: %f", c->movingUp);
+ImGui::Text("movingDown: %f", c->movingDown);
+if(c->movedGridPosInThisMove) ImGui::Text("movedGridPosInThisMove: true"); else ImGui::Text("movedGridPosInThisMove: false");
+}
+if(auto* c = mRegistry.try_get<component::PuzzleGridPos>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PuzzleGridPos: %i, %i", c->x, c->y);
 }
 if(auto* c = mRegistry.try_get<component::Gate>(mSelected)) 
 {

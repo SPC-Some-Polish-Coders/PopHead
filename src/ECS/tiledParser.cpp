@@ -62,29 +62,33 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadPos = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		return body;
 	};
 
 	auto loadSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.size = getSizeAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.size = getSizeAttribute();
+		return body;
 	};
 
 	auto loadPosAndSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
-		bodyRect.size = getSizeAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.size = getSizeAttribute();
+		return body;
 	};
 
 	auto loadPosAndOptionalSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
 		if(auto size = getOptionalSizeAttribute())
-			bodyRect.size = *size;
+			body.size = *size;
+		return body;
 	};
 
 	auto loadAndAlignPos = [&]()
@@ -93,6 +97,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		body.pos = getPosAttribute();
 		body.x -= static_cast<float>(static_cast<int>(body.pos.x) % 16); 
 		body.y -= static_cast<float>(static_cast<int>(body.pos.y) % 16); 
+		return body;
 	};
 
 	auto loadAndAlignPosAndSize = [&]()
@@ -104,6 +109,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		body.y -= static_cast<float>(static_cast<int>(body.y) % 16); 
 		body.w = static_cast<float>(body.w + 16 - static_cast<int>(body.w + 16) % 16);
 		body.h = static_cast<float>(body.h + 16 - static_cast<int>(body.h + 16) % 16);
+		return body;
+	};
+
+	auto loadPuzzleGridPos = [&](const FloatRect& body)
+	{	
+		auto& puzzleGridPos = registry.get<component::PuzzleGridPos>(entity);
+		puzzleGridPos = static_cast<sf::Vector2i>(Math::hadamardDiv(body.center(), sf::Vector2f(16, 16)));
 	};
 
 	auto getProperty = [&](const std::string& propertyName)
@@ -461,7 +473,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "PuzzleBoulder")
 	{
 		createCopy("PuzzleBoulder");
-		loadAndAlignPos();
+		auto& body = loadAndAlignPos();
+		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		createDebugName();
@@ -469,7 +482,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "PressurePlate")
 	{
 		createCopy("PressurePlate");
-		loadAndAlignPos();
+		auto& body = loadAndAlignPos();
+		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		auto& plate = registry.get<component::PressurePlate>(entity);

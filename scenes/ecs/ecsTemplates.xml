@@ -208,14 +208,14 @@
   </entityTemplate >
 
   <entityTemplate name="PuzzleBoulder" >
-    <component name="BodyRect" x="0" y="0" width="16" height="21" />
+    <component name="BodyRect" x="0" y="0" width="16" height="16" />
     <component name="RenderQuad" textureFilepath="textures/others/puzzleBoulder.png" z="99" />
-    <component name="TextureRect" x="0" y="0" width="16" height="21" />
+    <component name="TextureRect" x="0" y="0" width="16" height="16" />
 	<component name="IndoorOutdoor" />
     <component name="StaticCollisionBody" />
-    <component name="Kinematics" friction="15.0" />
 	<component name="PuzzleColor" />
 	<component name="PuzzleBoulder" />
+	<component name="PuzzleGridPos" />
   </entityTemplate >
 
   <entityTemplate name="PressurePlate" >
@@ -225,6 +225,7 @@
 	<component name="IndoorOutdoor" />
 	<component name="PressurePlate" />
 	<component name="PuzzleColor" />
+	<component name="PuzzleGridPos" />
   </entityTemplate >
 
   <entityTemplate name="Spikes" >

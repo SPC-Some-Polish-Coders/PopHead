@@ -86,10 +86,16 @@ namespace ph::component {
 		float pushedRightSince = 0.f;
 		float pushedUpSince = 0.f;
 		float pushedDownSince = 0.f;
-		bool isMovingLeft = false;
-		bool isMovingRight = false;
-		bool isMovingUp = false;
-		bool isMovingDown = false;
+		float movingLeft = 0.f;
+		float movingRight = 0.f;
+		float movingUp = 0.f;
+		float movingDown = 0.f;
+		bool movedGridPosInThisMove = false;
+	};
+
+	struct PuzzleGridPos : public sf::Vector2i 
+	{
+		using sf::Vector2i::operator=;
 	};
 
 	struct Gate

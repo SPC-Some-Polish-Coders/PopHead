@@ -125,7 +125,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"PressurePlate",               &EntitiesParser::parsePressurePlate},
 		{"PuzzleColor",                 &EntitiesParser::parsePuzzleColor},
 		{"SavePoint",                   &EntitiesParser::parseSavePoint},
-		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder}
+		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder},
+		{"PuzzleGridPos",               &EntitiesParser::parsePuzzleGridPos}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -573,6 +574,11 @@ void EntitiesParser::parseSavePoint(const Xml& entityComponentNode, entt::entity
 void EntitiesParser::parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::PuzzleBoulder>(entity);
+}
+
+void EntitiesParser::parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PuzzleGridPos>(entity);
 }
 
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
