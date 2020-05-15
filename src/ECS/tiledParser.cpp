@@ -87,6 +87,25 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			bodyRect.size = *size;
 	};
 
+	auto loadAndAlignPos = [&]()
+	{
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.x -= static_cast<float>(static_cast<int>(body.pos.x) % 16); 
+		body.y -= static_cast<float>(static_cast<int>(body.pos.y) % 16); 
+	};
+
+	auto loadAndAlignPosAndSize = [&]()
+	{
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.size = getSizeAttribute();
+		body.x -= static_cast<float>(static_cast<int>(body.x) % 16); 
+		body.y -= static_cast<float>(static_cast<int>(body.y) % 16); 
+		body.w = static_cast<float>(body.w + 16 - static_cast<int>(body.w + 16) % 16);
+		body.h = static_cast<float>(body.h + 16 - static_cast<int>(body.h + 16) % 16);
+	};
+
 	auto getProperty = [&](const std::string& propertyName)
 	{
 		if(const auto propertiesNode = entityNode.getChild("properties")) 
@@ -442,7 +461,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "PuzzleBoulder")
 	{
 		createCopy("PuzzleBoulder");
-		loadPos();
+		loadAndAlignPos();
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		createDebugName();
@@ -450,7 +469,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "PressurePlate")
 	{
 		createCopy("PressurePlate");
-		loadPos();
+		loadAndAlignPos();
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		auto& plate = registry.get<component::PressurePlate>(entity);
@@ -475,16 +494,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		createCopy("Spikes");
 		loadIndoorOutdoorBlendComponent();
-
-		auto pos = getPosAttribute();
-		auto size = getSizeAttribute();
-		pos.x -= static_cast<float>(static_cast<int>(pos.x) % 16); 
-		pos.y -= static_cast<float>(static_cast<int>(pos.y) % 16); 
-		size.x = static_cast<float>(size.x + 16 - static_cast<int>(size.x + 16) % 16);
-		size.y = static_cast<float>(size.y + 16 - static_cast<int>(size.y + 16) % 16);
-		auto& body = registry.get<component::BodyRect>(entity);
-		body.pos = pos;
-		body.size = size;
+		loadAndAlignPosAndSize();
 
 		auto& spikes = registry.get<component::Spikes>(entity);
 		spikes.timeToChange = getProperty("timeToChange").toFloat();
@@ -492,9 +502,9 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		spikes.changes = getProperty("changes").toBool();
 		spikes.active = getProperty("active").toBool();
 
+		auto& body = registry.get<component::BodyRect>(entity);
 		auto& textureRect = registry.get<component::TextureRect>(entity);
-		textureRect.x = spikes.active ? 0 : 16;
-		textureRect.size = static_cast<sf::Vector2i>(size);
+		textureRect.size = static_cast<sf::Vector2i>(body.size);
 
 		createDebugName();
 	}

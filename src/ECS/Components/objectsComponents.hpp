@@ -80,6 +80,18 @@ namespace ph::component {
 		unsigned id;
 	};
 
+	struct PuzzleBoulder
+	{	
+		float pushedLeftSince = 0.f;
+		float pushedRightSince = 0.f;
+		float pushedUpSince = 0.f;
+		float pushedDownSince = 0.f;
+		bool isMovingLeft = false;
+		bool isMovingRight = false;
+		bool isMovingUp = false;
+		bool isMovingDown = false;
+	};
+
 	struct Gate
 	{
 		unsigned id;

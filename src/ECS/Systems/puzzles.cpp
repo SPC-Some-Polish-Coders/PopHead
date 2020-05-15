@@ -6,6 +6,8 @@ namespace ph::system {
 
 void Puzzles::update(float dt)
 {
+	PH_PROFILE_FUNCTION();
+
 	if(sPause)
 		return;
 

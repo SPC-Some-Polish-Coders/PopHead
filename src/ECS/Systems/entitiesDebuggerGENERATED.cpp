@@ -418,6 +418,19 @@ ImGui::Separator();
 ImGui::BulletText("Puzzle");
 ImGui::Text("id: %u", c->id);
 }
+if(auto* c = mRegistry.try_get<component::PuzzleBoulder>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PuzzleBoulder");
+ImGui::Text("pushedLeftSince: %f", c->pushedLeftSince);
+ImGui::Text("pushedRightSince: %f", c->pushedRightSince);
+ImGui::Text("pushedUpSince: %f", c->pushedUpSince);
+ImGui::Text("pushedDownSince: %f", c->pushedDownSince);
+if(c->isMovingLeft) ImGui::Text("isMovingLeft: true"); else ImGui::Text("isMovingLeft: false");
+if(c->isMovingRight) ImGui::Text("isMovingRight: true"); else ImGui::Text("isMovingRight: false");
+if(c->isMovingUp) ImGui::Text("isMovingUp: true"); else ImGui::Text("isMovingUp: false");
+if(c->isMovingDown) ImGui::Text("isMovingDown: true"); else ImGui::Text("isMovingDown: false");
+}
 if(auto* c = mRegistry.try_get<component::Gate>(mSelected)) 
 {
 ImGui::Separator();

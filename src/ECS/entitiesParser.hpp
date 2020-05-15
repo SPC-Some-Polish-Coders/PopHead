@@ -68,6 +68,7 @@ private:
 	void parseSpikes(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePuzzleColor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseSavePoint(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;

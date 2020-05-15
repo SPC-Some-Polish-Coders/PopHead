@@ -31,7 +31,7 @@ namespace ph::component {
 		std::vector<ph::FloatRect> rects;
 		ph::FloatRect sharedBounds;
 	};
-	
+
 	struct KinematicCollisionBody 
 	{
 		float mass;
@@ -40,4 +40,5 @@ namespace ph::component {
 		bool staticallyMovedLeft;
 		bool staticallyMovedRight;
 	};
+
 }

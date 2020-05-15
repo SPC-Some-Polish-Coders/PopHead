@@ -212,9 +212,10 @@
     <component name="RenderQuad" textureFilepath="textures/others/puzzleBoulder.png" z="99" />
     <component name="TextureRect" x="0" y="0" width="16" height="21" />
 	<component name="IndoorOutdoor" />
-    <component name="KinematicCollisionBody" mass="10" />
+    <component name="StaticCollisionBody" />
     <component name="Kinematics" friction="15.0" />
 	<component name="PuzzleColor" />
+	<component name="PuzzleBoulder" />
   </entityTemplate >
 
   <entityTemplate name="PressurePlate" >
