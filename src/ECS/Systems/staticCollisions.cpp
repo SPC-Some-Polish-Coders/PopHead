@@ -13,240 +13,415 @@ namespace ph::system {
 
 		calculateStaticCollisions();
 		calculateKinematicCollisions();
+
+		pushedLeft.clear();
+		pushedRight.clear();
+		pushedUp.clear();
+		pushedDown.clear();
 	}
 
 	void StaticCollisions::calculateStaticCollisions()
 	{
-		auto staticObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>();
+		auto staticRectObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>(entt::exclude<component::BodyCircle>);
+		auto staticCircObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody, component::BodyCircle>();
 		auto multiStaticCollisionObjects = mRegistry.view<component::MultiStaticCollisionBody>();
-		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
+		auto kinematicRectObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>(entt::exclude<component::BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody, component::BodyCircle>();
 
-		for(auto& kinematicObject : kinematicObjects)
+		for (auto& kinematicObject : kinematicRectObjects)
 		{
-			auto& kinematicBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
-			auto& kinematicCollision = kinematicObjects.get<component::KinematicCollisionBody>(kinematicObject);
-
-			// reset kinematic body
-			kinematicCollision.staticallyMovedDown = false;
-			kinematicCollision.staticallyMovedLeft = false;
-			kinematicCollision.staticallyMovedRight = false;
-			kinematicCollision.staticallyMovedUp = false;
-
-			// compute single static collisions
-			for(const auto& staticObject : staticObjects)
+			auto& kinematicRect = kinematicRectObjects.get<component::BodyRect>(kinematicObject);
+			auto& kinematicBody = kinematicRectObjects.get<component::KinematicCollisionBody>(kinematicObject);
+			resetKinematicBody(kinematicBody);
+		
+			for (const auto& staticObject : staticRectObjects)
 			{
-				const auto& staticBody = staticObjects.get<component::BodyRect>(staticObject);
-				handleStaticCollision(staticBody, kinematicBody, kinematicCollision);
+				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
+				handleCollision(staticRect, nullptr, kinematicRect, nullptr, kinematicObject, kinematicBody);
 			}
-
-			// compute multi static collisions
-			for(const auto& multiStaticObject : multiStaticCollisionObjects)
+			for (const auto& staticObject : staticCircObjects)
+			{
+				const auto& staticRect = staticCircObjects.get<component::BodyRect>(staticObject);
+				const auto& staticCirc = staticCircObjects.get<component::BodyCircle>(staticObject);
+				handleCollision(staticRect, &staticCirc, kinematicRect, nullptr, kinematicObject, kinematicBody);
+			}
+			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
 				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
-				if(intersect(multiStaticCollisionBody.sharedBounds, kinematicBody))
+				if (intersect(multiStaticCollisionBody.sharedBounds, kinematicRect))
 				{
-					for(const FloatRect& staticCollisionBodyRect : multiStaticCollisionBody.rects)
+					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{
-						handleStaticCollision(staticCollisionBodyRect, kinematicBody, kinematicCollision);
+						handleCollision(staticRect, nullptr, kinematicRect, nullptr, kinematicObject, kinematicBody);
+					}
+				}
+			}
+		}
+		for (auto& kinematicObject : kinematicCircObjects)
+		{
+			auto& kinematicRect = kinematicCircObjects.get<component::BodyRect>(kinematicObject);
+			auto& kinematicCirc = kinematicCircObjects.get<component::BodyCircle>(kinematicObject);
+			auto& kinematicBody = kinematicCircObjects.get<component::KinematicCollisionBody>(kinematicObject);
+			resetKinematicBody(kinematicBody);
+
+			for (const auto& staticObject : staticRectObjects)
+			{
+				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
+				handleCollision(staticRect, nullptr, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
+			}
+			for (const auto& staticObject : staticCircObjects)
+			{
+				const auto& staticRect = staticCircObjects.get<component::BodyRect>(staticObject);
+				const auto& staticCirc = staticCircObjects.get<component::BodyCircle>(staticObject);
+				handleCollision(staticRect, &staticCirc, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
+			}
+			for (const auto& multiStaticObject : multiStaticCollisionObjects)
+			{
+				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
+				if (intersect(multiStaticCollisionBody.sharedBounds, kinematicRect))
+				{
+					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
+					{
+						handleCollision(staticRect, nullptr, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 					}
 				}
 			}
 		}
 	}
 
-	void StaticCollisions::handleStaticCollision(const ph::FloatRect& staticBody, ph::FloatRect& kinematicBody, component::KinematicCollisionBody& collision)
+	sf::Vector2f StaticCollisions::handleCollision(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, ph::FloatRect& kinematicRect,
+												   const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody)
 	{
-		sf::Vector2<short> collisionDirection;
+		auto collisionVector = getCollisionVector(staticRect, staticCircle, kinematicRect, kinematicCircle);
+		kinematicRect.pos += collisionVector;
 
-		if(intersect(staticBody, kinematicBody))
+		if (collisionVector.x < 0)
 		{
-			FloatRect intersection;
-			kinematicBody.intersects(staticBody, intersection);
+			kinematicBody.staticallyMovedLeft = true;
+			pushedLeft.emplace_back(kinematicEntity, kinematicCircle != false);
+		}
+		if (collisionVector.x > 0)
+		{
+			kinematicBody.staticallyMovedRight = true;
+			pushedRight.emplace_back(kinematicEntity, kinematicCircle != false);
+		}
+		if (collisionVector.y < 0)
+		{
+			kinematicBody.staticallyMovedUp = true;
+			pushedUp.emplace_back(kinematicEntity, kinematicCircle != false);
+		}
+		if (collisionVector.y > 0)
+		{
+			kinematicBody.staticallyMovedDown = true;
+			pushedDown.emplace_back(kinematicEntity, kinematicCircle != false);
+		}
 
-			if(intersection.w < intersection.h)
-			{
-				if(kinematicBody.x < staticBody.x)
-				{
-					kinematicBody.x -= intersection.w;
-					collision.staticallyMovedLeft = true;
-				}
-				else
-				{
-					kinematicBody.x += intersection.w;
-					collision.staticallyMovedRight = true;
-				}
-			}
-			else
-			{
-				if(kinematicBody.y < staticBody.y)
-				{
-					kinematicBody.y -= intersection.h;
-					collision.staticallyMovedUp = true;
-				}
-				else
-				{
-					kinematicBody.y += intersection.h;
-					collision.staticallyMovedDown = true;
-				}
-			}
-		}
-		else if(kinematicBody.touch(staticBody, collisionDirection))
-		{
-			if(collisionDirection.x == -1)
-				collision.staticallyMovedLeft = true;
-			else if(collisionDirection.x == 1)
-				collision.staticallyMovedRight = true;
-			else if(collisionDirection.y == -1)
-				collision.staticallyMovedUp = true;
-			else if(collisionDirection.y == 1)
-				collision.staticallyMovedDown = true;
-		}
+		return collisionVector;
 	}
 
 	void StaticCollisions::calculateKinematicCollisions()
 	{
-		auto kinematicObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>();
-
-		std::vector<entt::entity> pushedLeft;
-		std::vector<entt::entity> pushedRight;
-		std::vector<entt::entity> pushedUp;
-		std::vector<entt::entity> pushedDown;
-
-		for(auto object : kinematicObjects)
-		{
-			const auto& collision = kinematicObjects.get<component::KinematicCollisionBody>(object);
-			if(collision.staticallyMovedLeft)
-				pushedLeft.emplace_back(object);
-			if(collision.staticallyMovedRight)
-				pushedRight.emplace_back(object);
-			if(collision.staticallyMovedUp)
-				pushedUp.emplace_back(object);
-			if(collision.staticallyMovedDown)
-				pushedDown.emplace_back(object);
-		}
+		auto kinematicRectObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>(entt::exclude<component::BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody, component::BodyCircle>();
 
 		size_t index = 0;
 		while(index != pushedLeft.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedLeft[index]);
-			for(auto object : kinematicObjects)
+			component::BodyRect* firstRect;
+			component::BodyCircle* firstCircle;
+			if (pushedLeft[index].isCircle)
 			{
-				if(object == pushedLeft[index])
-					continue;
-
-				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if(anotherCollisionBody.staticallyMovedLeft) continue;
-				
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
-				
-				if(intersect(firstRect, anotherRect))
-				{
-					FloatRect intersection;
-					firstRect.intersects(anotherRect, intersection);
-
-					if(intersection.w < intersection.h && anotherRect.x < firstRect.x)
-					{
-						anotherCollisionBody.staticallyMovedLeft = true;
-						anotherRect.x -= intersection.w;
-						pushedLeft.emplace_back(object);
-					}
-				}
+				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedLeft[index].entity));
+				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedLeft[index].entity));
+			}
+			else
+			{
+				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedLeft[index].entity));
+				firstCircle = nullptr;
 			}
 
-			++index;
-		}
-		
-		index = 0;
-		while(index != pushedRight.size())
-		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedRight[index]);
-			for(auto object : kinematicObjects)
+			for (auto secondEntity : kinematicRectObjects)
 			{
-				if(object == pushedRight[index])
-					continue;
+				if (secondEntity == pushedLeft[index].entity) continue;
+				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if(anotherCollisionBody.staticallyMovedRight) continue;
-
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
-
-				if(intersect(firstRect, anotherRect))
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				if (collisionVector.x < 0)
 				{
-					FloatRect intersection;
-					firstRect.intersects(anotherRect, intersection);
-
-					if(intersection.w < intersection.h && firstRect.x < anotherRect.x)
-					{
-						anotherCollisionBody.staticallyMovedRight = true;
-						anotherRect.x += intersection.w;
-						pushedRight.emplace_back(object);
-					}
+					secondRect.x += collisionVector.x;
+					secondBody.staticallyMovedLeft = true;
+					pushedLeft.emplace_back(secondEntity, false);
 				}
 			}
+			for (auto secondEntity : kinematicCircObjects)
+			{
+				if (secondEntity == pushedLeft[index].entity) continue;
+				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
+				if (collisionVector.x < 0)
+				{
+					secondRect.x += collisionVector.x;
+					secondBody.staticallyMovedLeft = true;
+					pushedLeft.emplace_back(secondEntity, true);
+				}
+			}
 			++index;
 		}
 
 		index = 0;
-		while(index != pushedUp.size())
+		while (index != pushedRight.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedUp[index]);
-			for(auto object : kinematicObjects)
+			component::BodyRect* firstRect;
+			component::BodyCircle* firstCircle;
+			if (pushedRight[index].isCircle)
 			{
-				if(object == pushedUp[index])
-					continue;
-
-				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if(anotherCollisionBody.staticallyMovedUp) continue;
-
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
-
-				if(intersect(firstRect, anotherRect))
-				{
-					FloatRect intersection;
-					firstRect.intersects(anotherRect, intersection);
-
-					if(intersection.h < intersection.w && anotherRect.y < firstRect.y)
-					{
-						anotherCollisionBody.staticallyMovedUp = true;
-						anotherRect.y -= intersection.h;
-						pushedUp.emplace_back(object);
-					}
-				}
+				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedRight[index].entity));
+				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedRight[index].entity));
+			}
+			else
+			{
+				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedRight[index].entity));
+				firstCircle = nullptr;
 			}
 
+			for (auto secondEntity : kinematicRectObjects)
+			{
+				if (secondEntity == pushedRight[index].entity) continue;
+				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				if (collisionVector.x > 0)
+				{
+					secondRect.x += collisionVector.x;
+					secondBody.staticallyMovedRight = true;
+					pushedRight.emplace_back(secondEntity, false);
+				}
+			}
+			for (auto secondEntity : kinematicCircObjects)
+			{
+				if (secondEntity == pushedRight[index].entity) continue;
+				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
+				if (collisionVector.x > 0)
+				{
+					secondRect.x += collisionVector.x;
+					secondBody.staticallyMovedRight = true;
+					pushedRight.emplace_back(secondEntity, true);
+				}
+			}
 			++index;
 		}
 
 		index = 0;
-		while(index != pushedDown.size())
+		while (index != pushedUp.size())
 		{
-			const auto& firstRect = kinematicObjects.get<component::BodyRect>(pushedDown[index]);
-			for(auto object : kinematicObjects)
+			component::BodyRect* firstRect;
+			component::BodyCircle* firstCircle;
+			if (pushedUp[index].isCircle)
 			{
-				if(object == pushedDown[index])
-					continue;
+				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedUp[index].entity));
+				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedUp[index].entity));
+			}
+			else
+			{
+				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedUp[index].entity));
+				firstCircle = nullptr;
+			}
 
-				auto& anotherCollisionBody = kinematicObjects.get<component::KinematicCollisionBody>(object);
-				if(anotherCollisionBody.staticallyMovedDown) continue;
+			for (auto secondEntity : kinematicRectObjects)
+			{
+				if (secondEntity == pushedUp[index].entity) continue;
+				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto& anotherRect = kinematicObjects.get<component::BodyRect>(object);
-
-				if(intersect(firstRect, anotherRect))
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				if (collisionVector.y < 0)
 				{
-					FloatRect intersection;
-					firstRect.intersects(anotherRect, intersection);
+					secondRect.y += collisionVector.y;
+					secondBody.staticallyMovedUp = true;
+					pushedUp.emplace_back(secondEntity, false);
+				}
+			}
+			for (auto secondEntity : kinematicCircObjects)
+			{
+				if (secondEntity == pushedUp[index].entity) continue;
+				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-					if(intersection.h < intersection.w && firstRect.y < anotherRect.y)
-					{
-						anotherCollisionBody.staticallyMovedDown = true;
-						anotherRect.y += intersection.h;
-						pushedDown.emplace_back(object);
-					}
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
+				if (collisionVector.y < 0)
+				{
+					secondRect.y += collisionVector.y;
+					secondBody.staticallyMovedUp = true;
+					pushedUp.emplace_back(secondEntity, true);
+				}
+			}
+			++index;
+		}
+
+		index = 0;
+		while (index != pushedDown.size())
+		{
+			component::BodyRect* firstRect;
+			component::BodyCircle* firstCircle;
+			if (pushedDown[index].isCircle)
+			{
+				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedDown[index].entity));
+				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedDown[index].entity));
+			}
+			else
+			{
+				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedDown[index].entity));
+				firstCircle = nullptr;
+			}
+
+			for (auto secondEntity : kinematicRectObjects)
+			{
+				if (secondEntity == pushedDown[index].entity) continue;
+				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				if (collisionVector.y > 0)
+				{
+					secondRect.y += collisionVector.y;
+					secondBody.staticallyMovedDown = true;
+					pushedDown.emplace_back(secondEntity, false);
+				}
+			}
+			for (auto secondEntity : kinematicCircObjects)
+			{
+				if (secondEntity == pushedDown[index].entity) continue;
+				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
+				if (collisionVector.y > 0)
+				{
+					secondRect.y += collisionVector.y;
+					secondBody.staticallyMovedDown = true;
+					pushedDown.emplace_back(secondEntity, true);
+				}
+			}
+			++index;
+		}
+	}
+
+	sf::Vector2f StaticCollisions::getCollisionVector(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, 
+													  const ph::FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const
+	{
+		auto rectCircleCollision = [](const ph::FloatRect& firstRect, const component::BodyCircle& firstCircle, const ph::FloatRect& secondRect) -> sf::Vector2f
+		{
+			auto circleCenter = firstRect.pos + firstCircle.offset;
+
+			if (!(circleCenter.x < secondRect.x || circleCenter.x > secondRect.right()))
+			{
+				if (circleCenter.y + firstCircle.radius > secondRect.y && circleCenter.y + firstCircle.radius < secondRect.bottom())
+				{
+					return { 0.f, circleCenter.y + firstCircle.radius - secondRect.y };
+				}
+				if (circleCenter.y - firstCircle.radius > secondRect.y && circleCenter.y - firstCircle.radius < secondRect.bottom())
+				{
+					return { 0.f, (circleCenter.y - firstCircle.radius) - secondRect.bottom() };
+				}
+				return { 0.f, 0.f };
+			}
+			if (!(circleCenter.y < secondRect.y || circleCenter.y > secondRect.bottom()))
+			{
+				if (circleCenter.x + firstCircle.radius > secondRect.x && circleCenter.x + firstCircle.radius < secondRect.right())
+				{
+					return { circleCenter.x + firstCircle.radius - secondRect.x, 0.f };
+				}
+				if (circleCenter.x - firstCircle.radius > secondRect.x && circleCenter.x - firstCircle.radius < secondRect.right())
+				{
+					return { (circleCenter.x - firstCircle.radius) - secondRect.right(), 0.f };
+				}
+				return { 0.f, 0.f };
+			}
+
+			auto bottomRightOfRect = secondRect.bottomRight();
+			sf::Vector2f rectCorners[4] = { secondRect.pos, {secondRect.x, bottomRightOfRect.y}, {bottomRightOfRect.x, secondRect.y}, bottomRightOfRect };
+			float closestDistance = firstCircle.radius;
+			size_t closestCornerIndex = 0;
+
+			for (size_t i = 0; i < 4; ++i)
+			{
+				auto distance = Math::distanceBetweenPoints(circleCenter, rectCorners[i]);
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestCornerIndex = i;
 				}
 			}
 
-			++index;
+			if (closestDistance < firstCircle.radius)
+			{
+				auto intersectionDistance = firstCircle.radius - closestDistance;
+				auto distanceVector = rectCorners[closestCornerIndex] - circleCenter;
+				distanceVector /= closestDistance;
+				distanceVector *= intersectionDistance;
+				return distanceVector;
+			}
+			return { 0.f, 0.f };
+		};
+
+		if (staticCircle && kinematicCircle)
+		{
+			auto staticCircleCenter = staticRect.pos + staticCircle->offset;
+			auto kinematicCircleCenter = kinematicRect.pos + kinematicCircle->offset;
+			auto centersDistance = Math::distanceBetweenPoints(kinematicCircleCenter, staticCircleCenter);
+
+			if (centersDistance < staticCircle->radius + kinematicCircle->radius)
+			{
+				auto collisionDistance = staticCircle->radius + kinematicCircle->radius - centersDistance;
+				return (kinematicCircleCenter - staticCircleCenter) / centersDistance * collisionDistance;
+			}
 		}
+		else if (staticCircle == nullptr && kinematicCircle)
+		{
+			return -rectCircleCollision(kinematicRect, *kinematicCircle, staticRect);
+		}
+		else if (staticCircle && kinematicCircle == nullptr)
+		{
+			return rectCircleCollision(staticRect, *staticCircle, kinematicRect);
+		}
+		else
+		{
+			ph::FloatRect intersection;
+			staticRect.intersects(kinematicRect, intersection);
+
+			if (intersection.w < intersection.h)
+			{
+				if (staticRect.x < kinematicRect.x)
+					return { intersection.w, 0.f };
+				else
+					return { -intersection.w, 0.f };
+			}
+			else if (intersection.h < intersection.w)
+			{
+				if (staticRect.y < kinematicRect.y)
+					return { 0.f, intersection.h };
+				else
+					return { 0.f, -intersection.h };
+			}
+		}
+	}
+
+	void StaticCollisions::resetKinematicBody(component::KinematicCollisionBody& kinematicBody)
+	{
+		kinematicBody.staticallyMovedLeft = false;
+		kinematicBody.staticallyMovedRight = false;
+		kinematicBody.staticallyMovedUp = false;
+		kinematicBody.staticallyMovedDown = false;
 	}
 }
