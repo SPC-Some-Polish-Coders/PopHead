@@ -1,5 +1,6 @@
 #include "pch.hpp"
 #include "entitiesTemplateStorage.hpp"
+#include "ECS/Components/debugComponents.hpp"
 
 namespace ph {
 
@@ -14,9 +15,15 @@ entt::registry& EntitiesTemplateStorage::getTemplateRegistry()
 
 entt::entity EntitiesTemplateStorage::create(const std::string& templateName)
 {
-	auto newEntityTemplate = mTemplatesRegistry.create();
-	mTemplatesMap.insert(std::make_pair(templateName, newEntityTemplate));
-	return newEntityTemplate;
+	auto newTemplateEntity = mTemplatesRegistry.create();
+	mTemplatesMap.insert(std::make_pair(templateName, newTemplateEntity));
+
+	#ifndef PH_DISTRIBUTION
+	auto& debugName = mTemplatesRegistry.assign<component::DebugName>(newTemplateEntity);
+	memcpy(debugName.name, templateName.c_str(), templateName.length()); 
+	#endif
+
+	return newTemplateEntity;
 }
 
 entt::entity EntitiesTemplateStorage::createCopy(const std::string& templateName, entt::registry& gameRegistry)

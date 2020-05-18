@@ -3,6 +3,7 @@
 #include "playerStatus.hpp"
 #include <entt/entity/registry.hpp>
 #include "ECS/systemsQueue.hpp"
+#include "ECS/entitiesTemplateStorage.hpp"
 #include <SFML/System.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -16,7 +17,7 @@ class ThreadPool;
 class Scene
 {
 public:
-    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&);
+    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&, EntitiesTemplateStorage&);
 
 	void handleEvent(sf::Event);
     void update(float dt);

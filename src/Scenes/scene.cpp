@@ -47,7 +47,8 @@
 
 namespace ph {
 
-Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture, ThreadPool& threadPool)
+Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture,
+             ThreadPool& threadPool, EntitiesTemplateStorage& entitiesTemplateStorage)
 	:mSystemsQueue(mRegistry, threadPool)
 {
 	// should be at the start
@@ -105,7 +106,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::EntitiesDebugger>();
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlend>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
-	mSystemsQueue.appendSystem<system::Puzzles>();
+	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));
 	mSystemsQueue.appendSystem<system::Spikes>();
 	mSystemsQueue.appendSystem<system::Save>();
 	mSystemsQueue.appendSystem<system::Teleport>();

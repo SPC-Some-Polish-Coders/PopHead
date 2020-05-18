@@ -412,12 +412,6 @@ ImGui::Text("pressedByColor: PuzzleColor view is not supported!");
 if(c->isPressed) ImGui::Text("isPressed: true"); else ImGui::Text("isPressed: false");
 if(c->isPressIrreversible) ImGui::Text("isPressIrreversible: true"); else ImGui::Text("isPressIrreversible: false");
 }
-if(auto* c = mRegistry.try_get<component::Puzzle>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Puzzle");
-ImGui::Text("id: %u", c->id);
-}
 if(auto* c = mRegistry.try_get<component::PuzzleBoulder>(mSelected)) 
 {
 ImGui::Separator();
@@ -449,6 +443,8 @@ if(auto* c = mRegistry.try_get<component::Spikes>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("Spikes");
+ImGui::Text("puzzleId: %u", c->puzzleId);
+ImGui::Text("id: %u", c->id);
 ImGui::Text("timeToChange: %f", c->timeToChange);
 ImGui::Text("changeFrequency: %f", c->changeFrequency);
 if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");

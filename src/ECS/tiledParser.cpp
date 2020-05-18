@@ -25,15 +25,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	//       so we can capture it with lambda and we don't have to pass it to lambda as argument.
 	entt::entity entity;
 
-	auto createDebugName = [&]()
-	{
-		#ifndef PH_DISTRIBUTION
-		auto& debugName = registry.assign<component::DebugName>(entity);
-		auto name = entityNode.getAttribute("type")->toString();
-		memcpy(debugName.name, name.c_str(), name.length()); 
-		#endif
-	};
-
 	auto getPosAttribute = [&]()
 	{
 		auto x = entityNode.getAttribute("x");
@@ -221,7 +212,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPos();
 		loadHealthComponent();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "Player") 
 	{
@@ -253,8 +243,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			flashlight.attenuationSquareFactor = 1.5f;
 			registry.assign_or_replace<component::LightSource>(entity, flashlight);
 		}	
-
-		createDebugName();
 	}
 	else if(type == "Camera") 
 	{
@@ -267,7 +255,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			sf::Vector2f center(pos + (size / 2.f));
 			camera.camera = Camera(center, size);
 			camera.name = getProperty("name").toString();
-			createDebugName();
 		}
 	}
 	else if(type == "BulletBox") 
@@ -278,14 +265,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& bullets = registry.get<component::Bullets>(entity);
 		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toInt();
 		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toInt();
-		createDebugName();
 	}
 	else if(type == "Medkit") 
 	{
 		createCopy("Medkit");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "VelocityChangingArea")
 	{
@@ -294,7 +279,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadSize();
 		float& areaSpeedMultiplier = registry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty("velocityMultiplier").toFloat();
-		createDebugName();
 	}
 	else if(type == "PushingArea")
 	{
@@ -304,7 +288,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& pushDirection = registry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty("pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty("pushForceY").toFloat();
-		createDebugName();
 	}
 	else if(type == "HintArea")
 	{
@@ -315,7 +298,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		hint.hintName = getProperty("hintName").toString();
 		hint.keyboardContent = getProperty("hintKeyboardContent").toString();
 		hint.joystickContent = getProperty("hintJoystickContent").toString();
-		createDebugName();
 	}
 	else if(type == "Gate")
 	{
@@ -323,14 +305,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPos();
 		auto& gate = registry.get<component::Gate>(entity);
 		gate.id = getProperty("id").toUnsigned();
-		createDebugName();
 	}
 	else if(type == "Lever") 
 	{
 		createCopy("Lever");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "Sprite")
 	{
@@ -394,21 +374,17 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 		// load body rect
 		loadPosAndSize();
-
-		createDebugName();
 	}
 	else if(type == "Torch") 
 	{
 		createCopy("Torch");
 		loadPos();
-		createDebugName();
 	}
 	else if(type == "LightWall")
 	{
 		// TODO: Delete this one
 		createCopy("LightWall");
 		loadPosAndSize();
-		createDebugName();
 	}
 	else if(type == "FlowingRiver")
 	{
@@ -441,7 +417,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
-		createDebugName();
 	}
 	else if(type == "IndoorOutdoorBlendArea")
 	{
@@ -468,7 +443,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		registry.assign<component::IndoorOutdoorBlendArea>(entity, area);
 		registry.assign<component::BodyRect>(entity);
 		loadPosAndSize();
-		createDebugName();
 	}
 	else if(type == "PuzzleBoulder")
 	{
@@ -477,7 +451,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
-		createDebugName();
 	}
 	else if(type == "PressurePlate")
 	{
@@ -495,14 +468,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			auto& textureRect = registry.get<component::TextureRect>(entity);
 			textureRect.x = 72;
 		}
-		createDebugName();
-	}
-	else if(type == "Puzzle")
-	{
-		entity = registry.create();
-		unsigned id = getProperty("id").toUnsigned(); 
-		registry.assign<component::Puzzle>(entity, id);
-		createDebugName();
 	}
 	else if(type == "Spikes")
 	{
@@ -511,6 +476,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadAndAlignPosAndSize();
 
 		auto& spikes = registry.get<component::Spikes>(entity);
+		spikes.puzzleId = getProperty("puzzleId").toUnsigned();
+		spikes.id = getProperty("id").toUnsigned();
 		spikes.timeToChange = getProperty("timeToChange").toFloat();
 		spikes.changeFrequency = getProperty("changeFrequency").toFloat();
 		spikes.changes = getProperty("changes").toBool();
@@ -519,15 +486,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& body = registry.get<component::BodyRect>(entity);
 		auto& textureRect = registry.get<component::TextureRect>(entity);
 		textureRect.size = static_cast<sf::Vector2i>(body.size);
-
-		createDebugName();
 	}
 	else if(type == "SavePoint")
 	{
 		createCopy("SavePoint");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "TeleportPoint")
 	{
@@ -535,7 +499,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		registry.assign<component::BodyRect>(entity);
 		registry.assign<component::TeleportPoint>(entity, getProperty("name").toString());
 		loadPos();
-		createDebugName();
 	}
 	else 
 	{

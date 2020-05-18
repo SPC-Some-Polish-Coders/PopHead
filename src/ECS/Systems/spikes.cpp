@@ -26,6 +26,13 @@ void Spikes::update(float dt)
 	mRegistry.view<component::Spikes, component::RenderQuad, component::BodyRect>().each([&]
 	(auto& spikes, auto& spikesRenderQuad, const auto& spikesBody)
 	{
+		// change spikes texture
+		if(spikes.active)
+			spikesRenderQuad.texture = spikesTexture;
+		else
+			spikesRenderQuad.texture = notActiveSpikesTexture;
+
+		// spikes hurt player
 		if(spikes.active)
 		{
 			mRegistry.view<component::Player, component::BodyRect>().each([&]
@@ -38,6 +45,7 @@ void Spikes::update(float dt)
 			});
 		}
 
+		// change spikes activeness over type
 		if(spikes.changes)
 		{
 			spikes.timeToChange -= dt;
@@ -45,10 +53,10 @@ void Spikes::update(float dt)
 			{
 				spikes.timeToChange = spikes.changeFrequency;
 				spikes.active = !spikes.active;
-				spikesRenderQuad.texture = spikes.active ? spikesTexture : notActiveSpikesTexture; 
 			}
 		}
 	});
 }
 
 }
+

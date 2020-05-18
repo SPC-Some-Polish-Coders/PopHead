@@ -61,7 +61,7 @@ void SceneManager::replaceAction()
 	if (thereIsPlayerStatus)
 		mLastPlayerStatus = mScene->getPlayerStatus();
 	
-	mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool));
+	mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool, mEntitiesTemplateStorage));
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 
 	parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,

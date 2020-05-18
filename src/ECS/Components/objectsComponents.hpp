@@ -75,11 +75,6 @@ namespace ph::component {
 		bool isPressIrreversible;
 	};
 
-	struct Puzzle
-	{	
-		unsigned id;
-	};
-
 	struct PuzzleBoulder
 	{	
 		float pushedLeftSince = 0.f;
@@ -107,6 +102,8 @@ namespace ph::component {
 
 	struct Spikes 
 	{
+		unsigned puzzleId;
+		unsigned id;
 		float timeToChange; 
 		float changeFrequency;
 		bool changes;

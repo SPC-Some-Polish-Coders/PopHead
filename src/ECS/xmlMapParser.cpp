@@ -135,7 +135,6 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	
 	auto createBorderCollision = [this]() -> FloatRect& {
 		auto borderEntity = mTemplates->createCopy("BorderCollision", *mGameRegistry);
-		createDebugName(borderEntity, "map border");
 		return mGameRegistry->get<component::BodyRect>(borderEntity);
 	};
 
@@ -469,7 +468,6 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 		if(groundChunkShouldBeConstructed)
 		{
 			auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
-			createDebugName(groundChunkEntity, "ground chunk");
 
 			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
 			grc.bounds = quadsBounds;
@@ -490,7 +488,6 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 		else
 		{
 			auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
-			createDebugName(chunkEntity, "chunk");
 
 			auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 			rc.quads = quads;
@@ -536,19 +533,6 @@ std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const
 			return i;
 	return std::string::npos;
 }
-
-// TODO: This function is repeated in TiledParser
-void XmlMapParser::createDebugName(entt::entity entity, const char* name) const
-{
-	#ifndef PH_DISTRIBUTION
-	
-	auto& debugName = mGameRegistry->assign<component::DebugName>(entity);	
-	memcpy(debugName.name, name, strlen(name));
-
-	#endif
-}
-
-
 
 }
 
