@@ -224,7 +224,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
 			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera.camera = Camera(playerBody.center(), sf::Vector2f(640, 360));
+		playerCamera = Camera(playerBody.center(), sf::Vector2f(640, 360));
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
@@ -253,7 +253,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			sf::Vector2f pos = getPosAttribute();
 			sf::Vector2f size = getSizeAttribute();
 			sf::Vector2f center(pos + (size / 2.f));
-			camera.camera = Camera(center, size);
+			camera = Camera(center, size);
 			camera.name = getProperty("name").toString();
 		}
 	}
@@ -499,6 +499,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		registry.assign<component::BodyRect>(entity);
 		registry.assign<component::TeleportPoint>(entity, getProperty("name").toString());
 		loadPos();
+	}
+	else if(type == "CameraRoom")
+	{
+		createCopy("CameraRoom");
+		loadPosAndSize();
 	}
 	else 
 	{

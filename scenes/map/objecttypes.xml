@@ -34,6 +34,7 @@
   <property name="isValid" type="bool" default="false"/>
   <property name="name" type="string" default="default"/>
  </objecttype>
+ <objecttype name="CameraRoom" color="#3142a4"/>
  <objecttype name="Collision" color="#a40c0c"/>
  <objecttype name="CollisionAndLightWallDenialArea" color="#0c081e"/>
  <objecttype name="CollisionDenialArea" color="#6a0001"/>

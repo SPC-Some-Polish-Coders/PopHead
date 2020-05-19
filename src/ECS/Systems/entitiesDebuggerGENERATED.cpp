@@ -318,11 +318,20 @@ ImGui::Text("attenuationSquareFactor: %f", c->attenuationSquareFactor);
 ImGui::Text("startAngle: %f", c->startAngle);
 ImGui::Text("endAngle: %f", c->endAngle);
 }
+if(auto* c = mRegistry.try_get<component::CameraRoom>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("CameraRoom");
+ImGui::Text("interpolation: %f", c->interpolation);
+ImGui::Text("cam: free view is not supported!");
+ImGui::Text("cam: room view is not supported!");
+}
 if(auto* c = mRegistry.try_get<component::Camera>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("Camera");
-ImGui::Text("camera: Camera view is not supported!");
+ImGui::Text("center: %f, %f", c->center().x, c->center().y);
+ImGui::Text("size: %f, %f", c->getSize().x, c->getSize().y);
 ImGui::Text("name: %s", c->name.c_str());
 }
 if(mRegistry.has<component::HiddenForRenderer>(mSelected)) 

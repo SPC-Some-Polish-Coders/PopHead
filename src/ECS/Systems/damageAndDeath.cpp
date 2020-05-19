@@ -136,7 +136,7 @@ namespace ph::system {
 					mRegistry.remove<component::GunAttacker>(entity);
 					mRegistry.remove<component::FaceDirection>(entity);
 					component::Camera camera;
-					camera.camera = mRegistry.get<component::Camera>(entity).camera;
+					camera = mRegistry.get<component::Camera>(entity);
 					camera.name = "death";
 					camera.currentCameraName = "death";
 					mRegistry.assign<component::Camera>(deathCameraEntity, camera);

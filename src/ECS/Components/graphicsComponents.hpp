@@ -86,12 +86,17 @@ namespace component {
 		float endAngle;
 	};
 
-	struct Camera
+	struct CameraRoom 
 	{
-		ph::Camera camera;
-		std::string name;
+		float interpolation = 0.f; // 0 - free cam  1 - room cam
+	};
 
+	struct Camera : public ph::Camera
+	{
+		std::string name;
 		inline static std::string currentCameraName;
+
+		using ph::Camera::operator=;
 	};
 
 	struct CameraShake // @no-debugger

@@ -7,7 +7,7 @@ namespace ph::system {
 class PlayerCameraMovement : public System
 {
 public:
-	PlayerCameraMovement(entt::registry& registry);
+	using System::System;	
 
 	void update(float dt) override;
 };

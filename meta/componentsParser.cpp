@@ -383,6 +383,8 @@ void parseComponentsFile(char* filename, FILE* genFile)
 
 				if(*code == ':')
 				{
+					// handle inheritance
+
 					componentUsesInheritance = true;
 
 					while(*code++)
@@ -402,49 +404,52 @@ void parseComponentsFile(char* filename, FILE* genFile)
 								{
 									fprintf(genFile, "body = *c;\nbodyValid = true;\n");
 								}
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f, %%f, %%f\", c->x, c->y, c->w, c->h);\n}\n", componentName);
-								while(*code++ != '}');
-								while(*code++ != ';');
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f, %%f, %%f\", c->x, c->y, c->w, c->h);\n", componentName);
+								while(*code++ != '{');
 								break;
 							}
 							if(match(code, "IntRect"))
 							{
 								code += 7;
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i, %%i, %%i\", c->x, c->y, c->w, c->h);\n}\n", componentName);
-								while(*code++ != '}');
-								while(*code++ != ';');
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i, %%i, %%i\", c->x, c->y, c->w, c->h);\n", componentName);
+								while(*code++ != '{');
 								break;
 							}
 							if(match(code, "sf::Vector2f"))
 							{
 								code += 12;
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n}\n", componentName);
-								while(*code++ != '}');
-								while(*code++ != ';');
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n", componentName);
+								while(*code++ != '{');
 								break;
 							}
 							if(match(code, "sf::Vector2i"))
 							{
 								code += 12;
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i\", c->x, c->y);\n}\n", componentName);
-								while(*code++ != '}');
-								while(*code++ != ';');
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i\", c->x, c->y);\n", componentName);
+								while(*code++ != '{');
 								break;
 							}
 							if(match(code, "sf::Vector2u"))
 							{
 								code += 12;
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%u, %%u\", c->x, c->y);\n}\n", componentName);
-								while(*code++ != '}');
-								while(*code++ != ';');
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%u, %%u\", c->x, c->y);\n", componentName);
+								while(*code++ != '{');
+								break;
+							}
+							if(match(code, "ph::Camera"))
+							{
+								code += 10;
+								fprintf(genFile, "ImGui::BulletText(\"%s\");\n", componentName);
+								fprintf(genFile, "ImGui::Text(\"center: %%f, %%f\", c->center().x, c->center().y);\n");
+								fprintf(genFile, "ImGui::Text(\"size: %%f, %%f\", c->getSize().x, c->getSize().y);\n");
+								while(*code++ != '{');
 								break;
 							}
 
 							// handle unknown parent type
-							fprintf(genFile, "ImGui::BulletText(\"%s\"); // unknown parent type!\n}\n", componentName);
+							fprintf(genFile, "ImGui::BulletText(\"%s\"); // unknown parent type!\n", componentName);
 							while(isAlpha(*code)) ++code;
-							while(*code++ != '}');
-							while(*code++ != ';');
+							while(*code++ != '{');
 							break;
 						}
 					}
@@ -453,7 +458,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 
 				++code;
 			}
-			if(componentUsesInheritance) continue;
 
 			Enums enums;
 
