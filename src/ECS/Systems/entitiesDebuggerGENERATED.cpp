@@ -322,9 +322,7 @@ if(auto* c = mRegistry.try_get<component::CameraRoom>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("CameraRoom");
-ImGui::Text("interpolation: %f", c->interpolation);
-ImGui::Text("cam: free view is not supported!");
-ImGui::Text("cam: room view is not supported!");
+ImGui::Text("timeFromPlayerEntrance: %f", c->timeFromPlayerEntrance);
 }
 if(auto* c = mRegistry.try_get<component::Camera>(mSelected)) 
 {

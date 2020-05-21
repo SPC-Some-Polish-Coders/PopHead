@@ -20,7 +20,8 @@ indoorOutdoorBlend = false,
 collisionDenialAreas = false,
 lightWallDenialAreas = false,
 collisionAndLightWallDenialAreas = false,
-hintArea = false, hintAreaDetail = true;
+hintArea = false, hintAreaDetail = true,
+cameraRoom = false;
 
 void AreasDebug::update(float dt)
 {
@@ -38,6 +39,7 @@ void AreasDebug::update(float dt)
 		ImGui::Checkbox("light wall denial areas", &lightWallDenialAreas);
 		ImGui::Checkbox("collision and light wall denial areas", &collisionAndLightWallDenialAreas);
 		ImGui::Checkbox("hint area", &hintArea);
+		ImGui::Checkbox("camera room", &cameraRoom);
 		if(hintArea)
 		{
 			ImGui::Checkbox("hint area detail", &hintAreaDetail);
@@ -183,6 +185,17 @@ void AreasDebug::update(float dt)
 				Renderer::submitText(debugText.c_str(), "LiberationMono-Bold.ttf", pos, 10, sf::Color::Black,
 				                     45, ProjectionType::gameWorld, false);
 			}
+		});
+	}
+
+	if(cameraRoom)
+	{
+		mRegistry.view<component::CameraRoom, component::BodyRect>().each([&]
+		(auto, const auto& body)
+		{
+			// render camera rooms as violet rectangle
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 150, 140), nullptr,
+				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 }

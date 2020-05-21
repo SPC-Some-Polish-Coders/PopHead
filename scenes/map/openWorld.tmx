@@ -16033,12 +16033,12 @@
    <chunk x="48" y="348" width="12" height="12">
 0,0,0,0,97,6,67,37,4,0,1,38,
 0,0,0,0,0,97,6,67,37,2,38,34,
-674,675,676,0,0,0,97,6,67,34,67,5,
-707,707,708,0,0,0,0,97,6,67,5,100,
-707,707,741,674,674,674,674,0,33,67,68,0,
-707,707,707,707,707,707,707,707,65,35,68,707,
+674,674,674,674,674,674,674,6,35,67,34,5,
+707,707,707,707,707,707,707,707,6,35,5,707,
 707,707,707,707,707,707,707,707,33,35,68,707,
 707,707,707,707,707,707,707,707,65,35,36,707,
+707,707,707,707,707,707,707,707,33,67,36,707,
+707,707,707,707,707,707,707,707,33,35,68,707,
 707,707,707,707,707,707,707,707,33,67,36,707,
 707,707,707,707,707,707,707,707,33,35,68,707,
 707,707,707,707,707,707,707,707,65,34,68,707,
@@ -16046,10 +16046,10 @@
 </chunk>
    <chunk x="60" y="348" width="12" height="12">
 34,5,98,98,99,98,99,99,99,99,100,737,
-5,100,0,0,673,674,674,674,674,674,674,709,
-100,0,0,0,705,706,706,706,706,706,706,707,
-0,0,0,0,737,707,707,707,707,707,707,707,
-674,674,674,675,2147484389,707,707,707,707,707,707,707,
+5,100,0,0,0,706,706,706,706,706,706,707,
+674,674,674,675,2147484389,706,706,706,706,706,706,707,
+707,707,707,707,707,707,707,707,707,707,707,707,
+707,707,707,707,707,707,707,707,707,707,707,707,
 707,707,707,707,707,707,707,707,707,707,707,707,
 707,707,707,707,707,707,707,707,707,707,707,707,
 707,707,707,707,707,707,707,707,707,707,707,707,
@@ -21977,8 +21977,6 @@
    <chunk x="48" y="348" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,675,676,0,673,674,
 0,0,0,0,0,0,0,0,708,0,705,0,
 0,0,0,0,0,0,0,0,740,0,737,0,
@@ -21986,7 +21984,23 @@
 0,0,0,0,0,0,0,0,740,0,737,0,
 0,0,0,0,0,0,0,0,740,0,737,0,
 0,0,0,0,0,0,0,0,740,0,737,0,
+0,0,0,0,0,0,0,0,740,0,737,0,
+0,0,0,0,0,0,0,0,740,0,737,0,
 0,0,0,0,0,0,0,0,740,0,737,0
+</chunk>
+   <chunk x="60" y="348" width="12" height="12">
+0,0,0,0,673,674,674,674,674,674,674,709,
+0,0,0,0,705,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="48" y="360" width="12" height="12">
 0,0,0,0,0,0,0,0,772,0,769,0,
@@ -25011,8 +25025,8 @@
   </object>
   <object id="142" name="Melee Fighting Tutorial" type="HintArea" x="108.833" y="5253.58" width="148" height="367.167">
    <properties>
-    <property name="hintJoystickContent" value="Use @C9909[B]@C9999 to hit"/>
-    <property name="hintKeyboardContent" value="Use @C9909[\]@C9999 (backslash) to hit"/>
+    <property name="hintJoystickContent" value="Use @C9909B@C9999 to hit"/>
+    <property name="hintKeyboardContent" value="Use @C9909\@C9999 (backslash) to hit"/>
     <property name="hintName" value="meleeFightingHint"/>
    </properties>
   </object>
@@ -25043,8 +25057,8 @@
   </object>
   <object id="148" name="Movement tutorial popup" type="HintArea" x="-433.333" y="5553.67" width="228" height="159.333">
    <properties>
-    <property name="hintJoystickContent" value="Use @C9909[Left thumb]@C9999 to walk"/>
-    <property name="hintKeyboardContent" value="Use @C9909[AWSD]@C9999 to walk"/>
+    <property name="hintJoystickContent" value="Use @C9909Left thumb@C9999 to walk"/>
+    <property name="hintKeyboardContent" value="Use @C9909AWSD@C9999 to walk"/>
     <property name="hintName" value="controlHint"/>
    </properties>
   </object>
@@ -25131,7 +25145,7 @@
    </properties>
    <point/>
   </object>
-  <object id="162" name="Gate" type="Gate" x="899.976" y="5653.67">
+  <object id="162" name="Gate" type="Gate" x="901.726" y="5635.67">
    <properties>
     <property name="id" type="int" value="3"/>
    </properties>
@@ -25150,7 +25164,7 @@
    </properties>
    <point/>
   </object>
-  <object id="167" type="PressurePlate" x="1012.17" y="5480.36">
+  <object id="167" type="PressurePlate" x="1026.84" y="5492.36">
    <properties>
     <property name="id" type="int" value="1"/>
     <property name="puzzleId" type="int" value="3"/>
@@ -25171,8 +25185,8 @@
   </object>
   <object id="171" name="Dashing Tutorial" type="HintArea" x="778.5" y="5757.25" width="283" height="312.833">
    <properties>
-    <property name="hintJoystickContent" value="Use @C9909[X] @C9999to dash"/>
-    <property name="hintKeyboardContent" value="Use @C9909[Left Shift] @C9999to dash"/>
+    <property name="hintJoystickContent" value="Use @C9909X @C9999to dash"/>
+    <property name="hintKeyboardContent" value="Use @C9909Left Shift@C9999 to dash"/>
     <property name="hintName" value="dashingHint"/>
    </properties>
   </object>

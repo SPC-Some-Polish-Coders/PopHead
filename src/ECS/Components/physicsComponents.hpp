@@ -28,8 +28,8 @@ namespace ph::component {
 
 	struct MultiStaticCollisionBody
 	{
-		std::vector<ph::FloatRect> rects;
-		ph::FloatRect sharedBounds;
+		std::vector<FloatRect> rects;
+		FloatRect sharedBounds;
 	};
 
 	struct KinematicCollisionBody 

@@ -88,7 +88,7 @@ namespace component {
 
 	struct CameraRoom 
 	{
-		float interpolation = 0.f; // 0 - free cam  1 - room cam
+		float timeFromPlayerEntrance = 0.f;
 	};
 
 	struct Camera : public ph::Camera
