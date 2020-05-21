@@ -21,7 +21,7 @@ collisionDenialAreas = false,
 lightWallDenialAreas = false,
 collisionAndLightWallDenialAreas = false,
 hintArea = false, hintAreaDetail = true,
-cameraRoom = false;
+cameraRoom = false, cameraRoomCenter = true;
 
 void AreasDebug::update(float dt)
 {
@@ -39,11 +39,11 @@ void AreasDebug::update(float dt)
 		ImGui::Checkbox("light wall denial areas", &lightWallDenialAreas);
 		ImGui::Checkbox("collision and light wall denial areas", &collisionAndLightWallDenialAreas);
 		ImGui::Checkbox("hint area", &hintArea);
-		ImGui::Checkbox("camera room", &cameraRoom);
 		if(hintArea)
-		{
 			ImGui::Checkbox("hint area detail", &hintAreaDetail);
-		}
+		ImGui::Checkbox("camera room", &cameraRoom);
+		if(cameraRoom)
+			ImGui::Checkbox("camera room center", &cameraRoomCenter);
 		ImGui::EndTabItem();
 	}
 
@@ -191,11 +191,23 @@ void AreasDebug::update(float dt)
 	if(cameraRoom)
 	{
 		mRegistry.view<component::CameraRoom, component::BodyRect>().each([&]
-		(auto, const auto& body)
+		(auto camRoom, const auto& body)
 		{
 			// render camera rooms as violet rectangle
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 150, 140), nullptr,
 				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+
+			if(cameraRoomCenter)
+			{
+				FloatRect centerArea = body;
+				centerArea.x += camRoom.edgeAreaSize * body.w;
+				centerArea.y += camRoom.edgeAreaSize * body.h;
+				centerArea.w -= camRoom.edgeAreaSize * body.w * 2.f;
+				centerArea.h -= camRoom.edgeAreaSize * body.h * 2.f;
+
+				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
+					centerArea.pos, centerArea.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			}
 		});
 	}
 }

@@ -504,6 +504,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		createCopy("CameraRoom");
 		loadPosAndSize();
+		auto& camRoom = registry.get<component::CameraRoom>(entity);
+		camRoom.edgeAreaSize = getProperty("edgeAreaSize").toFloat();
 	}
 	else 
 	{

@@ -64,6 +64,19 @@ void DebugCamera::update(float dt)
 				}
 			});
 		}
+
+		mRegistry.view<component::Camera>().each([&]
+		(auto camera)
+		{
+			if(camera.name == component::Camera::currentCameraName)
+			{
+				auto center = camera.center();
+				auto size = camera.getSize();
+				ImGui::Text("camera center: %f %f", center.x, center.y); 
+				ImGui::Text("camera size: %f %f", size.x, size.y);
+			}
+		});
+
 		ImGui::EndTabItem();
 	}
 

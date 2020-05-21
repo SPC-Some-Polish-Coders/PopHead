@@ -79,6 +79,13 @@ FORCE_INLINE bool intersect(const Rect<T>& a, const Rect<T>& b)
 }
 
 template<typename T>
+FORCE_INLINE bool fullyIntersect(const Rect<T>& a, const Rect<T>& b)
+{
+	return a.contains(b.pos) && a.contains(b.topRight()) &&
+	       a.contains(b.bottomLeft()) && a.contains(b.bottomRight());
+}
+
+template<typename T>
 FORCE_INLINE bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b)
 {
     Rect<T> intersection;

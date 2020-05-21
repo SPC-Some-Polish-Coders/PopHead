@@ -89,6 +89,8 @@ namespace component {
 	struct CameraRoom 
 	{
 		float timeFromPlayerEntrance = 0.f;
+		float edgeAreaSize = 0.f; // from 0 to 1
+		bool playerWasInCenter;
 	};
 
 	struct Camera : public ph::Camera
