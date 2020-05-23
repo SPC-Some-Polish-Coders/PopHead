@@ -48,7 +48,7 @@ void ZombieSystem::update(float dt)
 	if(sPause || freezeZombies)
 		return;
 
-	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Kinematics, component::AnimationData>
+	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Kinematics, component::AnimationData, component::BodyCircle>
 		(entt::exclude<component::DeadCharacter>);
 
 	for (auto zombieEntity : zombies)
@@ -87,13 +87,13 @@ void ZombieSystem::update(float dt)
 		for (; begin != end; ++begin)
 		{
 			auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(*begin);
-			const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(*begin);
+			const auto& [body, speed, circle] = zombies.get<component::BodyRect, component::CharacterSpeed, component::BodyCircle>(*begin);
 			
 			// move body 
 			zombie.timeFromStartingThisMove += dt;
 			if (zombie.pathMode.path.empty())
 			{
-				zombie.pathMode = mAIManager->getZombiePath(body.pos);
+				zombie.pathMode = mAIManager->getZombiePath(body.pos + circle.offset);
 				zombie.timeFromStartingThisMove = 0.f;
 			}
 
