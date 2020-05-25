@@ -4,12 +4,12 @@
 
 namespace ph::component {
 
-	struct AmbientSound
+	struct AmbientSound // @no-debugger
 	{
 		std::string filepath;	
 	};
 
-	struct SpatialSound
+	struct SpatialSound // @no-debugger
 	{
 		std::string filepath;	
 	};

@@ -25,15 +25,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	//       so we can capture it with lambda and we don't have to pass it to lambda as argument.
 	entt::entity entity;
 
-	auto createDebugName = [&]()
-	{
-		#ifndef PH_DISTRIBUTION
-		auto& debugName = registry.assign<component::DebugName>(entity);
-		auto name = entityNode.getAttribute("type")->toString();
-		memcpy(debugName.name, name.c_str(), name.length()); 
-		#endif
-	};
-
 	auto getPosAttribute = [&]()
 	{
 		auto x = entityNode.getAttribute("x");
@@ -62,29 +53,63 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadPos = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		return body;
 	};
 
 	auto loadSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.size = getSizeAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.size = getSizeAttribute();
+		return body;
 	};
 
 	auto loadPosAndSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
-		bodyRect.size = getSizeAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.size = getSizeAttribute();
+		return body;
 	};
 
 	auto loadPosAndOptionalSize = [&]()
 	{
-		auto& bodyRect = registry.get<component::BodyRect>(entity);
-		bodyRect.pos = getPosAttribute();
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
 		if(auto size = getOptionalSizeAttribute())
-			bodyRect.size = *size;
+			body.size = *size;
+		return body;
+	};
+
+	auto loadAndAlignPos = [&]()
+	{
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.x -= static_cast<float>(static_cast<int>(body.pos.x) % 16); 
+		body.y -= static_cast<float>(static_cast<int>(body.pos.y) % 16); 
+		return body;
+	};
+
+	auto loadAndAlignPosAndSize = [&]()
+	{
+		auto& body = registry.get<component::BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.size = getSizeAttribute();
+		body.x -= static_cast<float>(static_cast<int>(body.x) % 16); 
+		body.y -= static_cast<float>(static_cast<int>(body.y) % 16); 
+		body.w = static_cast<float>(body.w + 16 - static_cast<int>(body.w + 16) % 16);
+		body.h = static_cast<float>(body.h + 16 - static_cast<int>(body.h + 16) % 16);
+		return body;
+	};
+
+	auto loadPuzzleGridPos = [&](const FloatRect& body)
+	{	
+		auto& puzzleGridPos = registry.get<component::PuzzleGridPos>(entity);
+		auto center = body.center();
+		if(center.x < 0.f) center.x -= 16.f;
+		if(center.y < 0.f) center.y -= 16.f;
+		puzzleGridPos = static_cast<sf::Vector2i>(Math::hadamardDiv(center, sf::Vector2f(16, 16)));
 	};
 
 	auto getProperty = [&](const std::string& propertyName)
@@ -190,7 +215,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPos();
 		loadHealthComponent();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "Player") 
 	{
@@ -203,7 +227,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
 			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera.camera = Camera(playerBody.center(), sf::Vector2f(640, 360));
+		playerCamera = Camera(playerBody.center(), sf::Vector2f(640, 360));
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
@@ -222,8 +246,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			flashlight.attenuationSquareFactor = 1.5f;
 			registry.assign_or_replace<component::LightSource>(entity, flashlight);
 		}	
-
-		createDebugName();
 	}
 	else if(type == "Camera") 
 	{
@@ -234,9 +256,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			sf::Vector2f pos = getPosAttribute();
 			sf::Vector2f size = getSizeAttribute();
 			sf::Vector2f center(pos + (size / 2.f));
-			camera.camera = Camera(center, size);
+			camera = Camera(center, size);
 			camera.name = getProperty("name").toString();
-			createDebugName();
 		}
 	}
 	else if(type == "BulletBox") 
@@ -247,14 +268,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& bullets = registry.get<component::Bullets>(entity);
 		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toInt();
 		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toInt();
-		createDebugName();
 	}
 	else if(type == "Medkit") 
 	{
 		createCopy("Medkit");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "VelocityChangingArea")
 	{
@@ -263,7 +282,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadSize();
 		float& areaSpeedMultiplier = registry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty("velocityMultiplier").toFloat();
-		createDebugName();
 	}
 	else if(type == "PushingArea")
 	{
@@ -273,7 +291,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& pushDirection = registry.get<component::PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty("pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty("pushForceY").toFloat();
-		createDebugName();
 	}
 	else if(type == "HintArea")
 	{
@@ -284,7 +301,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		hint.hintName = getProperty("hintName").toString();
 		hint.keyboardContent = getProperty("hintKeyboardContent").toString();
 		hint.joystickContent = getProperty("hintJoystickContent").toString();
-		createDebugName();
 	}
 	else if(type == "Gate")
 	{
@@ -292,14 +308,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPos();
 		auto& gate = registry.get<component::Gate>(entity);
 		gate.id = getProperty("id").toUnsigned();
-		createDebugName();
 	}
 	else if(type == "Lever") 
 	{
 		createCopy("Lever");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "Sprite")
 	{
@@ -363,21 +377,17 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 		// load body rect
 		loadPosAndSize();
-
-		createDebugName();
 	}
 	else if(type == "Torch") 
 	{
 		createCopy("Torch");
 		loadPos();
-		createDebugName();
 	}
 	else if(type == "LightWall")
 	{
 		// TODO: Delete this one
 		createCopy("LightWall");
 		loadPosAndSize();
-		createDebugName();
 	}
 	else if(type == "FlowingRiver")
 	{
@@ -410,7 +420,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
 		particleEmitter.parWholeLifetime = pushForce.x == 0.f ? std::abs(size.y / pushForce.y) : std::abs(size.x / pushForce.x);
-		createDebugName();
 	}
 	else if(type == "IndoorOutdoorBlendArea")
 	{
@@ -437,20 +446,20 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		registry.assign<component::IndoorOutdoorBlendArea>(entity, area);
 		registry.assign<component::BodyRect>(entity);
 		loadPosAndSize();
-		createDebugName();
 	}
 	else if(type == "PuzzleBoulder")
 	{
 		createCopy("PuzzleBoulder");
-		loadPos();
+		auto& body = loadAndAlignPos();
+		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
-		createDebugName();
 	}
 	else if(type == "PressurePlate")
 	{
 		createCopy("PressurePlate");
-		loadPos();
+		auto& body = loadAndAlignPos();
+		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		auto& plate = registry.get<component::PressurePlate>(entity);
@@ -462,41 +471,30 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			auto& textureRect = registry.get<component::TextureRect>(entity);
 			textureRect.x = 72;
 		}
-		createDebugName();
-	}
-	else if(type == "Puzzle")
-	{
-		entity = registry.create();
-		unsigned id = getProperty("id").toUnsigned(); 
-		registry.assign<component::Puzzle>(entity, id);
-		createDebugName();
 	}
 	else if(type == "Spikes")
 	{
 		createCopy("Spikes");
 		loadIndoorOutdoorBlendComponent();
+		loadAndAlignPosAndSize();
 
-		auto pos = getPosAttribute();
-		auto size = getSizeAttribute();
-		pos.x -= static_cast<float>(static_cast<int>(pos.x) % 16); 
-		pos.y -= static_cast<float>(static_cast<int>(pos.y) % 16); 
-		size.x = static_cast<float>(size.x + 16 - static_cast<int>(size.x + 16) % 16);
-		size.y = static_cast<float>(size.y + 16 - static_cast<int>(size.y + 16) % 16);
+		auto& spikes = registry.get<component::Spikes>(entity);
+		spikes.puzzleId = getProperty("puzzleId").toUnsigned();
+		spikes.id = getProperty("id").toUnsigned();
+		spikes.timeToChange = getProperty("timeToChange").toFloat();
+		spikes.changeFrequency = getProperty("changeFrequency").toFloat();
+		spikes.changes = getProperty("changes").toBool();
+		spikes.active = getProperty("active").toBool();
+
 		auto& body = registry.get<component::BodyRect>(entity);
-		body.pos = pos;
-		body.size = size;
-
 		auto& textureRect = registry.get<component::TextureRect>(entity);
-		textureRect.size = static_cast<sf::Vector2i>(size);
-
-		createDebugName();
+		textureRect.size = static_cast<sf::Vector2i>(body.size);
 	}
 	else if(type == "SavePoint")
 	{
 		createCopy("SavePoint");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		createDebugName();
 	}
 	else if(type == "TeleportPoint")
 	{
@@ -504,7 +502,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		registry.assign<component::BodyRect>(entity);
 		registry.assign<component::TeleportPoint>(entity, getProperty("name").toString());
 		loadPos();
-		createDebugName();
+	}
+	else if(type == "CameraRoom")
+	{
+		createCopy("CameraRoom");
+		loadPosAndSize();
+		auto& camRoom = registry.get<component::CameraRoom>(entity);
+		camRoom.edgeAreaSize = getProperty("edgeAreaSize").toFloat();
 	}
 	else 
 	{

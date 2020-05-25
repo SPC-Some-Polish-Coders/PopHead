@@ -86,15 +86,22 @@ namespace component {
 		float endAngle;
 	};
 
-	struct Camera
+	struct CameraRoom 
 	{
-		ph::Camera camera;
-		std::string name;
-
-		inline static std::string currentCameraName;
+		float timeFromPlayerEntrance = 0.f;
+		float edgeAreaSize = 0.f; // from 0 to 1
+		bool playerWasInCenter;
 	};
 
-	struct CameraShake
+	struct Camera : public ph::Camera
+	{
+		std::string name;
+		inline static std::string currentCameraName;
+
+		using ph::Camera::operator=;
+	};
+
+	struct CameraShake // @no-debugger
 	{
 		float duration;
 		float elapsedTime = 0.f;
@@ -102,7 +109,7 @@ namespace component {
 		bool smooth = false;
 	};
 
-	struct DebugCamera {};
+	struct DebugCamera {}; // @no-debugger
 
 	struct HiddenForRenderer {};
 

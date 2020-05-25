@@ -124,7 +124,11 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"BulletBox",                   &EntitiesParser::parseBulletBox},
 		{"Spikes",                      &EntitiesParser::parseSpikes},
 		{"PressurePlate",               &EntitiesParser::parsePressurePlate},
-		{"PuzzleColor",                 &EntitiesParser::parsePuzzleColor}
+		{"PuzzleColor",                 &EntitiesParser::parsePuzzleColor},
+		{"SavePoint",                   &EntitiesParser::parseSavePoint},
+		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder},
+		{"PuzzleGridPos",               &EntitiesParser::parsePuzzleGridPos},
+		{"CameraRoom",                  &EntitiesParser::parseCameraRoom}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -572,12 +576,32 @@ void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt
 	mUsedRegistry->assign_or_replace<component::HiddenForRenderer>(entity);
 }
 
+void EntitiesParser::parseSavePoint(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::SavePoint>(entity);
+}
+
+void EntitiesParser::parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PuzzleBoulder>(entity);
+}
+
+void EntitiesParser::parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::PuzzleGridPos>(entity);
+}
+
+void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::CameraRoom>(entity);
+}
+
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
 {
 	component::Camera camera;
 	sf::Vector2f size(entityComponentNode.getAttribute("width")->toFloat(), entityComponentNode.getAttribute("height")->toFloat());
 	sf::Vector2f center(entityComponentNode.getAttribute("x")->toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y")->toFloat() + (size.y / 2.f));
-	camera.camera = Camera(center, size);
+	camera = Camera(center, size);
 	camera.name = entityComponentNode.getAttribute("cameraName")->toString();
 	mUsedRegistry->assign_or_replace<component::Camera>(entity, camera);
 	component::Camera::currentCameraName = "default";

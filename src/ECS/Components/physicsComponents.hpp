@@ -34,10 +34,10 @@ namespace ph::component {
 
 	struct MultiStaticCollisionBody
 	{
-		std::vector<ph::FloatRect> rects;
-		ph::FloatRect sharedBounds;
+		std::vector<FloatRect> rects;
+		FloatRect sharedBounds;
 	};
-	
+
 	struct KinematicCollisionBody 
 	{
 		float mass;
@@ -46,4 +46,5 @@ namespace ph::component {
 		bool staticallyMovedLeft;
 		bool staticallyMovedRight;
 	};
+
 }

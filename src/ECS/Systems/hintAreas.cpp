@@ -102,6 +102,15 @@ void HintAreas::update(float dt)
 			}
 		}
 	}
+
+	// NOTE: TEMPORARY
+	mWasPlayerInControlHint = true;
+	GunAttacks::shootInputDisabled = false;
+	GunAttacks::changeWeaponInputDisabled = false;
+	MeleeAttacks::inputDisabled = false;
+	PlayerMovementInput::dashInputDisabled = false;
+	Weather::setRainType(Rain::Heavy);
+	Weather::setMode(Weather::Rainy);	
 }
 
 }

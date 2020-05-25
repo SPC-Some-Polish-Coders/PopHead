@@ -15,15 +15,15 @@ public:
 
 	void setCenter(sf::Vector2f center);
 	void move(sf::Vector2f offset);
-	sf::Vector2f center() { return mCenter; }
+	sf::Vector2f center() const { return mCenter; }
 
 	void setRotation(float rotation);
 	void rotate(float rotation);
-	float getRotation() { return mRotation; }
+	float getRotation() const { return mRotation; }
 
 	void setSize(sf::Vector2f size);
 	void zoom(float factor);
-	sf::Vector2f getSize() { return mSize; }
+	sf::Vector2f getSize() const { return mSize; }
 
 	const sf::Transform& getViewProjectionMatrix4x4();
 

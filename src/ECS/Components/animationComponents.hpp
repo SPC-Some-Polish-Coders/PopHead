@@ -9,7 +9,7 @@
 
 namespace ph::component {
 
-struct AnimationData
+struct AnimationData // @no-debugger
 {
 	std::string currentStateName;
 	AnimationStatesData* states;

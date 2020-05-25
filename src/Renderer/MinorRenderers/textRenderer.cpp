@@ -3,6 +3,7 @@
 #include "Renderer/renderer.hpp"
 #include "quadRenderer.hpp"
 #include "Renderer/API/shader.hpp"
+#include "Renderer/API/camera.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
 #include <stb_truetype.h>
 
@@ -69,10 +70,19 @@ void shutDown()
 	fontHolder.clear();
 }
 
-void drawText(const char* text, const char* fontFilename, sf::Vector2f position, float size, sf::Color color,
+void drawText(const char* text, const char* fontFilename, sf::Vector2f pos, float size, sf::Color color,
               unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	drawTextInternal(text, fontFilename, position, size, color, z, projectionType, isAffectedByLight);
+	drawTextInternal(text, fontFilename, pos, size, color, z, projectionType, isAffectedByLight);
+}
+
+void drawTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, 
+                     const Camera& worldCam, float size, sf::Color textColor, unsigned char z)
+{
+	auto cameraTopLeft = worldCam.center() - worldCam.getSize() / 2.f; 
+	auto pos = (1920 / worldCam.getSize().x) * (worldPos - cameraTopLeft);
+	size *= 1920 / worldCam.getSize().x;
+	drawTextInternal(text, fontFilename, pos, size, textColor, z, ProjectionType::gui, false);
 }
 
 void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,

@@ -11,6 +11,24 @@ namespace ph::Math {
 	}
 
 	template <typename T>
+	sf::Vector2<T> hadamardMul(sf::Vector2<T> a, sf::Vector2<T> b)
+	{
+		sf::Vector2<T> res;
+		res.x = a.x * b.x;
+		res.y = a.y * b.y;
+		return res;
+	}
+
+	template <typename T>
+	sf::Vector2<T> hadamardDiv(sf::Vector2<T> a, sf::Vector2<T> b)
+	{
+		sf::Vector2<T> res;
+		res.x = a.x / b.x;
+		res.y = a.y / b.y;
+		return res;
+	}
+
+	template <typename T>
 	float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2)
 	{
 		auto diff1 = point1.x - point2.x;

@@ -26,8 +26,9 @@ namespace ph::system {
 		auto doPause = [this]()
 		{
 			// TODO_states: Pause screen could be handled by states
-			auto playerView = mRegistry.view<component::Player, component::Health>();
-			playerView.each([this](component::Player, component::Health) {
+			mRegistry.view<component::Player, component::Health>().each([this]
+			(auto, auto)
+			{
 				sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
 				sPause = !sPause;
 			});
@@ -37,7 +38,7 @@ namespace ph::system {
 		{
 			if(e.key.code == sf::Keyboard::Escape)
 				doPause();
-			else if(e.key.code == sf::Keyboard::LShift && !dashInputDisabled) 
+			else if(e.key.code == sf::Keyboard::LShift && !dashInputDisabled)
 				mDashJustPressed = true; 
 		}
 		else if(e.type == sf::Event::JoystickButtonPressed)
@@ -189,17 +190,20 @@ namespace ph::system {
 			lightSource.endAngle = middleAngle + 35.f;
 		});
 
-		static float maxDash = 85.f;
+		static float dashLength = 75.f;
 
 		// move player
-		auto movementView = mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>(entt::exclude<component::DeadCharacter>);
-		movementView.each([this, d, playerDir]
-		(const component::Player, component::Kinematics& kinematics, component::CharacterSpeed& speed, component::BodyRect& body) 
+		mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>
+		(entt::exclude<component::DeadCharacter>).each([&]
+		(auto, auto& kinematics, auto speed, auto& body) 
 		{
 			if(mDashJustPressed) 
 			{
-				body.pos += d * mDashMomentum; 
-				mDashMomentum = 0.f;
+				if(mDashes)
+				{
+					--mDashes;
+					body.pos += d * dashLength;
+				}
 				mDashJustPressed = false;
 			}
 			else
@@ -208,25 +212,26 @@ namespace ph::system {
 			}
 
 			mAIManager.setPlayerPosition(body.pos);
-
-			if(debugWindowOpen && ImGui::BeginTabItem("tunning"))
-			{
-				ImGui::Text("dash momentum: %f", mDashMomentum);
-				ImGui::SliderFloat("max dash", &maxDash, 50.f, 350.f);
-				ImGui::SliderFloat("player movement speed", &speed.speed, 500.f, 3000.f);
-				ImGui::SliderFloat("player default friction", &kinematics.defaultFriction, 1.f, 30.f);
-				ImGui::Text("Player velocity: %f %f", kinematics.vel.x, kinematics.vel.y);
-				ImGui::Text("Player friction: %f", kinematics.friction);
-				ImGui::EndTabItem();
-			}
 		});
 
-		if(mDashMomentum < maxDash)
+		static float timeToGetNextDash = 2.f;
+
+		// add dashes
+		if(mDashes < 2)
 		{
-			float toCenterDash = abs(maxDash / 2.f - mDashMomentum); 
-			if(toCenterDash < maxDash / 10.f)
-				mDashMomentum += maxDash / 20.f * dt;
-			mDashMomentum += dt * toCenterDash;
+			mTimeToHaveNextDash -= dt;
+			if(mTimeToHaveNextDash < 0.f)
+			{
+				++mDashes;
+				mTimeToHaveNextDash = timeToGetNextDash; 
+			}
+		}
+
+		if(debugWindowOpen && ImGui::BeginTabItem("tunning"))
+		{
+			ImGui::SliderFloat("dash length", &dashLength, 20.f, 100.f);
+			ImGui::SliderFloat("time to get next dash", &timeToGetNextDash, 1.f, 5.f);
+			ImGui::EndTabItem();
 		}
 	}
 }

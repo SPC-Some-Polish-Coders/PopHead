@@ -1,81 +1,96 @@
 #include "pch.hpp"
 #include "puzzles.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 
 namespace ph::system {
 
+Puzzles::Puzzles(entt::registry& registry, EntitiesTemplateStorage& ets)
+:System(registry)
+,mEntitiesTemplateStorage(ets)
+{
+}
+
 void Puzzles::update(float dt)
 {
-	if(sPause)
-		return;
+	PH_PROFILE_FUNCTION();
 
-	auto gates = mRegistry.view<component::Gate>();
+	if(sPause) return;
 
-	mRegistry.view<component::Puzzle>().each([&]
-	(component::Puzzle& puzzle)
+	// puzzle 1	
 	{
-		switch(puzzle.id)
+		mRegistry.view<component::PressurePlate>().each([&]
+		(auto plate)
 		{
-			case 1:
+			if(plate.puzzleId == 1)
 			{
-				mRegistry.view<component::PressurePlate>().each([&]
-				(component::PressurePlate plate)
+				mRegistry.view<component::Gate>().each([=]
+				(auto& gate)
 				{
-					if(plate.puzzleId == puzzle.id)
-					{
-						gates.each([=]
-						(component::Gate& gate)
-						{
-							if(gate.id == 1)
-								gate.open = plate.isPressed;
-						});	
-					}
-				});
+					if(gate.id == 1)
+						gate.open = plate.isPressed;
+				});	
+			}
+		});
+	}
 
-			} break;
+	// puzzle 2
+	{
+		unsigned pressedPlates = 0;
 
-			case 2:
+		mRegistry.view<component::PressurePlate, component::PuzzleColor>().each([&]
+		(auto plate, auto plateColor)
+		{
+			if(plate.puzzleId == 2)
 			{
-				unsigned pressedPlates = 0;
+				if(plate.pressedByColor == plateColor)
+					++pressedPlates;
+			}
+		});
 
-				mRegistry.view<component::PressurePlate, component::PuzzleColor>().each([&]
-				(component::PressurePlate plate, component::PuzzleColor plateColor)
-				{
-					if(plate.puzzleId == puzzle.id)
-					{
-						if(plate.pressedByColor == plateColor)
-							++pressedPlates;
-					}
-				});
+		mRegistry.view<component::Gate>().each([=]
+		(auto& gate)
+		{
+			if(gate.id == 2)
+				gate.open = pressedPlates == 3;
+		});
+	}
 
-				gates.each([=]
-				(component::Gate& gate)
-				{
-					if(gate.id == 2)
-						gate.open = pressedPlates == 3;
-				});
-			} break;
+	// puzzle 3
+	{
+		unsigned pressedPlates = 0;
 
-			case 3:
+		mRegistry.view<component::PressurePlate>().each([&]
+		(auto plate)
+		{
+			if(plate.puzzleId == 3 && plate.isPressed)
+				++pressedPlates;
+		});
+
+		mRegistry.view<component::Gate>().each([=]
+		(auto& gate)
+		{
+			if(gate.id == 3)
+				gate.open = pressedPlates == 4;
+		});
+	}
+
+	// puzzle 4
+	{
+		mRegistry.view<component::PressurePlate>().each([&]
+		(auto plate)
+		{
+			if(plate.puzzleId == 4) 
 			{
-				unsigned pressedPlates = 0;
-
-				mRegistry.view<component::PressurePlate>().each([&]
-				(component::PressurePlate plate)
+				mRegistry.view<component::Spikes>().each([&]
+				(auto& spikes)
 				{
-					if(plate.puzzleId == puzzle.id && plate.isPressed)
-						++pressedPlates;
+					if(spikes.puzzleId == 4 && plate.id == spikes.id)
+						spikes.active = !plate.isPressed;
 				});
-
-				gates.each([=]
-				(component::Gate& gate)
-				{
-					if(gate.id == 3)
-						gate.open = pressedPlates == 4;
-				});
-			} break;
-		}
-	});
+			}
+		});
+	}
 }
 
 }

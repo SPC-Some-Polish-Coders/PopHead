@@ -13,8 +13,6 @@ void DebugCamera::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	auto debugCameraView = mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>();
-
 	if(debugWindowOpen && ImGui::BeginTabItem("camera"))
 	{
 		if(ImGui::Checkbox("debug camera", &mDebugCameraEnabled))
@@ -43,33 +41,48 @@ void DebugCamera::update(float dt)
 
 			sPause = mDebugCameraEnabled;
 		}
-		
+
 		if(mDebugCameraEnabled)
 		{
 			ImGui::Separator();
 			ImGui::Text("AWSD - Move camera");
 
-			debugCameraView.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
+			mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>().each([this, dt]
+			(auto, auto& camera, auto& body)
 			{
 				if(ImGui::SliderFloat("zoom", &mZoom, 0.01f, 20.f))
 				{
-					camera.camera.setSize(sf::Vector2f(640.f, 360.f) * mZoom);
+					camera.setSize(sf::Vector2f(640.f, 360.f) * mZoom);
 				}
-				
+
 				ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
 
 				if(ImGui::Button("normal zoom"))
 				{
 					mZoom = 1.f;
-					camera.camera.setSize(sf::Vector2f(640.f, 360.f));
+					camera.setSize(sf::Vector2f(640.f, 360.f));
 				}
 			});
 		}
+
+		mRegistry.view<component::Camera>().each([&]
+		(auto camera)
+		{
+			if(camera.name == component::Camera::currentCameraName)
+			{
+				auto center = camera.center();
+				auto size = camera.getSize();
+				ImGui::Text("camera center: %f %f", center.x, center.y); 
+				ImGui::Text("camera size: %f %f", size.x, size.y);
+			}
+		});
+
 		ImGui::EndTabItem();
 	}
 
 	// move camera
-	debugCameraView.each([this, dt](const component::DebugCamera, component::Camera& camera, component::BodyRect& body)
+	mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>().each([this, dt]
+	(auto, auto& camera, auto& body)
 	{
 		sf::Vector2f movement;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
@@ -83,7 +96,7 @@ void DebugCamera::update(float dt)
 		movement *= dt;
 		movement *= mMovementSpeed;
 		body.pos += movement;
-		camera.camera.setCenter(body.center());
+		camera.setCenter(body.center());
 	});
 }
 

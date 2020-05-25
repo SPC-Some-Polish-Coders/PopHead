@@ -4,7 +4,7 @@
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Utilities/threadPool.hpp"
 #include <SFML/System.hpp>
-#include <SFML/Window/Event.hpp>
+#include <SFML/Window.hpp>
 #include <memory>
 
 namespace ph {
@@ -34,7 +34,7 @@ public:
     void update(float dt);
 
 	Scene& getScene() { return *mScene.get(); }
-	void init(AIManager*);
+	void init(AIManager*, sf::Window*);
 
 	std::string getCurrentSceneFilePath() const { return mCurrentSceneFilePath; }
 
@@ -47,6 +47,7 @@ private:
 	std::string mCurrentSceneFilePath;
 	Texture* mTilesetTexture;
 	AIManager* mAIManager;
+	sf::Window* mWindow;
 	sf::Vector2f mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;

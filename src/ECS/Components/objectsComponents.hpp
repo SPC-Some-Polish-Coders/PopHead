@@ -7,7 +7,7 @@
 
 namespace ph::component {
 
-	struct ArcadeSpawner
+	struct ArcadeSpawner // @no-debugger
 	{
 		struct Wave
 		{
@@ -18,7 +18,7 @@ namespace ph::component {
 		float timeFromLastSpawn = 0.5f;
 	};
 
-	struct LootSpawner
+	struct LootSpawner // @no-debugger
 	{
 		enum LootType { Bullets, Medkit };
 		LootType type;
@@ -75,9 +75,27 @@ namespace ph::component {
 		bool isPressIrreversible;
 	};
 
-	struct Puzzle
+	struct PuzzleBoulder
 	{	
-		unsigned id;
+		float pushedLeftSince = 0.f;
+		float pushedRightSince = 0.f;
+		float pushedUpSince = 0.f;
+		float pushedDownSince = 0.f;
+		float movingLeft = 0.f;
+		float movingRight = 0.f;
+		float movingUp = 0.f;
+		float movingDown = 0.f;
+		bool movedGridPosInThisMove = false;
+	};
+
+	struct PuzzleGridPos : public sf::Vector2i 
+	{
+		using sf::Vector2i::operator=;
+	};
+
+	struct PuzzleGridRoadChunk
+	{
+		bool tiles[12][12] = {}; // 1 - road, 0 - collision
 	};
 
 	struct Gate
@@ -87,9 +105,17 @@ namespace ph::component {
 		bool open = false;
 	};
 
-	struct Spikes {};
+	struct Spikes 
+	{
+		unsigned puzzleId;
+		unsigned id;
+		float timeToChange; 
+		float changeFrequency;
+		bool changes;
+		bool active;
+	};
 
-	struct GunProperties
+	struct GunProperties // @no-debugger
 	{
 		std::string shotSoundFilepath;
 		float range;
@@ -102,7 +128,7 @@ namespace ph::component {
 		Type type;
 	};
 
-	struct MeleeProperties
+	struct MeleeProperties // @no-debugger
 	{
 		float minHitInterval;
 		float rotationRange;
@@ -111,6 +137,12 @@ namespace ph::component {
 		int damage;
 	};
 
-	struct Weather {};
+	struct Weather {}; // @no-debugger
+
+	struct SavePoint 
+	{
+		bool isIntersectingPlayer = false;
+		float timeSincePlayerSteppedOnIt = 2.f;
+	};
 
 }

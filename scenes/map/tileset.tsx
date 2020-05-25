@@ -41,15 +41,46 @@
   </objectgroup>
  </tile>
  <tile id="32" terrain=",0,,0"/>
- <tile id="33" terrain="0,0,0,0"/>
- <tile id="34" terrain="0,0,0,0"/>
+ <tile id="33" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="7.5" y="7.5">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="34" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="7.5" y="8">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="35" terrain="0,,0,"/>
  <tile id="36" terrain="0,,0,0"/>
  <tile id="37" terrain=",0,0,0"/>
  <tile id="64" terrain=",0,,0"/>
- <tile id="65" terrain="0,0,0,0"/>
- <tile id="66" terrain="0,0,0,0"/>
+ <tile id="65" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="6.5" y="9">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="66" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="9.25" y="9.75">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="67" terrain="0,,0,"/>
+ <tile id="68">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridCollision" x="7.63636" y="9.27273">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="70">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="2.18182" y="7.72727" width="13.8182" height="8.27273"/>
@@ -519,6 +550,12 @@
    <object id="5" type="LightWall" x="9.27276" y="8.27273" width="4.09085" height="3.54546"/>
   </objectgroup>
  </tile>
+ <tile id="710">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.09091" y="2.56819" width="15.0909" height="13.3636"/>
+   <object id="2" type="LightWall" x="1.45455" y="1.15908" width="14.7273" height="14.7273"/>
+  </objectgroup>
+ </tile>
  <tile id="736">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="8.625" y="0.125" width="6.75" height="16"/>
@@ -537,6 +574,12 @@
    <object id="2" type="Collision" x="7.18182" y="12.8182" width="8.72727" height="3"/>
    <object id="3" type="LightWall" x="1.81818" y="-0.181827" width="1.27273" height="13.4546"/>
    <object id="4" type="LightWall" x="1.8182" y="12" width="14" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="742">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.27274" y="0.18182" width="14.1818" height="15.4545"/>
+   <object id="2" type="LightWall" x="1.54546" y="0.170452" width="14.1818" height="15.4008"/>
   </objectgroup>
  </tile>
  <tile id="768">
@@ -569,6 +612,12 @@
    <object id="2" type="Collision" x="6.90909" y="0" width="9.09091" height="4"/>
    <object id="3" type="LightWall" x="1.68182" y="1.22727" width="1.27273" height="14.8182"/>
    <object id="4" type="LightWall" x="1.5" y="1.13636" width="14.3636" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="774">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.27273" y="0.181818" width="14.1818" height="4.54545"/>
+   <object id="2" type="LightWall" x="1.27273" y="0.261359" width="14.1818" height="2.49175"/>
   </objectgroup>
  </tile>
  <tile id="834">
@@ -614,6 +663,13 @@
    <object id="3" type="LightWall" x="-0.136354" y="11.7727" width="11.6363" height="1.27273"/>
    <object id="4" type="LightWall" x="12.6818" y="-0.318188" width="1.27273" height="8.8182"/>
    <object id="5" type="LightWall" x="9.2273" y="8.22728" width="4.09085" height="3.54546"/>
+  </objectgroup>
+ </tile>
+ <tile id="897">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="11" y="10">
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="898">

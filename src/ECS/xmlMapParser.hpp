@@ -29,6 +29,7 @@ struct TilesData
 	std::vector<unsigned> ids;
 	std::vector<std::vector<FloatRect>> bounds;
 	std::vector<std::vector<FloatRect>> lightWalls;
+	std::vector<bool> puzzleGridRoads;
 };
 
 struct TilesetsData
@@ -66,6 +67,7 @@ private:
 private:
 	std::vector<component::RenderChunk> mRenderChunks;
 	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
+	std::vector<sf::Vector2i> mAlreadyCreatedPuzzleGridRoadChunks;
 	DenialAreas mDenialAreas;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;

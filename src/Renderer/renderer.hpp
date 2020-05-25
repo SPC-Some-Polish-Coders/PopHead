@@ -61,6 +61,9 @@ namespace Renderer
 	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
 		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
+	void submitTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, float characterSize,
+		                   sf::Color textColor, unsigned char z);
+
 	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
                         TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
 
