@@ -10,6 +10,12 @@ namespace ph::component {
 		using FloatRect::operator=;
 	};
 
+	struct BodyCircle
+	{
+		sf::Vector2f offset;
+		float radius;
+	};
+
 	struct Kinematics
 	{
 		sf::Vector2f vel;

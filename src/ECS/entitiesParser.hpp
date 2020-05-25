@@ -20,6 +20,7 @@ private:
 	void parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity);
 
 	void parseBodyRect(const Xml& entityComponentNode, entt::entity& entity);
+	void parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity);
 	void parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity);
 	void parseIndoorOutdoor(const Xml& entityComponentNode, entt::entity& entity);
 	void parseTextureRect(const Xml& entityComponentNode, entt::entity& entity);

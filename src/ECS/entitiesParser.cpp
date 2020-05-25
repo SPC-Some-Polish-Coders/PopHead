@@ -78,6 +78,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 	static std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> componentsMap = {
 		{"BodyRect",			        &EntitiesParser::parseBodyRect},
+		{"BodyCircle",			        &EntitiesParser::parseBodyCircle},
 		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
 		{"IndoorOutdoor",			  	&EntitiesParser::parseIndoorOutdoor},
 		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
@@ -149,6 +150,14 @@ void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity&
 	float width = entityComponentNode.getAttribute("width")->toFloat();
 	float height = entityComponentNode.getAttribute("height")->toFloat();
 	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, ph::FloatRect(x, y, width, height));
+}
+
+void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity)
+{
+	float x = entityComponentNode.getAttribute("x")->toFloat();
+	float y = entityComponentNode.getAttribute("y")->toFloat();
+	float radius = entityComponentNode.getAttribute("radius")->toFloat();
+	mUsedRegistry->assign_or_replace<component::BodyCircle>(entity, sf::Vector2f(x, y), radius);
 }
 
 void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity)

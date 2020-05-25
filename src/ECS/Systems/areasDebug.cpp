@@ -51,8 +51,8 @@ void AreasDebug::update(float dt)
 	if(collision)
 	{
 		// render static collision bodies as dark red rectangle
-		auto staticBodies = mRegistry.view<component::StaticCollisionBody, component::BodyRect>();
-		staticBodies.each([](const component::StaticCollisionBody, const component::BodyRect body) 
+		auto staticBodies = mRegistry.view<component::StaticCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>);
+		staticBodies.each([](const component::StaticCollisionBody, const component::BodyRect& body) 
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 0, 140), nullptr,
 				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
@@ -70,11 +70,31 @@ void AreasDebug::update(float dt)
 		});
 
 		// render kinematic bodies as blue rectangle
-		auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>();
+		auto kinematicBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>);
 		kinematicBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& body)
 		{
 			Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 140), nullptr,
 				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+		});
+
+		// render static circle bodies as dark red circle
+		auto staticCircleBodies = mRegistry.view<component::StaticCollisionBody, component::BodyRect, component::BodyCircle>();
+		staticCircleBodies.each([](const component::StaticCollisionBody, const component::BodyRect& rect, const component::BodyCircle& circle)
+		{
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(130, 0, 0, 140), nullptr,
+				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			Renderer::submitCircle(sf::Color(130, 0, 0, 200), rect.pos + circle.offset - sf::Vector2f(circle.radius, circle.radius),
+				circle.radius, 50, ProjectionType::gameWorld, false);
+		});
+
+		// render kinematic circle bodies as blue circle
+		auto kinematicCircleBodies = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::BodyCircle>();
+		kinematicCircleBodies.each([](const component::KinematicCollisionBody, const component::BodyRect& rect, const component::BodyCircle& circle)
+		{
+			Renderer::submitQuad(nullptr, nullptr, &sf::Color(45, 100, 150, 40), nullptr,
+				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			Renderer::submitCircle(sf::Color(45, 100, 150, 140), rect.pos + circle.offset - sf::Vector2f(circle.radius, circle.radius),
+				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
 	}
 

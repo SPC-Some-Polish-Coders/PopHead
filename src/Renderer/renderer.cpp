@@ -235,7 +235,7 @@ void endScene()
 void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
 				  ProjectionType projectionType, bool isAffectedByLight)
 {
-	submitQuad(nullptr, nullptr, &color, &circleShader, position, {radius, radius}, z, 0.f, {}, projectionType, isAffectedByLight);
+	submitQuad(nullptr, nullptr, &color, &circleShader, position, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,

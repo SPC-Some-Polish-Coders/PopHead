@@ -38,6 +38,7 @@
     <component name="Player" />
     <component name="FaceDirection" />
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="BodyCircle" x="10.0" y="16.0" radius="5.5" />
     <component name="CharacterSpeed" speed="1000" />
     <component name="Kinematics" friction="9.0" />
     <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
@@ -54,6 +55,7 @@
     <component name="Damage" damageDealt="25" />
     <component name="CollisionWithPlayer" pushForce="2"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="BodyCircle" x="10.0" y="16.0" radius="5.5" />
     <component name="CharacterSpeed" speed="700" />
     <component name="Kinematics" friction="8.0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.1" />
@@ -71,6 +73,7 @@
     <component name="Damage" damageDealt="25" />
     <component name="CollisionWithPlayer" pushForce="300"/>
     <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="BodyCircle" x="10.0" y="16.0" radius="5.5" />
     <component name="CharacterSpeed" speed="250" />
     <component name="Kinematics" friction="8.0" />
     <component name="Zombie" timeToMoveToAnotherTile="0.15" />
