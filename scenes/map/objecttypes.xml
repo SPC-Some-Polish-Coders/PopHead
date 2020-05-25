@@ -1,30 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="ArcadeSpawner" color="#a40414">
-  <property name="wave01-normalZombies" type="int" default="0"/>
-  <property name="wave01-slowZombies" type="int" default="2"/>
-  <property name="wave02-normalZombies" type="int" default="1"/>
-  <property name="wave02-slowZombies" type="int" default="3"/>
-  <property name="wave03-normalZombies" type="int" default="1"/>
-  <property name="wave03-slowZombies" type="int" default="5"/>
-  <property name="wave04-normalZombies" type="int" default="3"/>
-  <property name="wave04-slowZombies" type="int" default="3"/>
-  <property name="wave05-normalZombies" type="int" default="4"/>
-  <property name="wave05-slowZombies" type="int" default="2"/>
-  <property name="wave06-normalZombies" type="int" default="4"/>
-  <property name="wave06-slowZombies" type="int" default="4"/>
-  <property name="wave07-normalZombies" type="int" default="3"/>
-  <property name="wave07-slowZombies" type="int" default="7"/>
-  <property name="wave08-normalZombies" type="int" default="6"/>
-  <property name="wave08-slowZombies" type="int" default="4"/>
-  <property name="wave09-normalZombies" type="int" default="7"/>
-  <property name="wave09-slowZombies" type="int" default="8"/>
-  <property name="wave10-normalZombies" type="int" default="10"/>
-  <property name="wave10-slowZombies" type="int" default="10"/>
- </objecttype>
- <objecttype name="Bilbord" color="#550000">
-  <property name="isLying" type="bool" default="false"/>
- </objecttype>
  <objecttype name="BulletBox" color="#e9ff1d">
   <property name="numOfPistolBullets" type="int" default="30"/>
   <property name="numOfShotgunBullets" type="int" default="0"/>
@@ -70,9 +45,6 @@
  </objecttype>
  <objecttype name="LightWall" color="#129f70"/>
  <objecttype name="LightWallDenialArea" color="#0b2c04"/>
- <objecttype name="LootSpawner" color="#0cff7d">
-  <property name="lootType" type="string" default="bullets"/>
- </objecttype>
  <objecttype name="Medkit" color="#aaffff">
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
@@ -94,6 +66,7 @@
   <property name="color" type="string" default="grey"/>
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
+ <objecttype name="PuzzleGridRoad" color="#005500"/>
  <objecttype name="SavePoint" color="#18c3c6">
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>

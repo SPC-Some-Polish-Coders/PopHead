@@ -93,6 +93,11 @@ namespace ph::component {
 		using sf::Vector2i::operator=;
 	};
 
+	struct PuzzleGridRoadChunk
+	{
+		bool tiles[12][12] = {}; // 1 - road, 0 - collision
+	};
+
 	struct Gate
 	{
 		unsigned id;

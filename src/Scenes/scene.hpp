@@ -5,7 +5,7 @@
 #include "ECS/systemsQueue.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include <SFML/System.hpp>
-#include <SFML/Window/Event.hpp>
+#include <SFML/Window.hpp>
 
 namespace ph{
 
@@ -17,7 +17,7 @@ class ThreadPool;
 class Scene
 {
 public:
-    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&, EntitiesTemplateStorage&);
+    Scene(AIManager&, SceneManager&, Texture& tilesetTexture, ThreadPool&, EntitiesTemplateStorage&, sf::Window*);
 
 	void handleEvent(sf::Event);
     void update(float dt);

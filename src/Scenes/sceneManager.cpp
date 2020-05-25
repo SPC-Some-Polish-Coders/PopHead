@@ -61,7 +61,7 @@ void SceneManager::replaceAction()
 	if (thereIsPlayerStatus)
 		mLastPlayerStatus = mScene->getPlayerStatus();
 	
-	mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool, mEntitiesTemplateStorage));
+	mScene.reset(new Scene(*mAIManager, *this, *mTilesetTexture, mThreadPool, mEntitiesTemplateStorage, mWindow));
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 
 	parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
@@ -94,9 +94,10 @@ void SceneManager::update(float dt)
 	mScene->update(dt);
 }
 
-void SceneManager::init(AIManager* aiManager)
+void SceneManager::init(AIManager* aiManager, sf::Window* window)
 {
 	mAIManager = aiManager;
+	mWindow = window;
 	loadTexture("textures/map/extrudedTileset.png", true);
 	mTilesetTexture = &getTexture("textures/map/extrudedTileset.png");
 }

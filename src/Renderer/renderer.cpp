@@ -16,16 +16,18 @@
 
 extern bool debugWindowOpen;
 
-namespace {
-	ph::FloatRect screenBounds;
+namespace ph::Renderer {
 
-	ph::Shader defaultFramebufferShader;
-	ph::Shader gaussianBlurFramebufferShader;
-	ph::Shader circleShader;
+namespace {
+	FloatRect screenBounds;
+
+	Shader defaultFramebufferShader;
+	Shader gaussianBlurFramebufferShader;
+	Shader circleShader;
 	
-	ph::Framebuffer gameObjectsFramebuffer;
-	ph::Framebuffer lightingFramebuffer;
-	ph::Framebuffer lightingGaussianBlurFramebuffer;
+	Framebuffer gameObjectsFramebuffer;
+	Framebuffer lightingFramebuffer;
+	Framebuffer lightingGaussianBlurFramebuffer;
 	unsigned screenVBO;
 	unsigned screenIBO;
 	unsigned screenVAO;
@@ -34,16 +36,14 @@ namespace {
 
 	unsigned sharedDataUBO;
 
-	ph::PointRenderer pointRenderer;
-	ph::LineRenderer lineRenderer;
-	ph::LightRenderer lightRenderer;
+	PointRenderer pointRenderer;
+	LineRenderer lineRenderer;
+	LightRenderer lightRenderer;
 
-	ph::Camera gameWorldCamera; 
+	Camera gameWorldCamera; 
 
 	bool isDebugDisplayActive = false;
 }
-
-namespace ph::Renderer {
 
 static void setClearColor(sf::Color color)
 {
@@ -84,7 +84,7 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 32 * sizeof(float));
 
 	// initialize gui view projection matrix
-	ph::Camera guiCamera({960, 540}, {1920, 1080});
+	Camera guiCamera({960, 540}, {1920, 1080});
 	const float* guiViewProjectionMatrix = guiCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
@@ -314,6 +314,12 @@ void submitText(const char* text, const char* fontFilename, sf::Vector2f positio
                 unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
 {
 	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
+}
+
+void submitTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, 
+                       float characterSize, sf::Color textColor, unsigned char z)
+{
+	TextRenderer::drawTextWorldHD(text, fontFilename, worldPos, gameWorldCamera, characterSize, textColor, z);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,

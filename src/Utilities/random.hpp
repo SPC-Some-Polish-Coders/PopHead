@@ -4,7 +4,9 @@
 
 namespace ph::Random {
 
-	float generateNumber(const float min, const float max);
-	int generateNumber(const int min, const int max);
-	sf::Vector2f generateVector(const sf::Vector2f min, const sf::Vector2f max);
+	float generateNumber(float min, float max);
+	int generateNumber(int min, int max);
+	sf::Vector2f generateVector(sf::Vector2f min, sf::Vector2f max);
+	sf::Color generateColor();
+	sf::Color generateColor(sf::Color min, sf::Color max);
 }

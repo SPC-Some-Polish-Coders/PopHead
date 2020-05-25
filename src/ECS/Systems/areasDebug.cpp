@@ -21,13 +21,14 @@ collisionDenialAreas = false,
 lightWallDenialAreas = false,
 collisionAndLightWallDenialAreas = false,
 hintArea = false, hintAreaDetail = true,
-cameraRoom = false, cameraRoomCenter = true;
+cameraRoom = false, cameraRoomCenter = true,
+puzzleGridRoads = false, puzzleGridRoadsPos = true, puzzleGridRoadsChunks = false;
 
 void AreasDebug::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(debugWindowOpen && ImGui::BeginTabItem("game debug visualization"))
+	if(debugWindowOpen && ImGui::BeginTabItem("debug visualization"))
 	{
 		ImGui::Checkbox("enable area debug", &enableAreaDebug);
 		ImGui::Checkbox("collisions", &collision);
@@ -44,6 +45,12 @@ void AreasDebug::update(float dt)
 		ImGui::Checkbox("camera room", &cameraRoom);
 		if(cameraRoom)
 			ImGui::Checkbox("camera room center", &cameraRoomCenter);
+		ImGui::Checkbox("puzzle grid roads", &puzzleGridRoads);
+		if(puzzleGridRoads)
+		{
+			ImGui::Checkbox("puzzle grid roads pos", &puzzleGridRoadsPos);
+			ImGui::Checkbox("puzzle grid roads chunks", &puzzleGridRoadsChunks);
+		}
 		ImGui::EndTabItem();
 	}
 
@@ -207,6 +214,51 @@ void AreasDebug::update(float dt)
 
 				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
 					centerArea.pos, centerArea.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			}
+		});
+	}
+
+	if(puzzleGridRoads)
+	{
+		mRegistry.view<component::PuzzleGridRoadChunk, component::PuzzleGridPos>().each([&]
+		(auto entity, const auto& roadChunk, auto chunkRelativeGridPos)
+		{
+			for(int y = 0; y < 12; ++y)
+			{
+				for(int x = 0; x < 12; ++x)
+				{
+					if(roadChunk.tiles[y][x])
+					{
+						// render road tile as green rectangle
+						auto gridPos = static_cast<sf::Vector2f>(chunkRelativeGridPos + sf::Vector2i(x, y));
+						auto worldPos = gridPos * 16.f;
+
+						Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 200, 0, 140), nullptr,
+							worldPos, {16.f, 16.f}, 50, 0.f, {}, ProjectionType::gameWorld, false);
+
+						if(puzzleGridRoadsPos)
+						{
+							// render puzzle grid pos, x up, y down 
+							char posText[50];
+							sprintf(posText, "%i", (int)gridPos.x);
+							Renderer::submitTextWorldHD(posText, "LiberationMono-Bold.ttf", worldPos, 6, sf::Color::Black, 45);
+							sprintf(posText, "%i", (int)gridPos.y);
+							worldPos.y += 4.f;
+							Renderer::submitTextWorldHD(posText, "LiberationMono-Bold.ttf", worldPos, 6, sf::Color::Black, 45);
+						}
+
+						if(puzzleGridRoadsChunks)
+						{
+							// render puzzle grid road chukns as rectangles with random color
+							if(auto* body = mRegistry.try_get<component::BodyRect>(entity))
+							{
+								auto color = mRegistry.get<component::DebugColor>(entity);
+								Renderer::submitQuad(nullptr, nullptr, &color, nullptr,
+									body->pos, body->size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+							}
+						}
+					}
+				}
 			}
 		});
 	}

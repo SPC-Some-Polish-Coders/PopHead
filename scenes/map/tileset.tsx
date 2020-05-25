@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1296" columns="32">
+<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  <terraintypes>
   <terrain name="dirtRoad" tile="-1"/>
@@ -41,15 +41,46 @@
   </objectgroup>
  </tile>
  <tile id="32" terrain=",0,,0"/>
- <tile id="33" terrain="0,0,0,0"/>
- <tile id="34" terrain="0,0,0,0"/>
+ <tile id="33" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="7.5" y="7.5">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="34" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="7.5" y="8">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="35" terrain="0,,0,"/>
  <tile id="36" terrain="0,,0,0"/>
  <tile id="37" terrain=",0,0,0"/>
  <tile id="64" terrain=",0,,0"/>
- <tile id="65" terrain="0,0,0,0"/>
- <tile id="66" terrain="0,0,0,0"/>
+ <tile id="65" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="6.5" y="9">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="66" terrain="0,0,0,0">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="9.25" y="9.75">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="67" terrain="0,,0,"/>
+ <tile id="68">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridCollision" x="7.63636" y="9.27273">
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="70">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="2.18182" y="7.72727" width="13.8182" height="8.27273"/>
@@ -614,6 +645,13 @@
    <object id="3" type="LightWall" x="-0.136354" y="11.7727" width="11.6363" height="1.27273"/>
    <object id="4" type="LightWall" x="12.6818" y="-0.318188" width="1.27273" height="8.8182"/>
    <object id="5" type="LightWall" x="9.2273" y="8.22728" width="4.09085" height="3.54546"/>
+  </objectgroup>
+ </tile>
+ <tile id="897">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="PuzzleGridRoad" x="11" y="10">
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="898">

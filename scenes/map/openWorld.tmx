@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="233">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="236">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -25295,10 +25295,10 @@
     <property name="timeToChange" type="float" value="0.6"/>
    </properties>
   </object>
-  <object id="195" type="PuzzleBoulder" x="-61.25" y="5617.33">
+  <object id="195" type="PuzzleBoulder" x="-54" y="5618.33">
    <point/>
   </object>
-  <object id="196" type="PuzzleBoulder" x="-45" y="5617.67">
+  <object id="196" type="PuzzleBoulder" x="-36" y="5618.17">
    <point/>
   </object>
   <object id="198" type="Spikes" x="401.614" y="5909.4" width="28.5" height="35.834">
@@ -25422,6 +25422,18 @@
    <properties>
     <property name="edgeAreaSize" type="float" value="0.06"/>
    </properties>
+  </object>
+  <object id="233" type="TeleportPoint" x="198.5" y="5139.5">
+   <properties>
+    <property name="name" value="puzzle1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="234" type="PuzzleBoulder" x="-316.5" y="5514">
+   <point/>
+  </object>
+  <object id="235" type="PuzzleBoulder" x="-342" y="5675">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="10" name="denialAreas">

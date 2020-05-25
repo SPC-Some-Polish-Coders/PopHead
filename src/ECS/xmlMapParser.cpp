@@ -2,10 +2,12 @@
 #include "xmlMapParser.hpp"
 #include "Components/physicsComponents.hpp"
 #include "Components/debugComponents.hpp"
+#include "Components/objectsComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
+#include "Utilities/random.hpp"
 
 namespace ph {
 
@@ -218,6 +220,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			const auto objectNodes = objectGroupNode->getChildren("object");
 			std::vector<FloatRect> collisions;
 			std::vector<FloatRect> lightWalls;
+			bool puzzleGridRoad = false;
 			for(auto& objectNode : objectNodes)
 			{
 				if(auto type = objectNode.getAttribute("type"))
@@ -239,10 +242,13 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 						collisions.emplace_back(getBounds());
 					else if(typeStr == "LightWall")
 						lightWalls.emplace_back(getBounds());
+					else if(typeStr == "PuzzleGridRoad")
+						puzzleGridRoad = true;
 				}
 			}
 			tilesData.bounds.emplace_back(collisions);
 			tilesData.lightWalls.emplace_back(lightWalls);
+			tilesData.puzzleGridRoads.emplace_back(puzzleGridRoad);
 		}
 	}
 	return tilesData;
@@ -267,6 +273,9 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 	FloatRect quadsBounds = FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize);
 	FloatRect lightWallsBounds = {};
 
+	component::PuzzleGridRoadChunk puzzleGridRoadChunk;
+	bool isThereAnyPuzzleGridRoadInThisChunk = false;
+
 	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
 		constexpr unsigned bitsInByte = 8;
@@ -289,15 +298,15 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 				continue;
 			}
 
-			sf::Vector2f positionInTiles(Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize));
-			positionInTiles += static_cast<sf::Vector2f>(chunkPos);
+			sf::Vector2u chunkRelativePosInTiles = Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize);
+			sf::Vector2f posInTiles = chunkPos + static_cast<sf::Vector2f>(chunkRelativePosInTiles);
 
 			// create quad data
 			ChunkQuadData cqd;
 
 			sf::Vector2f tileWorldPos( 
-				positionInTiles.x * static_cast<float>(info.tileSize.x),
-				positionInTiles.y * static_cast<float>(info.tileSize.y)
+				posInTiles.x * static_cast<float>(info.tileSize.x),
+				posInTiles.y * static_cast<float>(info.tileSize.y)
 			);
 
 			cqd.position = tileWorldPos; 
@@ -361,12 +370,12 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 
 			// load collision bodies and light walls
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
-			if (tilesDataIndex == std::string::npos)
+			if(tilesDataIndex == std::string::npos)
 				continue;
 			auto& tilesData = tilesets.tilesData[tilesDataIndex];
-			for (std::size_t i = 0; i < tilesData.ids.size(); ++i) 
+			for(std::size_t i = 0; i < tilesData.ids.size(); ++i) 
 			{
-				if (tileId == tilesData.ids[i]) 
+				if(tileId == tilesData.ids[i]) 
 				{
 					// collision bodies
 					for(FloatRect collisionRect : tilesData.bounds[i])
@@ -382,14 +391,16 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 						bool shouldBeAdded = true;
 
 						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
-							if(intersect(collisionDenialArea, collisionRect)) {
+							if(intersect(collisionDenialArea, collisionRect)) 
+							{
 								shouldBeAdded = false;
 								break;
 							}
 
 						if(shouldBeAdded)
 							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
-								if(intersect(collisionDenialArea, collisionRect)) {
+								if(intersect(collisionDenialArea, collisionRect)) 
+								{
 									shouldBeAdded = false;
 									break;
 								}
@@ -411,10 +422,13 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 
 						bool shouldBeAdded = true;
 						for(FloatRect lightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
-							if(intersect(lightWallDenialArea, lightWallRect)) {
+						{
+							if(intersect(lightWallDenialArea, lightWallRect)) 
+							{
 								shouldBeAdded = false;
 								break;
 							}
+						}
 
 						if(shouldBeAdded)
 							for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
@@ -425,10 +439,30 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 							lightWalls.emplace_back(lightWallRect);
 					}
 
+					// puzzle grid collisions
+					bool road = tilesData.puzzleGridRoads[i];
+					puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
+					if(road) isThereAnyPuzzleGridRoadInThisChunk = true;
+
 					break;
 				}
-			}		
+			}
 		}
+	}
+
+	if(isThereAnyPuzzleGridRoadInThisChunk)
+	{
+		// create puzzle grid road chunk in registry
+		auto intChunkPos = static_cast<sf::Vector2i>(chunkPos);
+		auto entity = mGameRegistry->create();
+		mGameRegistry->assign<component::PuzzleGridRoadChunk>(entity, puzzleGridRoadChunk);
+		mGameRegistry->assign<component::PuzzleGridPos>(entity, intChunkPos);
+		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
+		mAlreadyCreatedPuzzleGridRoadChunks.emplace_back(intChunkPos);
+		#ifndef PH_DISTRIBUTION
+		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, {12.f * 16.f, 12.f * 16.f}));
+		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
+		#endif
 	}
 
 	if(!quads.empty())

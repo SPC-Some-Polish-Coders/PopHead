@@ -20,7 +20,7 @@ Game::Game()
 	SoundPlayer::init();
 	MusicPlayer::init();
 
-	mSceneManager->init(mAIManager.get());
+	mSceneManager->init(mAIManager.get(), &mWindow);
 	mSceneManager->replaceScene("scenes/mainMenu.xml");
 
 	Terminal::init(&mWindow, mSceneManager.get());

@@ -23,6 +23,17 @@ static char* components[] = {
 };
 static bool selectedComponents[IM_ARRAYSIZE(components)];
 
+static bool selectingInWorldMode = false;
+static float selectingInWorldModeF4InputDelay = 0.f;
+static unsigned selectingInWorldModeZPriority = 0;
+static float selectingInWorldModeZPriorityInputDelay = 0.f;
+
+EntitiesDebugger::EntitiesDebugger(entt::registry& reg, sf::Window* window)
+	:System(reg)
+	,mWindow(window)
+{
+}
+
 static unsigned getCharCount(char* str, size_t size)
 {
 	for(unsigned charCount = 0; charCount < static_cast<unsigned>(size); ++charCount)
@@ -33,12 +44,145 @@ static unsigned getCharCount(char* str, size_t size)
 
 void EntitiesDebugger::update(float dt)
 {
-	PH_PROFILE_FUNCTION();
+	PH_PROFILE_FUNCTION();	
 
 	if(debugWindowOpen && ImGui::BeginTabItem("entities debugger"))
 	{
 		ImGui::BeginChild("entities", ImVec2(360, 0), true);
 		ImGui::Checkbox("hightlight selected", &highlightSelected);
+
+		if(selectingInWorldModeF4InputDelay > 0.f)
+			selectingInWorldModeF4InputDelay -= dt;
+
+		if(selectingInWorldMode)
+		{
+			if(ImGui::Button("leave world entity seleting [F4]"))
+			{
+				selectingInWorldMode = false;
+			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::F4) && selectingInWorldModeF4InputDelay <= 0.f)
+			{	
+				selectingInWorldModeF4InputDelay = 0.4f;
+				selectingInWorldMode = false;
+			}
+		}
+		else
+		{
+			if(ImGui::Button("select entity in world [F4]"))
+			{
+				selectingInWorldMode = true;
+			}
+			else if(sf::Keyboard::isKeyPressed(sf::Keyboard::F4) && selectingInWorldModeF4InputDelay <= 0.f)
+			{	
+				selectingInWorldModeF4InputDelay = 0.4f;
+				selectingInWorldMode = true;
+			}
+		}
+
+		if(selectingInWorldMode)
+		{
+			if(selectingInWorldModeZPriorityInputDelay > 0.f)
+				selectingInWorldModeZPriorityInputDelay -= dt;
+
+			sf::Vector2f currentCamTopLeft;
+			sf::Vector2f currentCamSize;
+			mRegistry.view<component::Camera>().each([&]
+			(auto camera)
+			{
+				if(camera.name == component::Camera::currentCameraName)
+				{
+					currentCamTopLeft = camera.center() - camera.getSize() / 2.f;
+					currentCamSize = camera.getSize();
+				}
+			});
+
+			auto mouseWindowPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
+			auto resolutionRatio = Math::hadamardDiv(currentCamSize, static_cast<sf::Vector2f>(mWindow->getSize()));
+			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamTopLeft; 
+
+			struct EntityUnderCursor
+			{
+				entt::entity entity;
+				unsigned char z;
+			};
+			std::vector<EntityUnderCursor> entitiesUnderCursor;
+
+			auto bodiesView = mRegistry.view<component::BodyRect>();
+			for(auto entity : bodiesView)
+			{
+				const auto& body = bodiesView.get<component::BodyRect>(entity); 
+				if(body.contains(mouseWorldPos))
+				{
+					EntityUnderCursor euc;
+					euc.entity = entity;
+
+					if(auto* rq = mRegistry.try_get<component::RenderQuad>(entity))
+						euc.z = rq->z; 
+					else if(auto* rc = mRegistry.try_get<component::RenderChunk>(entity))
+						euc.z = rc->z;
+					else if(auto* grc = mRegistry.try_get<component::GroundRenderChunk>(entity))
+						euc.z = grc->z;
+					else
+						euc.z = 255;
+
+					entitiesUnderCursor.emplace_back(euc);
+				}
+			}
+
+			std::sort(entitiesUnderCursor.begin(), entitiesUnderCursor.end(), []
+			(const auto& a, const auto& b)
+			{
+				return a.z < b.z;
+			});
+
+			if(selectingInWorldModeZPriority > entitiesUnderCursor.size() - 1)
+				selectingInWorldModeZPriority = 0; 
+
+			ImGui::Text("left mouse button - select entity");
+			ImGui::Text("right mouse button - leave world entity seleting");
+			ImGui::Text("middle mouse button - change z priority");
+
+			if(entitiesUnderCursor.size())
+			{
+				auto underCursorEntity = entitiesUnderCursor[selectingInWorldModeZPriority].entity;
+				auto underCursorZ = entitiesUnderCursor[selectingInWorldModeZPriority].z;
+
+				unsigned char alpha = underCursorEntity == mSelected ? 45 : 150;
+				auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
+				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, alpha), nullptr,
+					body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
+
+				for(unsigned i = 1; i < entitiesUnderCursor.size(); ++i)
+				{
+					auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
+					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 40), nullptr,
+						body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
+				}
+
+				if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					mSelected = underCursorEntity; 
+				}
+
+				if(sf::Mouse::isButtonPressed(sf::Mouse::Middle) && selectingInWorldModeZPriorityInputDelay <= 0.f)
+				{
+					selectingInWorldModeZPriorityInputDelay = 0.2f;
+					if(selectingInWorldModeZPriority < entitiesUnderCursor.size() - 1)
+						++selectingInWorldModeZPriority;
+					else
+						selectingInWorldModeZPriority = 0;
+				}
+			}
+
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
+			{
+				selectingInWorldMode = false;	
+			}
+		}
+		else
+		{
+			selectingInWorldModeZPriorityInputDelay = 0.f;
+		}
 
 		/* TODO: Add support for components choosing
 		if(ImGui::TreeNode("choose components"))
@@ -133,16 +277,22 @@ void EntitiesDebugger::update(float dt)
 		}
 		*/
 
-		mRegistry.each([=](auto entity)
-		{
-			selectableEntity(entity);
-		});
+		ImGui::BeginChild("entities2", ImVec2(0, 0), true);
+			mRegistry.each([=](auto entity)
+			{
+				selectableEntity(entity);
+			});
+		ImGui::EndChild();
 
 		ImGui::EndChild();
 		ImGui::SameLine();
 
 		ImGui::BeginChild("components view");
-		ImGui::Text("Components view:");
+
+		if(auto* debugName = mRegistry.try_get<component::DebugName>(mSelected))
+			ImGui::Text("%s Components view:", debugName->name);
+		else
+			ImGui::Text("Components view:");
 
 		if(mRegistry.valid(mSelected))
 		{
@@ -174,6 +324,10 @@ const char* genFileFooter = R"(
 
 		ImGui::EndChild();
 		ImGui::EndTabItem();
+	}
+	else
+	{
+		selectingInWorldMode = false;
 	}
 }
 

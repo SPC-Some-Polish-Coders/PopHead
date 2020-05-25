@@ -40,17 +40,45 @@ void PuzzleBoulders::update(float dt)
 				}
 			};
 
-			auto collidesWithOtherBoulderOnPuzzleGrid = [&](sf::Vector2i pushDir)
+			auto collidesOnPuzzleGrid = [&](sf::Vector2i pushDir)
 			{
-				bool collides = false;
 				auto newBoulderGridPos = boulderGridPos + pushDir;
-				mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos>().each([&]
-				(auto, auto otherBoulderGridPos)
+
+				// check collsion with another boulder
+				auto puzzleBoulders = mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos>();
+				for(auto otherBoulder : puzzleBoulders)
 				{
+					const auto& otherBoulderGridPos = puzzleBoulders.get<component::PuzzleGridPos>(otherBoulder);
 					if(newBoulderGridPos == otherBoulderGridPos)
-						collides = true;
-				});
-				return collides;
+						return true;
+				}
+
+				// check is boulder not going out of the boulder road
+				sf::Vector2i gridPosOfRoadChunkThatBoulderIsIn;
+
+				if(newBoulderGridPos.x > 0)
+					gridPosOfRoadChunkThatBoulderIsIn.x = newBoulderGridPos.x - newBoulderGridPos.x % 12;
+				else if(newBoulderGridPos.x < 0)
+					gridPosOfRoadChunkThatBoulderIsIn.x = static_cast<int>(std::floor(static_cast<float>(newBoulderGridPos.x) / 12.f)) * 12;
+
+				if(newBoulderGridPos.y > 0)
+					gridPosOfRoadChunkThatBoulderIsIn.y = newBoulderGridPos.y - newBoulderGridPos.y % 12;
+				else if(newBoulderGridPos.y < 0)
+					gridPosOfRoadChunkThatBoulderIsIn.y = static_cast<int>(std::floor(static_cast<float>(newBoulderGridPos.y) / 12.f)) * 12;
+
+				sf::Vector2i chunkRelativeBoulderPos = newBoulderGridPos - gridPosOfRoadChunkThatBoulderIsIn;
+
+				auto roadChunks = mRegistry.view<component::PuzzleGridRoadChunk, component::PuzzleGridPos>();
+				for(auto roadChunkEntity : roadChunks)
+				{
+					const auto& roadChunk = roadChunks.get<component::PuzzleGridRoadChunk>(roadChunkEntity);
+					const auto& roadChunkGridPos = roadChunks.get<component::PuzzleGridPos>(roadChunkEntity);
+
+					if(gridPosOfRoadChunkThatBoulderIsIn == roadChunkGridPos)
+						return !roadChunk.tiles[chunkRelativeBoulderPos.y][chunkRelativeBoulderPos.x];
+				}
+
+				return true;
 			};
 
 			// push boulder right
@@ -59,7 +87,7 @@ void PuzzleBoulders::update(float dt)
 			boulderLeftEdge.w = 5.f;
 			if(intersect(boulderLeftEdge, playerBody) && playerKinematics.acceleration.x > 0.f &&
 			   (boulder.movingRight == 0.f || boulder.movingRight > 15.f) &&
-			   !collidesWithOtherBoulderOnPuzzleGrid({1, 0}))
+			   !collidesOnPuzzleGrid({1, 0}))
 			{
 				playerMovesBoulder(boulder.pushedRightSince, boulder.movingRight);
 			}
@@ -74,7 +102,7 @@ void PuzzleBoulders::update(float dt)
 			boulderRightEdge.w = 5.f;
 			if(intersect(boulderRightEdge, playerBody) && playerKinematics.acceleration.x < 0.f &&
 			   (boulder.movingLeft == 0.f || boulder.movingLeft > 15.f) &&
-			   !collidesWithOtherBoulderOnPuzzleGrid({-1, 0}))
+			   !collidesOnPuzzleGrid({-1, 0}))
 			{
 				playerMovesBoulder(boulder.pushedLeftSince, boulder.movingLeft);
 			}
@@ -89,7 +117,7 @@ void PuzzleBoulders::update(float dt)
 			boulderUpEdge.h = 5.f;
 			if(intersect(boulderUpEdge, playerBody) && playerKinematics.acceleration.y > 0.f &&
 			   (boulder.movingDown == 0.f || boulder.movingDown > 15.f) &&
-			   !collidesWithOtherBoulderOnPuzzleGrid({0, 1}))
+			   !collidesOnPuzzleGrid({0, 1}))
 			{
 				playerMovesBoulder(boulder.pushedDownSince, boulder.movingDown);
 			}
@@ -104,7 +132,7 @@ void PuzzleBoulders::update(float dt)
 			boulderDownEdge.h = 5.f;
 			if(intersect(boulderDownEdge, playerBody) && playerKinematics.acceleration.y < 0.f &&
 			   (boulder.movingUp == 0.f || boulder.movingUp > 15.f) &&
-			   !collidesWithOtherBoulderOnPuzzleGrid({0, -1}))
+			   !collidesOnPuzzleGrid({0, -1}))
 			{
 				playerMovesBoulder(boulder.pushedUpSince, boulder.movingUp);
 			}

@@ -48,7 +48,7 @@
 namespace ph {
 
 Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture,
-             ThreadPool& threadPool, EntitiesTemplateStorage& entitiesTemplateStorage)
+             ThreadPool& threadPool, EntitiesTemplateStorage& entitiesTemplateStorage, sf::Window* window)
 	:mSystemsQueue(mRegistry, threadPool)
 {
 	// should be at the start
@@ -103,7 +103,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
-	mSystemsQueue.appendSystem<system::EntitiesDebugger>();
+	mSystemsQueue.appendSystem<system::EntitiesDebugger>(window);
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlend>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
 	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));

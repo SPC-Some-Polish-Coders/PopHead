@@ -17,4 +17,9 @@ namespace ph::component {
 	{
 		std::string name;
 	};
+
+	struct DebugColor : public sf::Color
+	{
+		using sf::Color::operator=;
+	};
 }
