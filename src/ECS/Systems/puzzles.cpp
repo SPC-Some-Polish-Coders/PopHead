@@ -82,28 +82,12 @@ void Puzzles::update(float dt)
 		{
 			if(plate.puzzleId == 4) 
 			{
-				if(plate.id <= 4)
+				mRegistry.view<component::Spikes>().each([&]
+				(auto& spikes)
 				{
-					mRegistry.view<component::Spikes>().each([&]
-					(auto& spikes)
-					{
-						if(spikes.puzzleId == 4 && plate.id == spikes.id)
-							spikes.active = !plate.isPressed; 
-					});
-				}
-				else if(plate.id == 5) 
-				{
-					if(plate.isPressed && !puzzle4.secondBoulderFell)
-					{
-						puzzle4.secondBoulderFell = true;
-						auto boulderEntity = mEntitiesTemplateStorage.createCopy("PuzzleBoulder", mRegistry);
-						auto& body = mRegistry.get<component::BodyRect>(boulderEntity);
-						body.pos = {272.f, 6080.f}; 
-						auto& puzzleGridPos = mRegistry.get<component::PuzzleGridPos>(boulderEntity);
-						puzzleGridPos = static_cast<sf::Vector2i>(Math::hadamardDiv(body.center(), sf::Vector2f(16, 16)));
-					}
-				}
-				else PH_BREAKPOINT();
+					if(spikes.puzzleId == 4 && plate.id == spikes.id)
+						spikes.active = !plate.isPressed;
+				});
 			}
 		});
 	}

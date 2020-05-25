@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+<tileset version="1.2" tiledversion="1.3.1" name="tileset" tilewidth="16" tileheight="16" tilecount="1296" columns="32">
  <image source="../../resources/textures/map/tileset.png" width="512" height="512"/>
  <terraintypes>
   <terrain name="dirtRoad" tile="-1"/>
@@ -550,6 +550,12 @@
    <object id="5" type="LightWall" x="9.27276" y="8.27273" width="4.09085" height="3.54546"/>
   </objectgroup>
  </tile>
+ <tile id="710">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.09091" y="2.56819" width="15.0909" height="13.3636"/>
+   <object id="2" type="LightWall" x="1.45455" y="1.15908" width="14.7273" height="14.7273"/>
+  </objectgroup>
+ </tile>
  <tile id="736">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="8.625" y="0.125" width="6.75" height="16"/>
@@ -568,6 +574,12 @@
    <object id="2" type="Collision" x="7.18182" y="12.8182" width="8.72727" height="3"/>
    <object id="3" type="LightWall" x="1.81818" y="-0.181827" width="1.27273" height="13.4546"/>
    <object id="4" type="LightWall" x="1.8182" y="12" width="14" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="742">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.27274" y="0.18182" width="14.1818" height="15.4545"/>
+   <object id="2" type="LightWall" x="1.54546" y="0.170452" width="14.1818" height="15.4008"/>
   </objectgroup>
  </tile>
  <tile id="768">
@@ -600,6 +612,12 @@
    <object id="2" type="Collision" x="6.90909" y="0" width="9.09091" height="4"/>
    <object id="3" type="LightWall" x="1.68182" y="1.22727" width="1.27273" height="14.8182"/>
    <object id="4" type="LightWall" x="1.5" y="1.13636" width="14.3636" height="1.27273"/>
+  </objectgroup>
+ </tile>
+ <tile id="774">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="1.27273" y="0.181818" width="14.1818" height="4.54545"/>
+   <object id="2" type="LightWall" x="1.27273" y="0.261359" width="14.1818" height="2.49175"/>
   </objectgroup>
  </tile>
  <tile id="834">
