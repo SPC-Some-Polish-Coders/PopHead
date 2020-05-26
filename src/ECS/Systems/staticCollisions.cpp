@@ -147,7 +147,7 @@ namespace ph::system {
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
-				if (collisionVector.x < 0)
+				if (collisionVector.x + 0.001f < 0)
 				{
 					secondRect.x += collisionVector.x;
 					secondBody.staticallyMovedLeft = true;
@@ -162,7 +162,7 @@ namespace ph::system {
 				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
-				if (collisionVector.x < 0)
+				if (collisionVector.x + 0.001f < 0)
 				{
 					secondRect.x += collisionVector.x;
 					secondBody.staticallyMovedLeft = true;
@@ -195,7 +195,7 @@ namespace ph::system {
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
-				if (collisionVector.x > 0)
+				if (collisionVector.x - 0.001f > 0)
 				{
 					secondRect.x += collisionVector.x;
 					secondBody.staticallyMovedRight = true;
@@ -210,7 +210,7 @@ namespace ph::system {
 				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
-				if (collisionVector.x > 0)
+				if (collisionVector.x - 0.001f > 0)
 				{
 					secondRect.x += collisionVector.x;
 					secondBody.staticallyMovedRight = true;
@@ -243,7 +243,7 @@ namespace ph::system {
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
-				if (collisionVector.y < 0)
+				if (collisionVector.y + 0.001f < 0)
 				{
 					secondRect.y += collisionVector.y;
 					secondBody.staticallyMovedUp = true;
@@ -258,7 +258,7 @@ namespace ph::system {
 				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
-				if (collisionVector.y < 0)
+				if (collisionVector.y + 0.001f < 0)
 				{
 					secondRect.y += collisionVector.y;
 					secondBody.staticallyMovedUp = true;
@@ -291,7 +291,7 @@ namespace ph::system {
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
-				if (collisionVector.y > 0)
+				if (collisionVector.y - 0.001f > 0)
 				{
 					secondRect.y += collisionVector.y;
 					secondBody.staticallyMovedDown = true;
@@ -306,7 +306,7 @@ namespace ph::system {
 				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
-				if (collisionVector.y > 0)
+				if (collisionVector.y - 0.001f > 0)
 				{
 					secondRect.y += collisionVector.y;
 					secondBody.staticallyMovedDown = true;
