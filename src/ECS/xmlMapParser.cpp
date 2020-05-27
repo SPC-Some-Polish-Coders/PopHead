@@ -211,14 +211,15 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 {
 	TilesData tilesData{};
 	tilesData.ids.reserve(tileNodes.size());
-	tilesData.bounds.reserve(tileNodes.size());
+	tilesData.rectCollisions.reserve(tileNodes.size());
 	for(const Xml& tileNode : tileNodes) 
 	{
 		if(auto objectGroupNode = tileNode.getChild("objectgroup"))
 		{
 			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
 			const auto objectNodes = objectGroupNode->getChildren("object");
-			std::vector<FloatRect> collisions;
+			std::vector<FloatRect> rectCollisions;
+			std::vector<component::BodyCircle> circleCollisions;
 			std::vector<FloatRect> lightWalls;
 			bool puzzleGridRoad = false;
 			for(auto& objectNode : objectNodes)
@@ -239,14 +240,31 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 
 					std::string typeStr = type->toString();
 					if(typeStr == "Collision")
-						collisions.emplace_back(getBounds());
+					{
+						if(objectNode.getChild("ellipse"))
+						{
+							auto bounds = getBounds();
+							float radius = bounds.w / 2.f;
+							auto circleCenter = bounds.pos + sf::Vector2f(radius, radius);
+							circleCollisions.emplace_back(component::BodyCircle{circleCenter, radius});
+						}
+						else
+						{
+							rectCollisions.emplace_back(getBounds());
+						}
+					}
 					else if(typeStr == "LightWall")
+					{
 						lightWalls.emplace_back(getBounds());
+					}
 					else if(typeStr == "PuzzleGridRoad")
+					{
 						puzzleGridRoad = true;
+					}
 				}
 			}
-			tilesData.bounds.emplace_back(collisions);
+			tilesData.rectCollisions.emplace_back(rectCollisions);
+			tilesData.circleCollisions.emplace_back(circleCollisions);
 			tilesData.lightWalls.emplace_back(lightWalls);
 			tilesData.puzzleGridRoads.emplace_back(puzzleGridRoad);
 		}
@@ -270,6 +288,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 	std::vector<ChunkQuadData> quads;
 	std::vector<FloatRect> lightWalls;
 	std::vector<FloatRect> chunkCollisionRects;
+	std::vector<component::BodyCircle> chunkCollisionCircles;
 	FloatRect quadsBounds = FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize);
 	FloatRect lightWallsBounds = {};
 
@@ -377,8 +396,8 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 			{
 				if(tileId == tilesData.ids[i]) 
 				{
-					// collision bodies
-					for(FloatRect collisionRect : tilesData.bounds[i])
+					// rect collision bodies
+					for(FloatRect collisionRect : tilesData.rectCollisions[i])
 					{
 						if(isHorizontallyFlipped)
 							collisionRect.x = info.tileSize.x - collisionRect.x - collisionRect.w;
@@ -389,24 +408,69 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 						collisionRect.y += tileWorldPos.y; 
 
 						bool shouldBeAdded = true;
-
 						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+						{
 							if(intersect(collisionDenialArea, collisionRect)) 
 							{
 								shouldBeAdded = false;
 								break;
 							}
+						}
 
 						if(shouldBeAdded)
+						{
 							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+							{
 								if(intersect(collisionDenialArea, collisionRect)) 
 								{
 									shouldBeAdded = false;
 									break;
 								}
+							}
+
+							if(shouldBeAdded)
+								chunkCollisionRects.emplace_back(collisionRect);
+						}
+
+					}
+
+					// circle collision bodies
+					for(auto collisionCircle : tilesData.circleCollisions[i])
+					{
+						if(isHorizontallyFlipped)
+							collisionCircle.offset.x = info.tileSize.x - collisionCircle.offset.x - collisionCircle.radius;
+						if(isVerticallyFlipped)
+							collisionCircle.offset.y = info.tileSize.y - collisionCircle.offset.y - collisionCircle.radius;
+
+						collisionCircle.offset.x += tileWorldPos.x; 
+						collisionCircle.offset.y += tileWorldPos.y; 
+
+						auto collisionCircleRect = FloatRect(collisionCircle.offset, {collisionCircle.radius, collisionCircle.radius});
+
+						bool shouldBeAdded = true;
+						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+						{
+							if(intersect(collisionDenialArea, collisionCircleRect)) 
+							{
+								shouldBeAdded = false;
+								break;
+							}
+						}
 
 						if(shouldBeAdded)
-							chunkCollisionRects.emplace_back(collisionRect);
+						{
+							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+							{
+								if(intersect(collisionDenialArea, collisionCircleRect)) 
+								{
+									shouldBeAdded = false;
+									break;
+								}
+							}
+
+							if(shouldBeAdded)
+								chunkCollisionCircles.emplace_back(collisionCircle);
+						}
 					}
 
 					// light walls
@@ -431,12 +495,16 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 						}
 
 						if(shouldBeAdded)
+						{
 							for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
+							{
 								if(intersect(lightWallDenialArea, lightWallRect))
 									shouldBeAdded = false;
+							}
 
-						if(shouldBeAdded)
-							lightWalls.emplace_back(lightWallRect);
+							if(shouldBeAdded)
+								lightWalls.emplace_back(lightWallRect);
+						}
 					}
 
 					// puzzle grid collisions
@@ -544,6 +612,7 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 
 			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
 			mscb.rects = chunkCollisionRects;
+			mscb.circles = chunkCollisionCircles;
 			mscb.sharedBounds = quadsBounds;
 		}
 	}

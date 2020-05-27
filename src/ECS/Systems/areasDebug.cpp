@@ -67,7 +67,7 @@ void AreasDebug::update(float dt)
 				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
-		// render multi static collision bodies as bright red rectangle
+		// render multi static collision bodies as bright red rectangle or bright red circles
 		auto multiStaticBodies = mRegistry.view<component::MultiStaticCollisionBody>();
 		multiStaticBodies.each([](const component::MultiStaticCollisionBody& multiCollisionBody) 
 		{
@@ -75,6 +75,12 @@ void AreasDebug::update(float dt)
 			{
 				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 140), nullptr,
 					bodyRect.pos, bodyRect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			}
+
+			for(auto& circle : multiCollisionBody.circles)
+			{
+				Renderer::submitCircle(sf::Color(255, 0, 0, 140), circle.offset - sf::Vector2f(circle.radius, circle.radius),
+					circle.radius, 50, ProjectionType::gameWorld, false);
 			}
 		});
 

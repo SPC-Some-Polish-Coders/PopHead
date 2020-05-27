@@ -27,8 +27,9 @@ struct TilesData
 {
 	unsigned firstGlobalTileId;
 	std::vector<unsigned> ids;
-	std::vector<std::vector<FloatRect>> bounds;
 	std::vector<std::vector<FloatRect>> lightWalls;
+	std::vector<std::vector<FloatRect>> rectCollisions;
+	std::vector<std::vector<component::BodyCircle>> circleCollisions;
 	std::vector<bool> puzzleGridRoads;
 };
 

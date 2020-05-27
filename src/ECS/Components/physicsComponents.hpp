@@ -35,6 +35,7 @@ namespace ph::component {
 	struct MultiStaticCollisionBody
 	{
 		std::vector<FloatRect> rects;
+		std::vector<BodyCircle> circles;
 		FloatRect sharedBounds;
 	};
 
