@@ -76,6 +76,15 @@ namespace ph::Math {
 		return distanceBetweenPoints(point, circlePos) < radius;
 	}
 
+	bool intersect(FloatRect rect, Vec2 circlePos, float radius)
+	{
+		return rect.contains(circlePos) || 
+		       isPointInsideCircle(rect.pos, circlePos, radius) ||
+		       isPointInsideCircle(rect.topRight(), circlePos, radius) ||
+		       isPointInsideCircle(rect.bottomLeft(), circlePos, radius) ||
+		       isPointInsideCircle(rect.bottomRight(), circlePos, radius);
+	}
+
 	Vec2 lerp(Vec2 source, Vec2 destination, float speed)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(speed >= 0.f, "Speed cannot be less than 0");

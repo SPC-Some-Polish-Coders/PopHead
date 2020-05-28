@@ -413,10 +413,6 @@ namespace ph::system {
 				else
 					return { 0.f, -intersection.h };
 			}
-			else
-			{
-				PH_BREAKPOINT(); return Vec2();
-			}
 		}
 	}
 

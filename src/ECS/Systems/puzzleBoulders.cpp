@@ -17,8 +17,8 @@ void PuzzleBoulders::update(float dt)
 	mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos, component::BodyRect>().each([&]
 	(auto& boulder, auto& boulderGridPos, auto& boulderBody)
 	{
-		mRegistry.view<component::Player, component::Kinematics, component::BodyRect>().each([&]
-		(auto, const auto& playerKinematics, const auto& playerBody)
+		mRegistry.view<component::Player, component::Kinematics, component::BodyRect, component::BodyCircle>().each([&]
+		(auto, const auto& playerKinematics, const auto& playerBody, auto playerCircle)
 		{
 			if(playerKinematics.acceleration == Vec2())
 				mTimeSincePlayerIsPushingBoulder = 0.f;
@@ -81,11 +81,16 @@ void PuzzleBoulders::update(float dt)
 				return true;
 			};
 
-			// push boulder right
+			auto circlePos = playerBody.pos + playerCircle.offset;
+
+			// push boulder left
 			auto boulderLeftEdge = boulderBody;
 			boulderLeftEdge.x -= 2.f;
+			boulderLeftEdge.y += 2.f;
 			boulderLeftEdge.w = 5.f;
-			if(intersect(boulderLeftEdge, playerBody) && playerKinematics.acceleration.x > 0.f &&
+			boulderLeftEdge.h -= 4.f;
+			if(Math::intersect(boulderLeftEdge, circlePos, playerCircle.radius) &&
+			   playerKinematics.acceleration.x > 0.f &&
 			   (boulder.movingRight == 0.f || boulder.movingRight > 15.f) &&
 			   !collidesOnPuzzleGrid({1, 0}))
 			{
@@ -96,11 +101,14 @@ void PuzzleBoulders::update(float dt)
 				boulder.pushedRightSince = 0.f;
 			}
 
-			// push boulder left
+			// push boulder rigth
 			auto boulderRightEdge = boulderBody;
 			boulderRightEdge.x += boulderBody.w - 3.f;
+			boulderRightEdge.y += 2.f;
 			boulderRightEdge.w = 5.f;
-			if(intersect(boulderRightEdge, playerBody) && playerKinematics.acceleration.x < 0.f &&
+			boulderRightEdge.h -= 4.f;
+			if(Math::intersect(boulderRightEdge, circlePos, playerCircle.radius) && 
+			   playerKinematics.acceleration.x < 0.f &&
 			   (boulder.movingLeft == 0.f || boulder.movingLeft > 15.f) &&
 			   !collidesOnPuzzleGrid({-1, 0}))
 			{
@@ -111,11 +119,14 @@ void PuzzleBoulders::update(float dt)
 				boulder.pushedLeftSince = 0.f;
 			}
 
-			// push boulder down
+			// push boulder up
 			auto boulderUpEdge = boulderBody;
+			boulderUpEdge.x += 2.f; 
 			boulderUpEdge.y -= 2.f; 
+			boulderUpEdge.w -= 4.f; 
 			boulderUpEdge.h = 5.f;
-			if(intersect(boulderUpEdge, playerBody) && playerKinematics.acceleration.y > 0.f &&
+			if(Math::intersect(boulderUpEdge, circlePos, playerCircle.radius) && 
+			   playerKinematics.acceleration.y > 0.f &&
 			   (boulder.movingDown == 0.f || boulder.movingDown > 15.f) &&
 			   !collidesOnPuzzleGrid({0, 1}))
 			{
@@ -126,11 +137,14 @@ void PuzzleBoulders::update(float dt)
 				boulder.pushedDownSince = 0.f;
 			}
 
-			// push boulder up
+			// push boulder down
 			auto boulderDownEdge = boulderBody;
+			boulderDownEdge.x += 2.f;
 			boulderDownEdge.y += boulderBody.h - 3.f;
+			boulderDownEdge.w -= 4.f;
 			boulderDownEdge.h = 5.f;
-			if(intersect(boulderDownEdge, playerBody) && playerKinematics.acceleration.y < 0.f &&
+			if(Math::intersect(boulderDownEdge, circlePos, playerCircle.radius) &&
+			   playerKinematics.acceleration.y < 0.f &&
 			   (boulder.movingUp == 0.f || boulder.movingUp > 15.f) &&
 			   !collidesOnPuzzleGrid({0, -1}))
 			{
@@ -140,6 +154,13 @@ void PuzzleBoulders::update(float dt)
 			{
 				boulder.pushedUpSince = 0.f;
 			}
+
+			#if 0 // boulder edges debug visualization
+			Renderer::submitQuad(0, 0, &sf::Color(255, 0, 0, 200), 0, boulderLeftEdge.pos, boulderLeftEdge.size, 0, 0.f, {});
+			Renderer::submitQuad(0, 0, &sf::Color(0, 255, 0, 200), 0, boulderRightEdge.pos, boulderRightEdge.size, 0, 0.f, {});
+			Renderer::submitQuad(0, 0, &sf::Color(0, 0, 200, 200), 0, boulderUpEdge.pos, boulderUpEdge.size, 0, 0.f, {});
+			Renderer::submitQuad(0, 0, &sf::Color(0, 0, 100, 200), 0, boulderDownEdge.pos, boulderDownEdge.size, 0, 0.f, {});
+			#endif
 		});
 
 		float movementSpeed = 48.f * dt;

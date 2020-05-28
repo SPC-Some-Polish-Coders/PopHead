@@ -31,6 +31,8 @@ namespace ph::Math {
 
 	FORCE_INLINE bool isPointInsideCircle(Vec2 point, Vec2 circlePos, float radius);
 
+	FORCE_INLINE bool intersect(FloatRect rect, Vec2 circlePos, float radius);
+
 	FORCE_INLINE Vec2 lerp(Vec2 source, Vec2 destination, float speed);
 	FORCE_INLINE float lerp(float source, float destination, float speed);
 
