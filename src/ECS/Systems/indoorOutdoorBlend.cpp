@@ -8,7 +8,7 @@ namespace ph::system {
 
 using component::IndoorOutdoorBlendArea;
 
-static float getOutdoorFactor(const FloatRect& blendArea, sf::Vector2f objectPos, IndoorOutdoorBlendArea::ExitSide exit)
+static float getOutdoorFactor(const FloatRect& blendArea, Vec2 objectPos, IndoorOutdoorBlendArea::ExitSide exit)
 {
 	float res;
 

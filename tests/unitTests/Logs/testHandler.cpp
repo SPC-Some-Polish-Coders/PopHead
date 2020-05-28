@@ -26,9 +26,9 @@ namespace ph {
 	{
 		MockHandler handler;
 
-		for (int i = 0; i < static_cast<int>(LogLevel::Count); ++i)
+		for (i32 i = 0; i < cast<i32>(LogLevel::Count); ++i)
 		{
-			auto level = static_cast<LogLevel>(i);
+			auto level = cast<LogLevel>(i);
 			CHECK(!handler.isLogLevelAllowed(level));
 		}
 
@@ -84,9 +84,9 @@ namespace ph {
 		handler.enableAllPaths();
 		handler.enableAllLogLevels();
 
-		for (int i = 0; i < static_cast<int>(LogLevel::Count); ++i)
+		for (i32 i = 0; i < cast<i32>(LogLevel::Count); ++i)
 		{
-			auto level = static_cast<LogLevel>(i);
+			auto level = cast<LogLevel>(i);
 			CHECK(handler.isLogLevelAllowed(level));
 		}
 

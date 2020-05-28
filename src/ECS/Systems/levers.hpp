@@ -15,7 +15,7 @@ public:
 
 private:
 	void handleUsedLevers() const;
-	void handleListeners(bool isActivated, unsigned leverId) const;
+	void handleListeners(bool isActivated, u32 leverId) const;
 
 };
 

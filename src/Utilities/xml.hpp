@@ -18,15 +18,15 @@ public:
 	std::optional<Xml> getAttribute(const std::string& name) const;
 
 	std::string toString() const;
-	const char* toCstring() const;
+	const char* toCString() const;
 	bool toBool() const;
-	int toInt() const;
-	unsigned toUnsigned() const;
-	char toChar() const;
-	unsigned char toUnsignedChar() const;
+	i32 toI32() const;
+	u32 toU32() const;
+	i8 toI8() const;
+	u8 toU8() const;
 	float toFloat() const;
 	sf::Color toColor() const;
-	sf::Vector2f toVector2f() const;
+	Vec2 toVec2() const;
 
 private:
 	bool isSelfClosingTag(std::size_t openingTagEndPosition) const;

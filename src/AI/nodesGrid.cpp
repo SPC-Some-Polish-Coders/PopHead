@@ -3,7 +3,7 @@
 
 namespace ph {
 	
-	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2i destinationPosition)
+	NodesGrid::NodesGrid(const ObstacleGrid& obstacleGrid, Vec2i destinationPosition)
 		:mObstacleGrid(obstacleGrid)
 		,mNodes(createNodesPosCompare())
 		,mNodesByCost(createNodesCostsCompare())
@@ -11,7 +11,7 @@ namespace ph {
 	{
 	}
 
-	const NodesGrid::Node& NodesGrid::createStartNode(sf::Vector2i position)
+	const NodesGrid::Node& NodesGrid::createStartNode(Vec2i position)
 	{
 		return createNode(position);
 	}
@@ -32,7 +32,7 @@ namespace ph {
 	{
 		auto& position = node.mPosition;
 
-		std::vector<sf::Vector2i> neighboursPositions = {
+		std::vector<Vec2i> neighboursPositions = {
 			{position.x, position.y - 1},
 			{position.x + 1, position.y - 1},
 			{position.x + 1, position.y},
@@ -84,8 +84,8 @@ namespace ph {
 
 	void NodesGrid::closeNode(const NodesGrid::Node& node)
 	{
-		Node* pointer = const_cast<Node*>(&node);
-		auto count = mNodesByCost.erase(pointer);
+		Node* Pointer = const_cast<Node*>(&node);
+		auto count = mNodesByCost.erase(Pointer);
 
 		PH_ASSERT_UNEXPECTED_SITUATION(count == 1, "Attempt to close non-existing node");
 	}
@@ -95,11 +95,11 @@ namespace ph {
 		return !mNodesByCost.empty();
 	}
 
-	NodesGrid::Node& NodesGrid::createNode(sf::Vector2i position)
+	NodesGrid::Node& NodesGrid::createNode(Vec2i position)
 	{
-		auto pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
-		auto& ref = *pointer.get();
-		auto returnPair = mNodes.emplace(std::move(pointer));
+		auto Pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
+		auto& ref = *Pointer.get();
+		auto returnPair = mNodes.emplace(std::move(Pointer));
 		
 		if (returnPair.second)
 			mNodesByCost.insert(&ref);
@@ -131,7 +131,7 @@ namespace ph {
 		);
 	}
 
-	NodesGrid::Node::Node(const sf::Vector2i& position, const float distanceToDestination)
+	NodesGrid::Node::Node(const Vec2i& position, const float distanceToDestination)
 		: mPosition(position)
 		, mDistanceToDestination(distanceToDestination)
 	{

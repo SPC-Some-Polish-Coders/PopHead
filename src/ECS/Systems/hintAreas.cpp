@@ -29,13 +29,13 @@ void HintAreas::update(float dt)
 			auto& hint = hintAreasView.get<component::Hint>(hintArea);
 			if(hintAreaBody.contains(playerBody.center()))
 			{
-				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints interface!");
+				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints Interface!");
 
 				hint.isShown = true;
 				auto* hints = GUI::getInterface("hints");
 				hints->show();
 				auto* hintBackground = hints->getWidget("hintBackground");
-				auto* hintContent = static_cast<TextWidget*>(hintBackground->getWidget("hintContent"));
+				auto* hintContent = Cast<TextWidget*>(hintBackground->getWidget("hintContent"));
 				if(sf::Joystick::isConnected(0))
 					hintContent->setText(hint.joystickContent);
 				else	

@@ -6,17 +6,18 @@
 #include <fstream>
 #include <mutex>
 #include <vector>
+#include "aliases.hpp"
 
 namespace ph {
 
 struct ProfilingResult
 {
-	using id = unsigned long;
+	using id = u64;
 
 	id resultId;
 	std::string name;
-	long long startTime;
-	unsigned int duration;
+	i64 startTime;
+	u32 duration;
 	std::vector<std::pair<std::string, std::string>> args;
 };
 

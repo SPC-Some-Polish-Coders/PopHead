@@ -121,7 +121,7 @@ namespace ph::system {
 				mRegistry.reset<component::Damage>(entity);
 				if(mRegistry.has<component::Kinematics>(entity)) {
 					auto& kin = mRegistry.get<component::Kinematics>(entity);
-					kin.acceleration = sf::Vector2f();
+					kin.acceleration = Vec2();
 					kin.vel *= 0.35f;
 				}
 
@@ -153,7 +153,7 @@ namespace ph::system {
 	void DamageAndDeath::updateDeadCharacters(float dt)
 	{
 		auto view = mRegistry.view<component::DeadCharacter, component::RenderQuad>();
-		unsigned nrOfDeadCharacters = 0;
+		u32 nrOfDeadCharacters = 0;
 		for(auto entity : view)
 		{
 			++nrOfDeadCharacters;
@@ -164,7 +164,7 @@ namespace ph::system {
 			deadCharacter.timeToFadeOut -= dt;
 			if(deadCharacter.timeToFadeOut < 0.f)
 				mRegistry.assign<component::TaggedToDestroy>(entity);
-			auto alpha = static_cast<unsigned char>(deadCharacter.timeToFadeOut * 25.5f);
+			auto alpha = Cast<u8>(deadCharacter.timeToFadeOut * 25.5f);
 			renderQuad.color = sf::Color(255, 255, 255, alpha);
 
 			// update z component

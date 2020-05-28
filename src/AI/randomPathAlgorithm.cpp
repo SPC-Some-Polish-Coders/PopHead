@@ -4,7 +4,7 @@
 
 namespace ph {
 
-RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2i startNodePosition)
+RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, Vec2i startNodePosition)
 	:mObstacleGrid(obstacleGrid)
 	,mStartNodePosition(startNodePosition)
 	,mMaximalWalkableDistance(5)
@@ -14,7 +14,7 @@ RandomPathAlgorithm::RandomPathAlgorithm(const ObstacleGrid& obstacleGrid, const
 
 Path RandomPathAlgorithm::getRandomPath()
 {
-	const int isGonnaWalk = Random::generateNumber(0, 1);
+	i32 isGonnaWalk = Random::generateNumber(0, 1);
 	if(isGonnaWalk)
 		return getRandomWalkingPath();
 	else
@@ -23,7 +23,7 @@ Path RandomPathAlgorithm::getRandomPath()
 
 Path RandomPathAlgorithm::getRandomStayingPath()
 {
-	const int howMuchStayingInTheSamePlace = Random::generateNumber(1, 3);
+	i32 howMuchStayingInTheSamePlace = Random::generateNumber(1, 3);
 	Path path;
 	path.resize(howMuchStayingInTheSamePlace);
 	std::fill(path.begin(), path.end(), Direction::none);
@@ -36,19 +36,19 @@ Path RandomPathAlgorithm::getRandomWalkingPath()
 		return Path();
 
 	Path path;
-	Direction direction = static_cast<Direction>(Random::generateNumber(0, 3) * 2);
-	const unsigned walkableDistanceBetweenObstacleNode = getWalkableDistanceBetweenObstacleNodeIn(direction);
+	Direction direction = Cast<Direction>(Random::generateNumber(0, 3) * 2);
+	u32 walkableDistanceBetweenObstacleNode = getWalkableDistanceBetweenObstacleNodeIn(direction);
 	if(walkableDistanceBetweenObstacleNode < 2) {
 		++mNumberOfRecurrencyCalls;
 		return getRandomPath();
 	}
-	const int lengthOfPath = Random::generateNumber(2, walkableDistanceBetweenObstacleNode);
+	i32 lengthOfPath = Random::generateNumber(2, walkableDistanceBetweenObstacleNode);
 	path.resize(lengthOfPath);
 	std::fill(path.begin(), path.end(), direction);
 	return path;
 }
 
-unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction direction)
+u32 RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction direction)
 {
 	switch(direction)
 	{
@@ -65,10 +65,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeIn(Direction
 	}
 }
 
-unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
+u32 RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 {
-	for(int i = 1; i < 7; ++i) {
-		if(static_cast<int>(mObstacleGrid.getColumnsCount()) <= mStartNodePosition.x + i)
+	for(i32 i = 1; i < 7; ++i) {
+		if(Cast<i32>(mObstacleGrid.getColumnsCount()) <= mStartNodePosition.x + i)
 			return i;
 		if(mObstacleGrid.isObstacle(mStartNodePosition.x + i, mStartNodePosition.y))
 			return i - 1;
@@ -76,9 +76,9 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnEast()
 	return mMaximalWalkableDistance;
 }
 
-unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
+u32 RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 {
-	for(int i = 1; i < 7; ++i) {
+	for(i32 i = 1; i < 7; ++i) {
 		if(mStartNodePosition.x - i < 0)
 			return i;
 		if(mObstacleGrid.isObstacle(mStartNodePosition.x - i, mStartNodePosition.y))
@@ -87,9 +87,9 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeOnWest()
 	return mMaximalWalkableDistance;
 }
 
-unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
+u32 RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 {
-	for(int i = 1; i < 7; ++i) {
+	for(i32 i = 1; i < 7; ++i) {
 		if(mStartNodePosition.y - i < 0)
 			return i;
 		if(mObstacleGrid.isObstacle(mStartNodePosition.x, mStartNodePosition.y - i))
@@ -98,10 +98,10 @@ unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheNorth()
 	return mMaximalWalkableDistance;
 }
 
-unsigned RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheSouth()
+u32 RandomPathAlgorithm::getWalkableDistanceBetweenObstacleNodeToTheSouth()
 {
-	for(int i = 1; i < 7; ++i) {
-		if(static_cast<int>(mObstacleGrid.getRowsCount()) <= mStartNodePosition.y + i)
+	for(i32 i = 1; i < 7; ++i) {
+		if(Cast<i32>(mObstacleGrid.getRowsCount()) <= mStartNodePosition.y + i)
 			return i;
 		if(mObstacleGrid.isObstacle(mStartNodePosition.x, mStartNodePosition.y + i))
 			return i - 1;

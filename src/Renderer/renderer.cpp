@@ -28,13 +28,13 @@ namespace {
 	Framebuffer gameObjectsFramebuffer;
 	Framebuffer lightingFramebuffer;
 	Framebuffer lightingGaussianBlurFramebuffer;
-	unsigned screenVBO;
-	unsigned screenIBO;
-	unsigned screenVAO;
+	u32 screenVBO;
+	u32 screenIBO;
+	u32 screenVAO;
 	 
 	sf::Color ambientLightColor;
 
-	unsigned sharedDataUBO;
+	u32 sharedDataUBO;
 
 	PointRenderer pointRenderer;
 	LineRenderer lineRenderer;
@@ -50,12 +50,12 @@ static void setClearColor(sf::Color color)
 	GLCheck( glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f) );
 }
 
-static float getNormalizedZ(const unsigned char z)
+static float getNormalizedZ(const u8 z)
 {
 	return z / 255.f;
 }
 
-void init(unsigned screenWidth, unsigned screenHeight)
+void init(u32 screenWidth, u32 screenHeight)
 {
 	// initialize glew
 	glewExperimental = GL_TRUE;
@@ -80,7 +80,7 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	// set up uniform buffer object
 	glGenBuffers(1, &sharedDataUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO);
-	glBufferData(GL_UNIFORM_BUFFER, 32 * sizeof(float), nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, 32 * sizeof(float), Null, GL_STATIC_DRAW);
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 32 * sizeof(float));
 
 	// initialize gui view projection matrix
@@ -116,13 +116,13 @@ void init(unsigned screenWidth, unsigned screenHeight)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))); 
 
-	unsigned quadIndices[] = { 0, 1, 3, 1, 2, 3 };
+	u32 quadIndices[] = { 0, 1, 3, 1, 2, 3 };
 	glGenBuffers(1, &screenIBO); 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, screenIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 }
 
-void restart(unsigned screenWidth, unsigned screenHeight)
+void restart(u32 screenWidth, u32 screenHeight)
 {
 	shutDown();
 	init(screenWidth, screenHeight);
@@ -162,8 +162,8 @@ void beginScene()
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
 	
-	sf::Vector2f center = gameWorldCamera.center();
-	sf::Vector2f size = gameWorldCamera.getSize();
+	Vec2 center = gameWorldCamera.center();
+	Vec2 size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
 }
 
@@ -176,9 +176,7 @@ void endScene()
 	{
 		rendererDebugTabActive = ImGui::BeginTabItem("renderer debug");
 		if(rendererDebugTabActive)
-		{
 			ImGui::BeginTabBar("renderer debug tabs");
-		}
 	}
 
 	// render scene
@@ -213,9 +211,9 @@ void endScene()
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	GLCheck( glEnable(GL_FRAMEBUFFER_SRGB) );
 	defaultFramebufferShader.bind();
-	defaultFramebufferShader.setUniformInt("gameObjectsTexture", 0);
+	defaultFramebufferShader.setUniformI32("gameObjectsTexture", 0);
 	gameObjectsFramebuffer.bindTextureColorBuffer(0);
-	defaultFramebufferShader.setUniformInt("lightingTexture", 1);
+	defaultFramebufferShader.setUniformI32("lightingTexture", 1);
 	lightingGaussianBlurFramebuffer.bindTextureColorBuffer(1);
 	GLCheck( glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) );
 	GLCheck( glDisable(GL_FRAMEBUFFER_SRGB) );
@@ -232,14 +230,14 @@ void endScene()
 	}
 }
 
-void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
+void submitCircle(sf::Color color, Vec2 position, float radius, u8 z, 
 				  ProjectionType projectionType, bool isAffectedByLight)
 {
-	submitQuad(nullptr, nullptr, &color, &circleShader, position, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
+	submitQuad(Null, Null, &color, &circleShader, position, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                sf::Vector2f position, sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin,
+                Vec2 position, Vec2 size, u8 z, float rotation, Vec2 rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
 	QuadRenderer::submitQuad(texture, textureRect, color, shader, position, size,
@@ -247,7 +245,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 }
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& qd, Texture* t, const Shader* s,
-                                          unsigned char z, ProjectionType projectionType)
+                                          u8 z, ProjectionType projectionType)
 {
 	QuadRenderer::submitBunchOfQuadsWithTheSameTexture(qd, t, s, getNormalizedZ(z), projectionType);
 }
@@ -257,39 +255,39 @@ void setChunksTexture(const Texture& texture)
 	QuadRenderer::setChunksTexture(texture.getID());	
 }
 
-unsigned registerNewChunk(const FloatRect& bounds)
+u32 registerNewChunk(const FloatRect& bounds)
 {
 	return QuadRenderer::registerNewChunk(bounds);
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData,
-                 const FloatRect& bounds, unsigned char z, unsigned* rendererID, sf::Color color)
+                 const FloatRect& bounds, u8 z, u32* rendererID, sf::Color color)
 {
 	QuadRenderer::submitChunk(quadsData, bounds, getNormalizedZ(z), rendererID, color);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z, sf::Color color)  
+void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color color)  
 {
 	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z), color);
 }
 
-void submitLine(sf::Color color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+void submitLine(sf::Color color, const Vec2 positionA, const Vec2 positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);
 }
 
 void submitLine(sf::Color colorA, sf::Color colorB,
-                          const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness)
+                          const Vec2 positionA, const Vec2 positionB, float thickness)
 {
 	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
 }
 
-void submitPoint(sf::Vector2f position, sf::Color color, unsigned char z, float size)
+void submitPoint(Vec2 position, sf::Color color, u8 z, float size)
 {
 	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
 }
 
-void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
+void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
                  float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
 {
 	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
@@ -305,35 +303,37 @@ void submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 	lightRenderer.submitBunchOfLightWalls(walls);
 }
 
-unsigned getNrOfLights()
+u32 getNrOfLights()
 {
 	return lightRenderer.getNrOfLights();
 }
 
-void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize, sf::Color color,
-                unsigned char z, ProjectionType projecitonType, bool isAffectedByLight)
+void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize, sf::Color color,
+                u8 z, ProjectionType projecitonType, bool isAffectedByLight)
 {
 	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
 }
 
-void submitTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, 
-                       float characterSize, sf::Color textColor, unsigned char z)
+void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
+                       float characterSize, sf::Color textColor, u8 z)
 {
 	TextRenderer::drawTextWorldHD(text, fontFilename, worldPos, gameWorldCamera, characterSize, textColor, z);
 }
 
-void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                    TextAligment aligment, float size, sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
+void submitTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,
+                    TextAligment aligment, float size, sf::Color color, u8 z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	TextRenderer::drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
 void handleEvent(sf::Event e)
 {
-	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F3) {
+	if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F3) 
+	{
 		isDebugDisplayActive = !isDebugDisplayActive;
 	}
-	if(e.type == sf::Event::Resized) {
+	if(e.type == sf::Event::Resized) 
+	{
 		GLCheck( glViewport(0, 0, e.size.width, e.size.height) );
 		gameObjectsFramebuffer.onWindowResize(e.size.width, e.size.height);
 		lightingFramebuffer.onWindowResize(e.size.width, e.size.height);

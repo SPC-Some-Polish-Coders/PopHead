@@ -9,40 +9,40 @@ extern bool debugWindowOpen;
 
 namespace ph::QuadRenderer {
 
-static constexpr unsigned deleteVBOsDelay = 500;
+static constexpr u32 deleteVBOsDelay = 500;
 
 struct DebugNumbers
 {
-	std::vector<unsigned> renderGroupsSizes; 
-	std::vector<unsigned> renderGroupsZ; 
-	std::vector<unsigned> renderGroupsIndices; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsSizes; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsZ; 
-	std::vector<unsigned> notAffectedByLightRenderGroupsIndices; 
-	unsigned allocations = 0;
-	unsigned chunks = 0;
-	unsigned framesToDeleteChunkVBOs = 0;
-	unsigned renderGroups = 0;
-	unsigned renderGroupsNotAffectedByLight = 0;
-	unsigned drawCalls = 0;
-	unsigned drawnSprites = 0;
-	unsigned drawnTextures = 0;
+	std::vector<u32> renderGroupsSizes; 
+	std::vector<u32> renderGroupsZ; 
+	std::vector<u32> renderGroupsIndices; 
+	std::vector<u32> notAffectedByLightRenderGroupsSizes; 
+	std::vector<u32> notAffectedByLightRenderGroupsZ; 
+	std::vector<u32> notAffectedByLightRenderGroupsIndices; 
+	u32 allocations = 0;
+	u32 chunks = 0;
+	u32 framesToDeleteChunkVBOs = 0;
+	u32 renderGroups = 0;
+	u32 renderGroupsNotAffectedByLight = 0;
+	u32 drawCalls = 0;
+	u32 drawnSprites = 0;
+	u32 drawnTextures = 0;
 };
 
 struct RenderGroupsHashMap
 {
-	unsigned capacity;
-	unsigned size;
-	unsigned* indices = nullptr;
-	RenderGroupKey* keys = nullptr;
-	QuadRenderGroup* renderGroups = nullptr;
+	u32 capacity;
+	u32 size;
+	u32* indices = Null;
+	RenderGroupKey* keys = Null;
+	QuadRenderGroup* renderGroups = Null;
 	bool needsToBeSorted = false;
 };
 
 struct GroundChunk
 {
 	FloatRect textureRect;
-	sf::Vector2f pos;
+	Vec2 pos;
 	sf::Color color;
 	float z;
 };
@@ -50,8 +50,8 @@ struct GroundChunk
 struct Chunk
 {
 	FloatRect bounds;
-	unsigned vbo;
-	unsigned quadsCount;
+	u32 vbo;
+	u32 quadsCount;
 	sf::Color color;
 	float z;
 };
@@ -59,25 +59,25 @@ struct Chunk
 struct RegisteredChunk
 {
 	FloatRect bounds;
-	unsigned id;
-	unsigned vbo;
+	u32 id;
+	u32 vbo;
 };
 
 struct ChunksData
 {
 	std::vector<RegisteredChunk> registerChunks;
 	std::vector<Chunk> thisFrameChunks;
-	unsigned nextRegisteredChunkID = 0;
-	unsigned dummyVAO;
-	unsigned framesToDeleteChunkVBOs = deleteVBOsDelay;
+	u32 nextRegisteredChunkID = 0;
+	u32 dummyVAO;
+	u32 framesToDeleteChunkVBOs = deleteVBOsDelay;
 };
 
 static ChunksData chunks;
 
 static std::vector<GroundChunk> groundChunks;
-static unsigned groundChunkVAO; 
+static u32 groundChunkVAO; 
 
-static unsigned chunksTexture; // for chunks and ground chunks
+static u32 chunksTexture; // for chunks and ground chunks
 
 static RenderGroupsHashMap renderGroupsHashMap;
 static RenderGroupsHashMap notAffectedByLightRenderGroupsHashMap;
@@ -91,11 +91,11 @@ static Shader chunkShader;
 
 static const FloatRect* screenBounds; 
 static Texture* whiteTexture;
-static unsigned quadIBO;
-static unsigned quadsDataVBO;
-static unsigned quadVao;
+static u32 quadIBO;
+static u32 quadsDataVBO;
+static u32 quadVao;
 
-void setChunksTexture(unsigned texture)
+void setChunksTexture(u32 texture)
 {
 	chunksTexture = texture;
 }
@@ -110,9 +110,9 @@ void setScreenBoundsPtr(const FloatRect* bounds)
 	screenBounds = bounds;		
 }
 
-static unsigned bumpToNext4000(unsigned size)
+static u32 bumpToNext4000(u32 size)
 {
-	unsigned temp = size;
+	u32 temp = size;
 	while(temp > 4000)
 		temp -= 4000;
 	return size + 4000 - temp;	
@@ -123,10 +123,10 @@ static bool operator==(const RenderGroupKey& lhs, const RenderGroupKey& rhs)
 	return lhs.shader == rhs.shader && lhs.z == rhs.z;
 }
 
-static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashMap* hashMap, RenderGroupKey key, unsigned quadDataCount)
+static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashMap* hashMap, RenderGroupKey key, u32 quadDataCount)
 {
 	// return render group of matching key if exists
-	for(unsigned i = 0; i < hashMap->size; ++i)
+	for(u32 i = 0; i < hashMap->size; ++i)
 		if(key == *(hashMap->keys + i))
 			return hashMap->renderGroups + i;
 
@@ -134,12 +134,12 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 	if(hashMap == &renderGroupsHashMap)
 	{
 		debugNumbers.renderGroups = hashMap->size;
-		debugNumbers.renderGroupsZ.emplace_back((unsigned)(key.z * 255));
+		debugNumbers.renderGroupsZ.emplace_back(Cast<u32>(key.z * 255));
 	}
 	else if(hashMap == &notAffectedByLightRenderGroupsHashMap)
 	{
 		debugNumbers.renderGroupsNotAffectedByLight = hashMap->size; 
-		debugNumbers.notAffectedByLightRenderGroupsZ.emplace_back((unsigned)(key.z * 255));
+		debugNumbers.notAffectedByLightRenderGroupsZ.emplace_back(Cast<u32>(key.z * 255));
 	}
 
 	// reallocate if there is no more space
@@ -147,17 +147,17 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 	{
 		hashMap->capacity *= 2;
 
-		void* newIndices = realloc(hashMap->indices, hashMap->capacity * sizeof(unsigned));
+		void* newIndices = realloc(hashMap->indices, hashMap->capacity * sizeof(u32));
 		PH_ASSERT_CRITICAL(newIndices, "quad render group hash map indices realloc failed!");
-		hashMap->indices = (unsigned*)newIndices;
+		hashMap->indices = Cast<u32*>(newIndices);
 
 		void* newKeys = realloc(hashMap->keys, hashMap->capacity * sizeof(RenderGroupKey));
 		PH_ASSERT_CRITICAL(newKeys, "quad render group hash map keys realloc failed!");
-		hashMap->keys = (RenderGroupKey*)newKeys;
+		hashMap->keys = Cast<RenderGroupKey*>(newKeys);
 
 		void* newRenderGroups = realloc(hashMap->renderGroups, hashMap->capacity * sizeof(QuadRenderGroup));
 		PH_ASSERT_CRITICAL(newRenderGroups, "quad render group hash map render groups realloc failed!");
-		hashMap->renderGroups = (QuadRenderGroup*)newRenderGroups;
+		hashMap->renderGroups = Cast<QuadRenderGroup*>(newRenderGroups);
 
 		debugNumbers.allocations += 3;
 	}
@@ -173,13 +173,13 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 	quadDataCount = bumpToNext4000(quadDataCount);
 	size_t arenaSize = sizeof(QuadData) * quadDataCount; 
 	QuadRenderGroup& qrg = hashMap->renderGroups[hashMap->size];
-	qrg.quadsDataArenaSize = (unsigned)arenaSize; 
+	qrg.quadsDataArenaSize = Cast<u32>(arenaSize); 
 	qrg.texturesSize = 0;
 	qrg.texturesCapacity = 32;
-	qrg.textures = (unsigned*)malloc(sizeof(unsigned) * 32);
+	qrg.textures = Cast<u32*>(malloc(sizeof(u32) * 32));
 	qrg.quadsDataSize = 0; 
 	qrg.quadsDataCapacity = quadDataCount; 
-	qrg.quadsData = (QuadData*)malloc(arenaSize);
+	qrg.quadsData = Cast<QuadData*>(malloc(arenaSize));
 	debugNumbers.allocations += 2;
 
 	++hashMap->size;
@@ -189,14 +189,14 @@ static QuadRenderGroup* insertIfDoesNotExitstAndGetRenderGroup(RenderGroupsHashM
 
 static auto getTextureSlotToWhichThisTextureIsBound(const Texture* texture, QuadRenderGroup* rg) -> std::optional<float>
 {
-	unsigned* ptr = rg->textures;
+	u32* ptr = rg->textures;
 	for(size_t i = 0; i < rg->texturesSize; ++i, ++ptr)
 		if(*ptr == texture->getID())
-			return static_cast<float>(i);
+			return Cast<float>(i);
 	return std::nullopt;
 }
 
-static void insertQuadDataToQuadRenderGroup(QuadData* quadData, unsigned count, QuadRenderGroup* quadRenderGroup)
+static void insertQuadDataToQuadRenderGroup(QuadData* quadData, u32 count, QuadRenderGroup* quadRenderGroup)
 {
 	bool thereIsNoPlaceForNewQuadData = quadRenderGroup->quadsDataSize + count > quadRenderGroup->quadsDataCapacity;
 	if(thereIsNoPlaceForNewQuadData)
@@ -204,9 +204,9 @@ static void insertQuadDataToQuadRenderGroup(QuadData* quadData, unsigned count, 
 		// reallocate quad render group arena
 		size_t oldArenaSize = (size_t)quadRenderGroup->quadsDataArenaSize; 
 		void* oldArena = (void*)quadRenderGroup->quadsData; 
-		unsigned newQuadsDataCapacity = quadRenderGroup->quadsDataCapacity + count * 2; 
+		u32 newQuadsDataCapacity = quadRenderGroup->quadsDataCapacity + count * 2; 
 		size_t newArenaSize = newQuadsDataCapacity * sizeof(QuadData); 
-		quadRenderGroup->quadsDataArenaSize = (unsigned)newArenaSize;
+		quadRenderGroup->quadsDataArenaSize = (u32)newArenaSize;
 		quadRenderGroup->quadsDataCapacity = newQuadsDataCapacity; 
 		quadRenderGroup->quadsData = (QuadData*)malloc(newArenaSize);
 		memcpy(quadRenderGroup->quadsData, oldArena, oldArenaSize);
@@ -225,9 +225,9 @@ static void initRenderGroupsHashMap(RenderGroupsHashMap& hashMap)
 	constexpr size_t initialGroupsCapacity = 100;
 	hashMap.capacity = initialGroupsCapacity;
 	hashMap.size = 0;
-	hashMap.indices = (unsigned*)malloc(sizeof(unsigned) * initialGroupsCapacity);
-	hashMap.keys = (RenderGroupKey*)malloc(sizeof(RenderGroupKey) * initialGroupsCapacity);
-	hashMap.renderGroups = (QuadRenderGroup*)malloc(sizeof(QuadRenderGroup) * initialGroupsCapacity);
+	hashMap.indices = Cast<u32*>(malloc(sizeof(u32) * initialGroupsCapacity));
+	hashMap.keys = Cast<RenderGroupKey*>(malloc(sizeof(RenderGroupKey) * initialGroupsCapacity));
+	hashMap.renderGroups = Cast<QuadRenderGroup*>(malloc(sizeof(QuadRenderGroup) * initialGroupsCapacity));
 	debugNumbers.allocations += 3;
 }
 
@@ -272,10 +272,10 @@ void init()
 	GLCheck( glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*)offsetof(QuadData, rotation)) );
 	GLCheck( glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(QuadData), (void*)offsetof(QuadData, textureSlotRef)) );
 
-	for(int i = 0; i < 7; ++i) {
+	for(i32 i = 0; i < 7; ++i) {
 		GLCheck( glEnableVertexAttribArray(i) );
 	}
-	for(int i = 0; i < 7; ++i) {
+	for(i32 i = 0; i < 7; ++i) {
 		GLCheck( glVertexAttribDivisor(i, 1) );
 	}
 
@@ -292,18 +292,18 @@ void init()
 		0.f, 16.f,
 		16.f, 16.f
 	};
-	unsigned groundChunkVBO;
+	u32 groundChunkVBO;
 	glGenBuffers(1, &groundChunkVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, groundChunkVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(groundChunkVertices), groundChunkVertices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), Null);
 
 	// create white texture
 	whiteTexture = new Texture;
-	unsigned white = 0xffffffff;
-	whiteTexture->setData(&white, sizeof(unsigned), sf::Vector2i(1, 1));
+	u32 white = 0xffffffff;
+	whiteTexture->setData(&white, sizeof(u32), Vec2i(1, 1));
 }
 
 void shutDown()
@@ -318,12 +318,12 @@ void shutDown()
 	glDeleteVertexArrays(1, &chunks.dummyVAO);
 }
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z, sf::Color color)
+void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, float z, sf::Color color)
 {
 	groundChunks.push_back(GroundChunk{textureRect, pos, color, z});
 }
 
-unsigned registerNewChunk(const FloatRect& bounds)
+u32 registerNewChunk(const FloatRect& bounds)
 {
 	chunks.registerChunks.emplace_back(RegisteredChunk{bounds, chunks.nextRegisteredChunkID, 0});
 	++chunks.nextRegisteredChunkID;
@@ -331,7 +331,7 @@ unsigned registerNewChunk(const FloatRect& bounds)
 }
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
-                 float z, unsigned* id, sf::Color color)
+                 float z, u32* id, sf::Color color)
 {
 	for(auto& cached : chunks.registerChunks)
 	{
@@ -339,7 +339,7 @@ void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
 		{
 			if(cached.vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (unsigned)quadsData.size(), color, z});
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (u32)quadsData.size(), color, z});
 			}
 			else
 			{
@@ -364,7 +364,7 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Text
 	// insert if does not exitst and get render group
 	bool isAffectedByLight = true; // TODO
 	RenderGroupsHashMap& hashMap = isAffectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
-	QuadRenderGroup* renderGroup = insertIfDoesNotExitstAndGetRenderGroup(&hashMap, {shader, z, projectionType}, (unsigned)quadsData.size());
+	QuadRenderGroup* renderGroup = insertIfDoesNotExitstAndGetRenderGroup(&hashMap, {shader, z, projectionType}, Cast<u32>(quadsData.size()));
 
 	if(!texture)
 		texture = whiteTexture;
@@ -382,11 +382,11 @@ void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>& quadsData, Text
 		++renderGroup->texturesSize;
 	}
 
-	insertQuadDataToQuadRenderGroup(quadsData.data(), (unsigned)quadsData.size(), renderGroup);
+	insertQuadDataToQuadRenderGroup(quadsData.data(), Cast<u32>(quadsData.size()), renderGroup);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                sf::Vector2f pos, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin,
+                Vec2 pos, Vec2 size, float z, float rotation, Vec2 rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
 	// culling
@@ -409,7 +409,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	FloatRect finalTextureRect;
 	if(textureRect)
 	{
-		auto ts = static_cast<sf::Vector2f>(texture->getSize());
+		auto ts = Cast<Vec2>(texture->getSize());
 		finalTextureRect = FloatRect(
 			textureRect->x / ts.x, (ts.y - textureRect->y - textureRect->h) / ts.y,
 			textureRect->w / ts.x, textureRect->h / ts.y
@@ -423,7 +423,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	// submit data
 	QuadData quadData;
 	
-	quadData.color = color ? Cast::toNormalizedColorVector4f(*color) : Cast::toNormalizedColorVector4f(sf::Color::White);
+	quadData.color = color ? toNormalizedColorVec4(*color) : toNormalizedColorVec4(sf::Color::White);
 	quadData.textureRect = finalTextureRect; 
 	quadData.position = pos;
 	quadData.size = size;
@@ -438,7 +438,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	}
 	else 
 	{
-		unsigned textureSlotID = renderGroup->texturesSize;
+		u32 textureSlotID = renderGroup->texturesSize;
 		quadData.textureSlotRef = (float)textureSlotID;
 		*(renderGroup->textures + textureSlotID) = texture->getID();
 		++renderGroup->texturesSize;
@@ -451,7 +451,7 @@ void flush(bool affectedByLight)
 {
 	PH_PROFILE_FUNCTION();
 
-	const Shader* currentlyBoundShader = nullptr;
+	const Shader* currentlyBoundShader = Null;
 	auto& hashMap = affectedByLight ? renderGroupsHashMap : notAffectedByLightRenderGroupsHashMap;
 
 	// sort hash map indices
@@ -459,15 +459,15 @@ void flush(bool affectedByLight)
 	{
 		PH_PROFILE_SCOPE("sorting indices");
 		hashMap.needsToBeSorted = false;
-		for(unsigned i = 0; i < hashMap.size - 1; ++i)
+		for(u32 i = 0; i < hashMap.size - 1; ++i)
 		{
-			for(unsigned j = 0; j < hashMap.size - 1; ++j)
+			for(u32 j = 0; j < hashMap.size - 1; ++j)
 			{
-				unsigned index1 = hashMap.indices[j];
-				unsigned index2 = hashMap.indices[j + 1];
+				u32 index1 = hashMap.indices[j];
+				u32 index2 = hashMap.indices[j + 1];
 				if(hashMap.keys[index1].z < hashMap.keys[index2].z)
 				{
-					unsigned temp = hashMap.indices[j];
+					u32 temp = hashMap.indices[j];
 					hashMap.indices[j] = hashMap.indices[j + 1];
 					hashMap.indices[j + 1] = temp; 
 				}
@@ -478,7 +478,7 @@ void flush(bool affectedByLight)
 		auto& debugIndices = affectedByLight ? debugNumbers.renderGroupsIndices : debugNumbers.notAffectedByLightRenderGroupsIndices;
 
 		/* TODO
-		for(unsigned i = 0; i < hashMap.size; ++i)
+		for(u32 i = 0; i < hashMap.size; ++i)
 		{
 			debugNumbers.renderGroupsIndices[i] = hashMap.indices[i];
 		}
@@ -504,7 +504,7 @@ void flush(bool affectedByLight)
 		// debug info
 		debugNumbers.framesToDeleteChunkVBOs = chunks.framesToDeleteChunkVBOs; 
 
-		for(unsigned chunkIndex = 0, groundChunkIndex = 0;
+		for(u32 chunkIndex = 0, groundChunkIndex = 0;
 			chunkIndex + groundChunkIndex < chunks.thisFrameChunks.size() + groundChunks.size();)
 		{
 			float chunkZ = chunkIndex < chunks.thisFrameChunks.size() ? chunks.thisFrameChunks[chunkIndex].z : -1.f;
@@ -526,13 +526,13 @@ void flush(bool affectedByLight)
 					currentlyBoundShader = &groundChunkShader;
 					groundChunkShader.bind();
 				}
-				groundChunkShader.setUniformVector2("chunkPos", gc.pos);
+				groundChunkShader.setUniformVec2("chunkPos", gc.pos);
 				groundChunkShader.setUniformFloat("z", gc.z);
-				groundChunkShader.setUniformVector4Color("color", gc.color);
-				groundChunkShader.setUniformVector2("uvTopLeft", gc.textureRect.pos);
-				groundChunkShader.setUniformVector2("uvTopRight", gc.textureRect.topRight());
-				groundChunkShader.setUniformVector2("uvBottomLeft", gc.textureRect.bottomLeft());
-				groundChunkShader.setUniformVector2("uvBottomRight", gc.textureRect.bottomRight());
+				groundChunkShader.setUniformVec4Color("color", gc.color);
+				groundChunkShader.setUniformVec2("uvTopLeft", gc.textureRect.pos);
+				groundChunkShader.setUniformVec2("uvTopRight", gc.textureRect.topRight());
+				groundChunkShader.setUniformVec2("uvBottomLeft", gc.textureRect.bottomLeft());
+				groundChunkShader.setUniformVec2("uvBottomRight", gc.textureRect.bottomRight());
 
 				GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, 144) );
 
@@ -555,7 +555,7 @@ void flush(bool affectedByLight)
 					currentlyBoundShader = &chunkShader;
 					chunkShader.bind();
 				}
-				chunkShader.setUniformVector4Color("color", chunk.color);
+				chunkShader.setUniformVec4Color("color", chunk.color);
 				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
@@ -566,10 +566,10 @@ void flush(bool affectedByLight)
 				GLCheck( glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, size)) );
 				GLCheck( glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(ChunkQuadData), (void*)offsetof(ChunkQuadData, rotation)) );
 
-				for(int i = 0; i < 4; ++i)
+				for(i32 i = 0; i < 4; ++i)
 					glEnableVertexAttribArray(i);
 
-				for(int i = 0; i < 4; ++i)
+				for(i32 i = 0; i < 4; ++i)
 					glVertexAttribDivisor(i, 1);
 
 				GLCheck( glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, chunk.quadsCount) );
@@ -604,10 +604,10 @@ void flush(bool affectedByLight)
 	// NOTE: We assume that quads it hash map are always at top of ground chunks and chunks
 
 	// draw from hash map
-	for(unsigned pairIndex = 0; pairIndex < hashMap.size; ++pairIndex)
+	for(u32 pairIndex = 0; pairIndex < hashMap.size; ++pairIndex)
 	{
 		PH_PROFILE_SCOPE("draw hash map pair");
-		unsigned renderGroupIndex = hashMap.indices[pairIndex];
+		u32 renderGroupIndex = hashMap.indices[pairIndex];
 		auto& key = hashMap.keys[renderGroupIndex];
 		auto& rg = hashMap.renderGroups[renderGroupIndex];
 
@@ -625,10 +625,10 @@ void flush(bool affectedByLight)
 			key.shader->bind();
 			currentlyBoundShader = key.shader;
 
-			int textures[32];
-			for(int i = 0; i < 32; ++i)
+			i32 textures[32];
+			for(i32 i = 0; i < 32; ++i)
 				textures[i] = i;
-			key.shader->setUniformIntArray("textures", 32, textures);
+			key.shader->setUniformI32Array("textures", 32, textures);
 		}
 		key.shader->setUniformFloat("z", key.z);
 		key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
@@ -637,14 +637,14 @@ void flush(bool affectedByLight)
 		// std::sort(rg.quadsData.begin(), rg.quadsData.end(), [](const QuadData& a, const QuadData& b) { return a.textureSlotRef < b.textureSlotRef; });
 
 		// draw render group
-		unsigned quadsDataSize = rg.quadsDataSize;
-		unsigned texturesSize = rg.texturesSize;
+		u32 quadsDataSize = rg.quadsDataSize;
+		u32 texturesSize = rg.texturesSize;
 		QuadData* quadsData = rg.quadsData;
-		unsigned* textures = rg.textures;
+		u32* textures = rg.textures;
 
 		auto bindTexturesForNextDrawCall = [textures, texturesSize]
 		{
-			for(unsigned textureSlot = 0; textureSlot < (texturesSize > 32 ? 32 : texturesSize); ++textureSlot)
+			for(u32 textureSlot = 0; textureSlot < (texturesSize > 32 ? 32 : texturesSize); ++textureSlot)
 			{
 				glActiveTexture(GL_TEXTURE0 + textureSlot);
 				glBindTexture(GL_TEXTURE_2D, *(textures + textureSlot));
@@ -682,7 +682,7 @@ void flush(bool affectedByLight)
 				quadsData += quadIndex;
 
 				QuadData* ptr = quadsData;
-				for(unsigned i = 0; i < quadsDataSize; ++i)
+				for(u32 i = 0; i < quadsDataSize; ++i)
 				{
 					ptr->textureSlotRef -= 32;
 					++ptr;
@@ -739,7 +739,7 @@ void submitDebug()
 		ImGui::Text("drawn sprites: %u", debugNumbers.drawnSprites);
 		ImGui::Text("drawn textures: %u", debugNumbers.drawnTextures);
 		
-		auto submitDebugArray = [](const char* name, const std::vector<unsigned>& v)
+		auto submitDebugArray = [](const char* name, const std::vector<u32>& v)
 		{
 			std::string str(name);
 			str += ":";

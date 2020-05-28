@@ -23,6 +23,6 @@ namespace ph::system {
 
 	private:
 		AIManager& mAIManager;
-		unsigned char mLastDeadBodyZ = 170;
+		u8 mLastDeadBodyZ = 170;
 	};
 }

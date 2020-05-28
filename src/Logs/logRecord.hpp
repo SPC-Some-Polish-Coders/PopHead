@@ -9,7 +9,7 @@ namespace ph {
 		Warning,
 		Error,
 		Critical,
-		Count // WARNING: Keep it last
+		Count // NOTE: Keep it last
 	};
 
 	std::string logLevelToString(LogLevel level);
@@ -19,7 +19,7 @@ namespace ph {
 		LogLevel level;
 		std::string message;
 		std::string filePath;
-		unsigned short fileLine;
+		u32 fileLine;
 		float secondsFromStart;
 		std::string time;
 	};

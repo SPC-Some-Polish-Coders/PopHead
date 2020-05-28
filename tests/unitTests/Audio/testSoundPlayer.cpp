@@ -14,8 +14,8 @@ TEST_CASE("Ambient sound can be played", "[Audio][SoundPlayer]")
 TEST_CASE("Spatial sound can be played", "[Audio][SoundPlayer]")
 {
 	SoundPlayer soundPlayer;
-	sf::Vector2f soundPosition(100.f, 100.f);
-	sf::Vector2f playerPosition(150.f, 150.f);
+	Vec2 soundPosition(100.f, 100.f);
+	Vec2 playerPosition(150.f, 150.f);
 	soundPlayer.setListenerPosition(playerPosition);
 
 	CHECK_NOTHROW(soundPlayer.playSpatialSound("sounds/zombieGrowl1.ogg", soundPosition));

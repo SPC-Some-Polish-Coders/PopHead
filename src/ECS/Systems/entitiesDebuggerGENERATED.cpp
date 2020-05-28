@@ -156,13 +156,13 @@ void EntitiesDebugger::update(float dt)
 
 				unsigned char alpha = underCursorEntity == mSelected ? 45 : 150;
 				auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
-				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, alpha), nullptr,
+				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, alpha), Null,
 					body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 
 				for(unsigned i = 1; i < entitiesUnderCursor.size(); ++i)
 				{
 					auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
-					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 40), nullptr,
+					Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 40), Null,
 						body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 				}
 
@@ -433,7 +433,7 @@ ImGui::Text("shader: %p", c->shader);
 ImGui::Text("rotationOrigin: %f, %f", c->rotationOrigin.x, c->rotationOrigin.y);
 ImGui::Text("color: %u, %u, %u, %u", c->color.r, c->color.g, c->color.b, c->color.a);
 ImGui::Text("rotation: %f", c->rotation);
-ImGui::Text("z: %u", c->z);
+ImGui::Text("z: u view is not supported!");
 }
 if(auto* c = mRegistry.try_get<component::GroundRenderChunk>(mSelected)) 
 {
@@ -441,7 +441,7 @@ ImGui::Separator();
 ImGui::BulletText("GroundRenderChunk");
 ImGui::Text("bounds: %f, %f, %f, %f", c->bounds.x,  c->bounds.y, c->bounds.w, c->bounds.h);
 ImGui::Text("textureRect: %f, %f, %f, %f", c->textureRect.x,  c->textureRect.y, c->textureRect.w, c->textureRect.h);
-ImGui::Text("z: %u", c->z);
+ImGui::Text("z: u view is not supported!");
 if(c->outdoor) ImGui::Text("outdoor: true"); else ImGui::Text("outdoor: false");
 }
 if(auto* c = mRegistry.try_get<component::RenderChunk>(mSelected)) 
@@ -452,7 +452,7 @@ ImGui::Text("quads: std::vector view is not supported!");
 ImGui::Text("lightWalls: std::vector view is not supported!");
 ImGui::Text("quadsBounds: %f, %f, %f, %f", c->quadsBounds.x,  c->quadsBounds.y, c->quadsBounds.w, c->quadsBounds.h);
 ImGui::Text("lightWallsBounds: %f, %f, %f, %f", c->lightWallsBounds.x,  c->lightWallsBounds.y, c->lightWallsBounds.w, c->lightWallsBounds.h);
-ImGui::Text("z: %u", c->z);
+ImGui::Text("z: u view is not supported!");
 ImGui::Text("rendererID: %u", c->rendererID);
 if(c->outdoor) ImGui::Text("outdoor: true"); else ImGui::Text("outdoor: false");
 }
@@ -594,7 +594,7 @@ if(c->movedGridPosInThisMove) ImGui::Text("movedGridPosInThisMove: true"); else 
 if(auto* c = mRegistry.try_get<component::PuzzleGridPos>(mSelected)) 
 {
 ImGui::Separator();
-ImGui::BulletText("PuzzleGridPos: %i, %i", c->x, c->y);
+ImGui::BulletText("PuzzleGridPos: %f, %f", c->x, c->y);
 }
 if(auto* c = mRegistry.try_get<component::PuzzleGridRoadChunk>(mSelected)) 
 {
@@ -626,7 +626,7 @@ if(auto* c = mRegistry.try_get<component::SavePoint>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("SavePoint");
-if(c->isIntersectingPlayer) ImGui::Text("isIntersectingPlayer: true"); else ImGui::Text("isIntersectingPlayer: false");
+if(c->isintersectingPlayer) ImGui::Text("isintersectingPlayer: true"); else ImGui::Text("isintersectingPlayer: false");
 ImGui::Text("timeSincePlayerSteppedOnIt: %f", c->timeSincePlayerSteppedOnIt);
 }
 if(auto* c = mRegistry.try_get<component::ParticleEmitter>(mSelected)) 
@@ -646,7 +646,7 @@ ImGui::Text("parEndColor: %u, %u, %u, %u", c->parEndColor.r, c->parEndColor.g, c
 ImGui::Text("amountOfParticles: %u", c->amountOfParticles);
 ImGui::Text("amountOfAlreadySpawnParticles: %u", c->amountOfAlreadySpawnParticles);
 ImGui::Text("parWholeLifetime: %f", c->parWholeLifetime);
-ImGui::Text("parZ: %u", c->parZ);
+ImGui::Text("parZ: u view is not supported!");
 if(c->oneShot) ImGui::Text("oneShot: true"); else ImGui::Text("oneShot: false");
 if(c->isEmitting) ImGui::Text("isEmitting: true"); else ImGui::Text("isEmitting: false");
 if(c->wasInitialized) ImGui::Text("wasInitialized: true"); else ImGui::Text("wasInitialized: false");
@@ -663,6 +663,13 @@ ImGui::Separator();
 body = *c;
 bodyValid = true;
 ImGui::BulletText("BodyRect: %f, %f, %f, %f", c->x, c->y, c->w, c->h);
+}
+if(auto* c = mRegistry.try_get<component::BodyCircle>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("BodyCircle");
+ImGui::Text("offset: %f, %f", c->offset.x, c->offset.y);
+ImGui::Text("radius: %f", c->radius);
 }
 if(auto* c = mRegistry.try_get<component::Kinematics>(mSelected)) 
 {
@@ -690,6 +697,7 @@ if(auto* c = mRegistry.try_get<component::MultiStaticCollisionBody>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("MultiStaticCollisionBody");
 ImGui::Text("rects: std::vector view is not supported!");
+ImGui::Text("circles: std::vector view is not supported!");
 ImGui::Text("sharedBounds: %f, %f, %f, %f", c->sharedBounds.x,  c->sharedBounds.y, c->sharedBounds.w, c->sharedBounds.h);
 }
 if(auto* c = mRegistry.try_get<component::KinematicCollisionBody>(mSelected)) 
@@ -710,7 +718,7 @@ if(c->staticallyMovedRight) ImGui::Text("staticallyMovedRight: true"); else ImGu
 
 			if(highlightSelected && bodyValid)
 			{
-				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
+				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 150), Null, body.pos, body.size,
 									 10, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		}

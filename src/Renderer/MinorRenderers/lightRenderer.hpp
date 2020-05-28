@@ -14,7 +14,7 @@ namespace ph {
 struct Light
 {
 	sf::Color color;
-	sf::Vector2f pos;
+	Vec2 pos;
 	float startAngle;
 	float endAngle;
 	float attenuationAddition;
@@ -24,19 +24,19 @@ struct Light
 
 struct Ray
 {
-	sf::Vector2f direction;
+	Vec2 direction;
 	float angle;
 };
 
 struct Wall
 {
-	sf::Vector2f point1;
-	sf::Vector2f point2;
+	Vec2 point1;
+	Vec2 point2;
 };
 
 struct RayWallIntersection
 {
-	sf::Vector2f point;
+	Vec2 point;
 	float distance;
 	bool valid = false;
 };
@@ -51,7 +51,7 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
-	unsigned getNrOfLights(); 
+	u32 getNrOfLights(); 
 
 	void submitDebug();
 
@@ -60,16 +60,16 @@ public:
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 private:
-	RayWallIntersection getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall);
-	sf::Vector2f getVectorLineIntersectionPoint(sf::Vector2f rayDir, sf::Vector2f lightPos, sf::Vector2f lineP1, sf::Vector2f lineP2);
+	RayWallIntersection getRayWallClosestIntersection(Vec2 rayDir, Vec2 lightPos, FloatRect wall);
+	Vec2 getVectorLineIntersectionPoint(Vec2 rayDir, Vec2 lightPos, Vec2 lineP1, Vec2 lineP2);
 
 private:
 	std::vector<FloatRect> mLightWalls;
 	std::vector<Light> mLights;
-	std::vector<sf::Vector2f> mLightTriangleFanVertexData;
+	std::vector<Vec2> mLightTriangleFanVertexData;
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
-	unsigned mLightTriangleFanVAO, mLightTriangleFanVBO;
+	u32 mLightTriangleFanVAO, mLightTriangleFanVBO;
 };
 
 } 

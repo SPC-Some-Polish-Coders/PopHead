@@ -5,8 +5,8 @@
 namespace ph::Random {
 
 	float generateNumber(float min, float max);
-	int generateNumber(int min, int max);
-	sf::Vector2f generateVector(sf::Vector2f min, sf::Vector2f max);
+	i32 generateNumber(i32 min, i32 max);
+	Vec2 generateVector(Vec2 min, Vec2 max);
 	sf::Color generateColor();
 	sf::Color generateColor(sf::Color min, sf::Color max);
 }

@@ -16,8 +16,8 @@ class Xml;
 
 struct GeneralMapInfo
 {
-	sf::Vector2f mapSize;
-	sf::Vector2f tileSize;
+	Vec2 mapSize;
+	Vec2 tileSize;
 	float nrOfChunks;
 	float nrOfChunksInOneRow;
 	float nrOfChunksInOneColumn;
@@ -25,8 +25,8 @@ struct GeneralMapInfo
 
 struct TilesData
 {
-	unsigned firstGlobalTileId;
-	std::vector<unsigned> ids;
+	u32 firstGlobalTileId;
+	std::vector<u32> ids;
 	std::vector<std::vector<FloatRect>> lightWalls;
 	std::vector<std::vector<FloatRect>> rectCollisions;
 	std::vector<std::vector<component::BodyCircle>> circleCollisions;
@@ -35,9 +35,9 @@ struct TilesData
 
 struct TilesetsData
 {
-	std::vector<unsigned> firstGlobalTileIds;
-	std::vector<unsigned> tileCounts;
-	std::vector<unsigned> columnsCounts;
+	std::vector<u32> firstGlobalTileIds;
+	std::vector<u32> tileCounts;
+	std::vector<u32> columnsCounts;
 	std::vector<TilesData> tilesData;
 	std::string tilesetFileName;
 };
@@ -59,21 +59,21 @@ private:
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	std::vector<Xml> getLayerNodes(const Xml& mapNode) const;
-	void createChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
-	                 unsigned char z, AIManager&, bool outdoor);
-	size_t findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const;
-	size_t findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
+	void createChunk(Vec2 chunkPos, const std::vector<u32>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
+	                 u8 z, AIManager&, bool outdoor);
+	size_t findTilesetIndex(u32 globalTileId, const TilesetsData& tilesets) const;
+	size_t findTilesIndex(u32 firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 	void createDebugName(entt::entity entity, const char* name) const;
 
 private:
 	std::vector<component::RenderChunk> mRenderChunks;
 	std::vector<component::MultiStaticCollisionBody> mChunkCollisions;
-	std::vector<sf::Vector2i> mAlreadyCreatedPuzzleGridRoadChunks;
+	std::vector<Vec2i> mAlreadyCreatedPuzzleGridRoadChunks;
 	DenialAreas mDenialAreas;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
 	inline static float sChunkSize = 12.f;
-	inline static unsigned char sLowestLayerZ = 200; 
+	inline static u8 sLowestLayerZ = 200; 
 };
 
 }

@@ -1,11 +1,11 @@
 #include "pch.hpp"
-#include "interface.hpp"
+#include "Interface.hpp"
 
 namespace ph {
 
 Interface::Interface(const char* name)
 {
-	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Interface name length can be max 50 characters long!");
+	PH_ASSERT_UNEXPECTED_SITUATION(std::strlen(name) < 50, "Interface name length can be max 50 characters i64!");
 	std::strcpy(mName, name);
 }
 
@@ -43,7 +43,7 @@ Widget* Interface::getWidget(const char* name)
 	for(auto& widget : mWidgetChildren)
 		if(std::strcmp(widget->getName(), name) == 0)
 			return widget.get();
-	return nullptr;
+	return Null;
 }
 
 }

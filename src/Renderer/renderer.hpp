@@ -16,8 +16,8 @@ class Shader;
 
 namespace Renderer
 {
-	void init(unsigned screenWidth, unsigned screenHeight);
-	void restart(unsigned screenWidth, unsigned screenHeight);
+	void init(u32 screenWidth, u32 screenHeight);
+	void restart(u32 screenWidth, u32 screenHeight);
 	void shutDown();
 	
 	void setGameWorldCamera(Camera& camera);
@@ -25,47 +25,47 @@ namespace Renderer
 	void beginScene();
 	void endScene();
 
-	void submitCircle(sf::Color color, sf::Vector2f position, float radius, unsigned char z, 
+	void submitCircle(sf::Color color, Vec2 position, float radius, u8 z, 
 	                  ProjectionType = ProjectionType::gameWorld, bool isAffectedByLight = true);
 
-	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, sf::Vector2f position,
-	                sf::Vector2f size, unsigned char z, float rotation, sf::Vector2f rotationOrigin, ProjectionType = ProjectionType::gameWorld,
+	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, Vec2 position,
+	                Vec2 size, u8 z, float rotation, Vec2 rotationOrigin, ProjectionType = ProjectionType::gameWorld,
 					bool isAffectedByLight = true);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*,
-	                                          unsigned char z, ProjectionType = ProjectionType::gameWorld);
+	                                          u8 z, ProjectionType = ProjectionType::gameWorld);
 
 	void setChunksTexture(const Texture& texture);
 
-	unsigned registerNewChunk(const FloatRect& bounds);
+	u32 registerNewChunk(const FloatRect& bounds);
 
 	void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
-	                 unsigned char z, unsigned* rendererID, sf::Color color);
+	                 u8 z, u32* rendererID, sf::Color color);
 
-	void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, unsigned char z, sf::Color color); 
+	void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color color); 
 
-	void submitLine(sf::Color, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+	void submitLine(sf::Color, const Vec2 positionA, const Vec2 positionB, float thickness = 1.f);
 
-	void submitLine(sf::Color colorA, sf::Color colorB, const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+	void submitLine(sf::Color colorA, sf::Color colorB, const Vec2 positionA, const Vec2 positionB, float thickness = 1.f);
 
-	void submitPoint(sf::Vector2f position, sf::Color, unsigned char z, float size = 1.f);
+	void submitPoint(Vec2 position, sf::Color, u8 z, float size = 1.f);
 
-	void submitLight(sf::Color color, sf::Vector2f position, float startAngle, float endAngle,
+	void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
 
 	void submitLightWall(FloatRect wall);
 	void submitBunchOfLightWalls(const std::vector<FloatRect>& walls);
 
-	unsigned getNrOfLights();
+	u32 getNrOfLights();
 
-	void submitText(const char* text, const char* fontFilename, sf::Vector2f position, float characterSize,
-		            sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight = false);
+	void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize,
+		            sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight = false);
 
-	void submitTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, float characterSize,
-		                   sf::Color textColor, unsigned char z);
+	void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, float characterSize,
+		                   sf::Color textColor, u8 z);
 
-	void submitTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-                        TextAligment, float size, sf::Color, unsigned char z, ProjectionType, bool isAffectedByLight = false);
+	void submitTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,
+                        TextAligment, float size, sf::Color, u8 z, ProjectionType, bool isAffectedByLight = false);
 
 	void setAmbientLightColor(sf::Color);
 

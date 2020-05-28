@@ -36,7 +36,7 @@ void Puzzles::update(float dt)
 
 	// puzzle 2
 	{
-		unsigned pressedPlates = 0;
+		u32 pressedPlates = 0;
 
 		mRegistry.view<component::PressurePlate, component::PuzzleColor>().each([&]
 		(auto plate, auto plateColor)
@@ -58,7 +58,7 @@ void Puzzles::update(float dt)
 
 	// puzzle 3
 	{
-		unsigned pressedPlates = 0;
+		u32 pressedPlates = 0;
 
 		mRegistry.view<component::PressurePlate>().each([&]
 		(auto plate)

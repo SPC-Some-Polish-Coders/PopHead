@@ -45,17 +45,17 @@ namespace component {
 	{
 		Texture* texture;
 		Shader* shader;
-		sf::Vector2f rotationOrigin;
+		Vec2 rotationOrigin;
 		sf::Color color;
 		float rotation;
-		unsigned char z;
+		u8 z;
 	};
 
 	struct GroundRenderChunk
 	{
 		FloatRect bounds;
 		FloatRect textureRect;
-		unsigned char z;
+		u8 z;
 		bool outdoor;
 	};
 
@@ -65,8 +65,8 @@ namespace component {
 		std::vector<FloatRect> lightWalls;
 		FloatRect quadsBounds;
 		FloatRect lightWallsBounds;
-		unsigned char z;
-		unsigned rendererID;
+		u8 z;
+		u32 rendererID;
 		bool outdoor;
 	};
 
@@ -77,7 +77,7 @@ namespace component {
 
 	struct LightSource
 	{
-		sf::Vector2f offset;
+		Vec2 offset;
 		sf::Color color;
 		float attenuationAddition;
 		float attenuationFactor;

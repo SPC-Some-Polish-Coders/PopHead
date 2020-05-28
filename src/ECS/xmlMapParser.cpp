@@ -62,16 +62,16 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 
 		for(auto& area : mDenialAreas.collisionsAndLightWalls)
 			createDenialArea(area, DenialArea::All);
-		#endif
 	}
+	#endif
 
 	GeneralMapInfo info = getGeneralMapInfo(mapNode);
 
-	aiManager.registerMapSize(static_cast<sf::Vector2u>(info.mapSize));
+	aiManager.registerMapSize(Cast<Vec2u>(info.mapSize));
 	aiManager.registerTileSize(info.tileSize);
 
-	mRenderChunks.reserve(static_cast<size_t>(info.nrOfChunks));
-	mChunkCollisions.reserve(static_cast<size_t>(info.nrOfChunks));
+	mRenderChunks.reserve(Cast<size_t>(info.nrOfChunks));
+	mChunkCollisions.reserve(Cast<size_t>(info.nrOfChunks));
 
 	const std::vector<Xml> tilesetNodes = mapNode.getChildren("tileset");
 	PH_ASSERT_WARNING(tilesetNodes.size() != 0, "Map doesn't have any tilesets");
@@ -81,7 +81,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	
 	// parse map layers
 	FloatRect mapBounds;
-	unsigned char z = sLowestLayerZ;
+	u8 z = sLowestLayerZ;
 	bool isFirstChunk = true;
 	for (const Xml& layerNode : layerNodes)
 	{
@@ -92,8 +92,8 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 		bool outdoor = layerName.find("indoor") == std::string::npos;
 		for(Xml& chunkNode : dataNode.getChildren("chunk"))
 		{
-			sf::Vector2f chunkPos(chunkNode.getAttribute("x")->toFloat(), chunkNode.getAttribute("y")->toFloat());
-			sf::Vector2f chunkSize(chunkNode.getAttribute("width")->toFloat(), chunkNode.getAttribute("height")->toFloat());
+			Vec2 chunkPos(chunkNode.getAttribute("x")->toFloat(), chunkNode.getAttribute("y")->toFloat());
+			Vec2 chunkSize(chunkNode.getAttribute("width")->toFloat(), chunkNode.getAttribute("height")->toFloat());
 
 			PH_ASSERT_CRITICAL(chunkSize.x == 12.f, "You have to set map parameter \"Output Chunk Width\" to 12!");
 			PH_ASSERT_CRITICAL(chunkSize.y == 12.f, "You have to set map parameter \"Output Chunk Height\" to 12!");
@@ -123,7 +123,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 				}
 			}
 
-			auto globalIds = Csv::toUnsigneds(chunkNode.toString());
+			auto globalIds = Csv::toU32s(chunkNode.toString());
 			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor);
 		}
 		z -= 2;
@@ -183,7 +183,7 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 
 	for(Xml tilesetNode : tilesetNodes) 
 	{
-		const unsigned firstGlobalTileId = tilesetNode.getAttribute("firstgid")->toUnsigned();
+		const u32 firstGlobalTileId = tilesetNode.getAttribute("firstgid")->toU32();
 		tilesets.firstGlobalTileIds.emplace_back(firstGlobalTileId);
 		if(auto source = tilesetNode.getAttribute("source")) {
 			std::string tilesetNodeSource = source->toString();
@@ -194,8 +194,8 @@ auto XmlMapParser::getTilesetsData(const std::vector<Xml>& tilesetNodes) const -
 				"Not embedded tileset file \"" + tilesetNodeSource + "\" wasn't loaded correctly!");
 			tilesetNode = *tilesetDocument.getChild("tileset");
 		}
-		tilesets.tileCounts.emplace_back(tilesetNode.getAttribute("tilecount")->toUnsigned());
-		tilesets.columnsCounts.emplace_back(tilesetNode.getAttribute("columns")->toUnsigned());
+		tilesets.tileCounts.emplace_back(tilesetNode.getAttribute("tilecount")->toU32());
+		tilesets.columnsCounts.emplace_back(tilesetNode.getAttribute("columns")->toU32());
 		const Xml imageNode = *tilesetNode.getChild("image");
 		tilesets.tilesetFileName = FilePath::toFilename(imageNode.getAttribute("source")->toString(), '/');
 		const std::vector<Xml> tileNodes = tilesetNode.getChildren("tile");
@@ -216,7 +216,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	{
 		if(auto objectGroupNode = tileNode.getChild("objectgroup"))
 		{
-			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toUnsigned());
+			tilesData.ids.emplace_back(tileNode.getAttribute("id")->toU32());
 			const auto objectNodes = objectGroupNode->getChildren("object");
 			std::vector<FloatRect> rectCollisions;
 			std::vector<component::BodyCircle> circleCollisions;
@@ -245,7 +245,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 						{
 							auto bounds = getBounds();
 							float radius = bounds.w / 2.f;
-							auto circleCenter = bounds.pos + sf::Vector2f(radius, radius);
+							auto circleCenter = bounds.pos + Vec2(radius, radius);
 							circleCollisions.emplace_back(component::BodyCircle{circleCenter, radius});
 						}
 						else
@@ -280,8 +280,8 @@ std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
 	return layerNodes;
 }
 
-void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, unsigned char z, AIManager& aiManager, bool outdoor)
+void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTileIds, const TilesetsData& tilesets,
+                               const GeneralMapInfo& info, u8 z, AIManager& aiManager, bool outdoor)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -297,92 +297,101 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 
 	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
-		constexpr unsigned bitsInByte = 8;
-		const unsigned flippedHorizontally = 1u << (sizeof(unsigned) * bitsInByte - 1);
-		const unsigned flippedVertically = 1u << (sizeof(unsigned) * bitsInByte - 2);
-		const unsigned flippedDiagonally = 1u << (sizeof(unsigned) * bitsInByte - 3);
+		constexpr u32 bitsInByte = 8;
+		const u32 flippedHorizontally = 1u << (sizeof(u32) * bitsInByte - 1);
+		const u32 flippedVertically = 1u << (sizeof(u32) * bitsInByte - 2);
+		const u32 flippedDiagonally = 1u << (sizeof(u32) * bitsInByte - 3);
 
 		const bool isHorizontallyFlipped = globalTileIds[tileIndexInChunk] & flippedHorizontally;
 		const bool isVerticallyFlipped = globalTileIds[tileIndexInChunk] & flippedVertically;
 		const bool isDiagonallyFlipped = globalTileIds[tileIndexInChunk] & flippedDiagonally;
 
-		const unsigned globalTileId = globalTileIds[tileIndexInChunk] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+		const u32 globalTileId = globalTileIds[tileIndexInChunk] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
 		bool hasTile = globalTileId != 0;
 		if (hasTile) 
 		{
 			size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
-			if (tilesetIndex == std::string::npos) {
+			if (tilesetIndex == std::string::npos) 
+			{
 				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 
-			sf::Vector2u chunkRelativePosInTiles = Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex((unsigned)tileIndexInChunk, (unsigned)sChunkSize);
-			sf::Vector2f posInTiles = chunkPos + static_cast<sf::Vector2f>(chunkRelativePosInTiles);
+			Vec2u chunkRelativePosInTiles = Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(sChunkSize));
+			Vec2 posi32iles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
 
 			// create quad data
 			ChunkQuadData cqd;
 
-			sf::Vector2f tileWorldPos( 
-				posInTiles.x * static_cast<float>(info.tileSize.x),
-				posInTiles.y * static_cast<float>(info.tileSize.y)
+			Vec2 tileWorldPos( 
+				posi32iles.x * Cast<float>(info.tileSize.x),
+				posi32iles.y * Cast<float>(info.tileSize.y)
 			);
 
 			cqd.position = tileWorldPos; 
 
 			// TODO: Replace rotate/size-textureRect stuff with texture coords
-			auto tileSize = static_cast<sf::Vector2f>(info.tileSize);
-			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) {
+			auto tileSize = Cast<Vec2>(info.tileSize);
+			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
+			{
 				cqd.size = tileSize;
 				cqd.rotation = 0.f;
 			}
-			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) {
+			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) 
+			{
 				cqd.size = {tileSize.x, -tileSize.y};
 				cqd.position.x += tileSize.x;
 				cqd.rotation = 270.f;
 			}
-			else if(isHorizontallyFlipped && isVerticallyFlipped) {
+			else if(isHorizontallyFlipped && isVerticallyFlipped) 
+			{
 				cqd.size = -tileSize;
 				cqd.position += tileSize;
 				cqd.rotation = 0.f;
 			}
-			else if(isHorizontallyFlipped && isDiagonallyFlipped) {
+			else if(isHorizontallyFlipped && isDiagonallyFlipped) 
+			{
 				cqd.size = tileSize;
 				cqd.rotation = 90.f;
 			}
-			else if(isVerticallyFlipped && isDiagonallyFlipped) {
+			else if(isVerticallyFlipped && isDiagonallyFlipped) 
+			{
 				cqd.size = tileSize;
 				cqd.rotation = 270.f;
 			}
-			else if(isHorizontallyFlipped) {
+			else if(isHorizontallyFlipped) 
+			{
 				cqd.size = {-tileSize.x, tileSize.y};
 				cqd.position.x += tileSize.x;
 				cqd.rotation = 0.f;
 			}
-			else if(isVerticallyFlipped) {
+			else if(isVerticallyFlipped) 
+			{
 				cqd.size = {tileSize.x, -tileSize.y};
 				cqd.position.y += tileSize.y;
 				cqd.rotation = 0.f;
 			}
-			else if(isDiagonallyFlipped) {
+			else if(isDiagonallyFlipped) 
+			{
 				cqd.size = {-tileSize.x, tileSize.y};
 				cqd.position.y -= tileSize.x;
 				cqd.rotation = 270.f;
 			}
 			cqd.rotation = Math::degreesToRadians(cqd.rotation);
 
-			const unsigned tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			auto tileRectPosition = static_cast<sf::Vector2f>(
+			const u32 tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
+			auto tileRectPosition = Cast<Vec2>(
 				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
 			tileRectPosition.x *= (info.tileSize.x + 2);
 			tileRectPosition.y *= (info.tileSize.y + 2);
 			tileRectPosition.x += 1;
 			tileRectPosition.y += 1;
-			const sf::Vector2f textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
+			const Vec2 textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
 			cqd.textureRect.x = tileRectPosition.x / textureSize.x;
 			cqd.textureRect.y = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
-			cqd.textureRect.w = static_cast<float>(info.tileSize.x) / textureSize.x;
-			cqd.textureRect.h = static_cast<float>(info.tileSize.y) / textureSize.y;
+			cqd.textureRect.w = Cast<float>(info.tileSize.x) / textureSize.x;
+			cqd.textureRect.h = Cast<float>(info.tileSize.y) / textureSize.y;
 
 			// emplace quad data to chunk
 			quads.emplace_back(cqd);
@@ -521,13 +530,13 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 	if(isThereAnyPuzzleGridRoadInThisChunk)
 	{
 		// create puzzle grid road chunk in registry
-		auto intChunkPos = static_cast<sf::Vector2i>(chunkPos);
+		auto intChunkPos = Cast<Vec2i>(chunkPos);
 		auto entity = mGameRegistry->create();
 		mGameRegistry->assign<component::PuzzleGridRoadChunk>(entity, puzzleGridRoadChunk);
 		mGameRegistry->assign<component::PuzzleGridPos>(entity, intChunkPos);
-		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
 		mAlreadyCreatedPuzzleGridRoadChunks.emplace_back(intChunkPos);
 		#ifndef PH_DISTRIBUTION
+		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
 		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, {12.f * 16.f, 12.f * 16.f}));
 		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
 		#endif
@@ -536,10 +545,10 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 	if(!quads.empty())
 	{
 		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		quadsBounds.x *= static_cast<float>(info.tileSize.x);
-		quadsBounds.y *= static_cast<float>(info.tileSize.y);
-		quadsBounds.w *= static_cast<float>(info.tileSize.x);
-		quadsBounds.h *= static_cast<float>(info.tileSize.y);
+		quadsBounds.x *= Cast<float>(info.tileSize.x);
+		quadsBounds.y *= Cast<float>(info.tileSize.y);
+		quadsBounds.w *= Cast<float>(info.tileSize.x);
+		quadsBounds.h *= Cast<float>(info.tileSize.y);
 
 		// set light walls bounds so we can do culling in RenderSystem
 		lightWallsBounds.x = quadsBounds.x - 400.f;
@@ -618,18 +627,19 @@ void XmlMapParser::createChunk(sf::Vector2f chunkPos, const std::vector<unsigned
 	}
 }
 
-std::size_t XmlMapParser::findTilesetIndex(const unsigned globalTileId, const TilesetsData& tilesets) const
+std::size_t XmlMapParser::findTilesetIndex(u32 globalTileId, const TilesetsData& tilesets) const
 {
-	for (size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) {
-		const unsigned firstGlobalTileId = tilesets.firstGlobalTileIds[i];
-		const unsigned lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
+	for (size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) 
+	{
+		const u32 firstGlobalTileId = tilesets.firstGlobalTileIds[i];
+		const u32 lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
 		if (globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
 			return i;
 	}
 	return std::string::npos;
 }
 
-std::size_t XmlMapParser::findTilesIndex(const unsigned firstGlobalTileId, const std::vector<TilesData>& tilesData) const
+std::size_t XmlMapParser::findTilesIndex(u32 firstGlobalTileId, const std::vector<TilesData>& tilesData) const
 {
 	for (size_t i = 0; i < tilesData.size(); ++i)
 		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)

@@ -6,7 +6,7 @@
 #include "Resources/soundBufferHolder.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 
-int main()
+i32 main()
 {
 	try {
 		PH_BEGIN_PROFILING_SESSION("initProfilingResults.json");

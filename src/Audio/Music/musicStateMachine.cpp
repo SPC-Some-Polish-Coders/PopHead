@@ -14,11 +14,11 @@ auto MusicStateMachine::getRandomThemeFromState(const std::string& stateName) co
 	auto found = mStates.find(stateName);
 	PH_ASSERT_CRITICAL(found != mStates.end(), "Music state \"" + stateName + "\" does not exist!");
 
-	int numberOfThemes = static_cast<int>(found->second.filepaths.size());
+	i32 numberOfThemes = Cast<i32>(found->second.filepaths.size());
 	if(numberOfThemes == 1)
 		return std::pair<std::string, float>(found->second.filepaths[0], found->second.volumeMultipliers[0]);
 	else {
-		const int indexOfThemeToPlay = Random::generateNumber(0, numberOfThemes - 1);
+		const i32 indexOfThemeToPlay = Random::generateNumber(0, numberOfThemes - 1);
 		return std::pair<std::string, float>(found->second.filepaths[indexOfThemeToPlay], found->second.volumeMultipliers[indexOfThemeToPlay]);
 	}
 }

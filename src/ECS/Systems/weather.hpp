@@ -14,8 +14,6 @@ struct Rain
 	bool needsInitialization = true;
 };
 
-// TODO: Add fog
-
 namespace system {
 
 class Weather : public System

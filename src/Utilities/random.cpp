@@ -3,7 +3,7 @@
 
 namespace ph::Random {
 
-static std::default_random_engine engine = std::default_random_engine(static_cast<unsigned>(time(nullptr)));
+static std::default_random_engine engine = std::default_random_engine(Cast<u32>(time(Null)));
 
 float generateNumber(float min, float max)
 {
@@ -19,12 +19,12 @@ int generateNumber(int min, int max)
 	return dist(engine);
 }
 
-sf::Vector2f generateVector(sf::Vector2f min, sf::Vector2f max)
+Vec2 generateVector(Vec2 min, Vec2 max)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(min.x <= max.x && min.y <= max.y, "Min can't be greater than max");
 	std::uniform_real_distribution<float> distX(min.x, max.x);
 	std::uniform_real_distribution<float> distY(min.y, max.y);
-	return sf::Vector2f(distX(engine), distY(engine));
+	return Vec2(distX(engine), distY(engine));
 }
 
 sf::Color generateColor()

@@ -30,7 +30,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto x = entityNode.getAttribute("x");
 		auto y = entityNode.getAttribute("y");
 		PH_ASSERT_UNEXPECTED_SITUATION(x && y, "entity of type " + entityNode.getAttribute("type")->toString() + " doesn't have position");
-		return sf::Vector2f(x->toFloat(), y->toFloat());
+		return Vec2(x->toFloat(), y->toFloat());
 	};
 
 	auto getSizeAttribute = [&]()
@@ -38,15 +38,15 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto w = entityNode.getAttribute("width");
 		auto h = entityNode.getAttribute("height");
 		PH_ASSERT_UNEXPECTED_SITUATION(w && h, "entity of type " + entityNode.getAttribute("type")->toString() + " doesn't have size");
-		return sf::Vector2f(w->toFloat(), h->toFloat());
+		return Vec2(w->toFloat(), h->toFloat());
 	};
 
-	auto getOptionalSizeAttribute = [&]() -> std::optional<sf::Vector2f>
+	auto getOptionalSizeAttribute = [&]() -> std::optional<Vec2>
 	{
 		auto w = entityNode.getAttribute("width");
 		auto h = entityNode.getAttribute("height");
 		if(w && h)
-			return sf::Vector2f(w->toFloat(), h->toFloat());
+			return Vec2(w->toFloat(), h->toFloat());
 		else
 			return std::nullopt;
 	};
@@ -86,8 +86,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		auto& body = registry.get<component::BodyRect>(entity);
 		body.pos = getPosAttribute();
-		body.x -= static_cast<float>(static_cast<int>(body.pos.x) % 16); 
-		body.y -= static_cast<float>(static_cast<int>(body.pos.y) % 16); 
+		body.x -= Cast<float>(Cast<i32>(body.pos.x) % 16); 
+		body.y -= Cast<float>(Cast<i32>(body.pos.y) % 16); 
 		return body;
 	};
 
@@ -96,10 +96,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& body = registry.get<component::BodyRect>(entity);
 		body.pos = getPosAttribute();
 		body.size = getSizeAttribute();
-		body.x -= static_cast<float>(static_cast<int>(body.x) % 16); 
-		body.y -= static_cast<float>(static_cast<int>(body.y) % 16); 
-		body.w = static_cast<float>(body.w + 16 - static_cast<int>(body.w + 16) % 16);
-		body.h = static_cast<float>(body.h + 16 - static_cast<int>(body.h + 16) % 16);
+		body.x -= Cast<float>(Cast<i32>(body.x) % 16); 
+		body.y -= Cast<float>(Cast<i32>(body.y) % 16); 
+		body.w = Cast<float>(body.w + 16 - Cast<i32>(body.w + 16) % 16);
+		body.h = Cast<float>(body.h + 16 - Cast<i32>(body.h + 16) % 16);
 		return body;
 	};
 
@@ -109,7 +109,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto center = body.center();
 		if(center.x < 0.f) center.x -= 16.f;
 		if(center.y < 0.f) center.y -= 16.f;
-		puzzleGridPos = static_cast<sf::Vector2i>(Math::hadamardDiv(center, sf::Vector2f(16, 16)));
+		puzzleGridPos = Cast<Vec2i>(Math::hadamardDiv(center, Vec2(16, 16)));
 	};
 
 	auto getProperty = [&](const std::string& propertyName)
@@ -153,8 +153,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	auto loadHealthComponent = [&]()
 	{
 		auto& healthComponent = registry.get<component::Health>(entity);
-		healthComponent.healthPoints = getProperty("hp").toUnsigned();
-		healthComponent.maxHealthPoints = getProperty("maxHp").toUnsigned();
+		healthComponent.healthPoints = getProperty("hp").toU32();
+		healthComponent.maxHealthPoints = getProperty("maxHp").toU32();
 	};
 
 	auto loadIndoorOutdoorBlendComponent = [&]()
@@ -227,7 +227,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
 			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera = Camera(playerBody.center(), sf::Vector2f(640, 360));
+		playerCamera = Camera(playerBody.center(), Vec2(640, 360));
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
@@ -253,9 +253,9 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		{
 			createCopy("Camera");
 			auto& camera = registry.get<component::Camera>(entity);
-			sf::Vector2f pos = getPosAttribute();
-			sf::Vector2f size = getSizeAttribute();
-			sf::Vector2f center(pos + (size / 2.f));
+			Vec2 pos = getPosAttribute();
+			Vec2 size = getSizeAttribute();
+			Vec2 center(pos + (size / 2.f));
 			camera = Camera(center, size);
 			camera.name = getProperty("name").toString();
 		}
@@ -266,8 +266,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
 		auto& bullets = registry.get<component::Bullets>(entity);
-		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toInt();
-		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toInt();
+		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toI32();
+		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toI32();
 	}
 	else if(type == "Medkit") 
 	{
@@ -307,7 +307,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("Gate");
 		loadPos();
 		auto& gate = registry.get<component::Gate>(entity);
-		gate.id = getProperty("id").toUnsigned();
+		gate.id = getProperty("id").toU32();
 	}
 	else if(type == "Lever") 
 	{
@@ -335,10 +335,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			registry.assign_or_replace<component::TextureRect>(
 				entity,
 				IntRect(
-					getProperty("textureRectLeft").toInt(),
-					getProperty("textureRectTop").toInt(),
-					getProperty("textureRectWidth").toInt(),
-					getProperty("textureRectHeight").toInt()
+					getProperty("textureRectLeft").toI32(),
+					getProperty("textureRectTop").toI32(),
+					getProperty("textureRectWidth").toI32(),
+					getProperty("textureRectHeight").toI32()
 				)
 			);
 		}
@@ -348,7 +348,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			registry.assign_or_replace<component::HiddenForRenderer>(entity);
 
 		// load shader
-		rq.shader = nullptr;
+		rq.shader = Null;
 		// TODO: Enable custom shaders
 		/*const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
 		if(shaderName != "none") {
@@ -370,7 +370,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		rq.rotationOrigin.y = getProperty("rotationOriginY").toFloat();
 
 		// load z
-		rq.z = getProperty("z").toUnsignedChar();
+		rq.z = getProperty("z").toU8();
 
 		// TODO: Load color
 		rq.color = sf::Color::White;
@@ -396,11 +396,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		body.pos = getPosAttribute();
 		auto size = getSizeAttribute();
 		body.size = size;
-		const sf::Vector2f pushForce(getProperty("pushForceX").toFloat(), getProperty("pushForceY").toFloat());
+		const Vec2 pushForce(getProperty("pushForceX").toFloat(), getProperty("pushForceY").toFloat());
 		PH_ASSERT_CRITICAL(pushForce.x == 0.f || pushForce.y == 0.f, "We don't support diagonal flowing rivers! - Either pushForceX or pushForceY must be zero.");
 		pushingArea.pushForce = pushForce;
 		const float particleAmountMultiplier = getProperty("particleAmountMultiplier").toFloat();
-		particleEmitter.amountOfParticles = static_cast<unsigned>(particleAmountMultiplier * size.x * size.y / 100.f);
+		particleEmitter.amountOfParticles = Cast<u32>(particleAmountMultiplier * size.x * size.y / 100.f);
 		particleEmitter.parInitialVelocity = pushForce;
 		particleEmitter.parInitialVelocityRandom = pushForce;
 		if(pushForce.y > 0.f) {
@@ -463,8 +463,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
 		auto& plate = registry.get<component::PressurePlate>(entity);
-		plate.puzzleId = getProperty("puzzleId").toUnsigned();
-		plate.id = getProperty("id").toUnsigned();
+		plate.puzzleId = getProperty("puzzleId").toU32();
+		plate.id = getProperty("id").toU32();
 		plate.isPressIrreversible = getProperty("isPressIrreversible").toBool();
 		if(plate.isPressIrreversible)
 		{
@@ -479,8 +479,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadAndAlignPosAndSize();
 
 		auto& spikes = registry.get<component::Spikes>(entity);
-		spikes.puzzleId = getProperty("puzzleId").toUnsigned();
-		spikes.id = getProperty("id").toUnsigned();
+		spikes.puzzleId = getProperty("puzzleId").toU32();
+		spikes.id = getProperty("id").toU32();
 		spikes.timeToChange = getProperty("timeToChange").toFloat();
 		spikes.changeFrequency = getProperty("changeFrequency").toFloat();
 		spikes.changes = getProperty("changes").toBool();
@@ -488,7 +488,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 		auto& body = registry.get<component::BodyRect>(entity);
 		auto& textureRect = registry.get<component::TextureRect>(entity);
-		textureRect.size = static_cast<sf::Vector2i>(body.size);
+		textureRect.size = Cast<Vec2i>(body.size);
 	}
 	else if(type == "SavePoint")
 	{

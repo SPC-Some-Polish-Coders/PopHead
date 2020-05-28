@@ -19,24 +19,24 @@ public:
 		friend NodesGrid;
 
 	public:
-		const sf::Vector2i mPosition;
+		const Vec2i mPosition;
 		const float mDistanceToDestination;
-		const Node* mParent = nullptr;
+		const Node* mParent = Null;
 
 	private:
 		float mDistanceFromStart = 0.f;
 
 	public:
-		Node(const sf::Vector2i& position, const float distanceToDestination);
+		Node(const Vec2i& position, const float distanceToDestination);
 		float getFullCost() const;
 		float getDistanceFromStart() const;
 		bool isNewlyCreated() const;
 	};
 
 public:
-	NodesGrid(const ObstacleGrid& obstacleGrid, sf::Vector2i destinationPosition);
+	NodesGrid(const ObstacleGrid& obstacleGrid, Vec2i destinationPosition);
 
-	const Node& createStartNode(sf::Vector2i position);
+	const Node& createStartNode(Vec2i position);
 	void changeDistanceFromStartInNode(Node& node, float newDistance);
 	const Node& getNodeWithLowestCost() const;
 	std::vector<std::reference_wrapper<Node>> getNodeNeighbours(const Node& node);
@@ -45,7 +45,7 @@ public:
 	bool hasAnyOpenedNode() const;
 
 private:
-	Node& createNode(sf::Vector2i position);
+	Node& createNode(Vec2i position);
 
 	using nodesCostsCompare = std::function<bool(const Node*, const Node*)>;
 	static nodesCostsCompare createNodesCostsCompare();
@@ -59,6 +59,6 @@ private:
 	std::set<std::unique_ptr<Node>, nodesPosCompare> mNodes;
 	std::set<Node*, nodesCostsCompare> mNodesByCost;
 
-	const sf::Vector2i mDestinationPosition;
+	const Vec2i mDestinationPosition;
 };
 }

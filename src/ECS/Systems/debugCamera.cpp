@@ -25,7 +25,7 @@ void DebugCamera::update(float dt)
 			if(mDebugCameraEnabled)
 			{
 				// get player pos
-				sf::Vector2f playerPos;
+				Vec2 playerPos;
 				auto players = mRegistry.view<component::Player, component::BodyRect>();
 				players.each([&playerPos](const component::Player, const component::BodyRect& body) {
 					playerPos = body.center();
@@ -52,7 +52,7 @@ void DebugCamera::update(float dt)
 			{
 				if(ImGui::SliderFloat("zoom", &mZoom, 0.01f, 20.f))
 				{
-					camera.setSize(sf::Vector2f(640.f, 360.f) * mZoom);
+					camera.setSize(Vec2(640.f, 360.f) * mZoom);
 				}
 
 				ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
@@ -60,7 +60,7 @@ void DebugCamera::update(float dt)
 				if(ImGui::Button("normal zoom"))
 				{
 					mZoom = 1.f;
-					camera.setSize(sf::Vector2f(640.f, 360.f));
+					camera.setSize(Vec2(640.f, 360.f));
 				}
 			});
 		}
@@ -84,7 +84,7 @@ void DebugCamera::update(float dt)
 	mRegistry.view<component::DebugCamera, component::Camera, component::BodyRect>().each([this, dt]
 	(auto, auto& camera, auto& body)
 	{
-		sf::Vector2f movement;
+		Vec2 movement;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
 			movement.x -= 500.f;	
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))

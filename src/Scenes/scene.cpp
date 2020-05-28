@@ -97,9 +97,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	// must be after GunAttacks and before EntityDestroying
 	mSystemsQueue.appendSystem<system::Lifetime>();
 
-	// must be at the end
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
-
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
@@ -111,6 +108,9 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::Save>();
 	mSystemsQueue.appendSystem<system::Teleport>();
 	mSystemsQueue.appendSystem<system::PuzzleBoulders>();
+
+	// must be at the end
+	mSystemsQueue.appendSystem<system::EntityDestroying>();
 }
 
 void Scene::handleEvent(sf::Event e)
@@ -142,7 +142,7 @@ PlayerStatus Scene::getPlayerStatus()
 	return PlayerStatus{};
 }
 
-void Scene::setPlayerPosition(sf::Vector2f newPos)
+void Scene::setPlayerPosition(Vec2 newPos)
 {
 	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
 	auto& bodyRect = playerView.get<component::BodyRect>(*playerView.begin());

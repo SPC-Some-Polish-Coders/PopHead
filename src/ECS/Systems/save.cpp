@@ -18,22 +18,22 @@ void Save::update(float dt)
 			if(save.timeSincePlayerSteppedOnIt < 2.f)
 			{
 				save.timeSincePlayerSteppedOnIt += dt;
-				auto alpha = 255 - static_cast<unsigned char>(save.timeSincePlayerSteppedOnIt * 127.f);
+				u8 alpha = 255 - Cast<u8>(save.timeSincePlayerSteppedOnIt * 127.f);
 				Renderer::submitText("GAME SAVED", "LiberationMono-Bold.ttf", {800.f, 10.f}, 70,
 				                     sf::Color(50, 50, 255, alpha), 10, ProjectionType::gui);
 			}
 
 			if(intersect(saveBody, playerBody))
 			{
-				if(!save.isIntersectingPlayer)
+				if(!save.isintersectingPlayer)
 				{
-					save.isIntersectingPlayer = true;
+					save.isintersectingPlayer = true;
 					save.timeSincePlayerSteppedOnIt = 0.f;
 				}
 			}
 			else
 			{
-				save.isIntersectingPlayer = false;	
+				save.isintersectingPlayer = false;	
 			}
 		});
 	});

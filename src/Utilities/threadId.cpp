@@ -5,13 +5,13 @@ namespace ph {
 
 std::map<std::thread::id, size_t> ThreadId::mHardwareToFriendlyId;
 std::mutex ThreadId::mDataMutex;
-thread_local int ThreadId::mCurrentFriendlyId = -1;
+thread_local i32 ThreadId::mCurrentFriendlyId = -1;
 
 size_t ThreadId::getCurrentThreadId()
 {
 	// friendly id will be created only for threads that ask for it
 	if (mCurrentFriendlyId == -1)
-		mCurrentFriendlyId = static_cast<int>(createFriendlyId());
+		mCurrentFriendlyId = Cast<i32>(createFriendlyId());
 	return mCurrentFriendlyId;
 }
 

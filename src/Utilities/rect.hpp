@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include "Utilities/forceInline.hpp"
 #include <algorithm>
+#include "aliases.hpp"
 
 namespace ph {
 
@@ -12,7 +13,7 @@ struct Rect
 {
 	FORCE_INLINE Rect();
 	FORCE_INLINE Rect(T x, T y, T w, T h);
-	FORCE_INLINE Rect(sf::Vector2<T> pos, sf::Vector2<T> size);
+	FORCE_INLINE Rect(Vec2Base<T> pos, Vec2Base<T> size);
 
     template <typename U>
     FORCE_INLINE explicit Rect(const Rect<U>& rectangle);
@@ -20,19 +21,19 @@ struct Rect
 	FORCE_INLINE T right() const;
 	FORCE_INLINE T bottom() const;
 
-	FORCE_INLINE sf::Vector2<T> center() const;
-	FORCE_INLINE sf::Vector2<T> topRight() const;
-	FORCE_INLINE sf::Vector2<T> bottomLeft() const;
-	FORCE_INLINE sf::Vector2<T> bottomRight() const;
+	FORCE_INLINE Vec2Base<T> center() const;
+	FORCE_INLINE Vec2Base<T> topRight() const;
+	FORCE_INLINE Vec2Base<T> bottomLeft() const;
+	FORCE_INLINE Vec2Base<T> bottomRight() const;
 
-	FORCE_INLINE bool contains(const sf::Vector2<T>& point) const;
+	FORCE_INLINE bool contains(const Vec2Base<T>& point) const;
     FORCE_INLINE bool intersects(const Rect<T>& rectangle, Rect<T>& intersection) const;
-	FORCE_INLINE bool touch(const Rect<T>& rect, sf::Vector2<short>& direction) const;
+	FORCE_INLINE bool touch(const Rect<T>& rect, Vec2Base<i16>& direction) const;
 
 	union
 	{
 		struct { T x, y, w, h; };
-		struct { sf::Vector2<T> pos, size; };
+		struct { Vec2Base<T> pos, size; };
 	};
 };
 
@@ -53,7 +54,7 @@ FORCE_INLINE bool operator !=(const Rect<T>& a, const Rect<T>& b);
 
 #include "rect.inl"
 
-using IntRect = Rect<int>;
+using IntRect = Rect<i32>;
 using FloatRect = Rect<float>;
 
 }

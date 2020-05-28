@@ -10,7 +10,7 @@ namespace ph {
 void showErrorMessageBox(const char* title, const std::string& message)
 {
 #ifdef PH_WINDOWS
-	MessageBoxA(nullptr, message.c_str(), title, MB_OK | MB_ICONERROR);
+	MessageBoxA(Null, message.c_str(), title, MB_OK | MB_ICONERROR);
 #endif // PH_WINDOWS
 }
 

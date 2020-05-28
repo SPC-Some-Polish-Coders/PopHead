@@ -2,16 +2,14 @@
 
 namespace ph {
 
-// TODO: Add overloaded operators + - * /
-
 template<typename T>
-struct Vector4
+struct Vec4Base
 {
 	T x, y, z, w;
 };
 
-using Vector4f = Vector4<float>;
-using Vector4i = Vector4<int>;
-using Vector4u = Vector4<unsigned>;
+using Vec4 = Vec4Base<float>;
+using Vec4i = Vec4Base<i32>;
+using Vec4u = Vec4Base<u32>;
 
 }

@@ -17,13 +17,13 @@ public:
     SceneManager();
 
     void replaceScene(const std::string& sceneSourceCodeFilePath);
-    void replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition);
+    void replaceScene(const std::string& sceneSourceCodeFilePath, const Vec2& playerPosition);
     void popScene();
     
 	void changingScenesProcess();
 
 	bool hasPlayerPositionForNextScene() const;
-	const sf::Vector2f& getPlayerPositionForNextScene() const;
+	const Vec2& getPlayerPositionForNextScene() const;
 
 private:
 	void replaceAction();
@@ -48,7 +48,7 @@ private:
 	Texture* mTilesetTexture;
 	AIManager* mAIManager;
 	sf::Window* mWindow;
-	sf::Vector2f mPlayerPositionForNextScene;
+	Vec2 mPlayerPositionForNextScene;
     bool mIsReplacing;
     bool mIsPopping;
 	bool mHasPlayerPositionForNextScene;

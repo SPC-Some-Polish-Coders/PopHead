@@ -15,7 +15,7 @@ struct AnimationData // @no-debugger
 	AnimationStatesData* states;
 	float delay = 0.1f;
 	float elapsedTime = 0.f;
-	unsigned currentFrameIndex = 0;
+	u32 currentFrameIndex = 0;
 	bool isPlaying = false;
 };
 

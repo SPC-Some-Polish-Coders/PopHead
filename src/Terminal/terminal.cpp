@@ -28,9 +28,9 @@ static bool isVisible = false;
 static sf::Window* window;
 static ph::SceneManager* sceneManager;
 
-static int indexOfCurrentLastCommand = -1;
+static i32 indexOfCurrentLastCommand = -1;
 static std::deque<ph::OutputLine> outputLines;
-static const sf::Vector2f vector2ArgumentError = {-1, -1};
+static const Vec2 vector2ArgumentError = {-1, -1};
 
 typedef void (*ExecuteCommandFunction)(void);
 static std::unordered_map<std::string, ExecuteCommandFunction> commandsMap;
@@ -48,24 +48,25 @@ struct ResetGuiLive
 static ResetGuiLive resetGuiLive;
 #endif 
 
-static sf::Vector2f getPlayerPosition()
+static Vec2 getPlayerPosition()
 {
-	sf::Vector2f playerPos = vector2ArgumentError;
+	Vec2 playerPos = vector2ArgumentError;
 	auto& registry = sceneManager->getScene().getRegistry();
-	auto players = registry.view<component::Player, component::BodyRect>();
-	players.each([&playerPos](const component::Player, const component::BodyRect body) {
+	registry.view<component::Player, component::BodyRect>().each([&playerPos]
+	(auto, const auto& body) 
+	{
 		playerPos = body.center();
 	});
 	return playerPos;
 }
 
-static sf::Vector2f handleGetVector2ArgumentError()
+static Vec2 handleGetVector2ArgumentError()
 {
 	pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
 	return vector2ArgumentError;
 }
 
-static sf::Vector2f getVector2Argument()
+static Vec2 getVector2Argument()
 {
 	const std::string numbers("1234567890-");
 
@@ -76,7 +77,7 @@ static sf::Vector2f getVector2Argument()
 	const size_t xArgumentEndPositionInCommand = content.find(' ', xArgumentPositionInCommand);
 	const size_t xArgumentLength = xArgumentEndPositionInCommand - xArgumentPositionInCommand;
 	std::string xArgument = content.substr(xArgumentPositionInCommand, xArgumentLength);
-	const float positionX = std::strtof(xArgument.c_str(), nullptr);
+	const float positionX = std::strtof(xArgument.c_str(), Null);
 
 	const size_t yArgumentPositionInCommand = content.find_first_of(numbers, xArgumentEndPositionInCommand + 1);
 	if(yArgumentPositionInCommand == std::string::npos)
@@ -84,9 +85,9 @@ static sf::Vector2f getVector2Argument()
 	const size_t yArgumentEndPositionInCommand = content.find_first_not_of(numbers, yArgumentPositionInCommand);
 	const size_t yArgumentLength = yArgumentEndPositionInCommand - yArgumentPositionInCommand;
 	const std::string yArgument = content.substr(yArgumentPositionInCommand, yArgumentLength);
-	const float positionY = std::strtof(yArgument.c_str(), nullptr);
+	const float positionY = std::strtof(yArgument.c_str(), Null);
 
-	return sf::Vector2f(positionX, positionY);
+	return Vec2(positionX, positionY);
 }
 
 static float getSingleFloatArgument()
@@ -95,7 +96,7 @@ static float getSingleFloatArgument()
 	const size_t valueStartPos = spacePosition + 1;
 	const size_t valueLength = content.size() - valueStartPos;
 	const std::string value = content.substr(valueStartPos, valueLength);
-	return std::strtof(value.c_str(), nullptr);
+	return std::strtof(value.c_str(), Null);
 }
 
 static bool commandContains(const char c)
@@ -180,13 +181,9 @@ static void executeReset()
 	else
 	{
 		if(commandContains("stay"))
-		{
 			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath(), getPlayerPosition());
-		}
 		else
-		{
 			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
-		}
 	}
 }
 
@@ -218,7 +215,8 @@ static void executeResetGui()
 		Xml sceneFile;
 		sceneFile.loadFromFile(sceneManager->getCurrentSceneFilePath());
 		const auto sceneLinksNode = *sceneFile.getChild("scenelinks");
-		if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+		if(const auto guiNode = sceneLinksNode.getChild("gui")) 
+		{
 			const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
 			XmlGuiParser guiParser;
 			guiParser.parseGuiXml(filepath);
@@ -235,7 +233,7 @@ static void executeClear()
 	}
 	else
 	{
-		for(int i = 0; i < 20; ++i)
+		for(i32 i = 0; i < 20; ++i)
 			pushOutputLine({""});
 	}
 }
@@ -256,10 +254,10 @@ static void executeTeleportPoint()
 
 		auto& registry = sceneManager->getScene().getRegistry();
 
-		sf::Vector2f newPos; 
+		Vec2 newPos; 
 		bool tpExists = false;
 		registry.view<component::TeleportPoint, component::BodyRect>().each([&]
-		(component::TeleportPoint tp, component::BodyRect body)
+		(auto tp, auto body)
 		{
 			if(tp.name == teleportPointName)
 			{
@@ -271,7 +269,7 @@ static void executeTeleportPoint()
 		if(tpExists)
 		{
 			registry.view<component::Player, component::BodyRect>().each([newPos]
-			(const component::Player player, component::BodyRect& body) 
+			(auto player, auto& body) 
 			{
 				body.pos = newPos;
 			});
@@ -292,15 +290,15 @@ static void executeTeleport()
 	}
 	else
 	{
-		sf::Vector2f newPosition = getVector2Argument();
+		Vec2 newPosition = getVector2Argument();
 		if(newPosition == vector2ArgumentError)
 			return;
 
 		auto& registry = sceneManager->getScene().getRegistry();
-		auto view = registry.view<component::Player, component::BodyRect>();
-		view.each([newPosition](const component::Player player, component::BodyRect& body) {
-			body.x = newPosition.x;
-			body.y = newPosition.y;
+		registry.view<component::Player, component::BodyRect>().each([newPosition]
+		(auto, auto& body) 
+		{
+			body.pos = newPosition;
 		});
 	}
 }
@@ -318,12 +316,12 @@ static void executeMove()
 	}
 	else
 	{
-		sf::Vector2f moveOffset = getVector2Argument();
+		Vec2 moveOffset = getVector2Argument();
 		auto& registry = sceneManager->getScene().getRegistry();
-		auto view = registry.view<component::Player, component::BodyRect>();
-		view.each([moveOffset](const component::Player, component::BodyRect& body) {
-			body.x += moveOffset.x;
-			body.y += moveOffset.y;
+		registry.view<component::Player, component::BodyRect>().each([moveOffset]
+		(auto, auto& body) 
+		{
+			body.pos += moveOffset;
 		});
 	}
 }
@@ -341,10 +339,11 @@ static void executeGive()
 	{
 		if(commandContains("bullet"))
 		{
-			int numberOfItems = static_cast<int>(getSingleFloatArgument());
+			i32 numberOfItems = Cast<i32>(getSingleFloatArgument());
 			auto& registry = sceneManager->getScene().getRegistry();
-			auto view = registry.view<component::Player, component::Bullets>();
-			view.each([numberOfItems](const component::Player, component::Bullets& bullets) {
+			registry.view<component::Player, component::Bullets>().each([numberOfItems]
+			(auto, auto& bullets) 
+			{
 				bullets.numOfPistolBullets += numberOfItems;
 				bullets.numOfShotgunBullets += numberOfItems;
 			});
@@ -365,19 +364,22 @@ static void executeCurrentPos()
 	}
 	else
 	{
-		pushOutputLine({"player position: " + Cast::toString(getPlayerPosition()), infoLimeColor});
+		pushOutputLine({"player position: " + ph::toString(getPlayerPosition()), infoLimeColor});
 	}
 }
 
 static void setAudioMuted(bool mute)
 {
-	if(commandContains("music")) {
+	if(commandContains("music")) 
+	{
 		MusicPlayer::setMuted(mute);
 	}
-	else if(commandContains("sound")) {
+	else if(commandContains("sound")) 
+	{
 		SoundPlayer::setMuted(mute);
 	}
-	else {
+	else 
+	{
 		MusicPlayer::setMuted(mute);
 		SoundPlayer::setMuted(mute);
 	}
@@ -425,18 +427,22 @@ static void executeSetVolume()
 	else
 	{
 		const float newVolume = getSingleFloatArgument();
-		if(!(commandContains('0')) && newVolume == 0 || newVolume > 100) {
+		if(!(commandContains('0')) && newVolume == 0 || newVolume > 100) 
+		{
 			pushOutputLine({"Incorrect volume value! Enter value from 0 to 100", sf::Color::Red});
 			return;
 		}
 
-		if(commandContains("music")) {
+		if(commandContains("music")) 
+		{
 			MusicPlayer::setVolume(newVolume);
 		}
-		else if(commandContains("sound")) {
+		else if(commandContains("sound")) 
+		{
 			SoundPlayer::setVolume(newVolume);
 		}
-		else {
+		else 
+		{
 			MusicPlayer::setVolume(newVolume);
 			SoundPlayer::setVolume(newVolume);
 		}
@@ -453,12 +459,10 @@ static void executeFontDebug()
 	}
 	else
 	{
-		if(commandContains("off") && FontDebugRenderer::isActive()) {
+		if(commandContains("off") && FontDebugRenderer::isActive())
 			FontDebugRenderer::shutDown();
-		}
-		else if(!FontDebugRenderer::isActive()) {
+		else if(!FontDebugRenderer::isActive())
 			FontDebugRenderer::init("joystixMonospace.ttf", 50);
-		}
 	}
 }
 
@@ -523,9 +527,11 @@ static void executeResetGuiLiveFrequency()
 static void updateCommands(float dt)
 {
 #ifndef PH_DISTRIBUTION
-	if(resetGuiLive.isActive) {
+	if(resetGuiLive.isActive) 
+	{
 		resetGuiLive.timeFromReset += dt;
-		if(resetGuiLive.timeFromReset > resetGuiLive.resetFrequency) {
+		if(resetGuiLive.timeFromReset > resetGuiLive.resetFrequency) 
+		{
 			executeResetGui();
 			resetGuiLive.timeFromReset = 0.f;
 		}
@@ -537,7 +543,7 @@ void handleEvent(sf::Event e)
 {
 	if(isVisible && e.type == sf::Event::TextEntered)
 	{
-		char key = static_cast<char>(e.text.unicode);
+		char key = Cast<char>(e.text.unicode);
 		if(!iscntrl(key))
 			content += key;
 	}
@@ -565,7 +571,8 @@ void handleEvent(sf::Event e)
 				executeCommand();
 
 				indexOfCurrentLastCommand = -1;
-				if(content.size() != 0) {
+				if(content.size() != 0) 
+				{
 					lastCommands.emplace_front(content);
 					if(lastCommands.size() > 10)
 						lastCommands.pop_back();
@@ -575,7 +582,7 @@ void handleEvent(sf::Event e)
 			} break;
 
 			case sf::Keyboard::Up: {
-				if(indexOfCurrentLastCommand + 1 < static_cast<int>(lastCommands.size()))
+				if(indexOfCurrentLastCommand + 1 < Cast<i32>(lastCommands.size()))
 				{
 					++indexOfCurrentLastCommand;
 					if(indexOfCurrentLastCommand >= 0)
@@ -655,10 +662,10 @@ void update(float dt)
 
 	if(isVisible)
 	{
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color(0, 0, 0, 230), nullptr, {0.f, 660.f}, {1920.f, 420.f}, 5, 0.f, {},
+		Renderer::submitQuad(Null, Null, &sf::Color(0, 0, 0, 230), Null, {0.f, 660.f}, {1920.f, 420.f}, 5, 0.f, {},
 			ProjectionType::gui, false);
 
-		Renderer::submitQuad(nullptr, nullptr, &sf::Color::Black, nullptr, {0.f, 720.f}, {1920.f, 5.f},
+		Renderer::submitQuad(Null, Null, &sf::Color::Black, Null, {0.f, 720.f}, {1920.f, 5.f},
 			4, 0.f, {}, ProjectionType::gui, false);
 
 		Renderer::submitText(content.c_str(), "LiberationMono-Bold.ttf", {5.f, 660.f},

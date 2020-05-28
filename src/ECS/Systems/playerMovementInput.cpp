@@ -58,15 +58,13 @@ namespace ph::system {
 		if(sPause)
 			return;
 
-		auto playerView = mRegistry.view<component::Player, component::AnimationData, component::FaceDirection>();
-
 		// return if player is without control
-		for(auto player : playerView)
+		for(auto player : mRegistry.view<component::Player>())
 			if(mRegistry.has<component::DeadCharacter>(player))
 				return;
 
 		// set input variables
-		sf::Vector2f d;
+		Vec2 d;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			d.x -= 1.f;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -96,37 +94,45 @@ namespace ph::system {
 		}
 
 		// get player direction and correct diagonal input
-		sf::Vector2f playerDir;
-		if(d.x < 0.f && d.y < 0.f) { 
+		Vec2 playerDir;
+		if(d.x < 0.f && d.y < 0.f) 
+		{ 
 			playerDir = PH_NORTH_WEST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
-		else if(d.x > 0.f && d.y < 0.f) {
+		else if(d.x > 0.f && d.y < 0.f) 
+		{
 			playerDir = PH_NORTH_EAST;
 			float offset = (d.x + (-d.y)) / 2.f;
 			d.x = offset;
 			d.y = -offset;
 		}
-		else if(d.x < 0.f && d.y > 0.f) {
+		else if(d.x < 0.f && d.y > 0.f) 
+		{
 			playerDir = PH_SOUTH_WEST;
 			float offset = ((-d.x) + d.y) / 2.f;
 			d.x = -offset;
 			d.y = offset;
 		}
-		else if(d.x > 0.f && d.y > 0.f) {
+		else if(d.x > 0.f && d.y > 0.f) 
+		{
 			playerDir = PH_SOUTH_EAST;
 			d.x = d.y = (d.x + d.y) / 2.f;			
 		}
-		else if(d.y < 0.f) {
+		else if(d.y < 0.f) 
+		{
 			playerDir = PH_NORTH;
 		}
-		else if(d.y > 0.f) {
+		else if(d.y > 0.f) 
+		{
 			playerDir = PH_SOUTH;
 		}
-		else if(d.x < 0.f) {
+		else if(d.x < 0.f) 
+		{
 			playerDir = PH_WEST;
 		}
-		else if(d.x > 0.f) {
+		else if(d.x > 0.f) 
+		{
 			playerDir = PH_EAST;
 		}
 
@@ -135,45 +141,34 @@ namespace ph::system {
 			d *= 0.707106781187f;
 		}
 
-		for(auto& player : playerView)
+		mRegistry.view<component::Player, component::AnimationData, component::FaceDirection>().each([=]
+		(auto, auto& animationData, auto& faceDir)
 		{
 			// update animation data
-			auto& animationData = playerView.get<component::AnimationData>(player);
-
 			animationData.isPlaying = true;
-			if(d.x < 0.f && d.y < 0.f) {
+			if(d.x < 0.f && d.y < 0.f)
 				animationData.currentStateName = "leftUp";
-			}
-			else if(d.x > 0.f && d.y < 0.f) {
+			else if(d.x > 0.f && d.y < 0.f)
 				animationData.currentStateName = "rightUp";
-			}
-			else if(d.x < 0.f) {
+			else if(d.x < 0.f)
 				animationData.currentStateName = "left";
-			}
-			else if(d.x > 0.f) {
+			else if(d.x > 0.f)
 				animationData.currentStateName = "right";
-			}
-			else if(d.y < 0.f) {
+			else if(d.y < 0.f)
 				animationData.currentStateName = "up";
-			}
-			else if(d.y > 0.f) {
+			else if(d.y > 0.f)
 				animationData.currentStateName = "down";
-			}
-			else {
+			else 
 				animationData.isPlaying = false;
-			}
 
 			// set faceDir
-			if(playerDir != sf::Vector2f(0.f, 0.f))
-			{
-				auto& faceDir = playerView.get<component::FaceDirection>(player);
+			if(playerDir != Vec2(0.f, 0.f))
 				faceDir = playerDir;
-			}
-		}
+		});
 
 		// set flash light direction
-		auto view = mRegistry.view<component::Player, component::FaceDirection, component::LightSource>();
-		view.each([this](const component::Player, const component::FaceDirection faceDir, component::LightSource& lightSource) 
+		mRegistry.view<component::Player, component::FaceDirection, component::LightSource>().each([this]
+		(auto, auto faceDir, auto& lightSource) 
 		{
 			float middleAngle;
 			if(faceDir == PH_EAST)            middleAngle = 0.f;

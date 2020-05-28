@@ -21,19 +21,19 @@ void shutDown();
 void setScreenBoundsPtr(const FloatRect* bounds);
 void setDebugCountingActive(bool active);
 
-void setChunksTexture(unsigned texture);
+void setChunksTexture(u32 texture);
 
-void submitGroundChunk(sf::Vector2f pos, const FloatRect& textureRect, float z, sf::Color color);
+void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, float z, sf::Color color);
 
-unsigned registerNewChunk(const FloatRect& bounds);
+u32 registerNewChunk(const FloatRect& bounds);
 
 void submitChunk(std::vector<ChunkQuadData>& quadsData,
-				 const FloatRect& bounds, float z, unsigned* rendererID, sf::Color color);
+				 const FloatRect& bounds, float z, u32* rendererID, sf::Color color);
 
 void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*, float z, ProjectionType projectionType);
 
 void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader*,
-				sf::Vector2f position, sf::Vector2f size, float z, float rotation, sf::Vector2f rotationOrigin, ProjectionType, bool isAffectedByLight);
+				Vec2 position, Vec2 size, float z, float rotation, Vec2 rotationOrigin, ProjectionType, bool isAffectedByLight);
 void flush(bool affectedByLight);
 
 void submitDebug();

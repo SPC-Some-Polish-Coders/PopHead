@@ -17,8 +17,8 @@
 namespace ph {
 
 EntitiesParser::EntitiesParser()
-	:mTemplateStorage(nullptr)
-	,mUsedRegistry(nullptr)
+	:mTemplateStorage(Null)
+	,mUsedRegistry(Null)
 {
 }
 
@@ -40,8 +40,8 @@ void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStor
 		parseEntities(*entitiesNode);
 	}
 
-	mTemplateStorage = nullptr;
-	mUsedRegistry = nullptr;
+	mTemplateStorage = Null;
+	mUsedRegistry = Null;
 }
 
 void EntitiesParser::parseTemplates(const Xml& entityTemplatesNode)
@@ -151,9 +151,9 @@ void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity&
 {
 	float x = entityComponentNode.getAttribute("x")->toFloat();
 	float y = entityComponentNode.getAttribute("y")->toFloat();
-	float width = entityComponentNode.getAttribute("width")->toFloat();
-	float height = entityComponentNode.getAttribute("height")->toFloat();
-	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, ph::FloatRect(x, y, width, height));
+	float w = entityComponentNode.getAttribute("width")->toFloat();
+	float h = entityComponentNode.getAttribute("height")->toFloat();
+	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, FloatRect(x, y, w, h));
 }
 
 void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity)
@@ -161,7 +161,7 @@ void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entit
 	float x = entityComponentNode.getAttribute("x")->toFloat();
 	float y = entityComponentNode.getAttribute("y")->toFloat();
 	float radius = entityComponentNode.getAttribute("radius")->toFloat();
-	mUsedRegistry->assign_or_replace<component::BodyCircle>(entity, sf::Vector2f(x, y), radius);
+	mUsedRegistry->assign_or_replace<component::BodyCircle>(entity, Vec2(x, y), radius);
 }
 
 void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity)
@@ -169,20 +169,24 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	component::RenderQuad quad;
 
 	// parse texture
-	if(auto textureFilepathXml = entityComponentNode.getAttribute("textureFilepath")) {
-		const std::string filepath = textureFilepathXml->toString();
+	if(auto textureFilepathXml = entityComponentNode.getAttribute("textureFilepath")) 
+	{
+		std::string filepath = textureFilepathXml->toString();
 		if(loadTexture(filepath))
 			quad.texture = &getTexture(filepath);
 		else
 			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load texture \"" + filepath + "\"");
 	}
 	else
-		quad.texture = nullptr;
+	{
+		quad.texture = Null;
+	}
 
 	// parse shader
-	quad.shader = nullptr;
+	quad.shader = Null;
 	// TODO: Enable custom shaders
-	//if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) {
+	//if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) 
+	//{
 	//	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
 	//	const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath")->toString();
 
@@ -208,11 +212,11 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 
 	// parse rotation origin
 	auto rotationOrigin = entityComponentNode.getAttribute("rotationOrigin");
-	quad.rotationOrigin = rotationOrigin ? rotationOrigin->toVector2f() : sf::Vector2f();
+	quad.rotationOrigin = rotationOrigin ? rotationOrigin->toVec2() : Vec2();
 
 	// parse z
 	auto z = entityComponentNode.getAttribute("z");
-	quad.z = z ? z->toUnsignedChar() : 100;
+	quad.z = z ? z->toU8() : 100;
 
 	// assign component
 	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
@@ -225,11 +229,11 @@ void EntitiesParser::parseIndoorOutdoor(const Xml& entityComponentNode, entt::en
 
 void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int left = entityComponentNode.getAttribute("x")->toUnsigned();
-	int top = entityComponentNode.getAttribute("y")->toUnsigned();
-	int width = entityComponentNode.getAttribute("width")->toUnsigned();
-	int height = entityComponentNode.getAttribute("height")->toUnsigned();
-	IntRect rect(left, top, width, height);
+	i32 x = entityComponentNode.getAttribute("x")->toI32();
+	i32 y = entityComponentNode.getAttribute("y")->toI32();
+	i32 w = entityComponentNode.getAttribute("width")->toI32();
+	i32 h = entityComponentNode.getAttribute("height")->toI32();
+	IntRect rect(x, y, w, h);
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
 }
 
@@ -237,14 +241,18 @@ void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity
 {
 	FloatRect rect;
 	if(auto x = entityComponentNode.getAttribute("x"))
+	{
 		rect = FloatRect(
 			x->toFloat(),
 			entityComponentNode.getAttribute("y")->toFloat(),
 			entityComponentNode.getAttribute("width")->toFloat(),
 			entityComponentNode.getAttribute("height")->toFloat()
 		);
+	}
 	else
+	{
 		rect = FloatRect(-1.f, -1.f, -1.f, -1.f);
+	}
 
 	mUsedRegistry->assign_or_replace<component::LightWall>(entity, rect);
 }
@@ -253,7 +261,7 @@ void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::enti
 {
 	float directionX = entityComponentNode.getAttribute("pushForceX")->toFloat();
 	float directionY = entityComponentNode.getAttribute("pushForceY")->toFloat();
-	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, sf::Vector2f(directionX, directionY));
+	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, Vec2(directionX, directionY));
 }
 
 void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
@@ -277,25 +285,25 @@ void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, en
 void EntitiesParser::parseKinematics(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float friction = entityComponentNode.getAttribute("friction")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Kinematics>(entity, sf::Vector2f(), sf::Vector2f(), friction, friction, 0.5f);
+	mUsedRegistry->assign_or_replace<component::Kinematics>(entity, Vec2(), Vec2(), friction, friction, 0.5f);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int healthPoints = entityComponentNode.getAttribute("healthPoints")->toUnsigned();
-	int maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints")->toUnsigned();
+	i32 healthPoints = entityComponentNode.getAttribute("healthPoints")->toU32();
+	i32 maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints")->toU32();
 	mUsedRegistry->assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
 }
 
 void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int damageDealt = entityComponentNode.getAttribute("damageDealt")->toUnsigned();
+	i32 damageDealt = entityComponentNode.getAttribute("damageDealt")->toU32();
 	mUsedRegistry->assign_or_replace<component::Damage>(entity, damageDealt);
 }
 
 void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)
 {
-	int addHealthPoints = entityComponentNode.getAttribute("addHealthPoints")->toInt();
+	i32 addHealthPoints = entityComponentNode.getAttribute("addHealthPoints")->toI32();
 	mUsedRegistry->assign_or_replace<component::Medkit>(entity, addHealthPoints);
 }
 
@@ -309,7 +317,7 @@ void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity&
 	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination")->toString();
 	float posX = entityComponentNode.getAttribute("playerSpawnPositionX")->toFloat();
 	float posY = entityComponentNode.getAttribute("playerSpawnPositionY")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination, sf::Vector2f(posX, posY));
+	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination, Vec2(posX, posY));
 }
 
 void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
@@ -319,7 +327,7 @@ void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& ent
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
-	unsigned leverId = entityComponentNode.getAttribute("id")->toUnsigned();
+	u32 leverId = entityComponentNode.getAttribute("id")->toU32();
 	bool isActivated = false;
 	bool turnOffAfterSwitch = entityComponentNode.getAttribute("turnOffAfterSwitch")->toBool();
 	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, isActivated, turnOffAfterSwitch);
@@ -327,7 +335,7 @@ void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& en
 
 void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
 {
-	unsigned observedLeverId = entityComponentNode.getAttribute("observedLeverId")->toUnsigned();
+	u32 observedLeverId = entityComponentNode.getAttribute("observedLeverId")->toU32();
 	bool isActivated = false;
 	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, observedLeverId, isActivated);
 }
@@ -356,7 +364,7 @@ void EntitiesParser::parseMultiStaticCollisionBody(const Xml& entityComponentNod
 
 void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::FaceDirection>(entity, sf::Vector2f(0, 0));
+	mUsedRegistry->assign_or_replace<component::FaceDirection>(entity, Vec2(0, 0));
 }
 
 void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity& entity)
@@ -376,72 +384,85 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 	for(const auto& attrib : particleAttribs)
 	{
 		const std::string name = attrib.getAttribute("name")->toString();
-		if(name == "startColor") {
-			const auto r = attrib.getAttribute("r")->toUnsignedChar();
-			const auto g = attrib.getAttribute("g")->toUnsignedChar();
-			const auto b = attrib.getAttribute("b")->toUnsignedChar();
-			const auto a = attrib.getAttribute("a")->toUnsignedChar();
+		if(name == "startColor") 
+		{
+			u8 r = attrib.getAttribute("r")->toU8();
+			u8 g = attrib.getAttribute("g")->toU8();
+			u8 b = attrib.getAttribute("b")->toU8();
+			u8 a = attrib.getAttribute("a")->toU8();
 			if(!wasEndColorAssigned)
 				emitter.parEndColor = {r, g, b, a};
 			emitter.parStartColor = {r, g, b, a};
 		}
-		else if(name == "endColor") {
-			const auto r = attrib.getAttribute("r")->toUnsignedChar();
-			const auto g = attrib.getAttribute("g")->toUnsignedChar();
-			const auto b = attrib.getAttribute("b")->toUnsignedChar();
-			const auto a = attrib.getAttribute("a")->toUnsignedChar();
+		else if(name == "endColor") 
+		{
+			u8 r = attrib.getAttribute("r")->toU8();
+			u8 g = attrib.getAttribute("g")->toU8();
+			u8 b = attrib.getAttribute("b")->toU8();
+			u8 a = attrib.getAttribute("a")->toU8();
 			emitter.parEndColor = {r, g, b, a};
 			wasEndColorAssigned = true;
 		}
-		else if(name == "texture") {
+		else if(name == "texture") 
+		{
 			const std::string filepath = attrib.getAttribute("filepath")->toString();
 			if(loadTexture(filepath))
 				emitter.parTexture = &getTexture(filepath);
 			else
 				PH_EXIT_GAME("EntitiesParser::parseParticleEmitter() wasn't able to load texture!");
 		}
-		else if(name == "spawnPositionOffset") {
+		else if(name == "spawnPositionOffset") 
+		{
 			const float x = attrib.getAttribute("x")->toFloat();
 			const float y = attrib.getAttribute("y")->toFloat();
 			emitter.spawnPositionOffset = {x, y};
 		}
-		else if(name == "randomSpawnAreaSize") {
+		else if(name == "randomSpawnAreaSize") 
+		{
 			const float width = attrib.getAttribute("width")->toFloat();
 			const float height = attrib.getAttribute("height")->toFloat();
 			emitter.randomSpawnAreaSize = {width, height};
 		}
-		else if(name == "initialVelocity") {
+		else if(name == "initialVelocity") 
+		{
 			const float x = attrib.getAttribute("x")->toFloat();
 			const float y = attrib.getAttribute("y")->toFloat();
 			emitter.parInitialVelocity = {x, y};
 			if(!wasInitialVelocityRandomAssigned)
 				emitter.parInitialVelocityRandom = emitter.parInitialVelocity;
 		}
-		else if(name == "initialVelocityRandom") {
+		else if(name == "initialVelocityRandom") 
+		{
 			const float x = attrib.getAttribute("x")->toFloat();
 			const float y = attrib.getAttribute("y")->toFloat();
 			emitter.parInitialVelocityRandom = {x, y};
 		}
-		else if(name == "acceleration") {
+		else if(name == "acceleration") 
+		{
 			const float x = attrib.getAttribute("x")->toFloat();
 			const float y = attrib.getAttribute("y")->toFloat();
 			emitter.parAcceleration = {x, y};
 		}
-		else if(name == "size") {
+		else if(name == "size") 
+		{
 			const float x = attrib.getAttribute("x")->toFloat();
 			const float y = attrib.getAttribute("y")->toFloat();
 			emitter.parSize = {x, y};
 		}
-		else if(name == "amount") {
-			emitter.amountOfParticles = attrib.getAttribute("v")->toUnsigned();
+		else if(name == "amount") 
+		{
+			emitter.amountOfParticles = attrib.getAttribute("v")->toU32();
 		}
-		else if(name == "lifetime") {
+		else if(name == "lifetime") 
+		{
 			emitter.parWholeLifetime = attrib.getAttribute("v")->toFloat();
 		}
-		else if(name == "z") {
-			emitter.parZ = attrib.getAttribute("v")->toUnsignedChar();
+		else if(name == "z") 
+		{
+			emitter.parZ = attrib.getAttribute("v")->toU8();
 		}
-		else if(name == "isEmitting") {
+		else if(name == "isEmitting") 
+		{
 			emitter.isEmitting = attrib.getAttribute("v")->toBool();
 		}
 	}
@@ -522,7 +543,7 @@ void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::
 	mp.rotationSpeed = entityComponentNode.getAttribute("rotationSpeed")->toFloat();
 	mp.rotationRange = entityComponentNode.getAttribute("rotationRange")->toFloat();
 	mp.range = entityComponentNode.getAttribute("range")->toFloat();
-	mp.damage = entityComponentNode.getAttribute("damage")->toUnsigned();
+	mp.damage = entityComponentNode.getAttribute("damage")->toU32();
 	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, mp);
 }
 
@@ -533,9 +554,9 @@ void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::en
 	gp.shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath")->toString();
 	gp.range = entityComponentNode.getAttribute("range")->toFloat();
 	gp.deflectionAngle = entityComponentNode.getAttribute("deflectionAngle")->toFloat();
-	gp.damage = entityComponentNode.getAttribute("damage")->toUnsigned();
-	gp.numberOfBullets = entityComponentNode.getAttribute("numberOfBullets")->toUnsigned();
-	gp.gunId = entityComponentNode.getAttribute("gunId")->toUnsigned();
+	gp.damage = entityComponentNode.getAttribute("damage")->toU32();
+	gp.numberOfBullets = entityComponentNode.getAttribute("numberOfBullets")->toU32();
+	gp.gunId = entityComponentNode.getAttribute("gunId")->toU32();
 	
 	const std::string type = entityComponentNode.getAttribute("type")->toString();
 	if(type == "pistol")
@@ -566,8 +587,8 @@ void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity&
 void EntitiesParser::parseBullets(const Xml& entityComponentNode, entt::entity& entity)
 {
 	component::Bullets bullets;
-	bullets.numOfPistolBullets = entityComponentNode.getAttribute("numOfPistolBullets")->toUnsigned();
-	bullets.numOfShotgunBullets = entityComponentNode.getAttribute("numOfShotgunBullets")->toUnsigned();
+	bullets.numOfPistolBullets = entityComponentNode.getAttribute("numOfPistolBullets")->toU32();
+	bullets.numOfShotgunBullets = entityComponentNode.getAttribute("numOfShotgunBullets")->toU32();
 	mUsedRegistry->assign_or_replace<component::Bullets>(entity, bullets);
 }
 
@@ -599,8 +620,8 @@ void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entit
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
 {
 	component::Camera camera;
-	sf::Vector2f size(entityComponentNode.getAttribute("width")->toFloat(), entityComponentNode.getAttribute("height")->toFloat());
-	sf::Vector2f center(entityComponentNode.getAttribute("x")->toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y")->toFloat() + (size.y / 2.f));
+	Vec2 size(entityComponentNode.getAttribute("width")->toFloat(), entityComponentNode.getAttribute("height")->toFloat());
+	Vec2 center(entityComponentNode.getAttribute("x")->toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y")->toFloat() + (size.y / 2.f));
 	camera = Camera(center, size);
 	camera.name = entityComponentNode.getAttribute("cameraName")->toString();
 	mUsedRegistry->assign_or_replace<component::Camera>(entity, camera);
@@ -629,13 +650,13 @@ void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::en
 {
 	component::AnimationData animationData;
 
-	const std::string animationStateFilepath = entityComponentNode.getAttribute("animationStatesFile")->toString();
+	std::string animationStateFilepath = entityComponentNode.getAttribute("animationStatesFile")->toString();
 	loadAnimationStatesFromFile(animationStateFilepath);
 	animationData.states = getAnimationStates(animationStateFilepath);
 	
 	animationData.currentStateName = entityComponentNode.getAttribute("firstStateName")->toString();
 
-	const float delay = entityComponentNode.getAttribute("delay")->toFloat();
+	float delay = entityComponentNode.getAttribute("delay")->toFloat();
 	animationData.delay = delay;
 	animationData.elapsedTime = delay;
 

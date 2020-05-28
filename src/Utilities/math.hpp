@@ -10,38 +10,38 @@ namespace ph::Math {
 	constexpr float pi = 3.14159265359f;
 
 	constexpr float nullFloat = -99999999.99f;
-	const sf::Vector2f nullVector = sf::Vector2f(nullFloat, nullFloat);
+	const Vec2 nullVec2 = Vec2(nullFloat, nullFloat);
 
 	template <typename T>
-	FORCE_INLINE sf::Vector2<T> hadamardMul(sf::Vector2<T>, sf::Vector2<T>);
+	FORCE_INLINE Vec2Base<T> hadamardMul(Vec2Base<T>, Vec2Base<T>);
 	template <typename T>
-	FORCE_INLINE sf::Vector2<T> hadamardDiv(sf::Vector2<T>, sf::Vector2<T>);
+	FORCE_INLINE Vec2Base<T> hadamardDiv(Vec2Base<T>, Vec2Base<T>);
 
 	template <typename T>
-	FORCE_INLINE sf::Vector2<T> getUnitVector(const sf::Vector2<T>);
+	FORCE_INLINE Vec2Base<T> getUnitVector(Vec2Base<T>);
 
-	FORCE_INLINE sf::Vector2f getUnitVector(float angle);
+	FORCE_INLINE Vec2 getUnitVector(float angle);
 
-	FORCE_INLINE float getMagnitude(sf::Vector2f); 
+	FORCE_INLINE float getMagnitude(Vec2); 
 	
 	FORCE_INLINE float degreesToRadians(float angle);
 	FORCE_INLINE float radiansToDegrees(float angle);
 
-	FORCE_INLINE sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns);
+	FORCE_INLINE Vec2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(u32 index, u32 numberOfColumns);
 
-	FORCE_INLINE bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius);
+	FORCE_INLINE bool isPointInsideCircle(Vec2 point, Vec2 circlePos, float radius);
 
-	FORCE_INLINE sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed);
+	FORCE_INLINE Vec2 lerp(Vec2 source, Vec2 destination, float speed);
 	FORCE_INLINE float lerp(float source, float destination, float speed);
 
 	template <typename T>
-	FORCE_INLINE float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2);
+	FORCE_INLINE float distanceBetweenPoints(Vec2Base<T> point1, Vec2Base<T> point2);
 
 	template <typename T>
-	FORCE_INLINE sf::Vector2<T> abs(const sf::Vector2<T>);
+	FORCE_INLINE Vec2Base<T> abs(Vec2Base<T>);
 
 	FORCE_INLINE bool areApproximatelyEqual(float a, float b, float maxApproximation);
-	FORCE_INLINE bool areApproximatelyEqual(const sf::Vector2f a, const sf::Vector2f b, float maxApproximation);
+	FORCE_INLINE bool areApproximatelyEqual(Vec2 a, Vec2 b, float maxApproximation);
 }
 
 #include "math.inl"

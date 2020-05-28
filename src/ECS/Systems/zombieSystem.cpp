@@ -12,7 +12,7 @@
 
 namespace {
 	
-sf::Vector2f toDirectionVector(ph::Direction direction)
+Vec2 toDirectionVector(ph::Direction direction)
 {
 	switch(direction)
 	{
@@ -61,7 +61,7 @@ void ZombieSystem::update(float dt)
 		if (zombie.timeFromLastGrowl > 3.f)
 		{
 			zombie.timeFromLastGrowl = 0.f;
-			int randomNumber = Random::generateNumber(1, 4);
+			i32 randomNumber = Random::generateNumber(1, 4);
 			switch (randomNumber)
 			{
 			case 1: mRegistry.assign_or_replace<component::SpatialSound>(zombieEntity, "sounds/zombieGrowl1.ogg"); break;

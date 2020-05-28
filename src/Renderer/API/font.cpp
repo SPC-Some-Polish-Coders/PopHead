@@ -11,7 +11,7 @@ namespace ph {
 
 	SizeSpecificFontData::SizeSpecificFontData(const char* filename, float size)
 	{
-		int textureAtlasSideSize = size > 30.f ? size > 70.f ? size > 150.f ? 2048 : 1024 : 512 : 256;
+		i32 textureAtlasSideSize = size > 30.f ? size > 70.f ? size > 150.f ? 2048 : 1024 : 512 : 256;
 
 		FILE* file;
 		char filepath[50] = "resources/fonts/";
@@ -20,14 +20,14 @@ namespace ph {
 		if(!file)
 			PH_EXIT_GAME("Opening font file \"" + std::string(filepath) + "\" has failed!");
 
-		unsigned char* ttfBuffer = new unsigned char[1 << 20];
-		unsigned char* tempBitmap = new unsigned char[textureAtlasSideSize * textureAtlasSideSize];
+		u8* ttfBuffer = new u8[1 << 20];
+		u8* tempBitmap = new u8[textureAtlasSideSize * textureAtlasSideSize];
 
 		std::fread(ttfBuffer, 1, 1 << 20, file);
 		std::fclose(file);
 		stbtt_BakeFontBitmap(ttfBuffer, 0, size, tempBitmap, textureAtlasSideSize, textureAtlasSideSize, 32, 96, charactersData);
 
-		unsigned textureAtlasID;
+		u32 textureAtlasID;
 		GLCheck(glGenTextures(1, &textureAtlasID));
 		GLCheck(glBindTexture(GL_TEXTURE_2D, textureAtlasID));
 		GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, textureAtlasSideSize, textureAtlasSideSize, 0, GL_RED, GL_UNSIGNED_BYTE, tempBitmap));
@@ -36,7 +36,7 @@ namespace ph {
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 		GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 		GLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
-		textureAtlas = std::make_shared<Texture>(textureAtlasID, sf::Vector2i(textureAtlasSideSize, textureAtlasSideSize));
+		textureAtlas = std::make_shared<Texture>(textureAtlasID, Vec2i(textureAtlasSideSize, textureAtlasSideSize));
 
 		delete[] ttfBuffer;
 		delete[] tempBitmap;
@@ -66,7 +66,7 @@ namespace ph {
 			for(auto& font : mFonts)
 				if(std::strcmp(font.getFontFilename(), filename) == 0)
 					return &font;
-			return nullptr;
+			return Null;
 		};
 
 		if(Font* foundFont = findFont()) {
@@ -100,7 +100,7 @@ namespace ph {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
-		unsigned indexData[] = {0, 1, 2, 2, 3, 0};
+		u32 indexData[] = {0, 1, 2, 2, 3, 0};
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
@@ -129,7 +129,7 @@ namespace ph {
 	void FontDebugRenderer::shutDown()
 	{
 		delete sData;
-		sData = nullptr;
+		sData = Null;
 	}
 
 	void FontDebugRenderer::draw()

@@ -43,7 +43,7 @@ void ObstacleGrid::registerObstacle(size_t column, size_t row)
 	mObstacles.at(internalIndex(column, row)) = true;
 }
 
-bool ObstacleGrid::isObstacle(int column, int row) const
+bool ObstacleGrid::isObstacle(i32 column, i32 row) const
 {
 	if (column >= 0 && column < mColumns && row >= 0 && row < mRows)
 		return mObstacles.at(internalIndex(column, row));

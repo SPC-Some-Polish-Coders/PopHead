@@ -12,14 +12,14 @@ namespace ph::component {
 
 	struct BodyCircle
 	{
-		sf::Vector2f offset;
+		Vec2 offset;
 		float radius;
 	};
 
 	struct Kinematics
 	{
-		sf::Vector2f vel;
-		sf::Vector2f acceleration;
+		Vec2 vel;
+		Vec2 acceleration;
 		float friction;
 		float defaultFriction;
 		float frictionLerpSpeed;

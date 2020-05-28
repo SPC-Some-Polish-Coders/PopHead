@@ -91,10 +91,10 @@ namespace ph {
 
 	void Handler::initializeLogLevels()
 	{
-		auto levelsCount = static_cast<std::size_t>(LogLevel::Count);
+		auto levelsCount = Cast<std::size_t>(LogLevel::Count);
 		mAllowedLogLevels.resize(levelsCount);
 
 		for (std::size_t level = 0; level < levelsCount; ++level)
-			mAllowedLogLevels.at(level) = std::make_pair(static_cast<LogLevel>(level), false);
+			mAllowedLogLevels.at(level) = std::make_pair(Cast<LogLevel>(level), false);
 	}
 }

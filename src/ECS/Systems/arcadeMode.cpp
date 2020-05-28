@@ -61,9 +61,9 @@ void ArcadeMode::update(float dt)
 		MusicPlayer::playFromMusicState("break");
 
 		auto* counters = GUI::getInterface("nextWaveInfo")->getWidget("counters");
-		auto* timeToNextWave = dynamic_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
+		auto* timeToNextWave = dynamic_Cast<TextWidget*>(counters->getWidget("timeToNextWave"));
 		char str[40];
-		std::sprintf(str, "Start in %d seconds!", static_cast<int>(mTimeBeforeStartingFirstWave + 1.f));
+		std::sprintf(str, "Start in %d seconds!", Cast<i32>(mTimeBeforeStartingFirstWave + 1.f));
 		timeToNextWave->setText(str);
 
 		if(mTimeBeforeStartingFirstWave <= 0.f) {
@@ -84,10 +84,10 @@ void ArcadeMode::update(float dt)
 			if(arcadeModeSpawner.timeFromLastSpawn > 0.5f) 
 			{
 				arcadeModeSpawner.timeFromLastSpawn = 0.f;
-				const sf::Vector2f spawnPos = Random::generateVector(spawnerBody.rect.getTopLeft(), spawnerBody.rect.bottomRight());
+				const Vec2 spawnPos = Random::generateVector(spawnerBody.rect.getTopLeft(), spawnerBody.rect.bottomRight());
 				auto& wave = arcadeModeSpawner.waves[mCurrentWave - 1];
 				if(wave.normalZombiesToSpawn > 0 && wave.slowZombiesToSpawn > 0) {
-					int ran = Random::generateNumber(0, 5);
+					i32 ran = Random::generateNumber(0, 5);
 					if(ran == 0) {
 						createNormalZombie(spawnPos);
 						--wave.normalZombiesToSpawn;
@@ -182,34 +182,34 @@ void ArcadeMode::updateGuiCounters()
 {
 	if(mIsBreakTime) {
 		auto* counters = GUI::getInterface("nextWaveInfo")->getWidget("counters");
-		auto* timeToNextWave = static_cast<TextWidget*>(counters->getWidget("timeToNextWave"));
-		int secondsUntilTheEndOfBreak = static_cast<int>(20.f - mTimeFromBreakTimeStart);
+		auto* timeToNextWave = Cast<TextWidget*>(counters->getWidget("timeToNextWave"));
+		i32 secondsUntilTheEndOfBreak = Cast<i32>(20.f - mTimeFromBreakTimeStart);
 		timeToNextWave->setText("Time to next wave: " + addZero(secondsUntilTheEndOfBreak));
 	}
 	else {
 		auto* counters = GUI::getInterface("arcadeCounters")->getWidget("counters");
-		auto* waveCounter = static_cast<TextWidget*>(counters->getWidget("waveCounter"));
+		auto* waveCounter = Cast<TextWidget*>(counters->getWidget("waveCounter"));
 		waveCounter->setText("Wave: " + addZero(mCurrentWave));
-		auto* enemiesCounter = static_cast<TextWidget*>(counters->getWidget("enemiesCounter"));
+		auto* enemiesCounter = Cast<TextWidget*>(counters->getWidget("enemiesCounter"));
 		enemiesCounter->setText("Enemies: " + addZero(mEnemiesCounter));
 	}
 }
 
-void ArcadeMode::createNormalZombie(sf::Vector2f position)
+void ArcadeMode::createNormalZombie(Vec2 position)
 {
 	auto zombie = mTemplateStorage.createCopy("Zombie", mRegistry);
 	auto& body = mRegistry.get<component::BodyRect>(zombie);
 	body.rect.setPosition(position);
 }
 
-void ArcadeMode::createSlowZombie(sf::Vector2f position)
+void ArcadeMode::createSlowZombie(Vec2 position)
 {
 	auto slowZombie = mTemplateStorage.createCopy("SlowZombie", mRegistry);
 	auto& body = mRegistry.get<component::BodyRect>(slowZombie);
 	body.rect.setPosition(position);
 }
 
-std::string ArcadeMode::addZero(int number)
+std::string ArcadeMode::addZero(i32 number)
 {
 	if(number < 10)
 		return "0" + std::to_string(number);

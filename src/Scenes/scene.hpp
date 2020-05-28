@@ -26,7 +26,7 @@ public:
 
 	void setPlayerStatus(const PlayerStatus& status);
 	PlayerStatus getPlayerStatus();
-	void setPlayerPosition(sf::Vector2f newPosition);
+	void setPlayerPosition(Vec2 newPosition);
 
 	entt::registry& getRegistry();
 

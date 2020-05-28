@@ -5,7 +5,7 @@
 namespace ph {
 
 namespace {
-	std::string numberToStringWithTwoDigits(unsigned int number)
+	std::string numberToStringWithTwoDigits(u32 number)
 	{
 		if (number >= 10)
 			return std::to_string(number);
@@ -14,11 +14,9 @@ namespace {
 
 	std::string getCurrentTimeAsString()
 	{
-		// TODO: change this function to use <chrono> instead of ctime and add miliseconds
-
-		auto timePoint = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		auto timepoint = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		tm calendarTime;
-		localtime_s(&calendarTime, &timePoint);
+		localtime_s(&calendarTime, &timepoint);
 
 		return numberToStringWithTwoDigits(calendarTime.tm_hour) + ":" +
 			numberToStringWithTwoDigits(calendarTime.tm_min) + ":" +
@@ -26,7 +24,7 @@ namespace {
 	}
 }
 
-void Logger::createLog(LogLevel level, const std::string& message, const std::string& filePath, unsigned short fileLine)
+void Logger::createLog(LogLevel level, const std::string& message, const std::string& filePath, u32 fileLine)
 {
 	LogRecord logRecord;
 	logRecord.level = level;

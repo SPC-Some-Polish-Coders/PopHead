@@ -15,26 +15,27 @@ void PatricleSystem::update(float dt)
 	updateMultiParticleEmitters(dt);
 }
 
-void PatricleSystem::updateSingleParticleEmitters(const float dt) const
+void PatricleSystem::updateSingleParticleEmitters(float dt) const
 {
-	auto view = mRegistry.view<component::ParticleEmitter, component::BodyRect>();
-	view.each([dt, this](component::ParticleEmitter& emi, const component::BodyRect& body)
+	mRegistry.view<component::ParticleEmitter, component::BodyRect>().each([dt, this]
+	(auto& emi, const auto& body)
 	{
 		updateParticleEmitter(dt, emi, body);
 	});
 }
 
-void PatricleSystem::updateMultiParticleEmitters(const float dt) const
+void PatricleSystem::updateMultiParticleEmitters(float dt) const
 {
-	auto view = mRegistry.view<component::MultiParticleEmitter, component::BodyRect>();
-	view.each([dt, this](component::MultiParticleEmitter& multiEmi, const component::BodyRect& body)
+	mRegistry.view<component::MultiParticleEmitter, component::BodyRect>().each([dt, this]
+	(auto& multiEmi, const auto& body)
 	{
 		// update particle emitters 
 		for(auto& particleEmitter : multiEmi.particleEmitters)
 			updateParticleEmitter(dt, particleEmitter, body);
 
 		// erase dead particle emitters from multi particle emitter
-		for(auto it = multiEmi.particleEmitters.begin(); it != multiEmi.particleEmitters.end();) {
+		for(auto it = multiEmi.particleEmitters.begin(); it != multiEmi.particleEmitters.end();) 
+		{
 			if(it->oneShot && it->particles.empty())
 				it = multiEmi.particleEmitters.erase(it);
 			else
@@ -43,7 +44,7 @@ void PatricleSystem::updateMultiParticleEmitters(const float dt) const
 	});
 }
 
-void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEmitter& emi, const component::BodyRect& body) const
+void PatricleSystem::updateParticleEmitter(float dt, component::ParticleEmitter& emi, const component::BodyRect& body) const
 {
 	// exit if is not emitting
 	if(!emi.isEmitting)
@@ -52,7 +53,8 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 	if(!sPause)
 	{
 		// alocate particles
-		if(!emi.wasInitialized) {
+		if(!emi.wasInitialized) 
+		{
 			emi.particles.reserve(emi.amountOfParticles);
 			emi.wasInitialized = true;
 		}
@@ -70,7 +72,7 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 
 				particle.position = body.pos + emi.spawnPositionOffset;
 
-				if(emi.randomSpawnAreaSize != sf::Vector2f(0.f, 0.f))
+				if(emi.randomSpawnAreaSize != Vec2(0.f, 0.f))
 					particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);
 
 				if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
@@ -81,10 +83,10 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 				emi.particles.emplace_back(particle);
 			};
 
-			if(emi.oneShot || static_cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
+			if(emi.oneShot || Cast<float>(emi.amountOfParticles) > emi.parWholeLifetime * 60.f)
 			{
-				float nrOfParticlesPerFrame = float(emi.amountOfParticles / unsigned(emi.parWholeLifetime * 60.f));
-				unsigned nrOfParticlesAddedInThisFrame = 0;
+				float nrOfParticlesPerFrame = float(emi.amountOfParticles / u32(emi.parWholeLifetime * 60.f));
+				u32 nrOfParticlesAddedInThisFrame = 0;
 				while((emi.particles.size() < emi.amountOfParticles) && 
 						(emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
 				{
@@ -94,7 +96,7 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 				emi.amountOfAlreadySpawnParticles += nrOfParticlesAddedInThisFrame;
 			}
 			else if((emi.particles.size() < emi.amountOfParticles) && 
-				(emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
+			        (emi.particles.empty() || emi.particles.back().lifetime > emi.parWholeLifetime / emi.amountOfParticles))
 			{
 				addParticle(emi, body);
 				++emi.amountOfAlreadySpawnParticles;
@@ -114,20 +116,21 @@ void PatricleSystem::updateParticleEmitter(const float dt, component::ParticleEm
 	{
 		// compute current particle color
 		sf::Color color = emi.parStartColor;
-		if(emi.parStartColor != emi.parEndColor) {
+		if(emi.parStartColor != emi.parEndColor) 
+		{
 			float startColorMultiplier = (emi.parWholeLifetime - particle.lifetime) / emi.parWholeLifetime;
 			float endColorMultiplier = particle.lifetime / emi.parWholeLifetime;
-			color.r = unsigned char(float(emi.parStartColor.r) * startColorMultiplier + float(emi.parEndColor.r) * endColorMultiplier);
-			color.g = unsigned char(float(emi.parStartColor.g) * startColorMultiplier + float(emi.parEndColor.g) * endColorMultiplier);
-			color.b = unsigned char(float(emi.parStartColor.b) * startColorMultiplier + float(emi.parEndColor.b) * endColorMultiplier);
-			color.a = unsigned char(float(emi.parStartColor.a) * startColorMultiplier + float(emi.parEndColor.a) * endColorMultiplier);
+			color.r = u8(float(emi.parStartColor.r) * startColorMultiplier + float(emi.parEndColor.r) * endColorMultiplier);
+			color.g = u8(float(emi.parStartColor.g) * startColorMultiplier + float(emi.parEndColor.g) * endColorMultiplier);
+			color.b = u8(float(emi.parStartColor.b) * startColorMultiplier + float(emi.parEndColor.b) * endColorMultiplier);
+			color.a = u8(float(emi.parStartColor.a) * startColorMultiplier + float(emi.parEndColor.a) * endColorMultiplier);
 		}
 
 		// submit particle to renderer
 		if(emi.parTexture)
-			Renderer::submitQuad(emi.parTexture, nullptr, &color, nullptr, particle.position, emi.parSize, emi.parZ, 0.f, {});
+			Renderer::submitQuad(emi.parTexture, Null, &color, Null, particle.position, emi.parSize, emi.parZ, 0.f, {});
 		else if(emi.parSize.x != emi.parSize.y)
-			Renderer::submitQuad(nullptr, nullptr, &color, nullptr, particle.position, emi.parSize, emi.parZ, 0.f, {});
+			Renderer::submitQuad(Null, Null, &color, Null, particle.position, emi.parSize, emi.parZ, 0.f, {});
 		else
 			Renderer::submitPoint(particle.position, color, emi.parZ, emi.parSize.x);
 	}

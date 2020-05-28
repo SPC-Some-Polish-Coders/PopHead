@@ -115,15 +115,15 @@ ShaderSource lineSrc()
 }
 
 // points
-static const char* sPointsVS =
+static const char* spointsVS =
 	#include "points.vs.glsl"
 ;
-static const char* sPointsFS =
+static const char* spointsFS =
 	#include "points.fs.glsl"
 ;
 ShaderSource pointsSrc()
 {
-	return ShaderSource{sPointsVS, sPointsFS};
+	return ShaderSource{spointsVS, spointsFS};
 }
 
 

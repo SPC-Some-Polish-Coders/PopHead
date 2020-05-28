@@ -13,7 +13,7 @@ Camera::Camera(FloatRect& rect)
 {
 }
 
-Camera::Camera(sf::Vector2f center, sf::Vector2f size)
+Camera::Camera(Vec2 center, Vec2 size)
 	:mViewProjectionMatrix(sf::Transform::Identity)
 	,mCenter(center)
 	,mSize(size)
@@ -22,13 +22,13 @@ Camera::Camera(sf::Vector2f center, sf::Vector2f size)
 {
 }
 
-void Camera::setCenter(sf::Vector2f center)
+void Camera::setCenter(Vec2 center)
 {
 	mCenter = center;
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::move(sf::Vector2f offset)
+void Camera::move(Vec2 offset)
 {
 	mCenter += offset;
 	mViewProjectionMatrixNeedsUpdate = true;
@@ -46,7 +46,7 @@ void Camera::rotate(float rotation)
 	mViewProjectionMatrixNeedsUpdate = true;
 }
 
-void Camera::setSize(sf::Vector2f size)
+void Camera::setSize(Vec2 size)
 {
 	mSize = size;
 	mViewProjectionMatrixNeedsUpdate = true;
@@ -64,8 +64,8 @@ const sf::Transform& Camera::getViewProjectionMatrix4x4()
 	{
 		// Rotation components
 		float angle = mRotation * 3.141592654f / 180.f;
-		float cosine = static_cast<float>(std::cos(angle));
-		float sine = static_cast<float>(std::sin(angle));
+		float cosine = Cast<float>(std::cos(angle));
+		float sine = Cast<float>(std::sin(angle));
 		float tx = -mCenter.x * cosine - mCenter.y * sine + mCenter.x;
 		float ty = mCenter.x * sine - mCenter.y * cosine + mCenter.y;
 

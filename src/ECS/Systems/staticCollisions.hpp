@@ -19,13 +19,13 @@ namespace ph::system {
 
 	private:
 		void calculateStaticCollisions();
-		sf::Vector2f handleCollision(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, ph::FloatRect& kinematicRect,
-							 const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody);
+		Vec2 handleCollision(const FloatRect& staticRect, const component::BodyCircle* staticCircle, FloatRect& kinematicRect,
+		                     const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody);
 
 		void calculateKinematicCollisions();
 
-		sf::Vector2f getCollisionVector(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, 
-										const ph::FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const;
+		Vec2 getCollisionVector(const FloatRect& staticRect, const component::BodyCircle* staticCircle, 
+		                        const FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const;
 
 		void resetKinematicBody(component::KinematicCollisionBody& kinematicBody);
 

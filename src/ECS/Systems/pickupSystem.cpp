@@ -19,7 +19,7 @@ namespace ph::system {
 
 		for(auto player : players)
 		{
-			const auto& playerBody  = players.get<component::BodyRect>(player);
+			const auto& playerBody = players.get<component::BodyRect>(player);
 			auto& [playerHealth, playerBullets] = players.get<component::Health, component::Bullets>(player);
 			
 			for(auto medkitEntity : medkits)

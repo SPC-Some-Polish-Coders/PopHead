@@ -23,7 +23,7 @@ namespace system {
 		Scene* mScene;
 
 		float mTimeToHaveNextDash = 0.f; 
-		unsigned mDashes = 2;
+		u32 mDashes = 2;
 		bool mDashJustPressed = false;
 
 	public:

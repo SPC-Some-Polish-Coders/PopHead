@@ -8,8 +8,8 @@ namespace ph {
 struct FPSCounter
 {
 	sf::Clock clock;
-	unsigned fps;
-	unsigned framesFromLastSecond;
+	u32 fps;
+	u32 framesFromLastSecond;
 };
 
 static FPSCounter fpsCounter;
@@ -84,12 +84,12 @@ static void beginImGui(sf::Window& window, float dt)
 	io.DeltaTime = dt;
 
 	// setup display size
-	sf::Vector2u windowSize = window.getSize();
-	io.DisplaySize = ImVec2(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y));
+	Vec2u windowSize = window.getSize();
+	io.DisplaySize = ImVec2(Cast<float>(windowSize.x), Cast<float>(windowSize.y));
 	io.DisplayFramebufferScale = ImVec2(1.f, 1.f);
 
 	// update buttons
-	for(int i = 0; i < IM_ARRAYSIZE(io.MouseDown); ++i)
+	for(i32 i = 0; i < IM_ARRAYSIZE(io.MouseDown); ++i)
     {
         io.MouseDown[i] = mouseJustPressed[i] || sf::Mouse::isButtonPressed((sf::Mouse::Button)i);
         mouseJustPressed[i] = false;
@@ -98,13 +98,13 @@ static void beginImGui(sf::Window& window, float dt)
 	// Update mouse position
 	if(io.WantSetMousePos)
 	{	
-		sf::Vector2i mousePos(static_cast<int>(io.MousePos.x), static_cast<int>(io.MousePos.y));
+		Vec2i mousePos(Cast<i32>(io.MousePos.x), Cast<i32>(io.MousePos.y));
 		sf::Mouse::setPosition(mousePos, window);
 	}
 	else
 	{
-		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-		io.MousePos = ImVec2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+		Vec2i mousePos = sf::Mouse::getPosition(window);
+		io.MousePos = ImVec2(Cast<float>(mousePos.x), Cast<float>(mousePos.y));
 	}
 
 	ImGui::NewFrame();

@@ -7,7 +7,7 @@
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int main()
+i32 main()
 {
 	std::unique_ptr<ph::Handler> bufferedHandler(new Tests::BufferedHandler);
 	bufferedHandler->enableAllPaths();
@@ -30,7 +30,7 @@ int main()
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 
-int main()
+i32 main()
 {
 	try {
 		PH_LOG_INFO("start initializing PopHead");

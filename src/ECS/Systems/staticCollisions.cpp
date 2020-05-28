@@ -8,8 +8,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION();
 
-		if(sPause)
-			return;
+		if(sPause) return;
 
 		calculateStaticCollisions();
 		calculateKinematicCollisions();
@@ -37,13 +36,13 @@ namespace ph::system {
 			for (const auto& staticObject : staticRectObjects)
 			{
 				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
-				handleCollision(staticRect, nullptr, kinematicRect, nullptr, kinematicObject, kinematicBody);
+				handleCollision(staticRect, Null, kinematicRect, Null, kinematicObject, kinematicBody);
 			}
 			for (const auto& staticObject : staticCircObjects)
 			{
 				const auto& staticRect = staticCircObjects.get<component::BodyRect>(staticObject);
 				const auto& staticCirc = staticCircObjects.get<component::BodyCircle>(staticObject);
-				handleCollision(staticRect, &staticCirc, kinematicRect, nullptr, kinematicObject, kinematicBody);
+				handleCollision(staticRect, &staticCirc, kinematicRect, Null, kinematicObject, kinematicBody);
 			}
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
@@ -52,7 +51,7 @@ namespace ph::system {
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{
-						handleCollision(staticRect, nullptr, kinematicRect, nullptr, kinematicObject, kinematicBody);
+						handleCollision(staticRect, Null, kinematicRect, Null, kinematicObject, kinematicBody);
 					}
 				}
 			}
@@ -67,7 +66,7 @@ namespace ph::system {
 			for (const auto& staticObject : staticRectObjects)
 			{
 				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
-				handleCollision(staticRect, nullptr, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
+				handleCollision(staticRect, Null, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 			}
 			for (const auto& staticObject : staticCircObjects)
 			{
@@ -82,15 +81,15 @@ namespace ph::system {
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{
-						handleCollision(staticRect, nullptr, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
+						handleCollision(staticRect, Null, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 					}
 				}
 			}
 		}
 	}
 
-	sf::Vector2f StaticCollisions::handleCollision(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, ph::FloatRect& kinematicRect,
-												   const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody)
+	Vec2 StaticCollisions::handleCollision(const FloatRect& staticRect, const component::BodyCircle* staticCircle, FloatRect& kinematicRect,
+	                                       const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody)
 	{
 		auto collisionVector = getCollisionVector(staticRect, staticCircle, kinematicRect, kinematicCircle);
 		kinematicRect.pos += collisionVector;
@@ -137,7 +136,7 @@ namespace ph::system {
 			else
 			{
 				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedLeft[index].entity));
-				firstCircle = nullptr;
+				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
@@ -146,7 +145,7 @@ namespace ph::system {
 				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.x + 0.001f < 0)
 				{
 					secondRect.x += collisionVector.x;
@@ -185,7 +184,7 @@ namespace ph::system {
 			else
 			{
 				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedRight[index].entity));
-				firstCircle = nullptr;
+				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
@@ -194,7 +193,7 @@ namespace ph::system {
 				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.x - 0.001f > 0)
 				{
 					secondRect.x += collisionVector.x;
@@ -233,7 +232,7 @@ namespace ph::system {
 			else
 			{
 				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedUp[index].entity));
-				firstCircle = nullptr;
+				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
@@ -242,7 +241,7 @@ namespace ph::system {
 				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.y + 0.001f < 0)
 				{
 					secondRect.y += collisionVector.y;
@@ -281,7 +280,7 @@ namespace ph::system {
 			else
 			{
 				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedDown[index].entity));
-				firstCircle = nullptr;
+				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
@@ -290,7 +289,7 @@ namespace ph::system {
 				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
 				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
 
-				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, nullptr);
+				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.y - 0.001f > 0)
 				{
 					secondRect.y += collisionVector.y;
@@ -317,10 +316,10 @@ namespace ph::system {
 		}
 	}
 
-	sf::Vector2f StaticCollisions::getCollisionVector(const ph::FloatRect& staticRect, const component::BodyCircle* staticCircle, 
-													  const ph::FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const
+	Vec2 StaticCollisions::getCollisionVector(const FloatRect& staticRect, const component::BodyCircle* staticCircle, 
+	                                          const FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const
 	{
-		auto rectCircleCollision = [](const ph::FloatRect& firstRect, const component::BodyCircle& firstCircle, const ph::FloatRect& secondRect) -> sf::Vector2f
+		auto rectCircleCollision = [](const FloatRect& firstRect, const component::BodyCircle& firstCircle, const ph::FloatRect& secondRect) -> Vec2
 		{
 			auto circleCenter = firstRect.pos + firstCircle.offset;
 
@@ -350,7 +349,7 @@ namespace ph::system {
 			}
 
 			auto bottomRightOfRect = secondRect.bottomRight();
-			sf::Vector2f rectCorners[4] = { secondRect.pos, {secondRect.x, bottomRightOfRect.y}, {bottomRightOfRect.x, secondRect.y}, bottomRightOfRect };
+			Vec2 rectCorners[4] = { secondRect.pos, {secondRect.x, bottomRightOfRect.y}, {bottomRightOfRect.x, secondRect.y}, bottomRightOfRect };
 			float closestDistance = firstCircle.radius;
 			size_t closestCornerIndex = 0;
 
@@ -387,17 +386,17 @@ namespace ph::system {
 				return (kinematicCircleCenter - staticCircleCenter) / centersDistance * collisionDistance;
 			}
 		}
-		else if (staticCircle == nullptr && kinematicCircle)
+		else if (staticCircle == Null && kinematicCircle)
 		{
 			return -rectCircleCollision(kinematicRect, *kinematicCircle, staticRect);
 		}
-		else if (staticCircle && kinematicCircle == nullptr)
+		else if (staticCircle && kinematicCircle == Null)
 		{
 			return rectCircleCollision(staticRect, *staticCircle, kinematicRect);
 		}
 		else
 		{
-			ph::FloatRect intersection;
+			FloatRect intersection;
 			staticRect.intersects(kinematicRect, intersection);
 
 			if (intersection.w < intersection.h)
@@ -413,6 +412,10 @@ namespace ph::system {
 					return { 0.f, intersection.h };
 				else
 					return { 0.f, -intersection.h };
+			}
+			else
+			{
+				PH_BREAKPOINT(); return Vec2();
 			}
 		}
 	}

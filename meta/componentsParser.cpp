@@ -149,13 +149,13 @@ void EntitiesDebugger::update(float dt)
 
 				unsigned char alpha = underCursorEntity == mSelected ? 45 : 150;
 				auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
-				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, alpha), nullptr,
+				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, alpha), Null,
 					body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 
 				for(unsigned i = 1; i < entitiesUnderCursor.size(); ++i)
 				{
 					auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
-					Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 40), nullptr,
+					Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 40), Null,
 						body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 				}
 
@@ -317,7 +317,7 @@ const char* genFileFooter = R"(
 
 			if(highlightSelected && bodyValid)
 			{
-				Renderer::submitQuad(nullptr, nullptr, &sf::Color(255, 0, 0, 150), nullptr, body.pos, body.size,
+				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 150), Null, body.pos, body.size,
 									 10, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		}
@@ -569,23 +569,23 @@ void parseComponentsFile(char* filename, FILE* genFile)
 								while(*code++ != '{');
 								break;
 							}
-							if(match(code, "sf::Vector2f"))
+							if(match(code, "Vec2"))
 							{
-								code += 12;
+								code += 4;
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n", componentName);
 								while(*code++ != '{');
 								break;
 							}
-							if(match(code, "sf::Vector2i"))
+							if(match(code, "Vec2i"))
 							{
-								code += 12;
+								code += 5;
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%i, %%i\", c->x, c->y);\n", componentName);
 								while(*code++ != '{');
 								break;
 							}
-							if(match(code, "sf::Vector2u"))
+							if(match(code, "Vec2u"))
 							{
-								code += 12;
+								code += 5;
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%u, %%u\", c->x, c->y);\n", componentName);
 								while(*code++ != '{');
 								break;
@@ -710,15 +710,15 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f\", c->%s);\n", name, name);
 					}
-					else if(match(code, "int"))
+					else if(match(code, "i32"))
 					{
 						code += 3;
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%i\", c->%s);\n", name, name);
 					}
-					else if(match(code, "unsigned"))
+					else if(match(code, "u32"))
 					{
-						code += 8;
+						code += 3;
 						while(!isAlpha(*code)) ++code;
 						if(match(code, "long long")) code += 9;
 						else if(match(code, "long")) code += 4;
@@ -734,6 +734,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = parseVariableName();
 						fprintf(genFile, "if(c->%s) ImGui::Text(\"%s: true\"); else ImGui::Text(\"%s: false\");\n", name, name, name);
 					}
+					// TODO: Add support for u8, i8, maybe even for all integer types
 					else if(match(code, "char"))
 					{
 						code += 4;
@@ -783,9 +784,9 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%s\", c->%s.c_str());\n", name, name);
 					}
-					else if(match(code, "sf::Vector2f"))
+					else if(match(code, "Vec2"))
 					{
-						code += 12;
+						code += 4;
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f, %%f\", c->%s.x, c->%s.y);\n", name, name, name);
 					}

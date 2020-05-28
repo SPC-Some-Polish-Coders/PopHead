@@ -12,10 +12,10 @@ FORCE_INLINE Rect<T>::Rect(sf::Vector2<T> pos, sf::Vector2<T> size) :pos(pos), s
 template <typename T>
 template <typename U>
 FORCE_INLINE Rect<T>::Rect(const Rect<U>& rectangle) :
-	x(static_cast<T>(rectangle.x)),
-	y(static_cast<T>(rectangle.y)),
-	w(static_cast<T>(rectangle.w)),
-	h(static_cast<T>(rectangle.h)) 
+	x(Cast<T>(rectangle.x)),
+	y(Cast<T>(rectangle.y)),
+	w(Cast<T>(rectangle.w)),
+	h(Cast<T>(rectangle.h)) 
 {}
 
 template<typename T>
@@ -98,16 +98,16 @@ FORCE_INLINE bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& interse
     // Rectangles with negative (fliped) dimensions are allowed, so we must handle them correctly
 
     // Compute the min and max of the first rectangle on both axes
-    T r1MinX = std::min(x, static_cast<T>(x + w));
-    T r1MaxX = std::max(x, static_cast<T>(x + w));
-    T r1MinY = std::min(y, static_cast<T>(y + h));
-    T r1MaxY = std::max(y, static_cast<T>(y + h));
+    T r1MinX = std::min(x, Cast<T>(x + w));
+    T r1MaxX = std::max(x, Cast<T>(x + w));
+    T r1MinY = std::min(y, Cast<T>(y + h));
+    T r1MaxY = std::max(y, Cast<T>(y + h));
 
     // Compute the min and max of the second rectangle on both axes
-    T r2MinX = std::min(rectangle.x, static_cast<T>(rectangle.x + rectangle.w));
-    T r2MaxX = std::max(rectangle.x, static_cast<T>(rectangle.x + rectangle.w));
-    T r2MinY = std::min(rectangle.y, static_cast<T>(rectangle.y + rectangle.h));
-    T r2MaxY = std::max(rectangle.y, static_cast<T>(rectangle.y + rectangle.h));
+    T r2MinX = std::min(rectangle.x, Cast<T>(rectangle.x + rectangle.w));
+    T r2MaxX = std::max(rectangle.x, Cast<T>(rectangle.x + rectangle.w));
+    T r2MinY = std::min(rectangle.y, Cast<T>(rectangle.y + rectangle.h));
+    T r2MaxY = std::max(rectangle.y, Cast<T>(rectangle.y + rectangle.h));
 
     // Compute the intersection boundaries
     T interLeft   = std::max(r1MinX, r2MinX);
@@ -129,7 +129,7 @@ FORCE_INLINE bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& interse
 }
 
 template<typename T>
-FORCE_INLINE bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<short>& direction) const
+FORCE_INLINE bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<i16>& direction) const
 {
 	bool collideOnX = x < rect.right() && right() > rect.x;
 	bool collideOnY = y < rect.bottom() && bottom() > rect.y;

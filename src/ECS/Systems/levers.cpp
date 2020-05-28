@@ -47,7 +47,7 @@ void Levers::handleUsedLevers() const
 	}
 }
 
-void Levers::handleListeners(bool isActivated, unsigned leverId) const
+void Levers::handleListeners(bool isActivated, u32 leverId) const
 {
 	auto listenersView = mRegistry.view<component::LeverListener>();
 	for(auto leverListener : listenersView)

@@ -29,7 +29,7 @@ TEST_CASE("Xml parsing", "[Utilities][Xml]")
 	REQUIRE(children.size() == 2);
 
 	// test getChild(), getAttribute() and casting methods
-	unsigned i = 0;
+	u32 i = 0;
 	for(auto& child : children)
 	{
 		auto body = child.getChild("body");
@@ -47,16 +47,16 @@ TEST_CASE("Xml parsing", "[Utilities][Xml]")
 		switch(i)
 		{
 		case 0: {
-			CHECK(pos->toVector2f() == sf::Vector2f(12.4f, 1231.12f));
-			CHECK(z->toUnsignedChar() == 111);
+			CHECK(pos->toVec2() == Vec2(12.4f, 1231.12f));
+			CHECK(z->toU8() == 111);
 			CHECK(width->toChar() == 50);
-			CHECK(height->toUnsigned() == 0);
+			CHECK(height->toU32() == 0);
 		} break;
 
 		case 1: {
-			CHECK(pos->toVector2f() == sf::Vector2f(1.4f, -2.1f));
+			CHECK(pos->toVec2() == Vec2(1.4f, -2.1f));
 			CHECK(z->toFloat() == -20.f);
-			CHECK(width->toInt() == 20);
+			CHECK(width->toI32() == 20);
 			CHECK(height->toString() == "20");
 			auto playerTag = child.getChild("playerTag");
 			CHECK(playerTag);

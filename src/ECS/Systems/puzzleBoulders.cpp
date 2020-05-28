@@ -20,7 +20,7 @@ void PuzzleBoulders::update(float dt)
 		mRegistry.view<component::Player, component::Kinematics, component::BodyRect>().each([&]
 		(auto, const auto& playerKinematics, const auto& playerBody)
 		{
-			if(playerKinematics.acceleration == sf::Vector2f())
+			if(playerKinematics.acceleration == Vec2())
 				mTimeSincePlayerIsPushingBoulder = 0.f;
 
 			auto playerMovesBoulder = [&](float& pushedSince, float& moving)
@@ -40,7 +40,7 @@ void PuzzleBoulders::update(float dt)
 				}
 			};
 
-			auto collidesOnPuzzleGrid = [&](sf::Vector2i pushDir)
+			auto collidesOnPuzzleGrid = [&](Vec2i pushDir)
 			{
 				auto newBoulderGridPos = boulderGridPos + pushDir;
 
@@ -54,19 +54,19 @@ void PuzzleBoulders::update(float dt)
 				}
 
 				// check is boulder not going out of the boulder road
-				sf::Vector2i gridPosOfRoadChunkThatBoulderIsIn;
+				Vec2i gridPosOfRoadChunkThatBoulderIsIn;
 
 				if(newBoulderGridPos.x > 0)
 					gridPosOfRoadChunkThatBoulderIsIn.x = newBoulderGridPos.x - newBoulderGridPos.x % 12;
 				else if(newBoulderGridPos.x < 0)
-					gridPosOfRoadChunkThatBoulderIsIn.x = static_cast<int>(std::floor(static_cast<float>(newBoulderGridPos.x) / 12.f)) * 12;
+					gridPosOfRoadChunkThatBoulderIsIn.x = Cast<i32>(std::floor(Cast<float>(newBoulderGridPos.x) / 12.f)) * 12;
 
 				if(newBoulderGridPos.y > 0)
 					gridPosOfRoadChunkThatBoulderIsIn.y = newBoulderGridPos.y - newBoulderGridPos.y % 12;
 				else if(newBoulderGridPos.y < 0)
-					gridPosOfRoadChunkThatBoulderIsIn.y = static_cast<int>(std::floor(static_cast<float>(newBoulderGridPos.y) / 12.f)) * 12;
+					gridPosOfRoadChunkThatBoulderIsIn.y = Cast<i32>(std::floor(Cast<float>(newBoulderGridPos.y) / 12.f)) * 12;
 
-				sf::Vector2i chunkRelativeBoulderPos = newBoulderGridPos - gridPosOfRoadChunkThatBoulderIsIn;
+				Vec2i chunkRelativeBoulderPos = newBoulderGridPos - gridPosOfRoadChunkThatBoulderIsIn;
 
 				auto roadChunks = mRegistry.view<component::PuzzleGridRoadChunk, component::PuzzleGridPos>();
 				for(auto roadChunkEntity : roadChunks)

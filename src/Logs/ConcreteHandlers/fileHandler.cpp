@@ -3,7 +3,7 @@
 
 namespace {
 
-	std::string numberToStringWithTwoDigits(unsigned int number)
+	std::string numberToStringWithTwoDigits(u32 number)
 	{
 		if (number >= 10)
 			return std::to_string(number);
@@ -15,9 +15,9 @@ ph::FileHandler::FileHandler(std::string fileName)
 {
 	// TODO: change this function to use <chrono> instead of ctime
 
-	auto timePoint = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	auto timepoint = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	tm calendarTime;
-	localtime_s(&calendarTime, &timePoint);
+	localtime_s(&calendarTime, &timepoint);
 
 	fileName += '_' +
 				numberToStringWithTwoDigits(calendarTime.tm_mon + 1) + '-' +

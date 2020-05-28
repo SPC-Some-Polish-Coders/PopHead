@@ -60,7 +60,7 @@ std::optional<Xml> Xml::getChild(const std::string& name) const
 				PH_LOG_INFO("Xml getChild(): " + xml.mContent);
 				return xml;
 			}
-			unsigned count = 0;
+			u32 count = 0;
 			while(true) {
 				end = mContent.find(name, end + 2);
 				if(end == std::string::npos)
@@ -100,7 +100,7 @@ std::optional<Xml> Xml::getChild(const std::string& name) const
 			}
 			if(isSelfClosingTag(begin))
 				continue;
-			unsigned count = 0;
+			u32 count = 0;
 			while(true) {
 				begin = mContent.find(childName, begin + 2);
 				if(begin == std::string::npos)
@@ -165,7 +165,7 @@ std::vector<Xml> Xml::getChildren(const std::string& name) const
 					continue;
 				}
 			}
-			unsigned count = 0;
+			u32 count = 0;
 			while(true) {
 				end = mContent.find(name, end + 2);
 				if(end == std::string::npos)
@@ -207,7 +207,7 @@ std::vector<Xml> Xml::getChildren(const std::string& name) const
 				if(isSelfClosingTag(begin))
 					continue;
 			}
-			unsigned count = 0;
+			u32 count = 0;
 			while(true) {
 				begin = mContent.find(childName, begin + 2);
 				if(begin == std::string::npos)
@@ -300,34 +300,34 @@ std::string Xml::toString() const
 	return mContent.substr(begin, mContent.size() - begin);
 }
 
-const char* Xml::toCstring() const
+const char* Xml::toCString() const
 {
 	return toString().c_str();
 }
 
 bool Xml::toBool() const
 {
-	return Cast::toBool(toString());
+	return ph::toBool(toString());
 }
 
-int Xml::toInt() const
+i32 Xml::toI32() const
 {
 	return std::stoi(toString());
 }
 
-unsigned Xml::toUnsigned() const
+u32 Xml::toU32() const
 {
-	return Cast::toUnsigned(toString());
+	return ph::toU32(toString());
 }
 
-char Xml::toChar() const
+i8 Xml::toI8() const
 {
-	return static_cast<char>(std::stoi(toString()));
+	return Cast<i8>(std::stoi(toString()));
 }
 
-unsigned char Xml::toUnsignedChar() const
+u8 Xml::toU8() const
 {
-	return static_cast<unsigned char>(Cast::toUnsigned(toString()));
+	return Cast<u8>(ph::toU32(toString()));
 }
 
 float Xml::toFloat() const
@@ -337,8 +337,8 @@ float Xml::toFloat() const
 
 sf::Color Xml::toColor() const
 {
-	auto intoUint8 = [](const std::string& str) -> sf::Uint8 {
-		return static_cast<sf::Uint8>(std::stoi(str));
+	auto toU8 = [](const std::string& str) -> u8 {
+		return Cast<u8>(std::stoi(str));
 	};
 
 	if(mContent.find("rgba") != std::string::npos)
@@ -350,11 +350,11 @@ sf::Color Xml::toColor() const
 		commas[1] = mContent.find(',', commas[0] + 1);
 		commas[2] = mContent.find(',', commas[1] + 1);
 
-		sf::Uint8 values[] = {
-			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
-			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
-			intoUint8(mContent.substr(commas[1] + 1, commas[2] - commas[1])),
-			intoUint8(mContent.substr(commas[2] + 1))
+		u8 values[] = {
+			toU8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
+			toU8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
+			toU8(mContent.substr(commas[1] + 1, commas[2] - commas[1])),
+			toU8(mContent.substr(commas[2] + 1))
 		};
 
 		return sf::Color(values[0], values[1], values[2], values[3]);
@@ -367,10 +367,10 @@ sf::Color Xml::toColor() const
 		commas[0] = mContent.find(',');
 		commas[1] = mContent.find(',', commas[0] + 1);
 
-		sf::Uint8 values[] = {
-			intoUint8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
-			intoUint8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
-			intoUint8(mContent.substr(commas[1] + 1))
+		u8 values[] = {
+			toU8(mContent.substr(bracketPos + 1, commas[0] - bracketPos - 1)),
+			toU8(mContent.substr(commas[0] + 1, commas[1] - commas[0])),
+			toU8(mContent.substr(commas[1] + 1))
 		};
 
 		return sf::Color(values[0], values[1], values[2]);
@@ -399,12 +399,12 @@ sf::Color Xml::toColor() const
 		return sf::Color::Black;
 }
 
-sf::Vector2f Xml::toVector2f() const
+Vec2 Xml::toVec2() const
 {
 	size_t comma = mContent.find(',');
 	const std::string x = mContent.substr(0, comma);
 	const std::string y = mContent.substr(comma + 1, std::string::npos);
-	return sf::Vector2f(std::stof(x), std::stof(y));
+	return Vec2(std::stof(x), std::stof(y));
 }
 
 }

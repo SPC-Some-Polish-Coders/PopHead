@@ -8,10 +8,10 @@ namespace ph {
 class SpatializationManager
 {
 public:
-	void setListenerPosition(const sf::Vector2f listenerPosition);
-	float getSpatialVolume(const SoundData, const sf::Vector2f soundPosition, const float volume);
+	void setListenerPosition(const Vec2 listenerPosition);
+	float getSpatialVolume(const SoundData, const Vec2 soundPosition, const float volume);
 private:
-	void init(const SoundData, const sf::Vector2f soundPosition, const float volume);
+	void init(const SoundData, const Vec2 soundPosition, const float volume);
 	float getDistanceBetweenListenerAndSoundSource();
 	bool isListenerOutOfHearableArea();
 	bool isListenerVeryCloseToSoundSource();
@@ -21,8 +21,8 @@ private:
 
 private:
 	SoundData mSoundData;
-	sf::Vector2f mListenerPosition;
-	sf::Vector2f mSoundPosition;
+	Vec2 mListenerPosition;
+	Vec2 mSoundPosition;
 	float mVolume;
 	float mDistanceBetweenListenerAndSoundSource;
 };

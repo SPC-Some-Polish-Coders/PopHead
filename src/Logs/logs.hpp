@@ -7,7 +7,7 @@
 #include "Logs/criticalError.hpp"
 
 #define PH_LOG(logLevel, message)\
-	ph::Logger::createLog(logLevel, message, __FILE__, static_cast<unsigned short>(__LINE__))
+	ph::Logger::createLog(logLevel, message, __FILE__, __LINE__)
 
 #define PH_ASSERT_EXPRESSION(expression, code)\
 	if(!(expression)) code

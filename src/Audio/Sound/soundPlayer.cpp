@@ -63,7 +63,7 @@ void playAmbientSound(const std::string& filePath)
 	playSound(filePath, soundVolume * soundData.mVolumeMultiplier, soundData.mLoop);
 }
 
-void playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition)
+void playSpatialSound(const std::string& filePath, Vec2 soundPosition)
 {
 	removeStoppedSounds();
 	if(sceneMute)
@@ -84,7 +84,7 @@ bool isMuted()
 	return sceneMute;
 }
 
-void setListenerPosition(sf::Vector2f listenerPosition)
+void setListenerPosition(Vec2 listenerPosition)
 {
 	spatializationManager.setListenerPosition(listenerPosition);
 }

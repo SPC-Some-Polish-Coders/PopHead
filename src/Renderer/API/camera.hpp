@@ -11,19 +11,19 @@ class Camera
 public:
 	Camera();
 	Camera(FloatRect& rect);
-	Camera(sf::Vector2f center, sf::Vector2f size);
+	Camera(Vec2 center, Vec2 size);
 
-	void setCenter(sf::Vector2f center);
-	void move(sf::Vector2f offset);
-	sf::Vector2f center() const { return mCenter; }
+	void setCenter(Vec2 center);
+	void move(Vec2 offset);
+	Vec2 center() const { return mCenter; }
 
 	void setRotation(float rotation);
 	void rotate(float rotation);
 	float getRotation() const { return mRotation; }
 
-	void setSize(sf::Vector2f size);
+	void setSize(Vec2 size);
 	void zoom(float factor);
-	sf::Vector2f getSize() const { return mSize; }
+	Vec2 getSize() const { return mSize; }
 
 	const sf::Transform& getViewProjectionMatrix4x4();
 
@@ -31,8 +31,8 @@ public:
 
 private:
 	sf::Transform mViewProjectionMatrix;
-	sf::Vector2f mCenter;
-	sf::Vector2f mSize;
+	Vec2 mCenter;
+	Vec2 mSize;
 	float mRotation;
 	bool mViewProjectionMatrixNeedsUpdate;
 };

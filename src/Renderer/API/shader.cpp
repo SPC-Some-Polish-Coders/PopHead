@@ -7,8 +7,8 @@ namespace ph {
 void Shader::init(ShaderSource& ss)
 {
 	mID = glCreateProgram();
-	int vertexShader = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
-	int fragmentShader = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
+	i32 vertexShader = compileShaderAndGetId(ss.vertexShader, GL_VERTEX_SHADER);
+	i32 fragmentShader = compileShaderAndGetId(ss.fragmentShader, GL_FRAGMENT_SHADER);
 
 	GLCheck( glAttachShader(mID, vertexShader) );
 	GLCheck( glAttachShader(mID, fragmentShader) );
@@ -19,22 +19,23 @@ void Shader::init(ShaderSource& ss)
 	glDeleteShader(fragmentShader);
 }
 
-int Shader::compileShaderAndGetId(const char* sourceCode, const unsigned shaderType)
+i32 Shader::compileShaderAndGetId(const char* sourceCode, u32 shaderType)
 {
-	unsigned shaderId = glCreateShader(shaderType);
-	GLCheck( glShaderSource(shaderId, 1, &sourceCode, nullptr) );
+	u32 shaderId = glCreateShader(shaderType);
+	GLCheck( glShaderSource(shaderId, 1, &sourceCode, Null) );
 	GLCheck( glCompileShader(shaderId) );
 	checkCompilationErrors(shaderId, shaderType);
 	return shaderId;
 }
 
-void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shaderType)
+void Shader::checkCompilationErrors(u32 shaderId, u32 shaderType)
 {
 	#ifndef PH_DISTRIBUTION
-	int success;
+	i32 success;
 	char infoLog[200];
 	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
-	if(!success) {
+	if(!success) 
+	{
 		glGetShaderInfoLog(shaderId, sizeof(infoLog), NULL, infoLog);
 		std::string type = shaderType == GL_VERTEX_SHADER ? "Vertex" : "Fragment";
 		std::cout << type + " shader compilation failed:\n" + infoLog << std::endl;
@@ -46,10 +47,11 @@ void Shader::checkCompilationErrors(const unsigned shaderId, const unsigned shad
 void Shader::checkLinkingErrors()
 {
 	#ifndef PH_DISTRIBUTION
-	int success;
+	i32 success;
 	char infoLog[200];
 	glGetProgramiv(mID, GL_LINK_STATUS, &success);
-	if(!success) {
+	if(!success) 
+	{
 		glGetProgramInfoLog(mID, sizeof(infoLog), NULL, infoLog);
 		PH_EXIT_GAME("Shader linking error:\n" + std::string(infoLog));
 	}
@@ -66,92 +68,72 @@ void Shader::bind() const
 	GLCheck( glUseProgram(mID) );
 }
 
-void Shader::initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding)
+void Shader::initUniformBlock(const char* uniformBlockName, u32 uniformBlockBinding)
 {
 	bind();
-	GLCheck( unsigned uniformBlockIndex = glGetUniformBlockIndex(mID, uniformBlockName) );
+	GLCheck( u32 uniformBlockIndex = glGetUniformBlockIndex(mID, uniformBlockName) );
 	GLCheck( glUniformBlockBinding(mID, uniformBlockIndex, uniformBlockBinding) );
 }
 
-void Shader::setUniformBool(const char* name, const bool value) const
+void Shader::setUniformBool(const char* name, bool value) const
 {
-	GLCheck( glUniform1i(getUniformLocation(name), static_cast<int>(value)) );
+	GLCheck( glUniform1i(getUniformLocation(name), Cast<i32>(value)) );
 }
 
-void Shader::setUniformInt(const char* name, const int value) const
+void Shader::setUniformI32(const char* name, i32 value) const
 {
 	GLCheck( glUniform1i(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformUnsignedInt(const char* name, const unsigned value) const
+void Shader::setUniformU32(const char* name, u32 value) const
 {
 	GLCheck( glUniform1ui(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformFloat(const char* name, const float value) const
+void Shader::setUniformFloat(const char* name, float value) const
 {
 	GLCheck( glUniform1f(getUniformLocation(name), value) );
 }
 
-void Shader::setUniformVector2(const char* name, const sf::Vector2f value) const
+void Shader::setUniformVec2(const char* name, Vec2 value) const
 {
 	GLCheck( glUniform2f(getUniformLocation(name), value.x, value.y) );
 }
 
-void Shader::setUniformVector2(const char* name, const float x, const float y) const
-{
-	GLCheck( glUniform2f(getUniformLocation(name), x, y) );
-}
-
-void Shader::setUniformVector3(const char* name, const sf::Vector3f value) const
-{
-	GLCheck( glUniform3f(getUniformLocation(name), value.x, value.y, value.z) );
-}
-
-void Shader::setUniformVector3(const char* name, const float x, const float y, const float z) const
-{
-	GLCheck( glUniform3f(getUniformLocation(name), x, y, z) );
-}
-
-void Shader::setUniformVector4Color(const char* name, const sf::Color& color) const
+void Shader::setUniformVec4Color(const char* name, sf::Color color) const
 {
 	GLCheck( glUniform4f(getUniformLocation(name),
-		static_cast<float>(color.r) / 255.f, static_cast<float>(color.g) / 255.f,
-		static_cast<float>(color.b) / 255.f, static_cast<float>(color.a) / 255.f
+		Cast<float>(color.r) / 255.f, Cast<float>(color.g) / 255.f,
+		Cast<float>(color.b) / 255.f, Cast<float>(color.a) / 255.f
 	) );
 }
 
-void Shader::setUniformVector4(const char* name, const float x, const float y, const float z, const float w) const
+void Shader::setUniformVec4Rect(const char* name, const FloatRect& r) const
 {
-	GLCheck( glUniform4f(getUniformLocation(name), x, y, z, w) );
+	GLCheck( glUniform4f(getUniformLocation(name), r.x, r.y, r.w, r.h) );
 }
 
-void Shader::setUniformVector4Rect(const char* name, const FloatRect& r) const
-{
-	setUniformVector4(name, r.x, r.y, r.w, r.h);
-}
-
-void Shader::setUniformMatrix4x4(const char* name, const float* transform) const
+void Shader::setUniformMatrix4x4(const char* name, float* transform) const
 {
 	GLCheck( glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, transform) );
 }
 
-void Shader::setUniformFloatArray(const char* name, int count, const float* data) const
+void Shader::setUniformFloatArray(const char* name, i32 count, float* data) const
 {
 	GLCheck( glUniform1fv(getUniformLocation(name), count, data) );
 }
 
-void Shader::setUniformIntArray(const char* name, int count, const int* data) const
+void Shader::setUniformI32Array(const char* name, i32 count, i32* data) const
 {
 	GLCheck( glUniform1iv(getUniformLocation(name), count, data) );
 }
 
-int Shader::getUniformLocation(const char* name) const
+i32 Shader::getUniformLocation(const char* name) const
 {
 	if(mUniformsLocationCache.find(name) != mUniformsLocationCache.end())
 		return mUniformsLocationCache[name];
 
-	GLCheck( int location = glGetUniformLocation(mID, name) );
+	GLCheck( i32 location = glGetUniformLocation(mID, name) );
 	mUniformsLocationCache[name] = location;
 	return location;
 }

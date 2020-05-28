@@ -8,7 +8,7 @@ void clearErrors()
 	while(glGetError() != GL_NO_ERROR);
 }
 
-bool logErrors(const char* functionSignature, const char* fileName, unsigned numberOfLine)
+bool logErrors(const char* functionSignature, const char* fileName, u32 numberOfLine)
 {
 	GLenum errorCode = glGetError();
 	if(errorCode == GL_NO_ERROR)

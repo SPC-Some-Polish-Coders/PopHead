@@ -19,7 +19,7 @@ namespace ph {
 		{
 			DYNAMIC_SECTION("Checking LogLevel::" << logLevelToString(logLevels.at(i)))
 			{
-				Logger::createLog(logLevels.at(i), "my test message", __FILE__, static_cast<unsigned short>(i * 20));
+				Logger::createLog(logLevels.at(i), "my test message", __FILE__, cast<u8>(i * 20));
 
 				CHECK(handler.getRecordsCount() == 1);
 				auto logRecord = handler.getLogRecordFromEnd();

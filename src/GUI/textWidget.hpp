@@ -11,7 +11,7 @@ class TextWidget : public Widget
 public:
 	TextWidget(const char* name);
 
-	void updateCurrent(float dt, unsigned char z) override;
+	void updateCurrent(float dt, u8 z) override;
 
 	void setText(const char* text);
 	void setText(const std::string& text) { mText = text; }

@@ -30,9 +30,9 @@ private:
 	void createNextWave();
 	void startBreakTime();
 	void endBreakTime();
-	std::string addZero(int number);
-	void createNormalZombie(sf::Vector2f position);
-	void createSlowZombie(sf::Vector2f position);
+	std::string addZero(i32 number);
+	void createNormalZombie(Vec2 position);
+	void createSlowZombie(Vec2 position);
 
 private:
 	AIManager& mAIManager;
@@ -40,11 +40,11 @@ private:
 	float mTimeFromStart = 0.f;
 	float mTimeFromBreakTimeStart = 0.f;;
 	float mTimeBeforeStartingFirstWave = 5.f;
-	int mEnemiesToSpawn = 0;
-	int mSlowZombiesToSpawnPerSpawner = 0;
-	int mNormalZombiesToSpawnPerSpawner = 0;
-	int mEnemiesCounter = 0;
-	int mCurrentWave = 0;
+	i32 mEnemiesToSpawn = 0;
+	i32 mSlowZombiesToSpawnPerSpawner = 0;
+	i32 mNormalZombiesToSpawnPerSpawner = 0;
+	i32 mEnemiesCounter = 0;
+	i32 mCurrentWave = 0;
 	bool mIsBreakTime = false;
 	bool mMadeInit = false;
 	bool mHasStartedFirstWave = false;

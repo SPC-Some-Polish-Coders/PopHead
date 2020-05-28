@@ -4,53 +4,53 @@
 namespace ph::Math {
 
 	template<typename T>
-	sf::Vector2<T> getUnitVector(const sf::Vector2<T> vec)
+	Vec2Base<T> getUnitVector(Vec2Base<T> vec)
 	{
-		auto dist = distanceBetweenPoints(sf::Vector2f(), vec);
+		auto dist = distanceBetweenPoints(Vec2(), vec);
 		return vec / dist;
 	}
 
 	template <typename T>
-	sf::Vector2<T> hadamardMul(sf::Vector2<T> a, sf::Vector2<T> b)
+	Vec2Base<T> hadamardMul(Vec2Base<T> a, Vec2Base<T> b)
 	{
-		sf::Vector2<T> res;
+		Vec2Base<T> res;
 		res.x = a.x * b.x;
 		res.y = a.y * b.y;
 		return res;
 	}
 
 	template <typename T>
-	sf::Vector2<T> hadamardDiv(sf::Vector2<T> a, sf::Vector2<T> b)
+	Vec2Base<T> hadamardDiv(Vec2Base<T> a, Vec2Base<T> b)
 	{
-		sf::Vector2<T> res;
+		Vec2Base<T> res;
 		res.x = a.x / b.x;
 		res.y = a.y / b.y;
 		return res;
 	}
 
 	template <typename T>
-	float distanceBetweenPoints(const sf::Vector2<T>& point1, const sf::Vector2<T>& point2)
+	float distanceBetweenPoints(Vec2Base<T> point1, Vec2Base<T> point2)
 	{
 		auto diff1 = point1.x - point2.x;
 		auto diff2 = point1.y - point2.y;
 		diff1 *= diff1;
 		diff2 *= diff2;
-		return static_cast<float>(std::sqrt(diff1 + diff2));
+		return Cast<float>(std::sqrt(diff1 + diff2));
 	}
 
 	template<typename T>
-	sf::Vector2<T> abs(const sf::Vector2<T> vec)
+	Vec2Base<T> abs(Vec2Base<T> vec)
 	{
-		return sf::Vector2<T>(std::abs(vec.x), std::abs(vec.y));
+		return Vec2Base<T>(std::abs(vec.x), std::abs(vec.y));
 	}
 
-	sf::Vector2f getUnitVector(float angle)
+	Vec2 getUnitVector(float angle)
 	{
 		auto radians = degreesToRadians(angle);
-		return sf::Vector2f(std::cosf(radians), std::sinf(radians));
+		return Vec2(std::cosf(radians), std::sinf(radians));
 	}
 
-	float getMagnitude(sf::Vector2f v)
+	float getMagnitude(Vec2 v)
 	{
 		return std::hypotf(v.x, v.y);	
 	}
@@ -65,18 +65,18 @@ namespace ph::Math {
 		return angle * 180.f / pi;
 	}
 
-	sf::Vector2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(const unsigned index, const unsigned numberOfColumns)
+	Vec2u getTwoDimensionalPositionFromOneDimensionalArrayIndex(u32 index, u32 numberOfColumns)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(numberOfColumns != 0, "Number of columns cannot be 0");
-		return sf::Vector2u(index % numberOfColumns, index / numberOfColumns);
+		return Vec2u(index % numberOfColumns, index / numberOfColumns);
 	}
 
-	bool isPointInsideCircle(const sf::Vector2f point, const sf::Vector2f circlePos, const float radius)
+	bool isPointInsideCircle(Vec2 point, Vec2 circlePos, float radius)
 	{
-		return (distanceBetweenPoints(point, circlePos) < radius);
+		return distanceBetweenPoints(point, circlePos) < radius;
 	}
 
-	sf::Vector2f lerp(sf::Vector2f source, sf::Vector2f destination, float speed)
+	Vec2 lerp(Vec2 source, Vec2 destination, float speed)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(speed >= 0.f, "Speed cannot be less than 0");
 		return source + (destination - source) * speed;
@@ -94,7 +94,7 @@ namespace ph::Math {
 		return (std::fabs(a - b) < maxApproximation);
 	}
 
-	bool areApproximatelyEqual(const sf::Vector2f a, const sf::Vector2f b, float maxApproximation)
+	bool areApproximatelyEqual(Vec2 a, Vec2 b, float maxApproximation)
 	{
 		return areApproximatelyEqual(a.x, b.x, maxApproximation) && areApproximatelyEqual(a.y, b.y, maxApproximation);
 	}

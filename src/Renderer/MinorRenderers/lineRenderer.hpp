@@ -16,15 +16,15 @@ public:
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
 
 	void drawLine(const sf::Color& colorA, const sf::Color& colorB,
-	              const sf::Vector2f positionA, const sf::Vector2f positionB, float thickness = 1.f);
+	              const Vec2 positionA, const Vec2 positionB, float thickness = 1.f);
 
 	void submitDebug();
 
 private:
 	Shader mLineShader;
 	const FloatRect* mScreenBounds;
-	unsigned mLineVAO;
-	unsigned mLineVBO;
+	u32 mLineVAO;
+	u32 mLineVBO;
 };
 
 }

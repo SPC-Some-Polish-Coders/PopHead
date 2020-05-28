@@ -111,7 +111,7 @@ namespace ph::system {
 				}
 
 				auto bottomRightOfRect = currentBody.bottomRight();
-				sf::Vector2f rectCorners[4] = { currentBody.pos, {currentBody.x, bottomRightOfRect.y}, {bottomRightOfRect.x, currentBody.y}, bottomRightOfRect };
+				Vec2 rectCorners[4] = { currentBody.pos, {currentBody.x, bottomRightOfRect.y}, {bottomRightOfRect.x, currentBody.y}, bottomRightOfRect };
 				float closestDistance = circCircle.radius;
 				size_t closestCornerIndex = 0;
 

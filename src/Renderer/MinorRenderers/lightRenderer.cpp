@@ -6,13 +6,13 @@
 
 namespace ph {
 
-static unsigned rays; // debug info
+static u32 rays; // debug info
 
-static unsigned lights;
+static u32 lights;
 static bool lightingEnabled = true;
 static bool drawRays = false;
 
-unsigned LightRenderer::getNrOfLights()
+u32 LightRenderer::getNrOfLights()
 {
 	return lights;
 }
@@ -82,7 +82,7 @@ void LightRenderer::flush()
 	if(mLights.empty())
 		return;
 
-	lights = static_cast<unsigned>(mLights.size());
+	lights = Cast<u32>(mLights.size());
 
 	// submit quad which rays will hit if they won't hit anything in the scene
 	submitLightWall(FloatRect(mScreenBounds->x - 100000.f, mScreenBounds->y - 100000.f,
@@ -105,8 +105,8 @@ void LightRenderer::flush()
 				++rays;
 
 				float rad = Math::degreesToRadians(angle);
-				sf::Vector2f rayDir(std::cos(rad), std::sin(rad));
-				sf::Vector2f nearestIntersectionPoint;
+				Vec2 rayDir(std::cos(rad), std::sin(rad));
+				Vec2 nearestIntersectionPoint;
 				float nearestIntersectionDistance = INFINITY;
 				for(FloatRect& wall : mLightWalls)
 				{
@@ -124,8 +124,8 @@ void LightRenderer::flush()
 		// draw light using triangle fan
 		mLightShader.bind();
 		PH_PROFILE_SCOPE("draw light triangle fan");
-		mLightShader.setUniformVector2("lightPos", light.pos);
-		mLightShader.setUniformVector4Color("color", light.color);
+		mLightShader.setUniformVec2("lightPos", light.pos);
+		mLightShader.setUniformVec4Color("color", light.color);
 		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
 		mLightShader.setUniformFloat("a", light.attenuationAddition);
 		mLightShader.setUniformFloat("b", light.attenuationFactor);
@@ -133,12 +133,13 @@ void LightRenderer::flush()
 		glBindVertexArray(mLightTriangleFanVAO);
 		glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<unsigned>(mLightTriangleFanVertexData.size()));
+		glDrawArrays(GL_TRIANGLE_FAN, 0, Cast<u32>(mLightTriangleFanVertexData.size()));
 		mLightTriangleFanVertexData.clear();
 
 		if(drawRays)
 		{
-			for(auto& point : mLightTriangleFanVertexData) {
+			for(auto& point : mLightTriangleFanVertexData) 
+			{
 				Renderer::submitPoint(point, light.color, 0, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
@@ -154,24 +155,25 @@ void LightRenderer::flush()
 	mLights.clear();
 }
 
-RayWallIntersection LightRenderer::getRayWallClosestIntersection(sf::Vector2f rayDir, sf::Vector2f lightPos, FloatRect wall)
+RayWallIntersection LightRenderer::getRayWallClosestIntersection(Vec2 rayDir, Vec2 lightPos, FloatRect wall)
 {
-	sf::Vector2f results[4];
+	Vec2 results[4];
 	results[0] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.pos, wall.topRight());
 	results[1] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.bottomLeft(), wall.bottomRight());
 	results[2] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.pos, wall.bottomLeft());
 	results[3] = getVectorLineIntersectionPoint(rayDir, lightPos, wall.topRight(), wall.bottomRight());
 
 	RayWallIntersection closestIntersection;
-	for(unsigned i = 0; i < 4; ++i) 
+	for(u32 i = 0; i < 4; ++i) 
 	{
-		if(results[i] == Math::nullVector)
+		if(results[i] == Math::nullVec2)
 			continue;
 
 		if(closestIntersection.valid) 
 		{
 			float distance = Math::distanceBetweenPoints(lightPos, results[i]);
-			if(distance < closestIntersection.distance) {
+			if(distance < closestIntersection.distance) 
+			{
 				closestIntersection.distance = distance;
 				closestIntersection.point = results[i];
 			}
@@ -187,7 +189,7 @@ RayWallIntersection LightRenderer::getRayWallClosestIntersection(sf::Vector2f ra
 	return closestIntersection;
 }
 
-sf::Vector2f LightRenderer::getVectorLineIntersectionPoint(sf::Vector2f rayDir, sf::Vector2f lightPos, sf::Vector2f lineP1, sf::Vector2f lineP2)
+Vec2 LightRenderer::getVectorLineIntersectionPoint(Vec2 rayDir, Vec2 lightPos, Vec2 lineP1, Vec2 lineP2)
 {
 	float x1 = lineP1.x;
 	float y1 = lineP1.y;
@@ -201,15 +203,15 @@ sf::Vector2f LightRenderer::getVectorLineIntersectionPoint(sf::Vector2f rayDir, 
 
 	float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	if(den == 0.f)
-		return Math::nullVector; 
+		return Math::nullVec2; 
 
 	float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
 	float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
 	
 	if(t > 0 && t < 1 && u > 0)
-		return sf::Vector2f(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
+		return Vec2(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
-		return Math::nullVector; 
+		return Math::nullVec2; 
 }
 
 }

@@ -16,13 +16,13 @@ namespace ph::TextRenderer {
 void init();
 void shutDown();
 
-void drawText(const char* text, const char* fontFilename, sf::Vector2f position,
-			  float fontSize, sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight);
+void drawText(const char* text, const char* fontFilename, Vec2 position,
+			  float fontSize, sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight);
 
-void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f position, float textAreaWidth,
-				  TextAligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType, bool isAffectedByLight);
+void drawTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,
+				  TextAligment, float fontSize, sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight);
 
-void drawTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, 
-                     const Camera& worldCam, float fontSize, sf::Color textColor, unsigned char z);
+void drawTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
+                     const Camera& worldCam, float fontSize, sf::Color textColor, u8 z);
 }
 

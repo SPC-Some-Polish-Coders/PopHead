@@ -4,7 +4,7 @@ namespace ph::component {
 
 	struct Medkit
 	{
-		int addHealthPoints;
+		i32 addHealthPoints;
 	};
 
 	struct BulletBox // should be removed?
@@ -13,8 +13,8 @@ namespace ph::component {
 
 	struct Bullets
 	{
-		int numOfPistolBullets;
-		int numOfShotgunBullets;
+		i32 numOfPistolBullets;
+		i32 numOfShotgunBullets;
 	};
 }
 

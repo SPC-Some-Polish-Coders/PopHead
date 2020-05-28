@@ -6,7 +6,7 @@ namespace ph {
 
 TEST_CASE("Generated number is from given range", "[Utilities][Random]")
 {
-	for(int i = 0; i < 10; ++i)
+	for(i32 i = 0; i < 10; ++i)
 	{ 
 		DYNAMIC_SECTION("Positive numbers" << i)
 		{
@@ -36,29 +36,29 @@ TEST_CASE("Generated number is from given range", "[Utilities][Random]")
 					CHECK(generatedPositiveNumber == 1.f);
 				}
 			}
-			SECTION("integers") 
+			SECTION("i32egers") 
 			{
 				SECTION("Small range")
 				{
-					int generatedPositiveNumber = Random::generateNumber(2, 4);
+					i32 generatedPositiveNumber = Random::generateNumber(2, 4);
 					CHECK(generatedPositiveNumber >= 2);
 					CHECK(generatedPositiveNumber <= 4);
 				}
 				SECTION("Standard range")
 				{
-					int generatedPositiveNumber = Random::generateNumber(0, 20);
+					i32 generatedPositiveNumber = Random::generateNumber(0, 20);
 					CHECK(generatedPositiveNumber >= 0);
 					CHECK(generatedPositiveNumber <= 20);
 				}
 				SECTION("Big range")
 				{
-					int generatedPositiveNumber = Random::generateNumber(1000, 20000);
+					i32 generatedPositiveNumber = Random::generateNumber(1000, 20000);
 					CHECK(generatedPositiveNumber >= 1000);
 					CHECK(generatedPositiveNumber <= 20000);
 				}
 				SECTION("Limited range")
 				{
-					int generatedPositiveNumber = Random::generateNumber(1, 1);
+					i32 generatedPositiveNumber = Random::generateNumber(1, 1);
 					CHECK(generatedPositiveNumber == 1);
 				}
 			}
@@ -91,29 +91,29 @@ TEST_CASE("Generated number is from given range", "[Utilities][Random]")
 					CHECK(generatedNegativeNumber == -1.f);
 				}
 			}
-			SECTION("integers") 
+			SECTION("i32egers") 
 			{
 				SECTION("Small range")
 				{
-					int generatedNegativeNumber = Random::generateNumber(-4, -2);
+					i32 generatedNegativeNumber = Random::generateNumber(-4, -2);
 					CHECK(generatedNegativeNumber >= -4);
 					CHECK(generatedNegativeNumber <= -2);
 				}
 				SECTION("Standard range")
 				{
-					int generatedNegativeNumber = Random::generateNumber(-20, -10);
+					i32 generatedNegativeNumber = Random::generateNumber(-20, -10);
 					CHECK(generatedNegativeNumber >= -20);
 					CHECK(generatedNegativeNumber <= -10);
 				}
 				SECTION("Big range")
 				{
-					int generatedNegativeNumber = Random::generateNumber(-2000, -1000);
+					i32 generatedNegativeNumber = Random::generateNumber(-2000, -1000);
 					CHECK(generatedNegativeNumber >= -2000);
 					CHECK(generatedNegativeNumber <= -1000);
 				}
 				SECTION("Limited range")
 				{
-					int generatedNegativeNumber = Random::generateNumber(-1, -1);
+					i32 generatedNegativeNumber = Random::generateNumber(-1, -1);
 					CHECK(generatedNegativeNumber == -1);
 				}
 			}
@@ -141,23 +141,23 @@ TEST_CASE("Generated number is from given range", "[Utilities][Random]")
 					CHECK(generatedRealNumber <= 2000.f);
 				}
 			}
-			SECTION("integers")
+			SECTION("i32egers")
 			{
 				SECTION("Small range")
 				{
-					int generatedRealNumber = Random::generateNumber(-2, 2);
+					i32 generatedRealNumber = Random::generateNumber(-2, 2);
 					CHECK(generatedRealNumber >= -2);
 					CHECK(generatedRealNumber <= 2);
 				}
 				SECTION("Standard range")
 				{
-					int generatedRealNumber = Random::generateNumber(-20, 20);
+					i32 generatedRealNumber = Random::generateNumber(-20, 20);
 					CHECK(generatedRealNumber >= -20);
 					CHECK(generatedRealNumber <= 20);
 				}
 				SECTION("Big range")
 				{
-					int generatedRealNumber = Random::generateNumber(-2000, 2000);
+					i32 generatedRealNumber = Random::generateNumber(-2000, 2000);
 					CHECK(generatedRealNumber >= -2000);
 					CHECK(generatedRealNumber <= 2000);
 				}

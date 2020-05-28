@@ -5,7 +5,7 @@
 
 namespace ph {
 
-PathMode AIManager::getZombiePath(sf::Vector2f zombiePosition) const
+PathMode AIManager::getZombiePath(Vec2 zombiePosition) const
 {
 	if (!mIsPlayerOnScene || mAIMode == AIMode::zombieAlwaysWalkRandomly)
 		return { getRandomPath(zombiePosition) };
@@ -23,26 +23,26 @@ PathMode AIManager::getZombiePath(sf::Vector2f zombiePosition) const
 	return { Path() };
 }
 
-bool AIManager::shouldZombiePlayAttackAnimation(sf::Vector2f zombiePosition) const
+bool AIManager::shouldZombiePlayAttackAnimation(Vec2 zombiePosition) const
 {
 	float distanceBetweenZombieAndPlayer = getDistanceBetweenZombieAndPlayer(zombiePosition);
 	return distanceBetweenZombieAndPlayer < 25;
 }
 
-void AIManager::setPlayerPosition(sf::Vector2f playerPosition) 
+void AIManager::setPlayerPosition(Vec2 playerPosition) 
 { 
 	this->mPlayerPosition = playerPosition; 
 	mHasPlayerMovedSinceLastUpdate = true;
 }
 
-void AIManager::registerMapSize(sf::Vector2u mapSizeInTiles)
+void AIManager::registerMapSize(Vec2u mapSizeInTiles)
 {
 	mObstacleGrid = ObstacleGrid(mapSizeInTiles.x, mapSizeInTiles.y);
 }
 
-void AIManager::registerObstacle(sf::Vector2f gridPosition)
+void AIManager::registerObstacle(Vec2 gridPosition)
 {
-	mObstacleGrid.registerObstacle(static_cast<size_t>(gridPosition.x), static_cast<size_t>(gridPosition.y));
+	mObstacleGrid.registerObstacle(Cast<size_t>(gridPosition.x), Cast<size_t>(gridPosition.y));
 }
 
 void AIManager::update()
@@ -50,7 +50,7 @@ void AIManager::update()
 	mHasPlayerMovedSinceLastUpdate = false;
 }
 
-float AIManager::getDistanceBetweenZombieAndPlayer(sf::Vector2f zombiePosition) const
+float AIManager::getDistanceBetweenZombieAndPlayer(Vec2 zombiePosition) const
 {
 	float legX = std::abs(zombiePosition.x - mPlayerPosition.x);
 	float legY = std::abs(zombiePosition.y - mPlayerPosition.y);
@@ -58,11 +58,11 @@ float AIManager::getDistanceBetweenZombieAndPlayer(sf::Vector2f zombiePosition) 
 	return distance;
 }
 
-Path AIManager::getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosition) const
+Path AIManager::getPath(Vec2 startPosition, Vec2 destinationPosition) const
 {
 	auto dest = toNodePosition(destinationPosition);
 	if (mObstacleGrid.isObstacle(dest.x, dest.y))
-		dest += sf::Vector2i(1, 1);
+		dest += Vec2i(1, 1);
 
 	AStarAlgorithm a(mObstacleGrid, toNodePosition(startPosition), dest);
 	auto path = a.getPath();
@@ -71,12 +71,12 @@ Path AIManager::getPath(sf::Vector2f startPosition, sf::Vector2f destinationPosi
 	return path;
 }
 
-sf::Vector2i AIManager::toNodePosition(sf::Vector2f position) const
+Vec2i AIManager::toNodePosition(Vec2 position) const
 {
-	return static_cast<sf::Vector2i>(sf::Vector2f(position.x / mTileSize.x, position.y / mTileSize.y));
+	return Cast<Vec2i>(Vec2(position.x / mTileSize.x, position.y / mTileSize.y));
 }
 
-Path AIManager::getRandomPath(sf::Vector2f startPosition) const
+Path AIManager::getRandomPath(Vec2 startPosition) const
 {
 	RandomPathAlgorithm rpa(mObstacleGrid, toNodePosition(startPosition));
 	return rpa.getRandomPath();

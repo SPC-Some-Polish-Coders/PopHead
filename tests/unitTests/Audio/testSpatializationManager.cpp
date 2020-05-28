@@ -7,8 +7,8 @@ namespace ph {
 TEST_CASE("Spatialization is properly computed", "[Audio][SpatializationManager]")
 {
 	SpatializationManager spatializationManager;
-	sf::Vector2f soundPosition(100.f, 150.f);
-	sf::Vector2f listenerPosition(100.f, 100.f);
+	Vec2 soundPosition(100.f, 150.f);
+	Vec2 listenerPosition(100.f, 100.f);
 	SoundData soundData;
 	float volume = 20.f;
 

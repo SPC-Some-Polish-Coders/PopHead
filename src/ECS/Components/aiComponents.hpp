@@ -8,7 +8,7 @@ namespace ph::component {
 	struct Zombie
 	{
 		PathMode pathMode;
-		sf::Vector2f currentDirectionVector;
+		Vec2 currentDirectionVector;
 		float timeFromStartingThisMove = 0.f;
 		float timeFromLastGrowl;
 		float timeToMoveToAnotherTile;

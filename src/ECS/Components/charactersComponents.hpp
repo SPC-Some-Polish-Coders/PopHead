@@ -6,13 +6,13 @@ namespace ph::component {
 	
 	struct Health
 	{
-		int healthPoints;
-		int maxHealthPoints;
+		i32 healthPoints;
+		i32 maxHealthPoints;
 	};
 
 	struct Damage
 	{
-		int damageDealt;
+		i32 damageDealt;
 	};
 	
 	struct Player {};
@@ -21,9 +21,9 @@ namespace ph::component {
 
 	struct InPlayerGunAttackArea {};
 
-	struct FaceDirection : public sf::Vector2f 
+	struct FaceDirection : public Vec2 
 	{
-		using sf::Vector2f::operator=;
+		using Vec2::operator=;
 	};
 
 	struct GunAttacker // @no-debugger
@@ -43,7 +43,7 @@ namespace ph::component {
 
 	struct DamageTag // @no-debugger
 	{
-		int amountOfDamage;
+		i32 amountOfDamage;
 	};
 
 	struct CollisionWithPlayer
@@ -59,8 +59,8 @@ namespace ph::component {
 
 	struct LastingShot // @no-debugger
 	{
-		sf::Vector2f startingShotPos;
-		sf::Vector2f endingShotPos;
+		Vec2 startingShotPos;
+		Vec2 endingShotPos;
 	};
 
 	struct CurrentGun {}; // @no-debugger

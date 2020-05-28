@@ -38,13 +38,13 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::submitPoint(sf::Vector2f pos, const sf::Color& color, float z, float size)
+void PointRenderer::submitPoint(Vec2 pos, const sf::Color& color, float z, float size)
 {
 	if(!isInsideScreen(pos, size))
 		return;
 
 	PointVertexData point;
-	point.color = Cast::toNormalizedColorVector4f(color);
+	point.color = toNormalizedColorVec4(color);
 	point.position = pos;
 	point.size = size * (360.f / mScreenBounds->h);
 	point.z = z;
@@ -62,12 +62,12 @@ void PointRenderer::flush()
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PointVertexData) * mSubmitedPointsVertexData.size(), mSubmitedPointsVertexData.data(), GL_STATIC_DRAW);
 
-	glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(mSubmitedPointsVertexData.size()));
+	glDrawArrays(GL_POINTS, 0, Cast<GLsizei>(mSubmitedPointsVertexData.size()));
 
 	mSubmitedPointsVertexData.clear();
 }
 
-bool PointRenderer::isInsideScreen(sf::Vector2f pos, float size)
+bool PointRenderer::isInsideScreen(Vec2 pos, float size)
 {
 	if(size == 1.f)
 	{
@@ -75,7 +75,7 @@ bool PointRenderer::isInsideScreen(sf::Vector2f pos, float size)
 	}
 	else 
 	{
-		const float halfSize = size / 2;
+		float halfSize = size / 2;
 		FloatRect pointRect(pos.x - halfSize, pos.y - halfSize, size, size);
 		return intersect(*mScreenBounds, pointRect);
 	}
@@ -83,7 +83,7 @@ bool PointRenderer::isInsideScreen(sf::Vector2f pos, float size)
 
 void PointRenderer::submitDebug()
 {
-	if(ImGui::BeginTabItem("point renderer"))
+	if(ImGui::BeginTabItem("Point renderer"))
 	{
 		ImGui::Text("drawn points %u", mSubmitedPointsVertexData.size());
 		ImGui::Text("draw calls: 1 (it is always 1)");

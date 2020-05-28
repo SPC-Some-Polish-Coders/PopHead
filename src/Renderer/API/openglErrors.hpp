@@ -16,7 +16,7 @@ namespace ph::OpenGLErrors
 		ASSERT(OpenGLErrors::logErrors(#x, __FILE__, __LINE__));
 
 void clearErrors();
-bool logErrors(const char* functionSignature, const char* fileName, unsigned numberOfLine);
+bool logErrors(const char* functionSignature, const char* fileName, u32 numberOfLine);
 
 #else
 #define ASSERT(x) x;

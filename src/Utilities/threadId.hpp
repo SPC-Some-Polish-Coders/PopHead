@@ -18,6 +18,6 @@ private:
 private:
 	static std::map<std::thread::id, size_t> mHardwareToFriendlyId;
 	static std::mutex mDataMutex;
-	static thread_local int mCurrentFriendlyId;
+	static thread_local i32 mCurrentFriendlyId;
 };
 }

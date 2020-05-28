@@ -53,9 +53,9 @@ namespace ph {
 
 			SizeSpecificFontData sizeSpecificFontData;
 			Shader shader;
-			unsigned vao, vbo, ibo;
+			u32 vao, vbo, ibo;
 		};
-		inline static FontDebugRendererData* sData = nullptr;
+		inline static FontDebugRendererData* sData = Null;
 	};
 
 }

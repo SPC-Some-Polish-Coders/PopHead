@@ -27,12 +27,12 @@ Interface* getInterface(const char* name)
 	for(auto& interface : mInterfaces)
 		if(std::strcmp(interface.getName(), name) == 0)
 			return &interface;
-	return nullptr;
+	return Null;
 }
 
 bool hasInterface(const char* name)
 {
-	return getInterface(name) != nullptr;
+	return getInterface(name) != Null;
 }
 
 void deleteInterface(const char* name)
@@ -57,7 +57,7 @@ void hideInterface(const char* name)
 void handleEvent(sf::Event e)
 {
 	if(e.type == sf::Event::Resized)
-		Widget::setScreenSize(sf::Vector2f(float(e.size.width), float(e.size.height)));
+		Widget::setScreenSize(Vec2(Cast<float>(e.size.width), Cast<float>(e.size.height)));
 
 	for(auto& interface : mInterfaces)
 		if(interface.isActive())

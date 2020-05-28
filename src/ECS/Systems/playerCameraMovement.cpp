@@ -107,7 +107,7 @@ void PlayerCameraMovement::update(float dt)
 			{
 				// handle camera movement in edge area 
 
-				sf::Vector2f edgeAreaSize = {camRoom.edgeAreaSize * camRoomBody.w, camRoom.edgeAreaSize * camRoomBody.h};
+				Vec2 edgeAreaSize = {camRoom.edgeAreaSize * camRoomBody.w, camRoom.edgeAreaSize * camRoomBody.h};
 
 				FloatRect centerArea = camRoomBody;
 				centerArea.x += edgeAreaSize.x;

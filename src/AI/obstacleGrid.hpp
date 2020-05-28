@@ -13,7 +13,7 @@ public:
 	ObstacleGrid(std::vector<std::vector<bool>> obstacles, size_t columns, size_t rows);
 
 	void registerObstacle(size_t column, size_t row);
-	bool isObstacle(int column, int row) const;
+	bool isObstacle(i32 column, i32 row) const;
 
 	size_t getColumnsCount() const { return mColumns; } 
 	size_t getRowsCount() const { return mRows; }

@@ -6,31 +6,32 @@
 
 namespace ph::system {
 
-	class GunAttacks : public System
-	{
-	public:
-		using System::System;
+class GunAttacks : public System
+{
+public:
+	using System::System;
 
-		void update(float dt) override;
-		void onEvent(sf::Event) override;
+	void update(float dt) override;
+	void onEvent(sf::Event) override;
 
-	private:
-		void handlePendingGunAttacks() const;
-		sf::Vector2f getBulletStartingPosition(sf::Vector2f playerFaceDirection) const;
-		void tagEnemiesInGunAttackArea(sf::Vector2f playerFaceDirection, FloatRect playerBody, sf::Vector2f gunSize,
-		                               float range, float deflectionAngle, bool* wasOpponentHitOut) const;
-		std::vector<sf::Vector2f> performShoot(sf::Vector2f playerFaceDirection, sf::Vector2f startingBulletPos, float range,
-		                                       float deflectionAngle, int damage, int numberOfBullets) const;
-		sf::Vector2f getBulletDirection(sf::Vector2f playerFaceDirection, float deflection) const;
-		sf::Vector2f getCurrentPosition(sf::Vector2f bulletDirection, sf::Vector2f startingPos, int bulletDistance) const;
-		void clearInGunAttackAreaTags() const;
+private:
+	void handlePendingGunAttacks() const;
+	Vec2 getBulletStartingPosition(Vec2 playerFaceDirection) const;
+	void tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect playerBody, Vec2 gunSize,
+								   float range, float deflectionAngle, bool* wasOpponentHitOut) const;
+	std::vector<Vec2> performShoot(Vec2 playerFaceDirection, Vec2 startingBulletPos, float range,
+								   float deflectionAngle, i32 damage, i32 numberOfBullets) const;
+	Vec2 getBulletDirection(Vec2 playerFaceDirection, float deflection) const;
+	Vec2 getCurrentPosition(Vec2 bulletDirection, Vec2 startingPos, i32 bulletDistance) const;
+	void clearInGunAttackAreaTags() const;
 
-		void createShotImage(sf::Vector2f shotsStartingPosition, const std::vector<sf::Vector2f>& shots, const std::string& soundFilename) const;
-		void handleLastingBullets() const;
-		void shakeCamera(float magnitude, bool smooth) const; 
+	void createShotImage(Vec2 shotsStartingPosition, const std::vector<Vec2>& shots, const std::string& soundFilename) const;
+	void handleLastingBullets() const;
+	void shakeCamera(float magnitude, bool smooth) const; 
 
-	public:
-		inline static bool shootInputDisabled = false;
-		inline static bool changeWeaponInputDisabled = false;
-	};
+public:
+	inline static bool shootInputDisabled = false;
+	inline static bool changeWeaponInputDisabled = false;
+};
+
 }

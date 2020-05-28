@@ -11,9 +11,7 @@
 
 namespace ph {
 
-namespace {
-	SceneManager* sceneManager = nullptr;
-}
+static SceneManager* sceneManager = Null;
 
 void XmlGuiParser::init(SceneManager* sm)
 {
@@ -55,21 +53,29 @@ void XmlGuiParser::parseChildren(const Xml& widgetNode, WidgetParent* widgetPare
 	parseTemplateAttributes = [this, &parseTemplateAttributes](const Xml* widgetNode, Widget* widget, WidgetType widgetType)
 	{
 		if(auto templateName = widgetNode->getAttribute("template"))
+		{
 			for(auto& widgetTemplate : mWidgetTemplates)
+			{
 				if(auto name = widgetTemplate.getAttribute("name"))
+				{
 					if(name->toString() == templateName->toString()) 
 					{
 						parseTemplateAttributes(&widgetTemplate, widget, WidgetType::Widget);
 						parseWidgetAttributes(widgetTemplate, widget);
-						if(widgetType == WidgetType::TextWidget) {
+						if(widgetType == WidgetType::TextWidget) 
+						{
 							parseTemplateAttributes(&widgetTemplate, widget, WidgetType::TextWidget);
 							parseTextWidgetAttributes(widgetTemplate, dynamic_cast<TextWidget*>(widget));
 						}
-						else if(widgetType == WidgetType::SliderWidget) {
+						else if(widgetType == WidgetType::SliderWidget) 
+						{
 							parseTemplateAttributes(&widgetTemplate, widget, WidgetType::SliderWidget);
 							parseSliderWidgetAttributes(widgetTemplate, dynamic_cast<SliderWidget*>(widget));
 						}
 					}
+				}
+			}
+		}
 	};
 
 	auto widgets = widgetNode.getChildren("widget");
@@ -116,27 +122,27 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 		widget->setTexture(&getTexture(path));
 	}
 	if(auto size = widgetNode.getAttribute("size"))
-		widget->setSize(size->toVector2f());
+		widget->setSize(size->toVec2());
 	if(auto vel = widgetNode.getAttribute("velocity"))
-		widget->setVelocity(vel->toVector2f());
+		widget->setVelocity(vel->toVec2());
 	if(auto pos = widgetNode.getAttribute("centerPos"))
-		widget->setCenterPosition(pos->toVector2f());
+		widget->setCenterPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("leftCenterPos"))
-		widget->setLeftCenterPosition(pos->toVector2f());
+		widget->setLeftCenterPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("rightCenterPos"))
-		widget->setRightCenterPosition(pos->toVector2f());
+		widget->setRightCenterPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("topCenterPos"))
-		widget->setTopCenterPosition(pos->toVector2f());
+		widget->setTopCenterPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("bottomCenterPos"))
-		widget->setBottomCenterPosition(pos->toVector2f());
+		widget->setBottomCenterPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("topLeftPos"))
-		widget->setTopLeftPosition(pos->toVector2f());
+		widget->setTopLeftPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("topRightPos"))
-		widget->setTopRightPosition(pos->toVector2f());
+		widget->setTopRightPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("bottomLeftPos"))
-		widget->setBottomLeftPosition(pos->toVector2f());
+		widget->setBottomLeftPosition(pos->toVec2());
 	if(auto pos = widgetNode.getAttribute("bottomRightPos"))
-		widget->setBottomRightPosition(pos->toVector2f());
+		widget->setBottomRightPosition(pos->toVec2());
 	if(auto color = widgetNode.getAttribute("color"))
 		widget->setColor(color->toColor());
 	if(auto hide = widgetNode.getAttribute("hide"))
@@ -153,7 +159,8 @@ void XmlGuiParser::parseWidgetAttributes(const Xml& widgetNode, Widget* widget) 
 
 void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidget* widget) const
 {
-	if(auto aligment = textWidgetTag.getAttribute("textAligment")) {
+	if(auto aligment = textWidgetTag.getAttribute("textAligment")) 
+	{
 		const std::string aligmentStr = aligment->toString();
 		if(aligmentStr == "center")
 			widget->setTextAligment(TextAligment::center);
@@ -174,18 +181,20 @@ void XmlGuiParser::parseTextWidgetAttributes(const Xml& textWidgetTag, TextWidge
 
 void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidget* widget) const
 {
-	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) {
+	if(auto iconTexturePath = widgetTag.getAttribute("iconTexturePath")) 
+	{
 		const std::string path = "textures/" + iconTexturePath->toString();
 		PH_ASSERT_CRITICAL(loadTexture(path, false), "XmlGuiParser error: Icon texture path wasn't properly loaded " + path)
 		widget->setIconTexture(&getTexture(path));
 	}
 	if(auto iconSize = widgetTag.getAttribute("iconSize"))
-		widget->setIconSize(iconSize->toVector2f());
+		widget->setIconSize(iconSize->toVec2());
 
 	auto getSliderValue = [](const Xml& sliderValueNode)
 	{
 		const std::string sliderValueStr = sliderValueNode.toString();
-		if(sliderValueStr.find("get:") != std::string::npos) {
+		if(sliderValueStr.find("get:") != std::string::npos) 
+		{
 			std::string_view varName(sliderValueStr);
 			varName.remove_prefix(4);
 			if(varName == "SoundVolume")
@@ -194,7 +203,8 @@ void XmlGuiParser::parseSliderWidgetAttributes(const Xml& widgetTag, SliderWidge
 				return MusicPlayer::getVolume();
 			PH_EXIT_GAME("XmlGuiParser error: You're trying to get unknown variable \"get:" + std::string(varName.data()));
 		}
-		else {
+		else 
+		{
 			return sliderValueNode.toFloat();
 		}
 	};
@@ -212,30 +222,37 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	auto name = actionStr.substr(0, colonPos);
 	auto data = actionStr.substr(colonPos + 1);
 
-	if(name == "replaceScene") {
+	if(name == "replaceScene") 
+	{
 		return [data](Widget*) { sceneManager->replaceScene("scenes/" + data); };
 	}
-	else if(name == "loadLastSave") {
+	else if(name == "loadLastSave") 
+	{
 		return [](Widget*) { sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath()); };
 	}
-	else if(name == "set") {
+	else if(name == "set") 
+	{
 		if(data == "MusicVolume")
-			return [](Widget* widget) { MusicPlayer::setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
+			return [](Widget* widget) { MusicPlayer::setVolume(Cast<SliderWidget*>(widget)->getSliderValue()); };
 		if(data == "SoundVolume")
-			return [](Widget* widget) { SoundPlayer::setVolume(static_cast<SliderWidget*>(widget)->getSliderValue()); };
+			return [](Widget* widget) { SoundPlayer::setVolume(Cast<SliderWidget*>(widget)->getSliderValue()); };
 	}
-	else if(name == "closeGame") {
+	else if(name == "closeGame") 
+	{
 		return [](Widget*) { Game::close(); };
 	}
-	else if(name == "hideGuiInterface") {
+	else if(name == "hideGuiInterface") 
+	{
 		return [data](Widget*) {GUI::hideInterface(data.c_str()); };
 	}
-	else if(name == "showGuiInterface") {
+	else if(name == "showGuiInterface") 
+	{
 		return [data](Widget*) {GUI::showInterface(data.c_str()); };
 	}
-	else if(name == "setGamePause") {
+	else if(name == "setGamePause") 
+	{
 		return [data](Widget*) {
-			bool pause = Cast::toBool(data);
+			bool pause = toBool(data);
 			system::System::setPause(pause);
 			pause ? GUI::showInterface("pauseScreen") : GUI::hideInterface("pauseScreen");
 		};

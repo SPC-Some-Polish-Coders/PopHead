@@ -3,7 +3,7 @@
 
 namespace ph {
 
-AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const sf::Vector2i& startNodePosition, const sf::Vector2i& destinationNodePosition)
+AStarAlgorithm::AStarAlgorithm(const ObstacleGrid& obstacleGrid, const Vec2i& startNodePosition, const Vec2i& destinationNodePosition)
 	: mNodesGrid(obstacleGrid, destinationNodePosition)
 	, mStartNodePosition(startNodePosition)
 	, mDestinationNodePosition(destinationNodePosition)
@@ -60,8 +60,8 @@ Direction AStarAlgorithm::getDirectionBetweenNodes(const NodesGrid::Node& startN
 	auto& startPos = startNode.mPosition;
 	auto& endPos = endNode.mPosition;
 
-	short verticalDirection = 0;    // 0 - none, 1 - north, 2 - south
-	short horizontalDirection = 0;  // 0 - none, 1 - east, 2 - west
+	i16 verticalDirection = 0;    // 0 - none, 1 - north, 2 - south
+	i16 horizontalDirection = 0;  // 0 - none, 1 - east, 2 - west
 
 	if (endPos.x > startPos.x)
 		horizontalDirection = 1;

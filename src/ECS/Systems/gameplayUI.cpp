@@ -32,7 +32,7 @@ void GameplayUI::update(float dt)
 
 		// set health counter
 		if(mRegistry.has<component::Health>(player)) {
-			const int playerHP = mRegistry.get<component::Health>(player).healthPoints;
+			const i32 playerHP = mRegistry.get<component::Health>(player).healthPoints;
 			std::sprintf(string, "%i", playerHP);
 			dynamic_cast<TextWidget*>(gameplayCounters->getWidget("vitalityCounter"))->setText(string);
 		}

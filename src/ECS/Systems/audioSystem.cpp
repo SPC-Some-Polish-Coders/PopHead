@@ -23,16 +23,17 @@ namespace ph::system {
 			return;
 
 		// get player position
-		sf::Vector2f playerPos(-10000, -10000);
-		auto playerView = mRegistry.view<component::Player, component::BodyRect>();
-		playerView.each([&playerPos](const component::Player, const component::BodyRect& body) {
+		Vec2 playerPos(-10000, -10000);
+		mRegistry.view<component::Player, component::BodyRect>().each([&playerPos]
+		(const component::Player, const component::BodyRect& body)
+		{
 			playerPos = body.center();
 		});
 
 		// play and destroy spatial sounds
 		SoundPlayer::setListenerPosition(playerPos);
 		auto spatialSoundsView = mRegistry.view<component::SpatialSound, component::BodyRect>();
-		for(auto& entity : spatialSoundsView)
+		for(auto entity : spatialSoundsView)
 		{
 			const auto& [spatialSound, body] = spatialSoundsView.get<component::SpatialSound, component::BodyRect>(entity);
 			SoundPlayer::playSpatialSound(spatialSound.filepath, body.center());
@@ -41,7 +42,7 @@ namespace ph::system {
 
 		// play and destroy ambient sounds
 		auto ambientSoundsView = mRegistry.view<component::AmbientSound>();
-		for(auto& entity : ambientSoundsView)
+		for(auto entity : ambientSoundsView)
 		{
 			const auto& ambientSound = ambientSoundsView.get<component::AmbientSound>(entity);
 			SoundPlayer::playAmbientSound(ambientSound.filepath);
@@ -57,7 +58,7 @@ namespace ph::system {
 		auto enemiesView = mRegistry.view<component::Damage, component::BodyRect>();
 		enemiesView.each([&theClosestEnemyDistanceFromPlayer, playerPos](const component::Damage, const component::BodyRect& body) 
 		{
-			const sf::Vector2f enemyPos = body.center();
+			const Vec2 enemyPos = body.center();
 			const float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
 			if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
 				theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
@@ -75,7 +76,8 @@ namespace ph::system {
 		else
 			themeTypeWhichShouldBePlayed = mCurrentlyPlayerTheme;
 		
-		if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) {
+		if(themeTypeWhichShouldBePlayed != mCurrentlyPlayerTheme) 
+		{
 			mCurrentlyPlayerTheme = themeTypeWhichShouldBePlayed;
 			if(mCurrentlyPlayerTheme == Theme::Fight)
 				MusicPlayer::playFromMusicState("fight");

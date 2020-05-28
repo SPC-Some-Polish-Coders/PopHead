@@ -9,9 +9,9 @@ namespace ph::SoundPlayer
 	void shutdown();
 
 	void playAmbientSound(const std::string& filePath);
-	void playSpatialSound(const std::string& filePath, sf::Vector2f soundPosition);
+	void playSpatialSound(const std::string& filePath, Vec2 soundPosition);
 
-	void setListenerPosition(sf::Vector2f listenerPosition);
+	void setListenerPosition(Vec2 listenerPosition);
 	void setMuted(bool muted);
 	void setSceneMute(bool mute);
 	bool isMuted();

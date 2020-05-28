@@ -30,7 +30,7 @@ void MeleeAttacks::update(float dt)
 	for(auto player : players)
 	{
 		const auto& [faceDirection, playerBody] = players.get<component::FaceDirection, component::BodyRect>(player);
-		const sf::Vector2f playerBodyCenter = playerBody.center();
+		const Vec2 playerBodyCenter = playerBody.center();
 
 		auto currentMeleeWeaponView = mRegistry.view<component::CurrentMeleeWeapon, component::MeleeProperties, component::RenderQuad, component::BodyRect>();
 
@@ -50,14 +50,14 @@ void MeleeAttacks::update(float dt)
 				// deal damage, push enemy and shake camera
 				FloatRect attackArea(
 					playerBodyCenter - sf::Vector2(meleeProperties.range, meleeProperties.range),
-					sf::Vector2f(meleeProperties.range * 2, meleeProperties.range * 2)
+					Vec2(meleeProperties.range * 2, meleeProperties.range * 2)
 				);
 				bool wasEnemyHit = false;
 				auto enemies = mRegistry.view<component::Killable, component::BodyRect, component::Kinematics>(entt::exclude<component::Player>);
 				for(auto enemy : enemies)
 				{
 					const auto& [enemyBody, kinematics] = enemies.get<component::BodyRect, component::Kinematics>(enemy);
-					const sf::Vector2f enemyBodyCenter = enemyBody.center();
+					const Vec2 enemyBodyCenter = enemyBody.center();
 					if(intersect(attackArea, enemyBody))
 					{
 						float enemyAngle = std::atan2f(enemyBodyCenter.y - playerBodyCenter.y, enemyBodyCenter.x - playerBodyCenter.x);
@@ -65,7 +65,7 @@ void MeleeAttacks::update(float dt)
 						if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10.f && enemyAngle <= mStartWeaponRotation + 10.f) 
 						{
 							mRegistry.assign_or_replace<component::DamageTag>(enemy, meleeProperties.damage);
-							kinematics.vel = sf::Vector2f(faceDirection.x, faceDirection.y) * 300.f;
+							kinematics.vel = Vec2(faceDirection.x, faceDirection.y) * 300.f;
 							kinematics.friction = 0.005f;
 							kinematics.frictionLerpSpeed = 0.033f;
 							wasEnemyHit = true;
@@ -91,7 +91,7 @@ void MeleeAttacks::update(float dt)
 			if(mShouldWeaponBeRendered)
 			{
 				// set weapon position
-				weaponBody.pos = playerBody.center() - sf::Vector2f(12, 12);
+				weaponBody.pos = playerBody.center() - Vec2(12, 12);
 
 				// rotate weapon
 				constexpr float anglesPerSecond = 240.f;
@@ -107,7 +107,7 @@ void MeleeAttacks::update(float dt)
 	}
 }
 
-float MeleeAttacks::getStartAttackRotation(sf::Vector2f faceDirection) const
+float MeleeAttacks::getStartAttackRotation(Vec2 faceDirection) const
 {
 	if(faceDirection == PH_EAST)
 		return 90.f;

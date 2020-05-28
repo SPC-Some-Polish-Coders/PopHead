@@ -11,8 +11,8 @@ namespace ph::component {
 	{
 		struct Wave
 		{
-			unsigned normalZombiesToSpawn;
-			unsigned slowZombiesToSpawn;
+			u32 normalZombiesToSpawn;
+			u32 slowZombiesToSpawn;
 		};
 		std::array<Wave, 10> waves;
 		float timeFromLastSpawn = 0.5f;
@@ -39,25 +39,25 @@ namespace ph::component {
 
 	struct PushingArea
 	{
-		sf::Vector2f pushForce;
+		Vec2 pushForce;
 	};
 
 	struct Entrance
 	{
 		std::string entranceDestination;
-		sf::Vector2f playerSpawnPosition;
+		Vec2 playerSpawnPosition;
 	};
 
 	struct Lever
 	{
-		unsigned id;
+		u32 id;
 		bool isActivated;
 		bool turnOffAfterSwitch;
 	};
 
 	struct LeverListener
 	{
-		unsigned observedLeverId;
+		u32 observedLeverId;
 		bool isActivated;
 	};
 
@@ -68,8 +68,8 @@ namespace ph::component {
 
 	struct PressurePlate
 	{
-		unsigned puzzleId;
-		unsigned id;
+		u32 puzzleId;
+		u32 id;
 		PuzzleColor pressedByColor;
 		bool isPressed = false;
 		bool isPressIrreversible;
@@ -88,9 +88,9 @@ namespace ph::component {
 		bool movedGridPosInThisMove = false;
 	};
 
-	struct PuzzleGridPos : public sf::Vector2i 
+	struct PuzzleGridPos : public Vec2i 
 	{
-		using sf::Vector2i::operator=;
+		using Vec2i::operator=;
 	};
 
 	struct PuzzleGridRoadChunk
@@ -100,15 +100,15 @@ namespace ph::component {
 
 	struct Gate
 	{
-		unsigned id;
+		u32 id;
 		bool previouslyOpen = false; 
 		bool open = false;
 	};
 
 	struct Spikes 
 	{
-		unsigned puzzleId;
-		unsigned id;
+		u32 puzzleId;
+		u32 id;
 		float timeToChange; 
 		float changeFrequency;
 		bool changes;
@@ -120,9 +120,9 @@ namespace ph::component {
 		std::string shotSoundFilepath;
 		float range;
 		float deflectionAngle;
-		int damage;
-		int numberOfBullets;
-		unsigned gunId;
+		i32 damage;
+		i32 numberOfBullets;
+		u32 gunId;
 
 		enum class Type { Pistol, Shotgun };
 		Type type;
@@ -134,14 +134,14 @@ namespace ph::component {
 		float rotationRange;
 		float rotationSpeed;
 		float range;
-		int damage;
+		i32 damage;
 	};
 
 	struct Weather {}; // @no-debugger
 
 	struct SavePoint 
 	{
-		bool isIntersectingPlayer = false;
+		bool isintersectingPlayer = false;
 		float timeSincePlayerSteppedOnIt = 2.f;
 	};
 

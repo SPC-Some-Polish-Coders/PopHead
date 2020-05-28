@@ -1,13 +1,9 @@
 #pragma once
 
 #include "Utilities/rect.hpp"
-#include <SFML/System/Vector2.hpp>
-#include <SFML/System/Vector3.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <string>
 #include <unordered_map>
-#include <optional>
-#include <map>
 
 namespace ph {
 
@@ -26,36 +22,32 @@ public:
 	void bind() const;
 	void unbind() const;
 
-	void initUniformBlock(const char* uniformBlockName, unsigned uniformBlockBinding);
+	void initUniformBlock(const char* uniformBlockName, u32 uniformBlockBinding);
 
-	void setUniformBool(const char* name, const bool value) const;
-	void setUniformInt(const char* name, const int value) const;
-	void setUniformUnsignedInt(const char* name, const unsigned value) const;
-	void setUniformFloat(const char* name, const float value) const;
-	void setUniformVector2(const char* name, const sf::Vector2f value) const;
-	void setUniformVector2(const char* name, const float x, const float y) const;
-	void setUniformVector3(const char* name, const sf::Vector3f value) const;
-	void setUniformVector3(const char* name, const float x, const float y, const float z) const;
-	void setUniformVector4Color(const char* name, const sf::Color&) const;
-	void setUniformVector4(const char* name, const float x, const float y, const float z, const float w) const;
-	void setUniformVector4Rect(const char* name, const FloatRect&) const;
-	void setUniformMatrix4x4(const char* name, const float* transform) const;
-	void setUniformFloatArray(const char* name, int count, const float* data) const;
-	void setUniformIntArray(const char* name, int count, const int* data) const;
+	void setUniformBool(const char* name, bool value) const;
+	void setUniformI32(const char* name, i32 value) const;
+	void setUniformU32(const char* name, u32 value) const;
+	void setUniformFloat(const char* name, float value) const;
+	void setUniformVec2(const char* name, Vec2 value) const;
+	void setUniformVec4Color(const char* name, sf::Color) const;
+	void setUniformVec4Rect(const char* name, const FloatRect&) const;
+	void setUniformMatrix4x4(const char* name, float* transform) const;
+	void setUniformFloatArray(const char* name, i32 count, float* data) const;
+	void setUniformI32Array(const char* name, i32 count, i32* data) const;
 	
-	unsigned getID() const { return mID; }
+	u32 getID() const { return mID; }
 
 private:
-	int compileShaderAndGetId(const char* sourceCode, const unsigned shaderType);
-	void checkCompilationErrors(const unsigned shaderId, const unsigned shaderType);
-	void linkProgram(const int vertexShaderId, const int fragmentShaderId);
+	i32 compileShaderAndGetId(const char* sourceCode, u32 shaderType);
+	void checkCompilationErrors(u32 shaderId, u32 shaderType);
+	void linkProgram(i32 vertexShaderId, i32 fragmentShaderId);
 	void checkLinkingErrors();
 
-	int getUniformLocation(const char* name) const;
+	i32 getUniformLocation(const char* name) const;
 
 private:
-	mutable std::unordered_map<std::string, int> mUniformsLocationCache;
-	unsigned mID;
+	mutable std::unordered_map<std::string, i32> mUniformsLocationCache;
+	u32 mID;
 };
 
 }

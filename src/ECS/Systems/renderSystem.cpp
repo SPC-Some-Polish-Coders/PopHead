@@ -82,7 +82,7 @@ void RenderSystem::update(float dt)
 
 	auto getIndoorBlendColor = [](component::IndoorBlend ib)
 	{
-		auto alpha = static_cast<unsigned char>(ib.alpha * 255.f);
+		u8 alpha = Cast<u8>(ib.alpha * 255.f);
 		return sf::Color(255, 255, 255, alpha);
 	};
 
@@ -107,7 +107,7 @@ void RenderSystem::update(float dt)
 
 	auto getOutdoorBlendColor = [](component::OutdoorBlend ob)
 	{
-		auto d = static_cast<unsigned char>(ob.brightness * 255.f);
+		u8 d = Cast<u8>(ob.brightness * 255.f);
 		return sf::Color(d, d, d, 255);
 	};
 
@@ -132,8 +132,8 @@ void RenderSystem::update(float dt)
 
 	auto getIndoorOutdoorColor = [](component::IndoorOutdoorBlend io)
 	{
-		auto bright = static_cast<unsigned char>(io.brightness * 255.f);
-		auto alpha = static_cast<unsigned char>(io.alpha * 255.f);
+		u8 bright = Cast<u8>(io.brightness * 255.f);
+		u8 alpha = Cast<u8>(io.alpha * 255.f);
 		return sf::Color(bright, bright, bright, alpha);
 	};
 
@@ -144,7 +144,7 @@ void RenderSystem::update(float dt)
 	{
 		sf::Color color = quad.color * getIndoorOutdoorColor(indoorOutdoorBlend);
 		Renderer::submitQuad(
-			quad.texture, nullptr, &color, quad.shader,
+			quad.texture, Null, &color, quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
@@ -164,7 +164,7 @@ void RenderSystem::update(float dt)
 	(const auto& quad, const auto& body)
 	{
 		Renderer::submitQuad(
-			quad.texture, nullptr, &quad.color, quad.shader,
+			quad.texture, Null, &quad.color, quad.shader,
 			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 

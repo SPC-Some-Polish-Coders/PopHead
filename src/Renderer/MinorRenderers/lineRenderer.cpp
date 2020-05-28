@@ -8,7 +8,7 @@
 
 namespace ph {
 
-static unsigned drawCalls;
+static u32 drawCalls;
 
 void LineRenderer::init()
 {
@@ -23,7 +23,7 @@ void LineRenderer::init()
 
 	GLCheck( glGenBuffers(1, &mLineVBO) );
 	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mLineVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, 2 * 6 * sizeof(float), nullptr, GL_DYNAMIC_DRAW) );
+	GLCheck( glBufferData(GL_ARRAY_BUFFER, 2 * 6 * sizeof(float), Null, GL_DYNAMIC_DRAW) );
 
 	GLCheck( glEnableVertexAttribArray(0) );
 	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0) );
@@ -38,10 +38,10 @@ void LineRenderer::shutDown()
 }
 
 void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
-                            const sf::Vector2f posA, const sf::Vector2f posB, float thickness)
+                            const Vec2 posA, const Vec2 posB, float thickness)
 {
-	auto colA = Cast::toNormalizedColorVector4f(colorA);
-	auto colB = Cast::toNormalizedColorVector4f(colorB);
+	auto colA = toNormalizedColorVec4(colorA);
+	auto colB = toNormalizedColorVec4(colorB);
 	float vertexData[] = {
 		posA.x, posA.y, colA.x, colA.y, colA.z, colA.w,
 		posB.x, posB.y, colB.x, colB.y, colB.z, colB.w

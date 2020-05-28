@@ -9,8 +9,8 @@ namespace ph{
 
 struct PointVertexData
 {
-	Vector4f color;	
-	sf::Vector2f position;
+	Vec4 color;	
+	Vec2 position;
 	float size;
 	float z;
 };
@@ -26,21 +26,21 @@ public:
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 	void resetDebugNumbers();
 
-	void submitPoint(sf::Vector2f position, const sf::Color&, float z, float size);
+	void submitPoint(Vec2 position, const sf::Color&, float z, float size);
 
 	void flush();
 
 	void submitDebug();
 
 private:
-	bool isInsideScreen(sf::Vector2f position, float size);
+	bool isInsideScreen(Vec2 position, float size);
 
 private:
 	std::vector<PointVertexData> mSubmitedPointsVertexData;
 	const FloatRect* mScreenBounds;
 	Shader mPointsShader;
-	unsigned mVAO;
-	unsigned mVBO;
+	u32 mVAO;
+	u32 mVBO;
 	bool mIsDebugCountingActive = false;
 };
 

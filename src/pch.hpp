@@ -42,6 +42,7 @@
 #include <entt/entt.hpp>
 #include <entt/entity/utility.hpp>
 
+#include "aliases.hpp"
 #include "Logs/logs.hpp"
 #include "Utilities/profiling.hpp"
 #include "Utilities/xml.hpp"

@@ -10,23 +10,23 @@ namespace ph {
 class RandomPathAlgorithm
 {
 public:
-	RandomPathAlgorithm(const ObstacleGrid&, const sf::Vector2i startNodePosition);
+	RandomPathAlgorithm(const ObstacleGrid&, Vec2i startNodePosition);
 	Path getRandomPath();
 
 private:
 	Path getRandomStayingPath();
 	Path getRandomWalkingPath();
-	unsigned getWalkableDistanceBetweenObstacleNodeIn(const Direction);
-	unsigned getWalkableDistanceBetweenObstacleNodeOnEast();
-	unsigned getWalkableDistanceBetweenObstacleNodeOnWest();
-	unsigned getWalkableDistanceBetweenObstacleNodeToTheNorth();
-	unsigned getWalkableDistanceBetweenObstacleNodeToTheSouth();
+	u32 getWalkableDistanceBetweenObstacleNodeIn(Direction);
+	u32 getWalkableDistanceBetweenObstacleNodeOnEast();
+	u32 getWalkableDistanceBetweenObstacleNodeOnWest();
+	u32 getWalkableDistanceBetweenObstacleNodeToTheNorth();
+	u32 getWalkableDistanceBetweenObstacleNodeToTheSouth();
 
 private:
 	const ObstacleGrid& mObstacleGrid;
-	const sf::Vector2i mStartNodePosition;
-	const unsigned mMaximalWalkableDistance;
-	unsigned mNumberOfRecurrencyCalls;
+	const Vec2i mStartNodePosition;
+	const u32 mMaximalWalkableDistance;
+	u32 mNumberOfRecurrencyCalls;
 };
 
 } 

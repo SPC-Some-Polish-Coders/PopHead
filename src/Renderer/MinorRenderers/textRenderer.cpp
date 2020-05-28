@@ -12,8 +12,8 @@ namespace ph::TextRenderer {
 struct CharacterQuad
 {
 	IntRect textureRect;
-	sf::Vector2f pos;
-	sf::Vector2f size;
+	Vec2 pos;
+	Vec2 size;
 	float advance;
 	sf::Color color;
 };
@@ -22,35 +22,38 @@ static std::vector<CharacterQuad> rowCharacters;
 static FontHolder fontHolder;
 static Shader textShader;
 
-static CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, int charIndex, sf::Vector2f* pos, int textureWidth)
+static CharacterQuad getCharacterQuad(const stbtt_bakedchar *chardata, i32 charIndex, Vec2* pos, i32 textureWidth)
 {
 	const stbtt_bakedchar* bc = chardata + charIndex;
 	CharacterQuad q;
 	q.pos.x = std::floorf(pos->x + bc->xoff + 0.5f);
 	q.pos.y = std::floorf(pos->y + bc->yoff + 0.5f);
-	unsigned short width = bc->x1 - bc->x0;
-	unsigned short height = bc->y1 - bc->y0;
+	u8 width = bc->x1 - bc->x0;
+	u8 height = bc->y1 - bc->y0;
 	q.size = {float(width), float(height)};
 	q.textureRect = {bc->x0, textureWidth - bc->y0 - height, width, height};
 	q.advance = bc->xadvance;
 	return q;
 }
 
-static void drawTextInternal(const char* text, const char* fontFilename, sf::Vector2f position, float fontSize,
-                             sf::Color color, unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
+static void drawTextInternal(const char* text, const char* fontFilename, Vec2 position, float fontSize,
+                             sf::Color color, u8 z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	SizeSpecificFontData& data = fontHolder.getSizeSpecificFontData(fontFilename, fontSize);
 
 	position.y += fontSize;
 
-	while(*text) {
-		if(*text >= '!' && *text <= '~') {
+	while(*text) 
+	{
+		if(*text >= '!' && *text <= '~') 
+		{
 			auto cq = getCharacterQuad(data.charactersData, *text - 32, &position, data.textureAtlas->getWidth());
 			Renderer::submitQuad(data.textureAtlas.get(), &cq.textureRect, &color, &textShader, cq.pos, cq.size, z, 0.f, {}, projectionType,
 				isAffectedByLight);
 			position.x += cq.advance;
 		}
-		else {
+		else 
+		{
 			position.x += fontSize;
 		}
 		++text;
@@ -70,14 +73,14 @@ void shutDown()
 	fontHolder.clear();
 }
 
-void drawText(const char* text, const char* fontFilename, sf::Vector2f pos, float size, sf::Color color,
-              unsigned char z, ProjectionType projectionType, bool isAffectedByLight)
+void drawText(const char* text, const char* fontFilename, Vec2 pos, float size, sf::Color color,
+              u8 z, ProjectionType projectionType, bool isAffectedByLight)
 {
 	drawTextInternal(text, fontFilename, pos, size, color, z, projectionType, isAffectedByLight);
 }
 
-void drawTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f worldPos, 
-                     const Camera& worldCam, float size, sf::Color textColor, unsigned char z)
+void drawTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
+                     const Camera& worldCam, float size, sf::Color textColor, u8 z)
 {
 	auto cameraTopLeft = worldCam.center() - worldCam.getSize() / 2.f; 
 	auto pos = (1920 / worldCam.getSize().x) * (worldPos - cameraTopLeft);
@@ -85,8 +88,8 @@ void drawTextWorldHD(const char* text, const char* fontFilename, sf::Vector2f wo
 	drawTextInternal(text, fontFilename, pos, size, textColor, z, ProjectionType::gui, false);
 }
 
-void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f worldPos, float textAreaWidth,
-                  TextAligment aligment, float fontSize, sf::Color textColor, unsigned char z, ProjectionType projectionType,
+void drawTextArea(const char* text, const char* fontFilename, Vec2 worldPos, float textAreaWidth,
+                  TextAligment aligment, float fontSize, sf::Color textColor, u8 z, ProjectionType projectionType,
 			 	  bool isAffectedByLight)
 {
 	sf::Color initialTextColor = textColor;
@@ -95,9 +98,9 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 
 	worldPos.y += fontSize;
 
-	sf::Vector2f localPos;
-	unsigned wordsInCurrentRow = 0;
-	unsigned lettersInCurrentWord = 0;
+	Vec2 localPos;
+	u32 wordsInCurrentRow = 0;
+	u32 lettersInCurrentWord = 0;
 
 	auto getXOffset = [textAreaWidth, aligment, fontSize](float mostRightCharacterPosX)
 	{
@@ -110,7 +113,7 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 		}
 	};
 
-	auto submitCharacterToQuadRenderer = [&](sf::Vector2f localPos, sf::Vector2f size, IntRect textureRect, sf::Color color)
+	auto submitCharacterToQuadRenderer = [&](Vec2 localPos, Vec2 size, IntRect textureRect, sf::Color color)
 	{
 		Renderer::submitQuad(data.textureAtlas.get(), &textureRect, &color, &textShader,
 			localPos + worldPos, size, z, 0.f, {}, projectionType, isAffectedByLight);
@@ -152,7 +155,7 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 						auto getColorValue = [&getDigit, &text] 
 						{
 							float digit = getDigit(*text);
-							return static_cast<unsigned char>((digit / 9.f) * 255.f); 
+							return Cast<u8>((digit / 9.f) * 255.f); 
 						};
 						textColor.r = getColorValue();
 						++text;
@@ -164,7 +167,7 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 					}
 				} break;
 
-				case 'S': { // separate text into 2 columns 
+				case 'S': { // separate text i32o 2 columns 
 					++text;
 					float columnCount = getDigit(*text); 
 					++text;
@@ -174,7 +177,7 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 					if(localPos.x < currentColumnLeftBound)
 						localPos.x = currentColumnLeftBound + textColumnWidth / textColumnWidth / 2.f;
 					else
-						PH_LOG_INFO("Text didn't fit into 2 columns!");
+						PH_LOG_INFO("Text didn't fit i32o 2 columns!");
 				} break;
 
 				default:
@@ -191,7 +194,8 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 		}
 		else if(*text == ' ' || localPos.x > textAreaWidth) 
 		{
-			while(*(text + 1) == ' ') {
+			while(*(text + 1) == ' ') 
+			{
 				++text;
 				localPos.x += fontSize;
 			}
@@ -200,9 +204,10 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 			{
 				if(wordsInCurrentRow > 0)
 				{
-					auto firstNotFittingLetterInTheRow = rowCharacters.begin() + rowCharacters.size() - lettersInCurrentWord;
-					const float xOffset = getXOffset(firstNotFittingLetterInTheRow->pos.x);
-					for(auto it = rowCharacters.begin(); it != firstNotFittingLetterInTheRow; ++it) {
+					auto firstNotFittingLetteri32heRow = rowCharacters.begin() + rowCharacters.size() - lettersInCurrentWord;
+					const float xOffset = getXOffset(firstNotFittingLetteri32heRow->pos.x);
+					for(auto it = rowCharacters.begin(); it != firstNotFittingLetteri32heRow; ++it) 
+					{
 						it->pos.x += xOffset;
 						submitCharacterToQuadRenderer(it->pos, it->size, it->textureRect, it->color);
 					}
@@ -212,7 +217,8 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 				else
 				{
 					const float xOffset = getXOffset(localPos.x);
-					for(auto& cq : rowCharacters) {
+					for(auto& cq : rowCharacters) 
+					{
 						cq.pos.x += xOffset;
 						submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 					}
@@ -233,7 +239,8 @@ void drawTextArea(const char* text, const char* fontFilename, sf::Vector2f world
 			if(!rowCharacters.empty())
 			{
 				const float xOffset = getXOffset(localPos.x);
-				for(auto& cq : rowCharacters) {
+				for(auto& cq : rowCharacters) 
+				{
 					cq.pos.x += xOffset;
 					submitCharacterToQuadRenderer(cq.pos, cq.size, cq.textureRect, cq.color);
 				}

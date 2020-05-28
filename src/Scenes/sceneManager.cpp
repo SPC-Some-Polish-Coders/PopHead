@@ -11,14 +11,14 @@
 namespace ph {
 
 SceneManager::SceneManager()
-	:mScene(nullptr)
+	:mScene(Null)
 	,mThreadPool(0)
-	,mAIManager(nullptr)
+	,mAIManager(Null)
 	,mIsReplacing(false)
 	,mIsPopping(false)
 	,mHasPlayerPositionForNextScene(false)
 	,mLastPlayerStatus()
-	,mTilesetTexture(nullptr)
+	,mTilesetTexture(Null)
 {
 }
 
@@ -36,18 +36,21 @@ bool SceneManager::hasPlayerPositionForNextScene() const
 	return mHasPlayerPositionForNextScene;
 }
 
-const sf::Vector2f& SceneManager::getPlayerPositionForNextScene() const
+const Vec2& SceneManager::getPlayerPositionForNextScene() const
 {
 	return mPlayerPositionForNextScene;
 }
 
 void SceneManager::popAction()
 {
-	if (mScene == nullptr)
+	if (mScene == Null)
+	{
 		PH_LOG_WARNING("You are trying to pop scene but there is no scene to pop.");
-	else {
+	}
+	else 
+	{
 		GUI::clear();
-		mScene = nullptr;
+		mScene = Null;
 		PH_LOG_INFO("The scene was popped, scene file: " + mCurrentSceneFilePath);
 	}
 	mIsPopping = false;
@@ -90,7 +93,7 @@ void SceneManager::handleEvent(sf::Event e)
 
 void SceneManager::update(float dt)
 {
-	PH_ASSERT_UNEXPECTED_SITUATION(mScene != nullptr, "There is no active scene.");
+	PH_ASSERT_UNEXPECTED_SITUATION(mScene != Null, "There is no active scene.");
 	mScene->update(dt);
 }
 
@@ -110,7 +113,7 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 	mHasPlayerPositionForNextScene = false;
 }
 
-void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const sf::Vector2f& playerPosition)
+void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const Vec2& playerPosition)
 {
 	PH_LOG_INFO("Scene replacement requested, scene file: " + sceneSourceCodeFilePath + 
 				", player position: " + std::to_string(playerPosition.x) + ',' + std::to_string(playerPosition.y));

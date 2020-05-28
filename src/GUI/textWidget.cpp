@@ -13,7 +13,7 @@ TextWidget::TextWidget(const char* name)
 {
 }
 
-void TextWidget::updateCurrent(float dt, unsigned char z)
+void TextWidget::updateCurrent(float dt, u8 z)
 {
 	for(const auto& behaviour : mBehaviors)
 		if(behaviour.first == BehaviorType::onUpdate)

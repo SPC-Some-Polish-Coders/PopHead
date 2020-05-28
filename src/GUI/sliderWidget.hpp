@@ -10,7 +10,7 @@ class SliderWidget : public Widget
 public:
 	SliderWidget(const char* name);
 
-	void setIconSize(sf::Vector2f size);
+	void setIconSize(Vec2 size);
 	void setIconTexture(Texture*);
 	void setSliderValue(float value) { mSliderValue = value; }
 	void setSliderMinValue(float minValue) { mSliderMinValue = minValue; }
@@ -21,7 +21,7 @@ public:
 	float getSliderMaxValue() const { return mSliderMaxValue; }
 
 private:
-	void updateCurrent(float dt, unsigned char z) override;
+	void updateCurrent(float dt, u8 z) override;
 
 private:
 	Widget* mIconWidget;

@@ -14,25 +14,25 @@ std::vector<std::string> Csv::toStrings(const std::string& csv)
 	return values;
 }
 
-std::vector<int> Csv::toInts(const std::string& csv)
+std::vector<i32> Csv::toI32s(const std::string& csv)
 {
 	std::istringstream iss(csv);
-	std::vector<int> values;
+	std::vector<i32> values;
 	std::string temp;
 	while (std::getline(iss, temp, ',')) {
-		const int value = std::stoi(temp);
+		const i32 value = std::stoi(temp);
 		values.push_back(value);
 	}
 	return values;
 }
 
-std::vector<unsigned> Csv::toUnsigneds(const std::string& csv)
+std::vector<u32> Csv::toU32s(const std::string& csv)
 {
 	std::istringstream iss(csv);
-	std::vector<unsigned> values;
+	std::vector<u32> values;
 	std::string temp;
 	while (std::getline(iss, temp, ',')) {
-		const unsigned value = Cast::toUnsigned(temp);
+		const u32 value = toU32(temp);
 		values.push_back(value);
 	}
 	return values;

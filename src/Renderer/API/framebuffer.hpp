@@ -5,18 +5,18 @@ namespace ph {
 class Framebuffer
 {
 public:
-	void init(unsigned width, unsigned height);
+	void init(u32 width, u32 height);
 	void remove();
 
-	void onWindowResize(unsigned width, unsigned height);
+	void onWindowResize(u32 width, u32 height);
 
 	void bind();
-	void bindTextureColorBuffer(unsigned slot);
+	void bindTextureColorBuffer(u32 slot);
 	
 private:
-	unsigned mFramebufferID;
-	unsigned mColorBufferTextureID;
-	unsigned mRenderBufferID;
+	u32 mFramebufferID;
+	u32 mColorBufferTextureID;
+	u32 mRenderBufferID;
 };
 
 }

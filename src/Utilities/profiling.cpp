@@ -24,7 +24,7 @@ void MainProfilingManager::ThreadProfilingManager::commitResultEnd(ProfilingResu
 		if (result.resultId == id)
 		{
 			auto endTime = std::chrono::time_point_cast<std::chrono::microseconds>(clock::now()).time_since_epoch().count();
-			result.duration = static_cast<unsigned int>(endTime - result.startTime);
+			result.duration = Cast<u32>(endTime - result.startTime);
 			if (mResults[0].resultId == id)
 				mIsFirstResultFinished = true;
 			return;
@@ -183,7 +183,7 @@ namespace ImGuiProfiling {
 				});
 			}
 
-			ImGui::Columns(3, nullptr);
+			ImGui::Columns(3, Null);
 			ImGui::BulletText("Time of all calls in seconds");
 			ImGui::NextColumn();
 			ImGui::BulletText("Percent of time of all calls relative to 60Hz");

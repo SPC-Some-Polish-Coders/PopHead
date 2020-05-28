@@ -64,16 +64,18 @@ void Game::handleEvents()
 		}
 		if(e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::F11)
 		{
-			if(mWindow.getSize() == sf::Vector2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) {
+			if(mWindow.getSize() == Vec2u(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height)) 
+			{
 				mWindow.create(sf::VideoMode(640, 360), "PopHead", sf::Style::Default, sf::ContextSettings(24, 8, 0, 3, 3));
 				Renderer::restart(640, 360);
 				Widget::setScreenSize({640, 360});
 			}
-			else {
+			else 
+			{
 				mWindow.create(sf::VideoMode(), "PopHead", sf::Style::Fullscreen, sf::ContextSettings(24, 8, 0, 3, 3));
-				sf::Vector2u fullScreenSize(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+				Vec2u fullScreenSize(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
 				Renderer::restart(fullScreenSize.x, fullScreenSize.y);
-				Widget::setScreenSize(static_cast<sf::Vector2f>(fullScreenSize));
+				Widget::setScreenSize(Cast<Vec2>(fullScreenSize));
 			}
 			mWindow.setVerticalSyncEnabled(true);
 			mWindow.setKeyRepeatEnabled(false);

@@ -43,10 +43,10 @@ void Weather::update(float dt)
 				sRain.needsInitialization = false;
 				destroyWeatherEntity();
 
-				sf::Vector2f rainInitVel = {};
-				sf::Vector2f rainInitVelRandom = {};
-				sf::Vector2f rainAcceleration = {};
-				unsigned rainDropsAmount = {};
+				Vec2 rainInitVel = {};
+				Vec2 rainInitVelRandom = {};
+				Vec2 rainAcceleration = {};
+				u32 rainDropsAmount = {};
 
 				auto createRain = [&]
 				{
@@ -99,7 +99,7 @@ void Weather::update(float dt)
 			}
 
 			// get player position
-			sf::Vector2f playerPos;
+			Vec2 playerPos;
 			auto players = mRegistry.view<component::Player, component::BodyRect>();
 			players.each([&playerPos](const component::Player, const component::BodyRect& body) {
 				playerPos = body.pos;

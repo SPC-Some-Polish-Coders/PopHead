@@ -112,7 +112,7 @@ auto getMusicStateMachine() -> MusicStateMachine &
 
 void clearMusicPlayer()
 {
-	music.reset(nullptr);
+	music.reset(Null);
 }
 
 }

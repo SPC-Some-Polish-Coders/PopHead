@@ -12,11 +12,11 @@ class Texture;
 
 struct QuadData
 {
-	Vector4f color;
+	Vec4 color;
 	FloatRect textureRect;
-	sf::Vector2f position;
-	sf::Vector2f size;
-	sf::Vector2f rotationOrigin;
+	Vec2 position;
+	Vec2 size;
+	Vec2 rotationOrigin;
 	float rotation;
 	float textureSlotRef;
 };
@@ -24,8 +24,8 @@ struct QuadData
 struct ChunkQuadData
 {
 	FloatRect textureRect;
-	sf::Vector2f position;
-	sf::Vector2f size;
+	Vec2 position;
+	Vec2 size;
 	float rotation;
 };
 
@@ -40,16 +40,16 @@ struct RenderGroupKey
 
 struct QuadRenderGroup
 {
-	unsigned* textures;
+	u32* textures;
 
 	QuadData* quadsData;
 
-	unsigned texturesSize;
-	unsigned texturesCapacity;
+	u32 texturesSize;
+	u32 texturesCapacity;
 
-	unsigned quadsDataArenaSize;
-	unsigned quadsDataSize;
-	unsigned quadsDataCapacity;
+	u32 quadsDataArenaSize;
+	u32 quadsDataSize;
+	u32 quadsDataCapacity;
 };
 
 }

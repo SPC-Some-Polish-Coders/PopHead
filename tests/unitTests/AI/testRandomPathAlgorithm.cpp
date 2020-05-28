@@ -47,7 +47,7 @@ ObstacleGrid getWalkableGrid11x11()
 
 TEST_CASE("Random path finding algorithm works properly with obstacles", "[AI][RandomPathAlgorithm]")
 {
-	for(int i = 0; i < 10; ++i) {
+	for(i32 i = 0; i < 10; ++i) {
 		auto obstacleGrid = getGridWithObstacles11x11();
 		RandomPathAlgorithm rpa(obstacleGrid, {5, 5});
 		Path path = rpa.getRandomPath();
