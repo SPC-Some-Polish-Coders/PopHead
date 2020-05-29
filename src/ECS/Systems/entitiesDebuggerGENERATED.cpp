@@ -594,7 +594,7 @@ if(c->movedGridPosInThisMove) ImGui::Text("movedGridPosInThisMove: true"); else 
 if(auto* c = mRegistry.try_get<component::PuzzleGridPos>(mSelected)) 
 {
 ImGui::Separator();
-ImGui::BulletText("PuzzleGridPos: %f, %f", c->x, c->y);
+ImGui::BulletText("PuzzleGridPos: %i, %i", c->x, c->y);
 }
 if(auto* c = mRegistry.try_get<component::PuzzleGridRoadChunk>(mSelected)) 
 {

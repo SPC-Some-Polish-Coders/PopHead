@@ -155,11 +155,11 @@ void PuzzleBoulders::update(float dt)
 				boulder.pushedUpSince = 0.f;
 			}
 
-			#if 0 // boulder edges debug visualization
+			#if 1 // boulder edges debug visualization
 			Renderer::submitQuad(0, 0, &sf::Color(255, 0, 0, 200), 0, boulderLeftEdge.pos, boulderLeftEdge.size, 0, 0.f, {});
 			Renderer::submitQuad(0, 0, &sf::Color(0, 255, 0, 200), 0, boulderRightEdge.pos, boulderRightEdge.size, 0, 0.f, {});
 			Renderer::submitQuad(0, 0, &sf::Color(0, 0, 200, 200), 0, boulderUpEdge.pos, boulderUpEdge.size, 0, 0.f, {});
-			Renderer::submitQuad(0, 0, &sf::Color(0, 0, 100, 200), 0, boulderDownEdge.pos, boulderDownEdge.size, 0, 0.f, {});
+			Renderer::submitQuad(0, 0, &sf::Color(255, 255, 0, 200), 0, boulderDownEdge.pos, boulderDownEdge.size, 0, 0.f, {});
 			#endif
 		});
 

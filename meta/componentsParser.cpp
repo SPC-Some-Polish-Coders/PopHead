@@ -569,13 +569,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 								while(*code++ != '{');
 								break;
 							}
-							if(match(code, "Vec2"))
-							{
-								code += 4;
-								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n", componentName);
-								while(*code++ != '{');
-								break;
-							}
 							if(match(code, "Vec2i"))
 							{
 								code += 5;
@@ -587,6 +580,13 @@ void parseComponentsFile(char* filename, FILE* genFile)
 							{
 								code += 5;
 								fprintf(genFile, "ImGui::BulletText(\"%s: %%u, %%u\", c->x, c->y);\n", componentName);
+								while(*code++ != '{');
+								break;
+							}
+							if(match(code, "Vec2"))
+							{
+								code += 4;
+								fprintf(genFile, "ImGui::BulletText(\"%s: %%f, %%f\", c->x, c->y);\n", componentName);
 								while(*code++ != '{');
 								break;
 							}
