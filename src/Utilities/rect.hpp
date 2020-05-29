@@ -25,6 +25,10 @@ struct Rect
 	FORCE_INLINE Vec2Base<T> topRight() const;
 	FORCE_INLINE Vec2Base<T> bottomLeft() const;
 	FORCE_INLINE Vec2Base<T> bottomRight() const;
+	FORCE_INLINE Vec2Base<T> topCenter() const;
+	FORCE_INLINE Vec2Base<T> bottomCenter() const;
+	FORCE_INLINE Vec2Base<T> leftCenter() const;
+	FORCE_INLINE Vec2Base<T> rightCenter() const;
 
 	FORCE_INLINE bool contains(const Vec2Base<T>& point) const;
     FORCE_INLINE bool intersects(const Rect<T>& rectangle, Rect<T>& intersection) const;

@@ -1,17 +1,17 @@
 #include "rect.hpp"
 
 template<typename T>
-FORCE_INLINE Rect<T>::Rect() :x(0), y(0), w(0), h(0) {}
+Rect<T>::Rect() :x(0), y(0), w(0), h(0) {}
 
 template<typename T>
-FORCE_INLINE Rect<T>::Rect(T x, T y, T w, T h) :x(x), y(y), w(w), h(h) {}
+Rect<T>::Rect(T x, T y, T w, T h) :x(x), y(y), w(w), h(h) {}
 
 template<typename T>
-FORCE_INLINE Rect<T>::Rect(sf::Vector2<T> pos, sf::Vector2<T> size) :pos(pos), size(size) {}
+Rect<T>::Rect(sf::Vector2<T> pos, sf::Vector2<T> size) :pos(pos), size(size) {}
 
 template <typename T>
 template <typename U>
-FORCE_INLINE Rect<T>::Rect(const Rect<U>& rectangle) :
+Rect<T>::Rect(const Rect<U>& rectangle) :
 	x(Cast<T>(rectangle.x)),
 	y(Cast<T>(rectangle.y)),
 	w(Cast<T>(rectangle.w)),
@@ -19,43 +19,67 @@ FORCE_INLINE Rect<T>::Rect(const Rect<U>& rectangle) :
 {}
 
 template<typename T>
-FORCE_INLINE T Rect<T>::right() const
+T Rect<T>::right() const
 {
 	return x + w;
 }
 
 template<typename T>
-FORCE_INLINE T Rect<T>::bottom() const
+T Rect<T>::bottom() const
 {
 	return y + h;
 }
 
 template<typename T>
-FORCE_INLINE sf::Vector2<T> Rect<T>::center() const
+sf::Vector2<T> Rect<T>::center() const
 {
-	return { x + w / 2, y + h / 2};
+	return {x + w / 2, y + h / 2};
 }
 
 template<typename T>
-FORCE_INLINE sf::Vector2<T> Rect<T>::topRight() const
+sf::Vector2<T> Rect<T>::topRight() const
 {
-	return { right(), y };
+	return {right(), y};
 }
 
 template<typename T>
-FORCE_INLINE sf::Vector2<T> Rect<T>::bottomLeft() const
+sf::Vector2<T> Rect<T>::bottomLeft() const
 {
-	return { x, bottom() };
+	return {x, bottom()};
 }
 
 template<typename T>
-FORCE_INLINE sf::Vector2<T> Rect<T>::bottomRight() const
+sf::Vector2<T> Rect<T>::bottomRight() const
 {
-	return { right(), bottom() };
+	return {right(), bottom()};
 }
 
 template<typename T>
-FORCE_INLINE bool Rect<T>::contains(const sf::Vector2<T>& point) const
+Vec2Base<T> Rect<T>::topCenter() const
+{
+	return {x + w / 2, y};
+}
+
+template<typename T>
+Vec2Base<T> Rect<T>::bottomCenter() const
+{
+	return {x + w / 2, bottom()};
+}
+
+template<typename T>
+Vec2Base<T> Rect<T>::leftCenter() const
+{
+	return {x, y + h / 2};
+}
+
+template<typename T>
+Vec2Base<T> Rect<T>::rightCenter() const
+{
+	return {right(), y + h / 2};
+}
+
+template<typename T>
+bool Rect<T>::contains(const sf::Vector2<T>& point) const
 {
 	auto r = right();
 	auto b = bottom();
@@ -69,7 +93,7 @@ FORCE_INLINE bool Rect<T>::contains(const sf::Vector2<T>& point) const
 }
 
 template<typename T>
-FORCE_INLINE bool intersect(const Rect<T>& a, const Rect<T>& b)
+bool intersect(const Rect<T>& a, const Rect<T>& b)
 {
 	// this function only works properly for rects with positive w and h
 	return a.x < b.x + b.w
@@ -79,21 +103,21 @@ FORCE_INLINE bool intersect(const Rect<T>& a, const Rect<T>& b)
 }
 
 template<typename T>
-FORCE_INLINE bool fullyIntersect(const Rect<T>& a, const Rect<T>& b)
+bool fullyIntersect(const Rect<T>& a, const Rect<T>& b)
 {
 	return a.contains(b.pos) && a.contains(b.topRight()) &&
 	       a.contains(b.bottomLeft()) && a.contains(b.bottomRight());
 }
 
 template<typename T>
-FORCE_INLINE bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b)
+bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b)
 {
     Rect<T> intersection;
     return a.intersects(b, intersection);
 }
 
 template<typename T>
-FORCE_INLINE bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& intersection) const
+bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& intersection) const
 {
     // Rectangles with negative (fliped) dimensions are allowed, so we must handle them correctly
 
@@ -129,7 +153,7 @@ FORCE_INLINE bool Rect<T>::intersects(const Rect<T>& rectangle, Rect<T>& interse
 }
 
 template<typename T>
-FORCE_INLINE bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<i16>& direction) const
+bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<i16>& direction) const
 {
 	bool collideOnX = x < rect.right() && right() > rect.x;
 	bool collideOnY = y < rect.bottom() && bottom() > rect.y;
@@ -172,13 +196,13 @@ FORCE_INLINE bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<i16>& directio
 }
 
 template <typename T>
-FORCE_INLINE bool operator ==(const Rect<T>& a, const Rect<T>& b)
+bool operator ==(const Rect<T>& a, const Rect<T>& b)
 {
 	return a.x == b.x && a.y == b.y && a.w == b.w && a.h == b.h;
 }
 
 template <typename T>
-FORCE_INLINE bool operator !=(const Rect<T>& a, const Rect<T>& b)
+bool operator !=(const Rect<T>& a, const Rect<T>& b)
 {
 	return !(a == b); 
 }

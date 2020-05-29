@@ -82,7 +82,11 @@ namespace ph::Math {
 		       isPointInsideCircle(rect.pos, circlePos, radius) ||
 		       isPointInsideCircle(rect.topRight(), circlePos, radius) ||
 		       isPointInsideCircle(rect.bottomLeft(), circlePos, radius) ||
-		       isPointInsideCircle(rect.bottomRight(), circlePos, radius);
+		       isPointInsideCircle(rect.bottomRight(), circlePos, radius) ||
+		       isPointInsideCircle(rect.topCenter(), circlePos, radius) ||
+		       isPointInsideCircle(rect.bottomCenter(), circlePos, radius) ||
+		       isPointInsideCircle(rect.leftCenter(), circlePos, radius) ||
+		       isPointInsideCircle(rect.rightCenter(), circlePos, radius); 
 	}
 
 	Vec2 lerp(Vec2 source, Vec2 destination, float speed)
