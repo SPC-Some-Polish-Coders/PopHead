@@ -35,10 +35,10 @@ void Spikes::update(float dt)
 		// spikes hurt player
 		if(spikes.active)
 		{
-			mRegistry.view<component::Player, component::BodyRect>().each([&]
-			(auto playerEntity, auto, const auto& playerBody)
+			mRegistry.view<component::Player, component::BodyRect, component::BodyCircle>().each([&]
+			(auto playerEntity, auto, const auto& playerBody, auto playerCircle)
 			{
-				if(intersect(playerBody, spikesBody))
+				if(Math::intersect(spikesBody, playerBody.pos + playerCircle.offset, playerCircle.radius))
 				{
 					mRegistry.assign_or_replace<component::DamageTag>(playerEntity, 1);
 				}

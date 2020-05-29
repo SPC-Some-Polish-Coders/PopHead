@@ -21,12 +21,14 @@ namespace ph::system {
 	{
 	}
 
+	using namespace component;
+
 	void PlayerMovementInput::onEvent(sf::Event e)
 	{
 		auto doPause = [this]()
 		{
 			// TODO_states: Pause screen could be handled by states
-			mRegistry.view<component::Player, component::Health>().each([this]
+			mRegistry.view<Player, Health>().each([this]
 			(auto, auto)
 			{
 				sPause ? GUI::hideInterface("pauseScreen") : GUI::showInterface("pauseScreen");
@@ -59,8 +61,8 @@ namespace ph::system {
 			return;
 
 		// return if player is without control
-		for(auto player : mRegistry.view<component::Player>())
-			if(mRegistry.has<component::DeadCharacter>(player))
+		for(auto player : mRegistry.view<Player>())
+			if(mRegistry.has<DeadCharacter>(player))
 				return;
 
 		// set input variables
@@ -141,7 +143,7 @@ namespace ph::system {
 			d *= 0.707106781187f;
 		}
 
-		mRegistry.view<component::Player, component::AnimationData, component::FaceDirection>().each([=]
+		mRegistry.view<Player, AnimationData, FaceDirection>().each([=]
 		(auto, auto& animationData, auto& faceDir)
 		{
 			// update animation data
@@ -167,7 +169,7 @@ namespace ph::system {
 		});
 
 		// set flash light direction
-		mRegistry.view<component::Player, component::FaceDirection, component::LightSource>().each([this]
+		mRegistry.view<Player, FaceDirection, LightSource>().each([this]
 		(auto, auto faceDir, auto& lightSource) 
 		{
 			float middleAngle;
@@ -188,9 +190,9 @@ namespace ph::system {
 		static float dashLength = 75.f;
 
 		// move player
-		mRegistry.view<component::Player, component::Kinematics, component::CharacterSpeed, component::BodyRect>
-		(entt::exclude<component::DeadCharacter>).each([&]
-		(auto, auto& kinematics, auto speed, auto& body) 
+		mRegistry.view<Player, Kinematics, CharacterSpeed, BodyRect, BodyCircle>
+		(entt::exclude<DeadCharacter>).each([&]
+		(auto, auto& kinematics, auto speed, auto& body, auto circle) 
 		{
 			if(mDashJustPressed) 
 			{
@@ -206,7 +208,7 @@ namespace ph::system {
 				kinematics.acceleration = d * speed.speed;
 			}
 
-			mAIManager.setPlayerPosition(body.pos);
+			mAIManager.setPlayerPosition(getCirclePos(body, circle));
 		});
 
 		static float timeToGetNextDash = 2.f;

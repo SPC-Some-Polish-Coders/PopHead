@@ -13,9 +13,10 @@ void PressurePlates::update(float dt)
 	if(sPause)
 		return;
 
-	mRegistry.view<component::PressurePlate, component::PuzzleColor, component::PuzzleGridPos,
-	               component::BodyRect, component::TextureRect>().each([&]
-	(auto& plate, auto plateColor, auto pressurePlatePuzzleGridPos, const auto& plateBody, auto& textureRect)
+	using namespace component;
+
+	mRegistry.view<PressurePlate, PuzzleColor, PuzzleGridPos, BodyRect, TextureRect>().each([&]
+	(auto& plate, auto plateColor, auto pressurePlatePuzzleGridPos, auto plateBody, auto& textureRect)
 	{
 		if(plate.isPressIrreversible && plate.isPressed)
 			return;
@@ -29,21 +30,21 @@ void PressurePlates::update(float dt)
 			using component::PuzzleColor;
 			if(plateColor != PuzzleColor::Grey)
 			{
-				if(const auto* pressedByColor = mRegistry.try_get<component::PuzzleColor>(pressingEntity))
+				if(const auto* pressedByColor = mRegistry.try_get<PuzzleColor>(pressingEntity))
 					plate.pressedByColor = *pressedByColor;
 				else if(!plate.isPressed)
 					plate.pressedByColor = PuzzleColor::Grey;
 			}
 		};
 
-		mRegistry.view<component::KinematicCollisionBody, component::BodyRect>().each([&]
-		(auto pressingEntity, auto, const auto& kinBody)	
+		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle>().each([&]
+		(auto pressingEntity, auto, auto kinBody, auto kinCircle)
 		{
-			if(intersect(plateBody, kinBody))
+			if(intersect(plateBody, kinBody, kinCircle))
 				pressPlate(pressingEntity);
 		});
 
-		mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos>().each([&]
+		mRegistry.view<PuzzleBoulder, PuzzleGridPos>().each([&]
 		(auto pressingEntity, auto, auto boulderPuzzleGridPos)
 		{
 			if(boulderPuzzleGridPos == pressurePlatePuzzleGridPos)

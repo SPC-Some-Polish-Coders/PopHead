@@ -9,11 +9,13 @@ namespace ph::system {
 
 void Save::update(float dt)
 {
-	mRegistry.view<component::SavePoint, component::BodyRect>().each([&]
-	(auto& save, const auto& saveBody)
+	using namespace component;
+
+	mRegistry.view<SavePoint, BodyRect>().each([&]
+	(auto& save, auto saveBody)
 	{
-		mRegistry.view<component::Player, component::BodyRect>().each([&]
-		(auto, const auto& playerBody)
+		mRegistry.view<Player, BodyRect, BodyCircle>().each([&]
+		(auto, auto playerBody, auto playerCircle)
 		{
 			if(save.timeSincePlayerSteppedOnIt < 2.f)
 			{
@@ -23,7 +25,7 @@ void Save::update(float dt)
 				                     sf::Color(50, 50, 255, alpha), 10, ProjectionType::gui);
 			}
 
-			if(intersect(saveBody, playerBody))
+			if(intersect(saveBody, playerBody, playerCircle))
 			{
 				if(!save.isintersectingPlayer)
 				{

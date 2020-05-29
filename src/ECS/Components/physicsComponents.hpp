@@ -2,8 +2,11 @@
 
 #include "Utilities/rect.hpp"
 #include <vector>
+#include <cmath>
 
-namespace ph::component {
+namespace ph {
+
+namespace component {
 
 	struct BodyRect : public FloatRect 
 	{
@@ -47,5 +50,29 @@ namespace ph::component {
 		bool staticallyMovedLeft;
 		bool staticallyMovedRight;
 	};
+
+}
+
+static inline
+Vec2 getCirclePos(const FloatRect& rect, component::BodyCircle circle)
+{
+	return rect.pos + circle.offset;
+}
+
+static inline
+bool intersect(const FloatRect& a,
+               const FloatRect& b, component::BodyCircle bc)
+{
+	return Math::intersect(a, getCirclePos(b, bc), bc.radius);
+}
+
+static inline
+bool intersect(const FloatRect& a, component::BodyCircle ac,
+               const FloatRect& b, component::BodyCircle bc)
+{
+	auto aPos = getCirclePos(a, ac);
+	auto bPos = getCirclePos(b, bc);
+	return Math::distanceBetweenPoints(aPos, bPos) < ac.radius + bc.radius;
+}
 
 }
