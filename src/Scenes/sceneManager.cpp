@@ -7,6 +7,8 @@
 #include "Audio/xmlAudioParser.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
+#include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/physicsComponents.hpp"
 
 namespace ph {
 
@@ -89,6 +91,23 @@ void SceneManager::replaceAction()
 void SceneManager::handleEvent(sf::Event e)
 {
 	mScene->handleEvent(e);
+
+	#ifndef PH_DISTRIBUTION
+	if(e.type == sf::Event::KeyPressed && e.key.alt && e.key.code == sf::Keyboard::M)
+	{
+		Vec2 playerPos = Math::nullVec2; 
+		mScene->getRegistry().view<component::Player, component::BodyRect>().each([&]
+		(auto, auto& playerBody)
+		{
+			playerPos = playerBody.pos;
+		});
+
+		if(playerPos == Math::nullVec2)
+			replaceScene(mCurrentSceneFilePath);
+		else
+			replaceScene(mCurrentSceneFilePath, playerPos);
+	}
+	#endif
 }
 
 void SceneManager::update(float dt)
@@ -113,7 +132,7 @@ void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath)
 	mHasPlayerPositionForNextScene = false;
 }
 
-void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, const Vec2& playerPosition)
+void SceneManager::replaceScene(const std::string& sceneSourceCodeFilePath, Vec2 playerPosition)
 {
 	PH_LOG_INFO("Scene replacement requested, scene file: " + sceneSourceCodeFilePath + 
 				", player position: " + std::to_string(playerPosition.x) + ',' + std::to_string(playerPosition.y));

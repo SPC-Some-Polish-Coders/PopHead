@@ -98,7 +98,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
-		{"LeverListener",		  	    &EntitiesParser::parseLeverListener},
 		{"CurrentGun",            	    &EntitiesParser::parseCurrentGun},
 		{"CurrentMeleeWeapon",    	    &EntitiesParser::parseCurrentMeleeWeapon},
 		{"GunProperties",		  	    &EntitiesParser::parseGunProperties},
@@ -327,17 +326,7 @@ void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& ent
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
-	u32 leverId = entityComponentNode.getAttribute("id")->toU32();
-	bool isActivated = false;
-	bool turnOffAfterSwitch = entityComponentNode.getAttribute("turnOffAfterSwitch")->toBool();
-	mUsedRegistry->assign_or_replace<component::Lever>(entity, leverId, isActivated, turnOffAfterSwitch);
-}
-
-void EntitiesParser::parseLeverListener(const Xml& entityComponentNode, entt::entity& entity)
-{
-	u32 observedLeverId = entityComponentNode.getAttribute("observedLeverId")->toU32();
-	bool isActivated = false;
-	mUsedRegistry->assign_or_replace<component::LeverListener>(entity, observedLeverId, isActivated);
+	mUsedRegistry->assign_or_replace<component::Lever>(entity);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)

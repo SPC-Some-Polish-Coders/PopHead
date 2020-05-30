@@ -27,41 +27,44 @@ void parseScene(EntitiesTemplateStorage& templateStorage,
 	aiManager.setIsPlayerOnScene(false);
 
 	// parse gui
-	if(const auto guiNode = sceneLinksNode.getChild("gui")) {
+	if(const auto guiNode = sceneLinksNode.getChild("gui")) 
+	{
 		const std::string filepath = "scenes/gui/" + guiNode->getAttribute("filename")->toString();
 		XmlGuiParser guiParser;
 		guiParser.parseGuiXml(filepath);
 	}
 
 	// parse audio
-	if(const auto audioNode = sceneLinksNode.getChild("audio")) {
+	if(const auto audioNode = sceneLinksNode.getChild("audio")) 
+	{
 		const std::string audioFilePath = "scenes/audio/" + audioNode->getAttribute("filename")->toString();
 		parseAudioXmlFile(audioFilePath);
 	}
 
 	// parse ambient light 
 	const auto ambientLightNode = sceneLinksNode.getChildren("ambientLight");
-	if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) {
+	if (const auto ambientLightNode = sceneLinksNode.getChild("ambientLight")) 
+	{
 		sf::Color color = ambientLightNode->getAttribute("color")->toColor();
 		Renderer::setAmbientLightColor(color);
 	}
 	else
+	{
 		Renderer::setAmbientLightColor(sf::Color(255, 255, 255));
-
-	// parse arcade mode
-	//if(!sceneLinksNode.getChildren("arcadeMode").empty())
-	//	systemsQueue.appendSystem<system::ArcadeMode>(std::ref(aiManager), std::ref(templateStorage));
+	}
 
 	// parse ecs entities
 	templateStorage.clearStorage();
-	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) {
+	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) 
+	{
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
 		EntitiesParser parser;
 		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry);
 	}
 
 	// parse map
-	if(const auto mapNode = sceneLinksNode.getChild("map")) {
+	if(const auto mapNode = sceneLinksNode.getChild("map")) 
+	{
 		Xml map;
 		const std::string mapFilepath = "scenes/map/" + mapNode->getAttribute("filename")->toString();
 		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");

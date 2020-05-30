@@ -33,7 +33,7 @@
 #include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
 #include "ECS/Systems/entitiesDebugger.hpp"
-#include "ECS/Systems/indoorOutdoorBlend.hpp"
+#include "ECS/Systems/indoorOutdoorBlending.hpp"
 #include "ECS/Systems/pressurePlates.hpp"
 #include "ECS/Systems/puzzles.hpp"
 #include "ECS/Systems/spikes.hpp"
@@ -77,7 +77,6 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
 
-	mSystemsQueue.appendSystem<system::Levers>(); // must be before Gates
 	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
 
 	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
@@ -101,13 +100,15 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::DebugCamera>();
 	mSystemsQueue.appendSystem<system::Weather>();
 	mSystemsQueue.appendSystem<system::EntitiesDebugger>(window);
-	mSystemsQueue.appendSystem<system::IndoorOutdoorBlend>();
+	mSystemsQueue.appendSystem<system::IndoorOutdoorBlending>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
 	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));
 	mSystemsQueue.appendSystem<system::Spikes>();
 	mSystemsQueue.appendSystem<system::Save>();
 	mSystemsQueue.appendSystem<system::Teleport>();
 	mSystemsQueue.appendSystem<system::PuzzleBoulders>();
+
+	mSystemsQueue.appendSystem<system::Levers>(); // must be after Puzzles
 
 	// must be at the end
 	mSystemsQueue.appendSystem<system::EntityDestroying>();

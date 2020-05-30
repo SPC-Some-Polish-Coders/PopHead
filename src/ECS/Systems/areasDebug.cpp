@@ -79,7 +79,7 @@ void AreasDebug::update(float dt)
 
 			for(auto& circle : multiCollisionBody.circles)
 			{
-				Renderer::submitCircle(sf::Color(255, 0, 0, 140), circle.offset - Vec2(circle.radius, circle.radius),
+				Renderer::submitCircle(sf::Color(255, 0, 0, 140), circle.offset - Vec2(circle.radius),
 					circle.radius, 50, ProjectionType::gameWorld, false);
 			}
 		});
@@ -98,7 +98,7 @@ void AreasDebug::update(float dt)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
 				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
-			Renderer::submitCircle(sf::Color(130, 0, 0, 200), rect.pos + circle.offset - Vec2(circle.radius, circle.radius),
+			Renderer::submitCircle(sf::Color(130, 0, 0, 200), rect.pos + circle.offset - Vec2(circle.radius),
 				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
 
@@ -108,7 +108,7 @@ void AreasDebug::update(float dt)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(45, 100, 150, 40), Null,
 				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
-			Renderer::submitCircle(sf::Color(45, 100, 150, 140), rect.pos + circle.offset - Vec2(circle.radius, circle.radius),
+			Renderer::submitCircle(sf::Color(45, 100, 150, 140), rect.pos + circle.offset - Vec2(circle.radius),
 				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
 	}

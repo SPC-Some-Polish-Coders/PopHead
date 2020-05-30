@@ -72,7 +72,7 @@ void PatricleSystem::updateParticleEmitter(float dt, component::ParticleEmitter&
 
 				particle.position = body.pos + emi.spawnPositionOffset;
 
-				if(emi.randomSpawnAreaSize != Vec2(0.f, 0.f))
+				if(emi.randomSpawnAreaSize != Vec2())
 					particle.position += Random::generateVector({0.f, 0.f}, emi.randomSpawnAreaSize);
 
 				if(emi.parInitialVelocity == emi.parInitialVelocityRandom)
@@ -88,7 +88,7 @@ void PatricleSystem::updateParticleEmitter(float dt, component::ParticleEmitter&
 				float nrOfParticlesPerFrame = float(emi.amountOfParticles / u32(emi.parWholeLifetime * 60.f));
 				u32 nrOfParticlesAddedInThisFrame = 0;
 				while((emi.particles.size() < emi.amountOfParticles) && 
-						(emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
+				      (emi.oneShot || nrOfParticlesAddedInThisFrame < nrOfParticlesPerFrame))
 				{
 					++nrOfParticlesAddedInThisFrame;
 					addParticle(emi, body);

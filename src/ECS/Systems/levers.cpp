@@ -8,8 +8,15 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void Levers::update(float dt)
 {
+	mRegistry.view<Lever, TextureRect, BodyRect>().each([&]
+	(auto& lever, auto& leverTextureRect, auto leverBody)
+	{
+		lever.wasJustSwitched = false;
+	});
 }
 
 void Levers::onEvent(sf::Event e)
@@ -22,40 +29,22 @@ void Levers::onEvent(sf::Event e)
 
 void Levers::handleUsedLevers() const
 {
-	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
-	auto leverView = mRegistry.view<component::Lever, component::BodyRect, component::TextureRect>();
-
-	for(auto player : playerView)
+	mRegistry.view<Player, BodyRect>().each([&]
+	(auto, auto playerBody)
 	{
-		const auto& playerBody = playerView.get<component::BodyRect>(player);
-		for(auto lever : leverView)
+		mRegistry.view<Lever, TextureRect, BodyRect>().each([&]
+		(auto& lever, auto& leverTextureRect, auto leverBody)
 		{
-			const auto& leverBody = leverView.get<component::BodyRect>(lever);
-			auto& leverTextureRect = leverView.get<component::TextureRect>(lever);
-			auto& leverDetails = leverView.get<component::Lever>(lever);
-
-			if(leverDetails.turnOffAfterSwitch && leverDetails.isActivated)
-				continue;
+			if(lever.turnOffAfterSwitch && lever.active) return;
 
 			if(intersect(leverBody, playerBody))
 			{
-				leverDetails.isActivated = !leverDetails.isActivated;
-				leverTextureRect = leverDetails.isActivated ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
-				handleListeners(leverDetails.isActivated, leverDetails.id);
+				lever.wasJustSwitched = true;
+				lever.active = !lever.active;
+				leverTextureRect = lever.active ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
 			}
-		}
-	}
-}
-
-void Levers::handleListeners(bool isActivated, u32 leverId) const
-{
-	auto listenersView = mRegistry.view<component::LeverListener>();
-	for(auto leverListener : listenersView)
-	{
-		auto& listenerDetails = listenersView.get<component::LeverListener>(leverListener);
-		if(listenerDetails.observedLeverId == leverId)
-			listenerDetails.isActivated = true;
-	}
+		});
+	});
 }
 
 }

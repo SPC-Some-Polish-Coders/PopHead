@@ -155,13 +155,12 @@ void beginScene()
 
 	gameObjectsFramebuffer.bind();
 	setClearColor(sf::Color::Black);
-	GLCheck( glEnable(GL_DEPTH_TEST) );
-	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
 	const float* viewProjectionMatrix = gameWorldCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
 	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
-	
+
 	Vec2 center = gameWorldCamera.center();
 	Vec2 size = gameWorldCamera.getSize();
 	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
@@ -183,9 +182,6 @@ void endScene()
 	QuadRenderer::flush(true);
 	pointRenderer.flush();
 
-	// disable depth test for performance purposes
-	GLCheck( glDisable(GL_DEPTH_TEST) );
-
 	// render font debug
 	if(FontDebugRenderer::isActive())
 		FontDebugRenderer::draw();
@@ -193,7 +189,7 @@ void endScene()
 	// render lights to lighting framebuffer
 	lightingFramebuffer.bind();
 	setClearColor(ambientLightColor);
-	GLCheck( glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) );
+	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	lightRenderer.flush();
 
 	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer

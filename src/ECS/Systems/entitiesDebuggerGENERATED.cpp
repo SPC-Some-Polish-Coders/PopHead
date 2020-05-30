@@ -546,15 +546,10 @@ if(auto* c = mRegistry.try_get<component::Lever>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("Lever");
 ImGui::Text("id: %u", c->id);
-if(c->isActivated) ImGui::Text("isActivated: true"); else ImGui::Text("isActivated: false");
+ImGui::Text("puzzleId: %u", c->puzzleId);
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+if(c->wasJustSwitched) ImGui::Text("wasJustSwitched: true"); else ImGui::Text("wasJustSwitched: false");
 if(c->turnOffAfterSwitch) ImGui::Text("turnOffAfterSwitch: true"); else ImGui::Text("turnOffAfterSwitch: false");
-}
-if(auto* c = mRegistry.try_get<component::LeverListener>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LeverListener");
-ImGui::Text("observedLeverId: %u", c->observedLeverId);
-if(c->isActivated) ImGui::Text("isActivated: true"); else ImGui::Text("isActivated: false");
 }
 if(auto* c = mRegistry.try_get<component::PuzzleColor>(mSelected))
 {

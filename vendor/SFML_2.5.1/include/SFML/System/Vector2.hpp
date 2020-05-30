@@ -55,6 +55,9 @@ public:
     ////////////////////////////////////////////////////////////
     Vector2(T X, T Y);
 
+	// NOTE: This constructor does not exist in original SFML libary and was added by Czapa 
+    Vector2(T Scalar);
+
     ////////////////////////////////////////////////////////////
     /// \brief Construct the vector from another type of vector
     ///

@@ -16,6 +16,8 @@
 
 namespace ph {
 
+using namespace component;
+
 static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates, 
                        entt::registry& registry, SceneManager& sceneManager, bool* isPlayerOnScene)
 {
@@ -53,21 +55,21 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadPos = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
 		return body;
 	};
 
 	auto loadSize = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.size = getSizeAttribute();
 		return body;
 	};
 
 	auto loadPosAndSize = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
 		body.size = getSizeAttribute();
 		return body;
@@ -75,41 +77,61 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadPosAndOptionalSize = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
 		if(auto size = getOptionalSizeAttribute())
 			body.size = *size;
 		return body;
 	};
 
+	auto getOffsetFromTileTopLeft = [](Vec2 pos)
+	{
+		return Vec2(fmod(pos.x, 16.f), fmod(pos.y, 16.f));
+	};
+
 	auto loadAndAlignPos = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
-		body.x -= Cast<float>(Cast<i32>(body.pos.x) % 16); 
-		body.y -= Cast<float>(Cast<i32>(body.pos.y) % 16); 
+		body.pos -= getOffsetFromTileTopLeft(body.pos);
 		return body;
 	};
 
 	auto loadAndAlignPosAndSize = [&]()
 	{
-		auto& body = registry.get<component::BodyRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
 		body.size = getSizeAttribute();
-		body.x -= Cast<float>(Cast<i32>(body.x) % 16); 
-		body.y -= Cast<float>(Cast<i32>(body.y) % 16); 
-		body.w = Cast<float>(body.w + 16 - Cast<i32>(body.w + 16) % 16);
-		body.h = Cast<float>(body.h + 16 - Cast<i32>(body.h + 16) % 16);
+		body.x -= fmod(body.x, 16.f);
+		body.y -= fmod(body.y, 16.f); 
+		body.pos - getOffsetFromTileTopLeft(body.pos);
+		body.w = body.w + 16.f - fmod(body.w + 16.f, 16.f);
+		body.h = body.h + 16.f - fmod(body.h + 16.f, 16.f);
+		return body;
+	};
+
+	auto loadPosAndAlignBodyCenterToTileCenter = [&]()
+	{
+		auto& body = registry.get<BodyRect>(entity);
+		body.pos = getPosAttribute();
+		body.pos -= getOffsetFromTileTopLeft(body.pos);
+		body.pos -= (body.pos + Vec2(8.f)) - body.center();
 		return body;
 	};
 
 	auto loadPuzzleGridPos = [&](const FloatRect& body)
 	{	
-		auto& puzzleGridPos = registry.get<component::PuzzleGridPos>(entity);
+		auto& puzzleGridPos = registry.get<PuzzleGridPos>(entity);
 		auto center = body.center();
 		if(center.x < 0.f) center.x -= 16.f;
 		if(center.y < 0.f) center.y -= 16.f;
 		puzzleGridPos = Cast<Vec2i>(Math::hadamardDiv(center, Vec2(16, 16)));
+	};
+
+	auto createAndLoadPosAndSize = [&]()
+	{
+		registry.assign<BodyRect>(entity);
+		loadPosAndSize();
 	};
 
 	auto getProperty = [&](const std::string& propertyName)
@@ -120,15 +142,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			for(const auto& property : properties)
 			{
 				if(property.getAttribute("name")->toString() == propertyName)
-				{
 					return *property.getAttribute("value");
-				}
 			}
 		}
 
 		Xml objectTypesFile;
-		PH_ASSERT_CRITICAL(objectTypesFile.loadFromFile("scenes/map/objecttypes.xml"),
-			"Tiled object type file \"scenes/map/objecttypes.xml\" wasn't loaded correctly!");
+		PH_ASSERT_CRITICAL(objectTypesFile.loadFromFile("scenes/map/objecttypes.xml"), "Tiled object type file \"scenes/map/objecttypes.xml\" wasn't loaded correctly!");
 		const auto objectTypesNode = objectTypesFile.getChild("objecttypes");
 		std::vector<Xml> objectNodes = objectTypesNode->getChildren("objecttype");
 		for(const auto& objectNode : objectNodes)
@@ -152,14 +171,14 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadHealthComponent = [&]()
 	{
-		auto& healthComponent = registry.get<component::Health>(entity);
+		auto& healthComponent = registry.get<Health>(entity);
 		healthComponent.healthPoints = getProperty("hp").toU32();
 		healthComponent.maxHealthPoints = getProperty("maxHp").toU32();
 	};
 
 	auto loadIndoorOutdoorBlendComponent = [&]()
 	{
-		auto& io = registry.get<component::IndoorOutdoorBlend>(entity);
+		auto& io = registry.get<IndoorOutdoorBlend>(entity);
 		bool outdoor = getProperty("outdoor").toBool();
 		io.outdoor = outdoor ? 1.f : 0.f;
 		if(outdoor == 1.f)
@@ -178,8 +197,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto loadPuzzleColorAndTextureRect = [&]()
 	{
-		auto& puzzleColor = registry.get<component::PuzzleColor>(entity);
-		auto& textureRect = registry.get<component::TextureRect>(entity);
+		auto& puzzleColor = registry.get<PuzzleColor>(entity);
+		auto& textureRect = registry.get<TextureRect>(entity);
 		auto color = getProperty("color").toString();
 		using component::PuzzleColor;
 		if(color == "red")
@@ -221,22 +240,22 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		*isPlayerOnScene = true;
 
 		createCopy("Player");
-		auto& playerBody = registry.get<component::BodyRect>(entity);
+		auto& playerBody = registry.get<BodyRect>(entity);
 		auto& playerCamera = registry.get<component::Camera>(entity);
 		
 		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
 			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera = Camera(playerBody.center(), Vec2(640, 360));
+		playerCamera = ph::Camera(playerBody.center(), Vec2(640, 360));
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
 		auto melee = templates.createCopy("BaseballBat", registry);
-		registry.assign<component::CurrentMeleeWeapon>(melee);
+		registry.assign<CurrentMeleeWeapon>(melee);
 
 		if(getProperty("hasFlashlight").toBool()) 
 		{
-			component::LightSource flashlight;
+			LightSource flashlight;
 			flashlight.offset = {10.f, 10.f};
 			flashlight.color = sf::Color(255, 255, 255, 90);
 			flashlight.startAngle = 40.f;
@@ -244,7 +263,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			flashlight.attenuationAddition = 0.1f;
 			flashlight.attenuationFactor = 3.f;
 			flashlight.attenuationSquareFactor = 1.5f;
-			registry.assign_or_replace<component::LightSource>(entity, flashlight);
+			registry.assign_or_replace<LightSource>(entity, flashlight);
 		}	
 	}
 	else if(type == "Camera") 
@@ -256,7 +275,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			Vec2 pos = getPosAttribute();
 			Vec2 size = getSizeAttribute();
 			Vec2 center(pos + (size / 2.f));
-			camera = Camera(center, size);
+			camera = ph::Camera(center, size);
 			camera.name = getProperty("name").toString();
 		}
 	}
@@ -265,7 +284,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("BulletBox");
 		loadPos();
 		loadIndoorOutdoorBlendComponent();
-		auto& bullets = registry.get<component::Bullets>(entity);
+		auto& bullets = registry.get<Bullets>(entity);
 		bullets.numOfPistolBullets = getProperty("numOfPistolBullets").toI32();
 		bullets.numOfShotgunBullets = getProperty("numOfShotgunBullets").toI32();
 	}
@@ -280,7 +299,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("VelocityChangingArea");
 		loadPos();
 		loadSize();
-		float& areaSpeedMultiplier = registry.get<component::AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
+		float& areaSpeedMultiplier = registry.get<AreaVelocityChangingEffect>(entity).areaSpeedMultiplier;
 		areaSpeedMultiplier = getProperty("velocityMultiplier").toFloat();
 	}
 	else if(type == "PushingArea")
@@ -288,7 +307,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("PushingArea");
 		loadPos();
 		loadSize();
-		auto& pushDirection = registry.get<component::PushingArea>(entity);
+		auto& pushDirection = registry.get<PushingArea>(entity);
 		pushDirection.pushForce.x = getProperty("pushForceX").toFloat();
 		pushDirection.pushForce.y = getProperty("pushForceY").toFloat();
 	}
@@ -297,7 +316,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("HintArea");
 		loadPos();
 		loadSize();
-		auto& hint = registry.get<component::Hint>(entity);
+		auto& hint = registry.get<Hint>(entity);
 		hint.hintName = getProperty("hintName").toString();
 		hint.keyboardContent = getProperty("hintKeyboardContent").toString();
 		hint.joystickContent = getProperty("hintJoystickContent").toString();
@@ -306,24 +325,30 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		createCopy("Gate");
 		loadPos();
-		auto& gate = registry.get<component::Gate>(entity);
+		auto& gate = registry.get<Gate>(entity);
 		gate.id = getProperty("id").toU32();
 	}
 	else if(type == "Lever") 
 	{
 		createCopy("Lever");
-		loadPos();
+		loadPosAndAlignBodyCenterToTileCenter();
 		loadIndoorOutdoorBlendComponent();
+		auto& lever = registry.get<Lever>(entity);
+		lever.id = getProperty("id").toU32();
+		lever.puzzleId = getProperty("puzzleId").toU32();
+		lever.active = getProperty("active").toBool();
+		lever.turnOffAfterSwitch = getProperty("turnOffAfterSwitch").toBool();
 	}
 	else if(type == "Sprite")
 	{
 		// create sprite entity
 		createCopy("Sprite");
-		auto& [rq, body] = registry.get<component::RenderQuad, component::BodyRect>(entity);
+		auto& [rq, body] = registry.get<RenderQuad, BodyRect>(entity);
 
 		// load texture
 		const std::string texturePath = getProperty("texturePath").toString();
-		if(texturePath != "none") {
+		if(texturePath != "none") 
+		{
 			if(loadTexture(texturePath))
 				rq.texture = &getTexture(texturePath);
 			else
@@ -331,21 +356,20 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		}
 
 		// load texture rect
-		if(getProperty("activeTextureRect").toBool()) {
-			registry.assign_or_replace<component::TextureRect>(
+		if(getProperty("activeTextureRect").toBool()) 
+		{
+			registry.assign_or_replace<TextureRect>(
 				entity,
-				IntRect(
-					getProperty("textureRectLeft").toI32(),
-					getProperty("textureRectTop").toI32(),
-					getProperty("textureRectWidth").toI32(),
-					getProperty("textureRectHeight").toI32()
-				)
+				IntRect(getProperty("textureRectLeft").toI32(),
+				        getProperty("textureRectTop").toI32(),
+				        getProperty("textureRectWidth").toI32(),
+				        getProperty("textureRectHeight").toI32())
 			);
 		}
 
 		// load hidden forrenderer
 		if(getProperty("hiddenForRenderer").toBool())
-			registry.assign_or_replace<component::HiddenForRenderer>(entity);
+			registry.assign_or_replace<HiddenForRenderer>(entity);
 
 		// load shader
 		rq.shader = Null;
@@ -392,7 +416,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "FlowingRiver")
 	{
 		createCopy("FlowingRiver");
-		auto& [pushingArea, particleEmitter, body] = registry.get<component::PushingArea, component::ParticleEmitter, component::BodyRect>(entity);
+		auto& [pushingArea, particleEmitter, body] = registry.get<PushingArea, ParticleEmitter, BodyRect>(entity);
 		body.pos = getPosAttribute();
 		auto size = getSizeAttribute();
 		body.size = size;
@@ -403,19 +427,23 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		particleEmitter.amountOfParticles = Cast<u32>(particleAmountMultiplier * size.x * size.y / 100.f);
 		particleEmitter.parInitialVelocity = pushForce;
 		particleEmitter.parInitialVelocityRandom = pushForce;
-		if(pushForce.y > 0.f) {
+		if(pushForce.y > 0.f) 
+		{
 			particleEmitter.spawnPositionOffset = {0.f, 0.f};
 			particleEmitter.randomSpawnAreaSize = {size.x, 0.f};
 		}
-		else if(pushForce.y < 0.f) {
+		else if(pushForce.y < 0.f) 
+		{
 			particleEmitter.spawnPositionOffset = {0.f, size.y};
 			particleEmitter.randomSpawnAreaSize = {size.x, 0.f};
 		}
-		else if(pushForce.x > 0.f) {
+		else if(pushForce.x > 0.f) 
+		{
 			particleEmitter.spawnPositionOffset = {0.f, 0.f};
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
-		else if(pushForce.x < 0.f) {
+		else if(pushForce.x < 0.f) 
+		{
 			particleEmitter.spawnPositionOffset = {size.x, 0.f};
 			particleEmitter.randomSpawnAreaSize = {0.f, size.y};
 		}
@@ -425,27 +453,27 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		using component::IndoorOutdoorBlendArea;
 		IndoorOutdoorBlendArea area;
-		if(getProperty("exit_left").toBool())
-		{
-			area.exit = IndoorOutdoorBlendArea::Left;
-		}
-		else if(getProperty("exit_right").toBool())
-		{
-			area.exit = IndoorOutdoorBlendArea::Right;
-		}
-		else if(getProperty("exit_top").toBool())
-		{
-			area.exit = IndoorOutdoorBlendArea::Top;
-		}
-		else if(getProperty("exit_down").toBool())
-		{
-			area.exit = IndoorOutdoorBlendArea::Down;
-		}
+		if(getProperty("exit_left").toBool())       area.exit = IndoorOutdoorBlendArea::Left;
+		else if(getProperty("exit_right").toBool()) area.exit = IndoorOutdoorBlendArea::Right;
+		else if(getProperty("exit_top").toBool())   area.exit = IndoorOutdoorBlendArea::Top;
+		else if(getProperty("exit_down").toBool())  area.exit = IndoorOutdoorBlendArea::Down;
 
 		entity = registry.create();
-		registry.assign<component::IndoorOutdoorBlendArea>(entity, area);
-		registry.assign<component::BodyRect>(entity);
+		registry.assign<IndoorOutdoorBlendArea>(entity, area);
+		registry.assign<BodyRect>(entity);
 		loadPosAndSize();
+	}
+	else if(type == "IndoorArea")
+	{
+		entity = registry.create();
+		registry.assign<IndoorArea>(entity);
+		createAndLoadPosAndSize();
+	}
+	else if(type == "OutdoorArea")
+	{
+		entity = registry.create();
+		registry.assign<OutdoorArea>(entity);
+		createAndLoadPosAndSize();
 	}
 	else if(type == "PuzzleBoulder")
 	{
@@ -462,13 +490,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
-		auto& plate = registry.get<component::PressurePlate>(entity);
+		auto& plate = registry.get<PressurePlate>(entity);
 		plate.puzzleId = getProperty("puzzleId").toU32();
 		plate.id = getProperty("id").toU32();
 		plate.isPressIrreversible = getProperty("isPressIrreversible").toBool();
 		if(plate.isPressIrreversible)
 		{
-			auto& textureRect = registry.get<component::TextureRect>(entity);
+			auto& textureRect = registry.get<TextureRect>(entity);
 			textureRect.x = 72;
 		}
 	}
@@ -478,7 +506,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadIndoorOutdoorBlendComponent();
 		loadAndAlignPosAndSize();
 
-		auto& spikes = registry.get<component::Spikes>(entity);
+		auto& spikes = registry.get<Spikes>(entity);
 		spikes.puzzleId = getProperty("puzzleId").toU32();
 		spikes.id = getProperty("id").toU32();
 		spikes.timeToChange = getProperty("timeToChange").toFloat();
@@ -486,8 +514,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		spikes.changes = getProperty("changes").toBool();
 		spikes.active = getProperty("active").toBool();
 
-		auto& body = registry.get<component::BodyRect>(entity);
-		auto& textureRect = registry.get<component::TextureRect>(entity);
+		auto& body = registry.get<BodyRect>(entity);
+		auto& textureRect = registry.get<TextureRect>(entity);
 		textureRect.size = Cast<Vec2i>(body.size);
 	}
 	else if(type == "SavePoint")
@@ -499,15 +527,15 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "TeleportPoint")
 	{
 		entity = registry.create();
-		registry.assign<component::BodyRect>(entity);
-		registry.assign<component::TeleportPoint>(entity, getProperty("name").toString());
+		registry.assign<BodyRect>(entity);
+		registry.assign<TeleportPoint>(entity, getProperty("name").toString());
 		loadPos();
 	}
 	else if(type == "CameraRoom")
 	{
 		createCopy("CameraRoom");
 		loadPosAndSize();
-		auto& camRoom = registry.get<component::CameraRoom>(entity);
+		auto& camRoom = registry.get<CameraRoom>(entity);
 		camRoom.edgeAreaSize = getProperty("edgeAreaSize").toFloat();
 	}
 	else 
@@ -519,18 +547,14 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 void loadEntitiesFromMapFile(const Xml& mapNode, EntitiesTemplateStorage& templates, entt::registry& registry,
 							 SceneManager& sceneManager, bool* isPlayerOnScene)
 {
-	// TODO: Change map layer name in tiled to entities
 	std::vector<Xml> objectGroupNodes = mapNode.getChildren("objectgroup");
 	for(auto& objectGroupNode : objectGroupNodes)
 	{
-		if((objectGroupNode.getAttribute("name")->toString() == "gameObjects"))
+		if((objectGroupNode.getAttribute("name")->toString().find("Entities")) != std::string::npos)
 		{
 			std::vector<Xml> objects = objectGroupNode.getChildren("object");
 			for(const auto& entityNode : objects)
-			{
 				loadEntity(entityNode, templates, registry, sceneManager, isPlayerOnScene);
-			}
-			return;
 		}
 	}
 }

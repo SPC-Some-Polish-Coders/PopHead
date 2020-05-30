@@ -17,7 +17,7 @@ public:
     SceneManager();
 
     void replaceScene(const std::string& sceneSourceCodeFilePath);
-    void replaceScene(const std::string& sceneSourceCodeFilePath, const Vec2& playerPosition);
+    void replaceScene(const std::string& sceneSourceCodeFilePath, Vec2 playerPosition);
     void popScene();
     
 	void changingScenesProcess();

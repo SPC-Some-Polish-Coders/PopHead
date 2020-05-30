@@ -11,13 +11,14 @@ void PuzzleBoulders::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos, component::BodyRect>().each([&]
+	using namespace component;
+
+	mRegistry.view<PuzzleBoulder, PuzzleGridPos, BodyRect>().each([&]
 	(auto& boulder, auto& boulderGridPos, auto& boulderBody)
 	{
-		mRegistry.view<component::Player, component::Kinematics, component::BodyRect, component::BodyCircle>().each([&]
+		mRegistry.view<Player, Kinematics, BodyRect, BodyCircle>().each([&]
 		(auto, const auto& playerKinematics, const auto& playerBody, auto playerCircle)
 		{
 			if(playerKinematics.acceleration == Vec2())
@@ -45,10 +46,10 @@ void PuzzleBoulders::update(float dt)
 				auto newBoulderGridPos = boulderGridPos + pushDir;
 
 				// check collsion with another boulder
-				auto puzzleBoulders = mRegistry.view<component::PuzzleBoulder, component::PuzzleGridPos>();
+				auto puzzleBoulders = mRegistry.view<PuzzleBoulder, PuzzleGridPos>();
 				for(auto otherBoulder : puzzleBoulders)
 				{
-					const auto& otherBoulderGridPos = puzzleBoulders.get<component::PuzzleGridPos>(otherBoulder);
+					const auto& otherBoulderGridPos = puzzleBoulders.get<PuzzleGridPos>(otherBoulder);
 					if(newBoulderGridPos == otherBoulderGridPos)
 						return true;
 				}
@@ -68,11 +69,11 @@ void PuzzleBoulders::update(float dt)
 
 				Vec2i chunkRelativeBoulderPos = newBoulderGridPos - gridPosOfRoadChunkThatBoulderIsIn;
 
-				auto roadChunks = mRegistry.view<component::PuzzleGridRoadChunk, component::PuzzleGridPos>();
+				auto roadChunks = mRegistry.view<PuzzleGridRoadChunk, PuzzleGridPos>();
 				for(auto roadChunkEntity : roadChunks)
 				{
-					const auto& roadChunk = roadChunks.get<component::PuzzleGridRoadChunk>(roadChunkEntity);
-					const auto& roadChunkGridPos = roadChunks.get<component::PuzzleGridPos>(roadChunkEntity);
+					const auto& roadChunk = roadChunks.get<PuzzleGridRoadChunk>(roadChunkEntity);
+					const auto& roadChunkGridPos = roadChunks.get<PuzzleGridPos>(roadChunkEntity);
 
 					if(gridPosOfRoadChunkThatBoulderIsIn == roadChunkGridPos)
 						return !roadChunk.tiles[chunkRelativeBoulderPos.y][chunkRelativeBoulderPos.x];

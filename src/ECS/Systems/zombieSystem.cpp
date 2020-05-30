@@ -45,6 +45,17 @@ void ZombieSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
+	#ifndef PH_DISTRIBUTION
+	if(freezeZombies)
+	{
+		mRegistry.view<component::Zombie, component::Kinematics>().each([&]
+		(auto, auto& kinematics)
+		{
+			kinematics.acceleration = {};
+		});
+	}
+	#endif
+
 	if(sPause || freezeZombies)
 		return;
 

@@ -14,12 +14,6 @@ public:
 
 private:
 	EntitiesTemplateStorage& mEntitiesTemplateStorage;
-
-	struct Puzzle4
-	{
-		bool secondBoulderFell = false;
-	};
-	Puzzle4 puzzle4;
 };
 
 }

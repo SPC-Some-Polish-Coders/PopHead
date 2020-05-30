@@ -3,74 +3,74 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace ph::component {
-	
-	struct Health
-	{
-		i32 healthPoints;
-		i32 maxHealthPoints;
-	};
 
-	struct Damage
-	{
-		i32 damageDealt;
-	};
-	
-	struct Player {};
+struct Health
+{
+	i32 healthPoints;
+	i32 maxHealthPoints;
+};
 
-	struct Killable {};
+struct Damage
+{
+	i32 damageDealt;
+};
 
-	struct InPlayerGunAttackArea {};
+struct Player {};
 
-	struct FaceDirection : public Vec2 
-	{
-		using Vec2::operator=;
-	};
+struct Killable {};
 
-	struct GunAttacker // @no-debugger
-	{
-		bool isTryingToAttack;
-		float timeBeforeHiding;
-		float timeToHide;
-	};
+struct InPlayerGunAttackArea {};
 
-	struct DeadCharacter // @no-debugger
-	{
-		float timeToFadeOut = 0.f;
-		float timeFromDeath = 0.f;
-	};
+struct FaceDirection : public Vec2 
+{
+	using Vec2::operator=;
+};
 
-	struct TaggedToDestroy {};
+struct GunAttacker // @no-debugger
+{
+	bool isTryingToAttack;
+	float timeBeforeHiding;
+	float timeToHide;
+};
 
-	struct DamageTag // @no-debugger
-	{
-		i32 amountOfDamage;
-	};
+struct DeadCharacter // @no-debugger
+{
+	float timeToFadeOut = 0.f;
+	float timeFromDeath = 0.f;
+};
 
-	struct CollisionWithPlayer
-	{
-		float pushForce;
-		bool isCollision;
-	};
+struct TaggedToDestroy {};
 
-	struct Lifetime
-	{
-		float lifetime;
-	};
+struct DamageTag // @no-debugger
+{
+	i32 amountOfDamage;
+};
 
-	struct LastingShot // @no-debugger
-	{
-		Vec2 startingShotPos;
-		Vec2 endingShotPos;
-	};
+struct CollisionWithPlayer
+{
+	float pushForce;
+	bool isCollision;
+};
 
-	struct CurrentGun {}; // @no-debugger
+struct Lifetime
+{
+	float lifetime;
+};
 
-	struct CurrentMeleeWeapon {}; // @no-debugger
+struct LastingShot // @no-debugger
+{
+	Vec2 startingShotPos;
+	Vec2 endingShotPos;
+};
 
-	struct DamageAnimation // @no-debugger
-	{
-		float timeToEndColorChange;
-		bool animationStarted = false;
-	};
+struct CurrentGun {}; // @no-debugger
+
+struct CurrentMeleeWeapon {}; // @no-debugger
+
+struct DamageAnimation // @no-debugger
+{
+	float timeToEndColorChange;
+	bool animationStarted = false;
+};
 
 }

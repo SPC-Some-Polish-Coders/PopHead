@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="240">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="267">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -24418,37 +24418,35 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
-   <chunk x="12" y="348" width="12" height="12">
+   <chunk x="-12" y="360" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898
 </chunk>
-   <chunk x="24" y="348" width="12" height="12">
+   <chunk x="0" y="360" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+898,898,898,898,898,898,898,898,898,898,0,0,
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898
 </chunk>
    <chunk x="12" y="360" width="12" height="12">
-0,0,0,0,0,898,898,898,898,898,898,898,
-0,0,0,0,0,898,898,898,898,898,898,898,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24458,49 +24456,135 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898
 </chunk>
    <chunk x="24" y="360" width="12" height="12">
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,898,898,898,898,898,898,898,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,898,898
+</chunk>
+   <chunk x="36" y="360" width="12" height="12">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="-12" y="372" width="12" height="12">
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,898,898,898,898,898,898,898,898,
+0,0,0,0,0,0,0,0,0,0,0,898,
+0,0,0,0,0,0,0,0,0,0,0,898,
+0,0,0,0,0,0,0,0,0,0,0,898,
+0,0,0,0,0,0,0,0,0,0,0,898,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,898,898,898,0,898,898,898,898,898,898
+</chunk>
+   <chunk x="0" y="372" width="12" height="12">
+898,898,898,898,898,898,898,898,898,898,898,898,
+898,898,898,898,898,898,898,898,898,898,0,0,
+898,898,898,898,898,898,898,898,898,898,0,0,
+898,898,898,898,898,898,898,898,898,898,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="12" y="372" width="12" height="12">
+898,898,898,898,898,898,898,898,898,898,898,898,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,898,898,898,898,898,898,898,898,898,0,
-0,0,898,898,898,898,898,898,898,898,898,0,
-0,0,898,898,898,898,898,898,898,898,898,0,
-0,0,898,898,898,898,898,898,898,898,898,0,
-0,0,898,898,898,898,898,898,898,898,898,898,
-0,0,898,898,898,898,898,898,898,898,898,898,
-0,0,898,898,898,898,898,898,898,898,898,898,
-0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
+0,0,0,0,0,0,0,898,898,898,898,898,
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="372" width="12" height="12">
+898,898,898,898,898,898,898,898,898,898,898,898,
 898,898,898,898,0,0,0,0,0,0,0,0,
 898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
-898,898,898,898,0,0,0,0,0,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
+898,898,898,898,898,898,898,898,898,0,0,0,
 898,898,898,898,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="36" y="372" width="12" height="12">
+898,898,898,898,898,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="-12" y="384" width="12" height="12">
+0,0,898,898,898,0,898,898,898,898,898,898,
+0,0,898,898,898,0,898,898,898,898,898,898,
+0,0,898,898,898,0,898,898,898,898,898,898,
+0,0,898,898,898,0,0,0,0,0,0,0,
+0,0,898,898,898,0,0,0,0,0,0,0,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,898,898,898,898,898,898,898,898,898,898,
+0,0,0,0,0,0,0,0,0,0,898,898,
+0,0,0,0,0,0,0,0,0,0,898,898,
+0,0,0,0,0,0,0,0,0,0,898,898,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="0" y="384" width="12" height="12">
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+898,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="384" width="12" height="12">
 898,898,898,898,0,0,0,0,0,0,0,0,
@@ -24730,37 +24814,35 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
-   <chunk x="12" y="348" width="12" height="12">
+   <chunk x="-12" y="360" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,935,932,932,932,932,932,932,
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,902,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,935,932,932,932,932,932,932,932,
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,902,0,0,0,0,0,0,0
 </chunk>
-   <chunk x="24" y="348" width="12" height="12">
+   <chunk x="0" y="360" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-932,932,932,932,932,932,932,932,932,932,2147484583,0,
-0,0,0,0,0,0,0,0,0,0,899,0,
-0,0,0,0,0,0,0,0,0,0,899,0,
-0,0,0,0,0,0,0,0,0,0,899,0,
-0,0,0,0,0,0,0,0,0,0,899,0,
-0,0,0,0,0,0,0,0,0,0,899,0,
-0,0,0,0,0,0,0,0,0,0,899,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+932,932,932,932,932,932,932,932,932,2147484583,0,0,
+0,0,0,0,0,0,0,0,0,899,0,0,
+0,0,0,0,0,0,0,0,0,931,932,932,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="12" y="360" width="12" height="12">
-0,0,0,0,0,902,0,0,0,0,0,0,
-0,0,0,0,0,903,836,837,837,837,837,837,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24769,50 +24851,136 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+932,932,932,932,932,932,932,932,932,932,932,932,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="360" width="12" height="12">
-0,0,0,0,0,0,0,0,0,0,899,0,
-838,0,0,835,836,837,837,837,837,837,871,0,
-870,0,0,867,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+932,932,933,932,932,932,932,932,932,932,932,932,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="36" y="360" width="12" height="12">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+932,932,932,932,933,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="-12" y="372" width="12" height="12">
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,902,0,0,0,0,0,0,0,
+0,0,0,0,903,836,837,837,837,837,837,838,
+0,0,0,0,0,0,0,0,0,0,0,870,
+0,0,0,0,0,0,0,0,0,0,0,902,
+0,0,0,0,0,0,0,0,0,0,0,902,
+0,0,935,933,933,933,933,933,933,933,933,902,
+0,0,902,0,0,0,0,0,0,0,0,0,
+0,0,902,0,0,0,0,0,0,0,0,0,
+0,0,902,0,835,837,838,0,0,0,0,0,
+0,0,902,0,867,0,870,0,0,0,0,0
+</chunk>
+   <chunk x="0" y="372" width="12" height="12">
+0,0,0,0,0,0,0,0,0,835,837,837,
+0,0,0,0,0,0,0,0,0,867,0,0,
+0,0,0,0,0,0,0,0,0,899,0,0,
+0,0,835,836,837,837,837,837,837,871,0,0,
+0,0,867,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="12" y="372" width="12" height="12">
+837,837,837,837,837,837,837,837,837,837,837,837,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,935,933,933,933,933,933,933,933,2147484583,0,
-0,0,902,193,0,0,0,0,0,193,899,0,
-0,0,902,0,0,0,0,0,0,0,899,0,
-0,0,902,0,0,0,0,0,0,0,899,0,
-0,0,902,0,0,0,0,0,0,0,931,933,
-0,0,902,0,0,0,0,0,0,0,0,0,
-0,0,902,0,0,0,0,0,0,0,0,0,
-0,0,902,0,0,0,0,0,0,0,0,0,
-0,0,903,837,837,837,837,837,837,837,837,837,
+0,0,0,0,0,0,0,935,933,933,933,933,
+0,0,0,0,0,0,0,902,193,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,902,0,0,0,0,
+0,0,0,0,0,0,0,903,837,837,837,837,
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="372" width="12" height="12">
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-902,0,0,899,0,0,0,0,0,0,0,0,
-934,0,0,899,0,0,0,0,0,0,0,0,
-0,0,0,899,0,0,0,0,0,0,0,0,
-0,0,0,899,0,0,0,0,0,0,0,0,
-0,0,0,899,0,0,0,0,0,0,0,0,
-838,0,0,899,0,0,0,0,0,0,0,0,
-870,0,0,899,0,0,0,0,0,0,0,0
+838,0,0,835,837,837,837,837,837,837,837,837,
+870,0,0,867,0,0,0,0,0,0,0,0,
+934,0,0,931,933,933,933,933,2147484583,0,0,0,
+0,0,0,0,0,0,0,193,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+0,0,0,0,0,0,0,0,899,0,0,0,
+838,0,0,835,837,837,837,837,2147484551,0,0,0,
+870,0,0,867,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="36" y="372" width="12" height="12">
+837,837,837,837,837,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="-12" y="384" width="12" height="12">
+0,0,902,0,899,0,902,0,0,0,0,0,
+0,0,902,0,899,0,902,0,0,0,0,0,
+0,0,902,0,899,0,903,836,836,836,836,836,
+0,0,902,0,899,0,0,0,0,0,0,0,
+0,0,902,0,899,0,0,0,0,0,0,0,
+0,0,902,0,931,933,933,933,933,933,933,933,
+0,0,902,0,0,0,0,0,0,0,0,0,
+0,0,903,836,837,837,837,837,837,837,838,0,
+0,0,0,0,0,0,0,0,0,0,870,0,
+0,0,0,0,0,0,0,0,0,0,902,0,
+0,0,0,0,0,0,0,0,0,0,902,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+   <chunk x="0" y="384" width="12" height="12">
+0,0,899,0,0,0,0,0,0,0,0,0,
+0,0,899,0,0,0,0,0,0,0,0,0,
+836,837,2147484551,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+2147484583,0,0,0,0,0,0,0,0,0,0,0,
+899,0,0,0,0,0,0,0,0,0,0,0,
+899,0,0,0,0,0,0,0,0,0,0,0,
+899,0,0,0,0,0,0,0,0,0,0,0,
+899,0,0,0,0,0,0,0,0,0,0,0,
+899,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="24" y="384" width="12" height="12">
 902,0,0,899,0,0,0,0,0,0,0,0,
@@ -24858,7 +25026,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="5" name="gameObjects">
+ <objectgroup id="5" name="Entities">
   <object id="3" type="Camera" x="62.303" y="3615.45" width="640" height="360"/>
   <object id="10" name="Shooting Tutorial" type="HintArea" x="-1628.57" y="1813.9" width="810.395" height="252.833">
    <properties>
@@ -25183,11 +25351,6 @@
   <object id="177" type="SavePoint" x="527.5" y="5103.75">
    <point/>
   </object>
-  <object id="180" type="IndoorOutdoorBlendArea" x="693.75" y="6278.88" width="78.375" height="37.5">
-   <properties>
-    <property name="exit_right" type="bool" value="true"/>
-   </properties>
-  </object>
   <object id="181" type="Spikes" x="626.364" y="6225.63" width="11" height="11.667">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
@@ -25273,29 +25436,7 @@
   <object id="196" type="PuzzleBoulder" x="-55.25" y="5619.92">
    <point/>
   </object>
-  <object id="198" type="Spikes" x="401.281" y="5849.9" width="28.5" height="35.834">
-   <properties>
-    <property name="active" type="bool" value="true"/>
-    <property name="changeFrequency" type="float" value="2"/>
-    <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="4"/>
-    <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="4"/>
-    <property name="timeToChange" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="199" type="Spikes" x="401.099" y="5895.13" width="28.5" height="35.834">
-   <properties>
-    <property name="active" type="bool" value="true"/>
-    <property name="changeFrequency" type="float" value="2"/>
-    <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="3"/>
-    <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="4"/>
-    <property name="timeToChange" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="200" type="Spikes" x="401.417" y="5942.95" width="28.5" height="35.834">
+  <object id="198" type="Spikes" x="276.614" y="5922.57" width="37.5" height="38.0007">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25306,99 +25447,29 @@
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="201" type="Spikes" x="401.599" y="5991.13" width="28.5" height="35.834">
+  <object id="199" type="Spikes" x="322.349" y="5923.13" width="41.5" height="37.5007">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="1"/>
+    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="202" type="SavePoint" x="259.333" y="6053.33">
+  <object id="200" type="Spikes" x="451.417" y="5925.95" width="35.6667" height="34.834">
    <properties>
-    <property name="outdoor" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="204" type="TeleportPoint" x="414.5" y="6093">
-   <properties>
-    <property name="name" value="puzzle4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="205" type="PuzzleBoulder" x="326.06" y="6077.42">
-   <properties>
-    <property name="outdoor" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="206" type="PressurePlate" x="331.462" y="6006.85">
-   <properties>
-    <property name="id" type="int" value="1"/>
-    <property name="isPressIrreversible" type="bool" value="false"/>
-    <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="207" type="PressurePlate" x="314.326" y="6006.65">
-   <properties>
-    <property name="id" type="int" value="2"/>
-    <property name="isPressIrreversible" type="bool" value="false"/>
-    <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="210" type="PressurePlate" x="295.03" y="6006.48">
-   <properties>
-    <property name="id" type="int" value="3"/>
-    <property name="isPressIrreversible" type="bool" value="false"/>
-    <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="211" type="PressurePlate" x="277.894" y="6006.53">
-   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
     <property name="id" type="int" value="4"/>
-    <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
     <property name="puzzleId" type="int" value="4"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="216" type="CameraRoom" x="-197.5" y="5533.33" width="320" height="180"/>
-  <object id="217" type="CameraRoom" x="44.6667" y="5006.67" width="320" height="180"/>
-  <object id="226" type="CameraRoom" x="492.667" y="5004.67" width="320" height="180"/>
-  <object id="228" type="CameraRoom" x="569.333" y="5296.67" width="640" height="360"/>
-  <object id="229" type="CameraRoom" x="148.667" y="6160" width="640" height="360"/>
-  <object id="231" type="CameraRoom" x="80.8333" y="5800.5" width="640" height="360">
-   <properties>
-    <property name="edgeAreaSize" type="float" value="0.06"/>
+    <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="232" type="CameraRoom" x="259.334" y="5621.34" width="320" height="180">
-   <properties>
-    <property name="edgeAreaSize" type="float" value="0.06"/>
-   </properties>
-  </object>
-  <object id="233" type="TeleportPoint" x="198.5" y="5139.5">
-   <properties>
-    <property name="name" value="puzzle1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="236" type="PuzzleBoulder" x="291.333" y="6078">
-   <properties>
-    <property name="outdoor" type="bool" value="false"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="237" type="Spikes" x="400.417" y="5803.58" width="28.5" height="35.834">
+  <object id="201" type="Spikes" x="499.099" y="5926.96" width="40" height="33.334">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25409,7 +25480,84 @@
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="238" type="PressurePlate" x="262" y="6005.75">
+  <object id="202" type="SavePoint" x="414.333" y="6103.66">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="204" type="TeleportPoint" x="414.167" y="6130.33">
+   <properties>
+    <property name="name" value="puzzle4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="205" type="PuzzleBoulder" x="438.393" y="6074.09">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="206" type="PressurePlate" x="341.962" y="6012.12">
+   <properties>
+    <property name="id" type="int" value="1"/>
+    <property name="isPressIrreversible" type="bool" value="false"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="207" type="PressurePlate" x="358.076" y="6008.17">
+   <properties>
+    <property name="id" type="int" value="2"/>
+    <property name="isPressIrreversible" type="bool" value="false"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="210" type="PressurePlate" x="377.78" y="6011.5">
+   <properties>
+    <property name="id" type="int" value="3"/>
+    <property name="isPressIrreversible" type="bool" value="false"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="211" type="PressurePlate" x="455.894" y="6012.05">
+   <properties>
+    <property name="id" type="int" value="4"/>
+    <property name="isPressIrreversible" type="bool" value="false"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="233" type="TeleportPoint" x="198.5" y="5139.5">
+   <properties>
+    <property name="name" value="puzzle1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="236" type="PuzzleBoulder" x="391.333" y="6074.33">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="237" type="Spikes" x="228.417" y="5922.58" width="41.5" height="38.6673">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="1"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+    <property name="timeToChange" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="238" type="PressurePlate" x="473.75" y="6011.5">
    <properties>
     <property name="id" type="int" value="5"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
@@ -25421,8 +25569,128 @@
   <object id="239" type="BulletBox" x="130.667" y="5627">
    <point/>
   </object>
+  <object id="240" type="Spikes" x="548.75" y="5927.42" width="38.5" height="33.6673">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="6"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+    <property name="timeToChange" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="241" type="PressurePlate" x="489.636" y="6009.27">
+   <properties>
+    <property name="id" type="int" value="6"/>
+    <property name="isPressIrreversible" type="bool" value="false"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="242" type="Zombie" x="-108.667" y="5937.33">
+   <properties>
+    <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="250" type="Spikes" x="-152.625" y="6081.96" width="29.6667" height="79.334">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="1"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="251" type="Spikes" x="-150.708" y="6165.2" width="28.5" height="35.834">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="2"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+    <property name="timeToChange" type="float" value="0.3"/>
+   </properties>
+  </object>
+  <object id="252" type="Spikes" x="-149.875" y="6211.37" width="28.5" height="52.1673">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="3"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+    <property name="timeToChange" type="float" value="0.6"/>
+   </properties>
+  </object>
+  <object id="253" type="Spikes" x="-109.598" y="6241.61" width="37.5" height="25.834">
+   <properties>
+    <property name="active" type="bool" value="true"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="4"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+    <property name="timeToChange" type="float" value="0.6"/>
+   </properties>
+  </object>
+  <object id="255" type="Lever" x="-70.9167" y="6166.75">
+   <properties>
+    <property name="id" type="int" value="1"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="256" type="Lever" x="-25.8333" y="6168.67">
+   <properties>
+    <property name="id" type="int" value="2"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="257" type="Lever" x="19.5" y="6168.5">
+   <properties>
+    <property name="id" type="int" value="1"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="262" type="TeleportPoint" x="9" y="6099">
+   <properties>
+    <property name="name" value="puzzle5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="266" type="Spikes" x="-60" y="6099.08" width="13.5" height="13.584">
+   <properties>
+    <property name="active" type="bool" value="false"/>
+    <property name="changeFrequency" type="float" value="2"/>
+    <property name="changes" type="bool" value="false"/>
+    <property name="id" type="int" value="4"/>
+    <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleId" type="int" value="0"/>
+    <property name="timeToChange" type="float" value="0.6"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="10" name="denialAreas">
+ <objectgroup id="16" name="IndoorOutdoorEntities" visible="0">
+  <object id="258" type="IndoorOutdoorBlendArea" x="695.479" y="6281.92" width="78.375" height="37.5">
+   <properties>
+    <property name="exit_right" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="259" type="IndoorArea" x="-174.188" y="5842.25" width="840.375" height="760.5"/>
+  <object id="260" type="OutdoorArea" x="-496.188" y="4991.75" width="1982.38" height="764.5"/>
+  <object id="261" type="OutdoorArea" x="798.81" y="5705.75" width="1276.38" height="878.5"/>
+ </objectgroup>
+ <objectgroup id="10" name="denialAreas" visible="0">
   <object id="32" type="CollisionAndLightWallDenialArea" x="385.667" y="2041" width="477.833" height="543.667"/>
   <object id="33" type="CollisionAndLightWallDenialArea" x="-388.833" y="763.83" width="781.833" height="1307.83"/>
   <object id="35" type="CollisionAndLightWallDenialArea" x="-156.666" y="-111.83" width="449.333" height="873"/>
@@ -25437,5 +25705,27 @@
   <object id="138" type="CollisionAndLightWallDenialArea" x="-715.947" y="3109.49" width="86.6663" height="108.652"/>
   <object id="139" type="CollisionAndLightWallDenialArea" x="-628.076" y="3133.96" width="50.6663" height="39.9853"/>
   <object id="178" type="CollisionAndLightWallDenialArea" x="732.5" y="6278.88" width="15.625" height="36.5"/>
+ </objectgroup>
+ <objectgroup id="15" name="CameraRoomsEntities" visible="0">
+  <object id="243" type="CameraRoom" x="-193.417" y="5528.99" width="320" height="180"/>
+  <object id="244" type="CameraRoom" x="48.7502" y="5002.34" width="320" height="180"/>
+  <object id="245" type="CameraRoom" x="496.75" y="5000.34" width="320" height="180"/>
+  <object id="246" type="CameraRoom" x="573.416" y="5292.34" width="640" height="360"/>
+  <object id="247" type="CameraRoom" x="152.75" y="6155.66" width="640" height="360"/>
+  <object id="248" type="CameraRoom" x="172.916" y="5886.84" width="480" height="270">
+   <properties>
+    <property name="edgeAreaSize" type="float" value="0.06"/>
+   </properties>
+  </object>
+  <object id="249" type="CameraRoom" x="-147.916" y="5847.68" width="320" height="180">
+   <properties>
+    <property name="edgeAreaSize" type="float" value="0.06"/>
+   </properties>
+  </object>
+  <object id="254" type="CameraRoom" x="-294.667" y="6029.67" width="480" height="270">
+   <properties>
+    <property name="edgeAreaSize" type="float" value="0.06"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

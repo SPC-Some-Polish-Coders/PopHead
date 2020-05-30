@@ -91,7 +91,7 @@ void MeleeAttacks::update(float dt)
 			if(mShouldWeaponBeRendered)
 			{
 				// set weapon position
-				weaponBody.pos = playerBody.center() - Vec2(12, 12);
+				weaponBody.pos = playerBody.center() - Vec2(12);
 
 				// rotate weapon
 				constexpr float anglesPerSecond = 240.f;

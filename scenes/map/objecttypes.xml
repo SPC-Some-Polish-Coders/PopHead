@@ -34,6 +34,7 @@
   <property name="hintKeyboardContent" type="string"/>
   <property name="hintName" type="string"/>
  </objecttype>
+ <objecttype name="IndoorArea" color="#19191a"/>
  <objecttype name="IndoorOutdoorBlendArea" color="#a4a41b">
   <property name="exit_down" type="bool" default="false"/>
   <property name="exit_left" type="bool" default="false"/>
@@ -41,13 +42,18 @@
   <property name="exit_top" type="bool" default="false"/>
  </objecttype>
  <objecttype name="Lever" color="#aa00ff">
+  <property name="active" type="bool" default="false"/>
+  <property name="id" type="int" default="0"/>
   <property name="outdoor" type="bool" default="true"/>
+  <property name="puzzleId" type="int" default="0"/>
+  <property name="turnOffAfterSwitch" type="bool" default="false"/>
  </objecttype>
  <objecttype name="LightWall" color="#129f70"/>
  <objecttype name="LightWallDenialArea" color="#0b2c04"/>
  <objecttype name="Medkit" color="#aaffff">
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
+ <objecttype name="OutdoorArea" color="#ecf7f6"/>
  <objecttype name="Player" color="#55ffff">
   <property name="hasFlashlight" type="bool" default="false"/>
  </objecttype>

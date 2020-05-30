@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-class IndoorOutdoorBlend : public System
+class IndoorOutdoorBlending : public System
 {
 public:
 	using System::System;

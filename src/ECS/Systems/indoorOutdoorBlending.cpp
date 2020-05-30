@@ -1,12 +1,12 @@
 #include "pch.hpp"
-#include "indoorOutdoorBlend.hpp"
+#include "indoorOutdoorBlending.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 
 namespace ph::system {
 
-using component::IndoorOutdoorBlendArea;
+using namespace component;
 
 static float getOutdoorFactor(const FloatRect& blendArea, Vec2 objectPos, IndoorOutdoorBlendArea::ExitSide exit)
 {
@@ -42,66 +42,107 @@ static float getOutdoorFactor(const FloatRect& blendArea, Vec2 objectPos, Indoor
 	return res;
 }
 
-float correctDarkness(float brightness)
+static float correctBrightness(float brightness)
 {
 	if(brightness < 0.05f) brightness = 0.05f;
 	else if(brightness > 0.95f) brightness = 1.f;
 	return brightness;
 }
 
-float correctAlpha(float alpha)
+static float correctAlpha(float alpha)
 {
 	if(alpha < 0.05f) alpha = 0.f;
 	else if(alpha > 0.95f) alpha = 1.f;
 	return alpha;
 }
 
-void IndoorOutdoorBlend::update(float dt)
+void IndoorOutdoorBlending::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	auto blendAreas = mRegistry.view<component::IndoorOutdoorBlendArea, component::BodyRect>();
-
-	mRegistry.view<component::Player, component::BodyRect>().each([&]
-	(const component::Player, const component::BodyRect& playerBody)
+	mRegistry.view<Player, BodyRect>().each([&]
+	(auto, auto playerBody)
 	{
-		blendAreas.each([this, &playerBody]
-		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
+		bool playerIntersectsArea = false;
+
+		auto setEnviromentColors = [&](float brightness, float alpha)
+		{
+			mRegistry.view<OutdoorBlend>().each([=]
+			(OutdoorBlend& ob)
+			{
+				ob.brightness = correctBrightness(brightness); 
+			});
+
+			mRegistry.view<IndoorBlend>().each([=]
+			(IndoorBlend& ib)
+			{
+				ib.alpha = correctAlpha(alpha); 
+			});	
+		};
+
+		mRegistry.view<IndoorOutdoorBlendArea, BodyRect>().each([&]
+		(auto blendArea, auto blendAreaBody)
 		{
 			if(intersect(playerBody, blendAreaBody))
 			{
+				playerIntersectsArea = true;
+
 				auto outdoor = getOutdoorFactor(blendAreaBody, playerBody.center(), blendArea.exit); 
-
 				mPlayerOutdoor = correctAlpha(outdoor); 
-
-				mRegistry.view<component::OutdoorBlend>().each([=]
-				(component::OutdoorBlend& ob)
-				{
-					ob.brightness = correctDarkness(outdoor); 
-				});
-
-				mRegistry.view<component::IndoorBlend>().each([=]
-				(component::IndoorBlend& ib)
-				{
-					ib.alpha = correctAlpha(1.f - outdoor); 
-				});	
+				setEnviromentColors(outdoor, 1.f - outdoor);
 			}
 		});
+		if(playerIntersectsArea) return;
+
+		mRegistry.view<IndoorArea, BodyRect>().each([&]
+		(auto, auto indoorAreaBody)
+		{
+			if(intersect(playerBody, indoorAreaBody))
+			{
+				playerIntersectsArea = true;
+				mPlayerOutdoor = 0.f;
+				setEnviromentColors(0.f, 1.f);
+			}
+		});
+		if(playerIntersectsArea) return;
+
+		mRegistry.view<OutdoorArea, BodyRect>().each([&]
+		(auto, auto outdoorAreaBody)
+		{
+			if(intersect(playerBody, outdoorAreaBody))
+			{
+				playerIntersectsArea = true;
+				mPlayerOutdoor = 1.f;
+				setEnviromentColors(1.f, 0.f);
+			}
+		});
+		if(playerIntersectsArea) return;
 	});
 
-	mRegistry.view<component::IndoorOutdoorBlend, component::BodyRect>().each([&]
-	(component::IndoorOutdoorBlend& object, component::BodyRect objectBody)
+	mRegistry.view<component::IndoorOutdoorBlend, BodyRect>().each([&]
+	(auto& object, auto objectBody)
 	{
-		blendAreas.each([&]
-		(component::IndoorOutdoorBlendArea blendArea, const component::BodyRect& blendAreaBody)
+		mRegistry.view<IndoorOutdoorBlendArea, BodyRect>().each([&]
+		(auto blendArea, auto blendAreaBody)
 		{
 			if(intersect(objectBody, blendAreaBody))
-			{
 				object.outdoor = correctAlpha(getOutdoorFactor(blendAreaBody, objectBody.center(), blendArea.exit));
-			}
+		});
+
+		mRegistry.view<IndoorArea, BodyRect>().each([&]
+		(auto, auto indoorAreaBody)
+		{
+			if(intersect(objectBody, indoorAreaBody))
+				object.outdoor = 0.f; 
+		});
+
+		mRegistry.view<OutdoorArea, BodyRect>().each([&]
+		(auto, auto outdoorAreaBody)
+		{
+			if(intersect(objectBody, outdoorAreaBody))
+				object.outdoor = 1.f; 
 		});
 
 		bool isPlayerInsideBlendArea = mPlayerOutdoor > 0.f && mPlayerOutdoor < 1.f;

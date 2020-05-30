@@ -44,7 +44,6 @@ private:
 	void parseEntrance(const Xml& entityComponentNode, entt::entity& entity);
 	void parseGate(const Xml& entityComponentNode, entt::entity& entity);
 	void parseLever(const Xml& entityComponentNode, entt::entity& entity);
-	void parseLeverListener(const Xml& entityComponentNode, entt::entity& entity);
 	void parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity);
 	void parseBullets(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity);
