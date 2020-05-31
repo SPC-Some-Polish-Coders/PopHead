@@ -46,8 +46,9 @@ namespace ph::system {
 			}
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
+				const auto& sharedBounds = mRegistry.get<component::BodyRect>(multiStaticObject);
 				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
-				if (intersect(multiStaticCollisionBody.sharedBounds, kinematicRect))
+				if (intersect(sharedBounds, kinematicRect))
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{
@@ -77,7 +78,8 @@ namespace ph::system {
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
 				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
-				if (intersect(multiStaticCollisionBody.sharedBounds, kinematicRect))
+				const auto& sharedBounds = mRegistry.get<component::BodyRect>(multiStaticObject);
+				if (intersect(sharedBounds, kinematicRect))
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{

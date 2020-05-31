@@ -57,7 +57,6 @@ struct RenderQuad
 
 struct GroundRenderChunk
 {
-	FloatRect bounds;
 	FloatRect textureRect;
 	u8 z;
 	bool outdoor;
@@ -67,10 +66,8 @@ struct RenderChunk
 {
 	std::vector<ChunkQuadData> quads;
 	std::vector<FloatRect> lightWalls;
-	FloatRect quadsBounds;
-	FloatRect lightWallsBounds;
-	u8 z;
 	u32 rendererID;
+	u8 z;
 	bool outdoor;
 };
 

@@ -710,21 +710,28 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%f\", c->%s);\n", name, name);
 					}
-					else if(match(code, "i32"))
+					else if(match(code, "i32") || match(code, "i64") || match(code, "i16"))
 					{
 						code += 3;
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%i\", c->%s);\n", name, name);
 					}
-					else if(match(code, "u32"))
+					else if(match(code, "i8"))
+					{
+						code += 2;
+						char* name = parseVariableName();
+						fprintf(genFile, "ImGui::Text(\"%s: %%i\", c->%s);\n", name, name);
+					}
+					else if(match(code, "u32") || match(code, "u64") || match(code, "u16"))
 					{
 						code += 3;
 						while(!isAlpha(*code)) ++code;
-						if(match(code, "long long")) code += 9;
-						else if(match(code, "long")) code += 4;
-						else if(match(code, "int")) code += 3;
-						else if(match(code, "short")) code += 5;
-						else if(match(code, "char")) code += 4;
+						char* name = parseVariableName();
+						fprintf(genFile, "ImGui::Text(\"%s: %%u\", c->%s);\n", name, name);
+					}
+					else if(match(code, "u8"))
+					{
+						code += 2;
 						char* name = parseVariableName();
 						fprintf(genFile, "ImGui::Text(\"%s: %%u\", c->%s);\n", name, name);
 					}
@@ -734,7 +741,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						char* name = parseVariableName();
 						fprintf(genFile, "if(c->%s) ImGui::Text(\"%s: true\"); else ImGui::Text(\"%s: false\");\n", name, name, name);
 					}
-					// TODO: Add support for u8, i8, maybe even for all integer types
 					else if(match(code, "char"))
 					{
 						code += 4;
@@ -903,7 +909,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 			fprintf(genFile, "ImGui::Separator();\n");
 			fprintf(genFile, "switch(*c)\n{\n");
 
-			code += 10;
 			while(*code++)
 			{
 				if(*code == '}')

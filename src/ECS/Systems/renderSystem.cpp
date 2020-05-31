@@ -19,15 +19,17 @@ RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 	Renderer::setChunksTexture(tileset);
 }
 
+using namespace component;
+
 void RenderSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
 	// shake camera
-	auto shakingCameras = mRegistry.view<component::CameraShake, component::Camera>();
+	auto shakingCameras = mRegistry.view<CameraShake, component::Camera>();
 	for(auto cameraEntity : shakingCameras)
 	{
-		auto& [shake, camera] = shakingCameras.get<component::CameraShake, component::Camera>(cameraEntity);
+		auto& [shake, camera] = shakingCameras.get<CameraShake, component::Camera>(cameraEntity);
 		if(shake.elapsedTime < shake.duration) 
 		{
 			auto cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
@@ -42,12 +44,12 @@ void RenderSystem::update(float dt)
 		}
 		else 
 		{
-			mRegistry.remove<component::CameraShake>(cameraEntity);
+			mRegistry.remove<CameraShake>(cameraEntity);
 		}
 	}
 
 	// get current camera and update shake
-	Camera* currentCamera = &defaultCamera;
+	ph::Camera* currentCamera = &defaultCamera;
 	mRegistry.view<component::Camera>().each([&currentCamera]
 	(auto& camera) 
 	{
@@ -59,7 +61,7 @@ void RenderSystem::update(float dt)
 	Renderer::setGameWorldCamera(*currentCamera);
 
 	// submit light sources
-	mRegistry.view<component::LightSource, component::BodyRect>().each([]
+	mRegistry.view<LightSource, BodyRect>().each([]
 	(const auto& pointLight, const auto& body)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
@@ -70,7 +72,7 @@ void RenderSystem::update(float dt)
 	//submit single light walls
 	if(Renderer::getNrOfLights() > 0)
 	{
-		mRegistry.view<component::LightWall, component::BodyRect>().each([]
+		mRegistry.view<LightWall, BodyRect>().each([]
 		(const auto& lightWall, const auto& body) 
 		{
 			if(lightWall.y == -1.f)
@@ -80,57 +82,59 @@ void RenderSystem::update(float dt)
 		});
 	}
 
-	auto getIndoorBlendColor = [](component::IndoorBlend ib)
+	auto getIndoorBlendColor = [](IndoorBlend ib)
 	{
 		u8 alpha = Cast<u8>(ib.alpha * 255.f);
 		return sf::Color(255, 255, 255, alpha);
 	};
 
 	// submit ground chunks with indoor blend
-	mRegistry.view<component::GroundRenderChunk, component::IndoorBlend>().each([&]
-	(auto& chunk, auto indoorBlend)
+	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend>().each([&]
+	(auto bounds, auto& chunk, auto indoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.pos, chunk.textureRect, chunk.z, getIndoorBlendColor(indoorBlend));
+		if(intersect(currentCamera->getBounds(), bounds))
+			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getIndoorBlendColor(indoorBlend));
 	});
 
 	// submit chunks with indoor blend
-	mRegistry.view<component::RenderChunk, component::IndoorBlend>().each([&]
-	(auto& chunk, auto indoorBlend)
+	mRegistry.view<BodyRect, RenderChunk, IndoorBlend>().each([&]
+	(auto bounds, auto& chunk, auto indoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), chunk.quadsBounds) && !chunk.quads.empty())
-			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(indoorBlend));
+		if(intersect(currentCamera->getBounds(), bounds) && !chunk.quads.empty())
+			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(indoorBlend));
 
-		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), chunk.lightWallsBounds)) 
+		FloatRect lightWallsBounds = {bounds.x - 400.f, bounds.y - 400.f, bounds.w + 800.f, bounds.h + 800.f};
+		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
-	auto getOutdoorBlendColor = [](component::OutdoorBlend ob)
+	auto getOutdoorBlendColor = [](OutdoorBlend ob)
 	{
 		u8 d = Cast<u8>(ob.brightness * 255.f);
 		return sf::Color(d, d, d, 255);
 	};
 
 	// submit ground chunks with outdoor blend
-	mRegistry.view<component::GroundRenderChunk, component::OutdoorBlend>().each([&]
-	(auto& chunk, auto outdoorBlend)
+	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend>().each([&]
+	(auto bounds, auto& chunk, auto outdoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), chunk.bounds))
-			Renderer::submitGroundChunk(chunk.bounds.pos, chunk.textureRect, chunk.z, getOutdoorBlendColor(outdoorBlend));
+		if(intersect(currentCamera->getBounds(), bounds))
+			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getOutdoorBlendColor(outdoorBlend));
 	});
 
 	// submit chunks with outdoor blend
-	mRegistry.view<component::RenderChunk, component::OutdoorBlend>().each([&]
-	(auto& chunk, auto outdoorBlend)
+	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend>().each([&]
+	(auto bounds, auto& chunk, auto outdoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), chunk.quadsBounds) && !chunk.quads.empty())
-			Renderer::submitChunk(chunk.quads, chunk.quadsBounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(outdoorBlend));
+		if(intersect(currentCamera->getBounds(), bounds) && !chunk.quads.empty())
+			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(outdoorBlend));
 
-		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), chunk.lightWallsBounds)) 
+		FloatRect lightWallsBounds = {bounds.x - 400.f, bounds.y - 400.f, bounds.w + 800.f, bounds.h + 800.f};
+		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
-	auto getIndoorOutdoorColor = [](component::IndoorOutdoorBlend io)
+	auto getIndoorOutdoorColor = [](IndoorOutdoorBlend io)
 	{
 		u8 bright = Cast<u8>(io.brightness * 255.f);
 		u8 alpha = Cast<u8>(io.alpha * 255.f);
@@ -138,8 +142,8 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit render quads
-	mRegistry.view<component::RenderQuad, component::IndoorOutdoorBlend, component::BodyRect>
-	(entt::exclude<component::HiddenForRenderer, component::TextureRect>).each([&]
+	mRegistry.view<RenderQuad, IndoorOutdoorBlend, BodyRect>
+	(entt::exclude<HiddenForRenderer, TextureRect>).each([&]
 	(const auto& quad, auto indoorOutdoorBlend, const auto& body)
 	{
 		sf::Color color = quad.color * getIndoorOutdoorColor(indoorOutdoorBlend);
@@ -149,8 +153,8 @@ void RenderSystem::update(float dt)
 	});
 
 	// submit render quads with texture rect
-	mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect, component::IndoorOutdoorBlend>
-	(entt::exclude<component::HiddenForRenderer>).each([&]
+	mRegistry.view<RenderQuad, TextureRect, BodyRect, IndoorOutdoorBlend>
+	(entt::exclude<HiddenForRenderer>).each([&]
 	(const auto& quad, const auto& textureRect, const auto& body, auto indoorOutdoorBlend)
 	{
 		Renderer::submitQuad(
@@ -159,8 +163,8 @@ void RenderSystem::update(float dt)
 	});
 
 	// submit render quads with no indoor outdoor component
-	mRegistry.view<component::RenderQuad, component::BodyRect>
-	(entt::exclude<component::HiddenForRenderer, component::TextureRect, component::IndoorOutdoorBlend>).each([&]
+	mRegistry.view<RenderQuad, BodyRect>
+	(entt::exclude<HiddenForRenderer, TextureRect, IndoorOutdoorBlend>).each([&]
 	(const auto& quad, const auto& body)
 	{
 		Renderer::submitQuad(
@@ -169,8 +173,8 @@ void RenderSystem::update(float dt)
 	});
 
 	// submit render quads with texture rect and no indoor outdoor component
-	mRegistry.view<component::RenderQuad, component::TextureRect, component::BodyRect>
-	(entt::exclude<component::HiddenForRenderer, component::IndoorOutdoorBlend>).each([&]
+	mRegistry.view<RenderQuad, TextureRect, BodyRect>
+	(entt::exclude<HiddenForRenderer, IndoorOutdoorBlend>).each([&]
 	(const auto& quad, const auto& textureRect, const auto& body)
 	{
 		Renderer::submitQuad(

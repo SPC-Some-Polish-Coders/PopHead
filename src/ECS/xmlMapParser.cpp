@@ -550,12 +550,6 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 		quadsBounds.w *= Cast<float>(info.tileSize.x);
 		quadsBounds.h *= Cast<float>(info.tileSize.y);
 
-		// set light walls bounds so we can do culling in RenderSystem
-		lightWallsBounds.x = quadsBounds.x - 400.f;
-		lightWallsBounds.y = quadsBounds.y - 400.f;
-		lightWallsBounds.w = quadsBounds.w + 800.f;
-		lightWallsBounds.h = quadsBounds.h + 800.f;
-
 		// check should we construct ground chunk or normal chunk 
 		FloatRect groundTextureRect = quads[0].textureRect;
 		bool groundChunkShouldBeConstructed = false;
@@ -580,8 +574,10 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 		{
 			auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
 
+			auto& chunkBody = mGameRegistry->get<component::BodyRect>(groundChunkEntity);
+			chunkBody = quadsBounds;
+
 			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
-			grc.bounds = quadsBounds;
 			grc.textureRect = groundTextureRect;
 			grc.z = z;
 
@@ -600,11 +596,12 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 		{
 			auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
 
+			auto& chunkBody = mGameRegistry->get<component::BodyRect>(chunkEntity);
+			chunkBody = quadsBounds;
+
 			auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
 			rc.quads = quads;
 			rc.lightWalls = lightWalls;
-			rc.quadsBounds = quadsBounds;
-			rc.lightWallsBounds = lightWallsBounds;
 			rc.z = z;
 			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
 
@@ -622,7 +619,6 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
 			mscb.rects = chunkCollisionRects;
 			mscb.circles = chunkCollisionCircles;
-			mscb.sharedBounds = quadsBounds;
 		}
 	}
 }

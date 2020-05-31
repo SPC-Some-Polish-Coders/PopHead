@@ -148,10 +148,14 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 
 void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity& entity)
 {
-	float x = entityComponentNode.getAttribute("x")->toFloat();
-	float y = entityComponentNode.getAttribute("y")->toFloat();
-	float w = entityComponentNode.getAttribute("width")->toFloat();
-	float h = entityComponentNode.getAttribute("height")->toFloat();
+	auto xNode = entityComponentNode.getAttribute("x");
+	auto yNode = entityComponentNode.getAttribute("y");
+	auto wNode = entityComponentNode.getAttribute("w");
+	auto hNode = entityComponentNode.getAttribute("h");
+	float x = xNode ? xNode->toFloat() : 0.f;
+	float y = yNode ? yNode->toFloat() : 0.f;
+	float w = wNode ? wNode->toFloat() : 0.f;
+	float h = hNode ? hNode->toFloat() : 0.f;
 	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, FloatRect(x, y, w, h));
 }
 
@@ -230,8 +234,8 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 {
 	i32 x = entityComponentNode.getAttribute("x")->toI32();
 	i32 y = entityComponentNode.getAttribute("y")->toI32();
-	i32 w = entityComponentNode.getAttribute("width")->toI32();
-	i32 h = entityComponentNode.getAttribute("height")->toI32();
+	i32 w = entityComponentNode.getAttribute("w")->toI32();
+	i32 h = entityComponentNode.getAttribute("h")->toI32();
 	IntRect rect(x, y, w, h);
 	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
 }
@@ -244,8 +248,8 @@ void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity
 		rect = FloatRect(
 			x->toFloat(),
 			entityComponentNode.getAttribute("y")->toFloat(),
-			entityComponentNode.getAttribute("width")->toFloat(),
-			entityComponentNode.getAttribute("height")->toFloat()
+			entityComponentNode.getAttribute("w")->toFloat(),
+			entityComponentNode.getAttribute("h")->toFloat()
 		);
 	}
 	else
@@ -408,9 +412,9 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 		}
 		else if(name == "randomSpawnAreaSize") 
 		{
-			const float width = attrib.getAttribute("width")->toFloat();
-			const float height = attrib.getAttribute("height")->toFloat();
-			emitter.randomSpawnAreaSize = {width, height};
+			const float w = attrib.getAttribute("w")->toFloat();
+			const float h = attrib.getAttribute("h")->toFloat();
+			emitter.randomSpawnAreaSize = {w, h};
 		}
 		else if(name == "initialVelocity") 
 		{
@@ -609,7 +613,7 @@ void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entit
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
 {
 	component::Camera camera;
-	Vec2 size(entityComponentNode.getAttribute("width")->toFloat(), entityComponentNode.getAttribute("height")->toFloat());
+	Vec2 size(entityComponentNode.getAttribute("w")->toFloat(), entityComponentNode.getAttribute("h")->toFloat());
 	Vec2 center(entityComponentNode.getAttribute("x")->toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y")->toFloat() + (size.y / 2.f));
 	camera = Camera(center, size);
 	camera.name = entityComponentNode.getAttribute("cameraName")->toString();

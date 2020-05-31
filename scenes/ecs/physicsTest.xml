@@ -2,17 +2,17 @@
 <root>
 <entityTemplates>
   <entityTemplate name="Camera">
-    <component name="Camera" priority="0" x="0" y="0" cameraName="" width="640" height="360" />
+    <component name="Camera" priority="0" x="0" y="0" cameraName="" w="640" h="360" />
   </entityTemplate>
 
     <entityTemplate name="ColorRect">
-        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="0.0" y="0.0" w="20.0" h="20.0" />
         <component name="RenderQuad"/>
         <component name="KinematicCollisionBody" mass="3" />
         <component name="Kinematics" friction="8.0" />
     </entityTemplate>
     <entityTemplate name="ColorCircle">
-        <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="0.0" y="0.0" w="20.0" h="20.0" />
         <component name="BodyCircle" x="0.0" y="0.0" radius="10.0" />
         <component name="KinematicCollisionBody" mass="3" />
         <component name="Kinematics" friction="8.0" />
@@ -21,10 +21,10 @@
   <entityTemplate name="Player" sourceTemplate="ColorRect">
     <component name="KinematicCollisionBody" mass="3" />
     <component name="Player" />
-    <component name="BodyRect" x="0.0" y="0.0" width="20.0" height="20.0" />
+    <component name="BodyRect" x="0.0" y="0.0" w="20.0" h="20.0" />
     <component name="CharacterSpeed" speed="500" />
     <component name="Kinematics" friction="8.0" />
-    <component name="Camera" cameraName="default" x="0" y="0" width="640" height="360" />
+    <component name="Camera" cameraName="default" x="0" y="0" w="640" h="360" />
     <component name="FaceDirection" />
     <component name="RenderQuad" color="rgb(0,0,255)" z="90" />
   </entityTemplate>
@@ -35,31 +35,31 @@
     <entity sourceTemplate="Camera"></entity>
     <entity sourceTemplate="Player"></entity>
     <entity sourceTemplate="ColorRect">
-        <component name="BodyRect" x="30.0" y="30.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="30.0" y="30.0" w="20.0" h="20.0" />
         <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
     </entity>
     <entity sourceTemplate="ColorRect">
-        <component name="BodyRect" x="60.0" y="30.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="60.0" y="30.0" w="20.0" h="20.0" />
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
     <entity sourceTemplate="ColorCircle">
-        <component name="BodyRect" x="100.0" y="30.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="100.0" y="30.0" w="20.0" h="20.0" />
         <component name="BodyCircle" x="10.0" y="20.0" radius="10.0" />
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
     <entity sourceTemplate="ColorCircle">
-        <component name="BodyRect" x="140.0" y="35.0" width="20.0" height="20.0" />
+        <component name="BodyRect" x="140.0" y="35.0" w="20.0" h="20.0" />
         <component name="BodyCircle" x="10.0" y="20.0" radius="10.0" />
         <component name="RenderQuad" color="rgb(0,255,0)" z="50" />
     </entity>
     
     <entity>
-        <component name="BodyRect" x="50.0" y="70.0" width="40.0" height="40.0" />
+        <component name="BodyRect" x="50.0" y="70.0" w="40.0" h="40.0" />
         <component name="RenderQuad" z="94" color="rgb(0,0,0)"/>
         <component name="StaticCollisionBody" />
     </entity>
     <entity>
-        <component name="BodyRect" x="120.0" y="140.0" width="60.0" height="60.0" />
+        <component name="BodyRect" x="120.0" y="140.0" w="60.0" h="60.0" />
         <component name="BodyCircle" x="30.0" y="30.0" radius="30.0" />
         <component name="RenderQuad" z="94" color="rgb(0,0,100)"/>
         <component name="StaticCollisionBody" />
