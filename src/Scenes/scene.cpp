@@ -40,6 +40,7 @@
 #include "ECS/Systems/save.hpp"
 #include "ECS/Systems/teleport.hpp"
 #include "ECS/Systems/puzzleBoulders.hpp"
+#include "ECS/Systems/movingPlatforms.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -107,6 +108,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::Save>();
 	mSystemsQueue.appendSystem<system::Teleport>();
 	mSystemsQueue.appendSystem<system::PuzzleBoulders>();
+	mSystemsQueue.appendSystem<system::MovingPlatforms>();
 
 	mSystemsQueue.appendSystem<system::Levers>(); // must be after Puzzles
 

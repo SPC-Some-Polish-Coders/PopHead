@@ -240,15 +240,22 @@
   </entityTemplate >
 
   <entityTemplate name="Spikes" >
-    <component name="BodyRect" x="0" y="0" w="16" h="16" outdoor="false" />
+    <component name="BodyRect" x="0" y="0" w="16" h="16" />
     <component name="RenderQuad" textureFilepath="textures/others/spike.png" z="187" />
     <component name="TextureRect" x="0" y="0" w="16" h="16" />
 	<component name="IndoorOutdoor" />
 	<component name="Spikes" />
   </entityTemplate >
 
+  <entityTemplate name="MovingPlatform" >
+    <component name="BodyRect" x="0" y="0" w="32" h="32" />
+    <component name="RenderQuad" textureFilepath="textures/others/movingPlatform.png" z="187" />
+	<component name="IndoorOutdoor" />
+	<component name="MovingPlatform" />
+  </entityTemplate >
+
   <entityTemplate name="SavePoint" >
-    <component name="BodyRect" x="0" y="0" w="32" h="32" outdoor="false" />
+    <component name="BodyRect" x="0" y="0" w="32" h="32" />
     <component name="RenderQuad" textureFilepath="textures/others/saveDisc.png" z="100" />
 	<component name="IndoorOutdoor" />
 	<component name="SavePoint" />

@@ -127,7 +127,8 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"SavePoint",                   &EntitiesParser::parseSavePoint},
 		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder},
 		{"PuzzleGridPos",               &EntitiesParser::parsePuzzleGridPos},
-		{"CameraRoom",                  &EntitiesParser::parseCameraRoom}
+		{"CameraRoom",                  &EntitiesParser::parseCameraRoom},
+		{"MovingPlatform",                  &EntitiesParser::parseMovingPlatform}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -608,6 +609,11 @@ void EntitiesParser::parsePuzzleGridPos(const Xml& entityComponentNode, entt::en
 void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::CameraRoom>(entity);
+}
+
+void EntitiesParser::parseMovingPlatform(const Xml& entityComponentNode, entt::entity& entity)
+{
+	mUsedRegistry->assign_or_replace<component::MovingPlatform>(entity);
 }
 
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)

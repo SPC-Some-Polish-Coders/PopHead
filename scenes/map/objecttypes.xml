@@ -53,6 +53,13 @@
  <objecttype name="Medkit" color="#aaffff">
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
+ <objecttype name="MovingPlatform" color="#1ba470">
+  <property name="active" type="bool" default="true"/>
+  <property name="platformOffsetX" type="float" default="0"/>
+  <property name="platformOffsetY" type="float" default="0"/>
+  <property name="velX" type="float" default="0"/>
+  <property name="velY" type="float" default="0"/>
+ </objecttype>
  <objecttype name="OutdoorArea" color="#ecf7f6"/>
  <objecttype name="Player" color="#55ffff">
   <property name="hasFlashlight" type="bool" default="false"/>

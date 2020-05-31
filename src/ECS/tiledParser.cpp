@@ -43,6 +43,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		return Vec2(w->toFloat(), h->toFloat());
 	};
 
+	auto getPosAndSizeAttributes = [&]()
+	{
+		return FloatRect(getPosAttribute(), getSizeAttribute());
+	};
+
 	auto getOptionalSizeAttribute = [&]() -> std::optional<Vec2>
 	{
 		auto w = entityNode.getAttribute("width");
@@ -533,6 +538,19 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPosAndSize();
 		auto& camRoom = registry.get<CameraRoom>(entity);
 		camRoom.edgeAreaSize = getProperty("edgeAreaSize").toFloat();
+	}
+	else if(type == "MovingPlatform")
+	{
+		createCopy("MovingPlatform");
+
+		auto& platform = registry.get<MovingPlatform>(entity);
+		platform.pathBody = getPosAndSizeAttributes();
+		platform.velocity = Vec2(getProperty("velX").toFloat(), getProperty("velY").toFloat());
+		platform.active = getProperty("active").toBool();
+
+		auto& body = registry.get<BodyRect>(entity);
+		Vec2 offset(getProperty("platformOffsetX").toFloat(), getProperty("platformOffsetY").toFloat());
+		body.pos = platform.pathBody.pos + offset;
 	}
 	else 
 	{

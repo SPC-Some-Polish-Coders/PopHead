@@ -111,6 +111,14 @@ struct Spikes
 	bool active;
 };
 
+struct MovingPlatform
+{
+	FloatRect pathBody;
+	Vec2 velocity;
+	float pathCompletion;
+	bool active;
+};
+
 struct GunProperties // @no-debugger
 {
 	std::string shotSoundFilepath;

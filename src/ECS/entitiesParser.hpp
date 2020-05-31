@@ -71,6 +71,7 @@ private:
 	void parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity);
+	void parseMovingPlatform(const Xml& entityComponentNode, entt::entity& entity);
 
 private:
 	EntitiesTemplateStorage* mTemplateStorage;
