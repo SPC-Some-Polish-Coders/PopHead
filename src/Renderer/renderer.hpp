@@ -44,9 +44,9 @@ namespace Renderer
 
 	void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color color); 
 
-	void submitLine(sf::Color, const Vec2 positionA, const Vec2 positionB, float thickness = 1.f);
+	void submitLine(sf::Color, Vec2 positionA, Vec2 positionB, float thickness = 1.f);
 
-	void submitLine(sf::Color colorA, sf::Color colorB, const Vec2 positionA, const Vec2 positionB, float thickness = 1.f);
+	void submitLine(sf::Color colorA, sf::Color colorB, Vec2 positionA, Vec2 positionB, float thickness = 1.f);
 
 	void submitPoint(Vec2 position, sf::Color, u8 z, float size = 1.f);
 

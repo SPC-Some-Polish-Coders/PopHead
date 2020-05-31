@@ -28,7 +28,7 @@
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
-#include "ECS/Systems/areasDebug.hpp"
+#include "ECS/Systems/debugVisualization.hpp"
 #include "ECS/Systems/debugCamera.hpp"
 #include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
@@ -85,7 +85,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	// should be after StaticCollisions
 	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::AreasDebug>();
+	mSystemsQueue.appendSystem<system::DebugVisualization>();
 	mSystemsQueue.appendSystem<system::AudioSystem>();
 
 	// must be after StaticCollisions

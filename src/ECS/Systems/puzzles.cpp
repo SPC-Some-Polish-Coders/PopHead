@@ -105,8 +105,9 @@ void Puzzles::update(float dt)
 				(auto& spikes)
 				{
 					if((lever.id == 1 && (spikes.id == 2 || spikes.id == 4)) ||
-					   (lever.id == 2 && (spikes.id == 1 || spikes.id == 2 || spikes.id == 4)) ||
-					   (lever.id == 3 && (spikes.id == 1 || spikes.id == 3)))
+					   (lever.id == 2 && (spikes.id == 2 || spikes.id == 3 || spikes.id == 4)) ||
+					   (lever.id == 3 && (spikes.id == 1 || spikes.id == 2 || spikes.id == 3)) ||
+					   (lever.id == 4 && (spikes.id == 2)))
 					{
 						spikes.active = !spikes.active;
 					}

@@ -6,67 +6,123 @@
 #include "Utilities/vector4.hpp"
 #include "Utilities/cast.hpp"
 
-namespace ph {
+namespace ph::LineRenderer {
+
+struct DebugInfo
+{
+	size_t drawnLines = 0;
+	size_t drawCalls = 0; 
+};
+static DebugInfo debugInfo;
+
+struct LineVertexData
+{
+	Vec4 color;
+	Vec2 pos;
+};
+
+struct LineBatch
+{
+	std::vector<LineVertexData> vertexData;
+	float thickness;
+};
+
+static std::vector<LineBatch> lineBatches;
+
+static Shader lineShader;
+static const FloatRect* screenBounds;
+static u32 lineVAO;
+static u32 lineVBO;
 
 static u32 drawCalls;
 
-void LineRenderer::init()
+void init()
 {
-	mLineShader.init(shader::lineSrc());
-	mLineShader.initUniformBlock("SharedData", 0);
+	lineShader.init(shader::lineSrc());
+	lineShader.initUniformBlock("SharedData", 0);
 
 	GLCheck( glEnable(GL_LINE_SMOOTH) );
 	GLCheck( glHint(GL_LINE_SMOOTH_HINT, GL_NICEST) );
 
-	GLCheck( glGenVertexArrays(1, &mLineVAO) );
-	GLCheck( glBindVertexArray(mLineVAO) );
+	GLCheck( glGenVertexArrays(1, &lineVAO) );
+	GLCheck( glBindVertexArray(lineVAO) );
 
-	GLCheck( glGenBuffers(1, &mLineVBO) );
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mLineVBO) );
-	GLCheck( glBufferData(GL_ARRAY_BUFFER, 2 * 6 * sizeof(float), Null, GL_DYNAMIC_DRAW) );
+	GLCheck( glGenBuffers(1, &lineVBO) );
+	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, lineVBO) );
 
 	GLCheck( glEnableVertexAttribArray(0) );
-	GLCheck( glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0) );
 	GLCheck( glEnableVertexAttribArray(1) );
-	GLCheck( glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(2 * sizeof(float))) );
+	GLCheck( glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(float), Null) );
+	GLCheck( glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(4 * sizeof(float))) );
 }
 
-void LineRenderer::shutDown()
+void shutDown()
 {
-	GLCheck( glDeleteVertexArrays(1, &mLineVAO) );
-	GLCheck( glDeleteBuffers(1, &mLineVBO) );
+	GLCheck( glDeleteVertexArrays(1, &lineVAO) );
+	GLCheck( glDeleteBuffers(1, &lineVBO) );
 }
 
-void LineRenderer::drawLine(const sf::Color& colorA, const sf::Color& colorB,
-                            const Vec2 posA, const Vec2 posB, float thickness)
+void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float thickness)
 {
 	auto colA = toNormalizedColorVec4(colorA);
 	auto colB = toNormalizedColorVec4(colorB);
-	float vertexData[] = {
-		posA.x, posA.y, colA.x, colA.y, colA.z, colA.w,
-		posB.x, posB.y, colB.x, colB.y, colB.z, colB.w
-	};
-	GLCheck( glBindBuffer(GL_ARRAY_BUFFER, mLineVBO) );
-	GLCheck( glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * 6 * sizeof(float), vertexData) );
 
-	GLCheck( glBindVertexArray(mLineVAO) );
-	mLineShader.bind();
-	
-	GLCheck( glLineWidth(thickness * (360.f / mScreenBounds->h)) );
+	bool batchExists = false;
+	for(auto& batch : lineBatches)
+	{
+		if(batch.thickness == thickness)
+		{
+			batch.vertexData.emplace_back(LineVertexData{colA, posA});
+			batch.vertexData.emplace_back(LineVertexData{colB, posB});
+			batchExists = true;
+		}
+	}
 
-	GLCheck( glDrawArrays(GL_LINES, 0, 2) );
-
-	++drawCalls;
+	if(!batchExists)
+	{
+		auto& batch = lineBatches.emplace_back();
+		batch.thickness = thickness;
+		batch.vertexData.emplace_back(LineVertexData{colA, posA});
+		batch.vertexData.emplace_back(LineVertexData{colB, posB});
+	}
 }
 
-void LineRenderer::submitDebug()
+void flush()
+{
+	debugInfo.drawnLines = 0;
+	debugInfo.drawCalls = lineBatches.size();
+
+	for(auto& batch : lineBatches)
+	{
+		debugInfo.drawnLines += batch.vertexData.size();
+
+		GLCheck( glBindBuffer(GL_ARRAY_BUFFER, lineVBO) );
+		GLCheck( glBufferData(GL_ARRAY_BUFFER, batch.vertexData.size() * sizeof(LineVertexData), batch.vertexData.data(), GL_STATIC_DRAW) );
+
+		GLCheck( glBindVertexArray(lineVAO) );
+		lineShader.bind();
+		GLCheck( glLineWidth(batch.thickness * (360.f / screenBounds->h)) );
+
+		GLCheck( glDrawArrays(GL_LINES, 0, Cast<u32>(batch.vertexData.size())) );
+	}
+
+	lineBatches.clear();
+}
+
+void submitDebug()
 {
 	if(ImGui::BeginTabItem("line renderer"))
 	{
-		ImGui::Text("draw calls: %u", drawCalls);
+		ImGui::Text("drawn lines: %u", debugInfo.drawnLines);
+		ImGui::Text("draw calls: %u", debugInfo.drawCalls);
 		ImGui::EndTabItem();
 	}
-	drawCalls = 0;
+}
+
+void setScreenBoundsPtr(const FloatRect* sb) 
+{ 
+	screenBounds = sb; 
 }
 
 }
+

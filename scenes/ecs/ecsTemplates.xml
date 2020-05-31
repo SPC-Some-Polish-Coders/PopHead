@@ -157,7 +157,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/lever.png" z="99" />
 	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" width="7" height="15" />
-    <component name="Lever" id="0" minActivationInterval="0.25" turnOffAfterSwitch="false" />
+    <component name="Lever" />
   </entityTemplate>
 
   <entityTemplate name="BulletBox">

@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-class AreasDebug : public System
+class DebugVisualization : public System
 {
 public:
 	using System::System;

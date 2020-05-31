@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="267">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="268">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -24511,10 +24511,10 @@
 898,898,898,0,0,0,0,0,0,0,0,0,
 898,898,898,0,0,0,0,0,0,0,0,0,
 898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0
 </chunk>
    <chunk x="12" y="372" width="12" height="12">
 898,898,898,898,898,898,898,898,898,898,898,898,
@@ -24573,9 +24573,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="0" y="384" width="12" height="12">
-898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0,
-898,898,898,0,0,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
+898,898,898,898,898,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 898,0,0,0,0,0,0,0,0,0,0,0,
@@ -24906,11 +24906,11 @@
 0,0,867,0,0,0,0,0,0,0,0,0,
 0,0,899,0,0,0,0,0,0,0,0,0,
 0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0
+0,0,931,932,2147484583,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0
 </chunk>
    <chunk x="12" y="372" width="12" height="12">
 837,837,837,837,837,837,837,837,837,837,837,837,
@@ -24969,9 +24969,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
    <chunk x="0" y="384" width="12" height="12">
-0,0,899,0,0,0,0,0,0,0,0,0,
-0,0,899,0,0,0,0,0,0,0,0,0,
-836,837,2147484551,0,0,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0,
+0,0,0,0,899,0,0,0,0,0,0,0,
+836,837,836,837,2147484551,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 2147484583,0,0,0,0,0,0,0,0,0,0,0,
@@ -25436,7 +25436,7 @@
   <object id="196" type="PuzzleBoulder" x="-55.25" y="5619.92">
    <point/>
   </object>
-  <object id="198" type="Spikes" x="276.614" y="5922.57" width="37.5" height="38.0007">
+  <object id="198" type="Spikes" x="276.114" y="5924.07" width="37.5" height="38.0007">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25458,7 +25458,7 @@
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="200" type="Spikes" x="451.417" y="5925.95" width="35.6667" height="34.834">
+  <object id="200" type="Spikes" x="471.417" y="5922.95" width="35.6667" height="34.834">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25469,7 +25469,7 @@
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
-  <object id="201" type="Spikes" x="499.099" y="5926.96" width="40" height="33.334">
+  <object id="201" type="Spikes" x="519.099" y="5923.96" width="40" height="33.334">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25546,7 +25546,7 @@
    </properties>
    <point/>
   </object>
-  <object id="237" type="Spikes" x="228.417" y="5922.58" width="41.5" height="38.6673">
+  <object id="237" type="Spikes" x="230.417" y="5923.08" width="38" height="39.6673">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25569,7 +25569,7 @@
   <object id="239" type="BulletBox" x="130.667" y="5627">
    <point/>
   </object>
-  <object id="240" type="Spikes" x="548.75" y="5927.42" width="38.5" height="33.6673">
+  <object id="240" type="Spikes" x="568.75" y="5924.42" width="38.5" height="33.6673">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25595,7 +25595,7 @@
    </properties>
    <point/>
   </object>
-  <object id="250" type="Spikes" x="-152.625" y="6081.96" width="29.6667" height="79.334">
+  <object id="250" type="Spikes" x="-156.625" y="6081.96" width="53.1667" height="34.334">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25605,7 +25605,7 @@
     <property name="puzzleId" type="int" value="5"/>
    </properties>
   </object>
-  <object id="251" type="Spikes" x="-150.708" y="6165.2" width="28.5" height="35.834">
+  <object id="251" type="Spikes" x="-150.708" y="6131.7" width="28.5" height="54.334">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25616,7 +25616,7 @@
     <property name="timeToChange" type="float" value="0.3"/>
    </properties>
   </object>
-  <object id="252" type="Spikes" x="-149.875" y="6211.37" width="28.5" height="52.1673">
+  <object id="252" type="Spikes" x="-149.375" y="6195.37" width="28.5" height="69.1673">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25627,7 +25627,7 @@
     <property name="timeToChange" type="float" value="0.6"/>
    </properties>
   </object>
-  <object id="253" type="Spikes" x="-109.598" y="6241.61" width="37.5" height="25.834">
+  <object id="253" type="Spikes" x="-109.598" y="6241.11" width="72.5" height="25.834">
    <properties>
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
@@ -25638,7 +25638,7 @@
     <property name="timeToChange" type="float" value="0.6"/>
    </properties>
   </object>
-  <object id="255" type="Lever" x="-70.9167" y="6166.75">
+  <object id="255" type="Lever" x="-70" y="6162">
    <properties>
     <property name="id" type="int" value="1"/>
     <property name="outdoor" type="bool" value="false"/>
@@ -25646,7 +25646,7 @@
    </properties>
    <point/>
   </object>
-  <object id="256" type="Lever" x="-25.8333" y="6168.67">
+  <object id="256" type="Lever" x="-30" y="6162">
    <properties>
     <property name="id" type="int" value="2"/>
     <property name="outdoor" type="bool" value="false"/>
@@ -25654,9 +25654,9 @@
    </properties>
    <point/>
   </object>
-  <object id="257" type="Lever" x="19.5" y="6168.5">
+  <object id="257" type="Lever" x="10" y="6162">
    <properties>
-    <property name="id" type="int" value="1"/>
+    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
@@ -25668,16 +25668,13 @@
    </properties>
    <point/>
   </object>
-  <object id="266" type="Spikes" x="-60" y="6099.08" width="13.5" height="13.584">
+  <object id="267" type="Lever" x="50" y="6162">
    <properties>
-    <property name="active" type="bool" value="false"/>
-    <property name="changeFrequency" type="float" value="2"/>
-    <property name="changes" type="bool" value="false"/>
     <property name="id" type="int" value="4"/>
     <property name="outdoor" type="bool" value="false"/>
-    <property name="puzzleId" type="int" value="0"/>
-    <property name="timeToChange" type="float" value="0.6"/>
+    <property name="puzzleId" type="int" value="5"/>
    </properties>
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="16" name="IndoorOutdoorEntities" visible="0">

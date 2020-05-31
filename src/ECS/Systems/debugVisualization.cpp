@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "areasDebug.hpp"
+#include "debugVisualization.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
@@ -12,19 +12,22 @@ namespace ph::system {
 
 static bool 
 enableAreaDebug = true,
-collision = false,
-velocityChangingArea = false,
-pushingArea = false,
-lightWalls = false,
-indoorOutdoorBlend = false,
-collisionDenialAreas = false,
-lightWallDenialAreas = false,
-collisionAndLightWallDenialAreas = false,
-hintArea = false, hintAreaDetail = true,
-cameraRoom = false, cameraRoomCenter = true,
-puzzleGridRoads = false, puzzleGridRoadsPos = true, puzzleGridRoadsChunks = false;
+collision,
+velocityChangingArea,
+pushingArea,
+lightWalls,
+indoorOutdoorBlend,
+collisionDenialAreas,
+lightWallDenialAreas,
+collisionAndLightWallDenialAreas,
+hintArea, hintAreaDetail = true,
+cameraRoom, cameraRoomCenter = true,
+puzzleGridRoads, puzzleGridRoadsPos = true, puzzleGridRoadsChunks,
+tileBounds;
 
-void AreasDebug::update(float dt)
+using namespace component;
+
+void DebugVisualization::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -51,6 +54,7 @@ void AreasDebug::update(float dt)
 			ImGui::Checkbox("puzzle grid roads pos", &puzzleGridRoadsPos);
 			ImGui::Checkbox("puzzle grid roads chunks", &puzzleGridRoadsChunks);
 		}
+		ImGui::Checkbox("tile bounds", &tileBounds);
 		ImGui::EndTabItem();
 	}
 
@@ -60,7 +64,7 @@ void AreasDebug::update(float dt)
 	if(collision)
 	{
 		// render static collision bodies as dark red rectangle
-		mRegistry.view<component::StaticCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>).each([]
+		mRegistry.view<StaticCollisionBody, BodyRect>(entt::exclude<BodyCircle>).each([]
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
@@ -68,7 +72,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render multi static collision bodies as bright red rectangle or bright red circles
-		mRegistry.view<component::MultiStaticCollisionBody>().each([]
+		mRegistry.view<MultiStaticCollisionBody>().each([]
 		(const auto& multiCollisionBody) 
 		{
 			for(auto& bodyRect : multiCollisionBody.rects)
@@ -85,7 +89,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render kinematic bodies as blue rectangle
-		mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>).each([]
+		mRegistry.view<KinematicCollisionBody, BodyRect>(entt::exclude<BodyCircle>).each([]
 		(auto, const auto& body)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(45, 100, 150, 140), Null,
@@ -93,7 +97,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render static circle bodies as dark red circle
-		mRegistry.view<component::StaticCollisionBody, component::BodyRect, component::BodyCircle>().each([]
+		mRegistry.view<StaticCollisionBody, BodyRect, BodyCircle>().each([]
 		(auto, const auto& rect, const auto& circle)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
@@ -103,7 +107,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render kinematic circle bodies as blue circle
-		mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::BodyCircle>().each([]
+		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle>().each([]
 		(auto, const auto& rect, const auto& circle)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(45, 100, 150, 40), Null,
@@ -116,7 +120,7 @@ void AreasDebug::update(float dt)
 	if(velocityChangingArea)
 	{
 		// render velocity changing areas as orange rectangle
-		mRegistry.view<component::AreaVelocityChangingEffect, component::BodyRect>().each([]
+		mRegistry.view<AreaVelocityChangingEffect, BodyRect>().each([]
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 140), Null,
@@ -127,7 +131,7 @@ void AreasDebug::update(float dt)
 	if(pushingArea)
 	{
 		// render pushing areas as yellow rectangle
-		mRegistry.view<component::PushingArea, component::BodyRect>().each([]
+		mRegistry.view<PushingArea, BodyRect>().each([]
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 255, 0, 140), Null,
@@ -138,7 +142,7 @@ void AreasDebug::update(float dt)
 	if(lightWalls)
 	{
 		// render light walls as blue rectangle
-		mRegistry.view<component::LightWall, component::BodyRect>().each([]
+		mRegistry.view<LightWall, BodyRect>().each([]
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(40, 40, 225, 140), Null,
@@ -146,7 +150,7 @@ void AreasDebug::update(float dt)
 		});
 
 		// render chunk light walls as light blue rectangle
-		mRegistry.view<component::RenderChunk>().each([]
+		mRegistry.view<RenderChunk>().each([]
 		(const auto& chunk) 
 		{
 			for(const auto wall : chunk.lightWalls) 
@@ -160,7 +164,7 @@ void AreasDebug::update(float dt)
 	if(indoorOutdoorBlend)
 	{
 		// render indoor outdoor blend areas as orange rectangle
-		mRegistry.view<component::IndoorOutdoorBlendArea, component::BodyRect>().each([]
+		mRegistry.view<IndoorOutdoorBlendArea, BodyRect>().each([]
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 140), Null,
@@ -171,10 +175,9 @@ void AreasDebug::update(float dt)
 	if(collisionDenialAreas || lightWallDenialAreas || collisionAndLightWallDenialAreas)
 	{
 		// denial areas debug
-		mRegistry.view<component::DenialArea, component::BodyRect>().each([]
+		mRegistry.view<DenialArea, BodyRect>().each([]
 		(auto denial, const auto& body)
 		{
-			using component::DenialArea;
 			if(denial.type == DenialArea::Collision && collisionDenialAreas)
 			{
 				// render collision denial areas as dark red rectangle 
@@ -199,7 +202,7 @@ void AreasDebug::update(float dt)
 	if(hintArea)
 	{
 		
-		mRegistry.view<component::Hint, component::BodyRect>().each([]
+		mRegistry.view<Hint, BodyRect>().each([]
 		(const auto& hint, const auto& body)
 		{
 			// render hint area as lime green rectangle
@@ -230,7 +233,7 @@ void AreasDebug::update(float dt)
 
 	if(cameraRoom)
 	{
-		mRegistry.view<component::CameraRoom, component::BodyRect>().each([&]
+		mRegistry.view<CameraRoom, BodyRect>().each([&]
 		(auto camRoom, const auto& body)
 		{
 			// render camera rooms as violet rectangle
@@ -253,7 +256,7 @@ void AreasDebug::update(float dt)
 
 	if(puzzleGridRoads)
 	{
-		mRegistry.view<component::PuzzleGridRoadChunk, component::PuzzleGridPos>().each([&]
+		mRegistry.view<PuzzleGridRoadChunk, PuzzleGridPos>().each([&]
 		(auto entity, const auto& roadChunk, auto chunkRelativeGridPos)
 		{
 			for(i32 y = 0; y < 12; ++y)
@@ -283,9 +286,9 @@ void AreasDebug::update(float dt)
 						if(puzzleGridRoadsChunks)
 						{
 							// render puzzle grid road chukns as rectangles with random color
-							if(auto* body = mRegistry.try_get<component::BodyRect>(entity))
+							if(auto* body = mRegistry.try_get<BodyRect>(entity))
 							{
-								auto color = mRegistry.get<component::DebugColor>(entity);
+								auto color = mRegistry.get<DebugColor>(entity);
 								Renderer::submitQuad(Null, Null, &color, Null,
 									body->pos, body->size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 							}
@@ -294,6 +297,23 @@ void AreasDebug::update(float dt)
 				}
 			}
 		});
+	}
+
+	if(tileBounds)
+	{
+		FloatRect cameraBounds;
+		mRegistry.view<component::Camera>().each([&]
+		(auto camera)
+		{
+			if(camera.name == component::Camera::currentCameraName)
+				cameraBounds = camera.getBounds();
+		});
+
+		for(float x = cameraBounds.x - fmod(cameraBounds.x, 16.f); x < cameraBounds.right(); x += 16.f)
+			Renderer::submitLine(sf::Color(255, 0, 0, 200), Vec2(x, cameraBounds.y), Vec2(x, cameraBounds.bottom()));
+
+		for(float y = cameraBounds.y - fmod(cameraBounds.y, 16.f); y < cameraBounds.bottom(); y += 16.f)
+			Renderer::submitLine(sf::Color(255, 0, 0, 200), Vec2(cameraBounds.x, y), Vec2(cameraBounds.right(), y));
 	}
 }
 

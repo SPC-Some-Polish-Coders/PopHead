@@ -8,7 +8,6 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
-#include "ECS/Systems/areasDebug.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "Audio/Music/musicPlayer.hpp"

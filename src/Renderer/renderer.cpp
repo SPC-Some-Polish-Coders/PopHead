@@ -37,7 +37,6 @@ namespace {
 	u32 sharedDataUBO;
 
 	PointRenderer pointRenderer;
-	LineRenderer lineRenderer;
 	LightRenderer lightRenderer;
 
 	Camera gameWorldCamera; 
@@ -65,10 +64,10 @@ void init(u32 screenWidth, u32 screenHeight)
 	// initialize minor renderers
 	QuadRenderer::setScreenBoundsPtr(&screenBounds);
 	pointRenderer.setScreenBoundsPtr(&screenBounds);
-	lineRenderer.setScreenBoundsPtr(&screenBounds);
+	LineRenderer::setScreenBoundsPtr(&screenBounds);
 	lightRenderer.setScreenBoundsPtr(&screenBounds);
 	QuadRenderer::init();
-	lineRenderer.init();
+	LineRenderer::init();
 	pointRenderer.init();
 	lightRenderer.init();
 	TextRenderer::init();
@@ -131,7 +130,7 @@ void restart(u32 screenWidth, u32 screenHeight)
 void shutDown()
 {
 	QuadRenderer::shutDown();
-	lineRenderer.shutDown();
+	LineRenderer::shutDown();
 	lightRenderer.shutDown();
 	TextRenderer::shutDown();
 	gameObjectsFramebuffer.remove();
@@ -181,6 +180,7 @@ void endScene()
 	// render scene
 	QuadRenderer::flush(true);
 	pointRenderer.flush();
+	LineRenderer::flush();
 
 	// render font debug
 	if(FontDebugRenderer::isActive())
@@ -220,7 +220,7 @@ void endScene()
 		QuadRenderer::submitDebug();
 		lightRenderer.submitDebug();
 		pointRenderer.submitDebug();
-		lineRenderer.submitDebug();
+		LineRenderer::submitDebug();
 		ImGui::EndTabBar();
 		ImGui::EndTabItem();
 	}
@@ -267,15 +267,14 @@ void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color c
 	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z), color);
 }
 
-void submitLine(sf::Color color, const Vec2 positionA, const Vec2 positionB, float thickness)
+void submitLine(sf::Color color, Vec2 positionA, Vec2 positionB, float thickness)
 {
 	submitLine(color, color, positionA, positionB, thickness);
 }
 
-void submitLine(sf::Color colorA, sf::Color colorB,
-                          const Vec2 positionA, const Vec2 positionB, float thickness)
+void submitLine(sf::Color colorA, sf::Color colorB, Vec2 positionA, Vec2 positionB, float thickness)
 {
-	lineRenderer.drawLine(colorA, colorB, positionA, positionB, thickness);
+	LineRenderer::submitLine(colorA, colorB, positionA, positionB, thickness);
 }
 
 void submitPoint(Vec2 position, sf::Color color, u8 z, float size)

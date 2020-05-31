@@ -86,7 +86,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto getOffsetFromTileTopLeft = [](Vec2 pos)
 	{
-		return Vec2(fmod(pos.x, 16.f), fmod(pos.y, 16.f));
+		float remX = abs(fmod(pos.x, 16.f));
+		float remY = abs(fmod(pos.y, 16.f));
+		return Vec2(
+			pos.x > 0.f ? remX : 16.f - remX,
+			pos.y > 0.f ? remY : 16.f - remY
+		);
 	};
 
 	auto loadAndAlignPos = [&]()
@@ -102,20 +107,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& body = registry.get<BodyRect>(entity);
 		body.pos = getPosAttribute();
 		body.size = getSizeAttribute();
-		body.x -= fmod(body.x, 16.f);
-		body.y -= fmod(body.y, 16.f); 
-		body.pos - getOffsetFromTileTopLeft(body.pos);
-		body.w = body.w + 16.f - fmod(body.w + 16.f, 16.f);
-		body.h = body.h + 16.f - fmod(body.h + 16.f, 16.f);
-		return body;
-	};
-
-	auto loadPosAndAlignBodyCenterToTileCenter = [&]()
-	{
-		auto& body = registry.get<BodyRect>(entity);
-		body.pos = getPosAttribute();
-		body.pos -= getOffsetFromTileTopLeft(body.pos);
-		body.pos -= (body.pos + Vec2(8.f)) - body.center();
+		Vec2 bottomRight = body.bottomRight();
+		body.pos -= getOffsetFromTileTopLeft(body.pos); 
+		bottomRight += Vec2(16.f);
+		bottomRight -= getOffsetFromTileTopLeft(bottomRight); 
+		body.size = bottomRight - body.pos;
 		return body;
 	};
 
@@ -331,7 +327,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	else if(type == "Lever") 
 	{
 		createCopy("Lever");
-		loadPosAndAlignBodyCenterToTileCenter();
+		auto& body = loadPos();
 		loadIndoorOutdoorBlendComponent();
 		auto& lever = registry.get<Lever>(entity);
 		lever.id = getProperty("id").toU32();
