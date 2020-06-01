@@ -619,11 +619,28 @@ ImGui::Text("changeFrequency: %f", c->changeFrequency);
 if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");
 if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
 }
+if(mRegistry.has<component::WeatherArea>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("WeatherArea");
+}
+if(auto* c = mRegistry.try_get<component::WeatherType>(mSelected))
+{
+ImGui::Separator();
+switch(*c)
+{
+case component::WeatherType::Sunny: ImGui::BulletText("WeatherType: Sunny"); break;
+case component::WeatherType::DrizzleRain: ImGui::BulletText("WeatherType: DrizzleRain"); break;
+case component::WeatherType::NormalRain: ImGui::BulletText("WeatherType: NormalRain"); break;
+case component::WeatherType::HeavyRain: ImGui::BulletText("WeatherType: HeavyRain"); break;
+default: ImGui::BulletText("WeatherType: unknown enumeration!!!");
+}
+}
 if(auto* c = mRegistry.try_get<component::SavePoint>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("SavePoint");
-if(c->isintersectingPlayer) ImGui::Text("isintersectingPlayer: true"); else ImGui::Text("isintersectingPlayer: false");
+if(c->isIntersectingPlayer) ImGui::Text("isIntersectingPlayer: true"); else ImGui::Text("isIntersectingPlayer: false");
 ImGui::Text("timeSincePlayerSteppedOnIt: %f", c->timeSincePlayerSteppedOnIt);
 }
 if(auto* c = mRegistry.try_get<component::ParticleEmitter>(mSelected)) 

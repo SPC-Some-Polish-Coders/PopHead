@@ -12,11 +12,6 @@ static u32 lights;
 static bool lightingEnabled = true;
 static bool drawRays = false;
 
-u32 LightRenderer::getNrOfLights()
-{
-	return lights;
-}
-
 void LightRenderer::init()
 {
 	mLightShader.init(shader::lightSrc());
@@ -59,20 +54,6 @@ void LightRenderer::submitLight(Light light)
 	{
 		mLights.emplace_back(light);
 	}	
-}
-
-void LightRenderer::submitDebug()
-{
-	if(ImGui::BeginTabItem("light renderer"))
-	{
-		ImGui::Checkbox("lighting", &lightingEnabled);
-		ImGui::Checkbox("rays debug", &drawRays);
-		ImGui::Text("light sources (draw calls): %u", mLights.size());
-		ImGui::Text("light rays: %u", rays);
-		ImGui::EndTabItem();
-	}
-	rays = 0;
-
 }
 
 void LightRenderer::flush()
@@ -212,6 +193,29 @@ Vec2 LightRenderer::getVectorLineIntersectionPoint(Vec2 rayDir, Vec2 lightPos, V
 		return Vec2(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
 		return Math::nullVec2; 
+}
+
+void LightRenderer::submitDebug(sf::Color* ambientLightColor)
+{
+	if(ImGui::BeginTabItem("light renderer"))
+	{
+		ImGui::Checkbox("lighting", &lightingEnabled);
+		ImGui::Checkbox("rays debug", &drawRays);
+		ImGui::Text("light sources (draw calls): %u", mLights.size());
+		ImGui::Text("light rays: %u", rays);
+
+		auto color = toNormalizedColorVec4(*ambientLightColor);
+		ImGui::ColorEdit3("ambient light color", &color.r);
+		*ambientLightColor = toPackedColor(color); 
+
+		ImGui::EndTabItem();
+	}
+	rays = 0;
+}
+
+u32 LightRenderer::getNrOfLights()
+{
+	return lights;
 }
 
 }

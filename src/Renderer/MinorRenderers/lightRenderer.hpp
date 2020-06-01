@@ -51,13 +51,13 @@ public:
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
 	void submitLight(Light);
-	u32 getNrOfLights(); 
-
-	void submitDebug();
 
 	void flush();
 	
 	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+
+	void submitDebug(sf::Color* ambientLightColor);
+	u32 getNrOfLights(); 
 
 private:
 	RayWallIntersection getRayWallClosestIntersection(Vec2 rayDir, Vec2 lightPos, FloatRect wall);

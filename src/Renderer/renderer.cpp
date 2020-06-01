@@ -218,7 +218,7 @@ void endScene()
 	if(rendererDebugTabActive)
 	{
 		QuadRenderer::submitDebug();
-		lightRenderer.submitDebug();
+		lightRenderer.submitDebug(&ambientLightColor);
 		pointRenderer.submitDebug();
 		LineRenderer::submitDebug();
 		ImGui::EndTabBar();

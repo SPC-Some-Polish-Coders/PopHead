@@ -30,12 +30,20 @@ std::string toString(Vec2 vec)
 	return "x:" + xVal + " y:" + yVal;
 }
 
-Vec4 toNormalizedColorVec4(sf::Color color)
+Vec4 toNormalizedColorVec4(sf::Color c)
 {
 	return Vec4({
-		Cast<float>(color.r) / 255.f, Cast<float>(color.g) / 255.f,
-		Cast<float>(color.b) / 255.f, Cast<float>(color.a) / 255.f
+		Cast<float>(c.r) / 255.f, Cast<float>(c.g) / 255.f,
+		Cast<float>(c.b) / 255.f, Cast<float>(c.a) / 255.f
 	});
+}
+
+sf::Color toPackedColor(Vec4 c)
+{
+	return sf::Color(
+		Cast<u8>(c.r * 255.f), Cast<u8>(c.g * 255.f),
+		Cast<u8>(c.b * 255.f), Cast<u8>(c.a * 255.f)
+	);
 }
 
 }

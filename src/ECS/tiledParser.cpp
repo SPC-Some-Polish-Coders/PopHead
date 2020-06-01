@@ -159,14 +159,12 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 				for(const auto& propertyNode : propertiesNodes)
 				{
 					if(propertyNode.getAttribute("name")->toString() == propertyName)
-					{
 						return *propertyNode.getAttribute("default");
-					}
 				}
 			}
 		}
 
-		PH_UNEXPECTED_SITUATION("property " + propertyName + " for entity type " + type + " wasn't found!");
+		PH_UNEXPECTED_SITUATION("property \"" + propertyName + "\" for entity type \"" + type + "\" wasn't found!");
 		return Xml();
 	};
 
@@ -551,6 +549,26 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& body = registry.get<BodyRect>(entity);
 		Vec2 offset(getProperty("platformOffsetX").toFloat(), getProperty("platformOffsetY").toFloat());
 		body.pos = platform.pathBody.pos + offset;
+	}
+	else if(type == "WeatherArea")
+	{
+		entity = registry.create();
+		registry.assign<BodyRect>(entity, getPosAndSizeAttributes());
+		registry.assign<WeatherArea>(entity);
+
+		auto type = getProperty("WeatherType").toString();
+		if(type == "Sunny")
+			registry.assign<WeatherType>(entity, WeatherType::Sunny);
+		else if(type == "Cave")
+			registry.assign<WeatherType>(entity, WeatherType::Cave);
+		else if(type == "DrizzleRain")
+			registry.assign<WeatherType>(entity, WeatherType::DrizzleRain);
+		else if(type == "NormalRain")
+			registry.assign<WeatherType>(entity, WeatherType::NormalRain);
+		else if(type == "HeavyRain")
+			registry.assign<WeatherType>(entity, WeatherType::HeavyRain);
+		else
+			PH_BREAKPOINT();
 	}
 	else 
 	{

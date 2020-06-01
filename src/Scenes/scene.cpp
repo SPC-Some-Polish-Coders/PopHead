@@ -30,7 +30,7 @@
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/debugVisualization.hpp"
 #include "ECS/Systems/debugCamera.hpp"
-#include "ECS/Systems/weather.hpp"
+#include "ECS/Systems/weatherSystem.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
 #include "ECS/Systems/entitiesDebugger.hpp"
 #include "ECS/Systems/indoorOutdoorBlending.hpp"
@@ -99,7 +99,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
-	mSystemsQueue.appendSystem<system::Weather>();
+	mSystemsQueue.appendSystem<system::WeatherSystem>();
 	mSystemsQueue.appendSystem<system::EntitiesDebugger>(window);
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlending>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
@@ -138,7 +138,8 @@ void Scene::setPlayerStatus(const PlayerStatus& status)
 PlayerStatus Scene::getPlayerStatus()
 {
 	auto playerView = mRegistry.view<component::Bullets, component::Health, component::Player>();
-	for(auto player : playerView) {
+	for(auto player : playerView) 
+	{
 		const auto [bullets, health] = playerView.get<component::Bullets, component::Health>(player);
 		return PlayerStatus{health.healthPoints, bullets.numOfPistolBullets, bullets.numOfShotgunBullets};
 	}

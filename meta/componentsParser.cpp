@@ -911,11 +911,6 @@ void parseComponentsFile(char* filename, FILE* genFile)
 
 			while(*code++)
 			{
-				if(*code == '}')
-				{
-					code += 2;
-					break;
-				}
 				if(isAlpha(*code))
 				{	
 					char* enumeration = code;
@@ -923,6 +918,11 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					*code = 0;
 					++code;
 					fprintf(genFile, "case component::%s::%s: ImGui::BulletText(\"%s: %s\"); break;\n", componentName, enumeration, componentName, enumeration);
+				}
+				if(*code == '}')
+				{
+					code += 2;
+					break;
 				}
 			}
 

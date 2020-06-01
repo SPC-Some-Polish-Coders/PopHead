@@ -4,12 +4,13 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
-#include "ECS/Systems/weather.hpp"
 #include "ECS/Systems/gunAttacks.hpp"
 #include "ECS/Systems/meleeAttacks.hpp"
 #include "ECS/Systems/playerMovementInput.hpp"
 
 namespace ph::system {
+
+using namespace component;
 
 void HintAreas::update(float dt)
 {
@@ -18,15 +19,15 @@ void HintAreas::update(float dt)
 	if(sPause)
 		return;
 
-	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
-	auto hintAreasView = mRegistry.view<component::Hint, component::BodyRect>();
+	auto playerView = mRegistry.view<Player, BodyRect>();
+	auto hintAreasView = mRegistry.view<Hint, BodyRect>();
 	for(auto hintArea : hintAreasView)
 	{
 		for(auto player : playerView)
 		{
-			const auto& hintAreaBody = hintAreasView.get<component::BodyRect>(hintArea);
-			const auto& playerBody = playerView.get<component::BodyRect>(player);
-			auto& hint = hintAreasView.get<component::Hint>(hintArea);
+			const auto& hintAreaBody = hintAreasView.get<BodyRect>(hintArea);
+			const auto& playerBody = playerView.get<BodyRect>(player);
+			auto& hint = hintAreasView.get<Hint>(hintArea);
 			if(hintAreaBody.contains(playerBody.center()))
 			{
 				PH_ASSERT_UNEXPECTED_SITUATION(GUI::hasInterface("hints"), "Player walked into hint area but gui does not have hints Interface!");
@@ -51,8 +52,6 @@ void HintAreas::update(float dt)
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = true;
 					PlayerMovementInput::dashInputDisabled = true;
-					Weather::setRainType(Rain::Heavy);
-					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "meleeFightingHint") 
 				{
@@ -61,8 +60,6 @@ void HintAreas::update(float dt)
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = false;
 					PlayerMovementInput::dashInputDisabled = true;
-					Weather::setRainType(Rain::Heavy);
-					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "shootingHint") 
 				{
@@ -71,8 +68,6 @@ void HintAreas::update(float dt)
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = false;
 					PlayerMovementInput::dashInputDisabled = false;
-					Weather::setRainType(Rain::Heavy);
-					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "weaponChangingHint") 
 				{
@@ -81,8 +76,6 @@ void HintAreas::update(float dt)
 					GunAttacks::changeWeaponInputDisabled = false;
 					MeleeAttacks::inputDisabled = false;
 					PlayerMovementInput::dashInputDisabled = false;
-					Weather::setRainType(Rain::Heavy);
-					Weather::setMode(Weather::Rainy);	
 				}
 				else if(hint.hintName == "dashingHint") 
 				{
@@ -91,8 +84,6 @@ void HintAreas::update(float dt)
 					GunAttacks::changeWeaponInputDisabled = true;
 					MeleeAttacks::inputDisabled = false;
 					PlayerMovementInput::dashInputDisabled = false;
-					Weather::setRainType(Rain::Heavy);
-					Weather::setMode(Weather::Rainy);	
 				}
 			}
 			else if(hint.isShown)
@@ -109,8 +100,6 @@ void HintAreas::update(float dt)
 	GunAttacks::changeWeaponInputDisabled = false;
 	MeleeAttacks::inputDisabled = false;
 	PlayerMovementInput::dashInputDisabled = false;
-	Weather::setRainType(Rain::Heavy);
-	Weather::setMode(Weather::Rainy);	
 }
 
 }

@@ -143,9 +143,20 @@ struct MeleeProperties // @no-debugger
 
 struct Weather {}; // @no-debugger
 
+struct WeatherArea {};
+
+enum class WeatherType
+{
+	Sunny, 
+	Cave, 
+	DrizzleRain,
+	NormalRain,
+	HeavyRain
+};
+
 struct SavePoint 
 {
-	bool isintersectingPlayer = false;
+	bool isIntersectingPlayer = false;
 	float timeSincePlayerSteppedOnIt = 2.f;
 };
 

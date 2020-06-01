@@ -80,6 +80,7 @@
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
  <objecttype name="PuzzleGridRoad" color="#005500"/>
+ <objecttype name="RainArea" color="#150aa4"/>
  <objecttype name="SavePoint" color="#18c3c6">
   <property name="outdoor" type="bool" default="true"/>
  </objecttype>
@@ -123,6 +124,9 @@
  <objecttype name="Torch" color="#ffff00"/>
  <objecttype name="VelocityChangingArea" color="#5eb825">
   <property name="velocityMultiplier" type="float" default="0.4"/>
+ </objecttype>
+ <objecttype name="WeatherArea" color="#1855ff">
+  <property name="WeatherType" type="string" default="Sunny"/>
  </objecttype>
  <objecttype name="Zombie" color="#00aa00">
   <property name="hp" type="float" default="100"/>

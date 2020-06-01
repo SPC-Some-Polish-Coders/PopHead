@@ -3,9 +3,10 @@
 namespace ph {
 
 template<typename T>
-struct Vec4Base
+union Vec4Base
 {
-	T x, y, z, w;
+	struct {T x, y, z, w; };
+	struct {T r, g, b, a; };
 };
 
 using Vec4 = Vec4Base<float>;

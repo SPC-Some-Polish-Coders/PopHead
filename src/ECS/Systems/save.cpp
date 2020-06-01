@@ -27,15 +27,15 @@ void Save::update(float dt)
 
 			if(intersect(saveBody, playerBody, playerCircle))
 			{
-				if(!save.isintersectingPlayer)
+				if(!save.isIntersectingPlayer)
 				{
-					save.isintersectingPlayer = true;
+					save.isIntersectingPlayer = true;
 					save.timeSincePlayerSteppedOnIt = 0.f;
 				}
 			}
 			else
 			{
-				save.isintersectingPlayer = false;	
+				save.isIntersectingPlayer = false;	
 			}
 		});
 	});
