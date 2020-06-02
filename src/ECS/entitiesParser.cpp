@@ -642,6 +642,8 @@ void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::enti
 		lightSource.attenuationFactor = attenuationFactor->toFloat();
 	if(auto attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor"))
 		lightSource.attenuationSquareFactor = attenuationSquareFactor->toFloat();
+	if(auto rayCollisionDetection = entityComponentNode.getAttribute("rayCollisionDetection"))
+		lightSource.rayCollisionDetection = rayCollisionDetection->toBool();
 	mUsedRegistry->assign_or_replace<component::LightSource>(entity, lightSource);
 }
 

@@ -7,6 +7,7 @@ namespace ph::shader {
 ShaderSource defaultFramebufferSrc();
 ShaderSource gaussianBlurFramebufferSrc();
 ShaderSource lightSrc();
+ShaderSource noCollisionLightSrc();
 ShaderSource circleSrc();
 ShaderSource quadSrc();
 ShaderSource chunkSrc();

@@ -85,6 +85,7 @@ struct LightSource
 	float attenuationSquareFactor;
 	float startAngle;
 	float endAngle;
+	bool rayCollisionDetection = true;
 };
 
 struct CameraRoom 

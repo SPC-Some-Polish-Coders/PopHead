@@ -51,7 +51,7 @@ namespace Renderer
 	void submitPoint(Vec2 position, sf::Color, u8 z, float size = 1.f);
 
 	void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
-	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor);
+	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection);
 
 	void submitLightWall(FloatRect wall);
 	void submitBunchOfLightWalls(const std::vector<FloatRect>& walls);

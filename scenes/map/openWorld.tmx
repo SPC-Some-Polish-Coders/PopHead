@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="298">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="310">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -26034,13 +26034,13 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="16" name="IndoorOutdoorEntities" visible="0">
+ <objectgroup id="16" name="IndoorOutdoorEntities">
   <object id="258" type="IndoorOutdoorBlendArea" x="695.479" y="6281.92" width="78.375" height="37.5">
    <properties>
     <property name="exit_right" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="259" type="IndoorArea" x="-687.521" y="5842.25" width="1353.71" height="940.5"/>
+  <object id="259" type="IndoorArea" x="-1328.85" y="5842.25" width="1995.04" height="940.5"/>
   <object id="260" type="OutdoorArea" x="-496.188" y="4991.75" width="1982.38" height="764.5"/>
   <object id="261" type="OutdoorArea" x="798.81" y="5705.75" width="1276.38" height="878.5"/>
  </objectgroup>
@@ -26805,6 +26805,42 @@
     <property name="velY" type="float" value="-80"/>
    </properties>
   </object>
+  <object id="298" type="Torch" x="-14.25" y="5586.5">
+   <point/>
+  </object>
+  <object id="299" type="Torch" x="106" y="5144">
+   <point/>
+  </object>
+  <object id="300" type="Torch" x="578.5" y="5072.25">
+   <point/>
+  </object>
+  <object id="301" type="Torch" x="944.667" y="5530.33">
+   <point/>
+  </object>
+  <object id="302" type="Torch" x="624.364" y="6161.09">
+   <point/>
+  </object>
+  <object id="303" type="Torch" x="465.5" y="6400.75">
+   <point/>
+  </object>
+  <object id="304" type="Torch" x="413" y="5908.5">
+   <point/>
+  </object>
+  <object id="305" type="Torch" x="6" y="5878.33">
+   <point/>
+  </object>
+  <object id="306" type="Torch" x="-109" y="6224.33">
+   <point/>
+  </object>
+  <object id="307" type="Torch" x="237.333" y="6392.67">
+   <point/>
+  </object>
+  <object id="308" type="Torch" x="-687" y="6154">
+   <point/>
+  </object>
+  <object id="309" type="Torch" x="-855" y="5992">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="denialAreas" visible="0">
   <object id="32" type="CollisionAndLightWallDenialArea" x="385.667" y="2041" width="477.833" height="543.667"/>
@@ -26849,7 +26885,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="15" name="CameraRoomsEntities">
+ <objectgroup id="15" name="CameraRoomsEntities" visible="0">
   <object id="243" type="CameraRoom" x="-193.417" y="5528.99" width="320" height="180"/>
   <object id="244" type="CameraRoom" x="48.7502" y="5002.34" width="320" height="180"/>
   <object id="245" type="CameraRoom" x="496.75" y="5000.34" width="320" height="180"/>

@@ -192,7 +192,7 @@ void endScene()
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 	lightRenderer.flush();
 
-	// user framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
+	// use framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
 	glBindVertexArray(screenVAO);
 
 	// apply gaussian blur for lighting
@@ -283,9 +283,9 @@ void submitPoint(Vec2 position, sf::Color color, u8 z, float size)
 }
 
 void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
-                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor) 
+                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection) 
 {
-	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor});
+	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor}, rayCollisionDetection);
 }
 
 void submitLightWall(FloatRect wall)

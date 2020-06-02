@@ -38,6 +38,15 @@ ShaderSource lightSrc()
 	return ShaderSource{sLightVS, sLightFS};
 }
 
+// no collision light
+static const char* sNoCollisionLightVS =
+	#include "noCollisionLight.vs.glsl"
+;
+ShaderSource noCollisionLightSrc()
+{
+	return ShaderSource{sNoCollisionLightVS, sLightFS};
+}
+
 
 // circle 
 static const char* sCircleVS = 

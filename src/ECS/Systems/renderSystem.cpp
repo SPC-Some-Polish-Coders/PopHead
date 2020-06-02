@@ -62,11 +62,11 @@ void RenderSystem::update(float dt)
 
 	// submit light sources
 	mRegistry.view<LightSource, BodyRect>().each([]
-	(const auto& pointLight, const auto& body)
+	(const auto& light, const auto& body)
 	{
-		PH_ASSERT_UNEXPECTED_SITUATION(pointLight.startAngle <= pointLight.endAngle, "start angle must be lesser or equal to end angle");
-		Renderer::submitLight(pointLight.color, body.pos + pointLight.offset, pointLight.startAngle, pointLight.endAngle,
-			pointLight.attenuationAddition, pointLight.attenuationFactor, pointLight.attenuationSquareFactor);
+		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
+		Renderer::submitLight(light.color, body.pos + light.offset, light.startAngle, light.endAngle,
+			light.attenuationAddition, light.attenuationFactor, light.attenuationSquareFactor, light.rayCollisionDetection);
 	});
 
 	//submit single light walls

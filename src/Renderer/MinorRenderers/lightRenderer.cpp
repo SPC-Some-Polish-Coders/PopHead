@@ -12,27 +12,55 @@ static u32 lights;
 static bool lightingEnabled = true;
 static bool drawRays = false;
 
+static u32 noCollisionLightRectVao;
+
 void LightRenderer::init()
 {
+	// init ray collision light rendering
 	mLightShader.init(shader::lightSrc());
 	mLightShader.initUniformBlock("SharedData", 0);
 
-	glGenVertexArrays(1, &mLightTriangleFanVAO);
-	glBindVertexArray(mLightTriangleFanVAO);
+	glGenVertexArrays(1, &mLightTriangleFanVao);
+	glBindVertexArray(mLightTriangleFanVao);
 
-	glGenBuffers(1, &mLightTriangleFanVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mLightTriangleFanVBO);
+	glGenBuffers(1, &mLightTriangleFanVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, mLightTriangleFanVbo);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), Null);
 
 	mLightTriangleFanVertexData.reserve(361);
+
+
+	// init no ray collision light rendering
+	mNoCollisionLightShader.init(shader::noCollisionLightSrc());
+	mNoCollisionLightShader.initUniformBlock("SharedData", 0);
+
+	glGenVertexArrays(1, &noCollisionLightRectVao);
+	glBindVertexArray(noCollisionLightRectVao);
+
+	float quadVertexData[] = {
+		-1.f,  1.f,
+		 1.f,  1.f,
+		-1.f, -1.f,
+		 1.f, -1.f
+	};
+
+	u32 quadVbo;
+	glGenBuffers(1, &quadVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertexData), quadVertexData, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), Null);
+
+	glBindVertexArray(0);
 }
 
 void LightRenderer::shutDown()
 {
-	glDeleteBuffers(1, &mLightTriangleFanVBO);
-	glDeleteVertexArrays(1, &mLightTriangleFanVAO);
+	glDeleteBuffers(1, &mLightTriangleFanVbo);
+	glDeleteVertexArrays(1, &mLightTriangleFanVao);
 }
 
 void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
@@ -46,13 +74,16 @@ void LightRenderer::submitLightWall(FloatRect wall)
 		mLightWalls.emplace_back(wall);
 }
 
-void LightRenderer::submitLight(Light light)
+void LightRenderer::submitLight(Light light, bool rayCollisionDetection)
 {
 	// TODO: Culling
 
 	if(lightingEnabled)
 	{
-		mLights.emplace_back(light);
+		if(rayCollisionDetection)
+			mLights.emplace_back(light);
+		else
+			mNoCollisionLights.emplace_back(light);
 	}	
 }
 
@@ -80,7 +111,7 @@ void LightRenderer::flush()
 		{
 			PH_PROFILE_SCOPE("create vertex data");
 
-			// TODO_ren: Optimize ray casting algorithm
+			// TODO: Optimize ray casting algorithm
 			for(float angle = light.startAngle; angle <= light.endAngle; angle += 0.5)
 			{
 				++rays;
@@ -103,16 +134,16 @@ void LightRenderer::flush()
 		}
 
 		// draw light using triangle fan
-		mLightShader.bind();
 		PH_PROFILE_SCOPE("draw light triangle fan");
+		mLightShader.bind();
 		mLightShader.setUniformVec2("lightPos", light.pos);
 		mLightShader.setUniformVec4Color("color", light.color);
 		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
 		mLightShader.setUniformFloat("a", light.attenuationAddition);
 		mLightShader.setUniformFloat("b", light.attenuationFactor);
 		mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
-		glBindVertexArray(mLightTriangleFanVAO);
-		glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVBO); // TODO: Do I have to bind it?
+		glBindVertexArray(mLightTriangleFanVao);
+		glBindBuffer(GL_ARRAY_BUFFER ,mLightTriangleFanVbo); // TODO: Do I have to bind it?
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mLightTriangleFanVertexData.size(), mLightTriangleFanVertexData.data(), GL_STATIC_DRAW);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, Cast<u32>(mLightTriangleFanVertexData.size()));
 		mLightTriangleFanVertexData.clear();
@@ -127,13 +158,37 @@ void LightRenderer::flush()
 		}
 	}
 
+	// draw no ray collision detection lights
+	{
+		PH_PROFILE_SCOPE("draw no collision lights");
+
+		mNoCollisionLightShader.bind();
+		mNoCollisionLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
+		for(auto& light : mNoCollisionLights)
+		{
+			mNoCollisionLightShader.setUniformVec2("lightPos", light.pos);
+			mNoCollisionLightShader.setUniformVec4Color("color", light.color);
+			mNoCollisionLightShader.setUniformFloat("a", light.attenuationAddition);
+			mNoCollisionLightShader.setUniformFloat("b", light.attenuationFactor);
+			mNoCollisionLightShader.setUniformFloat("c", light.attenuationSquareFactor);
+
+			glBindVertexArray(noCollisionLightRectVao);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		}
+	}
+
 	// draw light sources as points
 	if(drawRays)
+	{
 		for(auto& light : mLights)
 			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
+		for(auto& light : mNoCollisionLights)
+			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
+	}
 
 	mLightWalls.clear();
 	mLights.clear();
+	mNoCollisionLights.clear();
 }
 
 RayWallIntersection LightRenderer::getRayWallClosestIntersection(Vec2 rayDir, Vec2 lightPos, FloatRect wall)

@@ -50,7 +50,7 @@ public:
 	void clearStaticLightWalls();
 	void submitBunchOfLightWalls(const std::vector<FloatRect>&);
 	void submitLightWall(FloatRect);
-	void submitLight(Light);
+	void submitLight(Light, bool rayCollisionDetection);
 
 	void flush();
 	
@@ -66,10 +66,12 @@ private:
 private:
 	std::vector<FloatRect> mLightWalls;
 	std::vector<Light> mLights;
+	std::vector<Light> mNoCollisionLights;
 	std::vector<Vec2> mLightTriangleFanVertexData;
 	const FloatRect* mScreenBounds;
 	Shader mLightShader;
-	u32 mLightTriangleFanVAO, mLightTriangleFanVBO;
+	Shader mNoCollisionLightShader;
+	u32 mLightTriangleFanVao, mLightTriangleFanVbo;
 };
 
 } 
