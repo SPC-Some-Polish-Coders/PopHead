@@ -64,8 +64,8 @@ void shutDown()
 
 void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float thickness)
 {
-	auto colA = toNormalizedColorVec4(colorA);
-	auto colB = toNormalizedColorVec4(colorB);
+	auto colA = castToNormalizedColorVec4(colorA);
+	auto colB = castToNormalizedColorVec4(colorB);
 
 	bool batchExists = false;
 	for(auto& batch : lineBatches)

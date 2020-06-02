@@ -423,7 +423,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	// submit data
 	QuadData quadData;
 	
-	quadData.color = color ? toNormalizedColorVec4(*color) : toNormalizedColorVec4(sf::Color::White);
+	quadData.color = color ? castToNormalizedColorVec4(*color) : castToNormalizedColorVec4(sf::Color::White);
 	quadData.textureRect = finalTextureRect; 
 	quadData.position = pos;
 	quadData.size = size;

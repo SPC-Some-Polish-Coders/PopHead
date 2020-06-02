@@ -5,7 +5,7 @@
 
 namespace ph {
 
-u32 toU32(const std::string& str)
+u32 castToU32(const std::string& str)
 {
 	u64 ulResult = std::stoul(str);
 	u32 result = Cast<u32>(ulResult);
@@ -13,7 +13,7 @@ u32 toU32(const std::string& str)
 	return result;
 }
 
-bool toBool(const std::string& str)
+bool castToBool(const std::string& str)
 {
 	if (str == "true" || str == "1")
 		return true;
@@ -23,14 +23,14 @@ bool toBool(const std::string& str)
 		PH_EXIT_GAME("Cast to bool failed!");
 }
 
-std::string toString(Vec2 vec)
+std::string castToString(Vec2 vec)
 {
 	std::string xVal = std::to_string(vec.x);
 	std::string yVal = std::to_string(vec.y);
 	return "x:" + xVal + " y:" + yVal;
 }
 
-Vec4 toNormalizedColorVec4(sf::Color c)
+Vec4 castToNormalizedColorVec4(sf::Color c)
 {
 	return Vec4({
 		Cast<float>(c.r) / 255.f, Cast<float>(c.g) / 255.f,
@@ -38,7 +38,7 @@ Vec4 toNormalizedColorVec4(sf::Color c)
 	});
 }
 
-sf::Color toPackedColor(Vec4 c)
+sf::Color castToPackedColor(Vec4 c)
 {
 	return sf::Color(
 		Cast<u8>(c.r * 255.f), Cast<u8>(c.g * 255.f),

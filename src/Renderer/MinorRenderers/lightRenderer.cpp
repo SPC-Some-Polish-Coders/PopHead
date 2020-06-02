@@ -259,9 +259,9 @@ void LightRenderer::submitDebug(sf::Color* ambientLightColor)
 		ImGui::Text("light sources (draw calls): %u", mLights.size());
 		ImGui::Text("light rays: %u", rays);
 
-		auto color = toNormalizedColorVec4(*ambientLightColor);
+		auto color = castToNormalizedColorVec4(*ambientLightColor);
 		ImGui::ColorEdit3("ambient light color", &color.r);
-		*ambientLightColor = toPackedColor(color); 
+		*ambientLightColor = castToPackedColor(color); 
 
 		ImGui::EndTabItem();
 	}

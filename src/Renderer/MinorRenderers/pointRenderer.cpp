@@ -44,7 +44,7 @@ void PointRenderer::submitPoint(Vec2 pos, const sf::Color& color, float z, float
 		return;
 
 	PointVertexData point;
-	point.color = toNormalizedColorVec4(color);
+	point.color = castToNormalizedColorVec4(color);
 	point.position = pos;
 	point.size = size * (360.f / mScreenBounds->h);
 	point.z = z;

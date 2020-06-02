@@ -363,7 +363,7 @@ static void executeCurrentPos()
 	}
 	else
 	{
-		pushOutputLine({"player position: " + ph::toString(getPlayerPosition()), infoLimeColor});
+		pushOutputLine({"player position: " + castToString(getPlayerPosition()), infoLimeColor});
 	}
 }
 

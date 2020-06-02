@@ -252,7 +252,7 @@ std::function<void(Widget*)> XmlGuiParser::getGuiAction(const std::string& actio
 	else if(name == "setGamePause") 
 	{
 		return [data](Widget*) {
-			bool pause = toBool(data);
+			bool pause = castToBool(data);
 			system::System::setPause(pause);
 			pause ? GUI::showInterface("pauseScreen") : GUI::hideInterface("pauseScreen");
 		};

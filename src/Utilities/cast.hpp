@@ -10,11 +10,11 @@
 
 namespace ph {
 
-FORCE_INLINE u32 toU32(const std::string& str);
-FORCE_INLINE bool toBool(const std::string& str);
-FORCE_INLINE std::string toString(Vec2);
-FORCE_INLINE Vec4 toNormalizedColorVec4(sf::Color);
-FORCE_INLINE sf::Color toPackedColor(Vec4);
+FORCE_INLINE u32 castToU32(const std::string& str);
+FORCE_INLINE bool castToBool(const std::string& str);
+FORCE_INLINE std::string castToString(Vec2);
+FORCE_INLINE Vec4 castToNormalizedColorVec4(sf::Color);
+FORCE_INLINE sf::Color castToPackedColor(Vec4);
 
 }
 

@@ -307,7 +307,7 @@ const char* Xml::toCString() const
 
 bool Xml::toBool() const
 {
-	return ph::toBool(toString());
+	return castToBool(toString());
 }
 
 i32 Xml::toI32() const
@@ -317,7 +317,7 @@ i32 Xml::toI32() const
 
 u32 Xml::toU32() const
 {
-	return ph::toU32(toString());
+	return castToU32(toString());
 }
 
 i8 Xml::toI8() const
@@ -327,7 +327,7 @@ i8 Xml::toI8() const
 
 u8 Xml::toU8() const
 {
-	return Cast<u8>(ph::toU32(toString()));
+	return Cast<u8>(castToU32(toString()));
 }
 
 float Xml::toFloat() const

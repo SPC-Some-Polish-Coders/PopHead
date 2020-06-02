@@ -32,7 +32,7 @@ std::vector<u32> Csv::toU32s(const std::string& csv)
 	std::vector<u32> values;
 	std::string temp;
 	while (std::getline(iss, temp, ',')) {
-		const u32 value = toU32(temp);
+		const u32 value = castToU32(temp);
 		values.push_back(value);
 	}
 	return values;
