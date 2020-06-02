@@ -46,6 +46,8 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
 
+#include "ECS/entityUtil.hpp"
+
 namespace ph {
 
 Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetTexture,
@@ -114,6 +116,8 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 
 	// must be at the end
 	mSystemsQueue.appendSystem<system::EntityDestroying>();
+
+	initEntityUtil(&mRegistry);
 }
 
 void Scene::handleEvent(sf::Event e)

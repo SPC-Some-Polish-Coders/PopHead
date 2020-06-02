@@ -5,19 +5,17 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void AnimationSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	auto view = mRegistry.view<component::AnimationData, component::TextureRect>();
-
-	for(auto entity : view)
+	mRegistry.view<AnimationData, TextureRect>().each([&]
+	(auto& animationData, auto& textureRect)
 	{
-		auto& [animationData, textureRect] = view.get<component::AnimationData, component::TextureRect>(entity);
-		
 		if(animationData.isPlaying)
 		{
 			animationData.elapsedTime += dt;
@@ -26,9 +24,8 @@ void AnimationSystem::update(float dt)
 				animationData.elapsedTime -= animationData.delay;
 				StateData& state = animationData.states->at(animationData.currentStateName);
 				if(++animationData.currentFrameIndex >= state.frameCount)
-				{
 					animationData.currentFrameIndex = 0;
-				}
+
 				textureRect = state.startFrame;
 				textureRect.x = state.startFrame.x + state.startFrame.w * animationData.currentFrameIndex;
 			}
@@ -39,7 +36,7 @@ void AnimationSystem::update(float dt)
 			animationData.currentFrameIndex = 0;
 			textureRect = state.startFrame;
 		}
-	}
+	});
 }
 
 }

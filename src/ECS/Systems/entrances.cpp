@@ -4,6 +4,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/entityUtil.hpp"
 
 namespace ph::system {
 
@@ -13,32 +14,26 @@ Entrances::Entrances(entt::registry& registry, SceneManager& sceneManager)
 {
 }
 
+using namespace component;
+
 void Entrances::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	auto playerView = mRegistry.view<component::Player, component::BodyRect>();
-	auto entrancesView = mRegistry.view<component::Entrance, component::BodyRect>();
+	auto playerCenterPos = getPlayerCenterPos();
 
-	for(auto player : playerView)
+	mRegistry.view<Entrance, BodyRect>().each([&]
+	(const auto& entrance, auto entranceBody)
 	{
-		const auto& playerBody = playerView.get<component::BodyRect>(player);
-
-		for(auto entrance : entrancesView)
+		if(entranceBody.contains(playerCenterPos))
 		{
-			const auto& entranceBody = entrancesView.get<component::BodyRect>(entrance);
-			if(entranceBody.contains(playerBody.center()))
-			{
-				const auto& entranceDetails = entrancesView.get<component::Entrance>(entrance);
-				std::string sceneFilepath = "scenes/" + entranceDetails.entranceDestination.substr(2);
-				mSceneManager.replaceScene(sceneFilepath, entranceDetails.playerSpawnPosition);
-				return;
-			}
+			std::string sceneFilepath = "scenes/" + entrance.entranceDestination.substr(2);
+			mSceneManager.replaceScene(sceneFilepath, entrance.playerSpawnPosition);
+			return;
 		}
-	}
+	});
 }
 
 }
