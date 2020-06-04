@@ -72,7 +72,7 @@ void parseScene(EntitiesTemplateStorage& templateStorage,
 		XmlMapParser mapParser;
 		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
 
-		bool isPlayerOnScene;
+		bool isPlayerOnScene = false;
 		loadEntitiesFromMapFile(map, templateStorage, gameRegistry, sceneManager, &isPlayerOnScene);
 		aiManager.setIsPlayerOnScene(isPlayerOnScene);
 	}
