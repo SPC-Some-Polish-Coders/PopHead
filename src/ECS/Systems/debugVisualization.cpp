@@ -58,8 +58,7 @@ void DebugVisualization::update(float dt)
 		ImGui::EndTabItem();
 	}
 
-	if(!enableAreaDebug)
-		return;
+	if(!enableAreaDebug) return;
 
 	if(collision)
 	{

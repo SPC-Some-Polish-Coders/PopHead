@@ -6,27 +6,28 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void Gates::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	mRegistry.view<component::Gate>().each([&]
-	(auto entity, component::Gate& gate)
+	mRegistry.view<Gate>().each([&]
+	(auto entity, Gate& gate)
 	{
 		if(gate.open && !gate.previouslyOpen)
 		{
-			mRegistry.remove<component::StaticCollisionBody>(entity);
-			mRegistry.remove<component::LightWall>(entity);
-			mRegistry.assign_or_replace<component::HiddenForRenderer>(entity);
+			mRegistry.remove<StaticCollisionBody>(entity);
+			mRegistry.remove<LightWall>(entity);
+			mRegistry.assign_or_replace<HiddenForRenderer>(entity);
 		}
 		else if(!gate.open && gate.previouslyOpen)
 		{
-			mRegistry.assign_or_replace<component::StaticCollisionBody>(entity);
-			mRegistry.assign_or_replace<component::LightWall>(entity);
-			mRegistry.remove<component::HiddenForRenderer>(entity);
+			mRegistry.assign_or_replace<StaticCollisionBody>(entity);
+			mRegistry.assign_or_replace<LightWall>(entity);
+			mRegistry.remove<HiddenForRenderer>(entity);
 		}
 		gate.previouslyOpen = gate.open;
 	});

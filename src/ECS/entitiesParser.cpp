@@ -95,7 +95,6 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"SlowZombieBehavior",			&EntitiesParser::parseSlowZombieBehavior},
 		{"Bullets",                	    &EntitiesParser::parseBullets},
 		{"Kinematics",              	&EntitiesParser::parseKinematics},
-		{"Entrance",              	    &EntitiesParser::parseEntrance},
 		{"Gate",				  	    &EntitiesParser::parseGate},
 		{"Lever",				  	    &EntitiesParser::parseLever},
 		{"CurrentGun",            	    &EntitiesParser::parseCurrentGun},
@@ -314,14 +313,6 @@ void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& e
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	mUsedRegistry->assign_or_replace<component::Player>(entity);
-}
-
-void EntitiesParser::parseEntrance(const Xml& entityComponentNode, entt::entity& entity)
-{
-	std::string entranceDestination = entityComponentNode.getAttribute("entranceDestination")->toString();
-	float posX = entityComponentNode.getAttribute("playerSpawnPositionX")->toFloat();
-	float posY = entityComponentNode.getAttribute("playerSpawnPositionY")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Entrance>(entity, entranceDestination, Vec2(posX, posY));
 }
 
 void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)

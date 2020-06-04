@@ -7,10 +7,10 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void Save::update(float dt)
 {
-	using namespace component;
-
 	mRegistry.view<SavePoint, BodyRect>().each([&]
 	(auto& save, auto saveBody)
 	{

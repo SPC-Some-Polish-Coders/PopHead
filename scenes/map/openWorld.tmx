@@ -26067,9 +26067,6 @@
     <property name="hintName" value="shootingHint"/>
    </properties>
   </object>
-  <object id="20" name="GateGuardNpc" type="GateGuardNpc" x="1495.79" y="3133.22">
-   <point/>
-  </object>
   <object id="22" name="Lever" type="Lever" x="1409.25" y="3234.08">
    <point/>
   </object>
@@ -26107,14 +26104,6 @@
     <property name="hintJoystickContent" value="You just got a new weapon Use @C9909[lb] and [rb]@C9999 to change weapon"/>
     <property name="hintKeyboardContent" value="You just got a new weapon Use @C9909[Q]@C9999 to change weapon"/>
     <property name="hintName" value="weaponChangingHint"/>
-   </properties>
-  </object>
-  <object id="28" type="Entrance" x="617.333" y="237.33" width="16" height="16.3333">
-   <properties>
-    <property name="gotoScene" type="file" value="../sewage.xml"/>
-    <property name="gotoX" type="float" value="455"/>
-    <property name="gotoY" type="float" value="2105"/>
-    <property name="isEntranceWithCustomPosition" type="bool" value="true"/>
    </properties>
   </object>
   <object id="57" type="SlowZombie" x="2074.44" y="2693.44">
@@ -26157,12 +26146,6 @@
    <properties>
     <property name="exit_down" type="bool" value="true"/>
    </properties>
-  </object>
-  <object id="86" type="Puzzle" x="-211" y="3406.33">
-   <properties>
-    <property name="id" type="int" value="1"/>
-   </properties>
-   <point/>
   </object>
   <object id="90" type="Spikes" x="-587.208" y="3039.83" width="77.9167" height="78.8333">
    <properties>

@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-class Spikes : public System
+class SpikesSystem : public System
 {
 public:
 	using System::System;

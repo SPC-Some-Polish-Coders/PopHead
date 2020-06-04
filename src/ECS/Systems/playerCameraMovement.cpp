@@ -6,6 +6,8 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void PlayerCameraMovement::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
@@ -14,10 +16,10 @@ void PlayerCameraMovement::update(float dt)
 
 	mRoomsThatIntersectPlayer.clear();
 
-	mRegistry.view<component::Player, component::Camera, component::BodyRect, component::FaceDirection>().each([&]
+	mRegistry.view<Player, component::Camera, BodyRect, FaceDirection>().each([&]
 	(auto, auto& playerCam, const auto& playerBody, auto faceDir) 
 	{
-		mRegistry.view<component::CameraRoom, component::BodyRect>().each([&]
+		mRegistry.view<CameraRoom, BodyRect>().each([&]
 		(auto camRoomEntity, auto& camRoom, const auto& camRoomBody)
 		{
 			if(intersect(camRoomBody, playerBody))
@@ -72,7 +74,7 @@ void PlayerCameraMovement::update(float dt)
 				float smallestTimeFromPlayerEntrance = 10000.f;
 				for(auto e : mRoomsThatIntersectPlayer)
 				{	
-					auto& camRoom = mRegistry.get<component::CameraRoom>(e);
+					auto& camRoom = mRegistry.get<CameraRoom>(e);
 					if(camRoom.timeFromPlayerEntrance < smallestTimeFromPlayerEntrance)
 					{
 						smallestTimeFromPlayerEntrance = camRoom.timeFromPlayerEntrance;
@@ -84,8 +86,8 @@ void PlayerCameraMovement::update(float dt)
 			if(mCurrentCamRoom != lastCamRoom) 
 				mInterpolation = 0.f;
 
-			auto& camRoom = mRegistry.get<component::CameraRoom>(mCurrentCamRoom);
-			const auto& camRoomBody = mRegistry.get<component::BodyRect>(mCurrentCamRoom);
+			auto& camRoom = mRegistry.get<CameraRoom>(mCurrentCamRoom);
+			const auto& camRoomBody = mRegistry.get<BodyRect>(mCurrentCamRoom);
 
 			if(mInterpolation < 1.f)
 			{

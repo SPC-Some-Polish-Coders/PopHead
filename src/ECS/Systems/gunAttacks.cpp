@@ -24,20 +24,23 @@ void GunAttacks::update(float dt)
 	handleLastingBullets();
 }
 
+using namespace component;
+
 void GunAttacks::onEvent(sf::Event e)
 {
-	if(sPause)
-		return;
+	PH_PROFILE_FUNCTION();
+
+	if(sPause) return;
 
 	auto shoot = [this]()
 	{
 		if(!shootInputDisabled)
 		{
-			auto playerGunView = mRegistry.view<component::Player, component::GunAttacker>();
-			for(auto player : playerGunView) {
-				auto& playerGunAttack = playerGunView.get<component::GunAttacker>(player);
-				playerGunAttack.isTryingToAttack = true;
-			}	
+			mRegistry.view<Player, GunAttacker>().each([&]
+			(auto, auto& gunAttacker)
+			{
+				gunAttacker.isTryingToAttack = true;
+			});
 		}
 	};
 
@@ -45,24 +48,23 @@ void GunAttacks::onEvent(sf::Event e)
 	{
 		if(!changeWeaponInputDisabled)
 		{
-			auto currentGunView = mRegistry.view<component::CurrentGun, component::GunProperties>();
-			auto otherGunsView = mRegistry.view<component::GunProperties>(entt::exclude<component::CurrentGun>);
-
-			for(auto currentGun : currentGunView)
+			mRegistry.view<CurrentGun, GunProperties>().each([&]
+			(auto currentGunEntity, auto, const auto& currentGunProperties)
 			{
-				const auto& currentGunProperties = currentGunView.get<component::GunProperties>(currentGun);
-				mRegistry.assign_or_replace<component::HiddenForRenderer>(currentGun);
-				mRegistry.remove<component::CurrentGun>(currentGun);
+				mRegistry.assign_or_replace<HiddenForRenderer>(currentGunEntity);
+				mRegistry.remove<CurrentGun>(currentGunEntity);
 
-				for(auto otherGun : otherGunsView) {
-					const auto& gunProperties = otherGunsView.get<component::GunProperties>(otherGun);
+				mRegistry.view<GunProperties>(entt::exclude<CurrentGun>).each([&]
+				(auto otherGunEntity, const auto& gunProperties)
+				{
 					if(gunProperties.gunId != currentGunProperties.gunId)
-						mRegistry.assign<component::CurrentGun>(otherGun);
-				}
-			}
+						mRegistry.assign<CurrentGun>(otherGunEntity);
+				});
+			});
 
-			auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker>();
-			gunAttackerView.each([](component::Player, component::GunAttacker& gunAttacker) {
+			mRegistry.view<Player, GunAttacker>().each([&]
+			(auto, auto& gunAttacker)
+			{
 				gunAttacker.timeToHide = gunAttacker.timeBeforeHiding;
 			});
 		}
@@ -86,22 +88,19 @@ void GunAttacks::onEvent(sf::Event e)
 
 void GunAttacks::handlePendingGunAttacks() const
 {
-	auto gunAttackerView = mRegistry.view<component::Player, component::GunAttacker, component::Bullets, component::FaceDirection, component::BodyRect>();
-	gunAttackerView.each([this]
-	(const component::Player, component::GunAttacker& playerGunAttack, component::Bullets& playerBullets,
-	 const component::FaceDirection playerFaceDirection, const component::BodyRect& playerBody)
+	mRegistry.view<Player, GunAttacker, Bullets, FaceDirection, BodyRect>().each([&]
+	(auto, auto& gunAttacker, auto& playerBullets, auto playerFaceDirection, auto playerBody)
 	{
-		if(playerGunAttack.isTryingToAttack)
+		if(gunAttacker.isTryingToAttack)
 		{
-			playerGunAttack.isTryingToAttack = false;
+			gunAttacker.isTryingToAttack = false;
 
-			auto gunView = mRegistry.view<component::CurrentGun, component::GunProperties, component::BodyRect>();
-			for(const auto& gun : gunView)
+			mRegistry.view<CurrentGun, GunProperties, BodyRect>().each([&]
+			(auto, const auto& gunProperties, auto gunBody)
 			{
-				const auto& [gunBody, gunProperties] = gunView.get<component::BodyRect, component::GunProperties>(gun);
-
-				if((gunProperties.type == component::GunProperties::Type::Pistol && playerBullets.numOfPistolBullets <= 0.f) ||
-				   (gunProperties.type == component::GunProperties::Type::Shotgun && playerBullets.numOfShotgunBullets <= 0.f)) {
+				if((gunProperties.type == GunProperties::Type::Pistol && playerBullets.numOfPistolBullets <= 0.f) ||
+				   (gunProperties.type == GunProperties::Type::Shotgun && playerBullets.numOfShotgunBullets <= 0.f)) 
+				{
 					return;
 				}
 
@@ -117,15 +116,17 @@ void GunAttacks::handlePendingGunAttacks() const
 				createShotImage(startingBulletPosition, shotsEndingPositions, gunProperties.shotSoundFilepath);
 				clearInGunAttackAreaTags();
 
-				if(gunProperties.type == component::GunProperties::Type::Pistol) {
+				if(gunProperties.type == GunProperties::Type::Pistol) 
+				{
 					--playerBullets.numOfPistolBullets;
 					wasOpponentHit ? shakeCamera(2.f, false) : shakeCamera(0.15f, true);
 				}
-				else if(gunProperties.type == component::GunProperties::Type::Shotgun) {
+				else if(gunProperties.type == GunProperties::Type::Shotgun) 
+				{
 					--playerBullets.numOfShotgunBullets;
 					wasOpponentHit ? shakeCamera(3.f, false) : shakeCamera(0.2f, true);
 				}
-			}
+			});
 		}
 	});
 }
@@ -182,23 +183,23 @@ void GunAttacks::tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect p
 			attackArea.y -= range + playerBody.h / 2.f;
 	}
 
-	auto enemiesView = mRegistry.view<component::Killable, component::BodyRect>(entt::exclude<component::Player>);
-	for(auto enemy : enemiesView)
+	mRegistry.view<Killable, BodyRect>(entt::exclude<Player>).each([&]
+	(auto enemyEntity, auto, auto enemyBody)
 	{
-		const auto& enemyBody = enemiesView.get<component::BodyRect>(enemy);
 		if(intersect(attackArea, enemyBody))
 		{
-			mRegistry.assign<component::InPlayerGunAttackArea>(enemy);
+			mRegistry.assign<InPlayerGunAttackArea>(enemyEntity);
 			*wasOpponentHitOut = true;
 		}
-	}
+	});
 }
 
 std::vector<Vec2> GunAttacks::performShoot(Vec2 playerFaceDirection, Vec2 startingBulletPos,
                                            float range, float deflectionAngle, i32 damage, i32 numberOfBullets) const
 {
-	auto enemiesWithDamageTag = mRegistry.view<component::DamageTag, component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
-	auto enemies = mRegistry.view<component::InPlayerGunAttackArea, component::Killable, component::BodyRect>();
+	// TODO: This algorithm is very very very slow!
+	auto enemiesWithDamageTag = mRegistry.view<DamageTag, InPlayerGunAttackArea, Killable, BodyRect>();
+	auto enemies = mRegistry.view<InPlayerGunAttackArea, Killable, BodyRect>();
 	std::vector<Vec2> shotsEndingPositions;
 	const i32 bulletShiftValue = 5;
 
@@ -213,23 +214,24 @@ std::vector<Vec2> GunAttacks::performShoot(Vec2 playerFaceDirection, Vec2 starti
 			bool didBulletHitEnemy = false;
 			for(const auto enemy : enemies)
 			{
-				const auto& bodyRect = enemies.get<component::BodyRect>(enemy);
+				const auto& bodyRect = enemies.get<BodyRect>(enemy);
 				if(bodyRect.contains(currentBulletPos))
 				{
 					if(enemiesWithDamageTag.contains(enemy))
 					{
-						auto& damageTagValue = enemiesWithDamageTag.get<component::DamageTag>(enemy);
+						auto& damageTagValue = enemiesWithDamageTag.get<DamageTag>(enemy);
 						damageTagValue.amountOfDamage += damage;
 					}
 					else
-						mRegistry.assign<component::DamageTag>(enemy, damage);
+					{
+						mRegistry.assign<DamageTag>(enemy, damage);
+					}
 					didBulletHitEnemy = true;
 					break;
 				}
 			}
 
-			if(didBulletHitEnemy)
-				break;
+			if(didBulletHitEnemy) break;
 
 			bulletTravelledDist += bulletShiftValue;
 			currentBulletPos = getCurrentPosition(direction, startingBulletPos, bulletTravelledDist);
@@ -337,9 +339,11 @@ Vec2 GunAttacks::getCurrentPosition(Vec2 bulletDirection, Vec2 startingPos, i32 
 
 void GunAttacks::clearInGunAttackAreaTags() const
 {
-	auto enemiesInAreaAttackView = mRegistry.view<component::InPlayerGunAttackArea>();
-	for(auto enemy : enemiesInAreaAttackView)
-		mRegistry.remove<component::InPlayerGunAttackArea>(enemy);
+	mRegistry.view<InPlayerGunAttackArea>().each([&]
+	(auto enemyEntity, auto)
+	{
+		mRegistry.remove<InPlayerGunAttackArea>(enemyEntity);
+	});
 }
 
 void GunAttacks::createShotImage(Vec2 shotsStartingPosition, const std::vector<Vec2>& shotsEndingPosition,
@@ -348,37 +352,36 @@ void GunAttacks::createShotImage(Vec2 shotsStartingPosition, const std::vector<V
 	for(auto shot : shotsEndingPosition)
 	{
 		auto entity = mRegistry.create();
-		mRegistry.assign<component::LastingShot>(entity, shotsStartingPosition, shot);
-		mRegistry.assign<component::Lifetime>(entity, .05f);
+		mRegistry.assign<LastingShot>(entity, shotsStartingPosition, shot);
+		mRegistry.assign<Lifetime>(entity, .05f);
 	}
 
 	auto soundEntity = mRegistry.create();
-	mRegistry.assign<component::AmbientSound>(soundEntity, soundFilename);
-	mRegistry.assign<component::Lifetime>(soundEntity, .05f);
+	mRegistry.assign<AmbientSound>(soundEntity, soundFilename);
+	mRegistry.assign<Lifetime>(soundEntity, .05f);
 }
 
 void GunAttacks::handleLastingBullets() const
 {
-	const auto lastingShotsView = mRegistry.view<component::LastingShot>();
-
-	lastingShotsView.each([](const component::LastingShot& lastingShotDetails) 
+	mRegistry.view<LastingShot>().each([]
+	(auto lastingShot)
 	{
 		Renderer::submitLine(sf::Color(230, 160, 0), sf::Color(250, 250, 200),
-			lastingShotDetails.startingShotPos, lastingShotDetails.endingShotPos, 1.f);
+			lastingShot.startingShotPos, lastingShot.endingShotPos, 1.f);
 	});
 }
 
 void GunAttacks::shakeCamera(float magnitude, bool smooth) const
 {
-	auto playerCameraView = mRegistry.view<component::Player>();
-	for(auto player : playerCameraView)
+	mRegistry.view<Player>().each([&]
+	(auto playerEntity, auto)
 	{
-		component::CameraShake shake;
+		CameraShake shake;
 		shake.duration = 0.35f;
 		shake.magnitude = magnitude;
 		shake.smooth = smooth;
-		mRegistry.assign_or_replace<component::CameraShake>(player, shake);
-	}
+		mRegistry.assign_or_replace<CameraShake>(playerEntity, shake);
+	});
 }
 
 }

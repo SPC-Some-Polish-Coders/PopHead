@@ -15,12 +15,6 @@
  <objecttype name="Collision" color="#a40c0c"/>
  <objecttype name="CollisionAndLightWallDenialArea" color="#0c081e"/>
  <objecttype name="CollisionDenialArea" color="#6a0001"/>
- <objecttype name="Entrance" color="#000000">
-  <property name="gotoScene" type="file" default=""/>
-  <property name="gotoX" type="float" default="0"/>
-  <property name="gotoY" type="float" default="0"/>
-  <property name="isEntranceWithCustomPosition" type="bool" default="true"/>
- </objecttype>
  <objecttype name="FlowingRiver" color="#307d52">
   <property name="particleAmountMultiplier" type="float" default="1"/>
   <property name="pushForceX" type="float" default="0"/>

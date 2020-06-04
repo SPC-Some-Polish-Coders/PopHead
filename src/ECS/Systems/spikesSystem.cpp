@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "spikes.hpp"
+#include "spikesSystem.hpp"
 #include "Resources/textureHolder.hpp"
 #include "Renderer/API/texture.hpp"
 #include "ECS/Components/objectsComponents.hpp"
@@ -12,9 +12,13 @@ namespace ph::system {
 static Texture* spikesTexture;
 static Texture* notActiveSpikesTexture;
 
-void Spikes::update(float dt)
+using namespace component;
+
+void SpikesSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
+
+	if(sPause) return;
 
 	if(!spikesTexture)
 	{
@@ -23,7 +27,7 @@ void Spikes::update(float dt)
 		notActiveSpikesTexture = &getTexture("textures/others/spikesNotActive.png");
 	}
 
-	mRegistry.view<component::Spikes, component::RenderQuad, component::BodyRect>().each([&]
+	mRegistry.view<Spikes, RenderQuad, BodyRect>().each([&]
 	(auto& spikes, auto& spikesRenderQuad, const auto& spikesBody)
 	{
 		// change spikes texture
@@ -35,13 +39,11 @@ void Spikes::update(float dt)
 		// spikes hurt player
 		if(spikes.active)
 		{
-			mRegistry.view<component::Player, component::BodyRect, component::BodyCircle>().each([&]
-			(auto playerEntity, auto, const auto& playerBody, auto playerCircle)
+			mRegistry.view<Player, BodyRect, BodyCircle>().each([&]
+			(auto playerEntity, auto, auto playerBody, auto playerCircle)
 			{
 				if(Math::intersect(spikesBody, playerBody.pos + playerCircle.offset, playerCircle.radius))
-				{
-					mRegistry.assign_or_replace<component::DamageTag>(playerEntity, 1);
-				}
+					mRegistry.assign_or_replace<DamageTag>(playerEntity, 1);
 			});
 		}
 

@@ -57,8 +57,7 @@ namespace ph::system {
 	{
 		PH_PROFILE_FUNCTION();
 
-		if(sPause)
-			return;
+		if(sPause) return;
 
 		// return if player is without control
 		for(auto player : mRegistry.view<Player>())

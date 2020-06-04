@@ -28,9 +28,9 @@ struct FaceDirection : public Vec2
 
 struct GunAttacker // @no-debugger
 {
-	bool isTryingToAttack;
 	float timeBeforeHiding;
 	float timeToHide;
+	bool isTryingToAttack;
 };
 
 struct DeadCharacter // @no-debugger

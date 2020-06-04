@@ -41,6 +41,8 @@ ZombieSystem::ZombieSystem(entt::registry& registry, const AIManager* aiManager,
 {
 }
 
+using namespace component;
+
 void ZombieSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
@@ -48,7 +50,7 @@ void ZombieSystem::update(float dt)
 	#ifndef PH_DISTRIBUTION
 	if(freezeZombies)
 	{
-		mRegistry.view<component::Zombie, component::Kinematics>().each([&]
+		mRegistry.view<Zombie, Kinematics>().each([&]
 		(auto, auto& kinematics)
 		{
 			kinematics.acceleration = {};
@@ -59,13 +61,13 @@ void ZombieSystem::update(float dt)
 	if(sPause || freezeZombies)
 		return;
 
-	const auto zombies = mRegistry.view<component::Zombie, component::BodyRect, component::CharacterSpeed, component::Kinematics, component::AnimationData, component::BodyCircle>
-		(entt::exclude<component::DeadCharacter>);
+	const auto zombies = mRegistry.view<Zombie, BodyRect, CharacterSpeed, Kinematics, AnimationData, BodyCircle>
+		(entt::exclude<DeadCharacter>);
 
 	for (auto zombieEntity : zombies)
 	{
-		auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(zombieEntity);
-		const auto& [body, speed] = zombies.get<component::BodyRect, component::CharacterSpeed>(zombieEntity);
+		auto& [zombie, kinematics, animationData] = zombies.get<Zombie, Kinematics, AnimationData>(zombieEntity);
+		const auto& [body, speed] = zombies.get<BodyRect, CharacterSpeed>(zombieEntity);
 
 		// make sounds
 		zombie.timeFromLastGrowl += dt;
@@ -75,10 +77,10 @@ void ZombieSystem::update(float dt)
 			i32 randomNumber = Random::generateNumber(1, 4);
 			switch (randomNumber)
 			{
-			case 1: mRegistry.assign_or_replace<component::SpatialSound>(zombieEntity, "sounds/zombieGrowl1.ogg"); break;
-			case 2: mRegistry.assign_or_replace<component::SpatialSound>(zombieEntity, "sounds/zombieGrowl2.ogg"); break;
-			case 3: mRegistry.assign_or_replace<component::SpatialSound>(zombieEntity, "sounds/zombieGrowl3.ogg"); break;
-			case 4: mRegistry.assign_or_replace<component::SpatialSound>(zombieEntity, "sounds/zombieGrowl4.ogg"); break;
+			case 1: mRegistry.assign_or_replace<SpatialSound>(zombieEntity, "sounds/zombieGrowl1.ogg"); break;
+			case 2: mRegistry.assign_or_replace<SpatialSound>(zombieEntity, "sounds/zombieGrowl2.ogg"); break;
+			case 3: mRegistry.assign_or_replace<SpatialSound>(zombieEntity, "sounds/zombieGrowl3.ogg"); break;
+			case 4: mRegistry.assign_or_replace<SpatialSound>(zombieEntity, "sounds/zombieGrowl4.ogg"); break;
 			default:
 				PH_UNEXPECTED_SITUATION("Random sound choosing in ZombieSystem failed!");
 			}
@@ -97,8 +99,8 @@ void ZombieSystem::update(float dt)
 
 		for (; begin != end; ++begin)
 		{
-			auto& [zombie, kinematics, animationData] = zombies.get<component::Zombie, component::Kinematics, component::AnimationData>(*begin);
-			const auto& [body, speed, circle] = zombies.get<component::BodyRect, component::CharacterSpeed, component::BodyCircle>(*begin);
+			auto& [zombie, kinematics, animationData] = zombies.get<Zombie, Kinematics, AnimationData>(*begin);
+			const auto& [body, speed, circle] = zombies.get<BodyRect, CharacterSpeed, BodyCircle>(*begin);
 			
 			// move body 
 			zombie.timeFromStartingThisMove += dt;

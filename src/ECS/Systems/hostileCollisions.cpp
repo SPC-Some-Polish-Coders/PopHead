@@ -6,17 +6,18 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void HostileCollisions::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	mRegistry.view<component::BodyRect, component::BodyCircle, component::Kinematics, component::Player, component::Health>().each([&]
+	mRegistry.view<BodyRect, BodyCircle, Kinematics, Player, Health>().each([&]
 	(auto playerEntity, auto playerBody, auto playerCircle, auto& playerKinematics, auto, auto)
 	{
-		mRegistry.view<component::BodyRect, component::BodyCircle, component::Damage, component::CollisionWithPlayer>().each([&]
+		mRegistry.view<BodyRect, BodyCircle, Damage, CollisionWithPlayer>().each([&]
 		(auto enemyBody, auto enemyCircle, auto damage, auto& playerCollision)
 		{
 			if(intersect(playerBody, playerCircle, enemyBody, enemyCircle) && !playerCollision.isCollision)
@@ -24,7 +25,7 @@ void HostileCollisions::update(float dt)
 				playerCollision.isCollision = true;
 
 				if(!godMode)
-					mRegistry.assign_or_replace<component::DamageTag>(playerEntity, damage.damageDealt);
+					mRegistry.assign_or_replace<DamageTag>(playerEntity, damage.damageDealt);
 
 				auto playerCirclePos = getCirclePos(playerBody, playerCircle);
 				auto enemyCirclePos = getCirclePos(enemyBody, enemyCircle);
@@ -32,11 +33,11 @@ void HostileCollisions::update(float dt)
 				playerKinematics.friction = 0.01f;
 				playerKinematics.frictionLerpSpeed = 0.04f;
 
-				component::CameraShake shake;
+				CameraShake shake;
 				shake.duration = 1.f;
 				shake.magnitude = playerCollision.pushForce / 200.f;
 				shake.smooth = false;
-				mRegistry.assign_or_replace<component::CameraShake>(playerEntity, shake);
+				mRegistry.assign_or_replace<CameraShake>(playerEntity, shake);
 			}
 			else
 			{

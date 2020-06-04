@@ -5,30 +5,24 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void PushingAreas::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
-	auto pushingAreasView = mRegistry.view<component::PushingArea, component::BodyRect>();
-	auto kinematicObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Kinematics>();
-
-	for(auto pushingArea : pushingAreasView)
+	mRegistry.view<PushingArea, BodyRect>().each([&]
+	(auto pushingArea, auto pushingAreaBody)
 	{
-		const auto& [pushingAreaDetails, areaBody] = pushingAreasView.get<component::PushingArea, component::BodyRect>(pushingArea);
-
-		for(auto kinematicObject : kinematicObjects)
+		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle, Kinematics>().each([&]
+		(auto, auto objectBody, auto objectCircle, auto& objectKinematics)
 		{
-			auto& objectKinematics = kinematicObjects.get<component::Kinematics>(kinematicObject);
-			const auto& kinematicObjectBody = kinematicObjects.get<component::BodyRect>(kinematicObject);
-			if(areaBody.contains(kinematicObjectBody.center()))
-			{
-				objectKinematics.vel += pushingAreaDetails.pushForce;
-			}
-		}
-	}
+			if(intersect(pushingAreaBody, objectBody, objectCircle))
+				objectKinematics.vel += pushingArea.pushForce;
+		});
+	});
 }
 
 }

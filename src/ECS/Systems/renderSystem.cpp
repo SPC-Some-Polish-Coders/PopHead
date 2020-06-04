@@ -26,10 +26,9 @@ void RenderSystem::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	// shake camera
-	auto shakingCameras = mRegistry.view<CameraShake, component::Camera>();
-	for(auto cameraEntity : shakingCameras)
+	mRegistry.view<CameraShake, component::Camera>().each([&]
+	(auto cameraEntity, auto& shake, auto& camera)
 	{
-		auto& [shake, camera] = shakingCameras.get<CameraShake, component::Camera>(cameraEntity);
 		if(shake.elapsedTime < shake.duration) 
 		{
 			auto cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
@@ -46,7 +45,7 @@ void RenderSystem::update(float dt)
 		{
 			mRegistry.remove<CameraShake>(cameraEntity);
 		}
-	}
+	});
 
 	// get current camera and update shake
 	ph::Camera* currentCamera = &defaultCamera;
@@ -62,7 +61,7 @@ void RenderSystem::update(float dt)
 
 	// submit light sources
 	mRegistry.view<LightSource, BodyRect>().each([]
-	(const auto& light, const auto& body)
+	(const auto& light, auto body)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
 		Renderer::submitLight(light.color, body.pos + light.offset, light.startAngle, light.endAngle,
@@ -73,7 +72,7 @@ void RenderSystem::update(float dt)
 	if(Renderer::getNrOfLights() > 0)
 	{
 		mRegistry.view<LightWall, BodyRect>().each([]
-		(const auto& lightWall, const auto& body) 
+		(const auto& lightWall, auto body) 
 		{
 			if(lightWall.y == -1.f)
 				Renderer::submitLightWall(body);
@@ -144,7 +143,7 @@ void RenderSystem::update(float dt)
 	// submit render quads
 	mRegistry.view<RenderQuad, IndoorOutdoorBlend, BodyRect>
 	(entt::exclude<HiddenForRenderer, TextureRect>).each([&]
-	(const auto& quad, auto indoorOutdoorBlend, const auto& body)
+	(const auto& quad, auto indoorOutdoorBlend, auto body)
 	{
 		sf::Color color = quad.color * getIndoorOutdoorColor(indoorOutdoorBlend);
 		Renderer::submitQuad(
@@ -155,7 +154,7 @@ void RenderSystem::update(float dt)
 	// submit render quads with texture rect
 	mRegistry.view<RenderQuad, TextureRect, BodyRect, IndoorOutdoorBlend>
 	(entt::exclude<HiddenForRenderer>).each([&]
-	(const auto& quad, const auto& textureRect, const auto& body, auto indoorOutdoorBlend)
+	(const auto& quad, auto textureRect, auto body, auto indoorOutdoorBlend)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect, &getIndoorOutdoorColor(indoorOutdoorBlend), quad.shader,
@@ -165,7 +164,7 @@ void RenderSystem::update(float dt)
 	// submit render quads with no indoor outdoor component
 	mRegistry.view<RenderQuad, BodyRect>
 	(entt::exclude<HiddenForRenderer, TextureRect, IndoorOutdoorBlend>).each([&]
-	(const auto& quad, const auto& body)
+	(const auto& quad, auto body)
 	{
 		Renderer::submitQuad(
 			quad.texture, Null, &quad.color, quad.shader,
@@ -175,7 +174,7 @@ void RenderSystem::update(float dt)
 	// submit render quads with texture rect and no indoor outdoor component
 	mRegistry.view<RenderQuad, TextureRect, BodyRect>
 	(entt::exclude<HiddenForRenderer, IndoorOutdoorBlend>).each([&]
-	(const auto& quad, const auto& textureRect, const auto& body)
+	(const auto& quad, auto textureRect, auto body)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect, &quad.color, quad.shader,

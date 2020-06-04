@@ -473,6 +473,7 @@ ImGui::Text("attenuationFactor: %f", c->attenuationFactor);
 ImGui::Text("attenuationSquareFactor: %f", c->attenuationSquareFactor);
 ImGui::Text("startAngle: %f", c->startAngle);
 ImGui::Text("endAngle: %f", c->endAngle);
+if(c->rayCollisionDetection) ImGui::Text("rayCollisionDetection: true"); else ImGui::Text("rayCollisionDetection: false");
 }
 if(auto* c = mRegistry.try_get<component::CameraRoom>(mSelected)) 
 {
@@ -534,13 +535,6 @@ if(auto* c = mRegistry.try_get<component::PushingArea>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("PushingArea");
 ImGui::Text("pushForce: %f, %f", c->pushForce.x, c->pushForce.y);
-}
-if(auto* c = mRegistry.try_get<component::Entrance>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Entrance");
-ImGui::Text("entranceDestination: %s", c->entranceDestination.c_str());
-ImGui::Text("playerSpawnPosition: %f, %f", c->playerSpawnPosition.x, c->playerSpawnPosition.y);
 }
 if(auto* c = mRegistry.try_get<component::Lever>(mSelected)) 
 {
@@ -630,6 +624,7 @@ ImGui::Separator();
 switch(*c)
 {
 case component::WeatherType::Sunny: ImGui::BulletText("WeatherType: Sunny"); break;
+case component::WeatherType::Cave: ImGui::BulletText("WeatherType: Cave"); break;
 case component::WeatherType::DrizzleRain: ImGui::BulletText("WeatherType: DrizzleRain"); break;
 case component::WeatherType::NormalRain: ImGui::BulletText("WeatherType: NormalRain"); break;
 case component::WeatherType::HeavyRain: ImGui::BulletText("WeatherType: HeavyRain"); break;

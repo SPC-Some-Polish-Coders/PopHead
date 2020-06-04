@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-class GunPositioningAndTexture : public System
+class LifetimeSystem : public System
 {
 public:
 	using System::System;

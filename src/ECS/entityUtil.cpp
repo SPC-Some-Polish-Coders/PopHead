@@ -13,7 +13,7 @@ void initEntityUtil(entt::registry* reg)
 
 using namespace component;
 
-bool isPlayerIOnScene()
+bool isPlayerOnScene()
 {
 	for(auto entity : registry->view<Player>())
 		return true;
@@ -46,5 +46,11 @@ Vec2 getPlayerPos()
 	return body.pos;
 }
 
+Vec2 getPlayerFaceDirection()
+{
+	auto entity = getPlayerEntity();
+	Vec2 dir = registry->get<FaceDirection>(entity);
+	return dir;
+}
 
 }

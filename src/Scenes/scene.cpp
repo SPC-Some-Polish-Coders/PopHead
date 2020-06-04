@@ -18,7 +18,7 @@
 #include "ECS/Systems/gunPositioningAndTexture.hpp"
 #include "ECS/Systems/velocityChangingAreas.hpp"
 #include "ECS/Systems/meleeAttacks.hpp"
-#include "ECS/Systems/lifetime.hpp"
+#include "ECS/Systems/lifetimeSystem.hpp"
 #include "ECS/Systems/animationSystem.hpp"
 #include "ECS/Systems/particleSystem.hpp"
 #include "ECS/Systems/pushingAreas.hpp"
@@ -26,7 +26,6 @@
 #include "ECS/Systems/kinematicCollisions.hpp"
 #include "ECS/Systems/audioSystem.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
-#include "ECS/Systems/entrances.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/debugVisualization.hpp"
 #include "ECS/Systems/debugCamera.hpp"
@@ -36,7 +35,7 @@
 #include "ECS/Systems/indoorOutdoorBlending.hpp"
 #include "ECS/Systems/pressurePlates.hpp"
 #include "ECS/Systems/puzzles.hpp"
-#include "ECS/Systems/spikes.hpp"
+#include "ECS/Systems/spikesSystem.hpp"
 #include "ECS/Systems/save.hpp"
 #include "ECS/Systems/teleport.hpp"
 #include "ECS/Systems/puzzleBoulders.hpp"
@@ -94,10 +93,9 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	// must be after StaticCollisions
 	mSystemsQueue.appendSystemWithLastOrder<system::PickupItems>();
 	mSystemsQueue.appendSystem<system::HintAreas>();
-	mSystemsQueue.appendSystem<system::Entrances>(std::ref(sceneManager));
 
 	// must be after GunAttacks and before EntityDestroying
-	mSystemsQueue.appendSystem<system::Lifetime>();
+	mSystemsQueue.appendSystem<system::LifetimeSystem>();
 
 	// not specified yet
 	mSystemsQueue.appendSystem<system::DebugCamera>();
@@ -106,7 +104,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlending>();
 	mSystemsQueue.appendSystem<system::PressurePlates>();
 	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));
-	mSystemsQueue.appendSystem<system::Spikes>();
+	mSystemsQueue.appendSystem<system::SpikesSystem>();
 	mSystemsQueue.appendSystem<system::Save>();
 	mSystemsQueue.appendSystem<system::Teleport>();
 	mSystemsQueue.appendSystem<system::PuzzleBoulders>();

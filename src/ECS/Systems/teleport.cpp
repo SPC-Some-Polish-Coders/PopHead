@@ -1,12 +1,14 @@
 #include "pch.hpp"
 #include "teleport.hpp"
 #include "ECS/Components/debugComponents.hpp"
-#include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/entityUtil.hpp"
 
 extern bool debugWindowOpen; 
 
 namespace ph::system {
+
+using namespace component;
 
 void Teleport::update(float dt)
 {
@@ -14,16 +16,13 @@ void Teleport::update(float dt)
 
 	if(debugWindowOpen && ImGui::BeginTabItem("teleport"))
 	{
-		mRegistry.view<component::TeleportPoint, component::BodyRect>().each([&]
+		mRegistry.view<TeleportPoint, BodyRect>().each([&]
 		(const auto& teleport, const auto& teleportBody)
 		{
 			if(ImGui::Button(teleport.name.c_str()))
 			{
-				mRegistry.view<component::Player, component::BodyRect>().each([&]
-				(auto, auto& playerBody)
-				{
-					playerBody.pos = teleportBody.pos;
-				});
+				auto& playerBody = mRegistry.get<BodyRect>(getPlayerEntity());
+				playerBody.pos = teleportBody.pos;
 			}
 		});
 

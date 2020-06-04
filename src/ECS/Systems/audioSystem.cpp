@@ -22,7 +22,7 @@ void AudioSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause || !isPlayerIOnScene()) return;
+	if(sPause || !isPlayerOnScene()) return;
 
 	Vec2 playerPos = getPlayerCenterPos();
 

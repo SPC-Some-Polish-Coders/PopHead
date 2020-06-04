@@ -42,12 +42,6 @@ struct PushingArea
 	Vec2 pushForce;
 };
 
-struct Entrance
-{
-	std::string entranceDestination;
-	Vec2 playerSpawnPosition;
-};
-
 struct Lever
 {
 	u32 id = 0;

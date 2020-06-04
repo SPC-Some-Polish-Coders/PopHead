@@ -6,14 +6,13 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void PressurePlates::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
-
-	using namespace component;
+	if(sPause) return;
 
 	mRegistry.view<PressurePlate, PuzzleColor, PuzzleGridPos, BodyRect, TextureRect>().each([&]
 	(auto& plate, auto plateColor, auto pressurePlatePuzzleGridPos, auto plateBody, auto& textureRect)

@@ -5,30 +5,24 @@
 
 namespace ph::system {
 
-	void VelocityChangingAreas::update(float dt)
+using namespace component;
+
+void VelocityChangingAreas::update(float dt)
+{
+	PH_PROFILE_FUNCTION();
+
+	if(sPause) return;
+
+	mRegistry.view<BodyRect, AreaVelocityChangingEffect>().each([&]
+	(auto areaBody, auto velocityChangingEffect)
 	{
-		PH_PROFILE_FUNCTION();
-
-		if(sPause)
-			return;
-
-		auto velocityChaningAreasView = mRegistry.view<component::BodyRect, component::AreaVelocityChangingEffect>();
-		auto kinematicObjectsView = mRegistry.view<component::KinematicCollisionBody, component::BodyRect, component::Kinematics>();
-
-		for(auto velocityChangingArea : velocityChaningAreasView)
+		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle, Kinematics>().each([&]
+		(auto, auto objectBody, auto objectCircle, auto& objectKinematics)
 		{
-			const auto& [areaBody, velocityChangeEffect] = velocityChaningAreasView.get<component::BodyRect, component::AreaVelocityChangingEffect>(velocityChangingArea);
-			
-			for(auto kinematicObject : kinematicObjectsView)
-			{
-				auto& objectKinematics = kinematicObjectsView.get<component::Kinematics>(kinematicObject);
-				const auto& objectBody = kinematicObjectsView.get<component::BodyRect>(kinematicObject);
+			if(intersect(areaBody, objectBody, objectCircle))
+				objectKinematics.vel *= velocityChangingEffect.areaSpeedMultiplier;
+		});
+	});
+}
 
-				if(areaBody.contains(objectBody.center()))
-				{
-					objectKinematics.vel *= velocityChangeEffect.areaSpeedMultiplier;
-				}
-			}
-		}
-	}
 }

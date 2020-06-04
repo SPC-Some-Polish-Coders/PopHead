@@ -7,13 +7,13 @@
 
 namespace ph::system {
 
+using namespace component;
+
 void PuzzleBoulders::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
 	if(sPause) return;
-
-	using namespace component;
 
 	mRegistry.view<PuzzleBoulder, PuzzleGridPos, BodyRect>().each([&]
 	(auto& boulder, auto& boulderGridPos, auto& boulderBody)
