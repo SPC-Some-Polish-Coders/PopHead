@@ -10,6 +10,7 @@
 #include "ECS/Components/debugComponents.hpp"
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
+#include "ECS/entityUtil.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
 #include "Audio/Sound/soundData.hpp"
@@ -149,7 +150,7 @@ static void executeHelp()
 	pushOutputLine({"gts @C9999 go to scene @CO @S31 r @C9999 reset scene @CO @S32 clear @C9999 clear terminal output", infoLimeColor});
 	pushOutputLine({"pause @C9999 pause game @CO @S31 rgui @C9999 reset gui @CO @S32 rguilive @C9999 reset gui all the time", infoLimeColor});
 	pushOutputLine({"rguilivefreq @C9999 set gui reset frequency", infoLimeColor});
-	pushOutputLine({"@CO @S31 nofocusupdate @CO @S32 gm @C9999 god mode", infoLimeColor});
+	pushOutputLine({"nofocusupdate @CO @S31 gm @C9999 god mode @CO @S32 pf @C9999 player flying", infoLimeColor});
 	pushOutputLine({"@C9509 TO LEARN MORE DETAILS ABOUT THE COMMAND USE @CO? @C9509 For example: @COgts ?", infoLimeColor});
 }
 
@@ -489,6 +490,20 @@ static void executeGodMode()
 	system::HostileCollisions::godMode = !commandContains("off");
 }
 
+static void executePlayerFlying()
+{
+	auto& registry = sceneManager->getScene().getRegistry();
+	auto playerEntity = getPlayerEntity();
+	if(playerEntity == entt::null)
+		return;
+
+	using namespace component;
+	if(commandContains("off"))
+		registry.assign_or_replace<KinematicCollisionBody>(playerEntity, 3.f);
+	else if(registry.has<KinematicCollisionBody>(playerEntity))
+		registry.remove<KinematicCollisionBody>(playerEntity);
+}
+
 #ifndef PH_DISTRIBUTION
 
 static void executeResetGuiLive()
@@ -634,6 +649,7 @@ void init(sf::Window* w, SceneManager* sm)
 	commandsMap["nofocusupdate"] = &executeNoFocusUpdate;
 	commandsMap["fz"] = &executeFreezeZombies;
 	commandsMap["gm"] = &executeGodMode;
+	commandsMap["pf"] = &executePlayerFlying;
 	commandsMap[""] = &executeInfoMessage;
 
 #ifndef PH_DISTRIBUTION
