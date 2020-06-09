@@ -45,7 +45,7 @@ void ObstacleGrid::registerObstacle(size_t column, size_t row)
 
 bool ObstacleGrid::isObstacle(i32 column, i32 row) const
 {
-	if (column >= 0 && column < mColumns && row >= 0 && row < mRows)
+	if (column >= 0 && column < Cast<i32>(mColumns) && row >= 0 && row < Cast<i32>(mRows))
 		return mObstacles.at(internalIndex(column, row));
 	else
 		return false;

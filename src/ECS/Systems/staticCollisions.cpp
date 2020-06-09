@@ -416,6 +416,8 @@ namespace ph::system {
 					return { 0.f, -intersection.h };
 			}
 		}
+
+		return {};
 	}
 
 	void StaticCollisions::resetKinematicBody(component::KinematicCollisionBody& kinematicBody)
