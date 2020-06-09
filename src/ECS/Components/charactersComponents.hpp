@@ -19,6 +19,8 @@ struct Player {};
 
 struct Killable {};
 
+struct CurrentlyDashing {};
+
 struct InPlayerGunAttackArea {};
 
 struct FaceDirection : public Vec2 

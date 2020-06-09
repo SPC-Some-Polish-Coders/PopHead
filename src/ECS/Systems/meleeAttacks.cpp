@@ -48,9 +48,9 @@ void MeleeAttacks::update(float dt)
 
 	if(sPause) return;
 
-	auto playerEntity = getPlayerEntity();
-	if (playerEntity == entt::null) return;
+	if(!isPlayerAlive()) return;
 
+	auto playerEntity = getPlayerEntity();
 	Vec2 playerFaceDir = getPlayerFaceDirection();
 	Vec2 playerPos = getPlayerCenterPos(); 
 

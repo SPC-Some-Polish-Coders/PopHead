@@ -20,6 +20,13 @@ bool isPlayerOnScene()
 	return false;
 }
 
+bool isPlayerAlive()
+{
+	for(auto entity : registry->view<Player>())
+		return !registry->has<DeadCharacter>(entity);
+	return false;
+}
+
 entt::entity getPlayerEntity()
 {
 	for(auto entity : registry->view<Player>())

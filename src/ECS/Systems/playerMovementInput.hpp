@@ -10,25 +10,27 @@ class Scene;
 
 namespace system {
 
-	class PlayerMovementInput : public System
-	{
-	public:
-		PlayerMovementInput(entt::registry&, AIManager&, Scene*);
+class PlayerMovementInput : public System
+{
+public:
+	PlayerMovementInput(entt::registry&, AIManager&, Scene*);
 
-		void onEvent(sf::Event) override;
-		void update(float dt) override;
+	void onEvent(sf::Event) override;
+	void update(float dt) override;
 
-	private:
-		AIManager& mAIManager;
-		Scene* mScene;
+private:
+	AIManager& mAIManager;
+	Scene* mScene;
 
-		float mTimeToHaveNextDash = 0.f; 
-		u32 mDashes = 2;
-		bool mDashJustPressed = false;
+	Vec2 mDashDirection;
+	float mTimeToHaveNextDash = 0.f; 
+	float mTimeFromStartingDash = 0.f;
+	bool mDashButtonJustPressed = false;
 
-	public:
-		inline static bool dashInputDisabled = false;
-	};
+public:
+	inline static bool dashInputDisabled = false;
+};
+
 }
 
 }

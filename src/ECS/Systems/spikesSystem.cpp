@@ -39,7 +39,7 @@ void SpikesSystem::update(float dt)
 		// spikes hurt player
 		if(spikes.active)
 		{
-			mRegistry.view<Player, BodyRect, BodyCircle>().each([&]
+			mRegistry.view<Player, BodyRect, BodyCircle>(entt::exclude<CurrentlyDashing>).each([&]
 			(auto playerEntity, auto, auto playerBody, auto playerCircle)
 			{
 				if(Math::intersect(spikesBody, playerBody.pos + playerCircle.offset, playerCircle.radius))
