@@ -191,8 +191,8 @@ void DebugVisualization::update(float dt)
 			}
 			else if(denial.type == DenialArea::All && collisionAndLightWallDenialAreas)
 			{
-				// render collision and light wall denial areas as black rectangle 
-				Renderer::submitQuad(Null, Null, &sf::Color(0, 0, 0, 140), Null,
+				// render collision and light wall denial areas as dark red rectangle 
+				Renderer::submitQuad(Null, Null, &sf::Color(50, 20, 20, 140), Null,
 					body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});

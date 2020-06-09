@@ -514,13 +514,13 @@
  </tile>
  <tile id="673">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="13" width="16" height="3"/>
+   <object id="1" type="Collision" x="0" y="13" width="16" height="12.1818"/>
    <object id="2" type="LightWall" x="0" y="11.0455" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
  <tile id="674">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="13" width="16" height="3"/>
+   <object id="1" type="Collision" x="0" y="13" width="16" height="13.4545"/>
    <object id="3" type="LightWall" x="0" y="10.6818" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
@@ -531,26 +531,26 @@
  </tile>
  <tile id="704">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9.39773" y="6.72727" width="6.47727" height="9.27273"/>
+   <object id="1" type="Collision" x="9.39773" y="6.72727" width="15.6591" height="11.4545"/>
    <object id="2" type="LightWall" x="12.6818" y="0.136359" width="1.54545" height="15.9091"/>
-   <object id="3" type="Collision" x="10.5" y="-0.636363" width="9" height="9">
+   <object id="3" type="Collision" x="10.5" y="-0.636363" width="13.8182" height="13.7273">
     <ellipse/>
    </object>
   </objectgroup>
  </tile>
  <tile id="707">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="7" width="6.75" height="9"/>
+   <object id="1" type="Collision" x="-6.18182" y="7" width="12.9318" height="9"/>
    <object id="2" type="LightWall" x="0.227273" y="0.136359" width="2.27273" height="15.9091"/>
-   <object id="3" type="Collision" x="-2.5" y="-1.31818" width="9" height="9">
+   <object id="3" type="Collision" x="-7.13636" y="0.0454564" width="13.7273" height="14.2727">
     <ellipse/>
    </object>
   </objectgroup>
  </tile>
  <tile id="708">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9.09091" y="0" width="6.90909" height="16"/>
-   <object id="2" type="Collision" x="-4.54545e-07" y="12.3636" width="8.90909" height="3.81818"/>
+   <object id="1" type="Collision" x="9.09091" y="0" width="10.7273" height="21.8182"/>
+   <object id="2" type="Collision" x="-4.54545e-07" y="12.3636" width="8.90909" height="9.54545"/>
    <object id="3" type="LightWall" x="-0.0908905" y="11.8182" width="11.6363" height="1.27273"/>
    <object id="4" type="LightWall" x="12.7273" y="-0.272737" width="1.27273" height="8.8182"/>
    <object id="5" type="LightWall" x="9.27276" y="8.27273" width="4.09085" height="3.54546"/>
@@ -570,20 +570,20 @@
  </tile>
  <tile id="736">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="8.625" y="0.125" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="8.625" y="0.125" width="15.5682" height="15.8182"/>
    <object id="2" type="LightWall" x="13.3182" y="0.136359" width="1.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="739">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="0" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="-6.54545" y="0" width="13.2955" height="16"/>
    <object id="2" type="LightWall" x="0.0909091" y="0" width="2.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="740">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.0909091" y="-0.0909091" width="7.18182" height="16"/>
-   <object id="2" type="Collision" x="7.18182" y="12.8182" width="8.72727" height="3"/>
+   <object id="1" type="Collision" x="-5.18182" y="-0.0909091" width="12.2727" height="21.9091"/>
+   <object id="2" type="Collision" x="7.18182" y="12.8182" width="8.72727" height="9.18182"/>
    <object id="3" type="LightWall" x="1.81818" y="-0.181827" width="1.27273" height="13.4546"/>
    <object id="4" type="LightWall" x="1.8182" y="12" width="14" height="1.27273"/>
   </objectgroup>
@@ -596,7 +596,7 @@
  </tile>
  <tile id="768">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9" y="-0.125" width="6.75" height="5.18182"/>
+   <object id="1" type="Collision" x="9" y="0.0568182" width="14.6591" height="5"/>
    <object id="2" type="LightWall" x="13.1363" y="0.0454499" width="2.63636" height="2.54546"/>
    <object id="3" type="Collision" x="9.13637" y="2.63636" width="6.63636" height="6.90909">
     <ellipse/>
@@ -605,19 +605,19 @@
  </tile>
  <tile id="769">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-1.36364" y="0" width="17.3636" height="10"/>
+   <object id="1" type="Collision" x="-1.36364" y="-11.7273" width="17.5454" height="21.7273"/>
    <object id="2" type="LightWall" x="0" y="0.499995" width="16" height="1.36365"/>
   </objectgroup>
  </tile>
  <tile id="770">
   <objectgroup draworder="index" id="2">
    <object id="2" type="LightWall" x="0" y="0.499995" width="16" height="1.27274"/>
-   <object id="3" type="Collision" x="0" y="0.0909105" width="17.2727" height="10"/>
+   <object id="3" type="Collision" x="0" y="-9.63636" width="17.2727" height="19.7273"/>
   </objectgroup>
  </tile>
  <tile id="771">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="0" width="6.75" height="6"/>
+   <object id="1" type="Collision" x="-4.90909" y="-8.27273" width="11.6591" height="14.2727"/>
    <object id="2" type="LightWall" x="0.409091" y="0.136359" width="3" height="3.9091"/>
    <object id="3" type="Coll" x="8.90909" y="5.63636" width="0.0909091">
     <ellipse/>
@@ -629,8 +629,8 @@
  </tile>
  <tile id="772">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="0" width="6.75" height="16"/>
-   <object id="2" type="Collision" x="6.90909" y="0" width="9.09091" height="10"/>
+   <object id="1" type="Collision" x="-5" y="-5.54545" width="11.75" height="21.5455"/>
+   <object id="2" type="Collision" x="6.90909" y="-5.54545" width="9.09091" height="15.5455"/>
    <object id="3" type="LightWall" x="1.68182" y="1.22727" width="1.27273" height="14.8182"/>
    <object id="4" type="LightWall" x="1.5" y="1.13636" width="14.3636" height="1.27273"/>
   </objectgroup>
@@ -652,13 +652,13 @@
  </tile>
  <tile id="835">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.272727" y="13.0227" width="16" height="6.81818"/>
+   <object id="1" type="Collision" x="-0.272727" y="13.0227" width="16" height="10.0909"/>
    <object id="2" type="LightWall" x="-0.272727" y="14.7955" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
  <tile id="836">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.272727" y="12.8409" width="16" height="8"/>
+   <object id="1" type="Collision" x="-0.272727" y="12.8409" width="16" height="11.4545"/>
    <object id="2" type="LightWall" x="-0.272727" y="14.8864" width="16" height="2.18183"/>
   </objectgroup>
  </tile>
@@ -670,20 +670,20 @@
  </tile>
  <tile id="866">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9.0625" y="-0.0227295" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="9.0625" y="-0.0227295" width="12.0227" height="16"/>
    <object id="2" type="LightWall" x="12.6193" y="0.113629" width="1.54545" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="869">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0.261364" y="-0.0227295" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="-3.46591" y="-0.0227295" width="10.4773" height="16"/>
    <object id="2" type="LightWall" x="0.488637" y="0.113629" width="2.27273" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="870">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="8.86363" y="-0.0454506" width="7.09091" height="16"/>
-   <object id="2" type="Collision" x="-0.0454643" y="9.95455" width="8.90909" height="6.18182"/>
+   <object id="1" type="Collision" x="8.86363" y="-0.0454506" width="8.45455" height="18.5455"/>
+   <object id="2" type="Collision" x="-0.0454643" y="9.95455" width="8.90909" height="8.27273"/>
    <object id="3" type="LightWall" x="-0.136354" y="11.7727" width="11.6363" height="1.27273"/>
    <object id="4" type="LightWall" x="12.6818" y="-0.318188" width="1.27273" height="8.8182"/>
    <object id="5" type="LightWall" x="9.2273" y="8.22728" width="4.09085" height="3.54546"/>
@@ -698,52 +698,52 @@
  </tile>
  <tile id="898">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9.25" y="0.125" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="9.25" y="0.125" width="11.2955" height="16"/>
    <object id="2" type="LightWall" x="13.9432" y="0.136359" width="1.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="901">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.0113636" y="0" width="6.75" height="16"/>
+   <object id="1" type="Collision" x="-3.73864" y="0" width="10.4773" height="16"/>
    <object id="2" type="LightWall" x="0.0795455" y="0" width="2.36364" height="15.9091"/>
   </objectgroup>
  </tile>
  <tile id="902">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.181818" y="0.227277" width="7.18182" height="16"/>
-   <object id="2" type="Collision" x="7.09091" y="13.1364" width="8.72727" height="3"/>
+   <object id="1" type="Collision" x="-2.90909" y="0.227277" width="9.90909" height="17.5455"/>
+   <object id="2" type="Collision" x="7.09091" y="13.1364" width="8.72727" height="4.72727"/>
    <object id="3" type="LightWall" x="1.72727" y="0.136359" width="1.27273" height="13.4546"/>
    <object id="4" type="LightWall" x="1.72729" y="12.3182" width="14" height="1.27273"/>
   </objectgroup>
  </tile>
  <tile id="930">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="9.17617" y="0.125" width="6.75" height="10"/>
+   <object id="1" type="Collision" x="9.17617" y="0.125" width="9.38636" height="10"/>
    <object id="2" type="LightWall" x="13.3125" y="0.29545" width="2.63636" height="2.54546"/>
   </objectgroup>
  </tile>
  <tile id="931">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="-0.181818" y="-0.454545" width="16" height="10"/>
+   <object id="1" type="Collision" x="-0.181818" y="-5.81818" width="16" height="15.3636"/>
    <object id="2" type="LightWall" x="-0.181818" y="1.04545" width="16" height="1.27274"/>
   </objectgroup>
  </tile>
  <tile id="932">
   <objectgroup draworder="index" id="3">
-   <object id="3" type="Collision" x="-0.206522" y="-0.684783" width="16" height="10"/>
+   <object id="3" type="Collision" x="-0.206522" y="-6.04842" width="16" height="15.3636"/>
    <object id="4" type="LightWall" x="-0.206522" y="0.815212" width="16" height="1.27274"/>
   </objectgroup>
  </tile>
  <tile id="933">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0.0795455" y="0.340907" width="6.75" height="10"/>
+   <object id="1" type="Collision" x="-3.46591" y="-4.65909" width="10.2955" height="13"/>
    <object id="2" type="LightWall" x="0.488636" y="0.477266" width="3" height="3.9091"/>
   </objectgroup>
  </tile>
  <tile id="934">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="4.44089e-16" y="-0.204553" width="6.75" height="16"/>
-   <object id="2" type="Collision" x="6.90909" y="-0.204553" width="9.09091" height="10"/>
+   <object id="1" type="Collision" x="-1.81818" y="-1.93183" width="8.56818" height="17.7273"/>
+   <object id="2" type="Collision" x="6.90909" y="-1.93183" width="9.09091" height="11.7273"/>
    <object id="3" type="LightWall" x="1.68182" y="1.02272" width="1.27273" height="14.8182"/>
    <object id="4" type="LightWall" x="1.5" y="0.931807" width="14.3636" height="1.27273"/>
   </objectgroup>

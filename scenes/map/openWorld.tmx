@@ -25844,7 +25844,7 @@
 0,0,0,0,0,0,0,0,0,0,0,870,
 0,0,0,0,0,0,0,0,0,0,0,902,
 0,0,0,0,0,0,0,0,0,0,0,902,
-0,0,935,933,933,933,933,933,933,933,933,902,
+0,0,935,933,933,933,933,933,933,933,933,934,
 0,0,902,0,0,0,0,0,0,0,0,0,
 0,0,902,0,0,0,0,0,0,0,0,0,
 0,0,902,0,835,837,838,0,0,0,0,0,
@@ -26721,7 +26721,7 @@
     <property name="velY" type="float" value="60"/>
    </properties>
   </object>
-  <object id="281" type="MovingPlatform" x="-511.833" y="6261.83" width="48.3333" height="336.167">
+  <object id="281" type="MovingPlatform" x="-511.833" y="6261.83" width="48.3333" height="293.667">
    <properties>
     <property name="platformOffsetX" type="float" value="0"/>
     <property name="platformOffsetY" type="float" value="20"/>
