@@ -84,21 +84,17 @@ void EntitiesDebugger::update(float dt)
 			if(selectingInWorldModeZPriorityInputDelay > 0.f)
 				selectingInWorldModeZPriorityInputDelay -= dt;
 
-			sf::Vector2f currentCamTopLeft;
-			sf::Vector2f currentCamSize;
+			FloatRect currentCamBounds;
 			mRegistry.view<component::Camera>().each([&]
 			(auto camera)
 			{
 				if(camera.name == component::Camera::currentCameraName)
-				{
-					currentCamTopLeft = camera.center() - camera.getSize() / 2.f;
-					currentCamSize = camera.getSize();
-				}
+					currentCamBounds = camera.bounds;
 			});
 
-			auto mouseWindowPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
-			auto resolutionRatio = Math::hadamardDiv(currentCamSize, static_cast<sf::Vector2f>(mWindow->getSize()));
-			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamTopLeft; 
+			auto mouseWindowPos = Cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
+			auto resolutionRatio = Math::hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
+			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
 
 			struct EntityUnderCursor
 			{

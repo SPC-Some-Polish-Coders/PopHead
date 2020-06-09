@@ -18,6 +18,13 @@ Rect<T>::Rect(const Rect<U>& rectangle) :
 	h(Cast<T>(rectangle.h)) 
 {}
 
+template <typename T>
+void Rect<T>::setCenter(Vec2Base<T> center)
+{
+	x = center.x - w / 2;
+	y = center.y - h / 2;
+}
+
 template<typename T>
 T Rect<T>::right() const
 {

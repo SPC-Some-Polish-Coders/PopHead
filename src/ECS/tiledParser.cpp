@@ -199,7 +199,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& puzzleColor = registry.get<PuzzleColor>(entity);
 		auto& textureRect = registry.get<TextureRect>(entity);
 		auto color = getProperty("color").toString();
-		using component::PuzzleColor;
 		if(color == "red")
 		{
 			puzzleColor = PuzzleColor::Red;
@@ -240,12 +239,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 		createCopy("Player");
 		auto& playerBody = registry.get<BodyRect>(entity);
-		auto& playerCamera = registry.get<component::Camera>(entity);
+		auto& playerCamera = registry.get<Camera>(entity);
 		
 		playerBody.pos = sceneManager.hasPlayerPositionForNextScene() ?
 			sceneManager.getPlayerPositionForNextScene() : getPosAttribute();
 
-		playerCamera = ph::Camera(playerBody.center(), Vec2(640, 360));
+		playerCamera.bounds.size = Vec2(640.f, 360.f);
+		playerCamera.bounds.setCenter(playerBody.center());
 
 		templates.createCopy("Pistol", registry);
 		auto shotgun = templates.createCopy("Shotgun", registry);
@@ -270,11 +270,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		if(getProperty("isValid").toBool()) 
 		{
 			createCopy("Camera");
-			auto& camera = registry.get<component::Camera>(entity);
-			Vec2 pos = getPosAttribute();
-			Vec2 size = getSizeAttribute();
-			Vec2 center(pos + (size / 2.f));
-			camera = ph::Camera(center, size);
+			auto& camera = registry.get<Camera>(entity);
+			camera.bounds = getPosAndSizeAttributes();
 			camera.name = getProperty("name").toString();
 		}
 	}
@@ -450,7 +447,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "IndoorOutdoorBlendArea")
 	{
-		using component::IndoorOutdoorBlendArea;
 		IndoorOutdoorBlendArea area;
 		if(getProperty("exit_left").toBool())       area.exit = IndoorOutdoorBlendArea::Left;
 		else if(getProperty("exit_right").toBool()) area.exit = IndoorOutdoorBlendArea::Right;

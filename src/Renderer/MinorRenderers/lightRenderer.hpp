@@ -54,7 +54,7 @@ public:
 
 	void flush();
 	
-	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+	void setGameWorldCameraBoundsPtr(const FloatRect* cameraBounds) { mGameWorldCameraBounds = cameraBounds; }
 
 	void submitDebug(sf::Color* ambientLightColor);
 	u32 getNrOfLights(); 
@@ -68,7 +68,7 @@ private:
 	std::vector<Light> mLights;
 	std::vector<Light> mNoCollisionLights;
 	std::vector<Vec2> mLightTriangleFanVertexData;
-	const FloatRect* mScreenBounds;
+	const FloatRect* mGameWorldCameraBounds;
 	Shader mLightShader;
 	Shader mNoCollisionLightShader;
 	u32 mLightTriangleFanVao, mLightTriangleFanVbo;

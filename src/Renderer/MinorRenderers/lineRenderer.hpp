@@ -15,6 +15,6 @@ namespace ph::LineRenderer {
 
 	void submitDebug();
 
-	void setScreenBoundsPtr(const FloatRect* screenBounds);
+	void setGameWorldCameraBoundsPtr(const FloatRect*);
 
 }

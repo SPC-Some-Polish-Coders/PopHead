@@ -3,7 +3,6 @@
 #include "Renderer/renderer.hpp"
 #include "quadRenderer.hpp"
 #include "Renderer/API/shader.hpp"
-#include "Renderer/API/camera.hpp"
 #include "Renderer/Shaders/embeddedShaders.hpp"
 #include <stb_truetype.h>
 
@@ -80,11 +79,10 @@ void drawText(const char* text, const char* fontFilename, Vec2 pos, float size, 
 }
 
 void drawTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
-                     const Camera& worldCam, float size, sf::Color textColor, u8 z)
+                     FloatRect worldCamBounds, float size, sf::Color textColor, u8 z)
 {
-	auto cameraTopLeft = worldCam.center() - worldCam.getSize() / 2.f; 
-	auto pos = (1920 / worldCam.getSize().x) * (worldPos - cameraTopLeft);
-	size *= 1920 / worldCam.getSize().x;
+	auto pos = (1920.f / worldCamBounds.w) * (worldPos - worldCamBounds.pos);
+	size *= 1920.f / worldCamBounds.w;
 	drawTextInternal(text, fontFilename, pos, size, textColor, z, ProjectionType::gui, false);
 }
 

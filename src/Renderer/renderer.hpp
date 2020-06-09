@@ -10,7 +10,6 @@
 
 namespace ph {
 
-class Camera;
 class Texture;
 class Shader;
 
@@ -20,7 +19,7 @@ namespace Renderer
 	void restart(u32 screenWidth, u32 screenHeight);
 	void shutDown();
 	
-	void setGameWorldCamera(Camera& camera);
+	void setGameWorldCamera(FloatRect bounds);
 
 	void beginScene();
 	void endScene();
@@ -30,7 +29,7 @@ namespace Renderer
 
 	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, Vec2 position,
 	                Vec2 size, u8 z, float rotation, Vec2 rotationOrigin, ProjectionType = ProjectionType::gameWorld,
-					bool isAffectedByLight = true);
+	                bool isAffectedByLight = true);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*,
 	                                          u8 z, ProjectionType = ProjectionType::gameWorld);

@@ -21,7 +21,7 @@ public:
 	void init();
 	void shutDown();
 
-	void setScreenBoundsPtr(const FloatRect* screenBounds) { mScreenBounds = screenBounds; }
+	void setGameWorldCameraBoundsPtr(const FloatRect* cameraBounds) { mGameWorldCameraBounds = cameraBounds; }
 
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 	void resetDebugNumbers();
@@ -37,7 +37,7 @@ private:
 
 private:
 	std::vector<PointVertexData> mSubmitedPointsVertexData;
-	const FloatRect* mScreenBounds;
+	const FloatRect* mGameWorldCameraBounds;
 	Shader mPointsShader;
 	u32 mVAO;
 	u32 mVBO;

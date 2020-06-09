@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "debugCamera.hpp"
+#include "debugCameraSystem.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
@@ -12,7 +12,7 @@ namespace ph::system {
 
 using namespace component;
 
-void DebugCamera::update(float dt)
+void DebugCameraSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -20,9 +20,9 @@ void DebugCamera::update(float dt)
 	{
 		if(ImGui::Checkbox("debug camera", &mDebugCameraEnabled))
 		{
-			component::Camera::currentCameraName = "default";
+			Camera::currentCameraName = "default";
 
-			auto debugCameras = mRegistry.view<component::DebugCamera, component::Camera, BodyRect>();
+			auto debugCameras = mRegistry.view<DebugCamera, Camera, BodyRect>();
 			mRegistry.destroy(debugCameras.begin(), debugCameras.end());
 
 			if(mDebugCameraEnabled)
@@ -30,10 +30,10 @@ void DebugCamera::update(float dt)
 				// create debug camera
 				auto playerPos = getPlayerCenterPos();
 				auto entity = mRegistry.create();
-				mRegistry.assign<component::Camera>(entity, ph::Camera(playerPos, {640, 360}), "debug");
-				mRegistry.assign<component::DebugCamera>(entity);
+				mRegistry.assign<Camera>(entity, Camera{"debug", FloatRect(playerPos - Vec2(320.f, 180.f), Vec2(640.f, 360.f))});
+				mRegistry.assign<DebugCamera>(entity);
 				mRegistry.assign<BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
-				component::Camera::currentCameraName = "debug";
+				Camera::currentCameraName = "debug";
 			}
 
 			sPause = mDebugCameraEnabled;
@@ -44,31 +44,29 @@ void DebugCamera::update(float dt)
 			ImGui::Separator();
 			ImGui::Text("AWSD - Move camera");
 
-			mRegistry.view<component::DebugCamera, component::Camera, BodyRect>().each([this, dt]
-			(auto, auto& camera, auto& body)
+			mRegistry.view<DebugCamera, Camera>().each([this, dt]
+			(auto, auto& camera)
 			{
 				if(ImGui::SliderFloat("zoom", &mZoom, 0.01f, 20.f))
-				{
-					camera.setSize(Vec2(640.f, 360.f) * mZoom);
-				}
+					camera.bounds.size = Vec2(640.f, 360.f) * mZoom;
 
 				ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
 
 				if(ImGui::Button("normal zoom"))
 				{
 					mZoom = 1.f;
-					camera.setSize(Vec2(640.f, 360.f));
+					camera.bounds.size = Vec2(640.f, 360.f);
 				}
 			});
 		}
 
-		mRegistry.view<component::Camera>().each([&]
+		mRegistry.view<Camera>().each([&]
 		(auto camera)
 		{
-			if(camera.name == component::Camera::currentCameraName)
+			if(camera.name == Camera::currentCameraName)
 			{
-				auto center = camera.center();
-				auto size = camera.getSize();
+				auto center = camera.bounds.center();
+				auto size = camera.bounds.size;
 				ImGui::Text("camera center: %f %f", center.x, center.y); 
 				ImGui::Text("camera size: %f %f", size.x, size.y);
 			}
@@ -78,7 +76,7 @@ void DebugCamera::update(float dt)
 	}
 
 	// move camera
-	mRegistry.view<component::DebugCamera, component::Camera, BodyRect>().each([this, dt]
+	mRegistry.view<DebugCamera, Camera, BodyRect>().each([this, dt]
 	(auto, auto& camera, auto& body)
 	{
 		Vec2 movement;
@@ -93,7 +91,7 @@ void DebugCamera::update(float dt)
 		movement *= dt;
 		movement *= mMovementSpeed;
 		body.pos += movement;
-		camera.setCenter(body.center());
+		camera.bounds.setCenter(body.pos);
 	});
 }
 

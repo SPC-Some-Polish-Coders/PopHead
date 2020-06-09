@@ -4,14 +4,11 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "Renderer/renderer.hpp"
-#include "Renderer/API/camera.hpp"
 #include "Utilities/random.hpp"
 
-namespace {
-	ph::Camera defaultCamera = ph::Camera({320, 180}, {640, 360});
-}
-
 namespace ph::system {
+
+static FloatRect defaultCameraBounds = {0.f, 0.f, 640.f, 360.f};
 
 RenderSystem::RenderSystem(entt::registry& registry, Texture& tileset)
 	:System(registry)
@@ -26,7 +23,7 @@ void RenderSystem::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	// shake camera
-	mRegistry.view<CameraShake, component::Camera>().each([&]
+	mRegistry.view<CameraShake, Camera>().each([&]
 	(auto cameraEntity, auto& shake, auto& camera)
 	{
 		if(shake.elapsedTime < shake.duration) 
@@ -34,11 +31,11 @@ void RenderSystem::update(float dt)
 			auto cameraOffset = Random::generateVector({-1.f, -1.f}, {1.f, 1.f});
 			cameraOffset *= shake.magnitude;
 			cameraOffset *= (shake.duration - shake.elapsedTime) / shake.duration;
-			auto newCameraPos = camera.center() + cameraOffset;
+			auto newCameraPos = camera.bounds.pos + cameraOffset;
 			if(shake.smooth)
-				camera.setCenter(Math::lerp(camera.center(), newCameraPos, 2.f));
+				camera.bounds.pos = Math::lerp(camera.bounds.pos, newCameraPos, 2.f);
 			else
-				camera.setCenter(newCameraPos);
+				camera.bounds.pos = newCameraPos;
 			shake.elapsedTime += dt;
 		}
 		else 
@@ -48,16 +45,16 @@ void RenderSystem::update(float dt)
 	});
 
 	// get current camera and update shake
-	ph::Camera* currentCamera = &defaultCamera;
-	mRegistry.view<component::Camera>().each([&currentCamera]
-	(auto& camera) 
+	FloatRect currentCameraBounds;
+	mRegistry.view<Camera>().each([&]
+	(auto& camera)
 	{
-		if(camera.name == component::Camera::currentCameraName)
-			currentCamera = &camera;
+		if(camera.name == Camera::currentCameraName)
+			currentCameraBounds = camera.bounds;
 	});
 
 	// set camera
-	Renderer::setGameWorldCamera(*currentCamera);
+	Renderer::setGameWorldCamera(currentCameraBounds);
 
 	// submit light sources
 	mRegistry.view<LightSource, BodyRect>().each([]
@@ -91,7 +88,7 @@ void RenderSystem::update(float dt)
 	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend>().each([&]
 	(auto bounds, auto& chunk, auto indoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), bounds))
+		if(intersect(currentCameraBounds, bounds))
 			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getIndoorBlendColor(indoorBlend));
 	});
 
@@ -99,11 +96,11 @@ void RenderSystem::update(float dt)
 	mRegistry.view<BodyRect, RenderChunk, IndoorBlend>().each([&]
 	(auto bounds, auto& chunk, auto indoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), bounds) && !chunk.quads.empty())
+		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(indoorBlend));
 
 		FloatRect lightWallsBounds = {bounds.x - 400.f, bounds.y - 400.f, bounds.w + 800.f, bounds.h + 800.f};
-		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), lightWallsBounds)) 
+		if(!chunk.lightWalls.empty() && intersect(currentCameraBounds, lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 
@@ -117,7 +114,7 @@ void RenderSystem::update(float dt)
 	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend>().each([&]
 	(auto bounds, auto& chunk, auto outdoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), bounds))
+		if(intersect(currentCameraBounds, bounds))
 			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getOutdoorBlendColor(outdoorBlend));
 	});
 
@@ -125,11 +122,11 @@ void RenderSystem::update(float dt)
 	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend>().each([&]
 	(auto bounds, auto& chunk, auto outdoorBlend)
 	{
-		if(intersect(currentCamera->getBounds(), bounds) && !chunk.quads.empty())
+		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(outdoorBlend));
 
 		FloatRect lightWallsBounds = {bounds.x - 400.f, bounds.y - 400.f, bounds.w + 800.f, bounds.h + 800.f};
-		if(!chunk.lightWalls.empty() && intersect(currentCamera->getBounds(), lightWallsBounds)) 
+		if(!chunk.lightWalls.empty() && intersect(currentCameraBounds, lightWallsBounds)) 
 			Renderer::submitBunchOfLightWalls(chunk.lightWalls);
 	});
 

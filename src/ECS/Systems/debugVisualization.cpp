@@ -275,9 +275,9 @@ void DebugVisualization::update(float dt)
 						{
 							// render puzzle grid pos, x up, y down 
 							char posText[50];
-							sprintf(posText, "%i", (i32)gridPos.x);
+							sprintf(posText, "%i", Cast<i32>(gridPos.x));
 							Renderer::submitTextWorldHD(posText, "LiberationMono-Bold.ttf", worldPos, 6, sf::Color::Black, 45);
-							sprintf(posText, "%i", (i32)gridPos.y);
+							sprintf(posText, "%i", Cast<i32>(gridPos.y));
 							worldPos.y += 4.f;
 							Renderer::submitTextWorldHD(posText, "LiberationMono-Bold.ttf", worldPos, 6, sf::Color::Black, 45);
 						}
@@ -305,7 +305,7 @@ void DebugVisualization::update(float dt)
 		(auto camera)
 		{
 			if(camera.name == component::Camera::currentCameraName)
-				cameraBounds = camera.getBounds();
+				cameraBounds = camera.bounds;
 		});
 
 		for(float x = cameraBounds.x - fmod(cameraBounds.x, 16.f); x < cameraBounds.right(); x += 16.f)

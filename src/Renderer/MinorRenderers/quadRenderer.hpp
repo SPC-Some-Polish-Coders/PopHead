@@ -18,7 +18,7 @@ namespace ph::QuadRenderer {
 void init();
 void shutDown();
 
-void setScreenBoundsPtr(const FloatRect* bounds);
+void setGameWorldCameraBoundsPtr(const FloatRect* bounds);
 void setDebugCountingActive(bool active);
 
 void setChunksTexture(u32 texture);

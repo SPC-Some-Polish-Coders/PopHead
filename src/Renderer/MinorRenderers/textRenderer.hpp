@@ -23,6 +23,6 @@ void drawTextArea(const char* text, const char* fontFilename, Vec2 position, flo
 				  TextAligment, float fontSize, sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight);
 
 void drawTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
-                     const Camera& worldCam, float fontSize, sf::Color textColor, u8 z);
+                     FloatRect worldCamBounds, float fontSize, sf::Color textColor, u8 z);
 }
 

@@ -6,12 +6,12 @@
 #include "MinorRenderers/lightRenderer.hpp"
 #include "MinorRenderers/TextRenderer.hpp"
 #include "API/shader.hpp"
-#include "API/camera.hpp"
 #include "API/font.hpp"
 #include "API/openglErrors.hpp"
 #include "API/framebuffer.hpp"
 #include "Shaders/embeddedShaders.hpp"
 #include "Utilities/vector4.hpp"
+#include "Utilities/mat4.hpp"
 #include "Utilities/cast.hpp"
 
 extern bool debugWindowOpen;
@@ -19,7 +19,8 @@ extern bool debugWindowOpen;
 namespace ph::Renderer {
 
 namespace {
-	FloatRect screenBounds;
+	FloatRect gameWorldCameraBounds;
+	mat4 gameWorldVPM;
 
 	Shader defaultFramebufferShader;
 	Shader gaussianBlurFramebufferShader;
@@ -39,8 +40,6 @@ namespace {
 	PointRenderer pointRenderer;
 	LightRenderer lightRenderer;
 
-	Camera gameWorldCamera; 
-
 	bool isDebugDisplayActive = false;
 }
 
@@ -58,14 +57,13 @@ void init(u32 screenWidth, u32 screenHeight)
 {
 	// initialize glew
 	glewExperimental = GL_TRUE;
-	if(glewInit() != GLEW_OK)
-		PH_EXIT_GAME("GLEW wasn't initialized correctly!");
+	PH_ASSERT_CRITICAL(glewInit() == GLEW_OK, "GLEW wasn't initialized correctly!");
 
 	// initialize minor renderers
-	QuadRenderer::setScreenBoundsPtr(&screenBounds);
-	pointRenderer.setScreenBoundsPtr(&screenBounds);
-	LineRenderer::setScreenBoundsPtr(&screenBounds);
-	lightRenderer.setScreenBoundsPtr(&screenBounds);
+	QuadRenderer::setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
+	pointRenderer.setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
+	LineRenderer::setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
+	lightRenderer.setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
 	QuadRenderer::init();
 	LineRenderer::init();
 	pointRenderer.init();
@@ -79,14 +77,12 @@ void init(u32 screenWidth, u32 screenHeight)
 	// set up uniform buffer object
 	glGenBuffers(1, &sharedDataUBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO);
-	glBufferData(GL_UNIFORM_BUFFER, 32 * sizeof(float), Null, GL_STATIC_DRAW);
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 32 * sizeof(float));
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(mat4), Null, GL_STATIC_DRAW);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, sharedDataUBO, 0, 2 * sizeof(mat4));
 
 	// initialize gui view projection matrix
-	Camera guiCamera({960, 540}, {1920, 1080});
-	const float* guiViewProjectionMatrix = guiCamera.getViewProjectionMatrix4x4().getMatrix();
-	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
-	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 16 * sizeof(float), 16 * sizeof(float), guiViewProjectionMatrix) );
+	mat4 guiVPM = makeOrthographic(FloatRect(0.f, 0.f, 1920.f, 1080.f));
+	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4), sizeof(mat4), guiVPM.e) );
 
 	// init shaders
 	circleShader.init(shader::circleSrc());
@@ -111,7 +107,7 @@ void init(u32 screenWidth, u32 screenHeight)
 	glBindBuffer(GL_ARRAY_BUFFER, screenVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(framebufferQuad), framebufferQuad, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0); 
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), Null); 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))); 
 
@@ -143,9 +139,10 @@ void shutDown()
 	glDeleteVertexArrays(1, &screenVAO);
 }
 
-void setGameWorldCamera(Camera& camera)
+void setGameWorldCamera(FloatRect bounds)
 {
-	gameWorldCamera = camera;	
+	gameWorldCameraBounds = bounds;
+	gameWorldVPM = makeOrthographic(bounds);
 }
 
 void beginScene()
@@ -156,13 +153,8 @@ void beginScene()
 	setClearColor(sf::Color::Black);
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
 
-	const float* viewProjectionMatrix = gameWorldCamera.getViewProjectionMatrix4x4().getMatrix();
 	GLCheck( glBindBuffer(GL_UNIFORM_BUFFER, sharedDataUBO) );
-	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, 16 * sizeof(float), viewProjectionMatrix) );
-
-	Vec2 center = gameWorldCamera.center();
-	Vec2 size = gameWorldCamera.getSize();
-	screenBounds = FloatRect(center.x - size.x / 2, center.y - size.y / 2, size.x, size.y);
+	GLCheck( glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4), gameWorldVPM.e) );
 }
 
 void endScene()
@@ -312,7 +304,7 @@ void submitText(const char* text, const char* fontFilename, Vec2 position, float
 void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
                        float characterSize, sf::Color textColor, u8 z)
 {
-	TextRenderer::drawTextWorldHD(text, fontFilename, worldPos, gameWorldCamera, characterSize, textColor, z);
+	TextRenderer::drawTextWorldHD(text, fontFilename, worldPos, gameWorldCameraBounds, characterSize, textColor, z);
 }
 
 void submitTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,

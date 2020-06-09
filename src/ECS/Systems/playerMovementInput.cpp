@@ -138,9 +138,7 @@ namespace ph::system {
 		}
 
 		if((d.x != 0.f) && (d.y != 0.f))
-		{
 			d *= 0.707106781187f;
-		}
 
 		mRegistry.view<Player, AnimationData, FaceDirection>().each([=]
 		(auto, auto& animationData, auto& faceDir)

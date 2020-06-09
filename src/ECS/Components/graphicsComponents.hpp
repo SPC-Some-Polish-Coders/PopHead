@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics/Color.hpp>
-#include "Renderer/API/camera.hpp"
 #include "Renderer/MinorRenderers/quadData.hpp"
 #include "Utilities/rect.hpp"
 #include <vector>
@@ -95,12 +94,12 @@ struct CameraRoom
 	bool playerWasInCenter;
 };
 
-struct Camera : public ph::Camera
+struct Camera
 {
 	std::string name;
 	inline static std::string currentCameraName;
 
-	using ph::Camera::operator=;
+	FloatRect bounds;
 };
 
 struct CameraShake // @no-debugger

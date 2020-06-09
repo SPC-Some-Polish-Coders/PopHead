@@ -4,7 +4,6 @@
 #include "Utilities/rect.hpp"
 
 namespace ph {
-	class Camera;
 	class Texture;
 }
 

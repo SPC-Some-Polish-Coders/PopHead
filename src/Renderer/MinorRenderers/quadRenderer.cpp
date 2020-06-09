@@ -105,7 +105,7 @@ DebugNumbers getDebugNumbers()
 	return debugNumbers;
 }
 
-void setScreenBoundsPtr(const FloatRect* bounds)
+void setGameWorldCameraBoundsPtr(const FloatRect* bounds)
 {
 	screenBounds = bounds;		
 }

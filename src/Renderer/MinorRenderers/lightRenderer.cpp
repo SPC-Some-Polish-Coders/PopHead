@@ -70,7 +70,7 @@ void LightRenderer::submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 
 void LightRenderer::submitLightWall(FloatRect wall)
 {
-	if(intersect(*mScreenBounds, FloatRect(wall.x - 200.f, wall.y - 200.f, wall.w + 400.f, wall.h + 400.f)))
+	if(intersect(*mGameWorldCameraBounds, FloatRect(wall.x - 200.f, wall.y - 200.f, wall.w + 400.f, wall.h + 400.f)))
 		mLightWalls.emplace_back(wall);
 }
 
@@ -97,10 +97,10 @@ void LightRenderer::flush()
 	lights = Cast<u32>(mLights.size());
 
 	// submit quad which rays will hit if they won't hit anything in the scene
-	submitLightWall(FloatRect(mScreenBounds->x - 100000.f, mScreenBounds->y - 100000.f,
-	                          mScreenBounds->w + 200000.f, mScreenBounds->h + 200000.f));
+	submitLightWall(FloatRect(mGameWorldCameraBounds->x - 100000.f, mGameWorldCameraBounds->y - 100000.f,
+	                          mGameWorldCameraBounds->w + 200000.f, mGameWorldCameraBounds->h + 200000.f));
 
-	FloatRect expandedScreenSize(mScreenBounds->x - 400.f, mScreenBounds->y - 400.f, 800.f, 800.f);
+	FloatRect expandedScreenSize(mGameWorldCameraBounds->x - 400.f, mGameWorldCameraBounds->y - 400.f, 800.f, 800.f);
 
 	for(auto& light : mLights)
 	{
@@ -138,7 +138,7 @@ void LightRenderer::flush()
 		mLightShader.bind();
 		mLightShader.setUniformVec2("lightPos", light.pos);
 		mLightShader.setUniformVec4Color("color", light.color);
-		mLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
+		mLightShader.setUniformFloat("cameraZoom", mGameWorldCameraBounds->h / 480);
 		mLightShader.setUniformFloat("a", light.attenuationAddition);
 		mLightShader.setUniformFloat("b", light.attenuationFactor);
 		mLightShader.setUniformFloat("c", light.attenuationSquareFactor);
@@ -163,7 +163,7 @@ void LightRenderer::flush()
 		PH_PROFILE_SCOPE("draw no collision lights");
 
 		mNoCollisionLightShader.bind();
-		mNoCollisionLightShader.setUniformFloat("cameraZoom", mScreenBounds->h / 480);
+		mNoCollisionLightShader.setUniformFloat("cameraZoom", mGameWorldCameraBounds->h / 480);
 		for(auto& light : mNoCollisionLights)
 		{
 			mNoCollisionLightShader.setUniformVec2("lightPos", light.pos);

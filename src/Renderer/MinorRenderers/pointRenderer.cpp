@@ -46,7 +46,7 @@ void PointRenderer::submitPoint(Vec2 pos, const sf::Color& color, float z, float
 	PointVertexData point;
 	point.color = castToNormalizedColorVec4(color);
 	point.position = pos;
-	point.size = size * (360.f / mScreenBounds->h);
+	point.size = size * (360.f / mGameWorldCameraBounds->h);
 	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
 }
@@ -71,13 +71,13 @@ bool PointRenderer::isInsideScreen(Vec2 pos, float size)
 {
 	if(size == 1.f)
 	{
-		return mScreenBounds->contains(pos);
+		return mGameWorldCameraBounds->contains(pos);
 	}
 	else 
 	{
 		float halfSize = size / 2;
 		FloatRect pointRect(pos.x - halfSize, pos.y - halfSize, size, size);
-		return intersect(*mScreenBounds, pointRect);
+		return intersect(*mGameWorldCameraBounds, pointRect);
 	}
 }
 

@@ -2,7 +2,7 @@
 
 namespace ph::system {
 
-class DebugCamera : public System
+class DebugCameraSystem : public System
 {
 public:
 	using System::System;

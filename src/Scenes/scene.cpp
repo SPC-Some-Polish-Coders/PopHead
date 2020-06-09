@@ -28,7 +28,7 @@
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/gameplayUI.hpp"
 #include "ECS/Systems/debugVisualization.hpp"
-#include "ECS/Systems/debugCamera.hpp"
+#include "ECS/Systems/debugCameraSystem.hpp"
 #include "ECS/Systems/weatherSystem.hpp"
 #include "ECS/Systems/slowZombieSystem.hpp"
 #include "ECS/Systems/entitiesDebugger.hpp"
@@ -98,7 +98,7 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::LifetimeSystem>();
 
 	// not specified yet
-	mSystemsQueue.appendSystem<system::DebugCamera>();
+	mSystemsQueue.appendSystem<system::DebugCameraSystem>();
 	mSystemsQueue.appendSystem<system::WeatherSystem>();
 	mSystemsQueue.appendSystem<system::EntitiesDebugger>(window);
 	mSystemsQueue.appendSystem<system::IndoorOutdoorBlending>();

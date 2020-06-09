@@ -127,7 +127,7 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder},
 		{"PuzzleGridPos",               &EntitiesParser::parsePuzzleGridPos},
 		{"CameraRoom",                  &EntitiesParser::parseCameraRoom},
-		{"MovingPlatform",                  &EntitiesParser::parseMovingPlatform}
+		{"MovingPlatform",              &EntitiesParser::parseMovingPlatform}
 	};
 
 	for (auto& entityComponent : entityComponents)
@@ -143,8 +143,9 @@ void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::e
 	}
 }
 
-//NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates
-//		so it's probably the best option
+//NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates.
+
+using namespace component;
 
 void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity& entity)
 {
@@ -156,7 +157,7 @@ void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity&
 	float y = yNode ? yNode->toFloat() : 0.f;
 	float w = wNode ? wNode->toFloat() : 0.f;
 	float h = hNode ? hNode->toFloat() : 0.f;
-	mUsedRegistry->assign_or_replace<component::BodyRect>(entity, FloatRect(x, y, w, h));
+	mUsedRegistry->assign_or_replace<BodyRect>(entity, FloatRect(x, y, w, h));
 }
 
 void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity)
@@ -164,12 +165,12 @@ void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entit
 	float x = entityComponentNode.getAttribute("x")->toFloat();
 	float y = entityComponentNode.getAttribute("y")->toFloat();
 	float radius = entityComponentNode.getAttribute("radius")->toFloat();
-	mUsedRegistry->assign_or_replace<component::BodyCircle>(entity, Vec2(x, y), radius);
+	mUsedRegistry->assign_or_replace<BodyCircle>(entity, Vec2(x, y), radius);
 }
 
 void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::RenderQuad quad;
+	RenderQuad quad;
 
 	// parse texture
 	if(auto textureFilepathXml = entityComponentNode.getAttribute("textureFilepath")) 
@@ -222,12 +223,12 @@ void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entit
 	quad.z = z ? z->toU8() : 100;
 
 	// assign component
-	mUsedRegistry->assign_or_replace<component::RenderQuad>(entity, quad);
+	mUsedRegistry->assign_or_replace<RenderQuad>(entity, quad);
 }
 
 void EntitiesParser::parseIndoorOutdoor(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::IndoorOutdoorBlend>(entity);
+	mUsedRegistry->assign_or_replace<IndoorOutdoorBlend>(entity);
 }
 
 void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
@@ -237,7 +238,7 @@ void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::enti
 	i32 w = entityComponentNode.getAttribute("w")->toI32();
 	i32 h = entityComponentNode.getAttribute("h")->toI32();
 	IntRect rect(x, y, w, h);
-	mUsedRegistry->assign_or_replace<component::TextureRect>(entity, rect);
+	mUsedRegistry->assign_or_replace<TextureRect>(entity, rect);
 }
 
 void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity& entity)
@@ -257,112 +258,112 @@ void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity
 		rect = FloatRect(-1.f, -1.f, -1.f, -1.f);
 	}
 
-	mUsedRegistry->assign_or_replace<component::LightWall>(entity, rect);
+	mUsedRegistry->assign_or_replace<LightWall>(entity, rect);
 }
 
 void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float directionX = entityComponentNode.getAttribute("pushForceX")->toFloat();
 	float directionY = entityComponentNode.getAttribute("pushForceY")->toFloat();
-	mUsedRegistry->assign_or_replace<component::PushingArea>(entity, Vec2(directionX, directionY));
+	mUsedRegistry->assign_or_replace<PushingArea>(entity, Vec2(directionX, directionY));
 }
 
 void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
 {
 	std::string hintName = entityComponentNode.getAttribute("hintName")->toString();
-	mUsedRegistry->assign_or_replace<component::Hint>(entity, hintName);
+	mUsedRegistry->assign_or_replace<Hint>(entity, hintName);
 }
 
 void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float speed = entityComponentNode.getAttribute("speed")->toFloat();
-	mUsedRegistry->assign_or_replace<component::CharacterSpeed>(entity, speed);
+	mUsedRegistry->assign_or_replace<CharacterSpeed>(entity, speed);
 }
 
 void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float pushForce = entityComponentNode.getAttribute("pushForce")->toFloat();
-	mUsedRegistry->assign_or_replace<component::CollisionWithPlayer>(entity, pushForce, false);
+	mUsedRegistry->assign_or_replace<CollisionWithPlayer>(entity, pushForce, false);
 }
 
 void EntitiesParser::parseKinematics(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float friction = entityComponentNode.getAttribute("friction")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Kinematics>(entity, Vec2(), Vec2(), friction, friction, 0.5f);
+	mUsedRegistry->assign_or_replace<Kinematics>(entity, Vec2(), Vec2(), friction, friction, 0.5f);
 }
 
 void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
 {
 	i32 healthPoints = entityComponentNode.getAttribute("healthPoints")->toU32();
 	i32 maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints")->toU32();
-	mUsedRegistry->assign_or_replace<component::Health>(entity, healthPoints, maxHealthPoints);
+	mUsedRegistry->assign_or_replace<Health>(entity, healthPoints, maxHealthPoints);
 }
 
 void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& entity)
 {
 	i32 damageDealt = entityComponentNode.getAttribute("damageDealt")->toU32();
-	mUsedRegistry->assign_or_replace<component::Damage>(entity, damageDealt);
+	mUsedRegistry->assign_or_replace<Damage>(entity, damageDealt);
 }
 
 void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)
 {
 	i32 addHealthPoints = entityComponentNode.getAttribute("addHealthPoints")->toI32();
-	mUsedRegistry->assign_or_replace<component::Medkit>(entity, addHealthPoints);
+	mUsedRegistry->assign_or_replace<Medkit>(entity, addHealthPoints);
 }
 
 void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::Player>(entity);
+	mUsedRegistry->assign_or_replace<Player>(entity);
 }
 
 void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::Gate>(entity);
+	mUsedRegistry->assign_or_replace<Gate>(entity);
 }
 
 void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::Lever>(entity);
+	mUsedRegistry->assign_or_replace<Lever>(entity);
 }
 
 void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier")->toFloat();
-	mUsedRegistry->assign_or_replace<component::AreaVelocityChangingEffect>(entity, velocityMultiplier);
+	mUsedRegistry->assign_or_replace<AreaVelocityChangingEffect>(entity, velocityMultiplier);
 }
 
 void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
 	float mass = entityComponentNode.getAttribute("mass")->toFloat();
-	mUsedRegistry->assign_or_replace<component::KinematicCollisionBody>(entity, mass);
+	mUsedRegistry->assign_or_replace<KinematicCollisionBody>(entity, mass);
 }
 
 void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::StaticCollisionBody>(entity);
+	mUsedRegistry->assign_or_replace<StaticCollisionBody>(entity);
 }
 
 void EntitiesParser::parseMultiStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::MultiStaticCollisionBody>(entity);
+	mUsedRegistry->assign_or_replace<MultiStaticCollisionBody>(entity);
 }
 
 void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::FaceDirection>(entity, Vec2(0, 0));
+	mUsedRegistry->assign_or_replace<FaceDirection>(entity, Vec2(0, 0));
 }
 
 void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity& entity)
 {
 	const float entityLifetime = entityComponentNode.getAttribute("lifetime")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Lifetime>(entity, entityLifetime);
+	mUsedRegistry->assign_or_replace<Lifetime>(entity, entityLifetime);
 }
 
 void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
 {
 	// TODO: Make them be attributes of ParticleNode and not separate nodes
 
-	component::ParticleEmitter emitter;
+	ParticleEmitter emitter;
 	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
 	bool wasEndColorAssigned = false;
 	bool wasInitialVelocityRandomAssigned = false;
@@ -451,90 +452,90 @@ void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::
 			emitter.isEmitting = attrib.getAttribute("v")->toBool();
 		}
 	}
-	mUsedRegistry->assign_or_replace<component::ParticleEmitter>(entity, emitter);
+	mUsedRegistry->assign_or_replace<ParticleEmitter>(entity, emitter);
 }
 
 void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::MultiParticleEmitter>(entity);
+	mUsedRegistry->assign_or_replace<MultiParticleEmitter>(entity);
 }
 
 void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::Zombie zombie;
+	Zombie zombie;
 	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
 	zombie.timeToMoveToAnotherTile = entityComponentNode.getAttribute("timeToMoveToAnotherTile")->toFloat();
-	mUsedRegistry->assign_or_replace<component::Zombie>(entity, zombie);
+	mUsedRegistry->assign_or_replace<Zombie>(entity, zombie);
 }
 
 void EntitiesParser::parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::SlowZombieBehavior>(entity);
+	mUsedRegistry->assign_or_replace<SlowZombieBehavior>(entity);
 }
 
 void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::RenderChunk>(entity);
+	mUsedRegistry->assign_or_replace<RenderChunk>(entity);
 }
 
 void EntitiesParser::parseGroundRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::GroundRenderChunk>(entity);
+	mUsedRegistry->assign_or_replace<GroundRenderChunk>(entity);
 }
 
 void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
 {
-	//mUsedRegistry->assign_or_replace<component::ArcadeSpawner>(entity);
+	//mUsedRegistry->assign_or_replace<ArcadeSpawner>(entity);
 }
 
 void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::LootSpawner>(entity);
+	mUsedRegistry->assign_or_replace<LootSpawner>(entity);
 }
 
 void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::BulletBox>(entity);
+	mUsedRegistry->assign_or_replace<BulletBox>(entity);
 }
 
 void EntitiesParser::parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PressurePlate>(entity);
+	mUsedRegistry->assign_or_replace<PressurePlate>(entity);
 }
 
 void EntitiesParser::parsePuzzleColor(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PuzzleColor>(entity);
+	mUsedRegistry->assign_or_replace<PuzzleColor>(entity);
 }
 
 void EntitiesParser::parseSpikes(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::Spikes>(entity);
+	mUsedRegistry->assign_or_replace<Spikes>(entity);
 }
 
 void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::GunAttacker gunAttacker;
+	GunAttacker gunAttacker;
 	gunAttacker.isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack")->toBool();
 	gunAttacker.timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding")->toFloat();
 	gunAttacker.timeToHide = 0.f;
-	mUsedRegistry->assign_or_replace<component::GunAttacker>(entity, gunAttacker);
+	mUsedRegistry->assign_or_replace<GunAttacker>(entity, gunAttacker);
 }
 
 void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::MeleeProperties mp;
+	MeleeProperties mp;
 	mp.minHitInterval = entityComponentNode.getAttribute("minHitInterval")->toFloat();
 	mp.rotationSpeed = entityComponentNode.getAttribute("rotationSpeed")->toFloat();
 	mp.rotationRange = entityComponentNode.getAttribute("rotationRange")->toFloat();
 	mp.range = entityComponentNode.getAttribute("range")->toFloat();
 	mp.damage = entityComponentNode.getAttribute("damage")->toU32();
-	mUsedRegistry->assign_or_replace<component::MeleeProperties>(entity, mp);
+	mUsedRegistry->assign_or_replace<MeleeProperties>(entity, mp);
 }
 
 void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::GunProperties gp;
+	GunProperties gp;
 
 	gp.shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath")->toString();
 	gp.range = entityComponentNode.getAttribute("range")->toFloat();
@@ -545,82 +546,84 @@ void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::en
 	
 	const std::string type = entityComponentNode.getAttribute("type")->toString();
 	if(type == "pistol")
-		gp.type = component::GunProperties::Type::Pistol;
+		gp.type = GunProperties::Type::Pistol;
 	else if(type == "shotgun")
-		gp.type = component::GunProperties::Type::Shotgun;
+		gp.type = GunProperties::Type::Shotgun;
 	else
 		PH_UNEXPECTED_SITUATION("Unknown Gun type!");
 	
-	mUsedRegistry->assign_or_replace<component::GunProperties>(entity, gp);
+	mUsedRegistry->assign_or_replace<GunProperties>(entity, gp);
 }
 
 void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::CurrentGun>(entity);
+	mUsedRegistry->assign_or_replace<CurrentGun>(entity);
 }
 
 void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::CurrentMeleeWeapon>(entity);
+	mUsedRegistry->assign_or_replace<CurrentMeleeWeapon>(entity);
 }
 
 void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::Killable>(entity);
+	mUsedRegistry->assign_or_replace<Killable>(entity);
 }
 
 void EntitiesParser::parseBullets(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::Bullets bullets;
+	Bullets bullets;
 	bullets.numOfPistolBullets = entityComponentNode.getAttribute("numOfPistolBullets")->toU32();
 	bullets.numOfShotgunBullets = entityComponentNode.getAttribute("numOfShotgunBullets")->toU32();
-	mUsedRegistry->assign_or_replace<component::Bullets>(entity, bullets);
+	mUsedRegistry->assign_or_replace<Bullets>(entity, bullets);
 }
 
 void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::HiddenForRenderer>(entity);
+	mUsedRegistry->assign_or_replace<HiddenForRenderer>(entity);
 }
 
 void EntitiesParser::parseSavePoint(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::SavePoint>(entity);
+	mUsedRegistry->assign_or_replace<SavePoint>(entity);
 }
 
 void EntitiesParser::parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PuzzleBoulder>(entity);
+	mUsedRegistry->assign_or_replace<PuzzleBoulder>(entity);
 }
 
 void EntitiesParser::parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::PuzzleGridPos>(entity);
+	mUsedRegistry->assign_or_replace<PuzzleGridPos>(entity);
 }
 
 void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::CameraRoom>(entity);
+	mUsedRegistry->assign_or_replace<CameraRoom>(entity);
 }
 
 void EntitiesParser::parseMovingPlatform(const Xml& entityComponentNode, entt::entity& entity)
 {
-	mUsedRegistry->assign_or_replace<component::MovingPlatform>(entity);
+	mUsedRegistry->assign_or_replace<MovingPlatform>(entity);
 }
 
 void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::Camera camera;
-	Vec2 size(entityComponentNode.getAttribute("w")->toFloat(), entityComponentNode.getAttribute("h")->toFloat());
-	Vec2 center(entityComponentNode.getAttribute("x")->toFloat() + (size.x / 2.f), entityComponentNode.getAttribute("y")->toFloat() + (size.y / 2.f));
-	camera = Camera(center, size);
+	Camera camera;
+	float x = entityComponentNode.getAttribute("x")->toFloat();
+	float y = entityComponentNode.getAttribute("y")->toFloat();
+	float w = entityComponentNode.getAttribute("w")->toFloat();
+	float h = entityComponentNode.getAttribute("h")->toFloat();
+	camera.bounds = FloatRect(x, y, w, h);
 	camera.name = entityComponentNode.getAttribute("cameraName")->toString();
-	mUsedRegistry->assign_or_replace<component::Camera>(entity, camera);
-	component::Camera::currentCameraName = "default";
+	mUsedRegistry->assign_or_replace<Camera>(entity, camera);
+	Camera::currentCameraName = "default";
 }
 
 void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::LightSource lightSource;
+	LightSource lightSource;
 	lightSource.offset = { entityComponentNode.getAttribute("offsetX")->toFloat(), entityComponentNode.getAttribute("offsetY")->toFloat() };
 	lightSource.color = entityComponentNode.getAttribute("color")->toColor();
 	auto startAngle = entityComponentNode.getAttribute("startAngle");
@@ -635,12 +638,12 @@ void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::enti
 		lightSource.attenuationSquareFactor = attenuationSquareFactor->toFloat();
 	if(auto rayCollisionDetection = entityComponentNode.getAttribute("rayCollisionDetection"))
 		lightSource.rayCollisionDetection = rayCollisionDetection->toBool();
-	mUsedRegistry->assign_or_replace<component::LightSource>(entity, lightSource);
+	mUsedRegistry->assign_or_replace<LightSource>(entity, lightSource);
 }
 
 void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)
 {
-	component::AnimationData animationData;
+	AnimationData animationData;
 
 	std::string animationStateFilepath = entityComponentNode.getAttribute("animationStatesFile")->toString();
 	loadAnimationStatesFromFile(animationStateFilepath);
@@ -655,7 +658,7 @@ void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::en
 	if(auto isPlaying = entityComponentNode.getAttribute("isPlaying"))
 		animationData.isPlaying = isPlaying->toBool();
 	
-	mUsedRegistry->assign_or_replace<component::AnimationData>(entity, animationData);
+	mUsedRegistry->assign_or_replace<AnimationData>(entity, animationData);
 }
 
 }

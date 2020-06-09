@@ -91,21 +91,17 @@ void EntitiesDebugger::update(float dt)
 			if(selectingInWorldModeZPriorityInputDelay > 0.f)
 				selectingInWorldModeZPriorityInputDelay -= dt;
 
-			sf::Vector2f currentCamTopLeft;
-			sf::Vector2f currentCamSize;
+			FloatRect currentCamBounds;
 			mRegistry.view<component::Camera>().each([&]
 			(auto camera)
 			{
 				if(camera.name == component::Camera::currentCameraName)
-				{
-					currentCamTopLeft = camera.center() - camera.getSize() / 2.f;
-					currentCamSize = camera.getSize();
-				}
+					currentCamBounds = camera.bounds;
 			});
 
-			auto mouseWindowPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
-			auto resolutionRatio = Math::hadamardDiv(currentCamSize, static_cast<sf::Vector2f>(mWindow->getSize()));
-			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamTopLeft; 
+			auto mouseWindowPos = Cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
+			auto resolutionRatio = Math::hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
+			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
 
 			struct EntityUnderCursor
 			{
@@ -483,14 +479,6 @@ ImGui::Text("timeFromPlayerEntrance: %f", c->timeFromPlayerEntrance);
 ImGui::Text("edgeAreaSize: %f", c->edgeAreaSize);
 ImGui::Text("to: from view is not supported!");
 if(c->playerWasInCenter) ImGui::Text("playerWasInCenter: true"); else ImGui::Text("playerWasInCenter: false");
-}
-if(auto* c = mRegistry.try_get<component::Camera>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Camera");
-ImGui::Text("center: %f, %f", c->center().x, c->center().y);
-ImGui::Text("size: %f, %f", c->getSize().x, c->getSize().y);
-ImGui::Text("name: %s", c->name.c_str());
 }
 if(mRegistry.has<component::HiddenForRenderer>(mSelected)) 
 {

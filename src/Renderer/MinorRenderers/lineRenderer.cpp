@@ -119,7 +119,7 @@ void submitDebug()
 	}
 }
 
-void setScreenBoundsPtr(const FloatRect* sb) 
+void setGameWorldCameraBoundsPtr(const FloatRect* sb) 
 { 
 	screenBounds = sb; 
 }
