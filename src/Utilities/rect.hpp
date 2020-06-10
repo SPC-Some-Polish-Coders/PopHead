@@ -19,6 +19,7 @@ struct Rect
     FORCE_INLINE explicit Rect(const Rect<U>& rectangle);
 
 	FORCE_INLINE void setCenter(Vec2Base<T>);
+	FORCE_INLINE void setSizeWithFixedCenter(Vec2Base<T>);
 
 	FORCE_INLINE T right() const;
 	FORCE_INLINE T bottom() const;

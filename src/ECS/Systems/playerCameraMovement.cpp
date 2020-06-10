@@ -48,7 +48,7 @@ void PlayerCameraMovement::update(float dt)
 				if(mInterpolation < 0.f)	
 					mInterpolation = 0.f;
 
-				playerCam.bounds.size = Math::lerp(playerCam.bounds.size, {640.f, 360.f}, dt * 5.f);
+				playerCam.bounds.setSizeWithFixedCenter(Math::lerp(playerCam.bounds.size, {640.f, 360.f}, dt * 5.f));
 				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), playerBody.center(), dt * 5.f));
 			}
 
@@ -97,7 +97,7 @@ void PlayerCameraMovement::update(float dt)
 				if(mInterpolation > 1.f) 
 					mInterpolation = 1.f;
 
-				playerCam.bounds.size = Math::lerp(playerCam.bounds.size, camRoomBody.size, dt * 5.f);
+				playerCam.bounds.setSizeWithFixedCenter(Math::lerp(playerCam.bounds.size, camRoomBody.size, dt * 5.f));
 				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), camRoomBody.center(), dt * 5.f));
 			}
 			else
@@ -128,30 +128,22 @@ void PlayerCameraMovement::update(float dt)
 					{
 						float offset = 0.f;
 
-						auto addOffset = [&offset](float x) 
-						{
-							x = abs(x);
-							if(offset) x /= 2.f;
-							offset += x; 
-						};
-
 						FloatRect leftEdgeArea = {camRoomBody.x, camRoomBody.y, edgeAreaSize.x, camRoomBody.h};
-						if(intersect(playerBody, leftEdgeArea))
-							addOffset((playerBody.x - centerArea.x) / edgeAreaSize.x);
-
 						FloatRect rightEdgeArea = {centerArea.right(), camRoomBody.y, edgeAreaSize.x, camRoomBody.h};
-						if(intersect(playerBody, rightEdgeArea))
-							addOffset((playerBody.right() - centerArea.right()) / edgeAreaSize.x); 
-
 						FloatRect topEdgeArea = {camRoomBody.x, camRoomBody.y, camRoomBody.w, edgeAreaSize.y};
-						if(intersect(playerBody, topEdgeArea))
-							addOffset((playerBody.y - centerArea.y) / edgeAreaSize.y);
-
 						FloatRect bottomEdgeArea = {camRoomBody.x, centerArea.bottom(), camRoomBody.w, edgeAreaSize.y};
-						if(intersect(playerBody, bottomEdgeArea))
-							addOffset((playerBody.bottom() - centerArea.bottom()) / edgeAreaSize.y);
 
-						playerCam.bounds.setCenter(Math::lerp(camRoomBody.center(), playerBody.center(), offset / 2.f));
+						if(intersect(playerBody, leftEdgeArea))
+							offset += abs((playerBody.x - centerArea.x) / edgeAreaSize.x);
+						else if(intersect(playerBody, rightEdgeArea))
+							offset += abs((playerBody.right() - centerArea.right()) / edgeAreaSize.x); 
+
+						if(intersect(playerBody, topEdgeArea))
+							offset += abs((playerBody.y - centerArea.y) / edgeAreaSize.y);
+						else if(intersect(playerBody, bottomEdgeArea))
+							offset += abs((playerBody.bottom() - centerArea.bottom()) / edgeAreaSize.y);
+
+						playerCam.bounds.setCenter(Math::lerp(camRoomBody.center(), playerBody.center(), offset / 2.2f));
 					}
 				}
 			}

@@ -25,6 +25,14 @@ void Rect<T>::setCenter(Vec2Base<T> center)
 	y = center.y - h / 2;
 }
 
+template <typename T>
+void Rect<T>::setSizeWithFixedCenter(Vec2Base<T> size)
+{
+	Vec2 previousCenter = center();
+	this->size = size;
+	setCenter(previousCenter);
+}
+
 template<typename T>
 T Rect<T>::right() const
 {
