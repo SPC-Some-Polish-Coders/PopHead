@@ -49,10 +49,9 @@ void PlayerCameraMovement::update(float dt)
 					mInterpolation = 0.f;
 
 				playerCam.bounds.setSizeWithFixedCenter(Math::lerp(playerCam.bounds.size, {640.f, 360.f}, dt * 5.f));
-				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), playerBody.center(), dt * 5.f));
+				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, dt * 5.f));
 			}
-
-			if(mInterpolation == 0.f)
+			else
 			{
 				// free camera sliding movement
 				Vec2 newCenter = Math::lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, 5.f * dt);

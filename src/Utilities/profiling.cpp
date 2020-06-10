@@ -213,10 +213,7 @@ namespace ImGuiProfiling {
 			timeFromLastDisplay = 0.f;
 		}
 
-		if(!pause)
-		{
-			timeFromLastDisplay += dt;
-		}
+		if(!pause) timeFromLastDisplay += dt;
 	}
 }
 
