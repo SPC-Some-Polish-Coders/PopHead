@@ -55,7 +55,7 @@ namespace Renderer
 	void submitLightWall(FloatRect wall);
 	void submitBunchOfLightWalls(const std::vector<FloatRect>& walls);
 
-	u32 getNrOfLights();
+	u32 getNrOfCollisionLights();
 
 	void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize,
 		            sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight = false);

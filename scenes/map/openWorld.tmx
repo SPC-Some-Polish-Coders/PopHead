@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="321">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="329">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -28028,7 +28028,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="12" name="1-indoor" width="2000" height="2000" visible="0">
+ <layer id="12" name="1-indoor" width="2000" height="2000">
   <data encoding="csv">
    <chunk x="-12" y="132" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -28788,7 +28788,7 @@
 </chunk>
   </data>
  </layer>
- <layer id="13" name="2-indoor" width="2000" height="2000" visible="0">
+ <layer id="13" name="2-indoor" width="2000" height="2000">
   <data encoding="csv">
    <chunk x="-12" y="132" width="12" height="12">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -29292,7 +29292,7 @@
   <object id="260" type="OutdoorArea" x="-496.188" y="4991.75" width="1982.38" height="764.5"/>
   <object id="261" type="OutdoorArea" x="798.81" y="5705.75" width="1276.38" height="878.5"/>
  </objectgroup>
- <objectgroup id="5" name="Entities" visible="0">
+ <objectgroup id="5" name="Entities">
   <object id="3" type="Camera" x="62.303" y="3615.45" width="640" height="360"/>
   <object id="10" name="Shooting Tutorial" type="HintArea" x="-1628.57" y="1813.9" width="810.395" height="252.833">
    <properties>
@@ -29440,7 +29440,7 @@
   </object>
   <object id="147" name="Player" type="Player" x="-315.028" y="5574.15">
    <properties>
-    <property name="hasFlashlight" type="bool" value="true"/>
+    <property name="hasFlashlight" type="bool" value="false"/>
    </properties>
    <point/>
   </object>
@@ -30067,6 +30067,30 @@
    <point/>
   </object>
   <object id="309" type="Torch" x="-762" y="6092">
+   <point/>
+  </object>
+  <object id="321" type="Torch" x="331" y="6102">
+   <point/>
+  </object>
+  <object id="322" type="Torch" x="496.5" y="6101">
+   <point/>
+  </object>
+  <object id="323" type="Torch" x="-10.5" y="6566">
+   <point/>
+  </object>
+  <object id="324" type="Torch" x="-300" y="6407.5">
+   <point/>
+  </object>
+  <object id="325" type="Torch" x="-489.5" y="6587.5">
+   <point/>
+  </object>
+  <object id="326" type="Torch" x="-494.5" y="6229">
+   <point/>
+  </object>
+  <object id="327" type="Torch" x="-313" y="5631.67">
+   <point/>
+  </object>
+  <object id="328" type="Torch" x="-47.6667" y="6063.67">
    <point/>
   </object>
  </objectgroup>

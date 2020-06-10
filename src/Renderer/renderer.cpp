@@ -3,7 +3,7 @@
 #include "MinorRenderers/quadRenderer.hpp"
 #include "MinorRenderers/lineRenderer.hpp"
 #include "MinorRenderers/pointRenderer.hpp"
-#include "MinorRenderers/lightRenderer.hpp"
+#include "MinorRenderers/LightRenderer.hpp"
 #include "MinorRenderers/TextRenderer.hpp"
 #include "API/shader.hpp"
 #include "API/font.hpp"
@@ -38,7 +38,6 @@ namespace {
 	u32 sharedDataUBO;
 
 	PointRenderer pointRenderer;
-	LightRenderer lightRenderer;
 
 	bool isDebugDisplayActive = false;
 }
@@ -63,11 +62,11 @@ void init(u32 screenWidth, u32 screenHeight)
 	QuadRenderer::setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
 	pointRenderer.setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
 	LineRenderer::setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
-	lightRenderer.setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
+	LightRenderer::setGameWorldCameraBoundsPtr(&gameWorldCameraBounds);
 	QuadRenderer::init();
 	LineRenderer::init();
 	pointRenderer.init();
-	lightRenderer.init();
+	LightRenderer::init();
 	TextRenderer::init();
 
 	// set up blending
@@ -127,7 +126,7 @@ void shutDown()
 {
 	QuadRenderer::shutDown();
 	LineRenderer::shutDown();
-	lightRenderer.shutDown();
+	LightRenderer::shutDown();
 	TextRenderer::shutDown();
 	gameObjectsFramebuffer.remove();
 	lightingFramebuffer.remove();
@@ -182,7 +181,7 @@ void endScene()
 	lightingFramebuffer.bind();
 	setClearColor(ambientLightColor);
 	GLCheck( glClear(GL_COLOR_BUFFER_BIT) );
-	lightRenderer.flush();
+	LightRenderer::flush();
 
 	// use framebuffer vao for both lightingBlurFramebuffer and for default framebuffer
 	glBindVertexArray(screenVAO);
@@ -210,7 +209,7 @@ void endScene()
 	if(rendererDebugTabActive)
 	{
 		QuadRenderer::submitDebug();
-		lightRenderer.submitDebug(&ambientLightColor);
+		LightRenderer::submitDebug(&ambientLightColor);
 		pointRenderer.submitDebug();
 		LineRenderer::submitDebug();
 		ImGui::EndTabBar();
@@ -277,22 +276,22 @@ void submitPoint(Vec2 position, sf::Color color, u8 z, float size)
 void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
                  float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection) 
 {
-	lightRenderer.submitLight({color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor}, rayCollisionDetection);
+	LightRenderer::submitLight(color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor, rayCollisionDetection);
 }
 
 void submitLightWall(FloatRect wall)
 {
-	lightRenderer.submitLightWall(wall);
+	LightRenderer::submitLightWall(wall);
 }
 
 void submitBunchOfLightWalls(const std::vector<FloatRect>& walls)
 {
-	lightRenderer.submitBunchOfLightWalls(walls);
+	LightRenderer::submitBunchOfLightWalls(walls);
 }
 
-u32 getNrOfLights()
+u32 getNrOfCollisionLights()
 {
-	return lightRenderer.getNrOfLights();
+	return LightRenderer::getNrOfCollisionLights();
 }
 
 void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize, sf::Color color,

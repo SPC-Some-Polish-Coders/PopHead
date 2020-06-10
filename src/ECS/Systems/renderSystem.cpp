@@ -66,7 +66,7 @@ void RenderSystem::update(float dt)
 	});
 
 	//submit single light walls
-	if(Renderer::getNrOfLights() > 0)
+	if(Renderer::getNrOfCollisionLights() > 0)
 	{
 		mRegistry.view<LightWall, BodyRect>().each([]
 		(const auto& lightWall, auto body) 
