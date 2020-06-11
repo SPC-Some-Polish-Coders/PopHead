@@ -114,7 +114,8 @@ struct Spikes
 struct MovingPlatform
 {
 	FloatRect pathBody;
-	Vec2 velocity;
+	Vec2 fullVelocity;
+	Vec2 currentVelocity;
 	float pathCompletion;
 	bool active;
 };

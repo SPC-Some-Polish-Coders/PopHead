@@ -718,17 +718,17 @@
  </tile>
  <tile id="905">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="9.99999" y="10.7727" width="5.8182" height="5.18182"/>
+   <object id="2" type="Pit" x="13.0625" y="11.0227" width="2.76" height="5"/>
   </objectgroup>
  </tile>
  <tile id="906">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="-9.09091e-06" y="10.5909" width="15.8182" height="5.18182"/>
+   <object id="2" type="Pit" x="0.0624909" y="10.9659" width="15.8182" height="5"/>
   </objectgroup>
  </tile>
  <tile id="907">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="0.0909" y="10.6818" width="5.8182" height="5.18182"/>
+   <object id="2" type="Pit" x="-0.0341" y="10.9943" width="2.76" height="5"/>
   </objectgroup>
  </tile>
  <tile id="930">
@@ -765,7 +765,7 @@
  </tile>
  <tile id="937">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="10.2727" y="0.0909" width="5.8182" height="15.8182"/>
+   <object id="2" type="Pit" x="13.3352" y="0.0909" width="2.7557" height="15.8182"/>
   </objectgroup>
  </tile>
  <tile id="938">
@@ -775,22 +775,22 @@
  </tile>
  <tile id="939">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="0.0909" y="0.227272" width="5.8182" height="15.8182"/>
+   <object id="2" type="Pit" x="0.0909" y="0.227272" width="2.76" height="15.8182"/>
   </objectgroup>
  </tile>
  <tile id="969">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="10.0909" y="0.0454536" width="5.8182" height="5.18182"/>
+   <object id="2" type="Pit" x="13.1534" y="0.0454536" width="2.76" height="5"/>
   </objectgroup>
  </tile>
  <tile id="970">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Pit" x="0.0909091" y="0.0909091" width="15.8182" height="5.18182"/>
+   <object id="1" type="Pit" x="0.0909091" y="0.0909091" width="15.8182" height="5"/>
   </objectgroup>
  </tile>
  <tile id="971">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Pit" x="0.0909" y="0.227272" width="5.8182" height="5.18182"/>
+   <object id="2" type="Pit" x="0.0909" y="0.227272" width="2.76" height="5"/>
   </objectgroup>
  </tile>
 </tileset>

@@ -27,6 +27,13 @@ bool isPlayerAlive()
 	return false;
 }
 
+bool isPlayerFallingIntoPit()
+{
+	for(auto entity : registry->view<Player>())
+		return registry->has<FallingIntoPit>(entity);
+	return false;
+}
+
 entt::entity getPlayerEntity()
 {
 	for(auto entity : registry->view<Player>())

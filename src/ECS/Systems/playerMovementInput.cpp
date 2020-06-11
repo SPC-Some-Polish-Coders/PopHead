@@ -4,6 +4,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/entityUtil.hpp"
 #include "AI/aiManager.hpp"
 #include "Scenes/scene.hpp"
 #include "GUI/gui.hpp"
@@ -63,12 +64,7 @@ void PlayerMovementInput::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause) return;
-
-	// return if player is without control
-	for(auto player : mRegistry.view<Player>())
-		if(mRegistry.has<DeadCharacter>(player))
-			return;
+	if(sPause || !isPlayerAlive() || isPlayerFallingIntoPit()) return;
 
 	// set input variables
 	Vec2 d;

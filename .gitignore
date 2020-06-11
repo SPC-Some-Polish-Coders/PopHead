@@ -22,6 +22,7 @@ doc/latex
 *.workspace
 
 # Generated files
+save
 imgui.ini
 logs/*.txt
 initProfilingResults.json

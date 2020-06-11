@@ -21,36 +21,49 @@ void MovingPlatforms::update(float dt)
 		if(!platform.active) return;
 
 		// move platform
-		platformBody.pos += platform.velocity * dt;
-
-		// platform moves bodies standing on it
-		mRegistry.view<BodyRect, BodyCircle>().each([&]
-		(auto movedEntity, auto& body, auto& circle)
-		{
-			if(intersect(platformBody, body, circle))
-			{
-				body.pos += platform.velocity * dt;
-				mRegistry.assign_or_replace<IsOnPlatform>(movedEntity);
-			}
-			else
-			{
-				mRegistry.reset<IsOnPlatform>(movedEntity);
-			}
-		});
+		Vec2 toCenterOfPathBody = Math::distanceBetweenPoints(platformBody.center(), platform.pathBody.center());
+		Vec2 velFactor = Vec2(1.f) - Math::hadamardDiv(toCenterOfPathBody, platform.pathBody.size);
+		platform.currentVelocity = Math::hadamardMul(platform.fullVelocity, velFactor) * dt;
+		platformBody.pos += platform.currentVelocity; 
 
 		// flip platform velocity when platform is on the edge of path body
-		if((platform.velocity.x > 0.f && platformBody.right() > platform.pathBody.right()) ||
-		   (platform.velocity.x < 0.f && platformBody.x < platform.pathBody.x))
+		if((platform.fullVelocity.x > 0.f && platformBody.right() > platform.pathBody.right()) ||
+		   (platform.fullVelocity.x < 0.f && platformBody.x < platform.pathBody.x))
 		{
-			platform.velocity.x = -platform.velocity.x;
+			platform.fullVelocity.x = -platform.fullVelocity.x;
 		}
 
-		if((platform.velocity.y > 0.f && platformBody.bottom() > platform.pathBody.bottom()) ||
-		   (platform.velocity.y < 0.f && platformBody.y < platform.pathBody.y))
+		if((platform.fullVelocity.y > 0.f && platformBody.bottom() > platform.pathBody.bottom()) ||
+		   (platform.fullVelocity.y < 0.f && platformBody.y < platform.pathBody.y))
 		{
-			platform.velocity.y = -platform.velocity.y;
+			platform.fullVelocity.y = -platform.fullVelocity.y;
 		}
 	}); 
+
+	// platforms move bodies standing on them
+	mRegistry.view<BodyRect, BodyCircle>().each([&]
+	(auto entity, auto& body, auto circle)
+	{
+		circle.radius += sBodyCircleOnPlatformRadiusAddition;
+		bool isOnPlatformBody = false;
+		auto platforms = mRegistry.view<MovingPlatform, BodyRect>();
+		for(auto platformEntity : platforms)
+		{
+			const auto& platform = platforms.get<MovingPlatform>(platformEntity);
+			auto platformBody = platforms.get<BodyRect>(platformEntity); 
+			if(intersect(platformBody, body, circle))
+			{
+				body.pos += platform.currentVelocity;
+				isOnPlatformBody = true;
+				break;
+			}
+		}
+
+		if(isOnPlatformBody)
+			mRegistry.assign_or_replace<IsOnPlatform>(entity);
+		else
+			mRegistry.reset<IsOnPlatform>(entity);
+	});
 }
 
 }

@@ -284,22 +284,30 @@ static void executeTeleport()
 		pushOutputLine({""});
 		pushOutputLine({"@C2919 Example: @C9609tp 100"});
 		pushOutputLine({"@C2919 Example: @C9609tp -100 2000"});
+		pushOutputLine({"@C2919 Example: @C9609tp here"});
 		pushOutputLine({"It takes 1 parameter(a, a) or 2 parameters (x, y)"});
 		pushOutputLine({"If player is not on the scene it doesn't do anything"});
 		pushOutputLine({"@C9609tp@CO teleports player to absolute coordinate"});
+		pushOutputLine({"@C9609tp here@CO teleports player to current pos (in reality sets kind of teleportation point)"});
 	}
 	else
 	{
+		auto& playerBody = getPlayerBodyRef();
+
+		if(commandContains("here"))
+		{
+			auto herePos = content.find("here");
+			content.erase(herePos);
+			content += std::to_string(playerBody.x);
+			content += " ";
+			content += std::to_string(playerBody.y);
+		}
+
 		Vec2 newPosition = getVector2Argument();
 		if(newPosition == vector2ArgumentError)
 			return;
 
-		auto& registry = sceneManager->getScene().getRegistry();
-		registry.view<component::Player, component::BodyRect>().each([newPosition]
-		(auto, auto& body) 
-		{
-			body.pos = newPosition;
-		});
+		playerBody.pos = newPosition;
 	}
 }
 

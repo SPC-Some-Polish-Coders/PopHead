@@ -1,6 +1,7 @@
 #include "pch.hpp"
 #include "movement.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
 
 namespace ph::system {
 
@@ -24,6 +25,12 @@ void Movement::update(float dt)
 		kin.vel += kin.acceleration * dt;
 		body.pos += kin.vel * dt;
 		kin.vel -= kin.vel * kin.friction * dt;
+	});
+
+	mRegistry.view<FallingIntoPit, Kinematics>().each([&]
+	(auto falling, auto& kin)
+	{
+		kin.vel *= falling.timeToEnd / 6.f;
 	});
 }
 

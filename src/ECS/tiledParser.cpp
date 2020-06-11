@@ -539,7 +539,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 		auto& platform = registry.get<MovingPlatform>(entity);
 		platform.pathBody = getPosAndSizeAttributes();
-		platform.velocity = Vec2(getProperty("velX").toFloat(), getProperty("velY").toFloat());
+		platform.fullVelocity = Vec2(getProperty("velX").toFloat(), getProperty("velY").toFloat());
 		platform.active = getProperty("active").toBool();
 
 		auto& body = registry.get<BodyRect>(entity);

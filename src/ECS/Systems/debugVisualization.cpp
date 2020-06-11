@@ -4,6 +4,8 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
+#include "movingPlatforms.hpp"
 #include "Renderer/renderer.hpp"
 
 extern bool debugWindowOpen;
@@ -23,7 +25,9 @@ collisionAndLightWallDenialAreas,
 hintArea, hintAreaDetail = true,
 cameraRoom, cameraRoomCenter = true,
 puzzleGridRoads, puzzleGridRoadsPos = true, puzzleGridRoadsChunks,
-pits, pitChunks,
+pits, pitChunks, 
+movingPlatformBodies, onPlatformCircles,
+movingPlatformPathBodies,
 tileBounds;
 
 using namespace component;
@@ -34,6 +38,8 @@ void DebugVisualization::update(float dt)
 
 	if(debugWindowOpen && ImGui::BeginTabItem("debug visualization"))
 	{
+		ImGui::Columns(2);
+
 		ImGui::Checkbox("enable area debug", &enableAreaDebug);
 		ImGui::Checkbox("collisions", &collision);
 		ImGui::Checkbox("velocity changing areas", &velocityChangingArea);
@@ -43,6 +49,9 @@ void DebugVisualization::update(float dt)
 		ImGui::Checkbox("collision denial areas", &collisionDenialAreas);
 		ImGui::Checkbox("light wall denial areas", &lightWallDenialAreas);
 		ImGui::Checkbox("collision and light wall denial areas", &collisionAndLightWallDenialAreas);
+
+		ImGui::NextColumn();
+
 		ImGui::Checkbox("hint area", &hintArea);
 		if(hintArea)
 			ImGui::Checkbox("hint area detail", &hintAreaDetail);
@@ -57,10 +66,14 @@ void DebugVisualization::update(float dt)
 		}
 		ImGui::Checkbox("pits", &pits);
 		if(pits)
-		{
 			ImGui::Checkbox("pit chunks", &pitChunks);
-		}
+		ImGui::Checkbox("moving platform bodies", &movingPlatformBodies);
+		if(movingPlatformBodies)
+			ImGui::Checkbox("on platform circles", &onPlatformCircles);
+		ImGui::Checkbox("moving platform path bodies", &movingPlatformPathBodies);
 		ImGui::Checkbox("tile bounds", &tileBounds);
+
+		ImGui::Columns(1);
 		ImGui::EndTabItem();
 	}
 
@@ -325,6 +338,48 @@ void DebugVisualization::update(float dt)
 						chunkBody.pos, chunkBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 				}
 			}
+		});
+	}
+
+	if(movingPlatformBodies)
+	{
+		mRegistry.view<MovingPlatform, BodyRect>().each([&]
+		(auto platform, auto platformBody)
+		{
+			// render expanded moving platform body as orange rectangle
+			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 50), Null,
+				platformBody.pos, platformBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+		});
+
+		if(onPlatformCircles)
+		{
+			mRegistry.view<BodyRect, BodyCircle>().each([&]
+			(auto entity, auto body, auto circle)
+			{
+				sf::Color color;
+				if(mRegistry.has<IsOnPlatform>(entity))
+					color = sf::Color(30, 255, 30, 110); // green
+				else if(mRegistry.has<FallingIntoPit>(entity))
+					color = sf::Color(255, 30, 30, 110); // red
+				else
+					color = sf::Color(30, 30, 255, 110); // blue
+
+				// draw expanded circle of object
+				circle.radius += system::MovingPlatforms::sBodyCircleOnPlatformRadiusAddition;
+				Renderer::submitCircle(color, body.pos + circle.offset - Vec2(circle.radius),
+					circle.radius, 50, ProjectionType::gameWorld, false);
+			});
+		}
+	}
+
+	if(movingPlatformPathBodies)
+	{
+		// render moving platform path body as lime rectangle
+		mRegistry.view<MovingPlatform, BodyRect>().each([&]
+		(auto platform, auto platformBody)
+		{
+			Renderer::submitQuad(Null, Null, &sf::Color(192, 255, 0, 50), Null,
+				platform.pathBody.pos, platform.pathBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 

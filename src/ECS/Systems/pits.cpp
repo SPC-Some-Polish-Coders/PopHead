@@ -16,8 +16,10 @@ void Pits::update(float dt)
 	mRegistry.view<PitChunk, BodyRect>().each([&]
 	(const auto& pitChunk, auto pitChunkBody)
 	{
-		mRegistry.view<BodyRect, BodyCircle>(entt::exclude<IsOnPlatform, CurrentlyDashing, FallingIntoPit>).each([&]
-		(auto objectEntity, auto objectRect, auto objectCircle)
+		// NOTE: KinematicCollisionBody is here to make player not fall into pits when we're using pf (player flying) terminal command
+		mRegistry.view<BodyRect, BodyCircle, KinematicCollisionBody> 
+		(entt::exclude<IsOnPlatform, CurrentlyDashing, FallingIntoPit>).each([&]
+		(auto objectEntity, auto objectRect, auto objectCircle, auto)
 		{
 			if(intersect(pitChunkBody, objectRect))
 			{
@@ -26,6 +28,8 @@ void Pits::update(float dt)
 					if(intersect(pitBody, objectRect, objectCircle))
 					{
 						mRegistry.assign<FallingIntoPit>(objectEntity);
+						if(auto* rq = mRegistry.try_get<RenderQuad>(objectEntity))
+							rq->z = 188;
 						return;
 					}
 				}
@@ -33,11 +37,9 @@ void Pits::update(float dt)
 		});
 	});
 
-	mRegistry.view<BodyRect, RenderQuad, FallingIntoPit>().each([&]
-	(auto entity, auto& body, auto& renderQuad, auto& falling)
+	mRegistry.view<BodyRect, FallingIntoPit>().each([&]
+	(auto entity, auto& body, auto& falling)
 	{
-		if(renderQuad.z < 255)
-			++renderQuad.z;
 		falling.timeToEnd -= dt;
 		body.setSizeWithFixedCenter(Vec2(20.f) * falling.timeToEnd);
 		if(falling.timeToEnd < 0.f)

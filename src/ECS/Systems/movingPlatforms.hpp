@@ -10,6 +10,8 @@ public:
 	using System::System;
 
 	void update(float dt) override;
+	
+	inline static float sBodyCircleOnPlatformRadiusAddition = 2.f;
 };
 
 }
