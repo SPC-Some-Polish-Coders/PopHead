@@ -23,6 +23,12 @@ struct GeneralMapInfo
 	float nrOfChunksInOneColumn;
 };
 
+struct Pit
+{
+	FloatRect bounds;
+	bool exists = false;
+};
+
 struct TilesData
 {
 	u32 firstGlobalTileId;
@@ -30,6 +36,7 @@ struct TilesData
 	std::vector<std::vector<FloatRect>> lightWalls;
 	std::vector<std::vector<FloatRect>> rectCollisions;
 	std::vector<std::vector<component::BodyCircle>> circleCollisions;
+	std::vector<Pit> pits;
 	std::vector<bool> puzzleGridRoads;
 };
 

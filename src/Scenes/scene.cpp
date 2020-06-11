@@ -36,10 +36,11 @@
 #include "ECS/Systems/pressurePlates.hpp"
 #include "ECS/Systems/puzzles.hpp"
 #include "ECS/Systems/spikesSystem.hpp"
-#include "ECS/Systems/save.hpp"
+#include "ECS/Systems/savePoints.hpp"
 #include "ECS/Systems/teleport.hpp"
 #include "ECS/Systems/puzzleBoulders.hpp"
 #include "ECS/Systems/movingPlatforms.hpp"
+#include "ECS/Systems/pits.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -105,10 +106,11 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
 	mSystemsQueue.appendSystem<system::PressurePlates>();
 	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));
 	mSystemsQueue.appendSystem<system::SpikesSystem>();
-	mSystemsQueue.appendSystem<system::Save>();
+	mSystemsQueue.appendSystem<system::SavePoints>();
 	mSystemsQueue.appendSystem<system::Teleport>();
 	mSystemsQueue.appendSystem<system::PuzzleBoulders>();
 	mSystemsQueue.appendSystem<system::MovingPlatforms>();
+	mSystemsQueue.appendSystem<system::Pits>();
 
 	mSystemsQueue.appendSystem<system::Levers>(); // must be after Puzzles
 

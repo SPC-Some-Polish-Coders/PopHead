@@ -55,6 +55,7 @@
   <property name="velY" type="float" default="0"/>
  </objecttype>
  <objecttype name="OutdoorArea" color="#ecf7f6"/>
+ <objecttype name="Pit" color="#141415"/>
  <objecttype name="Player" color="#55ffff">
   <property name="hasFlashlight" type="bool" default="false"/>
  </objecttype>

@@ -716,6 +716,21 @@
    <object id="4" type="LightWall" x="1.72729" y="12.3182" width="14" height="1.27273"/>
   </objectgroup>
  </tile>
+ <tile id="905">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="9.99999" y="10.7727" width="5.8182" height="5.18182"/>
+  </objectgroup>
+ </tile>
+ <tile id="906">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="-9.09091e-06" y="10.5909" width="15.8182" height="5.18182"/>
+  </objectgroup>
+ </tile>
+ <tile id="907">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="0.0909" y="10.6818" width="5.8182" height="5.18182"/>
+  </objectgroup>
+ </tile>
  <tile id="930">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="9.17617" y="0.125" width="9.38636" height="10"/>
@@ -748,11 +763,34 @@
    <object id="4" type="LightWall" x="1.5" y="0.931807" width="14.3636" height="1.27273"/>
   </objectgroup>
  </tile>
+ <tile id="937">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="10.2727" y="0.0909" width="5.8182" height="15.8182"/>
+  </objectgroup>
+ </tile>
  <tile id="938">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="SokobondBoulder" x="6.875" y="9.125">
-    <point/>
-   </object>
+   <object id="3" type="Pit" x="0.0909" y="-0.0454555" width="15.9091" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="939">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="0.0909" y="0.227272" width="5.8182" height="15.8182"/>
+  </objectgroup>
+ </tile>
+ <tile id="969">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="10.0909" y="0.0454536" width="5.8182" height="5.18182"/>
+  </objectgroup>
+ </tile>
+ <tile id="970">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Pit" x="0.0909091" y="0.0909091" width="15.8182" height="5.18182"/>
+  </objectgroup>
+ </tile>
+ <tile id="971">
+  <objectgroup draworder="index" id="2">
+   <object id="2" type="Pit" x="0.0909" y="0.227272" width="5.8182" height="5.18182"/>
   </objectgroup>
  </tile>
 </tileset>

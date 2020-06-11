@@ -222,6 +222,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			std::vector<component::BodyCircle> circleCollisions;
 			std::vector<FloatRect> lightWalls;
 			bool puzzleGridRoad = false;
+			Pit pit;
 			for(auto& objectNode : objectNodes)
 			{
 				if(auto type = objectNode.getAttribute("type"))
@@ -261,12 +262,19 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 					{
 						puzzleGridRoad = true;
 					}
+					else if(typeStr == "Pit")
+					{
+						PH_ASSERT_UNEXPECTED_SITUATION(!pit.exists, "There can't be more then 1 pit in the same tile");
+						pit.bounds = getBounds();
+						pit.exists = true;
+					}
 				}
 			}
 			tilesData.rectCollisions.emplace_back(rectCollisions);
 			tilesData.circleCollisions.emplace_back(circleCollisions);
 			tilesData.lightWalls.emplace_back(lightWalls);
 			tilesData.puzzleGridRoads.emplace_back(puzzleGridRoad);
+			tilesData.pits.emplace_back(pit);
 		}
 	}
 	return tilesData;
@@ -295,6 +303,8 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 	component::PuzzleGridRoadChunk puzzleGridRoadChunk;
 	bool isThereAnyPuzzleGridRoadInThisChunk = false;
 
+	component::PitChunk pitChunk;
+
 	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
 		constexpr u32 bitsInByte = 8;
@@ -319,14 +329,14 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			}
 
 			Vec2u chunkRelativePosInTiles = Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(sChunkSize));
-			Vec2 posi32iles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
+			Vec2 positionInTiles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
 
 			// create quad data
 			ChunkQuadData cqd;
 
 			Vec2 tileWorldPos( 
-				posi32iles.x * Cast<float>(info.tileSize.x),
-				posi32iles.y * Cast<float>(info.tileSize.y)
+				positionInTiles.x * Cast<float>(info.tileSize.x),
+				positionInTiles.y * Cast<float>(info.tileSize.y)
 			);
 
 			cqd.position = tileWorldPos; 
@@ -521,6 +531,14 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 					puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
 					if(road) isThereAnyPuzzleGridRoadInThisChunk = true;
 
+					// pits
+					Pit pit = tilesData.pits[i];
+					if(pit.exists)
+					{
+						pit.bounds.pos += tileWorldPos;
+						pitChunk.pits.emplace_back(pit.bounds);
+					}
+
 					break;
 				}
 			}
@@ -537,7 +555,19 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 		mAlreadyCreatedPuzzleGridRoadChunks.emplace_back(intChunkPos);
 		#ifndef PH_DISTRIBUTION
 		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
-		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, {12.f * 16.f, 12.f * 16.f}));
+		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(12.f * 16.f)));
+		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
+		#endif
+	}
+
+	if(!pitChunk.pits.empty())
+	{
+		// create pit chunk in registry
+		auto entity = mGameRegistry->create();
+		mGameRegistry->assign<component::PitChunk>(entity, pitChunk);
+		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(sChunkSize * 16.f)));
+		#ifndef PH_DISTRIBUTION
+		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"PitChunk\0"});
 		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
 		#endif
 	}

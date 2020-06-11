@@ -74,4 +74,16 @@ bool intersect(const FloatRect& a, component::BodyCircle ac,
 	return Math::distanceBetweenPoints(aPos, bPos) < ac.radius + bc.radius;
 }
 
+static inline
+bool fullyIntersect(const FloatRect& a,
+                    const FloatRect& b, component::BodyCircle bc)
+{
+	Vec2 circlePos = getCirclePos(b, bc);
+	return a.contains(circlePos) && 
+	       a.contains(circlePos + Vec2(-bc.radius, 0.f)) &&
+	       a.contains(circlePos + Vec2(bc.radius, 0.f)) &&
+	       a.contains(circlePos + Vec2(0.f, -bc.radius)) &&
+	       a.contains(circlePos + Vec2(0.f, bc.radius)); 
+}
+
 }

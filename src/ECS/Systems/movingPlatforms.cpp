@@ -3,6 +3,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/charactersComponents.hpp"
 
 namespace ph::system {
 
@@ -24,10 +25,17 @@ void MovingPlatforms::update(float dt)
 
 		// platform moves bodies standing on it
 		mRegistry.view<BodyRect, BodyCircle>().each([&]
-		(auto& body, auto& circle)
+		(auto movedEntity, auto& body, auto& circle)
 		{
 			if(intersect(platformBody, body, circle))
+			{
 				body.pos += platform.velocity * dt;
+				mRegistry.assign_or_replace<IsOnPlatform>(movedEntity);
+			}
+			else
+			{
+				mRegistry.reset<IsOnPlatform>(movedEntity);
+			}
 		});
 
 		// flip platform velocity when platform is on the edge of path body

@@ -41,6 +41,13 @@ BodyRect getPlayerBody()
 	return body;
 }
 
+BodyRect& getPlayerBodyRef()
+{
+	auto entity = getPlayerEntity();
+	auto& body = registry->get<BodyRect>(entity);
+	return body;
+}
+
 Vec2 getPlayerCenterPos()
 {
 	auto body = getPlayerBody();

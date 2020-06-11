@@ -4,7 +4,7 @@
 
 namespace ph::system {
 
-	class Save : public System
+	class Pits : public System
 	{
 	public:
 		using System::System;

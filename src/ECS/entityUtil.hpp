@@ -10,6 +10,7 @@ bool isPlayerOnScene();
 bool isPlayerAlive();
 entt::entity getPlayerEntity();
 component::BodyRect getPlayerBody();
+component::BodyRect& getPlayerBodyRef();
 Vec2 getPlayerCenterPos();
 Vec2 getPlayerPos();
 Vec2 getPlayerFaceDirection();

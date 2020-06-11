@@ -83,9 +83,15 @@ struct PuzzleGridPos : public Vec2i
 	using Vec2i::operator=;
 };
 
+// TODO: store this as bit flags
 struct PuzzleGridRoadChunk
 {
 	bool tiles[12][12] = {}; // 1 - road, 0 - collision
+};
+
+struct PitChunk 
+{
+	std::vector<FloatRect> pits;
 };
 
 struct Gate

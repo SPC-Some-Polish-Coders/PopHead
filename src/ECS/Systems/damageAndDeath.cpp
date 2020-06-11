@@ -5,6 +5,8 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "ECS/entityUtil.hpp"
+#include "Scenes/save.hpp"
 #include "GUI/gui.hpp"
 #include "AI/aiManager.hpp"
 
@@ -20,8 +22,7 @@ void DamageAndDeath::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
 	dealDamage();
 	makeDamageJuice(dt);
@@ -38,8 +39,9 @@ void DamageAndDeath::dealDamage() const
 	(auto entity, auto& damageTag, auto& health)
 	{
 		health.healthPoints -= damageTag.amountOfDamage;
+		if(damageTag.particles)
+			mRegistry.assign_or_replace<DamageAnimation>(entity, 0.14f);
 		mRegistry.remove<DamageTag>(entity);
-		mRegistry.assign_or_replace<DamageAnimation>(entity, 0.14f);
 	});
 }
 
@@ -116,43 +118,37 @@ void DamageAndDeath::makeCharactersDie()
 	{
 		if(health.healthPoints <= 0)
 		{
-			PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
-			PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<AnimationData>(entity), "Hurt enemy must have AnimationData!");
-
-			mRegistry.assign<DeadCharacter>(entity, 10.f);
-			mRegistry.remove<Health>(entity);
-			mRegistry.reset<Killable>(entity);
-			mRegistry.reset<KinematicCollisionBody>(entity);
-			mRegistry.reset<Damage>(entity);
-			if(mRegistry.has<Kinematics>(entity)) 
+			if(mRegistry.has<Player>(entity))
 			{
-				auto& kin = mRegistry.get<Kinematics>(entity);
-				kin.acceleration = Vec2();
-				kin.vel *= 0.35f;
+				auto& playerBody = getPlayerBodyRef();
+				playerBody.size = Vec2(20.f); 
+				loadGameSave(&mRegistry);
 			}
-
-			bool isPlayer = mRegistry.has<Player>(entity);
-			auto& z = mRegistry.get<RenderQuad>(entity).z;
-			if(mLastDeadBodyZ == 101)
-				mLastDeadBodyZ = 170;
-			z = --mLastDeadBodyZ;
-
-			if(isPlayer) 
+			else
 			{
-				auto deathCameraEntity = mRegistry.create();
-				mRegistry.remove<GunAttacker>(entity);
-				mRegistry.remove<FaceDirection>(entity);
-				component::Camera camera;
-				camera = mRegistry.get<component::Camera>(entity);
-				camera.name = "death";
-				camera.currentCameraName = "death";
-				mRegistry.assign<component::Camera>(deathCameraEntity, camera);
-				GUI::showInterface("gameOverScreen");
-				mAIManager.setAIMode(AIMode::zombieAlwaysWalkRandomly);
-			}
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<RenderQuad>(entity), "Hurt enemy must have RenderQuad!");
+				PH_ASSERT_UNEXPECTED_SITUATION(mRegistry.has<AnimationData>(entity), "Hurt enemy must have AnimationData!");
 
-			auto& animation = mRegistry.get<AnimationData>(entity);
-			animation.currentStateName = "dead";
+				mRegistry.assign<DeadCharacter>(entity, 10.f);
+				mRegistry.remove<Health>(entity);
+				mRegistry.reset<Killable>(entity);
+				mRegistry.reset<KinematicCollisionBody>(entity);
+				mRegistry.reset<Damage>(entity);
+				if(mRegistry.has<Kinematics>(entity)) 
+				{
+					auto& kin = mRegistry.get<Kinematics>(entity);
+					kin.acceleration = Vec2();
+					kin.vel *= 0.35f;
+				}
+
+				auto& z = mRegistry.get<RenderQuad>(entity).z;
+				if(mLastDeadBodyZ == 101)
+					mLastDeadBodyZ = 170;
+				z = --mLastDeadBodyZ;
+
+				auto& animation = mRegistry.get<AnimationData>(entity);
+				animation.currentStateName = "dead";
+			}
 		}
 	});
 }

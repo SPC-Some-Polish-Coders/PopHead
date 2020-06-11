@@ -23,6 +23,13 @@ struct CurrentlyDashing {};
 
 struct InPlayerGunAttackArea {};
 
+struct IsOnPlatform {};
+
+struct FallingIntoPit
+{
+	float timeToEnd = 1.f;
+};
+
 struct FaceDirection : public Vec2 
 {
 	using Vec2::operator=;
@@ -46,6 +53,7 @@ struct TaggedToDestroy {};
 struct DamageTag // @no-debugger
 {
 	i32 amountOfDamage;
+	bool particles = true;
 };
 
 struct CollisionWithPlayer

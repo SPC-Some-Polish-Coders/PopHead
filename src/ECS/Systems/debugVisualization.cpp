@@ -23,6 +23,7 @@ collisionAndLightWallDenialAreas,
 hintArea, hintAreaDetail = true,
 cameraRoom, cameraRoomCenter = true,
 puzzleGridRoads, puzzleGridRoadsPos = true, puzzleGridRoadsChunks,
+pits, pitChunks,
 tileBounds;
 
 using namespace component;
@@ -53,6 +54,11 @@ void DebugVisualization::update(float dt)
 		{
 			ImGui::Checkbox("puzzle grid roads pos", &puzzleGridRoadsPos);
 			ImGui::Checkbox("puzzle grid roads chunks", &puzzleGridRoadsChunks);
+		}
+		ImGui::Checkbox("pits", &pits);
+		if(pits)
+		{
+			ImGui::Checkbox("pit chunks", &pitChunks);
 		}
 		ImGui::Checkbox("tile bounds", &tileBounds);
 		ImGui::EndTabItem();
@@ -293,6 +299,30 @@ void DebugVisualization::update(float dt)
 							}
 						}
 					}
+				}
+			}
+		});
+	}
+
+	if(pits)
+	{
+		mRegistry.view<PitChunk, BodyRect>().each([&]
+		(auto entity, const auto& pitChunk, auto chunkBody)
+		{
+			for(auto& pit : pitChunk.pits)
+			{
+				// render pit as dark purple rectangle
+				Renderer::submitQuad(Null, Null, &sf::Color(100, 0, 100, 50), Null,
+					pit.pos, pit.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+			}
+
+			if(pitChunks)
+			{
+				// render pit chunk as rectangle with random color
+				if(auto* color = mRegistry.try_get<DebugColor>(entity))
+				{
+					Renderer::submitQuad(Null, Null, color, Null,
+						chunkBody.pos, chunkBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
 				}
 			}
 		});
