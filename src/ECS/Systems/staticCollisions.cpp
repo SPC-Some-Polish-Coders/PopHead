@@ -54,6 +54,11 @@ namespace ph::system {
 					{
 						handleCollision(staticRect, Null, kinematicRect, Null, kinematicObject, kinematicBody);
 					}
+					for (auto i = 0; i < multiStaticCollisionBody.circles.size(); ++i)
+					{
+						const auto& staticCircle = multiStaticCollisionBody.circles[i];
+						handleCollision({}, &staticCircle, kinematicRect, Null, kinematicObject, kinematicBody);
+					}
 				}
 			}
 		}
@@ -77,13 +82,18 @@ namespace ph::system {
 			}
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
-				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
 				const auto& sharedBounds = mRegistry.get<component::BodyRect>(multiStaticObject);
+				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
 				if (intersect(sharedBounds, kinematicRect))
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
 					{
 						handleCollision(staticRect, Null, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
+					}
+					for (auto i = 0; i < multiStaticCollisionBody.circles.size(); ++i)
+					{
+						const auto& staticCircle = multiStaticCollisionBody.circles[i];
+						handleCollision({}, &staticCircle, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 					}
 				}
 			}
