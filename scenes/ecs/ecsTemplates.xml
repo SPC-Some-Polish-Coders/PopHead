@@ -99,13 +99,22 @@
   </entityTemplate>
 
   <entityTemplate name="Gate">
-    <component name="BodyRect" x="70.0" y="2.0" w="40" h="13" />
-    <component name="RenderQuad" textureFilepath="textures/others/gate.png" z="99" />
-	<component name="IndoorOutdoor" />
-    <component name="TextureRect" x="0" y="4" w="32" h="12" />
-    <component name="LightWall" x="0" y="0" w="40" h="1"/>
     <component name="Gate" />
     <component name="StaticCollisionBody" />
+	<component name="IndoorOutdoor" />
+  </entityTemplate>
+
+  <entityTemplate sourceTemplate="Gate" name="HorizontalGate">
+    <component name="BodyRect" x="0" y="0" w="40" h="13" />
+    <component name="RenderQuad" textureFilepath="textures/others/horizontalGate.png" z="99" />
+    <component name="TextureRect" x="0" y="4" w="32" h="12" />
+    <component name="LightWall" x="0" y="0" w="40" h="1"/>
+  </entityTemplate>
+
+  <entityTemplate sourceTemplate="Gate" name="VerticalGate">
+    <component name="BodyRect" x="0" y="0" w="13" h="40" />
+    <component name="RenderQuad" textureFilepath="textures/others/verticalGate.png" z="99" />
+    <component name="LightWall" x="8" y="0" w="1" h="32"/>
   </entityTemplate>
 
   <entityTemplate name="ActivateArea">

@@ -319,7 +319,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "Gate")
 	{
-		createCopy("Gate");
+		if(getProperty("vertical").toBool())
+			createCopy("VerticalGate");
+		else
+			createCopy("HorizontalGate");
 		loadPos();
 		auto& gate = registry.get<Gate>(entity);
 		gate.id = getProperty("id").toU32();

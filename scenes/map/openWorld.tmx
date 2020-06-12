@@ -29422,9 +29422,10 @@
   <object id="143" type="PuzzleBoulder" x="236.166" y="5124.84">
    <point/>
   </object>
-  <object id="144" name="Gate" type="Gate" x="286.5" y="5097.84">
+  <object id="144" name="Gate" type="Gate" x="287.75" y="5088.59">
    <properties>
     <property name="id" type="int" value="1"/>
+    <property name="vertical" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -29585,9 +29586,10 @@
    </properties>
    <point/>
   </object>
-  <object id="174" name="Gate" type="Gate" x="1153.67" y="5508.67">
+  <object id="174" name="Gate" type="Gate" x="1151.92" y="5495.55">
    <properties>
     <property name="id" type="int" value="3"/>
+    <property name="vertical" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

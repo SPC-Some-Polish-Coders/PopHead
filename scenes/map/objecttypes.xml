@@ -23,6 +23,7 @@
  </objecttype>
  <objecttype name="Gate" color="#a48096">
   <property name="id" type="int" default="0"/>
+  <property name="vertical" type="bool" default="false"/>
  </objecttype>
  <objecttype name="HintArea" color="#2fa477">
   <property name="hintJoystickContent" type="string"/>
