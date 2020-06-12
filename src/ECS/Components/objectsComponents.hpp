@@ -120,6 +120,19 @@ struct MovingPlatform
 	bool active;
 };
 
+struct FallingPlatform
+{
+	enum State
+	{
+		isStable,
+		isFallingApart,
+		isRecovering
+	};
+	State state;
+	float timeToChangeState;
+	float timeToChangeAnimationFrame;
+};
+
 struct GunProperties // @no-debugger
 {
 	std::string shotSoundFilepath;

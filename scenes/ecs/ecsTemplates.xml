@@ -249,6 +249,14 @@
 	<component name="MovingPlatform" />
   </entityTemplate >
 
+  <entityTemplate name="FallingPlatform" >
+    <component name="BodyRect" x="0" y="0" w="48" h="48" />
+    <component name="RenderQuad" textureFilepath="textures/others/fallingPlatform.png" z="187" />
+    <component name="TextureRect" x="0" y="0" w="48" h="48" />
+	<component name="IndoorOutdoor" />
+	<component name="FallingPlatform" />
+  </entityTemplate >
+
   <entityTemplate name="SavePoint" >
     <component name="BodyRect" x="0" y="0" w="32" h="32" />
     <component name="RenderQuad" textureFilepath="textures/others/saveDisc.png" z="100" />

@@ -5,7 +5,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
-#include "movingPlatforms.hpp"
+#include "platforms.hpp"
 #include "Renderer/renderer.hpp"
 
 extern bool debugWindowOpen;
@@ -365,7 +365,7 @@ void DebugVisualization::update(float dt)
 					color = sf::Color(30, 30, 255, 110); // blue
 
 				// draw expanded circle of object
-				circle.radius += system::MovingPlatforms::sBodyCircleOnPlatformRadiusAddition;
+				circle.radius += system::Platforms::sBodyCircleRadiusAdditionForPlatforms;
 				Renderer::submitCircle(color, body.pos + circle.offset - Vec2(circle.radius),
 					circle.radius, 50, ProjectionType::gameWorld, false);
 			});

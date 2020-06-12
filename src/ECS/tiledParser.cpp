@@ -546,6 +546,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		Vec2 offset(getProperty("platformOffsetX").toFloat(), getProperty("platformOffsetY").toFloat());
 		body.pos = platform.pathBody.pos + offset;
 	}
+	else if(type == "FallingPlatform")
+	{
+		createCopy("FallingPlatform");
+		loadAndAlignPos();
+	}
 	else if(type == "WeatherArea")
 	{
 		entity = registry.create();

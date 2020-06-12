@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="336">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="351">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -28340,11 +28340,11 @@
 </chunk>
    <chunk x="-60" y="372" width="12" height="12">
 0,0,0,939,939,939,939,939,939,939,939,939,
+0,0,0,939,939,939,939,939,939,939,939,939,
+0,0,0,939,939,939,939,939,939,939,939,939,
+0,0,0,939,939,939,939,939,939,939,939,939,
+0,0,0,939,939,939,939,939,939,939,939,939,
 0,0,0,939,939,939,971,971,971,971,971,971,
-0,0,0,939,939,940,930,930,930,930,930,930,
-0,0,0,939,939,940,930,930,930,930,930,930,
-0,0,0,939,939,940,930,930,930,930,930,930,
-0,0,0,939,939,940,930,930,930,930,930,930,
 0,0,0,939,939,940,930,930,930,930,930,930,
 0,0,0,939,939,940,930,930,930,930,930,930,
 0,0,0,939,939,940,930,930,930,930,930,930,
@@ -28354,11 +28354,11 @@
 </chunk>
    <chunk x="-48" y="372" width="12" height="12">
 939,939,939,939,939,939,939,939,939,939,939,939,
+939,939,939,939,939,939,939,939,939,939,939,939,
+939,939,939,939,939,939,939,939,939,939,939,939,
+939,939,939,939,939,939,939,939,939,939,939,939,
+939,939,939,939,939,939,939,939,939,939,939,939,
 971,971,971,971,971,971,939,939,939,939,939,939,
-930,930,930,930,930,930,938,939,939,939,939,939,
-930,930,930,930,930,930,938,939,939,939,939,939,
-930,930,930,930,930,930,938,939,939,939,939,939,
-930,930,930,930,930,930,938,939,939,939,939,939,
 930,930,930,930,930,930,938,939,939,939,939,939,
 930,930,930,930,930,930,938,939,939,939,939,939,
 930,930,930,930,930,930,938,939,939,939,939,939,
@@ -28467,11 +28467,11 @@
    <chunk x="-60" y="384" width="12" height="12">
 0,0,0,939,939,940,930,930,930,930,930,930,
 0,0,0,939,939,940,930,930,930,930,930,930,
+0,0,0,939,939,940,930,930,930,930,930,930,
+0,0,0,939,939,940,930,930,930,930,930,930,
+0,0,0,939,939,940,930,930,930,930,930,930,
+0,0,0,939,939,940,930,930,930,930,930,930,
 0,0,0,939,939,939,907,907,907,907,907,907,
-0,0,0,939,939,939,939,939,939,939,939,939,
-0,0,0,939,939,939,939,939,939,939,939,939,
-0,0,0,939,939,939,939,939,939,939,939,939,
-0,0,0,939,939,939,939,939,939,939,939,939,
 0,0,0,939,939,939,939,939,939,939,939,939,
 0,0,0,939,939,939,939,939,939,939,939,939,
 0,0,0,939,939,939,939,939,939,939,939,939,
@@ -28481,11 +28481,11 @@
    <chunk x="-48" y="384" width="12" height="12">
 930,930,930,930,930,930,938,939,939,939,939,939,
 930,930,930,930,930,930,938,939,939,939,939,939,
+930,930,930,930,930,930,938,939,939,939,939,939,
+930,930,930,930,930,930,938,939,939,939,939,939,
+930,930,930,930,930,930,938,939,939,939,939,939,
+930,930,930,930,930,930,938,939,939,939,939,939,
 907,907,907,907,907,907,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
@@ -28510,11 +28510,11 @@
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
-939,939,939,939,939,939,939,939,939,939,939,939,
+939,939,939,971,971,971,939,939,939,939,939,939,
+939,939,940,930,930,930,938,939,939,939,939,939,
+939,939,940,930,930,930,938,939,939,939,939,939,
+939,939,940,930,930,930,938,939,939,939,939,939,
+939,939,939,907,907,907,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
 939,939,939,939,939,939,939,939,939,939,939,939,
@@ -29963,58 +29963,10 @@
     <property name="velY" type="float" value="80"/>
    </properties>
   </object>
-  <object id="282" type="MovingPlatform" x="-422.667" y="6210.33" width="158" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="45"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="283" type="MovingPlatform" x="-361.333" y="6167" width="96" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="30"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="284" type="MovingPlatform" x="-361.333" y="6126.33" width="96" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="40"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="285" type="MovingPlatform" x="-458" y="6084.33" width="192.667" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="60"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="286" type="MovingPlatform" x="-558.833" y="6043.17" width="293.167" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="70"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="288" type="MovingPlatform" x="-668.583" y="6001" width="403.167" height="40.667">
-   <properties>
-    <property name="platformOffsetX" type="float" value="0"/>
-    <property name="platformOffsetY" type="float" value="0"/>
-    <property name="velX" type="float" value="90"/>
-    <property name="velY" type="float" value="0"/>
-   </properties>
-  </object>
-  <object id="289" type="SlowZombie" x="-814" y="6134">
+  <object id="289" type="SlowZombie" x="-817.333" y="6198">
    <point/>
   </object>
-  <object id="290" type="Zombie" x="-746" y="6030">
+  <object id="290" type="Zombie" x="-749.333" y="6094">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
    </properties>
@@ -30050,7 +30002,7 @@
   <object id="307" type="Torch" x="237.333" y="6392.67">
    <point/>
   </object>
-  <object id="309" type="Torch" x="-762" y="6092">
+  <object id="309" type="Torch" x="-765.333" y="6156">
    <point/>
   </object>
   <object id="321" type="Torch" x="331" y="6102">
@@ -30095,7 +30047,7 @@
    </properties>
    <point/>
   </object>
-  <object id="334" type="SavePoint" x="-700.667" y="6018.67">
+  <object id="334" type="SavePoint" x="-704" y="6082.67">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
    </properties>
@@ -30106,6 +30058,76 @@
     <property name="outdoor" type="bool" value="false"/>
    </properties>
    <point/>
+  </object>
+  <object id="336" type="FallingPlatform" x="-428.167" y="6209.58" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="337" type="FallingPlatform" x="-379.5" y="6209.25" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="340" type="FallingPlatform" x="-332.833" y="6104.58" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="341" type="FallingPlatform" x="-332.833" y="6052.92" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="342" type="FallingPlatform" x="-380.833" y="6052.58" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="344" type="FallingPlatform" x="-478.5" y="6051.92" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="346" type="FallingPlatform" x="-618.5" y="6051.58" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
+  </object>
+  <object id="349" type="TeleportPoint" x="-453.333" y="6233.33">
+   <properties>
+    <property name="name" value="fallingPlatforms"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="350" type="FallingPlatform" x="-525" y="6051.75" width="39" height="41.5003">
+   <properties>
+    <property name="platformOffsetX" type="float" value="0"/>
+    <property name="platformOffsetY" type="float" value="20"/>
+    <property name="velX" type="float" value="0"/>
+    <property name="velY" type="float" value="80"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="10" name="denialAreas" visible="0">
@@ -30187,7 +30209,7 @@
     <property name="edgeAreaSize" type="float" value="0"/>
    </properties>
   </object>
-  <object id="287" type="CameraRoom" x="-891" y="5942" width="640" height="360">
+  <object id="287" type="CameraRoom" x="-900.333" y="5998.33" width="640" height="360">
    <properties>
     <property name="edgeAreaSize" type="float" value="0"/>
    </properties>

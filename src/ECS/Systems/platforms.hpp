@@ -4,14 +4,14 @@
 
 namespace ph::system {
 
-class MovingPlatforms : public System
+class Platforms : public System
 {
 public:
 	using System::System;
 
 	void update(float dt) override;
-	
-	inline static float sBodyCircleOnPlatformRadiusAddition = 2.f;
+
+	inline static const float sBodyCircleRadiusAdditionForPlatforms = 2.f;
 };
 
 }
