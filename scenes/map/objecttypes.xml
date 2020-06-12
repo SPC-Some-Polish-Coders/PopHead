@@ -51,8 +51,10 @@
  </objecttype>
  <objecttype name="MovingPlatform" color="#1ba470">
   <property name="active" type="bool" default="true"/>
+  <property name="id" type="int" default="0"/>
   <property name="platformOffsetX" type="float" default="0"/>
   <property name="platformOffsetY" type="float" default="0"/>
+  <property name="puzzleId" type="int" default="0"/>
   <property name="velX" type="float" default="0"/>
   <property name="velY" type="float" default="0"/>
  </objecttype>

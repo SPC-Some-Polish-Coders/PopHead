@@ -118,6 +118,8 @@ struct MovingPlatform
 	Vec2 currentVelocity;
 	float pathCompletion;
 	bool active;
+	u32 puzzleId;
+	u32 id;
 };
 
 struct FallingPlatform

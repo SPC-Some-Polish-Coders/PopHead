@@ -115,6 +115,35 @@ void Puzzles::update(float dt)
 			}
 		});
 	}
+
+	// puzzle 6
+	{
+		mRegistry.view<Lever>().each([&]
+		(auto lever)
+		{
+			if(lever.puzzleId == 6)
+			{
+				mRegistry.view<MovingPlatform>().each([&]
+				(auto& platform)
+				{
+					if(lever.id == platform.id)
+					{
+						bool negative = platform.fullVelocity.x < 0.f;
+						switch(platform.id)
+						{
+							case 1: platform.fullVelocity.x = lever.active ? 45.f : 60.f; break;
+							case 2: platform.fullVelocity.x = lever.active ? 45.f : 90.f; break;
+							case 3: platform.fullVelocity.x = lever.active ? 45.f : 120.f; break;
+							case 4: platform.fullVelocity.x = lever.active ? 45.f : 150.f; break;
+							case 5: platform.fullVelocity.x = lever.active ? 45.f : 200.f; break;
+						}
+						if(negative)
+							platform.fullVelocity.x = -platform.fullVelocity.x;
+					}
+				});
+			}
+		});
+	}
 }
 
 }

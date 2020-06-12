@@ -544,6 +544,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		platform.pathBody = getPosAndSizeAttributes();
 		platform.fullVelocity = Vec2(getProperty("velX").toFloat(), getProperty("velY").toFloat());
 		platform.active = getProperty("active").toBool();
+		platform.puzzleId = getProperty("puzzleId").toU32();
+		platform.id = getProperty("id").toU32();
 
 		auto& body = registry.get<BodyRect>(entity);
 		Vec2 offset(getProperty("platformOffsetX").toFloat(), getProperty("platformOffsetY").toFloat());
