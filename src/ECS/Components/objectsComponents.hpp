@@ -42,13 +42,17 @@ struct PushingArea
 	Vec2 pushForce;
 };
 
-struct Lever
+struct PuzzleId
 {
-	u32 id = 0;
-	u32 puzzleId = 0;
-	bool active = false;
-	bool wasJustSwitched = false;
-	bool turnOffAfterSwitch = false;
+	union
+	{
+		struct
+		{
+			u8 puzzleId;
+			u8 elementId;
+		};
+		u16 hash;
+	};
 };
 
 enum class PuzzleColor
@@ -56,10 +60,15 @@ enum class PuzzleColor
 	Grey, Red, Green, Blue 
 };
 
+struct Lever
+{
+	bool active = false;
+	bool wasJustSwitched = false;
+	bool turnOffAfterSwitch = false;
+};
+
 struct PressurePlate
 {
-	u32 puzzleId;
-	u32 id;
 	PuzzleColor pressedByColor;
 	bool isPressed = false;
 	bool isPressIrreversible;
@@ -103,8 +112,6 @@ struct Gate
 
 struct Spikes 
 {
-	u32 puzzleId;
-	u32 id;
 	float timeToChange; 
 	float changeFrequency;
 	bool changes;
@@ -118,8 +125,6 @@ struct MovingPlatform
 	Vec2 currentVelocity;
 	float pathCompletion;
 	bool active;
-	u32 puzzleId;
-	u32 id;
 };
 
 struct FallingPlatform

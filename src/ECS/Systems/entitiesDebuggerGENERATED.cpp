@@ -349,10 +349,26 @@ if(mRegistry.has<component::Killable>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("Killable");
 }
+if(mRegistry.has<component::CurrentlyDashing>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("CurrentlyDashing");
+}
 if(mRegistry.has<component::InPlayerGunAttackArea>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("InPlayerGunAttackArea");
+}
+if(mRegistry.has<component::IsOnPlatform>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("IsOnPlatform");
+}
+if(auto* c = mRegistry.try_get<component::FallingIntoPit>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("FallingIntoPit");
+ImGui::Text("timeToEnd: %f", c->timeToEnd);
 }
 if(auto* c = mRegistry.try_get<component::FaceDirection>(mSelected)) 
 {
@@ -524,15 +540,13 @@ ImGui::Separator();
 ImGui::BulletText("PushingArea");
 ImGui::Text("pushForce: %f, %f", c->pushForce.x, c->pushForce.y);
 }
-if(auto* c = mRegistry.try_get<component::Lever>(mSelected)) 
+if(auto* c = mRegistry.try_get<component::PuzzleId>(mSelected)) 
 {
 ImGui::Separator();
-ImGui::BulletText("Lever");
-ImGui::Text("id: %u", c->id);
+ImGui::BulletText("PuzzleId");
+ImGui::Text("struct: union view is not supported!");
 ImGui::Text("puzzleId: %u", c->puzzleId);
-if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
-if(c->wasJustSwitched) ImGui::Text("wasJustSwitched: true"); else ImGui::Text("wasJustSwitched: false");
-if(c->turnOffAfterSwitch) ImGui::Text("turnOffAfterSwitch: true"); else ImGui::Text("turnOffAfterSwitch: false");
+ImGui::Text("elementId: %u", c->elementId);
 }
 if(auto* c = mRegistry.try_get<component::PuzzleColor>(mSelected))
 {
@@ -546,12 +560,18 @@ case component::PuzzleColor::Blue: ImGui::BulletText("PuzzleColor: Blue"); break
 default: ImGui::BulletText("PuzzleColor: unknown enumeration!!!");
 }
 }
+if(auto* c = mRegistry.try_get<component::Lever>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Lever");
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+if(c->wasJustSwitched) ImGui::Text("wasJustSwitched: true"); else ImGui::Text("wasJustSwitched: false");
+if(c->turnOffAfterSwitch) ImGui::Text("turnOffAfterSwitch: true"); else ImGui::Text("turnOffAfterSwitch: false");
+}
 if(auto* c = mRegistry.try_get<component::PressurePlate>(mSelected)) 
 {
 ImGui::Separator();
 ImGui::BulletText("PressurePlate");
-ImGui::Text("puzzleId: %u", c->puzzleId);
-ImGui::Text("id: %u", c->id);
 ImGui::Text("pressedByColor: PuzzleColor view is not supported!");
 if(c->isPressed) ImGui::Text("isPressed: true"); else ImGui::Text("isPressed: false");
 if(c->isPressIrreversible) ImGui::Text("isPressIrreversible: true"); else ImGui::Text("isPressIrreversible: false");
@@ -582,6 +602,12 @@ ImGui::BulletText("PuzzleGridRoadChunk");
 if(c->tiles) ImGui::Text("tiles: true"); else ImGui::Text("tiles: false");
 ImGui::Text("collision: road view is not supported!");
 }
+if(auto* c = mRegistry.try_get<component::PitChunk>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PitChunk");
+ImGui::Text("pits: std::vector view is not supported!");
+}
 if(auto* c = mRegistry.try_get<component::Gate>(mSelected)) 
 {
 ImGui::Separator();
@@ -594,12 +620,33 @@ if(auto* c = mRegistry.try_get<component::Spikes>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("Spikes");
-ImGui::Text("puzzleId: %u", c->puzzleId);
-ImGui::Text("id: %u", c->id);
 ImGui::Text("timeToChange: %f", c->timeToChange);
 ImGui::Text("changeFrequency: %f", c->changeFrequency);
 if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");
 if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+}
+if(auto* c = mRegistry.try_get<component::MovingPlatform>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("MovingPlatform");
+ImGui::Text("pathBody: %f, %f, %f, %f", c->pathBody.x,  c->pathBody.y, c->pathBody.w, c->pathBody.h);
+ImGui::Text("fullVelocity: %f, %f", c->fullVelocity.x, c->fullVelocity.y);
+ImGui::Text("currentVelocity: %f, %f", c->currentVelocity.x, c->currentVelocity.y);
+ImGui::Text("pathCompletion: %f", c->pathCompletion);
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+}
+if(auto* c = mRegistry.try_get<component::FallingPlatform>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("FallingPlatform");
+switch(c->state) {
+case component::FallingPlatform::isStable: ImGui::Text("state: isStable"); break;
+case component::FallingPlatform::isFallingApart: ImGui::Text("state: isFallingApart"); break;
+case component::FallingPlatform::isRecovering: ImGui::Text("state: isRecovering"); break;
+default: ImGui::Text("FallingPlatform: unknown enumeration!!!");
+}
+ImGui::Text("timeToChangeState: %f", c->timeToChangeState);
+ImGui::Text("timeToChangeAnimationFrame: %f", c->timeToChangeAnimationFrame);
 }
 if(mRegistry.has<component::WeatherArea>(mSelected)) 
 {

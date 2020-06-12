@@ -39,8 +39,8 @@
  </objecttype>
  <objecttype name="Lever" color="#aa00ff">
   <property name="active" type="bool" default="false"/>
-  <property name="id" type="int" default="0"/>
   <property name="outdoor" type="bool" default="true"/>
+  <property name="puzzleElementId" type="int" default="0"/>
   <property name="puzzleId" type="int" default="0"/>
   <property name="turnOffAfterSwitch" type="bool" default="false"/>
  </objecttype>
@@ -51,9 +51,9 @@
  </objecttype>
  <objecttype name="MovingPlatform" color="#1ba470">
   <property name="active" type="bool" default="true"/>
-  <property name="id" type="int" default="0"/>
   <property name="platformOffsetX" type="float" default="0"/>
   <property name="platformOffsetY" type="float" default="0"/>
+  <property name="puzzleElementId" type="int" default="0"/>
   <property name="puzzleId" type="int" default="0"/>
   <property name="velX" type="float" default="0"/>
   <property name="velY" type="float" default="0"/>
@@ -65,9 +65,9 @@
  </objecttype>
  <objecttype name="PressurePlate" color="#a0a0a4">
   <property name="color" type="string" default="grey"/>
-  <property name="id" type="int" default="0"/>
   <property name="isPressIrreversible" type="bool" default="false"/>
   <property name="outdoor" type="bool" default="true"/>
+  <property name="puzzleElementId" type="int" default="0"/>
   <property name="puzzleId" type="int" default="0"/>
  </objecttype>
  <objecttype name="PushingArea" color="#76a450">
@@ -96,8 +96,8 @@
   <property name="active" type="bool" default="true"/>
   <property name="changeFrequency" type="float" default="0"/>
   <property name="changes" type="bool" default="false"/>
-  <property name="id" type="int" default="0"/>
   <property name="outdoor" type="bool" default="true"/>
+  <property name="puzzleElementId" type="int" default="0"/>
   <property name="puzzleId" type="int" default="0"/>
   <property name="timeToChange" type="float" default="0"/>
  </objecttype>

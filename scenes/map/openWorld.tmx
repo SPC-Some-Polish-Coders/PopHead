@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="371">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="372">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -30146,9 +30146,6 @@
    <point/>
   </object>
   <object id="140" name="Gate" type="Gate" x="-331" y="5454.67">
-   <properties>
-    <property name="id" type="int" value="4"/>
-   </properties>
    <point/>
   </object>
   <object id="141" type="SlowZombie" x="180.5" y="5289">
@@ -30173,7 +30170,7 @@
   </object>
   <object id="145" type="PressurePlate" x="203.166" y="5091.51">
    <properties>
-    <property name="id" type="int" value="1"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="1"/>
    </properties>
    <point/>
@@ -30200,13 +30197,6 @@
    </properties>
    <point/>
   </object>
-  <object id="150" type="PressurePlate" x="189.5" y="5325.83">
-   <properties>
-    <property name="id" type="int" value="1"/>
-    <property name="puzzleId" type="int" value="0"/>
-   </properties>
-   <point/>
-  </object>
   <object id="151" name="Gate" type="Gate" x="641.334" y="5172.67">
    <properties>
     <property name="id" type="int" value="2"/>
@@ -30216,7 +30206,7 @@
   <object id="153" type="PressurePlate" x="706.833" y="5058.24">
    <properties>
     <property name="color" value="red"/>
-    <property name="id" type="int" value="3"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
@@ -30224,7 +30214,7 @@
   <object id="154" type="PressurePlate" x="610.751" y="5058.99">
    <properties>
     <property name="color" value="blue"/>
-    <property name="id" type="int" value="1"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
@@ -30250,7 +30240,7 @@
   <object id="158" type="PressurePlate" x="659.75" y="5058.34">
    <properties>
     <property name="color" value="green"/>
-    <property name="id" type="int" value="2"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="2"/>
    </properties>
    <point/>
@@ -30263,16 +30253,16 @@
   </object>
   <object id="160" type="PressurePlate" x="1115.25" y="5467.03">
    <properties>
-    <property name="id" type="int" value="2"/>
     <property name="isPressIrreversible" type="bool" value="true"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="3"/>
    </properties>
    <point/>
   </object>
   <object id="161" type="PressurePlate" x="1010.79" y="5563.31">
    <properties>
-    <property name="id" type="int" value="3"/>
     <property name="isPressIrreversible" type="bool" value="true"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="3"/>
    </properties>
    <point/>
@@ -30291,14 +30281,14 @@
   </object>
   <object id="166" type="PressurePlate" x="1106.04" y="5561.37">
    <properties>
-    <property name="id" type="int" value="4"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="3"/>
    </properties>
    <point/>
   </object>
   <object id="167" type="PressurePlate" x="1013.84" y="5463.03">
    <properties>
-    <property name="id" type="int" value="1"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="3"/>
    </properties>
    <point/>
@@ -30434,8 +30424,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="2"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
@@ -30445,8 +30435,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
@@ -30456,8 +30446,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="4"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
@@ -30467,8 +30457,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="5"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="5"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
@@ -30493,36 +30483,36 @@
   </object>
   <object id="206" type="PressurePlate" x="341.962" y="6012.12">
    <properties>
-    <property name="id" type="int" value="1"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
   </object>
   <object id="207" type="PressurePlate" x="358.076" y="6008.17">
    <properties>
-    <property name="id" type="int" value="2"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
   </object>
   <object id="210" type="PressurePlate" x="377.78" y="6011.5">
    <properties>
-    <property name="id" type="int" value="3"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
   </object>
   <object id="211" type="PressurePlate" x="455.894" y="6012.05">
    <properties>
-    <property name="id" type="int" value="4"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
@@ -30544,17 +30534,17 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="1"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
   <object id="238" type="PressurePlate" x="473.75" y="6011.5">
    <properties>
-    <property name="id" type="int" value="5"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="5"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
@@ -30567,17 +30557,17 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="6"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="6"/>
     <property name="puzzleId" type="int" value="4"/>
     <property name="timeToChange" type="float" value="0"/>
    </properties>
   </object>
   <object id="241" type="PressurePlate" x="489.636" y="6009.27">
    <properties>
-    <property name="id" type="int" value="6"/>
     <property name="isPressIrreversible" type="bool" value="false"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="6"/>
     <property name="puzzleId" type="int" value="4"/>
    </properties>
    <point/>
@@ -30593,8 +30583,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="1"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
   </object>
@@ -30603,8 +30593,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="2"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="5"/>
     <property name="timeToChange" type="float" value="0.3"/>
    </properties>
@@ -30614,8 +30604,8 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="5"/>
     <property name="timeToChange" type="float" value="0.6"/>
    </properties>
@@ -30625,32 +30615,32 @@
     <property name="active" type="bool" value="true"/>
     <property name="changeFrequency" type="float" value="2"/>
     <property name="changes" type="bool" value="false"/>
-    <property name="id" type="int" value="4"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="5"/>
     <property name="timeToChange" type="float" value="0.6"/>
    </properties>
   </object>
   <object id="255" type="Lever" x="-70" y="6162">
    <properties>
-    <property name="id" type="int" value="1"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
    <point/>
   </object>
   <object id="256" type="Lever" x="-30" y="6162">
    <properties>
-    <property name="id" type="int" value="2"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
    <point/>
   </object>
   <object id="257" type="Lever" x="10" y="6162">
    <properties>
-    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
    <point/>
@@ -30663,8 +30653,8 @@
   </object>
   <object id="267" type="Lever" x="50" y="6162">
    <properties>
-    <property name="id" type="int" value="4"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="5"/>
    </properties>
    <point/>
@@ -30884,9 +30874,9 @@
   </object>
   <object id="354" type="MovingPlatform" x="-1293.17" y="6116.58" width="328.333" height="21.5003">
    <properties>
-    <property name="id" type="int" value="1"/>
     <property name="platformOffsetX" type="float" value="0"/>
     <property name="platformOffsetY" type="float" value="0"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="6"/>
     <property name="velX" type="float" value="60"/>
     <property name="velY" type="float" value="0"/>
@@ -30894,9 +30884,9 @@
   </object>
   <object id="355" type="MovingPlatform" x="-1294" y="6086.08" width="328.333" height="23.5003">
    <properties>
-    <property name="id" type="int" value="2"/>
     <property name="platformOffsetX" type="float" value="200"/>
     <property name="platformOffsetY" type="float" value="0"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="6"/>
     <property name="velX" type="float" value="90"/>
     <property name="velY" type="float" value="0"/>
@@ -30904,9 +30894,9 @@
   </object>
   <object id="356" type="MovingPlatform" x="-1295.83" y="6052.92" width="328.333" height="21.5003">
    <properties>
-    <property name="id" type="int" value="3"/>
     <property name="platformOffsetX" type="float" value="30"/>
     <property name="platformOffsetY" type="float" value="0"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="6"/>
     <property name="velX" type="float" value="120"/>
     <property name="velY" type="float" value="0"/>
@@ -30914,9 +30904,9 @@
   </object>
   <object id="357" type="MovingPlatform" x="-1293.5" y="6022.75" width="328.333" height="19.8337">
    <properties>
-    <property name="id" type="int" value="4"/>
     <property name="platformOffsetX" type="float" value="50"/>
     <property name="platformOffsetY" type="float" value="0"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="6"/>
     <property name="velX" type="float" value="150"/>
     <property name="velY" type="float" value="0"/>
@@ -30925,8 +30915,8 @@
   <object id="358" type="Lever" x="-1163.42" y="6169.92">
    <properties>
     <property name="active" type="bool" value="false"/>
-    <property name="id" type="int" value="4"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="4"/>
     <property name="puzzleId" type="int" value="6"/>
    </properties>
    <point/>
@@ -30934,8 +30924,8 @@
   <object id="359" type="Lever" x="-1111.75" y="6172.75">
    <properties>
     <property name="active" type="bool" value="false"/>
-    <property name="id" type="int" value="3"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="3"/>
     <property name="puzzleId" type="int" value="6"/>
    </properties>
    <point/>
@@ -30943,8 +30933,8 @@
   <object id="360" type="Lever" x="-1060.75" y="6173.25">
    <properties>
     <property name="active" type="bool" value="false"/>
-    <property name="id" type="int" value="2"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="2"/>
     <property name="puzzleId" type="int" value="6"/>
    </properties>
    <point/>
@@ -30952,8 +30942,8 @@
   <object id="361" type="Lever" x="-1016" y="6173">
    <properties>
     <property name="active" type="bool" value="false"/>
-    <property name="id" type="int" value="1"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="1"/>
     <property name="puzzleId" type="int" value="6"/>
    </properties>
    <point/>
@@ -30975,9 +30965,9 @@
   </object>
   <object id="368" type="MovingPlatform" x="-1293.83" y="5991.67" width="328.333" height="19.8337">
    <properties>
-    <property name="id" type="int" value="5"/>
     <property name="platformOffsetX" type="float" value="50"/>
     <property name="platformOffsetY" type="float" value="0"/>
+    <property name="puzzleElementId" type="int" value="5"/>
     <property name="puzzleId" type="int" value="6"/>
     <property name="velX" type="float" value="200"/>
     <property name="velY" type="float" value="0"/>
@@ -30986,9 +30976,15 @@
   <object id="369" type="Lever" x="-1209.5" y="6172.75">
    <properties>
     <property name="active" type="bool" value="false"/>
-    <property name="id" type="int" value="5"/>
     <property name="outdoor" type="bool" value="false"/>
+    <property name="puzzleElementId" type="int" value="5"/>
     <property name="puzzleId" type="int" value="6"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="371" type="TeleportPoint" x="-908.667" y="6176">
+   <properties>
+    <property name="name" value="puzzle6"/>
    </properties>
    <point/>
   </object>

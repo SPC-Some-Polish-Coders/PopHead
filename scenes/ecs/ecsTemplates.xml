@@ -164,6 +164,7 @@
 	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" w="7" h="15" />
     <component name="Lever" />
+    <component name="PuzzleId" />
   </entityTemplate>
 
   <entityTemplate name="BulletBox">
@@ -241,6 +242,7 @@
 	<component name="PressurePlate" />
 	<component name="PuzzleColor" />
 	<component name="PuzzleGridPos" />
+	<component name="PuzzleId" />
   </entityTemplate >
 
   <entityTemplate name="Spikes" >
@@ -249,6 +251,7 @@
     <component name="TextureRect" x="0" y="0" w="16" h="16" />
 	<component name="IndoorOutdoor" />
 	<component name="Spikes" />
+	<component name="PuzzleId" />
   </entityTemplate >
 
   <entityTemplate name="MovingPlatform" >
@@ -256,6 +259,7 @@
     <component name="RenderQuad" textureFilepath="textures/others/movingPlatform.png" z="187" />
 	<component name="IndoorOutdoor" />
 	<component name="MovingPlatform" />
+	<component name="PuzzleId" />
   </entityTemplate >
 
   <entityTemplate name="FallingPlatform" >

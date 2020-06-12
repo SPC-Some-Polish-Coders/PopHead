@@ -70,6 +70,7 @@ private:
 	void parseSavePoint(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity);
 	void parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity);
+	void parsePuzzleId(const Xml& entityComponentNode, entt::entity& entity);
 	void parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity);
 	void parseMovingPlatform(const Xml& entityComponentNode, entt::entity& entity);
 	void parseFallingPlatform(const Xml& entityComponentNode, entt::entity& entity);

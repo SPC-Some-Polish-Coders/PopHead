@@ -21,10 +21,10 @@ void Puzzles::update(float dt)
 
 	// puzzle 1	
 	{
-		mRegistry.view<PressurePlate>().each([&]
-		(auto plate)
+		mRegistry.view<PressurePlate, PuzzleId>().each([&]
+		(auto plate, auto plateId)
 		{
-			if(plate.puzzleId == 1)
+			if(plateId.puzzleId == 1)
 			{
 				mRegistry.view<Gate>().each([=]
 				(auto& gate)
@@ -40,10 +40,10 @@ void Puzzles::update(float dt)
 	{
 		u32 pressedPlates = 0;
 
-		mRegistry.view<PressurePlate, PuzzleColor>().each([&]
-		(auto plate, auto plateColor)
+		mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
+		(auto plate, auto plateColor, auto plateId)
 		{
-			if(plate.puzzleId == 2)
+			if(plateId.puzzleId == 2)
 			{
 				if(plate.pressedByColor == plateColor)
 					++pressedPlates;
@@ -62,10 +62,10 @@ void Puzzles::update(float dt)
 	{
 		u32 pressedPlates = 0;
 
-		mRegistry.view<PressurePlate>().each([&]
-		(auto plate)
+		mRegistry.view<PressurePlate, PuzzleId>().each([&]
+		(auto plate, auto plateId)
 		{
-			if(plate.puzzleId == 3 && plate.isPressed)
+			if(plateId.puzzleId == 3 && plate.isPressed)
 				++pressedPlates;
 		});
 
@@ -79,15 +79,15 @@ void Puzzles::update(float dt)
 
 	// puzzle 4
 	{
-		mRegistry.view<PressurePlate>().each([&]
-		(auto plate)
+		mRegistry.view<PressurePlate, PuzzleId>().each([&]
+		(auto plate, auto plateId)
 		{
-			if(plate.puzzleId == 4) 
+			if(plateId.puzzleId == 4) 
 			{
-				mRegistry.view<Spikes>().each([&]
-				(auto& spikes)
+				mRegistry.view<Spikes, PuzzleId>().each([&]
+				(auto& spikes, auto spikesId)
 				{
-					if(spikes.puzzleId == 4 && plate.id == spikes.id)
+					if(plateId.hash == spikesId.hash)
 						spikes.active = !plate.isPressed;
 				});
 			}
@@ -96,18 +96,18 @@ void Puzzles::update(float dt)
 
 	// puzzle 5
 	{
-		mRegistry.view<Lever>().each([&]
-		(auto lever)
+		mRegistry.view<Lever, PuzzleId>().each([&]
+		(auto lever, auto leverId)
 		{
-			if(lever.puzzleId == 5 && lever.wasJustSwitched)
+			if(leverId.puzzleId == 5 && lever.wasJustSwitched)
 			{
-				mRegistry.view<Spikes>().each([&]
-				(auto& spikes)
+				mRegistry.view<Spikes, PuzzleId>().each([&]
+				(auto& spikes, auto spikesId)
 				{
-					if((lever.id == 1 && (spikes.id == 2 || spikes.id == 4)) ||
-					   (lever.id == 2 && (spikes.id == 2 || spikes.id == 3 || spikes.id == 4)) ||
-					   (lever.id == 3 && (spikes.id == 1 || spikes.id == 2 || spikes.id == 3)) ||
-					   (lever.id == 4 && (spikes.id == 2)))
+					if((leverId.elementId == 1 && (spikesId.elementId == 2 || spikesId.elementId == 4)) ||
+					   (leverId.elementId == 2 && (spikesId.elementId == 2 || spikesId.elementId == 3 || spikesId.elementId == 4)) ||
+					   (leverId.elementId == 3 && (spikesId.elementId == 1 || spikesId.elementId == 2 || spikesId.elementId == 3)) ||
+					   (leverId.elementId == 4 && (spikesId.elementId == 2)))
 					{
 						spikes.active = !spikes.active;
 					}
@@ -118,18 +118,18 @@ void Puzzles::update(float dt)
 
 	// puzzle 6
 	{
-		mRegistry.view<Lever>().each([&]
-		(auto lever)
+		mRegistry.view<Lever, PuzzleId>().each([&]
+		(auto lever, auto leverId)
 		{
-			if(lever.puzzleId == 6)
+			if(leverId.puzzleId == 6)
 			{
-				mRegistry.view<MovingPlatform>().each([&]
-				(auto& platform)
+				mRegistry.view<MovingPlatform, PuzzleId>().each([&]
+				(auto& platform, auto platformId)
 				{
-					if(lever.id == platform.id)
+					if(leverId.hash == platformId.hash)
 					{
 						bool negative = platform.fullVelocity.x < 0.f;
-						switch(platform.id)
+						switch(platformId.elementId)
 						{
 							case 1: platform.fullVelocity.x = lever.active ? 45.f : 60.f; break;
 							case 2: platform.fullVelocity.x = lever.active ? 45.f : 90.f; break;

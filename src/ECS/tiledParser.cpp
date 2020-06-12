@@ -221,6 +221,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		}
 	};
 
+	auto loadPuzzleId = [&]()
+	{
+		auto& id = registry.get<PuzzleId>(entity);
+		id.puzzleId = getProperty("puzzleId").toU8();
+		id.elementId = getProperty("puzzleElementId").toU8();
+	};
+
 	auto createCopy = [&](const std::string& templateName)
 	{
 		entity = templates.createCopy(templateName, registry);
@@ -332,9 +339,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("Lever");
 		auto& body = loadPos();
 		loadIndoorOutdoorBlendComponent();
+		loadPuzzleId();
 		auto& lever = registry.get<Lever>(entity);
-		lever.id = getProperty("id").toU32();
-		lever.puzzleId = getProperty("puzzleId").toU32();
 		lever.active = getProperty("active").toBool();
 		lever.turnOffAfterSwitch = getProperty("turnOffAfterSwitch").toBool();
 	}
@@ -488,9 +494,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		loadPuzzleGridPos(body);
 		loadIndoorOutdoorBlendComponent();
 		loadPuzzleColorAndTextureRect();
+		loadPuzzleId();
 		auto& plate = registry.get<PressurePlate>(entity);
-		plate.puzzleId = getProperty("puzzleId").toU32();
-		plate.id = getProperty("id").toU32();
 		plate.isPressIrreversible = getProperty("isPressIrreversible").toBool();
 		if(plate.isPressIrreversible)
 		{
@@ -503,10 +508,9 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		createCopy("Spikes");
 		loadIndoorOutdoorBlendComponent();
 		loadAndAlignPosAndSize();
+		loadPuzzleId();
 
 		auto& spikes = registry.get<Spikes>(entity);
-		spikes.puzzleId = getProperty("puzzleId").toU32();
-		spikes.id = getProperty("id").toU32();
 		spikes.timeToChange = getProperty("timeToChange").toFloat();
 		spikes.changeFrequency = getProperty("changeFrequency").toFloat();
 		spikes.changes = getProperty("changes").toBool();
@@ -540,12 +544,11 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	{
 		createCopy("MovingPlatform");
 
+		loadPuzzleId();
 		auto& platform = registry.get<MovingPlatform>(entity);
 		platform.pathBody = getPosAndSizeAttributes();
 		platform.fullVelocity = Vec2(getProperty("velX").toFloat(), getProperty("velY").toFloat());
 		platform.active = getProperty("active").toBool();
-		platform.puzzleId = getProperty("puzzleId").toU32();
-		platform.id = getProperty("id").toU32();
 
 		auto& body = registry.get<BodyRect>(entity);
 		Vec2 offset(getProperty("platformOffsetX").toFloat(), getProperty("platformOffsetY").toFloat());
