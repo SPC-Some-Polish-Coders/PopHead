@@ -16,661 +16,522 @@
 
 namespace ph {
 
-EntitiesParser::EntitiesParser()
-	:mTemplateStorage(Null)
-	,mUsedRegistry(Null)
+static void parseComponents(entt::registry& registry, std::vector<Xml>& componentNodes, entt::entity entity)
 {
-}
+	using namespace component;
 
-void EntitiesParser::parseFile(const std::string& filePath, EntitiesTemplateStorage& templateStorage, entt::registry& gameRegistry)
-{
-	mTemplateStorage = &templateStorage;
-	Xml entitiesFile;
-	PH_ASSERT_CRITICAL(entitiesFile.loadFromFile(filePath), "entities file \"" + filePath + "\"wasn't loaded correctly!");
-	const auto rootNode = entitiesFile.getChild("root");
-
-	mUsedRegistry = &templateStorage.getTemplateRegistry();
-	parseTemplates(*rootNode->getChild("entityTemplates"));
-
-	mUsedRegistry = &gameRegistry;
-
-	const auto entitiesNode = rootNode->getChild("entities");
-	if (entitiesNode)
+	for(auto& componentNode : componentNodes)
 	{
-		parseEntities(*entitiesNode);
-	}
+		const std::string& componentName = componentNode.getAttribute("name")->toString();
 
-	mTemplateStorage = Null;
-	mUsedRegistry = Null;
-}
+		//NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates.
 
-void EntitiesParser::parseTemplates(const Xml& entityTemplatesNode)
-{
-	std::vector<Xml> entityTemplates = entityTemplatesNode.getChildren("entityTemplate");
-	for (auto& entityTemplate : entityTemplates)
-	{
-		const std::string& templateName = entityTemplate.getAttribute("name")->toString();
-		auto entity = mTemplateStorage->create(templateName);
-		if (auto sourceTemplate = entityTemplate.getAttribute("sourceTemplate"))
-			mTemplateStorage->stomp(entity, sourceTemplate->toString(), *mUsedRegistry);
-		std::vector<Xml> entityComponents = entityTemplate.getChildren("component");
-		parseComponents(entityComponents, entity);
-	}
-}
+		if(componentName == "BodyRect")
+		{
+			auto xNode = componentNode.getAttribute("x");
+			auto yNode = componentNode.getAttribute("y");
+			auto wNode = componentNode.getAttribute("w");
+			auto hNode = componentNode.getAttribute("h");
+			float x = xNode ? xNode->toFloat() : 0.f;
+			float y = yNode ? yNode->toFloat() : 0.f;
+			float w = wNode ? wNode->toFloat() : 0.f;
+			float h = hNode ? hNode->toFloat() : 0.f;
+			registry.assign_or_replace<BodyRect>(entity, FloatRect(x, y, w, h));
+		}
+		else if(componentName == "BodyCircle")
+		{
+			float x = componentNode.getAttribute("x")->toFloat();
+			float y = componentNode.getAttribute("y")->toFloat();
+			float radius = componentNode.getAttribute("radius")->toFloat();
+			registry.assign_or_replace<BodyCircle>(entity, Vec2(x, y), radius);
+		}
+		else if(componentName == "RenderQuad")
+		{
+			RenderQuad quad;
 
-void EntitiesParser::parseEntities(const Xml& entitiesNode)
-{
-	std::vector<Xml> entities = entitiesNode.getChildren("entity");
-	for (auto& entity : entities) 
-	{
-		auto newEntity = mUsedRegistry->create();
-		if (auto sourceTemplate = entity.getAttribute("sourceTemplate"))
-			mTemplateStorage->stomp(newEntity, sourceTemplate->toString(), *mUsedRegistry);
-		auto entityComponents = entity.getChildren("component");
-		parseComponents(entityComponents, newEntity);
-	}
-}
+			// parse texture
+			if(auto textureFilepathXml = componentNode.getAttribute("textureFilepath")) 
+			{
+				std::string filepath = textureFilepathXml->toString();
+				if(loadTexture(filepath))
+					quad.texture = &getTexture(filepath);
+				else
+					PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load texture \"" + filepath + "\"");
+			}
+			else
+			{
+				quad.texture = Null;
+			}
 
-void EntitiesParser::parseComponents(std::vector<Xml>& entityComponents, entt::entity& entity)
-{
-	if (entityComponents.empty())
-		return;
+			// parse shader
+			quad.shader = Null;
+			// TODO: Enable custom shaders
+			//if(auto shaderNameXml = componentNode.getAttribute("shaderName")) 
+			//{
+			//	PH_ASSERT_UNEXPECTED_SITUATION(componentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
+			//	const std::string vertexShaderFilepath = componentNode.getAttribute("vertexShaderFilepath")->toString();
 
-	static std::unordered_map<std::string, void(EntitiesParser::*)(const Xml&, entt::entity&)> componentsMap = {
-		{"BodyRect",			        &EntitiesParser::parseBodyRect},
-		{"BodyCircle",			        &EntitiesParser::parseBodyCircle},
-		{"RenderQuad",			  	    &EntitiesParser::parseRenderQuad},
-		{"IndoorOutdoor",			  	&EntitiesParser::parseIndoorOutdoor},
-		{"TextureRect",			  	    &EntitiesParser::parseTextureRect},
-		{"LightWall",			  	    &EntitiesParser::parseLightWall},
-		{"PushingArea",			  	    &EntitiesParser::parsePushingArea},
-		{"Hint",			  			&EntitiesParser::parseHint},
-		{"CharacterSpeed",		  	    &EntitiesParser::parseCharacterSpeed},
-		{"Killable",			  	    &EntitiesParser::parseKillable},
-		{"Health",	              	    &EntitiesParser::parseHealth},
-		{"Damage",	              	    &EntitiesParser::parseDamage},
-		{"Medkit",	              	    &EntitiesParser::parseMedkit},
-		{"Player",                	    &EntitiesParser::parsePlayer},
-		{"Zombie",                	    &EntitiesParser::parseZombie},
-		{"SlowZombieBehavior",			&EntitiesParser::parseSlowZombieBehavior},
-		{"Bullets",                	    &EntitiesParser::parseBullets},
-		{"Kinematics",              	&EntitiesParser::parseKinematics},
-		{"Gate",				  	    &EntitiesParser::parseGate},
-		{"Lever",				  	    &EntitiesParser::parseLever},
-		{"CurrentGun",            	    &EntitiesParser::parseCurrentGun},
-		{"CurrentMeleeWeapon",    	    &EntitiesParser::parseCurrentMeleeWeapon},
-		{"GunProperties",		  	    &EntitiesParser::parseGunProperties},
-		{"MeleeProperties",		  	    &EntitiesParser::parseMeleeProperties},
-		{"FaceDirection",               &EntitiesParser::parseFaceDirection},
-		{"Lifetime",                    &EntitiesParser::parseLifetime},
-		{"Camera",                	    &EntitiesParser::parseCamera},
-		{"LightSource",           	    &EntitiesParser::parseLightSource},
-		{"HiddenForRenderer",	  	    &EntitiesParser::parseHiddenForRenderer},
-		{"GunAttacker",           	    &EntitiesParser::parseGunAttacker},
-		{"CollisionWithPlayer",   	    &EntitiesParser::parseCollisionWithPlayer},
-		{"StaticCollisionBody",   	    &EntitiesParser::parseStaticCollisionBody},
-		{"MultiStaticCollisionBody",    &EntitiesParser::parseMultiStaticCollisionBody},
-		{"KinematicCollisionBody", 	    &EntitiesParser::parseKinematicCollisionBody},
-		{"VelocityChangingEffect", 	    &EntitiesParser::parseVelocityChangingEffect},
-		{"AnimationData",          	    &EntitiesParser::parseAnimationData},
-		{"ParticleEmitter",             &EntitiesParser::parseParticleEmitter},
-		{"MultiParticleEmitter",        &EntitiesParser::parseMultiParticleEmitter},
-		{"RenderChunk",                 &EntitiesParser::parseRenderChunk},
-		{"GroundRenderChunk",           &EntitiesParser::parseGroundRenderChunk},
-		{"ArcadeSpawner",               &EntitiesParser::parseArcadeSpawner},
-		{"LootSpawner",                 &EntitiesParser::parseLootSpawner},
-		{"BulletBox",                   &EntitiesParser::parseBulletBox},
-		{"Spikes",                      &EntitiesParser::parseSpikes},
-		{"PressurePlate",               &EntitiesParser::parsePressurePlate},
-		{"PuzzleColor",                 &EntitiesParser::parsePuzzleColor},
-		{"SavePoint",                   &EntitiesParser::parseSavePoint},
-		{"PuzzleBoulder",               &EntitiesParser::parsePuzzleBoulder},
-		{"PuzzleGridPos",               &EntitiesParser::parsePuzzleGridPos},
-		{"PuzzleId",                    &EntitiesParser::parsePuzzleId},
-		{"CameraRoom",                  &EntitiesParser::parseCameraRoom},
-		{"MovingPlatform",              &EntitiesParser::parseMovingPlatform},
-		{"FallingPlatform",             &EntitiesParser::parseFallingPlatform}
-	};
+			//	PH_ASSERT_UNEXPECTED_SITUATION(componentNode.getAttribute("fragmentShaderFilepath").has_value(), "Not specified fragmentShaderFilepath attribute!");
+			//	const std::string fragmentShaderFilepath = componentNode.getAttribute("fragmentShaderFilepath")->toString();
 
-	for (auto& entityComponent : entityComponents)
-	{
-		const std::string& componentName = entityComponent.getAttribute("name")->toString();
-		try{
-			// TODO: Use std::map::find here instead of std::map::at and get rid of this ugly try catch block
-			(this->*componentsMap.at(componentName))(entityComponent, entity);
-		} 
-		catch(const std::out_of_range&) {
+			//	auto& sl = ShaderLibrary::getInstance();
+			//	const std::string shaderName = shaderNameXml->toString();
+			//	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
+			//		quad.shader = sl.get(shaderName);
+			//	else
+			//		PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
+			//}
+			//else
+
+			// Color parsing
+			auto color = componentNode.getAttribute("color");
+			quad.color = color ? color->toColor() : sf::Color::White;
+
+			// parse rotation
+			auto rotation = componentNode.getAttribute("rotation");
+			quad.rotation = rotation ? rotation->toFloat() : 0.f;
+
+			// parse rotation origin
+			auto rotationOrigin = componentNode.getAttribute("rotationOrigin");
+			quad.rotationOrigin = rotationOrigin ? rotationOrigin->toVec2() : Vec2();
+
+			// parse z
+			auto z = componentNode.getAttribute("z");
+			quad.z = z ? z->toU8() : 100;
+
+			// assign component
+			registry.assign_or_replace<RenderQuad>(entity, quad);
+		}
+		else if(componentName == "IndoorOutdoor")
+		{
+			registry.assign_or_replace<IndoorOutdoorBlend>(entity);
+		}
+		else if(componentName == "TextureRect")
+		{
+			i32 x = componentNode.getAttribute("x")->toI32();
+			i32 y = componentNode.getAttribute("y")->toI32();
+			i32 w = componentNode.getAttribute("w")->toI32();
+			i32 h = componentNode.getAttribute("h")->toI32();
+			IntRect rect(x, y, w, h);
+			registry.assign_or_replace<TextureRect>(entity, rect);
+		}
+		else if(componentName == "LightWall")
+		{
+			FloatRect rect;
+			if(auto x = componentNode.getAttribute("x"))
+			{
+				rect = FloatRect(
+					x->toFloat(),
+					componentNode.getAttribute("y")->toFloat(),
+					componentNode.getAttribute("w")->toFloat(),
+					componentNode.getAttribute("h")->toFloat()
+				);
+			}
+			else
+			{
+				rect = FloatRect(-1.f, -1.f, -1.f, -1.f);
+			}
+
+			registry.assign_or_replace<LightWall>(entity, rect);
+		}
+		else if(componentName == "PushingArea")
+		{
+			float directionX = componentNode.getAttribute("pushForceX")->toFloat();
+			float directionY = componentNode.getAttribute("pushForceY")->toFloat();
+			registry.assign_or_replace<PushingArea>(entity, Vec2(directionX, directionY));
+		}
+		else if(componentName == "Hint")
+		{
+			std::string hintName = componentNode.getAttribute("hintName")->toString();
+			registry.assign_or_replace<Hint>(entity, hintName);
+		}
+		else if(componentName == "CharacterSpeed")
+		{
+			float speed = componentNode.getAttribute("speed")->toFloat();
+			registry.assign_or_replace<CharacterSpeed>(entity, speed);
+		}
+		else if(componentName == "CollisionWithPlayer")
+		{
+			float pushForce = componentNode.getAttribute("pushForce")->toFloat();
+			registry.assign_or_replace<CollisionWithPlayer>(entity, pushForce, false);
+		}
+		else if(componentName == "Kinematics")
+		{
+			float friction = componentNode.getAttribute("friction")->toFloat();
+			registry.assign_or_replace<Kinematics>(entity, Vec2(), Vec2(), friction, friction, 0.5f);
+		}
+		else if(componentName == "Health")
+		{
+			i32 healthPoints = componentNode.getAttribute("healthPoints")->toU32();
+			i32 maxHealthPoints = componentNode.getAttribute("maxHealthPoints")->toU32();
+			registry.assign_or_replace<Health>(entity, healthPoints, maxHealthPoints);
+		}
+		else if(componentName == "Damage")
+		{
+			i32 damageDealt = componentNode.getAttribute("damageDealt")->toU32();
+			registry.assign_or_replace<Damage>(entity, damageDealt);
+		}
+		else if(componentName == "Medkit")
+		{
+			i32 addHealthPoints = componentNode.getAttribute("addHealthPoints")->toI32();
+			registry.assign_or_replace<Medkit>(entity, addHealthPoints);
+		}
+		else if(componentName == "Player")
+		{
+			registry.assign_or_replace<Player>(entity);
+		}
+		else if(componentName == "Gate")
+		{
+			registry.assign_or_replace<Gate>(entity);
+		}
+		else if(componentName == "Lever")
+		{
+			registry.assign_or_replace<Lever>(entity);
+		}
+		else if(componentName == "VelocityChangingEffect")
+		{
+			float velocityMultiplier = componentNode.getAttribute("velocityMultiplier")->toFloat();
+			registry.assign_or_replace<AreaVelocityChangingEffect>(entity, velocityMultiplier);
+		}
+		else if(componentName == "KinematicCollisionBody")
+		{
+			float mass = componentNode.getAttribute("mass")->toFloat();
+			registry.assign_or_replace<KinematicCollisionBody>(entity, mass);
+		}
+		else if(componentName == "StaticCollisionBody")
+		{
+			registry.assign_or_replace<StaticCollisionBody>(entity);
+		}
+		else if(componentName == "MultiStaticCollisionBody")
+		{
+			registry.assign_or_replace<MultiStaticCollisionBody>(entity);
+		}
+		else if(componentName == "FaceDirection")
+		{
+			registry.assign_or_replace<FaceDirection>(entity, Vec2(0, 0));
+		}
+		else if(componentName == "Lifetime")
+		{
+			const float entityLifetime = componentNode.getAttribute("lifetime")->toFloat();
+			registry.assign_or_replace<Lifetime>(entity, entityLifetime);
+		}
+		else if(componentName == "ParticleEmitter")
+		{
+			// TODO: Make them be attributes of ParticleNode and not separate nodes
+
+			ParticleEmitter emitter;
+			auto particleAttribs = componentNode.getChildren("particleAttrib");
+			bool wasEndColorAssigned = false;
+			bool wasInitialVelocityRandomAssigned = false;
+			for(const auto& attrib : particleAttribs)
+			{
+				const std::string name = attrib.getAttribute("name")->toString();
+				if(name == "startColor") 
+				{
+					u8 r = attrib.getAttribute("r")->toU8();
+					u8 g = attrib.getAttribute("g")->toU8();
+					u8 b = attrib.getAttribute("b")->toU8();
+					u8 a = attrib.getAttribute("a")->toU8();
+					if(!wasEndColorAssigned)
+						emitter.parEndColor = {r, g, b, a};
+					emitter.parStartColor = {r, g, b, a};
+				}
+				else if(name == "endColor") 
+				{
+					u8 r = attrib.getAttribute("r")->toU8();
+					u8 g = attrib.getAttribute("g")->toU8();
+					u8 b = attrib.getAttribute("b")->toU8();
+					u8 a = attrib.getAttribute("a")->toU8();
+					emitter.parEndColor = {r, g, b, a};
+					wasEndColorAssigned = true;
+				}
+				else if(name == "texture") 
+				{
+					const std::string filepath = attrib.getAttribute("filepath")->toString();
+					if(loadTexture(filepath))
+						emitter.parTexture = &getTexture(filepath);
+					else
+						PH_EXIT_GAME("EntitiesParser::parseParticleEmitter() wasn't able to load texture!");
+				}
+				else if(name == "spawnPositionOffset") 
+				{
+					const float x = attrib.getAttribute("x")->toFloat();
+					const float y = attrib.getAttribute("y")->toFloat();
+					emitter.spawnPositionOffset = {x, y};
+				}
+				else if(name == "randomSpawnAreaSize") 
+				{
+					const float w = attrib.getAttribute("w")->toFloat();
+					const float h = attrib.getAttribute("h")->toFloat();
+					emitter.randomSpawnAreaSize = {w, h};
+				}
+				else if(name == "initialVelocity") 
+				{
+					const float x = attrib.getAttribute("x")->toFloat();
+					const float y = attrib.getAttribute("y")->toFloat();
+					emitter.parInitialVelocity = {x, y};
+					if(!wasInitialVelocityRandomAssigned)
+						emitter.parInitialVelocityRandom = emitter.parInitialVelocity;
+				}
+				else if(name == "initialVelocityRandom") 
+				{
+					const float x = attrib.getAttribute("x")->toFloat();
+					const float y = attrib.getAttribute("y")->toFloat();
+					emitter.parInitialVelocityRandom = {x, y};
+				}
+				else if(name == "acceleration") 
+				{
+					const float x = attrib.getAttribute("x")->toFloat();
+					const float y = attrib.getAttribute("y")->toFloat();
+					emitter.parAcceleration = {x, y};
+				}
+				else if(name == "size") 
+				{
+					const float x = attrib.getAttribute("x")->toFloat();
+					const float y = attrib.getAttribute("y")->toFloat();
+					emitter.parSize = {x, y};
+				}
+				else if(name == "amount") 
+				{
+					emitter.amountOfParticles = attrib.getAttribute("v")->toU32();
+				}
+				else if(name == "lifetime") 
+				{
+					emitter.parWholeLifetime = attrib.getAttribute("v")->toFloat();
+				}
+				else if(name == "z") 
+				{
+					emitter.parZ = attrib.getAttribute("v")->toU8();
+				}
+				else if(name == "isEmitting") 
+				{
+					emitter.isEmitting = attrib.getAttribute("v")->toBool();
+				}
+			}
+			registry.assign_or_replace<ParticleEmitter>(entity, emitter);
+		}
+		else if(componentName == "MultiParticleEmitter")
+		{
+			registry.assign_or_replace<MultiParticleEmitter>(entity);
+		}
+		else if(componentName == "Zombie")
+		{
+			Zombie zombie;
+			zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
+			zombie.timeToMoveToAnotherTile = componentNode.getAttribute("timeToMoveToAnotherTile")->toFloat();
+			registry.assign_or_replace<Zombie>(entity, zombie);
+		}
+		else if(componentName == "SlowZombieBehavior")
+		{
+			registry.assign_or_replace<SlowZombieBehavior>(entity);
+		}
+		else if(componentName == "RenderChunk")
+		{
+			registry.assign_or_replace<RenderChunk>(entity);
+		}
+		else if(componentName == "GroundRenderChunk")
+		{
+			registry.assign_or_replace<GroundRenderChunk>(entity);
+		}
+		else if(componentName == "BulletBox")
+		{
+			registry.assign_or_replace<BulletBox>(entity);
+		}
+		else if(componentName == "PressurePlate")
+		{
+			registry.assign_or_replace<PressurePlate>(entity);
+		}
+		else if(componentName == "PuzzleColor")
+		{
+			registry.assign_or_replace<PuzzleColor>(entity);
+		}
+		else if(componentName == "Spikes")
+		{
+			registry.assign_or_replace<Spikes>(entity);
+		}
+		else if(componentName == "GunAttacker")
+		{
+			GunAttacker gunAttacker;
+			gunAttacker.isTryingToAttack = componentNode.getAttribute("isTryingToAttack")->toBool();
+			gunAttacker.timeBeforeHiding = componentNode.getAttribute("timeBeforeHiding")->toFloat();
+			gunAttacker.timeToHide = 0.f;
+			registry.assign_or_replace<GunAttacker>(entity, gunAttacker);
+		}
+		else if(componentName == "MeleeProperties")
+		{
+			MeleeProperties mp;
+			mp.minHitInterval = componentNode.getAttribute("minHitInterval")->toFloat();
+			mp.rotationSpeed = componentNode.getAttribute("rotationSpeed")->toFloat();
+			mp.rotationRange = componentNode.getAttribute("rotationRange")->toFloat();
+			mp.range = componentNode.getAttribute("range")->toFloat();
+			mp.damage = componentNode.getAttribute("damage")->toU32();
+			registry.assign_or_replace<MeleeProperties>(entity, mp);
+		}
+		else if(componentName == "GunProperties")
+		{
+			GunProperties gp;
+
+			gp.shotSoundFilepath = componentNode.getAttribute("shotSoundFilepath")->toString();
+			gp.range = componentNode.getAttribute("range")->toFloat();
+			gp.deflectionAngle = componentNode.getAttribute("deflectionAngle")->toFloat();
+			gp.damage = componentNode.getAttribute("damage")->toU32();
+			gp.numberOfBullets = componentNode.getAttribute("numberOfBullets")->toU32();
+			gp.gunId = componentNode.getAttribute("gunId")->toU32();
+			
+			const std::string type = componentNode.getAttribute("type")->toString();
+			if(type == "pistol")
+				gp.type = GunProperties::Type::Pistol;
+			else if(type == "shotgun")
+				gp.type = GunProperties::Type::Shotgun;
+			else
+				PH_UNEXPECTED_SITUATION("Unknown Gun type!");
+			
+			registry.assign_or_replace<GunProperties>(entity, gp);
+		}
+		else if(componentName == "CurrentGun")
+		{
+			registry.assign_or_replace<CurrentGun>(entity);
+		}
+		else if(componentName == "CurrentMeleeWeapon")
+		{
+			registry.assign_or_replace<CurrentMeleeWeapon>(entity);
+		}
+		else if(componentName == "Killable")
+		{
+			registry.assign_or_replace<Killable>(entity);
+		}
+		else if(componentName == "Bullets")
+		{
+			Bullets bullets;
+			bullets.numOfPistolBullets = componentNode.getAttribute("numOfPistolBullets")->toU32();
+			bullets.numOfShotgunBullets = componentNode.getAttribute("numOfShotgunBullets")->toU32();
+			registry.assign_or_replace<Bullets>(entity, bullets);
+		}
+		else if(componentName == "HiddenForRenderer")
+		{
+			registry.assign_or_replace<HiddenForRenderer>(entity);
+		}
+		else if(componentName == "SavePoint")
+		{
+			registry.assign_or_replace<SavePoint>(entity);
+		}
+		else if(componentName == "PuzzleBoulder")
+		{
+			registry.assign_or_replace<PuzzleBoulder>(entity);
+		}
+		else if(componentName == "PuzzleGridPos")
+		{
+			registry.assign_or_replace<PuzzleGridPos>(entity);
+		}
+		else if(componentName == "PuzzleId")
+		{
+			registry.assign_or_replace<PuzzleId>(entity);
+		}
+		else if(componentName == "CameraRoom")
+		{
+			registry.assign_or_replace<CameraRoom>(entity);
+		}
+		else if(componentName == "MovingPlatform")
+		{
+			registry.assign_or_replace<MovingPlatform>(entity);
+		}
+		else if(componentName == "FallingPlatform")
+		{
+			registry.assign_or_replace<FallingPlatform>(entity);
+		}
+		else if(componentName == "Camera")
+		{
+			Camera camera;
+			float x = componentNode.getAttribute("x")->toFloat();
+			float y = componentNode.getAttribute("y")->toFloat();
+			float w = componentNode.getAttribute("w")->toFloat();
+			float h = componentNode.getAttribute("h")->toFloat();
+			camera.bounds = FloatRect(x, y, w, h);
+			camera.name = componentNode.getAttribute("cameraName")->toString();
+			registry.assign_or_replace<Camera>(entity, camera);
+			Camera::currentCameraName = "default";
+		}
+		else if(componentName == "LightSource")
+		{
+			LightSource lightSource;
+			lightSource.offset = { componentNode.getAttribute("offsetX")->toFloat(), componentNode.getAttribute("offsetY")->toFloat() };
+			lightSource.color = componentNode.getAttribute("color")->toColor();
+			auto startAngle = componentNode.getAttribute("startAngle");
+			lightSource.startAngle = startAngle ? startAngle->toFloat() : 0.f;
+			auto endAngle = componentNode.getAttribute("endAngle");
+			lightSource.endAngle = endAngle ? endAngle->toFloat() : 360.f;
+			if(auto attenuationAddition = componentNode.getAttribute("attenuationAddition"))
+				lightSource.attenuationAddition = attenuationAddition->toFloat();
+			if(auto attenuationFactor = componentNode.getAttribute("attenuationFactor"))
+				lightSource.attenuationFactor = attenuationFactor->toFloat();
+			if(auto attenuationSquareFactor = componentNode.getAttribute("attenuationSquareFactor"))
+				lightSource.attenuationSquareFactor = attenuationSquareFactor->toFloat();
+			if(auto rayCollisionDetection = componentNode.getAttribute("rayCollisionDetection"))
+				lightSource.rayCollisionDetection = rayCollisionDetection->toBool();
+			registry.assign_or_replace<LightSource>(entity, lightSource);
+		}
+		else if(componentName == "AnimationData")
+		{
+			AnimationData animationData;
+
+			std::string animationStateFilepath = componentNode.getAttribute("animationStatesFile")->toString();
+			loadAnimationStatesFromFile(animationStateFilepath);
+			animationData.states = getAnimationStates(animationStateFilepath);
+			
+			animationData.currentStateName = componentNode.getAttribute("firstStateName")->toString();
+
+			float delay = componentNode.getAttribute("delay")->toFloat();
+			animationData.delay = delay;
+			animationData.elapsedTime = delay;
+
+			if(auto isPlaying = componentNode.getAttribute("isPlaying"))
+				animationData.isPlaying = isPlaying->toBool();
+			
+			registry.assign_or_replace<AnimationData>(entity, animationData);
+		}
+		else
+		{
 			PH_EXIT_GAME("Component " + componentName + " wasn't found in Entities Parser");
 		}
 	}
 }
 
-//NOTE: We get a little time penalty from using assign_or_replace. However we need it for templates that base on other templates.
-
-using namespace component;
-
-void EntitiesParser::parseBodyRect(const Xml& entityComponentNode, entt::entity& entity)
+void parseEntities(const std::string& filePath, EntitiesTemplateStorage& templateStorage,
+                   entt::registry& gameRegistry)
 {
-	auto xNode = entityComponentNode.getAttribute("x");
-	auto yNode = entityComponentNode.getAttribute("y");
-	auto wNode = entityComponentNode.getAttribute("w");
-	auto hNode = entityComponentNode.getAttribute("h");
-	float x = xNode ? xNode->toFloat() : 0.f;
-	float y = yNode ? yNode->toFloat() : 0.f;
-	float w = wNode ? wNode->toFloat() : 0.f;
-	float h = hNode ? hNode->toFloat() : 0.f;
-	mUsedRegistry->assign_or_replace<BodyRect>(entity, FloatRect(x, y, w, h));
-}
+	Xml entitiesFile;
+	PH_ASSERT_CRITICAL(entitiesFile.loadFromFile(filePath), "entities file \"" + filePath + "\"wasn't loaded correctly!");
+	auto rootNode = entitiesFile.getChild("root");
 
-void EntitiesParser::parseBodyCircle(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float x = entityComponentNode.getAttribute("x")->toFloat();
-	float y = entityComponentNode.getAttribute("y")->toFloat();
-	float radius = entityComponentNode.getAttribute("radius")->toFloat();
-	mUsedRegistry->assign_or_replace<BodyCircle>(entity, Vec2(x, y), radius);
-}
-
-void EntitiesParser::parseRenderQuad(const Xml& entityComponentNode, entt::entity& entity)
-{
-	RenderQuad quad;
-
-	// parse texture
-	if(auto textureFilepathXml = entityComponentNode.getAttribute("textureFilepath")) 
+	// parse templates
+	auto entityTemplatesNode = rootNode->getChild("entityTemplates");
+	std::vector<Xml> entityTemplates = entityTemplatesNode->getChildren("entityTemplate");
+	for(auto& entityTemplate : entityTemplates)
 	{
-		std::string filepath = textureFilepathXml->toString();
-		if(loadTexture(filepath))
-			quad.texture = &getTexture(filepath);
-		else
-			PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load texture \"" + filepath + "\"");
-	}
-	else
-	{
-		quad.texture = Null;
+		std::string templateName = entityTemplate.getAttribute("name")->toString();
+		auto entity = templateStorage.create(templateName);
+		if(auto sourceTemplate = entityTemplate.getAttribute("sourceTemplate"))
+			templateStorage.stomp(entity, sourceTemplate->toString(), templateStorage.getTemplateRegistry());
+		auto componentNodes = entityTemplate.getChildren("component");
+		if(!componentNodes.empty())
+			parseComponents(templateStorage.getTemplateRegistry(), componentNodes, entity);
 	}
 
-	// parse shader
-	quad.shader = Null;
-	// TODO: Enable custom shaders
-	//if(auto shaderNameXml = entityComponentNode.getAttribute("shaderName")) 
-	//{
-	//	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("vertexShaderFilepath").has_value(), "Not specifiled vertexShaderFilepath attribute!");
-	//	const std::string vertexShaderFilepath = entityComponentNode.getAttribute("vertexShaderFilepath")->toString();
-
-	//	PH_ASSERT_UNEXPECTED_SITUATION(entityComponentNode.getAttribute("fragmentShaderFilepath").has_value(), "Not specified fragmentShaderFilepath attribute!");
-	//	const std::string fragmentShaderFilepath = entityComponentNode.getAttribute("fragmentShaderFilepath")->toString();
-
-	//	auto& sl = ShaderLibrary::getInstance();
-	//	const std::string shaderName = shaderNameXml->toString();
-	//	if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
-	//		quad.shader = sl.get(shaderName);
-	//	else
-	//		PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
-	//}
-	//else
-
-	// Color parsing
-	auto color = entityComponentNode.getAttribute("color");
-	quad.color = color ? color->toColor() : sf::Color::White;
-
-	// parse rotation
-	auto rotation = entityComponentNode.getAttribute("rotation");
-	quad.rotation = rotation ? rotation->toFloat() : 0.f;
-
-	// parse rotation origin
-	auto rotationOrigin = entityComponentNode.getAttribute("rotationOrigin");
-	quad.rotationOrigin = rotationOrigin ? rotationOrigin->toVec2() : Vec2();
-
-	// parse z
-	auto z = entityComponentNode.getAttribute("z");
-	quad.z = z ? z->toU8() : 100;
-
-	// assign component
-	mUsedRegistry->assign_or_replace<RenderQuad>(entity, quad);
-}
-
-void EntitiesParser::parseIndoorOutdoor(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<IndoorOutdoorBlend>(entity);
-}
-
-void EntitiesParser::parseTextureRect(const Xml& entityComponentNode, entt::entity& entity)
-{
-	i32 x = entityComponentNode.getAttribute("x")->toI32();
-	i32 y = entityComponentNode.getAttribute("y")->toI32();
-	i32 w = entityComponentNode.getAttribute("w")->toI32();
-	i32 h = entityComponentNode.getAttribute("h")->toI32();
-	IntRect rect(x, y, w, h);
-	mUsedRegistry->assign_or_replace<TextureRect>(entity, rect);
-}
-
-void EntitiesParser::parseLightWall(const Xml& entityComponentNode, entt::entity& entity)
-{
-	FloatRect rect;
-	if(auto x = entityComponentNode.getAttribute("x"))
+	// parse entities
+	const auto entitiesNode = rootNode->getChild("entities");
+	if(entitiesNode)
 	{
-		rect = FloatRect(
-			x->toFloat(),
-			entityComponentNode.getAttribute("y")->toFloat(),
-			entityComponentNode.getAttribute("w")->toFloat(),
-			entityComponentNode.getAttribute("h")->toFloat()
-		);
-	}
-	else
-	{
-		rect = FloatRect(-1.f, -1.f, -1.f, -1.f);
-	}
-
-	mUsedRegistry->assign_or_replace<LightWall>(entity, rect);
-}
-
-void EntitiesParser::parsePushingArea(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float directionX = entityComponentNode.getAttribute("pushForceX")->toFloat();
-	float directionY = entityComponentNode.getAttribute("pushForceY")->toFloat();
-	mUsedRegistry->assign_or_replace<PushingArea>(entity, Vec2(directionX, directionY));
-}
-
-void EntitiesParser::parseHint(const Xml& entityComponentNode, entt::entity& entity)
-{
-	std::string hintName = entityComponentNode.getAttribute("hintName")->toString();
-	mUsedRegistry->assign_or_replace<Hint>(entity, hintName);
-}
-
-void EntitiesParser::parseCharacterSpeed(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float speed = entityComponentNode.getAttribute("speed")->toFloat();
-	mUsedRegistry->assign_or_replace<CharacterSpeed>(entity, speed);
-}
-
-void EntitiesParser::parseCollisionWithPlayer(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float pushForce = entityComponentNode.getAttribute("pushForce")->toFloat();
-	mUsedRegistry->assign_or_replace<CollisionWithPlayer>(entity, pushForce, false);
-}
-
-void EntitiesParser::parseKinematics(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float friction = entityComponentNode.getAttribute("friction")->toFloat();
-	mUsedRegistry->assign_or_replace<Kinematics>(entity, Vec2(), Vec2(), friction, friction, 0.5f);
-}
-
-void EntitiesParser::parseHealth(const Xml& entityComponentNode, entt::entity& entity)
-{
-	i32 healthPoints = entityComponentNode.getAttribute("healthPoints")->toU32();
-	i32 maxHealthPoints = entityComponentNode.getAttribute("maxHealthPoints")->toU32();
-	mUsedRegistry->assign_or_replace<Health>(entity, healthPoints, maxHealthPoints);
-}
-
-void EntitiesParser::parseDamage(const Xml& entityComponentNode, entt::entity& entity)
-{
-	i32 damageDealt = entityComponentNode.getAttribute("damageDealt")->toU32();
-	mUsedRegistry->assign_or_replace<Damage>(entity, damageDealt);
-}
-
-void EntitiesParser::parseMedkit(const Xml& entityComponentNode, entt::entity& entity)
-{
-	i32 addHealthPoints = entityComponentNode.getAttribute("addHealthPoints")->toI32();
-	mUsedRegistry->assign_or_replace<Medkit>(entity, addHealthPoints);
-}
-
-void EntitiesParser::parsePlayer(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<Player>(entity);
-}
-
-void EntitiesParser::parseGate(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<Gate>(entity);
-}
-
-void EntitiesParser::parseLever(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<Lever>(entity);
-}
-
-void EntitiesParser::parseVelocityChangingEffect(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float velocityMultiplier = entityComponentNode.getAttribute("velocityMultiplier")->toFloat();
-	mUsedRegistry->assign_or_replace<AreaVelocityChangingEffect>(entity, velocityMultiplier);
-}
-
-void EntitiesParser::parseKinematicCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
-{
-	float mass = entityComponentNode.getAttribute("mass")->toFloat();
-	mUsedRegistry->assign_or_replace<KinematicCollisionBody>(entity, mass);
-}
-
-void EntitiesParser::parseStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<StaticCollisionBody>(entity);
-}
-
-void EntitiesParser::parseMultiStaticCollisionBody(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<MultiStaticCollisionBody>(entity);
-}
-
-void EntitiesParser::parseFaceDirection(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<FaceDirection>(entity, Vec2(0, 0));
-}
-
-void EntitiesParser::parseLifetime(const Xml& entityComponentNode, entt::entity& entity)
-{
-	const float entityLifetime = entityComponentNode.getAttribute("lifetime")->toFloat();
-	mUsedRegistry->assign_or_replace<Lifetime>(entity, entityLifetime);
-}
-
-void EntitiesParser::parseParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
-{
-	// TODO: Make them be attributes of ParticleNode and not separate nodes
-
-	ParticleEmitter emitter;
-	auto particleAttribs = entityComponentNode.getChildren("particleAttrib");
-	bool wasEndColorAssigned = false;
-	bool wasInitialVelocityRandomAssigned = false;
-	for(const auto& attrib : particleAttribs)
-	{
-		const std::string name = attrib.getAttribute("name")->toString();
-		if(name == "startColor") 
+		std::vector<Xml> entities = entitiesNode->getChildren("entity");
+		for(auto& entity : entities) 
 		{
-			u8 r = attrib.getAttribute("r")->toU8();
-			u8 g = attrib.getAttribute("g")->toU8();
-			u8 b = attrib.getAttribute("b")->toU8();
-			u8 a = attrib.getAttribute("a")->toU8();
-			if(!wasEndColorAssigned)
-				emitter.parEndColor = {r, g, b, a};
-			emitter.parStartColor = {r, g, b, a};
-		}
-		else if(name == "endColor") 
-		{
-			u8 r = attrib.getAttribute("r")->toU8();
-			u8 g = attrib.getAttribute("g")->toU8();
-			u8 b = attrib.getAttribute("b")->toU8();
-			u8 a = attrib.getAttribute("a")->toU8();
-			emitter.parEndColor = {r, g, b, a};
-			wasEndColorAssigned = true;
-		}
-		else if(name == "texture") 
-		{
-			const std::string filepath = attrib.getAttribute("filepath")->toString();
-			if(loadTexture(filepath))
-				emitter.parTexture = &getTexture(filepath);
-			else
-				PH_EXIT_GAME("EntitiesParser::parseParticleEmitter() wasn't able to load texture!");
-		}
-		else if(name == "spawnPositionOffset") 
-		{
-			const float x = attrib.getAttribute("x")->toFloat();
-			const float y = attrib.getAttribute("y")->toFloat();
-			emitter.spawnPositionOffset = {x, y};
-		}
-		else if(name == "randomSpawnAreaSize") 
-		{
-			const float w = attrib.getAttribute("w")->toFloat();
-			const float h = attrib.getAttribute("h")->toFloat();
-			emitter.randomSpawnAreaSize = {w, h};
-		}
-		else if(name == "initialVelocity") 
-		{
-			const float x = attrib.getAttribute("x")->toFloat();
-			const float y = attrib.getAttribute("y")->toFloat();
-			emitter.parInitialVelocity = {x, y};
-			if(!wasInitialVelocityRandomAssigned)
-				emitter.parInitialVelocityRandom = emitter.parInitialVelocity;
-		}
-		else if(name == "initialVelocityRandom") 
-		{
-			const float x = attrib.getAttribute("x")->toFloat();
-			const float y = attrib.getAttribute("y")->toFloat();
-			emitter.parInitialVelocityRandom = {x, y};
-		}
-		else if(name == "acceleration") 
-		{
-			const float x = attrib.getAttribute("x")->toFloat();
-			const float y = attrib.getAttribute("y")->toFloat();
-			emitter.parAcceleration = {x, y};
-		}
-		else if(name == "size") 
-		{
-			const float x = attrib.getAttribute("x")->toFloat();
-			const float y = attrib.getAttribute("y")->toFloat();
-			emitter.parSize = {x, y};
-		}
-		else if(name == "amount") 
-		{
-			emitter.amountOfParticles = attrib.getAttribute("v")->toU32();
-		}
-		else if(name == "lifetime") 
-		{
-			emitter.parWholeLifetime = attrib.getAttribute("v")->toFloat();
-		}
-		else if(name == "z") 
-		{
-			emitter.parZ = attrib.getAttribute("v")->toU8();
-		}
-		else if(name == "isEmitting") 
-		{
-			emitter.isEmitting = attrib.getAttribute("v")->toBool();
+			auto newEntity = gameRegistry.create();
+			if(auto sourceTemplate = entity.getAttribute("sourceTemplate"))
+				templateStorage.stomp(newEntity, sourceTemplate->toString(), gameRegistry);
+			auto componentNodes = entity.getChildren("component");
+			if(!componentNodes.empty())
+				parseComponents(gameRegistry, componentNodes, newEntity);
 		}
 	}
-	mUsedRegistry->assign_or_replace<ParticleEmitter>(entity, emitter);
-}
-
-void EntitiesParser::parseMultiParticleEmitter(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<MultiParticleEmitter>(entity);
-}
-
-void EntitiesParser::parseZombie(const Xml& entityComponentNode, entt::entity& entity)
-{
-	Zombie zombie;
-	zombie.timeFromLastGrowl = Random::generateNumber(0.f, 2.5f);
-	zombie.timeToMoveToAnotherTile = entityComponentNode.getAttribute("timeToMoveToAnotherTile")->toFloat();
-	mUsedRegistry->assign_or_replace<Zombie>(entity, zombie);
-}
-
-void EntitiesParser::parseSlowZombieBehavior(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<SlowZombieBehavior>(entity);
-}
-
-void EntitiesParser::parseRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<RenderChunk>(entity);
-}
-
-void EntitiesParser::parseGroundRenderChunk(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<GroundRenderChunk>(entity);
-}
-
-void EntitiesParser::parseArcadeSpawner(const Xml& entityComponentNode, entt::entity& entity)
-{
-	//mUsedRegistry->assign_or_replace<ArcadeSpawner>(entity);
-}
-
-void EntitiesParser::parseLootSpawner(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<LootSpawner>(entity);
-}
-
-void EntitiesParser::parseBulletBox(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<BulletBox>(entity);
-}
-
-void EntitiesParser::parsePressurePlate(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<PressurePlate>(entity);
-}
-
-void EntitiesParser::parsePuzzleColor(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<PuzzleColor>(entity);
-}
-
-void EntitiesParser::parseSpikes(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<Spikes>(entity);
-}
-
-void EntitiesParser::parseGunAttacker(const Xml& entityComponentNode, entt::entity& entity)
-{
-	GunAttacker gunAttacker;
-	gunAttacker.isTryingToAttack = entityComponentNode.getAttribute("isTryingToAttack")->toBool();
-	gunAttacker.timeBeforeHiding = entityComponentNode.getAttribute("timeBeforeHiding")->toFloat();
-	gunAttacker.timeToHide = 0.f;
-	mUsedRegistry->assign_or_replace<GunAttacker>(entity, gunAttacker);
-}
-
-void EntitiesParser::parseMeleeProperties(const Xml& entityComponentNode, entt::entity& entity)
-{
-	MeleeProperties mp;
-	mp.minHitInterval = entityComponentNode.getAttribute("minHitInterval")->toFloat();
-	mp.rotationSpeed = entityComponentNode.getAttribute("rotationSpeed")->toFloat();
-	mp.rotationRange = entityComponentNode.getAttribute("rotationRange")->toFloat();
-	mp.range = entityComponentNode.getAttribute("range")->toFloat();
-	mp.damage = entityComponentNode.getAttribute("damage")->toU32();
-	mUsedRegistry->assign_or_replace<MeleeProperties>(entity, mp);
-}
-
-void EntitiesParser::parseGunProperties(const Xml& entityComponentNode, entt::entity& entity)
-{
-	GunProperties gp;
-
-	gp.shotSoundFilepath = entityComponentNode.getAttribute("shotSoundFilepath")->toString();
-	gp.range = entityComponentNode.getAttribute("range")->toFloat();
-	gp.deflectionAngle = entityComponentNode.getAttribute("deflectionAngle")->toFloat();
-	gp.damage = entityComponentNode.getAttribute("damage")->toU32();
-	gp.numberOfBullets = entityComponentNode.getAttribute("numberOfBullets")->toU32();
-	gp.gunId = entityComponentNode.getAttribute("gunId")->toU32();
-	
-	const std::string type = entityComponentNode.getAttribute("type")->toString();
-	if(type == "pistol")
-		gp.type = GunProperties::Type::Pistol;
-	else if(type == "shotgun")
-		gp.type = GunProperties::Type::Shotgun;
-	else
-		PH_UNEXPECTED_SITUATION("Unknown Gun type!");
-	
-	mUsedRegistry->assign_or_replace<GunProperties>(entity, gp);
-}
-
-void EntitiesParser::parseCurrentGun(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<CurrentGun>(entity);
-}
-
-void EntitiesParser::parseCurrentMeleeWeapon(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<CurrentMeleeWeapon>(entity);
-}
-
-void EntitiesParser::parseKillable(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<Killable>(entity);
-}
-
-void EntitiesParser::parseBullets(const Xml& entityComponentNode, entt::entity& entity)
-{
-	Bullets bullets;
-	bullets.numOfPistolBullets = entityComponentNode.getAttribute("numOfPistolBullets")->toU32();
-	bullets.numOfShotgunBullets = entityComponentNode.getAttribute("numOfShotgunBullets")->toU32();
-	mUsedRegistry->assign_or_replace<Bullets>(entity, bullets);
-}
-
-void EntitiesParser::parseHiddenForRenderer(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<HiddenForRenderer>(entity);
-}
-
-void EntitiesParser::parseSavePoint(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<SavePoint>(entity);
-}
-
-void EntitiesParser::parsePuzzleBoulder(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<PuzzleBoulder>(entity);
-}
-
-void EntitiesParser::parsePuzzleGridPos(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<PuzzleGridPos>(entity);
-}
-
-void EntitiesParser::parsePuzzleId(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<PuzzleId>(entity);
-}
-
-void EntitiesParser::parseCameraRoom(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<CameraRoom>(entity);
-}
-
-void EntitiesParser::parseMovingPlatform(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<MovingPlatform>(entity);
-}
-
-void EntitiesParser::parseFallingPlatform(const Xml& entityComponentNode, entt::entity& entity)
-{
-	mUsedRegistry->assign_or_replace<FallingPlatform>(entity);
-}
-
-void EntitiesParser::parseCamera(const Xml& entityComponentNode, entt::entity& entity)
-{
-	Camera camera;
-	float x = entityComponentNode.getAttribute("x")->toFloat();
-	float y = entityComponentNode.getAttribute("y")->toFloat();
-	float w = entityComponentNode.getAttribute("w")->toFloat();
-	float h = entityComponentNode.getAttribute("h")->toFloat();
-	camera.bounds = FloatRect(x, y, w, h);
-	camera.name = entityComponentNode.getAttribute("cameraName")->toString();
-	mUsedRegistry->assign_or_replace<Camera>(entity, camera);
-	Camera::currentCameraName = "default";
-}
-
-void EntitiesParser::parseLightSource(const Xml& entityComponentNode, entt::entity& entity)
-{
-	LightSource lightSource;
-	lightSource.offset = { entityComponentNode.getAttribute("offsetX")->toFloat(), entityComponentNode.getAttribute("offsetY")->toFloat() };
-	lightSource.color = entityComponentNode.getAttribute("color")->toColor();
-	auto startAngle = entityComponentNode.getAttribute("startAngle");
-	lightSource.startAngle = startAngle ? startAngle->toFloat() : 0.f;
-	auto endAngle = entityComponentNode.getAttribute("endAngle");
-	lightSource.endAngle = endAngle ? endAngle->toFloat() : 360.f;
-	if(auto attenuationAddition = entityComponentNode.getAttribute("attenuationAddition"))
-		lightSource.attenuationAddition = attenuationAddition->toFloat();
-	if(auto attenuationFactor = entityComponentNode.getAttribute("attenuationFactor"))
-		lightSource.attenuationFactor = attenuationFactor->toFloat();
-	if(auto attenuationSquareFactor = entityComponentNode.getAttribute("attenuationSquareFactor"))
-		lightSource.attenuationSquareFactor = attenuationSquareFactor->toFloat();
-	if(auto rayCollisionDetection = entityComponentNode.getAttribute("rayCollisionDetection"))
-		lightSource.rayCollisionDetection = rayCollisionDetection->toBool();
-	mUsedRegistry->assign_or_replace<LightSource>(entity, lightSource);
-}
-
-void EntitiesParser::parseAnimationData(const Xml& entityComponentNode, entt::entity& entity)
-{
-	AnimationData animationData;
-
-	std::string animationStateFilepath = entityComponentNode.getAttribute("animationStatesFile")->toString();
-	loadAnimationStatesFromFile(animationStateFilepath);
-	animationData.states = getAnimationStates(animationStateFilepath);
-	
-	animationData.currentStateName = entityComponentNode.getAttribute("firstStateName")->toString();
-
-	float delay = entityComponentNode.getAttribute("delay")->toFloat();
-	animationData.delay = delay;
-	animationData.elapsedTime = delay;
-
-	if(auto isPlaying = entityComponentNode.getAttribute("isPlaying"))
-		animationData.isPlaying = isPlaying->toBool();
-	
-	mUsedRegistry->assign_or_replace<AnimationData>(entity, animationData);
 }
 
 }

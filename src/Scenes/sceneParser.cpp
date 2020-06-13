@@ -58,8 +58,7 @@ void parseScene(EntitiesTemplateStorage& templateStorage,
 	if(const auto entitiesNode = sceneLinksNode.getChild("ecsObjects")) 
 	{
 		const std::string entitiesFilePath = "scenes/ecs/" + entitiesNode->getAttribute("filename")->toString();
-		EntitiesParser parser;
-		parser.parseFile(entitiesFilePath, templateStorage, gameRegistry);
+		parseEntities(entitiesFilePath, templateStorage, gameRegistry);
 	}
 
 	// parse map

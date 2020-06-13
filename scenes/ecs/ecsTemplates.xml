@@ -12,16 +12,6 @@
 	<component name="CameraRoom" />
   </entityTemplate>
 
-  <entityTemplate name="ArcadeSpawner">
-    <component name="BodyRect"/>
-    <component name="ArcadeSpawner"/>
-  </entityTemplate>
-
-  <entityTemplate name="LootSpawner">
-    <component name="BodyRect"/>
-    <component name="LootSpawner"/>
-  </entityTemplate>
-
   <entityTemplate name="MapChunk">
     <component name="BodyRect" />
     <component name="RenderChunk" />
