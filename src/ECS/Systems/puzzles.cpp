@@ -144,6 +144,66 @@ void Puzzles::update(float dt)
 			}
 		});
 	}
+
+	// puzzle 7 (it's not really a puzzle, it's just lever which opens gate)
+	{
+		mRegistry.view<Lever, PuzzleId>().each([&]
+		(auto lever, auto leverId)
+		{
+			if(leverId.puzzleId == 7)
+			{
+				mRegistry.view<Gate>().each([&]
+				(auto& gate)
+				{
+					if(gate.id == 4)
+						gate.open = lever.active;
+				});
+			}
+		});
+	}
+
+	// puzzle 8
+	{
+		u32 pressedPlates = 0;
+
+		mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
+		(auto plate, auto plateColor, auto plateId)
+		{
+			if(plateId.puzzleId == 8)
+			{
+				if(plate.pressedByColor == plateColor)
+					++pressedPlates;
+			}
+		});
+
+		mRegistry.view<Gate>().each([=]
+		(auto& gate)
+		{
+			if(gate.id == 5)
+				gate.open = pressedPlates == 2;
+		});
+	}
+
+	// puzzle 9 (it's not really a puzzle, it's just bunch of pressure plates which open a door)
+	{
+		u32 pressedPlates = 0;
+
+		mRegistry.view<PressurePlate, PuzzleId>().each([&]
+		(auto plate, auto plateId)
+		{
+			if(plateId.puzzleId == 9 && plate.isPressed)
+				++pressedPlates;
+		});
+
+		if(pressedPlates == 4)
+		{
+			mRegistry.view<Gate>().each([&]
+			(auto& gate)
+			{
+				gate.open = true;
+			});
+		}
+	}
 }
 
 }

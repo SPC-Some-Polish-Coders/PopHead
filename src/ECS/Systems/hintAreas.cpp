@@ -88,13 +88,6 @@ void HintAreas::update(float dt)
 			hint.isShown = false;
 		}
 	});
-
-	// NOTE: TEMPORARY
-	mWasPlayerInControlHint = true;
-	GunAttacks::shootInputDisabled = false;
-	GunAttacks::changeWeaponInputDisabled = false;
-	MeleeAttacks::inputDisabled = false;
-	PlayerMovementInput::dashInputDisabled = false;
 }
 
 }

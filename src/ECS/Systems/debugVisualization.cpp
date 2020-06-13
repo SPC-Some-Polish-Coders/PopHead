@@ -13,7 +13,7 @@ extern bool debugWindowOpen;
 namespace ph::system {
 
 static bool 
-enableAreaDebug = true,
+enableDebugVisualization = true,
 collision,
 velocityChangingArea,
 pushingArea,
@@ -40,7 +40,7 @@ void DebugVisualization::update(float dt)
 	{
 		ImGui::Columns(2);
 
-		ImGui::Checkbox("enable area debug", &enableAreaDebug);
+		ImGui::Checkbox("enable debug visualization", &enableDebugVisualization);
 		ImGui::Checkbox("collisions", &collision);
 		ImGui::Checkbox("velocity changing areas", &velocityChangingArea);
 		ImGui::Checkbox("pushing areas", &pushingArea);
@@ -77,7 +77,7 @@ void DebugVisualization::update(float dt)
 		ImGui::EndTabItem();
 	}
 
-	if(!enableAreaDebug) return;
+	if(!enableDebugVisualization) return;
 
 	if(collision)
 	{
