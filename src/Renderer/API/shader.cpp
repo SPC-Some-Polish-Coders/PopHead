@@ -100,12 +100,14 @@ void Shader::setUniformVec2(const char* name, Vec2 value) const
 	GLCheck( glUniform2f(getUniformLocation(name), value.x, value.y) );
 }
 
+void Shader::setUniformVec4(const char* name, Vec4 v) const
+{
+	glUniform4f(getUniformLocation(name), v.x, v.y, v.z, v.w);
+}
+
 void Shader::setUniformVec4Color(const char* name, sf::Color color) const
 {
-	GLCheck( glUniform4f(getUniformLocation(name),
-		Cast<float>(color.r) / 255.f, Cast<float>(color.g) / 255.f,
-		Cast<float>(color.b) / 255.f, Cast<float>(color.a) / 255.f
-	) );
+	setUniformVec4(name, castToNormalizedColorVec4(color));
 }
 
 void Shader::setUniformVec4Rect(const char* name, const FloatRect& r) const

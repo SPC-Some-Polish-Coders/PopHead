@@ -48,18 +48,6 @@ struct ResetGuiLive
 static ResetGuiLive resetGuiLive;
 #endif 
 
-static Vec2 getPlayerPosition()
-{
-	Vec2 playerPos = vector2ArgumentError;
-	auto& registry = sceneManager->getScene().getRegistry();
-	registry.view<component::Player, component::BodyRect>().each([&playerPos]
-	(auto, const auto& body) 
-	{
-		playerPos = body.center();
-	});
-	return playerPos;
-}
-
 static Vec2 handleGetVector2ArgumentError()
 {
 	pushOutputLine({"Incorrect argument! Argument has to be a number.", errorRedColor});
@@ -181,7 +169,7 @@ static void executeReset()
 	else
 	{
 		if(commandContains("stay"))
-			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath(), getPlayerPosition());
+			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath(), getPlayerPos());
 		else
 			sceneManager->replaceScene(sceneManager->getCurrentSceneFilePath());
 	}
@@ -268,11 +256,8 @@ static void executeTeleportPoint()
 
 		if(tpExists)
 		{
-			registry.view<component::Player, component::BodyRect>().each([newPos]
-			(auto player, auto& body) 
-			{
-				body.pos = newPos;
-			});
+			auto& body = getPlayerBodyRef();
+			body.pos = newPos;
 		}
 	}
 }
@@ -325,12 +310,8 @@ static void executeMove()
 	else
 	{
 		Vec2 moveOffset = getVector2Argument();
-		auto& registry = sceneManager->getScene().getRegistry();
-		registry.view<component::Player, component::BodyRect>().each([moveOffset]
-		(auto, auto& body) 
-		{
-			body.pos += moveOffset;
-		});
+		auto& body = getPlayerBodyRef();
+		body.pos += moveOffset;
 	}
 }
 
@@ -372,7 +353,7 @@ static void executeCurrentPos()
 	}
 	else
 	{
-		pushOutputLine({"player position: " + castToString(getPlayerPosition()), infoLimeColor});
+		pushOutputLine({"player position: " + castToString(getPlayerPos()), infoLimeColor});
 	}
 }
 

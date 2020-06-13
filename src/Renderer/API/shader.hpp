@@ -29,6 +29,7 @@ public:
 	void setUniformU32(const char* name, u32 value) const;
 	void setUniformFloat(const char* name, float value) const;
 	void setUniformVec2(const char* name, Vec2 value) const;
+	void setUniformVec4(const char* name, Vec4 v) const;
 	void setUniformVec4Color(const char* name, sf::Color) const;
 	void setUniformVec4Rect(const char* name, const FloatRect&) const;
 	void setUniformMatrix4x4(const char* name, float* transform) const;
