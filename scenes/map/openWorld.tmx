@@ -33198,7 +33198,7 @@
   <object id="461" type="CollisionAndLightWallDenialArea" x="-460.479" y="5649.5" width="74.2913" height="22.333"/>
   <object id="467" type="CollisionAndLightWallDenialArea" x="473.188" y="5962.75" width="42.125" height="40.4997"/>
  </objectgroup>
- <objectgroup id="17" name="WeatherEntities">
+ <objectgroup id="17" name="WeatherEntities" visible="0">
   <object id="291" type="WeatherArea" x="397.818" y="4711.27" width="1105.09" height="1056.36">
    <properties>
     <property name="WeatherType" value="NormalRain"/>

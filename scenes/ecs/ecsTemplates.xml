@@ -143,11 +143,6 @@
     </component>
   </entityTemplate>
 
-  <entityTemplate name="LightWall">
-    <component name="BodyRect"/>
-    <component name="LightWall"/>
-  </entityTemplate>
-
   <entityTemplate name="Lever">
     <component name="BodyRect" x="0.0" y="2.0" w="8" h="16" />
     <component name="RenderQuad" textureFilepath="textures/others/lever.png" z="99" />
@@ -194,11 +189,6 @@
     <component name="RenderQuad" textureFilepath="textures/others/baseballBat.png" z="93" rotationOrigin="12, 12"/>
     <component name="HiddenForRenderer" />
     <component name="MeleeProperties" minHitInterval="0.8" rotationRange="100.0" rotationSpeed="270.0" range="27.0" damage="50" />
-  </entityTemplate>
-
-  <entityTemplate name="Sprite">
-    <component name="BodyRect" />
-    <component name="RenderQuad" />
   </entityTemplate>
 
   <entityTemplate name="FlowingRiver" >

@@ -344,69 +344,6 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		lever.active = getProperty("active").toBool();
 		lever.turnOffAfterSwitch = getProperty("turnOffAfterSwitch").toBool();
 	}
-	else if(type == "Sprite")
-	{
-		// create sprite entity
-		createCopy("Sprite");
-		auto& [rq, body] = registry.get<RenderQuad, BodyRect>(entity);
-
-		// load texture
-		const std::string texturePath = getProperty("texturePath").toString();
-		if(texturePath != "none") 
-		{
-			if(loadTexture(texturePath))
-				rq.texture = &getTexture(texturePath);
-			else
-				PH_EXIT_GAME("TiledParser::loadSprite() wasn't able to load texture \"" + texturePath + "\"");
-		}
-
-		// load texture rect
-		if(getProperty("activeTextureRect").toBool()) 
-		{
-			registry.assign_or_replace<TextureRect>(
-				entity,
-				IntRect(getProperty("textureRectLeft").toI32(),
-				        getProperty("textureRectTop").toI32(),
-				        getProperty("textureRectWidth").toI32(),
-				        getProperty("textureRectHeight").toI32())
-			);
-		}
-
-		// load hidden forrenderer
-		if(getProperty("hiddenForRenderer").toBool())
-			registry.assign_or_replace<HiddenForRenderer>(entity);
-
-		// load shader
-		rq.shader = Null;
-		// TODO: Enable custom shaders
-		/*const std::string shaderName = getProperty(spriteNode, "shaderName").toString();
-		if(shaderName != "none") {
-			const std::string vertexShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
-			PH_ASSERT_CRITICAL(vertexShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'vertexShaderFilepath'!");
-			const std::string fragmentShaderFilepath = getProperty(spriteNode, "vertexShaderFilepath").toString();
-			PH_ASSERT_CRITICAL(fragmentShaderFilepath != "none", "TiledParser::loadSprite(): Sprite has 'shaderName' but doesn't have 'fragmentShaderFilepath'!");
-
-			auto& sl = ShaderLibrary::getInstance();
-			if(sl.loadFromFile(shaderName, vertexShaderFilepath.c_str(), fragmentShaderFilepath.c_str()))
-				rq.shader = sl.get(shaderName);
-			else
-				PH_EXIT_GAME("EntitiesParser::parseRenderQuad() wasn't able to load shader!");
-		}*/
-
-		// load rotation and rotation origin
-		rq.rotation = getProperty("rotation").toFloat();
-		rq.rotationOrigin.x = getProperty("rotationOriginX").toFloat();
-		rq.rotationOrigin.y = getProperty("rotationOriginY").toFloat();
-
-		// load z
-		rq.z = getProperty("z").toU8();
-
-		// TODO: Load color
-		rq.color = sf::Color::White;
-
-		// load body rect
-		loadPosAndSize();
-	}
 	else if(type == "Torch") 
 	{
 		createCopy("Torch");

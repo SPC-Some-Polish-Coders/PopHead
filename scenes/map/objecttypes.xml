@@ -101,22 +101,6 @@
   <property name="puzzleId" type="int" default="0"/>
   <property name="timeToChange" type="float" default="0"/>
  </objecttype>
- <objecttype name="Sprite" color="#454fa4">
-  <property name="activeTextureRect" type="bool" default="false"/>
-  <property name="fragmentShaderFilepath" type="string" default="none"/>
-  <property name="hiddenForRenderer" type="bool" default="false"/>
-  <property name="rotation" type="float" default="0"/>
-  <property name="rotationOriginX" type="float" default="0"/>
-  <property name="rotationOriginY" type="float" default="0"/>
-  <property name="shaderName" type="string" default="none"/>
-  <property name="texturePath" type="string" default="none"/>
-  <property name="textureRectHeight" type="int" default="0"/>
-  <property name="textureRectLeft" type="int" default="0"/>
-  <property name="textureRectTop" type="int" default="0"/>
-  <property name="textureRectWidth" type="int" default="0"/>
-  <property name="vertexShaderFilepath" type="string" default="none"/>
-  <property name="z" type="float" default="0"/>
- </objecttype>
  <objecttype name="TeleportPoint" color="#a42b9a">
   <property name="name" type="string"/>
  </objecttype>
