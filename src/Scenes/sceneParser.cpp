@@ -1,7 +1,6 @@
 #include "pch.hpp"
 #include "sceneParser.hpp"
 #include "Renderer/renderer.hpp"
-#include "ECS/Systems/arcadeMode.hpp"
 #include "ECS/entitiesParser.hpp"
 #include "ECS/tiledParser.hpp"
 #include "ECS/xmlMapParser.hpp"

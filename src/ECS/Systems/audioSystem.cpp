@@ -1,6 +1,5 @@
 #include "pch.hpp"
 #include "audioSystem.hpp"
-#include "arcadeMode.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/audioComponents.hpp"
