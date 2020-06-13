@@ -52,7 +52,7 @@ void AudioSystem::update(float dt)
 	mRegistry.view<Damage, BodyRect>().each([&](auto, auto body)
 	{
 		Vec2 enemyPos = body.center();
-		float enemyDistanceFromPlayer = Math::distanceBetweenPoints(enemyPos, playerPos);
+		float enemyDistanceFromPlayer = distanceBetweenPoints(enemyPos, playerPos);
 		if(theClosestEnemyDistanceFromPlayer > enemyDistanceFromPlayer)
 			theClosestEnemyDistanceFromPlayer = enemyDistanceFromPlayer;
 	});

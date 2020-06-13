@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 
-namespace ph::Math {
+namespace ph {
 
 	constexpr float pi = 3.14159265359f;
 
@@ -40,7 +40,7 @@ namespace ph::Math {
 	FORCE_INLINE float distanceBetweenPoints(Vec2Base<T> point1, Vec2Base<T> point2);
 
 	template <typename T>
-	FORCE_INLINE Vec2Base<T> abs(Vec2Base<T>);
+	FORCE_INLINE Vec2Base<T> absVec(Vec2Base<T>);
 
 	FORCE_INLINE bool areApproximatelyEqual(float a, float b, float maxApproximation);
 	FORCE_INLINE bool areApproximatelyEqual(Vec2 a, Vec2 b, float maxApproximation);

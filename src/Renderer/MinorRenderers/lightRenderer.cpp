@@ -155,7 +155,7 @@ static Vec2 getVectorLineIntersectionPoint(Vec2 rayDir, Vec2 lightPos, Vec2 line
 
 	float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	if(den == 0.f)
-		return Math::nullVec2; 
+		return nullVec2; 
 
 	float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
 	float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
@@ -163,7 +163,7 @@ static Vec2 getVectorLineIntersectionPoint(Vec2 rayDir, Vec2 lightPos, Vec2 line
 	if(t > 0 && t < 1 && u > 0)
 		return Vec2(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
 	else
-		return Math::nullVec2; 
+		return nullVec2; 
 }
 
 static RayWallIntersection getRayWallClosestIntersection(Vec2 rayDir, Vec2 lightPos, FloatRect wall)
@@ -177,12 +177,12 @@ static RayWallIntersection getRayWallClosestIntersection(Vec2 rayDir, Vec2 light
 	RayWallIntersection closestIntersection;
 	for(u32 i = 0; i < 4; ++i) 
 	{
-		if(results[i] == Math::nullVec2)
+		if(results[i] == nullVec2)
 			continue;
 
 		if(closestIntersection.valid) 
 		{
-			float distance = Math::distanceBetweenPoints(lightPos, results[i]);
+			float distance = distanceBetweenPoints(lightPos, results[i]);
 			if(distance < closestIntersection.distance) 
 			{
 				closestIntersection.distance = distance;
@@ -191,7 +191,7 @@ static RayWallIntersection getRayWallClosestIntersection(Vec2 rayDir, Vec2 light
 		}
 		else
 		{
-			closestIntersection.distance = Math::distanceBetweenPoints(lightPos, results[i]);
+			closestIntersection.distance = distanceBetweenPoints(lightPos, results[i]);
 			closestIntersection.point = results[i];
 			closestIntersection.valid = true;
 		}
@@ -224,7 +224,7 @@ void flush()
 			{
 				++rays;
 
-				float rad = Math::degreesToRadians(angle);
+				float rad = degreesToRadians(angle);
 				Vec2 rayDir(std::cos(rad), std::sin(rad));
 				Vec2 nearestIntersectionPoint;
 				float nearestIntersectionDistance = INFINITY;

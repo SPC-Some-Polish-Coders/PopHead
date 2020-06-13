@@ -90,7 +90,7 @@ void PuzzleBoulders::update(float dt)
 			boulderLeftEdge.y += 2.f;
 			boulderLeftEdge.w = 5.f;
 			boulderLeftEdge.h -= 4.f;
-			if(Math::intersect(boulderLeftEdge, circlePos, playerCircle.radius) &&
+			if(intersect(boulderLeftEdge, circlePos, playerCircle.radius) &&
 			   playerKinematics.acceleration.x > 0.f &&
 			   (boulder.movingRight == 0.f || boulder.movingRight > 15.f) &&
 			   !collidesOnPuzzleGrid({1, 0}))
@@ -108,7 +108,7 @@ void PuzzleBoulders::update(float dt)
 			boulderRightEdge.y += 2.f;
 			boulderRightEdge.w = 5.f;
 			boulderRightEdge.h -= 4.f;
-			if(Math::intersect(boulderRightEdge, circlePos, playerCircle.radius) && 
+			if(intersect(boulderRightEdge, circlePos, playerCircle.radius) && 
 			   playerKinematics.acceleration.x < 0.f &&
 			   (boulder.movingLeft == 0.f || boulder.movingLeft > 15.f) &&
 			   !collidesOnPuzzleGrid({-1, 0}))
@@ -126,7 +126,7 @@ void PuzzleBoulders::update(float dt)
 			boulderUpEdge.y -= 2.f; 
 			boulderUpEdge.w -= 4.f; 
 			boulderUpEdge.h = 5.f;
-			if(Math::intersect(boulderUpEdge, circlePos, playerCircle.radius) && 
+			if(intersect(boulderUpEdge, circlePos, playerCircle.radius) && 
 			   playerKinematics.acceleration.y > 0.f &&
 			   (boulder.movingDown == 0.f || boulder.movingDown > 15.f) &&
 			   !collidesOnPuzzleGrid({0, 1}))
@@ -144,7 +144,7 @@ void PuzzleBoulders::update(float dt)
 			boulderDownEdge.y += boulderBody.h - 3.f;
 			boulderDownEdge.w -= 4.f;
 			boulderDownEdge.h = 5.f;
-			if(Math::intersect(boulderDownEdge, circlePos, playerCircle.radius) &&
+			if(intersect(boulderDownEdge, circlePos, playerCircle.radius) &&
 			   playerKinematics.acceleration.y < 0.f &&
 			   (boulder.movingUp == 0.f || boulder.movingUp > 15.f) &&
 			   !collidesOnPuzzleGrid({0, -1}))

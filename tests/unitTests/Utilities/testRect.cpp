@@ -8,31 +8,31 @@ TEST_CASE("Get bounds of rect", "[Utilities][Rect]")
 		ph::FloatRect rect(0, 0, 0, 0);
 		CHECK(rect.right() == 0);
 		CHECK(rect.bottom() == 0);
-		//CHECK(areEqual(Math::center(rect), Vec2(0, 0)));
+		//CHECK(areEqual(center(rect), Vec2(0, 0)));
 	}
 	SECTION("Top left corner at (0, 0)") {
 		ph::FloatRect rect(0, 0, 5, 8);
 		CHECK(rect.right() == 5);
 		CHECK(rect.bottom() == 8);
-		//CHECK(Math::center(rect) == Vec2(2.5, 4));
+		//CHECK(center(rect) == Vec2(2.5, 4));
 	}
 	SECTION("Top left corner has positive coordinates") {
 		ph::FloatRect rect(4, 9, 5, 8);
 		CHECK(rect.right() == 4 + 5);
 		CHECK(rect.bottom() == 9 + 8);
-		//CHECK(areEqual(Math::center(rect), Vec2(6.5f, 13.f)));
+		//CHECK(areEqual(center(rect), Vec2(6.5f, 13.f)));
 	}
 	SECTION("Top left corner has negative coordinates") {
 		ph::FloatRect rect(-3, -4, 3, 5);
 		CHECK(rect.right() == -3 + 3);
 		CHECK(rect.bottom() == -4 + 5);
-		//CHECK(areEqual(Math::center(rect), Vec2(-1.5f, -1.5f)));
+		//CHECK(areEqual(center(rect), Vec2(-1.5f, -1.5f)));
 	}
 	SECTION("Top left corner has big coordinates") {
 		ph::FloatRect rect(123000, -456710, 120, 6);
 		CHECK(rect.right() == 123000 + 120);
 		CHECK(rect.bottom() == -456710 + 6);
-		//CHECK(areEqual(Math::center(rect), Vec2(123060.f, -456707)));
+		//CHECK(areEqual(center(rect), Vec2(123060.f, -456707)));
 	}
 }
 

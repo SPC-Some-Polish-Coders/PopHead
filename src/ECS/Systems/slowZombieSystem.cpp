@@ -33,7 +33,7 @@ void SlowZombieSystem::update(float dt)
 			return;
 		}
 
-		auto distance = Math::distanceBetweenPoints(playerBody.center(), zombieBody.center());
+		auto distance = distanceBetweenPoints(playerBody.center(), zombieBody.center());
 
 		if(distance > SlowZombieBehavior::farDistance)
 			zombieSpeed.speed = SlowZombieBehavior::farFromPlayerSpeed;

@@ -33,7 +33,7 @@ void RenderSystem::update(float dt)
 			cameraOffset *= (shake.duration - shake.elapsedTime) / shake.duration;
 			auto newCameraPos = camera.bounds.pos + cameraOffset;
 			if(shake.smooth)
-				camera.bounds.pos = Math::lerp(camera.bounds.pos, newCameraPos, 2.f);
+				camera.bounds.pos = lerp(camera.bounds.pos, newCameraPos, 2.f);
 			else
 				camera.bounds.pos = newCameraPos;
 			shake.elapsedTime += dt;

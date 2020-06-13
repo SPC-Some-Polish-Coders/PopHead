@@ -1,7 +1,7 @@
 #include "math.hpp"
 #include "Logs/logs.hpp"
 
-namespace ph::Math {
+namespace ph {
 
 	template<typename T>
 	Vec2Base<T> getUnitVector(Vec2Base<T> vec)
@@ -39,7 +39,7 @@ namespace ph::Math {
 	}
 
 	template<typename T>
-	Vec2Base<T> abs(Vec2Base<T> vec)
+	Vec2Base<T> absVec(Vec2Base<T> vec)
 	{
 		return Vec2Base<T>(std::abs(vec.x), std::abs(vec.y));
 	}

@@ -117,7 +117,7 @@ namespace ph::system {
 
 				for (size_t i = 0; i < 4; ++i)
 				{
-					auto distance = Math::distanceBetweenPoints(circleCenter, rectCorners[i]);
+					auto distance = distanceBetweenPoints(circleCenter, rectCorners[i]);
 					if (distance < closestDistance)
 					{
 						closestDistance = distance;
@@ -156,7 +156,7 @@ namespace ph::system {
 				auto& anotherCirc = kinematicCircObjects.get<component::BodyCircle>(*another);
 				auto anotherCenter = anotherRect.pos + anotherCirc.offset;
 
-				auto distance = Math::distanceBetweenPoints(currentCenter, anotherCenter);
+				auto distance = distanceBetweenPoints(currentCenter, anotherCenter);
 				float radiusSum = currentCirc.radius + anotherCirc.radius;
 
 				if (distance < radiusSum)

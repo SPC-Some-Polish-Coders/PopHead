@@ -157,14 +157,14 @@ void GunAttacks::tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect p
 	if(playerFaceDirection == PH_WEST || playerFaceDirection == PH_EAST)
 	{
 		attackArea.w = range;
-		attackArea.h = range * std::tan(Math::degreesToRadians(deflectionAngle)) * 2.f;
+		attackArea.h = range * std::tan(degreesToRadians(deflectionAngle)) * 2.f;
 
 		attackArea.x += (playerBody.w / 2.f + gunSize.x / 2.f) * playerFaceDirection.x;;
 		attackArea.y -= attackArea.h / 2.f;
 	}
 	else if(playerFaceDirection == PH_SOUTH || playerFaceDirection == PH_NORTH)
 	{
-		attackArea.w = range * std::tan(Math::degreesToRadians(deflectionAngle)) * 2.f;
+		attackArea.w = range * std::tan(degreesToRadians(deflectionAngle)) * 2.f;
 		attackArea.h = range;
 
 		attackArea.x -= attackArea.w / 2.f;

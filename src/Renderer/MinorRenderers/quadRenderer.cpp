@@ -428,7 +428,7 @@ void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* c
 	quadData.position = pos;
 	quadData.size = size;
 	quadData.rotationOrigin = rotationOrigin;
-	quadData.rotation = Math::degreesToRadians(rotation);
+	quadData.rotation = degreesToRadians(rotation);
 	
 	if(!texture)
 		texture = whiteTexture;

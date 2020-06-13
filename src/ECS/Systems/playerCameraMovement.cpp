@@ -48,13 +48,13 @@ void PlayerCameraMovement::update(float dt)
 				if(mInterpolation < 0.f)	
 					mInterpolation = 0.f;
 
-				playerCam.bounds.setSizeWithFixedCenter(Math::lerp(playerCam.bounds.size, {640.f, 360.f}, dt * 5.f));
-				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, dt * 5.f));
+				playerCam.bounds.setSizeWithFixedCenter(lerp(playerCam.bounds.size, {640.f, 360.f}, dt * 5.f));
+				playerCam.bounds.setCenter(lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, dt * 5.f));
 			}
 			else
 			{
 				// free camera sliding movement
-				Vec2 newCenter = Math::lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, 5.f * dt);
+				Vec2 newCenter = lerp(playerCam.bounds.center(), playerBody.center() + faceDir * 20.f, 5.f * dt);
 				playerCam.bounds.setCenter(newCenter);
 			}
 		}
@@ -96,8 +96,8 @@ void PlayerCameraMovement::update(float dt)
 				if(mInterpolation > 1.f) 
 					mInterpolation = 1.f;
 
-				playerCam.bounds.setSizeWithFixedCenter(Math::lerp(playerCam.bounds.size, camRoomBody.size, dt * 5.f));
-				playerCam.bounds.setCenter(Math::lerp(playerCam.bounds.center(), camRoomBody.center(), dt * 5.f));
+				playerCam.bounds.setSizeWithFixedCenter(lerp(playerCam.bounds.size, camRoomBody.size, dt * 5.f));
+				playerCam.bounds.setCenter(lerp(playerCam.bounds.center(), camRoomBody.center(), dt * 5.f));
 			}
 			else
 			{
@@ -142,7 +142,7 @@ void PlayerCameraMovement::update(float dt)
 						else if(intersect(playerBody, bottomEdgeArea))
 							offset += abs((playerBody.bottom() - centerArea.bottom()) / edgeAreaSize.y);
 
-						playerCam.bounds.setCenter(Math::lerp(camRoomBody.center(), playerBody.center(), offset / 2.2f));
+						playerCam.bounds.setCenter(lerp(camRoomBody.center(), playerBody.center(), offset / 2.2f));
 					}
 				}
 			}

@@ -328,7 +328,7 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 				continue;
 			}
 
-			Vec2u chunkRelativePosInTiles = Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(sChunkSize));
+			Vec2u chunkRelativePosInTiles = getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(sChunkSize));
 			Vec2 positionInTiles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
 
 			// create quad data
@@ -388,11 +388,11 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 				cqd.position.y -= tileSize.x;
 				cqd.rotation = 270.f;
 			}
-			cqd.rotation = Math::degreesToRadians(cqd.rotation);
+			cqd.rotation = degreesToRadians(cqd.rotation);
 
 			const u32 tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
 			auto tileRectPosition = Cast<Vec2>(
-				Math::getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
+				getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
 			tileRectPosition.x *= (info.tileSize.x + 2);
 			tileRectPosition.y *= (info.tileSize.y + 2);
 			tileRectPosition.x += 1;

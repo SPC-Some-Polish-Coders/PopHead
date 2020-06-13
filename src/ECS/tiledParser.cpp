@@ -126,7 +126,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto center = body.center();
 		if(center.x < 0.f) center.x -= 16.f;
 		if(center.y < 0.f) center.y -= 16.f;
-		puzzleGridPos = Cast<Vec2i>(Math::hadamardDiv(center, Vec2(16, 16)));
+		puzzleGridPos = Cast<Vec2i>(hadamardDiv(center, Vec2(16, 16)));
 	};
 
 	auto createAndLoadPosAndSize = [&]()

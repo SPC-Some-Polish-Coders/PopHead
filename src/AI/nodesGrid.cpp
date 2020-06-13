@@ -97,7 +97,7 @@ namespace ph {
 
 	NodesGrid::Node& NodesGrid::createNode(Vec2i position)
 	{
-		auto Pointer = std::make_unique<Node>(position, Math::distanceBetweenPoints(position, mDestinationPosition));
+		auto Pointer = std::make_unique<Node>(position, distanceBetweenPoints(position, mDestinationPosition));
 		auto& ref = *Pointer.get();
 		auto returnPair = mNodes.emplace(std::move(Pointer));
 		

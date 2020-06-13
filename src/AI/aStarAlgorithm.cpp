@@ -95,7 +95,7 @@ Direction AStarAlgorithm::getDirectionBetweenNodes(const NodesGrid::Node& startN
 
 float AStarAlgorithm::distanceBetweenNodes(const NodesGrid::Node& pos1, const NodesGrid::Node& pos2)
 {
-	return Math::distanceBetweenPoints(pos1.mPosition, pos2.mPosition);
+	return distanceBetweenPoints(pos1.mPosition, pos2.mPosition);
 }
 
 }

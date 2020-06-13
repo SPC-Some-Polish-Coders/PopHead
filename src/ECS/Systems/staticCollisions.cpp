@@ -367,7 +367,7 @@ namespace ph::system {
 
 			for (size_t i = 0; i < 4; ++i)
 			{
-				auto distance = Math::distanceBetweenPoints(circleCenter, rectCorners[i]);
+				auto distance = distanceBetweenPoints(circleCenter, rectCorners[i]);
 				if (distance < closestDistance)
 				{
 					closestDistance = distance;
@@ -390,7 +390,7 @@ namespace ph::system {
 		{
 			auto staticCircleCenter = staticRect.pos + staticCircle->offset;
 			auto kinematicCircleCenter = kinematicRect.pos + kinematicCircle->offset;
-			auto centersDistance = Math::distanceBetweenPoints(kinematicCircleCenter, staticCircleCenter);
+			auto centersDistance = distanceBetweenPoints(kinematicCircleCenter, staticCircleCenter);
 
 			if (centersDistance < staticCircle->radius + kinematicCircle->radius)
 			{

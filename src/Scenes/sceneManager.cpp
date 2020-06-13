@@ -95,14 +95,14 @@ void SceneManager::handleEvent(sf::Event e)
 	#ifndef PH_DISTRIBUTION
 	if(e.type == sf::Event::KeyPressed && e.key.alt && e.key.code == sf::Keyboard::M)
 	{
-		Vec2 playerPos = Math::nullVec2; 
+		Vec2 playerPos = nullVec2; 
 		mScene->getRegistry().view<component::Player, component::BodyRect>().each([&]
 		(auto, auto& playerBody)
 		{
 			playerPos = playerBody.pos;
 		});
 
-		if(playerPos == Math::nullVec2)
+		if(playerPos == nullVec2)
 			replaceScene(mCurrentSceneFilePath);
 		else
 			replaceScene(mCurrentSceneFilePath, playerPos);

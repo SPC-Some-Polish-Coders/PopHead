@@ -62,7 +62,7 @@ static inline
 bool intersect(const FloatRect& a,
                const FloatRect& b, component::BodyCircle bc)
 {
-	return Math::intersect(a, getCirclePos(b, bc), bc.radius);
+	return intersect(a, getCirclePos(b, bc), bc.radius);
 }
 
 static inline
@@ -71,7 +71,7 @@ bool intersect(const FloatRect& a, component::BodyCircle ac,
 {
 	auto aPos = getCirclePos(a, ac);
 	auto bPos = getCirclePos(b, bc);
-	return Math::distanceBetweenPoints(aPos, bPos) < ac.radius + bc.radius;
+	return distanceBetweenPoints(aPos, bPos) < ac.radius + bc.radius;
 }
 
 static inline

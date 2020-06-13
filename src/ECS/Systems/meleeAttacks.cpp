@@ -79,7 +79,7 @@ void MeleeAttacks::update(float dt)
 				if(intersect(attackArea, enemyBody))
 				{
 					float enemyAngle = std::atan2f(enemyBodyCenter.y - playerPos.y, enemyBodyCenter.x - playerPos.x);
-					enemyAngle = Math::radiansToDegrees(enemyAngle);
+					enemyAngle = radiansToDegrees(enemyAngle);
 					if(enemyAngle >= mStartWeaponRotation - meleeProperties.rotationRange - 10.f &&
 					   enemyAngle <= mStartWeaponRotation + 10.f) 
 					{

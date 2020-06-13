@@ -29,7 +29,7 @@ void HostileCollisions::update(float dt)
 
 				auto playerCirclePos = getCirclePos(playerBody, playerCircle);
 				auto enemyCirclePos = getCirclePos(enemyBody, enemyCircle);
-				playerKinematics.vel = playerCollision.pushForce * Math::getUnitVector(playerCirclePos - enemyCirclePos);
+				playerKinematics.vel = playerCollision.pushForce * getUnitVector(playerCirclePos - enemyCirclePos);
 				playerKinematics.friction = 0.01f;
 				playerKinematics.frictionLerpSpeed = 0.04f;
 

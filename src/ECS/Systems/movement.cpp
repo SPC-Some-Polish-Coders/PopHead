@@ -18,8 +18,8 @@ void Movement::update(float dt)
 	{
 		if(kin.defaultFriction != kin.friction) 
 		{
-			kin.friction = Math::lerp(kin.friction, kin.defaultFriction, kin.frictionLerpSpeed);	
-			if(Math::areApproximatelyEqual(kin.defaultFriction, kin.friction, 0.2f))
+			kin.friction = lerp(kin.friction, kin.defaultFriction, kin.frictionLerpSpeed);	
+			if(areApproximatelyEqual(kin.defaultFriction, kin.friction, 0.2f))
 				kin.friction = kin.defaultFriction;
 		}
 		kin.vel += kin.acceleration * dt;

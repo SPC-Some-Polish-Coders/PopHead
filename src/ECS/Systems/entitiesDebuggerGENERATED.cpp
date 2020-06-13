@@ -100,8 +100,8 @@ void EntitiesDebugger::update(float dt)
 			});
 
 			auto mouseWindowPos = Cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
-			auto resolutionRatio = Math::hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
-			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
+			auto resolutionRatio = hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
+			auto mouseWorldPos = (hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
 
 			struct EntityUnderCursor
 			{
