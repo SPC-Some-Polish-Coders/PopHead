@@ -25,7 +25,7 @@ void main()
 		discard;
 	}
 
-    fragColor = texture(textures[fs_in.textureSlotRef], fs_in.texCoords) * fs_in.color;
+    fragColor = fs_in.color;
 
 	if(debugVisualization)
 	{
