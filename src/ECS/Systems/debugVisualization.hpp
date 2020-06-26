@@ -10,6 +10,12 @@ public:
 	using System::System;
 
 	void update(float dt) override;
+
+	static void setSimRegionBoundsPtr(FloatRect* ptr) { simRegionRect = ptr; };
+	static void setSimRegionCentralPartitionBoundsPtr(FloatRect* ptr) { simRegionCentralPartitionRect = ptr; };
+private:
+	inline static FloatRect* simRegionRect;
+	inline static FloatRect* simRegionCentralPartitionRect;
 };
 
 }

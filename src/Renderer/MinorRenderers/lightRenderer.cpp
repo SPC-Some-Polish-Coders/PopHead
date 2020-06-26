@@ -294,7 +294,7 @@ void flush()
 			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
 	}
 
-	nrOfNoCollisionLights = noCollisionLights.size();
+	nrOfNoCollisionLights = Cast<u32>(noCollisionLights.size());
 
 	lightWalls.clear();
 	lights.clear();

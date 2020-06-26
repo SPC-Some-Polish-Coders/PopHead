@@ -2,6 +2,7 @@
 #include "pushingAreas.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -13,11 +14,11 @@ void PushingAreas::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<PushingArea, BodyRect>().each([&]
-	(auto pushingArea, auto pushingAreaBody)
+	mRegistry.view<PushingArea, InsideSimRegion, BodyRect>().each([&]
+	(auto pushingArea, auto, auto pushingAreaBody)
 	{
-		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle, Kinematics>().each([&]
-		(auto, auto objectBody, auto objectCircle, auto& objectKinematics)
+		mRegistry.view<KinematicCollisionBody, InsideSimRegion, BodyRect, BodyCircle, Kinematics>().each([&]
+		(auto, auto, auto objectBody, auto objectCircle, auto& objectKinematics)
 		{
 			if(intersect(pushingAreaBody, objectBody, objectCircle))
 				objectKinematics.vel += pushingArea.pushForce;

@@ -4,6 +4,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -13,13 +14,13 @@ void Pits::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	mRegistry.view<PitChunk, BodyRect>().each([&]
-	(const auto& pitChunk, auto pitChunkBody)
+	mRegistry.view<PitChunk, InsideSimRegion, BodyRect>().each([&]
+	(const auto& pitChunk, auto, auto pitChunkBody)
 	{
 		// NOTE: KinematicCollisionBody is here to make player not fall into pits when we're using pf (player flying) terminal command
-		mRegistry.view<BodyRect, BodyCircle, KinematicCollisionBody> 
+		mRegistry.view<BodyRect, BodyCircle, KinematicCollisionBody, InsideSimRegion> 
 		(entt::exclude<IsOnPlatform, CurrentlyDashing, FallingIntoPit>).each([&]
-		(auto objectEntity, auto objectRect, auto objectCircle, auto)
+		(auto objectEntity, auto objectRect, auto objectCircle, auto, auto)
 		{
 			if(intersect(pitChunkBody, objectRect))
 			{
@@ -37,8 +38,8 @@ void Pits::update(float dt)
 		});
 	});
 
-	mRegistry.view<BodyRect, FallingIntoPit>().each([&]
-	(auto entity, auto& body, auto& falling)
+	mRegistry.view<FallingIntoPit, BodyRect>().each([&]
+	(auto entity, auto& falling, auto& body)
 	{
 		falling.timeToEnd -= dt;
 		body.setSizeWithFixedCenter(Vec2(20.f) * falling.timeToEnd);

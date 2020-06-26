@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Scenes/save.hpp"
 
@@ -12,8 +13,8 @@ using namespace component;
 
 void SavePoints::update(float dt)
 {
-	mRegistry.view<SavePoint, BodyRect>().each([&]
-	(auto& savePoint, auto savePointBody)
+	mRegistry.view<SavePoint, InsideSimRegion, BodyRect>().each([&]
+	(auto& savePoint, auto, auto savePointBody)
 	{
 		mRegistry.view<Player, BodyRect, BodyCircle>().each([&]
 		(auto, auto playerBody, auto playerCircle)

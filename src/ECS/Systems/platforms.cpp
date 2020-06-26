@@ -4,6 +4,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -18,15 +19,15 @@ void Platforms::update(float dt)
 	// NOTE: KinematicCollisionBody is below to make player not fall into pits when you're using pf (player flying) terminal command
 
 	// player - platform interactions
-	mRegistry.view<BodyRect, BodyCircle, KinematicCollisionBody>().each([&]
-	(auto entity, auto& body, auto circle, auto)
+	mRegistry.view<BodyRect, BodyCircle, KinematicCollisionBody, InsideSimRegion>().each([&]
+	(auto entity, auto& body, auto circle, auto, auto)
 	{
 		bool isOnPlatform = false;
 		circle.radius += sBodyCircleRadiusAdditionForPlatforms;
 
 		// move bodies that stand on moving platforms 
 		// and register that they are on platform
-		auto platforms = mRegistry.view<MovingPlatform, BodyRect>();
+		auto platforms = mRegistry.view<MovingPlatform, InsideSimRegion, BodyRect>();
 		for(auto platformEntity : platforms)
 		{
 			const auto& platform = platforms.get<MovingPlatform>(platformEntity);
@@ -41,8 +42,8 @@ void Platforms::update(float dt)
 
 		// make falling platforms start falling apart when bodies stumble on them 
 		// and register that bodies are on platform
-		mRegistry.view<FallingPlatform, BodyRect, TextureRect>().each([&]
-		(auto& platform, auto platformBody, auto platformTexRect)
+		mRegistry.view<FallingPlatform, InsideSimRegion, BodyRect, TextureRect>().each([&]
+		(auto& platform, auto, auto platformBody, auto platformTexRect)
 		{
 			if(platform.state == FallingPlatform::isStable || 
 			   platform.state == FallingPlatform::isFallingApart)
@@ -69,8 +70,8 @@ void Platforms::update(float dt)
 	});
 
 	// update moving platforms
-	mRegistry.view<MovingPlatform, BodyRect>().each([&]
-	(auto& platform, auto& platformBody)
+	mRegistry.view<MovingPlatform, InsideSimRegion, BodyRect>().each([&]
+	(auto& platform, auto, auto& platformBody)
 	{
 		if(!platform.active) return;
 
@@ -95,8 +96,8 @@ void Platforms::update(float dt)
 	}); 
 
 	// update falling platforms
-	mRegistry.view<FallingPlatform, TextureRect>().each([&]
-	(auto& platform, auto& texRect)
+	mRegistry.view<FallingPlatform, InsideSimRegion, TextureRect>().each([&]
+	(auto& platform, auto, auto& texRect)
 	{
 		if(platform.state == FallingPlatform::isFallingApart ||
 		   platform.state == FallingPlatform::isRecovering)

@@ -4,10 +4,6 @@
 
 namespace ph {
 
-EntitiesTemplateStorage::EntitiesTemplateStorage()
-{
-}
-
 entt::registry& EntitiesTemplateStorage::getTemplateRegistry()
 {
 	return mTemplatesRegistry;

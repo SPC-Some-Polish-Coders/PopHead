@@ -112,4 +112,13 @@ namespace ph {
 		return areApproximatelyEqual(a.x, b.x, maxApproximation) && areApproximatelyEqual(a.y, b.y, maxApproximation);
 	}
 
+	Vec2 mod(Vec2 a, float b)
+	{
+		return Vec2(fmod(a.x, b), fmod(a.y, b));
+	}
+
+	Vec2 mod(Vec2 a, Vec2 b)
+	{
+		return Vec2(fmod(a.x, b.x), fmod(a.y, b.y));
+	}
 }

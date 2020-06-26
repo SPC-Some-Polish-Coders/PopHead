@@ -3,6 +3,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
 
@@ -57,8 +58,8 @@ void RenderSystem::update(float dt)
 	Renderer::setGameWorldCamera(currentCameraBounds);
 
 	// submit light sources
-	mRegistry.view<LightSource, BodyRect>().each([]
-	(const auto& light, auto body)
+	mRegistry.view<LightSource, BodyRect, InsideSimRegion>().each([]
+	(const auto& light, auto body, auto)
 	{
 		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
 		Renderer::submitLight(light.color, body.pos + light.offset, light.startAngle, light.endAngle,
@@ -68,8 +69,8 @@ void RenderSystem::update(float dt)
 	//submit single light walls
 	if(Renderer::getNrOfCollisionLights() > 0)
 	{
-		mRegistry.view<LightWall, BodyRect>().each([]
-		(const auto& lightWall, auto body) 
+		mRegistry.view<LightWall, BodyRect, InsideSimRegion>().each([]
+		(const auto& lightWall, auto body, auto) 
 		{
 			if(lightWall.y == -1.f)
 				Renderer::submitLightWall(body);
@@ -85,16 +86,16 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit ground chunks with indoor blend
-	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend>().each([&]
-	(auto bounds, auto& chunk, auto indoorBlend)
+	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend, InsideSimRegion>().each([&]
+	(auto bounds, auto& chunk, auto indoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds))
 			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getIndoorBlendColor(indoorBlend));
 	});
 
 	// submit chunks with indoor blend
-	mRegistry.view<BodyRect, RenderChunk, IndoorBlend>().each([&]
-	(auto bounds, auto& chunk, auto indoorBlend)
+	mRegistry.view<BodyRect, RenderChunk, IndoorBlend, InsideSimRegion>().each([&]
+	(auto bounds, auto& chunk, auto indoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getIndoorBlendColor(indoorBlend));
@@ -111,16 +112,16 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit ground chunks with outdoor blend
-	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend>().each([&]
-	(auto bounds, auto& chunk, auto outdoorBlend)
+	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend, InsideSimRegion>().each([&]
+	(auto bounds, auto& chunk, auto outdoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds))
 			Renderer::submitGroundChunk(bounds.pos, chunk.textureRect, chunk.z, getOutdoorBlendColor(outdoorBlend));
 	});
 
 	// submit chunks with outdoor blend
-	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend>().each([&]
-	(auto bounds, auto& chunk, auto outdoorBlend)
+	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend, InsideSimRegion>().each([&]
+	(auto bounds, auto& chunk, auto outdoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
 			Renderer::submitChunk(chunk.quads, bounds, chunk.z, &chunk.rendererID, getOutdoorBlendColor(outdoorBlend));
@@ -138,44 +139,44 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit render quads
-	mRegistry.view<RenderQuad, IndoorOutdoorBlend, BodyRect>
+	mRegistry.view<RenderQuad, IndoorOutdoorBlend, BodyRect, InsideSimRegion>
 	(entt::exclude<HiddenForRenderer, TextureRect>).each([&]
-	(const auto& quad, auto indoorOutdoorBlend, auto body)
+	(const auto& quad, auto indoorOutdoorBlend, auto body, auto)
 	{
 		sf::Color color = quad.color * getIndoorOutdoorColor(indoorOutdoorBlend);
 		Renderer::submitQuad(
 			quad.texture, Null, &color, quad.shader,
-			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+			body, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
 	// submit render quads with texture rect
-	mRegistry.view<RenderQuad, TextureRect, BodyRect, IndoorOutdoorBlend>
+	mRegistry.view<RenderQuad, TextureRect, BodyRect, IndoorOutdoorBlend, InsideSimRegion>
 	(entt::exclude<HiddenForRenderer>).each([&]
-	(const auto& quad, auto textureRect, auto body, auto indoorOutdoorBlend)
+	(const auto& quad, auto textureRect, auto body, auto indoorOutdoorBlend, auto)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect, &getIndoorOutdoorColor(indoorOutdoorBlend), quad.shader,
-			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+			body, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
 	// submit render quads with no indoor outdoor component
-	mRegistry.view<RenderQuad, BodyRect>
+	mRegistry.view<RenderQuad, BodyRect, InsideSimRegion>
 	(entt::exclude<HiddenForRenderer, TextureRect, IndoorOutdoorBlend>).each([&]
-	(const auto& quad, auto body)
+	(const auto& quad, auto body, auto)
 	{
 		Renderer::submitQuad(
 			quad.texture, Null, &quad.color, quad.shader,
-			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+			body, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 
 	// submit render quads with texture rect and no indoor outdoor component
-	mRegistry.view<RenderQuad, TextureRect, BodyRect>
+	mRegistry.view<RenderQuad, TextureRect, BodyRect, InsideSimRegion>
 	(entt::exclude<HiddenForRenderer, IndoorOutdoorBlend>).each([&]
-	(const auto& quad, auto textureRect, auto body)
+	(const auto& quad, auto textureRect, auto body, auto)
 	{
 		Renderer::submitQuad(
 			quad.texture, &textureRect, &quad.color, quad.shader,
-			body.pos, body.size, quad.z, quad.rotation, quad.rotationOrigin);
+			body, quad.z, quad.rotation, quad.rotationOrigin);
 	});
 }
 

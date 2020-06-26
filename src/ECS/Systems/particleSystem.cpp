@@ -2,6 +2,7 @@
 #include "particleSystem.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "Utilities/random.hpp"
 #include "Renderer/renderer.hpp"
 
@@ -104,15 +105,15 @@ void PatricleSystem::update(float dt)
 	PH_PROFILE_FUNCTION();
 
 	// update single particle emitters
-	mRegistry.view<ParticleEmitter, BodyRect>().each([&]
-	(auto& emi, auto body)
+	mRegistry.view<ParticleEmitter, InsideSimRegion, BodyRect>().each([&]
+	(auto& emi, auto, auto body)
 	{
 		updateParticleEmitter(dt, emi, body, sPause);
 	});
 
 	// update multi particle emitters
-	mRegistry.view<MultiParticleEmitter, BodyRect>().each([&]
-	(auto& multiEmi, auto body)
+	mRegistry.view<MultiParticleEmitter, InsideSimRegion, BodyRect>().each([&]
+	(auto& multiEmi, auto, auto body)
 	{
 		// update particle emitters 
 		for(auto& particleEmitter : multiEmi.particleEmitters)

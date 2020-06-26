@@ -42,6 +42,9 @@ namespace ph {
 	template <typename T>
 	FORCE_INLINE Vec2Base<T> absVec(Vec2Base<T>);
 
+	FORCE_INLINE Vec2 mod(Vec2, float);
+	FORCE_INLINE Vec2 mod(Vec2, Vec2);
+
 	FORCE_INLINE bool areApproximatelyEqual(float a, float b, float maxApproximation);
 	FORCE_INLINE bool areApproximatelyEqual(Vec2 a, Vec2 b, float maxApproximation);
 }

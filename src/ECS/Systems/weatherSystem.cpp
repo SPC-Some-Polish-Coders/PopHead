@@ -4,6 +4,8 @@
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
+#include "ECS/entityUtil.hpp"
 #include "Renderer/renderer.hpp"
 
 namespace ph::system {
@@ -29,8 +31,8 @@ void WeatherSystem::update(float dt)
 	mRegistry.view<Player, BodyRect>().each([&]
 	(auto, auto playerBody)
 	{
-		mRegistry.view<WeatherArea, WeatherType, BodyRect>().each([&]
-		(auto, auto weatherAreaType, auto weatherAreaBody)
+		mRegistry.view<WeatherArea, InsideSimRegion, WeatherType, BodyRect>().each([&]
+		(auto, auto, auto weatherAreaType, auto weatherAreaBody)
 		{
 			if(intersect(weatherAreaBody, playerBody))
 			{
@@ -138,21 +140,12 @@ void WeatherSystem::update(float dt)
 	   currentWeatherType == WeatherType::NormalRain ||
 	   currentWeatherType == WeatherType::HeavyRain)
 	{
-		// get player position
-		Vec2 playerPos;
-		auto players = mRegistry.view<Player, BodyRect>();
-		players.each([&playerPos]
-		(auto, const auto& body) 
-		{
-			playerPos = body.pos;
-		});
-
 		// set weather position to player position
-		auto weatherView = mRegistry.view<Weather, BodyRect>();
-		weatherView.each([playerPos]
+		mRegistry.view<Weather, BodyRect>().each([]
 		(auto, auto& weatherBody) 
 		{
-			weatherBody.pos = playerPos;
+			if(isPlayerAlive())
+				weatherBody.pos = getPlayerPos();
 		});	
 	}
 }

@@ -4,6 +4,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -15,11 +16,11 @@ void PuzzleBoulders::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<PuzzleBoulder, PuzzleGridPos, BodyRect>().each([&]
-	(auto& boulder, auto& boulderGridPos, auto& boulderBody)
+	mRegistry.view<PuzzleBoulder, InsideSimRegion, PuzzleGridPos, BodyRect>().each([&]
+	(auto& boulder, auto, auto& boulderGridPos, auto& boulderBody)
 	{
 		mRegistry.view<Player, Kinematics, BodyRect, BodyCircle>().each([&]
-		(auto, const auto& playerKinematics, const auto& playerBody, auto playerCircle)
+		(auto, const auto& playerKinematics, auto playerBody, auto playerCircle)
 		{
 			if(playerKinematics.acceleration == Vec2())
 				mTimeSincePlayerIsPushingBoulder = 0.f;
@@ -46,7 +47,7 @@ void PuzzleBoulders::update(float dt)
 				auto newBoulderGridPos = boulderGridPos + pushDir;
 
 				// check collsion with another boulder
-				auto puzzleBoulders = mRegistry.view<PuzzleBoulder, PuzzleGridPos>();
+				auto puzzleBoulders = mRegistry.view<PuzzleBoulder, PuzzleGridPos, InsideSimRegion>();
 				for(auto otherBoulder : puzzleBoulders)
 				{
 					const auto& otherBoulderGridPos = puzzleBoulders.get<PuzzleGridPos>(otherBoulder);
@@ -69,7 +70,7 @@ void PuzzleBoulders::update(float dt)
 
 				Vec2i chunkRelativeBoulderPos = newBoulderGridPos - gridPosOfRoadChunkThatBoulderIsIn;
 
-				auto roadChunks = mRegistry.view<PuzzleGridRoadChunk, PuzzleGridPos>();
+				auto roadChunks = mRegistry.view<PuzzleGridRoadChunk, InsideSimRegion, PuzzleGridPos>();
 				for(auto roadChunkEntity : roadChunks)
 				{
 					const auto& roadChunk = roadChunks.get<PuzzleGridRoadChunk>(roadChunkEntity);

@@ -1,6 +1,7 @@
 #include "pch.hpp"
 #include "staticCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -19,35 +20,37 @@ namespace ph::system {
 		pushedDown.clear();
 	}
 
+	using namespace component;
+
 	void StaticCollisions::calculateStaticCollisions()
 	{
-		auto staticRectObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody>(entt::exclude<component::BodyCircle>);
-		auto staticCircObjects = mRegistry.view<component::BodyRect, component::StaticCollisionBody, component::BodyCircle>();
-		auto multiStaticCollisionObjects = mRegistry.view<component::MultiStaticCollisionBody>();
-		auto kinematicRectObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>(entt::exclude<component::BodyCircle>);
-		auto kinematicCircObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody, component::BodyCircle>();
+		auto staticRectObjects = mRegistry.view<BodyRect, StaticCollisionBody, InsideSimRegion>(entt::exclude<BodyCircle>);
+		auto staticCircObjects = mRegistry.view<BodyRect, StaticCollisionBody, BodyCircle, InsideSimRegion>();
+		auto multiStaticCollisionObjects = mRegistry.view<MultiStaticCollisionBody, InsideSimRegion>();
+		auto kinematicRectObjects = mRegistry.view<BodyRect, KinematicCollisionBody, InsideSimRegion>(entt::exclude<BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<BodyRect, KinematicCollisionBody, BodyCircle, InsideSimRegion>();
 
 		for (auto& kinematicObject : kinematicRectObjects)
 		{
-			auto& kinematicRect = kinematicRectObjects.get<component::BodyRect>(kinematicObject);
-			auto& kinematicBody = kinematicRectObjects.get<component::KinematicCollisionBody>(kinematicObject);
+			auto& kinematicRect = kinematicRectObjects.get<BodyRect>(kinematicObject);
+			auto& kinematicBody = kinematicRectObjects.get<KinematicCollisionBody>(kinematicObject);
 			resetKinematicBody(kinematicBody);
 		
 			for (const auto& staticObject : staticRectObjects)
 			{
-				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
+				const auto& staticRect = staticRectObjects.get<BodyRect>(staticObject);
 				handleCollision(staticRect, Null, kinematicRect, Null, kinematicObject, kinematicBody);
 			}
 			for (const auto& staticObject : staticCircObjects)
 			{
-				const auto& staticRect = staticCircObjects.get<component::BodyRect>(staticObject);
-				const auto& staticCirc = staticCircObjects.get<component::BodyCircle>(staticObject);
+				const auto& staticRect = staticCircObjects.get<BodyRect>(staticObject);
+				const auto& staticCirc = staticCircObjects.get<BodyCircle>(staticObject);
 				handleCollision(staticRect, &staticCirc, kinematicRect, Null, kinematicObject, kinematicBody);
 			}
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
-				const auto& sharedBounds = mRegistry.get<component::BodyRect>(multiStaticObject);
-				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
+				const auto& sharedBounds = mRegistry.get<BodyRect>(multiStaticObject);
+				const auto& multiStaticCollisionBody = mRegistry.get<MultiStaticCollisionBody>(multiStaticObject);
 				if (intersect(sharedBounds, kinematicRect))
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
@@ -64,26 +67,26 @@ namespace ph::system {
 		}
 		for (auto& kinematicObject : kinematicCircObjects)
 		{
-			auto& kinematicRect = kinematicCircObjects.get<component::BodyRect>(kinematicObject);
-			auto& kinematicCirc = kinematicCircObjects.get<component::BodyCircle>(kinematicObject);
-			auto& kinematicBody = kinematicCircObjects.get<component::KinematicCollisionBody>(kinematicObject);
+			auto& kinematicRect = kinematicCircObjects.get<BodyRect>(kinematicObject);
+			auto& kinematicCirc = kinematicCircObjects.get<BodyCircle>(kinematicObject);
+			auto& kinematicBody = kinematicCircObjects.get<KinematicCollisionBody>(kinematicObject);
 			resetKinematicBody(kinematicBody);
 
 			for (const auto& staticObject : staticRectObjects)
 			{
-				const auto& staticRect = staticRectObjects.get<component::BodyRect>(staticObject);
+				const auto& staticRect = staticRectObjects.get<BodyRect>(staticObject);
 				handleCollision(staticRect, Null, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 			}
 			for (const auto& staticObject : staticCircObjects)
 			{
-				const auto& staticRect = staticCircObjects.get<component::BodyRect>(staticObject);
-				const auto& staticCirc = staticCircObjects.get<component::BodyCircle>(staticObject);
+				const auto& staticRect = staticCircObjects.get<BodyRect>(staticObject);
+				const auto& staticCirc = staticCircObjects.get<BodyCircle>(staticObject);
 				handleCollision(staticRect, &staticCirc, kinematicRect, &kinematicCirc, kinematicObject, kinematicBody);
 			}
 			for (const auto& multiStaticObject : multiStaticCollisionObjects)
 			{
-				const auto& sharedBounds = mRegistry.get<component::BodyRect>(multiStaticObject);
-				const auto& multiStaticCollisionBody = mRegistry.get<component::MultiStaticCollisionBody>(multiStaticObject);
+				const auto& sharedBounds = mRegistry.get<BodyRect>(multiStaticObject);
+				const auto& multiStaticCollisionBody = mRegistry.get<MultiStaticCollisionBody>(multiStaticObject);
 				if (intersect(sharedBounds, kinematicRect))
 				{
 					for (const FloatRect& staticRect : multiStaticCollisionBody.rects)
@@ -100,8 +103,8 @@ namespace ph::system {
 		}
 	}
 
-	Vec2 StaticCollisions::handleCollision(const FloatRect& staticRect, const component::BodyCircle* staticCircle, FloatRect& kinematicRect,
-	                                       const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody)
+	Vec2 StaticCollisions::handleCollision(const FloatRect& staticRect, const BodyCircle* staticCircle, FloatRect& kinematicRect,
+	                                       const BodyCircle* kinematicCircle, entt::entity kinematicEntity, KinematicCollisionBody& kinematicBody)
 	{
 		auto collisionVector = getCollisionVector(staticRect, staticCircle, kinematicRect, kinematicCircle);
 		kinematicRect.pos += collisionVector;
@@ -132,30 +135,30 @@ namespace ph::system {
 
 	void StaticCollisions::calculateKinematicCollisions()
 	{
-		auto kinematicRectObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody>(entt::exclude<component::BodyCircle>);
-		auto kinematicCircObjects = mRegistry.view<component::BodyRect, component::KinematicCollisionBody, component::BodyCircle>();
+		auto kinematicRectObjects = mRegistry.view<BodyRect, KinematicCollisionBody, InsideSimRegion>(entt::exclude<BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<BodyRect, KinematicCollisionBody, BodyCircle, InsideSimRegion>();
 
 		size_t index = 0;
 		while(index != pushedLeft.size())
 		{
-			component::BodyRect* firstRect;
-			component::BodyCircle* firstCircle;
+			BodyRect* firstRect;
+			BodyCircle* firstCircle;
 			if (pushedLeft[index].isCircle)
 			{
-				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedLeft[index].entity));
-				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedLeft[index].entity));
+				firstRect = &(kinematicCircObjects.get<BodyRect>(pushedLeft[index].entity));
+				firstCircle = &(kinematicCircObjects.get<BodyCircle>(pushedLeft[index].entity));
 			}
 			else
 			{
-				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedLeft[index].entity));
+				firstRect = &(kinematicRectObjects.get<BodyRect>(pushedLeft[index].entity));
 				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
 			{
 				if (secondEntity == pushedLeft[index].entity) continue;
-				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
-				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicRectObjects.get<BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.x + 0.001f < 0)
@@ -168,9 +171,9 @@ namespace ph::system {
 			for (auto secondEntity : kinematicCircObjects)
 			{
 				if (secondEntity == pushedLeft[index].entity) continue;
-				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
-				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
-				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicCircObjects.get<BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
 				if (collisionVector.x + 0.001f < 0)
@@ -186,24 +189,24 @@ namespace ph::system {
 		index = 0;
 		while (index != pushedRight.size())
 		{
-			component::BodyRect* firstRect;
-			component::BodyCircle* firstCircle;
+			BodyRect* firstRect;
+			BodyCircle* firstCircle;
 			if (pushedRight[index].isCircle)
 			{
-				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedRight[index].entity));
-				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedRight[index].entity));
+				firstRect = &(kinematicCircObjects.get<BodyRect>(pushedRight[index].entity));
+				firstCircle = &(kinematicCircObjects.get<BodyCircle>(pushedRight[index].entity));
 			}
 			else
 			{
-				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedRight[index].entity));
+				firstRect = &(kinematicRectObjects.get<BodyRect>(pushedRight[index].entity));
 				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
 			{
 				if (secondEntity == pushedRight[index].entity) continue;
-				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
-				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicRectObjects.get<BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.x - 0.001f > 0)
@@ -216,9 +219,9 @@ namespace ph::system {
 			for (auto secondEntity : kinematicCircObjects)
 			{
 				if (secondEntity == pushedRight[index].entity) continue;
-				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
-				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
-				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicCircObjects.get<BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
 				if (collisionVector.x - 0.001f > 0)
@@ -234,24 +237,24 @@ namespace ph::system {
 		index = 0;
 		while (index != pushedUp.size())
 		{
-			component::BodyRect* firstRect;
-			component::BodyCircle* firstCircle;
+			BodyRect* firstRect;
+			BodyCircle* firstCircle;
 			if (pushedUp[index].isCircle)
 			{
-				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedUp[index].entity));
-				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedUp[index].entity));
+				firstRect = &(kinematicCircObjects.get<BodyRect>(pushedUp[index].entity));
+				firstCircle = &(kinematicCircObjects.get<BodyCircle>(pushedUp[index].entity));
 			}
 			else
 			{
-				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedUp[index].entity));
+				firstRect = &(kinematicRectObjects.get<BodyRect>(pushedUp[index].entity));
 				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
 			{
 				if (secondEntity == pushedUp[index].entity) continue;
-				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
-				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicRectObjects.get<BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.y + 0.001f < 0)
@@ -264,9 +267,9 @@ namespace ph::system {
 			for (auto secondEntity : kinematicCircObjects)
 			{
 				if (secondEntity == pushedUp[index].entity) continue;
-				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
-				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
-				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicCircObjects.get<BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
 				if (collisionVector.y + 0.001f < 0)
@@ -282,24 +285,24 @@ namespace ph::system {
 		index = 0;
 		while (index != pushedDown.size())
 		{
-			component::BodyRect* firstRect;
-			component::BodyCircle* firstCircle;
+			BodyRect* firstRect;
+			BodyCircle* firstCircle;
 			if (pushedDown[index].isCircle)
 			{
-				firstRect = &(kinematicCircObjects.get<component::BodyRect>(pushedDown[index].entity));
-				firstCircle = &(kinematicCircObjects.get<component::BodyCircle>(pushedDown[index].entity));
+				firstRect = &(kinematicCircObjects.get<BodyRect>(pushedDown[index].entity));
+				firstCircle = &(kinematicCircObjects.get<BodyCircle>(pushedDown[index].entity));
 			}
 			else
 			{
-				firstRect = &(kinematicRectObjects.get<component::BodyRect>(pushedDown[index].entity));
+				firstRect = &(kinematicRectObjects.get<BodyRect>(pushedDown[index].entity));
 				firstCircle = Null;
 			}
 
 			for (auto secondEntity : kinematicRectObjects)
 			{
 				if (secondEntity == pushedDown[index].entity) continue;
-				auto& secondRect = kinematicRectObjects.get<component::BodyRect>(secondEntity);
-				auto& secondBody = kinematicRectObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicRectObjects.get<BodyRect>(secondEntity);
+				auto& secondBody = kinematicRectObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, Null);
 				if (collisionVector.y - 0.001f > 0)
@@ -312,9 +315,9 @@ namespace ph::system {
 			for (auto secondEntity : kinematicCircObjects)
 			{
 				if (secondEntity == pushedDown[index].entity) continue;
-				auto& secondRect = kinematicCircObjects.get<component::BodyRect>(secondEntity);
-				auto& secondCircle = kinematicCircObjects.get<component::BodyCircle>(secondEntity);
-				auto& secondBody = kinematicCircObjects.get<component::KinematicCollisionBody>(secondEntity);
+				auto& secondRect = kinematicCircObjects.get<BodyRect>(secondEntity);
+				auto& secondCircle = kinematicCircObjects.get<BodyCircle>(secondEntity);
+				auto& secondBody = kinematicCircObjects.get<KinematicCollisionBody>(secondEntity);
 
 				auto collisionVector = getCollisionVector(*firstRect, firstCircle, secondRect, &secondCircle);
 				if (collisionVector.y - 0.001f > 0)
@@ -328,10 +331,10 @@ namespace ph::system {
 		}
 	}
 
-	Vec2 StaticCollisions::getCollisionVector(const FloatRect& staticRect, const component::BodyCircle* staticCircle, 
-	                                          const FloatRect& kinematicRect, const component::BodyCircle* kinematicCircle) const
+	Vec2 StaticCollisions::getCollisionVector(const FloatRect& staticRect, const BodyCircle* staticCircle, 
+	                                          const FloatRect& kinematicRect, const BodyCircle* kinematicCircle) const
 	{
-		auto rectCircleCollision = [](const FloatRect& firstRect, const component::BodyCircle& firstCircle, const ph::FloatRect& secondRect) -> Vec2
+		auto rectCircleCollision = [](const FloatRect& firstRect, const BodyCircle& firstCircle, const ph::FloatRect& secondRect) -> Vec2
 		{
 			auto circleCenter = firstRect.pos + firstCircle.offset;
 
@@ -430,7 +433,7 @@ namespace ph::system {
 		return {};
 	}
 
-	void StaticCollisions::resetKinematicBody(component::KinematicCollisionBody& kinematicBody)
+	void StaticCollisions::resetKinematicBody(KinematicCollisionBody& kinematicBody)
 	{
 		kinematicBody.staticallyMovedLeft = false;
 		kinematicBody.staticallyMovedRight = false;

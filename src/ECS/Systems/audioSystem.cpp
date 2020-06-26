@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/audioComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entityUtil.hpp"
 #include "Audio/Music/musicPlayer.hpp"
 #include "Audio/Sound/soundPlayer.hpp"
@@ -48,7 +49,8 @@ void AudioSystem::update(float dt)
 
 	// get the closest enemy distance from player
 	float theClosestEnemyDistanceFromPlayer = 1000;
-	mRegistry.view<Damage, BodyRect>().each([&](auto, auto body)
+	mRegistry.view<Damage, BodyRect, InsideSimRegion>().each([&]
+	(auto, auto body, auto)
 	{
 		Vec2 enemyPos = body.center();
 		float enemyDistanceFromPlayer = distanceBetweenPoints(enemyPos, playerPos);

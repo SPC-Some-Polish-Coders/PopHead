@@ -15,5 +15,7 @@ component::BodyRect& getPlayerBodyRef();
 Vec2 getPlayerCenterPos();
 Vec2 getPlayerPos();
 Vec2 getPlayerFaceDirection();
+FloatRect getCurrentCameraBounds();
+FloatRect getPlayerCameraBounds();
 
 }

@@ -1,6 +1,7 @@
 #include "pch.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 
 namespace ph {
 
@@ -72,6 +73,30 @@ Vec2 getPlayerFaceDirection()
 	auto entity = getPlayerEntity();
 	Vec2 dir = registry->get<FaceDirection>(entity);
 	return dir;
+}
+
+FloatRect getCurrentCameraBounds()
+{
+	auto cameras = registry->view<Camera>();
+	for(auto entity : cameras)
+	{
+		const auto& camera = cameras.get<Camera>(entity);
+		if(camera.name == Camera::currentCameraName)
+			return camera.bounds;
+	}
+	return {};
+}
+
+FloatRect getPlayerCameraBounds()
+{
+	auto players = registry->view<Player, Camera>();
+	for(auto entity : players)
+	{
+		const auto& camera = players.get<Camera>(entity);
+		return camera.bounds;
+	}
+	PH_BREAKPOINT();
+	return {};
 }
 
 }

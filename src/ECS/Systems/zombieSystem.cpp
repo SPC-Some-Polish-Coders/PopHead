@@ -5,6 +5,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/direction.hpp"
 #include "Utilities/random.hpp"
@@ -61,7 +62,7 @@ void ZombieSystem::update(float dt)
 	if(sPause || freezeZombies)
 		return;
 
-	const auto zombies = mRegistry.view<Zombie, BodyRect, CharacterSpeed, Kinematics, AnimationData, BodyCircle>
+	const auto zombies = mRegistry.view<Zombie, InsideSimRegion, BodyRect, CharacterSpeed, Kinematics, AnimationData, BodyCircle>
 		(entt::exclude<DeadCharacter>);
 
 	for (auto zombieEntity : zombies)

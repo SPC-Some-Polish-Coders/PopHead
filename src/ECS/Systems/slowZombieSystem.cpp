@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entityUtil.hpp"
 
 namespace ph::system {
@@ -17,8 +18,8 @@ void SlowZombieSystem::update(float dt)
 
 	auto playerBody = getPlayerBody();
 
-	mRegistry.view<SlowZombieBehavior, CharacterSpeed, BodyRect, CollisionWithPlayer>().each([&]
-	(auto& slowZombieBehavior, auto& zombieSpeed, auto zombieBody, auto collisionWithPlayer)
+	mRegistry.view<SlowZombieBehavior, InsideSimRegion, CharacterSpeed, BodyRect, CollisionWithPlayer>().each([&]
+	(auto& slowZombieBehavior, auto, auto& zombieSpeed, auto zombieBody, auto collisionWithPlayer)
 	{
 		if(collisionWithPlayer.isCollision)
 		{

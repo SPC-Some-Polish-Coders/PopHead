@@ -8,6 +8,7 @@
 #include "Components/itemComponents.hpp"
 #include "Components/particleComponents.hpp"
 #include "Components/debugComponents.hpp"
+#include "Components/simRegionComponents.hpp"
 
 #include "entitiesTemplateStorage.hpp"
 #include "Scenes/sceneManager.hpp"
@@ -91,11 +92,10 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 
 	auto getOffsetFromTileTopLeft = [](Vec2 pos)
 	{
-		float remX = abs(fmod(pos.x, 16.f));
-		float remY = abs(fmod(pos.y, 16.f));
+		Vec2 rem = absVec(mod(pos, 16.f));
 		return Vec2(
-			pos.x > 0.f ? remX : 16.f - remX,
-			pos.y > 0.f ? remY : 16.f - remY
+			pos.x > 0.f ? rem.x : 16.f - rem.x,
+			pos.y > 0.f ? rem.y : 16.f - rem.y
 		);
 	};
 
@@ -468,6 +468,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		entity = registry.create();
 		registry.assign<BodyRect>(entity);
 		registry.assign<TeleportPoint>(entity, getProperty("name").toString());
+		registry.assign<DontCareAboutSimRegion>(entity);
 		loadPos();
 	}
 	else if(type == "CameraRoom")

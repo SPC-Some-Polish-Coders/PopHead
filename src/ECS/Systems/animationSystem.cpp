@@ -2,6 +2,7 @@
 #include "animationSystem.hpp"
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -13,8 +14,8 @@ void AnimationSystem::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<AnimationData, TextureRect>().each([&]
-	(auto& animationData, auto& textureRect)
+	mRegistry.view<AnimationData, TextureRect, InsideSimRegion>().each([&]
+	(auto& animationData, auto& textureRect, auto)
 	{
 		if(animationData.isPlaying)
 		{

@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -10,16 +11,15 @@ void PickupItems::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	if(sPause)
-		return;
+	if(sPause) return;
 
 	using namespace component;
 
 	mRegistry.view<Player, BodyRect, BodyCircle, Health, Bullets>().each([&]
 	(auto, auto playerBody, auto playerCircle, auto& playerHealth, auto& playerBullets)
 	{
-		mRegistry.view<Medkit, BodyRect>().each([&]
-		(auto medkitEntity, auto medkit, auto medkitBody)
+		mRegistry.view<Medkit, InsideSimRegion, BodyRect>().each([&]
+		(auto medkitEntity, auto medkit, auto, auto medkitBody)
 		{
 			if(intersect(medkitBody, playerBody, playerCircle))
 			{
@@ -32,8 +32,8 @@ void PickupItems::update(float dt)
 			}
 		});
 
-		mRegistry.view<BulletBox, Bullets, BodyRect>().each([&]
-		(auto bulletBoxEntity, auto, auto bulletBoxBullets, auto bulletBoxBody)
+		mRegistry.view<BulletBox, InsideSimRegion, Bullets, BodyRect>().each([&]
+		(auto bulletBoxEntity, auto, auto, auto bulletBoxBullets, auto bulletBoxBody)
 		{
 			if(intersect(bulletBoxBody, playerBody, playerCircle))
 			{

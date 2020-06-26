@@ -4,6 +4,8 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
+#include "ECS/entityUtil.hpp"
 #include "Utilities/joystickMacros.hpp"
 
 namespace ph::system {
@@ -12,8 +14,8 @@ using namespace component;
 
 void Levers::update(float dt)
 {
-	mRegistry.view<Lever, TextureRect, BodyRect>().each([&]
-	(auto& lever, auto& leverTextureRect, auto leverBody)
+	mRegistry.view<Lever, InsideSimRegion, TextureRect, BodyRect>().each([&]
+	(auto& lever, auto, auto& leverTextureRect, auto leverBody)
 	{
 		lever.wasJustSwitched = false;
 	});
@@ -29,11 +31,11 @@ void Levers::onEvent(sf::Event e)
 
 void Levers::handleUsedLevers() const
 {
-	mRegistry.view<Player, BodyRect>().each([&]
-	(auto, auto playerBody)
+	if(isPlayerAlive())
 	{
-		mRegistry.view<Lever, TextureRect, BodyRect>().each([&]
-		(auto& lever, auto& leverTextureRect, auto leverBody)
+		auto playerBody = getPlayerBody();
+		mRegistry.view<Lever, InsideSimRegion, TextureRect, BodyRect>().each([&]
+		(auto& lever, auto, auto& leverTextureRect, auto leverBody)
 		{
 			if(lever.turnOffAfterSwitch && lever.active) return;
 
@@ -44,7 +46,7 @@ void Levers::handleUsedLevers() const
 				leverTextureRect = lever.active ? IntRect(9, 0, 7, 15) : IntRect(0, 0, 7, 15);
 			}
 		});
-	});
+	}
 }
 
 }

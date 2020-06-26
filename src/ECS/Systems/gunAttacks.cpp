@@ -6,6 +6,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/itemComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
 #include "Utilities/direction.hpp"
@@ -183,8 +184,8 @@ void GunAttacks::tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect p
 			attackArea.y -= range + playerBody.h / 2.f;
 	}
 
-	mRegistry.view<Killable, BodyRect>(entt::exclude<Player>).each([&]
-	(auto enemyEntity, auto, auto enemyBody)
+	mRegistry.view<Killable, InsideSimRegion, BodyRect>(entt::exclude<Player>).each([&]
+	(auto enemyEntity, auto, auto, auto enemyBody)
 	{
 		if(intersect(attackArea, enemyBody))
 		{

@@ -8,6 +8,7 @@
 #include "ECS/Components/animationComponents.hpp"
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/aiComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entitiesTemplateStorage.hpp"
 #include "Renderer/API/shader.hpp"
 #include "Resources/textureHolder.hpp"
@@ -488,6 +489,11 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 				animationData.isPlaying = isPlaying->toBool();
 			
 			registry.assign_or_replace<AnimationData>(entity, animationData);
+		}
+		else if(componentName == "NonSpatialPartionable")
+		{
+			registry.assign_or_replace<DontCareAboutSimRegion>(entity);
+			registry.assign_or_replace<InsideSimRegion>(entity);
 		}
 		else
 		{

@@ -2,6 +2,7 @@
 #include "movement.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -13,8 +14,8 @@ void Movement::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<BodyRect, Kinematics>().each([dt]
-	(auto& body, auto& kin)
+	mRegistry.view<Kinematics, InsideSimRegion, BodyRect>().each([dt]
+	(auto& kin, auto, auto& body)
 	{
 		if(kin.defaultFriction != kin.friction) 
 		{

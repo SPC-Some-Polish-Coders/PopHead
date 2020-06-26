@@ -1,22 +1,24 @@
 #include "pch.hpp"
 #include "kinematicCollisions.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
+
+	using namespace component;
 
 	void KinematicCollisions::update(float dt)
 	{
 		PH_PROFILE_FUNCTION();
 
-		if (sPause)
-			return;
+		if (sPause) return;
 
-		auto kinematicRectObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyRect>(entt::exclude<component::BodyCircle>);
-		auto kinematicCircObjects = mRegistry.view<component::KinematicCollisionBody, component::BodyCircle, component::BodyRect>();
+		auto kinematicRectObjects = mRegistry.view<KinematicCollisionBody, InsideSimRegion, BodyRect>(entt::exclude<BodyCircle>);
+		auto kinematicCircObjects = mRegistry.view<KinematicCollisionBody, InsideSimRegion, BodyCircle, BodyRect>();
 
 		for (auto current = kinematicRectObjects.begin(); current != kinematicRectObjects.end(); ++current)
 		{
-			auto& currentBody = kinematicRectObjects.get<component::BodyRect>(*current);
+			auto& currentBody = kinematicRectObjects.get<BodyRect>(*current);
 
 			auto another = current;
 			++another;
@@ -24,7 +26,7 @@ namespace ph::system {
 			// rect-on-rect collisions
 			for (; another != kinematicRectObjects.end(); ++another)
 			{
-				auto& anotherBody = kinematicRectObjects.get<component::BodyRect>(*another);
+				auto& anotherBody = kinematicRectObjects.get<BodyRect>(*another);
 
 				if (intersect(currentBody, anotherBody))
 				{
@@ -65,8 +67,8 @@ namespace ph::system {
 			// rect-on-circle collisions
 			for (auto& circObject : kinematicCircObjects)
 			{
-				auto& circRect = kinematicCircObjects.get<component::BodyRect>(circObject);
-				auto& circCircle = kinematicCircObjects.get<component::BodyCircle>(circObject);
+				auto& circRect = kinematicCircObjects.get<BodyRect>(circObject);
+				auto& circCircle = kinematicCircObjects.get<BodyCircle>(circObject);
 				auto circleCenter = circRect.pos + circCircle.offset;
 
 				if (!(circleCenter.x < currentBody.x || circleCenter.x > currentBody.right()))
@@ -143,8 +145,8 @@ namespace ph::system {
 		// circle-on-circle collisions
 		for (auto current = kinematicCircObjects.begin(); current != kinematicCircObjects.end(); ++current)
 		{
-			auto& currentRect = kinematicCircObjects.get<component::BodyRect>(*current);
-			auto& currentCirc = kinematicCircObjects.get<component::BodyCircle>(*current);
+			auto& currentRect = kinematicCircObjects.get<BodyRect>(*current);
+			auto& currentCirc = kinematicCircObjects.get<BodyCircle>(*current);
 			auto currentCenter = currentRect.pos + currentCirc.offset;
 
 			auto another = current;
@@ -152,8 +154,8 @@ namespace ph::system {
 
 			for (; another != kinematicCircObjects.end(); ++another)
 			{
-				auto& anotherRect = kinematicCircObjects.get<component::BodyRect>(*another);
-				auto& anotherCirc = kinematicCircObjects.get<component::BodyCircle>(*another);
+				auto& anotherRect = kinematicCircObjects.get<BodyRect>(*another);
+				auto& anotherCirc = kinematicCircObjects.get<BodyCircle>(*another);
 				auto anotherCenter = anotherRect.pos + anotherCirc.offset;
 
 				auto distance = distanceBetweenPoints(currentCenter, anotherCenter);

@@ -14,7 +14,7 @@ extern bool debugWindowOpen;
 
 namespace ph::system {
 
-constexpr unsigned lookForSize = 255;
+constexpr u32 lookForSize = 255;
 static char lookFor[lookForSize];
 static bool highlightSelected = true;
 
@@ -25,7 +25,7 @@ static bool selectedComponents[IM_ARRAYSIZE(components)];
 
 static bool selectingInWorldMode = false;
 static float selectingInWorldModeF4InputDelay = 0.f;
-static unsigned selectingInWorldModeZPriority = 0;
+static u32 selectingInWorldModeZPriority = 0;
 static float selectingInWorldModeZPriorityInputDelay = 0.f;
 
 EntitiesDebugger::EntitiesDebugger(entt::registry& reg, sf::Window* window)
@@ -34,13 +34,15 @@ EntitiesDebugger::EntitiesDebugger(entt::registry& reg, sf::Window* window)
 {
 }
 
-static unsigned getCharCount(char* str, size_t size)
+static u32 getCharCount(char* str, size_t size)
 {
-	for(unsigned charCount = 0; charCount < static_cast<unsigned>(size); ++charCount)
+	for(u32 charCount = 0; charCount < static_cast<u32>(size); ++charCount)
 		if(str[charCount] == 0)
 			return charCount;
-	return static_cast<unsigned>(size);
+	return static_cast<u32>(size);
 }
+
+using namespace component;
 
 void EntitiesDebugger::update(float dt)
 {
@@ -85,38 +87,38 @@ void EntitiesDebugger::update(float dt)
 				selectingInWorldModeZPriorityInputDelay -= dt;
 
 			FloatRect currentCamBounds;
-			mRegistry.view<component::Camera>().each([&]
+			mRegistry.view<Camera>().each([&]
 			(auto camera)
 			{
-				if(camera.name == component::Camera::currentCameraName)
+				if(camera.name == Camera::currentCameraName)
 					currentCamBounds = camera.bounds;
 			});
 
 			auto mouseWindowPos = Cast<sf::Vector2f>(sf::Mouse::getPosition(*mWindow));
-			auto resolutionRatio = Math::hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
-			auto mouseWorldPos = (Math::hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
+			auto resolutionRatio = hadamardDiv(currentCamBounds.size, Cast<sf::Vector2f>(mWindow->getSize()));
+			auto mouseWorldPos = (hadamardMul(mouseWindowPos, resolutionRatio)) + currentCamBounds.pos; 
 
 			struct EntityUnderCursor
 			{
 				entt::entity entity;
-				unsigned char z;
+				u8 z;
 			};
 			std::vector<EntityUnderCursor> entitiesUnderCursor;
 
-			auto bodiesView = mRegistry.view<component::BodyRect>();
+			auto bodiesView = mRegistry.view<BodyRect>();
 			for(auto entity : bodiesView)
 			{
-				const auto& body = bodiesView.get<component::BodyRect>(entity); 
+				const auto& body = bodiesView.get<BodyRect>(entity); 
 				if(body.contains(mouseWorldPos))
 				{
 					EntityUnderCursor euc;
 					euc.entity = entity;
 
-					if(auto* rq = mRegistry.try_get<component::RenderQuad>(entity))
+					if(auto* rq = mRegistry.try_get<RenderQuad>(entity))
 						euc.z = rq->z; 
-					else if(auto* rc = mRegistry.try_get<component::RenderChunk>(entity))
+					else if(auto* rc = mRegistry.try_get<RenderChunk>(entity))
 						euc.z = rc->z;
-					else if(auto* grc = mRegistry.try_get<component::GroundRenderChunk>(entity))
+					else if(auto* grc = mRegistry.try_get<GroundRenderChunk>(entity))
 						euc.z = grc->z;
 					else
 						euc.z = 255;
@@ -143,14 +145,14 @@ void EntitiesDebugger::update(float dt)
 				auto underCursorEntity = entitiesUnderCursor[selectingInWorldModeZPriority].entity;
 				auto underCursorZ = entitiesUnderCursor[selectingInWorldModeZPriority].z;
 
-				unsigned char alpha = underCursorEntity == mSelected ? 45 : 150;
-				auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
+				u8 alpha = underCursorEntity == mSelected ? 45 : 150;
+				auto& body = mRegistry.get<BodyRect>(underCursorEntity);
 				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, alpha), Null,
 					body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 
-				for(unsigned i = 1; i < entitiesUnderCursor.size(); ++i)
+				for(u32 i = 1; i < entitiesUnderCursor.size(); ++i)
 				{
-					auto& body = mRegistry.get<component::BodyRect>(underCursorEntity);
+					auto& body = mRegistry.get<BodyRect>(underCursorEntity);
 					Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 40), Null,
 						body.pos, body.size, underCursorZ, 0.f, {}, ProjectionType::gameWorld, false);
 				}
@@ -197,20 +199,20 @@ void EntitiesDebugger::update(float dt)
 
 		ImGui::InputText("debug name", lookFor, lookForSize);
 
-		unsigned lookForCharCount = getCharCount(lookFor, lookForSize);
+		u32 lookForCharCount = getCharCount(lookFor, lookForSize);
 
 		auto selectableEntity = [=](entt::entity entity)
 		{
 			bool displayThisEntity = true;
 			char label[50];
-			if(auto* debugName = mRegistry.try_get<component::DebugName>(entity))
+			if(auto* debugName = mRegistry.try_get<DebugName>(entity))
 			{
 				char* name = debugName->name;
-				unsigned nameCharCount = getCharCount(name, strlen(name));
+				u32 nameCharCount = getCharCount(name, strlen(name));
 				sprintf(label, "%u - %s", entity, name);
 				if(lookForCharCount != 0 && lookFor[0] != ' ')
 				{
-					for(unsigned i = 0; i <= nameCharCount && i < lookForCharCount; ++i)
+					for(u32 i = 0; i <= nameCharCount && i < lookForCharCount; ++i)
 					{
 						char nameChar = name[i];
 						char lookForChar = lookFor[i]; 
@@ -251,11 +253,11 @@ void EntitiesDebugger::update(float dt)
 		std::vector<entt::component> types;
 
 		/* TODO: Add support for components choosing
-		if(selectedComponents[0]) types.emplace_back(mRegistry.type<component::Health>());
-		if(selectedComponents[1]) types.emplace_back(mRegistry.type<component::Damage>());
-		if(selectedComponents[2]) types.emplace_back(mRegistry.type<component::Player>());
-		if(selectedComponents[3]) types.emplace_back(mRegistry.type<component::Killable>());
-		if(selectedComponents[4]) types.emplace_back(mRegistry.type<component::InPlayerGunAttackArea>());
+		if(selectedComponents[0]) types.emplace_back(mRegistry.type<Health>());
+		if(selectedComponents[1]) types.emplace_back(mRegistry.type<Damage>());
+		if(selectedComponents[2]) types.emplace_back(mRegistry.type<Player>());
+		if(selectedComponents[3]) types.emplace_back(mRegistry.type<Killable>());
+		if(selectedComponents[4]) types.emplace_back(mRegistry.type<InPlayerGunAttackArea>());
 
 		if(types.empty() || types.size() == IM_ARRAYSIZE(components))
 		{
@@ -285,7 +287,7 @@ void EntitiesDebugger::update(float dt)
 
 		ImGui::BeginChild("components view");
 
-		if(auto* debugName = mRegistry.try_get<component::DebugName>(mSelected))
+		if(auto* debugName = mRegistry.try_get<DebugName>(mSelected))
 			ImGui::Text("%s Components view:", debugName->name);
 		else
 			ImGui::Text("Components view:");
@@ -293,7 +295,7 @@ void EntitiesDebugger::update(float dt)
 		if(mRegistry.valid(mSelected))
 		{
 			bool bodyValid = false;
-			component::BodyRect body;	
+			BodyRect body;	
 
 			// NOTE: Change value to 0 if this code doesn't compile
 			//       because of bug in components parser!
@@ -362,9 +364,8 @@ void* push(u32 size)
 {
 	if(arena.size < arena.used + size)
 	{
-		u32 newSize = arena.size + size * 2;
-		arena.base = cast<u8*>(realloc(arena.base, size));
-		arena.size = size;
+		arena.size = arena.size + size * 2;
+		arena.base = cast<u8*>(realloc(arena.base, arena.size));
 	}
 	void* res = cast<void*>(arena.base + arena.used);
 	arena.used += size;
@@ -484,7 +485,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 				// handle @no-debugger
 				bool noDebugger = false;
 				char* code2 = code;
-				while(*code2++)
+				do
 				{
 					if(*code2 == '{') break;
 					if(match(code2, "@no-debugger"))
@@ -494,6 +495,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 						break;
 					}
 				}
+				while(*code2++);
 				if(noDebugger) continue;
 			}
 
@@ -508,7 +510,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					if(*code2 == '}')
 					{
 						structIsEmpty = true;
-						fprintf(genFile, "if(mRegistry.has<component::%s>(mSelected)) \n{\n", componentName);
+						fprintf(genFile, "if(mRegistry.has<%s>(mSelected)) \n{\n", componentName);
 						fprintf(genFile, "ImGui::Separator();\n");
 						fprintf(genFile, "ImGui::BulletText(\"%s\");\n}\n", componentName);
 						while(*code2++ != ';');
@@ -519,7 +521,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 				if(structIsEmpty) continue;
 			}
 
-			fprintf(genFile, "if(auto* c = mRegistry.try_get<component::%s>(mSelected)) \n{\n", componentName);
+			fprintf(genFile, "if(auto* c = mRegistry.try_get<%s>(mSelected)) \n{\n", componentName);
 			fprintf(genFile, "ImGui::Separator();\n");
 
 			bool componentUsesInheritance = false;
@@ -837,11 +839,11 @@ void parseComponentsFile(char* filename, FILE* genFile)
 									char* enumeration = e.enumerations[enumerationIndex];
 									if(e.isEnumClass)
 									{
-										fprintf(genFile, "case component::%s::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, e.name, enumeration, varName, enumeration);
+										fprintf(genFile, "case %s::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, e.name, enumeration, varName, enumeration);
 									}
 									else
 									{
-										fprintf(genFile, "case component::%s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, enumeration, varName, enumeration);
+										fprintf(genFile, "case %s::%s: ImGui::Text(\"%s: %s\"); break;\n", componentName, enumeration, varName, enumeration);
 									}
 								}
 								fprintf(genFile, "default: ImGui::Text(\"%s: unknown enumeration!!!\");\n}\n", componentName);
@@ -901,7 +903,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 			while(isAlpha(*code)) ++code;
 			*code = 0;
 			++code;
-			fprintf(genFile, "if(auto* c = mRegistry.try_get<component::%s>(mSelected))\n{\n", componentName);
+			fprintf(genFile, "if(auto* c = mRegistry.try_get<%s>(mSelected))\n{\n", componentName);
 			fprintf(genFile, "ImGui::Separator();\n");
 			fprintf(genFile, "switch(*c)\n{\n");
 
@@ -913,7 +915,7 @@ void parseComponentsFile(char* filename, FILE* genFile)
 					while(isAlpha(*code)) ++code; 
 					*code = 0;
 					++code;
-					fprintf(genFile, "case component::%s::%s: ImGui::BulletText(\"%s: %s\"); break;\n", componentName, enumeration, componentName, enumeration);
+					fprintf(genFile, "case %s::%s: ImGui::BulletText(\"%s: %s\"); break;\n", componentName, enumeration, componentName, enumeration);
 				}
 				if(*code == '}')
 				{
@@ -925,6 +927,8 @@ void parseComponentsFile(char* filename, FILE* genFile)
 			fprintf(genFile, "default: ImGui::BulletText(\"%s: unknown enumeration!!!\");\n}\n}\n", componentName);
 		}
 	}
+
+	pop(componentsFileLength);
 	
 	fclose(componentsFile);
 }

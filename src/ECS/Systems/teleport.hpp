@@ -4,11 +4,12 @@
 
 namespace ph::system {
 
-	class Teleport : public System
-	{
-	public:
-		using System::System;
+class Teleport : public System
+{
+public:
+	using System::System;
 
-		void update(float dt) override;
-	};
+	void update(float dt) override;
+};
+
 }

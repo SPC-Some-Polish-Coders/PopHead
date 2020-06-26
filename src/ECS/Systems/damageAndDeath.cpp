@@ -5,6 +5,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/animationComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entityUtil.hpp"
 #include "Scenes/save.hpp"
 #include "GUI/gui.hpp"
@@ -34,7 +35,6 @@ using namespace component;
 
 void DamageAndDeath::dealDamage() const
 {
-	auto view = mRegistry.view<DamageTag, Health>();
 	mRegistry.view<DamageTag, Health>().each([&]
 	(auto entity, auto& damageTag, auto& health)
 	{
@@ -47,8 +47,8 @@ void DamageAndDeath::dealDamage() const
 
 void DamageAndDeath::makeDamageJuice(float dt) const
 {
-	mRegistry.view<DamageAnimation, RenderQuad, Health, MultiParticleEmitter>().each([&]
-	(auto entity, auto& damageAnimation, auto& renderQuad, auto health, auto& multiParticleEmitter)
+	mRegistry.view<DamageAnimation, RenderQuad, Health, MultiParticleEmitter, InsideSimRegion>().each([&]
+	(auto entity, auto& damageAnimation, auto& renderQuad, auto health, auto& multiParticleEmitter, auto)
 	{
 		damageAnimation.timeToEndColorChange -= dt;
 		
@@ -113,8 +113,8 @@ void DamageAndDeath::makeDamageJuice(float dt) const
 
 void DamageAndDeath::makeCharactersDie() 
 {
-	mRegistry.view<Health>().each([&]
-	(auto entity, auto health)
+	mRegistry.view<Health, InsideSimRegion>().each([&]
+	(auto entity, auto health, auto)
 	{
 		if(health.healthPoints <= 0)
 		{
@@ -156,8 +156,8 @@ void DamageAndDeath::makeCharactersDie()
 void DamageAndDeath::updateDeadCharacters(float dt)
 {
 	u32 nrOfDeadCharacters = 0;
-	mRegistry.view<DeadCharacter, RenderQuad>().each([&]
-	(auto entity, auto& deadCharacter, auto& renderQuad)
+	mRegistry.view<DeadCharacter, RenderQuad, InsideSimRegion>().each([&]
+	(auto entity, auto& deadCharacter, auto& renderQuad, auto)
 	{
 		++nrOfDeadCharacters;
 		

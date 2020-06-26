@@ -4,10 +4,9 @@
 
 namespace ph {
 
-class EntitiesTemplateStorage {
+class EntitiesTemplateStorage 
+{
 public:
-	EntitiesTemplateStorage();
-
 	entt::registry& getTemplateRegistry();
 
 	entt::entity getTemplate(const std::string& templateName);

@@ -3,6 +3,7 @@
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -17,8 +18,8 @@ void HostileCollisions::update(float dt)
 	mRegistry.view<BodyRect, BodyCircle, Kinematics, Player, Health>().each([&]
 	(auto playerEntity, auto playerBody, auto playerCircle, auto& playerKinematics, auto, auto)
 	{
-		mRegistry.view<BodyRect, BodyCircle, Damage, CollisionWithPlayer>().each([&]
-		(auto enemyBody, auto enemyCircle, auto damage, auto& playerCollision)
+		mRegistry.view<InsideSimRegion, BodyRect, BodyCircle, Damage, CollisionWithPlayer>().each([&]
+		(auto, auto enemyBody, auto enemyCircle, auto damage, auto& playerCollision)
 		{
 			if(intersect(playerBody, playerCircle, enemyBody, enemyCircle) && !playerCollision.isCollision)
 			{

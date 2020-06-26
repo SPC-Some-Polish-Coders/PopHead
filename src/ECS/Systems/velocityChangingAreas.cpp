@@ -2,6 +2,7 @@
 #include "velocityChangingAreas.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -13,11 +14,11 @@ void VelocityChangingAreas::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<BodyRect, AreaVelocityChangingEffect>().each([&]
-	(auto areaBody, auto velocityChangingEffect)
+	mRegistry.view<AreaVelocityChangingEffect, InsideSimRegion, BodyRect>().each([&]
+	(auto velocityChangingEffect, auto, auto areaBody)
 	{
-		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle, Kinematics>().each([&]
-		(auto, auto objectBody, auto objectCircle, auto& objectKinematics)
+		mRegistry.view<KinematicCollisionBody, InsideSimRegion, BodyRect, BodyCircle, Kinematics>().each([&]
+		(auto, auto, auto objectBody, auto objectCircle, auto& objectKinematics)
 		{
 			if(intersect(areaBody, objectBody, objectCircle))
 				objectKinematics.vel *= velocityChangingEffect.areaSpeedMultiplier;

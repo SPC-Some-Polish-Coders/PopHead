@@ -3,6 +3,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -19,8 +20,8 @@ void PlayerCameraMovement::update(float dt)
 	mRegistry.view<Player, Camera, BodyRect, FaceDirection>().each([&]
 	(auto, auto& playerCam, const auto& playerBody, auto faceDir) 
 	{
-		mRegistry.view<CameraRoom, BodyRect>().each([&]
-		(auto camRoomEntity, auto& camRoom, auto camRoomBody)
+		mRegistry.view<CameraRoom, InsideSimRegion, BodyRect>().each([&]
+		(auto camRoomEntity, auto& camRoom, auto, auto camRoomBody)
 		{
 			if(intersect(camRoomBody, playerBody))
 			{

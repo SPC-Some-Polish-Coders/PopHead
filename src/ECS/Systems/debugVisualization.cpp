@@ -5,6 +5,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/debugComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
+#include "ECS/entityUtil.hpp"
 #include "platforms.hpp"
 #include "Renderer/renderer.hpp"
 
@@ -28,7 +29,9 @@ puzzleGridRoads, puzzleGridRoadsPos = true, puzzleGridRoadsChunks,
 pits, pitChunks, 
 movingPlatformBodies, onPlatformCircles,
 movingPlatformPathBodies,
-tileBounds;
+tileBounds,
+mapChunkBounds,
+spatialPartitionBounds, simRegion;
 
 using namespace component;
 
@@ -72,6 +75,10 @@ void DebugVisualization::update(float dt)
 			ImGui::Checkbox("on platform circles", &onPlatformCircles);
 		ImGui::Checkbox("moving platform path bodies", &movingPlatformPathBodies);
 		ImGui::Checkbox("tile bounds", &tileBounds);
+		ImGui::Checkbox("map chunk bounds", &mapChunkBounds);
+		ImGui::Checkbox("spatial partition bounds", &spatialPartitionBounds);
+		if(spatialPartitionBounds)
+			ImGui::Checkbox("sim region", &simRegion);
 
 		ImGui::Columns(1);
 		ImGui::EndTabItem();
@@ -86,7 +93,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
 		// render multi static collision bodies as bright red rectangle or bright red circles
@@ -96,7 +103,7 @@ void DebugVisualization::update(float dt)
 			for(auto& bodyRect : multiCollisionBody.rects)
 			{
 				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 140), Null,
-					bodyRect.pos, bodyRect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					bodyRect, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 
 			for(auto& circle : multiCollisionBody.circles)
@@ -111,7 +118,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(45, 100, 150, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
 		// render static circle bodies as dark red circle
@@ -119,7 +126,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& rect, const auto& circle)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
-				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				rect, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			Renderer::submitCircle(sf::Color(130, 0, 0, 200), rect.pos + circle.offset - Vec2(circle.radius),
 				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
@@ -129,7 +136,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& rect, const auto& circle)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(45, 100, 150, 40), Null,
-				rect.pos, rect.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				rect, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			Renderer::submitCircle(sf::Color(45, 100, 150, 140), rect.pos + circle.offset - Vec2(circle.radius),
 				circle.radius, 50, ProjectionType::gameWorld, false);
 		});
@@ -142,7 +149,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
@@ -153,7 +160,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 255, 0, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
@@ -164,7 +171,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(40, 40, 225, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
 		// render chunk light walls as light blue rectangle
@@ -174,7 +181,7 @@ void DebugVisualization::update(float dt)
 			for(const auto wall : chunk.lightWalls) 
 			{
 				Renderer::submitQuad(Null, Null, &sf::Color(60, 60, 255, 140), Null,
-					wall.pos, wall.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					wall, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});	
 	}
@@ -186,7 +193,7 @@ void DebugVisualization::update(float dt)
 		(auto, const auto& body) 
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
@@ -200,19 +207,19 @@ void DebugVisualization::update(float dt)
 			{
 				// render collision denial areas as dark red rectangle 
 				Renderer::submitQuad(Null, Null, &sf::Color(150, 10, 0, 140), Null,
-					body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 			else if(denial.type == DenialArea::LightWall && lightWallDenialAreas)
 			{
 				// render collision denial areas as dark yellow rectangle 
 				Renderer::submitQuad(Null, Null, &sf::Color(100, 100, 0, 140), Null,
-					body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 			else if(denial.type == DenialArea::All && collisionAndLightWallDenialAreas)
 			{
 				// render collision and light wall denial areas as dark red rectangle 
 				Renderer::submitQuad(Null, Null, &sf::Color(50, 20, 20, 140), Null,
-					body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});
 	}
@@ -225,7 +232,7 @@ void DebugVisualization::update(float dt)
 		{
 			// render hint area as lime green rectangle
 			Renderer::submitQuad(Null, Null, &sf::Color(192, 255, 0, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 
 			if(hintAreaDetail)
 			{
@@ -256,7 +263,7 @@ void DebugVisualization::update(float dt)
 		{
 			// render camera rooms as violet rectangle
 			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 150, 140), Null,
-				body.pos, body.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 
 			if(cameraRoomCenter)
 			{
@@ -267,7 +274,7 @@ void DebugVisualization::update(float dt)
 				centerArea.h -= camRoom.edgeAreaSize * body.h * 2.f;
 
 				Renderer::submitQuad(Null, Null, &sf::Color(255, 0, 0, 140), Null,
-					centerArea.pos, centerArea.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					centerArea, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 		});
 	}
@@ -308,7 +315,7 @@ void DebugVisualization::update(float dt)
 							{
 								auto color = mRegistry.get<DebugColor>(entity);
 								Renderer::submitQuad(Null, Null, &color, Null,
-									body->pos, body->size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+									*body, 50, 0.f, {}, ProjectionType::gameWorld, false);
 							}
 						}
 					}
@@ -322,11 +329,11 @@ void DebugVisualization::update(float dt)
 		mRegistry.view<PitChunk, BodyRect>().each([&]
 		(auto entity, const auto& pitChunk, auto chunkBody)
 		{
-			for(auto& pit : pitChunk.pits)
+			for(auto pit : pitChunk.pits)
 			{
 				// render pit as dark purple rectangle
 				Renderer::submitQuad(Null, Null, &sf::Color(100, 0, 100, 50), Null,
-					pit.pos, pit.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+					pit, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			}
 
 			if(pitChunks)
@@ -335,7 +342,7 @@ void DebugVisualization::update(float dt)
 				if(auto* color = mRegistry.try_get<DebugColor>(entity))
 				{
 					Renderer::submitQuad(Null, Null, color, Null,
-						chunkBody.pos, chunkBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+						chunkBody, 50, 0.f, {}, ProjectionType::gameWorld, false);
 				}
 			}
 		});
@@ -348,7 +355,7 @@ void DebugVisualization::update(float dt)
 		{
 			// render expanded moving platform body as orange rectangle
 			Renderer::submitQuad(Null, Null, &sf::Color(255, 165, 0, 50), Null,
-				platformBody.pos, platformBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				platformBody, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 
 		if(onPlatformCircles)
@@ -379,25 +386,43 @@ void DebugVisualization::update(float dt)
 		(auto platform, auto platformBody)
 		{
 			Renderer::submitQuad(Null, Null, &sf::Color(192, 255, 0, 50), Null,
-				platform.pathBody.pos, platform.pathBody.size, 50, 0.f, {}, ProjectionType::gameWorld, false);
+				platform.pathBody, 50, 0.f, {}, ProjectionType::gameWorld, false);
 		});
 	}
 
+	auto drawAlignBounds = [&](float alignment, float lineThickness, sf::Color lineColor)
+	{
+		FloatRect cameraBounds = getCurrentCameraBounds();
+
+		for(float x = cameraBounds.x - fmod(cameraBounds.x, alignment); x < cameraBounds.right(); x += alignment)
+			Renderer::submitLine(lineColor, Vec2(x, cameraBounds.y), Vec2(x, cameraBounds.bottom()), lineThickness);
+
+		for(float y = cameraBounds.y - fmod(cameraBounds.y, alignment); y < cameraBounds.bottom(); y += alignment)
+			Renderer::submitLine(lineColor, Vec2(cameraBounds.x, y), Vec2(cameraBounds.right(), y), lineThickness);
+	};
+
 	if(tileBounds)
 	{
-		FloatRect cameraBounds;
-		mRegistry.view<component::Camera>().each([&]
-		(auto camera)
+		drawAlignBounds(16.f, 1.f, sf::Color(255, 0, 0, 200));
+	}
+
+	if(mapChunkBounds)
+	{
+		drawAlignBounds(16.f * 12.f, 5.f, sf::Color(0, 0, 255, 200));
+	}
+
+	if(spatialPartitionBounds)
+	{
+		drawAlignBounds(16.f * 12.f * 3.f, 20.f, sf::Color(255, 255, 30, 240));
+
+		if(simRegion)
 		{
-			if(camera.name == component::Camera::currentCameraName)
-				cameraBounds = camera.bounds;
-		});
+			Renderer::submitQuad(Null, Null, &sf::Color(255, 255, 0, 50), Null,
+				*simRegionRect, 50, 0.f, {}, ProjectionType::gameWorld, false);
 
-		for(float x = cameraBounds.x - fmod(cameraBounds.x, 16.f); x < cameraBounds.right(); x += 16.f)
-			Renderer::submitLine(sf::Color(255, 0, 0, 200), Vec2(x, cameraBounds.y), Vec2(x, cameraBounds.bottom()));
-
-		for(float y = cameraBounds.y - fmod(cameraBounds.y, 16.f); y < cameraBounds.bottom(); y += 16.f)
-			Renderer::submitLine(sf::Color(255, 0, 0, 200), Vec2(cameraBounds.x, y), Vec2(cameraBounds.right(), y));
+			Renderer::submitQuad(Null, Null, &sf::Color(0, 255, 0, 100), Null,
+				*simRegionCentralPartitionRect, 50, 0.f, {}, ProjectionType::gameWorld, false);
+		}
 	}
 }
 

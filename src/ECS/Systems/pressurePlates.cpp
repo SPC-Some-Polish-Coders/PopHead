@@ -3,6 +3,7 @@
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -14,11 +15,10 @@ void PressurePlates::update(float dt)
 
 	if(sPause) return;
 
-	mRegistry.view<PressurePlate, PuzzleColor, PuzzleGridPos, BodyRect, TextureRect>().each([&]
-	(auto& plate, auto plateColor, auto pressurePlatePuzzleGridPos, auto plateBody, auto& textureRect)
+	mRegistry.view<PressurePlate, InsideSimRegion, PuzzleColor, PuzzleGridPos, BodyRect, TextureRect>().each([&]
+	(auto& plate, auto, auto plateColor, auto pressurePlatePuzzleGridPos, auto plateBody, auto& textureRect)
 	{
-		if(plate.isPressIrreversible && plate.isPressed)
-			return;
+		if(plate.isPressIrreversible && plate.isPressed) return;
 
 		plate.isPressed = false;
 
@@ -36,15 +36,15 @@ void PressurePlates::update(float dt)
 			}
 		};
 
-		mRegistry.view<KinematicCollisionBody, BodyRect, BodyCircle>().each([&]
-		(auto pressingEntity, auto, auto kinBody, auto kinCircle)
+		mRegistry.view<KinematicCollisionBody, InsideSimRegion, BodyRect, BodyCircle>().each([&]
+		(auto pressingEntity, auto, auto, auto kinBody, auto kinCircle)
 		{
 			if(intersect(plateBody, kinBody, kinCircle))
 				pressPlate(pressingEntity);
 		});
 
-		mRegistry.view<PuzzleBoulder, PuzzleGridPos>().each([&]
-		(auto pressingEntity, auto, auto boulderPuzzleGridPos)
+		mRegistry.view<PuzzleBoulder, PuzzleGridPos, InsideSimRegion>().each([&]
+		(auto pressingEntity, auto, auto boulderPuzzleGridPos, auto)
 		{
 			if(boulderPuzzleGridPos == pressurePlatePuzzleGridPos)
 				pressPlate(pressingEntity);

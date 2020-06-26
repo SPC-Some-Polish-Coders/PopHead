@@ -41,8 +41,12 @@ void DebugCameraSystem::update(float dt)
 
 		if(mDebugCameraEnabled)
 		{
+			ImGui::Checkbox("debug camera moves", &mDebugCameraMoves);
+
 			ImGui::Separator();
-			ImGui::Text("AWSD - Move camera");
+			
+			if(mDebugCameraMoves)
+				ImGui::Text("AWSD - Move camera");
 
 			mRegistry.view<DebugCamera, Camera>().each([this, dt]
 			(auto, auto& camera)
@@ -50,7 +54,8 @@ void DebugCameraSystem::update(float dt)
 				if(ImGui::SliderFloat("zoom", &mZoom, 0.01f, 20.f))
 					camera.bounds.size = Vec2(640.f, 360.f) * mZoom;
 
-				ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
+				if(mDebugCameraMoves)
+					ImGui::SliderFloat("movement speed", &mMovementSpeed, 0.01f, 10.f);
 
 				if(ImGui::Button("normal zoom"))
 				{
@@ -79,18 +84,21 @@ void DebugCameraSystem::update(float dt)
 	mRegistry.view<DebugCamera, Camera, BodyRect>().each([this, dt]
 	(auto, auto& camera, auto& body)
 	{
-		Vec2 movement;
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
-			movement.x -= 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			movement.x += 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			movement.y -= 500.f;	
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			movement.y += 500.f;	
-		movement *= dt;
-		movement *= mMovementSpeed;
-		body.pos += movement;
+		if(mDebugCameraMoves)
+		{
+			Vec2 movement;
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+				movement.x -= 500.f;	
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				movement.x += 500.f;	
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+				movement.y -= 500.f;	
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+				movement.y += 500.f;	
+			movement *= dt;
+			movement *= mMovementSpeed;
+			body.pos += movement;
+		}
 		camera.bounds.setCenter(body.pos);
 	});
 }

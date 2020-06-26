@@ -4,6 +4,7 @@
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entityUtil.hpp"
 #include "Utilities/direction.hpp"
 
@@ -72,8 +73,8 @@ void MeleeAttacks::update(float dt)
 			);
 			bool wasEnemyHit = false;
 
-			mRegistry.view<Killable, BodyRect, Kinematics>(entt::exclude<Player>).each([&]
-			(auto enemyEntity, auto, auto enemyBody, auto& kinematics)
+			mRegistry.view<Killable, InsideSimRegion, BodyRect, Kinematics>(entt::exclude<Player>).each([&]
+			(auto enemyEntity, auto, auto, auto enemyBody, auto& kinematics)
 			{
 				Vec2 enemyBodyCenter = enemyBody.center();
 				if(intersect(attackArea, enemyBody))
@@ -111,7 +112,7 @@ void MeleeAttacks::update(float dt)
 			weaponBody.pos = playerPos - Vec2(12.f);
 
 			// rotate weapon
-			constexpr float anglesPerSecond = 240.f;
+			float anglesPerSecond = 240.f;
 			renderQuad.rotation -= dt * anglesPerSecond;
 
 			if(renderQuad.rotation <= mStartWeaponRotation - meleeProperties.rotationRange) 

@@ -217,17 +217,25 @@ void endScene()
 	}
 }
 
-void submitCircle(sf::Color color, Vec2 position, float radius, u8 z, 
+void submitCircle(sf::Color color, Vec2 pos, float radius, u8 z, 
 				  ProjectionType projectionType, bool isAffectedByLight)
 {
-	submitQuad(Null, Null, &color, &circleShader, position, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
+	submitQuad(Null, Null, &color, &circleShader, pos, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
-                Vec2 position, Vec2 size, u8 z, float rotation, Vec2 rotationOrigin,
+                Vec2 pos, Vec2 size, u8 z, float rotation, Vec2 rotationOrigin,
                 ProjectionType projectionType, bool isAffectedByLight)
 {
-	QuadRenderer::submitQuad(texture, textureRect, color, shader, position, size,
+	QuadRenderer::submitQuad(texture, textureRect, color, shader, pos, size,
+	                         getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
+}
+
+void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
+				FloatRect posAndSize, u8 z, float rotation, Vec2 rotationOrigin, ProjectionType projectionType,
+				bool isAffectedByLight)
+{	
+	QuadRenderer::submitQuad(texture, textureRect, color, shader, posAndSize.pos, posAndSize.size,
 	                         getNormalizedZ(z), rotation, rotationOrigin, projectionType, isAffectedByLight);
 }
 
@@ -258,25 +266,25 @@ void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color c
 	QuadRenderer::submitGroundChunk(pos, textureRect, getNormalizedZ(z), color);
 }
 
-void submitLine(sf::Color color, Vec2 positionA, Vec2 positionB, float thickness)
+void submitLine(sf::Color color, Vec2 posA, Vec2 posB, float thickness)
 {
-	submitLine(color, color, positionA, positionB, thickness);
+	submitLine(color, color, posA, posB, thickness);
 }
 
-void submitLine(sf::Color colorA, sf::Color colorB, Vec2 positionA, Vec2 positionB, float thickness)
+void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float thickness)
 {
-	LineRenderer::submitLine(colorA, colorB, positionA, positionB, thickness);
+	LineRenderer::submitLine(colorA, colorB, posA, posB, thickness);
 }
 
-void submitPoint(Vec2 position, sf::Color color, u8 z, float size)
+void submitPoint(Vec2 pos, sf::Color color, u8 z, float size)
 {
-	pointRenderer.submitPoint(position, color, getNormalizedZ(z), size);
+	pointRenderer.submitPoint(pos, color, getNormalizedZ(z), size);
 }
 
-void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
+void submitLight(sf::Color color, Vec2 pos, float startAngle, float endAngle,
                  float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection) 
 {
-	LightRenderer::submitLight(color, position, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor, rayCollisionDetection);
+	LightRenderer::submitLight(color, pos, startAngle, endAngle, attenuationAddition, attenuationFactor, attenuationSquareFactor, rayCollisionDetection);
 }
 
 void submitLightWall(FloatRect wall)
@@ -294,10 +302,10 @@ u32 getNrOfCollisionLights()
 	return LightRenderer::getNrOfCollisionLights();
 }
 
-void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize, sf::Color color,
+void submitText(const char* text, const char* fontFilename, Vec2 pos, float characterSize, sf::Color color,
                 u8 z, ProjectionType projecitonType, bool isAffectedByLight)
 {
-	TextRenderer::drawText(text, fontFilename, position, characterSize, color, z, projecitonType, isAffectedByLight);
+	TextRenderer::drawText(text, fontFilename, pos, characterSize, color, z, projecitonType, isAffectedByLight);
 }
 
 void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, 
@@ -306,10 +314,10 @@ void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos
 	TextRenderer::drawTextWorldHD(text, fontFilename, worldPos, gameWorldCameraBounds, characterSize, textColor, z);
 }
 
-void submitTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,
+void submitTextArea(const char* text, const char* fontFilename, Vec2 pos, float textAreaWidth,
                     TextAligment aligment, float size, sf::Color color, u8 z, ProjectionType projectionType, bool isAffectedByLight)
 {
-	TextRenderer::drawTextArea(text, fontFilename, position, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
+	TextRenderer::drawTextArea(text, fontFilename, pos, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
 
 void handleEvent(sf::Event e)

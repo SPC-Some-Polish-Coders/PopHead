@@ -3,6 +3,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -82,8 +83,8 @@ void IndoorOutdoorBlending::update(float dt)
 			});	
 		};
 
-		mRegistry.view<IndoorOutdoorBlendArea, BodyRect>().each([&]
-		(auto blendArea, auto blendAreaBody)
+		mRegistry.view<IndoorOutdoorBlendArea, InsideSimRegion, BodyRect>().each([&]
+		(auto blendArea, auto, auto blendAreaBody)
 		{
 			if(intersect(playerBody, blendAreaBody))
 			{
@@ -96,8 +97,8 @@ void IndoorOutdoorBlending::update(float dt)
 		});
 		if(playerIntersectsArea) return;
 
-		mRegistry.view<IndoorArea, BodyRect>().each([&]
-		(auto, auto indoorAreaBody)
+		mRegistry.view<IndoorArea, InsideSimRegion, BodyRect>().each([&]
+		(auto, auto, auto indoorAreaBody)
 		{
 			if(intersect(playerBody, indoorAreaBody))
 			{
@@ -108,8 +109,8 @@ void IndoorOutdoorBlending::update(float dt)
 		});
 		if(playerIntersectsArea) return;
 
-		mRegistry.view<OutdoorArea, BodyRect>().each([&]
-		(auto, auto outdoorAreaBody)
+		mRegistry.view<OutdoorArea, InsideSimRegion, BodyRect>().each([&]
+		(auto, auto, auto outdoorAreaBody)
 		{
 			if(intersect(playerBody, outdoorAreaBody))
 			{
@@ -121,11 +122,11 @@ void IndoorOutdoorBlending::update(float dt)
 		if(playerIntersectsArea) return;
 	});
 
-	mRegistry.view<component::IndoorOutdoorBlend, BodyRect>().each([&]
-	(auto& object, auto objectBody)
+	mRegistry.view<IndoorOutdoorBlend, InsideSimRegion, BodyRect>().each([&]
+	(auto& object, auto, auto objectBody)
 	{
-		mRegistry.view<IndoorOutdoorBlendArea, BodyRect>().each([&]
-		(auto blendArea, auto blendAreaBody)
+		mRegistry.view<IndoorOutdoorBlendArea, InsideSimRegion, BodyRect>().each([&]
+		(auto blendArea, auto, auto blendAreaBody)
 		{
 			if(intersect(objectBody, blendAreaBody))
 				object.outdoor = correctAlpha(getOutdoorFactor(blendAreaBody, objectBody.center(), blendArea.exit));

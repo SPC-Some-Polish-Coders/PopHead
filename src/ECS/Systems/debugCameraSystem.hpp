@@ -13,6 +13,7 @@ private:
 	float mZoom = 1.f;
 	float mMovementSpeed = 1.f;
 	bool mDebugCameraEnabled = false;
+	bool mDebugCameraMoves = true;
 };
 
 }

@@ -24,11 +24,15 @@ namespace Renderer
 	void beginScene();
 	void endScene();
 
-	void submitCircle(sf::Color color, Vec2 position, float radius, u8 z, 
+	void submitCircle(sf::Color color, Vec2 pos, float radius, u8 z, 
 	                  ProjectionType = ProjectionType::gameWorld, bool isAffectedByLight = true);
 
-	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, Vec2 position,
+	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader, Vec2 pos,
 	                Vec2 size, u8 z, float rotation, Vec2 rotationOrigin, ProjectionType = ProjectionType::gameWorld,
+	                bool isAffectedByLight = true);
+
+	void submitQuad(Texture*, const IntRect* textureRect, const sf::Color*, const Shader* shader,
+	                FloatRect posAndSize, u8 z, float rotation, Vec2 rotationOrigin, ProjectionType = ProjectionType::gameWorld,
 	                bool isAffectedByLight = true);
 
 	void submitBunchOfQuadsWithTheSameTexture(std::vector<QuadData>&, Texture*, const Shader*,
@@ -43,13 +47,13 @@ namespace Renderer
 
 	void submitGroundChunk(Vec2 pos, const FloatRect& textureRect, u8 z, sf::Color color); 
 
-	void submitLine(sf::Color, Vec2 positionA, Vec2 positionB, float thickness = 1.f);
+	void submitLine(sf::Color, Vec2 posA, Vec2 posB, float thickness = 1.f);
 
-	void submitLine(sf::Color colorA, sf::Color colorB, Vec2 positionA, Vec2 positionB, float thickness = 1.f);
+	void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float thickness = 1.f);
 
-	void submitPoint(Vec2 position, sf::Color, u8 z, float size = 1.f);
+	void submitPoint(Vec2 pos, sf::Color, u8 z, float size = 1.f);
 
-	void submitLight(sf::Color color, Vec2 position, float startAngle, float endAngle,
+	void submitLight(sf::Color color, Vec2 pos, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection);
 
 	void submitLightWall(FloatRect wall);
@@ -57,13 +61,13 @@ namespace Renderer
 
 	u32 getNrOfCollisionLights();
 
-	void submitText(const char* text, const char* fontFilename, Vec2 position, float characterSize,
+	void submitText(const char* text, const char* fontFilename, Vec2 pos, float characterSize,
 		            sf::Color textColor, u8 z, ProjectionType, bool isAffectedByLight = false);
 
 	void submitTextWorldHD(const char* text, const char* fontFilename, Vec2 worldPos, float characterSize,
 		                   sf::Color textColor, u8 z);
 
-	void submitTextArea(const char* text, const char* fontFilename, Vec2 position, float textAreaWidth,
+	void submitTextArea(const char* text, const char* fontFilename, Vec2 pos, float textAreaWidth,
                         TextAligment, float size, sf::Color, u8 z, ProjectionType, bool isAffectedByLight = false);
 
 	void setAmbientLightColor(sf::Color);

@@ -41,6 +41,7 @@
 #include "ECS/Systems/puzzleBoulders.hpp"
 #include "ECS/Systems/platforms.hpp"
 #include "ECS/Systems/pits.hpp"
+#include "ECS/Systems/simRegion.hpp"
 
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
@@ -54,68 +55,73 @@ Scene::Scene(AIManager& aiManager, SceneManager& sceneManager, Texture& tilesetT
              ThreadPool& threadPool, EntitiesTemplateStorage& entitiesTemplateStorage, sf::Window* window)
 	:mSystemsQueue(mRegistry, threadPool)
 {
-	// should be at the start
-	mSystemsQueue.appendSystem<system::RenderSystem>(std::ref(tilesetTexture));
+	using namespace system;
+
+	// must be at the start
+	mSystemsQueue.appendSystem<SimRegion>();
+
+	// should be between SpatialPartitioning and every other system
+	mSystemsQueue.appendSystem<RenderSystem>(std::ref(tilesetTexture));
 
 	// must be before Movement
-	mSystemsQueue.appendSystem<system::PlayerMovementInput>(std::ref(aiManager), this);
-	mSystemsQueue.appendSystem<system::ZombieSystem>(&aiManager, std::ref(threadPool));
-	mSystemsQueue.appendSystem<system::VelocityChangingAreas>();
-	mSystemsQueue.appendSystem<system::PushingAreas>();
+	mSystemsQueue.appendSystem<PlayerMovementInput>(std::ref(aiManager), this);
+	mSystemsQueue.appendSystem<ZombieSystem>(&aiManager, std::ref(threadPool));
+	mSystemsQueue.appendSystem<VelocityChangingAreas>();
+	mSystemsQueue.appendSystem<PushingAreas>();
 
-	mSystemsQueue.appendSystem<system::Movement>(); // physics
+	mSystemsQueue.appendSystem<Movement>(); // physics
 
-	mSystemsQueue.appendSystem<system::GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
-	mSystemsQueue.appendSystem<system::GunAttacks>();
-	mSystemsQueue.appendSystem<system::MeleeAttacks>();
+	mSystemsQueue.appendSystem<GunPositioningAndTexture>(); // must be after Movement and before GunAttacks
+	mSystemsQueue.appendSystem<GunAttacks>();
+	mSystemsQueue.appendSystem<MeleeAttacks>();
 
-	mSystemsQueue.appendSystem<system::HostileCollisions>(); // must be after Movement and before KinematicCollisions
-	mSystemsQueue.appendSystem<system::SlowZombieSystem>(); // must be after HostileCollisions and before ZombieSystem (in next iteration)
+	mSystemsQueue.appendSystem<HostileCollisions>(); // must be after Movement and before KinematicCollisions
+	mSystemsQueue.appendSystem<SlowZombieSystem>(); // must be after HostileCollisions and before ZombieSystem (in next iteration)
 
-	mSystemsQueue.appendSystem<system::DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
+	mSystemsQueue.appendSystem<DamageAndDeath>(std::ref(aiManager)); // must be after GunAttacks, MeleeAttacks and HostileCollisions
 	
-	mSystemsQueue.appendSystem<system::PatricleSystem>(); // must be after DamageAndDeath
+	mSystemsQueue.appendSystem<PatricleSystem>(); // must be after DamageAndDeath
 
-	mSystemsQueue.appendSystem<system::KinematicCollisions>(); // physics
+	mSystemsQueue.appendSystem<KinematicCollisions>(); // physics
 
-	mSystemsQueue.appendSystemWithLastOrder<system::GameplayUI>(); // must be after DamageAndDeath
+	mSystemsQueue.appendSystemWithLastOrder<GameplayUI>(); // must be after DamageAndDeath
 
-	mSystemsQueue.appendSystem<system::Gates>(); // must be after Levers and before StaticCollisions
+	mSystemsQueue.appendSystem<Gates>(); // must be after Levers and before StaticCollisions
 
-	mSystemsQueue.appendSystem<system::StaticCollisions>(); // physics
+	mSystemsQueue.appendSystem<StaticCollisions>(); // physics
 
-	mSystemsQueue.appendSystemWithLastOrder<system::AnimationSystem>(); // must be after Levers and DamageAndDeath
+	mSystemsQueue.appendSystemWithLastOrder<AnimationSystem>(); // must be after Levers and DamageAndDeath
 
 	// should be after StaticCollisions
-	mSystemsQueue.appendSystem<system::PlayerCameraMovement>();
-	mSystemsQueue.appendSystem<system::DebugVisualization>();
-	mSystemsQueue.appendSystem<system::AudioSystem>();
+	mSystemsQueue.appendSystem<PlayerCameraMovement>();
+	mSystemsQueue.appendSystem<DebugVisualization>();
+	mSystemsQueue.appendSystem<AudioSystem>();
 
 	// must be after StaticCollisions
-	mSystemsQueue.appendSystemWithLastOrder<system::PickupItems>();
-	mSystemsQueue.appendSystem<system::HintAreas>();
+	mSystemsQueue.appendSystemWithLastOrder<PickupItems>();
+	mSystemsQueue.appendSystem<HintAreas>();
 
 	// must be after GunAttacks and before EntityDestroying
-	mSystemsQueue.appendSystem<system::LifetimeSystem>();
+	mSystemsQueue.appendSystem<LifetimeSystem>();
 
 	// not specified yet
-	mSystemsQueue.appendSystem<system::DebugCameraSystem>();
-	mSystemsQueue.appendSystem<system::WeatherSystem>();
-	mSystemsQueue.appendSystem<system::EntitiesDebugger>(window);
-	mSystemsQueue.appendSystem<system::IndoorOutdoorBlending>();
-	mSystemsQueue.appendSystem<system::PressurePlates>();
-	mSystemsQueue.appendSystem<system::Puzzles>(std::ref(entitiesTemplateStorage));
-	mSystemsQueue.appendSystem<system::SpikesSystem>();
-	mSystemsQueue.appendSystem<system::SavePoints>();
-	mSystemsQueue.appendSystem<system::Teleport>();
-	mSystemsQueue.appendSystem<system::PuzzleBoulders>();
-	mSystemsQueue.appendSystem<system::Platforms>();
-	mSystemsQueue.appendSystem<system::Pits>();
+	mSystemsQueue.appendSystem<DebugCameraSystem>();
+	mSystemsQueue.appendSystem<WeatherSystem>();
+	mSystemsQueue.appendSystem<EntitiesDebugger>(window);
+	mSystemsQueue.appendSystem<IndoorOutdoorBlending>();
+	mSystemsQueue.appendSystem<PressurePlates>();
+	mSystemsQueue.appendSystem<Puzzles>(std::ref(entitiesTemplateStorage));
+	mSystemsQueue.appendSystem<SpikesSystem>();
+	mSystemsQueue.appendSystem<SavePoints>();
+	mSystemsQueue.appendSystem<Teleport>();
+	mSystemsQueue.appendSystem<PuzzleBoulders>();
+	mSystemsQueue.appendSystem<Platforms>();
+	mSystemsQueue.appendSystem<Pits>();
 
-	mSystemsQueue.appendSystem<system::Levers>(); // must be after Puzzles
+	mSystemsQueue.appendSystem<Levers>(); // must be after Puzzles
 
 	// must be at the end
-	mSystemsQueue.appendSystem<system::EntityDestroying>();
+	mSystemsQueue.appendSystem<EntityDestroying>();
 
 	initEntityUtil(&mRegistry);
 }

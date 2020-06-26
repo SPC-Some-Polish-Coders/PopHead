@@ -3,6 +3,7 @@
 #include "GUI/gui.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/objectsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/Systems/gunAttacks.hpp"
 #include "ECS/Systems/meleeAttacks.hpp"
 #include "ECS/Systems/playerMovementInput.hpp"
@@ -20,8 +21,8 @@ void HintAreas::update(float dt)
 
 	auto playerPos = getPlayerCenterPos();
 
-	mRegistry.view<Hint, BodyRect>().each([&]
-	(auto& hint, auto hintAreaBody)
+	mRegistry.view<InsideSimRegion, Hint, BodyRect>().each([&]
+	(auto, auto& hint, auto hintAreaBody)
 	{
 		if(hintAreaBody.contains(playerPos))
 		{
