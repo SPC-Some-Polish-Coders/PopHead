@@ -3,6 +3,7 @@
 #include "ECS/Components/particleComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
 #include "ECS/Components/simRegionComponents.hpp"
+#include "ECS/Components/graphicsComponents.hpp"
 #include "Utilities/random.hpp"
 #include "Renderer/renderer.hpp"
 
@@ -10,7 +11,8 @@ namespace ph::system {
 
 using namespace component;
 
-static void updateParticleEmitter(float dt, ParticleEmitter& emi, const BodyRect& body, bool pause)
+static void updateParticleEmitter(float dt, ParticleEmitter& emi, const BodyRect& body,
+                                  float brightness, float alpha, bool pause)
 {
 	if(!emi.isEmitting) return;
 
@@ -84,10 +86,10 @@ static void updateParticleEmitter(float dt, ParticleEmitter& emi, const BodyRect
 		{
 			float startColorMultiplier = (emi.parWholeLifetime - particle.lifetime) / emi.parWholeLifetime;
 			float endColorMultiplier = particle.lifetime / emi.parWholeLifetime;
-			color.r = u8(Cast<float>(emi.parStartColor.r) * startColorMultiplier + Cast<float>(emi.parEndColor.r) * endColorMultiplier);
-			color.g = u8(Cast<float>(emi.parStartColor.g) * startColorMultiplier + Cast<float>(emi.parEndColor.g) * endColorMultiplier);
-			color.b = u8(Cast<float>(emi.parStartColor.b) * startColorMultiplier + Cast<float>(emi.parEndColor.b) * endColorMultiplier);
-			color.a = u8(Cast<float>(emi.parStartColor.a) * startColorMultiplier + Cast<float>(emi.parEndColor.a) * endColorMultiplier);
+			color.r = (Cast<u8>((Cast<float>(emi.parStartColor.r) * startColorMultiplier + Cast<float>(emi.parEndColor.r) * endColorMultiplier) * brightness));
+			color.g = (Cast<u8>((Cast<float>(emi.parStartColor.g) * startColorMultiplier + Cast<float>(emi.parEndColor.g) * endColorMultiplier) * brightness));
+			color.b = (Cast<u8>((Cast<float>(emi.parStartColor.b) * startColorMultiplier + Cast<float>(emi.parEndColor.b) * endColorMultiplier) * brightness));
+			color.a = (Cast<u8>((Cast<float>(emi.parStartColor.a) * startColorMultiplier + Cast<float>(emi.parEndColor.a) * endColorMultiplier) * alpha));
 		}
 
 		// submit particle to renderer
@@ -104,20 +106,12 @@ void PatricleSystem::update(float dt)
 {
 	PH_PROFILE_FUNCTION();
 
-	// update single particle emitters
-	mRegistry.view<ParticleEmitter, InsideSimRegion, BodyRect>().each([&]
-	(auto& emi, auto, auto body)
-	{
-		updateParticleEmitter(dt, emi, body, sPause);
-	});
-
-	// update multi particle emitters
-	mRegistry.view<MultiParticleEmitter, InsideSimRegion, BodyRect>().each([&]
-	(auto& multiEmi, auto, auto body)
+	auto updateMultiParticleEmitter = [&]
+	(MultiParticleEmitter& multiEmi, BodyRect body, float brightness, float alpha)
 	{
 		// update particle emitters 
 		for(auto& particleEmitter : multiEmi.particleEmitters)
-			updateParticleEmitter(dt, particleEmitter, body, sPause);
+			updateParticleEmitter(dt, particleEmitter, body, brightness, alpha, sPause);
 
 		// erase dead particle emitters from multi particle emitter
 		for(auto it = multiEmi.particleEmitters.begin(); it != multiEmi.particleEmitters.end();) 
@@ -127,6 +121,34 @@ void PatricleSystem::update(float dt)
 			else
 				++it;
 		}
+	};
+
+	// update multi particle emitters with indoor outdoor blend
+	mRegistry.view<MultiParticleEmitter, InsideSimRegion, BodyRect, IndoorOutdoorBlend>().each([&]
+	(auto& multiEmi, auto, auto body, auto io)
+	{
+		updateMultiParticleEmitter(multiEmi, body, io.brightness, io.alpha);
+	});
+
+	// update multi particle emitters without indoor outdoor blend
+	mRegistry.view<MultiParticleEmitter, InsideSimRegion, BodyRect, IndoorOutdoorBlend>().each([&]
+	(auto& multiEmi, auto, auto body, auto io)
+	{
+		updateMultiParticleEmitter(multiEmi, body, 1, 1);
+	});
+
+	// update single particle emitters with indoor outdoor blend
+	mRegistry.view<ParticleEmitter, InsideSimRegion, BodyRect, IndoorOutdoorBlend>().each([&]
+	(auto& emi, auto, auto body, auto io)
+	{
+		updateParticleEmitter(dt, emi, body, io.brightness, io.alpha, sPause);
+	});
+
+	// update single particle emitters without indoor outdoor blend
+	mRegistry.view<ParticleEmitter, InsideSimRegion, BodyRect>(entt::exclude<IndoorOutdoorBlend>).each([&]
+	(auto& emi, auto, auto body)
+	{
+		updateParticleEmitter(dt, emi, body, 1, 1, sPause);
 	});
 }
 

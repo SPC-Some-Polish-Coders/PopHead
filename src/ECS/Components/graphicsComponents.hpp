@@ -5,7 +5,7 @@
 #include "Utilities/rect.hpp"
 #include <vector>
 
-namespace ph{
+namespace ph {
 
 class Texture;
 class Shader;
