@@ -57,28 +57,6 @@ void RenderSystem::update(float dt)
 	// set camera
 	Renderer::setGameWorldCamera(currentCameraBounds);
 
-	// submit light sources
-	mRegistry.view<LightSource, BodyRect, InsideSimRegion>().each([]
-	(const auto& light, auto body, auto)
-	{
-		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
-		Renderer::submitLight(light.color, body.pos + light.offset, light.startAngle, light.endAngle,
-			light.attenuationAddition, light.attenuationFactor, light.attenuationSquareFactor, light.rayCollisionDetection);
-	});
-
-	//submit single light walls
-	if(Renderer::getNrOfCollisionLights() > 0)
-	{
-		mRegistry.view<LightWall, BodyRect, InsideSimRegion>().each([]
-		(const auto& lightWall, auto body, auto) 
-		{
-			if(lightWall.y == -1.f)
-				Renderer::submitLightWall(body);
-			else
-				Renderer::submitLightWall(FloatRect(body.pos + lightWall.pos, lightWall.size));
-		});
-	}
-
 	auto getIndoorBlendColor = [](IndoorBlend ib)
 	{
 		u8 alpha = Cast<u8>(ib.alpha * 255.f);
@@ -178,6 +156,38 @@ void RenderSystem::update(float dt)
 			quad.texture, &textureRect, &quad.color, quad.shader,
 			body, quad.z, quad.rotation, quad.rotationOrigin);
 	});
+
+	// submit light sources with indoor outdoor blend
+	mRegistry.view<LightSource, IndoorOutdoorBlend, BodyRect, InsideSimRegion>().each([&]
+	(const auto& light, auto io, auto body, auto)
+	{
+		sf::Color color = light.color * getIndoorOutdoorColor(io);
+		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
+		Renderer::submitLight(color, body.pos + light.offset, light.startAngle, light.endAngle,
+			light.attenuationAddition, light.attenuationFactor, light.attenuationSquareFactor, light.rayCollisionDetection);
+	});
+
+	// submit light sources with no indoor outdoor blend
+	mRegistry.view<LightSource, BodyRect, InsideSimRegion>(entt::exclude<IndoorOutdoorBlend>).each([]
+	(const auto& light, auto body, auto)
+	{
+		PH_ASSERT_UNEXPECTED_SITUATION(light.startAngle <= light.endAngle, "start angle must be lesser or equal to end angle");
+		Renderer::submitLight(light.color, body.pos + light.offset, light.startAngle, light.endAngle,
+			light.attenuationAddition, light.attenuationFactor, light.attenuationSquareFactor, light.rayCollisionDetection);
+	});
+
+	//submit single light walls
+	if(Renderer::getNrOfCollisionLights() > 0)
+	{
+		mRegistry.view<LightWall, BodyRect, InsideSimRegion>().each([]
+		(const auto& lightWall, auto body, auto) 
+		{
+			if(lightWall.y == -1.f)
+				Renderer::submitLightWall(body);
+			else
+				Renderer::submitLightWall(FloatRect(body.pos + lightWall.pos, lightWall.size));
+		});
+	}
 }
 
 }
