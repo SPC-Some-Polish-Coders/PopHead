@@ -129,7 +129,7 @@
     <component name="BodyRect" x="0" y="0" w="8" h="8"/>
     <component name="RenderQuad" z="99" textureFilepath="textures/others/torch.png" />
 	<component name="IndoorOutdoor" />
-    <component name="LightSource" offsetX="10" offsetY="10" color="rgba(200, 120, 32, 150)" attenuationAddition="0.24" attenuationFactor="4.0" attenuationSquareFactor="2.5" rayCollisionDetection="false"/>
+    <component name="LightSource" offsetX="4" offsetY="2" color="rgba(200, 120, 32, 150)" attenuationAddition="0.24" attenuationFactor="4.0" attenuationSquareFactor="2.5" rayCollisionDetection="false"/>
     <component name="ParticleEmitter">
       <particleAttrib name="startColor" r="200" g="120" b="32" a="255" />
       <particleAttrib name="endColor" r="200" g="120" b="32" a="100" />
@@ -142,6 +142,11 @@
       <particleAttrib name="lifetime" v="0.3" />
       <particleAttrib name="isEmitting" v="true" />
     </component>
+  </entityTemplate>
+
+  <entityTemplate name="Puzzle">
+    <component name="BodyRect" x="0.0" y="2.0" w="8" h="16" />
+    <component name="Puzzle" />
   </entityTemplate>
 
   <entityTemplate name="Lever">
@@ -266,6 +271,11 @@
       <particleAttrib name="lifetime" v="3" />
       <particleAttrib name="randomSpawnAreaSize" w="20" h="3" />
     </component>
+  </entityTemplate >
+
+  <entityTemplate name="WeatherArea" >
+    <component name="BodyRect" />
+    <component name="WeatherArea" />
   </entityTemplate >
 
 </entityTemplates>

@@ -334,6 +334,13 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 		auto& gate = registry.get<Gate>(entity);
 		gate.id = getProperty("id").toU32();
 	}
+	else if(type == "Puzzle")
+	{	
+		createCopy("Puzzle");
+		loadPos();
+		auto& puzzle = registry.get<Puzzle>(entity);
+		puzzle.id = getProperty("id").toU8();
+	}
 	else if(type == "Lever") 
 	{
 		createCopy("Lever");
@@ -499,9 +506,8 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 	}
 	else if(type == "WeatherArea")
 	{
-		entity = registry.create();
-		registry.assign<BodyRect>(entity, getPosAndSizeAttributes());
-		registry.assign<WeatherArea>(entity);
+		createCopy("WeatherArea");
+		loadPosAndSize();
 
 		auto type = getProperty("WeatherType").toString();
 		if(type == "Sunny")

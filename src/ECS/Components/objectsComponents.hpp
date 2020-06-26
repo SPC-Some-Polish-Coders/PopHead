@@ -42,6 +42,11 @@ struct PushingArea
 	Vec2 pushForce;
 };
 
+struct Puzzle 
+{
+	u8 id;
+};
+
 struct PuzzleId
 {
 	union

@@ -2,6 +2,7 @@
 #include "puzzles.hpp"
 #include "ECS/Components/objectsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
+#include "ECS/Components/simRegionComponents.hpp"
 
 namespace ph::system {
 
@@ -19,191 +20,204 @@ void Puzzles::update(float dt)
 
 	if(sPause) return;
 
-	// puzzle 1	
+	mRegistry.view<Puzzle, InsideSimRegion>().each([&]
+	(auto puzzle, auto)
 	{
-		mRegistry.view<PressurePlate, PuzzleId>().each([&]
-		(auto plate, auto plateId)
+		switch(puzzle.id)
 		{
-			if(plateId.puzzleId == 1)
+			case 1:
 			{
+				mRegistry.view<PressurePlate, PuzzleId>().each([&]
+				(auto plate, auto plateId)
+				{
+					if(plateId.puzzleId == puzzle.id)
+					{
+						mRegistry.view<Gate>().each([=]
+						(auto& gate)
+						{
+							if(gate.id == 1)
+								gate.open = plate.isPressed;
+						});	
+					}
+				});
+			} break;
+
+			case 2:
+			{
+				u32 pressedPlates = 0;
+
+				mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
+				(auto plate, auto plateColor, auto plateId)
+				{
+					if(plateId.puzzleId == puzzle.id)
+					{
+						if(plate.pressedByColor == plateColor)
+							++pressedPlates;
+					}
+				});
+
 				mRegistry.view<Gate>().each([=]
 				(auto& gate)
 				{
-					if(gate.id == 1)
-						gate.open = plate.isPressed;
-				});	
-			}
-		});
-	}
-
-	// puzzle 2
-	{
-		u32 pressedPlates = 0;
-
-		mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
-		(auto plate, auto plateColor, auto plateId)
-		{
-			if(plateId.puzzleId == 2)
-			{
-				if(plate.pressedByColor == plateColor)
-					++pressedPlates;
-			}
-		});
-
-		mRegistry.view<Gate>().each([=]
-		(auto& gate)
-		{
-			if(gate.id == 2)
-				gate.open = pressedPlates == 3;
-		});
-	}
-
-	// puzzle 3
-	{
-		u32 pressedPlates = 0;
-
-		mRegistry.view<PressurePlate, PuzzleId>().each([&]
-		(auto plate, auto plateId)
-		{
-			if(plateId.puzzleId == 3 && plate.isPressed)
-				++pressedPlates;
-		});
-
-		mRegistry.view<Gate>().each([=]
-		(auto& gate)
-		{
-			if(gate.id == 3)
-				gate.open = pressedPlates == 4;
-		});
-	}
-
-	// puzzle 4
-	{
-		mRegistry.view<PressurePlate, PuzzleId>().each([&]
-		(auto plate, auto plateId)
-		{
-			if(plateId.puzzleId == 4) 
-			{
-				mRegistry.view<Spikes, PuzzleId>().each([&]
-				(auto& spikes, auto spikesId)
-				{
-					if(plateId.hash == spikesId.hash)
-						spikes.active = !plate.isPressed;
+					if(gate.id == 2)
+						gate.open = pressedPlates == 3;
 				});
-			}
-		});
-	}
+			} break;
 
-	// puzzle 5
-	{
-		mRegistry.view<Lever, PuzzleId>().each([&]
-		(auto lever, auto leverId)
-		{
-			if(leverId.puzzleId == 5 && lever.wasJustSwitched)
+			case 3:
 			{
-				mRegistry.view<Spikes, PuzzleId>().each([&]
-				(auto& spikes, auto spikesId)
+				u32 pressedPlates = 0;
+
+				mRegistry.view<PressurePlate, PuzzleId>().each([&]
+				(auto plate, auto plateId)
 				{
-					if((leverId.elementId == 1 && (spikesId.elementId == 2 || spikesId.elementId == 4)) ||
-					   (leverId.elementId == 2 && (spikesId.elementId == 2 || spikesId.elementId == 3 || spikesId.elementId == 4)) ||
-					   (leverId.elementId == 3 && (spikesId.elementId == 1 || spikesId.elementId == 2 || spikesId.elementId == 3)) ||
-					   (leverId.elementId == 4 && (spikesId.elementId == 2)))
-					{
-						spikes.active = !spikes.active;
-					}
+					if(plateId.puzzleId == puzzle.id && plate.isPressed)
+						++pressedPlates;
 				});
-			}
-		});
-	}
 
-	// puzzle 6
-	{
-		mRegistry.view<Lever, PuzzleId>().each([&]
-		(auto lever, auto leverId)
-		{
-			if(leverId.puzzleId == 6)
-			{
-				mRegistry.view<MovingPlatform, PuzzleId>().each([&]
-				(auto& platform, auto platformId)
-				{
-					if(leverId.hash == platformId.hash)
-					{
-						bool negative = platform.fullVelocity.x < 0.f;
-						switch(platformId.elementId)
-						{
-							case 1: platform.fullVelocity.x = lever.active ? 45.f : 60.f; break;
-							case 2: platform.fullVelocity.x = lever.active ? 45.f : 90.f; break;
-							case 3: platform.fullVelocity.x = lever.active ? 45.f : 120.f; break;
-							case 4: platform.fullVelocity.x = lever.active ? 45.f : 150.f; break;
-							case 5: platform.fullVelocity.x = lever.active ? 45.f : 200.f; break;
-						}
-						if(negative)
-							platform.fullVelocity.x = -platform.fullVelocity.x;
-					}
-				});
-			}
-		});
-	}
-
-	// puzzle 7 (it's not really a puzzle, it's just lever which opens gate)
-	{
-		mRegistry.view<Lever, PuzzleId>().each([&]
-		(auto lever, auto leverId)
-		{
-			if(leverId.puzzleId == 7)
-			{
-				mRegistry.view<Gate>().each([&]
+				mRegistry.view<Gate>().each([=]
 				(auto& gate)
 				{
-					if(gate.id == 4)
-						gate.open = lever.active;
+					if(gate.id == 3)
+						gate.open = pressedPlates == 4;
 				});
-			}
-		});
-	}
+			} break;
 
-	// puzzle 8
-	{
-		u32 pressedPlates = 0;
-
-		mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
-		(auto plate, auto plateColor, auto plateId)
-		{
-			if(plateId.puzzleId == 8)
+			case 4:
 			{
-				if(plate.pressedByColor == plateColor)
-					++pressedPlates;
-			}
-		});
+				mRegistry.view<PressurePlate, PuzzleId>().each([&]
+				(auto plate, auto plateId)
+				{
+					if(plateId.puzzleId == puzzle.id) 
+					{
+						mRegistry.view<Spikes, PuzzleId>().each([&]
+						(auto& spikes, auto spikesId)
+						{
+							if(plateId.hash == spikesId.hash)
+								spikes.active = !plate.isPressed;
+						});
+					}
+				});
+			} break;
 
-		mRegistry.view<Gate>().each([=]
-		(auto& gate)
-		{
-			if(gate.id == 5)
-				gate.open = pressedPlates == 2;
-		});
-	}
-
-	// puzzle 9 (it's not really a puzzle, it's just bunch of pressure plates which open a door)
-	{
-		u32 pressedPlates = 0;
-
-		mRegistry.view<PressurePlate, PuzzleId>().each([&]
-		(auto plate, auto plateId)
-		{
-			if(plateId.puzzleId == 9 && plate.isPressed)
-				++pressedPlates;
-		});
-
-		if(pressedPlates == 4)
-		{
-			mRegistry.view<Gate>().each([&]
-			(auto& gate)
+			case 5:
 			{
-				gate.open = true;
-			});
+				mRegistry.view<Lever, PuzzleId>().each([&]
+				(auto lever, auto leverId)
+				{
+					if(leverId.puzzleId == puzzle.id && lever.wasJustSwitched)
+					{
+						mRegistry.view<Spikes, PuzzleId>().each([&]
+						(auto& spikes, auto spikesId)
+						{
+							if((leverId.elementId == 1 && (spikesId.elementId == 2 || spikesId.elementId == 4)) ||
+							   (leverId.elementId == 2 && (spikesId.elementId == 2 || spikesId.elementId == 3 || spikesId.elementId == 4)) ||
+							   (leverId.elementId == 3 && (spikesId.elementId == 1 || spikesId.elementId == 2 || spikesId.elementId == 3)) ||
+							   (leverId.elementId == 4 && (spikesId.elementId == 2)))
+							{
+								spikes.active = !spikes.active;
+							}
+						});
+					}
+				});
+			} break;
+
+			case 6:
+			{
+				mRegistry.view<Lever, PuzzleId>().each([&]
+				(auto lever, auto leverId)
+				{
+					if(leverId.puzzleId == puzzle.id)
+					{
+						mRegistry.view<MovingPlatform, PuzzleId>().each([&]
+						(auto& platform, auto platformId)
+						{
+							if(leverId.hash == platformId.hash)
+							{
+								bool negative = platform.fullVelocity.x < 0.f;
+								switch(platformId.elementId)
+								{
+									case 1: platform.fullVelocity.x = lever.active ? 45.f : 60.f; break;
+									case 2: platform.fullVelocity.x = lever.active ? 45.f : 90.f; break;
+									case 3: platform.fullVelocity.x = lever.active ? 45.f : 120.f; break;
+									case 4: platform.fullVelocity.x = lever.active ? 45.f : 150.f; break;
+									case 5: platform.fullVelocity.x = lever.active ? 45.f : 200.f; break;
+								}
+								if(negative)
+									platform.fullVelocity.x = -platform.fullVelocity.x;
+							}
+						});
+					}
+				});
+			} break;
+
+			case 7:
+			{
+				// it's not really a puzzle, it's just lever which opens gate
+
+				mRegistry.view<Lever, PuzzleId>().each([&]
+				(auto lever, auto leverId)
+				{
+					if(leverId.puzzleId == puzzle.id)
+					{
+						mRegistry.view<Gate>().each([&]
+						(auto& gate)
+						{
+							if(gate.id == 4)
+								gate.open = lever.active;
+						});
+					}
+				});
+			} break;
+
+			case 8:
+			{
+				u32 pressedPlates = 0;
+
+				mRegistry.view<PressurePlate, PuzzleColor, PuzzleId>().each([&]
+				(auto plate, auto plateColor, auto plateId)
+				{
+					if(plateId.puzzleId == puzzle.id)
+					{
+						if(plate.pressedByColor == plateColor)
+							++pressedPlates;
+					}
+				});
+
+				mRegistry.view<Gate>().each([=]
+				(auto& gate)
+				{
+					if(gate.id == 5)
+						gate.open = pressedPlates == 2;
+				});
+			} break;
+
+			case 9:
+			{
+				// it's not really a puzzle, it's just bunch of pressure plates which open a door
+
+				u32 pressedPlates = 0;
+
+				mRegistry.view<PressurePlate, PuzzleId>().each([&]
+				(auto plate, auto plateId)
+				{
+					if(plateId.puzzleId == puzzle.id && plate.isPressed)
+						++pressedPlates;
+				});
+
+				if(pressedPlates == 4)
+				{
+					mRegistry.view<Gate>().each([&]
+					(auto& gate)
+					{
+						gate.open = true;
+					});
+				}
+			} break;
+
+			default: PH_BREAKPOINT();
 		}
-	}
+	});
 }
 
 }

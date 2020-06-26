@@ -696,6 +696,12 @@ ImGui::Separator();
 ImGui::BulletText("PushingArea");
 ImGui::Text("pushForce: %f, %f", c->pushForce.x, c->pushForce.y);
 }
+if(auto* c = mRegistry.try_get<Puzzle>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Puzzle");
+ImGui::Text("id: %u", c->id);
+}
 if(auto* c = mRegistry.try_get<PuzzleId>(mSelected)) 
 {
 ImGui::Separator();
@@ -861,6 +867,116 @@ if(auto* c = mRegistry.try_get<MultiParticleEmitter>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("MultiParticleEmitter");
 ImGui::Text("particleEmitters: std::vector view is not supported!");
+}
+if(auto* c = mRegistry.try_get<PressurePlate>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PressurePlate");
+ImGui::Text("pressedByColor: PuzzleColor view is not supported!");
+if(c->isPressed) ImGui::Text("isPressed: true"); else ImGui::Text("isPressed: false");
+if(c->isPressIrreversible) ImGui::Text("isPressIrreversible: true"); else ImGui::Text("isPressIrreversible: false");
+}
+if(auto* c = mRegistry.try_get<PuzzleBoulder>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PuzzleBoulder");
+ImGui::Text("pushedLeftSince: %f", c->pushedLeftSince);
+ImGui::Text("pushedRightSince: %f", c->pushedRightSince);
+ImGui::Text("pushedUpSince: %f", c->pushedUpSince);
+ImGui::Text("pushedDownSince: %f", c->pushedDownSince);
+ImGui::Text("movingLeft: %f", c->movingLeft);
+ImGui::Text("movingRight: %f", c->movingRight);
+ImGui::Text("movingUp: %f", c->movingUp);
+ImGui::Text("movingDown: %f", c->movingDown);
+if(c->movedGridPosInThisMove) ImGui::Text("movedGridPosInThisMove: true"); else ImGui::Text("movedGridPosInThisMove: false");
+}
+if(auto* c = mRegistry.try_get<PuzzleGridPos>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PuzzleGridPos: %i, %i", c->x, c->y);
+}
+if(auto* c = mRegistry.try_get<PuzzleGridRoadChunk>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PuzzleGridRoadChunk");
+if(c->tiles) ImGui::Text("tiles: true"); else ImGui::Text("tiles: false");
+ImGui::Text("collision: road view is not supported!");
+}
+if(auto* c = mRegistry.try_get<PitChunk>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("PitChunk");
+ImGui::Text("pits: std::vector view is not supported!");
+}
+if(auto* c = mRegistry.try_get<Gate>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Gate");
+ImGui::Text("id: %u", c->id);
+if(c->previouslyOpen) ImGui::Text("previouslyOpen: true"); else ImGui::Text("previouslyOpen: false");
+if(c->open) ImGui::Text("open: true"); else ImGui::Text("open: false");
+}
+if(auto* c = mRegistry.try_get<Spikes>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Spikes");
+ImGui::Text("timeToChange: %f", c->timeToChange);
+ImGui::Text("changeFrequency: %f", c->changeFrequency);
+if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+}
+if(auto* c = mRegistry.try_get<MovingPlatform>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("MovingPlatform");
+ImGui::Text("pathBody: %f, %f, %f, %f", c->pathBody.x,  c->pathBody.y, c->pathBody.w, c->pathBody.h);
+ImGui::Text("fullVelocity: %f, %f", c->fullVelocity.x, c->fullVelocity.y);
+ImGui::Text("currentVelocity: %f, %f", c->currentVelocity.x, c->currentVelocity.y);
+ImGui::Text("pathCompletion: %f", c->pathCompletion);
+if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
+}
+if(auto* c = mRegistry.try_get<FallingPlatform>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("FallingPlatform");
+switch(c->state) {
+case FallingPlatform::isStable: ImGui::Text("state: isStable"); break;
+case FallingPlatform::isFallingApart: ImGui::Text("state: isFallingApart"); break;
+case FallingPlatform::isRecovering: ImGui::Text("state: isRecovering"); break;
+default: ImGui::Text("FallingPlatform: unknown enumeration!!!");
+}
+ImGui::Text("timeToChangeState: %f", c->timeToChangeState);
+ImGui::Text("timeToChangeAnimationFrame: %f", c->timeToChangeAnimationFrame);
+}
+if(mRegistry.has<Weather>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("Weather");
+}
+if(mRegistry.has<WeatherArea>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("WeatherArea");
+}
+if(auto* c = mRegistry.try_get<WeatherType>(mSelected))
+{
+ImGui::Separator();
+switch(*c)
+{
+case WeatherType::Sunny: ImGui::BulletText("WeatherType: Sunny"); break;
+case WeatherType::Cave: ImGui::BulletText("WeatherType: Cave"); break;
+case WeatherType::DrizzleRain: ImGui::BulletText("WeatherType: DrizzleRain"); break;
+case WeatherType::NormalRain: ImGui::BulletText("WeatherType: NormalRain"); break;
+case WeatherType::HeavyRain: ImGui::BulletText("WeatherType: HeavyRain"); break;
+default: ImGui::BulletText("WeatherType: unknown enumeration!!!");
+}
+}
+if(auto* c = mRegistry.try_get<SavePoint>(mSelected)) 
+{
+ImGui::Separator();
+ImGui::BulletText("SavePoint");
+if(c->isIntersectingPlayer) ImGui::Text("isIntersectingPlayer: true"); else ImGui::Text("isIntersectingPlayer: false");
+ImGui::Text("timeSincePlayerSteppedOnIt: %f", c->timeSincePlayerSteppedOnIt);
 }
 if(auto* c = mRegistry.try_get<BodyRect>(mSelected)) 
 {

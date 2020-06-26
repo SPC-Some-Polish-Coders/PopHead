@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="19" nextobjectid="469">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="2000" height="2000" tilewidth="16" tileheight="16" infinite="1" nextlayerid="19" nextobjectid="479">
  <editorsettings>
   <chunksize width="12" height="12"/>
  </editorsettings>
@@ -33119,6 +33119,60 @@
   <object id="468" type="PuzzleBoulder" x="421" y="6058">
    <properties>
     <property name="outdoor" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="470" type="Puzzle" x="177" y="5090.5">
+   <properties>
+    <property name="id" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="471" type="Puzzle" x="665.333" y="5082">
+   <properties>
+    <property name="id" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="472" type="Puzzle" x="1062" y="5459.67">
+   <properties>
+    <property name="id" type="int" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="473" type="Puzzle" x="378.333" y="5974.67">
+   <properties>
+    <property name="id" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="474" type="Puzzle" x="-26.5" y="6085.5">
+   <properties>
+    <property name="id" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="475" type="Puzzle" x="-1087" y="6177">
+   <properties>
+    <property name="id" type="int" value="6"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="476" type="Puzzle" x="-1054" y="5399">
+   <properties>
+    <property name="id" type="int" value="7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="477" type="Puzzle" x="-936.667" y="5104.67">
+   <properties>
+    <property name="id" type="int" value="8"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="478" type="Puzzle" x="-640.5" y="5522.5">
+   <properties>
+    <property name="id" type="int" value="9"/>
    </properties>
    <point/>
   </object>

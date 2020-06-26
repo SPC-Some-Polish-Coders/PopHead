@@ -74,6 +74,9 @@
   <property name="pushForceX" type="float" default="0"/>
   <property name="pushForceY" type="float" default="0"/>
  </objecttype>
+ <objecttype name="Puzzle" color="#1aa45f">
+  <property name="id" type="int" default="0"/>
+ </objecttype>
  <objecttype name="PuzzleBoulder" color="#727578">
   <property name="color" type="string" default="grey"/>
   <property name="outdoor" type="bool" default="true"/>

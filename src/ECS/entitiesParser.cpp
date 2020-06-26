@@ -490,6 +490,14 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 			
 			registry.assign_or_replace<AnimationData>(entity, animationData);
 		}
+		else if(componentName == "Puzzle")
+		{
+			registry.assign_or_replace<Puzzle>(entity);
+		}
+		else if(componentName == "WeatherArea")
+		{
+			registry.assign_or_replace<WeatherArea>(entity);
+		}
 		else if(componentName == "NonSpatialPartionable")
 		{
 			registry.assign_or_replace<DontCareAboutSimRegion>(entity);
