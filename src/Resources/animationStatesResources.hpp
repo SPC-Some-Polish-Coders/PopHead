@@ -1,13 +1,11 @@
 #pragma once
 
-#include "pch.hpp"
-
 namespace ph {
 
 struct StateData
 {
 	IntRect startFrame;
-	u32 frameCount;
+	u16 frameCount;
 };
 
 using AnimationStatesData = std::map<std::string, StateData>;

@@ -196,7 +196,7 @@ void GunAttacks::tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect p
 }
 
 std::vector<Vec2> GunAttacks::performShoot(Vec2 playerFaceDirection, Vec2 startingBulletPos,
-                                           float range, float deflectionAngle, i32 damage, i32 numberOfBullets) const
+                                           float range, float deflectionAngle, i16 damage, i16 numberOfBullets) const
 {
 	// TODO: This algorithm is very very very slow!
 	auto enemiesWithDamageTag = mRegistry.view<DamageTag, InPlayerGunAttackArea, Killable, BodyRect>();

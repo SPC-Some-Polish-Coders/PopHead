@@ -163,18 +163,18 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 		}
 		else if(componentName == "Health")
 		{
-			i32 healthPoints = componentNode.getAttribute("healthPoints")->toU32();
-			i32 maxHealthPoints = componentNode.getAttribute("maxHealthPoints")->toU32();
+			i16 healthPoints = componentNode.getAttribute("healthPoints")->toI16();
+			i16 maxHealthPoints = componentNode.getAttribute("maxHealthPoints")->toI16();
 			registry.assign_or_replace<Health>(entity, healthPoints, maxHealthPoints);
 		}
 		else if(componentName == "Damage")
 		{
-			i32 damageDealt = componentNode.getAttribute("damageDealt")->toU32();
+			i16 damageDealt = componentNode.getAttribute("damageDealt")->toI16();
 			registry.assign_or_replace<Damage>(entity, damageDealt);
 		}
 		else if(componentName == "Medkit")
 		{
-			i32 addHealthPoints = componentNode.getAttribute("addHealthPoints")->toI32();
+			i16 addHealthPoints = componentNode.getAttribute("addHealthPoints")->toI16();
 			registry.assign_or_replace<Medkit>(entity, addHealthPoints);
 		}
 		else if(componentName == "Player")
@@ -294,7 +294,7 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 				}
 				else if(name == "amount") 
 				{
-					emitter.amountOfParticles = attrib.getAttribute("v")->toU32();
+					emitter.amountOfParticles = attrib.getAttribute("v")->toU16();
 				}
 				else if(name == "lifetime") 
 				{
@@ -365,7 +365,7 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 			mp.rotationSpeed = componentNode.getAttribute("rotationSpeed")->toFloat();
 			mp.rotationRange = componentNode.getAttribute("rotationRange")->toFloat();
 			mp.range = componentNode.getAttribute("range")->toFloat();
-			mp.damage = componentNode.getAttribute("damage")->toU32();
+			mp.damage = componentNode.getAttribute("damage")->toU16();
 			registry.assign_or_replace<MeleeProperties>(entity, mp);
 		}
 		else if(componentName == "GunProperties")
@@ -375,9 +375,9 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 			gp.shotSoundFilepath = componentNode.getAttribute("shotSoundFilepath")->toString();
 			gp.range = componentNode.getAttribute("range")->toFloat();
 			gp.deflectionAngle = componentNode.getAttribute("deflectionAngle")->toFloat();
-			gp.damage = componentNode.getAttribute("damage")->toU32();
-			gp.numberOfBullets = componentNode.getAttribute("numberOfBullets")->toU32();
-			gp.gunId = componentNode.getAttribute("gunId")->toU32();
+			gp.damage = componentNode.getAttribute("damage")->toU16();
+			gp.numberOfBullets = componentNode.getAttribute("numberOfBullets")->toU16();
+			gp.gunId = componentNode.getAttribute("gunId")->toU8();
 			
 			const std::string type = componentNode.getAttribute("type")->toString();
 			if(type == "pistol")
@@ -404,8 +404,8 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 		else if(componentName == "Bullets")
 		{
 			Bullets bullets;
-			bullets.numOfPistolBullets = componentNode.getAttribute("numOfPistolBullets")->toU32();
-			bullets.numOfShotgunBullets = componentNode.getAttribute("numOfShotgunBullets")->toU32();
+			bullets.numOfPistolBullets = componentNode.getAttribute("numOfPistolBullets")->toU16();
+			bullets.numOfShotgunBullets = componentNode.getAttribute("numOfShotgunBullets")->toU16();
 			registry.assign_or_replace<Bullets>(entity, bullets);
 		}
 		else if(componentName == "HiddenForRenderer")

@@ -6,13 +6,13 @@ namespace ph::component {
 
 struct Health
 {
-	i32 healthPoints;
-	i32 maxHealthPoints;
+	i16 healthPoints;
+	i16 maxHealthPoints;
 };
 
 struct Damage
 {
-	i32 damageDealt;
+	i16 damageDealt;
 };
 
 struct Player {};
@@ -52,7 +52,7 @@ struct TaggedToDestroy {};
 
 struct DamageTag // @no-debugger
 {
-	i32 amountOfDamage;
+	i16 amountOfDamage;
 	bool particles = true;
 };
 

@@ -4,18 +4,16 @@ namespace ph::component {
 
 struct Medkit
 {
-	i32 addHealthPoints;
-};
-
-struct BulletBox // should be removed?
-{
+	i16 addHealthPoints;
 };
 
 struct Bullets
 {
-	i32 numOfPistolBullets;
-	i32 numOfShotgunBullets;
+	i16 numOfPistolBullets;
+	i16 numOfShotgunBullets;
 };
+
+struct BulletBox {};
 
 }
 

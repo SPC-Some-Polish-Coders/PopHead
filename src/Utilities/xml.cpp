@@ -320,6 +320,16 @@ u32 Xml::toU32() const
 	return castToU32(toString());
 }
 
+u16 Xml::toI16() const
+{
+	return Cast<i16>(std::stoi(toString()));
+}
+
+u16 Xml::toU16() const
+{
+	return Cast<u16>(castToU32(toString()));
+}
+
 i8 Xml::toI8() const
 {
 	return Cast<i8>(std::stoi(toString()));

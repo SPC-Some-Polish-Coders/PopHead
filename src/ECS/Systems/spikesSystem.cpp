@@ -27,10 +27,10 @@ void SpikesSystem::update(float dt)
 		notActiveSpikesTexture = &getTexture("textures/others/spikesNotActive.png");
 	}
 
-	// NOTE: We don't check are spikes inside sim region because it would cause bugs in spikes time changing
+	// NOTE: We don't check are spikes inside sim region because it would cause bugs in changing spikes activness over time 
 
 	mRegistry.view<Spikes, RenderQuad, BodyRect>().each([&]
-	(auto& spikes, auto& spikesRenderQuad, const auto& spikesBody)
+	(auto& spikes, auto& spikesRenderQuad, auto spikesBody)
 	{
 		// change spikes texture and hurt player
 		if(spikes.active)
@@ -41,7 +41,10 @@ void SpikesSystem::update(float dt)
 			(auto playerEntity, auto, auto playerBody, auto playerCircle)
 			{
 				if(intersect(spikesBody, playerBody.pos + playerCircle.offset, playerCircle.radius))
-					mRegistry.assign_or_replace<DamageTag>(playerEntity, 1);
+				{
+					DamageTag tag{1, true};
+					mRegistry.assign_or_replace<DamageTag>(playerEntity, tag);
+				}
 			});
 		}
 		else

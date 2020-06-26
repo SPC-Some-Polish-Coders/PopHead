@@ -3,26 +3,8 @@
 #include "Utilities/rect.hpp"
 #include "Renderer/MinorRenderers/quadData.hpp"
 #include <vector>
-#include <array>
 
 namespace ph::component {
-
-struct ArcadeSpawner // @no-debugger
-{
-	struct Wave
-	{
-		u32 normalZombiesToSpawn;
-		u32 slowZombiesToSpawn;
-	};
-	std::array<Wave, 10> waves;
-	float timeFromLastSpawn = 0.5f;
-};
-
-struct LootSpawner // @no-debugger
-{
-	enum LootType { Bullets, Medkit };
-	LootType type;
-};
 
 struct AreaVelocityChangingEffect
 {
@@ -110,7 +92,7 @@ struct PitChunk
 
 struct Gate
 {
-	u32 id;
+	u16 id;
 	bool previouslyOpen = false; 
 	bool open = false;
 };
@@ -150,9 +132,9 @@ struct GunProperties // @no-debugger
 	std::string shotSoundFilepath;
 	float range;
 	float deflectionAngle;
-	i32 damage;
-	i32 numberOfBullets;
-	u32 gunId;
+	i16 damage;
+	u16 numberOfBullets;
+	u8 gunId;
 
 	enum class Type { Pistol, Shotgun };
 	Type type;
@@ -164,7 +146,7 @@ struct MeleeProperties // @no-debugger
 	float rotationRange;
 	float rotationSpeed;
 	float range;
-	i32 damage;
+	i16 damage;
 };
 
 struct Weather {}; // @no-debugger

@@ -332,7 +332,7 @@ static void loadEntity(const Xml& entityNode, EntitiesTemplateStorage& templates
 			createCopy("HorizontalGate");
 		loadPos();
 		auto& gate = registry.get<Gate>(entity);
-		gate.id = getProperty("id").toU32();
+		gate.id = getProperty("id").toU16();
 	}
 	else if(type == "Puzzle")
 	{	

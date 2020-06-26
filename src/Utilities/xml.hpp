@@ -22,6 +22,8 @@ public:
 	bool toBool() const;
 	i32 toI32() const;
 	u32 toU32() const;
+	u16 toI16() const;
+	u16 toU16() const;
 	i8 toI8() const;
 	u8 toU8() const;
 	float toFloat() const;

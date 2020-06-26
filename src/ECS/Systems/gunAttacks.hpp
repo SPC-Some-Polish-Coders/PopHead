@@ -20,7 +20,7 @@ private:
 	void tagEnemiesInGunAttackArea(Vec2 playerFaceDirection, FloatRect playerBody, Vec2 gunSize,
 								   float range, float deflectionAngle, bool* wasOpponentHitOut) const;
 	std::vector<Vec2> performShoot(Vec2 playerFaceDirection, Vec2 startingBulletPos, float range,
-								   float deflectionAngle, i32 damage, i32 numberOfBullets) const;
+								   float deflectionAngle, i16 damage, i16 numberOfBullets) const;
 	Vec2 getBulletDirection(Vec2 playerFaceDirection, float deflection) const;
 	Vec2 getCurrentPosition(Vec2 bulletDirection, Vec2 startingPos, i32 bulletDistance) const;
 	void clearInGunAttackAreaTags() const;

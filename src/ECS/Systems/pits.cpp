@@ -45,7 +45,8 @@ void Pits::update(float dt)
 		body.setSizeWithFixedCenter(Vec2(20.f) * falling.timeToEnd);
 		if(falling.timeToEnd < 0.f)
 		{
-			mRegistry.assign_or_replace<DamageTag>(entity, 1000, false);
+			DamageTag tag{1000, false};
+			mRegistry.assign_or_replace<DamageTag>(entity, tag);
 			mRegistry.remove<FallingIntoPit>(entity);
 		}
 	});

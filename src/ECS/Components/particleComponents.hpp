@@ -29,9 +29,9 @@ struct ParticleEmitter
 	Vec2 parSize = {1.f, 1.f};
 	sf::Color parStartColor = sf::Color::White;
 	sf::Color parEndColor = sf::Color::White;
-	u32 amountOfParticles = 1;
-	u32 amountOfAlreadySpawnParticles = 0;
 	float parWholeLifetime = 1.f;
+	u16 amountOfParticles = 1;
+	u16 amountOfAlreadySpawnParticles = 0;
 	u8 parZ = 90;
 	bool oneShot = false;
 	bool isEmitting = true;
