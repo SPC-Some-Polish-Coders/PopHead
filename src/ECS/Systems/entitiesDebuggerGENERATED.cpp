@@ -543,11 +543,6 @@ ImGui::Separator();
 ImGui::BulletText("Medkit");
 ImGui::Text("addHealthPoints: %i", c->addHealthPoints);
 }
-if(mRegistry.has<BulletBox>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("BulletBox");
-}
 if(auto* c = mRegistry.try_get<Bullets>(mSelected)) 
 {
 ImGui::Separator();
@@ -555,125 +550,10 @@ ImGui::BulletText("Bullets");
 ImGui::Text("numOfPistolBullets: %i", c->numOfPistolBullets);
 ImGui::Text("numOfShotgunBullets: %i", c->numOfShotgunBullets);
 }
-if(auto* c = mRegistry.try_get<TextureRect>(mSelected)) 
+if(mRegistry.has<BulletBox>(mSelected)) 
 {
 ImGui::Separator();
-ImGui::BulletText("TextureRect: %i, %i, %i, %i", c->x, c->y, c->w, c->h);
-}
-if(auto* c = mRegistry.try_get<IndoorOutdoorBlendArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("IndoorOutdoorBlendArea");
-switch(c->exit) {
-case IndoorOutdoorBlendArea::Left: ImGui::Text("exit: Left"); break;
-case IndoorOutdoorBlendArea::Right: ImGui::Text("exit: Right"); break;
-case IndoorOutdoorBlendArea::Top: ImGui::Text("exit: Top"); break;
-case IndoorOutdoorBlendArea::Down: ImGui::Text("exit: Down"); break;
-default: ImGui::Text("IndoorOutdoorBlendArea: unknown enumeration!!!");
-}
-}
-if(mRegistry.has<IndoorArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("IndoorArea");
-}
-if(mRegistry.has<OutdoorArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("OutdoorArea");
-}
-if(auto* c = mRegistry.try_get<IndoorOutdoorBlend>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("IndoorOutdoorBlend");
-ImGui::Text("outdoor: %f", c->outdoor);
-ImGui::Text("brightness: %f", c->brightness);
-ImGui::Text("alpha: %f", c->alpha);
-}
-if(auto* c = mRegistry.try_get<OutdoorBlend>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("OutdoorBlend");
-ImGui::Text("brightness: %f", c->brightness);
-}
-if(auto* c = mRegistry.try_get<IndoorBlend>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("IndoorBlend");
-ImGui::Text("alpha: %f", c->alpha);
-}
-if(auto* c = mRegistry.try_get<RenderQuad>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("RenderQuad");
-ImGui::Text("texture: %p", c->texture);
-ImGui::Text("shader: %p", c->shader);
-ImGui::Text("rotationOrigin: %f, %f", c->rotationOrigin.x, c->rotationOrigin.y);
-ImGui::Text("color: %u, %u, %u, %u", c->color.r, c->color.g, c->color.b, c->color.a);
-ImGui::Text("rotation: %f", c->rotation);
-ImGui::Text("z: %u", c->z);
-}
-if(auto* c = mRegistry.try_get<GroundRenderChunk>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("GroundRenderChunk");
-ImGui::Text("textureRect: %f, %f, %f, %f", c->textureRect.x,  c->textureRect.y, c->textureRect.w, c->textureRect.h);
-ImGui::Text("z: %u", c->z);
-if(c->outdoor) ImGui::Text("outdoor: true"); else ImGui::Text("outdoor: false");
-}
-if(auto* c = mRegistry.try_get<RenderChunk>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("RenderChunk");
-ImGui::Text("quads: std::vector view is not supported!");
-ImGui::Text("lightWalls: std::vector view is not supported!");
-ImGui::Text("rendererID: %u", c->rendererID);
-ImGui::Text("z: %u", c->z);
-if(c->outdoor) ImGui::Text("outdoor: true"); else ImGui::Text("outdoor: false");
-}
-if(auto* c = mRegistry.try_get<LightWall>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LightWall: %f, %f, %f, %f", c->x, c->y, c->w, c->h);
-}
-if(auto* c = mRegistry.try_get<LightSource>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("LightSource");
-ImGui::Text("offset: %f, %f", c->offset.x, c->offset.y);
-ImGui::Text("color: %u, %u, %u, %u", c->color.r, c->color.g, c->color.b, c->color.a);
-ImGui::Text("attenuationAddition: %f", c->attenuationAddition);
-ImGui::Text("attenuationFactor: %f", c->attenuationFactor);
-ImGui::Text("attenuationSquareFactor: %f", c->attenuationSquareFactor);
-ImGui::Text("startAngle: %f", c->startAngle);
-ImGui::Text("endAngle: %f", c->endAngle);
-if(c->rayCollisionDetection) ImGui::Text("rayCollisionDetection: true"); else ImGui::Text("rayCollisionDetection: false");
-}
-if(auto* c = mRegistry.try_get<CameraRoom>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("CameraRoom");
-ImGui::Text("timeFromPlayerEntrance: %f", c->timeFromPlayerEntrance);
-ImGui::Text("edgeAreaSize: %f", c->edgeAreaSize);
-ImGui::Text("to: from view is not supported!");
-if(c->playerWasInCenter) ImGui::Text("playerWasInCenter: true"); else ImGui::Text("playerWasInCenter: false");
-}
-if(auto* c = mRegistry.try_get<Camera>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Camera");
-ImGui::Text("name: %s", c->name.c_str());
-ImGui::Text("bounds: %f, %f, %f, %f", c->bounds.x,  c->bounds.y, c->bounds.w, c->bounds.h);
-}
-if(mRegistry.has<DebugCamera>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("DebugCamera");
-}
-if(mRegistry.has<HiddenForRenderer>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("HiddenForRenderer");
+ImGui::BulletText("BulletBox");
 }
 if(auto* c = mRegistry.try_get<AreaVelocityChangingEffect>(mSelected)) 
 {
@@ -854,9 +734,9 @@ ImGui::Text("parAcceleration: %f, %f", c->parAcceleration.x, c->parAcceleration.
 ImGui::Text("parSize: %f, %f", c->parSize.x, c->parSize.y);
 ImGui::Text("parStartColor: %u, %u, %u, %u", c->parStartColor.r, c->parStartColor.g, c->parStartColor.b, c->parStartColor.a);
 ImGui::Text("parEndColor: %u, %u, %u, %u", c->parEndColor.r, c->parEndColor.g, c->parEndColor.b, c->parEndColor.a);
+ImGui::Text("parWholeLifetime: %f", c->parWholeLifetime);
 ImGui::Text("amountOfParticles: %u", c->amountOfParticles);
 ImGui::Text("amountOfAlreadySpawnParticles: %u", c->amountOfAlreadySpawnParticles);
-ImGui::Text("parWholeLifetime: %f", c->parWholeLifetime);
 ImGui::Text("parZ: %u", c->parZ);
 if(c->oneShot) ImGui::Text("oneShot: true"); else ImGui::Text("oneShot: false");
 if(c->isEmitting) ImGui::Text("isEmitting: true"); else ImGui::Text("isEmitting: false");
@@ -867,116 +747,6 @@ if(auto* c = mRegistry.try_get<MultiParticleEmitter>(mSelected))
 ImGui::Separator();
 ImGui::BulletText("MultiParticleEmitter");
 ImGui::Text("particleEmitters: std::vector view is not supported!");
-}
-if(auto* c = mRegistry.try_get<PressurePlate>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PressurePlate");
-ImGui::Text("pressedByColor: PuzzleColor view is not supported!");
-if(c->isPressed) ImGui::Text("isPressed: true"); else ImGui::Text("isPressed: false");
-if(c->isPressIrreversible) ImGui::Text("isPressIrreversible: true"); else ImGui::Text("isPressIrreversible: false");
-}
-if(auto* c = mRegistry.try_get<PuzzleBoulder>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PuzzleBoulder");
-ImGui::Text("pushedLeftSince: %f", c->pushedLeftSince);
-ImGui::Text("pushedRightSince: %f", c->pushedRightSince);
-ImGui::Text("pushedUpSince: %f", c->pushedUpSince);
-ImGui::Text("pushedDownSince: %f", c->pushedDownSince);
-ImGui::Text("movingLeft: %f", c->movingLeft);
-ImGui::Text("movingRight: %f", c->movingRight);
-ImGui::Text("movingUp: %f", c->movingUp);
-ImGui::Text("movingDown: %f", c->movingDown);
-if(c->movedGridPosInThisMove) ImGui::Text("movedGridPosInThisMove: true"); else ImGui::Text("movedGridPosInThisMove: false");
-}
-if(auto* c = mRegistry.try_get<PuzzleGridPos>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PuzzleGridPos: %i, %i", c->x, c->y);
-}
-if(auto* c = mRegistry.try_get<PuzzleGridRoadChunk>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PuzzleGridRoadChunk");
-if(c->tiles) ImGui::Text("tiles: true"); else ImGui::Text("tiles: false");
-ImGui::Text("collision: road view is not supported!");
-}
-if(auto* c = mRegistry.try_get<PitChunk>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("PitChunk");
-ImGui::Text("pits: std::vector view is not supported!");
-}
-if(auto* c = mRegistry.try_get<Gate>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Gate");
-ImGui::Text("id: %u", c->id);
-if(c->previouslyOpen) ImGui::Text("previouslyOpen: true"); else ImGui::Text("previouslyOpen: false");
-if(c->open) ImGui::Text("open: true"); else ImGui::Text("open: false");
-}
-if(auto* c = mRegistry.try_get<Spikes>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Spikes");
-ImGui::Text("timeToChange: %f", c->timeToChange);
-ImGui::Text("changeFrequency: %f", c->changeFrequency);
-if(c->changes) ImGui::Text("changes: true"); else ImGui::Text("changes: false");
-if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
-}
-if(auto* c = mRegistry.try_get<MovingPlatform>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("MovingPlatform");
-ImGui::Text("pathBody: %f, %f, %f, %f", c->pathBody.x,  c->pathBody.y, c->pathBody.w, c->pathBody.h);
-ImGui::Text("fullVelocity: %f, %f", c->fullVelocity.x, c->fullVelocity.y);
-ImGui::Text("currentVelocity: %f, %f", c->currentVelocity.x, c->currentVelocity.y);
-ImGui::Text("pathCompletion: %f", c->pathCompletion);
-if(c->active) ImGui::Text("active: true"); else ImGui::Text("active: false");
-}
-if(auto* c = mRegistry.try_get<FallingPlatform>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("FallingPlatform");
-switch(c->state) {
-case FallingPlatform::isStable: ImGui::Text("state: isStable"); break;
-case FallingPlatform::isFallingApart: ImGui::Text("state: isFallingApart"); break;
-case FallingPlatform::isRecovering: ImGui::Text("state: isRecovering"); break;
-default: ImGui::Text("FallingPlatform: unknown enumeration!!!");
-}
-ImGui::Text("timeToChangeState: %f", c->timeToChangeState);
-ImGui::Text("timeToChangeAnimationFrame: %f", c->timeToChangeAnimationFrame);
-}
-if(mRegistry.has<Weather>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Weather");
-}
-if(mRegistry.has<WeatherArea>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("WeatherArea");
-}
-if(auto* c = mRegistry.try_get<WeatherType>(mSelected))
-{
-ImGui::Separator();
-switch(*c)
-{
-case WeatherType::Sunny: ImGui::BulletText("WeatherType: Sunny"); break;
-case WeatherType::Cave: ImGui::BulletText("WeatherType: Cave"); break;
-case WeatherType::DrizzleRain: ImGui::BulletText("WeatherType: DrizzleRain"); break;
-case WeatherType::NormalRain: ImGui::BulletText("WeatherType: NormalRain"); break;
-case WeatherType::HeavyRain: ImGui::BulletText("WeatherType: HeavyRain"); break;
-default: ImGui::BulletText("WeatherType: unknown enumeration!!!");
-}
-}
-if(auto* c = mRegistry.try_get<SavePoint>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("SavePoint");
-if(c->isIntersectingPlayer) ImGui::Text("isIntersectingPlayer: true"); else ImGui::Text("isIntersectingPlayer: false");
-ImGui::Text("timeSincePlayerSteppedOnIt: %f", c->timeSincePlayerSteppedOnIt);
 }
 if(auto* c = mRegistry.try_get<BodyRect>(mSelected)) 
 {
@@ -1039,58 +809,6 @@ if(mRegistry.has<DontCareAboutSimRegion>(mSelected))
 {
 ImGui::Separator();
 ImGui::BulletText("DontCareAboutSimRegion");
-}
-if(auto* c = mRegistry.try_get<BodyRect>(mSelected)) 
-{
-ImGui::Separator();
-body = *c;
-bodyValid = true;
-ImGui::BulletText("BodyRect: %f, %f, %f, %f", c->x, c->y, c->w, c->h);
-}
-if(auto* c = mRegistry.try_get<BodyCircle>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("BodyCircle");
-ImGui::Text("offset: %f, %f", c->offset.x, c->offset.y);
-ImGui::Text("radius: %f", c->radius);
-}
-if(auto* c = mRegistry.try_get<Kinematics>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("Kinematics");
-ImGui::Text("vel: %f, %f", c->vel.x, c->vel.y);
-ImGui::Text("acceleration: %f, %f", c->acceleration.x, c->acceleration.y);
-ImGui::Text("friction: %f", c->friction);
-ImGui::Text("defaultFriction: %f", c->defaultFriction);
-ImGui::Text("frictionLerpSpeed: %f", c->frictionLerpSpeed);
-}
-if(auto* c = mRegistry.try_get<CharacterSpeed>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("CharacterSpeed");
-ImGui::Text("speed: %f", c->speed);
-}
-if(mRegistry.has<StaticCollisionBody>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("StaticCollisionBody");
-}
-if(auto* c = mRegistry.try_get<MultiStaticCollisionBody>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("MultiStaticCollisionBody");
-ImGui::Text("rects: std::vector view is not supported!");
-ImGui::Text("circles: std::vector view is not supported!");
-}
-if(auto* c = mRegistry.try_get<KinematicCollisionBody>(mSelected)) 
-{
-ImGui::Separator();
-ImGui::BulletText("KinematicCollisionBody");
-ImGui::Text("mass: %f", c->mass);
-if(c->staticallyMovedUp) ImGui::Text("staticallyMovedUp: true"); else ImGui::Text("staticallyMovedUp: false");
-if(c->staticallyMovedDown) ImGui::Text("staticallyMovedDown: true"); else ImGui::Text("staticallyMovedDown: false");
-if(c->staticallyMovedLeft) ImGui::Text("staticallyMovedLeft: true"); else ImGui::Text("staticallyMovedLeft: false");
-if(c->staticallyMovedRight) ImGui::Text("staticallyMovedRight: true"); else ImGui::Text("staticallyMovedRight: false");
 }
 
 

@@ -374,6 +374,7 @@ void* push(u32 size)
 
 void pop(u32 size)
 {
+	memset(arena.base + arena.used - size, 0, arena.used);
 	arena.used -= size;
 }
 
