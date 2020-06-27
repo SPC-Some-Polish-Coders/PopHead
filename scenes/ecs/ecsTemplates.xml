@@ -4,6 +4,7 @@
 
   <entityTemplate name="Camera">
     <component name="Camera" priority="0" x="0" y="0" cameraName="" w="640" h="360" />
+  	<component name="AlwaysInsideSimRegion" />
   </entityTemplate>
 
   <entityTemplate name="CameraRoom">
@@ -28,7 +29,7 @@
   </entityTemplate>
 
   <entityTemplate name="Player">
-  	<component name="NonSpatialPartionable" />
+  	<component name="AlwaysInsideSimRegion" />
     <component name="KinematicCollisionBody" mass="3" />
     <component name="GunAttacker" isTryingToAttack="false" timeBeforeHiding="3" />
     <component name="Bullets" numOfPistolBullets="90" numOfShotgunBullets="0" /> 

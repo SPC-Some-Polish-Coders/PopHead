@@ -97,7 +97,7 @@ struct CameraRoom
 struct Camera
 {
 	std::string name;
-	inline static std::string currentCameraName;
+	inline static std::string currentCameraName = "default";
 
 	FloatRect bounds;
 };

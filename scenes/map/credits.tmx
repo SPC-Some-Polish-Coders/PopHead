@@ -220,7 +220,7 @@
 </chunk>
   </data>
  </layer>
- <objectgroup id="2" name="gameObjects">
+ <objectgroup id="2" name="Entities">
   <object id="1" type="Camera" x="60" y="36" width="640" height="360">
    <properties>
     <property name="isValid" type="bool" value="true"/>

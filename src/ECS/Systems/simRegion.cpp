@@ -17,15 +17,13 @@ void SimRegion::update(float dt)
 {	
 	PH_PROFILE_FUNCTION();
 
-	if(sPause || !isPlayerAlive()) return;
-
-	auto playerPos = getPlayerCenterPos();	
+	Vec2 simRegionTriggerPos = isPlayerAlive() ? getPlayerCenterPos() : getCurrentCameraBounds().center();
 
 	auto reComputeBounds = [&]()
 	{
-		mSimRegionCentralPartitionBounds.pos = Cast<Vec2>(hadamardMul(hadamardDiv(Cast<Vec2i>(playerPos), partitionSizeInt), partitionSizeInt));
-		if(playerPos.x < 0.f) mSimRegionCentralPartitionBounds.x -= partitionSideSize;
-		if(playerPos.y < 0.f) mSimRegionCentralPartitionBounds.y -= partitionSideSize;
+		mSimRegionCentralPartitionBounds.pos = Cast<Vec2>(hadamardMul(hadamardDiv(Cast<Vec2i>(simRegionTriggerPos), partitionSizeInt), partitionSizeInt));
+		if(simRegionTriggerPos.x < 0.f) mSimRegionCentralPartitionBounds.x -= partitionSideSize;
+		if(simRegionTriggerPos.y < 0.f) mSimRegionCentralPartitionBounds.y -= partitionSideSize;
 
 		mSimRegionBounds.pos = mSimRegionCentralPartitionBounds.pos - partitionSize;
 	};
@@ -42,9 +40,9 @@ void SimRegion::update(float dt)
 		});
 	};
 
-	if(!mInitializedPartitions)
+	if(!mInitialized)
 	{
-		mInitializedPartitions = true;
+		mInitialized = true;
 
 		DebugVisualization::setSimRegionBoundsPtr(&mSimRegionBounds);
 		DebugVisualization::setSimRegionCentralPartitionBoundsPtr(&mSimRegionCentralPartitionBounds);
@@ -58,7 +56,7 @@ void SimRegion::update(float dt)
 		return;
 	}
 
-	if(!mSimRegionCentralPartitionBounds.contains(playerPos))
+	if(!mSimRegionCentralPartitionBounds.contains(simRegionTriggerPos))
 	{
 		reComputeBounds();
 		pullEntitiesInAndOutInsideRegion();

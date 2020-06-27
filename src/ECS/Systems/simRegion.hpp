@@ -14,7 +14,7 @@ public:
 private:
 	FloatRect mSimRegionCentralPartitionBounds;
 	FloatRect mSimRegionBounds;
-	bool mInitializedPartitions = false;
+	bool mInitialized = false;
 };
 
 /* NOTE: 

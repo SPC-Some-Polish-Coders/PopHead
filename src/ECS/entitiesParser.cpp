@@ -450,7 +450,6 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 			camera.bounds = FloatRect(x, y, w, h);
 			camera.name = componentNode.getAttribute("cameraName")->toString();
 			registry.assign_or_replace<Camera>(entity, camera);
-			Camera::currentCameraName = "default";
 		}
 		else if(componentName == "LightSource")
 		{
@@ -498,10 +497,14 @@ static void parseComponents(entt::registry& registry, std::vector<Xml>& componen
 		{
 			registry.assign_or_replace<WeatherArea>(entity);
 		}
-		else if(componentName == "NonSpatialPartionable")
+		else if(componentName == "AlwaysInsideSimRegion")
 		{
 			registry.assign_or_replace<DontCareAboutSimRegion>(entity);
 			registry.assign_or_replace<InsideSimRegion>(entity);
+		}
+		else if(componentName == "NeverInsideSimRegion")
+		{
+			registry.assign_or_replace<DontCareAboutSimRegion>(entity);
 		}
 		else
 		{

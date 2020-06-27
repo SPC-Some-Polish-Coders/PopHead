@@ -20,20 +20,22 @@ void DebugCameraSystem::update(float dt)
 	{
 		if(ImGui::Checkbox("debug camera", &mDebugCameraEnabled))
 		{
-			Camera::currentCameraName = "default";
-
 			auto debugCameras = mRegistry.view<DebugCamera, Camera, BodyRect>();
 			mRegistry.destroy(debugCameras.begin(), debugCameras.end());
 
 			if(mDebugCameraEnabled)
 			{
 				// create debug camera
-				auto playerPos = getPlayerCenterPos();
+				Vec2 camCenterPos = isPlayerOnScene() ? getPlayerCenterPos() : Vec2();
 				auto entity = mRegistry.create();
-				mRegistry.assign<Camera>(entity, Camera{"debug", FloatRect(playerPos - Vec2(320.f, 180.f), Vec2(640.f, 360.f))});
+				mRegistry.assign<Camera>(entity, Camera{"debug", FloatRect(camCenterPos - Vec2(320.f, 180.f), Vec2(640.f, 360.f))});
 				mRegistry.assign<DebugCamera>(entity);
-				mRegistry.assign<BodyRect>(entity, FloatRect(playerPos, {0.f, 0.f}));
+				mRegistry.assign<BodyRect>(entity, FloatRect(camCenterPos, {0.f, 0.f}));
 				Camera::currentCameraName = "debug";
+			}
+			else
+			{
+				Camera::currentCameraName = "default";
 			}
 
 			sPause = mDebugCameraEnabled;

@@ -48,7 +48,7 @@ void Game::run()
 	{
 		mSceneManager->changingScenesProcess();
 		handleEvents();
-		const float dt = clock.restart().asSeconds();
+		float dt = clock.restart().asSeconds();
 		constexpr float maxDTConstrain = 1.f/20.f;
 		update(dt > maxDTConstrain ? maxDTConstrain : dt);
 	}

@@ -45,8 +45,8 @@ void RenderSystem::update(float dt)
 		}
 	});
 
-	// get current camera and update shake
-	FloatRect currentCameraBounds;
+	// get current camera
+	FloatRect currentCameraBounds = defaultCameraBounds;
 	mRegistry.view<Camera>().each([&]
 	(auto& camera)
 	{
