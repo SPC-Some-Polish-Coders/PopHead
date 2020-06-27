@@ -11,6 +11,7 @@ class Game
 {
 public:
 	Game();
+	~Game();
 
 	void run();
 
@@ -22,9 +23,9 @@ private:
 	void update(float dt);
 
 private:
-	sf::Window                     mWindow;
-	std::unique_ptr<AIManager>     mAIManager;
-	std::unique_ptr<SceneManager>  mSceneManager;
+	sf::Window mWindow;
+	std::unique_ptr<AIManager> mAIManager;
+	std::unique_ptr<SceneManager> mSceneManager;
 
 	inline static bool sIsRunning = true;
 	inline static bool sNoFocusUpdate = false;

@@ -11,9 +11,8 @@
 #include "ECS/Systems/zombieSystem.hpp"
 #include "ECS/Systems/hostileCollisions.hpp"
 #include "ECS/entityUtil.hpp"
-#include "Audio/Music/musicPlayer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
-#include "Audio/Sound/soundData.hpp"
+#include "Audio/musicPlayer.hpp"
+#include "Audio/soundPlayer.hpp"
 #include "Renderer/renderer.hpp"
 #include "Renderer/API/font.hpp"
 #include "GUI/xmlGuiParser.hpp"
@@ -361,16 +360,16 @@ static void setAudioMuted(bool mute)
 {
 	if(commandContains("music")) 
 	{
-		MusicPlayer::setMuted(mute);
+		MusicPlayer::setVolume(mute ? 0.f : 50.f);
 	}
 	else if(commandContains("sound")) 
 	{
-		SoundPlayer::setMuted(mute);
+		SoundPlayer::setVolume(mute ? 0.f : 15.f);
 	}
 	else 
 	{
-		MusicPlayer::setMuted(mute);
-		SoundPlayer::setMuted(mute);
+		MusicPlayer::setVolume(mute ? 0.f : 50.f);
+		SoundPlayer::setVolume(mute ? 0.f : 15.f);
 	}
 }
 

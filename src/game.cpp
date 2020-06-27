@@ -4,8 +4,9 @@
 #include "GUI/gui.hpp"
 #include "Terminal/terminal.hpp"
 #include "Renderer/renderer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
-#include "Audio/Music/musicPlayer.hpp"
+#include "Audio/soundPlayer.hpp"
+#include "Audio/musicPlayer.hpp"
+#include "Resources/soundBufferHolder.hpp"
 
 #include "dearImGui.cpp"
 
@@ -32,6 +33,12 @@ Game::Game()
 	Widget::setWindow(&mWindow);
 	XmlGuiParser::init(mSceneManager.get());
 	initImGui(mWindow);
+}
+
+Game::~Game()
+{
+	clearSoundBufferHolder();
+	MusicPlayer::shutdown();
 }
 
 void Game::run()

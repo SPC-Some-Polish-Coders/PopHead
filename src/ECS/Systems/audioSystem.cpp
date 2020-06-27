@@ -5,8 +5,8 @@
 #include "ECS/Components/audioComponents.hpp"
 #include "ECS/Components/simRegionComponents.hpp"
 #include "ECS/entityUtil.hpp"
-#include "Audio/Music/musicPlayer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
+#include "Audio/musicPlayer.hpp"
+#include "Audio/soundPlayer.hpp"
 
 namespace ph::system {
 

@@ -4,8 +4,8 @@
 #include "game.hpp"
 #include "Scenes/sceneManager.hpp"
 #include "ECS/system.hpp"
-#include "Audio/Music/musicPlayer.hpp"
-#include "Audio/Sound/soundPlayer.hpp"
+#include "Audio/musicPlayer.hpp"
+#include "Audio/soundPlayer.hpp"
 #include "Resources/textureHolder.hpp"
 #include "GUI/gui.hpp"
 

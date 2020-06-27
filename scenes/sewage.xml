@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<scenelinks>
-  <ecsObjects filename="ecsTemplates.xml"/>
-  <neededResources filename="desert.res.xml"/>
-  <map filename="sewageSection.tmx"/>
-  <gui filename="gameplay.gui.xml"/>
-  <audio filename="sewage.audio.xml"/>
-  <ambientLight color="rgb(1, 5, 1)"/>
-</scenelinks>

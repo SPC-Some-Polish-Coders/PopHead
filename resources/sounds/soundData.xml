@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <soundData>
-  <sound fileName="swordAttack.wav" volumeMultiplier="1.3" loop="false" maximalFullVolumeDistance="40" maximalHearableDistance="400"/>
-  <sound fileName="zombieGrowl1.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="120" maximalHearableDistance="900"/>
-  <sound fileName="zombieGrowl2.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="120" maximalHearableDistance="900"/>
-  <sound fileName="zombieGrowl3.ogg" volumeMultiplier="0.6" loop="false" maximalFullVolumeDistance="120" maximalHearableDistance="900"/>
-  <sound fileName="zombieGrowl4.ogg" volumeMultiplier="0.8" loop="false" maximalFullVolumeDistance="120" maximalHearableDistance="900"/>
-  <sound fileName="reloadPistol.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
-  <sound fileName="pistolShot.ogg" volumeMultiplier="7" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
-  <sound fileName="reloadShotgun.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
-  <sound fileName="shotgunShot.ogg" volumeMultiplier="7" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
-  <sound fileName="carTireScreech.ogg" volumeMultiplier="1" loop="false" maximalFullVolumeDistance="50" maximalHearableDistance="400"/>
+  <sound fileName="swordAttack.wav" volumeMultiplier="1.3" loop="false" maxFullVolumeDistance="40" maxHearableDistance="400"/>
+  <sound fileName="zombieGrowl1.ogg" volumeMultiplier="1" loop="false" maxFullVolumeDistance="120" maxHearableDistance="900"/>
+  <sound fileName="zombieGrowl2.ogg" volumeMultiplier="1" loop="false" maxFullVolumeDistance="120" maxHearableDistance="900"/>
+  <sound fileName="zombieGrowl3.ogg" volumeMultiplier="0.6" loop="false" maxFullVolumeDistance="120" maxHearableDistance="900"/>
+  <sound fileName="zombieGrowl4.ogg" volumeMultiplier="0.8" loop="false" maxFullVolumeDistance="120" maxHearableDistance="900"/>
+  <sound fileName="reloadPistol.ogg" volumeMultiplier="1" loop="false" maxFullVolumeDistance="50" maxHearableDistance="400"/>
+  <sound fileName="pistolShot.ogg" volumeMultiplier="7" loop="false" maxFullVolumeDistance="50" maxHearableDistance="400"/>
+  <sound fileName="reloadShotgun.ogg" volumeMultiplier="1" loop="false" maxFullVolumeDistance="50" maxHearableDistance="400"/>
+  <sound fileName="shotgunShot.ogg" volumeMultiplier="7" loop="false" maxFullVolumeDistance="50" maxHearableDistance="400"/>
+  <sound fileName="carTireScreech.ogg" volumeMultiplier="1" loop="false" maxFullVolumeDistance="50" maxHearableDistance="400"/>
 </soundData>

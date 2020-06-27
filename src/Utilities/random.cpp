@@ -19,6 +19,11 @@ int generateNumber(int min, int max)
 	return dist(engine);
 }
 
+size_t generateNumber(size_t min, size_t max)
+{
+	return Cast<size_t>(generateNumber(Cast<size_t>(min), Cast<size_t>(max)));
+}
+
 Vec2 generateVector(Vec2 min, Vec2 max)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(min.x <= max.x && min.y <= max.y, "Min can't be greater than max");
