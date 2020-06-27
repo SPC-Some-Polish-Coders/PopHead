@@ -17,12 +17,12 @@ void SimRegion::update(float dt)
 {	
 	PH_PROFILE_FUNCTION();
 
+	if(sPause || !isPlayerAlive()) return;
+
 	auto playerPos = getPlayerCenterPos();	
 
 	auto reComputeBounds = [&]()
 	{
-		mSimRegionCentralPartitionBounds.x = (Cast<i32>(playerPos.x) / partitionSideSize) * partitionSideSize;
-		mSimRegionCentralPartitionBounds.y = (Cast<i32>(playerPos.y) / partitionSideSize) * partitionSideSize;
 		mSimRegionCentralPartitionBounds.pos = Cast<Vec2>(hadamardMul(hadamardDiv(Cast<Vec2i>(playerPos), partitionSizeInt), partitionSizeInt));
 		if(playerPos.x < 0.f) mSimRegionCentralPartitionBounds.x -= partitionSideSize;
 		if(playerPos.y < 0.f) mSimRegionCentralPartitionBounds.y -= partitionSideSize;
