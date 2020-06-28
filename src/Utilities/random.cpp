@@ -12,7 +12,7 @@ float generateNumber(float min, float max)
 	return dist(engine);
 }
 
-int generateNumber(int min, int max)
+i32 generateNumber(i32 min, i32 max)
 {
 	PH_ASSERT_UNEXPECTED_SITUATION(min <= max, "Min can't be greater than max");
 	std::uniform_int_distribution<> dist(min, max);
@@ -21,7 +21,7 @@ int generateNumber(int min, int max)
 
 size_t generateNumber(size_t min, size_t max)
 {
-	return Cast<size_t>(generateNumber(Cast<size_t>(min), Cast<size_t>(max)));
+	return Cast<size_t>(generateNumber(Cast<i32>(min), Cast<i32>(max)));
 }
 
 Vec2 generateVector(Vec2 min, Vec2 max)
