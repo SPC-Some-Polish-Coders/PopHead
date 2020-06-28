@@ -42,7 +42,7 @@ Path RandomPathAlgorithm::getRandomWalkingPath()
 		++mNumberOfRecurrencyCalls;
 		return getRandomPath();
 	}
-	i32 lengthOfPath = Random::generateNumber(2, walkableDistanceBetweenObstacleNode);
+	i32 lengthOfPath = Random::generateNumber(2, Cast<i32>(walkableDistanceBetweenObstacleNode));
 	path.resize(lengthOfPath);
 	std::fill(path.begin(), path.end(), direction);
 	return path;
