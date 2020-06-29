@@ -70,6 +70,10 @@ namespace Renderer
 	void submitTextArea(const char* text, const char* fontFilename, Vec2 pos, float textAreaWidth,
                         TextAligment, float size, sf::Color, u8 z, ProjectionType, bool isAffectedByLight = false);
 
+	#ifndef PH_DISTRIBUTION
+	void submitRenderSystemDebug(const std::function<void(void)>& fn);
+	#endif
+
 	void setAmbientLightColor(sf::Color);
 
 	void handleEvent(sf::Event);

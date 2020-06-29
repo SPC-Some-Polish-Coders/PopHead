@@ -601,7 +601,7 @@ void flush(bool affectedByLight)
 		groundChunks.clear();
 	}
 
-	// NOTE: We assume that quads it hash map are always at top of ground chunks and chunks
+	// NOTE: We assume that quads in hash map are always at top of ground chunks and chunks
 
 	// draw from hash map
 	for(u32 pairIndex = 0; pairIndex < hashMap.size; ++pairIndex)

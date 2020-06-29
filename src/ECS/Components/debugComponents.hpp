@@ -7,6 +7,11 @@ struct DebugName // @no-debugger
 	char name[50];
 };
 
+struct DebugChunkLayerName // @no-debugger
+{
+	char name[50];
+};
+
 struct DenialArea // @no-debugger
 {
 	enum Type {Collision, LightWall, All};

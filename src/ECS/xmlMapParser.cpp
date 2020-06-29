@@ -77,13 +77,16 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	PH_ASSERT_WARNING(tilesetNodes.size() != 0, "Map doesn't have any tilesets");
 
 	const TilesetsData tilesetsData = getTilesetsData(tilesetNodes);
-	const std::vector<Xml> layerNodes = getLayerNodes(mapNode);
+
+	const auto layerNodes = mapNode.getChildren("layer");
+	if(layerNodes.size() == 0)
+		PH_LOG_WARNING("Map doesn't have any layers");
 	
 	// parse map layers
 	FloatRect mapBounds;
 	u8 z = sLowestLayerZ;
 	bool isFirstChunk = true;
-	for (const Xml& layerNode : layerNodes)
+	for(const Xml& layerNode : layerNodes)
 	{
 		Xml dataNode = *layerNode.getChild("data");
 		std::string encoding = dataNode.getAttribute("encoding")->toString();
@@ -124,7 +127,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 			}
 
 			auto globalIds = Csv::toU32s(chunkNode.toString());
-			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor);
+			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor, layerName);
 		}
 		z -= 2;
 	}
@@ -280,16 +283,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 	return tilesData;
 }
 
-std::vector<Xml> XmlMapParser::getLayerNodes(const Xml& mapNode) const
-{
-	const std::vector<Xml> layerNodes = mapNode.getChildren("layer");
-	if(layerNodes.size() == 0)
-		PH_LOG_WARNING("Map doesn't have any layers");
-	return layerNodes;
-}
-
 void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, u8 z, AIManager& aiManager, bool outdoor)
+                               const GeneralMapInfo& info, u8 z, AIManager& aiManager, bool outdoor, const std::string& layerName)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -305,7 +300,7 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 
 	component::PitChunk pitChunk;
 
-	for (size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
+	for(size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
 		constexpr u32 bitsInByte = 8;
 		const u32 flippedHorizontally = 1u << (sizeof(u32) * bitsInByte - 1);
@@ -599,6 +594,15 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			}
 		}
 
+		auto assignDebugChunkLayerName = [&](entt::entity entity)
+		{
+			#ifndef PH_DISTRIBUTION
+			component::DebugChunkLayerName debugLayerName;
+			sprintf(debugLayerName.name, "%s  z = %u", layerName.c_str(), Cast<u32>(z));
+			mGameRegistry->assign<component::DebugChunkLayerName>(entity, debugLayerName);
+			#endif
+		};
+
 		// construct chunk in the registry
 		if(groundChunkShouldBeConstructed)
 		{
@@ -610,6 +614,8 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
 			grc.textureRect = groundTextureRect;
 			grc.z = z;
+
+			assignDebugChunkLayerName(groundChunkEntity);
 
 			if(outdoor)
 			{
@@ -634,6 +640,8 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			rc.lightWalls = lightWalls;
 			rc.z = z;
 			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
+
+			assignDebugChunkLayerName(chunkEntity);
 
 			if(outdoor)
 			{

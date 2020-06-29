@@ -4,6 +4,7 @@
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/charactersComponents.hpp"
 #include "ECS/Components/simRegionComponents.hpp"
+#include "ECS/Components/debugComponents.hpp"
 #include "Renderer/renderer.hpp"
 #include "Utilities/random.hpp"
 
@@ -64,7 +65,8 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit ground chunks with indoor blend
-	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend, InsideSimRegion>().each([&]
+	mRegistry.view<BodyRect, GroundRenderChunk, IndoorBlend, InsideSimRegion>
+	(entt::exclude<HiddenForRenderer>).each([&]
 	(auto bounds, auto& chunk, auto indoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds))
@@ -72,7 +74,8 @@ void RenderSystem::update(float dt)
 	});
 
 	// submit chunks with indoor blend
-	mRegistry.view<BodyRect, RenderChunk, IndoorBlend, InsideSimRegion>().each([&]
+	mRegistry.view<BodyRect, RenderChunk, IndoorBlend, InsideSimRegion>
+	(entt::exclude<HiddenForRenderer>).each([&]
 	(auto bounds, auto& chunk, auto indoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
@@ -90,7 +93,8 @@ void RenderSystem::update(float dt)
 	};
 
 	// submit ground chunks with outdoor blend
-	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend, InsideSimRegion>().each([&]
+	mRegistry.view<BodyRect, GroundRenderChunk, OutdoorBlend, InsideSimRegion>
+	(entt::exclude<HiddenForRenderer>).each([&]
 	(auto bounds, auto& chunk, auto outdoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds))
@@ -98,7 +102,8 @@ void RenderSystem::update(float dt)
 	});
 
 	// submit chunks with outdoor blend
-	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend, InsideSimRegion>().each([&]
+	mRegistry.view<BodyRect, RenderChunk, OutdoorBlend, InsideSimRegion>
+	(entt::exclude<HiddenForRenderer>).each([&]
 	(auto bounds, auto& chunk, auto outdoorBlend, auto)
 	{
 		if(intersect(currentCameraBounds, bounds) && !chunk.quads.empty())
@@ -188,6 +193,63 @@ void RenderSystem::update(float dt)
 				Renderer::submitLightWall(FloatRect(body.pos + lightWall.pos, lightWall.size));
 		});
 	}
+
+	#ifndef PH_DISTRIBUTION
+	// submit debug imgui
+	Renderer::submitRenderSystemDebug([&]()
+	{
+		if(ImGui::BeginTabItem("render system"))
+		{
+			if(!mDebugLayersInitialized)
+			{
+				mDebugLayersInitialized = true;
+
+				auto addName = [&](const DebugChunkLayerName& name)
+				{
+					for(const auto& debugLayer : mDebugLayers)
+						if(strcmp(name.name, debugLayer.name) == 0)
+							return;
+
+					DebugLayer layer;
+					memcpy(layer.name, name.name, strlen(name.name));
+					mDebugLayers.emplace_back(layer);
+				};
+
+				mRegistry.view<DebugChunkLayerName, RenderChunk>().each([&]
+				(const auto& name, const auto& chunk)
+				{
+					addName(name);
+				});
+
+				mRegistry.view<DebugChunkLayerName, GroundRenderChunk>().each([&]
+				(const auto& name, const auto& chunk)
+				{
+					addName(name);
+				});
+			}
+
+			for(auto& debugLayer : mDebugLayers)
+			{
+				if(ImGui::Checkbox(debugLayer.name, &debugLayer.turnOn))
+				{
+					mRegistry.view<DebugChunkLayerName>().each([&]
+					(auto entity, const auto& name)
+					{
+						if(strcmp(name.name, debugLayer.name) == 0)
+						{
+							if(debugLayer.turnOn)
+								mRegistry.reset<HiddenForRenderer>(entity);
+							else
+								mRegistry.assign_or_replace<HiddenForRenderer>(entity);
+						}
+					});
+				}
+			}
+
+			ImGui::EndTabItem();
+		}
+	});
+	#endif
 }
 
 }

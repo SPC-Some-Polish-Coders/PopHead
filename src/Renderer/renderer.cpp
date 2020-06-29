@@ -40,6 +40,10 @@ namespace {
 	PointRenderer pointRenderer;
 
 	bool isDebugDisplayActive = false;
+
+	#ifndef PH_DISTRIBUTION
+	std::function<void(void)> renderSystemDebug;
+	#endif
 }
 
 static void setClearColor(sf::Color color)
@@ -208,6 +212,7 @@ void endScene()
 
 	if(rendererDebugTabActive)
 	{
+		renderSystemDebug();
 		QuadRenderer::submitDebug();
 		LightRenderer::submitDebug(&ambientLightColor);
 		pointRenderer.submitDebug();
@@ -319,6 +324,13 @@ void submitTextArea(const char* text, const char* fontFilename, Vec2 pos, float 
 {
 	TextRenderer::drawTextArea(text, fontFilename, pos, textAreaWidth, aligment, size, color, z, projectionType, isAffectedByLight);
 }
+
+#ifndef PH_DISTRIBUTION
+void submitRenderSystemDebug(const std::function<void(void)>& fn)
+{
+	renderSystemDebug = fn;
+}
+#endif
 
 void handleEvent(sf::Event e)
 {
