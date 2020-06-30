@@ -10,29 +10,69 @@
  <tile id="3" terrain=",,0,"/>
  <tile id="4" terrain="0,0,0,"/>
  <tile id="5" terrain="0,0,,0"/>
+ <tile id="6">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="6.625" y="11.125">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="7">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="11" width="16" height="5"/>
+   <object id="2" type="Tag" x="8.66667" y="-11.3333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="8">
   <objectgroup draworder="index" id="2">
    <object id="3" type="Collision" x="0" y="4.90909" width="16" height="11.0909"/>
+   <object id="4" type="Tag" x="13" y="-3.66667">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="9">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="1.90909" y="4.90909" width="14.0909" height="11.0909"/>
+   <object id="2" type="Tag" x="11.6667" y="-0.333333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="10">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="11" width="16" height="5"/>
+   <object id="2" type="Tag" x="8" y="6.66667">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="11">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="-0.181818" y="9" width="16" height="6.81818"/>
+   <object id="2" type="Tag" x="5.33333" y="-0.666667">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="32" terrain=",0,,0"/>
@@ -64,9 +104,95 @@
    <object id="1" type="Collision" x="3.2557" y="4.76705" width="8.6136" height="8.5909">
     <ellipse/>
    </object>
-   <object id="2" type="Tag" x="7.8125" y="2.125">
+   <object id="2" type="Tag" x="-0.5625" y="-10.25">
     <properties>
      <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="3" type="Tag" x="19" y="-11.125">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="39">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-4.89583" y="-9.79167">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="14.6667" y="-10.6667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="40">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-15.5625" y="-12.4583">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="4" y="-13.3333">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="41">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-8.89583" y="-12.7917">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="10.6667" y="-13.6667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="42">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-10.2292" y="-10.7917">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="9.33333" y="-11.6667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="43">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-12.2292" y="-11.125">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="7.33333" y="-12">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
     </properties>
     <point/>
    </object>
@@ -104,21 +230,45 @@
  <tile id="70">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="2.18182" y="7.72727" width="13.8182" height="8.27273"/>
+   <object id="2" type="Tag" x="8.33333" y="-8">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="71">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="2.90909" width="12.6364" height="13.0909"/>
+   <object id="2" type="Tag" x="7.66667" y="-10.3333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="72">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0.863618" y="6.45455" width="14.5455" height="9.45454"/>
+   <object id="2" type="Tag" x="9.33333" y="-4">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="73">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="-0.181818" y="8.54546" width="16" height="7.18182"/>
+   <object id="2" type="Tag" x="6" y="-7.66667">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="79">
@@ -135,9 +285,69 @@
  <tile id="97" terrain="0,0,,"/>
  <tile id="98" terrain="0,0,,"/>
  <tile id="99" terrain="0,,,"/>
+ <tile id="102">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-2.91663" y="-8.54166">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="18.6667" y="-8.33333">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="103">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-7.91663" y="-6.20833">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="13.6667" y="-6">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="104">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-10.5833" y="-10.875">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="11" y="-10.6667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="105">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="3.81818"/>
+   <object id="2" type="Tag" x="-6.24997" y="-7.54166">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="3" type="Tag" x="15.3333" y="-7.33333">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="110">
@@ -202,22 +412,48 @@
  </tile>
  <tile id="129">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="Collision" x="0" y="0" width="16" height="16"/>
+   <object id="2" type="Tag" x="5.4167" y="-8.54166">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="4" type="Collision" x="3.35987" y="6.03788" width="8.6136" height="8.5909">
+    <ellipse/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="131">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="5.90909" width="16" height="10.0909"/>
+   <object id="2" type="Tag" x="6.33333" y="-2.33333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="134">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="4.81818" width="16" height="11.1818"/>
+   <object id="2" type="Tag" x="10" y="-6">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="135">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="4.90909" width="16" height="11.0909"/>
+   <object id="2" type="Tag" x="10" y="-8">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="142">
@@ -256,6 +492,38 @@
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="12.6818" y="0.136364" width="3.00001" height="15.8182"/>
    <object id="2" type="LightWall" x="12.6363" y="0.0908818" width="3.27285" height="15.8182"/>
+  </objectgroup>
+ </tile>
+ <tile id="166">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-5.5833" y="-6.875">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="16" y="-6.66667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="167">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-10.5833" y="-5.20833">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="11" y="-5">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="174">
@@ -315,14 +583,36 @@
    <object id="2" type="LightWall" x="12.5454" y="0.0909" width="3.27285" height="15.8182"/>
   </objectgroup>
  </tile>
+ <tile id="195">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="6.33333" y="5">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="198">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="6" width="16" height="10"/>
+   <object id="2" type="Tag" x="9.33333" y="-9">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="199">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="6" width="16" height="10"/>
+   <object id="2" type="Tag" x="5" y="-5">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="206">
@@ -397,6 +687,44 @@
     </properties>
     <point/>
    </object>
+   <object id="4" type="Tag" x="26.3333" y="1.33333">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="230">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-14.9166" y="-6.54166">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="6.66667" y="-6.33333">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="231">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-8.91663" y="-5.20833">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="12.6667" y="-5">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="247">
@@ -426,16 +754,82 @@
  <tile id="259">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="16" height="16"/>
+   <object id="2" type="Tag" x="3.33333" y="-17">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="262">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="4.63636" width="16" height="11.3636"/>
+   <object id="2" type="Tag" x="6.33333" y="-5">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="263">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="4.81818" width="16" height="11.1818"/>
+   <object id="2" type="Tag" x="5.33333" y="-8">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="291">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-13.25" y="5.79167">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="8.33333" y="6">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="294">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-10.25" y="0.79167">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="11.3333" y="1">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="295">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-13.9166" y="-6.20833">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="7.66667" y="-6">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="311">
@@ -451,26 +845,98 @@
  <tile id="322">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="10.7727" y="8.27273" width="5" height="7.36364"/>
+   <object id="2" type="Tag" x="8.33333" y="-7.33333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="323">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="7.72727" width="12.4545" height="8.27273"/>
+   <object id="2" type="Tag" x="4.66667" y="-10.6667">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="326">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="16" height="16"/>
+   <object id="2" type="Tag" x="2.66667" y="-14.3333">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="327">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="16" height="16"/>
+   <object id="2" type="Tag" x="10" y="-14">
+    <properties>
+     <property name="tag" value="DummySliceOfSlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="344">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="0" width="3" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="355">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-9.24997" y="6.45834">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="12.3333" y="6.66667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="358">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-15.9166" y="7.79167">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="5.66667" y="8">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
+ <tile id="359">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Tag" x="-12.25" y="2.45834">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
+   </object>
+   <object id="2" type="Tag" x="9.33333" y="2.66667">
+    <properties>
+     <property name="tag" value="SlicedEntity"/>
+    </properties>
+    <point/>
+   </object>
   </objectgroup>
  </tile>
  <tile id="376">

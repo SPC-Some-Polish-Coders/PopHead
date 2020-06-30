@@ -22,10 +22,12 @@ struct GeneralMapInfo
 
 enum TileFlags
 {
-	TileFlag_PuzzleGridRoad = (1 << 0),
-	TileFlag_Pit = (1 << 1),
-	TileFlag_Cactus = (1 << 2),
-	TileFlag_Rock = (1 << 3),
+	TileFlag_SlicedEntity = (1 << 0),
+	TileFlag_DummySliceOfSlicedEntity = (1 << 1),
+	TileFlag_PuzzleGridRoad = (1 << 2),
+	TileFlag_Pit = (1 << 3),
+	TileFlag_Cactus = (1 << 4),
+	TileFlag_Rock = (1 << 5),
 };
 
 struct TilesData

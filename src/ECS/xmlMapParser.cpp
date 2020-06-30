@@ -223,6 +223,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			std::vector<component::BodyCircle> circleCollisions;
 			std::vector<FloatRect> lightWalls;
 			FloatRect pitBounds;
+			u8 slicedEntityId = 0;
 			u32 flags = {};
 			for(auto& objectNode : objectNodes)
 			{
@@ -270,19 +271,24 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 						auto properties = objectNode.getChild("properties")->getChildren("property"); 
 						for(const auto& property : properties)
 						{
-							auto tag = property.getAttribute("value")->toString();
-							if(tag == "PuzzleGridRoad")
+							auto tag = property.getAttribute("value")->toString(); 
+							if(tag == "SlicedEntity")
+								flags |= TileFlag_SlicedEntity;
+							else if(tag == "DummySliceOfSlicedEntity")
+								flags |= TileFlag_DummySliceOfSlicedEntity;
+							else if(tag == "PuzzleGridRoad")
 								flags |= TileFlag_PuzzleGridRoad;
 							else if(tag == "Cactus")
 								flags |= TileFlag_Cactus;
 							else if(tag == "Rock")
 								flags |= TileFlag_Rock;
 							else
-								PH_EXIT_GAME("Unknown tile tag! (" + tag + ")");
+								PH_BREAKPOINT(); // Unknown tile tag!
 						}
 					}
 				}
 			}
+
 			tilesData.rectCollisions.emplace_back(rectCollisions);
 			tilesData.circleCollisions.emplace_back(circleCollisions);
 			tilesData.lightWalls.emplace_back(lightWalls);
@@ -337,120 +343,63 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 
 			globalTileId &= (~(flippedHorizontally | flippedVertically | flippedDiagonally));
 
-			entt::entity tileEntity;
-			if(entityChunkLayer)
-				tileEntity = mGameRegistry->create();
-
 			size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
-			if (tilesetIndex == std::string::npos) 
+			if(tilesetIndex == std::string::npos) 
 			{
 				PH_LOG_WARNING("It was not possible to find tileset for " + std::to_string(globalTileId));
 				continue;
 			}
 
-			Vec2u chunkRelativePosInTiles = getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(chunkSideSize));
-			Vec2 positionInTiles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
-
-			// create quad data
-			ChunkQuadData cqd;
-
-			Vec2 tileWorldPos( 
-				positionInTiles.x * Cast<float>(info.tileSize.x),
-				positionInTiles.y * Cast<float>(info.tileSize.y)
-			);
-
-			cqd.position = tileWorldPos; 
-
-			// TODO: Replace rotate/size-textureRect stuff with texture coords
-			auto tileSize = Cast<Vec2>(info.tileSize);
-			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
-			{
-				cqd.size = tileSize;
-				cqd.rotation = 0.f;
-			}
-			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) 
-			{
-				cqd.size = {tileSize.x, -tileSize.y};
-				cqd.position.x += tileSize.x;
-				cqd.rotation = 270.f;
-			}
-			else if(isHorizontallyFlipped && isVerticallyFlipped) 
-			{
-				cqd.size = -tileSize;
-				cqd.position += tileSize;
-				cqd.rotation = 0.f;
-			}
-			else if(isHorizontallyFlipped && isDiagonallyFlipped) 
-			{
-				cqd.size = tileSize;
-				cqd.rotation = 90.f;
-			}
-			else if(isVerticallyFlipped && isDiagonallyFlipped) 
-			{
-				cqd.size = tileSize;
-				cqd.rotation = 270.f;
-			}
-			else if(isHorizontallyFlipped) 
-			{
-				cqd.size = {-tileSize.x, tileSize.y};
-				cqd.position.x += tileSize.x;
-				cqd.rotation = 0.f;
-			}
-			else if(isVerticallyFlipped) 
-			{
-				cqd.size = {tileSize.x, -tileSize.y};
-				cqd.position.y += tileSize.y;
-				cqd.rotation = 0.f;
-			}
-			else if(isDiagonallyFlipped) 
-			{
-				cqd.size = {-tileSize.x, tileSize.y};
-				cqd.position.y -= tileSize.x;
-				cqd.rotation = 270.f;
-			}
-			cqd.rotation = degreesToRadians(cqd.rotation);
+			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
+			if(tilesDataIndex == std::string::npos) continue;
 
 			const u32 tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			Vec2 tileRectPos = Cast<Vec2>(
-				getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
-			tileRectPos.x *= (info.tileSize.x + 2);
-			tileRectPos.y *= (info.tileSize.y + 2);
-			tileRectPos.x += 1;
-			tileRectPos.y += 1;
 
+			entt::entity tileEntity;
 			if(entityChunkLayer)
-			{
-				component::RenderQuad rq = {};
-				rq.texture = tilesetTexture;
-				rq.rotation = cqd.rotation;
-				rq.rotationOrigin = {8.f, 8.f};
-				rq.z = z;
-				mGameRegistry->assign<component::RenderQuad>(tileEntity, rq);
-				mGameRegistry->assign<component::BodyRect>(tileEntity, FloatRect(cqd.position, cqd.size));
-				mGameRegistry->assign<component::IndoorOutdoorBlend>(tileEntity);
-				IntRect textureRect(Cast<Vec2i>(tileRectPos), Cast<Vec2i>(info.tileSize));
-				mGameRegistry->assign<component::TextureRect>(tileEntity, textureRect); 
-			}
-			else
-			{
-				cqd.textureRect = {
-					tileRectPos.x / tilesetTexture->getWidth(),
-					(tilesetTexture->getHeight() - tileRectPos.y - info.tileSize.y) / tilesetTexture->getHeight(),
-					Cast<float>(info.tileSize.x) / tilesetTexture->getWidth(),
-					Cast<float>(info.tileSize.y) / tilesetTexture->getHeight()
-				};
-				normalChunkData->quads.emplace_back(cqd);
-			}
+				tileEntity = mGameRegistry->create();
 
-			// load collision bodies and light walls
-			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
-			if(tilesDataIndex == std::string::npos)
-				continue;
+			Vec2u chunkRelativePosInTiles = getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(chunkSideSize));
+			Vec2 posInTiles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
+			Vec2 tileWorldPos( 
+				posInTiles.x * Cast<float>(info.tileSize.x),
+				posInTiles.y * Cast<float>(info.tileSize.y)
+			);
+
 			auto& tilesData = tilesets.tilesData[tilesDataIndex];
+			u32 flags = 0;
 			for(std::size_t i = 0; i < tilesData.ids.size(); ++i) 
 			{
 				if(tileId == tilesData.ids[i]) 
 				{
+					// flags
+					flags = tilesData.flags[i];
+					if(entityChunkLayer)
+					{
+						if(flags & TileFlag_DummySliceOfSlicedEntity) break;
+
+						// tags
+						if(flags & TileFlag_Cactus)
+							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Cactus\0"});
+						else if(flags & TileFlag_Rock)
+							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Rock\0"});
+					}
+					else
+					{
+						// puzzle grid collisions
+						bool road = flags & TileFlag_PuzzleGridRoad;
+						normalChunkData->puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
+						if(road) normalChunkData->isThereAnyPuzzleGridRoadInThisChunk = true;
+
+						// pits
+						if(flags & TileFlag_Pit)
+						{
+							FloatRect pitBounds = tilesData.pitBounds[i];
+							pitBounds.pos += tileWorldPos;
+							normalChunkData->pitChunk.pits.emplace_back(pitBounds);
+						}
+					}
+
 					// rect collision bodies
 					for(FloatRect collisionRect : tilesData.rectCollisions[i])
 					{
@@ -495,7 +444,6 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 								}
 							}
 						}
-
 					}
 
 					// circle collision bodies
@@ -508,6 +456,9 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 
 						if(entityChunkLayer)
 						{
+							if(flags & TileFlag_SlicedEntity)
+								collisionCircle.offset.y += 16.f;
+
 							mGameRegistry->assign<component::BodyCircle>(tileEntity, collisionCircle);
 							mGameRegistry->assign<component::StaticCollisionBody>(tileEntity);
 						}
@@ -586,33 +537,104 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 						}
 					}
 
-					u32 flags = tilesData.flags[i];
-					if(entityChunkLayer)
-					{
-						// tags
-						if(flags & TileFlag_Cactus)
-							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Cactus\0"});
-						else if(flags & TileFlag_Rock)
-							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Rock\0"});
-					}
-					else
-					{
-						// puzzle grid collisions
-						bool road = flags & TileFlag_PuzzleGridRoad;
-						normalChunkData->puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
-						if(road) normalChunkData->isThereAnyPuzzleGridRoadInThisChunk = true;
-
-						// pits
-						if(flags & TileFlag_Pit)
-						{
-							FloatRect pitBounds = tilesData.pitBounds[i];
-							pitBounds.pos += tileWorldPos;
-							normalChunkData->pitChunk.pits.emplace_back(pitBounds);
-						}
-					}
-
 					break;
 				}
+			}
+
+			if(entityChunkLayer && (flags & TileFlag_DummySliceOfSlicedEntity)) continue;
+
+			// create quad data
+			ChunkQuadData cqd;
+
+			cqd.position = tileWorldPos; 
+
+			// TODO: Replace rotate/size-textureRect stuff with texture coords
+			auto tileSize = Cast<Vec2>(info.tileSize);
+			if(!(isHorizontallyFlipped || isVerticallyFlipped || isDiagonallyFlipped)) 
+			{
+				cqd.size = tileSize;
+				cqd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped && isDiagonallyFlipped) 
+			{
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped && isVerticallyFlipped) 
+			{
+				cqd.size = -tileSize;
+				cqd.position += tileSize;
+				cqd.rotation = 0.f;
+			}
+			else if(isHorizontallyFlipped && isDiagonallyFlipped) 
+			{
+				cqd.size = tileSize;
+				cqd.rotation = 90.f;
+			}
+			else if(isVerticallyFlipped && isDiagonallyFlipped) 
+			{
+				cqd.size = tileSize;
+				cqd.rotation = 270.f;
+			}
+			else if(isHorizontallyFlipped) 
+			{
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.x += tileSize.x;
+				cqd.rotation = 0.f;
+			}
+			else if(isVerticallyFlipped) 
+			{
+				cqd.size = {tileSize.x, -tileSize.y};
+				cqd.position.y += tileSize.y;
+				cqd.rotation = 0.f;
+			}
+			else if(isDiagonallyFlipped) 
+			{
+				cqd.size = {-tileSize.x, tileSize.y};
+				cqd.position.y -= tileSize.x;
+				cqd.rotation = 270.f;
+			}
+			cqd.rotation = degreesToRadians(cqd.rotation);
+
+			Vec2 tileRectPos = Cast<Vec2>(
+				getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
+			tileRectPos.x *= (info.tileSize.x + 2);
+			tileRectPos.y *= (info.tileSize.y + 2);
+			tileRectPos.x += 1;
+			tileRectPos.y += 1;
+
+			if(entityChunkLayer)
+			{
+				component::RenderQuad rq = {};
+				rq.texture = tilesetTexture;
+				rq.rotation = cqd.rotation;
+				rq.rotationOrigin = {8.f, 8.f};
+				rq.z = z;
+				IntRect textureRect(Cast<Vec2i>(tileRectPos), Cast<Vec2i>(info.tileSize));
+
+				if(flags & TileFlag_SlicedEntity)
+				{
+					cqd.position.y -= 16.f;
+					cqd.size.y = 32.f;
+					textureRect.y -= 16;
+					textureRect.h = 32;
+				}
+
+				mGameRegistry->assign<component::RenderQuad>(tileEntity, rq);
+				mGameRegistry->assign<component::BodyRect>(tileEntity, FloatRect(cqd.position, cqd.size));
+				mGameRegistry->assign<component::IndoorOutdoorBlend>(tileEntity);
+				mGameRegistry->assign<component::TextureRect>(tileEntity, textureRect); 
+			}
+			else
+			{
+				cqd.textureRect = {
+					tileRectPos.x / tilesetTexture->getWidth(),
+					(tilesetTexture->getHeight() - tileRectPos.y - info.tileSize.y) / tilesetTexture->getHeight(),
+					Cast<float>(info.tileSize.x) / tilesetTexture->getWidth(),
+					Cast<float>(info.tileSize.y) / tilesetTexture->getHeight()
+				};
+				normalChunkData->quads.emplace_back(cqd);
 			}
 		}
 	}
