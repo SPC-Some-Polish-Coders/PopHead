@@ -222,9 +222,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			std::vector<FloatRect> rectCollisions;
 			std::vector<component::BodyCircle> circleCollisions;
 			std::vector<FloatRect> lightWalls;
-			bool puzzleGridRoad = false;
-			Pit pit;
-			std::string tag;
+			FloatRect pitBounds;
+			u32 flags = {};
 			for(auto& objectNode : objectNodes)
 			{
 				if(auto type = objectNode.getAttribute("type"))
@@ -260,22 +259,26 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 					{
 						lightWalls.emplace_back(getBounds());
 					}
-					else if(typeStr == "PuzzleGridRoad")
-					{
-						puzzleGridRoad = true;
-					}
 					else if(typeStr == "Pit")
 					{
-						PH_ASSERT_UNEXPECTED_SITUATION(!pit.exists, "There can't be more then 1 pit in the same tile");
-						pit.bounds = getBounds();
-						pit.exists = true;
+						PH_ASSERT_UNEXPECTED_SITUATION(!(flags & TileFlag_Pit), "There can't be more then 1 pit in the same tile");
+						pitBounds = getBounds();
+						flags |= TileFlag_Pit;
 					}
 					else if(typeStr == "Tag")
 					{
 						auto properties = objectNode.getChild("properties")->getChildren("property"); 
 						for(const auto& property : properties)
 						{
-							tag = property.getAttribute("value")->toString();
+							auto tag = property.getAttribute("value")->toString();
+							if(tag == "PuzzleGridRoad")
+								flags |= TileFlag_PuzzleGridRoad;
+							else if(tag == "Cactus")
+								flags |= TileFlag_Cactus;
+							else if(tag == "Rock")
+								flags |= TileFlag_Rock;
+							else
+								PH_EXIT_GAME("Unknown tile tag! (" + tag + ")");
 						}
 					}
 				}
@@ -283,9 +286,8 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			tilesData.rectCollisions.emplace_back(rectCollisions);
 			tilesData.circleCollisions.emplace_back(circleCollisions);
 			tilesData.lightWalls.emplace_back(lightWalls);
-			tilesData.puzzleGridRoads.emplace_back(puzzleGridRoad);
-			tilesData.pits.emplace_back(pit);
-			tilesData.tags.emplace_back(tag);
+			tilesData.pitBounds.emplace_back(pitBounds);
+			tilesData.flags.emplace_back(flags);
 		}
 	}
 	return tilesData;
@@ -584,31 +586,28 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 						}
 					}
 
+					u32 flags = tilesData.flags[i];
 					if(entityChunkLayer)
 					{
 						// tags
-						const auto tag = tilesData.tags[i];
-						if(!tag.empty())
-						{
-							if(tag == "Cactus")
-								mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Cactus\0"});
-							else if(tag == "Rock")
-								mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Rock\0"});
-						}
+						if(flags & TileFlag_Cactus)
+							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Cactus\0"});
+						else if(flags & TileFlag_Rock)
+							mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Rock\0"});
 					}
 					else
 					{
 						// puzzle grid collisions
-						bool road = tilesData.puzzleGridRoads[i];
+						bool road = flags & TileFlag_PuzzleGridRoad;
 						normalChunkData->puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
 						if(road) normalChunkData->isThereAnyPuzzleGridRoadInThisChunk = true;
 
 						// pits
-						Pit pit = tilesData.pits[i];
-						if(pit.exists)
+						if(flags & TileFlag_Pit)
 						{
-							pit.bounds.pos += tileWorldPos;
-							normalChunkData->pitChunk.pits.emplace_back(pit.bounds);
+							FloatRect pitBounds = tilesData.pitBounds[i];
+							pitBounds.pos += tileWorldPos;
+							normalChunkData->pitChunk.pits.emplace_back(pitBounds);
 						}
 					}
 

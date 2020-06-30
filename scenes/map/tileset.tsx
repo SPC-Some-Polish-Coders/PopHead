@@ -38,14 +38,20 @@
  <tile id="32" terrain=",0,,0"/>
  <tile id="33" terrain="0,0,0,0">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="PuzzleGridRoad" x="7.5" y="7.5">
+   <object id="2" type="Tag" x="10.125" y="1.875">
+    <properties>
+     <property name="tag" value="PuzzleGridRoad"/>
+    </properties>
     <point/>
    </object>
   </objectgroup>
  </tile>
  <tile id="34" terrain="0,0,0,0">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="PuzzleGridRoad" x="7.5" y="8">
+   <object id="2" type="Tag" x="9.875" y="8.75">
+    <properties>
+     <property name="tag" value="PuzzleGridRoad"/>
+    </properties>
     <point/>
    </object>
   </objectgroup>
@@ -69,14 +75,20 @@
  <tile id="64" terrain=",0,,0"/>
  <tile id="65" terrain="0,0,0,0">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="PuzzleGridRoad" x="6.5" y="9">
+   <object id="2" type="Tag" x="12" y="9">
+    <properties>
+     <property name="tag" value="PuzzleGridRoad"/>
+    </properties>
     <point/>
    </object>
   </objectgroup>
  </tile>
  <tile id="66" terrain="0,0,0,0">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="PuzzleGridRoad" x="9.25" y="9.75">
+   <object id="1" type="Tag" x="9.25" y="9.75">
+    <properties>
+     <property name="tag" value="PuzzleGridRoad"/>
+    </properties>
     <point/>
    </object>
   </objectgroup>
@@ -705,7 +717,10 @@
  </tile>
  <tile id="897">
   <objectgroup draworder="index" id="2">
-   <object id="1" type="PuzzleGridRoad" x="11" y="10">
+   <object id="2" type="Tag" x="6.625" y="10.25">
+    <properties>
+     <property name="tag" value="PuzzleGridRoad"/>
+    </properties>
     <point/>
    </object>
   </objectgroup>

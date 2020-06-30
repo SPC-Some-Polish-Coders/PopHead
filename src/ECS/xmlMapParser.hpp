@@ -20,10 +20,12 @@ struct GeneralMapInfo
 	float nrOfChunksInOneColumn;
 };
 
-struct Pit
+enum TileFlags
 {
-	FloatRect bounds;
-	bool exists = false;
+	TileFlag_PuzzleGridRoad = (1 << 0),
+	TileFlag_Pit = (1 << 1),
+	TileFlag_Cactus = (1 << 2),
+	TileFlag_Rock = (1 << 3),
 };
 
 struct TilesData
@@ -33,9 +35,8 @@ struct TilesData
 	std::vector<std::vector<FloatRect>> lightWalls;
 	std::vector<std::vector<FloatRect>> rectCollisions;
 	std::vector<std::vector<component::BodyCircle>> circleCollisions;
-	std::vector<Pit> pits;
-	std::vector<std::string> tags;
-	std::vector<bool> puzzleGridRoads;
+	std::vector<FloatRect> pitBounds;
+	std::vector<u32> flags;
 };
 
 struct TilesetsData
