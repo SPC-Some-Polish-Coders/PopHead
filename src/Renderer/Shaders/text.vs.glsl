@@ -22,7 +22,6 @@ layout (std140) uniform SharedData
 	mat4 guiVPM;
 };
 
-uniform float z;
 uniform bool isGameWorldProjection;
 uniform sampler2D textures[32];
 
@@ -57,7 +56,7 @@ void main()
     }
 	
 	mat4 VPM = isGameWorldProjection ? gameWorldVPM : guiVPM;
-	gl_Position = VPM * vec4(modelVertexPos + aPosition, z, 1);
+	gl_Position = VPM * vec4(modelVertexPos + aPosition, 0, 1);
 }
 
 )"

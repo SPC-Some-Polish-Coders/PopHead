@@ -43,7 +43,7 @@
     <component name="Camera" cameraName="default" x="0" y="0" w="640" h="360" />
     <component name="Killable" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
-    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="94" />
+    <component name="RenderQuad" textureFilepath="textures/characters/playerFullAnimation.png" z="96" />
     <component name="TextureRect" x="0" y="0" w="0" h="0" />
     <component name="MultiParticleEmitter" />
   </entityTemplate>
@@ -60,7 +60,7 @@
     <component name="Zombie" timeToMoveToAnotherTile="0.1" />
     <component name="AnimationData" firstStateName="left" delay="0.1" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
-    <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/characters/zombieFullAnimation.png" z="96" />
 	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" w="0" h="0" />
     <component name="MultiParticleEmitter" />
@@ -79,7 +79,7 @@
     <component name="SlowZombieBehavior" />
     <component name="AnimationData" firstStateName="left" delay="0.2" animationStatesFile="animations/character.animstates.xml" />
     <component name="Killable" />
-    <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="95" />
+    <component name="RenderQuad" textureFilepath="textures/characters/zombieHeavyFullAnimation.png" z="96" />
 	<component name="IndoorOutdoor" />
     <component name="TextureRect" x="0" y="0" w="0" h="0" />
     <component name="MultiParticleEmitter" />

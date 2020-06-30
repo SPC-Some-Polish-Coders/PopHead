@@ -12,8 +12,6 @@ layout (std140) uniform SharedData
 	mat4 guiVPM;
 };
 
-uniform float z;
-
 out vec2 texCoords;
 
 void main()
@@ -46,7 +44,7 @@ void main()
 
 	if(aRotation == 0)
 	{
-		gl_Position = gameWorldVPM * vec4(aWorldPos + vertexOffset, z, 1);
+		gl_Position = gameWorldVPM * vec4(aWorldPos + vertexOffset, 0, 1);
 	}
 	else
 	{
@@ -55,7 +53,7 @@ void main()
 			sin(aRotation), cos(aRotation)
 		);
 		vec2 rotatedVertexPos = (vertexOffset - vec2(8, 8)) * rotationMatrix + aWorldPos + vec2(8, 8);
-		gl_Position = gameWorldVPM * vec4(rotatedVertexPos, z, 1);
+		gl_Position = gameWorldVPM * vec4(rotatedVertexPos, 0, 1);
 	}
 }
 

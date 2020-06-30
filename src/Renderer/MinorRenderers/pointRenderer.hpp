@@ -12,7 +12,6 @@ struct PointVertexData
 	Vec4 color;	
 	Vec2 position;
 	float size;
-	float z;
 };
 
 class PointRenderer
@@ -26,7 +25,7 @@ public:
 	void setDebugCountingActive(bool active) { mIsDebugCountingActive = active; }
 	void resetDebugNumbers();
 
-	void submitPoint(Vec2 position, const sf::Color&, float z, float size);
+	void submitPoint(Vec2 position, const sf::Color&, float size);
 
 	void flush();
 

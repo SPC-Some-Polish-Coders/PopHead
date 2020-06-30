@@ -51,7 +51,7 @@ namespace Renderer
 
 	void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float thickness = 1.f);
 
-	void submitPoint(Vec2 pos, sf::Color, u8 z, float size = 1.f);
+	void submitPoint(Vec2 pos, sf::Color, float size = 1.f);
 
 	void submitLight(sf::Color color, Vec2 pos, float startAngle, float endAngle,
 	                 float attenuationAddition, float attenuationFactor, float attenuationSquareFactor, bool rayCollisionDetection);

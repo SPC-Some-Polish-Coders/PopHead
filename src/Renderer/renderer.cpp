@@ -225,7 +225,7 @@ void endScene()
 void submitCircle(sf::Color color, Vec2 pos, float radius, u8 z, 
 				  ProjectionType projectionType, bool isAffectedByLight)
 {
-	submitQuad(Null, Null, &color, &circleShader, pos, {2 * radius, 2 * radius}, z, 0.f, {}, projectionType, isAffectedByLight);
+	submitQuad(Null, Null, &color, &circleShader, pos, Vec2(2 * radius), z, 0.f, {}, projectionType, isAffectedByLight);
 }
 
 void submitQuad(Texture* texture, const IntRect* textureRect, const sf::Color* color, const Shader* shader,
@@ -281,9 +281,9 @@ void submitLine(sf::Color colorA, sf::Color colorB, Vec2 posA, Vec2 posB, float 
 	LineRenderer::submitLine(colorA, colorB, posA, posB, thickness);
 }
 
-void submitPoint(Vec2 pos, sf::Color color, u8 z, float size)
+void submitPoint(Vec2 pos, sf::Color color, float size)
 {
-	pointRenderer.submitPoint(pos, color, getNormalizedZ(z), size);
+	pointRenderer.submitPoint(pos, color, size);
 }
 
 void submitLight(sf::Color color, Vec2 pos, float startAngle, float endAngle,

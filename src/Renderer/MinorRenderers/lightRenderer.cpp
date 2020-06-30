@@ -6,8 +6,6 @@
 
 namespace ph::LightRenderer {
 
-// TODO: Add Z to Light
-
 struct Light
 {
 	sf::Color color;
@@ -260,7 +258,7 @@ void flush()
 		{
 			for(auto& point : lightTriangleFanVertexData) 
 			{
-				Renderer::submitPoint(point, light.color, 0, 7.f);
+				Renderer::submitPoint(point, light.color, 7.f);
 				Renderer::submitLine(light.color, light.pos, point, 3.f);
 			}
 		}
@@ -289,9 +287,9 @@ void flush()
 	if(drawRays)
 	{
 		for(auto& light : lights)
-			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
+			Renderer::submitPoint(light.pos, light.color, 15.f);
 		for(auto& light : noCollisionLights)
-			Renderer::submitPoint(light.pos, light.color, 0, 15.f);
+			Renderer::submitPoint(light.pos, light.color, 15.f);
 	}
 
 	nrOfNoCollisionLights = Cast<u32>(noCollisionLights.size());

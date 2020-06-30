@@ -98,7 +98,7 @@ static void updateParticleEmitter(float dt, ParticleEmitter& emi, const BodyRect
 		else if(emi.parSize.x != emi.parSize.y)
 			Renderer::submitQuad(Null, Null, &color, Null, particle.position, emi.parSize, emi.parZ, 0.f, {});
 		else
-			Renderer::submitPoint(particle.position, color, emi.parZ, emi.parSize.x);
+			Renderer::submitPoint(particle.position, color, emi.parSize.x);
 	}
 }
 

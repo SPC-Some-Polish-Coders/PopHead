@@ -609,7 +609,7 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 				component::RenderQuad rq = {};
 				rq.texture = tilesetTexture;
 				rq.rotation = cqd.rotation;
-				rq.rotationOrigin = {8.f, 8.f};
+				rq.rotationOrigin = Vec2(8.f);
 				rq.z = z;
 				IntRect textureRect(Cast<Vec2i>(tileRectPos), Cast<Vec2i>(info.tileSize));
 

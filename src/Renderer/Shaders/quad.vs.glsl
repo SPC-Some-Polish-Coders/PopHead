@@ -23,7 +23,6 @@ layout (std140) uniform SharedData
 	mat4 guiVPM;
 };
 
-uniform float z;
 uniform bool isGameWorldProjection;
 uniform sampler2D textures[32];
 
@@ -66,12 +65,12 @@ void main()
     
     if(aRotation == 0)
 	{
-        gl_Position = VPM * vec4(modelVertexPos + aPosition, z, 1);
+        gl_Position = VPM * vec4(modelVertexPos + aPosition, 0, 1);
 	}
 	else 
 	{
 		vec2 rotatedVertexPos = (modelVertexPos - aRotationOrigin) * getRotationMatrix(aRotation) + aPosition + aRotationOrigin;
-		gl_Position = VPM * vec4(rotatedVertexPos, z, 1);
+		gl_Position = VPM * vec4(rotatedVertexPos, 0, 1);
 	}
 }
 

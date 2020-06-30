@@ -4,7 +4,6 @@ R"(
 layout (location = 0) in vec2 aVertexOffset;
 
 uniform vec2 chunkPos;
-uniform float z;
 
 uniform vec2 uvTopLeft; 
 uniform vec2 uvTopRight; 
@@ -33,7 +32,7 @@ void main()
 	vec2 chunkRelPos;
 	chunkRelPos.x = (gl_InstanceID * 16) % (16 * 12);
 	chunkRelPos.y = floor(gl_InstanceID / 12) * 16;
-	gl_Position = gameWorldVPM * vec4(chunkPos + chunkRelPos + aVertexOffset, z, 1); 
+	gl_Position = gameWorldVPM * vec4(chunkPos + chunkRelPos + aVertexOffset, 0, 1); 
 }
 
 )"

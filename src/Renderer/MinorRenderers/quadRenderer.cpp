@@ -527,7 +527,6 @@ void flush(bool affectedByLight)
 					groundChunkShader.bind();
 				}
 				groundChunkShader.setUniformVec2("chunkPos", gc.pos);
-				groundChunkShader.setUniformFloat("z", gc.z);
 				groundChunkShader.setUniformVec4Color("color", gc.color);
 				groundChunkShader.setUniformVec2("uvTopLeft", gc.textureRect.pos);
 				groundChunkShader.setUniformVec2("uvTopRight", gc.textureRect.topRight());
@@ -556,7 +555,6 @@ void flush(bool affectedByLight)
 					chunkShader.bind();
 				}
 				chunkShader.setUniformVec4Color("color", chunk.color);
-				chunkShader.setUniformFloat("z", chunk.z);
 
 				GLCheck( glBindVertexArray(chunks.dummyVAO) );
 				GLCheck( glBindBuffer(GL_ARRAY_BUFFER, chunk.vbo) );
@@ -630,7 +628,6 @@ void flush(bool affectedByLight)
 				textures[i] = i;
 			key.shader->setUniformI32Array("textures", 32, textures);
 		}
-		key.shader->setUniformFloat("z", key.z);
 		key.shader->setUniformBool("isGameWorldProjection", key.projectionType == ProjectionType::gameWorld);
 
 		// TODO: sort quads by texture slot ref if there are more then 32 

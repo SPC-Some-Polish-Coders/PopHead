@@ -22,11 +22,9 @@ void PointRenderer::init()
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(PointVertexData), (void*)offsetof(PointVertexData, color));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(PointVertexData), (void*)offsetof(PointVertexData, position));
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(PointVertexData), (void*)offsetof(PointVertexData, size));
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(PointVertexData), (void*)offsetof(PointVertexData, z));
 
 	mSubmitedPointsVertexData.reserve(100);
 }
@@ -38,23 +36,20 @@ void PointRenderer::shutDown()
 	mPointsShader.remove();
 }
 
-void PointRenderer::submitPoint(Vec2 pos, const sf::Color& color, float z, float size)
+void PointRenderer::submitPoint(Vec2 pos, const sf::Color& color, float size)
 {
-	if(!isInsideScreen(pos, size))
-		return;
+	if(!isInsideScreen(pos, size)) return;
 
 	PointVertexData point;
 	point.color = castToNormalizedColorVec4(color);
 	point.position = pos;
 	point.size = size * (360.f / mGameWorldCameraBounds->h);
-	point.z = z;
 	mSubmitedPointsVertexData.emplace_back(point);
 }
 
 void PointRenderer::flush()
 {
-	if(mSubmitedPointsVertexData.empty())
-		return;
+	if(mSubmitedPointsVertexData.empty()) return;
 
 	mPointsShader.bind();
 	glBindVertexArray(mVAO);

@@ -16,7 +16,7 @@ layout (std140) uniform SharedData
 void main()
 {
     color = aColor;
-    gl_Position = gameWorldVPM * vec4(aPos, 0.0, 1.0);
+    gl_Position = gameWorldVPM * vec4(aPos, 0, 1);
 }
 
 )"
