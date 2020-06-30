@@ -339,7 +339,7 @@ void submitChunk(std::vector<ChunkQuadData>& quadsData, const FloatRect& bounds,
 		{
 			if(cached.vbo)
 			{
-				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, (u32)quadsData.size(), color, z});
+				chunks.thisFrameChunks.emplace_back(Chunk{bounds, cached.vbo, Cast<u32>(quadsData.size()), color, z});
 			}
 			else
 			{

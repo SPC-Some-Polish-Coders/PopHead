@@ -10,11 +10,6 @@
  <tile id="3" terrain=",,0,"/>
  <tile id="4" terrain="0,0,0,"/>
  <tile id="5" terrain="0,0,,0"/>
- <tile id="6">
-  <objectgroup draworder="index" id="2">
-   <object id="5" type="Collision" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
  <tile id="7">
   <objectgroup draworder="index" id="2">
    <object id="1" type="Collision" x="0" y="11" width="16" height="5"/>
@@ -58,6 +53,19 @@
  <tile id="35" terrain="0,,0,"/>
  <tile id="36" terrain="0,,0,0"/>
  <tile id="37" terrain=",0,0,0"/>
+ <tile id="38">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="Collision" x="3.2557" y="4.76705" width="8.6136" height="8.5909">
+    <ellipse/>
+   </object>
+   <object id="2" type="Tag" x="7.8125" y="2.125">
+    <properties>
+     <property name="tag" value="Cactus"/>
+    </properties>
+    <point/>
+   </object>
+  </objectgroup>
+ </tile>
  <tile id="64" terrain=",0,,0"/>
  <tile id="65" terrain="0,0,0,0">
   <objectgroup draworder="index" id="2">
@@ -368,8 +376,14 @@
  </tile>
  <tile id="227">
   <objectgroup draworder="index" id="2">
-   <object id="2" type="Collision" x="3.45455" y="-1.54545" width="10.3636" height="10.0909">
+   <object id="2" type="Collision" x="5.01705" y="3.82955" width="8.6136" height="8.5909">
     <ellipse/>
+   </object>
+   <object id="3" type="Tag" x="4.75" y="1.125">
+    <properties>
+     <property name="tag" value="Rock"/>
+    </properties>
+    <point/>
    </object>
   </objectgroup>
  </tile>

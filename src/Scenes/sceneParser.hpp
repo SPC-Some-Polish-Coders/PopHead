@@ -7,8 +7,10 @@
 
 namespace ph{
 
+class Texture;
+
 void parseScene(EntitiesTemplateStorage&, entt::registry&,
-                const std::string& sceneFileName, SystemsQueue&, AIManager&, SceneManager&);
+                const std::string& sceneFileName, SystemsQueue&, AIManager&, SceneManager&, Texture* tilesetTexture);
 
 }
 

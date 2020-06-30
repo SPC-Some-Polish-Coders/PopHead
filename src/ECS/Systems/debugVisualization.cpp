@@ -125,7 +125,7 @@ void DebugVisualization::update(float dt)
 		mRegistry.view<StaticCollisionBody, BodyRect, BodyCircle>().each([]
 		(auto, const auto& rect, const auto& circle)
 		{
-			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 140), Null,
+			Renderer::submitQuad(Null, Null, &sf::Color(130, 0, 0, 40), Null,
 				rect, 50, 0.f, {}, ProjectionType::gameWorld, false);
 			Renderer::submitCircle(sf::Color(130, 0, 0, 200), rect.pos + circle.offset - Vec2(circle.radius),
 				circle.radius, 50, ProjectionType::gameWorld, false);

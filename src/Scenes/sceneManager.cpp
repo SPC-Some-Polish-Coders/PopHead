@@ -71,7 +71,7 @@ void SceneManager::replaceAction()
 	PH_LOG_INFO("The scene was replaced by new scene (" + mFilePathOfSceneToMake + ").");
 
 	parseScene(mEntitiesTemplateStorage, mScene->getRegistry(), mFilePathOfSceneToMake,
-			   mScene->getSystemsQueue(), *mAIManager, *this);
+			   mScene->getSystemsQueue(), *mAIManager, *this, mTilesetTexture);
 
 	if(mAIManager->isPlayerOnScene()) 
 	{

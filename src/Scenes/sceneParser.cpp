@@ -6,12 +6,13 @@
 #include "ECS/xmlMapParser.hpp"
 #include "GUI/xmlGuiParser.hpp"
 #include "Audio/xmlAudioParser.hpp"
+#include "Renderer/API/texture.hpp"
 
 namespace ph {
 
 void parseScene(EntitiesTemplateStorage& templateStorage,
                 entt::registry& gameRegistry, const std::string& sceneFileName, SystemsQueue& systemsQueue,
-                AIManager& aiManager, SceneManager& sceneManager)
+                AIManager& aiManager, SceneManager& sceneManager, Texture* tilesetTexture)
 {
 	PH_PROFILE_FUNCTION();
 
@@ -68,7 +69,7 @@ void parseScene(EntitiesTemplateStorage& templateStorage,
 		PH_ASSERT_CRITICAL(map.loadFromFile(mapFilepath), "map file \"" + mapFilepath + "\" wasn't loaded correctly!");
 		map = *map.getChild("map");
 		XmlMapParser mapParser;
-		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage);
+		mapParser.parseFile(map, aiManager, gameRegistry, templateStorage, tilesetTexture);
 
 		bool isPlayerOnScene = false;
 		loadEntitiesFromMapFile(map, templateStorage, gameRegistry, sceneManager, &isPlayerOnScene);

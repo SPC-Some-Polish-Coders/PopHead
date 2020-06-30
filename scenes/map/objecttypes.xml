@@ -104,6 +104,9 @@
   <property name="puzzleId" type="int" default="0"/>
   <property name="timeToChange" type="float" default="0"/>
  </objecttype>
+ <objecttype name="Tag" color="#053555">
+  <property name="tag" type="string"/>
+ </objecttype>
  <objecttype name="TeleportPoint" color="#a42b9a">
   <property name="name" type="string"/>
  </objecttype>

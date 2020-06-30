@@ -4,6 +4,7 @@
 #include "Components/debugComponents.hpp"
 #include "Components/objectsComponents.hpp"
 #include "Renderer/renderer.hpp"
+#include "Renderer/API/texture.hpp"
 #include "AI/aiManager.hpp"
 #include "Utilities/csv.hpp"
 #include "Utilities/filePath.hpp"
@@ -11,7 +12,11 @@
 
 namespace ph {
 
-void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates)
+static float chunkSideSize = 12.f;
+static u8 lowestLayerZ = 200; 
+
+void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry,
+                             EntitiesTemplateStorage& templates, Texture* tilesetTexture)
 {
 	mGameRegistry = &gameRegistry;
 	mTemplates = &templates;
@@ -84,7 +89,7 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 	
 	// parse map layers
 	FloatRect mapBounds;
-	u8 z = sLowestLayerZ;
+	u8 z = lowestLayerZ;
 	bool isFirstChunk = true;
 	for(const Xml& layerNode : layerNodes)
 	{
@@ -109,25 +114,18 @@ void XmlMapParser::parseFile(const Xml& mapNode, AIManager& aiManager, entt::reg
 			}
 			else
 			{
-				if(chunkPos.x < mapBounds.x) {
-					mapBounds.x = chunkPos.x;
-				}
-				if(chunkPos.y < mapBounds.y) {
-					mapBounds.y = chunkPos.y;
-				}
+				if(chunkPos.x < mapBounds.x) mapBounds.x = chunkPos.x;
+				if(chunkPos.y < mapBounds.y) mapBounds.y = chunkPos.y;
 				
 				float mapWidthToThisChunk = chunkPos.x - mapBounds.x + chunkSize.x;
-				if(mapWidthToThisChunk > mapBounds.w) {
-					mapBounds.w = mapWidthToThisChunk; 
-				}
+				if(mapWidthToThisChunk > mapBounds.w) mapBounds.w = mapWidthToThisChunk; 
+
 				float mapHeightToThisChunk = chunkPos.y - mapBounds.y + chunkSize.y;
-				if(mapHeightToThisChunk > mapBounds.h) {
-					mapBounds.h = mapHeightToThisChunk;
-				}
+				if(mapHeightToThisChunk > mapBounds.h) mapBounds.h = mapHeightToThisChunk;
 			}
 
 			auto globalIds = Csv::toU32s(chunkNode.toString());
-			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor, layerName);
+			createChunk(chunkPos, globalIds, tilesetsData, info, z, aiManager, outdoor, layerName, tilesetTexture);
 		}
 		z -= 2;
 	}
@@ -171,8 +169,8 @@ auto XmlMapParser::getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo
 	info.mapSize.y = mapNode.getAttribute("height")->toFloat();
 	info.tileSize.x = mapNode.getAttribute("tilewidth")->toFloat();
 	info.tileSize.y = mapNode.getAttribute("tileheight")->toFloat();
-	info.nrOfChunksInOneRow = std::ceil(info.mapSize.x / sChunkSize);
-	info.nrOfChunksInOneColumn = std::ceil(info.mapSize.y / sChunkSize);
+	info.nrOfChunksInOneRow = std::ceil(info.mapSize.x / chunkSideSize);
+	info.nrOfChunksInOneColumn = std::ceil(info.mapSize.y / chunkSideSize);
 	info.nrOfChunks = info.nrOfChunksInOneRow * info.nrOfChunksInOneColumn;
 	return info;
 }
@@ -226,6 +224,7 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			std::vector<FloatRect> lightWalls;
 			bool puzzleGridRoad = false;
 			Pit pit;
+			std::string tag;
 			for(auto& objectNode : objectNodes)
 			{
 				if(auto type = objectNode.getAttribute("type"))
@@ -271,6 +270,14 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 						pit.bounds = getBounds();
 						pit.exists = true;
 					}
+					else if(typeStr == "Tag")
+					{
+						auto properties = objectNode.getChild("properties")->getChildren("property"); 
+						for(const auto& property : properties)
+						{
+							tag = property.getAttribute("value")->toString();
+						}
+					}
 				}
 			}
 			tilesData.rectCollisions.emplace_back(rectCollisions);
@@ -278,44 +285,60 @@ auto XmlMapParser::getTilesData(const std::vector<Xml>& tileNodes) const -> Tile
 			tilesData.lightWalls.emplace_back(lightWalls);
 			tilesData.puzzleGridRoads.emplace_back(puzzleGridRoad);
 			tilesData.pits.emplace_back(pit);
+			tilesData.tags.emplace_back(tag);
 		}
 	}
 	return tilesData;
 }
 
 void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTileIds, const TilesetsData& tilesets,
-                               const GeneralMapInfo& info, u8 z, AIManager& aiManager, bool outdoor, const std::string& layerName)
+                               const GeneralMapInfo& info, u8 z, AIManager& aiManager, bool outdoor, 
+                               const std::string& layerName, Texture* tilesetTexture)
 {
 	PH_PROFILE_FUNCTION();
 
-	std::vector<ChunkQuadData> quads;
-	std::vector<FloatRect> lightWalls;
-	std::vector<FloatRect> chunkCollisionRects;
-	std::vector<component::BodyCircle> chunkCollisionCircles;
-	FloatRect quadsBounds = FloatRect(chunkPos.x, chunkPos.y, sChunkSize, sChunkSize);
-	FloatRect lightWallsBounds = {};
+	const bool entityChunkLayer = layerName.find("entity-layer") != std::string::npos;
 
-	component::PuzzleGridRoadChunk puzzleGridRoadChunk;
-	bool isThereAnyPuzzleGridRoadInThisChunk = false;
+	struct NormalChunkData
+	{
+		std::vector<ChunkQuadData> quads;
+		std::vector<FloatRect> lightWalls;
+		std::vector<FloatRect> chunkCollisionRects;
+		std::vector<component::BodyCircle> chunkCollisionCircles;
+		FloatRect quadsBounds;
+		component::PuzzleGridRoadChunk puzzleGridRoadChunk;
+		component::PitChunk pitChunk;
+		bool isThereAnyPuzzleGridRoadInThisChunk = false;
+	};
 
-	component::PitChunk pitChunk;
+	std::unique_ptr<NormalChunkData> normalChunkData;
+	if(!entityChunkLayer)
+	{
+		normalChunkData = std::make_unique<NormalChunkData>();
+		normalChunkData->quadsBounds = {chunkPos, Vec2(chunkSideSize)};
+	}
 
 	for(size_t tileIndexInChunk = 0; tileIndexInChunk < globalTileIds.size(); ++tileIndexInChunk) 
 	{
-		constexpr u32 bitsInByte = 8;
-		const u32 flippedHorizontally = 1u << (sizeof(u32) * bitsInByte - 1);
-		const u32 flippedVertically = 1u << (sizeof(u32) * bitsInByte - 2);
-		const u32 flippedDiagonally = 1u << (sizeof(u32) * bitsInByte - 3);
-
-		const bool isHorizontallyFlipped = globalTileIds[tileIndexInChunk] & flippedHorizontally;
-		const bool isVerticallyFlipped = globalTileIds[tileIndexInChunk] & flippedVertically;
-		const bool isDiagonallyFlipped = globalTileIds[tileIndexInChunk] & flippedDiagonally;
-
-		const u32 globalTileId = globalTileIds[tileIndexInChunk] & (~(flippedHorizontally | flippedVertically | flippedDiagonally));
-
+		u32 globalTileId = globalTileIds[tileIndexInChunk];
 		bool hasTile = globalTileId != 0;
-		if (hasTile) 
+		if(hasTile) 
 		{
+			constexpr u32 bitsInByte = 8;
+			constexpr u32 flippedHorizontally = 1u << (sizeof(u32) * bitsInByte - 1);
+			constexpr u32 flippedVertically = 1u << (sizeof(u32) * bitsInByte - 2);
+			constexpr u32 flippedDiagonally = 1u << (sizeof(u32) * bitsInByte - 3);
+
+			const bool isHorizontallyFlipped = globalTileIds[tileIndexInChunk] & flippedHorizontally;
+			const bool isVerticallyFlipped = globalTileIds[tileIndexInChunk] & flippedVertically;
+			const bool isDiagonallyFlipped = globalTileIds[tileIndexInChunk] & flippedDiagonally;
+
+			globalTileId &= (~(flippedHorizontally | flippedVertically | flippedDiagonally));
+
+			entt::entity tileEntity;
+			if(entityChunkLayer)
+				tileEntity = mGameRegistry->create();
+
 			size_t tilesetIndex = findTilesetIndex(globalTileId, tilesets);
 			if (tilesetIndex == std::string::npos) 
 			{
@@ -323,7 +346,7 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 				continue;
 			}
 
-			Vec2u chunkRelativePosInTiles = getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(sChunkSize));
+			Vec2u chunkRelativePosInTiles = getTwoDimensionalPositionFromOneDimensionalArrayIndex(Cast<u32>(tileIndexInChunk), Cast<u32>(chunkSideSize));
 			Vec2 positionInTiles = chunkPos + Cast<Vec2>(chunkRelativePosInTiles);
 
 			// create quad data
@@ -386,20 +409,36 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 			cqd.rotation = degreesToRadians(cqd.rotation);
 
 			const u32 tileId = globalTileId - tilesets.firstGlobalTileIds[tilesetIndex];
-			auto tileRectPosition = Cast<Vec2>(
+			Vec2 tileRectPos = Cast<Vec2>(
 				getTwoDimensionalPositionFromOneDimensionalArrayIndex(tileId, tilesets.columnsCounts[tilesetIndex]));
-			tileRectPosition.x *= (info.tileSize.x + 2);
-			tileRectPosition.y *= (info.tileSize.y + 2);
-			tileRectPosition.x += 1;
-			tileRectPosition.y += 1;
-			const Vec2 textureSize(576.f, 576.f); // TODO: Make it not hardcoded like that
-			cqd.textureRect.x = tileRectPosition.x / textureSize.x;
-			cqd.textureRect.y = (textureSize.y - tileRectPosition.y - info.tileSize.y) / textureSize.y;
-			cqd.textureRect.w = Cast<float>(info.tileSize.x) / textureSize.x;
-			cqd.textureRect.h = Cast<float>(info.tileSize.y) / textureSize.y;
+			tileRectPos.x *= (info.tileSize.x + 2);
+			tileRectPos.y *= (info.tileSize.y + 2);
+			tileRectPos.x += 1;
+			tileRectPos.y += 1;
 
-			// emplace quad data to chunk
-			quads.emplace_back(cqd);
+			if(entityChunkLayer)
+			{
+				component::RenderQuad rq = {};
+				rq.texture = tilesetTexture;
+				rq.rotation = cqd.rotation;
+				rq.rotationOrigin = {8.f, 8.f};
+				rq.z = z;
+				mGameRegistry->assign<component::RenderQuad>(tileEntity, rq);
+				mGameRegistry->assign<component::BodyRect>(tileEntity, FloatRect(cqd.position, cqd.size));
+				mGameRegistry->assign<component::IndoorOutdoorBlend>(tileEntity);
+				IntRect textureRect(Cast<Vec2i>(tileRectPos), Cast<Vec2i>(info.tileSize));
+				mGameRegistry->assign<component::TextureRect>(tileEntity, textureRect); 
+			}
+			else
+			{
+				cqd.textureRect = {
+					tileRectPos.x / tilesetTexture->getWidth(),
+					(tilesetTexture->getHeight() - tileRectPos.y - info.tileSize.y) / tilesetTexture->getHeight(),
+					Cast<float>(info.tileSize.x) / tilesetTexture->getWidth(),
+					Cast<float>(info.tileSize.y) / tilesetTexture->getHeight()
+				};
+				normalChunkData->quads.emplace_back(cqd);
+			}
 
 			// load collision bodies and light walls
 			size_t tilesDataIndex = findTilesIndex(tilesets.firstGlobalTileIds[tilesetIndex], tilesets.tilesData);
@@ -418,24 +457,19 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 						if(isVerticallyFlipped)
 							collisionRect.y = info.tileSize.y - collisionRect.y - collisionRect.h;
 
-						collisionRect.x += tileWorldPos.x; 
-						collisionRect.y += tileWorldPos.y; 
-
-						bool shouldBeAdded = true;
-						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+						if(entityChunkLayer)
 						{
-							if(intersect(collisionDenialArea, collisionRect)) 
-							{
-								shouldBeAdded = false;
-								break;
-							}
+							mGameRegistry->assign<component::StaticCollisionBody>(tileEntity);
 						}
-
-						if(shouldBeAdded)
+						else
 						{
-							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+							collisionRect.x += tileWorldPos.x; 
+							collisionRect.y += tileWorldPos.y; 
+
+							bool shouldBeAdded = true;
+							for(FloatRect collisionAndLightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
 							{
-								if(intersect(collisionDenialArea, collisionRect)) 
+								if(intersect(collisionAndLightWallDenialArea, collisionRect)) 
 								{
 									shouldBeAdded = false;
 									break;
@@ -443,7 +477,21 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 							}
 
 							if(shouldBeAdded)
-								chunkCollisionRects.emplace_back(collisionRect);
+							{
+								for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+								{
+									if(intersect(collisionDenialArea, collisionRect)) 
+									{
+										shouldBeAdded = false;
+										break;
+									}
+								}
+
+								if(shouldBeAdded)
+								{
+									normalChunkData->chunkCollisionRects.emplace_back(collisionRect);
+								}
+							}
 						}
 
 					}
@@ -456,24 +504,20 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 						if(isVerticallyFlipped)
 							collisionCircle.offset.y = info.tileSize.y - collisionCircle.offset.y - collisionCircle.radius;
 
-						collisionCircle.offset.x += tileWorldPos.x; 
-						collisionCircle.offset.y += tileWorldPos.y; 
-
-						auto collisionCircleRect = FloatRect(collisionCircle.offset, {collisionCircle.radius, collisionCircle.radius});
-
-						bool shouldBeAdded = true;
-						for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
+						if(entityChunkLayer)
 						{
-							if(intersect(collisionDenialArea, collisionCircleRect)) 
-							{
-								shouldBeAdded = false;
-								break;
-							}
+							mGameRegistry->assign<component::BodyCircle>(tileEntity, collisionCircle);
+							mGameRegistry->assign<component::StaticCollisionBody>(tileEntity);
 						}
-
-						if(shouldBeAdded)
+						else
 						{
-							for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+							collisionCircle.offset.x += tileWorldPos.x; 
+							collisionCircle.offset.y += tileWorldPos.y; 
+
+							auto collisionCircleRect = FloatRect(collisionCircle.offset, Vec2(collisionCircle.radius));
+
+							bool shouldBeAdded = true;
+							for(FloatRect collisionDenialArea : mDenialAreas.collisionsAndLightWalls)
 							{
 								if(intersect(collisionDenialArea, collisionCircleRect)) 
 								{
@@ -483,7 +527,19 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 							}
 
 							if(shouldBeAdded)
-								chunkCollisionCircles.emplace_back(collisionCircle);
+							{
+								for(FloatRect collisionDenialArea : mDenialAreas.collisions)
+								{
+									if(intersect(collisionDenialArea, collisionCircleRect)) 
+									{
+										shouldBeAdded = false;
+										break;
+									}
+								}
+
+								if(shouldBeAdded)
+									normalChunkData->chunkCollisionCircles.emplace_back(collisionCircle);
+							}
 						}
 					}
 
@@ -495,43 +551,65 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 						if(isVerticallyFlipped)
 							lightWallRect.y = info.tileSize.y - lightWallRect.y - lightWallRect.h;
 
-						lightWallRect.x += tileWorldPos.x; 
-						lightWallRect.y += tileWorldPos.y; 
-
-						bool shouldBeAdded = true;
-						for(FloatRect lightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
+						if(entityChunkLayer)
 						{
-							if(intersect(lightWallDenialArea, lightWallRect)) 
-							{
-								shouldBeAdded = false;
-								break;
-							}
+							mGameRegistry->assign<component::LightWall>(tileEntity, lightWallRect);
 						}
-
-						if(shouldBeAdded)
+						else
 						{
-							for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
+							lightWallRect.x += tileWorldPos.x; 
+							lightWallRect.y += tileWorldPos.y; 
+
+							bool shouldBeAdded = true;
+							for(FloatRect lightWallDenialArea : mDenialAreas.collisionsAndLightWalls)
 							{
-								if(intersect(lightWallDenialArea, lightWallRect))
+								if(intersect(lightWallDenialArea, lightWallRect)) 
+								{
 									shouldBeAdded = false;
+									break;
+								}
 							}
 
 							if(shouldBeAdded)
-								lightWalls.emplace_back(lightWallRect);
+							{
+								for(FloatRect lightWallDenialArea : mDenialAreas.lightWalls)
+								{
+									if(intersect(lightWallDenialArea, lightWallRect))
+										shouldBeAdded = false;
+								}
+
+								if(shouldBeAdded)
+									normalChunkData->lightWalls.emplace_back(lightWallRect);
+							}
 						}
 					}
 
-					// puzzle grid collisions
-					bool road = tilesData.puzzleGridRoads[i];
-					puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
-					if(road) isThereAnyPuzzleGridRoadInThisChunk = true;
-
-					// pits
-					Pit pit = tilesData.pits[i];
-					if(pit.exists)
+					if(entityChunkLayer)
 					{
-						pit.bounds.pos += tileWorldPos;
-						pitChunk.pits.emplace_back(pit.bounds);
+						// tags
+						const auto tag = tilesData.tags[i];
+						if(!tag.empty())
+						{
+							if(tag == "Cactus")
+								mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Cactus\0"});
+							else if(tag == "Rock")
+								mGameRegistry->assign<component::DebugName>(tileEntity, component::DebugName{"Rock\0"});
+						}
+					}
+					else
+					{
+						// puzzle grid collisions
+						bool road = tilesData.puzzleGridRoads[i];
+						normalChunkData->puzzleGridRoadChunk.tiles[chunkRelativePosInTiles.y][chunkRelativePosInTiles.x] = road;
+						if(road) normalChunkData->isThereAnyPuzzleGridRoadInThisChunk = true;
+
+						// pits
+						Pit pit = tilesData.pits[i];
+						if(pit.exists)
+						{
+							pit.bounds.pos += tileWorldPos;
+							normalChunkData->pitChunk.pits.emplace_back(pit.bounds);
+						}
 					}
 
 					break;
@@ -540,134 +618,140 @@ void XmlMapParser::createChunk(Vec2 chunkPos, const std::vector<u32>& globalTile
 		}
 	}
 
-	if(isThereAnyPuzzleGridRoadInThisChunk)
+	if(!entityChunkLayer)
 	{
-		// create puzzle grid road chunk in registry
-		auto intChunkPos = Cast<Vec2i>(chunkPos);
-		auto entity = mGameRegistry->create();
-		mGameRegistry->assign<component::PuzzleGridRoadChunk>(entity, puzzleGridRoadChunk);
-		mGameRegistry->assign<component::PuzzleGridPos>(entity, intChunkPos);
-		mAlreadyCreatedPuzzleGridRoadChunks.emplace_back(intChunkPos);
-		#ifndef PH_DISTRIBUTION
-		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
-		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(12.f * 16.f)));
-		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
-		#endif
-	}
-
-	if(!pitChunk.pits.empty())
-	{
-		// create pit chunk in registry
-		auto entity = mGameRegistry->create();
-		mGameRegistry->assign<component::PitChunk>(entity, pitChunk);
-		mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(sChunkSize * 16.f)));
-		#ifndef PH_DISTRIBUTION
-		mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"PitChunk\0"});
-		mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
-		#endif
-	}
-
-	if(!quads.empty())
-	{
-		// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
-		quadsBounds.x *= Cast<float>(info.tileSize.x);
-		quadsBounds.y *= Cast<float>(info.tileSize.y);
-		quadsBounds.w *= Cast<float>(info.tileSize.x);
-		quadsBounds.h *= Cast<float>(info.tileSize.y);
-
-		// check should we construct ground chunk or normal chunk 
-		FloatRect groundTextureRect = quads[0].textureRect;
-		bool groundChunkShouldBeConstructed = false;
-		if(quads.size() == 144)
+		if(normalChunkData->isThereAnyPuzzleGridRoadInThisChunk)
 		{
-			if(lightWalls.empty())
+			// create puzzle grid road chunk in registry
+			auto intChunkPos = Cast<Vec2i>(chunkPos);
+			auto entity = mGameRegistry->create();
+			mGameRegistry->assign<component::PuzzleGridRoadChunk>(entity, normalChunkData->puzzleGridRoadChunk);
+			mGameRegistry->assign<component::PuzzleGridPos>(entity, intChunkPos);
+			mAlreadyCreatedPuzzleGridRoadChunks.emplace_back(intChunkPos);
+			#ifndef PH_DISTRIBUTION
+			mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"RoadChunk\0"});
+			mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(12.f * 16.f)));
+			mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
+			#endif
+		}
+
+		if(!normalChunkData->pitChunk.pits.empty())
+		{
+			// create pit chunk in registry
+			auto entity = mGameRegistry->create();
+			mGameRegistry->assign<component::PitChunk>(entity, normalChunkData->pitChunk);
+			mGameRegistry->assign<component::BodyRect>(entity, FloatRect(chunkPos * 16.f, Vec2(chunkSideSize * 16.f)));
+			#ifndef PH_DISTRIBUTION
+			mGameRegistry->assign<component::DebugName>(entity, component::DebugName{"PitChunk\0"});
+			mGameRegistry->assign<component::DebugColor>(entity, Random::generateColor(sf::Color(0, 0, 0, 50), sf::Color(255, 255, 255, 50))); 
+			#endif
+		}
+
+		if(!normalChunkData->quads.empty())
+		{
+			if(!entityChunkLayer)
 			{
-				groundChunkShouldBeConstructed = true;
-				for(auto& quad : quads)
+				// transform chunk bounds to world coords so we can later use them for culling in RenderSystem
+				normalChunkData->quadsBounds.x *= Cast<float>(info.tileSize.x);
+				normalChunkData->quadsBounds.y *= Cast<float>(info.tileSize.y);
+				normalChunkData->quadsBounds.w *= Cast<float>(info.tileSize.x);
+				normalChunkData->quadsBounds.h *= Cast<float>(info.tileSize.y);
+			}
+
+			// check should we construct ground chunk or normal chunk 
+			FloatRect groundTextureRect = normalChunkData->quads[0].textureRect;
+			bool groundChunkShouldBeConstructed = false;
+			if(normalChunkData->quads.size() == 144)
+			{
+				if(normalChunkData->lightWalls.empty())
 				{
-					if(quad.textureRect != groundTextureRect)
+					groundChunkShouldBeConstructed = true;
+					for(auto& quad : normalChunkData->quads)
 					{
-						groundChunkShouldBeConstructed = false;
-						break;
+						if(quad.textureRect != groundTextureRect)
+						{
+							groundChunkShouldBeConstructed = false;
+							break;
+						}
 					}
 				}
 			}
-		}
 
-		auto assignDebugChunkLayerName = [&](entt::entity entity)
-		{
-			#ifndef PH_DISTRIBUTION
-			component::DebugChunkLayerName debugLayerName;
-			sprintf(debugLayerName.name, "%s  z = %u", layerName.c_str(), Cast<u32>(z));
-			mGameRegistry->assign<component::DebugChunkLayerName>(entity, debugLayerName);
-			#endif
-		};
-
-		// construct chunk in the registry
-		if(groundChunkShouldBeConstructed)
-		{
-			auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
-
-			auto& chunkBody = mGameRegistry->get<component::BodyRect>(groundChunkEntity);
-			chunkBody = quadsBounds;
-
-			auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
-			grc.textureRect = groundTextureRect;
-			grc.z = z;
-
-			assignDebugChunkLayerName(groundChunkEntity);
-
-			if(outdoor)
+			auto assignDebugChunkLayerName = [&](entt::entity entity)
 			{
-				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(groundChunkEntity);
-				ob.brightness = 1.f;
+				#ifndef PH_DISTRIBUTION
+				component::DebugChunkLayerName debugLayerName;
+				sprintf(debugLayerName.name, "%s  z = %u", layerName.c_str(), Cast<u32>(z));
+				mGameRegistry->assign<component::DebugChunkLayerName>(entity, debugLayerName);
+				#endif
+			};
+
+			// construct chunk in the registry
+			if(groundChunkShouldBeConstructed)
+			{
+				auto groundChunkEntity = mTemplates->createCopy("GroundMapChunk", *mGameRegistry);
+
+				auto& chunkBody = mGameRegistry->get<component::BodyRect>(groundChunkEntity);
+				chunkBody = normalChunkData->quadsBounds;
+
+				auto& grc = mGameRegistry->get<component::GroundRenderChunk>(groundChunkEntity);
+				grc.textureRect = groundTextureRect;
+				grc.z = z;
+
+				assignDebugChunkLayerName(groundChunkEntity);
+
+				if(outdoor)
+				{
+					auto& ob = mGameRegistry->assign<component::OutdoorBlend>(groundChunkEntity);
+					ob.brightness = 1.f;
+				}
+				else
+				{
+					auto& ib = mGameRegistry->assign<component::IndoorBlend>(groundChunkEntity);
+					ib.alpha = 0.f;
+				}
 			}
 			else
 			{
-				auto& ib = mGameRegistry->assign<component::IndoorBlend>(groundChunkEntity);
-				ib.alpha = 0.f;
+				auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
+
+				auto& chunkBody = mGameRegistry->get<component::BodyRect>(chunkEntity);
+				chunkBody = normalChunkData->quadsBounds;
+
+				auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
+				rc.quads = normalChunkData->quads;
+				rc.lightWalls = normalChunkData->lightWalls;
+				rc.z = z;
+				rc.rendererID = Renderer::registerNewChunk(normalChunkData->quadsBounds);
+
+				assignDebugChunkLayerName(chunkEntity);
+
+				if(outdoor)
+				{
+					auto& ob = mGameRegistry->assign<component::OutdoorBlend>(chunkEntity);
+					ob.brightness = 1.f;
+				}
+				else
+				{
+					auto& ib = mGameRegistry->assign<component::IndoorBlend>(chunkEntity);
+					ib.alpha = 0.f;
+				}
+
+				auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
+				mscb.rects = normalChunkData->chunkCollisionRects;
+				mscb.circles = normalChunkData->chunkCollisionCircles;
 			}
-		}
-		else
-		{
-			auto chunkEntity = mTemplates->createCopy("MapChunk", *mGameRegistry);
-
-			auto& chunkBody = mGameRegistry->get<component::BodyRect>(chunkEntity);
-			chunkBody = quadsBounds;
-
-			auto& rc = mGameRegistry->get<component::RenderChunk>(chunkEntity);
-			rc.quads = quads;
-			rc.lightWalls = lightWalls;
-			rc.z = z;
-			rc.rendererID = Renderer::registerNewChunk(quadsBounds);
-
-			assignDebugChunkLayerName(chunkEntity);
-
-			if(outdoor)
-			{
-				auto& ob = mGameRegistry->assign<component::OutdoorBlend>(chunkEntity);
-				ob.brightness = 1.f;
-			}
-			else
-			{
-				auto& ib = mGameRegistry->assign<component::IndoorBlend>(chunkEntity);
-				ib.alpha = 0.f;
-			}
-
-			auto& mscb = mGameRegistry->get<component::MultiStaticCollisionBody>(chunkEntity);
-			mscb.rects = chunkCollisionRects;
-			mscb.circles = chunkCollisionCircles;
 		}
 	}
 }
 
 std::size_t XmlMapParser::findTilesetIndex(u32 globalTileId, const TilesetsData& tilesets) const
 {
-	for (size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) 
+	for(size_t i = 0; i < tilesets.firstGlobalTileIds.size(); ++i) 
 	{
-		const u32 firstGlobalTileId = tilesets.firstGlobalTileIds[i];
-		const u32 lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
-		if (globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
+		u32 firstGlobalTileId = tilesets.firstGlobalTileIds[i];
+		u32 lastGlobalTileId = firstGlobalTileId + tilesets.tileCounts[i] - 1;
+		if(globalTileId >= firstGlobalTileId && globalTileId <= lastGlobalTileId)
 			return i;
 	}
 	return std::string::npos;
@@ -675,8 +759,8 @@ std::size_t XmlMapParser::findTilesetIndex(u32 globalTileId, const TilesetsData&
 
 std::size_t XmlMapParser::findTilesIndex(u32 firstGlobalTileId, const std::vector<TilesData>& tilesData) const
 {
-	for (size_t i = 0; i < tilesData.size(); ++i)
-		if (firstGlobalTileId == tilesData[i].firstGlobalTileId)
+	for(size_t i = 0; i < tilesData.size(); ++i)
+		if(firstGlobalTileId == tilesData[i].firstGlobalTileId)
 			return i;
 	return std::string::npos;
 }

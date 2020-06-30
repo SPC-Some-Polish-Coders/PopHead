@@ -4,14 +4,11 @@
 #include "Resources/textureHolder.hpp"
 #include "ECS/Components/graphicsComponents.hpp"
 #include "ECS/Components/physicsComponents.hpp"
-#include <entt/entity/registry.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <vector>
-#include <string>
 
 namespace ph {
 
 class AIManager;
+class Texture;
 class Xml;
 
 struct GeneralMapInfo
@@ -37,6 +34,7 @@ struct TilesData
 	std::vector<std::vector<FloatRect>> rectCollisions;
 	std::vector<std::vector<component::BodyCircle>> circleCollisions;
 	std::vector<Pit> pits;
+	std::vector<std::string> tags;
 	std::vector<bool> puzzleGridRoads;
 };
 
@@ -59,14 +57,15 @@ struct DenialAreas
 class XmlMapParser
 {
 public:
-	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry, EntitiesTemplateStorage& templates);
+	void parseFile(const Xml& mapNode, AIManager& aiManager, entt::registry& gameRegistry,
+	               EntitiesTemplateStorage& templates, Texture* tilesetTexture);
 private:
 	auto getGeneralMapInfo(const Xml& mapNode) const -> GeneralMapInfo;
 	
 	auto getTilesetsData(const std::vector<Xml>& tilesetNodes) const -> const TilesetsData;
 	auto getTilesData(const std::vector<Xml>& tileNodes) const -> TilesData;
 	void createChunk(Vec2 chunkPos, const std::vector<u32>& globalTileIds, const TilesetsData&, const GeneralMapInfo&,
-	                 u8 z, AIManager&, bool outdoor, const std::string& layerName);
+	                 u8 z, AIManager&, bool outdoor, const std::string& layerName, Texture* tilesetTexture);
 	size_t findTilesetIndex(u32 globalTileId, const TilesetsData& tilesets) const;
 	size_t findTilesIndex(u32 firstGlobalTileId, const std::vector<TilesData>& tilesData) const;
 	void createDebugName(entt::entity entity, const char* name) const;
@@ -78,8 +77,6 @@ private:
 	DenialAreas mDenialAreas;
 	entt::registry* mGameRegistry;
 	EntitiesTemplateStorage* mTemplates;
-	inline static float sChunkSize = 12.f;
-	inline static u8 sLowestLayerZ = 200; 
 };
 
 }
