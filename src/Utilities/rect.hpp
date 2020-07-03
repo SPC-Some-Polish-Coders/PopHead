@@ -55,7 +55,7 @@ template<typename T>
 FORCE_INLINE bool intersectFlipAllowed(const Rect<T>& a, const Rect<T>& b);
 
 template<typename T>
-FORCE_INLINE std::vector<Rect<T>>connectRects(std::vector<std::pair<Rect<T>, int>>& rects, float maxGapSize, float maxAlignSize);
+FORCE_INLINE std::vector<Rect<T>> connectRects(std::vector<std::pair<Rect<T>, int>>& rects, float maxGapSize, float maxAlignSize);
 
 template <typename T>
 FORCE_INLINE bool operator ==(const Rect<T>& a, const Rect<T>& b);
