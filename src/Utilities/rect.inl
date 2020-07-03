@@ -210,6 +210,66 @@ bool Rect<T>::touch(const Rect<T>& rect, sf::Vector2<i16>& direction) const
 	return false;
 }
 
+template<typename T>
+std::vector<Rect<T>> connectRects(std::vector<std::pair<Rect<T>, int>>& rects, float maxGapSize, float maxAlignSize)
+{
+	std::vector<FloatRect> addedRects;
+
+	int n = rects.size() * 2;
+	bool aux[n];
+
+	for (auto& e : aux)
+	{
+		e = false;
+	}
+
+	for (int i = 0; i < rects.size(); i++)
+	{
+		auto rect1 = rects[i].first;
+		for (int j = 0; j < rects.size(); j++)
+		{
+			if (i == j)
+				continue;
+
+			auto rect2 = rects[j].first;
+
+			int index = rects[i].second + rects[j].second;
+
+			if (aux[index]) // Means that these two rects are already connected
+				continue;
+
+			float gapX = (rect1.x > rect2.x) ? rect1.x - rect2.right() : rect2.x - rect1.right(),
+				  gapY = (rect1.y > rect2.y) ? rect1.y - rect2.bottom() : rect2.y - rect1.bottom();
+
+			float distX = std::abs(rect1.x - rect2.x),
+				  distY = std::abs(rect1.y - rect2.y);
+
+
+			if (gapX <= maxGapSize && distY <= std::min(rect1.h, rect2.h)) // Alignment on X axis
+			{
+				if (rect1.x > rect2.x)
+					addedRects.emplace_back(FloatRect(rect2.right(), rect2.y, gapX, rect2.h));
+				else
+					addedRects.emplace_back(FloatRect(rect1.right(), rect1.y, gapX, rect1.h));
+
+				aux[index] = true;
+			}
+			else
+			if (gapY <= maxGapSize && distX <= std::min(rect1.w, rect2.w)) // Alignment on Y axis
+			{
+				if (rect1.y > rect2.y)
+					addedRects.emplace_back(FloatRect(rect2.x, rect2.bottom(), rect2.w, gapY));
+				else
+					addedRects.emplace_back(FloatRect(rect1.x, rect1.bottom(), rect1.w, gapY));
+
+				aux[index] = true;
+			}
+		}
+	}
+
+	return addedRects;
+}
+
 template <typename T>
 bool operator ==(const Rect<T>& a, const Rect<T>& b)
 {
