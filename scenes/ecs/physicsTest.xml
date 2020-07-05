@@ -5,6 +5,15 @@
     <component name="Camera" priority="0" x="0" y="0" cameraName="" w="640" h="360" />
   </entityTemplate>
 
+  <entityTemplate name="Spikes" >
+    <component name="BodyRect" x="0" y="0" w="16" h="16" />
+    <component name="RenderQuad" textureFilepath="textures/others/spike.png" z="187" />
+    <component name="TextureRect" x="0" y="0" w="16" h="16" />
+	<component name="IndoorOutdoor" />
+	<component name="Spikes" />
+	<component name="PuzzleId" />
+  </entityTemplate >
+  
     <entityTemplate name="ColorRect">
         <component name="BodyRect" x="0.0" y="0.0" w="20.0" h="20.0" />
         <component name="RenderQuad"/>
@@ -22,6 +31,7 @@
     <component name="KinematicCollisionBody" mass="3" />
     <component name="Player" />
     <component name="BodyRect" x="0.0" y="0.0" w="20.0" h="20.0" />
+    <component name="BodyCircle" x="10.0" y="10.0" radius="10.0" />
     <component name="CharacterSpeed" speed="500" />
     <component name="Kinematics" friction="8.0" />
     <component name="Camera" cameraName="default" x="0" y="0" w="640" h="360" />
@@ -62,6 +72,27 @@
         <component name="BodyRect" x="120.0" y="140.0" w="60.0" h="60.0" />
         <component name="BodyCircle" x="30.0" y="30.0" radius="30.0" />
         <component name="RenderQuad" z="94" color="rgb(0,0,100)"/>
+        <component name="StaticCollisionBody" />
+    </entity>
+    
+    <entity>
+        <component name="BodyRect" x="100.0" y="30.0" w="20.0" h="100.0" />
+        <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
+        <component name="StaticCollisionBody" />
+    </entity>
+    <entity>
+        <component name="BodyRect" x="150.0" y="30.0" w="10.0" h="100.0" />
+        <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
+        <component name="StaticCollisionBody" />
+    </entity>
+    <entity>
+        <component name="BodyRect" x="200.0" y="30.0" w="5.0" h="100.0" />
+        <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
+        <component name="StaticCollisionBody" />
+    </entity>
+    <entity>
+        <component name="BodyRect" x="240.0" y="30.0" w="2.0" h="100.0" />
+        <component name="RenderQuad" color="rgb(255,0,0)" z="50" />
         <component name="StaticCollisionBody" />
     </entity>
 </entities>
