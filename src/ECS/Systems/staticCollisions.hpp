@@ -18,9 +18,9 @@ namespace ph::system {
 		void update(float dt) override;
 
 	private:
-		void calculateStaticCollisions();
-		Vec2 handleCollision(const FloatRect& staticRect, const component::BodyCircle* staticCircle, FloatRect& kinematicRect,
-		                     const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody);
+		void calculateStaticCollisions(float dt);
+		Vec2 handleCollision(const FloatRect& staticRect, const component::BodyCircle* staticCircle, const component::Kinematics& kin, FloatRect& kinematicRect,
+		                     const component::BodyCircle* kinematicCircle, entt::entity kinematicEntity, component::KinematicCollisionBody& kinematicBody, float dt);
 
 		void calculateKinematicCollisions();
 
